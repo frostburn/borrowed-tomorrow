@@ -34,16 +34,20 @@ export function interactDiskA(host: StoryHost, id: string) {
           SAY('Nell','The girl says she left Rillbridge twenty minutes ago.','nell'),
           SAY('Orrin','Then we start where the line was closed. The old signal yard, west of the square. I used to go there with my father.','orrin'),
           SAY('Nell','Shouldn’t we tell somebody first?','nell'),
-          SAY('Orrin','We can tell Mara on the way. She’ll sell you a bandage before she asks why you need it.','orrin'),
+          SAY('Orrin','We can tell Iona on the way. She’ll sell you a bandage before she asks why you need it.','orrin'),
           SAY('Nell','Mira, stay close to us. We’ll find where your train came from.','nell'),
           SAY('Mira','Can I hold the lantern when we get to the dark part?','mira'),
           SAY('Nell','The safe side of it. Yes.','nell'),
         ],done:()=>{recruitOrrin(s);remember(s,'orrin');host.refresh();host.save();}});break;
-      case 'master':host.talk({lines:[
-        SAY('Stationmaster Vale','The ministry wants the engine impounded. An unscheduled train is an administrative problem, apparently.','master'),
+      case 'master':
+        if(Boolean(s.flags.promisedHome)!==Boolean(s.flags.askedForTruth)){
+          host.talk({lines:[SAY('Stationmaster Ansel',s.flags.promisedHome?'I’ll keep the ministry’s telegram on my desk. Bring the passengers back before I have to answer it.':'Find out what is happening on that line. Until then, I’ll keep the train here.','master')]});break;
+        }
+        host.talk({lines:[
+        SAY('Stationmaster Ansel','The ministry wants the engine impounded. An unscheduled train is an administrative problem, apparently.','master'),
         SAY('Nell','And the passengers?','nell'),
-        SAY('Stationmaster Vale','That part of the telegram was very short. Bring them home, Nell. If there is a home to bring them to.','master'),
-      ],choices:[{label:'I’ll bring them home.',action:()=>{s.flags.promisedHome=true;remember(s,'promise');host.update();host.save();}},{label:'First I need to understand the line.',action:()=>{s.flags.askedForTruth=true;host.update();host.save();}}]});break;
+        SAY('Stationmaster Ansel','That part of the telegram was very short. Bring them home, Nell. If there is a home to bring them to.','master'),
+      ],choices:[{label:'I’ll bring them home.',action:()=>{s.flags.promisedHome=true;delete s.flags.askedForTruth;remember(s,'promise');host.update();host.save();}},{label:'First I need to understand the line.',action:()=>{s.flags.askedForTruth=true;delete s.flags.promisedHome;s.journal=s.journal.filter(id=>id!=='promise');host.update();host.save();}}]});break;
       case 'clerk':host.shop();break;
       case 'notice':host.talk({lines:[SAY('Branch closure notice','RILLBRIDGE BRANCH · PERMANENT CLOSURE. After the flood of 14 October, all passenger services are suspended. Memorial donations may be left with the stationmaster.'),SAY('Nell','Someone has polished the brass. The rest of the board is covered in dust.','nell')],done:()=>host.commit('noticeRead','notice')});break;
       case 'train':host.talk({lines:[SAY('The 18:40','The carriage smells of wet wool and orange peel. A half-finished crossword lies on a seat. One answer has been pencilled in: RETURN.'),SAY('Nell','They were halfway through an ordinary day.','nell')]});break;

@@ -15,7 +15,7 @@ export const MAPS: Record<MapId, MapData> = {
       { id: 'mira', x: 27, y: 10, label: 'Mira', sprite: 'mira', doneFlag: 'metMira', hiddenFlag: 'orrinJoined' },
       { id: 'orrin', x: 17, y: 14, label: 'Orrin', sprite: 'orrin', hiddenFlag: 'orrinJoined' },
       { id: 'master', x: 13, y: 7, label: 'Stationmaster', sprite: 'master' },
-      { id: 'clerk', x: 28, y: 18, label: 'Mara · supplies & rest', sprite: 'clerk' },
+      { id: 'clerk', x: 28, y: 18, label: 'Iona · supplies & rest', sprite: 'clerk' },
       { id: 'notice', x: 20, y: 12, label: 'Branch closure notice', sign: true, doneFlag: 'noticeRead' },
       { id: 'to-yard', x: 2, y: 11, label: 'Old signal yard', sign: true },
       { id: 'train', x: 32, y: 10, label: 'The unscheduled train', sign: true },

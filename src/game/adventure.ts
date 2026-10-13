@@ -8,6 +8,7 @@ import { decodeSave, level, maxHp, newGame, remember, restoreParty, type GameSta
 import { Audio } from './audio';
 import { exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
+import { bitmapText } from './pixel-font';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
@@ -40,6 +41,7 @@ export class Adventure extends Phaser.Scene {
   private near?: MapObject;
   private lastSecond = 0;
   private latestSave?: GameState;
+  private labelId=0;
   private serialSave: Promise<void> = Promise.resolve();
 
   constructor() { super('adventure'); }
@@ -53,17 +55,26 @@ export class Adventure extends Phaser.Scene {
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.pointerClick(pointer));
-    this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-      if (this.mode !== 'battle' || this.blocked || this.busy) return;
-      const hex = fromPixel(pointer.x, pointer.y);
-      if (inside(hex) && (!this.hover || !equal(this.hover, hex))) { this.hover = hex; this.drawGrid(); this.updatePreview(); }
-    });
     this.showTitle();
     this.ui.status.textContent = 'WASD / arrows · E interact · click to walk · J journal · Esc menu';
     void listSaves().then(records => { if (records.length) this.latestSave = decodeSave(JSON.stringify(records[0].state)); if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
     window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles] } : null }) };
+  }
+  resizeView(){
+    if(!this.sys.isActive()||this.mode==='battle')return;
+    const portrait=window.innerWidth<640;this.scale.setGameSize(portrait?480:WIDTH,HEIGHT);
+    const camera=this.cameras.main;camera.stopFollow();camera.setBounds(0,0,WIDTH,HEIGHT);
+    if(this.mode==='world'&&portrait&&this.player)camera.startFollow(this.player,true,1,1);
+    else camera.setScroll(this.mode==='title'&&portrait?264:0,0);
+  }
+  get animating(){return this.moving||this.tweens.getTweens().length>0;}
+  private label(x:number,y:number,text:string,color:string,scale=3){
+    const canvas=document.createElement('canvas');canvas.width=text.length*6*scale;canvas.height=9*scale;
+    bitmapText(canvas.getContext('2d')!,text,0,scale,color,scale);
+    const name=`label-${this.labelId++}`;this.textures.addCanvas(name,canvas);
+    const image=this.add.image(x,y,name).setOrigin(.5);
+    image.once('destroy',()=>this.textures.remove(name));return image;
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
@@ -73,7 +84,7 @@ export class Adventure extends Phaser.Scene {
   }
   private background(name: string, y=0) { this.layer!.add(this.add.image(0,y,`map-${name}`).setOrigin(0).setDisplaySize(WIDTH,HEIGHT)); }
   private showTitle() {
-    this.mode = 'title'; this.scale.setGameSize(window.innerWidth<=720?480:WIDTH,HEIGHT); this.cameras.main.stopFollow();this.cameras.main.setScroll(window.innerWidth<=720?264:0,0);this.clearLayer(); this.background('station');
+    this.mode = 'title'; this.scale.setGameSize(window.innerWidth<640?480:WIDTH,HEIGHT); this.cameras.main.stopFollow();this.cameras.main.setScroll(window.innerWidth<640?264:0,0);this.clearLayer(); this.background('station');
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Disk A · A railway folktale';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey told one disk at a time</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
     this.titlePanel();
@@ -107,13 +118,13 @@ export class Adventure extends Phaser.Scene {
   }
   private showWorld() {
     this.mode = 'world'; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
-    this.scale.setGameSize(window.innerWidth<=720?480:WIDTH,HEIGHT);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
+    this.scale.setGameSize(window.innerWidth<640?480:WIDTH,HEIGHT);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode(map.id);
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
       if (object.sprite) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85).setDisplaySize(51,51));
       if (!object.doneFlag || !this.state.flags[object.doneFlag]) {
-        const marker = this.add.text(x, y - (object.sprite ? 39 : 9), object.sign ? '◇' : '!', { fontFamily:'Georgia',fontSize:object.sign?'23px':'19px',color:'#e4b86a',stroke:'#14262b',strokeThickness:3 }).setOrigin(.5);
+        const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a');
         this.layer!.add(marker);
       }
     }
@@ -123,7 +134,7 @@ export class Adventure extends Phaser.Scene {
       this.follower = this.add.image((p.x - 1 + .5)*TILE,(p.y+.5)*TILE+7,'orrin').setOrigin(.5,.85).setDisplaySize(48,48); this.layer!.add(this.follower);
     }
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setDisplaySize(48,48); this.layer!.add(this.player);
-    this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);if(window.innerWidth<=720)this.cameras.main.startFollow(this.player,true,1,1);
+    this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);if(window.innerWidth<640)this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
     this.ui.initiative.textContent = map.subtitle;
     this.renderWorldControls();
@@ -176,7 +187,7 @@ export class Adventure extends Phaser.Scene {
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
     this.face = dx < 0 ? 'nell-left' : dx > 0 ? 'nell-right' : dy < 0 ? 'nell-back' : 'nell';
-    this.player!.setTexture(this.face); p.x=x; p.y=y;
+    this.player!.setTexture(this.face); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
     if (this.follower) {
       if(this.miraFollower)this.tweens.add({targets:this.miraFollower,x:this.follower.x,y:this.follower.y,duration:160,ease:'Linear'});
@@ -184,7 +195,13 @@ export class Adventure extends Phaser.Scene {
       this.tweens.add({ targets:this.follower, x:previous.x, y:previous.y, duration:150, ease:'Linear' });
     }
   }
-  private pointerClick(pointer: Phaser.Input.Pointer) {
+  point(x:number,y:number,click:boolean){
+    if(click){this.pointerClick({x,y});return;}
+    if(this.mode!=='battle'||this.blocked||this.busy)return;
+    const hex=fromPixel(x,y);
+    if(inside(hex)&&(!this.hover||!equal(this.hover,hex))){this.hover=hex;this.drawGrid();this.updatePreview();}
+  }
+  private pointerClick(pointer: {x:number;y:number}) {
     if (this.blocked || this.busy) return;
     if (this.mode === 'battle') { const h = fromPixel(pointer.x,pointer.y); if (inside(h)) this.chooseHex(h); return; }
     if (this.mode !== 'world') return;
@@ -244,7 +261,7 @@ export class Adventure extends Phaser.Scene {
 
   private startBattle(id: string) {
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
-    this.scale.setGameSize(WIDTH,480);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode('battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
+    this.scale.setGameSize(WIDTH,480);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='inspector'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();this.background('yard',-66);
@@ -256,7 +273,7 @@ export class Adventure extends Phaser.Scene {
       if(u.side==='enemy')img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
       if(u.hp>0){const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(p.x-23,p.y+18,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(p.x-22,p.y+19,44*u.hp/u.maxHp,4);this.layer.add(g);
-        const t=this.add.text(p.x,p.y+28,String(u.hp),{fontFamily:'system-ui',fontSize:'11px',color:'#f0dfbd',stroke:'#11242a',strokeThickness:3}).setOrigin(.5);this.layer.add(t);
+        const t=this.label(p.x,p.y+32,String(u.hp),'#f4e5be',2);this.layer.add(t);
       }
     }
     this.drawGrid();this.drawInitiative();
@@ -328,17 +345,17 @@ export class Adventure extends Phaser.Scene {
     const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));
     const success=plan.action==='move'?!!move(b,u,plan.hex):cast(b,u,plan.action,plan.hex);
     if(!success){this.plan=undefined;this.drawGrid();this.renderBattleControls();return;}
-    this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action==='move'?'move':ABILITIES[plan.action].heal?'heal':'hit');
+    this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action,this.state.location.map);
     if(plan.action==='move')this.selected=u.abilities[0];else this.selected='move';
     this.animateBattle(before);
   }
-  private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
+  private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
   private doWait() {if(this.busy||active(this.battle!)?.side!=='party')return;if(wait(this.battle!)){this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}}
   private animateBattle(before: Map<string,{hex:Hex;hp:number}>) {
     this.busy=true;this.drawBattle();this.renderBattleControls();
     for(const u of this.battle!.units){const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
       if(!equal(old.hex,u.hex)){const from=toPixel(old.hex),to=toPixel(u.hex);image.setPosition(from.x,from.y+9);this.tweens.add({targets:image,x:to.x,y:to.y+9,duration:280,ease:'Sine.easeInOut'});}
-      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.add.text(p.x,p.y-50,`${amount>0?'+':''}${amount}`,{fontFamily:'Georgia',fontSize:'24px',color:amount>0?'#b7d3b0':'#ffe0b0',stroke:'#152a2e',strokeThickness:4}).setOrigin(.5).setDepth(10);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
+      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
     }
     this.time.delayedCall(380,()=>{this.busy=false;if(this.battle?.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}});
   }
@@ -348,7 +365,7 @@ export class Adventure extends Phaser.Scene {
     this.time.delayedCall(480,()=>{
       if(this.mode!=='battle'||this.battle!==b)return;
       if(this.ui.modalOpen){this.busy=false;this.scheduleEnemy();return;}
-      const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));enemyTurn(b);this.audio.effect('hit');this.animateBattle(before);
+      const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));const action=enemyTurn(b);if(action)this.audio.effect(action,this.state.location.map);this.animateBattle(before);
     });
   }
   private battleEnded() {
@@ -364,7 +381,7 @@ export class Adventure extends Phaser.Scene {
     if(b.encounter==='scrap')remember(this.state,'scrap');
     if(b.encounter==='tunnel')remember(this.state,'guardian');
     if(b.encounter==='inspector')remember(this.state,'inspector');
-    this.audio.effect('win');
+    this.audio.setMode(this.state.location.map);this.audio.effect('win');
     this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${b.encounter==='yard'?'<p>Orrin recovers the missing signal fuse from a hound’s jaws.</p>':''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();}}]);
   }
 
@@ -408,7 +425,7 @@ export class Adventure extends Phaser.Scene {
   }
   private shop() {
     const s=this.state;
-    this.ui.showModal('Mara’s supplies',`<p>“On account? No. On the house? If you look that tired, yes.”</p><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
+    this.ui.showModal('Iona’s supplies',`<p>“On account? No. On the house? If you look that tired, yes.”</p><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
     const items=[{id:'bandage',name:'Bandage',description:'Restore 24 HP during battle.',cost:8},{id:'brass-lantern',name:'Brass lantern',description:'Nell deals 3 more damage.',cost:30},{id:'work-coats',name:'Reinforced work coats',description:'Both heroes take 1 less damage.',cost:25}];
     const target=this.ui.modal.querySelector('#shop-items')!;
     for(const item of items){const row=document.createElement('div');row.className='equipment-row';row.innerHTML=`<div><h3>${item.name}</h3><p>${item.description}</p></div>`;row.append(this.ui.button({label:s.gear.includes(item.id)?'Equipped':`${item.cost} marks`,disabled:s.coins<item.cost||s.gear.includes(item.id),action:()=>{s.coins-=item.cost;if(item.id==='bandage')s.bandages++;else s.gear.push(item.id);this.autosave();this.renderWorldControls();this.shop();}}));target.append(row);}

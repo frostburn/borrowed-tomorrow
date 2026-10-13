@@ -17,7 +17,7 @@ This is the authored story source of truth. Update it after every chapter. Dialo
 
 The return railway preserves the last ordinary day of lost communities. The timetable is an act of rescue that became a bureaucratic loop. The inspector is an enforcer rather than the person who created it. A saved town can become real again only if its people can leave their appointed disaster without the registry replacing them with substitutes. This is a narrative constraint, not a rule the player has yet been told.
 
-The timetable's original author is Ada Rook, a signal engineer whose family was lost at Rillbridge. She constructed the return service and remains inside its maintenance network. Orrin's father was one of the maintenance crew. His work survives because maintenance time and passenger time pass differently. These truths should eventually be revealed through people, objects, and actions, not a final exposition dump.
+The timetable's original author is Ada Fenwick, a signal engineer whose family was lost at Rillbridge. She constructed the return service and remains inside its maintenance network. Orrin's father was one of the maintenance crew. His work survives because maintenance time and passenger time pass differently. These truths should eventually be revealed through people, objects, and actions, not a final exposition dump.
 
 Do not fix every catastrophe in advance. Each chapter should make a local problem actionable, resolve something the player cares about, and leave consequences visible in previous locations. Avoid endless “there is a bigger mystery” endings with no local resolution.
 

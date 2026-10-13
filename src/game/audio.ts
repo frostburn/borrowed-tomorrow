@@ -1,53 +1,55 @@
-type Mode = 'station' | 'yard' | 'tunnel' | 'battle' | 'ending';
-/** A look-ahead sequencer: music timing is independent of frame rate. */
+import { ARRANGEMENTS, scoreBar, type MusicMode } from './score';
+import { Synth, type Effect } from './synth';
+
+/** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
 export class Audio {
-  private context?: AudioContext;
-  private gain?: GainNode;
-  private timer?: number;
-  private next = 0;
-  private step = 0;
-  private mode: Mode = 'station';
-  enabled = false;
-  async toggle(): Promise<boolean> {
-    if (!this.context) { this.context = new AudioContext(); this.gain = this.context.createGain(); this.gain.connect(this.context.destination); this.gain.gain.value = 0; }
-    await this.context.resume(); this.enabled = !this.enabled;
-    this.gain!.gain.setTargetAtTime(this.enabled ? 0.16 : 0, this.context.currentTime, 0.1);
-    if (!this.timer) { this.next = this.context.currentTime + 0.05; this.timer = window.setInterval(() => this.schedule(), 25); }
+  private context?:AudioContext;
+  private master?:GainNode;
+  private music?:Synth;
+  private effects?:Synth;
+  private timer?:number;
+  private next=0;
+  private bar=0;
+  private mode:MusicMode='station';
+  private pending:MusicMode='station';
+  private steps=0;
+  private lastStep=-1;
+  enabled=false;
+  private initialize(){
+    const c=new AudioContext();this.context=c;
+    const master=c.createGain(),compressor=c.createDynamicsCompressor(),music=c.createGain(),fx=c.createGain();
+    this.master=master;master.gain.value=0;music.gain.value=.52;fx.gain.value=.58;
+    compressor.threshold.value=-12;compressor.knee.value=9;compressor.ratio.value=4;compressor.attack.value=.005;compressor.release.value=.2;
+    music.connect(compressor);fx.connect(compressor);compressor.connect(master);master.connect(c.destination);
+    // A quiet stereo room tail: no downloaded samples and no per-note reverbs.
+    const room=c.createConvolver(),wet=c.createGain();wet.gain.value=.16;
+    const impulse=c.createBuffer(2,Math.floor(c.sampleRate*.85),c.sampleRate);let seed=731;
+    for(let ch=0;ch<2;ch++){const data=impulse.getChannelData(ch);for(let i=0;i<data.length;i++){seed=(Math.imul(seed,1664525)+1013904223)|0;data[i]=((seed>>>0)/2147483648-1)*(1-i/data.length)**3*.4;}}
+    room.buffer=impulse;music.connect(room);room.connect(wet);wet.connect(compressor);
+    this.music=new Synth(c,music);this.effects=new Synth(c,fx);
+  }
+  async toggle():Promise<boolean>{
+    if(!this.context)this.initialize();const c=this.context!;await c.resume();
+    this.enabled=!this.enabled;this.master!.gain.setTargetAtTime(this.enabled?.75:0,c.currentTime,.025);
+    if(!this.enabled){this.music!.stop(c.currentTime+.08);this.effects!.stop(c.currentTime+.08);}
+    if(this.enabled){this.mode=this.pending;this.next=c.currentTime+.045;this.bar=0;this.schedule();}
+    if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
     return this.enabled;
   }
-  setMode(mode: Mode) { this.mode = mode; }
-  private note(midi: number, when: number, duration: number, volume: number, type: OscillatorType = 'triangle', pan = 0) {
-    const c = this.context!; const oscillator = c.createOscillator(), envelope = c.createGain(), panner = c.createStereoPanner();
-    oscillator.type = type; oscillator.frequency.value = 440 * 2 ** ((midi - 69) / 12); panner.pan.value = pan;
-    oscillator.connect(envelope); envelope.connect(panner); panner.connect(this.gain!);
-    envelope.gain.setValueAtTime(0, when); envelope.gain.linearRampToValueAtTime(volume, when + 0.015);
-    envelope.gain.exponentialRampToValueAtTime(0.001, when + duration);
-    oscillator.start(when); oscillator.stop(when + duration + 0.02);
-    oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); panner.disconnect(); };
-  }
-  private schedule() {
-    if (!this.context || !this.enabled || this.context.state !== 'running') { if (this.context) this.next = this.context.currentTime + 0.05; return; }
-    const c = this.context;
-    if (this.next < c.currentTime) this.next = c.currentTime + 0.03;
-    const combat = this.mode === 'battle'; const interval = combat ? 0.19 : 0.29;
-    const melody = [74, null, 77, 76, 74, null, 69, null, 72, null, 74, 77, 76, null, 72, null,
-      69, null, 72, 74, 77, null, 81, 79, 77, 76, 74, null, 72, null, 69, null];
-    while (this.next < c.currentTime + 0.13) {
-      const n = this.step % 32; const phrase = Math.floor(this.step / 32) % 4;
-      const roots = [50, 46, 53, 48]; const root = roots[Math.floor(n / 8)];
-      if (n % 4 === 0) this.note(root - 12, this.next, interval * 3.8, 0.34, 'triangle', -0.15);
-      if (n % 2 === 0) this.note(root + [0,7,12,7][Math.floor(n/2)%4], this.next, interval * 2.5, this.mode === 'tunnel' ? 0.05 : 0.12, 'sine', 0.4);
-      const pitch = melody[n];
-      if (pitch !== null && (phrase !== 2 || n > 15)) this.note(pitch + (this.mode === 'ending' ? 12 : 0), this.next, interval * (n % 4 ? 1.8 : 2.8), combat ? 0.21 : 0.14, phrase === 1 ? 'sine' : 'triangle', -0.3);
-      if (combat && n % 2 === 0) this.note(n % 4 ? 39 : 33, this.next, 0.07, 0.2, 'sawtooth');
-      this.next += interval; this.step++;
+  setMode(mode:MusicMode){this.pending=mode;if(!this.enabled)this.mode=mode;}
+  private schedule(){
+    const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
+    if(this.next<c.currentTime)this.next=c.currentTime+.03;
+    while(this.next<c.currentTime+.16){
+      this.mode=this.pending;const beat=60/ARRANGEMENTS[this.mode].bpm;
+      for(const n of scoreBar(this.mode,this.bar))this.music!.note(n.instrument,n.midi,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+      this.next+=beat*4;this.bar++;
     }
   }
-  effect(kind: 'hit' | 'move' | 'heal' | 'win' | 'click') {
-    if (!this.enabled || !this.context) return;
-    const now = this.context.currentTime;
-    if (kind === 'win') [62,65,69,74].forEach((n,i) => this.note(n, now + i * 0.12, 0.45, 0.35));
-    else if (kind === 'heal') [74,77,81].forEach((n,i) => this.note(n, now + i * 0.06, 0.22, 0.2, 'sine'));
-    else this.note(kind === 'hit' ? 38 : kind === 'move' ? 55 : 79, now, kind === 'hit' ? 0.18 : 0.05, 0.16, kind === 'hit' ? 'sawtooth' : 'triangle');
+  effect(kind:Effect,surface:'station'|'yard'|'tunnel'='station'){
+    if(!this.enabled||!this.context)return;
+    const now=this.context.currentTime;
+    if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
+    this.effects!.effect(kind,now+.005,surface,this.steps);
   }
 }

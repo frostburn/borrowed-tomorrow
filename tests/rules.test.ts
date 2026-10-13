@@ -4,6 +4,8 @@ import { ABILITIES, active, cast, createBattle, defend, enemyTurn, legalAim, mov
 import { blast, cells, distance, fromPixel, key, offset, ray, toPixel, visible } from '../src/rules/hex';
 import { decodeSave, newGame, recruitOrrin } from '../src/rules/state';
 import diskAV1 from './fixtures/disk-a-v1.json';
+import { interactDiskA, type StoryHost } from '../src/content/disk-a/interactions';
+import type { Dialogue } from '../src/content/disk-a/story';
 
 function party() { const s = newGame(); recruitOrrin(s); return s; }
 describe('hex geometry and cover', () => {
@@ -81,5 +83,28 @@ describe('chapter continuity', () => {
       const approaches=[{x:object.x,y:object.y},{x:object.x-1,y:object.y},{x:object.x+1,y:object.y},{x:object.x,y:object.y-1},{x:object.x,y:object.y+1}];
       expect(approaches.some(p=>walkable(map,p.x,p.y)&&worldPath(map,starts[map.id],p).length>0),`${map.id}: ${object.id}`).toBe(true);
     }
+  });
+});
+
+describe('stationmaster decision',()=>{
+  function visit(state=party()){
+    let dialogue:Dialogue|undefined;
+    const noop=()=>{};
+    const host:StoryHost={state,talk:d=>{dialogue=d;},commit:noop,refresh:noop,save:noop,update:noop,travel:noop,battle:noop,shop:noop,boundary:noop,toast:noop,endingMusic:noop};
+    return {state,host,read:()=>dialogue!};
+  }
+  it('retains either first answer when the stationmaster is visited again',()=>{
+    for(const chosen of [0,1]){
+      const {state,host,read}=visit();interactDiskA(host,'master');read().choices![chosen].action();
+      interactDiskA(host,'master');expect(read().choices).toBeUndefined();
+      expect(Boolean(state.flags.promisedHome)).toBe(chosen===0);
+      expect(Boolean(state.flags.askedForTruth)).toBe(chosen===1);
+    }
+  });
+  it('lets an ambiguous version-1 save resolve the choice to one answer',()=>{
+    const state=decodeSave(JSON.stringify({...party(),flags:{orrinJoined:true,promisedHome:true,askedForTruth:true}}));
+    const {host,read}=visit(state);interactDiskA(host,'master');read().choices![1].action();
+    expect(state.flags.askedForTruth).toBe(true);expect(state.flags.promisedHome).toBeUndefined();
+    interactDiskA(host,'master');expect(read().choices).toBeUndefined();
   });
 });

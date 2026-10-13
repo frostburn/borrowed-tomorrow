@@ -40,7 +40,7 @@ export class UI {
   sound(enabled: boolean) { const button = document.getElementById('sound-button')!; button.textContent = enabled ? 'Sound on' : 'Sound off'; button.setAttribute('aria-pressed', String(enabled)); }
   button(b: Button): HTMLButtonElement {
     const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
-    button.disabled = !!b.disabled; button.className = b.selected ? 'selected' : ''; if (b.title) button.title = b.title;
+    button.disabled = !!b.disabled; button.className = b.selected ? 'selected' : ''; if (b.title) button.setAttribute('aria-description', b.title);
     button.onclick = () => { b.action(); }; return button;
   }
   actionRow(target: HTMLElement, buttons: Button[]) { for (const b of buttons) target.append(this.button(b)); }

@@ -161,7 +161,7 @@ export function wait(b: Battle): boolean {
 }
 
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
-export function enemyTurn(b: Battle): void {
+export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   const enemies = alive(b).filter(v => v.side !== u.side);
   let best: { pos: Hex; aim: Hex; ability: AbilityId; score: number } | null = null;
@@ -187,11 +187,13 @@ export function enemyTurn(b: Battle): void {
   if (best) {
     if (!equal(original, best.pos)) move(b, u, best.pos);
     cast(b, u, best.ability, best.aim);
+    return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
     visits.sort((a, z) => Math.min(...enemies.map(v => distance(a.hex, v.hex))) - Math.min(...enemies.map(v => distance(z.hex, v.hex))) || a.path.length - z.path.length);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);
+    return 'defend';
   }
 }
 
