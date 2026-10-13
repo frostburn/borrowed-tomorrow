@@ -19,6 +19,8 @@ const game=new Phaser.Game({
   width:WIDTH,height:HEIGHT,scale:{mode:Phaser.Scale.NONE},
   scene:[adventure],audio:{noAudio:true},banner:false,
 });
+// Finish all Phaser resize handlers, then sync before the next input event.
+game.scale.on('resize',()=>queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}}));
 game.events.on('postrender',()=>{display.attach(game.canvas);display.paint(adventure.animating);});
 
 window.addEventListener('resize',()=>adventure.resizeView());

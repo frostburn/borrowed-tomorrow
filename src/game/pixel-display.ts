@@ -71,6 +71,20 @@ export class PixelDisplay {
     this.physicalLeft=Math.round(left*dpr);this.physicalTop=Math.round(top*dpr);
     this.output.width=Math.ceil(window.innerWidth*dpr);this.output.height=Math.ceil(window.innerHeight*dpr);
     Object.assign(this.output.style,{left:'0px',top:'0px',width:this.output.width/dpr+'px',height:this.output.height/dpr+'px'});
+    this.fitWorld();
+  }
+  /** Sync hit targets in the resize event, before another pointer event can run. */
+  fitWorld(){
+    if(!this.native)return;
+    const stage=document.getElementById('canvas')!;
+    const fit=Math.min(stage.clientWidth/this.native.width,stage.clientHeight/this.native.height);
+    const w=Math.floor(this.native.width*fit),h=Math.floor(this.native.height*fit);
+    if(this.world.width!==this.native.width||this.world.height!==this.native.height){this.world.width=this.native.width;this.world.height=this.native.height;this.dirty=true;}
+    const fitted=`${w}:${h}:${stage.clientWidth}:${stage.clientHeight}`;
+    if(fitted!==this.fitted){
+      Object.assign(this.world.style,{width:w+'px',height:h+'px',left:Math.floor((stage.clientWidth-w)/2)+'px',top:Math.floor((stage.clientHeight-h)/2)+'px'});
+      this.fitted=fitted;this.dirty=true;
+    }
   }
   paint(animated=false){
     if(!this.native)return;
@@ -80,15 +94,7 @@ export class PixelDisplay {
     this.wasAnimated=animated;
     if(!resized&&!this.dirty&&(!animated||now-this.lastPaint<50))return;
     this.lastPaint=now;
-    const stage=document.getElementById('canvas')!;
-    const fit=Math.min(stage.clientWidth/this.native.width,stage.clientHeight/this.native.height);
-    const w=Math.floor(this.native.width*fit),h=Math.floor(this.native.height*fit);
-    if(this.world.width!==this.native.width||this.world.height!==this.native.height){this.world.width=this.native.width;this.world.height=this.native.height;}
-    const fitted=`${w}:${h}:${stage.clientWidth}:${stage.clientHeight}`;
-    if(fitted!==this.fitted){
-      Object.assign(this.world.style,{width:w+'px',height:h+'px',left:Math.floor((stage.clientWidth-w)/2)+'px',top:Math.floor((stage.clientHeight-h)/2)+'px'});
-      this.fitted=fitted;this.dirty=true;
-    }
+    this.fitWorld();
     if(this.dirty){this.rebuild();this.dirty=false;}
     const ctx=this.ctx;ctx.imageSmoothingEnabled=false;ctx.globalAlpha=1;ctx.fillStyle=PALETTE[0];ctx.fillRect(0,0,this.width,this.height);
     ctx.drawImage(this.lower,0,0);
