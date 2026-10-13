@@ -1,6 +1,7 @@
 import { bitmapText } from './pixel-font';
+import { displayWidth, DISPLAY_HEIGHT } from './resolution';
 
-/** One palette for scenery, actors, text, and panels. */
+/** Panel and text colors. Asset colors pass through unchanged. */
 export const PALETTE = ['#080f19','#101d28','#182b32','#234047','#35535a','#557179','#87a3a2',
   '#142b29','#253d32','#3b513a','#536c46','#789054','#9bab6c',
   '#382c29','#514033','#70513d','#96694a','#c18a59','#dda66d','#f4c77a',
@@ -10,13 +11,6 @@ export function pixelScale(width:number,height:number,dpr:number,logicalWidth:nu
   const physical=Math.max(1,Math.floor(Math.min(width*dpr/logicalWidth,height*dpr/logicalHeight)));
   return {physical,css:physical/dpr};
 }
-const colors=PALETTE.map(c=>[parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]);
-const lookup=new Uint8Array(32768);
-for(let id=0;id<lookup.length;id++){
-  const rgb=[((id>>10)&31)*255/31,((id>>5)&31)*255/31,(id&31)*255/31];let best=Infinity;
-  colors.forEach((c,i)=>{const d=(rgb[0]-c[0])**2*.3+(rgb[1]-c[1])**2*.59+(rgb[2]-c[2])**2*.11;if(d<best){best=d;lookup[id]=i;}});
-}
-
 /** DOM retains focus, semantics, and hit targets. Only this bitmap is visible. */
 export class PixelDisplay {
   readonly source: HTMLDivElement;
@@ -29,8 +23,8 @@ export class PixelDisplay {
   private lower=document.createElement('canvas');
   private upper=document.createElement('canvas');
   private worldRect={x:0,y:0,w:0,h:0};
-  private width=640;
-  private height=400;
+  private width=1024;
+  private height=DISPLAY_HEIGHT;
   private cssScale=1;
   private physicalScale=1;
   private physicalLeft=0;
@@ -60,7 +54,7 @@ export class PixelDisplay {
   attach(canvas:HTMLCanvasElement){this.native=canvas;}
   private layout(){
     this.dirty=true;this.fitted='';
-    const portrait=window.innerWidth<640;this.width=portrait?320:640;this.height=portrait?640:400;
+    this.width=displayWidth();this.height=DISPLAY_HEIGHT;
     const dpr=window.devicePixelRatio||1,scale=pixelScale(window.innerWidth,window.innerHeight,dpr,this.width,this.height);
     this.cssScale=scale.css;this.physicalScale=scale.physical;
     const left=Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
@@ -77,8 +71,8 @@ export class PixelDisplay {
   fitWorld(){
     if(!this.native)return;
     const stage=document.getElementById('canvas')!;
-    const fit=Math.min(stage.clientWidth/this.native.width,stage.clientHeight/this.native.height);
-    const w=Math.floor(this.native.width*fit),h=Math.floor(this.native.height*fit);
+    // The scene owns its camera viewport. A scene pixel is always a framebuffer pixel.
+    const w=this.native.width,h=this.native.height;
     if(this.world.width!==this.native.width||this.world.height!==this.native.height){this.world.width=this.native.width;this.world.height=this.native.height;this.dirty=true;}
     const fitted=`${w}:${h}:${stage.clientWidth}:${stage.clientHeight}`;
     if(fitted!==this.fitted){
@@ -100,9 +94,6 @@ export class PixelDisplay {
     ctx.drawImage(this.lower,0,0);
     const r=this.worldRect;ctx.drawImage(this.native,r.x,r.y,r.w,r.h);
     ctx.drawImage(this.upper,0,0);
-    const image=ctx.getImageData(0,0,this.width,this.height),p=image.data;
-    for(let i=0;i<p.length;i+=4){const c=colors[lookup[((p[i]>>3)<<10)|((p[i+1]>>3)<<5)|(p[i+2]>>3)]];p[i]=c[0];p[i+1]=c[1];p[i+2]=c[2];p[i+3]=255;}
-    ctx.putImageData(image,0,0);
     // Expand in the bitmap itself. CSS fractional sizing can otherwise smooth pixels
     // at fractional DPR even when the final device scale is an integer.
     this.presentCtx.imageSmoothingEnabled=false;
@@ -127,9 +118,15 @@ export class PixelDisplay {
       if(element===this.world){this.worldRect=r;add(()=>{},false,true);}
       else if(element instanceof HTMLCanvasElement)add(ctx=>{ctx.drawImage(element,r.x,r.y,r.w,r.h);});
       else if(element instanceof HTMLImageElement&&element.complete&&element.naturalWidth){
-        const fit=style.objectFit==='contain'?Math.min(r.w/element.naturalWidth,r.h/element.naturalHeight):0;
-        const w=fit?Math.round(element.naturalWidth*fit):r.w,h=fit?Math.round(element.naturalHeight*fit):r.h;
-        add(ctx=>{ctx.drawImage(element,r.x+Math.floor((r.w-w)/2),r.y+Math.floor((r.h-h)/2),w,h);});
+        // Borders and padding are outside the image's content box. Drawing into
+        // the border box used to resample even a supposedly native-sized portrait.
+        const left=Math.round(parseFloat(style.borderLeftWidth)+parseFloat(style.paddingLeft));
+        const top=Math.round(parseFloat(style.borderTopWidth)+parseFloat(style.paddingTop));
+        const right=Math.round(parseFloat(style.borderRightWidth)+parseFloat(style.paddingRight));
+        const bottom=Math.round(parseFloat(style.borderBottomWidth)+parseFloat(style.paddingBottom));
+        const w=element.naturalWidth,h=element.naturalHeight;
+        const x=r.x+left+Math.floor((r.w-left-right-w)/2),y=r.y+top+Math.floor((r.h-top-bottom-h)/2);
+        add(ctx=>{ctx.drawImage(element,x,y);});
       }else{
         for(const node of element.childNodes){
           if(node instanceof HTMLElement)walk(node);

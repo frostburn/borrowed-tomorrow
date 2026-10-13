@@ -76,7 +76,7 @@ export function reachable(start: Hex, movement: number, blocked: Set<string>): M
 }
 
 export const HEX_SIZE = 35;
-export const ORIGIN = { x: 160, y: 128 };
+export const ORIGIN = { x: 160, y: 104 };
 export function toPixel(h: Hex): { x: number; y: number } {
   return { x: ORIGIN.x + Math.sqrt(3) * HEX_SIZE * (h.q + h.r / 2), y: ORIGIN.y + HEX_SIZE * 1.5 * h.r };
 }

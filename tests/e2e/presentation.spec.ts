@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test';
 const modes=['station','yard','tunnel','battle','inspector','ending'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win'] as const;
 
-test('the whole screen uses one palette and integer physical pixels at fractional DPR',async({browser})=>{
-  const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:1.25});
+test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
   const page=await context.newPage();await page.goto('/');await expect(page.getByRole('button',{name:'Begin Disk A'})).toBeVisible({timeout:15000});
   await expect.poll(()=>page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,ctx=canvas.getContext('2d')!;
@@ -13,8 +13,6 @@ test('the whole screen uses one palette and integer physical pixels at fractiona
   const result=await page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,r=canvas.getBoundingClientRect(),dpr=devicePixelRatio;
     const p=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
-    const palette=new Set(window.borrowedTomorrowPixels.inspect().palette.map(c=>parseInt(c.slice(1),16)));
-    let outside=0;for(let i=0;i<p.length;i+=4)if(!palette.has((p[i]<<16)|(p[i+1]<<8)|p[i+2])||p[i+3]!==255)outside++;
     const info=window.borrowedTomorrowPixels.inspect(),k=info.physicalScale;let uneven=0;
     for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
       const start=((info.physicalTop+y*k)*canvas.width+info.physicalLeft+x*k)*4;
@@ -24,9 +22,9 @@ test('the whole screen uses one palette and integer physical pixels at fractiona
       }
     }
     // The backing raster is already enlarged into equal physical blocks.
-    return {outside,uneven,physicalScale:k,xScale:r.width*dpr/canvas.width,yScale:r.height*dpr/canvas.height,left:r.left*dpr,top:r.top*dpr};
+    return {width:info.width,height:info.height,uneven,physicalScale:k,xScale:r.width*dpr/canvas.width,yScale:r.height*dpr/canvas.height,left:r.left*dpr,top:r.top*dpr};
   });
-  expect(result.outside).toBe(0);expect(result.uneven).toBe(0);expect(result.physicalScale).toBe(2);expect(result.xScale).toBeCloseTo(1,4);expect(result.yScale).toBeCloseTo(1,4);
+  expect(result.width).toBe(1024);expect(result.height).toBe(768);expect(result.uneven).toBe(0);expect(result.physicalScale).toBe(2);expect(result.xScale).toBeCloseTo(1,4);expect(result.yScale).toBeCloseTo(1,4);
   // CSS layout stores 1/64px units; the device raster rounds this subpixel error.
   expect(result.left).toBeCloseTo(Math.round(result.left),1);expect(result.top).toBeCloseTo(Math.round(result.top),1);
   // Compare the browser's displayed pixels, not just the canvas backing store.
@@ -55,6 +53,57 @@ test('the whole screen uses one palette and integer physical pixels at fractiona
   await page.getByRole('button',{name:'Save',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();
   await page.getByRole('button',{name:'Close',exact:true}).click();
   await context.close();
+});
+
+test('portraits, HUD sprites, and scenery retain their native pixels and colors',async({page})=>{
+  await page.goto('/');await page.getByRole('button',{name:'Begin Disk A'}).click();
+  await page.locator('.dialogue-actions button').click();
+  await expect(page.locator('.dialogue h2')).toHaveText('Nell');
+  await expect.poll(()=>page.evaluate(()=>{
+    const image=document.querySelector<HTMLImageElement>('.dialogue-portrait img');
+    if(!image?.complete||!image.naturalWidth)return -1;
+    const info=window.borrowedTomorrowPixels.inspect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),box=image.getBoundingClientRect();
+    const reference=document.createElement('canvas');reference.width=image.naturalWidth;reference.height=image.naturalHeight;
+    const ctx=reference.getContext('2d',{willReadFrequently:true})!;ctx.fillStyle=getComputedStyle(image.parentElement!).backgroundColor;ctx.fillRect(0,0,reference.width,reference.height);ctx.drawImage(image,0,0);
+    const expected=ctx.getImageData(0,0,reference.width,reference.height).data;
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!;
+    const actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const left=info.physicalLeft+Math.round((box.left-source.left)/info.cssScale)*info.physicalScale;
+    const top=info.physicalTop+Math.round((box.top-source.top)/info.cssScale)*info.physicalScale;
+    let missing=0;
+    if(reference.width!==128||reference.height!==128||Math.round(box.width/info.cssScale)!==128||Math.round(box.height/info.cssScale)!==128)return -2;
+    for(let y=0;y<128;y++)for(let x=0;x<128;x++)for(let c=0;c<4;c++){
+      const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
+      if(actual[at]!==expected[(y*128+x)*4+c])missing++;
+    }
+    return missing;
+  }),{timeout:15000}).toBe(0);
+  if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/native-portrait.png`});
+  while(await page.locator('.dialogue').isVisible())await page.locator('.dialogue-actions button').click();
+  const actor=await page.locator('.world-hero img').evaluate(image=>{
+    const img=image as HTMLImageElement,scale=window.borrowedTomorrowPixels.inspect().cssScale,b=img.getBoundingClientRect();
+    return {width:b.width/scale,height:b.height/scale,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight};
+  });
+  expect(actor).toEqual({width:80,height:80,naturalWidth:80,naturalHeight:80});
+  await expect.poll(()=>page.evaluate(async()=>{
+    const image=new Image();image.src='/art/station.webp';await image.decode();
+    const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const reference=document.createElement('canvas');reference.width=32;reference.height=64;
+    reference.getContext('2d',{willReadFrequently:true})!.drawImage(image,view.scrollX+8,view.scrollY+16,32,64,0,0,32,64);
+    const expected=reference.getContext('2d',{willReadFrequently:true})!.getImageData(0,0,32,64).data;
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+16)*info.physicalScale;
+    if(Math.round(world.width/info.cssScale)!==view.width||Math.round(world.height/info.cssScale)!==view.height)return -1;
+    let missing=0;
+    for(let y=0;y<64;y++)for(let x=0;x<32;x++)for(let c=0;c<4;c++){
+      const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
+      if(actual[at]!==expected[(y*32+x)*4+c])missing++;
+    }
+    return missing;
+  }),{timeout:15000}).toBe(0);
+  if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/native-station.png`});
 });
 
 test('the actual Web Audio instruments render distinct scores and action sounds without clipping',async({page})=>{

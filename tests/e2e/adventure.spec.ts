@@ -6,12 +6,12 @@ import { newGame, recruitOrrin } from '../../src/rules/state';
 
 async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 async function clickWorld(page: Page, x: number, y: number) {
-  const box=(await page.locator('#canvas canvas').boundingBox())!;
-  await page.mouse.click(box.x+(x+.5)*24*box.width/1008,box.y+(y+.5)*24*box.height/624);
+  const box=(await page.locator('#canvas canvas').boundingBox())!,view=(await inspect(page)).view;
+  await page.mouse.click(box.x+((x+.5)*24-view.scrollX)*box.width/view.width,box.y+((y+.5)*24-view.scrollY)*box.height/view.height);
 }
 async function clickHex(page: Page, h: Hex) {
-  const box=(await page.locator('#canvas canvas').boundingBox())!,p=toPixel(h);
-  await page.mouse.click(box.x+p.x*box.width/1008,box.y+p.y*box.height/480);
+  const box=(await page.locator('#canvas canvas').boundingBox())!,p=toPixel(h),view=(await inspect(page)).view;
+  await page.mouse.click(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
 }
 async function dialogue(page: Page) {
   await expect(page.locator('.dialogue')).toBeVisible({timeout:15000});
@@ -102,12 +102,27 @@ test('small-screen controls, journal and imported saves remain usable',async({pa
   await page.getByRole('button',{name:'Sound on'}).click();
   await page.getByRole('button',{name:'Journal',exact:true}).last().click();await expect(page.getByRole('heading',{name:'Travel journal'})).toBeVisible();
   await page.getByRole('button',{name:'Close',exact:true}).click();
-  const s=newGame();recruitOrrin(s);s.flags.metMira=true;s.flags.promisedHome=true;s.coins=41;s.gear=['brass-lantern'];
+  const s=newGame();recruitOrrin(s);s.flags.metMira=true;s.flags.promisedHome=true;s.coins=41;s.gear=['brass-lantern'];s.location={map:'yard',x:24,y:15};
   await page.getByRole('button',{name:'Save',exact:true}).click();
   const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Import save file'}).click();
   await (await chooser).setFiles({name:'save.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(s))});
   await expect.poll(async()=> (await inspect(page)).state.coins).toBe(41);
   expect((await inspect(page)).state.flags.promisedHome).toBe(true);
+  await talk(page,24,14);await expect.poll(async()=> (await inspect(page)).mode).toBe('battle');
+  await expect(page.getByRole('button',{name:'Pan battlefield right'})).toBeInViewport();
+  const start=(await inspect(page)).view.scrollX;
+  await page.getByRole('button',{name:'Pan battlefield right'}).click();
+  await expect.poll(async()=> (await inspect(page)).view.scrollX).toBe(start+192);
+  await capture(page,'mobile-battle');
+  const snapshot=(await inspect(page)).battle!,b={...snapshot,obstacles:new Set(snapshot.obstacles)} as Battle,u=active(b)!;
+  const view=(await inspect(page)).view;
+  const destination=[...movement(b,u).values()].find(v=>v.path.length>0&&toPixel(v.hex).x>view.scrollX+48&&toPixel(v.hex).x<view.scrollX+view.width-48)!.hex;
+  await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();
+  await clickHex(page,destination);await page.getByRole('button',{name:/^Confirm move/}).click();
+  await expect.poll(async()=> (await inspect(page)).battle!.units.find(v=>v.id===u.id)!.hex).toEqual(destination);
+  await page.getByRole('button',{name:'Pan battlefield left'}).click();
+  await expect.poll(async()=> (await inspect(page)).view.scrollX).toBe(start);
+
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });

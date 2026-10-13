@@ -28,7 +28,7 @@ npm run dev
 | Confirm battle plan | Confirmation button or Enter |
 | Defend / wait | F / W |
 
-Pointer input works for exploration and battles. Small screens also show a directional pad. Sound begins only when enabled with the Sound button. Locations share a sixteen-bar theme with different arrangements; combat actions and movement use material-specific effects.
+Pointer input works for exploration and battles. Small screens also show a directional pad and battlefield pan buttons. Sound begins only when enabled with the Sound button. Locations share a sixteen-bar theme with different arrangements; combat actions and movement use material-specific effects.
 
 ## Combat
 
@@ -38,7 +38,9 @@ Melee triggers one retaliation per defender per round. Defend reduces incoming d
 
 ## Display
 
-The entire game uses a shared thirty-two-color framebuffer and original bitmap lettering. Wide screens use 640 × 400 logical pixels; narrow screens use 320 × 640. The complete screen enlarges by a whole number of physical pixels, including at fractional device-pixel ratios, and centers with letterboxing. Menus and scenery share the same visible pixel grid.
+The desktop layout is 1024 × 768 native pixels. Scenery renders at 1:1 through a scrolling 1008 × 480 viewport; portraits retain all 128 × 128 pixels, and actors retain all 80 × 80 pixels. Original asset colors pass through unchanged. Bitmap text, menus, and scenery share one pixel grid, enlarged by a whole number of physical pixels even at fractional device-pixel ratios.
+
+Narrow screens use a layout up to 384 × 768 with a cropped, scrolling camera and battle pan controls. The art keeps the same pixel density instead of shrinking to fit.
 
 ## Saves
 
@@ -65,7 +67,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests exercise the actual controls and checkpoint restoration, fractional-DPR pixel scaling, palette consistency, and offline audio output.
+CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests exercise the actual controls and checkpoint restoration, fractional-DPR pixel scaling, native asset pixel/color preservation, and offline audio output.
 
 `window.borrowedTomorrow.inspect()` provides a read-only snapshot for diagnostics. It does not mutate progress or bypass battles. `window.borrowedTomorrowPixels.inspect()` exposes the framebuffer size, physical scale, and palette for display diagnostics.
 
