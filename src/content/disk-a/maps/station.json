@@ -1,0 +1,179 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.12.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 42,
+  "height": 26,
+  "tilewidth": 24,
+  "tileheight": 24,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 14,
+  "tilesets": [],
+  "layers": [
+    {
+      "id": 1,
+      "type": "imagelayer",
+      "name": "Scenery",
+      "image": "../../../../public/art/station.webp",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": 2,
+      "type": "objectgroup",
+      "name": "Collision",
+      "visible": true,
+      "opacity": 0.4,
+      "objects": [
+        {
+          "id": 1,
+          "name": "solid-1",
+          "type": "solid",
+          "x": 0,
+          "y": 0,
+          "width": 1008,
+          "height": 96,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 2,
+          "name": "solid-2",
+          "type": "solid",
+          "x": 96,
+          "y": 96,
+          "width": 288,
+          "height": 72,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 3,
+          "name": "solid-3",
+          "type": "solid",
+          "x": 624,
+          "y": 144,
+          "width": 384,
+          "height": 72,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 4,
+          "name": "solid-4",
+          "type": "solid",
+          "x": 0,
+          "y": 192,
+          "width": 456,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 5,
+          "name": "solid-5",
+          "type": "solid",
+          "x": 576,
+          "y": 192,
+          "width": 432,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 6,
+          "name": "solid-6",
+          "type": "solid",
+          "x": 0,
+          "y": 312,
+          "width": 144,
+          "height": 312,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 7,
+          "name": "solid-7",
+          "type": "solid",
+          "x": 864,
+          "y": 288,
+          "width": 144,
+          "height": 336,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 8,
+          "name": "solid-8",
+          "type": "solid",
+          "x": 168,
+          "y": 480,
+          "width": 264,
+          "height": 144,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 9,
+          "name": "solid-9",
+          "type": "solid",
+          "x": 240,
+          "y": 408,
+          "width": 144,
+          "height": 96,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 10,
+          "name": "solid-10",
+          "type": "solid",
+          "x": 720,
+          "y": 336,
+          "width": 72,
+          "height": 72,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 11,
+          "name": "solid-11",
+          "type": "solid",
+          "x": 720,
+          "y": 432,
+          "width": 120,
+          "height": 96,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 12,
+          "name": "solid-12",
+          "type": "solid",
+          "x": 0,
+          "y": 576,
+          "width": 432,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 13,
+          "name": "solid-13",
+          "type": "solid",
+          "x": 576,
+          "y": 576,
+          "width": 432,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        }
+      ]
+    }
+  ]
+}

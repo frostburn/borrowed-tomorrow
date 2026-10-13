@@ -1,0 +1,102 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.12.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 42,
+  "height": 26,
+  "tilewidth": 24,
+  "tileheight": 24,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 7,
+  "tilesets": [],
+  "layers": [
+    {
+      "id": 1,
+      "type": "imagelayer",
+      "name": "Scenery",
+      "image": "../../../../public/art/yard.webp",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": 2,
+      "type": "objectgroup",
+      "name": "Collision",
+      "visible": true,
+      "opacity": 0.4,
+      "objects": [
+        {
+          "id": 1,
+          "name": "solid-1",
+          "type": "solid",
+          "x": 0,
+          "y": 0,
+          "width": 1008,
+          "height": 144,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 2,
+          "name": "solid-2",
+          "type": "solid",
+          "x": 0,
+          "y": 144,
+          "width": 96,
+          "height": 480,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 3,
+          "name": "solid-3",
+          "type": "solid",
+          "x": 912,
+          "y": 144,
+          "width": 96,
+          "height": 480,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 4,
+          "name": "solid-4",
+          "type": "solid",
+          "x": 0,
+          "y": 576,
+          "width": 1008,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 5,
+          "name": "solid-5",
+          "type": "solid",
+          "x": 120,
+          "y": 144,
+          "width": 96,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 6,
+          "name": "solid-6",
+          "type": "solid",
+          "x": 624,
+          "y": 144,
+          "width": 288,
+          "height": 48,
+          "rotation": 0,
+          "visible": true
+        }
+      ]
+    }
+  ]
+}

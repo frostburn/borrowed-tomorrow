@@ -1,0 +1,54 @@
+{
+  "format": "borrowed-tomorrow",
+  "version": 1,
+  "chapter": "disk-a",
+  "location": {
+    "map": "tunnel",
+    "x": 38,
+    "y": 13
+  },
+  "party": [
+    {
+      "id": "nell",
+      "hp": 54,
+      "focus": 6
+    },
+    {
+      "id": "orrin",
+      "hp": 46,
+      "focus": 6
+    }
+  ],
+  "flags": {
+    "metMira": true,
+    "orrinJoined": true,
+    "noticeRead": true,
+    "yardCleared": true,
+    "relayRepaired": true,
+    "scrapCleared": true,
+    "tunnelCleared": true,
+    "timetableRead": true,
+    "cacheTaken": true,
+    "inspectorCleared": true,
+    "diskAComplete": true
+  },
+  "coins": 138,
+  "bandages": 3,
+  "xp": 165,
+  "gear": [],
+  "journal": [
+    "arrival",
+    "mira",
+    "orrin",
+    "notice",
+    "fuse",
+    "relay",
+    "scrap",
+    "guardian",
+    "timetable",
+    "inspector",
+    "boundary"
+  ],
+  "boundary": "disk-b:rillbridge-arrival",
+  "playSeconds": 146
+}
