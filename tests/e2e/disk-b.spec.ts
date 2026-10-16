@@ -101,6 +101,15 @@ test('Elspeth is behind a solid fence and a persistent schoolhouse gate',async({
   expect((await inspect(page)).state.flags.bSchoolGateOpen).toBe(true);
   await visit(page,'b-schoolhouse');expect((await inspect(page)).state.flags.bNeighborsReady).toBe(true);
   expect((await inspect(page)).state.location.y).toBeLessThan(38);
+  await expect.poll(()=>page.evaluate(()=>{
+    const info=window.borrowedTomorrowPixels.inspect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,ctx=output.getContext('2d')!;
+    const x=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
+    const y=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+16)*info.physicalScale;
+    const pixels=ctx.getImageData(x,y,32*info.physicalScale,32*info.physicalScale).data,colors=new Set<number>();
+    for(let i=0;i<pixels.length;i+=4)colors.add((pixels[i]<<16)+(pixels[i+1]<<8)+pixels[i+2]);
+    return colors.size;
+  })).toBeGreaterThan(32);
   await capture(page,'schoolhouse-gate-open');await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).state.flags.bSchoolGateOpen).toBe(true);
 });

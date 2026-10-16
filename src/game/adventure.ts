@@ -103,7 +103,7 @@ export class Adventure extends Phaser.Scene {
     this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.follower = undefined; this.miraFollower=undefined;this.actorImages.clear();
     this.layer = this.add.container(0,0);
   }
-  private background(name: string, y=0, x=0) { this.layer!.add(this.add.image(x,y,`map-${name}`).setOrigin(0)); }
+  private background(name: string, y=0, x=0) { this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0)); }
   private showTitle() {
     this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Disks A & B · A railway folktale';
@@ -173,7 +173,7 @@ export class Adventure extends Phaser.Scene {
     if(map.id==='rillbridge'&&this.state.flags.bSchoolGateOpen){
       // Reuse native paving pixels to reveal the passage behind the opened gate.
       const texture=this.textures.get('map-rillbridge');
-      if(!texture.has('open-school-gate'))texture.add('open-school-gate',0,960,840,56,48);
+      if(!texture.has('open-school-gate'))texture.add('open-school-gate',0,896,768,56,48);
       this.layer!.add(this.add.image(1320,896,'map-rillbridge','open-school-gate').setOrigin(0));
       const gate=this.add.graphics();gate.lineStyle(3,0x36372c).lineBetween(1323,901,1323,934);
       gate.lineStyle(1,0x988462);for(let y=904;y<934;y+=6)gate.lineBetween(1321,y,1326,y);this.layer!.add(gate);
