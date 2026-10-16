@@ -3,8 +3,8 @@ import yardMap from './maps/yard.json' with { type: 'json' };
 import tunnelMap from './maps/tunnel.json' with { type: 'json' };
 import type { MapId, GameState } from '../../rules/state';
 export const TILE = 24, WIDTH = 1008, HEIGHT = 624;
-export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; sign?: boolean }
-export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; objects: MapObject[]; solid: [number, number, number, number][] }
+export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean }
+export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; objects: MapObject[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export function collision(map: { layers: { type: string; objects?: { x: number; y: number; width: number; height: number }[] }[] }): [number, number, number, number][] {
   return map.layers.filter(l=>l.type==='objectgroup').flatMap(l=>l.objects??[]).map(o=>[o.x/TILE,o.y/TILE,o.width/TILE,o.height/TILE]);
 }
@@ -43,11 +43,11 @@ export const MAPS: Record<'station'|'yard'|'tunnel', MapData> = {
 };
 export function visibleObjects(map: MapData, s: GameState): MapObject[] { return map.objects.filter(o => (!o.hiddenFlag || !s.flags[o.hiddenFlag]) && (!o.requiredFlag || s.flags[o.requiredFlag])); }
 export const mapSize = (map:MapData) => ({width:map.width??WIDTH,height:map.height??HEIGHT});
-export function walkable(map: MapData, x: number, y: number): boolean {
-  return x >= 0 && x < Math.floor(mapSize(map).width/TILE) && y >= 0 && y < Math.floor(mapSize(map).height/TILE) && !map.solid.some(([sx, sy, w, h]) => x >= sx && x < sx + w && y >= sy && y < sy + h);
+export function walkable(map: MapData, x: number, y: number, state?:Pick<GameState,'flags'>): boolean {
+  return x >= 0 && x < Math.floor(mapSize(map).width/TILE) && y >= 0 && y < Math.floor(mapSize(map).height/TILE) && !(map.gates??[]).some(g=>!state?.flags[g.openFlag]&&x>=g.x&&x<g.x+g.width&&y>=g.y&&y<g.y+g.height) && !map.solid.some(([sx, sy, w, h]) => x >= sx && x < sx + w && y >= sy && y < sy + h);
 }
-export function worldPath(map: MapData, from: { x: number; y: number }, to: { x: number; y: number }): { x: number; y: number }[] {
-  if (!walkable(map, to.x, to.y)) return [];
+export function worldPath(map: MapData, from: { x: number; y: number }, to: { x: number; y: number }, state?:Pick<GameState,'flags'>): { x: number; y: number }[] {
+  if (!walkable(map, to.x, to.y, state)) return [];
   const columns=Math.floor(mapSize(map).width/TILE);
   const id = (p: { x: number; y: number }) => p.x + p.y * columns;
   const queue = [{ ...from }]; const previous = new Map<number, number>([[id(from), -1]]);
@@ -55,7 +55,7 @@ export function worldPath(map: MapData, from: { x: number; y: number }, to: { x:
     const p = queue[i]; if (p.x === to.x && p.y === to.y) break;
     for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
       const next = { x: p.x + dx, y: p.y + dy };
-      if (!walkable(map, next.x, next.y) || previous.has(id(next))) continue;
+      if (!walkable(map, next.x, next.y, state) || previous.has(id(next))) continue;
       previous.set(id(next), id(p)); queue.push(next);
     }
   }

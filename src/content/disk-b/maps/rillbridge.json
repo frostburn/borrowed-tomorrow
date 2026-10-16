@@ -150,13 +150,57 @@
           "visible": true
         },
         {
-          "id": 12,
-          "name": "solid-12",
+          "id": 13,
+          "name": "school-west-fence",
           "type": "solid",
-          "x": 1008,
+          "x": 1032,
+          "y": 576,
+          "width": 24,
+          "height": 360,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 14,
+          "name": "school-east-fence",
+          "type": "solid",
+          "x": 1560,
+          "y": 576,
+          "width": 24,
+          "height": 360,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 15,
+          "name": "school-north-boundary",
+          "type": "solid",
+          "x": 1032,
+          "y": 576,
+          "width": 552,
+          "height": 24,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 16,
+          "name": "school-south-fence-west",
+          "type": "solid",
+          "x": 1032,
           "y": 912,
-          "width": 576,
-          "height": 72,
+          "width": 288,
+          "height": 24,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 17,
+          "name": "school-south-fence-east",
+          "type": "solid",
+          "x": 1368,
+          "y": 912,
+          "width": 216,
+          "height": 24,
           "rotation": 0,
           "visible": true
         }

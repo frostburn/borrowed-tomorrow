@@ -51,12 +51,25 @@ describe('Disk B continuity and consequences',()=>{
     s.state.flags.bNeighborsReady=true;s.state.flags.bKeeperStopped=true;
     s.visit('b-crossing').done?.();expect(s.travel()).toBe('station');expect(s.state.flags.bEvacuated).toBe(true);
   });
+  it('blocks the schoolhouse walls and closed gate, then preserves the opened entrance',()=>{
+    const s=story(),map=MAPS.rillbridge,door={x:56,y:35};s.state.flags.bTrolleyFreed=true;
+    for(const from of [{x:42,y:35},{x:56,y:39},{x:64,y:23}])expect(worldPath(map,from,door,s.state)).toEqual([]);
+    expect(walkable(map,43,35,s.state)).toBe(false);expect(walkable(map,56,38,s.state)).toBe(false);
+    s.visit('b-schoolhouse');expect(s.state.flags.bNeighborsReady).toBeUndefined();
+    s.visit('b-school-gate').done?.();
+    const restored=decodeSave(JSON.stringify(s.state));
+    const route=worldPath(map,{x:42,y:35},door,restored);expect(route.length).toBeGreaterThan(0);
+    expect(route.some(p=>p.y===38&&(p.x===55||p.x===56))).toBe(true);
+    expect(walkable(map,43,35,restored)).toBe(false);
+    s.visit('b-schoolhouse').done?.();expect(s.state.flags.bNeighborsReady).toBe(true);
+  });
   it('every new object has a walkable approach, including after it replaces an encounter',()=>{
-    for(const [id,start] of [['rillbridge',{x:12,y:18}],['sluice',{x:33,y:35}]] as const){
-      const map=MAPS[id];expect(walkable(map,start.x,start.y)).toBe(true);
+    for(const [id,entrance] of [['rillbridge',{x:12,y:18}],['sluice',{x:33,y:35}]] as const){
+      const state=start();state.flags.bSchoolGateOpen=true;
+      const map=MAPS[id];expect(walkable(map,entrance.x,entrance.y)).toBe(true);
       for(const o of map.objects){
         const approaches=[{x:o.x,y:o.y},{x:o.x-1,y:o.y},{x:o.x+1,y:o.y},{x:o.x,y:o.y-1},{x:o.x,y:o.y+1}];
-        expect(approaches.some(p=>walkable(map,p.x,p.y)&&worldPath(map,start,p).length>0),o.id).toBe(true);
+        expect(approaches.some(p=>walkable(map,p.x,p.y,state)&&worldPath(map,entrance,p,state).length>0),o.id).toBe(true);
       }
     }
   });

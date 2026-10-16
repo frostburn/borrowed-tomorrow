@@ -18,7 +18,7 @@ async function approach(page:Page,id:string){
     const visible=(p:{x:number;y:number})=>(p.x+.5)*24>view.scrollX+36&&(p.x+.5)*24<view.scrollX+view.width-36&&(p.y+.5)*24>view.scrollY+40&&(p.y+.5)*24<view.scrollY+view.height-36;
     if(visible(object)){await clickWorld(page,object.x,object.y);return;}
     const approaches=[object,{x:object.x-1,y:object.y},{x:object.x+1,y:object.y},{x:object.x,y:object.y-1},{x:object.x,y:object.y+1}];
-    const paths=approaches.filter(p=>walkable(map,p.x,p.y)).map(p=>worldPath(map,state.location,p)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
+    const paths=approaches.filter(p=>walkable(map,p.x,p.y,state)).map(p=>worldPath(map,state.location,p,state)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
     const waypoint=[...paths[0]].reverse().find(p=>visible(p)&&objects.every(o=>Math.hypot(o.x-p.x,o.y-p.y)>=1.8));
     expect(waypoint,`Visible waypoint to ${id}`).toBeTruthy();
     await clickWorld(page,waypoint!.x,waypoint!.y);
@@ -49,7 +49,7 @@ test('version-1 arrival continues through Disk B and preserves the Disk C depart
   await visit(page,'b-gauge');await visit(page,'b-worksheet');
   await travel(page,'b-to-town','rillbridge');await visit(page,'b-baker');await visit(page,'b-carriage');
   await travel(page,'b-to-sluice','sluice');await visit(page,'b-trolley');await battle(page);
-  await travel(page,'b-to-town','rillbridge');await visit(page,'b-schoolhouse');
+  await travel(page,'b-to-town','rillbridge');await visit(page,'b-school-gate');await visit(page,'b-schoolhouse');
   await travel(page,'b-to-sluice','sluice');await approach(page,'b-wheel');
   await expect(page.locator('.dialogue')).toBeVisible({timeout:20000});
   while(!(await page.getByRole('button',{name:'Open the millrace · wade to the keeper',exact:true}).isVisible()))await page.locator('.dialogue-actions button').first().click();
@@ -86,4 +86,21 @@ test('the outfall choice fits a phone and the orchard decision survives a saved 
   await expect.poll(async()=>(await inspect(page)).state.flags.bOrchardChannel).toBe(true);
   await approach(page,'b-wheel');await expect(page.locator('.dialogue p')).toContainText('dry');await dialogue(page);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+test('Elspeth is behind a solid fence and a persistent schoolhouse gate',async({page})=>{
+  const state=enterDiskB(decodeSave(JSON.stringify(arrival)));
+  Object.assign(state.flags,{bFatherFound:true,bOverflowCleared:true,bFloodEvidence:true,bTownWarned:true,bRegistryRefused:true,bTrolleyFreed:true});
+  state.location={map:'rillbridge',x:42,y:35};await page.goto('/');await importSave(page,state);
+  await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('rillbridge');
+  await page.locator('#canvas').focus();await page.keyboard.down('ArrowRight');await page.waitForTimeout(500);await page.keyboard.up('ArrowRight');
+  expect((await inspect(page)).state.location).toEqual(state.location);
+  await approach(page,'b-schoolhouse');await page.waitForTimeout(500);
+  expect(await page.locator('.dialogue').isVisible()).toBe(false);expect((await inspect(page)).state.flags.bNeighborsReady).toBeUndefined();
+  await capture(page,'schoolhouse-gate-closed');await visit(page,'b-school-gate');
+  expect((await inspect(page)).state.flags.bSchoolGateOpen).toBe(true);
+  await visit(page,'b-schoolhouse');expect((await inspect(page)).state.flags.bNeighborsReady).toBe(true);
+  expect((await inspect(page)).state.location.y).toBeLessThan(38);
+  await capture(page,'schoolhouse-gate-open');await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).state.flags.bSchoolGateOpen).toBe(true);
 });

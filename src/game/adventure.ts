@@ -157,7 +157,7 @@ export class Adventure extends Phaser.Scene {
     if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
-      if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y)) throw new Error('This save is inside an obstacle.');
+      if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y,candidate)) throw new Error('This save is inside an obstacle.');
       await this.ensureRegion(candidate.location.map);
       this.state = candidate;
       this.battle = undefined; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
@@ -170,6 +170,14 @@ export class Adventure extends Phaser.Scene {
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode(map.id);
+    if(map.id==='rillbridge'&&this.state.flags.bSchoolGateOpen){
+      // Reuse native paving pixels to reveal the passage behind the opened gate.
+      const texture=this.textures.get('map-rillbridge');
+      if(!texture.has('open-school-gate'))texture.add('open-school-gate',0,960,840,56,48);
+      this.layer!.add(this.add.image(1320,896,'map-rillbridge','open-school-gate').setOrigin(0));
+      const gate=this.add.graphics();gate.lineStyle(3,0x36372c).lineBetween(1323,901,1323,934);
+      gate.lineStyle(1,0x988462);for(let y=904;y<934;y+=6)gate.lineBetween(1321,y,1326,y);this.layer!.add(gate);
+    }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
       if (object.sprite) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
@@ -216,7 +224,7 @@ export class Adventure extends Phaser.Scene {
   }
   private closestObject(): MapObject | undefined {
     const p = this.state.location;
-    return visibleObjects(MAPS[p.map], this.state).filter(o => Math.abs(o.x-p.x) + Math.abs(o.y-p.y) <= 3)
+    return visibleObjects(MAPS[p.map], this.state).filter(o=>(!o.accessFlag||this.state.flags[o.accessFlag])).filter(o => Math.abs(o.x-p.x) + Math.abs(o.y-p.y) <= 3)
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
   update(time: number) {
@@ -238,7 +246,7 @@ export class Adventure extends Phaser.Scene {
   }
   private stepWorld(dx: number, dy: number) {
     const p = this.state.location; const x = p.x + dx, y = p.y + dy;
-    if (!walkable(MAPS[p.map], x, y) || this.moving || this.blocked) return;
+    if (!walkable(MAPS[p.map], x, y,this.state) || this.moving || this.blocked) return;
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
     this.face = dx < 0 ? 'nell-left' : dx > 0 ? 'nell-right' : dy < 0 ? 'nell-back' : 'nell';
@@ -266,9 +274,9 @@ export class Adventure extends Phaser.Scene {
     if (object) {
       if (Math.abs(object.x-this.state.location.x)+Math.abs(object.y-this.state.location.y)<=3 && !this.moving) { this.interact(object); return; }
       const candidates = [{x:object.x,y:object.y}, {x:object.x-1,y:object.y}, {x:object.x+1,y:object.y}, {x:object.x,y:object.y-1}, {x:object.x,y:object.y+1}];
-      const paths = candidates.filter(d=>walkable(MAPS[this.state.location.map],d.x,d.y)).map(d=>worldPath(MAPS[this.state.location.map],this.state.location,d)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
+      const paths = candidates.filter(d=>walkable(MAPS[this.state.location.map],d.x,d.y,this.state)).map(d=>worldPath(MAPS[this.state.location.map],this.state.location,d,this.state)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
       if (paths[0]) { this.path = paths[0]; this.pendingObject=object; } else this.ui.toast('Walk closer to the marked entrance.');
-    } else { this.path=worldPath(MAPS[this.state.location.map],this.state.location,dest); this.pendingObject=undefined; }
+    } else { this.path=worldPath(MAPS[this.state.location.map],this.state.location,dest,this.state); this.pendingObject=undefined; }
     this.ui.canvas.focus();
   }
   private keydown(e: KeyboardEvent) {
@@ -298,6 +306,7 @@ export class Adventure extends Phaser.Scene {
 
   private interact(object: MapObject) {
     if (this.blocked || this.mode !== 'world') return;
+    if(object.accessFlag&&!this.state.flags[object.accessFlag]){this.ui.toast('Open the schoolhouse gate first.');return;}
     this.path = []; this.pendingObject = undefined;
     const id=object.id==='master'&&this.state.flags.bEvacuated?'b-ansel':object.id==='train'&&this.state.flags.bEvacuated?'b-dispatch':object.id;
     const interact=id.startsWith('b-')?interactDiskB:interactDiskA;

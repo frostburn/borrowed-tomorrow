@@ -58,4 +58,3 @@ export async function battle(page: Page, screenshot?: string) {
   }
   throw new Error('Battle did not resolve within the turn budget.');
 }
-

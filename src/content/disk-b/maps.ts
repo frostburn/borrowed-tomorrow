@@ -2,11 +2,12 @@ import town from './maps/rillbridge.json' with { type: 'json' };
 import sluice from './maps/sluice.json' with { type: 'json' };
 import { collision, type MapData } from '../disk-a/maps';
 export const B_MAPS:Record<'rillbridge'|'sluice',MapData>={
-  rillbridge:{id:'rillbridge',name:'Rillbridge',subtitle:'13 October · festival preparations',width:1595,height:986,solid:collision(town),objects:[
+  rillbridge:{id:'rillbridge',name:'Rillbridge',subtitle:'13 October · festival preparations',width:1595,height:986,solid:collision(town),gates:[{x:55,y:38,width:2,height:1,openFlag:'bSchoolGateOpen'}],objects:[
     {id:'b-bram',x:23,y:12,label:'Bram · Mira’s father',sprite:'master',doneFlag:'bFatherFound',hiddenFlag:'bEvacuated'},
     {id:'b-baker',x:44,y:13,label:'Tilda · the bakery',sprite:'clerk',hiddenFlag:'bEvacuated'},
     {id:'b-calendar',x:27,y:14,label:'Festival notice',sign:true},
-    {id:'b-schoolhouse',x:56,y:35,label:'Elspeth · schoolhouse',sign:true,doneFlag:'bNeighborsReady'},
+    {id:'b-school-gate',x:56,y:38,label:'Schoolhouse gate',sign:true,doneFlag:'bSchoolGateOpen'},
+    {id:'b-schoolhouse',x:56,y:35,label:'Elspeth · schoolhouse',sign:true,accessFlag:'bSchoolGateOpen',doneFlag:'bNeighborsReady'},
     {id:'b-carriage',x:58,y:17,label:'The carriage door',sign:true,doneFlag:'bRegistryRefused'},
     {id:'b-to-sluice',x:32,y:11,label:'Upstream sluice',sign:true},
     {id:'b-crossing',x:15,y:18,label:'Bridge · the residents',sign:true},

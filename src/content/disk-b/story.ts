@@ -35,7 +35,7 @@ export function objectiveB(s:GameState):string{
   if(!s.flags.bTownWarned)return 'Show the gauge plate to Tilda outside the bakery.';
   if(!s.flags.bRegistryRefused)return 'Try the carriage door with Bram and Mira.';
   if(!s.flags.bTrolleyFreed)return 'Recover the maintenance trolley at the sluice.';
-  if(!s.flags.bNeighborsReady)return 'Bring the trolley to Elspeth at the schoolhouse.';
+  if(!s.flags.bNeighborsReady)return s.flags.bSchoolGateOpen?'Bring the trolley to Elspeth at the schoolhouse.':'Open the schoolhouse gate and bring the trolley to Elspeth.';
   if(!s.flags.bOrchardChannel&&!s.flags.bMillraceChannel)return 'Choose an outfall at the sluice’s control wheel.';
   if(!s.flags.bKeeperStopped)return 'Stop the keeper on the sluice control apron.';
   if(!s.flags.bEvacuated)return 'Return to the bridge and bring the residents across.';

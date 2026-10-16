@@ -4,7 +4,7 @@ Disk B is implemented. Its incoming boundary remains `disk-b:rillbridge-arrival`
 
 **Begin Disk B** validates and copies the incoming state, loads the two new maps, then commits `chapter: disk-b`, `diskBStarted: true`, location `rillbridge` `(12,18)`, and `boundary: null`. Failure to load leaves the incoming state intact and allows retry. Version-1 saves migrate to version 2; party HP/focus, equipment, experience, marks, bandages, journal, play time, and choice flags carry forward. `tests/fixtures/disk-a-v1.json` is the original browser-playthrough save and is imported in browser QA.
 
-The local route is Bram → overflow → gauge → Tilda → carriage refusal → trolley → schoolhouse → outfall choice → keeper → crossing → Ansel → dispatch. The maintenance work sheet is optional. The party remains Nell and Orrin; Mira stays with Bram after their reunion.
+The local route is Bram → overflow → gauge → Tilda → carriage refusal → trolley → schoolhouse gate → schoolhouse → outfall choice → keeper → crossing → Ansel → dispatch. The maintenance work sheet is optional. The party remains Nell and Orrin; Mira stays with Bram after their reunion.
 
 The orchard channel gives a dry keeper arena at the cost of the trees. The millrace keeps the orchard bank dry and introduces shallow-water movement costs. Both paths rescue thirty-one residents. Their survival is confirmed after midnight at Larkspur.
 

@@ -65,7 +65,11 @@ export function interactDiskB(host:StoryHost,id:string){
         SAY('Orrin','The brake still grips. The hounds have chained the trolley to their charging rail.','orrin'),
         SAY('Nell','Cut the chain after we draw them away. Keep a lane between us for your steam lance.','nell'),
       ],done:()=>host.battle('b-trolley')});break;
+    case 'b-school-gate':
+      if(f.bSchoolGateOpen){say(SAY('Schoolhouse gate','The gate is fastened back against the fence, clear of the trolley’s wheels.'));break;}
+      host.talk({lines:[SAY('Nell','The latch lifts. I’ll fasten the gate back so the trolley can pass.','nell')],done:()=>commit('bSchoolGateOpen')});break;
     case 'b-schoolhouse':
+      if(!f.bSchoolGateOpen){host.toast('Open the schoolhouse gate first.');break;}
       if(f.bEvacuated){say(SAY('The schoolhouse','The windows are shuttered. Elspeth took the class register and left the door on its latch.'));break;}
       if(f.bNeighborsReady){say(SAY('Elspeth','Bram has the list. I’ve counted them too. He missed the baby the first time.'));break;}
       if(!f.bTrolleyFreed){say(SAY('Elspeth','I can get from the bed to my chair. The bridge steps are the problem. Bram says you found a trolley.'));break;}

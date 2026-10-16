@@ -15,7 +15,7 @@ Disk B uses a second sixteen-bar G-minor tune in `score-b.ts`, with four phrases
 
 | Scene | Tempo | Arrangement |
 | --- | --- | --- |
-| Rillbridge | 88 BPM | Reed melody, sparse keys, walking bass, quiet offbeat hat |
+| Rillbridge | 88 BPM | Repeated two-bar reed motif within one octave, close chord voicings, steady bass and occasional bell answers |
 | Sluice | 76 BPM | Lower bells, sustained strings, no percussion |
 | Flood battles | 124 BPM | Reed lead, eighth-note keys, syncopated bass, drums with phrase-ending fills |
 
@@ -26,3 +26,5 @@ Rillbridge footsteps use stone; sluice movement uses the gravel/stone work-yard 
 Effects have their own envelopes and materials: a strike combines a low impact with irregular metal partials; lantern shutters click before a rising flare and glass chime; the inspector's projector gives a descending signal alarm; steam uses swept hiss and low pressure; mend uses staggered bells; a bandage uses cloth noise; crows have wing noise and a sharp peck. Defend sets a short metal brace. Footsteps change between station stone, yard gravel, and tunnel stone, alternate, and are rate-limited. Menus use a quiet short tick; victory has a longer bell-and-string cadence.
 
 No external samples or audio downloads are required. Sound starts only after the player enables it. Browser regression tests render the real instruments with `OfflineAudioContext`, checking non-silent output, distinct arrangements and effects, and headroom. The tests verify output numerically; subjective listening and composition can continue to evolve with future disks.
+
+Rillbridge uses an A–A′–B–return form with explicit G-minor, E-flat, C-minor, B-flat and D-major cadences. Sustained melody downbeats belong to the current chord; passing notes are brief. Its accompaniment stays below the lead, and each location change restarts the score at its first phrase. String replies in the other Disk B arrangements use the actual chord third.

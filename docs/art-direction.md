@@ -36,3 +36,5 @@ Disk B images were generated with the built-in Image Gen tool and encoded to los
 Maps use generated scenery and editable Tiled collision data. Four directional actor frames animate between grid positions. Hexes, path indicators, interaction marks, damage numbers, and HP bars are code-drawn and must remain aligned to the final pixel grid.
 
 Disk B’s lossless WebP sources are stored as small base64 chunks in `assets/maps/` so they can be transferred through the repository connector. `scripts/restore-map-art.mjs` reconstructs the exact native files before `npm run dev` and `npm run build`, verifying their byte length and SHA-256. No colors or dimensions change. The built site contains the ordinary WebP files.
+
+The schoolhouse courtyard is enclosed by collision along all four sides. Its southern gate has a saved open state; both pathfinding and keyboard movement use it. Opening the gate reveals a 1:1 patch of native paving beneath the bars and swings the leaf against the fence. Elspeth’s interaction requires the gate to be open.

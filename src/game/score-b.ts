@@ -8,13 +8,14 @@ const melody:[number,number,number][][]=[
 ];
 const roots=[43,46,39,41,43,39,48,38,46,41,39,38,43,39,38,43];
 export function scoreB(mode:'rillbridge'|'sluice'|'flood',bar:number):Note[]{
+  if(mode==='rillbridge')return townBar(bar);
   const index=((bar%16)+16)%16,phrase=Math.floor(index/4),within=index%4,root=roots[index],flood=mode==='flood',quiet=mode==='sluice';
   const chord=[root,root+([43,48].includes(root)?3:4),root+7],notes:Note[]=[];
   const add=(instrument:Note['instrument'],midi:number,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,midi,beat,duration,velocity,pan});
   for(const [beat,pitch,duration] of melody[phrase])if(beat>=within*4&&beat<within*4+4){
     add(quiet?'bell':'reed',pitch-(quiet?12:0),beat-within*4,duration,quiet?.18:flood?.32:.27,-.2);
   }
-  if(index===6||index===10||index===14){add('strings',root+19,1,1.5,.12,.4);add('strings',root+15,3,.8,.1,.4);}
+  if(index===6||index===10||index===14){add('strings',root+19,1,1.5,.12,.4);add('strings',chord[1]+12,3,.8,.1,.4);}
   if(flood){
     for(let beat=0;beat<4;beat+=.5)add('keys',chord[[0,2,1,2][Math.round(beat*2)%4]]+12,beat,.3,.11,.3);
     for(const beat of [0,1.5,2.5])add('bass',root-12+(beat===2.5?7:0),beat,.85,.25);
@@ -29,5 +30,44 @@ export function scoreB(mode:'rillbridge'|'sluice'|'flood',bar:number):Note[]{
     if(!quiet&&index%4!==3){add('hat',42,1.5,.08,.028,.5);add('hat',42,3.5,.08,.022,.5);}
   }
   if(quiet||phrase===2)for(const p of chord)add('strings',p,0,3.8,quiet?.065:.045,.15);
+  return notes;
+}
+
+// A recurring two-bar tune, answered over a half cadence, with a contrasting bridge.
+// Chord voicings move by small intervals and the lead stays within one octave.
+const townChords={
+  gm:{root:43,voicing:[55,58,62]},eb:{root:39,voicing:[55,58,63]},
+  d:{root:38,voicing:[54,57,62]},cm:{root:36,voicing:[55,60,63]},bb:{root:34,voicing:[53,58,62]},
+};
+const townHarmony:(keyof typeof townChords)[]=['gm','gm','eb','d','gm','gm','eb','d','cm','cm','bb','d','eb','cm','d','gm'];
+const townMelody:[number,number,number][][]=[
+  [[0,67,1.5],[2,69,.5],[2.5,70,.5],[3,74,.75]],
+  [[0,70,1.5],[2,69,.5],[2.5,67,1]],
+  [[0,67,1],[1.5,70,.5],[2,67,1.5]],
+  [[0,69,1.5],[2,66,1]],
+  [[0,67,1.5],[2,69,.5],[2.5,70,.5],[3,74,.75]],
+  [[0,70,1],[1.5,69,.5],[2,67,1.5]],
+  [[0,70,1],[1.5,67,.5],[2,63,1.5]],
+  [[0,66,1],[1.5,69,.5],[2,74,1.5]],
+  [[0,75,1.5],[2,74,.5],[2.5,72,1]],
+  [[0,67,1],[1.5,72,.5],[2,75,1.5]],
+  [[0,74,1.5],[2,72,.5],[2.5,70,1]],
+  [[0,69,1.5],[2,66,1]],
+  [[0,67,1],[1.5,70,.5],[2,67,1.5]],
+  [[0,67,1],[1.5,72,.5],[2,75,1.5]],
+  [[0,74,1],[1.5,69,.5],[2,66,1.5]],
+  [[0,67,3]],
+];
+function townBar(bar:number):Note[]{
+  const index=((bar%16)+16)%16,{root,voicing}=townChords[townHarmony[index]],notes:Note[]=[];
+  const add=(instrument:Note['instrument'],midi:number,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,midi,beat,duration,velocity,pan});
+  for(const [beat,pitch,duration] of townMelody[index])add('reed',pitch,beat,duration,.2,-.12);
+  for(const pitch of voicing)add('keys',pitch,0,1.4,.05,.2);
+  if(index!==15)for(const pitch of voicing.slice(1))add('keys',pitch,2.25,1.1,.035,.2);
+  add('bass',root,0,index===15?3.4:2.6,.16,-.1);
+  if(index!==15)add('bass',root+7,3,.65,.075,-.1);
+  if(index>=8&&index<=11)for(const pitch of voicing)add('strings',pitch,0,3.7,.02,.12);
+  if(index===1||index===5)add('bell',74,3.5,.45,.055,.3);
+  if(index===9||index===13)add('bell',79,3.5,.45,.045,.3);
   return notes;
 }
