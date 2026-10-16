@@ -46,10 +46,10 @@ export class Audio {
       this.next+=beat*4;this.bar++;
     }
   }
-  effect(kind:Effect,surface:'station'|'yard'|'tunnel'='station'){
+  effect(kind:Effect,surface:'station'|'yard'|'tunnel'|'rillbridge'|'sluice'='station'){
     if(!this.enabled||!this.context)return;
     const now=this.context.currentTime;
     if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
-    this.effects!.effect(kind,now+.005,surface,this.steps);
+    this.effects!.effect(kind,now+.005,surface==='rillbridge'?'station':surface==='sluice'?'yard':surface,this.steps);
   }
 }

@@ -9,7 +9,17 @@ The score follows a sixteen-bar D-minor theme: an opening phrase, an answering v
 | Tunnel | 68 BPM | Lower bell melody, sustained strings, sparse accompaniment |
 | Battle | 128 BPM | Reed lead, repeating keys, active bass, kick/snare/hat accents and fills |
 | Inspector | 136 BPM | String lead, stronger rhythm and bell accents |
-| Disk B arrival | 78 BPM | Bells, fuller strings, an octave-lifted final phrase |
+| Disk boundary | 78 BPM | Bells, fuller strings, an octave-lifted final phrase |
+
+Disk B uses a second sixteen-bar G-minor tune in `score-b.ts`, with four phrases, space between melody entries, and short string answers in the bridge. Its three arrangements follow the same bar scheduling and instruments:
+
+| Scene | Tempo | Arrangement |
+| --- | --- | --- |
+| Rillbridge | 88 BPM | Reed melody, sparse keys, walking bass, quiet offbeat hat |
+| Sluice | 76 BPM | Lower bells, sustained strings, no percussion |
+| Flood battles | 124 BPM | Reed lead, eighth-note keys, syncopated bass, drums with phrase-ending fills |
+
+Rillbridge footsteps use stone; sluice movement uses the gravel/stone work-yard effect. Combat retains the distinct steam, lantern, melee, and healing sounds.
 
 `score.ts` owns composition and arrangement. `synth.ts` supplies filtered reed, plucked keys, detuned strings, FM bells, bass, and percussion; it works in live and offline Web Audio contexts. A shared short stereo room tail, gentle compression, and separate music/effect gains keep the mix together. Timing uses look-ahead scheduling rather than render frames. Muting fades the master and cancels scheduled voices; reenabling starts one arrangement, avoiding overlapping sequencers.
 

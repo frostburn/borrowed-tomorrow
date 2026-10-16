@@ -58,18 +58,17 @@ export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>)
   return result;
 }
 
-export interface Reach { hex: Hex; path: Hex[] }
-export function reachable(start: Hex, movement: number, blocked: Set<string>): Map<string, Reach> {
-  const result = new Map<string, Reach>([[key(start), { hex: start, path: [] }]]);
-  const queue: Reach[] = [{ hex: start, path: [] }];
-  for (let i = 0; i < queue.length; i++) {
-    const current = queue[i];
-    if (current.path.length >= movement) continue;
-    for (const h of neighbors(current.hex)) {
-      if (blocked.has(key(h)) || result.has(key(h))) continue;
-      const visit = { hex: h, path: [...current.path, h] };
-      result.set(key(h), visit);
-      queue.push(visit);
+export interface Reach { hex: Hex; path: Hex[]; cost: number }
+/** Dijkstra search: choose the cheapest route, which may be longer on dry ground. */
+export function reachable(start: Hex, movement: number, blocked: Set<string>, cost:(hex:Hex)=>number=()=>1): Map<string, Reach> {
+  const first:Reach={hex:start,path:[],cost:0},result=new Map<string,Reach>([[key(start),first]]),queue=[first];
+  while(queue.length){
+    queue.sort((a,b)=>a.cost-b.cost);const current=queue.shift()!;
+    if(result.get(key(current.hex))!==current)continue;
+    for(const h of neighbors(current.hex)){
+      const total=current.cost+cost(h);
+      if(total>movement||blocked.has(key(h))||(result.get(key(h))?.cost??Infinity)<=total)continue;
+      const visit={hex:h,path:[...current.path,h],cost:total};result.set(key(h),visit);queue.push(visit);
     }
   }
   return result;

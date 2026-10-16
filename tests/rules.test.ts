@@ -81,7 +81,7 @@ describe('chapter continuity', () => {
     const s=party();const starts={station:{x:21,y:19},yard:{x:35,y:18},tunnel:{x:3,y:13}};
     for(const map of Object.values(MAPS))for(const object of visibleObjects(map,s)){
       const approaches=[{x:object.x,y:object.y},{x:object.x-1,y:object.y},{x:object.x+1,y:object.y},{x:object.x,y:object.y-1},{x:object.x,y:object.y+1}];
-      expect(approaches.some(p=>walkable(map,p.x,p.y)&&worldPath(map,starts[map.id],p).length>0),`${map.id}: ${object.id}`).toBe(true);
+      expect(approaches.some(p=>walkable(map,p.x,p.y)&&worldPath(map,starts[map.id as keyof typeof starts],p).length>0),`${map.id}: ${object.id}`).toBe(true);
     }
   });
 });

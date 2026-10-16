@@ -4,6 +4,8 @@ A browser JRPG about a train from a town lost forty years ago. Explore the railw
 
 **Disk A: The Wrong Platform** includes Larkspur station, the old signal yard, Rillbridge tunnel, two party members, three story battles, one optional encounter, supplies, equipment, a travel journal, and a saved **Insert Disk B** arrival.
 
+**Disk B: A Town Expecting Rain** continues that arrival through Rillbridge and its upstream sluice: find Mira’s father, prove the flood danger, prepare an evacuation, and choose which outfall to open. Three battles introduce shallow water and a narrow crossing. The chapter resolves the rescue at Larkspur and records an **Insert Disk C** departure.
+
 ## Run
 
 Use Node 24 and npm:
@@ -28,11 +30,13 @@ npm run dev
 | Confirm battle plan | Confirmation button or Enter |
 | Defend / wait | F / W |
 
-Pointer input works for exploration and battles. Small screens also show a directional pad and battlefield pan buttons. Sound begins only when enabled with the Sound button. Locations share a sixteen-bar theme with different arrangements; combat actions and movement use material-specific effects.
+Pointer input works for exploration and battles. Small screens also show a directional pad and battlefield pan buttons. Sound begins only when enabled with the Sound button. Disk A and Disk B each have a sixteen-bar theme with distinct location arrangements; combat actions and movement use material-specific effects.
 
 ## Combat
 
 The battlefield is an 11 × 7 pointy-hex grid using axial coordinates. Each combatant is an individual character. Initiative orders turns; movement leaves one action available. Occupied hexes and rocks block walking. Rocks block ranged sight and steam rays. Nell's lantern hits a hex and its six neighbors; Orrin's steam lance hits a four-hex ray. **Both can hit allies.** Preview and resolution share the same geometry.
+
+In Disk B, shallow water costs two movement points per hex; dry ground costs one. Wave marks identify water. Flying crows ignore its extra cost. The preview and committed move use the same cheapest route. Opening the orchard channel drains the keeper’s arena and floods the fruit trees; the millrace spares the orchard and leaves the arena wet.
 
 Melee triggers one retaliation per defender per round. Defend reduces incoming damage until the defender's next turn. Wait delays a turn to the end of the round and is only available before moving. Enemy AI evaluates reachable firing positions and the same AoE shapes as the player.
 
@@ -46,12 +50,13 @@ Narrow screens use a layout up to 384 × 768 with a cropped, scrolling camera an
 
 IndexedDB stores one autosave and three manual slots. Autosaves occur at story checkpoints and before encounters. Manual saves are available outside battles. The Save menu imports and exports versioned JSON files; use an export to move between browsers or keep a durable backup. A reload during combat restores the pre-battle checkpoint. Browser storage belongs to the site's origin.
 
-The Disk A ending records `disk-b:rillbridge-arrival`. Return exploration preserves this pending arrival. Future chapters must migrate older saves rather than reset them.
+Version 2 imports original version-1 saves without resetting progress. At `disk-b:rillbridge-arrival`, choose **Begin Disk B**. The new art loads before the arrival is consumed. The Disk B ending records `disk-c:ambulance-siding`; returning to earlier areas preserves it. Disk C is a saved continuation point, not yet a playable chapter.
 
 ## Project layout
 
 - `src/rules/`: framework-independent hex geometry, combat, and save schema.
-- `src/content/disk-a/`: chapter constants, journal entries, map events, and Tiled map data.
+- `src/content/disk-a/` and `src/content/disk-b/`: chapter text, interactions, encounters, and Tiled maps.
+- `.agents/skills/write-game-prose/`: repository-local writing guidance adapted from Stephen D. Turner’s MIT-licensed [deslop](https://github.com/stephenturner/skill-deslop).
 - `src/game/`: Phaser scene, pixel framebuffer, bitmap UI, procedural score/instruments, and IndexedDB storage.
 - `public/art/`: generated environment and transparent actor assets.
 - `docs/art-direction.md` and `docs/audio-direction.md`: the visual and musical rules for later disks.
@@ -67,7 +72,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests exercise the actual controls and checkpoint restoration, fractional-DPR pixel scaling, native asset pixel/color preservation, and offline audio output.
+CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests play both disks through the actual controls, import the original version-1 arrival, recover from failed chapter downloads, verify both outfall choices and return exploration, and check fractional-DPR pixel scaling, native asset pixel/color preservation, and offline audio output.
 
 `window.borrowedTomorrow.inspect()` provides a read-only snapshot for diagnostics. It does not mutate progress or bypass battles. `window.borrowedTomorrowPixels.inspect()` exposes the framebuffer size, physical scale, and palette for display diagnostics.
 

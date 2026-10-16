@@ -1,3 +1,4 @@
+import { DISK_B_ENCOUNTERS } from '../content/disk-b/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId } from './state';
 
@@ -18,11 +19,12 @@ export interface Unit {
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
 }
 export interface Battle {
-  encounter: string; units: Unit[]; obstacles: Set<string>; queue: string[]; round: number;
+  encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; queue: string[]; round: number;
   log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number }[]; rocks: [number, number][] }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string }[]; rocks: [number, number][]; shallow?:[number,number][]; terrain?:'sluice'; journal?:string; victory?:string }
 export const ENCOUNTERS: Record<string, Encounter> = {
+  ...DISK_B_ENCOUNTERS,
   yard: { id: 'yard', name: 'Strays in the signal yard', flag: 'yardCleared', xp: 30, coins: 25,
     enemies: [{ kind: 'hound', col: 7, row: 2 }, { kind: 'hound', col: 8, row: 3 }, { kind: 'crow', col: 9, row: 5 }], rocks: [[5, 2], [5, 4], [7, 5]] },
   scrap: { id: 'scrap', name: 'Something in the scrap', flag: 'scrapCleared', xp: 25, coins: 30,
@@ -52,9 +54,10 @@ export function createBattle(encounter: string, state: GameState): Battle {
   e.enemies.forEach((enemy, i) => {
     const stats = ENEMY_STATS[enemy.kind];
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      maxHp: stats.hp, hp: stats.hp, focus: 6, moved: false, defending: false, retaliated: false, waited: false });
+      name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
+    water:new Set((encounter==='b-keeper'&&state.flags.bOrchardChannel?[]:e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   nextRound(battle);
   return battle;
@@ -64,7 +67,7 @@ export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => equal(u.hex, hex));
 export function movement(b: Battle, u: Unit) {
   const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).map(v => key(v.hex))]);
-  return reachable(u.hex, u.moved ? 0 : u.movement, blocked);
+  return reachable(u.hex, u.moved ? 0 : u.movement, blocked, h=>u.kind!=='crow'&&b.water.has(key(h))?2:1);
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
@@ -119,7 +122,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   const visit = movement(b, u).get(key(destination));
   if (!visit) return null;
   u.hex = { ...destination }; u.moved = true;
-  log(b, `${u.name} moves ${visit.path.length} hexes.`);
+  log(b, `${u.name} moves ${visit.path.length} hexes (${visit.cost} movement).`);
   return visit.path;
 }
 export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
@@ -171,7 +174,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
     for (const id of u.abilities) {
       for (const aim of cells()) {
         if (!legalAim(b, u, id, aim)) continue;
-        let score = -reach.path.length * 0.12;
+        let score = -reach.cost * 0.12;
         for (const v of targets(b, u, id, aim)) {
           score += (v.side !== u.side ? 1 : -2.5) * (Math.min(v.hp, damage(u, v, id)) + (v.hp <= damage(u, v, id) ? 8 : 0));
         }
@@ -190,7 +193,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    visits.sort((a, z) => Math.min(...enemies.map(v => distance(a.hex, v.hex))) - Math.min(...enemies.map(v => distance(z.hex, v.hex))) || a.path.length - z.path.length);
+    visits.sort((a, z) => Math.min(...enemies.map(v => distance(a.hex, v.hex))) - Math.min(...enemies.map(v => distance(z.hex, v.hex))) || a.cost - z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);
     return 'defend';

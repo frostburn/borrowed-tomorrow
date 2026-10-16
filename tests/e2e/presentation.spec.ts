@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const modes=['station','yard','tunnel','battle','inspector','ending'] as const;
+const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{

@@ -78,6 +78,7 @@ export function interactDiskA(host: StoryHost, id: string) {
         else host.talk({lines:[SAY('The inspector','One outstanding passenger. Return the child to the service. You are unauthorized additions.','inspector'),SAY('Nell','She’s waiting for her father. Who wrote that timetable?','nell'),SAY('The inspector','Passengers only. No substitutions.','inspector'),SAY('Orrin','Spread out, Nell. That staff is a signal projector.','orrin')],done:()=>host.battle('inspector')});break;
       case 'disk-b':
         if(!s.flags.inspectorCleared)host.talk({lines:[SAY('Nell','The inspector is standing between us and the exit. We can’t bring Mira through while he’s there.','nell')]});
+        else if(s.flags.diskBStarted)host.travel('rillbridge',12,18);
         else if(s.flags.diskAComplete)host.boundary();
         else host.talk({lines:[SAY('Beyond the tunnel','The rain has stopped. Across the river, roofs catch the morning sun. Rillbridge is whole.'),SAY('Mira','There! The blue house by the bridge. I told you it wasn’t far.','mira'),SAY('Nell','The festival banner has tomorrow’s date on it.','nell'),SAY('Orrin','The flood hasn’t happened yet.','orrin')],done:()=>{s.flags.diskAComplete=true;s.boundary=CHAPTER.next;remember(s,'boundary');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
     }
