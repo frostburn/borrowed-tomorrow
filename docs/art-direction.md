@@ -34,3 +34,5 @@ Original scenery and actors were generated with the built-in Image Gen tool. Ass
 Disk B images were generated with the built-in Image Gen tool and encoded to lossless WebP. Their original dimensions and RGBA pixels are preserved; no resizing or palette conversion was applied.
 
 Maps use generated scenery and editable Tiled collision data. Four directional actor frames animate between grid positions. Hexes, path indicators, interaction marks, damage numbers, and HP bars are code-drawn and must remain aligned to the final pixel grid.
+
+Disk B’s lossless WebP sources are stored as small base64 chunks in `assets/maps/` so they can be transferred through the repository connector. `scripts/restore-map-art.mjs` reconstructs the exact native files before `npm run dev` and `npm run build`, verifying their byte length and SHA-256. No colors or dimensions change. The built site contains the ordinary WebP files.

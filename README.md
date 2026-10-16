@@ -58,7 +58,7 @@ Version 2 imports original version-1 saves without resetting progress. At `disk-
 - `src/content/disk-a/` and `src/content/disk-b/`: chapter text, interactions, encounters, and Tiled maps.
 - `.agents/skills/write-game-prose/`: repository-local writing guidance adapted from Stephen D. Turner’s MIT-licensed [deslop](https://github.com/stephenturner/skill-deslop).
 - `src/game/`: Phaser scene, pixel framebuffer, bitmap UI, procedural score/instruments, and IndexedDB storage.
-- `public/art/`: generated environment and transparent actor assets.
+- `public/art/`: runtime scenery and transparent actor assets. The two Disk B maps are reconstructed from verified source chunks in `assets/maps/` automatically before dev/build.
 - `docs/art-direction.md` and `docs/audio-direction.md`: the visual and musical rules for later disks.
 - `docs/story/`: canon, character knowledge, unresolved questions, and the exact next chapter handoff. **Contains spoilers.**
 

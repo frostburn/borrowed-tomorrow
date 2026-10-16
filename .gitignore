@@ -3,3 +3,7 @@ dist/
 test-results/
 playwright-report/
 *.local
+
+# Reconstructed lossless map files; native sources are in assets/maps/.
+/public/art/rillbridge.webp
+/public/art/sluice.webp
