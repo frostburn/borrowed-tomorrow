@@ -3,7 +3,7 @@ import { Adventure } from './game/adventure';
 import { mountGame } from './game/mount';
 
 const root=document.getElementById('app')!;
-if(import.meta.env.DEV && new URLSearchParams(location.search).get('dev')!==null && ['workshop','inventory'].includes(new URLSearchParams(location.search).get('dev')!)){
+if(import.meta.env.DEV && ['workshop','inventory'].includes(new URLSearchParams(location.search).get('dev') ?? '')){
   void import('./dev/workshop').then(({startWorkshop})=>startWorkshop(root));
 }else{
   mountGame(root,new Adventure());

@@ -341,9 +341,9 @@ export class Adventure extends Phaser.Scene {
     this.enterBattle(id);
   }
   /** A standalone harness: no campaign saves, flags, loot or experience. */
-  previewBattle(battle: Battle, returnToInventory: () => void) {
+  previewBattle(battle: Battle, returnToWorkshop: () => void) {
     if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
-    this.practiceReturn=returnToInventory;this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
+    this.practiceReturn=returnToWorkshop;this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
     this.battle=battle;this.mode='battle';this.busy=false;this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle(battle.encounter);
   }
@@ -412,7 +412,7 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${roles[u.kind]}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.weakened?'Dazzled':''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name,key:String(i+2),action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:ABILITIES[id].description})),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved,action:()=>this.doWait()}]);

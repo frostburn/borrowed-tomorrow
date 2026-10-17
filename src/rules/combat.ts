@@ -104,20 +104,22 @@ export function damage(u: Unit, v: Unit, id: AbilityId): number {
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id)-(v.guard??0));
 }
-function attackDamage(u:Unit,v:Unit,id:AbilityId){
-  const a=ABILITIES[id];
-  return Math.max(1,Math.round((a.power+u.bonus-Math.max(0,v.armor-(a.pierce??0)))*(v.defending?.6:1)*(u.weakened?.6:1)));
+function attackDamage(u: Unit, v: Unit, id: AbilityId) {
+  const a = ABILITIES[id];
+  const armor = Math.max(0, v.armor - (a.pierce ?? 0));
+  return Math.max(1, Math.round((a.power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.weakened ? .6 : 1)));
 }
-function hurt(u:Unit,v:Unit,id:AbilityId){
-  const amount=damage(u,v,id),absorbed=v.sealed?0:Math.min(v.guard??0,attackDamage(u,v,id));
-  if(v.guard)v.guard-=absorbed;
-  v.hp=Math.max(0,v.hp-amount);
-  return {amount,absorbed};
+function hurt(u: Unit, v: Unit, id: AbilityId) {
+  const amount = damage(u, v, id);
+  const absorbed = v.sealed ? 0 : Math.min(v.guard ?? 0, attackDamage(u, v, id));
+  if (v.guard) v.guard -= absorbed;
+  v.hp = Math.max(0, v.hp - amount);
+  return { amount, absorbed };
 }
-export function pushDestination(b:Battle,u:Unit,v:Unit):Hex|undefined{
-  if(distance(u.hex,v.hex)!==1)return;
-  const hex={q:v.hex.q*2-u.hex.q,r:v.hex.r*2-u.hex.r};
-  if(inside(hex)&&!b.obstacles.has(key(hex))&&!unitAt(b,hex))return hex;
+export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
+  if (distance(u.hex, v.hex) !== 1) return;
+  const hex = { q: v.hex.q * 2 - u.hex.q, r: v.hex.r * 2 - u.hex.r };
+  if (inside(hex) && !b.obstacles.has(key(hex)) && !unitAt(b, hex)) return hex;
 }
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {

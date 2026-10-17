@@ -11,10 +11,11 @@ for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phon
     await page.evaluate(async record=>{
       await new Promise<void>((resolve,reject)=>{const request=indexedDB.open('borrowed-tomorrow',1);request.onsuccess=()=>{const db=request.result,tx=db.transaction('saves','readwrite');tx.objectStore('saves').put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>reject(tx.error);};});
     },saved);
-    await page.getByRole('button',{name:'Inventory workshop',exact:true}).click();
-    await expect(page).toHaveTitle('Borrowed Tomorrow · Inventory workshop');
-    await expect(page.getByRole('region',{name:'Character inventory'})).toBeVisible();
+    await page.getByRole('button',{name:'Workshop',exact:true}).click();
+    await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
+    await expect(page.getByRole('region',{name:'Character workshop'})).toBeVisible();
     await capture(page,`inventory-${device}`);
+    await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Equipment',exact:true}).click();
     const character=page.getByRole('group',{name:'Character',exact:true});
     const equip=()=>page.getByRole('button',{name:/^Equip on /});
     await equip().click();
@@ -40,10 +41,10 @@ for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phon
     expect(units.find(u=>u.id==='orrin')).toMatchObject({bonus:5,armor:1,speed:5});
     await expect.poll(async()=>{const b=(await inspect(page)).battle!;return b.units.find(u=>u.id===b.queue[0])?.side;}).toBe('party');
     await page.locator('.actions').getByRole('button',{name:/^F\s+Defend$/}).click();
-    await page.getByRole('button',{name:'Inventory',exact:true}).click();
+    await page.getByRole('button',{name:'Workshop',exact:true}).click();
     await page.getByRole('button',{name:'Test battle',exact:true}).click();
     await page.keyboard.press('Escape');
-    await expect(page.getByRole('region',{name:'Character inventory'})).toBeVisible();
+    await expect(page.getByRole('region',{name:'Character workshop'})).toBeVisible();
     const record=await page.evaluate(async()=>new Promise(resolve=>{const r=indexedDB.open('borrowed-tomorrow',1);r.onsuccess=()=>{const db=r.result,tx=db.transaction('saves','readonly'),get=tx.objectStore('saves').getAll();get.onsuccess=()=>{resolve(get.result);db.close();};};}));
     expect(record).toEqual([saved]);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
@@ -51,7 +52,7 @@ for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phon
 }
 
 test('@journey inventory practice completes without campaign rewards',async({page})=>{
-  await page.goto('/?dev=inventory');await expect(page.getByRole('region',{name:'Character inventory'})).toBeVisible();
+  await page.goto('/?dev=inventory');await expect(page.getByRole('region',{name:'Character workshop'})).toBeVisible();
   await page.getByRole('button',{name:'Equip on Nell',exact:true}).click();
   await page.getByRole('button',{name:/^Reinforced work coat/}).click();await page.getByRole('button',{name:'Equip on Nell',exact:true}).click();
   await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
@@ -59,5 +60,5 @@ test('@journey inventory practice completes without campaign rewards',async({pag
   await page.getByRole('button',{name:/^Pressure nozzle/}).click();await page.getByRole('button',{name:'Equip on Orrin',exact:true}).click();
   await page.getByRole('button',{name:'Test battle',exact:true}).click();await battle(page,'inventory-practice',true);
   const state=(await inspect(page)).state;expect(state.xp).toBe(0);expect(state.coins).toBe(0);expect(state.gear).toEqual([]);expect(state.flags.workshopWon).toBeUndefined();
-  await expect(page.getByRole('region',{name:'Character inventory'})).toBeVisible();
+  await expect(page.getByRole('region',{name:'Character workshop'})).toBeVisible();
 });

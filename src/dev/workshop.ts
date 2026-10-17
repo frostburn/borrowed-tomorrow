@@ -24,7 +24,7 @@ class Workshop {
   private tab: 'character' | 'equipment' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : 'character';
   private hero: HeroId = 'nell';
   private selected: ItemId = 'brass-reflector';
-  private message = 'Choose a character and an item.';
+  private message = 'Choose a character to adjust their build.';
   constructor(private scene: Adventure, private ui: UI) {
     try { const stored = localStorage.getItem(STORAGE); if (stored) this.inventory = decodeInventory(stored); }
     catch { this.message = 'Stored workshop inventory was unavailable. Starting with fresh equipment.'; }
@@ -57,7 +57,7 @@ class Workshop {
     }).join('');
     return `<section class="workshop-build" aria-label="Character settings"><h2>Character settings</h2><div class="workshop-level"><label for="character-level">Level</label><button data-level="-1" aria-label="Decrease ${names[hero]} level" ${build.level===1?'disabled':''}>−</button><input id="character-level" type="number" min="1" max="10" step="1" value="${build.level}" aria-label="${names[hero]} level"/><button data-level="1" aria-label="Increase ${names[hero]} level" ${build.level===10?'disabled':''}>+</button></div><p class="inv-note">Changing level restores base stats. Equipment stays equipped.</p><form id="character-stats" novalidate><h3>Base stats</h3>${fields}<button type="submit">Apply base stats</button><button type="button" id="level-defaults">Level defaults</button></form><p class="inv-note">Equipment bonuses are added to these values. Starting focus regenerates on a character’s turn.</p></section><section class="workshop-abilities" aria-label="Level abilities"><h2>Abilities</h2>${LEARNING[hero].map(entry=>{
       const ability=ABILITIES[entry.ability],known=entry.level<=build.level;
-      return `<article class="workshop-ability ${known?'known':'locked'}" data-ability="${ability.id}"><div><h3>${ability.name}</h3><small>${known?'Known':`Lv ${entry.level}`} · ${ability.cost} focus</small></div><p>${ability.description}</p></article>`;
+      return `<article class="workshop-ability ${known?'known':'locked'}" data-ability="${ability.id}"><div><h3>${ability.name}</h3><small>Lv ${entry.level} · ${known?'Known':'Locked'} · ${ability.cost} focus</small></div><p>${ability.description}</p></article>`;
     }).join('')}</section>`;
   }
   private bindCharacterPanel() {
@@ -134,7 +134,7 @@ class Workshop {
     this.scene.state = practiceState();
     this.scene.previewBattle(createBattle('workshop', this.scene.state, equipmentBonuses(this.inventory),characterProfiles(this.settings)), () => this.show());
     this.ui.location('Workshop practice');
-    this.ui.status.textContent = 'Workshop / Esc returns to equipment · Practice earns no campaign progress';
+    this.ui.status.textContent = 'Workshop / Esc returns to character settings · Practice earns no campaign progress';
   }
   help() {
     this.ui.showModal('Character workshop', '<p>Choose Nell or Orrin. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses both character builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next attack, including retaliation. Pressure wave can hit allies and pushes only into clear hexes.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');

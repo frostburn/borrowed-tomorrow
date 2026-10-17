@@ -1,6 +1,6 @@
 # Borrowed Tomorrow
 
-Vite development includes an off-story [inventory workshop](docs/development-inventory.md): open `/?dev=inventory` or choose it on the title screen. Manually equip each character, compare stats and try the loadout in combat. Production builds keep the current campaign equipment behavior.
+Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Adjust individual levels and base stats, discover level abilities, equip items and test the builds in combat. Production builds keep the current campaign equipment and progression.
 
 Nell's brother has finally returned from the capital—and the imperial train has followed him. A stolen crystal, a coal-fired engine and a village where time has stopped begin a JRPG about an empire living on tomorrow's promise.
 
