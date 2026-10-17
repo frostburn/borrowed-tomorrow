@@ -1,5 +1,5 @@
 import { decodeSave, type GameState } from '../rules/state';
-export interface SaveRecord { slot: string; savedAt: string; state: GameState }
+export interface SaveRecord { slot: string; savedAt: string; state: GameState; compatible: boolean }
 let connection: Promise<IDBDatabase> | undefined;
 function db(): Promise<IDBDatabase> {
   return connection ??= new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ function pendingCheckpoint():SaveRecord|undefined{
     const raw=localStorage.getItem(pendingKey);if(!raw)return;
     const record=JSON.parse(raw);
     if(record.slot!=='autosave'||typeof record.savedAt!=='string'||!Number.isFinite(Date.parse(record.savedAt)))return;
-    return {slot:'autosave',savedAt:record.savedAt,state:decodeSave(JSON.stringify(record.state))};
+    return {slot:'autosave',savedAt:record.savedAt,state:decodeSave(JSON.stringify(record.state)),compatible:true};
   }catch{return;}
 }
 function clearCheckpoint(state:GameState){
@@ -41,7 +41,7 @@ export async function listSaves(): Promise<SaveRecord[]> {
     const request = database.transaction('saves', 'readonly').objectStore('saves').getAll();
     request.onsuccess = () => {
       const pending=pendingCheckpoint(),records=request.result as SaveRecord[];
-      resolve((pending?[pending,...records.filter(r=>r.slot!=='autosave')]:records).sort((a,b)=>b.savedAt.localeCompare(a.savedAt)));
+      resolve((pending?[pending,...records.filter(r=>r.slot!=='autosave')]:records).map(record=>{try{return {...record,state:decodeSave(JSON.stringify(record.state)),compatible:true};}catch{return {...record,compatible:false};}}).sort((a,b)=>b.savedAt.localeCompare(a.savedAt)));
     };
     request.onerror = () => reject(request.error);
   });

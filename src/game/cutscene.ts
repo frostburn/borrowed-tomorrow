@@ -11,6 +11,7 @@ export class Cutscene {
   private actors=new Map<string,Phaser.GameObjects.Image>();
   private hidden:Phaser.GameObjects.Image[]=[];
   private focus?:StagePoint;
+  private omen?:Phaser.GameObjects.Graphics;
   private closed=false;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio){
@@ -44,7 +45,31 @@ export class Cutscene {
       if(direction.face)actor.setTexture(direction.face);
       if(direction.visible!==undefined)actor.setVisible(direction.visible);
       if(direction.at){const p=pixel(direction.at);actor.setPosition(p.x,p.y);}
+      if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to);actor.setData('destination',p);this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration:this.duration,ease:'Sine.easeInOut'});}
+    }
+    if(shot.omen){
+      this.omen?.destroy();this.omen=undefined;
+      if(shot.omen!=='none'){
+        const g=this.scene.add.graphics();this.omen=g;this.layer.add(g);
+        if(shot.omen==='sun'){
+          const center=this.focus?pixel(this.focus):{x:camera.midPoint.x,y:camera.midPoint.y};
+          const radius=Math.min(104,Math.floor(camera.width/3)),x=center.x,y=center.y;
+          g.fillStyle(0x07151d,1).fillRect(0,0,2048,1536);
+          g.lineStyle(4,0xe5bd73,1).strokeCircle(x,y,radius);
+          for(let ray=0;ray<12;ray++){
+            const angle=ray*Math.PI/6;
+            g.lineBetween(Math.round(x+Math.cos(angle)*(radius+9)),Math.round(y+Math.sin(angle)*(radius+9)),Math.round(x+Math.cos(angle)*(radius+25)),Math.round(y+Math.sin(angle)*(radius+25)));
+          }
+          g.lineStyle(3,0xf2e2af,1);g.lineBetween(x-radius+20,y,x,y-25).lineBetween(x,y-25,x+radius-20,y).lineBetween(x+radius-20,y,x,y+25).lineBetween(x,y+25,x-radius+20,y);
+          g.fillStyle(0xf2e2af,1).fillRect(x-5,y-19,10,38);
+        }else{
+          const actor=this.actors.get('nell'),x=Math.round(actor?.x??camera.midPoint.x),y=Math.round((actor?.y??camera.midPoint.y)-28);
+          g.lineStyle(2,0x98e8ef,1).strokeCircle(x,y,23);
+          g.fillStyle(0xf8f0c8,1).fillRect(x-3,y-14,6,28).fillRect(x-14,y-3,28,6);
+          for(const [dx,dy] of [[-29,-15],[24,-23],[-22,24],[32,17]])g.fillRect(x+dx,y+dy,3,3);
+        }
+      }
     }
     this.audio.cinematicMix(shot.silence?0:.25);if(shot.cue)this.audio.effect(shot.cue);
   }

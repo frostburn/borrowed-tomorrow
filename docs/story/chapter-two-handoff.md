@@ -1,0 +1,23 @@
+# Next: Chapter Two — Prison Trains
+
+Only Chapter One is playable. Use [grand-outline.md](grand-outline.md) as the full seven-chapter direction. This departure is the start of the deliberate pursuit, not a request to continue the removed ghost-train story.
+
+## Exact save
+
+Version **5**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
+
+Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`, `villageSeen`, `collectorConfronted`, `collectorDefeated`, `villageFreed`, `passSeen`, `captainConfronted`, `captainDefeated`, `chapterOneComplete`. Preserve optional `blessingRead`, `farewellSeen`, `waterSeen`, `workshopWon`, `muralRead` and `shelterSupplies`, plus every resource, equipped item, party HP/focus, journal entry and play-time value. Nell and Orrin are the two combatants.
+
+Load and validate new region assets before consuming this boundary. An error must leave the departure available. Do not offer a nonworking Begin Chapter Two button before the content exists.
+
+## Start with the pursuit
+
+Arrive at the Iron Coast prison-train exchange. The player should see a train, a person or a recognizable sign of Tomas's passage promptly. Give Nell a concrete route toward the resistance's train raid. A helpful contact can introduce a conflict, but do not withhold basic information behind unrelated repairs or errands.
+
+Recruit the healer and introduce the imperial knight through this pursuit. The first raid frees prisoners and earns Tomas's destination in the capital. It also gives the knight a visible reason to question the empire. The later rescue in Chapter Three must bring Tomas back alive and remain a permanent accomplishment.
+
+## What carries forward
+
+Ansel is dead, Iona keeps Larkspur open, Rillbridge is awake, and its inhabitants still feel the cost of the collection. Severin survived his defeat, but lost the crossing. Tomas is captive and has not joined the party. Nell's fragment is in Ansel's lantern; it is not an equipment purchase that may be sold or removed. The optional brass reflector improves that lantern without being the fragment itself.
+
+Nell and Orrin know about local repayment but not the whole bargain. The final eye beneath the capital was a player-only cutaway. The temple, imperial conduit and original bargain require later discoveries. Foreshadow the Benefactor's own domain before the emperor's defeat; the separate final chapter must feel like the culmination of known danger.

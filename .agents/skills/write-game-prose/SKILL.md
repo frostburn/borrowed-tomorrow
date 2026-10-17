@@ -1,15 +1,15 @@
 ---
 name: write-game-prose
-description: Write and edit Borrowed Tomorrow dialogue, narration, journal entries, choices, and chapter handoffs. Use when adding a disk, revising a scene, or reviewing player-facing story text for voice, clarity, and continuity.
+description: Write and edit Borrowed Tomorrow dialogue, narration, journal entries, choices, and chapter handoffs. Use when adding a chapter, revising a scene, or reviewing player-facing story text for voice, clarity, and continuity.
 ---
 
 # Write game prose
 
-Read `AGENTS.md`, `docs/story/canon.md`, `docs/story/characters.md`, and the relevant disk handoff from the repository root. Check implemented dialogue and saved choices before adding facts. Keep private author knowledge out of a character's mouth until they learn it.
+Read `AGENTS.md`, `docs/story/canon.md`, `docs/story/characters.md`, `docs/story/grand-outline.md`, and the relevant chapter handoff from the repository root. Check implemented dialogue and saved choices before adding facts. Keep private author knowledge out of a character's mouth until they learn it.
 
-Give a scene a practical purpose: someone needs something, disagrees, discovers evidence, or makes a decision. Let the player do the part that can be played. Show a railway rule preventing an action before explaining that rule.
+Give a scene a practical purpose: someone needs something, disagrees, discovers evidence, or makes a decision. Let the player do the part that can be played. Show a threat or a mechanic in action before explaining it. Keep the personal pursuit connected to the wider conflict.
 
-Write each speaker from their immediate concern. Let Nell notice people and station work; let Orrin test a mechanism; let Mira ask about a particular person or possession. Give new residents work, obligations, and opinions of their own. Let affection appear through what they do for each other. Keep humor occasional and specific to the speaker.
+Write each speaker from their immediate concern. Let Nell notice people and station work; let Orrin test a mechanism; let Tomas protect his sister without taking away her choices. Give Severin concrete aims and visible interference. Give new residents work, obligations, and opinions of their own. Let affection appear through what they do for each other. Keep humor occasional and specific to the speaker.
 
 Replace grand statements with things the player can see or use. Prefer “The overflow is packed with timber” to “The town faces an unprecedented crisis.” Cut throat-clearing, repeated explanations, stock metaphors, invented philosophical labels, and dramatic fragments that add no information. Keep an image when it earns its place in the scene.
 
@@ -21,6 +21,6 @@ Name choices by what Nell will say or do. State foreseeable costs before commitm
 
 Write journals as useful records of what happened and what remains to do. Keep uncertainty explicit. Avoid repeating a whole conversation or telling the player how to feel. Use direct action words in objectives and combat instructions.
 
-Before finishing, read the scene in sequence with its entry conditions and both choice outcomes. Check who knows each fact, whether the player can perform the promised action, and whether a return visit acknowledges the result. Resolve a local problem before opening the next disk. Update canon and the exact saved handoff after the playable text is final.
+Before finishing, read the scene in sequence with its entry conditions and both choice outcomes. Check who knows each fact, whether the player can perform the promised action, and whether a return visit acknowledges the result. Resolve the chapter’s local conflict before opening the next chapter. Keep the planned final journey into the god’s domain distinct from defeating the emperor. Update canon and the exact saved handoff after the playable text is final.
 
 Adapted from Stephen D. Turner's [deslop](https://github.com/stephenturner/skill-deslop), with its general prose advice narrowed to this game's writing. Retain the accompanying MIT license when copying this adaptation.

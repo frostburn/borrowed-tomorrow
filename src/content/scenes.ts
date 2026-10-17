@@ -1,165 +1,129 @@
-import { SAY, type Dialogue, type Line } from './disk-a/story';
+import { SAY, type Dialogue, type Line } from './dialogue';
 import type { Cinematic, Shot } from './cinematics';
-import type { GameState } from '../rules/state';
 
-const line=(who:string,text:string,shot?:Shot):Line=>({...SAY(who,text),shot});
-const scene=(id:string,title:string,actors:Cinematic['actors'],lines:Line[]):Dialogue=>({scene:{id,title,actors},lines});
-const receipt={heading:'LARKSPUR · RECEIVING COPY',lines:['14 OCTOBER · 00:17','Thirty-one received. None substituted.'],signature:true};
+const line = (who: string, text: string, shot?: Shot): Line => ({ ...SAY(who, text), shot });
+const scene = (id: string, title: string, actors: Cinematic['actors'], lines: Line[]): Dialogue => ({ scene: { id, title, actors }, lines });
 
-export const opening=()=>scene('a-arrival','DISK A · THE WRONG PLATFORM',[
-  {id:'nell',at:{x:23,y:13}},{id:'mira',at:{x:28,y:11}},{id:'inspector',at:{x:33,y:11},hidden:true},
-],[
-  line('Larkspur · 18:43','The empty platform bell rings twice, then holds its third note. A child steps down from the Rillbridge train.',{focus:{x:29,y:11},cut:true,cue:'return-call'}),
-  line('Mira','Dad got off to ask about the delay. Please don’t let it go without me too.',{actors:{nell:{to:{x:25,y:12}}}}),
-  line('Nell','We haven’t had a train from Rillbridge in forty years. What’s that you’re holding?'),
-  line('Mira','It was on my seat. Your name’s on it.',{cue:'paper',document:receipt}),
-  line('Nell','That’s my signature. See the tail under the whole name? I do that when I’m tired.',{document:receipt}),
-  line('Nell','Thirty-one people? Dated tomorrow? I haven’t signed this.',{silence:true,document:receipt}),
-  line('The inspector','Receiving copy. Hand it over.',{focus:{x:30,y:12},cue:'punch',actors:{inspector:{visible:true,to:{x:31,y:12}}}}),
-  line('Nell','Stay behind me, Mira. This is station paperwork. I’m keeping it.',{actors:{nell:{to:{x:28,y:13}},mira:{to:{x:25,y:12}}}}),
-  line('The inspector','The western return relay is closed. Do not attempt to answer it.',{actors:{inspector:{to:{x:36,y:12}}}}),
-  line('Mira','My ticket’s only twenty minutes old. Can your mechanic make it take us back?',{focus:{x:26,y:12},actors:{inspector:{visible:false}}}),
-  line('Nell','The date on your ticket is forty years old. The day the line flooded. Keep it with you; we’ll need both papers.'),
-  line('Nell','Orrin’s in the square. We’ll find your dad. And I’m going to ask why that man is afraid of a receipt.'),
+export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME', [
+  { id: 'nell', at: { x: 21, y: 16 } }, { id: 'ansel', at: { x: 20, y: 12 } },
+], [
+  line('Larkspur · festival night', 'The last train is in. Music carries from the square, and every crystal lamp bears the imperial sun.', { focus: { x: 21, y: 14 }, cut: true, cue: 'return-call' }),
+  line('Stationmaster Ansel', 'Off duty, Nell. Your brother’s by the festival lanterns. He asked if you still wanted to see the sea.'),
+  line('Nell', 'He promised we’d go before I turned eighteen. I’m starting to think he means the night before.'),
+  line('Stationmaster Ansel', 'You’re seventeen. Give him a chance to disappoint you properly.', { actors: { nell: { to: { x: 23, y: 15 } } } }),
+  line('Nell', 'I’ll make him pick a train this time.'),
 ]);
 
-export const relay=()=>scene('a-relay','THE FIRST ANSWER',[
-  {id:'nell',at:{x:14,y:12}},{id:'orrin',at:{x:11,y:11}},{id:'mira',at:{x:17,y:12}},
-],[
-  line('Orrin','The fuse was pulled, not burnt. Someone wanted this end deaf.',{focus:{x:12,y:11},cut:true,actors:{orrin:{to:{x:12,y:10}}}}),
-  line('The relay','Two short rings. One long. A strip of paper creeps out of the cabinet.',{cue:'return-call'}),
-  line('Return wire','RILLBRIDGE · THIRTY-ONE AT RISK. FOOT CROSSING STILL OPEN.',{document:{heading:'INCOMING · MAINTENANCE WIRE',lines:['RILLBRIDGE · 31 AT RISK','KEEP THE FOOT CROSSING OPEN.']}}),
-  line('The inspector · over the wire','Receiving copy unaccounted for. Seal the crossing.',{silence:true,cue:'punch'}),
-  line('Orrin','He can hear us now too. The tunnel gate’s released; let’s get there before he closes the far end.'),
+export const raid = () => scene('one-raid', 'THE ARREST', [
+  { id: 'nell', at: { x: 24, y: 14 } }, { id: 'tomas', at: { x: 26, y: 13 } },
+  { id: 'ansel', at: { x: 20, y: 12 } }, { id: 'severin', at: { x: 32, y: 11 }, hidden: true },
+], [
+  line('Tomas', 'You kept the lantern. I thought Ansel would have given you a crystal one by now.', { focus: { x: 25, y: 14 }, cut: true }),
+  line('Nell', 'You kept finding reasons to stay in the capital. Are we going to the sea or aren’t we?'),
+  line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.'),
+  line('Captain Severin', 'Tomas. Step away from the girl.', { cue: 'punch', focus: { x: 29, y: 13 }, actors: { severin: { visible: true, to: { x: 29, y: 13 } } } }),
+  line('Nell', 'What’s he supposed to have done?'),
+  line('Captain Severin', 'Stolen property from the palace engine. Your brother knows what I want.'),
+  line('Tomas', 'Take me. Leave her out of it.', { actors: { tomas: { to: { x: 27, y: 13 } } } }),
+  line('Stationmaster Ansel', 'You don’t draw a blade in my square. Put it away.', { actors: { ansel: { to: { x: 28, y: 14 } } } }),
+  line('The square', 'Ansel catches the captain’s arm. Severin turns his blade. Tomas lunges; the crystal in his hand strikes the paving.', { silence: true, cue: 'strike', actors: { ansel: { fallen: true }, tomas: { to: { x: 28, y: 13 } } } }),
+  line('Nell', 'Ansel!', { actors: { nell: { to: { x: 27, y: 14 } } } }),
+  line('The broken crystal', 'A white splinter enters Nell’s lantern. The fountain stops falling. Severin’s sword hangs above the stones.', { omen: 'shard', cue: 'return-call' }),
+  line('A voice', 'Return what I gave.', { omen: 'sun', silence: true }),
+  line('Nell', 'Tomas? Why can’t I hear you?', { omen: 'none' }),
+  line('The platform', 'The bell crashes back into sound. Soldiers drag Tomas up the steps. The prison coach rolls east.', { cue: 'punch', focus: { x: 29, y: 12 }, actors: { tomas: { to: { x: 31, y: 11 } }, severin: { to: { x: 33, y: 11 } } } }),
+  line('Tomas', 'Nell! Find Orrin. The old branch!', { actors: { tomas: { visible: false }, severin: { visible: false } } }),
+  line('Stationmaster Ansel', 'West gate. Iona’s got the key. Go on, Nell. Go.', { focus: { x: 27, y: 14 }, silence: true }),
+  line('The square', 'His hand slips from hers. Nell closes his eyes and takes the lantern. The hounds are coming down the steps.'),
+  line('Nell', 'I’m bringing him home. Iona, stay with Ansel.'),
 ]);
 
-export const timetable=(s:GameState)=>scene('a-timetable','A TRAIN FOR EVERY DISASTER',[
-  {id:'nell',at:{x:20,y:11}},{id:'orrin',at:{x:24,y:11}},{id:'mira',at:{x:16,y:12}},
-],[
-  line('Maintenance timetable','Below Rillbridge are dates of flood, fire, and war. Every arrival is written in one hand.',{focus:{x:21,y:9},cut:true,cue:'paper',document:{heading:'RETURN SERVICES · WORKING COPY',lines:['RILLBRIDGE · 31','CINDERBANK · 14','PASSENGERS ONLY. NO SUBSTITUTIONS.']}}),
-  line('Nell',s.flags.aReceiptSeen?'The receipt says we receive thirty-one. The relay says thirty-one are at risk. We haven’t missed them yet.':'Thirty-one at risk. The relay warned us, and the inspector tried to cut it off. We haven’t missed them yet.'),
-  line('Mira','Does Dad get to come if his name isn’t on it?'),
-  line('Nell','We’ll find him first. That man doesn’t get to decide who you leave behind.'),
+export const recruit = () => scene('one-orrin', 'A WAY EAST', [
+  { id: 'nell', at: { x: 27, y: 15 } }, { id: 'orrin', at: { x: 25, y: 13 } },
+], [
+  line('Orrin', 'I heard the train. Where’s Tomas?', { focus: { x: 26, y: 14 }, cut: true }),
+  line('Nell', 'They took him. Severin killed Ansel. I couldn’t—'),
+  line('Orrin', 'Sit down a moment. Here. I’ve got you.', { actors: { orrin: { to: { x: 26, y: 15 } } }, silence: true }),
+  line('Nell', 'There was a crystal. It broke, and everything stopped. Now the light’s in my lantern.'),
+  line('Orrin', 'Then we’ll work that out on the way. My engine burns coal. The army can’t turn it off with a signal.'),
+  line('Nell', 'Can it catch them?'),
+  line('Orrin', 'The Rillbridge branch joins the main line at the eastern pass. It’s shorter. We’ll take it.'),
+  line('Orrin', 'I’m bringing the lance. Don’t stand in front of it. And if your lantern’s about to explode, warn me.', { actors: { orrin: { to: { x: 25, y: 14 } } } }),
+  line('Nell', 'It’s never done that before. I’ll try to give you some notice.'),
 ]);
 
-export const inspector=(s:GameState)=>scene('a-inspector','THE MAN FROM THE PLATFORM',[
-  {id:'nell',at:{x:28,y:14}},{id:'orrin',at:{x:25,y:14}},{id:'mira',at:{x:21,y:14}},{id:'inspector',at:{x:34,y:13}},
-],[
-  line('The inspector',s.flags.aReceiptSeen?'You were told to leave the return wire closed. Give me the receiving copy and the child.':'One outstanding passenger. Return the child to the service.',{focus:{x:32,y:13},cut:true,cue:'punch',actors:{inspector:{to:{x:32,y:13}}}}),
-  line('Nell','You ordered the crossing sealed with thirty-one people still there. What happens to them?'),
-  line('The inspector','Their service will depart as recorded. You will not enter a different arrival.'),
-  line('Nell','Then you’d better take my pen too.',{actors:{nell:{to:{x:30,y:14}},mira:{to:{x:19,y:14}}}}),
-  line('Orrin','Mira, behind the wall. Nell, keep out of line with me. His staff throws a signal blast.'),
+export const stillness = () => scene('one-stillness', 'RILLBRIDGE', [
+  { id: 'nell', at: { x: 14, y: 18 } }, { id: 'orrin', at: { x: 12, y: 18 } },
+  { id: 'elspeth', at: { x: 27, y: 19 } },
+], [
+  line('The branch', 'Orrin leaves the engine before the town crossing. Smoke from a chimney stands in a straight column.', { focus: { x: 17, y: 18 }, cut: true, silence: true }),
+  line('Nell', 'There’s water hanging over the river. Look at the people.'),
+  line('Orrin', 'I can’t move my hand outside the light. Nell, bring the lantern closer.', { actors: { nell: { to: { x: 15, y: 18 } } }, omen: 'shard' }),
+  line('Nell', 'It did this in the square. Only there it stopped after a few seconds.'),
+  line('Orrin', 'That machine by the eastern carriage is still running. Same sun on its casing.'),
+  line('Nell', 'Tomas’s train came through here. We stop the machine, then we follow it.', { omen: 'none' }),
 ]);
 
-export const across=()=>scene('a-boundary','THE DAY BEFORE',[
-  {id:'nell',at:{x:33,y:14}},{id:'orrin',at:{x:30,y:14}},{id:'mira',at:{x:36,y:14}},
-],[
-  line('Beyond the tunnel','The inspector’s empty coat hangs on the signal arm. Its punch still clicks as they pass.',{focus:{x:34,y:14},cut:true,cue:'punch'}),
-  line('Mira','There! Our blue door. Dad’s mending the hinge.',{focus:{x:36,y:14},actors:{mira:{to:{x:37,y:14}}}}),
-  line('Orrin','Rillbridge. The roofs are whole. There’s washing out by the river.'),
-  line('Nell','The memorial said no survivors. We can still get them out.'),
-  line('Mira','Then come now. I want him to see you before the train leaves again.',{cue:'return-call'}),
+export const collector = () => scene('one-collector', 'THE FIRST REPAYMENT', [
+  { id: 'nell', at: { x: 55, y: 18 } }, { id: 'orrin', at: { x: 53, y: 18 } },
+], [
+  line('The collector', 'Light leaves the houses in thin threads. Each thread enters the sun-shaped opening in the carriage.', { focus: { x: 57, y: 18 }, cut: true, omen: 'sun', cue: 'return-call' }),
+  line('Captain Severin', 'Rillbridge collection complete. Record the repayment and clear the branch.'),
+  line('Nell', 'Repayment? What did these people borrow?'),
+  line('Orrin', 'Its guard’s turning. Stay out of the steam line. We can break the collector once it’s down.', { omen: 'none', cue: 'steam' }),
 ]);
 
-export const reunion=()=>scene('b-family','THE BLUE DOOR',[
-  {id:'nell',at:{x:19,y:14}},{id:'orrin',at:{x:16,y:14}},{id:'mira',at:{x:20,y:12}},{id:'bram',at:{x:25,y:12}},
-],[
-  line('Mira','Dad!',{focus:{x:23,y:12},cut:true,actors:{mira:{to:{x:23,y:12}}}}),
-  line('Bram','Mind the hinge. I haven’t—Mira? What’s happened to your shoes?'),
-  line('Mira','You got off the train. I waited and waited.'),
-  line('Bram','I haven’t been to the platform today. Your suitcase is upstairs.'),
-  line('Nell','There’s a memorial for this town at Larkspur. The flood is tomorrow here. We came through before it.'),
-  line('Bram','I don’t understand the memorial. I know what she looks like when she’s frightened.'),
-  line('Mira','Please don’t go to ask anyone about delays.'),
-  line('Bram','You and I stay together. Elspeth next door can’t walk the bridge steps. Help me bring her, and we’ll go.'),
-  line('Orrin','I saw a braked trolley on the sluice rails. We’ll check the flood gauge while we’re up there.'),
+export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', [
+  { id: 'nell', at: { x: 56, y: 18 } }, { id: 'orrin', at: { x: 58, y: 18 } },
+  { id: 'tilda', at: { x: 53, y: 18 }, hidden: true }, { id: 'elspeth', at: { x: 51, y: 18 }, hidden: true },
+], [
+  line('Orrin', 'Keep the lantern up. I’m opening the casing.', { focus: { x: 57, y: 18 }, cut: true }),
+  line('Rillbridge', 'The sun splits. Water falls, a plate smashes, and a woman finishes a word she began three days ago.', { cue: 'burst', omen: 'shard' }),
+  line('Tilda', 'Who are you? Where’s the carriage?', { actors: { tilda: { visible: true, to: { x: 55, y: 18 } }, elspeth: { visible: true, to: { x: 53, y: 18 } } }, omen: 'none' }),
+  line('Nell', 'Nell. From Larkspur. The army put a machine here. How long has it been?'),
+  line('Tilda', 'They arrived on Monday. Why?'),
+  line('Nell', 'It’s Thursday.'),
+  line('Tilda', 'Three days? My hands—why do they hurt?'),
+  line('Elspeth', 'Help me with my register. I could lift it this morning.'),
+  line('Orrin', 'We stopped it taking any more. I don’t know how to give back what it took.', { silence: true }),
+  line('Nell', 'A prison coach came through. My brother was on it.'),
+  line('Tilda', 'The eastern pass. I heard the captain order it through before he started this. The north road will take you there.'),
+  line('Elspeth', 'Go. We can look after each other now.'),
 ]);
 
-export const crossing=()=>scene('b-crossing','THIRTY-ONE ACROSS',[
-  {id:'nell',at:{x:16,y:20}},{id:'orrin',at:{x:10,y:19}},{id:'bram',at:{x:22,y:19}},{id:'mira',at:{x:25,y:19}},{id:'elspeth',at:{x:20,y:21}},
-],[
-  line('Bram','Thirty-one names. Elspeth, would you count them off while I pull?',{focus:{x:21,y:20},cut:true}),
-  line('Elspeth','I have been counting children through doors for forty years. Keep your eyes on the wheels.'),
-  line('The crossing','The river spills over the lower quay. Orrin holds the gate; Nell takes the last cart through.',{focus:{x:13,y:19},actors:{bram:{to:{x:17,y:19}},mira:{to:{x:20,y:19}},elspeth:{to:{x:15,y:21}},nell:{to:{x:11,y:20}}}}),
-  line('Mira','Dad? Still here?',{cue:'return-call'}),
-  line('Bram','Still here. I’m the one pulling your suitcase.'),
+export const passArrival = () => scene('one-pass', 'THE CROSSING', [
+  { id: 'nell', at: { x: 5, y: 13 } }, { id: 'orrin', at: { x: 3, y: 13 } },
+  { id: 'severin', at: { x: 33, y: 13 } },
+], [
+  line('Orrin', 'I’ve brought the engine up. We just need the crossing.', { focus: { x: 6, y: 13 }, cut: true }),
+  line('Captain Severin', 'The crossing is closed.', { focus: { x: 32, y: 13 }, cue: 'punch' }),
+  line('Nell', 'He’s waiting for us.'),
+  line('Orrin', 'There’s an old shelter in the lower recess. Catch your breath before we go at him.', { focus: { x: 9, y: 13 } }),
 ]);
 
-export function receiving(s:GameState):Dialogue{
-  const f=s.flags;
-  return scene('b-receipt','THE SIGNATURE',[
-    {id:'nell',at:{x:16,y:10}},{id:'orrin',at:{x:20,y:11}},{id:'ansel',at:{x:13,y:7}},{id:'mira',at:{x:25,y:20}},{id:'bram',at:{x:28,y:20}},
-  ],[
-    line('Stationmaster Ansel',f.promisedHome?'You promised to bring them home. I’d have put the kettle on sooner if you’d mentioned there were thirty-one.':f.askedForTruth?'You wanted to understand the line. I see you brought witnesses.':'I counted thirty-one people coming out of the goods yard. Iona is opening the waiting room.',{focus:{x:15,y:9},cut:true}),
-    line('Nell','Elspeth needs a bed without steps. Mira’s father is with her.'),
-    line('Stationmaster Ansel','My office has one. Sign the receiving copy. I’ll find somewhere for my desk.'),
-    line('Larkspur · after midnight','Nell checks the thirty-one names. Her last stroke trails beneath the whole name.',{cue:'paper',document:receipt}),
-    line('Nell',f.aReceiptSeen?'Same hooked first stroke, same long tail. This is what Mira brought me.':'There’s another copy under the blotter. Same signature, same long tail. This one was here before I signed.',{silence:true,document:{...receipt,compare:true}}),
-    line('Orrin','Let it dry. Put them side by side.'),
-    line('Nell','The inspector wasn’t trying to keep an error out of the books. He was trying to stop this arrival.'),
-    line('Tilda',f.bOrchardChannel?'We lost the orchard. We’re here, though. When people have slept, I’ll ask about flour on credit.':'The orchard bank held. When people have slept, I want to go back and see what we can bring over.'),
-    line('Mira','Dad’s still here. You can keep the paper.',{focus:{x:26,y:20}}),
-  ]);
-}
-
-export const ambulanceDoor=()=>scene('c-refusal','NO ATTENDANTS',[
-  {id:'nell',at:{x:37,y:13}},{id:'orrin',at:{x:34,y:13}},{id:'dena',at:{x:41,y:12}},{id:'ivo',at:{x:45,y:12}},
-],[
-  line('The carriage door','Ivo takes the stretcher over the sill. The door clamps Dena’s bag strap against the frame.',{focus:{x:42,y:11},cut:true,cue:'punch',actors:{ivo:{to:{x:45,y:9}},dena:{to:{x:41,y:10}}}}),
-  line('The carriage speaker','Fourteen registered patients. Attendants: zero. Unauthorized boarding refused.'),
-  line('Dena','My bag is beside his head. Let me reach it.'),
-  line('Nell','Ivo, bring him back. Nobody leaves without you.',{actors:{ivo:{to:{x:45,y:12}},nell:{to:{x:40,y:13}}}}),
-  line('Orrin','Same punch mark as the inspector’s receipt order.',{document:{heading:'CINDERBANK · SERVICE ORDER',lines:['PATIENTS: 14 · ATTENDANTS: 0'],stamp:'RETURN REGISTRY · NO ADDITIONS'}}),
-  line('Dena','There’s a footpath. Six miles of ballast, and two of them can’t sit up. We need this train.'),
-  line('Nell','Then we use the working-crew register. Keep the brake pinned. He’s not choosing who gets care.'),
+export const confrontation = () => scene('one-captain', 'CAPTAIN SEVERIN', [
+  { id: 'nell', at: { x: 29, y: 14 } }, { id: 'orrin', at: { x: 26, y: 14 } },
+  { id: 'severin', at: { x: 33, y: 13 } },
+], [
+  line('Nell', 'Where’s Tomas?', { focus: { x: 31, y: 13 }, cut: true }),
+  line('Captain Severin', 'Already east of the border. Give me the lantern, and you can go home.'),
+  line('Nell', 'You killed Ansel. You put that machine in Rillbridge. What happens when you come back for us?'),
+  line('Captain Severin', 'The empire has kept your lamps lit and your fields green. Someone has to settle what it owes.'),
+  line('Nell', 'Then start with the emperor.', { actors: { nell: { to: { x: 30, y: 14 } }, severin: { to: { x: 32, y: 13 } } } }),
+  line('Orrin', 'His sun flare hits a whole cluster. Keep apart, and watch the orange steam outlets.', { cue: 'flare' }),
 ]);
 
-export const collection=(s:GameState)=>scene('c-letter','ADDRESSED TO ORRIN',[
-  {id:'nell',at:{x:29,y:12}},{id:'orrin',at:{x:32,y:12}},
-],[
-  line('Collection slip','A sealed green bag has arrived with the crew carbon. The address names Orrin, care of Larkspur repairs.',{focus:{x:31,y:11},cut:true,cue:'paper',document:{heading:'NORTHGLASS · REGISTERED LETTER',lines:['ORRIN · CARE OF LARKSPUR REPAIRS','BAG SEALED: SHIFT 783','CREW COPY FILED: SHIFT 786']}}),
-  line('Orrin','Three shifts before we put our names in the register. Someone was waiting for my signature.'),
-  line('Nell',s.flags.bReceiptMatched?'Like the receiving copy. Northglass has the bag; we have the crew copy that opens it.':'The date is early, but the address is yours. Northglass has the bag; we have the crew copy that opens it.'),
-  line('Orrin','Not another passenger list. A letter to me. I’m taking my coat; we’re going there.'),
-]);
-
-export function fatherLetter(s:GameState):Dialogue{
-  return scene('d-letter','THE UNSENT LETTER',[
-    {id:'nell',at:{x:17,y:16}},{id:'orrin',at:{x:14,y:17}},{id:'petra',at:{x:14,y:14}},
-  ],[
-    line('Petra','Working crew: Nell, porter; Orrin, mechanic. The signatures match. The seal hasn’t been broken.',{focus:{x:15,y:16},cut:true,cue:'paper'}),
-    line('Orrin',s.flags.bWorksheetRead?'The same hand as the Rillbridge sheet. This one’s addressed to me.':s.flags.scrapCleared?'The same hand as the wage envelope. There’s a letter inside.':'He’s put “care of Larkspur repairs” under my name.'),
-    line('The letter','Orrin—Your ambulance crew copy came through. I nearly filed it. Then I saw your signature.',{silence:true,document:{heading:'ORRIN · FROM DAD',lines:['Your ambulance crew copy came through.','You couldn’t write your name when I left.']}}),
-    line('The letter','You couldn’t write your name when I left. I heard the viaduct fall. At shift change I was back in the lamp room, with the burn still on my sleeve.'),
-    line('Orrin','They brought his coat home. I couldn’t read yet. I remember trying to find that burn.'),
-    line('The letter','The train takes my ticket, not my tools. I stayed to hold the return contact. Don’t bridge the returns at Northglass; earth both before you open it.'),
-    line('The letter','I left your mother’s brass key in Brinewick’s parcel cage. One tooth filed down. The works has the number. If this reaches you, write back. Dad.'),
-    line('Orrin','Her sewing-drawer key. She thought she’d lost it.'),
-    line('Petra','The return feed’s tied into the workers’ road. Hang the independent red lamp first. Get those six off the tram; then we can isolate a safe reply wire.'),
-    line('Nell','We’ll do it. Keep a blank sheet by the recorder.'),
-  ]);
-}
-
-export const reply=()=>scene('d-reply','A REPLY FROM THE LAMP ROOM',[
-  {id:'nell',at:{x:50,y:29}},{id:'orrin',at:{x:54,y:29}},{id:'esme',at:{x:47,y:29}},
-],[
-  line('Shift recorder','The green bag was sealed three shifts before our crew copy arrived. The earlier parcel is at Brinewick freight ferry, cage 6.',{focus:{x:53,y:28},cut:true,cue:'paper',document:{heading:'ISOLATED RECORDER · COUNTERFOIL',lines:['LETTER SEALED: 783 · CREW COPY: 786','EARLIER PARCEL: BRINEWICK · CAGE 6','BRASS DRAWER KEY · ONE TOOTH FILED']}}),
-  line('Esme','I’ve got the yard circuit locked out. This wire only takes the lamp-room copy. Write what you want to send.'),
-  line('Orrin','Dad. I got the letter. Mum kept the drawer. I can read your writing now.',{document:{heading:'TO THE MAINTENANCE LAMP ROOM',lines:['DAD. I GOT THE LETTER.','I CAN READ YOUR WRITING NOW.','— ORRIN']}}),
-  line('Nell','Go on. Put it through.',{actors:{orrin:{to:{x:55,y:28}}}}),
-  line('The recorder','The paper feeds through. Nell waits beside Orrin. A second strip pushes out against the first.',{silence:true,cue:'return-call'}),
-  line('Lamp-room return','Orrin. Your handwriting has changed.',{silence:true,document:{heading:'LAMP ROOM · RETURN COPY',lines:['Orrin. Your handwriting has changed.','DON’T PUT YOUR NAME ON THE FERRY LIST.']}}),
-  line('Orrin','Send again. Ask him where he is.'),
-  line('The recorder','A round punch cuts through the next line. RETURN CONTACT UNDER INSPECTION.',{silence:true,cue:'punch',document:{heading:'RETURN REGISTRY',lines:['CONTACT UNDER INSPECTION.'],stamp:'REPLY RETAINED'}}),
-  line('Nell','We have his reply. And the parcel number. At Brinewick we ask for the key, not a passenger ticket.'),
-  line('Orrin','Put his strip inside the letter. He got one sentence through. I want the rest.'),
-]);
-
-export const nightPlan=()=>scene('d-night-plan','WHO STAYS TONIGHT',[
-  {id:'nell',at:{x:31,y:25}},{id:'orrin',at:{x:35,y:25}},{id:'petra',at:{x:28,y:24}},{id:'esme',at:{x:37,y:24}},
-],[
-  line('Petra','With the feed off, I can close the works for tonight. The crew keeps its pay; tonight’s parcels wait until morning.',{focus:{x:32,y:24},cut:true}),
-  line('Esme','Or we can work the local siding by hand bell. I’ll take one watch if you take the other. That gets the parcels away.',{actors:{esme:{to:{x:35,y:24}}}}),
-  line('Petra','It keeps both of us here late. The main line stays red either way. No one tests the viaduct tonight.'),
+export const departure = () => scene('one-departure', 'LEAVING HOME', [
+  { id: 'nell', at: { x: 34, y: 14 } }, { id: 'orrin', at: { x: 36, y: 14 } },
+  { id: 'severin', at: { x: 38, y: 13 } },
+], [
+  line('Captain Severin', 'You’ve won a crossing. Your brother’s at the Iron Coast exchange by now.', { focus: { x: 36, y: 14 }, cut: true }),
+  line('Nell', 'Then that’s where we’re going.'),
+  line('Captain Severin', 'Keep the light, if you must. He’ll come for everything he’s given.', { actors: { severin: { to: { x: 40, y: 13 } } } }),
+  line('Orrin', 'He’s gone. The engine’s ready.', { actors: { severin: { visible: false } } }),
+  line('Nell', 'Ansel wanted me to see the sea. He’d be furious about this route.'),
+  line('Orrin', 'We’ll complain to the stationmaster when we get back.'),
+  line('Nell', 'Iona will be stationmaster now. She’ll charge us for the coal.', { actors: { nell: { to: { x: 37, y: 14 } }, orrin: { to: { x: 39, y: 14 } } }, cue: 'return-call' }),
+  line('Below the capital', 'Far beneath the palace engine, an eye opens inside a hollow sun.', { silence: true, omen: 'sun', actors: { nell: { visible: false }, orrin: { visible: false } } }),
+  line('A voice', 'Return what I gave.'),
 ]);

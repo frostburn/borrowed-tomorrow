@@ -1,6 +1,5 @@
-import { DISK_B_ENCOUNTERS } from '../content/disk-b/encounters';
-import { DISK_D_ENCOUNTERS } from '../content/disk-d/encounters';
-import { DISK_C_ENCOUNTERS } from '../content/disk-c/encounters';
+import { ENCOUNTERS } from '../content/chapter-one/encounters';
+export { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId } from './state';
 
@@ -24,25 +23,12 @@ export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?:'sluice-keeper'|'boiler-keeper'|'relay-keeper'; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; terrain?:'sluice'|'cinderbank'|'northglass'|'relayhall'; journal?:string; victory?:string }
-export const ENCOUNTERS: Record<string, Encounter> = {
-  ...DISK_B_ENCOUNTERS,
-  ...DISK_C_ENCOUNTERS,
-  ...DISK_D_ENCOUNTERS,
-  yard: { id: 'yard', name: 'Strays in the signal yard', flag: 'yardCleared', xp: 30, coins: 25,
-    enemies: [{ kind: 'hound', col: 7, row: 2 }, { kind: 'hound', col: 8, row: 3 }, { kind: 'crow', col: 9, row: 5 }], rocks: [[5, 2], [5, 4], [7, 5]] },
-  scrap: { id: 'scrap', name: 'Something in the scrap', flag: 'scrapCleared', xp: 25, coins: 30,
-    enemies: [{ kind: 'crow', col: 7, row: 1 }, { kind: 'hound', col: 7, row: 3 }, { kind: 'crow', col: 8, row: 5 }], rocks: [[4, 2], [5, 4], [7, 4]] },
-  tunnel: { id: 'tunnel', name: 'The furnace that would not cool', flag: 'tunnelCleared', xp: 45, coins: 25,
-    enemies: [{ kind: 'guardian', col: 7, row: 3 }, { kind: 'crow', col: 8, row: 1 }, { kind: 'crow', col: 9, row: 5 }], rocks: [[5, 1], [5, 5], [7, 5], [3, 3]] },
-  inspector: { id: 'inspector', name: 'The last inspection', flag: 'inspectorCleared', xp: 65, coins: 40,
-    enemies: [{ kind: 'inspector', col: 8, row: 3 }, { kind: 'hound', col: 7, row: 2 }, { kind: 'hound', col: 7, row: 4 }], rocks: [[5, 2], [5, 4], [8, 5]] },
-};
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; journal?:string; victory?:string; gear?:string }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
   guardian: { name: 'Rail guardian', hp: 68, speed: 2, movement: 2, armor: 2, abilities: ['steam', 'strike'] as AbilityId[], bonus: -6 },
-  inspector: { name: 'The inspector', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
+  inspector: { name: 'Imperial officer', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
 };
 
 export function createBattle(encounter: string, state: GameState): Battle {
@@ -61,8 +47,8 @@ export function createBattle(encounter: string, state: GameState): Battle {
       appearance:enemy.appearance,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
-    water:new Set((encounter==='b-keeper'&&state.flags.bOrchardChannel?[]:e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
-    vents:new Set((encounter==='c-boiler'&&state.flags.cTrainHeat?[[3,1],[4,1],[5,1],[6,1],[7,1],[3,5],[4,5],[5,5],[6,5],[7,5]]:e.vents??[]).map(([c,r])=>key(offset(c,r)))),
+    water:new Set((e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
+    vents:new Set((e.vents??[]).map(([c,r])=>key(offset(c,r)))),
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   nextRound(battle);
@@ -227,6 +213,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
 export function awardVictory(b: Battle, s: GameState) {
   const e = ENCOUNTERS[b.encounter];
   if (b.result !== 'victory' || s.flags[e.flag]) return;
+  if (e.gear && !s.gear.includes(e.gear)) s.gear.push(e.gear);
   const oldLevel = level(s);
   s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
   for (const hero of s.party) {

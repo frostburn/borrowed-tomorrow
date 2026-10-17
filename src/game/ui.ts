@@ -1,4 +1,4 @@
-import type { Choice, Dialogue } from '../content/disk-a/story';
+import type { Choice, Dialogue } from '../content/dialogue';
 import { portraitAsset, speakerPortrait } from '../content/characters';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export const art = (name: string) => `${import.meta.env.BASE_URL}art/${name}.png`;
@@ -71,7 +71,7 @@ export class UI {
         if(insert.signature){
           const signatures=document.createElement('div');signatures.className='signatures';
           for(const label of insert.compare?['EARLY COPY','JUST SIGNED']:['']){
-          const signature=document.createElement('canvas');signature.width=192;signature.height=32;signature.setAttribute('aria-label','Nell’s receipt signature');
+          const signature=document.createElement('canvas');signature.width=192;signature.height=32;signature.setAttribute('aria-label','Handwritten signature');
           const ctx=signature.getContext('2d')!;ctx.strokeStyle='#382c29';ctx.lineWidth=2;
           ctx.beginPath();for(const [i,[x,y]] of [[8,25],[15,5],[23,25],[33,4],[28,24],[44,17],[48,22],[39,25],[45,11],[55,25],[63,6],[57,24],[71,6],[65,25],[88,21],[82,28],[163,25]].entries())if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);ctx.stroke();
           if(insert.compare){const copy=document.createElement('div');copy.className='signature-copy';copy.innerHTML=`<span>${esc(label)}</span>`;copy.append(signature);signatures.append(copy);}else signatures.append(signature);
