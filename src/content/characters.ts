@@ -11,6 +11,9 @@ export const CHARACTERS={
   dena:{name:'Dena',sprite:'dena',portrait:'portrait-dena'},
   ivo:{name:'Ivo',sprite:'ivo',portrait:'portrait-ivo'},
   celia:{name:'Celia',sprite:'celia',portrait:'portrait-celia'},
+  petra:{name:'Petra',sprite:'petra',portrait:'portrait-petra'},
+  esme:{name:'Esme',sprite:'esme',portrait:'portrait-esme'},
+  'relay-keeper':{name:'Relay keeper',sprite:'relay-keeper',portrait:'portrait-relay-keeper'},
   inspector:{name:'The inspector',sprite:'inspector',portrait:'portrait-inspector'},
   'sluice-keeper':{name:'Sluice keeper',sprite:'sluice-keeper',portrait:'portrait-sluice-keeper'},
   'boiler-keeper':{name:'Boiler keeper',sprite:'boiler-keeper',portrait:'portrait-boiler-keeper'},
@@ -25,4 +28,4 @@ export function speakerPortrait(name:string):string|undefined{
 export function portraitAsset(id:string):string{
   const character=CHARACTERS[(legacy[id]??id) as CharacterId];return character?.portrait??id;
 }
-export const NPC_SPRITES=['bram','tilda','elspeth','dena','ivo','celia','sluice-keeper','boiler-keeper'] as const;
+export const NPC_SPRITES=['bram','tilda','elspeth','dena','ivo','celia','sluice-keeper','boiler-keeper','petra','esme','relay-keeper'] as const;

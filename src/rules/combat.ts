@@ -1,4 +1,5 @@
 import { DISK_B_ENCOUNTERS } from '../content/disk-b/encounters';
+import { DISK_D_ENCOUNTERS } from '../content/disk-d/encounters';
 import { DISK_C_ENCOUNTERS } from '../content/disk-c/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId } from './state';
@@ -15,18 +16,19 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   flare: { id: 'flare', name: 'Signal flare', description: 'A seven-hex blast that punishes clustering. 2 focus.', range: 5, power: 9, cost: 2, shape: 'blast' },
 };
 export interface Unit {
-  id: string; name: string; kind: string; appearance?: string; side: 'party' | 'enemy'; hex: Hex;
+  id: string; name: string; kind: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
-  log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
+  grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?:'sluice-keeper'|'boiler-keeper' }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; terrain?:'sluice'|'cinderbank'; journal?:string; victory?:string }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?:'sluice-keeper'|'boiler-keeper'|'relay-keeper'; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; terrain?:'sluice'|'cinderbank'|'northglass'|'relayhall'; journal?:string; victory?:string }
 export const ENCOUNTERS: Record<string, Encounter> = {
   ...DISK_B_ENCOUNTERS,
   ...DISK_C_ENCOUNTERS,
+  ...DISK_D_ENCOUNTERS,
   yard: { id: 'yard', name: 'Strays in the signal yard', flag: 'yardCleared', xp: 30, coins: 25,
     enemies: [{ kind: 'hound', col: 7, row: 2 }, { kind: 'hound', col: 8, row: 3 }, { kind: 'crow', col: 9, row: 5 }], rocks: [[5, 2], [5, 4], [7, 5]] },
   scrap: { id: 'scrap', name: 'Something in the scrap', flag: 'scrapCleared', xp: 25, coins: 30,
@@ -56,11 +58,12 @@ export function createBattle(encounter: string, state: GameState): Battle {
   e.enemies.forEach((enemy, i) => {
     const stats = ENEMY_STATS[enemy.kind];
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      appearance:enemy.appearance,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
+      appearance:enemy.appearance,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((encounter==='b-keeper'&&state.flags.bOrchardChannel?[]:e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
     vents:new Set((encounter==='c-boiler'&&state.flags.cTrainHeat?[[3,1],[4,1],[5,1],[6,1],[7,1],[3,5],[4,5],[5,5],[6,5],[7,5]]:e.vents??[]).map(([c,r])=>key(offset(c,r)))),
+    grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   nextRound(battle);
   return battle;
@@ -99,6 +102,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
 export function damage(u: Unit, v: Unit, id: AbilityId): number {
   const a = ABILITIES[id];
   if (a.heal) return Math.min(v.maxHp - v.hp, a.power);
+  if(v.sealed)return 0;
   return Math.max(1, Math.round((a.power + u.bonus - v.armor) * (v.defending ? 0.6 : 1)));
 }
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
@@ -119,7 +123,14 @@ function ended(b:Battle){
   if (!sides.has('enemy')) { b.result = 'victory'; log(b, 'The line is clear.'); return true; }
   return false;
 }
+function checkGrounding(b:Battle){
+  const circuit=b.grounding;
+  if(!circuit||circuit.open||!circuit.plates.every(h=>alive(b).some(u=>u.side==='party'&&equal(u.hex,h))))return;
+  circuit.open=true;for(const u of b.units)u.sealed=false;
+  log(b,'Both earth contacts close. The keeper’s shield drops and stays down.');
+}
 function finishTurn(b: Battle) {
+  checkGrounding(b);
   if(ended(b))return;
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
@@ -133,6 +144,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   const visit = movement(b, u).get(key(destination));
   if (!visit) return null;
   u.hex = { ...destination }; u.moved = true;
+  checkGrounding(b);
   log(b, `${u.name} moves ${visit.path.length} hexes (${visit.cost} movement).`);
   return visit.path;
 }

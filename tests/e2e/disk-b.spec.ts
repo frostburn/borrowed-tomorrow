@@ -18,7 +18,7 @@ test('version-1 arrival continues through Disk B and preserves the Disk C depart
   await page.unroute('**/art/sluice.webp');
   await page.getByRole('button',{name:'Begin Disk B',exact:true}).click();await dialogue(page);
   const entered=(await inspect(page)).state;
-  expect(entered.version).toBe(3);expect(entered.chapter).toBe('disk-b');expect(entered.party).toEqual(arrival.party);
+  expect(entered.version).toBe(4);expect(entered.chapter).toBe('disk-b');expect(entered.party).toEqual(arrival.party);
   expect(entered.coins).toBe(arrival.coins);expect(entered.gear).toEqual(arrival.gear);expect(entered.boundary).toBeNull();
   await capture(page,'disk-b-arrival');await visit(page,'b-bram');
   await travel(page,'b-to-sluice','sluice');await visit(page,'b-overflow');await battle(page,'disk-b-overflow');

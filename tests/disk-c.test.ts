@@ -19,7 +19,7 @@ function story(state=start()){
 describe('Disk C continuation',()=>{
   it('imports the supplied version-2 save without changing any previous progress',()=>{
     const before=decodeSave(JSON.stringify(departure)),original=structuredClone(before),next=enterDiskC(before);
-    expect(before).toEqual(original);expect(next.version).toBe(3);expect(next.chapter).toBe('disk-c');
+    expect(before).toEqual(original);expect(next.version).toBe(4);expect(next.chapter).toBe('disk-c');
     for(const property of ['party','coins','bandages','xp','gear','playSeconds'] as const)expect(next[property]).toEqual(departure[property]);
     for(const [flag,value] of Object.entries(departure.flags))expect(next.flags[flag]).toBe(value);
     expect(next.journal.slice(0,departure.journal.length)).toEqual(departure.journal);

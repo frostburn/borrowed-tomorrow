@@ -18,7 +18,7 @@ function story(){
 describe('Disk B continuity and consequences',()=>{
   it('migrates the real version-1 checkpoint and enters without resetting progress',()=>{
     const old=decodeSave(JSON.stringify(arrival)),before=structuredClone(old),next=enterDiskB(old);
-    expect(old).toEqual(before);expect(next.version).toBe(3);
+    expect(old).toEqual(before);expect(next.version).toBe(4);
     for(const prop of ['party','gear','coins','bandages','xp','playSeconds'] as const)expect(next[prop]).toEqual(before[prop]);
     for(const [flag,value] of Object.entries(before.flags))expect(next.flags[flag]).toBe(value);
     expect(next.journal).toEqual([...before.journal,'b-arrival']);expect(next.boundary).toBeNull();

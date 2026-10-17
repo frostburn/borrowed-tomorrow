@@ -18,5 +18,15 @@
     "bytes": 2598212,
     "sha256": "3268c829aa9cf8f6fac21b486a6445e9d62eab79f7f4315be57b5abd5aeafae3",
     "parts": 14
+  },
+  "northglass": {
+    "bytes": 2560510,
+    "sha256": "11a15c92d4ee6c77fb57e003bf799653baaae50ad087008147c149b91c441fa7",
+    "parts": 15
+  },
+  "relayhall": {
+    "bytes": 2451154,
+    "sha256": "736bd5de7e2e46655adc5eb5808fe0e3103e9fa45b7a066261fc7b9f35d35689",
+    "parts": 14
   }
 }
