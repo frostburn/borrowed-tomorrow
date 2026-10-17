@@ -25,4 +25,3 @@ export async function approach(page:Page,id:string){
 }
 export async function visit(page:Page,id:string){await approach(page,id);await dialogue(page);}
 export async function travel(page:Page,id:string,map:string){await approach(page,id);await expect.poll(async()=>(await inspect(page)).state.location.map,{timeout:20000}).toBe(map);}
-
