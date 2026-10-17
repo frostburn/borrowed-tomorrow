@@ -52,6 +52,29 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
   },{name:map,yOffset}),{timeout:15000}).toBe(0);
 }
 
+/** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
+export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}){
+  await expect.poll(()=>page.evaluate(async({sprite,at})=>{
+    const actor=new Image();actor.src=`/art/${sprite}.png`;await actor.decode();
+    const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
+    const reference=document.createElement('canvas');reference.width=80;reference.height=80;
+    const ctx=reference.getContext('2d')!;ctx.drawImage(actor,0,0);
+    const expected=ctx.getImageData(0,0,80,80).data;
+    const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+x-view.scrollX)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+y-view.scrollY)*info.physicalScale;
+    let missing=0;
+    for(let row=0;row<80;row++)for(let col=0;col<80;col++)for(let c=0;c<4;c++){
+      if(expected[(row*80+col)*4+3]!==255)continue;
+      const index=((top+row*info.physicalScale)*output.width+left+col*info.physicalScale)*4+c;
+      if(actual[index]!==expected[(row*80+col)*4+c])missing++;
+    }
+    return missing;
+  },{sprite,at}),{timeout:15000}).toBe(0);
+}
+
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
   for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend'] as AbilityId[])

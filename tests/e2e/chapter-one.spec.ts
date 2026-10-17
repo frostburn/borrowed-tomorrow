@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { newGame } from '../../src/rules/state';
 import { checkpoint } from '../support/progress';
-import { battle, capture, dialogue, inspect, clickHex, nativeScene } from './controls';
+import { battle, capture, dialogue, inspect, clickHex, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 import { active, type Battle } from '../../src/rules/combat';
 
@@ -91,6 +91,31 @@ test('phone combat pans and confirms real healing without shrinking the actors',
   await expect.poll(async () => (await inspect(page)).battle!.bandages).toBe(before - 1);
   expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(48); expect(errors).toEqual([]);
 });
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`captain stays on the stone walkway throughout pass scenes on ${device}`,async({page})=>{
+    const errors=errorsOn(page);await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const arrival=checkpoint('villageFreed');arrival.location={map:'tunnel',x:3,y:14};await importSave(page,arrival);
+    await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-pass');
+    await page.locator('.dialogue-actions button').click();
+    await expect(page.locator('.dialogue h2')).toHaveText('Captain Alban');
+    await expect(page.locator('.dialogue-portrait img')).toHaveAttribute('src',/\/art\/portrait-alban\.png$/);
+    await nativeActor(page,'alban',{x:33,y:14});await capture(page,`pass-arrival-${device}`);
+    await dialogue(page);await approach(page,'captain');
+    await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-captain');
+    await nativeActor(page,'alban',{x:33,y:14});
+    for(let line=0;line<4;line++)await page.locator('.dialogue-actions button').click();
+    await nativeActor(page,'alban',{x:32,y:14});await capture(page,`pass-confrontation-${device}`);
+    await dialogue(page);await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+    expect((await inspect(page)).battle!.units.some(u=>u.name==='Captain Alban'&&u.appearance==='alban')).toBe(true);
+    await page.reload();const departure=checkpoint('captainDefeated');departure.location={map:'tunnel',x:35,y:14};await importSave(page,departure);
+    await approach(page,'departure');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-departure');
+    await nativeActor(page,'alban',{x:37,y:14});
+    await page.locator('.dialogue-actions button').click();await page.locator('.dialogue-actions button').click();
+    await nativeActor(page,'alban',{x:38,y:14});await capture(page,`pass-departure-${device}`);
+    await dialogue(page);expect((await inspect(page)).state.flags.chapterOneComplete).toBe(true);expect(errors).toEqual([]);
+  });
+}
 
 test('@journey Chapter One: festival, raid, escape, rescue and the Iron Coast departure', async ({ page }) => {
   test.setTimeout(240_000); const errors = errorsOn(page); await begin(page);

@@ -112,14 +112,14 @@ export const confrontation = () => scene('one-captain', 'CAPTAIN ALBAN', [
 ]);
 
 export const departure = () => scene('one-departure', 'LEAVING HOME', [
-  { id: 'nell', at: { x: 34, y: 14 } }, { id: 'orrin', at: { x: 36, y: 14 } },
-  { id: 'alban', at: { x: 38, y: 14 } },
+  { id: 'nell', at: { x: 34, y: 14 } }, { id: 'orrin', at: { x: 32, y: 14 } },
+  { id: 'alban', at: { x: 37, y: 14 } },
 ], [
   line('Captain Alban', 'You’ve won a crossing. Your brother’s at the Iron Coast exchange by now.', { focus: { x: 36, y: 14 }, cut: true }),
   line('Nell', 'Then that’s where we’re going.'),
-  line('Captain Alban', 'The exchange is under military guard. You won’t get near him.', { actors: { alban: { to: { x: 40, y: 14 } } } }),
+  line('Captain Alban', 'The exchange is under military guard. You won’t get near him.', { actors: { alban: { to: { x: 38, y: 14 } } } }),
   line('Orrin', 'He’s gone. The engine’s ready.', { actors: { alban: { visible: false } } }),
   line('Nell', 'Ansel wanted me to see the sea. He’d be furious about this route.'),
   line('Orrin', 'We’ll complain to the stationmaster when we get back.'),
-  line('Nell', 'Iona will be stationmaster now. She’ll charge us for the coal.', { actors: { nell: { to: { x: 37, y: 14 } }, orrin: { to: { x: 39, y: 14 } } }, cue: 'return-call' }),
+  line('Nell', 'Iona will be stationmaster now. She’ll charge us for the coal.', { actors: { nell: { to: { x: 37, y: 14 } }, orrin: { to: { x: 36, y: 14 } } }, cue: 'return-call' }),
 ]);

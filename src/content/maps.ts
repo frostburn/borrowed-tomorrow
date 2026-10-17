@@ -40,7 +40,7 @@ export const MAPS: Record<MapId, MapData> = {
     { id: 'captain', x: 33, y: 14, label: 'Captain Alban', sprite: 'alban', hiddenFlag: 'captainDefeated' },
     { id: 'sun-mural', x: 21, y: 8, label: 'The hollow sun · an old mural', sign: true, doneFlag: 'muralRead' },
     { id: 'shelter', x: 22, y: 19, label: 'Old shelter · rest & supplies', sign: true },
-    { id: 'departure', x: 39, y: 14, label: 'Board Orrin’s engine · Iron Coast', sign: true },
+    { id: 'departure', x: 37, y: 14, label: 'Board Orrin’s engine · Iron Coast', sign: true },
     { id: 'pass-village', x: 2, y: 13, label: 'Rillbridge', sign: true },
   ] },
 };
