@@ -1,5 +1,7 @@
 # Borrowed Tomorrow
 
+Vite development includes an off-story [inventory workshop](docs/development-inventory.md): open `/?dev=inventory` or choose it on the title screen. Manually equip each character, compare stats and try the loadout in combat. Production builds keep the current campaign equipment behavior.
+
 Nell's brother has finally returned from the capital—and the imperial train has followed him. A stolen crystal, a coal-fired engine and a village where time has stopped begin a JRPG about an empire living on tomorrow's promise.
 
 **Chapter One: Leaving Home** is playable from beginning to end: Larkspur's festival, the arrest of Nell's brother, the escape from the square, Orrin's recruitment, the frozen village of Rillbridge and a showdown with Captain Alban at the mountain pass. Three required battles and one optional workshop encounter use the existing tactical hex engine. Staged cutscenes carry the arrest, discoveries, rescue and departure. The chapter ends with a saved journey toward the Iron Coast.
