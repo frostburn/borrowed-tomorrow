@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
+import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 
@@ -77,7 +77,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
-  for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend'] as AbilityId[])
+  for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend','beacon'] as AbilityId[])
     if(legalAim(b,u,id,ally.hex))return {action:id,hex:ally.hex};
   if(b.grounding&&!b.grounding.open){
     const plate=b.grounding.plates[u.id==='nell'?0:1];
@@ -89,7 +89,7 @@ function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const original=u.hex;
   for(const visit of movement(b,u).values()){
     u.hex=visit.hex;
-    for(const id of u.abilities.filter(id=>!['mend','bandage'].includes(id)))for(const h of cells()){
+    for(const id of u.abilities.filter(id=>!ABILITIES[id].heal && !['guard','dazzle'].includes(id)))for(const h of cells()){
       if(!legalAim(b,u,id,h))continue;
       const score=targets(b,u,id,h).reduce((sum,v)=>sum+(v.side!==u.side?1:-4)*(Math.min(v.hp,damage(u,v,id))+(v.hp<=damage(u,v,id)?8:0)),0)-visit.path.length*.1-(b.vents.has(keyFor(visit.hex))?7:0);
       if(score>0&&(!best||score>best.score))best={action:id,hex:h,pos:visit.hex,score};
@@ -106,7 +106,7 @@ export async function battle(page: Page, screenshot?: string, practice=false) {
     if(await page.getByRole('heading',{name:practice?'Practice complete':'The line is clear',exact:true}).isVisible()){
       const snapshot=await inspect(page);
       if(snapshot.battle?.grounding){expect(snapshot.battle.grounding.open).toBe(true);expect(snapshot.battle.units.some(u=>u.sealed)).toBe(false);await capture(page,'northglass-shield-released');}
-      await page.getByRole('button',{name:practice?'Back to inventory':'Continue the journey'}).click();return;
+      await page.getByRole('button',{name:practice?'Back to workshop':'Continue the journey'}).click();return;
     }
     if(await page.getByRole('heading',{name:practice?'Practice defeated':'The line can wait'}).isVisible())throw new Error('The party was defeated during the browser playthrough.');
     const snapshot=(await inspect(page)).battle!;
@@ -115,10 +115,10 @@ export async function battle(page: Page, screenshot?: string, practice=false) {
     const u=active(b)!;
     if(u.side!=='party'){await page.waitForTimeout(250);continue;}
     const decision=playerPlan(b);
-    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${decision.action==='burst'?'Lantern burst':decision.action==='steam'?'Steam lance':decision.action==='bandage'?'Bandage':decision.action==='mend'?'Mend':'Strike'}$`);
+    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${ABILITIES[decision.action].name}$`);
     const action=page.locator('.actions').getByRole('button',{name:label});
     await expect(action).toBeEnabled();await action.click();
-    if(decision.hex){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:['mend','bandage'].includes(decision.action)?/^Confirm healing$/:/^Confirm attack$/}).click();}
+    if(decision.hex && decision.action!=='defend'){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:ABILITIES[decision.action].heal?/^Confirm healing$/:ABILITIES[decision.action].effect && ABILITIES[decision.action].effect!=='push'?/^Confirm ability$/:/^Confirm attack$/}).click();}
     await page.waitForTimeout(420);
   }
   throw new Error('Battle did not resolve within the turn budget.');

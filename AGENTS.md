@@ -4,7 +4,7 @@ The user authorized a complete story reboot. The former Disks A–D campaign has
 
 Keep canon and continuation notes under `docs/story/` in sync with playable content. Preserve the reboot’s version-5 campaign, content IDs and checkpoints in later work. Versions 1–4 belong to the previous story: retain export access, but never migrate their flags into the new campaign.
 
-Off-story mechanics work lives in the Vite-only inventory workshop (`?dev=inventory`). Keep its UI, fixtures and storage separate from campaign saves, and its entry behind `import.meta.env.DEV`. Production retains the current story equipment until an explicit integration task. Read `docs/development-inventory.md` for the manual equipment model and practice harness.
+Off-story mechanics work lives in the Vite-only character workshop (`?dev=workshop`; `?dev=inventory` opens its equipment tab). Keep its UI, fixtures and storage separate from campaign saves, and its entry behind `import.meta.env.DEV`. Production retains the current story equipment and character progression until an explicit integration task. Read `docs/development-workshop.md` for character builds, level abilities, the manual equipment model and the practice harness.
 
 For story work, read and apply `.agents/skills/write-game-prose/SKILL.md`. It covers dialogue, narration, journals, player choices, and disk handoffs.
 
