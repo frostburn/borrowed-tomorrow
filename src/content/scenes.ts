@@ -53,10 +53,10 @@ export const inspector=(s:GameState)=>scene('a-inspector','THE MAN FROM THE PLAT
 ]);
 
 export const across=()=>scene('a-boundary','THE DAY BEFORE',[
-  {id:'nell',at:{x:36,y:14}},{id:'orrin',at:{x:33,y:14}},{id:'mira',at:{x:39,y:13}},
+  {id:'nell',at:{x:33,y:14}},{id:'orrin',at:{x:30,y:14}},{id:'mira',at:{x:36,y:14}},
 ],[
-  line('Beyond the tunnel','The inspector’s empty coat hangs on the signal arm. Its punch still clicks as they pass.',{focus:{x:34,y:13},cut:true,cue:'punch'}),
-  line('Mira','There! Our blue door. Dad’s mending the hinge.',{focus:{x:39,y:13},actors:{mira:{to:{x:40,y:13}}}}),
+  line('Beyond the tunnel','The inspector’s empty coat hangs on the signal arm. Its punch still clicks as they pass.',{focus:{x:34,y:14},cut:true,cue:'punch'}),
+  line('Mira','There! Our blue door. Dad’s mending the hinge.',{focus:{x:36,y:14},actors:{mira:{to:{x:37,y:14}}}}),
   line('Orrin','Rillbridge. The roofs are whole. There’s washing out by the river.'),
   line('Nell','The memorial said no survivors. We can still get them out.'),
   line('Mira','Then come now. I want him to see you before the train leaves again.',{cue:'return-call'}),

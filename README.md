@@ -86,7 +86,7 @@ BT_FULL_QA=1 npm run test:e2e
 
 Normal PR/main CI runs Node 24 rule tests, a production build, and Chromium smoke checks. Smoke coverage includes the fresh opening and interrupted resume, receipt payoff for new/legacy saves, unselected choices on skip, a durable lamp-room reply, gate/entrance navigation, phone healing controls, unique portraits, native pixels at fractional DPR, and all fifteen arrangements plus fourteen effects. Complete phrase variation is also covered by the score unit tests.
 
-Five slower `@journey` tests play Disks A–D and the alternative Northglass outcome through actual controls, importing the original version-1 arrival and supplied version-2/3 departures. They remain available locally and through **Check → Run workflow → full_journey**. Regular CI no longer replays every combat round across all disks for each follow-up. The manual full run also renders complete 16/32-bar loops through Web Audio.
+Slower `@journey` tests play Disks A–D and the alternative Northglass outcome through actual controls, importing the original version-1 arrival and supplied version-2/3 departures. They also recover the supplied boiler checkpoint through victory and crew registration. They remain available locally and through **Check → Run workflow → full_journey**. Regular CI no longer replays every combat round across all disks for each follow-up. The manual full run also renders complete 16/32-bar loops through Web Audio.
 
 `window.borrowedTomorrow.inspect()` provides a read-only snapshot for diagnostics. It does not mutate progress or bypass battles. `window.borrowedTomorrowPixels.inspect()` exposes the framebuffer size, physical scale, and palette for display diagnostics.
 

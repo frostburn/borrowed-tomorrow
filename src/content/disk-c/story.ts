@@ -42,7 +42,7 @@ export function objectiveC(s:GameState):string{
   if(!f.cBedsReserved)return 'Take the stores handcar to Bellwether and reserve fourteen beds.';
   if(!f.cCouplingRecovered)return 'Recover the spare steam coupling at Cinderbank.';
   if(!f.cTrainHeat&&!f.cWardHeat)return 'Choose a heating plan at the steam bypass by the boiler shed.';
-  if(!f.cBoilerStopped)return 'Stop the boiler keeper. Leave the marked vents before each round ends.';
+  if(!f.cBoilerStopped)return 'Confront the keeper at the steam bypass, beside the boiler shed on the right.';
   if(!f.cCrewAccepted)return 'File the bed count and steam test in Cinderbank’s crew register.';
   if(!f.cTransferred)return 'Return to the carriage and dispatch the staffed ambulance train.';
   if(!f.cReceiptSigned)return 'Check the fourteen arrivals with Ivo at Bellwether’s receiving ramp.';

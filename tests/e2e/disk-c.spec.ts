@@ -70,6 +70,10 @@ test('the other heating choice persists on a phone, and Mend and Bandage confirm
   while(!await choice.isVisible())await page.locator('.dialogue-actions button').first().click();
   await expect(choice).toBeInViewport();await expect(page.getByRole('button',{name:'Heat the north ward · travel under blankets',exact:true})).toBeInViewport();
   await capture(page,'disk-c-phone-heat-choice');await choice.click();
+  const confront=page.getByRole('button',{name:'Confront the boiler keeper',exact:true});
+  while(!await confront.isVisible())await page.locator('.dialogue-actions button').first().click();
+  await expect(confront).toBeInViewport();expect((await inspect(page)).mode).toBe('world');
+  await page.getByRole('button',{name:'Prepare in the yard',exact:true}).click();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).state.flags.cTrainHeat).toBe(true);
   await approach(page,'c-valve');await dialogue(page);
