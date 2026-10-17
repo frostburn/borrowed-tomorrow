@@ -4,7 +4,7 @@
 
 Disk D ends with save version **4**, `chapter: disk-d`, `diskDStarted`, `diskDComplete`, `dLetterRead`, `dLineHeld`, `dCrewReturned`, `dCircuitRead`, `dRelayStopped`, and `dRecordRead` true. Exactly one of `dHoldRed` and `dHandBell` is true. The boundary is **`disk-e:brinewick-parcel`**. The usual physical location is Northglass near Petra’s dispatch window `(14,15)`; return exploration can change it. Never infer the pending chapter from coordinates.
 
-Nell and Orrin hold his father’s letter and the works parcel counterfoil. They are story documents recorded by `d-letter` and `d-record`, not equipment IDs. The counterfoil specifies **Brinewick freight ferry, parcel cage 6**, a brass sewing-drawer key with one tooth filed. It authorizes collection of that parcel, not passenger boarding. The key itself has not yet been collected.
+Orrin carries his father’s letter with the works parcel counterfoil inside it. Nell keeps the signed ambulance crew copy. The letter and counterfoil are story documents recorded by `d-letter` and `d-record`, not equipment IDs. The counterfoil specifies **Brinewick freight ferry, parcel cage 6**, a brass sewing-drawer key with one tooth filed. It authorizes collection of that parcel, not passenger boarding. The key itself has not yet been collected.
 
 Import an actual version-4 departure in verification. Preserve every resource, equipment ID, prior flag, journal entry, time value and choice. Load the next region’s assets before consuming this boundary. Continue with Nell and Orrin only; all earlier areas remain open. Larkspur has a separate stores-service marker for Cinderbank after Disk D begins, so the Northglass train does not remove access to Bellwether.
 
