@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { defaultBuild, newCharacterSettings } from '../../src/rules/characters';
 import { equipItem, newInventory, receiveItem } from '../../src/rules/inventory';
 import { distance, equal, offset } from '../../src/rules/hex';
-import { movement, type Battle } from '../../src/rules/combat';
+import { movement, pushDestination, type Battle } from '../../src/rules/combat';
 import { battle, capture, clickHex, inspect } from './controls';
 
 async function choose(page:Page,name:string){await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name,exact:true}).click();}
@@ -32,24 +32,25 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(snapshot.log).toContain('Celia: Celestial bolt hits Track hound for 5.');
     const b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water),vents:new Set(snapshot.vents)} as Battle,petra=b.units.find(u=>u.id==='petra')!;
     expect(petra.movement).toBe(3);
-    const approach=[...movement(b,petra).values()].find(v=>!equal(v.hex,petra.hex)&&b.units.some(e=>e.side==='enemy'&&e.hp>0&&distance(v.hex,e.hex)===1))!;
-    expect(approach).toBeDefined();const enemy=b.units.find(e=>e.side==='enemy'&&e.hp>0&&distance(approach.hex,e.hex)===1)!;
+    const approach=[...movement(b,petra).values()].find(v=>!equal(v.hex,petra.hex)&&b.units.some(e=>e.side==='enemy'&&e.hp>0&&distance(v.hex,e.hex)===1&&pushDestination(b,{...petra,hex:v.hex},e)))!;
+    expect(approach).toBeDefined();const enemy=b.units.find(e=>e.side==='enemy'&&e.hp>0&&distance(approach.hex,e.hex)===1&&pushDestination(b,{...petra,hex:approach.hex},e))!;
     await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,approach.hex);await page.getByRole('button',{name:/^Confirm move/}).click();
     const bash=()=>page.locator('.actions').getByRole('button',{name:/^3\s+Shield bash · Extra$/});
     await bash().click();await clickHex(page,enemy.hex);await page.locator('.actions').getByRole('button',{name:/^2\s+Strike$/}).click();
     expect((await inspect(page)).battle!.units.find(u=>u.id==='petra')!.bonusUsed).toBe(false);
     await bash().click();await clickHex(page,enemy.hex);await capture(page,`shield-bash-preview-${device}`);
-    await expect(page.locator('.prediction')).toContainText('no damage');
+    await expect(page.locator('.prediction')).toContainText('push one hex · no damage');
     await page.getByRole('button',{name:'Confirm ability',exact:true}).click();await expect(bash()).toBeDisabled();
     await expect(page.locator('.actions').getByRole('button',{name:/^5\s+Taunt$/})).toBeEnabled();
     const after=(await inspect(page)).battle!,hero=after.units.find(u=>u.id==='petra')!;
     expect(after.queue[0]).toBe('petra');expect(hero).toMatchObject({bonusUsed:true,moved:true,focus:5});
     expect(after.units.find(u=>u.id===enemy.id)!.hp).toBe(enemy.hp);
+    expect(after.units.find(u=>u.id===enemy.id)!.hex).toEqual(pushDestination(b,{...petra,hex:approach.hex},enemy));
     await expect(page.locator('.actions').getByRole('button',{name:/^W\s+Wait$/})).toBeDisabled();
     await page.keyboard.press('3');await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toHaveCount(0);
     await capture(page,`shield-bash-extra-${device}`);
     await page.locator('.actions').getByRole('button',{name:/^5\s+Taunt$/}).click();
-    await expect(page.locator('.prediction')).toContainText('target Petra');await capture(page,`taunt-preview-${device}`);
+    await expect(page.locator('.prediction')).toContainText('enemies target Petra');await capture(page,`taunt-preview-${device}`);
     await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).not.toBe('petra');
     const taunted=(await inspect(page)).battle!;expect(taunted.units.find(u=>u.id==='petra')!).toMatchObject({focus:3});
