@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Game Prose"
+  short_description: "Dialogue and story editing for Borrowed Tomorrow"
+  default_prompt: "Use $write-game-prose to revise this Borrowed Tomorrow scene while preserving its choices and canon."

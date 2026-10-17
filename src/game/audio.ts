@@ -41,15 +41,16 @@ export class Audio {
     const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
-      this.mode=this.pending;const beat=60/ARRANGEMENTS[this.mode].bpm;
+      if(this.mode!==this.pending){this.mode=this.pending;this.bar=0;}
+      const beat=60/ARRANGEMENTS[this.mode].bpm;
       for(const n of scoreBar(this.mode,this.bar))this.music!.note(n.instrument,n.midi,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
       this.next+=beat*4;this.bar++;
     }
   }
-  effect(kind:Effect,surface:'station'|'yard'|'tunnel'='station'){
+  effect(kind:Effect,surface:'station'|'yard'|'tunnel'|'rillbridge'|'sluice'='station'){
     if(!this.enabled||!this.context)return;
     const now=this.context.currentTime;
     if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
-    this.effects!.effect(kind,now+.005,surface,this.steps);
+    this.effects!.effect(kind,now+.005,surface==='rillbridge'?'station':surface==='sluice'?'yard':surface,this.steps);
   }
 }

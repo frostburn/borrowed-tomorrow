@@ -1,0 +1,12 @@
+{
+  "rillbridge": {
+    "bytes": 2587004,
+    "sha256": "c19775834560712a002862d7f82862794d2eabe13100dc5507e1286dfe3888a6",
+    "parts": 14
+  },
+  "sluice": {
+    "bytes": 2856570,
+    "sha256": "803a503f294aca2032182afb177e6ba559cd5303d4354cb9288550b5e8d111a1",
+    "parts": 15
+  }
+}

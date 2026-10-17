@@ -1,14 +1,15 @@
-# Open threads
+# Open threads after Disk B
 
-| Promise / clue | Required payoff |
+| Thread | Playable payoff / next obligation |
 | --- | --- |
-| Mira's father stepped off the train | Find him in Disk B. He should have his own reason for staying, not simply be an objective marker. |
-| Rillbridge's coming flood | Make townspeople's evacuation problems playable. The next chapter must let the player materially change the outcome. |
-| Ticket date versus town date | Explain which day the returned town is experiencing before introducing any deadline. |
-| “No substitutions” | Show a concrete effect of the registry in Disk B. Keep its author and full purpose partly unresolved. |
-| Tomorrow-stamped fuse | Connect maintenance supplies to the railway's unusual time, not an isolated spooky prop. |
-| Orrin's father's handwriting | If the optional discovery occurred, give Orrin a specific personal reaction to a maintenance record in Disk B. |
-| Ansel's promise | Change dialogue or a later decision according to `promisedHome` / `askedForTruth`. |
-| Other lost towns in the timetable | Future chapters may visit them; each needs a different human and mechanical problem. |
+| Mira’s missing father | Resolved locally: Bram and Mira are together at Larkspur. Keep them there for Disk C; do not undo the reunion for another search. |
+| Rillbridge flood | All thirty-one residents escaped. The lower quay flooded. Preserve the orchard consequence, residents’ accommodation, and later recovery work. |
+| Ticket versus town date | Established: ticket is 14 October; arrival is 13 October; evacuation preparation advances to before dawn on the 14th. |
+| “No substitutions” | Bram is physically refused by the carriage. The foot crossing bypasses boarding, not the registry’s identity rules. The complete system remains unknown. |
+| Tomorrow-stamped fuse | The maintenance work sheet connects repeated passenger dates to distinct maintenance shifts. Still establish how supplies and workers move through that time. |
+| Orrin’s father | Optional sheet recognizes his handwriting, with a specific envelope callback. His whereabouts and relationship to Ada remain unknown. |
+| Ansel’s first answer | Disk B coda responds to `promisedHome` / `askedForTruth`. Preserve this answer in later chapters. |
+| Return-railway author | Ada remains private author knowledge. Reveal her through records and actions when earned. |
+| Cinderbank ambulance train | Next local problem: wounded passengers, no medical staff on the manifest, departure before dawn. Follow `disk-c-handoff.md`. |
 
-Before adding a new major mystery, pay off at least one existing thread. Keep dialogue in visited places responsive to completed chapters.
+Finish a local rescue before opening another destination. Earlier places must acknowledge changes that already happened.

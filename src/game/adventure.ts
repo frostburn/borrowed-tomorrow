@@ -1,15 +1,20 @@
 import Phaser from 'phaser';
+import { interactDiskB } from '../content/disk-b/interactions';
+import { ARRIVAL, B_JOURNAL, objectiveB } from '../content/disk-b/story';
 import { interactDiskA } from '../content/disk-a/interactions';
-import { HEIGHT, MAPS, TILE, WIDTH, visibleObjects, walkable, worldPath, type MapObject } from '../content/disk-a/maps';
-import { CHAPTER, JOURNAL, SAY, objective, type Dialogue } from '../content/disk-a/story';
+import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
+import { CHAPTER, JOURNAL as A_JOURNAL, SAY, objective as objectiveA, type Dialogue } from '../content/disk-a/story';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, shape, targets, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
+import { decodeSave, enterDiskB, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
 import { Audio } from './audio';
-import { exportSave, listSaves, save } from './saves';
+import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
 import { bitmapText } from './pixel-font';
 import { worldView, narrowScreen } from './resolution';
+
+const JOURNAL={...A_JOURNAL,...B_JOURNAL};
+const objective=(state:GameState)=>state.chapter==='disk-b'?objectiveB(state):objectiveA(state);
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
@@ -44,6 +49,7 @@ export class Adventure extends Phaser.Scene {
   private latestSave?: GameState;
   private labelId=0;
   private shownTurn?:string;
+  private regionLoad?:Promise<void>;
   private serialSave: Promise<void> = Promise.resolve();
 
   constructor() { super('adventure'); }
@@ -61,7 +67,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.status.textContent = 'WASD / arrows · E interact · click to walk · J journal · Esc menu';
     void listSaves().then(records => { if (records.length) this.latestSave = decodeSave(JSON.stringify(records[0].state)); if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
     window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, moving:this.moving||this.path.length>0||!!this.pendingObject, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
   }
   resizeView(){
     if(!this.sys.isActive())return;
@@ -69,7 +75,7 @@ export class Adventure extends Phaser.Scene {
       const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
-    const camera=this.cameras.main;camera.stopFollow();camera.setBounds(0,0,WIDTH,HEIGHT);
+    const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
     if(this.mode==='world'&&this.player){camera.centerOn(this.player.x,this.player.y);camera.startFollow(this.player,true,1,1);}
     else camera.setScroll(Math.floor((WIDTH-view.width)/2),72);
   }
@@ -97,15 +103,15 @@ export class Adventure extends Phaser.Scene {
     this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.follower = undefined; this.miraFollower=undefined;this.actorImages.clear();
     this.layer = this.add.container(0,0);
   }
-  private background(name: string, y=0) { this.layer!.add(this.add.image(0,y,`map-${name}`).setOrigin(0)); }
+  private background(name: string, y=0, x=0) { this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0)); }
   private showTitle() {
     this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');
-    this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Disk A · A railway folktale';
+    this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Disks A & B · A railway folktale';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey told one disk at a time</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
     this.titlePanel();
   }
   private titlePanel() {
-    this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Disk A · The Wrong Platform</div><p>A train arrives from a town lost forty years ago.</p><p>A child says she left twenty minutes earlier.</p>', [
+    this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Disk A · The Wrong Platform</div><p>A train arrives from a town lost forty years ago.</p><p>A child says she left twenty minutes earlier.</p><p>Includes Disk B · A Town Expecting Rain.</p>', [
       { label: 'Begin Disk A', action: () => {
         if (this.latestSave) this.ui.showModal('Begin a new journey?', '<p>Your manual save slots will remain available. Starting a new journey replaces the autosave.</p>', [{ label: 'Begin', action: () => { this.ui.closeModal(); this.begin(); } }]);
         else this.begin();
@@ -122,19 +128,56 @@ export class Adventure extends Phaser.Scene {
       SAY('A small voice', 'Excuse me. Did my dad get off here?', 'mira'),
     ], done: () => this.autosave() });
   }
-  private loadState(state: GameState) {
+  private async ensureRegion(map:MapId) {
+    if(map!=='rillbridge'&&map!=='sluice')return;
+    if(this.textures.exists('map-rillbridge')&&this.textures.exists('map-sluice'))return;
+    if(!this.regionLoad){
+      this.regionLoad=new Promise<void>((resolve,reject)=>{
+        this.load.once('complete',()=>{
+          if(this.textures.exists('map-rillbridge')&&this.textures.exists('map-sluice'))resolve();
+          else reject(new Error('Rillbridge could not load. Your arrival save is intact; try Begin Disk B again.'));
+        });
+        for(const name of ['rillbridge','sluice'])if(!this.textures.exists(`map-${name}`))this.load.image(`map-${name}`,`${import.meta.env.BASE_URL}art/${name}.webp`);
+        this.load.start();
+      }).finally(()=>{this.regionLoad=undefined;});
+    }
+    await this.regionLoad;
+  }
+  private async beginDiskB(){
+    if(this.busy)return;this.busy=true;
+    const previous=this.state;
+    try{
+      const candidate=enterDiskB(previous);
+      this.ui.toast('Loading Rillbridge…');await this.ensureRegion('rillbridge');
+      this.state=candidate;this.ui.clearPanel();this.showWorld();this.autosave();
+      this.talk({lines:ARRIVAL});
+    }catch(error){this.state=previous;this.busy=false;this.boundaryPanel();this.ui.toast(error instanceof Error?error.message:'Unable to enter Rillbridge.');}
+  }
+  private async loadState(state: GameState) {
+    if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
-      if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y)) throw new Error('This save is inside an obstacle.');
+      if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y,candidate)) throw new Error('This save is inside an obstacle.');
+      await this.ensureRegion(candidate.location.map);
       this.state = candidate;
-      this.battle = undefined; this.busy = false; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
-      this.ui.toast(this.state.boundary ? 'Disk A complete. Your arrival in Rillbridge is saved.' : 'Journey restored.');
+      this.battle = undefined; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
+      if(this.state.boundary)this.boundaryPanel();
+      this.ui.toast('Journey restored.');
     } catch (error) { this.ui.toast(error instanceof Error ? error.message : 'Unable to load the save.'); }
+    finally{this.busy=false;}
   }
   private showWorld() {
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode(map.id);
+    if(map.id==='rillbridge'&&this.state.flags.bSchoolGateOpen){
+      // Reuse native paving pixels to reveal the passage behind the opened gate.
+      const texture=this.textures.get('map-rillbridge');
+      if(!texture.has('open-school-gate'))texture.add('open-school-gate',0,896,768,56,48);
+      this.layer!.add(this.add.image(1320,896,'map-rillbridge','open-school-gate').setOrigin(0));
+      const gate=this.add.graphics();gate.lineStyle(3,0x36372c).lineBetween(1323,901,1323,934);
+      gate.lineStyle(1,0x988462);for(let y=904;y<934;y+=6)gate.lineBetween(1321,y,1326,y);this.layer!.add(gate);
+    }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
       if (object.sprite) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
@@ -145,13 +188,15 @@ export class Adventure extends Phaser.Scene {
     }
     const p = this.state.location;
     if (this.state.flags.orrinJoined) {
-      this.miraFollower=this.add.image((p.x-2+.5)*TILE,(p.y+.5)*TILE+7,'mira').setOrigin(.5,.85);this.layer!.add(this.miraFollower);
+      if(!this.state.flags.bFatherFound){this.miraFollower=this.add.image((p.x-2+.5)*TILE,(p.y+.5)*TILE+7,'mira').setOrigin(.5,.85);this.layer!.add(this.miraFollower);}
       this.follower = this.add.image((p.x - 1 + .5)*TILE,(p.y+.5)*TILE+7,'orrin').setOrigin(.5,.85); this.layer!.add(this.follower);
     }
+    if(map.id==='rillbridge'&&this.state.flags.bFatherFound&&!this.state.flags.bEvacuated)this.layer!.add(this.add.image(25.5*TILE,12.5*TILE+7,'mira').setOrigin(.5,.85));
+    if(map.id==='station'&&this.state.flags.bEvacuated)this.layer!.add(this.add.image(25.5*TILE,20.5*TILE+7,'master').setOrigin(.5,.85));
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85); this.layer!.add(this.player);
-    this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
+    const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
-    this.ui.initiative.textContent = map.subtitle;
+    this.ui.initiative.textContent = this.state.flags.bEvacuated&&map.id==='station'?'Thirty-one residents have arrived from Rillbridge.':this.state.flags.bEvacuated&&map.id==='rillbridge'?'The lower quay is flooded. The maintenance crossing remains open.':this.state.flags.bNeighborsReady&&map.id==='rillbridge'?'14 October · the residents are ready at the bridge.':map.subtitle;
     this.renderWorldControls();
   }
   private talk(dialogue: Dialogue) {
@@ -162,8 +207,11 @@ export class Adventure extends Phaser.Scene {
     this.state.flags[flag] = true; if (entry) remember(this.state, entry);
     this.showWorld(); this.autosave();
   }
-  private changeMap(map: MapId, x: number, y: number) {
-    this.state.location = { map, x, y }; this.showWorld(); this.autosave(); this.ui.canvas.focus();
+  private async changeMap(map: MapId, x: number, y: number) {
+    if(this.busy)return;this.busy=true;
+    try{await this.ensureRegion(map);this.state.location={map,x,y};this.showWorld();this.autosave();this.ui.canvas.focus();}
+    catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to load this area.');}
+    finally{this.busy=false;}
   }
   private renderWorldControls() {
     if (this.mode !== 'world') return;
@@ -176,7 +224,7 @@ export class Adventure extends Phaser.Scene {
   }
   private closestObject(): MapObject | undefined {
     const p = this.state.location;
-    return visibleObjects(MAPS[p.map], this.state).filter(o => Math.abs(o.x-p.x) + Math.abs(o.y-p.y) <= 3)
+    return visibleObjects(MAPS[p.map], this.state).filter(o=>(!o.accessFlag||this.state.flags[o.accessFlag])).filter(o => Math.abs(o.x-p.x) + Math.abs(o.y-p.y) <= 3)
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
   update(time: number) {
@@ -198,7 +246,7 @@ export class Adventure extends Phaser.Scene {
   }
   private stepWorld(dx: number, dy: number) {
     const p = this.state.location; const x = p.x + dx, y = p.y + dy;
-    if (!walkable(MAPS[p.map], x, y) || this.moving || this.blocked) return;
+    if (!walkable(MAPS[p.map], x, y,this.state) || this.moving || this.blocked) return;
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
     this.face = dx < 0 ? 'nell-left' : dx > 0 ? 'nell-right' : dy < 0 ? 'nell-back' : 'nell';
@@ -226,9 +274,9 @@ export class Adventure extends Phaser.Scene {
     if (object) {
       if (Math.abs(object.x-this.state.location.x)+Math.abs(object.y-this.state.location.y)<=3 && !this.moving) { this.interact(object); return; }
       const candidates = [{x:object.x,y:object.y}, {x:object.x-1,y:object.y}, {x:object.x+1,y:object.y}, {x:object.x,y:object.y-1}, {x:object.x,y:object.y+1}];
-      const paths = candidates.filter(d=>walkable(MAPS[this.state.location.map],d.x,d.y)).map(d=>worldPath(MAPS[this.state.location.map],this.state.location,d)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
+      const paths = candidates.filter(d=>walkable(MAPS[this.state.location.map],d.x,d.y,this.state)).map(d=>worldPath(MAPS[this.state.location.map],this.state.location,d,this.state)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
       if (paths[0]) { this.path = paths[0]; this.pendingObject=object; } else this.ui.toast('Walk closer to the marked entrance.');
-    } else { this.path=worldPath(MAPS[this.state.location.map],this.state.location,dest); this.pendingObject=undefined; }
+    } else { this.path=worldPath(MAPS[this.state.location.map],this.state.location,dest,this.state); this.pendingObject=undefined; }
     this.ui.canvas.focus();
   }
   private keydown(e: KeyboardEvent) {
@@ -258,17 +306,27 @@ export class Adventure extends Phaser.Scene {
 
   private interact(object: MapObject) {
     if (this.blocked || this.mode !== 'world') return;
+    if(object.accessFlag&&!this.state.flags[object.accessFlag]){this.ui.toast('Open the schoolhouse gate first.');return;}
     this.path = []; this.pendingObject = undefined;
-    interactDiskA({
+    const id=object.id==='master'&&this.state.flags.bEvacuated?'b-ansel':object.id==='train'&&this.state.flags.bEvacuated?'b-dispatch':object.id;
+    const interact=id.startsWith('b-')?interactDiskB:interactDiskA;
+    interact({
       state: this.state, talk: d => this.talk(d), commit: (flag, entry) => this.finishStory(flag, entry),
       refresh: () => this.showWorld(), save: () => this.autosave(), update: () => this.renderWorldControls(),
       travel: (map, x, y) => this.changeMap(map, x, y), battle: id => this.startBattle(id),
       shop: () => this.shop(), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
       endingMusic: () => this.audio.setMode('ending'),
-    }, object.id);
+    }, id);
   }
   private boundaryPanel() {
-    this.ui.panel('Insert Disk B', '<div class="chapter-name">Next: A Town Expecting Rain</div><p>Rillbridge is waiting on the other side of the tunnel.</p><p>Your party, choices, equipment, and arrival point are saved. You can return to Larkspur while the next chapter is being built.</p>', [
+    if(this.state.chapter==='disk-b'){
+      this.ui.panel('Insert Disk C','<div class="chapter-name">Next: The Last Ambulance Train</div><p>Mira and Bram are safe at Larkspur. A dispatch from Cinderbank names an ambulance train with no medical staff.</p><p>Your choices and departure point are saved. You can revisit the line while Disk C is being built.</p>',[
+        {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
+        {label:'Export departure save',action:()=>exportSave(this.state)},
+      ]);return;
+    }
+    this.ui.panel('Insert Disk B', '<div class="chapter-name">Next: A Town Expecting Rain</div><p>Rillbridge is waiting on the other side of the tunnel.</p><p>Your party, choices, and equipment carry into the next chapter.</p>', [
+      {label:'Begin Disk B',action:()=>{void this.beginDiskB();}},
       {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
       {label:'Export arrival save',action:()=>exportSave(this.state)},
     ]);
@@ -276,10 +334,10 @@ export class Adventure extends Phaser.Scene {
 
   private startBattle(id: string) {
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='inspector'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(ENCOUNTERS[id].terrain==='sluice'?'flood':id==='inspector'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
   }
   private drawBattle() {
-    this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();this.background('yard',-66);
+    this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();if(ENCOUNTERS[this.battle!.encounter].terrain==='sluice')this.background('sluice',-350,-290);else this.background('yard',-66);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
@@ -307,12 +365,14 @@ export class Adventure extends Phaser.Scene {
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     for(const h of cells()){
       const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1;
+      if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;}
       if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;}
       else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;}
       if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;}
       this.hexPolygon(h,color,alpha,stroke,width);
+      if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
     }
     if(this.plan?.action==='move'&&u){const path=movement(b,u).get(key(this.plan.hex))?.path??[];this.grid.lineStyle(3,0xe8d6a2,.9);this.grid.beginPath();const start=toPixel(u.hex);this.grid.moveTo(start.x,start.y);for(const h of path){const p=toPixel(h);this.grid.lineTo(p.x,p.y);}this.grid.strokePath();}
   }
@@ -335,12 +395,12 @@ export class Adventure extends Phaser.Scene {
     const hint=document.getElementById('battle-hint'),confirm=document.getElementById('confirmation');if(!hint||!confirm)return;
     const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
-    hint.textContent=this.selected==='move'?'Blue hexes are reachable. Moving leaves your attack available. Wait is available before moving.':ABILITIES[this.selected].description;
+    hint.textContent=this.selected==='move'?(b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your attack available. Wait is available before moving.'):ABILITIES[this.selected].description;
     confirm.innerHTML='';
     if(!aimed)return;
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
-      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes · click to select`;confirm.append(text);}}
+      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
     }else if(legalAim(b,u,this.selected,aimed)){
       const hits=targets(b,u,this.selected,aimed);const description=hits.map(v=>`${v.name}: ${ABILITIES[this.selected as AbilityId].heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ABILITIES[this.selected as AbilityId].heal?' (ALLY)':''}`).join(' · ')||'Empty ground';
       if(this.plan)confirm.append(this.ui.button({label:'Confirm attack',action:()=>this.commitPlan()}));
@@ -397,8 +457,9 @@ export class Adventure extends Phaser.Scene {
     if(b.encounter==='scrap')remember(this.state,'scrap');
     if(b.encounter==='tunnel')remember(this.state,'guardian');
     if(b.encounter==='inspector')remember(this.state,'inspector');
+    if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map);this.audio.effect('win');
-    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${b.encounter==='yard'?'<p>Orrin recovers the missing signal fuse from a hound’s jaws.</p>':''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();}}]);
+    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}${b.encounter==='yard'?'<p>Orrin recovers the missing signal fuse from a hound’s jaws.</p>':''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();}}]);
   }
 
   journal() {
@@ -408,12 +469,12 @@ export class Adventure extends Phaser.Scene {
     this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.gear.length?s.gear.map(id=>id==='brass-lantern'?'Brass lantern':'Reinforced work coats').join(', '):'Station issue'}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then attack or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Disk A ends at a saved “Insert Disk B” arrival. You can keep exploring and continue from the same save when the next chapter is built.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then attack or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the sluice, wave-marked shallow water costs two movement points per hex. Dry ground costs one. Crows fly over water. The outfall decision changes the keeper’s arena.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Choose Begin Disk B at the saved Rillbridge arrival. Version-1 saves carry forward. Disk B ends at an “Insert Disk C” departure; earlier areas remain open.</p></article>');
   }
   async toggleSound() { try {this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {
     const snapshot=structuredClone(this.state);
-    this.latestSave=snapshot;
+    checkpoint(snapshot);this.latestSave=snapshot;
     this.serialSave=this.serialSave.catch(()=>{}).then(()=>save('autosave',snapshot)).catch(()=>{this.ui.toast('Unable to save in this browser. Export your progress from the Save menu.');});
   }
   async saves() {

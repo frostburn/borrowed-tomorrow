@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const modes=['station','yard','tunnel','battle','inspector','ending'] as const;
+const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
@@ -120,9 +120,10 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     };
     const scores=[];
     for(const mode of modes){
-      const beat=60/ARRANGEMENTS[mode].bpm,c=new OfflineAudioContext(2,Math.ceil((16*beat+2)*22050),22050);
+      const bars=['rillbridge','sluice','flood'].includes(mode)?16:4;
+      const beat=60/ARRANGEMENTS[mode].bpm,c=new OfflineAudioContext(2,Math.ceil((bars*4*beat+2)*22050),22050);
       const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-      for(let bar=0;bar<4;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+bar*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+      for(let bar=0;bar<bars;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+bar*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
       scores.push({mode,...summarize(await c.startRendering())});
     }
     const c=new OfflineAudioContext(2,(effects.length*3+1)*22050,22050),gain=c.createGain();gain.gain.value=.58;gain.connect(c.destination);

@@ -9,7 +9,9 @@
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check": "npm run test && npm run build"
+    "check": "npm run test && npm run build",
+    "predev": "node scripts/restore-map-art.mjs",
+    "prebuild": "node scripts/restore-map-art.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"
