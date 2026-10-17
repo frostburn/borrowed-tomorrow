@@ -1,7 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { defaultBuild, newCharacterSettings } from '../../src/rules/characters';
 import { equipItem, newInventory, receiveItem } from '../../src/rules/inventory';
-import { offset } from '../../src/rules/hex';
+import { distance, equal, offset } from '../../src/rules/hex';
+import { movement, type Battle } from '../../src/rules/combat';
 import { battle, capture, clickHex, inspect } from './controls';
 
 async function choose(page:Page,name:string){await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name,exact:true}).click();}
@@ -10,6 +11,49 @@ async function level(page:Page,name:string,value:number){const input=page.getByR
 async function stats(page:Page,name:string,values:Record<string,number>){for(const [stat,value] of Object.entries(values))await page.getByRole('spinbutton',{name:`${name} ${stat}`,exact:true}).fill(String(value));await page.getByRole('button',{name:'Apply base stats',exact:true}).click();}
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`Holy bolt and Petra’s extra bash work on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+    await page.setViewportSize(viewport);await page.goto('/?dev=workshop');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
+    await page.getByRole('button',{name:'Remove Nell from party',exact:true}).click();await choose(page,'Petra');
+    await expect(page.getByRole('spinbutton',{name:'Petra Movement',exact:true})).toHaveValue('3');
+    await page.getByRole('button',{name:'Add Petra to party',exact:true}).click();await level(page,'Petra',2);
+    await choose(page,'Orrin');await page.getByRole('button',{name:'Remove Orrin from party',exact:true}).click();
+    await choose(page,'Celia');await page.getByRole('button',{name:'Add Celia to party',exact:true}).click();
+    await expect(page.locator('[data-ability="holybolt"]')).toContainText('Known');
+    await page.getByRole('button',{name:'Test battle',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).toBe('celia');
+    await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,3));
+    await page.getByRole('button',{name:/^Confirm move/}).click();
+    await page.locator('.actions').getByRole('button',{name:/^3\s+Holy bolt$/}).click();await clickHex(page,offset(6,3));
+    await expect(page.locator('.prediction')).toContainText('Track hound: −9 HP');await capture(page,`holy-bolt-${device}`);
+    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).toBe('petra');
+    const snapshot=(await inspect(page)).battle!;
+    expect(snapshot.units.find(u=>u.id==='celia')!.focus).toBe(5);
+    expect(snapshot.units.find(u=>u.kind==='hound')!.hp).toBe(17);
+    const b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water),vents:new Set(snapshot.vents)} as Battle,petra=b.units.find(u=>u.id==='petra')!;
+    expect(petra.movement).toBe(3);
+    const approach=[...movement(b,petra).values()].find(v=>!equal(v.hex,petra.hex)&&b.units.some(e=>e.side==='enemy'&&e.hp>13&&distance(v.hex,e.hex)===1))!;
+    expect(approach).toBeDefined();const enemy=b.units.find(e=>e.side==='enemy'&&e.hp>13&&distance(approach.hex,e.hex)===1)!;
+    await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,approach.hex);await page.getByRole('button',{name:/^Confirm move/}).click();
+    const bash=()=>page.locator('.actions').getByRole('button',{name:/^3\s+Shield bash · Extra$/});
+    await bash().click();await clickHex(page,enemy.hex);await page.keyboard.press('Escape');
+    expect((await inspect(page)).battle!.units.find(u=>u.id==='petra')!.bonusUsed).toBe(false);
+    await bash().click();await clickHex(page,enemy.hex);await capture(page,`shield-bash-preview-${device}`);
+    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();await expect(bash()).toBeDisabled();
+    await expect(page.locator('.actions').getByRole('button',{name:/^5\s+Cover$/})).toBeEnabled();
+    const after=(await inspect(page)).battle!,hero=after.units.find(u=>u.id==='petra')!;
+    expect(after.queue[0]).toBe('petra');expect(hero).toMatchObject({bonusUsed:true,moved:true,focus:5});
+    expect(after.units.find(u=>u.id===enemy.id)!.hp).toBe(enemy.hp-13);
+    await expect(page.locator('.actions').getByRole('button',{name:/^W\s+Wait$/})).toBeDisabled();
+    await page.keyboard.press('3');await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toHaveCount(0);
+    await capture(page,`shield-bash-extra-${device}`);
+    await page.locator('.actions').getByRole('button',{name:/^5\s+Cover$/}).click();await clickHex(page,hero.hex);
+    await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).not.toBe('petra');
+    expect((await inspect(page)).battle!.units.find(u=>u.id==='petra')!).toMatchObject({guard:14,focus:3});
+    expect(errors).toEqual([]);
+  });
   test(`future companions form a persistent three-person party and use their roles on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.goto('/?dev=workshop');
@@ -40,7 +84,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(party.map(u=>u.id)).toEqual(['kit','celia','petra']);expect(new Set(party.map(u=>`${u.hex.q},${u.hex.r}`)).size).toBe(3);
     expect(party[0]).toMatchObject({bonus:10,speed:10,focus:1});expect(party[1]).toMatchObject({armor:1,speed:31});expect(party[2]).toMatchObject({armor:1,level:3});
     await capture(page,`companions-trio-${device}`);
-    await page.locator('.actions').getByRole('button',{name:/^5\s+Rally$/}).click();await clickHex(page,party[0].hex);
+    await page.locator('.actions').getByRole('button',{name:/^6\s+Rally$/}).click();await clickHex(page,party[0].hex);
     await expect(page.locator('.prediction')).toContainText('Kit: +2 focus');await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).battle!.units.find(u=>u.id==='kit')!.focus).toBe(3);
     await expect(page.locator('.actions').getByRole('button',{name:/^1\s+Move$/})).toBeEnabled();await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(5,3));

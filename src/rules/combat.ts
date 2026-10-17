@@ -7,8 +7,8 @@ import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
 import type { Effect } from '../game/synth';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'rally' | 'sanctuary' | 'bash' | 'cover' | 'sweep' | 'crush';
-export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'focus'; pierce?: number; sound?: Effect }
+export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'holybolt' | 'rally' | 'sanctuary' | 'bash' | 'cover' | 'sweep' | 'crush';
+export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; bonus?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'focus'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },
@@ -26,9 +26,10 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   bolt: { id: 'bolt', name: 'Piercing bolt', description: 'One enemy within 5 hexes. Ignores 2 armor. 1 focus.', range: 5, power: 10, cost: 1, shape: 'single', pierce: 2, sound: 'peck' },
   feint: { id: 'feint', name: 'Feint', description: 'An enemy within 4 hexes is dazzled: its next three attacks deal 40% less damage. 2 focus.', range: 4, power: 0, cost: 2, shape: 'single', effect: 'weaken', sound: 'flare' },
   volley: { id: 'volley', name: 'Volley', description: 'Seven-hex crossbow volley. Hits allies too. Range 5. 3 focus.', range: 5, power: 13, cost: 3, shape: 'blast', sound: 'peck' },
+  holybolt: { id: 'holybolt', name: 'Holy bolt', description: 'A bolt of light at one enemy within 5 hexes. Rocks block the aim. 1 focus.', range: 5, power: 12, cost: 1, shape: 'single', sound: 'flare' },
   rally: { id: 'rally', name: 'Rally', description: 'Restore up to 2 focus to another ally within 4 hexes. 3 focus.', range: 4, power: 2, cost: 3, shape: 'single', effect: 'focus', sound: 'mend' },
   sanctuary: { id: 'sanctuary', name: 'Sanctuary', description: 'Give allies in a seven-hex area an 8-point barrier. Does not stack. Range 4. 3 focus.', range: 4, power: 8, cost: 3, shape: 'blast', effect: 'guard', sound: 'defend' },
-  bash: { id: 'bash', name: 'Shield bash', description: 'Adjacent enemy. Push the survivor one hex if clear. 1 focus.', range: 1, power: 8, cost: 1, shape: 'single', effect: 'push', sound: 'strike' },
+  bash: { id: 'bash', name: 'Shield bash', description: 'Optional extra action, once per turn before your main action. Hit an adjacent enemy and push the survivor one clear hex. Keeps movement and your main action. 1 focus.', range: 1, power: 8, cost: 1, shape: 'single', bonus: true, effect: 'push', sound: 'strike' },
   cover: { id: 'cover', name: 'Cover', description: 'Give an ally within 2 hexes a 14-point barrier. Does not stack. 2 focus.', range: 2, power: 14, cost: 2, shape: 'single', effect: 'guard', sound: 'defend' },
   sweep: { id: 'sweep', name: 'Saber sweep', description: 'Sweep all six neighboring hexes, including allies. 2 focus.', range: 0, power: 13, cost: 2, shape: 'blast', sound: 'strike' },
   crush: { id: 'crush', name: 'Crushing blow', description: 'Adjacent enemy. Ignore 4 armor with a heavy saber strike. 3 focus.', range: 1, power: 18, cost: 3, shape: 'single', pierce: 4, sound: 'strike' },
@@ -37,7 +38,7 @@ export interface Unit {
   id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
-  guard?: number; dazzledAttacks?: number; level?: number;
+  guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean;
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
@@ -103,6 +104,7 @@ export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = ABILITIES[id];
   if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || b.result || active(b)?.id !== u.id) return false;
+  if (a.bonus && u.bonusUsed) return false;
   if (id === 'bandage' && b.bandages <= 0) return false;
   if (a.shape === 'line') return !equal(u.hex, aim) && distance(u.hex, aim) <= a.range && shape(b, u, id, aim).length > 0;
   if (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles)) return false;
@@ -147,7 +149,7 @@ export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {
   const u = active(b);
-  if (u) { u.defending = false; u.moved = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
+  if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -214,7 +216,11 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
     }
   }
   if((!a.heal&&!a.effect)||a.effect==='push')consumeDazzle(u);
-  finishTurn(b);
+  if (a.bonus) {
+    u.bonusUsed = true;
+    checkGrounding(b);
+    ended(b);
+  } else finishTurn(b);
   return true;
 }
 export function defend(b: Battle): boolean {
@@ -223,7 +229,7 @@ export function defend(b: Battle): boolean {
   log(b, `${u.name} defends: 40% less damage until their next turn.`); finishTurn(b); return true;
 }
 export function wait(b: Battle): boolean {
-  const u = active(b); if (!u || u.waited || u.moved || b.result) return false;
+  const u = active(b); if (!u || u.waited || u.moved || u.bonusUsed || b.result) return false;
   u.waited = true;
   b.queue.shift(); b.queue.push(u.id);
   log(b, `${u.name} waits until the end of the round.`);

@@ -9,7 +9,7 @@ export const COMPANIONS = {
   orrin: { role: 'Mechanic', tool: 'Steam lance', chapter: 1, description: 'Builds engines, tests explanations, and stands by his friends.', maxHp: 54, attack: 13, armor: 0, speed: 5, movement: 2 },
   kit: { role: 'Courier', tool: 'Repeating crossbow', chapter: 2, description: 'Knows the coast routes by heart. Stumbles over his words when Nell thanks him.', maxHp: 38, attack: 10, armor: 0, speed: 9, movement: 4 },
   celia: { role: 'Physician', tool: 'Field medicine', chapter: 2, description: 'Trained in the Benefactor’s hospitals. Treats the people the empire leaves behind.', maxHp: 40, attack: 8, armor: 0, speed: 6, movement: 3 },
-  petra: { role: 'Vanguard', tool: 'Saber and shield', chapter: 3, description: 'An imperial knight learning what her oath is worth when an order is wrong.', maxHp: 62, attack: 14, armor: 1, speed: 4, movement: 2 },
+  petra: { role: 'Vanguard', tool: 'Saber and shield', chapter: 3, description: 'An imperial knight learning what her oath is worth when an order is wrong.', maxHp: 62, attack: 14, armor: 1, speed: 4, movement: 3 },
 } as const;
 export const STAT_LIMITS = { maxHp: [1, 999], attack: [1, 199], armor: [0, 99], speed: [1, 30], movement: [1, 10], focus: [0, 6] } as const;
 export type CharacterStat = keyof typeof STAT_LIMITS;
@@ -20,7 +20,7 @@ export const LEARNING: Record<CompanionId, readonly { level: number; ability: Ab
   nell: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'burst' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'mend' }, { level: 3, ability: 'dazzle' }, { level: 5, ability: 'beacon' }],
   orrin: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'steam' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rivet' }, { level: 3, ability: 'guard' }, { level: 5, ability: 'repulse' }],
   kit: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'quickshot' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'bolt' }, { level: 3, ability: 'feint' }, { level: 5, ability: 'volley' }],
-  celia: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'mend' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rally' }, { level: 3, ability: 'beacon' }, { level: 5, ability: 'sanctuary' }],
+  celia: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'holybolt' }, { level: 1, ability: 'mend' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rally' }, { level: 3, ability: 'beacon' }, { level: 5, ability: 'sanctuary' }],
   petra: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'bash' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'cover' }, { level: 3, ability: 'sweep' }, { level: 5, ability: 'crush' }],
 };
 export function defaultBuild(hero: CompanionId, level = 1): CharacterBuild {

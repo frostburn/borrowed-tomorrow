@@ -11,14 +11,14 @@ The workshop previews companions planned for later story chapters. Kit is a fast
 | Companion | Default HP / Attack / Armor / Speed / Move | Level 1 | Level 2 | Level 3 | Level 5 |
 | --- | --- | --- | --- | --- | --- |
 | Kit | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
-| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Mend, Bandage | Rally | Beacon | Sanctuary |
-| Petra | 62 / 14 / 1 / 4 / 2 | Strike, Shield bash, Bandage | Cover | Saber sweep | Crushing blow |
+| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Holy bolt, Mend, Bandage | Rally | Beacon | Sanctuary |
+| Petra | 62 / 14 / 1 / 4 / 3 | Strike, Shield bash, Bandage | Cover | Saber sweep | Crushing blow |
 
-Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash uses the existing clear-hex push rules. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
+Holy bolt is available at level 1: a single enemy within five hexes, 1 focus, blocked by rocks. It uses Celia’s Attack bonus. Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash is an optional extra action once per turn, before Petra’s main action. It costs 1 focus, uses the existing clear-hex push rules and preserves her movement and main action. Its button disables after use, and waiting is unavailable after a bash. A bash that defeats the final enemy ends combat immediately. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
 
 ## Levels and base stats
 
-Levels range from 1 to 10. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults.
+Levels range from 1 to 10. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
 
 Edit Max HP (1–999), Attack (1–199), Armor (0–99), Speed (1–30), Movement (1–10), or Starting focus (0–6), then choose **Apply base stats**. Plus and minus buttons edit the same fields. Only whole numbers in the shown ranges are accepted; an invalid field prevents the entire build from being applied. **Level defaults** restores the selected character's base stats without changing their level or equipment.
 

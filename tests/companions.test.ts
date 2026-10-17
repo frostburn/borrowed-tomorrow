@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { characterProfiles, COMPANION_IDS, decodeCharacterSettings, defaultBuild, newCharacterSettings, setPartyMember } from '../src/rules/characters';
-import { active, cast, createBattle, damage, legalAim, targets } from '../src/rules/combat';
+import { active, cast, createBattle, damage, defend, legalAim, move, movement, targets, wait } from '../src/rules/combat';
 import { offset, key } from '../src/rules/hex';
 import { decodeInventory, equipmentBonuses, equipItem, newInventory, receiveItem } from '../src/rules/inventory';
 import { newGame, recruitOrrin } from '../src/rules/state';
@@ -96,10 +96,47 @@ it('Sanctuary protects allies around an empty center without replacing a stronge
   expect(cast(b,celia,'sanctuary',center)).toBe(true);
   expect(celia.guard).toBe(8);expect(kit.guard).toBe(8);expect(petra.guard).toBe(14);expect(enemy.guard).toBeUndefined();
 });
-it('Shield bash pushes an adjacent survivor without a retaliation',()=>{
+it('Celia can use Holy bolt at level one, with normal range, cover, focus and main-action rules',()=>{
+  const {b,celia,kit,enemy}=trio(1);celia.hex=offset(4,3);enemy.hex=offset(6,3);
+  expect(legalAim(b,celia,'holybolt',kit.hex)).toBe(false);
+  b.obstacles.add(key(offset(5,3)));expect(cast(b,celia,'holybolt',enemy.hex)).toBe(false);b.obstacles.clear();
+  const destination=enemy.hex;enemy.hex=offset(10,3);expect(legalAim(b,celia,'holybolt',enemy.hex)).toBe(false);enemy.hex=destination;
+  celia.focus=0;expect(cast(b,celia,'holybolt',enemy.hex)).toBe(false);celia.focus=3;
+  const hp=enemy.hp,hit=damage(celia,enemy,'holybolt');
+  expect(hit).toBeGreaterThan(0);expect(cast(b,celia,'holybolt',enemy.hex)).toBe(true);
+  expect(enemy.hp).toBe(hp-hit);expect(celia.focus).toBe(2);expect(active(b)?.id).not.toBe(celia.id);
+});
+it('Shield bash pushes without retaliation and preserves movement and the main action',()=>{
   const {b,petra,enemy}=trio();b.queue=[petra.id,enemy.id,'kit','celia'];petra.hex=offset(5,3);enemy.hex=offset(6,3);
-  const hp=petra.hp,hit=damage(petra,enemy,'bash');enemy.hp=enemy.maxHp=100;
+  const hp=petra.hp,hit=damage(petra,enemy,'bash'),queue=[...b.queue];enemy.hp=enemy.maxHp=100;
   expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(enemy.hex).toEqual(offset(7,3));expect(enemy.hp).toBe(100-hit);expect(petra.hp).toBe(hp);
+  expect(b.queue).toEqual(queue);expect(petra).toMatchObject({bonusUsed:true,moved:false,focus:5});
+  expect(move(b,petra,offset(6,3))).not.toBeNull();
+  const after=enemy.hp;expect(cast(b,petra,'crush',enemy.hex)).toBe(true);expect(enemy.hp).toBeLessThan(after);
+  expect(petra.focus).toBe(2);expect(active(b)?.id).toBe(enemy.id);
+});
+it('Petra moves three hexes, then bashes once even if knockback is blocked, then takes her main action',()=>{
+  const {b,petra,enemy}=trio();b.queue=[petra.id,enemy.id,'kit','celia'];enemy.hex=offset(5,5);enemy.hp=enemy.maxHp=100;
+  expect(movement(b,petra).get(key(offset(4,5)))?.cost).toBe(3);expect(movement(b,petra).has(key(offset(5,5)))).toBe(false);
+  expect(move(b,petra,offset(4,5))).not.toBeNull();b.obstacles.add(key(offset(6,5)));
+  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(enemy.hex).toEqual(offset(5,5));expect(petra.moved).toBe(true);
+  const after=structuredClone(b);expect(cast(b,petra,'bash',enemy.hex)).toBe(false);expect(wait(b)).toBe(false);expect(b).toEqual(after);
+  expect(cast(b,petra,'strike',enemy.hex)).toBe(true);expect(active(b)?.id).toBe(enemy.id);
+});
+it('waiting before a bash is allowed and its use refreshes only on Petra’s next turn',()=>{
+  const {b,petra,enemy}=trio();b.units=[petra,enemy];b.queue=[petra.id,enemy.id];petra.speed=30;
+  petra.hex=offset(5,3);enemy.hex=offset(6,3);enemy.hp=enemy.maxHp=100;b.obstacles.add(key(offset(7,3)));
+  expect(wait(b)).toBe(true);expect(defend(b)).toBe(true);expect(active(b)?.id).toBe(petra.id);
+  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(wait(b)).toBe(false);expect(defend(b)).toBe(true);
+  expect(b.round).toBe(2);expect(active(b)?.id).toBe(petra.id);expect(petra.bonusUsed).toBe(false);
+  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(cast(b,petra,'bash',enemy.hex)).toBe(false);
+});
+it('invalid bashes spend nothing and a bash killing the final enemy wins immediately',()=>{
+  const {b,petra,enemy}=trio();b.units=[petra,enemy];b.queue=[petra.id,enemy.id];petra.hex=offset(5,3);enemy.hex=offset(6,3);
+  const focus=petra.focus;expect(cast(b,petra,'bash',petra.hex)).toBe(false);expect(petra.focus).toBe(focus);expect(petra.bonusUsed).toBeFalsy();
+  petra.focus=0;expect(cast(b,petra,'bash',enemy.hex)).toBe(false);expect(petra.bonusUsed).toBeFalsy();petra.focus=focus;
+  enemy.hp=1;expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(b.result).toBe('victory');
+  expect(petra.focus).toBe(focus-1);expect(move(b,petra,offset(4,3))).toBeNull();
 });
 it('Saber sweep hits neighboring allies and enemies while excluding Petra',()=>{
   const {b,petra,kit,enemy}=trio();b.queue=[petra.id,enemy.id,'kit','celia'];petra.hex=offset(5,3);enemy.hex=offset(6,3);kit.hex=offset(4,3);

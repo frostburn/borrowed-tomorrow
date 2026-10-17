@@ -414,9 +414,9 @@ export class Adventure extends Phaser.Scene {
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
     this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name,key:String(i+2),action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:ABILITIES[id].description})),
-      {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved,action:()=>this.doWait()}]);
-    this.ui.status.textContent=player?(this.selected!=='move'&&ABILITIES[this.selected].range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
+    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name+(ABILITIES[id].bonus?' · Extra':''),key:String(i+2),action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||!!(ABILITIES[id].bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:ABILITIES[id].description})),
+      {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]);
+    this.ui.status.textContent=player?(u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&ABILITIES[this.selected].range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
   }
   private updatePreview() {
@@ -438,7 +438,7 @@ export class Adventure extends Phaser.Scene {
     }else{const text=document.createElement('span');text.className='prediction';text.textContent='Out of range, blocked, or not a valid target.';confirm.append(text);}
   }
   private selectAction(action: Action) {
-    const u=active(this.battle!);if(this.busy||u?.side!=='party')return;
+    const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&ABILITIES[action].bonus&&u.bonusUsed))return;
     this.selected=action;this.plan=undefined;
     if(action!=='move'&&ABILITIES[action].range===0&&legalAim(this.battle!,u,action,u.hex)){
       this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
@@ -461,7 +461,7 @@ export class Adventure extends Phaser.Scene {
     const success=plan.action==='move'?!!move(b,u,plan.hex):cast(b,u,plan.action,plan.hex);
     if(!success){this.plan=undefined;this.drawGrid();this.renderBattleControls();return;}
     this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action==='move'?'move':ABILITIES[plan.action].sound??plan.action as import('./synth').Effect,this.state.location.map);
-    if(plan.action==='move')this.selected=u.abilities[0];else this.selected='move';
+    if(plan.action==='move'||active(b)?.id===u.id&&u.moved)this.selected=u.abilities[0];else this.selected='move';
     this.animateBattle(before);
   }
   private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
