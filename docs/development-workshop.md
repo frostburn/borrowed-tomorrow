@@ -11,10 +11,10 @@ The workshop previews companions planned for later story chapters. Kit is a fast
 | Companion | Default HP / Attack / Armor / Speed / Move | Level 1 | Level 2 | Level 3 | Level 5 |
 | --- | --- | --- | --- | --- | --- |
 | Kit | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
-| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Holy bolt, Mend, Bandage | Rally | Beacon | Sanctuary |
-| Petra | 62 / 14 / 1 / 4 / 3 | Strike, Shield bash, Bandage | Cover | Saber sweep | Crushing blow |
+| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Celestial bolt, Mend, Bandage | Rally | Beacon | Sanctuary |
+| Petra | 62 / 14 / 1 / 4 / 3 | Strike, Shield bash, Bandage | Taunt | Saber sweep | Crushing blow |
 
-Holy bolt is available at level 1: a single enemy within five hexes, 1 focus, blocked by rocks. It uses Celia’s Attack bonus. Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash is an optional extra action once per turn, before Petra’s main action. It costs 1 focus, uses the existing clear-hex push rules and preserves her movement and main action. Its button disables after use, and waiting is unavailable after a bash. A bash that defeats the final enemy ends combat immediately. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
+Celestial bolt is available at level 1: a weak attack on any enemy, 1 focus, ignoring distance and obstacles. It uses Celia’s Attack bonus. Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash is an optional extra action once per turn, before Petra’s main action. It deals no damage, leaves barriers and Dazzle counters unchanged, costs 1 focus, uses the existing clear-hex push rules and preserves her movement and main action. Its button disables after use, and waiting is unavailable after a bash. Taunt replaces Cover at level 2. Select it to preview all affected enemies, then confirm without aiming. For 2 focus, every enemy targets Petra until her next turn; enemies that cannot reach her approach her instead of attacking someone else. Area attacks can still catch other units. Taunt ends early if Petra falls. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
 
 ## Levels and base stats
 

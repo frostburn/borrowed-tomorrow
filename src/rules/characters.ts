@@ -20,8 +20,8 @@ export const LEARNING: Record<CompanionId, readonly { level: number; ability: Ab
   nell: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'burst' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'mend' }, { level: 3, ability: 'dazzle' }, { level: 5, ability: 'beacon' }],
   orrin: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'steam' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rivet' }, { level: 3, ability: 'guard' }, { level: 5, ability: 'repulse' }],
   kit: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'quickshot' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'bolt' }, { level: 3, ability: 'feint' }, { level: 5, ability: 'volley' }],
-  celia: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'holybolt' }, { level: 1, ability: 'mend' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rally' }, { level: 3, ability: 'beacon' }, { level: 5, ability: 'sanctuary' }],
-  petra: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'bash' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'cover' }, { level: 3, ability: 'sweep' }, { level: 5, ability: 'crush' }],
+  celia: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'celestialbolt' }, { level: 1, ability: 'mend' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rally' }, { level: 3, ability: 'beacon' }, { level: 5, ability: 'sanctuary' }],
+  petra: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'bash' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'taunt' }, { level: 3, ability: 'sweep' }, { level: 5, ability: 'crush' }],
 };
 export function defaultBuild(hero: CompanionId, level = 1): CharacterBuild {
   if (!Number.isInteger(level) || level < 1 || level > 10) throw new Error('Level must be 1–10.');

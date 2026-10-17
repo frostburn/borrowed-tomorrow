@@ -7,8 +7,8 @@ import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
 import type { Effect } from '../game/synth';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'holybolt' | 'rally' | 'sanctuary' | 'bash' | 'cover' | 'sweep' | 'crush';
-export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; bonus?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'focus'; pierce?: number; sound?: Effect }
+export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush';
+export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },
@@ -26,11 +26,11 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   bolt: { id: 'bolt', name: 'Piercing bolt', description: 'One enemy within 5 hexes. Ignores 2 armor. 1 focus.', range: 5, power: 10, cost: 1, shape: 'single', pierce: 2, sound: 'peck' },
   feint: { id: 'feint', name: 'Feint', description: 'An enemy within 4 hexes is dazzled: its next three attacks deal 40% less damage. 2 focus.', range: 4, power: 0, cost: 2, shape: 'single', effect: 'weaken', sound: 'flare' },
   volley: { id: 'volley', name: 'Volley', description: 'Seven-hex crossbow volley. Hits allies too. Range 5. 3 focus.', range: 5, power: 13, cost: 3, shape: 'blast', sound: 'peck' },
-  holybolt: { id: 'holybolt', name: 'Holy bolt', description: 'A bolt of light at one enemy within 5 hexes. Rocks block the aim. 1 focus.', range: 5, power: 12, cost: 1, shape: 'single', sound: 'flare' },
+  celestialbolt: { id: 'celestialbolt', name: 'Celestial bolt', description: 'A weak celestial bolt at any enemy. Ignores distance and obstacles. 1 focus.', unrestricted: true, range: 99, power: 8, cost: 1, shape: 'single', sound: 'flare' },
   rally: { id: 'rally', name: 'Rally', description: 'Restore up to 2 focus to another ally within 4 hexes. 3 focus.', range: 4, power: 2, cost: 3, shape: 'single', effect: 'focus', sound: 'mend' },
   sanctuary: { id: 'sanctuary', name: 'Sanctuary', description: 'Give allies in a seven-hex area an 8-point barrier. Does not stack. Range 4. 3 focus.', range: 4, power: 8, cost: 3, shape: 'blast', effect: 'guard', sound: 'defend' },
-  bash: { id: 'bash', name: 'Shield bash', description: 'Optional extra action, once per turn before your main action. Hit an adjacent enemy and push the survivor one clear hex. Keeps movement and your main action. 1 focus.', range: 1, power: 8, cost: 1, shape: 'single', bonus: true, effect: 'push', sound: 'strike' },
-  cover: { id: 'cover', name: 'Cover', description: 'Give an ally within 2 hexes a 14-point barrier. Does not stack. 2 focus.', range: 2, power: 14, cost: 2, shape: 'single', effect: 'guard', sound: 'defend' },
+  bash: { id: 'bash', name: 'Shield bash', description: 'Optional extra action, once per turn before your main action. Push an adjacent enemy one clear hex without dealing damage. Keeps movement and your main action. 1 focus.', range: 1, power: 0, cost: 1, shape: 'single', bonus: true, effect: 'shove', sound: 'strike' },
+  taunt: { id: 'taunt', name: 'Taunt', description: 'All enemies target you until your next turn. Those out of reach approach you. 2 focus.', range: 0, power: 0, cost: 2, shape: 'single', effect: 'taunt', sound: 'defend' },
   sweep: { id: 'sweep', name: 'Saber sweep', description: 'Sweep all six neighboring hexes, including allies. 2 focus.', range: 0, power: 13, cost: 2, shape: 'blast', sound: 'strike' },
   crush: { id: 'crush', name: 'Crushing blow', description: 'Adjacent enemy. Ignore 4 armor with a heavy saber strike. 3 focus.', range: 1, power: 18, cost: 3, shape: 'single', pierce: 4, sound: 'strike' },
 };
@@ -38,7 +38,7 @@ export interface Unit {
   id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
-  guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean;
+  guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
@@ -92,6 +92,7 @@ export function movement(b: Battle, u: Unit) {
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
+  if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).map(v => v.hex);
   if (a.shape === 'blast') return blast(aim);
   if (a.shape === 'line') return ray(u.hex, aim, a.range, b.obstacles);
   return [aim];
@@ -101,13 +102,19 @@ export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
   return alive(b).filter(v => affected.has(key(v.hex)) && (!friendly || v.side === u.side) && (!(a.shape === 'blast' && a.range === 0) || v.id !== u.id));
 }
+export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
+  return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
+}
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = ABILITIES[id];
   if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || b.result || active(b)?.id !== u.id) return false;
   if (a.bonus && u.bonusUsed) return false;
   if (id === 'bandage' && b.bandages <= 0) return false;
+  if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
+  const forced = tauntTarget(b, u);
+  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' ? !shape(b,u,id,aim).some(h => equal(h,forced.hex)) : !equal(aim,forced.hex))) return false;
   if (a.shape === 'line') return !equal(u.hex, aim) && distance(u.hex, aim) <= a.range && shape(b, u, id, aim).length > 0;
-  if (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles)) return false;
+  if (!a.unrestricted && (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles))) return false;
   const v = unitAt(b, aim);
   if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&t.hp<t.maxHp);
   if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<a.power);
@@ -124,7 +131,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId): number {
   if (a.heal) return Math.min(v.maxHp - v.hp, a.power);
   if (a.effect==='guard') return Math.max(0,a.power-(v.guard??0));
   if (a.effect==='focus') return Math.min(6-v.focus,a.power);
-  if (a.effect==='weaken') return 0;
+  if (a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id)-(v.guard??0));
 }
@@ -149,6 +156,7 @@ export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {
   const u = active(b);
+  for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
 }
 function nextRound(b: Battle) {
@@ -196,20 +204,22 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage') b.bandages--;
   const hit = targets(b, u, id, aim);
   for (const v of hit) {
-    if(a.effect==='weaken'){v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
+    if(a.effect==='taunt'){v.tauntedBy=u.id;log(b,`${v.name} targets ${u.name} until ${u.name}’s next turn.`);}
+    else if(a.effect==='shove'){log(b,`${u.name}: ${a.name} deals no damage.`);}
+    else if(a.effect==='weaken'){v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,a.power);log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
     else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(6,v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
     else if(a.heal){const amount=damage(u,v,id);v.hp=Math.min(v.maxHp,v.hp+amount);log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id);
       log(b,`${u.name}: ${a.name} hits ${v.name} for ${amount}${absorbed?` (${absorbed} guarded)`:''}${v.hp?'.':' — down.'}`);
-      if(a.effect==='push'&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
     }
+    if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
   if (!hit.length) log(b, `${u.name}'s ${a.name} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
-    if (defender && defender.hp > 0 && !defender.retaliated && distance(u.hex, defender.hex) === 1) {
+    if (defender && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && distance(u.hex, defender.hex) === 1) {
       defender.retaliated = true;
       const {amount} = hurt(defender, u, 'strike');consumeDazzle(defender);
       log(b, `${defender.name} retaliates for ${amount}.`);
@@ -239,7 +249,7 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
-  const enemies = alive(b).filter(v => v.side !== u.side);
+  const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   let best: { pos: Hex; aim: Hex; ability: AbilityId; score: number } | null = null;
   const original = u.hex;
   for (const reach of movement(b, u).values()) {
@@ -255,7 +265,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
           const victim = unitAt(b, aim);
           if (victim && !victim.retaliated && victim.hp > damage(u, victim, id)) score -= damage(victim, u, 'strike') * 0.6;
         }
-        if (score > 0 && (!best || score > best.score)) best = { pos: reach.hex, aim, ability: id, score };
+        if ((forced || score > 0) && (!best || score > best.score)) best = { pos: reach.hex, aim, ability: id, score };
       }
     }
   }
@@ -266,7 +276,8 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    const approach=(h:Hex)=>Math.min(...enemies.map(v=>distance(h,v.hex)))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).map(v=>key(v.hex))]),h=>u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
+    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...enemies.map(v=>distance(h,v.hex))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
     visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);

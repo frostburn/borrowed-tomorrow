@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { characterProfiles, COMPANION_IDS, decodeCharacterSettings, defaultBuild, newCharacterSettings, setPartyMember } from '../src/rules/characters';
-import { active, cast, createBattle, damage, defend, legalAim, move, movement, targets, wait } from '../src/rules/combat';
-import { offset, key } from '../src/rules/hex';
+import { active, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, targets, tauntTarget, wait } from '../src/rules/combat';
+import { offset, key, equal } from '../src/rules/hex';
 import { decodeInventory, equipmentBonuses, equipItem, newInventory, receiveItem } from '../src/rules/inventory';
 import { newGame, recruitOrrin } from '../src/rules/state';
 
@@ -96,21 +96,24 @@ it('Sanctuary protects allies around an empty center without replacing a stronge
   expect(cast(b,celia,'sanctuary',center)).toBe(true);
   expect(celia.guard).toBe(8);expect(kit.guard).toBe(8);expect(petra.guard).toBe(14);expect(enemy.guard).toBeUndefined();
 });
-it('Celia can use Holy bolt at level one, with normal range, cover, focus and main-action rules',()=>{
+it('Celia can use Celestial bolt at level one, ignoring distance and cover but respecting focus and enemy targeting',()=>{
   const {b,celia,kit,enemy}=trio(1);celia.hex=offset(4,3);enemy.hex=offset(6,3);
-  expect(legalAim(b,celia,'holybolt',kit.hex)).toBe(false);
-  b.obstacles.add(key(offset(5,3)));expect(cast(b,celia,'holybolt',enemy.hex)).toBe(false);b.obstacles.clear();
-  const destination=enemy.hex;enemy.hex=offset(10,3);expect(legalAim(b,celia,'holybolt',enemy.hex)).toBe(false);enemy.hex=destination;
-  celia.focus=0;expect(cast(b,celia,'holybolt',enemy.hex)).toBe(false);celia.focus=3;
-  const hp=enemy.hp,hit=damage(celia,enemy,'holybolt');
-  expect(hit).toBeGreaterThan(0);expect(cast(b,celia,'holybolt',enemy.hex)).toBe(true);
+  expect(legalAim(b,celia,'celestialbolt',kit.hex)).toBe(false);
+  b.obstacles.add(key(offset(5,3)));expect(legalAim(b,celia,'celestialbolt',enemy.hex)).toBe(true);
+  enemy.hex=offset(10,3);b.obstacles.add(key(enemy.hex));expect(legalAim(b,celia,'celestialbolt',enemy.hex)).toBe(true);
+  expect(legalAim(b,celia,'celestialbolt',offset(9,6))).toBe(false);expect(legalAim(b,celia,'celestialbolt',{q:99,r:99})).toBe(false);
+  celia.focus=0;expect(cast(b,celia,'celestialbolt',enemy.hex)).toBe(false);celia.focus=3;
+  const hp=enemy.hp,hit=damage(celia,enemy,'celestialbolt');
+  expect(hit).toBe(5);expect(cast(b,celia,'celestialbolt',enemy.hex)).toBe(true);
   expect(enemy.hp).toBe(hp-hit);expect(celia.focus).toBe(2);expect(active(b)?.id).not.toBe(celia.id);
 });
 it('Shield bash pushes without retaliation and preserves movement and the main action',()=>{
   const {b,petra,enemy}=trio();b.queue=[petra.id,enemy.id,'kit','celia'];petra.hex=offset(5,3);enemy.hex=offset(6,3);
-  const hp=petra.hp,hit=damage(petra,enemy,'bash'),queue=[...b.queue];enemy.hp=enemy.maxHp=100;
-  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(enemy.hex).toEqual(offset(7,3));expect(enemy.hp).toBe(100-hit);expect(petra.hp).toBe(hp);
+  const hp=petra.hp,queue=[...b.queue];enemy.hp=enemy.maxHp=100;enemy.guard=12;petra.dazzledAttacks=3;petra.bonus=100;
+  expect(damage(petra,enemy,'bash')).toBe(0);
+  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(enemy.hex).toEqual(offset(7,3));expect(enemy.hp).toBe(100);expect(enemy.guard).toBe(12);expect(petra.hp).toBe(hp);expect(petra.dazzledAttacks).toBe(3);
   expect(b.queue).toEqual(queue);expect(petra).toMatchObject({bonusUsed:true,moved:false,focus:5});
+  petra.bonus=11;
   expect(move(b,petra,offset(6,3))).not.toBeNull();
   const after=enemy.hp;expect(cast(b,petra,'crush',enemy.hex)).toBe(true);expect(enemy.hp).toBeLessThan(after);
   expect(petra.focus).toBe(2);expect(active(b)?.id).toBe(enemy.id);
@@ -131,16 +134,61 @@ it('waiting before a bash is allowed and its use refreshes only on Petra’s nex
   expect(b.round).toBe(2);expect(active(b)?.id).toBe(petra.id);expect(petra.bonusUsed).toBe(false);
   expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(cast(b,petra,'bash',enemy.hex)).toBe(false);
 });
-it('invalid bashes spend nothing and a bash killing the final enemy wins immediately',()=>{
+it('invalid bashes spend nothing and a bash cannot kill even a one-HP enemy',()=>{
   const {b,petra,enemy}=trio();b.units=[petra,enemy];b.queue=[petra.id,enemy.id];petra.hex=offset(5,3);enemy.hex=offset(6,3);
   const focus=petra.focus;expect(cast(b,petra,'bash',petra.hex)).toBe(false);expect(petra.focus).toBe(focus);expect(petra.bonusUsed).toBeFalsy();
   petra.focus=0;expect(cast(b,petra,'bash',enemy.hex)).toBe(false);expect(petra.bonusUsed).toBeFalsy();petra.focus=focus;
-  enemy.hp=1;expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(b.result).toBe('victory');
-  expect(petra.focus).toBe(focus-1);expect(move(b,petra,offset(4,3))).toBeNull();
+  enemy.hp=1;expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(b.result).toBeNull();expect(enemy.hp).toBe(1);
+  expect(petra.focus).toBe(focus-1);expect(move(b,petra,offset(6,3))).not.toBeNull();expect(cast(b,petra,'strike',enemy.hex)).toBe(true);expect(b.result).toBe('victory');
 });
 it('Saber sweep hits neighboring allies and enemies while excluding Petra',()=>{
   const {b,petra,kit,enemy}=trio();b.queue=[petra.id,enemy.id,'kit','celia'];petra.hex=offset(5,3);enemy.hex=offset(6,3);kit.hex=offset(4,3);
   const hp=petra.hp,allyHp=kit.hp,hit=damage(petra,kit,'sweep');
   expect(targets(b,petra,'sweep',petra.hex).map(u=>u.id)).toEqual(['kit',enemy.id]);
   expect(cast(b,petra,'sweep',petra.hex)).toBe(true);expect(petra.hp).toBe(hp);expect(kit.hp).toBe(allyHp-hit);
+});
+
+it('Taunt affects every living enemy across the board and consumes the main action',()=>{
+  const {b,petra,celia}=trio();b.queue=[petra.id,...b.queue.filter(id=>id!==petra.id)];
+  const enemies=b.units.filter(u=>u.side==='enemy'),hp=b.units.map(u=>u.hp);
+  b.obstacles.add(key(petra.hex));
+  expect(legalAim(b,petra,'taunt',celia.hex)).toBe(false);
+  expect(targets(b,petra,'taunt',petra.hex)).toEqual(enemies);
+  expect(cast(b,petra,'taunt',petra.hex)).toBe(true);
+  expect(enemies.every(u=>tauntTarget(b,u)===petra)).toBe(true);expect(b.units.map(u=>u.hp)).toEqual(hp);
+  expect(petra.focus).toBe(4);expect(active(b)?.id).not.toBe(petra.id);
+});
+it('taunted melee, ranged, line and blast enemies attack Petra despite a vulnerable alternative',()=>{
+  for(const abilities of [['strike'],['peck','strike'],['steam'],['flare']] as const){
+    const {b,petra,enemy,celia,kit}=trio();b.units=[petra,enemy,celia,kit];b.queue=[petra.id,enemy.id,celia.id,kit.id];
+    petra.hex=offset(5,3);enemy.hex=offset(7,3);celia.hex=offset(7,4);celia.hp=1;kit.hex=offset(1,1);
+    enemy.abilities=[...abilities];const hp=petra.hp;
+    expect(cast(b,petra,'taunt',petra.hex)).toBe(true);
+    if(abilities[0]!=='steam')expect(legalAim(b,enemy,abilities[0],celia.hex)).toBe(false);
+    expect(enemyTurn(b)).not.toBe('defend');expect(petra.hp).toBeLessThan(hp);
+    if(abilities[0]==='strike'||abilities[0]==='peck')expect(celia.hp).toBe(1);
+  }
+});
+it('a taunted enemy approaches Petra instead of attacking an adjacent ally when she is out of reach',()=>{
+  const {b,petra,enemy,celia}=trio();b.units=[petra,enemy,celia];b.queue=[petra.id,enemy.id,celia.id];
+  petra.hex=offset(1,3);enemy.hex=offset(9,3);celia.hex=offset(8,3);enemy.movement=1;celia.hp=1;
+  expect(cast(b,petra,'taunt',petra.hex)).toBe(true);const before={...enemy.hex};
+  expect(enemyTurn(b)).toBe('defend');expect(equal(enemy.hex,before)).toBe(false);expect(celia.hp).toBe(1);
+});
+it('Taunt expires at Petra’s next turn and is unavailable below level two or without focus',()=>{
+  for(const level of [1,2]){
+    const {b,petra}=trio(level);petra.speed=31;b.queue=[petra.id,...b.units.filter(u=>u.id!==petra.id).map(u=>u.id)];
+    petra.focus=1;expect(cast(b,petra,'taunt',petra.hex)).toBe(false);petra.focus=6;
+    expect(cast(b,petra,'taunt',petra.hex)).toBe(level===2);
+    if(level===1)continue;
+    for(let i=0;i<b.units.length&&active(b)?.id!==petra.id;i++)expect(defend(b)).toBe(true);
+    expect(active(b)?.id).toBe(petra.id);expect(b.units.every(u=>!u.tauntedBy)).toBe(true);
+  }
+});
+it('Taunt prevents retaliation against other allies and releases enemies when Petra falls',()=>{
+  const {b,petra,enemy,kit,celia}=trio();b.units=[petra,kit,enemy,celia];b.queue=[petra.id,kit.id,enemy.id,celia.id];
+  petra.hex=offset(1,1);kit.hex=offset(5,3);enemy.hex=offset(6,3);celia.hex=offset(1,5);enemy.hp=100;
+  expect(cast(b,petra,'taunt',petra.hex)).toBe(true);const hp=kit.hp;
+  expect(cast(b,kit,'strike',enemy.hex)).toBe(true);expect(kit.hp).toBe(hp);
+  petra.hp=0;kit.retaliated=true;expect(tauntTarget(b,enemy)).toBeUndefined();expect(enemyTurn(b)).toBe('strike');expect(kit.hp).toBeLessThan(hp);
 });
