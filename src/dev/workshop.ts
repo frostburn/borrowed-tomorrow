@@ -137,7 +137,7 @@ class Workshop {
     this.ui.status.textContent = 'Workshop / Esc returns to character settings · Practice earns no campaign progress';
   }
   help() {
-    this.ui.showModal('Character workshop', '<p>Choose Nell or Orrin. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses both character builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next attack, including retaliation. Pressure wave can hit allies and pushes only into clear hexes.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
+    this.ui.showModal('Character workshop', '<p>Choose Nell or Orrin. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses both character builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next three attacks, including retaliations. Selecting Pressure wave immediately previews its area; confirm to use it. It can hit allies and pushes only into clear hexes.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
   }
 }
 export function startWorkshop(root: HTMLElement) {

@@ -16,17 +16,17 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   bandage: { id: 'bandage', name: 'Bandage', description: 'Restore 24 HP to an ally. Range 3. Uses one shared bandage.', range: 3, power: 24, cost: 0, shape: 'single', heal: true },
   peck: { id: 'peck', name: 'Cinder peck', description: 'Ranged attack. Rocks block the shot; adjacent enemies force melee.', range: 5, power: 7, cost: 0, shape: 'single' },
   flare: { id: 'flare', name: 'Signal flare', description: 'A seven-hex blast that punishes clustering. 2 focus.', range: 5, power: 9, cost: 2, shape: 'blast' },
-  dazzle: { id: 'dazzle', name: 'Dazzle', description: 'Enemy within 4 hexes. Its next attack deals 40% less damage, including retaliation. 2 focus.', range: 4, power: 0, cost: 2, shape: 'single', effect: 'weaken', sound: 'flare' },
+  dazzle: { id: 'dazzle', name: 'Dazzle', description: 'Enemy within 4 hexes. Its next three attacks deal 40% less damage, including retaliations. 2 focus.', range: 4, power: 0, cost: 2, shape: 'single', effect: 'weaken', sound: 'flare' },
   beacon: { id: 'beacon', name: 'Beacon', description: 'Restore 14 HP to allies in a seven-hex area. Range 4. Does not heal enemies. 3 focus.', range: 4, power: 14, cost: 3, shape: 'blast', heal: true, sound: 'mend' },
   rivet: { id: 'rivet', name: 'Rivet shot', description: 'One enemy within 5 hexes. Ignores 2 armor; rocks block the shot. 1 focus.', range: 5, power: 10, cost: 1, shape: 'single', pierce: 2, sound: 'peck' },
   guard: { id: 'guard', name: 'Safety guard', description: 'Give an ally within 3 hexes a 10-point damage barrier until absorbed. Does not stack. 2 focus.', range: 3, power: 10, cost: 2, shape: 'single', effect: 'guard', sound: 'defend' },
-  repulse: { id: 'repulse', name: 'Pressure wave', description: 'Hit all six neighboring hexes, including allies. Push survivors one hex if clear. 3 focus. Aim at Orrin.', range: 0, power: 8, cost: 3, shape: 'blast', effect: 'push', sound: 'steam' },
+  repulse: { id: 'repulse', name: 'Pressure wave', description: 'Hit all six hexes around Orrin, including allies. Push survivors one hex if clear. 3 focus.', range: 0, power: 8, cost: 3, shape: 'blast', effect: 'push', sound: 'steam' },
 };
 export interface Unit {
   id: string; name: string; kind: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
-  guard?: number; weakened?: boolean; level?: number;
+  guard?: number; dazzledAttacks?: number; level?: number;
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
@@ -91,7 +91,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (a.effect==='guard') return !!v && v.side===u.side && (v.guard??0)<a.power;
   if (a.shape === 'single') {
     if (!v || v.side === u.side) return false;
-    if (a.effect==='weaken' && v.weakened) return false;
+    if (a.effect==='weaken' && v.dazzledAttacks) return false;
     if (id === 'peck' && alive(b).some(t => t.side !== u.side && distance(t.hex, u.hex) === 1)) return false;
   }
   return true;
@@ -107,8 +107,9 @@ export function damage(u: Unit, v: Unit, id: AbilityId): number {
 function attackDamage(u: Unit, v: Unit, id: AbilityId) {
   const a = ABILITIES[id];
   const armor = Math.max(0, v.armor - (a.pierce ?? 0));
-  return Math.max(1, Math.round((a.power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.weakened ? .6 : 1)));
+  return Math.max(1, Math.round((a.power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.dazzledAttacks ? .6 : 1)));
 }
+function consumeDazzle(u: Unit) { if (u.dazzledAttacks) u.dazzledAttacks--; }
 function hurt(u: Unit, v: Unit, id: AbilityId) {
   const amount = damage(u, v, id);
   const absorbed = v.sealed ? 0 : Math.min(v.guard ?? 0, attackDamage(u, v, id));
@@ -171,7 +172,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage') b.bandages--;
   const hit = targets(b, u, id, aim);
   for (const v of hit) {
-    if(a.effect==='weaken'){v.weakened=true;log(b,`${v.name} is dazzled: their next attack deals 40% less damage.`);}
+    if(a.effect==='weaken'){v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,a.power);log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
     else if(a.heal){const amount=damage(u,v,id);v.hp=Math.min(v.maxHp,v.hp+amount);log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
@@ -185,11 +186,11 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
     const defender = hit[0];
     if (defender && defender.hp > 0 && !defender.retaliated && distance(u.hex, defender.hex) === 1) {
       defender.retaliated = true;
-      const {amount} = hurt(defender, u, 'strike');defender.weakened=false;
+      const {amount} = hurt(defender, u, 'strike');consumeDazzle(defender);
       log(b, `${defender.name} retaliates for ${amount}.`);
     }
   }
-  if((!a.heal&&!a.effect)||a.effect==='push')u.weakened=false;
+  if((!a.heal&&!a.effect)||a.effect==='push')consumeDazzle(u);
   finishTurn(b);
   return true;
 }

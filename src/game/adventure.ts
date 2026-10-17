@@ -368,7 +368,7 @@ export class Adventure extends Phaser.Scene {
       this.layer.add(img);this.actorImages.set(u.id,img);
       if(u.hp>0){const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(p.x-23,p.y+18,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(p.x-22,p.y+19,44*u.hp/u.maxHp,4);this.layer.add(g);
         const t=this.label(p.x,p.y+28,String(u.hp),'#f4e5be',2);this.layer.add(t);
-        if(u.guard||u.weakened)this.layer.add(this.label(p.x,p.y+44,[u.guard?`Guard ${u.guard}`:'',u.weakened?'Dazzled':''].filter(Boolean).join(' · '),'#87a3a2',1));
+        if(u.guard||u.dazzledAttacks)this.layer.add(this.label(p.x,p.y+44,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
     this.drawGrid();this.drawInitiative();
@@ -412,11 +412,11 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.weakened?'Dazzled':''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name,key:String(i+2),action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:ABILITIES[id].description})),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved,action:()=>this.doWait()}]);
-    this.ui.status.textContent=player?'Select an action, then a hex. Confirm to commit. Move once, then act.':'Enemy turn · watch the initiative order';
+    this.ui.status.textContent=player?(this.selected!=='move'&&ABILITIES[this.selected].range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
   }
   private updatePreview() {
@@ -432,14 +432,22 @@ export class Adventure extends Phaser.Scene {
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
     }else if(legalAim(b,u,this.selected,aimed)){
       const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);
-      const description=hits.map(v=>ability.effect==='weaken'?`${v.name}: next attack −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId)} guard`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`).join(' · ')||'Empty ground';
+      const description=hits.map(v=>ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId)} guard`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`).join(' · ')||'Empty ground';
       if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='guard'||ability.effect==='weaken'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
       const text=document.createElement('span');text.className='prediction';text.textContent=description;confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction';text.textContent='Out of range, blocked, or not a valid target.';confirm.append(text);}
   }
-  private selectAction(action: Action) { if(this.busy||active(this.battle!)?.side!=='party')return;this.selected=action;this.plan=undefined;this.drawGrid();this.renderBattleControls(); }
+  private selectAction(action: Action) {
+    const u=active(this.battle!);if(this.busy||u?.side!=='party')return;
+    this.selected=action;this.plan=undefined;
+    if(action!=='move'&&ABILITIES[action].range===0&&legalAim(this.battle!,u,action,u.hex)){
+      this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};this.revealHex(u.hex);
+    }
+    this.drawGrid();this.renderBattleControls();
+  }
   private chooseHex(hex: Hex) {
     const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||b.result)return;
+    if(this.selected!=='move'&&ABILITIES[this.selected].range===0)return;
     this.hover=hex;this.battleCursor=hex;
     const valid=this.selected==='move'?!!movement(b,u).get(key(hex))?.path.length:legalAim(b,u,this.selected,hex);
     if(valid){this.plan={action:this.selected,hex};this.audio.effect('click');}

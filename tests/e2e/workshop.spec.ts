@@ -87,7 +87,14 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await page.locator('.actions').getByRole('button', { name: /^1\s+Move$/ }).click(); await clickHex(page, offset(5, 3));
     await page.getByRole('button', { name: /^Confirm move/ }).click();
     await expect(page.locator('.actions').getByRole('button', { name: /^7\s+Pressure wave$/ })).toBeEnabled();
-    await page.keyboard.press('7'); await clickHex(page, offset(5, 3));
+    const beforeWave=(await inspect(page)).battle!;
+    await page.locator('.actions').getByRole('button', { name: /^7\s+Pressure wave$/ }).click();
+    await expect(page.getByRole('button', { name: 'Confirm attack', exact: true })).toBeInViewport();
+    expect((await inspect(page)).battle).toEqual(beforeWave);
+    await page.locator('.actions').getByRole('button', { name: /^2\s+Strike$/ }).click();
+    await expect(page.getByRole('button', { name: 'Confirm attack', exact: true })).toHaveCount(0);
+    await page.keyboard.press('7');
+    await expect(page.getByRole('button', { name: 'Confirm attack', exact: true })).toBeInViewport();
     await expect(page.locator('.prediction')).toContainText('pushed one hex');
     await capture(page, `workshop-push-${device}`); await page.getByRole('button', { name: 'Confirm attack', exact: true }).click();
     await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.kind === 'hound')!.hex).toEqual(offset(7, 3));
@@ -96,9 +103,10 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await page.getByRole('button', { name: /^Confirm move/ }).click();
     await expect(page.locator('.actions').getByRole('button', { name: /^6\s+Dazzle$/ })).toBeEnabled();
     await page.keyboard.press('6'); await clickHex(page, offset(7, 3));
-    await expect(page.locator('.prediction')).toContainText('next attack −40%');
+    await expect(page.locator('.prediction')).toContainText('next 3 attacks −40%');
     await page.getByRole('button', { name: 'Confirm ability', exact: true }).click();
     await expect.poll(async () => (await inspect(page)).battle!.queue[0]).toBe('orrin');
+    expect((await inspect(page)).battle!.units.find(u => u.kind === 'hound')!.dazzledAttacks).toBe(2);
     await expect(page.locator('.actions').getByRole('button', { name: /^F\s+Defend$/ })).toBeEnabled();
     await page.locator('.actions').getByRole('button', { name: /^F\s+Defend$/ }).click();
     await expect(page.locator('.actions').getByRole('button', { name: /^7\s+Beacon$/ })).toBeEnabled();

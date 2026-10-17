@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings } from '../src/rules/characters';
-import { active, cast, createBattle, damage, legalAim, pushDestination, targets } from '../src/rules/combat';
+import { active, cast, createBattle, damage, defend, legalAim, move, pushDestination, targets, wait } from '../src/rules/combat';
 import { key, offset } from '../src/rules/hex';
 import { equipmentBonuses, equipItem, newInventory, receiveItem } from '../src/rules/inventory';
 import { newGame, recruitOrrin } from '../src/rules/state';
@@ -57,27 +57,60 @@ it('uses edited base stats plus gear in practice without changing the campaign b
   expect(campaign.units[0].abilities).not.toContain('beacon'); expect(state.xp).toBe(0);
 });
 
-it('Dazzle weakens exactly one enemy attack, spends focus, and cannot be reapplied while active', () => {
+it('Dazzle weakens three attacks, spends focus, and cannot be reapplied until those attacks are used', () => {
   const { b, nell, enemy } = practice();
   const normal = damage(enemy, nell, 'strike');
   expect(cast(b, nell, 'dazzle', enemy.hex)).toBe(true); expect(nell.focus).toBe(4);
   b.queue = [nell.id, enemy.id, 'orrin'];
   expect(legalAim(b, nell, 'dazzle', enemy.hex)).toBe(false);
-  b.queue = [enemy.id, nell.id, 'orrin'];
-  const hp = nell.hp;
-  expect(cast(b, enemy, 'strike', nell.hex)).toBe(true);
-  expect(hp - nell.hp).toBe(Math.round(normal * .6)); expect(enemy.weakened).toBe(false);
+  for(let remaining=3;remaining>0;remaining--){
+    b.queue = [enemy.id, nell.id, 'orrin'];
+    const hp = nell.hp;
+    expect(cast(b, enemy, 'strike', nell.hex)).toBe(true);
+    expect(hp - nell.hp).toBe(Math.round(normal * .6)); expect(enemy.dazzledAttacks).toBe(remaining-1);
+  }
   expect(damage(enemy, nell, 'strike')).toBe(normal);
+  b.queue = [enemy.id, nell.id, 'orrin']; const hp = nell.hp;
+  expect(cast(b, enemy, 'strike', nell.hex)).toBe(true); expect(hp - nell.hp).toBe(normal);
+  expect(legalAim(b, nell, 'dazzle', enemy.hex)).toBe(true);
 });
 
-it('Dazzle also weakens retaliation and is consumed by that retaliation', () => {
+it('retaliation consumes one of Dazzle’s three attacks', () => {
   const { b, nell, orrin, enemy } = practice();
   const normal = damage(enemy, orrin, 'strike');
   cast(b, nell, 'dazzle', enemy.hex);
   const hp = orrin.hp; expect(active(b)?.id).toBe(orrin.id);
   expect(cast(b, orrin, 'strike', enemy.hex)).toBe(true);
   expect(hp - orrin.hp).toBe(Math.round(normal * .6));
-  expect(enemy.weakened).toBe(false); expect(enemy.retaliated).toBe(true);
+  expect(enemy.dazzledAttacks).toBe(2); expect(enemy.retaliated).toBe(true);
+});
+
+it('movement, waiting, defending, healing, guard and new rounds preserve Dazzle attacks', () => {
+  const { b, nell, enemy } = practice();
+  cast(b, nell, 'dazzle', enemy.hex);
+  b.queue = [enemy.id, nell.id, 'orrin'];
+  expect(wait(b)).toBe(true); expect(enemy.dazzledAttacks).toBe(3);
+  b.queue = [enemy.id, nell.id, 'orrin'];
+  expect(move(b, enemy, {q: enemy.hex.q+1, r: enemy.hex.r})).not.toBeNull();
+  expect(enemy.dazzledAttacks).toBe(3); expect(defend(b)).toBe(true);
+  b.queue = [enemy.id, nell.id, 'orrin']; enemy.abilities = ['strike', 'mend', 'guard']; enemy.hp = 50; enemy.focus = 6;
+  expect(cast(b, enemy, 'mend', enemy.hex)).toBe(true); expect(enemy.dazzledAttacks).toBe(3);
+  b.queue = [enemy.id, nell.id, 'orrin'];
+  expect(cast(b, enemy, 'guard', enemy.hex)).toBe(true); expect(enemy.dazzledAttacks).toBe(3);
+  const round=b.round;
+  while(b.round===round)defend(b);
+  expect(enemy.dazzledAttacks).toBe(3);
+});
+
+it('an area attack consumes one Dazzle attack while weakening every hit', () => {
+  const { b, nell, orrin, enemy } = practice();
+  cast(b, nell, 'dazzle', enemy.hex);
+  b.queue = [enemy.id, nell.id, orrin.id]; enemy.abilities = ['burst']; enemy.bonus = 0;
+  const before = new Map(b.units.map(u=>[u.id,u.hp]));
+  const hit=targets(b,enemy,'burst',enemy.hex); expect(hit).toHaveLength(3);
+  expect(cast(b, enemy, 'burst', enemy.hex)).toBe(true);
+  for(const u of hit)expect(before.get(u.id)!-u.hp).toBe(7);
+  expect(enemy.dazzledAttacks).toBe(2);
 });
 
 it('Beacon can target an empty center, heals only allies, and clamps at maximum HP', () => {
