@@ -1,3 +1,4 @@
+import { relay, timetable, inspector, across } from '../scenes';
 import { CHAPTER, SAY, type Dialogue } from './story';
 import { recruitOrrin, remember, restoreParty, type GameState, type MapId } from '../../rules/state';
 
@@ -20,7 +21,7 @@ export function interactDiskA(host: StoryHost, id: string) {
     const s=host.state;
     switch(id) {
       case 'mira':
-        if(s.flags.metMira)host.talk({lines:[SAY('Mira','I’ll wait by the train. Dad said that if we get separated, we should stay somewhere easy to find.','mira')]});
+        if(s.flags.metMira)host.talk({lines:[SAY('Mira',s.flags.aReceiptSeen?'Orrin’s by the square. The man with the punch went towards the western yard. Please don’t let him take the paper.':'I’ll wait by the train. Dad said that if we get separated, we should stay somewhere easy to find.','mira')]});
         else host.talk({lines:[
           SAY('Mira','He stepped off to ask about the delay. Then the train moved. He still has my suitcase.','mira'),
           SAY('Nell','What station did you leave from?','nell'),
@@ -30,14 +31,11 @@ export function interactDiskA(host: StoryHost, id: string) {
       case 'orrin':
         if(!s.flags.metMira)host.talk({lines:[SAY('Orrin','That engine’s been scrapped longer than you’ve been alive. Ask the little passenger what she remembers. I’ll look at the wheels.','orrin')]});
         else host.talk({lines:[
-          SAY('Orrin','Feel this axle. Still warm. Fresh oil. Somebody has been running this thing.','orrin'),
-          SAY('Nell','The girl says she left Rillbridge twenty minutes ago.','nell'),
-          SAY('Orrin','Then we start where the line was closed. The old signal yard, west of the square. I used to go there with my father.','orrin'),
-          SAY('Nell','Shouldn’t we tell somebody first?','nell'),
-          SAY('Orrin','We can tell Iona on the way. She’ll sell you a bandage before she asks why you need it.','orrin'),
-          SAY('Nell','Mira, stay close to us. We’ll find where your train came from.','nell'),
-          SAY('Mira','Can I hold the lantern when we get to the dark part?','mira'),
-          SAY('Nell','The safe side of it. Yes.','nell'),
+          SAY('Orrin','Warm axle. Fresh oil. That engine’s been scrapped for decades.'),
+          SAY('Nell',s.flags.aReceiptSeen?'Mira brought a receipt with my signature. Tomorrow’s date. The inspector wanted it back.':'Mira’s ticket is forty years old. She says she’s only been travelling twenty minutes.'),
+          SAY('Orrin','He cut the return wire in the western signal yard. I watched him do it. Let’s find what he doesn’t want answering.'),
+          SAY('Nell','Mira, keep on the inside of my lantern. We’ll find where your train came from.'),
+          SAY('Mira','Dad will wait by the blue door. I know he will.'),
         ],done:()=>{recruitOrrin(s);remember(s,'orrin');host.refresh();host.save();}});break;
       case 'master':
         if(Boolean(s.flags.promisedHome)!==Boolean(s.flags.askedForTruth)){
@@ -55,11 +53,11 @@ export function interactDiskA(host: StoryHost, id: string) {
         if(s.location.map==='station'&&!s.flags.orrinJoined)host.talk({lines:[SAY('Nell','Orrin knows the old line. I should ask him to come with me.','nell')]});
         else host.travel('yard',s.location.map==='station'?35:10,s.location.map==='station'?18:10);break;
       case 'to-station':host.travel('station',7,11);break;
-      case 'yard-fight':host.talk({lines:[SAY('Orrin','Track hounds. They used to fetch lost tools. These ones have forgotten what hands look like.','orrin'),SAY('Nell','Keep clear of my lantern when I open the shutter. It throws light in every direction.','nell')],done:()=>host.battle('yard')});break;
+      case 'yard-fight':host.talk({lines:[SAY('Orrin','Those hounds have the relay fuse. See the round punch on their collars? Same as his. He sent them to keep the wire dead.','orrin'),SAY('Nell','Keep clear of my lantern when I open the shutter. It throws light in every direction.','nell')],done:()=>host.battle('yard')});break;
       case 'relay':
         if(!s.flags.yardCleared)host.talk({lines:[SAY('Orrin','The fuse is missing. Those hounds have been carrying the relay’s pieces around the yard.','orrin')]});
         else if(s.flags.relayRepaired)host.talk({lines:[SAY('Old signal relay','Two short rings. One long. Rillbridge is still answering.')]});
-        else host.talk({lines:[SAY('Orrin','A new fuse in a dead relay. Let’s see what happens.','orrin'),SAY('The bell','Two short rings. One long.'),SAY('Orrin','That’s Rillbridge. The tunnel gate just released.','orrin')],done:()=>host.commit('relayRepaired','relay')});break;
+        else host.talk({...relay(),done:()=>host.commit('relayRepaired','relay')});break;
       case 'scrap':
         if(s.flags.scrapCleared)host.talk({lines:[SAY('Nell','Just cold iron now. We took what was still useful.','nell')]});
         else host.talk({lines:[SAY('Orrin','Fresh lamp oil. Somebody’s been maintaining this yard. There’s a wage envelope under the iron.','orrin')],choices:[{label:'Search the heap · optional battle',action:()=>host.battle('scrap')},{label:'Leave it for now',action:()=>host.update()}]});break;
@@ -69,17 +67,17 @@ export function interactDiskA(host: StoryHost, id: string) {
       case 'tunnel-fight':host.talk({lines:[SAY('Orrin','That furnace has no fuel. Look at the direction of the steam vents. We should split up.','orrin')],done:()=>host.battle('tunnel')});break;
       case 'timetable':
         if(!s.flags.tunnelCleared)host.talk({lines:[SAY('Orrin','The guardian is watching that chamber. We need to stop it before we touch the relay.','orrin')]});
-        else host.talk({lines:[SAY('Maintenance timetable','RILLBRIDGE · Return service. Passengers only. No substitutions. Below it: towns lost to flood, fire, and war.'),SAY('Nell','These aren’t destinations. They’re disasters.','nell'),SAY('Orrin','And every arrival is in the same handwriting. Someone has a very long shift.','orrin')],done:()=>host.commit('timetableRead','timetable')});break;
+        else host.talk({...timetable(s),done:()=>host.commit('timetableRead','timetable')});break;
       case 'cache':
         if(s.flags.cacheTaken)host.talk({lines:[SAY('Maintenance locker','Empty bottles, dry cloth, and a carefully folded pair of gloves.')]});
         else host.talk({lines:[SAY('Maintenance locker','Three sealed bandages and a flask of water. Someone expected the maintenance crew to come back.')],done:()=>{s.bandages+=3;restoreParty(s);host.commit('cacheTaken');host.toast('Three bandages found. Party HP and focus restored.');}});break;
       case 'inspector':
         if(!s.flags.timetableRead)host.talk({lines:[SAY('The inspector','The maintenance chamber is behind you. You have not read your instructions.','inspector'),SAY('Orrin','His coat is dry. Nothing else down here is dry.','orrin')]});
-        else host.talk({lines:[SAY('The inspector','One outstanding passenger. Return the child to the service. You are unauthorized additions.','inspector'),SAY('Nell','She’s waiting for her father. Who wrote that timetable?','nell'),SAY('The inspector','Passengers only. No substitutions.','inspector'),SAY('Orrin','Spread out, Nell. That staff is a signal projector.','orrin')],done:()=>host.battle('inspector')});break;
+        else host.talk({...inspector(s),done:()=>host.battle('inspector')});break;
       case 'disk-b':
         if(!s.flags.inspectorCleared)host.talk({lines:[SAY('Nell','The inspector is standing between us and the exit. We can’t bring Mira through while he’s there.','nell')]});
         else if(s.flags.diskBStarted)host.travel('rillbridge',12,18);
         else if(s.flags.diskAComplete)host.boundary();
-        else host.talk({lines:[SAY('Beyond the tunnel','The rain has stopped. Across the river, roofs catch the morning sun. Rillbridge is whole.'),SAY('Mira','There! The blue house by the bridge. I told you it wasn’t far.','mira'),SAY('Nell','The festival banner has tomorrow’s date on it.','nell'),SAY('Orrin','The flood hasn’t happened yet.','orrin')],done:()=>{s.flags.diskAComplete=true;s.boundary=CHAPTER.next;remember(s,'boundary');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
+        else host.talk({...across(),done:()=>{s.flags.diskAComplete=true;s.boundary=CHAPTER.next;remember(s,'boundary');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
     }
   }

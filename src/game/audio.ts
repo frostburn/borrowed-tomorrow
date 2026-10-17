@@ -6,6 +6,8 @@ export class Audio {
   private context?:AudioContext;
   private master?:GainNode;
   private music?:Synth;
+  private musicGain?:GainNode;
+  private cinematicLevel=1;
   private effects?:Synth;
   private timer?:number;
   private next=0;
@@ -18,7 +20,7 @@ export class Audio {
   private initialize(){
     const c=new AudioContext();this.context=c;
     const master=c.createGain(),compressor=c.createDynamicsCompressor(),music=c.createGain(),fx=c.createGain();
-    this.master=master;master.gain.value=0;music.gain.value=.52;fx.gain.value=.58;
+    this.master=master;this.musicGain=music;master.gain.value=0;music.gain.value=.52*this.cinematicLevel;fx.gain.value=.58;
     compressor.threshold.value=-12;compressor.knee.value=9;compressor.ratio.value=4;compressor.attack.value=.005;compressor.release.value=.2;
     music.connect(compressor);fx.connect(compressor);compressor.connect(master);master.connect(c.destination);
     // A quiet stereo room tail: no downloaded samples and no per-note reverbs.
@@ -35,6 +37,10 @@ export class Audio {
     if(this.enabled){this.mode=this.pending;this.next=c.currentTime+.045;this.bar=0;this.schedule();}
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
     return this.enabled;
+  }
+  cinematicMix(level:number){
+    this.cinematicLevel=Math.max(0,Math.min(1,level));
+    if(this.context&&this.musicGain)this.musicGain.gain.setTargetAtTime(.52*this.cinematicLevel,this.context.currentTime,.06);
   }
   setMode(mode:MusicMode){this.pending=mode;if(!this.enabled)this.mode=mode;}
   private schedule(){

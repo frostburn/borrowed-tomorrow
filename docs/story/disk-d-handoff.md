@@ -6,7 +6,7 @@ Implemented in `src/content/disk-d/`. This document retains its incoming contrac
 
 Disk C ends with save version **3**, `chapter: disk-c`, `diskCStarted`, `diskCComplete`, `cTransferred`, `cReceiptSigned`, and `cLarkspurReported` true, and **`boundary: disk-d:signal-works`**. The usual physical location is Larkspur near the unscheduled train at `(31,10)`; return exploration can change it. Never infer the boundary from coordinates.
 
-The final dialogue reads a registered-letter collection slip for **Orrin, care of Larkspur repairs**, held at **Northglass signal works**. The sender is blank. The bag was sealed three maintenance shifts before Nell and Orrin entered the ambulance crew register. Nell has kept their signed working-crew copy, required for collection. Orrin fetches his coat before leaving.
+The final dialogue reads a registered-letter collection slip for **Orrin, care of Larkspur repairs**, held at **Northglass signal works**. The sender is blank. The bag was sealed three maintenance shifts before Nell and Orrin entered the ambulance crew register. Nell has kept their signed working-crew copy, required for collection. Orrin chooses to follow the letter addressed to him. The scene shows the 783 seal and 786 crew entry together. If `bReceiptMatched`, Nell connects it to the receiving copy; original version-3 files do not gain that knowledge retroactively.
 
 Continue with Nell and Orrin only. Import a real version-3 completion save and preserve every resource, equipment ID, journal entry, time value and prior choice. Load the next chapter’s assets before consuming this boundary. Earlier areas remain open.
 
@@ -27,3 +27,5 @@ If `cWorkbookRead`, Nell and Orrin saw **A.F., signal office**, and the instruct
 Establish Northglass’s own date, its actual work and a person who needs help before relying on a deadline. Let presenting the signed crew copy secure the promised letter; avoid withholding it behind an unrelated series of locks. Reading it should answer something concrete about Orrin’s father while making a local problem actionable. Keep his father’s historical death in canon until evidence earns an explanation of what survives in maintenance time.
 
 Build a complete local adventure at the signal works, with a practical resolution before the next disk. New areas need newly composed themes, native-resolution scenery, collision aligned with visible walls, and the same physical macro-pixel grid. Follow `.agents/skills/write-game-prose/SKILL.md`, keep journals useful, and update canon, knowledge, open threads and the exact next boundary after playtesting.
+
+The revised father letter identifies Orrin’s adult signature on that early crew copy. After the local rescue and electrical isolation, Orrin can answer it. `dReplySent` records a personal reply, a warning against the ferry passenger list, and the inspector’s interception. Carry those discoveries into Disk E only when recorded; see the exact outgoing contract.

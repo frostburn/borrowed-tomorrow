@@ -9,6 +9,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:smoke": "playwright test --grep-invert @journey",
+    "test:e2e:journeys": "playwright test --grep @journey",
     "check": "npm run test && npm run build",
     "predev": "node scripts/restore-map-art.mjs",
     "prebuild": "node scripts/restore-map-art.mjs"

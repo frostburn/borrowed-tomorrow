@@ -8,11 +8,13 @@ import { interactDiskC } from '../content/disk-c/interactions';
 import { arrivalC, C_JOURNAL, objectiveC } from '../content/disk-c/story';
 import { interactDiskA } from '../content/disk-a/interactions';
 import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
-import { CHAPTER, JOURNAL as A_JOURNAL, SAY, objective as objectiveA, type Dialogue } from '../content/disk-a/story';
+import { CHAPTER, JOURNAL as A_JOURNAL, objective as objectiveA, type Dialogue } from '../content/disk-a/story';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, shape, targets, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { decodeSave, enterDiskB, enterDiskC, enterDiskD, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
 import { Audio } from './audio';
+import { Cutscene } from './cutscene';
+import { opening } from '../content/scenes';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
 import { bitmapText } from './pixel-font';
@@ -32,6 +34,7 @@ export class Adventure extends Phaser.Scene {
   readonly audio = new Audio();
   private ui!: UI;
   private layer?: Phaser.GameObjects.Container;
+  private cinematic?:Cutscene;
   private grid?: Phaser.GameObjects.Graphics;
   private player?: Phaser.GameObjects.Image;
   private follower?: Phaser.GameObjects.Image;
@@ -72,7 +75,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.status.textContent = 'WASD / arrows · E interact · click to walk · J journal · Esc menu';
     void listSaves().then(records => { if (records.length) this.latestSave = decodeSave(JSON.stringify(records[0].state)); if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
     window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, moving:this.moving||this.path.length>0||!!this.pendingObject, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
   }
   resizeView(){
     if(!this.sys.isActive())return;
@@ -81,7 +84,8 @@ export class Adventure extends Phaser.Scene {
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
-    if(this.mode==='world'&&this.player){camera.centerOn(this.player.x,this.player.y);camera.startFollow(this.player,true,1,1);}
+    if(this.cinematic){this.cinematic.reframe();}
+    else if(this.mode==='world'&&this.player){camera.centerOn(this.player.x,this.player.y);camera.startFollow(this.player,true,1,1);}
     else camera.setScroll(Math.floor((WIDTH-view.width)/2),72);
   }
   panBattle(direction:-1|1){
@@ -94,7 +98,7 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main,p=toPixel(hex);
     if(p.x<camera.scrollX+48||p.x>camera.scrollX+camera.width-48)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
-  get animating(){return this.moving||this.tweens.getTweens().length>0;}
+  get animating(){return this.moving||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
   private label(x:number,y:number,text:string,color:string,scale=3){
     const canvas=document.createElement('canvas');canvas.width=text.length*6*scale;canvas.height=9*scale;
     bitmapText(canvas.getContext('2d')!,text,0,scale,color,scale);
@@ -104,6 +108,7 @@ export class Adventure extends Phaser.Scene {
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.cinematic?.close();this.cinematic=undefined;
     this.path = []; this.pendingObject = undefined; this.near = undefined; this.moving = false;
     this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.follower = undefined; this.miraFollower=undefined;this.actorImages.clear();
     this.layer = this.add.container(0,0);
@@ -127,11 +132,13 @@ export class Adventure extends Phaser.Scene {
   }
   private begin() {
     this.state = newGame(); this.ui.clearPanel(); this.showWorld();
-    this.talk({ lines: [
-      SAY('Larkspur · 18:43', 'The bell rings for a train nobody called. You have three parcels left to unload and a kettle on the boil.'),
-      SAY('Nell', 'Rillbridge? That board must be wrong. We don’t even have a platform for that line.', 'nell'),
-      SAY('A small voice', 'Excuse me. Did my dad get off here?', 'mira'),
-    ], done: () => this.autosave() });
+    this.autosave();this.openingScene();
+  }
+  private openingScene(){
+    this.talk({...opening(),done:()=>{
+      Object.assign(this.state.flags,{metMira:true,aOpeningSeen:true,aReceiptSeen:true});
+      remember(this.state,'mira');remember(this.state,'a-receipt');this.showWorld();
+    }});
   }
   private async ensureRegion(map:MapId) {
     const names=map==='northglass'||map==='relayhall'?['northglass','relayhall']:map==='rillbridge'||map==='sluice'?['rillbridge','sluice']:map==='cinderbank'||map==='infirmary'?['cinderbank','infirmary']:[];
@@ -187,6 +194,7 @@ export class Adventure extends Phaser.Scene {
       this.state = candidate;
       this.battle = undefined; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
       if(this.state.boundary)this.boundaryPanel();
+      else if(this.state.chapter==='disk-a'&&!this.state.flags.metMira&&!this.state.flags.aOpeningSeen)this.openingScene();
       this.ui.toast('Journey restored.');
     } catch (error) { this.ui.toast(error instanceof Error ? error.message : 'Unable to load the save.'); }
     finally{this.busy=false;}
@@ -226,7 +234,15 @@ export class Adventure extends Phaser.Scene {
   }
   private talk(dialogue: Dialogue) {
     this.path = []; this.pendingObject = undefined;
-    this.ui.showDialogue({ ...dialogue, done: () => { dialogue.done?.(); if (this.mode === 'world') { this.renderWorldControls(); this.autosave(); } } });
+    this.cinematic?.close();
+    const director=dialogue.scene&&this.layer?new Cutscene(this,this.layer,dialogue.scene,this.audio):undefined;
+    this.cinematic=director;let finished=false;
+    const finish=(action?:()=>void)=>{
+      if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
+      if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,true,1,1);
+      action?.();if(this.mode==='world'){this.renderWorldControls();this.autosave();}
+    };
+    this.ui.showDialogue({...dialogue,choices:dialogue.choices?.map(c=>({...c,action:()=>finish(c.action)})),done:()=>finish(dialogue.done)},index=>director?.shot(dialogue.lines[index].shot));
   }
   private finishStory(flag: string, entry?: string) {
     this.state.flags[flag] = true; if (entry) remember(this.state, entry);
@@ -308,7 +324,7 @@ export class Adventure extends Phaser.Scene {
   private keydown(e: KeyboardEvent) {
     const tag = (e.target as HTMLElement)?.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
+    if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if(this.cinematic){this.ui.skipDialogue();} else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
     if (this.ui.modalOpen) return;
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     if (this.ui.dialogueOpen && ['Enter',' ','e','E'].includes(e.key)) { e.preventDefault(); this.ui.advanceDialogue(); return; }
@@ -346,26 +362,26 @@ export class Adventure extends Phaser.Scene {
   }
   private boundaryPanel() {
     if(this.state.chapter==='disk-d'){
-      this.ui.panel('Insert Disk E','<div class="chapter-name">Next: The Brass Key</div><p>Northglass is safe. Orrin has his father’s letter and a counterfoil for a parcel at Brinewick’s freight ferry.</p><p>Your operating plan, earlier rescues, and departure point are saved.</p>',[
+      this.ui.panel('Insert Disk E',`<div class="chapter-name">Next: The Dead Man’s Reply</div><p>Northglass is safe. ${this.state.flags.dReplySent?'Orrin’s father answered his message. The inspector cut the next line.':'Orrin has his father’s letter and the Brinewick parcel counterfoil.'}</p><p>${this.state.flags.dReplySent?'At Brinewick, ask for the parcel. Keep off the passenger ferry.':'The parcel cage at Brinewick freight ferry has the brass key.'}</p>`,[
         {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
         {label:'Export departure save',action:()=>exportSave(this.state)},
       ]);return;
     }
     if(this.state.chapter==='disk-c'){
-      this.ui.panel('Insert Disk D','<div class="chapter-name">Next: The Unsent Letter</div><p>Fourteen patients are safe at Bellwether. A registered letter for Orrin is waiting at Northglass signal works.</p><p>Your crew copy, choices, and departure point are saved. Earlier areas remain open.</p>',[
+      this.ui.panel('Insert Disk D','<div class="chapter-name">Next: The Unsent Letter</div><p>Fourteen patients are safe at Bellwether. Someone sealed a letter for Orrin before he signed the crew copy that released it. Northglass has the bag.</p><p>Your crew copy, choices, and departure point are saved. Earlier areas remain open.</p>',[
         {label:'Begin Disk D',action:()=>{void this.beginDiskD();}},
         {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
         {label:'Export departure save',action:()=>exportSave(this.state)},
       ]);return;
     }
     if(this.state.chapter==='disk-b'){
-      this.ui.panel('Insert Disk C','<div class="chapter-name">Next: The Last Ambulance Train</div><p>Mira and Bram are safe at Larkspur. A dispatch from Cinderbank names an ambulance train with no medical staff.</p><p>Your party, resources, equipment, and choices carry into the next chapter.</p>',[
+      this.ui.panel('Insert Disk C',`<div class="chapter-name">Next: The Last Ambulance Train</div><p>Thirty-one people are safe at Larkspur. ${this.state.flags.bReceiptMatched?'Nell has written the signature on the premature receipt. The next carbon names an ambulance train without its attendants.':'A dispatch from Cinderbank names an ambulance train with no medical staff.'}</p><p>Your party, resources, equipment, and choices carry into the next chapter.</p>`,[
         {label:'Begin Disk C',action:()=>{void this.beginDiskC();}},
         {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
         {label:'Export departure save',action:()=>exportSave(this.state)},
       ]);return;
     }
-    this.ui.panel('Insert Disk B', '<div class="chapter-name">Next: A Town Expecting Rain</div><p>Rillbridge is waiting on the other side of the tunnel.</p><p>Your party, choices, and equipment carry into the next chapter.</p>', [
+    this.ui.panel('Insert Disk B', '<div class="chapter-name">Next: A Town Expecting Rain</div><p>Mira can see her father by the blue door. The flood has not happened here yet. Thirty-one people can still leave.</p><p>Your party, choices, and equipment carry into the next chapter.</p>', [
       {label:'Begin Disk B',action:()=>{void this.beginDiskB();}},
       {label:'Return to the line',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
       {label:'Export arrival save',action:()=>exportSave(this.state)},

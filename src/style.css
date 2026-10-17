@@ -13,3 +13,11 @@
 .battle-pan{position:absolute;z-index:1;top:8px;right:8px;display:flex;gap:4px;padding:4px;background:#101d28;border:1px solid #8b805e}.battle-pan button{font-size:10px;line-height:12px;width:32px;height:28px;padding:4px}
 
 .shopkeeper{display:flex;align-items:center;gap:16px;margin-bottom:12px}.shopkeeper img{width:128px;height:128px;flex:0 0 128px;object-fit:none;background:#182b32}
+
+/* Native pixels throughout: staging pans the camera, never scales the actors. */
+.cinema-bar{position:absolute;top:0;left:0;right:0;height:36px;background:#080f19;display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:#f4c77a;font-size:10px;line-height:12px;border-bottom:1px solid #625842}.cinema-bar button{font-size:10px;line-height:12px;padding:4px 8px}.cinematic .dialogue{border-color:#b8a780;background:#080f19}.cinema-document{position:absolute;top:48px;left:50%;transform:translateX(-50%);width:min(600px,calc(100% - 32px));padding:12px 16px;background:#eadab4;color:#382c29;border:2px solid #625842;box-shadow:4px 4px 0 #080f19}.cinema-document h3{font-size:10px;line-height:12px;margin-bottom:8px}.cinema-document p{font-size:20px;line-height:24px;margin:0 0 8px}.cinema-document strong{display:block;color:#7f342d;font-size:10px;line-height:12px}.cinema-document canvas{display:block;width:192px;height:32px;margin-top:4px;image-rendering:pixelated}
+@media(max-width:1023px){.cinema-document{padding:8px;top:44px}.cinema-document p{font-size:10px;line-height:12px;margin-bottom:4px}.cinema-document h3{margin-bottom:4px}.cinema-bar{padding:0 8px}.cinematic .dialogue{max-height:calc(100% - 200px)}}
+.cinema-document h3{color:#382c29}
+@media(max-width:1023px){.cinematic .dialogue-copy p{font-size:10px;line-height:12px}}
+
+.signatures{display:flex;gap:8px 24px;flex-wrap:wrap}.signature-copy{width:192px}.signature-copy span{font-size:10px;line-height:12px;display:block}

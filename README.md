@@ -1,12 +1,16 @@
 # Borrowed Tomorrow
 
-A browser JRPG about a train from a town lost forty years ago. Explore the railway, meet its passengers, and fight battles where a careless blast can hit your own party.
+A browser JRPG about a train from a town lost forty years ago. A child arrives carrying Nell’s signature on a receipt she has not written; an inspector wants it back. Explore the railway, meet its passengers, and fight battles where a careless blast can hit your own party.
 
 **Disk A: The Wrong Platform** includes Larkspur station, the old signal yard, Rillbridge tunnel, two party members, three story battles, one optional encounter, supplies, equipment, a travel journal, and a saved **Insert Disk B** arrival.
 
 **Disk B: A Town Expecting Rain** continues that arrival through Rillbridge and its upstream sluice: find Mira’s father, prove the flood danger, prepare an evacuation, and choose which outfall to open. Three battles introduce shallow water and a narrow crossing. The chapter resolves the rescue at Larkspur and records an **Insert Disk C** departure.
 
 **Disk C: The Last Ambulance Train** continues the supplied Disk B departure through Cinderbank and Bellwether infirmary. Secure fourteen beds, repair the ambulance service, register its attendants, and bring every patient to staffed care. Two battles add round-end steam vents; the heating decision changes the danger lanes and the hospital’s accommodation. The chapter ends at a saved **Insert Disk D** letter collection.
+
+**Disk D: The Unsent Letter** brings Orrin to Northglass signal works. Collect his father’s letter, protect six workers, isolate a faulty return feed, and send a reply. Its intercepted answer opens **Insert Disk E: The Dead Man’s Reply**.
+
+Thirteen staged cutscenes connect the chapters: actor movement, camera cuts and pans, native document inserts, full speaker portraits, quiet musical mixes and distinct mechanical/bell cues. Advance at your own pace or use **Skip scene / Escape**. Skipping a choice scene leaves the choice to you. Reduced-motion settings use cuts.
 
 ## Run
 
@@ -54,12 +58,13 @@ Narrow screens use a layout up to 384 × 768 with a cropped, scrolling camera an
 
 IndexedDB stores one autosave and three manual slots. Autosaves occur at story checkpoints and before encounters. Manual saves are available outside battles. The Save menu imports and exports versioned JSON files; use an export to move between browsers or keep a durable backup. A reload during combat restores the pre-battle checkpoint. Browser storage belongs to the site's origin.
 
-Version 3 imports original version-1 and version-2 saves without resetting progress. At `disk-b:rillbridge-arrival`, choose **Begin Disk B**; at `disk-c:ambulance-siding`, choose **Begin Disk C**. Both destination maps load before an arrival is consumed, and a failed download leaves the pending save intact. Disk C records `disk-d:signal-works`; earlier areas remain visitable without consuming it.
+Version 4 imports original version-1, version-2 and version-3 saves without resetting progress. At `disk-b:rillbridge-arrival`, choose **Begin Disk B**; at `disk-c:ambulance-siding`, choose **Begin Disk C**. Both destination maps load before an arrival is consumed, and a failed download leaves the pending save intact. At `disk-d:signal-works`, choose **Begin Disk D**. Disk D records `disk-e:brinewick-parcel`; earlier areas remain visitable. New receipt/reply discoveries are optional flags, so old saves remain valid. An interrupted fresh opening replays from its checkpoint.
 
 ## Project layout
 
 - `src/rules/`: framework-independent hex geometry, combat, and save schema.
-- `src/content/disk-a/`, `src/content/disk-b/`, and `src/content/disk-c/`: chapter text, interactions, encounters, and Tiled maps.
+- `src/content/disk-a/`, `src/content/disk-b/`, `src/content/disk-c/`, and `src/content/disk-d/`: chapter text, interactions, encounters, and Tiled maps.
+- `src/content/scenes.ts`: cutscene dialogue and staging; `src/game/cutscene.ts`: temporary actors, camera and audio direction.
 - `.agents/skills/write-game-prose/`: repository-local writing guidance adapted from Stephen D. Turner’s MIT-licensed [deslop](https://github.com/stephenturner/skill-deslop).
 - `src/game/`: Phaser scene, pixel framebuffer, bitmap UI, procedural score/instruments, and IndexedDB storage.
 - `public/art/`: runtime scenery and transparent actor assets. The Disk B and C maps are reconstructed from verified source chunks in `assets/maps/` automatically before dev/build.
@@ -73,10 +78,15 @@ Tiled JSON files define each map's scenery and collision rectangles. Actor posit
 ```sh
 npm run check
 npx playwright install chromium
-npm run test:e2e
+npm run test:e2e:smoke
+npm run test:e2e:journeys
+# All checks, with full musical loops rather than four-bar browser samples:
+BT_FULL_QA=1 npm run test:e2e
 ```
 
-CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests play all three disks through the actual controls, import the original version-1 arrival and the supplied version-2 departure, recover from failed chapter downloads, verify both outfall and heating choices, and preserve the next disk boundary on return visits. They also check both healing confirmations on a phone, fractional-DPR scaling, native asset pixels and colors, and all twelve music arrangements and eleven effects through the real Web Audio instruments.
+Normal PR/main CI runs Node 24 rule tests, a production build, and Chromium smoke checks. Smoke coverage includes the fresh opening and interrupted resume, receipt payoff for new/legacy saves, unselected choices on skip, a durable lamp-room reply, gate/entrance navigation, phone healing controls, unique portraits, native pixels at fractional DPR, and all fifteen arrangements plus fourteen effects. Complete phrase variation is also covered by the score unit tests.
+
+Five slower `@journey` tests play Disks A–D and the alternative Northglass outcome through actual controls, importing the original version-1 arrival and supplied version-2/3 departures. They remain available locally and through **Check → Run workflow → full_journey**. Regular CI no longer replays every combat round across all disks for each follow-up. The manual full run also renders complete 16/32-bar loops through Web Audio.
 
 `window.borrowedTomorrow.inspect()` provides a read-only snapshot for diagnostics. It does not mutate progress or bypass battles. `window.borrowedTomorrowPixels.inspect()` exposes the framebuffer size, physical scale, and palette for display diagnostics.
 

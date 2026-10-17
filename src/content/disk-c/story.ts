@@ -5,7 +5,7 @@ export const DISK_C={id:'disk-c',title:'The Last Ambulance Train',next:'disk-d:s
 export function arrivalC(s:GameState){return [
   SAY('Before departure · Larkspur',s.flags.bOrchardChannel?'Iona puts two rolls of blankets on the barrow. Ansel has signed Tilda’s flour credit; the flooded orchard cannot pay for winter bread.':'Iona puts two rolls of blankets on the barrow. Tilda and Bram are bringing stored apples over the dry orchard bank to pay for flour.'),
   SAY('Orrin','Mira’s asleep beside Bram. She’s got the suitcase handle round her wrist.','orrin'),
-  SAY('Nell','Leave them the quiet end of the waiting room. These blankets are for the next train.','nell'),
+  SAY('Nell','The next carbon already has our names on it. We’ll follow it to whoever’s sending these backward. These blankets go with us.','nell'),
   SAY('Cinderbank · 2 December, 04:10','Two ambulance carriages stand beside a boiler shed. A woman holds a hot-water bottle against a man’s coat.'),
   SAY('Dena','Hold this clamp, please. My orderly’s gone for water and the wheels have started to move.'),
   SAY('Nell','Porter and mechanic, from Larkspur. Where are you taking them?','nell'),
@@ -19,7 +19,7 @@ export const C_JOURNAL:Record<string,{title:string;text:string}>={
   'c-flour-credit':{title:'Winter bread',text:'Ansel approved Tilda’s flour credit at Larkspur. The orchard we flooded cannot supply winter income. Iona has lent two rolls of blankets to the ambulance service. Mira and Bram remain together.'},
   'c-harvest':{title:'The first provisions',text:'The orchard bank stayed dry. Tilda and Bram are bringing stored apples across the maintenance crossing to pay for flour. Iona has lent two rolls of blankets to the ambulance service. Mira remains with Bram.'},
   'c-water':{title:'Warm hands',text:'Dena and Ivo have filled the hot-water bottles. The patients’ fingers are warm enough to grip the stretcher rails. Help them at the carriage door before releasing the brake.'},
-  'c-refused':{title:'Attendants refused',text:'The carriage accepted the patients, then shut on Dena’s bag. The registry lists fourteen passengers and no attendants. We will not dispatch them without care. Read the working-train instructions in the dispatch office.'},
+  'c-refused':{title:'Attendants refused',text:'The carriage accepted the patients, then shut on Dena’s bag. The registry lists fourteen passengers and no attendants. Its order bears the inspector’s punch mark. We will not dispatch them without care. Read the working-train instructions in the dispatch office.'},
   'c-register':{title:'A working train',text:'Ambulance crews have a separate register. It requires fourteen receiving beds, a tested brake and boiler, and the attendants’ names. The passenger list must stay unchanged. Bellwether holds the receiving copy; its stores handcar is available to railway workers.'},
   'c-beds':{title:'Fourteen places',text:'Celia has reserved fourteen beds in Bellwether’s receiving hall. Its north ward needs the same spare steam connection as the ambulance carriages. Recover the coupling at Cinderbank, then choose the heating plan.'},
   'c-coupling':{title:'A sound coupling',text:'The hounds have released the spare coupling. Orrin cleaned its threads and checked the seal. One working connection can heat the train or open Bellwether’s north ward; it cannot do both.'},
@@ -31,7 +31,7 @@ export const C_JOURNAL:Record<string,{title:string;text:string}>={
   'c-receipt':{title:'A signed receiving list',text:'Ivo counted fourteen occupied beds against the original passenger list. Celia countersigned the hospital copy. The patients have care, warmth, and a place to stay. Bring the receipt to Ansel at Larkspur.'},
   'c-workbook':{title:'A second copy',text:'The maintenance delivery book records working-train orders under A.F., signal office. A carbon copy of every crew entry goes to Northglass signal works. There is no full name or explanation of who wrote the return timetable.'},
   'c-coda':{title:'The morning deliveries',text:'Ansel filed Bellwether’s signed receipt. At Larkspur, the Rillbridge residents have breakfast and supplies for the next week. Mira and Bram are still together. The ambulance patients remain at Bellwether under Dena and Celia’s care.'},
-  'c-departure':{title:'A letter held for Orrin',text:'A collection slip from Northglass signal works names Orrin, care of Larkspur repairs. Its sender is blank. The bag was sealed three maintenance shifts before today’s crew entry. Nell kept the signed crew copy required to collect it.'},
+  'c-departure':{title:'A letter held for Orrin',text:'A collection slip from Northglass signal works names Orrin, care of Larkspur repairs. Its sender is blank. The bag was sealed three maintenance shifts before today’s crew entry. Someone was waiting for Orrin’s adult signature. Nell kept the signed crew copy required to collect it.'},
 };
 export function objectiveC(s:GameState):string{
   const f=s.flags;

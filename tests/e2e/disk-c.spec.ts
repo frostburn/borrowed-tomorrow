@@ -6,7 +6,7 @@ import { active } from '../../src/rules/combat';
 import { inspect, clickHex, dialogue, capture, battle, nativeScene } from './controls';
 import { importSave, approach, visit, travel } from './navigation';
 
-test('the supplied Disk B save plays through the staffed ambulance rescue and reaches Disk D',async({page})=>{
+test('the supplied Disk B save plays through the staffed ambulance rescue and reaches Disk D @journey',async({page})=>{
   test.setTimeout(300000);
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('/');await expect(page).toHaveTitle(/Borrowed Tomorrow/);await importSave(page,departure);

@@ -1,3 +1,4 @@
+import { fatherLetter, reply, nightPlan } from '../scenes';
 import { SAY, type Dialogue } from '../disk-a/story';
 import type { StoryHost } from '../disk-a/interactions';
 import { remember, restoreParty } from '../../rules/state';
@@ -9,24 +10,13 @@ export function interactDiskD(host:StoryHost,id:string){
   const say=(...lines:Dialogue['lines'])=>host.talk({lines});
   switch(id){
     case 'd-petra':
-      if(!f.dLetterRead){host.talk({lines:[
-        SAY('Petra','Working crew: Nell, porter; Orrin, mechanic. The signatures match. Here’s your bag. The seal hasn’t been broken.'),
-        SAY('Orrin',f.bWorksheetRead?'The same hand as the Rillbridge sheet. This one’s addressed to me.':f.scrapCleared?'The same hand as the wage envelope. There’s a letter inside.':'There’s my name. He’s put “care of Larkspur repairs” under it.'),
-        SAY('The letter','Orrin—They told me the viaduct had fallen while I was still under it. I heard the timbers go. At shift change I was back in the lamp room, with the burn still on my sleeve.'),
-        SAY('The letter','I asked for a train home. It would take my ticket, but not my tools. I stayed to hold the return contact open. I don’t know how long that counts for at home.'),
-        SAY('Orrin','They brought his coat back from the viaduct. I couldn’t read yet. He never came home after that.'),
-        SAY('The letter','Don’t bridge the two returns at Northglass. The green repeater feeds the workers’ road backwards. Earth both sides before you open the contact.'),
-        SAY('The letter','I left your mother’s brass key in the Brinewick parcel cage. I should have put it in your hand. The number is on the works counterfoil. Dad.'),
-        SAY('Orrin','Her sewing-drawer key. One tooth filed down. She thought she’d lost it.'),
-        SAY('Nell','Keep the letter in your coat. We can check the return wire with Esme once the crew is off that tram.'),
-        SAY('Petra','Hang the red lamp from the rack on the workers’ road first. Its clip shuts the road without using that repeater. Then you can approach the tram.'),
-      ],done:()=>host.commit('dLetterRead','d-letter')});break;}
+      if(!f.dLetterRead){host.talk({...fatherLetter(s),done:()=>host.commit('dLetterRead','d-letter')});break;}
       if(f.dRecordRead&&!f.diskDComplete){host.talk({lines:[
         SAY('Petra','Six workers back, return feed disconnected. I’ve checked the red lamp from both ends.'),
         SAY('Petra',f.dHoldRed?'I’m closing for tonight. Paid shift; I won’t dock them for a fault in my board. The parcels can wait until morning.':'Esme takes the first hand-bell watch; I take the second. Only the local siding. Nobody goes near the viaduct.'),
-        SAY('Orrin','The parcel number matches. I can read this much. I’m not sure about the rest yet.'),
-        SAY('Nell','We’ll start with the thing he left for you. Have you got the counterfoil?'),
-        SAY('Orrin','Inside the letter. I’m keeping both.'),
+        SAY('Orrin','The parcel number matches. I’m keeping it with the letter.'),
+        SAY('Nell',f.dReplySent?'We’ll ask at Brinewick. The parcel cage first; we keep off the passenger ferry.':'We’ll start at Brinewick’s parcel cage. Have you got the counterfoil?'),
+        SAY('Orrin','Inside the letter. I’m keeping everything he got through.'),
         SAY('Petra','Brinewick freight ferry. Present that number at the parcel cage; it won’t put anyone on a passenger list. I’ll keep a copy of the fault test here.'),
       ],done:()=>{f.diskDComplete=true;if(f.dHoldRed)f.dWorkersHome=true;s.boundary=DISK_D.next;remember(s,'d-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;}
       host.talk({lines:[SAY('Petra',f.diskDComplete?(f.dHoldRed?'The crew’s gone home on paid time. Tonight’s parcels are locked up for the morning.':'Esme has the hand bell. I’ll relieve her after supper. The main line stays red.'):!f.dLineHeld?'The letter’s yours. Hang the independent red lamp before you approach the tram.':!f.dCrewReturned?'The road is protected. Bring Esme and all five colleagues off the tram.':!f.dCircuitRead?'All six are in. Esme has the burnt wire at the relay hall’s insulation bench.':!f.dHoldRed&&!f.dHandBell?'Choose the night plan at the route table. I need to know which services to hold.':!f.dRelayStopped?'The night plan is ready. Earth both returns and stop the keeper; I’ll watch the road.':'The feed is isolated. Read the parcel counterfoil in the shift recorder, then bring it back for my signature.')],choices:[
@@ -61,11 +51,7 @@ export function interactDiskD(host:StoryHost,id:string){
     case 'd-plan':
       if(!f.dCircuitRead){say(SAY('Esme','Check the burnt wire at the insulation bench first. We need to know what we’re isolating.'));break;}
       if(f.dHoldRed||f.dHandBell){say(SAY('Petra',f.dHoldRed?'All signals red. I’ll close for the night and pay the crew for the full shift. Tonight’s parcels will wait.':'Main line red, local siding by hand bell. Esme and I will take turns. The parcels can move; we’ll be here late.'));break;}
-      host.talk({lines:[
-        SAY('Petra','With the feed off, I can close the works for tonight. The crew keeps its pay; tonight’s parcels wait until morning.'),
-        SAY('Esme','Or we can work the local siding by hand bell. I’ll take one watch if you take the other. That gets the parcels away.'),
-        SAY('Petra','It keeps both of us here late. The main line stays red either way. No one tests the viaduct tonight.'),
-      ],choices:[
+      host.talk({...nightPlan(),choices:[
         {label:'Keep all signals red · close tonight',action:()=>host.commit('dHoldRed','d-red-plan')},
         {label:'Work by hand bell · keep local deliveries',action:()=>host.commit('dHandBell','d-bell-plan')},
       ]});break;
@@ -79,12 +65,7 @@ export function interactDiskD(host:StoryHost,id:string){
     case 'd-recorder':
       if(!f.dRelayStopped){say(SAY('Orrin','The recorder shares the live return. We can read it once the keeper’s contact is open.'));break;}
       if(f.dRecordRead){say(SAY('Parcel counterfoil','BRINEWICK · parcel cage 6 · brass drawer key, one tooth filed. Collect against this number. No passenger authority.'));break;}
-      host.talk({lines:[
-        SAY('Shift recorder','Green bag sealed: 783. Ambulance crew copy received: 786. Earlier parcel, Brinewick cage 6: brass drawer key, one tooth filed. Collected from maintenance lamp room.'),
-        SAY('Orrin','Three shifts before our names went in. The parcel’s earlier still. These are the works’ entries, not his handwriting.'),
-        SAY('Nell','So the letter and the parcel both passed through here. We have the number now.'),
-        SAY('Orrin','I want to open it myself. Let’s get Petra’s signature before we leave.'),
-      ],done:()=>host.commit('dRecordRead','d-record')});break;
+      host.talk({...reply(),done:()=>{f.dReplySent=true;remember(s,'d-reply');host.commit('dRecordRead','d-record');}});break;
     case 'd-plaque':
       host.talk({lines:[SAY('Calibration order','Return-contact separation test. Engineer: Ada Fenwick. Retain both earth connections during service.'),SAY('Orrin',f.cWorkbookRead?'A.F., signal office. There’s her full name. This order is for the same contacts.':'Ada Fenwick, signal engineer. Write that down beside the contact test; she specified the two earths.')],done:()=>host.commit('dEngineerRead','d-engineer')});break;
     case 'd-to-hall':host.travel(RELAY_HALL_ARRIVAL.map,RELAY_HALL_ARRIVAL.x,RELAY_HALL_ARRIVAL.y);break;

@@ -1,3 +1,4 @@
+import { reunion, crossing, receiving } from '../scenes';
 import { SAY, type Dialogue } from '../disk-a/story';
 import type { StoryHost } from '../disk-a/interactions';
 import { remember, restoreParty } from '../../rules/state';
@@ -11,14 +12,7 @@ export function interactDiskB(host:StoryHost,id:string){
     case 'b-calendar':say(SAY('Festival notice','RILLBRIDGE HARVEST FAIR · 14 OCTOBER. Stallholders: set out your tables on the afternoon of the 13th.'),SAY('Nell',f.bNeighborsReady?'It’s the fourteenth now. Tilda took down the festival stalls during the night.':'Today is the thirteenth here. We have the day before the flood.','nell'));break;
     case 'b-bram':
       if(f.bFatherFound){say(SAY('Bram',f.bNeighborsReady?'Elspeth is strapped in. Mira is counting the carts with me. Come for us when the crossing is ready.':'I’m staying with Mira. Bring the maintenance trolley to the schoolhouse; I’ll meet you there.'));break;}
-      host.talk({lines:[
-        SAY('Bram','Mira says I left her on a train. I haven’t been to the platform today.'),
-        SAY('Nell','We found her at Larkspur. There’s a flood memorial there with your town’s name on it.','nell'),
-        SAY('Bram','I can’t make that fit. But I know what she looks like when she’s frightened.'),
-        SAY('Mira','Please don’t go to ask anyone about delays.','mira'),
-        SAY('Bram','You and I stay together. Elspeth next door can’t walk the bridge steps. Help me bring her, and we’ll go.'),
-        SAY('Orrin','A flat trolley with a brake would do it. I saw one on the sluice rails. I’ll check the water while I’m up there.','orrin'),
-      ],done:()=>commit('bFatherFound','b-family')});break;
+      host.talk({...reunion(),done:()=>commit('bFatherFound','b-family')});break;
     case 'b-baker':
       if(f.bFloodEvidence&&!f.bTownWarned){host.talk({lines:[
         SAY('Tilda','That gauge plate was bolted above the high-water line. Why is the back wet?'),
@@ -113,22 +107,10 @@ export function interactDiskB(host:StoryHost,id:string){
     case 'b-crossing':
       if(f.bEvacuated){say(SAY('The bridge',f.bOrchardChannel?'The lower quay is flooded. Farther upstream, the orchard stands in brown water. The foot crossing remains above it.':'The lower quay is flooded. Water churns down the old millrace; the orchard bank is still dry. The foot crossing remains open.'));break;}
       if(!f.bKeeperStopped||!f.bNeighborsReady){say(SAY('Bram','We’ll wait on this side. Come back when the keeper is stopped and the level crossing is open.'));break;}
-      host.talk({lines:[
-        SAY('Bram','Thirty-one names. Elspeth, would you count them off while I pull?'),
-        SAY('Elspeth','I have been counting children through doors for forty years. Keep your eyes on the wheels.'),
-        SAY('The crossing','Orrin holds the gate while Nell guides the last cart. The river comes over the lower quay behind them. Ahead, Larkspur’s goods-yard bell begins to ring.'),
-        SAY('Mira','Dad? Still here?','mira'),
-        SAY('Bram','Still here. I’m the one pulling your suitcase.'),
-      ],done:()=>{f.bEvacuated=true;remember(s,'b-evacuation');host.travel('station',21,19);}});break;
+      host.talk({...crossing(),done:()=>{f.bEvacuated=true;remember(s,'b-evacuation');host.travel('station',21,19);}});break;
     case 'b-ansel':
       if(f.bLarkspurReceived){say(SAY('Stationmaster Ansel','The waiting room is full. Nobody has vanished. I’ve sent a clerk to buy more blankets.','master'));break;}
-      host.talk({lines:[
-        SAY('Stationmaster Ansel',f.promisedHome?'You promised to bring them home. I’d have put the kettle on sooner if you’d mentioned there were thirty-one.':f.askedForTruth?'You wanted to understand the line. I see you brought witnesses.':'I counted thirty-one people coming out of the goods yard. Iona is opening the waiting room.','master'),
-        SAY('Nell','Mira’s father is with her. Elspeth needs a bed she can reach without steps.','nell'),
-        SAY('Stationmaster Ansel','My office has one. Give me the list.' ,'master'),
-        SAY('Tilda',f.bOrchardChannel?'We lost the orchard. When people have slept, I’ll ask about flour on credit.':'The orchard bank held. When people have slept, I want to go back and see what we can bring over.'),
-        SAY('Later · Larkspur','The station clock passes midnight. Bram is still asleep beside Mira. Nell checks the names once more and puts the list in Ansel’s drawer.'),
-      ],done:()=>commit('bLarkspurReceived','b-coda')});break;
+      host.talk({...receiving(s),done:()=>{f.bReceiptMatched=true;remember(s,'b-receipt');commit('bLarkspurReceived','b-coda');}});break;
     case 'b-elspeth-larkspur':say(SAY('Elspeth','The register is dry. Ansel found me a bed without steps. Please leave room for the chair when you stack those blankets.'));break;
     case 'b-family-larkspur':say(SAY('Mira','Dad put the suitcase under his chair. I can see both his shoes.','mira'),SAY('Bram','She won’t let me fetch a cup of tea. I can wait.'));break;
     case 'b-dispatch':
@@ -136,8 +118,8 @@ export function interactDiskB(host:StoryHost,id:string){
       if(f.diskBComplete){host.boundary();break;}
       host.talk({lines:[
         SAY('The dispatch','CINDERBANK SIDING · Ambulance train, departure before dawn. Two carriages of wounded soldiers. Medical staff: none listed.'),
-        SAY('Orrin','This came through the same relay. It has the next service number.','orrin'),
-        SAY('Nell','Leave Mira with Bram. I’ll get our coats.','nell'),
+        SAY('Orrin','A crew carbon is clipped to it. Someone signed us in before we agreed to go. The copies are coming back along the wire.','orrin'),
+        SAY('Nell','Then we follow the copies. Mira stays with Bram. This one says fourteen people will leave without anyone to care for them.','nell'),
       ],done:()=>{f.diskBComplete=true;s.boundary=DISK_B.next;remember(s,'b-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
   }
 }

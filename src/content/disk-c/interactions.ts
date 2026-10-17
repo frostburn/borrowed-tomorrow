@@ -1,3 +1,4 @@
+import { ambulanceDoor, collection } from '../scenes';
 import { SAY, type Dialogue } from '../disk-a/story';
 import type { StoryHost } from '../disk-a/interactions';
 import { remember, restoreParty } from '../../rules/state';
@@ -27,16 +28,7 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-carriage':
       if(f.cTransferred){say(SAY('The ambulance carriage','Empty stretchers are stacked on the return rack. The receiving slip is clipped where the passenger list used to hang.'));break;}
       if(!f.cWarmed){say(SAY('Dena','Hot water first. I can’t ask him to grip the rail with his hands like that.'));break;}
-      if(!f.cManifestRefused){host.talk({lines:[
-        SAY('The carriage door','Ivo slides the stretcher over the sill. Dena follows with her bag. The door catches its strap and holds her outside.'),
-        SAY('The carriage speaker','Fourteen registered patients. Attendants: zero. Unauthorized boarding refused.'),
-        SAY('Dena','My bag is beside his head. Let me reach it.'),
-        SAY('Nell','Ivo, bring the stretcher back onto the platform. We’re not sending him without you.','nell'),
-        SAY('Orrin','There’s a footpath round the shed. Could we bring them that way?','orrin'),
-        SAY('Dena','Six miles of ballast, with stretchers. Two of them can’t sit up. We need this train.'),
-        SAY('Nell','Where did you enter your names?','nell'),
-        SAY('Dena','The service sheet in the dispatch office. The tickets only had room for patients.'),
-      ],done:()=>commit('cManifestRefused','c-refused')});break;}
+      if(!f.cManifestRefused){host.talk({...ambulanceDoor(),done:()=>commit('cManifestRefused','c-refused')});break;}
       if(!f.cCrewAccepted){say(SAY('Nell','The brake stays pinned. We need the bed count and the repair signed into the crew register before Dena can board.','nell'));break;}
       host.talk({lines:[
         SAY('The carriage speaker','Fourteen patients. Four working crew. Receiving copy accepted.'),
@@ -154,11 +146,6 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-return-service':
       if(f.diskCComplete){host.boundary();break;}
       if(!f.cLarkspurReported){host.travel(CINDERBANK_ARRIVAL.map,CINDERBANK_ARRIVAL.x,CINDERBANK_ARRIVAL.y);break;}
-      host.talk({lines:[
-        SAY('Collection slip','REGISTERED LETTER · Orrin, care of Larkspur repairs. Held at Northglass signal works. Sender: blank. Present working-crew copy for collection.'),
-        SAY('Orrin','The bag was sealed three maintenance shifts before we put our names in this book.','orrin'),
-        SAY('Nell','I have the signed copy. We can ask who brought it.','nell'),
-        SAY('Orrin','Let me fetch my coat this time. I put it down at Bellwether and nearly left without it.','orrin'),
-      ],done:()=>{f.diskCComplete=true;s.boundary=DISK_C.next;remember(s,'c-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
+      host.talk({...collection(s),done:()=>{f.diskCComplete=true;s.boundary=DISK_C.next;remember(s,'c-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
   }
 }

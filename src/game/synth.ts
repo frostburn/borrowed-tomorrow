@@ -1,5 +1,5 @@
 import type { Instrument } from './score';
-export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend';
+export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper';
 const frequency=(midi:number)=>440*2**((midi-69)/12);
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
@@ -70,6 +70,11 @@ export class Synth {
     const tone=(hz:number,offset:number,duration:number,volume:number,type:OscillatorType='sine',endHz=hz)=>this.tone(hz,when+offset,duration,volume,type,0,endHz);
     const noise=(offset:number,duration:number,volume:number,hz:number,endHz=hz)=>this.noise(when+offset,duration,volume,hz,endHz);
     switch(kind){
+      case 'punch':
+        noise(0,.025,.2,2400,900);tone(180,0,.06,.16,'triangle',72);tone(370,.05,.4,.09);break;
+      case 'return-call':
+        [0,.24,.64].forEach((offset,i)=>{tone(880,offset,i===2?.7:.13,.12);tone(1320,offset,i===2?.55:.1,.045);});break;
+      case 'paper':noise(0,.12,.09,2700,1400);noise(.1,.08,.06,1800,3200);break;
       case 'click':tone(1150,0,.013,.1,'triangle',820);noise(0,.012,.045,3200);break;
       case 'move':{
         const hz=surface==='yard'?1400:surface==='tunnel'?480:780;
