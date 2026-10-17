@@ -38,3 +38,10 @@ Maps use generated scenery and editable Tiled collision data. Four directional a
 Disk B’s lossless WebP sources are stored as small base64 chunks in `assets/maps/` so they can be transferred through the repository connector. `scripts/restore-map-art.mjs` reconstructs the exact native files before `npm run dev` and `npm run build`, verifying their byte length and SHA-256. No colors or dimensions change. The built site contains the ordinary WebP files.
 
 The schoolhouse courtyard is enclosed by collision along all four sides. Its southern gate has a saved open state; both pathfinding and keyboard movement use it. Opening the gate reveals a 1:1 patch of native paving beneath the bars and swings the leaf against the fence. Elspeth’s interaction requires the gate to be open.
+
+Disk C adds two native **1536 × 1024** maps, generated with the built-in Image Gen tool and encoded losslessly. Original RGBA pixels and dimensions were checked against the WebP files. Both use the existing verified source-chunk restoration process and the same 1:1 scrolling camera.
+
+- **Cinderbank:** winter ambulance siding before dawn; dark green medical carriages along the upper platform, brick dispatch office to the left, copper-piped boiler shed to the right, stretchers and supply crates at the lower left, broad connected cobbled loading apron. Cold slate-blue snow and warm amber lamps; no people, text, UI, or grid. Native combat terrain is a crop of the loading apron.
+- **Bellwether infirmary:** cream-stone receiving hall beneath a glowing glass roof, wide central ramp, boiler house at the left, second ward and admissions porch at the right, clear paved courtyard, empty siding entering at the lower left, frosty herb beds and laundry at the far edge. Warm honey light contrasts with the siding. No people, labels, UI, or grid.
+
+Both production prompts requested a downward three-quarter JRPG view, detailed early-PC scenery, architecture at the edges, broad unobstructed walking surfaces, no black margins, and a full-canvas scene designed for native display rather than shrinking.

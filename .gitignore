@@ -7,3 +7,5 @@ playwright-report/
 # Reconstructed lossless map files; native sources are in assets/maps/.
 /public/art/rillbridge.webp
 /public/art/sluice.webp
+/public/art/cinderbank.webp
+/public/art/infirmary.webp
