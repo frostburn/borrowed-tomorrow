@@ -13,6 +13,7 @@ export class UI {
   readonly battlePan: HTMLElement;
   private dialogue?: Dialogue;
   private lineIndex = 0;
+  private onLine?: (index:number)=>void;
   private modalReturn?: HTMLElement;
   private toastTimer?: number;
   constructor(root: HTMLElement, callbacks: { journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
@@ -48,18 +49,37 @@ export class UI {
   }
   actionRow(target: HTMLElement, buttons: Button[]) { for (const b of buttons) target.append(this.button(b)); }
   panel(title: string, content: string, buttons: Button[] = []) {
-    this.dialogue = undefined;
+    this.dialogue = undefined;this.onLine=undefined;this.sceneLayer.classList.remove('cinematic');
     this.sceneLayer.innerHTML = `<section class="scene-panel"><h2>${esc(title)}</h2><div class="panel-content">${content}</div><div class="panel-actions"></div></section>`;
     this.actionRow(this.sceneLayer.querySelector<HTMLElement>('.panel-actions')!, buttons);
   }
-  clearPanel() { this.dialogue = undefined; this.sceneLayer.innerHTML = ''; }
-  showDialogue(dialogue: Dialogue) { this.dialogue = dialogue; this.lineIndex = 0; this.drawDialogue(); }
+  clearPanel() { this.dialogue = undefined; this.onLine=undefined;this.sceneLayer.classList.remove('cinematic');this.sceneLayer.innerHTML = ''; }
+  showDialogue(dialogue: Dialogue,onLine?:(index:number)=>void) { this.dialogue = dialogue; this.onLine=onLine;this.lineIndex = 0; this.drawDialogue(); }
   private drawDialogue() {
     const d = this.dialogue!; const line = d.lines[this.lineIndex];
     const last = this.lineIndex === d.lines.length - 1;
+    this.onLine?.(this.lineIndex);this.sceneLayer.classList.toggle('cinematic',!!d.scene);
     const portrait=line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who);
     this.sceneLayer.innerHTML = `<section class="dialogue" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt="${esc(line.who)}"/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
     const buttons = this.sceneLayer.querySelector<HTMLElement>('.dialogue-actions')!;
+    if(d.scene){
+      const bar=document.createElement('div');bar.className='cinema-bar';bar.innerHTML=`<span>${esc(d.scene.title)}</span>`;
+      bar.append(this.button({label:'Skip scene',action:()=>this.skipDialogue()}));this.sceneLayer.prepend(bar);
+      const insert=line.shot?.document;
+      if(insert){
+        const paper=document.createElement('article');paper.className='cinema-document';paper.innerHTML=`<h3>${esc(insert.heading)}</h3>${insert.lines.map(t=>`<p>${esc(t)}</p>`).join('')}${insert.stamp?`<strong>${esc(insert.stamp)}</strong>`:''}`;
+        if(insert.signature){
+          const signatures=document.createElement('div');signatures.className='signatures';
+          for(const label of insert.compare?['EARLY COPY','JUST SIGNED']:['']){
+          const signature=document.createElement('canvas');signature.width=192;signature.height=32;signature.setAttribute('aria-label','Nell’s receipt signature');
+          const ctx=signature.getContext('2d')!;ctx.strokeStyle='#382c29';ctx.lineWidth=2;
+          ctx.beginPath();for(const [i,[x,y]] of [[8,25],[15,5],[23,25],[33,4],[28,24],[44,17],[48,22],[39,25],[45,11],[55,25],[63,6],[57,24],[71,6],[65,25],[88,21],[82,28],[163,25]].entries())if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);ctx.stroke();
+          if(insert.compare){const copy=document.createElement('div');copy.className='signature-copy';copy.innerHTML=`<span>${esc(label)}</span>`;copy.append(signature);signatures.append(copy);}else signatures.append(signature);
+          }paper.append(signatures);
+        }
+        this.sceneLayer.insertBefore(paper,this.sceneLayer.querySelector('.dialogue'));
+      }
+    }
     if (last && d.choices) this.actionRow(buttons, d.choices.map((c: Choice) => ({ label: c.label, action: () => { this.clearPanel(); c.action(); } })));
     else buttons.append(this.button({ label: last ? 'Continue' : 'Next', key: '↵', action: () => this.advanceDialogue() }));
   }
@@ -67,6 +87,11 @@ export class UI {
     const d = this.dialogue; if (!d) return;
     if (this.lineIndex < d.lines.length - 1) { this.lineIndex++; this.drawDialogue(); }
     else if (!d.choices) { this.clearPanel(); d.done?.(); }
+  }
+  skipDialogue(){
+    const d=this.dialogue;if(!d?.scene)return;
+    if(d.choices){this.lineIndex=d.lines.length-1;this.drawDialogue();}
+    else{this.clearPanel();d.done?.();}
   }
   get dialogueOpen() { return !!this.dialogue; }
   get panelOpen() { return this.sceneLayer.childElementCount > 0; }

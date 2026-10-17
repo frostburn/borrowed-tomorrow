@@ -6,6 +6,8 @@ export async function importSave(page:Page,state:unknown){
   await page.getByRole('button',{name:/^Save files$|^Save$/}).first().click();
   const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Import save file'}).click();
   await (await chooser).setFiles({name:'arrival.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(state))});
+  // Restore closes this dialog only after the save and its region are ready.
+  await expect(page.getByRole('dialog')).toHaveCount(0,{timeout:20000});
 }
 /** Walk the larger maps through visible waypoints; never teleport or mutate the game. */
 export async function approach(page:Page,id:string){

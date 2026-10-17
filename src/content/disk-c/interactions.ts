@@ -1,3 +1,4 @@
+import { ambulanceDoor, collection } from '../scenes';
 import { SAY, type Dialogue } from '../disk-a/story';
 import type { StoryHost } from '../disk-a/interactions';
 import { remember, restoreParty } from '../../rules/state';
@@ -8,6 +9,13 @@ export function interactDiskC(host:StoryHost,id:string){
   const s=host.state,f=s.flags;
   const say=(...lines:Dialogue['lines'])=>host.talk({lines});
   const commit=(flag:string,entry?:string)=>host.commit(flag,entry);
+  const readyBoiler=()=>host.talk({lines:[
+    SAY('The bypass',f.cTrainHeat?'The coupling holds on the carriage pipe. The outer vent lanes hiss beside the boiler keeper.':'Ivo has returned with Celia’s coupling test. The central bypass lane hisses beside the boiler keeper.'),
+    SAY('Orrin','The keeper is on the apron beside the shed. Stop it, and I can shut the vents and test the brake. We can prepare first.'),
+  ],choices:[
+    {label:'Confront the boiler keeper',action:()=>host.battle('c-boiler')},
+    {label:'Prepare in the yard',action:()=>host.update()},
+  ]});
   switch(id){
     case 'c-dena':
       if(f.cTransferred){say(SAY('Dena','The empty carriages came back on the stores run. I’m going back to Bellwether before the next dressing round.'));break;}
@@ -27,16 +35,7 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-carriage':
       if(f.cTransferred){say(SAY('The ambulance carriage','Empty stretchers are stacked on the return rack. The receiving slip is clipped where the passenger list used to hang.'));break;}
       if(!f.cWarmed){say(SAY('Dena','Hot water first. I can’t ask him to grip the rail with his hands like that.'));break;}
-      if(!f.cManifestRefused){host.talk({lines:[
-        SAY('The carriage door','Ivo slides the stretcher over the sill. Dena follows with her bag. The door catches its strap and holds her outside.'),
-        SAY('The carriage speaker','Fourteen registered patients. Attendants: zero. Unauthorized boarding refused.'),
-        SAY('Dena','My bag is beside his head. Let me reach it.'),
-        SAY('Nell','Ivo, bring the stretcher back onto the platform. We’re not sending him without you.','nell'),
-        SAY('Orrin','There’s a footpath round the shed. Could we bring them that way?','orrin'),
-        SAY('Dena','Six miles of ballast, with stretchers. Two of them can’t sit up. We need this train.'),
-        SAY('Nell','Where did you enter your names?','nell'),
-        SAY('Dena','The service sheet in the dispatch office. The tickets only had room for patients.'),
-      ],done:()=>commit('cManifestRefused','c-refused')});break;}
+      if(!f.cManifestRefused){host.talk({...ambulanceDoor(),done:()=>commit('cManifestRefused','c-refused')});break;}
       if(!f.cCrewAccepted){say(SAY('Nell','The brake stays pinned. We need the bed count and the repair signed into the crew register before Dena can board.','nell'));break;}
       host.talk({lines:[
         SAY('The carriage speaker','Fourteen patients. Four working crew. Receiving copy accepted.'),
@@ -88,13 +87,10 @@ export function interactDiskC(host:StoryHost,id:string){
         SAY('Dena','The north ward opens. We travel with the Larkspur blankets and fresh hot-water bottles. Ivo and I stay in the carriages. Either plan is safe if we both go.'),
         SAY('Orrin','The keeper’s relief gear is stuck. The bypass changes which vent lanes discharge while we stop it. Anyone on an orange hex loses six HP at round end. Keep clear before the last turn.','orrin'),
       ],choices:[
-        {label:'Heat the train · one crowded receiving hall',action:()=>commit('cTrainHeat','c-train-heat')},
-        {label:'Heat the north ward · travel under blankets',action:()=>commit('cWardHeat','c-ward-heat')},
+        {label:'Heat the train · one crowded receiving hall',action:()=>{commit('cTrainHeat','c-train-heat');readyBoiler();}},
+        {label:'Heat the north ward · travel under blankets',action:()=>{commit('cWardHeat','c-ward-heat');readyBoiler();}},
       ]});break;}
-      host.talk({lines:[
-        SAY('The bypass',f.cTrainHeat?'Orrin fits the coupling to the carriage pipe. The outer vent lanes begin to hiss.':'Ivo takes the coupling to Bellwether on the stores handcar and returns with Celia’s test slip. The central bypass lane begins to hiss.'),
-        SAY('Orrin','The keeper can still lift the relief lever. Stop it, and I can close the vents and test the brake.','orrin'),
-      ],done:()=>host.battle('c-boiler')});break;
+      readyBoiler();break;
     case 'c-to-infirmary':
       if(!f.cRegisterRead){say(SAY('Nell','Read the dispatch instructions first. We need to know what to ask the receiving officer.','nell'));break;}
       host.travel('infirmary',16,27);break;
@@ -154,11 +150,6 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-return-service':
       if(f.diskCComplete){host.boundary();break;}
       if(!f.cLarkspurReported){host.travel(CINDERBANK_ARRIVAL.map,CINDERBANK_ARRIVAL.x,CINDERBANK_ARRIVAL.y);break;}
-      host.talk({lines:[
-        SAY('Collection slip','REGISTERED LETTER · Orrin, care of Larkspur repairs. Held at Northglass signal works. Sender: blank. Present working-crew copy for collection.'),
-        SAY('Orrin','The bag was sealed three maintenance shifts before we put our names in this book.','orrin'),
-        SAY('Nell','I have the signed copy. We can ask who brought it.','nell'),
-        SAY('Orrin','Let me fetch my coat this time. I put it down at Bellwether and nearly left without it.','orrin'),
-      ],done:()=>{f.diskCComplete=true;s.boundary=DISK_C.next;remember(s,'c-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
+      host.talk({...collection(s),done:()=>{f.diskCComplete=true;s.boundary=DISK_C.next;remember(s,'c-departure');host.refresh();host.save();host.endingMusic();host.boundary();}});break;
   }
 }

@@ -6,7 +6,7 @@ Implemented in `src/content/disk-c/`. This document preserves its incoming contr
 
 Disk B ends with `chapter: disk-b`, `diskBComplete: true`, `bEvacuated: true`, `bLarkspurReceived: true`, and `boundary: disk-c:ambulance-siding`. The physical save remains at Larkspur beside the unscheduled train, normally near `(32,10)`; return exploration may change that location. Do not infer the pending chapter from coordinates. Nell and Orrin are the only combatants. Mira is with Bram at Larkspur.
 
-The departure dialogue reads a dispatch for **Cinderbank siding**: an ambulance train must depart before dawn, two carriages carry wounded soldiers, and no medical staff appear on the passenger list. Orrin identifies the next service number on the same relay. Nell asks him to leave Mira with Bram and fetch their coats.
+The departure dialogue reads a dispatch for **Cinderbank siding**: an ambulance train must depart before dawn, two carriages carry wounded soldiers, and no medical staff appear on the passenger list. The revised dispatch carries a working-crew carbon bearing Nell and Orrin’s names before they have agreed to go. They follow the premature copies, with blankets for the fourteen patients. Mira stays with Bram. Original version-2 files without that scene remain valid.
 
 Import a real version-2 Disk B completion save during verification. Preserve all prior progress, the outfall choice, the optional maintenance discovery, and Ansel’s first answer. Do not consume this boundary until the new scene and assets are ready. Earlier towns remain visitable. Continue the save schema with migrations, not resets.
 
@@ -21,3 +21,7 @@ The previous chapter escaped through a maintenance path. Let that experience hel
 Keep Mira’s reunion intact. Bram, Tilda, and Elspeth have their own recovery at Larkspur. If the orchard flooded, follow through on lost food and Tilda’s request for credit; if it stayed dry, allow practical recovery through the crossing. The optional work sheet means Orrin can recognize his father’s maintenance time only when `bWorksheetRead` is true.
 
 Ada Fenwick remains private author knowledge. A useful new record may advance the author or maintenance thread, but avoid a speech explaining the whole return railway. Follow the repository’s `write-game-prose` skill and update canon, knowledge, open threads, and the next exact boundary after implementing the chapter.
+
+If `bReceiptMatched`, Nell has compared the premature receiving copy with the signature she writes at 00:17. Its sender remains unknown. Stage the ambulance door catching Dena’s bag; show the inspector’s punch mark on the refusal order. Working-crew registration still requires the same beds, heat plan and tested equipment.
+
+The chosen heat plan now leads directly to a readiness dialogue with **Confront the boiler keeper** and **Prepare in the yard**. The same dialogue reopens from `c-valve` for an already chosen plan. The keeper has its own native sprite on the apron; clicking the painted boiler-shed frontage also approaches that interaction. Defeating it hides the world sprite and marker while retaining the bypass inspection. Existing saves need no migration or reset.

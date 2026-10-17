@@ -6,7 +6,7 @@ import { MAPS } from '../../src/content/maps';
 import { battle, capture, dialogue, inspect, nativeScene } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 
-test('the supplied Disk C save collects the letter, rescues all six workers, earths the relay and reaches Disk E',async({page})=>{
+test('the supplied Disk C save collects the letter, rescues all six workers, earths the relay and reaches Disk E @journey',async({page})=>{
   test.setTimeout(300000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   const missing:string[]=[];page.on('response',r=>{if(r.url().includes('/art/')&&r.status()>=400)missing.push(r.url());});
@@ -46,7 +46,7 @@ test('the supplied Disk C save collects the letter, rescues all six workers, ear
   await visit(page,'d-recorder');await travel(page,'d-to-yard','northglass');await visit(page,'d-petra');
   await expect(page.getByRole('heading',{name:'Insert Disk E',exact:true})).toBeVisible();await capture(page,'disk-d-insert-e');
   const final=(await inspect(page)).state;expect(final.boundary).toBe('disk-e:brinewick-parcel');expect(final.flags.diskDComplete).toBe(true);
-  for(const flag of ['dCrewReturned','dRelayStopped','dRecordRead','dHandBell','dEngineerRead','bEvacuated','bOrchardChannel','cTransferred','cWardHeat'])expect(final.flags[flag]).toBe(true);
+  for(const flag of ['dCrewReturned','dRelayStopped','dReplySent','dRecordRead','dHandBell','dEngineerRead','bEvacuated','bOrchardChannel','cTransferred','cWardHeat'])expect(final.flags[flag]).toBe(true);
   expect(final.gear).toEqual(departure.gear);expect(final.party.map(h=>h.id)).toEqual(['nell','orrin']);
   if(process.env.BT_QA_SAVE_OUTPUT)await writeFile(process.env.BT_QA_SAVE_OUTPUT,JSON.stringify(final,null,2));
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
@@ -58,7 +58,7 @@ test('the supplied Disk C save collects the letter, rescues all six workers, ear
   expect(errors).toEqual([]);expect(missing).toEqual([]);expect(await page.locator('vite-error-overlay').count()).toBe(0);
 });
 
-test('a phone can release both earths, close for the night, and keep the alternative outcome after reload',async({page})=>{
+test('a phone can release both earths, close for the night, and keep the alternative outcome after reload @journey',async({page})=>{
   test.setTimeout(180000);await page.setViewportSize({width:390,height:844});await page.goto('/');
   const state=enterDiskD(decodeSave(JSON.stringify(departure)));
   state.location={map:'northglass',x:14,y:17};await importSave(page,state);

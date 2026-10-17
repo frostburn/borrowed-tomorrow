@@ -9,3 +9,9 @@ The local route is Bram → overflow → gauge → Tilda → carriage refusal �
 The orchard channel gives a dry keeper arena at the cost of the trees. The millrace keeps the orchard bank dry and introduces shallow-water movement costs. Both paths rescue thirty-one residents. Their survival is confirmed after midnight at Larkspur.
 
 The outgoing boundary is `disk-c:ambulance-siding`. See `disk-c-handoff.md` for the precise saved state and next adventure. Earlier regions, Rillbridge, and the sluice remain visitable. Keep all content and flag IDs stable.
+
+## Revised opening and outgoing hook
+
+New journeys may carry `aOpeningSeen` and `aReceiptSeen`. Mira’s paper has Nell’s signature and reads “14 October · 00:17; thirty-one received, none substituted.” Nell has not written it in Disk A. The inspector demanded it on the platform, cut the western return wire, ordered the foot crossing sealed and fought to prevent a different arrival. Do not require these new flags when importing an original version-1 file.
+
+The reunion and crossing are staged scenes. At Larkspur Nell signs the actual receiving copy; its signature matches the early one (`bReceiptMatched`, journal `b-receipt`). For an older save without the new opening, the early copy is found under Ansel’s blotter. This gives the same proof without invented memories. The next dispatch carries a premature crew carbon. Nell and Orrin follow it deliberately into Disk C, leaving Mira with Bram.

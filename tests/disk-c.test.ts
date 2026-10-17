@@ -55,9 +55,11 @@ describe('Disk C continuation',()=>{
       s.visit('c-valve').done?.();expect(s.battle()).toBe('');
       s.visit('c-celia').done?.();s.visit('c-beds').done?.();
       s.visit('c-couplings').done?.();expect(s.battle()).toBe('c-coupling');f.cCouplingRecovered=true;
-      s.visit('c-valve').choices![choice].action();expect(s.visit('c-valve').choices).toBeUndefined();
+      s.visit('c-valve').choices![choice].action();
+      expect(s.read().choices![0].label).toBe('Confront the boiler keeper');expect(s.battle()).toBe('c-coupling');
+      s.read().choices![1].action();expect(s.battle()).toBe('c-coupling');
       const saved=decodeSave(JSON.stringify(s.state));expect(Boolean(saved.flags.cTrainHeat)).toBe(choice===0);
-      s.visit('c-valve').done?.();expect(s.battle()).toBe('c-boiler');f.cBoilerStopped=true;
+      s.visit('c-valve').choices![0].action();expect(s.battle()).toBe('c-boiler');f.cBoilerStopped=true;
       s.visit('c-dispatch').done?.();expect(f.cCrewAccepted).toBe(true);
       s.visit('c-carriage').choices![0].action();s.read().done?.();
       expect(f.cTransferred).toBe(true);expect(s.destination()).toBe('infirmary');

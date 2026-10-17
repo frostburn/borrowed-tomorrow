@@ -5,7 +5,7 @@ import { decodeSave, enterDiskB } from '../../src/rules/state';
 import { inspect,dialogue,capture,battle } from './controls';
 import { importSave, approach, visit, travel } from './navigation';
 
-test('version-1 arrival continues through Disk B and preserves the Disk C departure on return visits',async({page})=>{
+test('version-1 arrival continues through Disk B and preserves the Disk C departure on return visits @journey',async({page})=>{
   test.setTimeout(420000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');await importSave(page,arrival);

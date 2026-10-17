@@ -5,7 +5,7 @@ import { toPixel } from '../../src/rules/hex';
 import { newGame, recruitOrrin } from '../../src/rules/state';
 import { inspect,clickWorld,clickHex,dialogue,talk,capture,battle } from './controls';
 
-test('Disk A plays through to a durable Disk B arrival using real controls',async({page})=>{
+test('Disk A plays through to a durable Disk B arrival using real controls @journey',async({page})=>{
   test.setTimeout(300000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');

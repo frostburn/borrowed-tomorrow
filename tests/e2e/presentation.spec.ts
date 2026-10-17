@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
-const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win'] as const;
+const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
@@ -57,7 +57,7 @@ test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional
 
 test('portraits, HUD sprites, and scenery retain their native pixels and colors',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Begin Disk A'}).click();
-  await page.locator('.dialogue-actions button').click();
+  while(await page.locator('.dialogue h2').textContent()!=='Nell')await page.locator('.dialogue-actions button').click();
   await expect(page.locator('.dialogue h2')).toHaveText('Nell');
   await expect.poll(()=>page.evaluate(()=>{
     const image=document.querySelector<HTMLImageElement>('.dialogue-portrait img');
@@ -108,7 +108,7 @@ test('portraits, HUD sprites, and scenery retain their native pixels and colors'
 
 test('the actual Web Audio instruments render distinct scores and action sounds without clipping',async({page})=>{
   await page.goto('/');
-  const output=await page.evaluate(async({modes,effects})=>{
+  const output=await page.evaluate(async({modes,effects,full})=>{
     // @ts-expect-error Vite serves this browser-only module import.
     const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
     // @ts-expect-error Vite serves this browser-only module import.
@@ -120,7 +120,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     };
     const scores=[];
     for(const mode of modes){
-      const bars=['northglass','relayhall','switching'].includes(mode)?32:['rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
+      const bars=!full?4:['northglass','relayhall','switching'].includes(mode)?32:['rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
       const beat=60/ARRANGEMENTS[mode].bpm,c=new OfflineAudioContext(2,Math.ceil((bars*4*beat+2)*22050),22050);
       const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
       for(let bar=0;bar<bars;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+bar*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
@@ -130,7 +130,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     const synth=new Synth(c,gain);effects.forEach((effect,i)=>synth.effect(effect,i*3+.03,'yard',i));
     const buffer=await c.startRendering();
     return {scores,effects:effects.map((effect,i)=>({effect,...summarize(buffer,i*3,i*3+2.8)}))};
-  },{modes,effects});
+  },{modes,effects,full:process.env.BT_FULL_QA==='1'});
   for(const sample of [...output.scores,...output.effects]){
     expect(sample.rms).toBeGreaterThan(.0005);expect(sample.peak).toBeLessThan(.95);
     expect(Number.isFinite(sample.rms)).toBe(true);

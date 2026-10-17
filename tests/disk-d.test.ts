@@ -50,7 +50,7 @@ describe('Disk D continuation',()=>{
       s.visit('d-plan').choices![choice].action();expect(s.visit('d-plan').choices).toBeUndefined();
       const saved=decodeSave(JSON.stringify(s.state));expect(Boolean(saved.flags.dHoldRed)).toBe(choice===0);
       s.visit('d-relay').done?.();expect(s.battle()).toBe('d-relay');f.dRelayStopped=true;
-      s.visit('d-recorder').done?.();s.visit('d-petra').done?.();
+      s.visit('d-recorder').done?.();expect(f.dReplySent).toBe(true);expect(s.state.journal).toContain('d-reply');s.visit('d-petra').done?.();
       const final=decodeSave(JSON.stringify(s.state));expect(final.boundary).toBe('disk-e:brinewick-parcel');
       expect(final.flags.diskDComplete).toBe(true);expect(final.flags.cWardHeat).toBe(true);expect(final.flags.bOrchardChannel).toBe(true);
       expect(visibleObjects(MAPS.northglass,final).some(o=>o.id==='d-esme')).toBe(false);

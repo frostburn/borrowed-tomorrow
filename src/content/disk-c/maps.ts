@@ -10,7 +10,7 @@ export const C_MAPS:Record<'cinderbank'|'infirmary',MapData>={
     {id:'c-dispatch',x:13,y:13,label:'Dispatch office · crew register',sign:true},
     {id:'c-couplings',x:9,y:26,label:'Spare steam coupling',sprite:'hound',hiddenFlag:'cCouplingRecovered'},
     {id:'c-toolbox',x:9,y:26,label:'Recovered steam coupling',sign:true,requiredFlag:'cCouplingRecovered'},
-    {id:'c-valve',x:49,y:19,label:'Steam bypass · boiler keeper',sign:true},
+    {id:'c-valve',x:49,y:19,label:'Steam bypass · boiler keeper',sprite:'boiler-keeper',doneFlag:'cBoilerStopped',spriteHiddenFlag:'cBoilerStopped',hitArea:{x:48,y:10,width:16,height:11}},
     {id:'c-workbook',x:16,y:14,label:'Maintenance delivery book',sign:true,doneFlag:'cWorkbookRead'},
     {id:'c-to-infirmary',x:47,y:27,label:'Stores handcar · Bellwether',sign:true},
     {id:'c-to-larkspur',x:20,y:38,label:'Return platform · Larkspur',sign:true},
