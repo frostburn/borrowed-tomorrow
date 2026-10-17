@@ -1,5 +1,5 @@
 import type { Instrument } from './score';
-export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper';
+export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
 const frequency=(midi:number)=>440*2**((midi-69)/12);
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
@@ -70,6 +70,8 @@ export class Synth {
     const tone=(hz:number,offset:number,duration:number,volume:number,type:OscillatorType='sine',endHz=hz)=>this.tone(hz,when+offset,duration,volume,type,0,endHz);
     const noise=(offset:number,duration:number,volume:number,hz:number,endHz=hz)=>this.noise(when+offset,duration,volume,hz,endHz);
     switch(kind){
+      case 'resonance':
+        tone(146.8,0,1.6,.1);tone(149.1,.04,1.5,.08);tone(440.4,.02,1.2,.025);break;
       case 'punch':
         noise(0,.025,.2,2400,900);tone(180,0,.06,.16,'triangle',72);tone(370,.05,.4,.09);break;
       case 'return-call':

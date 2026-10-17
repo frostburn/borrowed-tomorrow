@@ -1,11 +1,13 @@
 import { expect, test } from '@playwright/test';
+import { capture, dialogue, inspect, nativeScene } from './controls';
+import { approach } from './navigation';
 
 const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
-const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper'] as const;
+const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper','resonance'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
-  const page=await context.newPage();await page.goto('/');await expect(page.getByRole('button',{name:'Begin Disk A'})).toBeVisible({timeout:15000});
+  const page=await context.newPage();await page.goto('/');await expect(page.getByRole('button',{name:'Begin Chapter One'})).toBeVisible({timeout:15000});
   await expect.poll(()=>page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,ctx=canvas.getContext('2d')!;
     return ctx.getImageData(0,0,canvas.width,canvas.height).data.some((v,i)=>i%4!==3&&v>100);
@@ -56,7 +58,7 @@ test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional
 });
 
 test('portraits, HUD sprites, and scenery retain their native pixels and colors',async({page})=>{
-  await page.goto('/');await page.getByRole('button',{name:'Begin Disk A'}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Begin Chapter One'}).click();
   while(await page.locator('.dialogue h2').textContent()!=='Nell')await page.locator('.dialogue-actions button').click();
   await expect(page.locator('.dialogue h2')).toHaveText('Nell');
   await expect.poll(()=>page.evaluate(()=>{
@@ -104,6 +106,11 @@ test('portraits, HUD sprites, and scenery retain their native pixels and colors'
     return missing;
   }),{timeout:15000}).toBe(0);
   if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/native-station.png`});
+  await approach(page,'tomas');await expect(page.locator('.dialogue')).toBeVisible();
+  while(await page.locator('.dialogue h2').textContent()!=='The broken crystal')await page.locator('.dialogue-actions button').click();
+  await capture(page,'lantern-resonance');await dialogue(page);await approach(page,'pursuit');
+  await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  await nativeScene(page,'station',144);await capture(page,'escape-desktop');
 });
 
 test('the actual Web Audio instruments render distinct scores and action sounds without clipping',async({page})=>{

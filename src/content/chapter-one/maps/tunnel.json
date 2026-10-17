@@ -10,7 +10,7 @@
   "tileheight": 24,
   "infinite": false,
   "nextlayerid": 3,
-  "nextobjectid": 12,
+  "nextobjectid": 13,
   "tilesets": [],
   "layers": [
     {
@@ -147,6 +147,17 @@
           "x": 624,
           "y": 408,
           "width": 24,
+          "height": 120,
+          "rotation": 0,
+          "visible": true
+        },
+        {
+          "id": 12,
+          "name": "open-air",
+          "type": "solid",
+          "x": 936,
+          "y": 264,
+          "width": 72,
           "height": 120,
           "rotation": 0,
           "visible": true

@@ -31,26 +31,48 @@ export async function dialogue(page: Page) {
 export async function talk(page: Page, x: number, y: number) { await clickWorld(page,x,y);await dialogue(page); }
 export async function capture(page: Page, name: string) { if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/${name}.png`}); }
 
-/** Compare an unobstructed native camera crop with the displayed framebuffer. */
-export async function nativeScene(page:Page,map:string){
-  await expect.poll(()=>page.evaluate(async(name)=>{
+/** Compare a native camera crop below the cinematic heading with the framebuffer. */
+export async function nativeScene(page:Page,map:string,yOffset=0){
+  await expect.poll(()=>page.evaluate(async({name,yOffset})=>{
     const image=new Image();image.src=`/art/${name}.webp`;await image.decode();
-    if(image.naturalWidth!==1536||image.naturalHeight!==1024)return -1;
     const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
     const reference=document.createElement('canvas');reference.width=32;reference.height=64;
-    reference.getContext('2d')!.drawImage(image,view.scrollX+8,view.scrollY+16,32,64,0,0,32,64);
+    reference.getContext('2d')!.drawImage(image,view.scrollX+8,view.scrollY+48+yOffset,32,64,0,0,32,64);
     const expected=reference.getContext('2d')!.getImageData(0,0,32,64).data;
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
-    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+16)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+48)*info.physicalScale;
     let missing=0;
     for(let y=0;y<64;y++)for(let x=0;x<32;x++)for(let c=0;c<4;c++){
       const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
       if(actual[at]!==expected[(y*32+x)*4+c])missing++;
     }
     return missing;
-  },map),{timeout:15000}).toBe(0);
+  },{name:map,yOffset}),{timeout:15000}).toBe(0);
+}
+
+/** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
+export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}){
+  await expect.poll(()=>page.evaluate(async({sprite,at})=>{
+    const actor=new Image();actor.src=`/art/${sprite}.png`;await actor.decode();
+    const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
+    const reference=document.createElement('canvas');reference.width=80;reference.height=80;
+    const ctx=reference.getContext('2d')!;ctx.drawImage(actor,0,0);
+    const expected=ctx.getImageData(0,0,80,80).data;
+    const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+x-view.scrollX)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+y-view.scrollY)*info.physicalScale;
+    let missing=0;
+    for(let row=0;row<80;row++)for(let col=0;col<80;col++)for(let c=0;c<4;c++){
+      if(expected[(row*80+col)*4+3]!==255)continue;
+      const index=((top+row*info.physicalScale)*output.width+left+col*info.physicalScale)*4+c;
+      if(actual[index]!==expected[(row*80+col)*4+c])missing++;
+    }
+    return missing;
+  },{sprite,at}),{timeout:15000}).toBe(0);
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
