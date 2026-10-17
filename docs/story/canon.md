@@ -7,7 +7,7 @@ The old Disks A–D story has been replaced. Its rescues, time-travel railway, r
 - Stationmaster Ansel is Nell's mentor. Iona supplies the station. Orrin has built a coal-fired engine independent of imperial crystal signals.
 - Captain Severin arrives to arrest Tomas for stealing a crystal from the palace engine. Ansel intervenes and is fatally wounded. Tomas drops the crystal during the struggle. Its light enters Nell's lantern, briefly stopping movement and sound. Nell hears “Return what I gave.” She cannot identify the speaker.
 - Tomas is taken aboard the eastbound prison coach. His last instruction is to find Orrin and use the old branch. Ansel dies in Nell's arms after directing her west. `raidSeen` records the entire scene only when it completes or is skipped. A return visit offers Ansel's cap and Iona's acknowledgment, never a living Ansel.
-- Nell defeats two pursuit hounds (`escapeWon`), opening the western road. This is the only solo battle.
+- Nell defeats two pursuit hounds in Larkspur square (`escapeWon`), opening the western road. The battle uses the station backdrop. This is the only solo battle.
 - Orrin hears what happened, supports Nell and joins deliberately (`orrinJoined`). His engine can use the Rillbridge branch to reach the eastern pass. No fuse or repair errands gate recruitment or departure.
 - An optional workshop encounter (`workshopWon`) rewards the brass lantern reflector. It is not needed to proceed. Neither rewards nor supplies can be collected repeatedly.
 - Rillbridge has stopped. Its people, smoke and water are motionless. Nell's lantern allows Orrin to move beside her. The imperial collector is still running at the eastern carriage. The sun emblem matches the crystal's light. `villageSeen` records this arrival.

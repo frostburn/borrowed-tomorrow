@@ -10,7 +10,7 @@ export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME'
   line('Larkspur · festival night', 'The last train is in. Music carries from the square, and every crystal lamp bears the imperial sun.', { focus: { x: 21, y: 14 }, cut: true, cue: 'return-call' }),
   line('Stationmaster Ansel', 'Off duty, Nell. Your brother’s by the festival lanterns. He asked if you still wanted to see the sea.'),
   line('Nell', 'He promised we’d go before I turned eighteen. I’m starting to think he means the night before.'),
-  line('Stationmaster Ansel', 'You’re seventeen. Give him a chance to disappoint you properly.', { actors: { nell: { to: { x: 23, y: 15 } } } }),
+  line('Stationmaster Ansel', 'Give him a chance to disappoint you properly.', { actors: { nell: { to: { x: 23, y: 15 } } } }),
   line('Nell', 'I’ll make him pick a train this time.'),
 ]);
 

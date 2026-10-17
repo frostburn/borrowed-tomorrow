@@ -66,8 +66,8 @@ export function interactChapterOne(host: StoryHost, id: string) {
     case 'workshop-cache':
       if (!f.orrinJoined) return say('Nell', 'Orrin’s by the engine. I need to talk to him before I go after more hounds.');
       if (f.workshopWon) return;
-      host.talk({ lines: [SAY('Orrin', 'Hounds in the spare shed. There’s a brass reflector inside: more punch for your lantern. We can leave it if you want.')], choices: [
-        { label: 'Clear the shed · optional battle', action: () => host.battle('workshop') },
+      host.talk({ lines: [SAY('Orrin', 'Hounds in the spare shed. There’s a brass reflector inside: more punch for your lantern.')], choices: [
+        { label: 'Clear the shed', action: () => host.battle('workshop') },
         { label: 'Keep moving', action: () => {} },
       ] }); return;
     case 'branch':

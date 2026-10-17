@@ -3,13 +3,14 @@ import type { Encounter } from '../../rules/combat';
 export const ENCOUNTERS: Record<string, Encounter> = {
   pursuit: {
     id: 'pursuit', name: 'Escape from Larkspur', flag: 'escapeWon', xp: 40, coins: 18, journal: 'escape',
+    backdrop: { map: 'station', y: -144 },
     enemies: [{ kind: 'hound', name: 'Pursuit hound', col: 5, row: 2, hp: 18, bonus: -6 }, { kind: 'hound', name: 'Pursuit hound', col: 6, row: 3, hp: 18, bonus: -6 }],
     rocks: [[4, 4], [7, 1]], victory: 'The western road is open. Find Orrin in his workshop.',
   },
   workshop: {
     id: 'workshop', name: 'The spare engine shed', flag: 'workshopWon', xp: 25, coins: 24, journal: 'workshop', gear: 'brass-lantern',
     enemies: [{ kind: 'hound', col: 6, row: 3 }, { kind: 'crow', col: 8, row: 1 }, { kind: 'crow', col: 8, row: 5 }],
-    rocks: [[5, 2], [5, 4], [8, 3]], victory: 'Orrin fits the brass reflector. Nell gains 3 attack power. This fight was optional.',
+    rocks: [[5, 2], [5, 4], [8, 3]], victory: 'Orrin fits the brass reflector. Nell gains 3 attack power.',
   },
   collector: {
     id: 'collector', name: 'The imperial collector', flag: 'collectorDefeated', xp: 45, coins: 26, journal: 'collector',

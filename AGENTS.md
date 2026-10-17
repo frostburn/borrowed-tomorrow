@@ -6,6 +6,8 @@ Keep canon and continuation notes under `docs/story/` in sync with playable cont
 
 For story work, read and apply `.agents/skills/write-game-prose/SKILL.md`. It covers dialogue, narration, journals, player choices, and disk handoffs.
 
+Let scenes establish facts in sequence. Do not pre-explain nearby revelations in title copy or repeat facts such as Nell’s age. Choices can show that a fight may be declined; do not announce afterward that it was optional.
+
 Register named characters in `src/content/characters.ts`. Each needs their own 80 × 80 world sprite and 128 × 128 portrait. `SAY` resolves portraits from speaker identity; narration and documents have no speaker portrait. Keep one person's appearance consistent across locations. The legacy `master` and `clerk` textures belong to Ansel and Iona, respectively; do not assign them to new residents. Named mechanical keepers also have distinct artwork, separate from their combat archetype.
 
 Do not name characters Morrow, Vale, Rook, Sable, Voss, Mara, Dacre, Holt, or Kestrel. This list records the user's exclusions, not characters in the story. Use Ansel for Nell’s stationmaster mentor and Iona for the supply clerk. Ansel dies in the Chapter One raid; return visits must not resurrect him. Tomas is Nell’s older brother; Captain Severin is the officer who arrests him.

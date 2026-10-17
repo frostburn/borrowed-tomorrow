@@ -23,7 +23,7 @@ export const MAPS: Record<MapId, MapData> = {
   yard: { id: 'yard', name: 'Orrin’s workshop', subtitle: 'A steam engine, a disused branch, and a way east.', solid: collision(yardMap), objects: [
     { id: 'orrin', x: 25, y: 13, label: 'Orrin · the independent engine', sprite: 'orrin', hiddenFlag: 'orrinJoined' },
     { id: 'engine', x: 28, y: 9, label: 'Orrin’s coal-fired engine', sign: true, requiredFlag: 'orrinJoined' },
-    { id: 'workshop-cache', x: 30, y: 20, label: 'Engine shed · optional fight & lantern upgrade', sprite: 'hound', hiddenFlag: 'workshopWon' },
+    { id: 'workshop-cache', x: 30, y: 20, label: 'Engine shed', sprite: 'hound', hiddenFlag: 'workshopWon' },
     { id: 'branch', x: 9, y: 8, label: 'Rillbridge branch · eastbound', sign: true },
     { id: 'yard-home', x: 37, y: 18, label: 'Larkspur station', sign: true },
   ] },

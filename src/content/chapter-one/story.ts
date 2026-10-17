@@ -2,12 +2,12 @@ import type { GameState } from '../../rules/state';
 
 export const CHAPTER = { id: 'chapter-one', title: 'Leaving Home', nextTitle: 'Prison Trains' } as const;
 export const JOURNAL: Record<string, { title: string; text: string }> = {
-  home: { title: 'The trip we keep postponing', text: 'I am seventeen. Tomas promised we would see the sea together. He is finally back from the capital. Find him beside the festival lanterns in Larkspur square.' },
+  home: { title: 'The trip we keep postponing', text: 'Tomas promised we would see the sea together. Find him beside the festival lanterns in Larkspur square.' },
   blessing: { title: 'The Benefactor', text: 'The empire credits the Benefactor with its crystal engines, harvests and healing lamps. His sun emblem is on the festival lamps. Ansel says the station had oil lamps when he was a boy.' },
   raid: { title: 'They took Tomas', text: 'Captain Severin arrested Tomas for stealing a palace crystal. Ansel tried to stop him and died protecting us. When the crystal broke, its light entered my lantern. Everything stopped. A voice said, “Return what I gave.” Tomas is on the prison train. Break through the pursuit hounds, then find Orrin in the western workshop.' },
   escape: { title: 'Out of the square', text: 'The hounds cannot follow us now. Orrin took his engine to the western workshop. The army controls the main line; he may know another way east.' },
   orrin: { title: 'Our own engine', text: 'Orrin is coming with me. His engine burns coal instead of imperial crystal and can take the Rillbridge branch to the mountain pass. He brought a steam lance; keep clear of its line. The branch entrance is at the northwest end of the workshop.' },
-  workshop: { title: 'A better lantern', text: 'We cleared the optional engine shed. Orrin fitted a brass reflector to my lantern: three more attack power. The hounds were carrying imperial sun seals.' },
+  workshop: { title: 'A better lantern', text: 'Orrin fitted a brass reflector to my lantern: three more attack power. The hounds in the shed were carrying imperial sun seals.' },
   village: { title: 'Rillbridge has stopped', text: 'The villagers are motionless, but the imperial collector at the eastern carriage is still working. My lantern lets Orrin move beside me. The same sun emblem is on the machine. Reach the collector and stop it.' },
   collector: { title: 'A repayment', text: 'Severin called the collection a repayment over the signal horn. His machine was taking the villagers’ days. We defeated its guard. The collector is ready to break open.' },
   freed: { title: 'They can move again', text: 'We broke the collector and woke Rillbridge. Tilda lost three days; Elspeth can no longer lift her register. Stopping the machine did not return what it had already taken. They have opened the road to the eastern pass. Tomas’s coach went that way.' },

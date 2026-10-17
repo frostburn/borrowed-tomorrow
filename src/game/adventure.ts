@@ -130,7 +130,7 @@ export class Adventure extends Phaser.Scene {
     this.titlePanel();
   }
   private titlePanel() {
-    this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Chapter One · Leaving Home</div><p>Nell is seventeen. Her brother has finally come home from the capital.</p><p>The imperial train has followed him.</p><p>A stolen crystal, a coal-fired engine, and the first repayment of a god’s loan.</p>', [
+    this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Chapter One · Leaving Home</div>', [
       { label: 'Begin Chapter One', action: () => {
         if (this.latestSave) this.ui.showModal('Begin a new journey?', '<p>Your manual save slots will remain available. Starting a new journey replaces the autosave.</p>', [{ label: 'Begin', action: () => { this.ui.closeModal(); this.begin(); } }]);
         else this.begin();
@@ -336,7 +336,9 @@ export class Adventure extends Phaser.Scene {
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
   }
   private drawBattle() {
-    this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();this.background('yard',-66);
+    this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
+    const backdrop=ENCOUNTERS[this.battle!.encounter].backdrop??{map:'yard',y:-66};
+    this.background(backdrop.map,backdrop.y);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
