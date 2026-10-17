@@ -4,7 +4,7 @@ import { interactChapterOne, resumeChapter, type StoryHost } from '../content/ch
 import { CHAPTER, JOURNAL, objective } from '../content/chapter-one/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
-import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, shape, targets, wait, type AbilityId, type Battle } from '../rules/combat';
+import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
 import { Audio } from './audio';
@@ -141,7 +141,7 @@ export class Adventure extends Phaser.Scene {
       } },
       { label: 'Continue', disabled: !this.latestSave, action: () => { if (this.latestSave) this.loadState(this.latestSave); } },
       { label: 'Save files', action: () => this.saves() },
-      ...(import.meta.env.DEV ? [{label:'Inventory workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','inventory');location.assign(url);}}] : []),
+      ...(import.meta.env.DEV ? [{label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}}] : []),
     ]);
   }
   private begin() {
@@ -302,7 +302,7 @@ export class Adventure extends Phaser.Scene {
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
       const u=active(this.battle!)!;
       if (e.key==='1') this.selectAction('move');
-      else if (/^[2-5]$/.test(e.key)) { const id=u.abilities[Number(e.key)-2];if(id)this.selectAction(id); }
+      else if (/^[2-9]$/.test(e.key)) { const id=u.abilities[Number(e.key)-2];if(id)this.selectAction(id); }
       else if (e.key.toLowerCase()==='f') this.doDefend();
       else if (e.key.toLowerCase()==='w') this.doWait();
       else if (e.key==='Enter' || e.key===' ') { if(this.plan)this.commitPlan();else this.chooseHex(this.battleCursor); }
@@ -368,6 +368,7 @@ export class Adventure extends Phaser.Scene {
       this.layer.add(img);this.actorImages.set(u.id,img);
       if(u.hp>0){const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(p.x-23,p.y+18,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(p.x-22,p.y+19,44*u.hp/u.maxHp,4);this.layer.add(g);
         const t=this.label(p.x,p.y+28,String(u.hp),'#f4e5be',2);this.layer.add(t);
+        if(u.guard||u.weakened)this.layer.add(this.label(p.x,p.y+44,[u.guard?`Guard ${u.guard}`:'',u.weakened?'Dazzled':''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
     this.drawGrid();this.drawInitiative();
@@ -398,6 +399,9 @@ export class Adventure extends Phaser.Scene {
       if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
       if(b.vents.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffc07a,.95);for(const dx of [-10,0,10]){this.grid.lineBetween(p.x+dx-3,p.y+16,p.x+dx+3,p.y+8);this.grid.lineBetween(p.x+dx+3,p.y+8,p.x+dx,p.y+3);}}
     }
+    if(canAct&&aimed&&this.selected==='repulse'&&legalAim(b,u!,this.selected,aimed)){
+      for(const target of targets(b,u!,this.selected,aimed)){const destination=target.hp>damage(u!,target,this.selected)?pushDestination(b,u!,target):undefined;if(destination){this.hexPolygon(destination,0x557179,.3,0x9bab6c,2);}}
+    }
     if(this.plan?.action==='move'&&u){const path=movement(b,u).get(key(this.plan.hex))?.path??[];this.grid.lineStyle(3,0xe8d6a2,.9);this.grid.beginPath();const start=toPixel(u.hex);this.grid.moveTo(start.x,start.y);for(const h of path){const p=toPixel(h);this.grid.lineTo(p.x,p.y);}this.grid.strokePath();}
   }
   private drawInitiative() {
@@ -427,8 +431,9 @@ export class Adventure extends Phaser.Scene {
       const visit=movement(b,u).get(key(aimed));
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
     }else if(legalAim(b,u,this.selected,aimed)){
-      const hits=targets(b,u,this.selected,aimed);const description=hits.map(v=>`${v.name}: ${ABILITIES[this.selected as AbilityId].heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ABILITIES[this.selected as AbilityId].heal?' (ALLY)':''}`).join(' · ')||'Empty ground';
-      if(this.plan)confirm.append(this.ui.button({label:ABILITIES[this.selected].heal?'Confirm healing':'Confirm attack',action:()=>this.commitPlan()}));
+      const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);
+      const description=hits.map(v=>ability.effect==='weaken'?`${v.name}: next attack −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId)} guard`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`).join(' · ')||'Empty ground';
+      if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='guard'||ability.effect==='weaken'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
       const text=document.createElement('span');text.className='prediction';text.textContent=description;confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction';text.textContent='Out of range, blocked, or not a valid target.';confirm.append(text);}
   }
@@ -446,7 +451,7 @@ export class Adventure extends Phaser.Scene {
     const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));
     const success=plan.action==='move'?!!move(b,u,plan.hex):cast(b,u,plan.action,plan.hex);
     if(!success){this.plan=undefined;this.drawGrid();this.renderBattleControls();return;}
-    this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action,this.state.location.map);
+    this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action==='move'?'move':ABILITIES[plan.action].sound??plan.action as import('./synth').Effect,this.state.location.map);
     if(plan.action==='move')this.selected=u.abilities[0];else this.selected='move';
     this.animateBattle(before);
   }
@@ -467,14 +472,14 @@ export class Adventure extends Phaser.Scene {
     this.time.delayedCall(480,()=>{
       if(this.mode!=='battle'||this.battle!==b)return;
       if(this.ui.modalOpen){this.busy=false;this.scheduleEnemy();return;}
-      const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));const action=enemyTurn(b);if(action)this.audio.effect(action,this.state.location.map);this.animateBattle(before);
+      const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));const action=enemyTurn(b);if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before);
     });
   }
   private battleEnded() {
     const b=this.battle!;
     if(import.meta.env.DEV&&this.practiceReady){
       this.ui.panel(b.result==='victory'?'Practice complete':'Practice defeated','',[
-        {label:'Back to inventory',action:()=>this.practiceReturn?.()},
+        {label:'Back to workshop',action:()=>this.practiceReturn?.()},
       ]);return;
     }
     if(b.result==='defeat'){

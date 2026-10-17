@@ -46,7 +46,7 @@ export class PixelDisplay {
     const point=(e:PointerEvent,click:boolean)=>{const b=this.world.getBoundingClientRect();onPoint((e.clientX-b.left)*this.world.width/b.width,(e.clientY-b.top)*this.world.height/b.height,click);};
     this.world.addEventListener('pointerdown',e=>point(e,true));this.world.addEventListener('pointermove',e=>point(e,false));
     new MutationObserver(()=>{this.dirty=true;}).observe(this.source,{subtree:true,childList:true,characterData:true,attributes:true});
-    for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
+    for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
     window.addEventListener('resize',()=>this.layout());this.layout();
     window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,palette:PALETTE})};
@@ -117,6 +117,10 @@ export class PixelDisplay {
       if(style.overflowX!=='visible'||style.overflowY!=='visible')add(ctx=>{ctx.beginPath();ctx.rect(r.x,r.y,r.w,r.h);ctx.clip();},true);
       if(element===this.world){this.worldRect=r;add(()=>{},false,true);}
       else if(element instanceof HTMLCanvasElement)add(ctx=>{ctx.drawImage(element,r.x,r.y,r.w,r.h);});
+      else if(element instanceof HTMLInputElement&&element.type==='number'){
+        const value=element.value,scale=Math.max(1,Math.round(parseFloat(style.fontSize)/10));
+        add(ctx=>bitmapText(ctx,value,r.x+Math.round(parseFloat(style.paddingLeft)),r.y+Math.round(parseFloat(style.paddingTop))+scale,style.color,scale));
+      }
       else if(element instanceof HTMLImageElement&&element.complete&&element.naturalWidth){
         // Borders and padding are outside the image's content box. Drawing into
         // the border box used to resample even a supposedly native-sized portrait.
