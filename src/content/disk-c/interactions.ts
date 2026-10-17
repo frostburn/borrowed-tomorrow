@@ -2,6 +2,7 @@ import { SAY, type Dialogue } from '../disk-a/story';
 import type { StoryHost } from '../disk-a/interactions';
 import { remember, restoreParty } from '../../rules/state';
 import { DISK_C } from './story';
+import { CINDERBANK_ARRIVAL } from './entrances';
 
 export function interactDiskC(host:StoryHost,id:string){
   const s=host.state,f=s.flags;
@@ -11,6 +12,7 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-dena':
       if(f.cTransferred){say(SAY('Dena','The empty carriages came back on the stores run. I’m going back to Bellwether before the next dressing round.'));break;}
       host.talk({lines:[SAY('Dena',!f.cWarmed?'The covered kettle is on the supply table, by the folded stretchers. Ivo needs both hands for the men.':!f.cManifestRefused?'Their hands are warm again. Help Ivo at the carriage door; I’ll take my bag in after the first stretcher.':f.cCrewAccepted?'It opened for my bag this time. I’ll stay inside until the last stretcher is off at Bellwether.':'Ivo and I are going with them. If the register wants a receiving copy, Celia keeps it at Bellwether.')],choices:[
+        ...(f.cWarmed?[{label:'Help at the carriage door',action:()=>interactDiskC(host,'c-carriage')}]:[]),
         {label:'Rest beside the stove · free',action:()=>{restoreParty(s);host.refresh();host.save();host.toast('Party HP and focus restored.');}},
         {label:'Back to the loading apron',action:()=>host.update()},
       ]});break;
@@ -150,7 +152,7 @@ export function interactDiskC(host:StoryHost,id:string){
       ],done:()=>commit('cLarkspurReported','c-coda')});break;
     case 'c-return-service':
       if(f.diskCComplete){host.boundary();break;}
-      if(!f.cLarkspurReported){host.travel('cinderbank',28,16);break;}
+      if(!f.cLarkspurReported){host.travel(CINDERBANK_ARRIVAL.map,CINDERBANK_ARRIVAL.x,CINDERBANK_ARRIVAL.y);break;}
       host.talk({lines:[
         SAY('Collection slip','REGISTERED LETTER · Orrin, care of Larkspur repairs. Held at Northglass signal works. Sender: blank. Present working-crew copy for collection.'),
         SAY('Orrin','The bag was sealed three maintenance shifts before we put our names in this book.','orrin'),

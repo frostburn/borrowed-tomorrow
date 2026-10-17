@@ -3,7 +3,7 @@ import yardMap from './maps/yard.json' with { type: 'json' };
 import tunnelMap from './maps/tunnel.json' with { type: 'json' };
 import type { MapId, GameState } from '../../rules/state';
 export const TILE = 24, WIDTH = 1008, HEIGHT = 624;
-export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; spriteHiddenFlag?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean }
+export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; spriteHiddenFlag?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean; hitArea?: {x:number;y:number;width:number;height:number} }
 export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; objects: MapObject[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export function collision(map: { layers: { type: string; objects?: { x: number; y: number; width: number; height: number }[] }[] }): [number, number, number, number][] {
   return map.layers.filter(l=>l.type==='objectgroup').flatMap(l=>l.objects??[]).map(o=>[o.x/TILE,o.y/TILE,o.width/TILE,o.height/TILE]);

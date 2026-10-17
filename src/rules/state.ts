@@ -1,3 +1,5 @@
+import { CINDERBANK_ARRIVAL } from '../content/disk-c/entrances';
+
 export const SAVE_FORMAT = 'borrowed-tomorrow';
 export const SAVE_VERSION = 3;
 export type HeroId = 'nell' | 'orrin';
@@ -86,7 +88,7 @@ export function enterDiskC(state:GameState):GameState{
   if(state.chapter!=='disk-b'||state.boundary!=='disk-c:ambulance-siding'||!state.flags.diskBComplete||!state.flags.bEvacuated||!state.flags.bLarkspurReceived||!state.flags.orrinJoined)throw new Error('Reach the saved Cinderbank departure before starting Disk C.');
   const next=decodeSave(JSON.stringify(state));
   next.chapter='disk-c';next.boundary=null;next.flags.diskCStarted=true;
-  next.location={map:'cinderbank',x:28,y:16};remember(next,'c-arrival');
+  next.location={...CINDERBANK_ARRIVAL};remember(next,'c-arrival');
   remember(next,next.flags.bOrchardChannel?'c-flour-credit':'c-harvest');
   return next;
 }

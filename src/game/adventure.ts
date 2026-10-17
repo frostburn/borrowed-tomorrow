@@ -283,7 +283,8 @@ export class Adventure extends Phaser.Scene {
     if (this.mode !== 'world') return;
     const point={x:pointer.x+this.cameras.main.scrollX,y:pointer.y+this.cameras.main.scrollY};
     const dest = { x:Math.floor(point.x/TILE), y:Math.floor(point.y/TILE) };
-    const object = visibleObjects(MAPS[this.state.location.map], this.state).find(o => Math.hypot(o.x-dest.x,o.y-dest.y)<1.8);
+    const object = visibleObjects(MAPS[this.state.location.map], this.state).find(o =>
+      Math.hypot(o.x-dest.x,o.y-dest.y)<1.8 || (o.hitArea&&dest.x>=o.hitArea.x&&dest.x<o.hitArea.x+o.hitArea.width&&dest.y>=o.hitArea.y&&dest.y<o.hitArea.y+o.hitArea.height));
     if (object) {
       if (Math.abs(object.x-this.state.location.x)+Math.abs(object.y-this.state.location.y)<=3 && !this.moving) { this.interact(object); return; }
       const candidates = [{x:object.x,y:object.y}, {x:object.x-1,y:object.y}, {x:object.x+1,y:object.y}, {x:object.x,y:object.y-1}, {x:object.x,y:object.y+1}];

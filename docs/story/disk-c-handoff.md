@@ -10,6 +10,8 @@ The departure dialogue reads a dispatch for **Cinderbank siding**: an ambulance 
 
 Import a real version-2 Disk B completion save during verification. Preserve all prior progress, the outfall choice, the optional maintenance discovery, and Ansel’s first answer. Do not consume this boundary until the new scene and assets are ready. Earlier towns remain visitable. Continue the save schema with migrations, not resets.
 
+The Larkspur service enters Cinderbank at `(20,37)`, beside the return-platform marker at `(20,38)`, on both first arrival and later visits. Existing saves retain their saved position. After warming the patients, the painted ambulance door and Dena’s “Help at the carriage door” action open the same boarding-refusal scene; neither bypasses the crew-register requirements.
+
 ## Local adventure to build
 
 Establish Cinderbank’s local date, the train’s destination, and what will happen at departure before relying on the deadline. There is no inherited real-time countdown. Meet someone tending the wounded immediately; give the player a concrete job that improves their situation. The missing staff on the manifest should obstruct an attempted action before a character explains its implications.

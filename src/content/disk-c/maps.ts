@@ -6,7 +6,7 @@ export const C_MAPS:Record<'cinderbank'|'infirmary',MapData>={
   cinderbank:{id:'cinderbank',name:'Cinderbank siding',subtitle:'2 December · 04:10 · departure held for repairs',width:1536,height:1024,solid:collision(siding),objects:[
     {id:'c-dena',x:28,y:12,label:'Dena · ambulance attendant',sprite:'dena'},
     {id:'c-water',x:8,y:22,label:'Hot water · supply table',sign:true,doneFlag:'cWarmed'},
-    {id:'c-carriage',x:40,y:12,label:'Ambulance carriage',sign:true},
+    {id:'c-carriage',x:42,y:11,label:'Ambulance carriage door',sign:true,hitArea:{x:41,y:6,width:3,height:6}},
     {id:'c-dispatch',x:13,y:13,label:'Dispatch office · crew register',sign:true},
     {id:'c-couplings',x:9,y:26,label:'Spare steam coupling',sprite:'hound',hiddenFlag:'cCouplingRecovered'},
     {id:'c-toolbox',x:9,y:26,label:'Recovered steam coupling',sign:true,requiredFlag:'cCouplingRecovered'},

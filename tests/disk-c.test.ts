@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import departure from './fixtures/disk-b-v2.json';
-import { decodeSave, enterDiskC, remember } from '../src/rules/state';
+import { decodeSave, enterDiskC, remember, type GameState } from '../src/rules/state';
 import { createBattle, defend, move, wait } from '../src/rules/combat';
 import { key, offset } from '../src/rules/hex';
 import { MAPS, walkable, worldPath } from '../src/content/maps';
@@ -11,9 +11,9 @@ import type { Dialogue } from '../src/content/disk-a/story';
 
 const start=()=>enterDiskC(decodeSave(JSON.stringify(departure)));
 function story(state=start()){
-  let dialogue:Dialogue|undefined,battle='',destination='';const noop=()=>{};
-  const host:StoryHost={state,talk:d=>{dialogue=d;},commit:(flag,entry)=>{state.flags[flag]=true;if(entry)remember(state,entry);},refresh:noop,save:noop,update:noop,travel:map=>{destination=map;},battle:id=>{battle=id;},shop:noop,boundary:noop,toast:noop,endingMusic:noop};
-  return {state,visit:(id:string)=>{dialogue=undefined;interactDiskC(host,id);return dialogue!;},read:()=>dialogue!,battle:()=>battle,destination:()=>destination};
+  let dialogue:Dialogue|undefined,battle='',destination='',landing:GameState['location']|undefined;const noop=()=>{};
+  const host:StoryHost={state,talk:d=>{dialogue=d;},commit:(flag,entry)=>{state.flags[flag]=true;if(entry)remember(state,entry);},refresh:noop,save:noop,update:noop,travel:(map,x,y)=>{destination=map;landing={map,x,y};},battle:id=>{battle=id;},shop:noop,boundary:noop,toast:noop,endingMusic:noop};
+  return {state,visit:(id:string)=>{dialogue=undefined;interactDiskC(host,id);return dialogue!;},read:()=>dialogue!,battle:()=>battle,destination:()=>destination,landing:()=>landing};
 }
 
 describe('Disk C continuation',()=>{
@@ -37,6 +37,13 @@ describe('Disk C continuation',()=>{
       expect(lines.includes('Dad used')).toBe(worksheet);
       const credit=s.visit('c-tilda').lines[0].text;expect(credit).toContain(orchard?'Credit':'apple crates');
     }
+  });
+  it('arrives beside the Larkspur exit on first entry and return, without relocating older saves',()=>{
+    const s=story(),exit=MAPS.cinderbank.objects.find(o=>o.id==='c-to-larkspur')!;
+    expect(Math.abs(s.state.location.x-exit.x)+Math.abs(s.state.location.y-exit.y)).toBe(1);
+    s.visit('c-return-service');expect(s.landing()).toEqual(s.state.location);
+    s.state.location={map:'cinderbank',x:28,y:16};
+    expect(decodeSave(JSON.stringify(s.state)).location).toEqual(s.state.location);
   });
   it('requires care, a receiving signature, and a repair before dispatch, then resolves both heat choices',()=>{
     for(const choice of [0,1]){
@@ -71,7 +78,7 @@ describe('Disk C continuation',()=>{
   });
   it('every object and return entrance has a route that respects the buildings and fences',()=>{
     const state=start();
-    for(const [id,entrances] of [['cinderbank',[{x:28,y:16},{x:47,y:26}]],['infirmary',[{x:16,y:27},{x:32,y:20}]]] as const){
+    for(const [id,entrances] of [['cinderbank',[start().location,{x:28,y:16},{x:47,y:26}]],['infirmary',[{x:16,y:27},{x:32,y:20}]]] as const){
       const map=MAPS[id];
       for(const entrance of entrances){
         expect(walkable(map,entrance.x,entrance.y,state)).toBe(true);
