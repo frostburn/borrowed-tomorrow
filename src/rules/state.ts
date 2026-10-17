@@ -1,9 +1,10 @@
+import { NORTHGLASS_ARRIVAL } from '../content/disk-d/entrances';
 import { CINDERBANK_ARRIVAL } from '../content/disk-c/entrances';
 
 export const SAVE_FORMAT = 'borrowed-tomorrow';
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 export type HeroId = 'nell' | 'orrin';
-export type MapId = 'station' | 'yard' | 'tunnel' | 'rillbridge' | 'sluice' | 'cinderbank' | 'infirmary';
+export type MapId = 'station' | 'yard' | 'tunnel' | 'rillbridge' | 'sluice' | 'cinderbank' | 'infirmary' | 'northglass' | 'relayhall';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;
@@ -40,14 +41,14 @@ export function decodeSave(text: string): GameState {
   const raw: unknown = JSON.parse(text);
   if (!raw || typeof raw !== 'object') throw new Error('This is not a Borrowed Tomorrow save.');
   const s = raw as Record<string, unknown>;
-  if (s.format !== SAVE_FORMAT || ![1,2,SAVE_VERSION].includes(s.version as number)) throw new Error('Unsupported save format or version.');
+  if (s.format !== SAVE_FORMAT || ![1,2,3,SAVE_VERSION].includes(s.version as number)) throw new Error('Unsupported save format or version.');
   const validNumber = (x: unknown, max: number) => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
   const loc = s.location as GameState['location'] | undefined;
-  const cMap=loc?.map==='cinderbank'||loc?.map==='infirmary',bMap=loc?.map==='rillbridge'||loc?.map==='sluice';
-  if (!loc || !['station', 'yard', 'tunnel', 'rillbridge', 'sluice','cinderbank','infirmary'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
-    !validNumber(loc.x,cMap?63:bMap?65:41) || !validNumber(loc.y,cMap?41:bMap?40:25)) throw new Error('The save location is invalid.');
+  const dMap=loc?.map==='northglass'||loc?.map==='relayhall',cMap=loc?.map==='cinderbank'||loc?.map==='infirmary',bMap=loc?.map==='rillbridge'||loc?.map==='sluice';
+  if (!loc || !['station', 'yard', 'tunnel', 'rillbridge', 'sluice','cinderbank','infirmary','northglass','relayhall'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
+    !validNumber(loc.x,cMap||dMap?63:bMap?65:41) || !validNumber(loc.y,cMap||dMap?41:bMap?40:25)) throw new Error('The save location is invalid.');
   if (!validNumber(s.xp, 1e7) || !validNumber(s.coins, 1e7) || !validNumber(s.bandages, 999) || !validNumber(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
-  if (!['disk-a','disk-b','disk-c'].includes(s.chapter as string) || (s.boundary !== null && !['disk-b:rillbridge-arrival','disk-c:ambulance-siding','disk-d:signal-works'].includes(s.boundary as string))) throw new Error('This chapter is not available in this build.');
+  if (!['disk-a','disk-b','disk-c','disk-d'].includes(s.chapter as string) || (s.boundary !== null && !['disk-b:rillbridge-arrival','disk-c:ambulance-siding','disk-d:signal-works','disk-e:brinewick-parcel'].includes(s.boundary as string))) throw new Error('This chapter is not available in this build.');
   if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > 2 || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
   const party: HeroState[] = [];
   for (const h of s.party) {
@@ -61,11 +62,14 @@ export function decodeSave(text: string): GameState {
     flags[id] = value as boolean;
   }
   if (Boolean(flags.orrinJoined) !== party.some(h => h.id === 'orrin')) throw new Error('The party does not match the story progress.');
-  if (s.chapter==='disk-a'&&(bMap||cMap||(s.boundary!==null&&s.boundary!=='disk-b:rillbridge-arrival'))) throw new Error('The chapter does not match this location.');
-  if (s.chapter==='disk-b'&&(!flags.diskAComplete||!flags.diskBStarted||!flags.orrinJoined||cMap||(s.boundary!==null&&s.boundary!=='disk-c:ambulance-siding'))) throw new Error('The Disk B arrival is incomplete.');
+  if (s.chapter==='disk-a'&&(bMap||cMap||dMap||(s.boundary!==null&&s.boundary!=='disk-b:rillbridge-arrival'))) throw new Error('The chapter does not match this location.');
+  if (s.chapter==='disk-b'&&(!flags.diskAComplete||!flags.diskBStarted||!flags.orrinJoined||cMap||dMap||(s.boundary!==null&&s.boundary!=='disk-c:ambulance-siding'))) throw new Error('The Disk B arrival is incomplete.');
   if (s.boundary==='disk-c:ambulance-siding'&&(!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived)) throw new Error('The Disk C departure is incomplete.');
-  if (s.chapter==='disk-c'&&(!flags.diskAComplete||!flags.diskBStarted||!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived||!flags.diskCStarted||!flags.orrinJoined||(s.boundary!==null&&s.boundary!=='disk-d:signal-works'))) throw new Error('The Disk C arrival is incomplete.');
+  if (s.chapter==='disk-c'&&(dMap||!flags.diskAComplete||!flags.diskBStarted||!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived||!flags.diskCStarted||!flags.orrinJoined||(s.boundary!==null&&s.boundary!=='disk-d:signal-works'))) throw new Error('The Disk C arrival is incomplete.');
   if (s.boundary==='disk-d:signal-works'&&(s.chapter!=='disk-c'||!flags.diskCComplete||!flags.cTransferred||!flags.cReceiptSigned||!flags.cLarkspurReported)) throw new Error('The Disk D departure is incomplete.');
+  if (s.chapter==='disk-d'&&(!flags.diskDStarted||!flags.diskCComplete||!flags.cTransferred||!flags.cReceiptSigned||!flags.cLarkspurReported||!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived||!flags.diskAComplete||!flags.orrinJoined||(s.boundary!==null&&s.boundary!=='disk-e:brinewick-parcel'))) throw new Error('The Disk D arrival is incomplete.');
+  if (s.boundary==='disk-e:brinewick-parcel'&&(s.chapter!=='disk-d'||!flags.diskDComplete||!flags.dLetterRead||!flags.dLineHeld||!flags.dCrewReturned||!flags.dCircuitRead||!flags.dRelayStopped||!flags.dRecordRead||(!flags.dHoldRed&&!flags.dHandBell))) throw new Error('The Disk E departure is incomplete.');
+  if (flags.dHoldRed&&flags.dHandBell) throw new Error('The night operating plans conflict.');
   if (flags.bOrchardChannel&&flags.bMillraceChannel) throw new Error('The outfall choices conflict.');
   if (flags.cTrainHeat&&flags.cWardHeat) throw new Error('The heating choices conflict.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));
@@ -91,4 +95,12 @@ export function enterDiskC(state:GameState):GameState{
   next.location={...CINDERBANK_ARRIVAL};remember(next,'c-arrival');
   remember(next,next.flags.bOrchardChannel?'c-flour-credit':'c-harvest');
   return next;
+}
+
+/** Continue only the saved departure for Northglass; assets load before this becomes active. */
+export function enterDiskD(state:GameState):GameState{
+  if(state.chapter!=='disk-c'||state.boundary!=='disk-d:signal-works'||!state.flags.diskCComplete||!state.flags.cTransferred||!state.flags.cReceiptSigned||!state.flags.cLarkspurReported)throw new Error('Reach the saved Northglass departure before starting Disk D.');
+  const next=decodeSave(JSON.stringify(state));
+  next.chapter='disk-d';next.boundary=null;next.flags.diskDStarted=true;
+  next.location={...NORTHGLASS_ARRIVAL};remember(next,'d-arrival');return next;
 }

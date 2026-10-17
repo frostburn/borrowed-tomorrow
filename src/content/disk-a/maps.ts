@@ -22,6 +22,7 @@ export const MAPS: Record<'station'|'yard'|'tunnel', MapData> = {
       { id: 'c-tilda', x: 19, y: 19, label: 'Tilda · winter provisions', sprite: 'tilda', requiredFlag: 'diskCStarted' },
       { id: 'b-elspeth-larkspur', x: 14, y: 15, label: 'Elspeth · the class register', sprite: 'elspeth', requiredFlag: 'bEvacuated' },
       { id: 'train', x: 32, y: 10, label: 'The unscheduled train', sign: true },
+      { id: 'c-stores-service', x: 35, y: 12, label: 'Stores service · Cinderbank', sign: true, requiredFlag:'diskDStarted' },
     ] },
   yard: { id: 'yard', name: 'Old signal yard', subtitle: 'The abandoned line still has a pulse.',
     solid: collision(yardMap),

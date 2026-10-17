@@ -100,6 +100,7 @@ export function interactDiskC(host:StoryHost,id:string){
       host.travel('infirmary',16,27);break;
     case 'c-to-siding':host.travel('cinderbank',47,26);break;
     case 'c-to-larkspur':host.travel('station',31,10);break;
+    case 'c-stores-service':host.travel(CINDERBANK_ARRIVAL.map,CINDERBANK_ARRIVAL.x,CINDERBANK_ARRIVAL.y);break;
     case 'c-celia':
       if(f.cTransferred){say(SAY('Celia',f.cTrainHeat?'Fourteen men in the receiving hall. Dena has the window beds; I’ve put a screen round the stove.':'Seven men in each ward. Dena has enough room to get between the beds now.'));break;}
       if(f.cBedsReserved){host.talk({lines:[SAY('Celia','The beds are reserved. Take the signed copy back to Cinderbank. You can rest by our stove before you go.')],choices:[

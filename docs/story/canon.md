@@ -1,4 +1,4 @@
-# Canon — through Disk B
+# Canon — through Disk D
 
 This is the authored story source of truth. Update it after every chapter. Dialogue, journal entries, and recorded player flags outrank an unimplemented outline.
 
@@ -41,6 +41,19 @@ This is the authored story source of truth. Update it after every chapter. Dialo
 - Ansel files that receipt at Larkspur. Tilda’s credit or apple exchange supplies breakfast and the following week. Mira and Bram remain together. Bellwether’s patients remain under Dena and Celia’s care. Empty carriages have returned to Cinderbank on the stores run.
 - An optional delivery book has **A.F., signal office**, and says crew-entry carbon copies go to **Northglass signal works**. No character learns Ada’s full name or knows she wrote the return timetable. If `bWorksheetRead`, Orrin recognizes the continuing maintenance count; otherwise he observes the count without attributing it to his father.
 - The final collection slip names **Orrin, care of Larkspur repairs**, for a registered letter held at Northglass. The sender is blank and the bag was sealed three maintenance shifts before today’s crew entry. Nell retains their signed crew copy. This is the Disk D hook, not an implemented destination.
+
+## Disk D: The Unsent Letter
+
+- The version-3 Northglass departure continues without resetting progress. Northglass’s local date is **19 January, 17:35**. Petra holds every departure because the workers’ road displays red at one end and green at the other. Six inspection workers wait on a tram. There is no running countdown.
+- **Petra**, the dispatcher, hands Orrin the sealed letter against Nell’s signed crew copy at their first window visit. The letter is delivered before the local repair jobs.
+- Orrin’s father writes that he heard the viaduct fall, then found himself back in a maintenance lamp room with a burnt sleeve. He stayed to hold a return contact open after the service would accept his ticket but not his tools. Orrin remembers his father’s coat coming home when he could not yet read. The historical death is not erased; the letter establishes further maintenance work, not his present whereabouts or a return to Larkspur.
+- The letter warns that the green repeater backfeeds Northglass’s workers’ road. It specifies earthing both returns before opening the contact. It also names a brass key from Orrin’s mother’s sewing drawer, one tooth filed, sent to **Brinewick’s parcel cage**. Orrin remembers that distinctive key.
+- Nell pins an independent red lamp to protect the road. After the track hounds are cleared, **Esme**, a relay technician, brings five colleagues off the inspection tram. All six reach the protected yard; none joins the combat party.
+- Esme compares the burnt wire with the letter. The relay keeper’s shield releases only when Nell and Orrin occupy the two earth plates simultaneously. The release latches; they can then leave the plates and stop the keeper. Orrin runs the earth leads onto the clear works apron and opens the return contact after the fight.
+- `dHoldRed`: Petra closes for the shift, pays the workers in full and holds tonight’s parcels until morning. Esme and the crew go home after sign-off (`dWorkersHome`). `dHandBell`: the main line remains red; Petra and Esme take turns working the local siding by hand bell, staying late to dispatch the parcels. Neither branch sends a train over the viaduct.
+- The isolated shift recorder independently records the green bag sealed at **783**, our crew copy entered at **786**, and the brass-key parcel dispatched before both. The counterfoil identifies **Brinewick freight ferry, parcel cage 6** and authorizes parcel collection only.
+- Optionally, `dEngineerRead` identifies **Ada Fenwick, signal engineer**, on a calibration order for the paired earths. If `cWorkbookRead`, Orrin connects this to A.F. in Cinderbank’s delivery book. The party has not established her authorship of the railway or her current location.
+- Petra signs the safe night plan after all six workers return and the contact is isolated. Orrin keeps the letter and counterfoil. **Insert Disk E: The Brass Key** points to Brinewick; the parcel and key remain uncollected. Earlier rescues and both earlier choices remain intact. A separate Larkspur stores service preserves access to Cinderbank and Bellwether.
 
 ## Private author foundation
 

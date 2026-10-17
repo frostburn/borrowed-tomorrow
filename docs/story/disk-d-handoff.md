@@ -1,4 +1,6 @@
-# Insert Disk D — The Unsent Letter
+# Disk D — The Unsent Letter
+
+Implemented in `src/content/disk-d/`. This document retains its incoming contract. The next exact boundary is in `disk-e-handoff.md`.
 
 ## Exact continuation
 

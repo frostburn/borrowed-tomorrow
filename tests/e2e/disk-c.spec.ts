@@ -18,7 +18,7 @@ test('the supplied Disk B save plays through the staffed ambulance rescue and re
   await page.unroute('**/art/infirmary.webp');
   await page.getByRole('button',{name:'Begin Disk C',exact:true}).click();await dialogue(page);
   const entered=(await inspect(page)).state;
-  expect(entered.version).toBe(3);expect(entered.chapter).toBe('disk-c');expect(entered.party).toEqual(departure.party);
+  expect(entered.version).toBe(4);expect(entered.chapter).toBe('disk-c');expect(entered.party).toEqual(departure.party);
   for(const property of ['coins','bandages','xp','gear'] as const)expect(entered[property]).toEqual(departure[property]);
   expect(entered.flags.bOrchardChannel).toBe(true);expect(entered.flags.bWorksheetRead).toBe(true);
   expect(entered.journal).toContain('c-flour-credit');await nativeScene(page,'cinderbank');await capture(page,'disk-c-cinderbank-arrival');

@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 import { active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
-import { cells, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
+import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
@@ -9,7 +9,11 @@ export async function clickWorld(page: Page, x: number, y: number) {
   await page.mouse.click(box.x+((x+.5)*24-view.scrollX)*box.width/view.width,box.y+((y+.5)*24-view.scrollY)*box.height/view.height);
 }
 export async function clickHex(page: Page, h: Hex) {
-  const box=(await page.locator('#canvas canvas').boundingBox())!,p=toPixel(h),view=(await inspect(page)).view;
+  const p=toPixel(h);let view=(await inspect(page)).view;
+  for(let pan=0;pan<6&&(p.x<view.scrollX+8||p.x>view.scrollX+view.width-8);pan++){
+    await page.getByRole('button',{name:p.x<view.scrollX?'Pan battlefield left':'Pan battlefield right',exact:true}).click();view=(await inspect(page)).view;
+  }
+  const box=(await page.locator('#canvas canvas').boundingBox())!;
   await page.mouse.click(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
 }
 export async function dialogue(page: Page) {
@@ -53,6 +57,12 @@ function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
   for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend'] as AbilityId[])
     if(legalAim(b,u,id,ally.hex))return {action:id,hex:ally.hex};
+  if(b.grounding&&!b.grounding.open){
+    const plate=b.grounding.plates[u.id==='nell'?0:1];
+    const best=[...movement(b,u).values()].sort((a,z)=>distance(a.hex,plate)-distance(z.hex,plate)||a.cost-z.cost)[0];
+    if(best&&distance(best.hex,plate)<distance(u.hex,plate))return {action:'move',hex:best.hex};
+    return {action:'defend'};
+  }
   let best:{action:AbilityId;hex:Hex;pos:Hex;score:number}|undefined;
   const original=u.hex;
   for(const visit of movement(b,u).values()){
@@ -72,6 +82,8 @@ export async function battle(page: Page, screenshot?: string) {
   if(screenshot)await capture(page,screenshot);
   for(let turns=0;turns<260;turns++){
     if(await page.getByRole('heading',{name:'The line is clear',exact:true}).isVisible()){
+      const snapshot=await inspect(page);
+      if(snapshot.battle?.grounding){expect(snapshot.battle.grounding.open).toBe(true);expect(snapshot.battle.units.some(u=>u.sealed)).toBe(false);await capture(page,'northglass-shield-released');}
       await page.getByRole('button',{name:'Continue the journey'}).click();return;
     }
     if(await page.getByRole('heading',{name:'The line can wait'}).isVisible())throw new Error('The party was defeated during the browser playthrough.');
