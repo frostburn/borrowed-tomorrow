@@ -1,4 +1,5 @@
 import type { GameState } from '../../rules/state';
+import { portraitAsset, speakerPortrait } from '../characters';
 
 export const CHAPTER = { id: 'disk-a', title: 'The Wrong Platform', next: 'disk-b:rillbridge-arrival' } as const;
 export const JOURNAL: Record<string, { title: string; text: string }> = {
@@ -18,7 +19,7 @@ export const JOURNAL: Record<string, { title: string; text: string }> = {
 export interface Line { who: string; text: string; portrait?: string }
 export interface Choice { label: string; action: () => void }
 export interface Dialogue { lines: Line[]; choices?: Choice[]; done?: () => void }
-export const SAY = (who: string, text: string, portrait?: string): Line => ({ who, text, portrait });
+export const SAY = (who: string, text: string, portrait?: string): Line => ({ who, text, portrait:portrait?portraitAsset(portrait):speakerPortrait(who) });
 export function objective(s: GameState): string {
   if (s.flags.diskAComplete) return 'Rillbridge is waiting. Insert Disk B.';
   if (!s.flags.metMira) return 'Talk to the child beside the unscheduled train.';

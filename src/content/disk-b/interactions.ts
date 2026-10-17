@@ -129,6 +129,7 @@ export function interactDiskB(host:StoryHost,id:string){
         SAY('Tilda',f.bOrchardChannel?'We lost the orchard. When people have slept, I’ll ask about flour on credit.':'The orchard bank held. When people have slept, I want to go back and see what we can bring over.'),
         SAY('Later · Larkspur','The station clock passes midnight. Bram is still asleep beside Mira. Nell checks the names once more and puts the list in Ansel’s drawer.'),
       ],done:()=>commit('bLarkspurReceived','b-coda')});break;
+    case 'b-elspeth-larkspur':say(SAY('Elspeth','The register is dry. Ansel found me a bed without steps. Please leave room for the chair when you stack those blankets.'));break;
     case 'b-family-larkspur':say(SAY('Mira','Dad put the suitcase under his chair. I can see both his shoes.','mira'),SAY('Bram','She won’t let me fetch a cup of tea. I can wait.'));break;
     case 'b-dispatch':
       if(!f.bLarkspurReceived){say(SAY('Nell','Ansel needs the residents’ list first.','nell'));break;}

@@ -1,4 +1,5 @@
 import type { Choice, Dialogue } from '../content/disk-a/story';
+import { portraitAsset, speakerPortrait } from '../content/characters';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export const art = (name: string) => `${import.meta.env.BASE_URL}art/${name}.png`;
 export interface Button { label: string; action: () => void; disabled?: boolean; selected?: boolean; key?: string; title?: string }
@@ -56,8 +57,8 @@ export class UI {
   private drawDialogue() {
     const d = this.dialogue!; const line = d.lines[this.lineIndex];
     const last = this.lineIndex === d.lines.length - 1;
-    const portrait=line.portrait&&['nell','orrin','mira','master','clerk'].includes(line.portrait)?`portrait-${line.portrait}`:line.portrait;
-    this.sceneLayer.innerHTML = `<section class="dialogue" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt=""/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
+    const portrait=line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who);
+    this.sceneLayer.innerHTML = `<section class="dialogue" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt="${esc(line.who)}"/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
     const buttons = this.sceneLayer.querySelector<HTMLElement>('.dialogue-actions')!;
     if (last && d.choices) this.actionRow(buttons, d.choices.map((c: Choice) => ({ label: c.label, action: () => { this.clearPanel(); c.action(); } })));
     else buttons.append(this.button({ label: last ? 'Continue' : 'Next', key: '↵', action: () => this.advanceDialogue() }));

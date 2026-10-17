@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
+import { speakerPortrait } from '../../src/content/characters';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -13,7 +14,15 @@ export async function clickHex(page: Page, h: Hex) {
 }
 export async function dialogue(page: Page) {
   await expect(page.locator('.dialogue')).toBeVisible({timeout:15000});
-  while(await page.locator('.dialogue').isVisible())await page.locator('.dialogue-actions button').first().click();
+  while(await page.locator('.dialogue').isVisible()){
+    const who=await page.locator('.dialogue h2').textContent(),portrait=who?speakerPortrait(who):undefined;
+    if(portrait){
+      const image=page.locator('.dialogue-portrait img');
+      await expect(image).toHaveAttribute('src',new RegExp(`/art/${portrait}\\.png$`));
+      await expect.poll(()=>image.evaluate(img=>{const i=img as HTMLImageElement;return i.complete&&i.naturalWidth===128&&i.naturalHeight===128;})).toBe(true);
+    }
+    await page.locator('.dialogue-actions button').first().click();
+  }
 }
 export async function talk(page: Page, x: number, y: number) { await clickWorld(page,x,y);await dialogue(page); }
 export async function capture(page: Page, name: string) { if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/${name}.png`}); }

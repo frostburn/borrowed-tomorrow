@@ -15,7 +15,7 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   flare: { id: 'flare', name: 'Signal flare', description: 'A seven-hex blast that punishes clustering. 2 focus.', range: 5, power: 9, cost: 2, shape: 'blast' },
 };
 export interface Unit {
-  id: string; name: string; kind: string; side: 'party' | 'enemy'; hex: Hex;
+  id: string; name: string; kind: string; appearance?: string; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
 }
@@ -23,7 +23,7 @@ export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; terrain?:'sluice'|'cinderbank'; journal?:string; victory?:string }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?:'sluice-keeper'|'boiler-keeper' }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; terrain?:'sluice'|'cinderbank'; journal?:string; victory?:string }
 export const ENCOUNTERS: Record<string, Encounter> = {
   ...DISK_B_ENCOUNTERS,
   ...DISK_C_ENCOUNTERS,
@@ -56,7 +56,7 @@ export function createBattle(encounter: string, state: GameState): Battle {
   e.enemies.forEach((enemy, i) => {
     const stats = ENEMY_STATS[enemy.kind];
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
+      appearance:enemy.appearance,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((encounter==='b-keeper'&&state.flags.bOrchardChannel?[]:e.shallow??[]).map(([c,r])=>key(offset(c,r)))),

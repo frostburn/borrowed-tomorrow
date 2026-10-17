@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import { interactDiskB } from '../content/disk-b/interactions';
 import { ARRIVAL, B_JOURNAL, objectiveB } from '../content/disk-b/story';
 import { interactDiskC } from '../content/disk-c/interactions';
@@ -20,7 +21,7 @@ const objective=(state:GameState)=>state.chapter==='disk-c'?objectiveC(state):st
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
-const textures = ['nell','nell-left','nell-right','nell-back','orrin','orrin-left','orrin-right','orrin-back','mira','master','clerk','hound','crow','inspector','guardian','rock'];
+const textures = ['nell','nell-left','nell-right','nell-back','orrin','orrin-left','orrin-right','orrin-back','mira','master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
 const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
 
 export class Adventure extends Phaser.Scene {
@@ -192,7 +193,7 @@ export class Adventure extends Phaser.Scene {
     }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
-      if (object.sprite) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
+      if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
       if (!object.doneFlag || !this.state.flags[object.doneFlag]) {
         const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a');
         this.layer!.add(marker);
@@ -204,7 +205,7 @@ export class Adventure extends Phaser.Scene {
       this.follower = this.add.image((p.x - 1 + .5)*TILE,(p.y+.5)*TILE+7,'orrin').setOrigin(.5,.85); this.layer!.add(this.follower);
     }
     if(map.id==='rillbridge'&&this.state.flags.bFatherFound&&!this.state.flags.bEvacuated)this.layer!.add(this.add.image(25.5*TILE,12.5*TILE+7,'mira').setOrigin(.5,.85));
-    if(map.id==='station'&&this.state.flags.bEvacuated)this.layer!.add(this.add.image(25.5*TILE,20.5*TILE+7,'master').setOrigin(.5,.85));
+    if(map.id==='station'&&this.state.flags.bEvacuated)this.layer!.add(this.add.image(25.5*TILE,20.5*TILE+7,'bram').setOrigin(.5,.85));
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85); this.layer!.add(this.player);
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
@@ -362,7 +363,7 @@ export class Adventure extends Phaser.Scene {
     if(turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
     for(const rock of ENCOUNTERS[b.encounter].rocks){const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
     for(const u of b.units){const p=toPixel(u.hex);
-      const img=this.add.image(p.x,p.y+9,u.kind).setOrigin(.5,.82).setAlpha(u.hp>0?1:.22);
+      const img=this.add.image(p.x,p.y+9,u.appearance??u.kind).setOrigin(.5,.82).setAlpha(u.hp>0?1:.22);
       if(u.side==='enemy')img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
       if(u.hp>0){const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(p.x-23,p.y+18,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(p.x-22,p.y+19,44*u.hp/u.maxHp,4);this.layer.add(g);
@@ -404,7 +405,8 @@ export class Adventure extends Phaser.Scene {
   private renderBattleControls() {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(u.side==='party'?`portrait-${u.kind}`:u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${roles[u.kind]}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${roles[u.kind]}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name,key:String(i+2),action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:ABILITIES[id].description})),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved,action:()=>this.doWait()}]);
@@ -523,7 +525,7 @@ export class Adventure extends Phaser.Scene {
   }
   private shop() {
     const s=this.state;
-    this.ui.showModal('Iona’s supplies',`<p>“On account? No. On the house? If you look that tired, yes.”</p><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
+    this.ui.showModal('Iona’s supplies',`<div class="shopkeeper"><img src="${art(CHARACTERS.iona.portrait)}" alt="Iona"/><p>“On account? No. On the house? If you look that tired, yes.”</p></div><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
     const items=[{id:'bandage',name:'Bandage',description:'Restore 24 HP during battle.',cost:8},{id:'brass-lantern',name:'Brass lantern',description:'Nell deals 3 more damage.',cost:30},{id:'work-coats',name:'Reinforced work coats',description:'Both heroes take 1 less damage.',cost:25}];
     const target=this.ui.modal.querySelector('#shop-items')!;
     for(const item of items){const row=document.createElement('div');row.className='equipment-row';row.innerHTML=`<div><h3>${item.name}</h3><p>${item.description}</p></div>`;row.append(this.ui.button({label:s.gear.includes(item.id)?'Equipped':`${item.cost} marks`,disabled:s.coins<item.cost||s.gear.includes(item.id),action:()=>{s.coins-=item.cost;if(item.id==='bandage')s.bandages++;else s.gear.push(item.id);this.autosave();this.renderWorldControls();this.shop();}}));target.append(row);}
