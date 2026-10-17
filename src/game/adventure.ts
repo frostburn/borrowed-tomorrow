@@ -49,8 +49,9 @@ export class Adventure extends Phaser.Scene {
   private shownTurn?:string;
   private regionLoad?:Promise<void>;
   private serialSave: Promise<void> = Promise.resolve();
+  private practiceReturn?: () => void;
 
-  constructor() { super('adventure'); }
+  constructor(private readonly practiceReady?: (scene: Adventure, ui: UI) => void) { super('adventure'); }
   attach(ui: UI) { this.ui = ui; }
   preload() {
     for (const name of textures) this.load.image(name, art(name));
@@ -61,10 +62,13 @@ export class Adventure extends Phaser.Scene {
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));
-    this.showTitle();
-    this.ui.status.textContent = 'WASD / arrows · E interact · click to walk · J journal · Esc menu';
-    void listSaves().then(records => { const current = records.find(r => r.compatible); if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
-    window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
+    if(import.meta.env.DEV&&this.practiceReady)this.practiceReady(this,this.ui);
+    else{
+      this.showTitle();
+      this.ui.status.textContent = 'WASD / arrows · E interact · click to walk · J journal · Esc menu';
+      void listSaves().then(records => { const current = records.find(r => r.compatible); if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
+      window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
+    }
     window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
   }
   resizeView(){
@@ -137,6 +141,7 @@ export class Adventure extends Phaser.Scene {
       } },
       { label: 'Continue', disabled: !this.latestSave, action: () => { if (this.latestSave) this.loadState(this.latestSave); } },
       { label: 'Save files', action: () => this.saves() },
+      ...(import.meta.env.DEV ? [{label:'Inventory workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','inventory');location.assign(url);}}] : []),
     ]);
   }
   private begin() {
@@ -287,12 +292,12 @@ export class Adventure extends Phaser.Scene {
   private keydown(e: KeyboardEvent) {
     const tag = (e.target as HTMLElement)?.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if(this.cinematic){this.ui.skipDialogue();} else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
+    if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.(); else if(this.cinematic){this.ui.skipDialogue();} else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
     if (this.ui.modalOpen) return;
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     if (this.ui.dialogueOpen && ['Enter',' ','e','E'].includes(e.key)) { e.preventDefault(); this.ui.advanceDialogue(); return; }
     if (this.blocked || this.busy || e.repeat) return;
-    if (e.key.toLowerCase()==='j') { this.journal(); return; }
+    if (e.key.toLowerCase()==='j') { if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.();else this.journal(); return; }
     if (this.mode==='world' && ['e','E','Enter',' '].includes(e.key)) { const near=this.closestObject(); if(near)this.interact(near); }
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
       const u=active(this.battle!)!;
@@ -333,7 +338,21 @@ export class Adventure extends Phaser.Scene {
 
   private startBattle(id: string) {
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
+    this.enterBattle(id);
+  }
+  /** A standalone harness: no campaign saves, flags, loot or experience. */
+  previewBattle(battle: Battle, returnToInventory: () => void) {
+    if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
+    this.practiceReturn=returnToInventory;this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
+    this.battle=battle;this.mode='battle';this.busy=false;this.selected='move';this.plan=undefined;this.hover=undefined;
+    this.enterBattle(battle.encounter);
+  }
+  closePreview() {
+    if(!import.meta.env.DEV||!this.practiceReady)return;
+    this.mode='title';this.battle=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
+  }
+  private enterBattle(id: string) {
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
@@ -434,12 +453,13 @@ export class Adventure extends Phaser.Scene {
   private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
   private doWait() {if(this.busy||active(this.battle!)?.side!=='party')return;if(wait(this.battle!)){this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}}
   private animateBattle(before: Map<string,{hex:Hex;hp:number}>) {
+    const battle=this.battle;
     this.busy=true;this.drawBattle();this.renderBattleControls();
     for(const u of this.battle!.units){const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
       if(!equal(old.hex,u.hex)){const from=toPixel(old.hex),to=toPixel(u.hex);image.setPosition(from.x,from.y+9);this.tweens.add({targets:image,x:to.x,y:to.y+9,duration:280,ease:'Sine.easeInOut'});}
-      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
+      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
     }
-    this.time.delayedCall(380,()=>{this.busy=false;if(this.battle?.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}});
+    this.time.delayedCall(380,()=>{if(this.battle!==battle||this.mode!=='battle')return;this.busy=false;if(this.battle?.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}});
   }
   private scheduleEnemy() {
     const b=this.battle;if(!b||b.result||active(b)?.side!=='enemy')return;
@@ -452,6 +472,11 @@ export class Adventure extends Phaser.Scene {
   }
   private battleEnded() {
     const b=this.battle!;
+    if(import.meta.env.DEV&&this.practiceReady){
+      this.ui.panel(b.result==='victory'?'Practice complete':'Practice defeated','',[
+        {label:'Back to inventory',action:()=>this.practiceReturn?.()},
+      ]);return;
+    }
     if(b.result==='defeat'){
       this.ui.panel('The line can wait', '<p>The party retreats to a safe spot. Your progress before this encounter is preserved.</p><p>Try separating them, using cover, or waiting for the enemy to approach.</p>',[
         {label:'Retry battle',action:()=>{restoreParty(this.state);this.startBattle(b.encounter);}},

@@ -2,6 +2,7 @@ import { ENCOUNTERS } from '../content/chapter-one/encounters';
 export { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
+import type { EquipmentBonuses } from './inventory';
 
 export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean }
@@ -31,14 +32,14 @@ const ENEMY_STATS = {
   inspector: { name: 'Imperial officer', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
 };
 
-export function createBattle(encounter: string, state: GameState): Battle {
+export function createBattle(encounter: string, state: GameState, equipment?: Record<HeroId, EquipmentBonuses>): Battle {
   const e = ENCOUNTERS[encounter];
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
   const units: Unit[] = state.party.map(h => ({ id: h.id, name: h.id === 'nell' ? 'Nell' : 'Orrin', kind: h.id, side: 'party',
     hex: offset(1, h.id === 'nell' ? 2 : 4), hp: Math.max(1, h.hp), maxHp: maxHp(h.id, state), focus: h.focus,
-    speed: h.id === 'nell' ? 7 : 5, movement: h.id === 'nell' ? 3 : 2,
-    armor: state.gear.includes('work-coats') ? 1 : 0,
-    bonus: (level(state) - 1) * 2 + (h.id === 'nell' && state.gear.includes('brass-lantern') ? 3 : 0) + (h.id === 'orrin' ? 2 : 0),
+    speed: (h.id === 'nell' ? 7 : 5) + (equipment?.[h.id].speed ?? 0), movement: h.id === 'nell' ? 3 : 2,
+    armor: equipment ? equipment[h.id].armor : state.gear.includes('work-coats') ? 1 : 0,
+    bonus: (level(state) - 1) * 2 + (equipment ? equipment[h.id].attack : h.id === 'nell' && state.gear.includes('brass-lantern') ? 3 : 0) + (h.id === 'orrin' ? 2 : 0),
     abilities: h.id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] : ['strike', 'steam', 'bandage'],
     moved: false, defending: false, retaliated: false, waited: false }));
   e.enemies.forEach((enemy, i) => {
