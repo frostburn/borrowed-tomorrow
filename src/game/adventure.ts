@@ -87,10 +87,10 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main;camera.setScroll(Phaser.Math.Clamp(camera.scrollX+direction*192,0,WIDTH-camera.width),0);
     this.ui.status.textContent='Battlefield view · choose an action and target';
   }
-  private revealHex(hex:Hex){
+  private revealHex(hex:Hex,margin=48){
     if(!narrowScreen())return;
     const camera=this.cameras.main,p=toPixel(hex);
-    if(p.x<camera.scrollX+48||p.x>camera.scrollX+camera.width-48)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
+    if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
   get animating(){return this.moving||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
   private label(x:number,y:number,text:string,color:string,scale=3){
@@ -441,7 +441,8 @@ export class Adventure extends Phaser.Scene {
     const u=active(this.battle!);if(this.busy||u?.side!=='party')return;
     this.selected=action;this.plan=undefined;
     if(action!=='move'&&ABILITIES[action].range===0&&legalAim(this.battle!,u,action,u.hex)){
-      this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};this.revealHex(u.hex);
+      this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
+      this.revealHex(u.hex,HEX_SIZE*5); // Include adjacent hexes and knockback landings.
     }
     this.drawGrid();this.renderBattleControls();
   }

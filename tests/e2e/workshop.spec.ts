@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { capture, clickHex, inspect } from './controls';
-import { offset } from '../../src/rules/hex';
+import { blast, HEX_SIZE, offset, toPixel } from '../../src/rules/hex';
 
 const characterStorage = 'borrowed-tomorrow:character-workshop:v1';
 async function setLevel(page: Page, hero: string, level: number) {
@@ -91,6 +91,12 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await page.locator('.actions').getByRole('button', { name: /^7\s+Pressure wave$/ }).click();
     await expect(page.getByRole('button', { name: 'Confirm attack', exact: true })).toBeInViewport();
     expect((await inspect(page)).battle).toEqual(beforeWave);
+    const view=(await inspect(page)).view;
+    for(const hex of [...blast(offset(5,3)),offset(7,3)]){
+      const p=toPixel(hex);
+      expect(p.x-HEX_SIZE).toBeGreaterThanOrEqual(view.scrollX);
+      expect(p.x+HEX_SIZE).toBeLessThanOrEqual(view.scrollX+view.width);
+    }
     await page.locator('.actions').getByRole('button', { name: /^2\s+Strike$/ }).click();
     await expect(page.getByRole('button', { name: 'Confirm attack', exact: true })).toHaveCount(0);
     await page.keyboard.press('7');
