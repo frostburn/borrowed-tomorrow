@@ -162,6 +162,22 @@
           "y": 912,
           "width": 144,
           "height": 96
+        },
+        {
+          "id": 18,
+          "name": "solid",
+          "x": 600,
+          "y": 336,
+          "width": 48,
+          "height": 72
+        },
+        {
+          "id": 19,
+          "name": "solid",
+          "x": 912,
+          "y": 336,
+          "width": 48,
+          "height": 72
         }
       ]
     }

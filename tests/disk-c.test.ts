@@ -81,7 +81,7 @@ describe('Disk C continuation',()=>{
         }
       }
     }
-    for(const [id,x,y] of [['cinderbank',30,8],['cinderbank',58,12],['infirmary',20,8],['infirmary',51,25]] as const)expect(walkable(MAPS[id],x,y,state)).toBe(false);
+    for(const [id,x,y] of [['cinderbank',30,8],['cinderbank',58,12],['infirmary',20,8],['infirmary',51,25],['cinderbank',43,34],['cinderbank',47,35],['infirmary',26,15],['infirmary',38,15]] as const)expect(walkable(MAPS[id],x,y,state)).toBe(false);
   });
 });
 
