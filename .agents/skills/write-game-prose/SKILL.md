@@ -9,7 +9,7 @@ Read `AGENTS.md`, `docs/story/canon.md`, `docs/story/characters.md`, `docs/story
 
 Give a scene a practical purpose: someone needs something, disagrees, discovers evidence, or makes a decision. Let the player do the part that can be played. Show a threat or a mechanic in action before explaining it. Keep the personal pursuit connected to the wider conflict.
 
-Write each speaker from their immediate concern. Let Nell notice people and station work; let Orrin test a mechanism; let Tomas protect his sister without taking away her choices. Give Severin concrete aims and visible interference. Give new residents work, obligations, and opinions of their own. Let affection appear through what they do for each other. Keep humor occasional and specific to the speaker.
+Write each speaker from their immediate concern. Let Nell notice people and station work; let Orrin test a mechanism; let Tomas protect his sister without taking away her choices. Give the captain concrete aims and visible interference. Give new residents work, obligations, and opinions of their own. Let affection appear through what they do for each other. Keep humor occasional and specific to the speaker.
 
 Replace grand statements with things the player can see or use. Prefer “The overflow is packed with timber” to “The town faces an unprecedented crisis.” Cut throat-clearing, repeated explanations, stock metaphors, invented philosophical labels, and dramatic fragments that add no information. Keep an image when it earns its place in the scene.
 

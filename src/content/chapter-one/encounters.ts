@@ -18,9 +18,9 @@ export const ENCOUNTERS: Record<string, Encounter> = {
     rocks: [[4, 2], [5, 4], [8, 5]], victory: 'The guard is down. Break open the collector to wake Rillbridge.',
   },
   captain: {
-    id: 'captain', name: 'Captain Severin · the eastern pass', flag: 'captainDefeated', xp: 65, coins: 40, journal: 'captain',
-    enemies: [{ kind: 'inspector', name: 'Captain Severin', appearance: 'severin', col: 8, row: 3, hp: 86 }, { kind: 'hound', col: 7, row: 1, hp: 24 }, { kind: 'hound', col: 7, row: 5, hp: 24 }],
+    id: 'captain', name: 'Captain Alban · the eastern pass', flag: 'captainDefeated', xp: 65, coins: 40, journal: 'captain',
+    enemies: [{ kind: 'inspector', name: 'Captain Alban', appearance: 'alban', col: 8, row: 3, hp: 86 }, { kind: 'hound', col: 7, row: 1, hp: 24 }, { kind: 'hound', col: 7, row: 5, hp: 24 }],
     rocks: [[4, 2], [4, 4], [8, 6]], vents: [[5, 1], [5, 2], [5, 4], [5, 5]],
-    victory: 'Severin retreats. The crossing is yours. Board Orrin’s engine at the eastern exit.',
+    victory: 'Alban retreats. The crossing is yours. Board Orrin’s engine at the eastern exit.',
   },
 };

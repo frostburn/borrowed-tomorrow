@@ -1,8 +1,8 @@
 # Borrowed Tomorrow
 
-Nell is seventeen. Her brother has finally returned from the capital—and the imperial train has followed him. A stolen crystal, a coal-fired engine and a village where time has stopped begin a JRPG about an empire living on tomorrow's promise.
+Nell's brother has finally returned from the capital—and the imperial train has followed him. A stolen crystal, a coal-fired engine and a village where time has stopped begin a JRPG about an empire living on tomorrow's promise.
 
-**Chapter One: Leaving Home** is playable from beginning to end: Larkspur's festival, the arrest of Nell's brother, the escape from the square, Orrin's recruitment, the frozen village of Rillbridge and a showdown with Captain Severin at the mountain pass. Three required battles and one optional workshop encounter use the existing tactical hex engine. Staged cutscenes carry the arrest, discoveries, rescue and departure. The chapter ends with a saved journey toward the Iron Coast.
+**Chapter One: Leaving Home** is playable from beginning to end: Larkspur's festival, the arrest of Nell's brother, the escape from the square, Orrin's recruitment, the frozen village of Rillbridge and a showdown with Captain Alban at the mountain pass. Three required battles and one optional workshop encounter use the existing tactical hex engine. Staged cutscenes carry the arrest, discoveries, rescue and departure. The chapter ends with a saved journey toward the Iron Coast.
 
 The previous Disks A–D story has been replaced. A **seven-chapter grand outline** is committed under [docs/story/grand-outline.md](docs/story/grand-outline.md), with a separate [final-chapter plan](docs/story/final-chapter.md) for entering the Benefactor's domain and defeating the god itself. Chapters Two–Seven are planned, not yet playable. Story documents contain spoilers.
 
@@ -33,7 +33,7 @@ npm run dev
 
 Exploration and combat support pointer input. Phones have movement and battlefield-pan controls. Audio starts only when enabled with Sound. Reduced-motion settings turn camera movement into cuts. You control dialogue pacing; there is no hidden real-time countdown.
 
-Each combatant occupies one cell of an 11 × 7 axial hex grid. Move, then act. Rocks and other units block movement; rocks block sight and steam rays. Nell's lantern burst hits a hex and all six neighbors. Orrin's steam lance hits a four-hex ray. **Both hit allies.** Previews and resolution share the same geometry. Melee provokes one retaliation per defender per round; Defend and Wait support positioning. Captain Severin's arena adds marked steam outlets that discharge after the last turn of each round.
+Each combatant occupies one cell of an 11 × 7 axial hex grid. Move, then act. Rocks and other units block movement; rocks block sight and steam rays. Nell's lantern burst hits a hex and all six neighbors. Orrin's steam lance hits a four-hex ray. **Both hit allies.** Previews and resolution share the same geometry. Melee provokes one retaliation per defender per round; Defend and Wait support positioning. Captain Alban's arena adds marked steam outlets that discharge after the last turn of each round.
 
 Iona offers supplies and free rest in Larkspur. The pass shelter offers free rest and a one-time bandage cache. The workshop battle is optional and rewards a lantern upgrade. Previously cleared battles and caches cannot be farmed.
 
@@ -45,7 +45,7 @@ The reboot uses **version 5**, campaign `imperial-debt`. Saves from the previous
 
 ## Presentation and source
 
-The whole visible game uses a 1024 × 768 native framebuffer and integer physical-pixel scaling, including text and menus. Scenery renders at 1:1 through a scrolling viewport; 80 × 80 actors and 128 × 128 portraits retain their native size. Phones crop and pan the same scene. New brother Tomas and Captain Severin have distinct matching actor/portrait pairs.
+The whole visible game uses a 1024 × 768 native framebuffer and integer physical-pixel scaling, including text and menus. Scenery renders at 1:1 through a scrolling viewport; 80 × 80 actors and 128 × 128 portraits retain their native size. Phones crop and pan the same scene. New brother Tomas and Captain Alban have distinct matching actor/portrait pairs.
 
 - `src/rules/`: framework-independent combat, hex geometry and save validation.
 - `src/content/chapter-one/`: objectives, journals, interactions, encounters and Tiled maps.

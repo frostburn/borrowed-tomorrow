@@ -36,11 +36,11 @@ export const MAPS: Record<MapId, MapData> = {
     { id: 'east-pass', x: 32, y: 11, label: 'Eastern pass · follow Tomas’s coach', sign: true },
     { id: 'village-yard', x: 2, y: 18, label: 'Return along the branch', sign: true },
   ] },
-  tunnel: { id: 'tunnel', name: 'The eastern pass', subtitle: 'Captain Severin holds the crossing.', solid: collision(tunnelMap), objects: [
-    { id: 'captain', x: 33, y: 13, label: 'Captain Severin', sprite: 'severin', hiddenFlag: 'captainDefeated' },
+  tunnel: { id: 'tunnel', name: 'The eastern pass', subtitle: 'Captain Alban holds the crossing.', solid: collision(tunnelMap), objects: [
+    { id: 'captain', x: 33, y: 14, label: 'Captain Alban', sprite: 'alban', hiddenFlag: 'captainDefeated' },
     { id: 'sun-mural', x: 21, y: 8, label: 'The hollow sun · an old mural', sign: true, doneFlag: 'muralRead' },
     { id: 'shelter', x: 22, y: 19, label: 'Old shelter · rest & supplies', sign: true },
-    { id: 'departure', x: 39, y: 13, label: 'Board Orrin’s engine · Iron Coast', sign: true },
+    { id: 'departure', x: 39, y: 14, label: 'Board Orrin’s engine · Iron Coast', sign: true },
     { id: 'pass-village', x: 2, y: 13, label: 'Rillbridge', sign: true },
   ] },
 };

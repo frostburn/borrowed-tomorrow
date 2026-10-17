@@ -119,8 +119,8 @@ export class Adventure extends Phaser.Scene {
       for(const [x,y] of [[44,13],[27,19],[25,15]])for(let i=0;i<4;i++)g.fillRect((x+.5)*TILE-26+i*16,(y+.5)*TILE-50+(i%2)*12,3,5);
     }
     if(map==='tunnel'){
-      const x=21.5*TILE,y=8*TILE;g.lineStyle(2,0xc29d5e,1).strokeCircle(x,y,17);
-      g.lineBetween(x-12,y,x,y-5).lineBetween(x,y-5,x+12,y).lineBetween(x+12,y,x,y+5).lineBetween(x,y+5,x-12,y);
+      const x=21.5*TILE,y=8*TILE;g.lineStyle(1,0x8c8067,.75).strokeCircle(x,y,17);
+      for(const [dx,dy] of [[0,-23],[23,0],[0,23],[-23,0]])g.lineBetween(x+dx,y+dy,x+Math.round(dx*.85),y+Math.round(dy*.85));
     }
   }
   private showTitle() {
@@ -325,7 +325,7 @@ export class Adventure extends Phaser.Scene {
     };
   }
   private boundaryPanel() {
-    this.ui.panel('Chapter One complete', '<div class="chapter-name">Next: Chapter Two · Prison Trains</div><p>Rillbridge is awake. Severin has lost the crossing. Tomas is at the prison-train exchange on the Iron Coast.</p><p>Nell and Orrin have their own engine and a way east.</p><p>Chapter Two is not yet playable. Your departure, party, equipment and journal are saved for its continuation.</p>', [
+    this.ui.panel('Chapter One complete', '<div class="chapter-name">Next: Chapter Two · Prison Trains</div><p>Rillbridge is awake. Alban has lost the crossing. Tomas is at the prison-train exchange on the Iron Coast.</p><p>Nell and Orrin have their own engine and a way east.</p><p>Chapter Two is not yet playable. Your departure, party, equipment and journal are saved for its continuation.</p>', [
       { label: 'Return to the pass', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
       { label: 'Export departure save', action: () => exportSave(this.state) },
     ]);

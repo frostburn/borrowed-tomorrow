@@ -21,7 +21,7 @@ export function resumeChapter(host: StoryHost) {
   const s = host.state;
   if (!s.flags.festivalSeen) host.talk({ ...scenes.opening(), done: () => { s.location = { map: 'station', x: 23, y: 15 }; host.commit('festivalSeen'); } });
   else if (s.location.map === 'rillbridge' && !s.flags.villageSeen) host.talk({ ...scenes.stillness(), done: () => { s.location = { map: 'rillbridge', x: 15, y: 18 }; host.commit('villageSeen', 'village'); } });
-  else if (s.location.map === 'tunnel' && !s.flags.passSeen) host.talk({ ...scenes.passArrival(), done: () => { s.location = { map: 'tunnel', x: 5, y: 13 }; host.commit('passSeen', 'pass'); } });
+  else if (s.location.map === 'tunnel' && !s.flags.passSeen) host.talk({ ...scenes.passArrival(), done: () => { s.location = { map: 'tunnel', x: 5, y: 14 }; host.commit('passSeen', 'pass'); } });
 }
 
 export function interactChapterOne(host: StoryHost, id: string) {
@@ -46,7 +46,7 @@ export function interactChapterOne(host: StoryHost, id: string) {
     case 'blessing':
       host.talk({ lines: [
         SAY('Festival lanterns', 'The sun emblem surrounds a crystal flame. “For the harvest, for healing, for another peaceful year: thanks to the Benefactor.”'),
-        SAY('Nell', f.raidSeen ? 'The same light. That’s what was in Tomas’s hand.' : 'Ansel still lights the station with oil. He says he likes knowing where the light comes from.'),
+        SAY('Nell', f.raidSeen ? 'A crystal in every lamp. Why did they need his so badly?' : 'Ansel still lights the station with oil. He says he likes knowing where the light comes from.'),
       ], done: () => host.commit('blessingRead', 'blessing') }); return;
     case 'imperial-train':
       say('Nell', f.raidSeen ? 'The prison coach has gone. The soldiers left an empty carriage. Tomas said to find Orrin.' : 'An armored coach on a festival service. Tomas never mentioned the army was traveling with him.'); return;
@@ -92,13 +92,13 @@ export function interactChapterOne(host: StoryHost, id: string) {
       host.talk({ ...scenes.releaseVillage(), done: () => { s.location = { map: 'rillbridge', x: 56, y: 18 }; restoreParty(s); host.commit('villageFreed', 'freed'); } }); return;
     case 'east-pass':
       if (!f.villageFreed) return host.toast(f.collectorDefeated ? 'Break open the collector before leaving.' : 'The collector has stopped the crossing. Reach the eastern carriage.');
-      host.travel('tunnel', 3, 13); return;
+      host.travel('tunnel', 3, 14); return;
     case 'village-yard': host.travel('yard', 10, 9); return;
     case 'sun-mural':
       host.talk({ scene: { id: 'one-mural', title: 'THE HOLLOW SUN', actors: [{ id: 'nell', at: { x: 21, y: 9 } }, { id: 'orrin', at: { x: 23, y: 9 } }] }, lines: [
-        { ...SAY('The old mural', 'A procession enters an open sun. The people carry sheaves of wheat; their shadows have become children and old men.'), shot: { focus: { x: 21, y: 8 }, cut: true, omen: 'sun', silence: true } },
-        SAY('Nell', 'That’s the shape I saw when the crystal broke.'),
-        SAY('Orrin', 'This was here before the empire laid the track. Whatever it is, they didn’t invent it.'),
+        { ...SAY('The old mural', 'Harvesters carry sheaves toward a circle. Most of its center has flaked away.'), shot: { focus: { x: 21, y: 8 }, cut: true, silence: true } },
+        SAY('Nell', 'The lamps in Larkspur have the same rays.'),
+        SAY('Orrin', 'This was here before the empire laid the track.'),
       ], done: () => host.commit('muralRead') }); return;
     case 'shelter':
       host.talk({ lines: [SAY('Orrin', f.shelterSupplies ? 'We can rest here. The crossing will still be there when we’re ready.' : 'Dry blankets, a stove and two sealed bandages. We can rest here before we face him.')], choices: [
@@ -113,7 +113,7 @@ export function interactChapterOne(host: StoryHost, id: string) {
       if (f.captainConfronted) return host.battle('captain');
       host.talk({ ...scenes.confrontation(), done: () => { s.location = { map: 'tunnel', x: 30, y: 14 }; host.commit('captainConfronted'); host.battle('captain'); } }); return;
     case 'departure':
-      if (!f.captainDefeated) return host.toast('Captain Severin still holds the crossing.');
+      if (!f.captainDefeated) return host.toast('Captain Alban still holds the crossing.');
       if (f.chapterOneComplete) return host.boundary();
       host.talk({ ...scenes.departure(), done: () => {
         s.location = { map: 'tunnel', x: 37, y: 14 }; f.chapterOneComplete = true; s.boundary = NEXT_CHAPTER; remember(s, 'departure');

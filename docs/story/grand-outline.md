@@ -4,7 +4,7 @@ This is the agreed direction for the story reboot. Chapter One is playable; Chap
 
 ## The promise
 
-Seventeen-year-old Nell wants to leave her provincial railway town and see the sea with her older brother, Tomas. Imperial soldiers take him during Larkspur's festival. A fragment of the crystal he stole bonds with Nell and briefly stops the world around her. With Orrin, a young mechanic, she pursues the prison trains.
+Seventeen-year-old Nell wants to leave her provincial railway town and see the sea with her older brother, Tomas. Imperial soldiers take him during Larkspur's festival. A fleck of the crystal he stole catches in Nell's lantern. It hums, and the handle feels strangely cold. With Orrin, a young mechanic, she pursues the prison trains.
 
 The pursuit becomes a rebellion, a rescue that succeeds while the world changes, a struggle to reunite and fight back, an assault on an emperor becoming a god, and finally a journey beyond the mortal world to defeat the god itself. Railways connect a broad fantasy continent: forests, mines, rival kingdoms, ancient temples, a coast and an airship journey. The tone has warmth, humor, frightening discoveries and room to enjoy traveling with the party.
 
@@ -14,7 +14,7 @@ The empire's patron is worshipped as **the Benefactor**. It lent the empire powe
 
 The stopped towns are the first repayments. Their people did not consent to the bargain. Breaking a local collector releases its captives, but does not recover the years already taken or end the god's claim. Stopping the extraction is a real local victory; ending the source of it requires the final chapter.
 
-The god's body beneath the palace is a conduit into its domain, rather than its whole existence. The empire calls the restraints a prison and thinks it has mastered its patron. The Benefactor permitted the arrangement because the conduit makes the empire dependent and gives it access to mortal lives. Foreshadow both the god and the hollow sun of its domain in Chapter One; establish the distinction between conduit and source well before the finale.
+The god's body beneath the palace is a conduit into its domain, rather than its whole existence. The empire calls the restraints a prison and thinks it has mastered its patron. The Benefactor permitted the arrangement because the conduit makes the empire dependent and gives it access to mortal lives. Begin with imperial worship, an unexplained lantern hum and a damaged sun mural, without divine speech or a boss cutaway; establish the distinction between conduit and source well before the finale.
 
 ## The emperor
 
@@ -24,17 +24,17 @@ He is an active antagonist throughout the adventure. Show his orders, his interv
 
 ## Chapter One — Leaving Home
 
-**Goal:** catch the soldiers who took Tomas. **Local antagonist:** Captain Severin.
+**Goal:** catch the soldiers who took Tomas. **Local antagonist:** Captain Alban.
 
 Let the player meet Tomas at the festival after a short opening scene. He has returned from the capital and is hiding something. Imperial crystal lamps, the festival blessing and the siblings' promised trip to the sea establish the world through ordinary life. Orrin's independent steam engine is an eccentric work in progress.
 
-Severin arrives to arrest Tomas for stealing a crystal from the palace engine. Stationmaster Ansel, Nell's mentor, intervenes and is fatally wounded. The crystal fractures as Tomas tries to keep it from the captain. Its light enters Nell's lantern; movement and sound stop for a few seconds. She hears, "Return what I gave." Tomas is taken while Nell is stunned. Ansel's final action gives her a way out of the square.
+Alban arrives to arrest Tomas for stealing a crystal from the palace engine. Stationmaster Ansel, Nell's mentor, intervenes and is fatally wounded. The crystal fractures as Tomas tries to keep it from the captain. A pale fleck catches in Nell's lantern glass. A low resonance travels through its handle and gives her the shivers. Neither a voice nor a demonstrated time stop explains it. Tomas is taken during the struggle. Ansel's final action gives her a way out of the square.
 
 Nell fights through the pursuit hounds, finds Orrin in the western workshop and chooses to pursue Tomas. No component-collection errands stand between the decision and the journey. Orrin joins, bringing a steam lance and an engine that can use the old branch.
 
-At Rillbridge, a living village has been stopped by an imperial collector. The party confronts its guard, breaks the collector and wakes the villagers. Captain Severin's signal calls the operation a repayment. The rescued villagers have lost days and some of their strength; that damage is not silently reversed. The Benefactor's sun emblem on the collector matches the festival lamps and Nell's fragment.
+At Rillbridge, a living village has been stopped by an imperial collector. The party confronts its guard, breaks the collector and wakes the villagers. Captain Alban's signal calls the operation a repayment. The rescued villagers have lost days and some of their strength; that damage is not silently reversed. The sun emblem on the collector matches the festival lamps. The lantern hums more strongly nearby, but the party does not claim to understand its powers or why they can move in the village.
 
-At the mountain pass, Severin blocks pursuit. He has already sent Tomas east in an armored prison coach. Nell and Orrin defeat him, open the route and escape on their own engine. Severin survives and retreats; the chapter's obstacle has genuinely been overcome. The destination is specific: the prison-train exchange at the Iron Coast. End on Nell deciding to follow, and a glimpse of an enormous eye inside the same sun emblem.
+At the mountain pass, Alban blocks pursuit. He has already sent Tomas east in an armored prison coach. Nell and Orrin defeat him, open the route and escape on their own engine. Alban survives and retreats; the chapter's obstacle has genuinely been overcome. The destination is specific: the prison-train exchange at the Iron Coast. End on Nell and Orrin deciding to follow. Keep the god offstage and silent.
 
 **Progression:** short festival exploration → staged raid → solo escape battle → recruit Orrin → frozen village and collector battle → mountain-pass boss → saved departure. One optional workshop fight rewards equipment. Rest and basic supplies are available without errands. Rescued people acknowledge the result on return visits.
 
@@ -44,7 +44,7 @@ At the mountain pass, Severin blocks pursuit. He has already sent Tomas east in 
 
 The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Recruit a healer educated in the Benefactor's religion. Introduce an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire's protection.
 
-The raid succeeds: prisoners escape, the army loses the train and the party learns that Tomas was moved to the capital because he discovered how the crystal engines are paid for. Severin attempts to recapture the freed prisoners. The knight witnesses the army sacrifice a settlement to keep the capital supplied, then helps the escape. Give the knight an earned defection, not an instant change of uniform after one conversation.
+The raid succeeds: prisoners escape, the army loses the train and the party learns that Tomas was moved to the capital because he discovered how the crystal engines are paid for. Alban attempts to recapture the freed prisoners. The knight witnesses the army sacrifice a settlement to keep the capital supplied, then helps the escape. Give the knight an earned defection, not an instant change of uniform after one conversation.
 
 The party obtains a usable way into the capital. The emperor appears directly and the god's religion gains an uncomfortable second meaning. Answers establish that the stopped villages are collection, not accidental engine failures.
 
@@ -64,7 +64,7 @@ Do not negate the rescue or suggest that every action was secretly the villain's
 
 Nell wakes with Tomas safe and her original objective completed. She must decide what to do with the world left around them. Other companions carry playable stretches: Orrin organizes an escape from a damaged industrial city; the knight protects people from former comrades; the healer searches the original guardians' sanctuary.
 
-Reunite through actions that resolve local dangers. Discover three ancient anchors that stabilize the palace conduit. Severing them will free regions from the emperor's expanding time arrest and expose his heart. Establish here that the Benefactor exists beyond the conduit, and that its claim can survive the emperor. A mural or vision shows the hollow sun and a path into its domain.
+Reunite through actions that resolve local dangers. Discover three ancient anchors that stabilize the palace conduit. Albang them will free regions from the emperor's expanding time arrest and expose his heart. Establish here that the Benefactor exists beyond the conduit, and that its claim can survive the emperor. A mural or vision shows the hollow sun and a path into its domain.
 
 Nell chooses to lead the counterattack. Tomas helps organize the resistance and stays an active supporting character, rather than being kidnapped again.
 
@@ -76,7 +76,7 @@ Acquire an airship. Let the player choose the order of three major adventures, e
 
 Orrin's industrial region supplies the alliance and proves transport can survive without divine crystal power. The knight confronts a former commander and persuades imperial troops to protect their own people. The healer exposes the concealed bargain and helps communities surrender the patron's protection without surrendering each other.
 
-Earlier rescues provide crews, intelligence, shelter and allies. Severin's campaign against the party ends decisively here; choose his final fate when his later scenes are authored. The emperor's projections become less human. His offer of Nell's old life arrives after the player has enough experience of the wider world to understand its cost.
+Earlier rescues provide crews, intelligence, shelter and allies. Alban's campaign against the party ends decisively here; choose his final fate when his later scenes are authored. The emperor's projections become less human. His offer of Nell's old life arrives after the player has enough experience of the wider world to understand its cost.
 
 ## Chapter Six — The Emperor's Last Day
 
@@ -98,7 +98,7 @@ Nell's fragment opens the path through the hollow sun. The party travels beyond 
 
 Meet people from earlier collected settlements. The party helps them act and move again, making the promised recovery visible before the final battle. The god offers Nell her old life once more, now with the power to make the offer real. It treats people as payment, and sees their rescue as theft.
 
-The original anchors taught the party how the god joins mortal days to its body. In the domain, the companions sever those bonds at their source. Nell returns her fragment to expose the divine heart and loses her borrowed power. Fight the Benefactor itself in multiple forms; the final transformation draws on the hollow sun shown since Chapter One. Victory destroys its capacity to claim people's lives. It cannot return through another emperor or renew the bargain.
+The original anchors taught the party how the god joins mortal days to its body. In the domain, the companions sever those bonds at their source. Nell returns her fragment to expose the divine heart and loses her borrowed power. Fight the Benefactor itself in multiple forms; the final transformation draws on the damaged sun motif introduced in Chapter One and developed in later chapters. Victory destroys its capacity to claim people's lives. It cannot return through another emperor or renew the bargain.
 
 Release the stolen days and surviving captives. Do not use a reset to erase the adventure: Ansel and people killed by violence remain dead, decisions and relationships remain, and towns still need rebuilding. Divine engines and effortless miracles cease. Ordinary skill, cooperation and the alternatives developed by Orrin's region make a livable future possible.
 
@@ -114,5 +114,5 @@ The fragment gives Nell access to the conflict and a limited shelter from stoppe
 - Give each chapter a local victory, a recognizable antagonist and a consequential discovery. A mysterious letter is not sufficient payment for a chapter of errands.
 - Stage the major decisions and reversals with actors, camera movement, sound and playable action. Keep dialogue concise and let players advance or skip it.
 - Keep the party's ordinary affection, arguments and humor present between crises. Allow exploration and rest; narrative urgency is not a hidden real-time timer.
-- Foreshadow the final god early. The emperor and the Benefactor have related goals but distinct agency. Defeating each resolves a different part of the threat.
+- Foreshadow through worship, old imagery and unsettling sensory clues; let the god speak only after later discoveries earn that encounter. The emperor and the Benefactor have related goals but distinct agency. Defeating each resolves a different part of the threat.
 - Protect the completed rescue of Tomas and every local victory. The finale restores stolen futures without erasing the cost of the journey.

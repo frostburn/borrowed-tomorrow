@@ -13,7 +13,7 @@ Keep music procedural and asset-light. Original melodies need recognizable phras
 | Rillbridge freed | `rillbridge` | Full original village melody returns |
 | Mountain pass | `tunnel` | Tension before the crossing |
 | Ordinary battles | `battle` | Faster home motif with active bass and percussion |
-| Captain Severin | `inspector` | The existing intense officer-battle arrangement; the key is not a surviving story identity |
+| Captain Alban | `inspector` | The existing intense officer-battle arrangement; the key is not a surviving story identity |
 | Saved departure | `ending` | Bell-led resolution |
 
 The other scores remain a library for later chapters, including the distinct E-minor siding, C-major piano and F-major Northglass material. Their prior plots have been discarded.

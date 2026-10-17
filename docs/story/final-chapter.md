@@ -4,14 +4,14 @@ This is the end of the seven-chapter outline, not currently playable content. It
 
 ## Why there is still a final journey
 
-The palace engine contains a conduit into the Benefactor's domain. The emperor's merger gives him control over the mortal side but never destroys or absorbs the whole god. When his vessel breaks, the Benefactor can collect directly. The party has already learned this distinction in Chapter Four and prepared the path while severing anchors in Chapter Five.
+The palace engine contains a conduit into the Benefactor's domain. The emperor's merger gives him control over the mortal side but never destroys or absorbs the whole god. When his vessel breaks, the Benefactor can collect directly. The party has already learned this distinction in Chapter Four and prepared the path while albang anchors in Chapter Five.
 
 The title is literal: the empire borrowed miraculous prosperity from future days, and the god demands repayment in human lives and futures. The god's claim persists beyond the dynasty. This is a power to break at its source, not an accounting puzzle solved with another document or a technicality.
 
 ## Final departure and route
 
 1. **The returned capital:** survivors reunite with Tomas and the supporting cast. Confirm which towns and people were helped. Let the player finish optional business, rest and save before choosing to go.
-2. **The hollow sun:** Nell's fragment opens the crossing. The airship crew and mortal allies hold the route open while the four companions enter. Use the same emblem and voice shown in Chapter One.
+2. **The hollow sun:** Nell's fragment opens the crossing. The airship crew and mortal allies hold the route open while the four companions enter. Develop the damaged sun motif from Chapter One into the domain's full image. The god's speech belongs to the later revelations, never the opening chapter.
 3. **The sea of taken mornings:** walk beneath a suspended ocean. Free people whose days became part of the domain. Establish that the stolen future can be recovered without reversing deaths caused by ordinary violence.
 4. **The first harvest:** see the founding bargain as a playable place. The Benefactor made the first offer, knew its cost and deliberately widened mortal dependence. The emperor continued the bargain and made his own choices; neither antagonist excuses the other.
 5. **The city of seasons:** stolen days from different places meet. Resolve the companions' final contributions through distinct actions: Orrin breaks a transfer mechanism, the knight protects freed people while the route fails, and the healer restores people's ability to act without renewing the god's protection.

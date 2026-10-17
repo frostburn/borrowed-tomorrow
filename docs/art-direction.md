@@ -25,19 +25,19 @@ The other restored scenery and unused character assets remain an art library for
 
 `src/content/characters.ts` registers each named character. Ansel and Iona exclusively own the original `master` and `clerk` sprite/portrait pairs. Nell and Orrin retain their existing directional actors. Tilda retains her red hair, cream kerchief and green dress. Elspeth retains her wheelchair, plum shawl and blue register.
 
-**Tomas** and **Captain Severin** have new matching actor and portrait pairs, created with built-in Image Gen using Nell's actor and portrait as style and proportion references. The transparent source sheets were mechanically separated and exported into native 80 × 80 actor and 128 × 128 portrait canvases with point sampling. Only near-transparent background glow was discarded; runtime never rescales or recolors the exported assets. The character tests verify native dimensions and distinct image contents.
+**Tomas** and **Captain Alban** have new matching actor and portrait pairs, created with built-in Image Gen using Nell's actor and portrait as style and proportion references. The transparent source sheets were mechanically separated and exported into native 80 × 80 actor and 128 × 128 portrait canvases with point sampling. Only near-transparent background glow was discarded; runtime never rescales or recolors the exported assets. The character tests verify native dimensions and distinct image contents.
 
 Production prompt briefs:
 
 - **Tomas:** Nell's older brother, 24; short tousled brown hair, brown eyes, clean-shaven, navy traveling jacket, cream shirt, worn red scarf, brass sun brooch and leather satchel. Warm but worried expression. A matching upper bust portrait and complete compact front-facing actor, real alpha background, intricate discrete early-PC pixel shading, no scenery, labels, extra poses or floor shadows. Match Nell's large-head/short-leg world proportions.
-- **Captain Severin:** human imperial officer in his late thirties; pale skin, angular face, swept-back dark hair with a silver streak, navy longcoat, ivory breastplate, brass sun, burgundy sash, white gloves and saber. Clearly human face without mask or goggles. The same sheet layout, native export sizes, pixel treatment and transparency constraints as Tomas.
+- **Captain Alban:** human imperial officer in his late thirties; pale skin, angular face, swept-back dark hair with a silver streak, navy longcoat, ivory breastplate, brass sun, burgundy sash, white gloves and saber. Clearly human face without mask or goggles. The same sheet layout, native export sizes, pixel treatment and transparency constraints as Tomas.
 
-Keep these identities consistent in dialogue, exploration, staging and battle. The captain's combat archetype remains the engine's officer rules, but his appearance is `severin`, never the retired inspector character.
+Keep these identities consistent in dialogue, exploration, staging and battle. The captain's combat archetype remains the engine's officer rules, but his appearance is `alban`, never the retired inspector character.
 
 ## Cutscenes and combat
 
 Stage key events with temporary actors, camera cuts and pans, sound cues and concise dialogue. The director never changes scale. Reduced motion snaps actor/camera movement. Interrupted scenes commit no partial plot progress; Skip runs the same completion callback once. Final protagonist positions are committed with their scenes, so the return to exploration stays on the same walking surface.
 
-The crystal splinter and hollow-sun eye use native drawn symbols. Their consistent shape links the festival blessing, collector, mural and final cutaway. They are visual foreshadowing; their meaning is earned later in the story. The unknown voice has no invented character portrait.
+Keep the crystal effects understated: a fleck in the lantern glass, a cold handle and a low beating resonance. The old sun mural is worn and incomplete. Do not overlay a divine eye, a radiant power symbol or a final-boss cutaway in Chapter One. Stage the pass scenes on the lower stone walkway (tile row 14), with the same footing in exploration and cinematic actors.
 
-Combat retains the quiet yard clearing and explicit geometry. Blue shows reachable ground, brass/white outlines show targeting, and orange marks warn of end-of-round steam. Keep preview and resolution on the same hex geometry. Use native actors, cover rocks, HP bars and damage text. Pan on narrow screens rather than shrinking the battlefield.
+The opening pursuit uses Larkspur square; the other encounters retain the quiet yard clearing and explicit geometry. Blue shows reachable ground, brass/white outlines show targeting, and orange marks warn of end-of-round steam. Keep preview and resolution on the same hex geometry. Use native actors, cover rocks, HP bars and damage text. Pan on narrow screens rather than shrinking the battlefield.

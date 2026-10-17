@@ -3,7 +3,7 @@ import { capture, inspect, nativeScene } from './controls';
 import { approach, visit } from './navigation';
 
 const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
-const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper'] as const;
+const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper','resonance'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});

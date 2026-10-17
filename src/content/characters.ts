@@ -3,7 +3,7 @@ export const CHARACTERS = {
   nell: { name: 'Nell', sprite: 'nell', portrait: 'portrait-nell' },
   orrin: { name: 'Orrin', sprite: 'orrin', portrait: 'portrait-orrin' },
   tomas: { name: 'Tomas', sprite: 'tomas', portrait: 'portrait-tomas' },
-  severin: { name: 'Captain Severin', sprite: 'severin', portrait: 'portrait-severin' },
+  alban: { name: 'Captain Alban', sprite: 'alban', portrait: 'portrait-alban' },
   ansel: { name: 'Stationmaster Ansel', sprite: 'master', portrait: 'portrait-master' },
   iona: { name: 'Iona', sprite: 'clerk', portrait: 'portrait-clerk' },
   tilda: { name: 'Tilda', sprite: 'tilda', portrait: 'portrait-tilda' },
@@ -20,4 +20,4 @@ export function portraitAsset(id: string): string {
   const aliases: Record<string, CharacterId> = { master: 'ansel', clerk: 'iona' };
   return CHARACTERS[(aliases[id] ?? id) as CharacterId]?.portrait ?? id;
 }
-export const NPC_SPRITES = ['tomas', 'severin', 'tilda', 'elspeth'] as const;
+export const NPC_SPRITES = ['tomas', 'alban', 'tilda', 'elspeth'] as const;
