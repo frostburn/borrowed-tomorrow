@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { capture, inspect, nativeScene } from './controls';
+import { approach, visit } from './navigation';
 
 const modes=['station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper'] as const;
@@ -104,6 +106,9 @@ test('portraits, HUD sprites, and scenery retain their native pixels and colors'
     return missing;
   }),{timeout:15000}).toBe(0);
   if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/native-station.png`});
+  await visit(page,'tomas');await approach(page,'pursuit');
+  await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  await nativeScene(page,'station',144);await capture(page,'escape-desktop');
 });
 
 test('the actual Web Audio instruments render distinct scores and action sounds without clipping',async({page})=>{

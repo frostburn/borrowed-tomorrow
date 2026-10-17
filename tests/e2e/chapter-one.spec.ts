@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { newGame } from '../../src/rules/state';
 import { checkpoint } from '../support/progress';
-import { battle, capture, dialogue, inspect, clickHex } from './controls';
+import { battle, capture, dialogue, inspect, clickHex, nativeScene } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 import { active, type Battle } from '../../src/rules/combat';
 
@@ -21,6 +21,7 @@ test('opening, interrupted raid and skip keep a coherent checkpoint on a phone',
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/'); await page.getByRole('button', { name: 'Begin Chapter One' }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
+  await nativeScene(page, 'station'); await capture(page, 'opening-phone');
   await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
   await page.getByRole('button', { name: 'Skip scene' }).click();
@@ -39,6 +40,8 @@ test('opening, interrupted raid and skip keep a coherent checkpoint on a phone',
   await visit(page, 'memorial');
   await page.getByRole('button', { name: 'Journal', exact: true }).first().click();
   await expect(page.getByRole('dialog')).toContainText('They took Tomas'); await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await approach(page, 'pursuit'); await expect.poll(async () => (await inspect(page)).mode).toBe('battle');
+  await nativeScene(page, 'station', 144); await capture(page, 'escape-phone');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });
