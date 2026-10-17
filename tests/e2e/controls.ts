@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 import { active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
-import { cells, equal, toPixel, type Hex } from '../../src/rules/hex';
+import { cells, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -28,7 +28,7 @@ function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
     u.hex=visit.hex;
     for(const id of u.abilities.filter(id=>!['mend','bandage'].includes(id)))for(const h of cells()){
       if(!legalAim(b,u,id,h))continue;
-      const score=targets(b,u,id,h).reduce((sum,v)=>sum+(v.side!==u.side?1:-4)*(Math.min(v.hp,damage(u,v,id))+(v.hp<=damage(u,v,id)?8:0)),0)-visit.path.length*.1;
+      const score=targets(b,u,id,h).reduce((sum,v)=>sum+(v.side!==u.side?1:-4)*(Math.min(v.hp,damage(u,v,id))+(v.hp<=damage(u,v,id)?8:0)),0)-visit.path.length*.1-(b.vents.has(keyFor(visit.hex))?7:0);
       if(score>0&&(!best||score>best.score))best={action:id,hex:h,pos:visit.hex,score};
     }
   }
@@ -46,7 +46,7 @@ export async function battle(page: Page, screenshot?: string) {
     if(await page.getByRole('heading',{name:'The line can wait'}).isVisible())throw new Error('The party was defeated during the browser playthrough.');
     const snapshot=(await inspect(page)).battle!;
     if(snapshot.result){await page.waitForTimeout(400);continue;}
-    const b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water)} as Battle;
+    const b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water),vents:new Set(snapshot.vents)} as Battle;
     const u=active(b)!;
     if(u.side!=='party'){await page.waitForTimeout(250);continue;}
     const decision=playerPlan(b);

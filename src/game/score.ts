@@ -1,9 +1,13 @@
 import { scoreB } from './score-b';
-export type MusicMode = 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood';
+import { scoreC } from './score-c';
+export type MusicMode = 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting';
 export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; midi:number; beat:number; duration:number; velocity:number; pan:number }
 interface Arrangement { bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  cinderbank:{bpm:84,lead:'reed',leadGain:.2,keys:.035,strings:.018,bass:.15,percussion:0},
+  infirmary:{bpm:66,lead:'keys',leadGain:.22,keys:.04,strings:.022,bass:.115,percussion:0},
+  shunting:{bpm:118,lead:'reed',leadGain:.24,keys:.065,strings:0,bass:.22,percussion:.16},
   rillbridge:{bpm:88,lead:'reed',leadGain:.27,keys:.12,strings:.045,bass:.18,percussion:.028},
   sluice:{bpm:76,lead:'bell',leadGain:.18,keys:.065,strings:.065,bass:.18,percussion:0},
   flood:{bpm:124,lead:'reed',leadGain:.32,keys:.11,strings:.045,bass:.25,percussion:.19},
@@ -25,6 +29,7 @@ const PHRASES:[number,number,number][][]=[
 const ROOTS=[50,46,53,48,50,46,43,45,53,48,46,45,50,46,45,50];
 /** A complete sixteen-bar score. Every location keeps the motif but changes its arrangement. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting')return scoreC(mode,bar);
   if(mode==='rillbridge'||mode==='sluice'||mode==='flood')return scoreB(mode,bar);
   const a=ARRANGEMENTS[mode],index=((bar%16)+16)%16,phrase=Math.floor(index/4),within=index%4;
   const tense=mode==='battle'||mode==='inspector',root=ROOTS[index];

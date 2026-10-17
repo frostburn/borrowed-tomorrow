@@ -19,6 +19,7 @@ export const MAPS: Record<'station'|'yard'|'tunnel', MapData> = {
       { id: 'notice', x: 20, y: 12, label: 'Branch closure notice', sign: true, doneFlag: 'noticeRead' },
       { id: 'to-yard', x: 2, y: 11, label: 'Old signal yard', sign: true },
       { id: 'b-family-larkspur', x: 23, y: 20, label: 'Mira and Bram', sprite: 'mira', requiredFlag: 'bEvacuated' },
+      { id: 'c-tilda', x: 19, y: 19, label: 'Tilda · winter provisions', sprite: 'clerk', requiredFlag: 'diskCStarted' },
       { id: 'train', x: 32, y: 10, label: 'The unscheduled train', sign: true },
     ] },
   yard: { id: 'yard', name: 'Old signal yard', subtitle: 'The abandoned line still has a pulse.',

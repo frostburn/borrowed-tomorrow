@@ -58,7 +58,7 @@ test('small-screen controls, journal and imported saves remain usable',async({pa
   await page.getByRole('button',{name:'Pan battlefield right'}).click();
   await expect.poll(async()=> (await inspect(page)).view.scrollX).toBe(start+192);
   await capture(page,'mobile-battle');
-  const snapshot=(await inspect(page)).battle!,b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water)} as Battle,u=active(b)!;
+  const snapshot=(await inspect(page)).battle!,b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water),vents:new Set(snapshot.vents)} as Battle,u=active(b)!;
   const view=(await inspect(page)).view;
   const destination=[...movement(b,u).values()].find(v=>v.path.length>0&&toPixel(v.hex).x>view.scrollX+48&&toPixel(v.hex).x<view.scrollX+view.width-48)!.hex;
   await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();
