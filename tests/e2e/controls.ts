@@ -53,7 +53,7 @@ export async function battle(page: Page, screenshot?: string) {
     const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${decision.action==='burst'?'Lantern burst':decision.action==='steam'?'Steam lance':decision.action==='bandage'?'Bandage':decision.action==='mend'?'Mend':'Strike'}$`);
     const action=page.locator('.actions').getByRole('button',{name:label});
     await expect(action).toBeEnabled();await action.click();
-    if(decision.hex){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:/^Confirm attack$/}).click();}
+    if(decision.hex){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:['mend','bandage'].includes(decision.action)?/^Confirm healing$/:/^Confirm attack$/}).click();}
     await page.waitForTimeout(420);
   }
   throw new Error('Battle did not resolve within the turn budget.');

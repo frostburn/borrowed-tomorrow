@@ -403,7 +403,7 @@ export class Adventure extends Phaser.Scene {
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
     }else if(legalAim(b,u,this.selected,aimed)){
       const hits=targets(b,u,this.selected,aimed);const description=hits.map(v=>`${v.name}: ${ABILITIES[this.selected as AbilityId].heal?'+':'−'}${damage(u,v,this.selected as AbilityId)} HP${v.side===u.side&&!ABILITIES[this.selected as AbilityId].heal?' (ALLY)':''}`).join(' · ')||'Empty ground';
-      if(this.plan)confirm.append(this.ui.button({label:'Confirm attack',action:()=>this.commitPlan()}));
+      if(this.plan)confirm.append(this.ui.button({label:ABILITIES[this.selected].heal?'Confirm healing':'Confirm attack',action:()=>this.commitPlan()}));
       const text=document.createElement('span');text.className='prediction';text.textContent=description;confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction';text.textContent='Out of range, blocked, or not a valid target.';confirm.append(text);}
   }
