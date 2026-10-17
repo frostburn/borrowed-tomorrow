@@ -8,5 +8,15 @@
     "bytes": 2856570,
     "sha256": "803a503f294aca2032182afb177e6ba559cd5303d4354cb9288550b5e8d111a1",
     "parts": 15
+  },
+  "cinderbank": {
+    "bytes": 2796672,
+    "sha256": "321a46e58366c3f90ec634a599964220f91552a9ad51e2936b452148c19d149e",
+    "parts": 15
+  },
+  "infirmary": {
+    "bytes": 2598212,
+    "sha256": "3268c829aa9cf8f6fac21b486a6445e9d62eab79f7f4315be57b5abd5aeafae3",
+    "parts": 14
   }
 }

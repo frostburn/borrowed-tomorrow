@@ -38,3 +38,20 @@ Maps use generated scenery and editable Tiled collision data. Four directional a
 Disk B’s lossless WebP sources are stored as small base64 chunks in `assets/maps/` so they can be transferred through the repository connector. `scripts/restore-map-art.mjs` reconstructs the exact native files before `npm run dev` and `npm run build`, verifying their byte length and SHA-256. No colors or dimensions change. The built site contains the ordinary WebP files.
 
 The schoolhouse courtyard is enclosed by collision along all four sides. Its southern gate has a saved open state; both pathfinding and keyboard movement use it. Opening the gate reveals a 1:1 patch of native paving beneath the bars and swings the leaf against the fence. Elspeth’s interaction requires the gate to be open.
+
+Disk C adds two native **1536 × 1024** maps, generated with the built-in Image Gen tool and encoded losslessly. Original RGBA pixels and dimensions were checked against the WebP files. Both use the existing verified source-chunk restoration process and the same 1:1 scrolling camera.
+
+- **Cinderbank:** winter ambulance siding before dawn; dark green medical carriages along the upper platform, brick dispatch office to the left, copper-piped boiler shed to the right, stretchers and supply crates at the lower left, broad connected cobbled loading apron. Cold slate-blue snow and warm amber lamps; no people, text, UI, or grid. Native combat terrain is a crop of the loading apron.
+- **Bellwether infirmary:** cream-stone receiving hall beneath a glowing glass roof, wide central ramp, boiler house at the left, second ward and admissions porch at the right, clear paved courtyard, empty siding entering at the lower left, frosty herb beds and laundry at the far edge. Warm honey light contrasts with the siding. No people, labels, UI, or grid.
+
+Both production prompts requested a downward three-quarter JRPG view, detailed early-PC scenery, architecture at the edges, broad unobstructed walking surfaces, no black margins, and a full-canvas scene designed for native display rather than shrinking.
+
+## Named character art
+
+`src/content/characters.ts` assigns every named on-screen character a distinct sprite and portrait. The original `master` and `clerk` assets identify Ansel and Iona only. Bram, Tilda, Elspeth, Dena, Ivo and Celia have their own matching pairs; Elspeth's world sprite includes her wheelchair. The sluice keeper and boiler keeper have separate sprites and portraits while retaining the guardian combat archetype. The inspector has a full portrait matching his existing appearance.
+
+The new character designs were generated with the built-in Image Gen tool as production reference sheets, then prepared offline into the final **80 × 80 actor** and **128 × 128 portrait** PNGs. Reference-sheet layouts are not runtime atlases. The exported PNGs are the native game assets; the renderer displays every pixel without resizing or palette conversion. Portrait transparency is composited over the existing panel color. Bright background-key residue was removed during export.
+
+Production prompts specified matching portrait/world views and separate identities: Bram's blue work shirt, beard and leather apron; Tilda's red hair, cream kerchief and green baker's dress; Elspeth's silver bun, spectacles, plum shawl, blue register and wooden wheelchair; Dena's dark curls, ivory apron, teal dress and satchel; Ivo's shaved head, maroon waistcoat and folded blanket; Celia's grey bob, green cardigan, high collar and clipboard. The machines use a patinated handwheel and blue eye slot for the sluice keeper, a pressure gauge and copper chimney for the boiler keeper, and a peaked cap and red signal projector for the inspector.
+
+`SAY` selects portraits by speaker identity, including legacy Ansel/Iona aliases. Narration, signs and documents keep the ticket mark. Character tests check unique image contents, native dimensions, map assignments, portrait resolution and keeper appearances. Browser playthroughs verify named speakers as their dialogue advances; focused desktop/phone checks compare all pixels of the new portraits with their source PNGs.

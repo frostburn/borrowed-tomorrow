@@ -1,4 +1,5 @@
 import { DISK_B_ENCOUNTERS } from '../content/disk-b/encounters';
+import { DISK_C_ENCOUNTERS } from '../content/disk-c/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId } from './state';
 
@@ -14,17 +15,18 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   flare: { id: 'flare', name: 'Signal flare', description: 'A seven-hex blast that punishes clustering. 2 focus.', range: 5, power: 9, cost: 2, shape: 'blast' },
 };
 export interface Unit {
-  id: string; name: string; kind: string; side: 'party' | 'enemy'; hex: Hex;
+  id: string; name: string; kind: string; appearance?: string; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
 }
 export interface Battle {
-  encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; queue: string[]; round: number;
+  encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string }[]; rocks: [number, number][]; shallow?:[number,number][]; terrain?:'sluice'; journal?:string; victory?:string }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?:'sluice-keeper'|'boiler-keeper' }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; terrain?:'sluice'|'cinderbank'; journal?:string; victory?:string }
 export const ENCOUNTERS: Record<string, Encounter> = {
   ...DISK_B_ENCOUNTERS,
+  ...DISK_C_ENCOUNTERS,
   yard: { id: 'yard', name: 'Strays in the signal yard', flag: 'yardCleared', xp: 30, coins: 25,
     enemies: [{ kind: 'hound', col: 7, row: 2 }, { kind: 'hound', col: 8, row: 3 }, { kind: 'crow', col: 9, row: 5 }], rocks: [[5, 2], [5, 4], [7, 5]] },
   scrap: { id: 'scrap', name: 'Something in the scrap', flag: 'scrapCleared', xp: 25, coins: 30,
@@ -54,10 +56,11 @@ export function createBattle(encounter: string, state: GameState): Battle {
   e.enemies.forEach((enemy, i) => {
     const stats = ENEMY_STATS[enemy.kind];
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
+      appearance:enemy.appearance,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((encounter==='b-keeper'&&state.flags.bOrchardChannel?[]:e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
+    vents:new Set((encounter==='c-boiler'&&state.flags.cTrainHeat?[[3,1],[4,1],[5,1],[6,1],[7,1],[3,5],[4,5],[5,5],[6,5],[7,5]]:e.vents??[]).map(([c,r])=>key(offset(c,r)))),
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   nextRound(battle);
   return battle;
@@ -109,13 +112,21 @@ function nextRound(b: Battle) {
   b.queue = alive(b).sort((a, z) => z.speed - a.speed || a.id.localeCompare(z.id)).map(u => u.id);
   beginTurn(b);
 }
-function finishTurn(b: Battle) {
+function ended(b:Battle){
   const sides = new Set(alive(b).map(u => u.side));
-  if (!sides.has('enemy')) { b.result = 'victory'; log(b, 'The line is clear.'); return; }
-  if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return; }
+  // If a discharge downs both sides, the party must retry rather than win unconscious.
+  if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return true; }
+  if (!sides.has('enemy')) { b.result = 'victory'; log(b, 'The line is clear.'); return true; }
+  return false;
+}
+function finishTurn(b: Battle) {
+  if(ended(b))return;
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
-  if (!b.queue.length) nextRound(b); else beginTurn(b);
+  if (!b.queue.length){
+    for(const u of alive(b))if(u.kind!=='crow'&&b.vents.has(key(u.hex))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    if(!ended(b))nextRound(b);
+  }else beginTurn(b);
 }
 export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   if (active(b)?.id !== u.id || b.result || u.moved || equal(u.hex, destination)) return null;
@@ -174,7 +185,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
     for (const id of u.abilities) {
       for (const aim of cells()) {
         if (!legalAim(b, u, id, aim)) continue;
-        let score = -reach.cost * 0.12;
+        let score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0);
         for (const v of targets(b, u, id, aim)) {
           score += (v.side !== u.side ? 1 : -2.5) * (Math.min(v.hp, damage(u, v, id)) + (v.hp <= damage(u, v, id) ? 8 : 0));
         }
@@ -193,7 +204,8 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    visits.sort((a, z) => Math.min(...enemies.map(v => distance(a.hex, v.hex))) - Math.min(...enemies.map(v => distance(z.hex, v.hex))) || a.cost - z.cost);
+    const approach=(h:Hex)=>Math.min(...enemies.map(v=>distance(h,v.hex)))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+    visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);
     return 'defend';

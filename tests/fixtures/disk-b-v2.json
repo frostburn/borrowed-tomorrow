@@ -1,0 +1,87 @@
+{
+  "format": "borrowed-tomorrow",
+  "version": 2,
+  "chapter": "disk-b",
+  "location": {
+    "map": "station",
+    "x": 31,
+    "y": 10
+  },
+  "party": [
+    {
+      "id": "nell",
+      "hp": 60,
+      "focus": 6
+    },
+    {
+      "id": "orrin",
+      "hp": 72,
+      "focus": 6
+    }
+  ],
+  "flags": {
+    "noticeRead": true,
+    "metMira": true,
+    "orrinJoined": true,
+    "promisedHome": true,
+    "scrapCleared": true,
+    "yardCleared": true,
+    "relayRepaired": true,
+    "tunnelCleared": true,
+    "timetableRead": true,
+    "cacheTaken": true,
+    "inspectorCleared": true,
+    "diskAComplete": true,
+    "diskBStarted": true,
+    "bFatherFound": true,
+    "bSchoolGateOpen": true,
+    "bOverflowCleared": true,
+    "bFloodEvidence": true,
+    "bWorksheetRead": true,
+    "bTownWarned": true,
+    "bRegistryRefused": true,
+    "bTrolleyFreed": true,
+    "bNeighborsReady": true,
+    "bOrchardChannel": true,
+    "bKeeperStopped": true,
+    "bEvacuated": true,
+    "bLarkspurReceived": true,
+    "diskBComplete": true
+  },
+  "coins": 139,
+  "bandages": 6,
+  "xp": 340,
+  "gear": [
+    "brass-lantern",
+    "work-coats"
+  ],
+  "journal": [
+    "arrival",
+    "notice",
+    "mira",
+    "orrin",
+    "promise",
+    "scrap",
+    "fuse",
+    "relay",
+    "guardian",
+    "timetable",
+    "inspector",
+    "boundary",
+    "b-arrival",
+    "b-family",
+    "b-evidence",
+    "b-maintenance",
+    "b-warning",
+    "b-registry",
+    "b-trolley",
+    "b-rescue",
+    "b-orchard",
+    "b-crossing",
+    "b-evacuation",
+    "b-coda",
+    "b-departure"
+  ],
+  "boundary": "disk-c:ambulance-siding",
+  "playSeconds": 1826
+}

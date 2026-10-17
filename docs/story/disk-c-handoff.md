@@ -1,4 +1,6 @@
-# Insert Disk C — The Last Ambulance Train
+# Disk C — The Last Ambulance Train
+
+Implemented in `src/content/disk-c/`. This document preserves its incoming contract. The next pending chapter is described in `disk-d-handoff.md`.
 
 ## Exact continuation
 
@@ -7,6 +9,8 @@ Disk B ends with `chapter: disk-b`, `diskBComplete: true`, `bEvacuated: true`, `
 The departure dialogue reads a dispatch for **Cinderbank siding**: an ambulance train must depart before dawn, two carriages carry wounded soldiers, and no medical staff appear on the passenger list. Orrin identifies the next service number on the same relay. Nell asks him to leave Mira with Bram and fetch their coats.
 
 Import a real version-2 Disk B completion save during verification. Preserve all prior progress, the outfall choice, the optional maintenance discovery, and Ansel’s first answer. Do not consume this boundary until the new scene and assets are ready. Earlier towns remain visitable. Continue the save schema with migrations, not resets.
+
+The Larkspur service enters Cinderbank at `(20,37)`, beside the return-platform marker at `(20,38)`, on both first arrival and later visits. Existing saves retain their saved position. After warming the patients, the painted ambulance door and Dena’s “Help at the carriage door” action open the same boarding-refusal scene; neither bypasses the crew-register requirements.
 
 ## Local adventure to build
 

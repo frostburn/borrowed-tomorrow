@@ -1,15 +1,16 @@
-# Open threads after Disk B
+# Open threads after Disk C
 
 | Thread | Playable payoff / next obligation |
 | --- | --- |
-| Mira’s missing father | Resolved locally: Bram and Mira are together at Larkspur. Keep them there for Disk C; do not undo the reunion for another search. |
-| Rillbridge flood | All thirty-one residents escaped. The lower quay flooded. Preserve the orchard consequence, residents’ accommodation, and later recovery work. |
-| Ticket versus town date | Established: ticket is 14 October; arrival is 13 October; evacuation preparation advances to before dawn on the 14th. |
-| “No substitutions” | Bram is physically refused by the carriage. The foot crossing bypasses boarding, not the registry’s identity rules. The complete system remains unknown. |
-| Tomorrow-stamped fuse | The maintenance work sheet connects repeated passenger dates to distinct maintenance shifts. Still establish how supplies and workers move through that time. |
-| Orrin’s father | Optional sheet recognizes his handwriting, with a specific envelope callback. His whereabouts and relationship to Ada remain unknown. |
-| Ansel’s first answer | Disk B coda responds to `promisedHome` / `askedForTruth`. Preserve this answer in later chapters. |
-| Return-railway author | Ada remains private author knowledge. Reveal her through records and actions when earned. |
-| Cinderbank ambulance train | Next local problem: wounded passengers, no medical staff on the manifest, departure before dawn. Follow `disk-c-handoff.md`. |
+| Mira and Bram | Reunited and together at Larkspur. Keep the reunion intact. Mira remains outside the combat party. |
+| Rillbridge’s recovery | Thirty-one residents remain safe. Orchard flooding now produces flour credit and a winter debt; the dry orchard produces an apple-for-flour exchange. Preserve both outfall flags. |
+| Fourteen ambulance patients | Safely received at Bellwether with Dena and Ivo. Keep their staffed care and the chosen accommodation intact. |
+| The heat plan | Warm train / crowded receiving hall versus blanket journey / two heated wards. A future visit can repair the closed ward, with an actual resource and action. Do not silently undo the cost. |
+| Passenger registry | The carriage accepts an independently certified working crew without substituting passenger identities. This is a specific ambulance-service rule, not permission to add arbitrary travelers. |
+| Maintenance time | Shift counts continue across different passenger dates. Carbon copies go to Northglass signal works. The time system is still only partly understood. |
+| Orrin’s father | Prior handwriting knowledge remains conditional on `bWorksheetRead`; the wage envelope remains conditional on `scrapCleared`. His whereabouts remain unknown. |
+| Orrin’s letter | A bag sealed three maintenance shifts before his crew entry contains a letter addressed to him. Collect it at Northglass with the signed crew copy. Follow `disk-d-handoff.md`. |
+| A.F. | Optional Cinderbank book identifies these initials with the signal office. The full identity and authorship of the return service remain private author knowledge. |
+| Ansel’s first answer | Disk C responds to `promisedHome` / `askedForTruth`. Preserve the original answer. |
 
-Finish a local rescue before opening another destination. Earlier places must acknowledge changes that already happened.
+Resolve a local problem before opening another destination. Earlier places must acknowledge completed rescues, food obligations and hospital accommodation.

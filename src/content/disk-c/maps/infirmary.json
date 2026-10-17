@@ -1,0 +1,185 @@
+{
+  "compressionlevel": -1,
+  "width": 64,
+  "height": 43,
+  "tilewidth": 24,
+  "tileheight": 24,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "layers": [
+    {
+      "id": 1,
+      "name": "Native scenery",
+      "type": "imagelayer",
+      "image": "../../../../public/art/infirmary.webp",
+      "imagewidth": 1536,
+      "imageheight": 1024,
+      "x": 0,
+      "y": 0,
+      "opacity": 1,
+      "visible": true
+    },
+    {
+      "id": 2,
+      "name": "Collision",
+      "type": "objectgroup",
+      "objects": [
+        {
+          "id": 1,
+          "name": "solid",
+          "x": 0,
+          "y": 0,
+          "width": 1536,
+          "height": 144
+        },
+        {
+          "id": 2,
+          "name": "solid",
+          "x": 0,
+          "y": 144,
+          "width": 672,
+          "height": 144
+        },
+        {
+          "id": 3,
+          "name": "solid",
+          "x": 888,
+          "y": 144,
+          "width": 648,
+          "height": 144
+        },
+        {
+          "id": 4,
+          "name": "solid",
+          "x": 0,
+          "y": 288,
+          "width": 240,
+          "height": 72
+        },
+        {
+          "id": 5,
+          "name": "solid",
+          "x": 264,
+          "y": 288,
+          "width": 360,
+          "height": 48
+        },
+        {
+          "id": 6,
+          "name": "solid",
+          "x": 936,
+          "y": 288,
+          "width": 600,
+          "height": 48
+        },
+        {
+          "id": 7,
+          "name": "solid",
+          "x": 0,
+          "y": 456,
+          "width": 96,
+          "height": 168
+        },
+        {
+          "id": 8,
+          "name": "solid",
+          "x": 96,
+          "y": 504,
+          "width": 192,
+          "height": 72
+        },
+        {
+          "id": 9,
+          "name": "solid",
+          "x": 288,
+          "y": 576,
+          "width": 120,
+          "height": 48
+        },
+        {
+          "id": 10,
+          "name": "solid",
+          "x": 408,
+          "y": 624,
+          "width": 96,
+          "height": 48
+        },
+        {
+          "id": 11,
+          "name": "solid",
+          "x": 936,
+          "y": 624,
+          "width": 96,
+          "height": 192
+        },
+        {
+          "id": 12,
+          "name": "solid",
+          "x": 1032,
+          "y": 552,
+          "width": 120,
+          "height": 312
+        },
+        {
+          "id": 13,
+          "name": "solid",
+          "x": 1152,
+          "y": 504,
+          "width": 168,
+          "height": 408
+        },
+        {
+          "id": 14,
+          "name": "solid",
+          "x": 1320,
+          "y": 432,
+          "width": 216,
+          "height": 504
+        },
+        {
+          "id": 15,
+          "name": "solid",
+          "x": 0,
+          "y": 744,
+          "width": 168,
+          "height": 264
+        },
+        {
+          "id": 16,
+          "name": "solid",
+          "x": 168,
+          "y": 816,
+          "width": 144,
+          "height": 192
+        },
+        {
+          "id": 17,
+          "name": "solid",
+          "x": 312,
+          "y": 912,
+          "width": 144,
+          "height": 96
+        },
+        {
+          "id": 18,
+          "name": "solid",
+          "x": 600,
+          "y": 336,
+          "width": 48,
+          "height": 72
+        },
+        {
+          "id": 19,
+          "name": "solid",
+          "x": 912,
+          "y": 336,
+          "width": 48,
+          "height": 72
+        }
+      ]
+    }
+  ]
+}

@@ -24,7 +24,23 @@ This is the authored story source of truth. Update it after every chapter. Dialo
 - Defeating the sluice keeper lets Orrin lower the maintenance crossing. All **thirty-one residents** cross on foot or on carts before the lower quay floods, arriving through Larkspur’s goods yard without boarding the passenger service. Mira remains a narrative companion, never a combatant.
 - Ansel and Iona arrange beds and blankets. His first exchange responds to Nell’s Disk A answer. Tilda acknowledges the orchard outcome. The residents remain after Larkspur’s clock passes midnight; Mira and Bram stay together there.
 - An optional work sheet has Orrin’s father’s handwriting and records maintenance shifts a week apart between passenger services both dated 14 October. It repeats his instruction to keep the foot crossing unlocked. The envelope discovery changes Orrin’s recognition line, but is not required to inspect the sheet.
-- A new dispatch names Cinderbank siding: two carriages of wounded soldiers, no medical staff listed, departure before dawn. Nell and Orrin keep the dispatch. Mira stays with Bram. This is the Disk C hook, not an implemented destination.
+- A new dispatch names Cinderbank siding: two carriages of wounded soldiers, no medical staff listed, departure before dawn. Nell and Orrin keep the dispatch. Mira stays with Bram. This is the incoming Disk C dispatch.
+
+## Disk C: The Last Ambulance Train
+
+- The actual version-2 departure continues at **Cinderbank, 2 December, 04:10**. The train is ordered out before dawn for **Bellwether infirmary**, six miles west. Fourteen wounded soldiers occupy two carriages. Orrin pins the frozen brake hose; departure advances only after the player approves it, with no real-time countdown.
+- Before leaving Larkspur, Iona lends blankets. If the orchard flooded, Ansel approves Tilda’s flour credit. If the orchard stayed dry, Tilda and Bram bring stored apples across to pay for flour. Mira remains with Bram; Elspeth’s rescue is not undone.
+- **Dena**, the ambulance attendant, and **Ivo**, her orderly, are already tending the patients. Nell brings their covered kettle, allowing both of Ivo’s hands to stay on the stretchers.
+- The carriage accepts a patient’s stretcher but refuses Dena and her bag: fourteen passengers, zero attendants. A footpath cannot move patients six miles over ballast. The maintenance crossing from Disk B is not a universal escape.
+- Working-train instructions provide a separate crew register without changing passenger names. Release requires a receiving bed count, an approved heat plan, and a brake/boiler test, signed at both ends. Railway workers can use the stores handcar between the two yards.
+- **Celia**, Bellwether’s receiving officer, initially expects eight patients. Nell counts six additional folding cots and obtains her signature for fourteen places.
+- One sound steam coupling remains on Cinderbank’s supply cart. Recovering it requires a battle through narrow cover lanes. The coupling can heat the carriages or repair Bellwether’s north ward; it cannot do both.
+- `cTrainHeat`: warm carriages, all fourteen patients share the receiving hall beside its independent stove; the north ward remains closed tonight. The repair arena has ten vent hexes in two outer lanes. `cWardHeat`: blankets and hot-water bottles for the staffed journey, seven patients in each of two warm wards; five central vent hexes. Both outcomes safely receive everyone.
+- Stopping the boiler keeper lets Orrin close the relief gear, thaw the brake hose and sign the test. Vents discharge at the end of each combat round for six HP, affecting every ground unit. Flying crows are above the discharge.
+- The accepted crew are Dena (attendant), Ivo (orderly), Nell (porter) and Orrin (mechanic). No passenger name is removed or substituted. At **05:20**, all fourteen patients arrive at Bellwether with all four crew. Ivo and Celia check the original names against the occupied beds and sign a receiving receipt.
+- Ansel files that receipt at Larkspur. Tilda’s credit or apple exchange supplies breakfast and the following week. Mira and Bram remain together. Bellwether’s patients remain under Dena and Celia’s care. Empty carriages have returned to Cinderbank on the stores run.
+- An optional delivery book has **A.F., signal office**, and says crew-entry carbon copies go to **Northglass signal works**. No character learns Ada’s full name or knows she wrote the return timetable. If `bWorksheetRead`, Orrin recognizes the continuing maintenance count; otherwise he observes the count without attributing it to his father.
+- The final collection slip names **Orrin, care of Larkspur repairs**, for a registered letter held at Northglass. The sender is blank and the bag was sealed three maintenance shifts before today’s crew entry. Nell retains their signed crew copy. This is the Disk D hook, not an implemented destination.
 
 ## Private author foundation
 

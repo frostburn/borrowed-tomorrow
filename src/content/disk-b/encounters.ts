@@ -9,7 +9,7 @@ export const DISK_B_ENCOUNTERS:Record<string,Encounter>={
     rocks:[[4,0],[4,1],[4,5],[4,6],[7,3]],shallow:[[3,2],[3,3],[3,4],[5,2],[5,3],[5,4]],
     victory:'Orrin cuts the chain, fits the brake shoes, and brings the trolley down to the schoolhouse.'},
   'b-keeper':{id:'b-keeper',name:'The sluice keeper',flag:'bKeeperStopped',xp:85,coins:48,terrain:'sluice',journal:'b-crossing',
-    enemies:[{kind:'guardian',name:'Sluice keeper',col:8,row:3,hp:108,bonus:0},{kind:'hound',col:6,row:2,hp:39,bonus:1},{kind:'hound',col:7,row:4,hp:39,bonus:1},{kind:'crow',col:9,row:0,hp:29,bonus:2}],
+    enemies:[{kind:'guardian',name:'Sluice keeper',appearance:'sluice-keeper',col:8,row:3,hp:108,bonus:0},{kind:'hound',col:6,row:2,hp:39,bonus:1},{kind:'hound',col:7,row:4,hp:39,bonus:1},{kind:'crow',col:9,row:0,hp:29,bonus:2}],
     rocks:[[5,0],[5,1],[5,2],[5,4],[5,5],[5,6],[8,5]],shallow:[[3,1],[3,2],[3,3],[3,4],[3,5],[4,2],[4,3],[4,4],[5,3],[6,2],[6,3],[6,4],[7,3]],
     victory:'The keeper’s control rods go slack. Orrin lowers the maintenance crossing and pins the outfall wheel. Go back for the residents.'},
 };
