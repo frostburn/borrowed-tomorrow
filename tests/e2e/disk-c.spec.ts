@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import departure from '../fixtures/disk-b-v2.json' with {type:'json'};
 import { decodeSave, enterDiskC } from '../../src/rules/state';
 import { active } from '../../src/rules/combat';
-import { inspect, clickHex, dialogue, capture, battle } from './controls';
+import { inspect, clickHex, dialogue, capture, battle, nativeScene } from './controls';
 import { importSave, approach, visit, travel } from './navigation';
 
 test('the supplied Disk B save plays through the staffed ambulance rescue and reaches Disk D',async({page})=>{
@@ -21,9 +21,9 @@ test('the supplied Disk B save plays through the staffed ambulance rescue and re
   expect(entered.version).toBe(3);expect(entered.chapter).toBe('disk-c');expect(entered.party).toEqual(departure.party);
   for(const property of ['coins','bandages','xp','gear'] as const)expect(entered[property]).toEqual(departure[property]);
   expect(entered.flags.bOrchardChannel).toBe(true);expect(entered.flags.bWorksheetRead).toBe(true);
-  expect(entered.journal).toContain('c-flour-credit');await capture(page,'disk-c-cinderbank-arrival');
+  expect(entered.journal).toContain('c-flour-credit');await nativeScene(page,'cinderbank');await capture(page,'disk-c-cinderbank-arrival');
   await visit(page,'c-water');await visit(page,'c-carriage');await visit(page,'c-dispatch');await visit(page,'c-workbook');
-  await travel(page,'c-to-infirmary','infirmary');await capture(page,'disk-c-bellwether');
+  await travel(page,'c-to-infirmary','infirmary');await nativeScene(page,'infirmary');await capture(page,'disk-c-bellwether');
   await visit(page,'c-celia');await visit(page,'c-beds');
   await travel(page,'c-to-siding','cinderbank');await approach(page,'c-couplings');await dialogue(page);await battle(page,'disk-c-supply-lanes');
   await approach(page,'c-valve');

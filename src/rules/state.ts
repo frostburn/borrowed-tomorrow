@@ -62,8 +62,8 @@ export function decodeSave(text: string): GameState {
   if (s.chapter==='disk-a'&&(bMap||cMap||(s.boundary!==null&&s.boundary!=='disk-b:rillbridge-arrival'))) throw new Error('The chapter does not match this location.');
   if (s.chapter==='disk-b'&&(!flags.diskAComplete||!flags.diskBStarted||!flags.orrinJoined||cMap||(s.boundary!==null&&s.boundary!=='disk-c:ambulance-siding'))) throw new Error('The Disk B arrival is incomplete.');
   if (s.boundary==='disk-c:ambulance-siding'&&(!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived)) throw new Error('The Disk C departure is incomplete.');
-  if (s.chapter==='disk-c'&&(!flags.diskBComplete||!flags.diskCStarted||!flags.orrinJoined||(s.boundary!==null&&s.boundary!=='disk-d:signal-works'))) throw new Error('The Disk C arrival is incomplete.');
-  if (s.boundary==='disk-d:signal-works'&&(s.chapter!=='disk-c'||!flags.diskCComplete||!flags.cTransferred||!flags.cLarkspurReported)) throw new Error('The Disk D departure is incomplete.');
+  if (s.chapter==='disk-c'&&(!flags.diskAComplete||!flags.diskBStarted||!flags.diskBComplete||!flags.bEvacuated||!flags.bLarkspurReceived||!flags.diskCStarted||!flags.orrinJoined||(s.boundary!==null&&s.boundary!=='disk-d:signal-works'))) throw new Error('The Disk C arrival is incomplete.');
+  if (s.boundary==='disk-d:signal-works'&&(s.chapter!=='disk-c'||!flags.diskCComplete||!flags.cTransferred||!flags.cReceiptSigned||!flags.cLarkspurReported)) throw new Error('The Disk D departure is incomplete.');
   if (flags.bOrchardChannel&&flags.bMillraceChannel) throw new Error('The outfall choices conflict.');
   if (flags.cTrainHeat&&flags.cWardHeat) throw new Error('The heating choices conflict.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));

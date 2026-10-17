@@ -18,6 +18,28 @@ export async function dialogue(page: Page) {
 export async function talk(page: Page, x: number, y: number) { await clickWorld(page,x,y);await dialogue(page); }
 export async function capture(page: Page, name: string) { if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/${name}.png`}); }
 
+/** Compare an unobstructed native camera crop with the displayed framebuffer. */
+export async function nativeScene(page:Page,map:string){
+  await expect.poll(()=>page.evaluate(async(name)=>{
+    const image=new Image();image.src=`/art/${name}.webp`;await image.decode();
+    if(image.naturalWidth!==1536||image.naturalHeight!==1024)return -1;
+    const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const reference=document.createElement('canvas');reference.width=32;reference.height=64;
+    reference.getContext('2d')!.drawImage(image,view.scrollX+8,view.scrollY+16,32,64,0,0,32,64);
+    const expected=reference.getContext('2d')!.getImageData(0,0,32,64).data;
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+16)*info.physicalScale;
+    let missing=0;
+    for(let y=0;y<64;y++)for(let x=0;x<32;x++)for(let c=0;c<4;c++){
+      const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
+      if(actual[at]!==expected[(y*32+x)*4+c])missing++;
+    }
+    return missing;
+  },map),{timeout:15000}).toBe(0);
+}
+
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
   for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend'] as AbilityId[])

@@ -6,6 +6,8 @@ A browser JRPG about a train from a town lost forty years ago. Explore the railw
 
 **Disk B: A Town Expecting Rain** continues that arrival through Rillbridge and its upstream sluice: find Mira’s father, prove the flood danger, prepare an evacuation, and choose which outfall to open. Three battles introduce shallow water and a narrow crossing. The chapter resolves the rescue at Larkspur and records an **Insert Disk C** departure.
 
+**Disk C: The Last Ambulance Train** continues the supplied Disk B departure through Cinderbank and Bellwether infirmary. Secure fourteen beds, repair the ambulance service, register its attendants, and bring every patient to staffed care. Two battles add round-end steam vents; the heating decision changes the danger lanes and the hospital’s accommodation. The chapter ends at a saved **Insert Disk D** letter collection.
+
 ## Run
 
 Use Node 24 and npm:
@@ -30,13 +32,15 @@ npm run dev
 | Confirm battle plan | Confirmation button or Enter |
 | Defend / wait | F / W |
 
-Pointer input works for exploration and battles. Small screens also show a directional pad and battlefield pan buttons. Sound begins only when enabled with the Sound button. Disk A and Disk B each have a sixteen-bar theme with distinct location arrangements; combat actions and movement use material-specific effects.
+Pointer input works for exploration and battles. Small screens also show a directional pad and battlefield pan buttons. Sound begins only when enabled with the Sound button. Disks A and B have sixteen-bar themes with distinct location arrangements. Disk C adds an independent E-minor siding melody, a C-major infirmary melody, and a faster repair-battle arrangement; combat actions and movement use material-specific effects.
 
 ## Combat
 
 The battlefield is an 11 × 7 pointy-hex grid using axial coordinates. Each combatant is an individual character. Initiative orders turns; movement leaves one action available. Occupied hexes and rocks block walking. Rocks block ranged sight and steam rays. Nell's lantern hits a hex and its six neighbors; Orrin's steam lance hits a four-hex ray. **Both can hit allies.** Preview and resolution share the same geometry.
 
 In Disk B, shallow water costs two movement points per hex; dry ground costs one. Wave marks identify water. Flying crows ignore its extra cost. The preview and committed move use the same cheapest route. Opening the orchard channel drains the keeper’s arena and floods the fruit trees; the millrace spares the orchard and leaves the arena wet.
+
+In Disk C, orange vents discharge after the last turn of each round, dealing six HP to every ground unit standing on them. Crows fly above them. Heating the train opens two outer discharge lanes; heating Bellwether’s north ward opens the central lane. Move away, wait for a safer approach, and keep your ally out of a steam-lance line. Healing previews use **Confirm healing** for both Mend and Bandage.
 
 Melee triggers one retaliation per defender per round. Defend reduces incoming damage until the defender's next turn. Wait delays a turn to the end of the round and is only available before moving. Enemy AI evaluates reachable firing positions and the same AoE shapes as the player.
 
@@ -50,15 +54,15 @@ Narrow screens use a layout up to 384 × 768 with a cropped, scrolling camera an
 
 IndexedDB stores one autosave and three manual slots. Autosaves occur at story checkpoints and before encounters. Manual saves are available outside battles. The Save menu imports and exports versioned JSON files; use an export to move between browsers or keep a durable backup. A reload during combat restores the pre-battle checkpoint. Browser storage belongs to the site's origin.
 
-Version 2 imports original version-1 saves without resetting progress. At `disk-b:rillbridge-arrival`, choose **Begin Disk B**. The new art loads before the arrival is consumed. The Disk B ending records `disk-c:ambulance-siding`; returning to earlier areas preserves it. Disk C is a saved continuation point, not yet a playable chapter.
+Version 3 imports original version-1 and version-2 saves without resetting progress. At `disk-b:rillbridge-arrival`, choose **Begin Disk B**; at `disk-c:ambulance-siding`, choose **Begin Disk C**. Both destination maps load before an arrival is consumed, and a failed download leaves the pending save intact. Disk C records `disk-d:signal-works`; earlier areas remain visitable without consuming it.
 
 ## Project layout
 
 - `src/rules/`: framework-independent hex geometry, combat, and save schema.
-- `src/content/disk-a/` and `src/content/disk-b/`: chapter text, interactions, encounters, and Tiled maps.
+- `src/content/disk-a/`, `src/content/disk-b/`, and `src/content/disk-c/`: chapter text, interactions, encounters, and Tiled maps.
 - `.agents/skills/write-game-prose/`: repository-local writing guidance adapted from Stephen D. Turner’s MIT-licensed [deslop](https://github.com/stephenturner/skill-deslop).
 - `src/game/`: Phaser scene, pixel framebuffer, bitmap UI, procedural score/instruments, and IndexedDB storage.
-- `public/art/`: runtime scenery and transparent actor assets. The two Disk B maps are reconstructed from verified source chunks in `assets/maps/` automatically before dev/build.
+- `public/art/`: runtime scenery and transparent actor assets. The Disk B and C maps are reconstructed from verified source chunks in `assets/maps/` automatically before dev/build.
 - `docs/art-direction.md` and `docs/audio-direction.md`: the visual and musical rules for later disks.
 - `docs/story/`: canon, character knowledge, unresolved questions, and the exact next chapter handoff. **Contains spoilers.**
 
@@ -72,7 +76,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests play both disks through the actual controls, import the original version-1 arrival, recover from failed chapter downloads, verify both outfall choices and return exploration, and check fractional-DPR pixel scaling, native asset pixel/color preservation, and offline audio output.
+CI uses one Node version and one Chromium run. Rule tests cover hex geometry, friendly fire, cover, movement, retaliation, waiting, enemy actions, saves, and map reachability. Browser tests play all three disks through the actual controls, import the original version-1 arrival and the supplied version-2 departure, recover from failed chapter downloads, verify both outfall and heating choices, and preserve the next disk boundary on return visits. They also check both healing confirmations on a phone, fractional-DPR scaling, native asset pixels and colors, and all twelve music arrangements and eleven effects through the real Web Audio instruments.
 
 `window.borrowedTomorrow.inspect()` provides a read-only snapshot for diagnostics. It does not mutate progress or bypass battles. `window.borrowedTomorrowPixels.inspect()` exposes the framebuffer size, physical scale, and palette for display diagnostics.
 

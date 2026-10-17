@@ -84,7 +84,7 @@ export function interactDiskC(host:StoryHost,id:string){
         SAY('Dena','Celia can fit all fourteen beside the receiving-hall stove. It’ll be crowded. We can manage.'),
         SAY('Nell','Or send the coupling to her?','nell'),
         SAY('Dena','The north ward opens. We travel with the Larkspur blankets and fresh hot-water bottles. Ivo and I stay in the carriages. Either plan is safe if we both go.'),
-        SAY('Orrin','The keeper’s relief gear is stuck. The bypass changes which vent lanes discharge while we stop it. Orange hexes lose six HP at the end of each round. Keep clear before the last turn.','orrin'),
+        SAY('Orrin','The keeper’s relief gear is stuck. The bypass changes which vent lanes discharge while we stop it. Anyone on an orange hex loses six HP at round end. Keep clear before the last turn.','orrin'),
       ],choices:[
         {label:'Heat the train · one crowded receiving hall',action:()=>commit('cTrainHeat','c-train-heat')},
         {label:'Heat the north ward · travel under blankets',action:()=>commit('cWardHeat','c-ward-heat')},
@@ -100,7 +100,10 @@ export function interactDiskC(host:StoryHost,id:string){
     case 'c-to-larkspur':host.travel('station',31,10);break;
     case 'c-celia':
       if(f.cTransferred){say(SAY('Celia',f.cTrainHeat?'Fourteen men in the receiving hall. Dena has the window beds; I’ve put a screen round the stove.':'Seven men in each ward. Dena has enough room to get between the beds now.'));break;}
-      if(f.cBedsReserved){say(SAY('Celia','The beds are reserved. Take the signed copy back to Cinderbank. You can rest by our stove before you go.'));break;}
+      if(f.cBedsReserved){host.talk({lines:[SAY('Celia','The beds are reserved. Take the signed copy back to Cinderbank. You can rest by our stove before you go.')],choices:[
+        {label:'Rest by the stove · free',action:()=>{restoreParty(s);host.refresh();host.save();host.toast('Party HP and focus restored.');}},
+        {label:'Back to the receiving yard',action:()=>host.update()},
+      ]});break;}
       host.talk({lines:[
         SAY('Celia','Fourteen? I was told eight. Leave the list on the desk; I’ll find six more beds.'),
         SAY('Nell','They’re coming with two attendants. The register won’t admit the staff until you sign.','nell'),

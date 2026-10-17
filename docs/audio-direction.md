@@ -28,3 +28,14 @@ Effects have their own envelopes and materials: a strike combines a low impact w
 No external samples or audio downloads are required. Sound starts only after the player enables it. Browser regression tests render the real instruments with `OfflineAudioContext`, checking non-silent output, distinct arrangements and effects, and headroom. The tests verify output numerically; subjective listening and composition can continue to evolve with future disks.
 
 Rillbridge uses an A–A′–B–return form with explicit G-minor, E-flat, C-minor, B-flat and D-major cadences. Sustained melody downbeats belong to the current chord; passing notes are brief. Its accompaniment stays below the lead, and each location change restarts the score at its first phrase. String replies in the other Disk B arrangements use the actual chord third.
+
+
+Disk C adds two independent melodies in `score-c.ts`; neither is a transposition of the earlier disks. Cinderbank uses a repeated E-minor call and answering descent, a contrasting bridge, and a B-major-to-E-minor cadence. Bellwether uses a slower C-major piano melody with its own rhythm and F–G–C resolution. Close accompaniment stays below the lead, passing notes are short, and phrase endings leave space.
+
+| Scene | Tempo | Arrangement |
+| --- | --- | --- |
+| Cinderbank | 84 BPM | E-minor reed melody, restrained keys, steady bass, sparse bell replies |
+| Bellwether infirmary | 66 BPM | Independent C-major piano melody, low broken support, quiet sustained strings, occasional bell responses |
+| Cinderbank repairs | 118 BPM | Siding motif with moving bass, short key figures and a restrained drum pulse |
+
+Location changes restart at the first phrase while preserving existing decay tails. Returning to an area restores its own theme; a world refresh in the same area does not restart it. Unit checks verify distinct melodic content, chord-supported downbeats, monophonic phrasing and full cadences. Browser checks render all sixteen bars of each new score and verify non-silence, distinct output and headroom.

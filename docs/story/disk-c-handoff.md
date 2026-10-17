@@ -1,4 +1,6 @@
-# Insert Disk C — The Last Ambulance Train
+# Disk C — The Last Ambulance Train
+
+Implemented in `src/content/disk-c/`. This document preserves its incoming contract. The next pending chapter is described in `disk-d-handoff.md`.
 
 ## Exact continuation
 
