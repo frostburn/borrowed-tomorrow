@@ -18,3 +18,7 @@ Workshop equipment persists under the local-storage key `borrowed-tomorrow:inven
 - `Adventure` supplies an isolated practice host around the existing renderer and controls. It skips campaign loading, autosaves and victory rewards. Delayed battle callbacks discard work belonging to an abandoned encounter.
 
 The workshop is the first step toward replacing auto-equip. Integrating loot, shops, character inventories and save migration into the story is a separate task.
+
+## Checks
+
+`npm run check` covers inventory conservation, compatibility, save validation and actual combat bonuses. `npm run test:e2e:smoke` exercises the workshop on desktop and phone alongside the campaign checks. After building, `npm run test:e2e:production` verifies that the development route and inventory catalog are absent from production. `npm run test:e2e:journeys` also completes an equipped practice battle and checks that it gives no campaign rewards.

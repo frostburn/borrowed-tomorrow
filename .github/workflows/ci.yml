@@ -28,6 +28,8 @@ jobs:
       - name: Browser smoke checks
         if: ${{ !inputs.full_journey }}
         run: npm run test:e2e:smoke
+      - name: Production excludes development inventory
+        run: npm run test:e2e:production
       - name: Complete adventure and audio checks
         if: ${{ inputs.full_journey }}
         run: npm run test:e2e

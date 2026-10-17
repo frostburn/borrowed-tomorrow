@@ -297,7 +297,7 @@ export class Adventure extends Phaser.Scene {
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     if (this.ui.dialogueOpen && ['Enter',' ','e','E'].includes(e.key)) { e.preventDefault(); this.ui.advanceDialogue(); return; }
     if (this.blocked || this.busy || e.repeat) return;
-    if (e.key.toLowerCase()==='j') { this.journal(); return; }
+    if (e.key.toLowerCase()==='j') { if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.();else this.journal(); return; }
     if (this.mode==='world' && ['e','E','Enter',' '].includes(e.key)) { const near=this.closestObject(); if(near)this.interact(near); }
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
       const u=active(this.battle!)!;
@@ -352,7 +352,7 @@ export class Adventure extends Phaser.Scene {
     this.mode='title';this.battle=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
   }
   private enterBattle(id: string) {
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
@@ -457,7 +457,7 @@ export class Adventure extends Phaser.Scene {
     this.busy=true;this.drawBattle();this.renderBattleControls();
     for(const u of this.battle!.units){const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
       if(!equal(old.hex,u.hex)){const from=toPixel(old.hex),to=toPixel(u.hex);image.setPosition(from.x,from.y+9);this.tweens.add({targets:image,x:to.x,y:to.y+9,duration:280,ease:'Sine.easeInOut'});}
-      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
+      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
     }
     this.time.delayedCall(380,()=>{if(this.battle!==battle||this.mode!=='battle')return;this.busy=false;if(this.battle?.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}});
   }

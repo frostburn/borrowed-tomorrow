@@ -28,6 +28,12 @@ it('serializes copies and loadouts, rejecting malformed or incompatible equipmen
   for (const text of ['null', '{}', JSON.stringify({ ...inventory, bag: { 'unknown': 1 } }), JSON.stringify({ ...inventory, bag: { 'work-coat': -1 } })]) expect(() => decodeInventory(text)).toThrow();
   inventory.characters.orrin.fitting = 'brass-reflector'; expect(() => decodeInventory(JSON.stringify(inventory))).toThrow();
 });
+it('keeps space to unequip items at the copy limit', () => {
+  const inventory = newInventory(); receiveItem(inventory, 'brass-reflector', 99); equipItem(inventory, 'nell', 'brass-reflector');
+  expect(receiveItem(inventory, 'brass-reflector')).toBe(false);
+  expect(unequipItem(inventory, 'nell', 'fitting')).toBe(true);
+  expect(inventory.bag['brass-reflector']).toBe(99);
+});
 it('equipped gear changes actual combat damage, armor and initiative only for its wearer', () => {
   const inventory = newInventory(), state = newGame(); recruitOrrin(state);
   // Old campaign gear must not leak into an explicit loadout.

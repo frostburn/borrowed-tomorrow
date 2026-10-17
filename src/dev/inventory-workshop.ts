@@ -3,7 +3,7 @@ import { mountGame } from '../game/mount';
 import { art, type UI } from '../game/ui';
 import { ABILITIES, createBattle, type Unit } from '../rules/combat';
 import { newGame, recruitOrrin, type HeroId } from '../rules/state';
-import { ITEMS, SLOTS, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
+import { ITEMS, SLOTS, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, ownedCopies, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
 import './inventory-workshop.css';
 
 const STORAGE = 'borrowed-tomorrow:inventory-workshop:v1';
@@ -44,6 +44,7 @@ class InventoryWorkshop {
     return createBattle('workshop', practiceState(), equipmentBonuses(inventory)).units.filter(u => u.side === 'party');
   }
   show() {
+    const scroll = this.ui.sceneLayer.querySelector('.inventory-panel')?.scrollTop ?? 0;
     this.scene.closePreview();
     document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled = false;
@@ -69,16 +70,17 @@ class InventoryWorkshop {
         <div class="inv-current-stats">${stats.map(([label, value]) => `<div><small>${label}</small><p>${value(current)}</p></div>`).join('')}</div>
         <h3>Equipped</h3>${SLOTS.map(slot => `<div class="inv-slot"><small>${slot === 'fitting' ? 'Tool fitting' : 'Coat'}</small><p>${equipped[slot] ? esc(ITEMS[equipped[slot]!].name) : 'None'}</p><button data-unequip="${slot}" ${!equipped[slot] ? 'disabled' : ''}>Unequip ${slot === 'fitting' ? 'fitting' : 'coat'}</button></div>`).join('')}
       </section><section class="inv-bag" aria-label="Shared bag"><h2>Shared bag</h2><div class="inv-items">${items}</div><p class="inv-note">An item stays in the bag until you equip it.</p></section>
-      <section class="inv-details" aria-label="Item details"><small>${selected.slot === 'fitting' ? 'Tool fitting' : 'Coat'} · ${selected.heroes.map(h => names[h]).join(' / ')}</small><h2>${esc(selected.name)}</h2><p>${esc(selected.description)}</p><div class="inv-comparison" aria-label="Stat comparison">${comparison}</div><div id="inv-equip"></div><p class="inv-note">${!canEquip(hero, this.selected) ? `${names[hero]} cannot use this fitting.` : equipped[selected.slot] === this.selected ? 'Already equipped.' : !(this.inventory.bag[this.selected] ?? 0) ? 'No spare copy. Unequip it from its wearer first.' : `Replaces ${equipped[selected.slot] ? esc(ITEMS[equipped[selected.slot]!].name) : 'the empty slot'}.`}</p><div id="inv-receive"></div></section></div>
+      <section class="inv-details" aria-label="Item details"><small>${selected.slot === 'fitting' ? 'Tool fitting' : 'Coat'} · ${selected.heroes.map(h => names[h]).join(' / ')}</small><h2>${esc(selected.name)}</h2><p>${esc(selected.description)}</p><div class="inv-comparison" aria-label="Stat comparison">${comparison}</div><div id="inv-equip"></div><p class="inv-note">${!canEquip(hero, this.selected) ? `${names[hero]} cannot use this fitting.` : equipped[selected.slot] === this.selected ? 'Already equipped.' : !(this.inventory.bag[this.selected] ?? 0) ? 'No spare copy. Unequip it from its wearer first.' : equipped[selected.slot] ? `Replaces ${esc(ITEMS[equipped[selected.slot]!].name)}.` : ''}</p><div id="inv-receive"></div></section></div>
       <div class="inv-footer"><div id="inv-tools"></div><p role="status">${esc(this.message)}</p></div>
     </section>`;
-    for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-hero]')) button.onclick = () => { this.hero = button.dataset.hero as HeroId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-hero="${this.hero}"]`)!.focus(); };
-    for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-item]')) button.onclick = () => { this.selected = button.dataset.item as ItemId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-item="${this.selected}"]`)!.focus(); };
+    for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-hero]')) button.onclick = () => { this.hero = button.dataset.hero as HeroId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-hero="${this.hero}"]`)!.focus({preventScroll:true}); };
+    for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-item]')) button.onclick = () => { this.selected = button.dataset.item as ItemId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-item="${this.selected}"]`)!.focus({preventScroll:true}); };
     for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-unequip]')) button.onclick = () => { if (unequipItem(this.inventory, hero, button.dataset.unequip as typeof SLOTS[number])) this.save('Equipment returned to the bag.'); };
     this.ui.actionRow(this.ui.sceneLayer.querySelector('#inv-equip')!, [{ label: `Equip on ${names[hero]}`, disabled: !changed, action: () => { if (equipItem(this.inventory, hero, this.selected)) this.save(`${selected.name} equipped on ${names[hero]}.`); } }]);
-    this.ui.actionRow(this.ui.sceneLayer.querySelector('#inv-receive')!, [{ label: 'Receive one copy', disabled: (this.inventory.bag[this.selected] ?? 0) >= 99, action: () => { if (receiveItem(this.inventory, this.selected)) this.save(`${selected.name} added to the bag.`); } }]);
+    this.ui.actionRow(this.ui.sceneLayer.querySelector('#inv-receive')!, [{ label: 'Receive one copy', disabled: ownedCopies(this.inventory, this.selected) >= 99, action: () => { if (receiveItem(this.inventory, this.selected)) this.save(`${selected.name} added to the bag.`); } }]);
     this.ui.actionRow(this.ui.sceneLayer.querySelector('#inv-tools')!, [{ label: 'Reset workshop', action: () => { this.inventory = stock(); this.save('Workshop reset. All equipment is in the bag.'); } }, { label: 'Return to story', action: () => { const url = new URL(location.href); url.searchParams.delete('dev'); location.assign(url); } }]);
     this.ui.status.textContent = 'Vite development · Workshop inventory saved separately';
+    this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   battle() {
     document.querySelector('.game-shell')!.classList.remove('inventory-open');
