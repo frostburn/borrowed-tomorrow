@@ -115,7 +115,7 @@ export async function battle(page: Page, screenshot?: string, practice=false) {
     const u=active(b)!;
     if(u.side!=='party'){await page.waitForTimeout(250);continue;}
     const decision=playerPlan(b);
-    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${ABILITIES[decision.action].name}$`);
+    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${ABILITIES[decision.action].name}${ABILITIES[decision.action].bonus?' · Extra':''}$`);
     const action=page.locator('.actions').getByRole('button',{name:label});
     await expect(action).toBeEnabled();await action.click();
     if(decision.hex && decision.action!=='defend'){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:ABILITIES[decision.action].heal?/^Confirm healing$/:ABILITIES[decision.action].effect && ABILITIES[decision.action].effect!=='push'?/^Confirm ability$/:/^Confirm attack$/}).click();}

@@ -12,6 +12,6 @@ test('production ignores both workshop routes and omits its controls, progressio
   }
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
-  for (const devOnly of ['Receive one copy', 'Heavy work coat', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1']) expect(built).not.toContain(devOnly);
+  for (const devOnly of ['Receive one copy', 'Heavy work coat', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Courier sight', 'Medic clasp', 'Balanced saber hilt', 'Knows the coast routes by heart', '.workshop-party']) expect(built).not.toContain(devOnly);
   expect(errors).toEqual([]);
 });
