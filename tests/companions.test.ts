@@ -5,9 +5,9 @@ import { offset, key } from '../src/rules/hex';
 import { decodeInventory, equipmentBonuses, equipItem, newInventory, receiveItem } from '../src/rules/inventory';
 import { newGame, recruitOrrin } from '../src/rules/state';
 
-function trio() {
+function trio(level = 5) {
   const settings = newCharacterSettings(); settings.party = ['esme', 'celia', 'petra'];
-  for(const id of settings.party)settings.characters[id]=defaultBuild(id,5);
+  for(const id of settings.party)settings.characters[id]=defaultBuild(id,level);
   settings.characters.celia.speed=30;
   const b=createBattle('workshop',newGame(),equipmentBonuses(newInventory()),characterProfiles(settings),settings.party);
   b.obstacles.clear();
@@ -53,12 +53,18 @@ it('creates any selected trio on separate spawn hexes and rejects invalid partie
   for(const party of [[],['nell','nell'],[...COMPANION_IDS]])expect(()=>createBattle('workshop',newGame(),gear,profiles,party as typeof s.party)).toThrow();
   const campaign=newGame();recruitOrrin(campaign);expect(createBattle('workshop',campaign).units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(['nell','orrin']);
 });
-it('gives the future companions different level unlocks',()=>{
-  const s=newCharacterSettings();for(const id of COMPANION_IDS)s.characters[id]=defaultBuild(id,5);
-  const p=characterProfiles(s);
-  expect(p.esme.abilities).toEqual(['strike','quickshot','bandage','bolt','feint','volley']);
-  expect(p.celia.abilities).toEqual(['strike','mend','bandage','rally','beacon','sanctuary']);
-  expect(p.petra.abilities).toEqual(['strike','bash','bandage','cover','sweep','crush']);
+it('makes each companion’s level-five skill usable only after its level unlock',()=>{
+  for(const [hero,ability] of [['esme','volley'],['celia','sanctuary'],['petra','crush']] as const){
+    for(const level of [1,5]){
+      const {b,enemy}=trio(level),u=b.units.find(u=>u.id===hero)!;
+      b.queue=[u.id,...b.queue.filter(id=>id!==u.id)];u.hex=offset(4,3);enemy.hex=offset(5,3);
+      const aim=ability==='sanctuary'?u.hex:enemy.hex,focus=u.focus,hp=enemy.hp;
+      expect(cast(b,u,ability,aim)).toBe(level===5);
+      if(level===1){expect(u.focus).toBe(focus);expect(enemy.hp).toBe(hp);}
+      else if(ability==='sanctuary')expect(u.guard).toBe(8);
+      else expect(enemy.hp).toBeLessThan(hp);
+    }
+  }
 });
 it('Rally restores the previewed focus, pays its cost and refuses self, enemies or full focus',()=>{
   const {b,celia,esme,enemy,petra}=trio();b.queue=[celia.id,petra.id,esme.id,enemy.id];esme.focus=5;
