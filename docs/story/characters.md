@@ -13,3 +13,16 @@
 | The Benefactor | Worshipped as the empire's patron; its actual nature belongs to the later author plan. | Makes no direct appearance and never speaks in Chapter One. The crystal's powers and origin remain uncertain. |
 
 Tomas and Alban have new matching portraits and actors. Ansel and Iona retain the original `master` and `clerk` art; these identities are not reused. Nell and Orrin retain their existing directional movement frames. Tilda and Elspeth retain their own matching art. Unseen speakers and narration have no portrait.
+
+
+## Planned companions — workshop preview
+
+These three companions are available in the Vite workshop so their combat roles can be tested. Their recruitment and relationship scenes belong to later chapters; none has joined the playable Chapter One party. Their original unused asset pairs are now assigned to these reboot identities. The traveling cast may grow, but the active combat party has at most three members; reserves keep their own builds and equipment.
+
+| Companion | Introduction and recruitment plan | Personality and relationships | Combat role |
+| --- | --- | --- | --- |
+| Esme | A resistance courier at the Iron Coast exchange. Joins in Chapter Two while guiding the prison-train raid. Her own priority is getting the prisoners and their families onto a safe route. | Seventeen, Nell’s peer. Braided hair, brass goggles and a navy courier’s coat. Quick with routes and improvised solutions; shy when Nell notices something she did for her. Their mutual first crush grows through small acts: keeping a seat, sharing a packed lunch, remembering a promise. Both initiate affection; neither becomes a reward for finishing a quest. | Fast skirmisher with a repeating crossbow. Quick shot, armor-piercing bolts, a distracting feint and a volley. |
+| Celia | A physician educated in the Benefactor’s hospitals. Joins the Chapter Two rescue because injured prisoners need care and the official hospitals refuse them. | Older, precise, patient with frightened people and impatient with preventable harm. Her medical knowledge and concern for patients survive her loss of faith in the institution. She does not know the full divine bargain on recruitment. | Healing and support: Mend, focus restoration, Beacon and an area barrier. |
+| Petra | An imperial knight pursuing the fragment in Chapter Two. Helps the escape after witnessing the army abandon a settlement; becomes a permanent companion in Chapter Three after refusing an order to hand the escapees back. | Disciplined, observant, slow to make excuses for herself. Her change of allegiance requires action and a cost; one conversation does not settle her loyalties. Her former commander remains a later opponent. | Armored vanguard. Shield bash pushes enemies, Cover protects an ally, Saber sweep clears adjacent hexes, and Crushing blow pierces armor. |
+
+Keep Nell and Esme’s early affection light and a little awkward. Give them practical reasons to spend time together and room to make each other laugh. The pursuit of Tomas still matters; Esme has obligations and choices of her own. Carry the relationship through the rescue, separation and reunion rather than declaring it complete at recruitment. The final ordinary train ride can include Esme saving Nell a seat beside the window.

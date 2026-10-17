@@ -1,5 +1,4 @@
 import { CHARACTERS } from '../content/characters';
-import type { HeroId } from './state';
 import type { AbilityId } from './combat';
 import { MAX_PARTY_SIZE, validParty } from './party';
 
@@ -46,7 +45,7 @@ export function characterProfiles(settings: CharacterSettings): Record<Companion
 export function decodeCharacterSettings(text: string): CharacterSettings {
   const raw = JSON.parse(text), settings = newCharacterSettings();
   if (!raw || ![1, 2].includes(raw.version) || !raw.characters) throw new Error('Invalid character settings.');
-  const ids: readonly CompanionId[] = raw.version === 1 ? ['nell', 'orrin'] satisfies HeroId[] : COMPANION_IDS;
+  const ids: readonly CompanionId[] = raw.version === 1 ? ['nell', 'orrin'] : COMPANION_IDS;
   for (const hero of ids) {
     const build = raw.characters[hero];
     if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > 10) throw new Error('Invalid character level.');

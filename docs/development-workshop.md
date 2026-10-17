@@ -2,7 +2,19 @@
 
 Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` keep the campaign; neither query parameter enables the workshop there.
 
-Choose Nell or Orrin, then **Character** or **Equipment**. Each character has an independent level, build and loadout. The portrait column shows effective stats, including equipped bonuses.
+Choose Nell, Orrin, Esme, Celia or Petra, then **Character** or **Equipment**. Each character has an independent level, build and loadout. **Add to party** and **Remove from party** edit the practice lineup: at least one and at most three companions may fight. Selecting a portrait edits that character without changing party membership. Reserves keep their builds and equipment; reloading preserves the selected lineup. The portrait column shows effective stats, including equipped bonuses.
+
+## Future companions
+
+The workshop previews companions planned for later story chapters. Esme is a fast Iron Coast courier and Nell’s first crush; Celia is an older physician; Petra is an imperial knight whose defection develops across Chapters Two and Three. Recruitment and relationship plans live in `docs/story/characters.md`. Their matching 80 × 80 actors and 128 × 128 portraits come from the unused art library.
+
+| Companion | Default HP / Attack / Armor / Speed / Move | Level 1 | Level 2 | Level 3 | Level 5 |
+| --- | --- | --- | --- | --- | --- |
+| Esme | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
+| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Mend, Bandage | Rally | Beacon | Sanctuary |
+| Petra | 62 / 14 / 1 / 4 / 2 | Strike, Shield bash, Bandage | Cover | Saber sweep | Crushing blow |
+
+Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash uses the existing clear-hex push rules. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
 
 ## Levels and base stats
 
@@ -23,25 +35,25 @@ The Abilities panel shows every unlock and whether it is known. Lowering level r
 
 ## Equipment
 
-Select an item in the shared bag, compare Attack / Armor / Speed, then equip it. Each character has a tool-fitting slot and a coat slot. Their basic lantern and lance remain part of the character. The brass reflector fits Nell's lantern; the pressure nozzle fits Orrin's lance. Coats fit either character, but each copy protects only its wearer. The heavy coat trades speed for protection.
+Select an item in the shared bag, compare Attack / Armor / Speed, then equip it. Each character has a tool-fitting slot and a coat slot. Their basic tools remain part of the character. The brass reflector fits Nell's lantern; the pressure nozzle fits Orrin's lance. Coats fit all five characters, but each copy protects only its wearer. The heavy coat trades speed for protection.
 
-Receiving equipment adds copies to the bag without equipping them. Equipping consumes one spare copy and returns the old item to the bag. Unequip a shared item before giving that copy to the other character. The initial stock includes two reinforced coats, one heavy coat and one of each fitting.
+Receiving equipment adds copies to the bag without equipping them. Equipping consumes one spare copy and returns the old item to the bag. Unequip a shared item before giving that copy to the other character. The initial stock includes one heavy coat and one of each fitting. New workshops have three reinforced coats, enough for a full party. Existing inventory is preserved during migration.
 
 ## Practice and persistence
 
-**Test battle** runs the existing hex engine with both builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
+**Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
-Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both validate stored data before use. **Reset workshop** restores both characters to level 1 and returns the equipment stock to the bag. Campaign IndexedDB saves and their version-5 data are unchanged.
+Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both use version-2 records under their existing keys, migrate version-1 two-character records without losing edits or equipment, and validate stored data before use. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign IndexedDB saves and their version-5 data are unchanged.
 
 ## Implementation boundary
 
 - `src/rules/characters.ts` owns level defaults, stat ranges, learned abilities and validated character settings. Abilities are derived from level rather than trusted from storage.
 - `src/rules/inventory.ts` owns item definitions, spare-copy counts, character loadouts, validation and manual equip/unequip rules.
-- `createBattle` accepts optional equipment bonuses and character profiles. Without these arguments, it retains the campaign's current gear, stats and fixed abilities. Both imports are type-only, so the prototype progression table and item catalog are not in production bundles.
+- `createBattle` accepts optional equipment bonuses, character profiles and an explicit party of one to three distinct companions. Three-person parties spawn on separate hexes. The chapter-one save schema stays limited to its two recruited characters. Without these arguments, it retains the campaign's current gear, stats and fixed abilities. Both imports are type-only, so the prototype progression table and item catalog are not in production bundles.
 - `src/dev/workshop.ts` is imported only behind `import.meta.env.DEV`. Its styles, controls and fixture stock are excluded from builds.
 - `Adventure` supplies an isolated practice host around the existing renderer and controls. It skips campaign loading, autosaves and victory rewards. Delayed battle callbacks discard work belonging to an abandoned encounter.
 
-Integrating character inventories, level progression, loot, shops and save migration into the story is a separate task.
+Integrating recruitment, reserves, character inventories, level progression, loot, shops and save migration into the story is a separate task.
 
 ## Checks
 

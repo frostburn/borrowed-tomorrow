@@ -42,17 +42,17 @@ At the mountain pass, Alban blocks pursuit. He has already sent Tomas east in an
 
 **Goal:** find Tomas before the next transfer. **Payoff:** free the prisoners and learn his destination.
 
-The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Recruit a healer educated in the Benefactor's religion. Introduce an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire's protection.
+The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Esme, a coast courier Nell’s own age, joins the raid to get the prisoners onto a safe route. She and Nell develop a shy mutual crush through shared travel, small favors and awkward attempts to impress each other. Recruit Celia, a physician educated in the Benefactor’s religion. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
 
 The raid succeeds: prisoners escape, the army loses the train and the party learns that Tomas was moved to the capital because he discovered how the crystal engines are paid for. Alban attempts to recapture the freed prisoners. The knight witnesses the army sacrifice a settlement to keep the capital supplied, then helps the escape. Give the knight an earned defection, not an instant change of uniform after one conversation.
 
-The party obtains a usable way into the capital. The emperor appears directly and the god's religion gains an uncomfortable second meaning. Answers establish that the stopped villages are collection, not accidental engine failures.
+Petra helps the escape but does not immediately join the party. Her permanent recruitment belongs to Chapter Three, when refusing to surrender the escapees makes her defection explicit. The party obtains a usable way into the capital. The emperor appears directly and the god's religion gains an uncomfortable second meaning. Answers establish that the stopped villages are collection, not accidental engine failures.
 
 ## Chapter Three — Beneath the Palace
 
 **Goal:** rescue Tomas and disable the extraction. **Payoff:** Tomas comes home alive. **Reversal:** the emperor merges with the conduit.
 
-Infiltrate the capital, interrupt an execution and fight through the palace. Tomas has been sabotaging the machinery from captivity; his work creates the opening the party uses. The rescue and reunion are substantial scenes, not a clue that sends Nell to another prison.
+Petra refuses an order to hand the escapees back and joins the party, accepting pursuit by her former comrades. Infiltrate the capital, interrupt an execution and fight through the palace. Tomas has been sabotaging the machinery from captivity; his work creates the opening the party uses. The rescue and reunion are substantial scenes, not a clue that sends Nell to another prison.
 
 The party disables the extraction machinery. The emperor makes a new decision in response: rather than surrender his miracles and face the Benefactor, he enters its restrained body. He becomes the conduit of its power. The capital tears free of the ground; the party escapes with Tomas as time begins failing across the continent.
 
@@ -64,7 +64,7 @@ Do not negate the rescue or suggest that every action was secretly the villain's
 
 Nell wakes with Tomas safe and her original objective completed. She must decide what to do with the world left around them. Other companions carry playable stretches: Orrin organizes an escape from a damaged industrial city; the knight protects people from former comrades; the healer searches the original guardians' sanctuary.
 
-Reunite through actions that resolve local dangers. Discover three ancient anchors that stabilize the palace conduit. Albang them will free regions from the emperor's expanding time arrest and expose his heart. Establish here that the Benefactor exists beyond the conduit, and that its claim can survive the emperor. A mural or vision shows the hollow sun and a path into its domain.
+Reunite through actions that resolve local dangers. Discover three ancient anchors that stabilize the palace conduit. Breaking them will free regions from the emperor's expanding time arrest and expose his heart. Establish here that the Benefactor exists beyond the conduit, and that its claim can survive the emperor. A mural or vision shows the hollow sun and a path into its domain.
 
 Nell chooses to lead the counterattack. Tomas helps organize the resistance and stays an active supporting character, rather than being kidnapped again.
 
@@ -113,6 +113,7 @@ The fragment gives Nell access to the conflict and a limited shelter from stoppe
 - The immediate objective names a person, place or action the party cares about. Completing it changes the situation and earns the next destination.
 - Give each chapter a local victory, a recognizable antagonist and a consequential discovery. A mysterious letter is not sufficient payment for a chapter of errands.
 - Stage the major decisions and reversals with actors, camera movement, sound and playable action. Keep dialogue concise and let players advance or skip it.
+- Keep active combat parties to three members. A larger traveling cast can participate in scenes, while reserves retain their own levels and equipment.
 - Keep the party's ordinary affection, arguments and humor present between crises. Allow exploration and rest; narrative urgency is not a hidden real-time timer.
 - Foreshadow through worship, old imagery and unsettling sensory clues; let the god speak only after later discoveries earn that encounter. The emperor and the Benefactor have related goals but distinct agency. Defeating each resolves a different part of the threat.
 - Protect the completed rescue of Tomas and every local victory. The finale restores stolen futures without erasing the cost of the journey.
