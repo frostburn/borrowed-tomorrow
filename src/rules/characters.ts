@@ -2,12 +2,12 @@ import { CHARACTERS } from '../content/characters';
 import type { AbilityId } from './combat';
 import { MAX_PARTY_SIZE, validParty } from './party';
 
-export const COMPANION_IDS = ['nell', 'orrin', 'esme', 'celia', 'petra'] as const;
+export const COMPANION_IDS = ['nell', 'orrin', 'kit', 'celia', 'petra'] as const;
 export type CompanionId = typeof COMPANION_IDS[number];
 export const COMPANIONS = {
   nell: { role: 'Porter', tool: 'Oil lantern', chapter: 1, description: 'A railway apprentice pursuing the soldiers who took her brother.', maxHp: 42, attack: 11, armor: 0, speed: 7, movement: 3 },
   orrin: { role: 'Mechanic', tool: 'Steam lance', chapter: 1, description: 'Builds engines, tests explanations, and stands by his friends.', maxHp: 54, attack: 13, armor: 0, speed: 5, movement: 2 },
-  esme: { role: 'Courier', tool: 'Repeating crossbow', chapter: 2, description: 'Knows the coast routes by heart. Loses her place when Nell smiles at her.', maxHp: 38, attack: 10, armor: 0, speed: 9, movement: 4 },
+  kit: { role: 'Courier', tool: 'Repeating crossbow', chapter: 2, description: 'Knows the coast routes by heart. Stumbles over his words when Nell thanks him.', maxHp: 38, attack: 10, armor: 0, speed: 9, movement: 4 },
   celia: { role: 'Physician', tool: 'Field medicine', chapter: 2, description: 'Trained in the Benefactor’s hospitals. Treats the people the empire leaves behind.', maxHp: 40, attack: 8, armor: 0, speed: 6, movement: 3 },
   petra: { role: 'Vanguard', tool: 'Saber and shield', chapter: 3, description: 'An imperial knight learning what her oath is worth when an order is wrong.', maxHp: 62, attack: 14, armor: 1, speed: 4, movement: 2 },
 } as const;
@@ -19,7 +19,7 @@ export interface CharacterSettings { version: 2; characters: Record<CompanionId,
 export const LEARNING: Record<CompanionId, readonly { level: number; ability: AbilityId }[]> = {
   nell: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'burst' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'mend' }, { level: 3, ability: 'dazzle' }, { level: 5, ability: 'beacon' }],
   orrin: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'steam' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rivet' }, { level: 3, ability: 'guard' }, { level: 5, ability: 'repulse' }],
-  esme: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'quickshot' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'bolt' }, { level: 3, ability: 'feint' }, { level: 5, ability: 'volley' }],
+  kit: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'quickshot' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'bolt' }, { level: 3, ability: 'feint' }, { level: 5, ability: 'volley' }],
   celia: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'mend' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'rally' }, { level: 3, ability: 'beacon' }, { level: 5, ability: 'sanctuary' }],
   petra: [{ level: 1, ability: 'strike' }, { level: 1, ability: 'bash' }, { level: 1, ability: 'bandage' }, { level: 2, ability: 'cover' }, { level: 3, ability: 'sweep' }, { level: 5, ability: 'crush' }],
 };
@@ -47,7 +47,8 @@ export function decodeCharacterSettings(text: string): CharacterSettings {
   if (!raw || ![1, 2].includes(raw.version) || !raw.characters) throw new Error('Invalid character settings.');
   const ids: readonly CompanionId[] = raw.version === 1 ? ['nell', 'orrin'] : COMPANION_IDS;
   for (const hero of ids) {
-    const build = raw.characters[hero];
+    // Preserve builds from the first expanded workshop preview.
+    const build = raw.characters[hero] ?? (hero === 'kit' && raw.version === 2 ? raw.characters.esme : undefined);
     if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > 10) throw new Error('Invalid character level.');
     for (const stat of Object.keys(STAT_LIMITS) as CharacterStat[]) {
       if (!validStat(stat, build[stat])) throw new Error(`Invalid ${stat}.`);
@@ -56,8 +57,9 @@ export function decodeCharacterSettings(text: string): CharacterSettings {
     settings.characters[hero].level = build.level;
   }
   if (raw.version === 2) {
-    if (!validParty(raw.party, COMPANION_IDS)) throw new Error('Choose one to three distinct companions.');
-    settings.party = [...raw.party];
+    const party = Array.isArray(raw.party) ? raw.party.map((id: unknown) => id === 'esme' ? 'kit' : id) : raw.party;
+    if (!validParty(party, COMPANION_IDS)) throw new Error('Choose one to three distinct companions.');
+    settings.party = [...party];
   }
   return settings;
 }

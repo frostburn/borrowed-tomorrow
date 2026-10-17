@@ -2,15 +2,15 @@
 
 Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` keep the campaign; neither query parameter enables the workshop there.
 
-Choose Nell, Orrin, Esme, Celia or Petra, then **Character** or **Equipment**. Each character has an independent level, build and loadout. **Add to party** and **Remove from party** edit the practice lineup: at least one and at most three companions may fight. Selecting a portrait edits that character without changing party membership. Reserves keep their builds and equipment; reloading preserves the selected lineup. The portrait column shows effective stats, including equipped bonuses.
+Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Each character has an independent level, build and loadout. **Add to party** and **Remove from party** edit the practice lineup: at least one and at most three companions may fight. Selecting a portrait edits that character without changing party membership. Reserves keep their builds and equipment; reloading preserves the selected lineup. The portrait column shows effective stats, including equipped bonuses.
 
 ## Future companions
 
-The workshop previews companions planned for later story chapters. Esme is a fast Iron Coast courier and Nell’s first crush; Celia is an older physician; Petra is an imperial knight whose defection develops across Chapters Two and Three. Recruitment and relationship plans live in `docs/story/characters.md`. Their matching 80 × 80 actors and 128 × 128 portraits come from the unused art library.
+The workshop previews companions planned for later story chapters. Kit is a fast Iron Coast boy courier who gets flustered around Nell; Celia is an older physician; Petra is an imperial knight whose defection develops across Chapters Two and Three. Recruitment plans and the constraints on Kit’s unresolved puppy-love gag live in `docs/story/characters.md`. Kit has new matching artwork; Celia and Petra use the unused art library. Each has an 80 × 80 actor and 128 × 128 portrait.
 
 | Companion | Default HP / Attack / Armor / Speed / Move | Level 1 | Level 2 | Level 3 | Level 5 |
 | --- | --- | --- | --- | --- | --- |
-| Esme | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
+| Kit | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
 | Celia | 40 / 8 / 0 / 6 / 3 | Strike, Mend, Bandage | Rally | Beacon | Sanctuary |
 | Petra | 62 / 14 / 1 / 4 / 2 | Strike, Shield bash, Bandage | Cover | Saber sweep | Crushing blow |
 

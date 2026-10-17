@@ -7,7 +7,7 @@ interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly C
 export const ITEMS = {
   'brass-reflector': { name: 'Brass reflector', slot: 'fitting', heroes: ['nell'], description: 'A brighter lantern beam.', bonuses: { attack: 3, armor: 0, speed: 0 } },
   'lance-nozzle': { name: 'Pressure nozzle', slot: 'fitting', heroes: ['orrin'], description: 'A tighter jet from the steam lance.', bonuses: { attack: 3, armor: 0, speed: 0 } },
-  'courier-sight': { name: 'Courier sight', slot: 'fitting', heroes: ['esme'], description: 'A light sight for Esme’s crossbow.', bonuses: { attack: 3, armor: 0, speed: 1 } },
+  'courier-sight': { name: 'Courier sight', slot: 'fitting', heroes: ['kit'], description: 'A light sight for Kit’s crossbow.', bonuses: { attack: 3, armor: 0, speed: 1 } },
   'medic-clasp': { name: 'Medic clasp', slot: 'fitting', heroes: ['celia'], description: 'Keeps Celia’s field kit ready to hand.', bonuses: { attack: 0, armor: 1, speed: 1 } },
   'saber-hilt': { name: 'Balanced saber hilt', slot: 'fitting', heroes: ['petra'], description: 'A firm grip for Petra’s saber and shield.', bonuses: { attack: 3, armor: 1, speed: 0 } },
   'work-coat': { name: 'Reinforced work coat', slot: 'coat', heroes: COMPANION_IDS, description: 'Padded canvas. One coat protects one wearer.', bonuses: { attack: 0, armor: 1, speed: 0 } },
@@ -62,7 +62,8 @@ export function decodeInventory(text: string): Inventory {
     inventory.bag[item as ItemId] = count as number;
   }
   for (const hero of (raw.version === 1 ? ['nell', 'orrin'] as const : COMPANION_IDS)) for (const slot of SLOTS) {
-    const item = raw.characters[hero]?.[slot];
+    const slots = raw.characters[hero] ?? (hero === 'kit' && raw.version === 2 ? raw.characters.esme : undefined);
+    const item = slots?.[slot];
     if (item !== null && (typeof item !== 'string' || !Object.hasOwn(ITEMS, item) || ITEMS[item as ItemId].slot !== slot || !canEquip(hero, item as ItemId))) throw new Error('Invalid equipment.');
     inventory.characters[hero][slot] = item;
   }

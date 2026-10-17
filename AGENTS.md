@@ -4,7 +4,9 @@ The user authorized a complete story reboot. The former Disks A–D campaign has
 
 Keep canon and continuation notes under `docs/story/` in sync with playable content. Preserve the reboot’s version-5 campaign, content IDs and checkpoints in later work. Versions 1–4 belong to the previous story: retain export access, but never migrate their flags into the new campaign.
 
-Off-story mechanics work lives in the Vite-only character workshop (`?dev=workshop`; `?dev=inventory` opens its equipment tab). Keep its UI, fixtures and storage separate from campaign saves, and its entry behind `import.meta.env.DEV`. Production retains the current story equipment and character progression until an explicit integration task. The workshop roster includes Nell, Orrin, Esme, Celia and Petra, with one to three active combatants. Future recruits are author plans, not Chapter One party members. Read `docs/development-workshop.md` for character builds, level abilities, the manual equipment model and the practice harness.
+Off-story mechanics work lives in the Vite-only character workshop (`?dev=workshop`; `?dev=inventory` opens its equipment tab). Keep its UI, fixtures and storage separate from campaign saves, and its entry behind `import.meta.env.DEV`. Production retains the current story equipment and character progression until an explicit integration task. The workshop roster includes Nell, Orrin, Kit, Celia and Petra, with one to three active combatants. Future recruits are author plans, not Chapter One party members. Read `docs/development-workshop.md` for character builds, level abilities, the manual equipment model and the practice harness.
+
+Nell is a seventeen-year-old girl (she/her). Kit is a boy her age whose occasional flustered responses to her are an innocent, unresolved running gag. Do not develop a mutual romance, confession, kiss or couple ending. Keep these author facts out of introductory exposition.
 
 For story work, read and apply `.agents/skills/write-game-prose/SKILL.md`. It covers dialogue, narration, journals, player choices, and disk handoffs.
 

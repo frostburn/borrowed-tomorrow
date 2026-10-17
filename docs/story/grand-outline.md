@@ -42,7 +42,7 @@ At the mountain pass, Alban blocks pursuit. He has already sent Tomas east in an
 
 **Goal:** find Tomas before the next transfer. **Payoff:** free the prisoners and learn his destination.
 
-The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Esme, a coast courier Nell’s own age, joins the raid to get the prisoners onto a safe route. She and Nell develop a shy mutual crush through shared travel, small favors and awkward attempts to impress each other. Recruit Celia, a physician educated in the Benefactor’s religion. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
+The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Kit, a boy courier Nell’s own age, joins the raid to get the prisoners onto a safe route. He sometimes gets flustered when Nell thanks him; these innocent hints stay unresolved, without a romance arc or payoff. Recruit Celia, a physician educated in the Benefactor’s religion. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
 
 The raid succeeds: prisoners escape, the army loses the train and the party learns that Tomas was moved to the capital because he discovered how the crystal engines are paid for. Alban attempts to recapture the freed prisoners. The knight witnesses the army sacrifice a settlement to keep the capital supplied, then helps the escape. Give the knight an earned defection, not an instant change of uniform after one conversation.
 
