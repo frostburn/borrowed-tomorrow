@@ -73,6 +73,21 @@ test('old workshop builds and equipment migrate without losing existing edits',a
   expect(stored.settings.version).toBe(2);expect(stored.inventory.version).toBe(2);expect(stored.inventory.bag['work-coat']).toBe(1);
 });
 
+test('future-companion portraits keep their native geometry on a compact phone',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:320,height:844});await page.goto('/?dev=workshop');
+  for(const name of ['Esme','Celia','Petra']){
+    await choose(page,name);
+    const image=page.getByRole('region',{name:`${name} equipment`}).getByRole('img',{name,exact:true});
+    await expect.poll(()=>image.evaluate(i=>{
+      const box=i.getBoundingClientRect(),scale=window.borrowedTomorrowPixels.inspect().cssScale,img=i as HTMLImageElement;
+      return {width:box.width/scale,height:box.height/scale,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight};
+    })).toEqual({width:128,height:128,naturalWidth:128,naturalHeight:128});
+    expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
+  }
+  await capture(page,'companions-compact-phone');expect(errors).toEqual([]);
+});
+
 test('@journey the future-companion trio wins practice and keeps its selected party',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/?dev=workshop');await page.getByRole('button',{name:'Remove Nell from party',exact:true}).click();
