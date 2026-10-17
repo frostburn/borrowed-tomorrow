@@ -3,11 +3,12 @@ export { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import type { EquipmentBonuses } from './inventory';
-import type { CharacterProfile } from './characters';
+import type { CharacterProfile, CompanionId } from './characters';
+import { validParty } from './party';
 import type { Effect } from '../game/synth';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse';
-export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; effect?: 'weaken' | 'guard' | 'push'; pierce?: number; sound?: Effect }
+export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'rally' | 'sanctuary' | 'bash' | 'cover' | 'sweep' | 'crush';
+export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'focus'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },
@@ -21,9 +22,19 @@ export const ABILITIES: Record<AbilityId, Ability> = {
   rivet: { id: 'rivet', name: 'Rivet shot', description: 'One enemy within 5 hexes. Ignores 2 armor; rocks block the shot. 1 focus.', range: 5, power: 10, cost: 1, shape: 'single', pierce: 2, sound: 'peck' },
   guard: { id: 'guard', name: 'Safety guard', description: 'Give an ally within 3 hexes a 10-point damage barrier until absorbed. Does not stack. 2 focus.', range: 3, power: 10, cost: 2, shape: 'single', effect: 'guard', sound: 'defend' },
   repulse: { id: 'repulse', name: 'Pressure wave', description: 'Hit all six hexes around Orrin, including allies. Push survivors one hex if clear. 3 focus.', range: 0, power: 8, cost: 3, shape: 'blast', effect: 'push', sound: 'steam' },
+  quickshot: { id: 'quickshot', name: 'Quick shot', description: 'One enemy within 5 hexes. Rocks block the shot. No focus cost.', range: 5, power: 10, cost: 0, shape: 'single', sound: 'peck' },
+  bolt: { id: 'bolt', name: 'Piercing bolt', description: 'One enemy within 5 hexes. Ignores 2 armor. 1 focus.', range: 5, power: 10, cost: 1, shape: 'single', pierce: 2, sound: 'peck' },
+  feint: { id: 'feint', name: 'Feint', description: 'An enemy within 4 hexes is dazzled: its next three attacks deal 40% less damage. 2 focus.', range: 4, power: 0, cost: 2, shape: 'single', effect: 'weaken', sound: 'flare' },
+  volley: { id: 'volley', name: 'Volley', description: 'Seven-hex crossbow volley. Hits allies too. Range 5. 3 focus.', range: 5, power: 13, cost: 3, shape: 'blast', sound: 'peck' },
+  rally: { id: 'rally', name: 'Rally', description: 'Restore up to 2 focus to another ally within 4 hexes. 3 focus.', range: 4, power: 2, cost: 3, shape: 'single', effect: 'focus', sound: 'mend' },
+  sanctuary: { id: 'sanctuary', name: 'Sanctuary', description: 'Give allies in a seven-hex area an 8-point barrier. Does not stack. Range 4. 3 focus.', range: 4, power: 8, cost: 3, shape: 'blast', effect: 'guard', sound: 'defend' },
+  bash: { id: 'bash', name: 'Shield bash', description: 'Adjacent enemy. Push the survivor one hex if clear. 1 focus.', range: 1, power: 8, cost: 1, shape: 'single', effect: 'push', sound: 'strike' },
+  cover: { id: 'cover', name: 'Cover', description: 'Give an ally within 2 hexes a 14-point barrier. Does not stack. 2 focus.', range: 2, power: 14, cost: 2, shape: 'single', effect: 'guard', sound: 'defend' },
+  sweep: { id: 'sweep', name: 'Saber sweep', description: 'Sweep all six neighboring hexes, including allies. 2 focus.', range: 0, power: 13, cost: 2, shape: 'blast', sound: 'strike' },
+  crush: { id: 'crush', name: 'Crushing blow', description: 'Adjacent enemy. Ignore 4 armor with a heavy saber strike. 3 focus.', range: 1, power: 18, cost: 3, shape: 'single', pierce: 4, sound: 'strike' },
 };
 export interface Unit {
-  id: string; name: string; kind: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
+  id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   guard?: number; dazzledAttacks?: number; level?: number;
@@ -40,16 +51,24 @@ const ENEMY_STATS = {
   inspector: { name: 'Imperial officer', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
 };
 
-export function createBattle(encounter: string, state: GameState, equipment?: Record<HeroId, EquipmentBonuses>, characters?: Record<HeroId, CharacterProfile>): Battle {
+export function createBattle(encounter: string, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
   const e = ENCOUNTERS[encounter];
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
-  const units: Unit[] = state.party.map(h => ({ id: h.id, name: h.id === 'nell' ? 'Nell' : 'Orrin', kind: h.id, side: 'party',
-    hex: offset(1, h.id === 'nell' ? 2 : 4), hp: characters?.[h.id].maxHp ?? Math.max(1, h.hp), maxHp: characters?.[h.id].maxHp ?? maxHp(h.id, state), focus: characters?.[h.id].focus ?? h.focus,
-    speed: Math.max(1, (characters?.[h.id].speed ?? (h.id === 'nell' ? 7 : 5)) + (equipment?.[h.id].speed ?? 0)), movement: characters?.[h.id].movement ?? (h.id === 'nell' ? 3 : 2),
-    armor: (characters?.[h.id].armor ?? 0) + (equipment ? equipment[h.id].armor : state.gear.includes('work-coats') ? 1 : 0),
-    bonus: (characters ? characters[h.id].attack - ABILITIES.strike.power : (level(state) - 1) * 2 + (h.id === 'orrin' ? 2 : 0)) + (equipment ? equipment[h.id].attack : h.id === 'nell' && state.gear.includes('brass-lantern') ? 3 : 0),
-    abilities: characters ? [...characters[h.id].abilities] : h.id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] : ['strike', 'steam', 'bandage'], level: characters?.[h.id].level,
-    moved: false, defending: false, retaliated: false, waited: false }));
+  const ids = party ?? state.party.map(h => h.id);
+  const available = characters ? Object.keys(characters) as CompanionId[] : state.party.map(h => h.id);
+  if (!validParty(ids, available)) throw new Error('Choose one to three distinct companions.');
+  const units: Unit[] = ids.map((id, index) => {
+    const profile = characters?.[id], legacy = state.party.find(h => h.id === id);
+    if (!profile && !legacy) throw new Error('A companion needs a character profile.');
+    const row = ids.length === 3 ? [1, 3, 5][index] : 2 + index * 2;
+    return { id, name: profile?.name ?? (id === 'nell' ? 'Nell' : 'Orrin'), kind: id, role: profile?.role, side: 'party',
+      hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
+      speed: Math.max(1, (profile?.speed ?? (id === 'nell' ? 7 : 5)) + (equipment?.[id].speed ?? 0)), movement: profile?.movement ?? (id === 'nell' ? 3 : 2),
+      armor: (profile?.armor ?? 0) + (equipment ? equipment[id].armor : state.gear.includes('work-coats') ? 1 : 0),
+      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + (id === 'orrin' ? 2 : 0)) + (equipment ? equipment[id].attack : id === 'nell' && state.gear.includes('brass-lantern') ? 3 : 0),
+      abilities: profile ? [...profile.abilities] : id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] : ['strike', 'steam', 'bandage'], level: profile?.level,
+      moved: false, defending: false, retaliated: false, waited: false };
+  });
   e.enemies.forEach((enemy, i) => {
     const stats = ENEMY_STATS[enemy.kind];
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
@@ -77,8 +96,9 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   return [aim];
 }
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
-  const affected = new Set(shape(b, u, id, aim).map(key));
-  return alive(b).filter(v => affected.has(key(v.hex)) && (!ABILITIES[id].heal || v.side === u.side) && (id !== 'repulse' || v.id !== u.id));
+  const a = ABILITIES[id], affected = new Set(shape(b, u, id, aim).map(key));
+  const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
+  return alive(b).filter(v => affected.has(key(v.hex)) && (!friendly || v.side === u.side) && (!(a.shape === 'blast' && a.range === 0) || v.id !== u.id));
 }
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = ABILITIES[id];
@@ -88,7 +108,8 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles)) return false;
   const v = unitAt(b, aim);
   if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&t.hp<t.maxHp);
-  if (a.effect==='guard') return !!v && v.side===u.side && (v.guard??0)<a.power;
+  if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<a.power);
+  if (a.effect==='focus') return !!v && v.id!==u.id && v.side===u.side && v.focus<6;
   if (a.shape === 'single') {
     if (!v || v.side === u.side) return false;
     if (a.effect==='weaken' && v.dazzledAttacks) return false;
@@ -100,6 +121,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId): number {
   const a = ABILITIES[id];
   if (a.heal) return Math.min(v.maxHp - v.hp, a.power);
   if (a.effect==='guard') return Math.max(0,a.power-(v.guard??0));
+  if (a.effect==='focus') return Math.min(6-v.focus,a.power);
   if (a.effect==='weaken') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id)-(v.guard??0));
@@ -174,6 +196,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   for (const v of hit) {
     if(a.effect==='weaken'){v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,a.power);log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
+    else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(6,v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
     else if(a.heal){const amount=damage(u,v,id);v.hp=Math.min(v.maxHp,v.hp+amount);log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id);

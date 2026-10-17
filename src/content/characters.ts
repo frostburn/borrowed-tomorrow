@@ -2,6 +2,9 @@
 export const CHARACTERS = {
   nell: { name: 'Nell', sprite: 'nell', portrait: 'portrait-nell' },
   orrin: { name: 'Orrin', sprite: 'orrin', portrait: 'portrait-orrin' },
+  esme: { name: 'Esme', sprite: 'esme', portrait: 'portrait-esme' },
+  celia: { name: 'Celia', sprite: 'celia', portrait: 'portrait-celia' },
+  petra: { name: 'Petra', sprite: 'petra', portrait: 'portrait-petra' },
   tomas: { name: 'Tomas', sprite: 'tomas', portrait: 'portrait-tomas' },
   alban: { name: 'Captain Alban', sprite: 'alban', portrait: 'portrait-alban' },
   ansel: { name: 'Stationmaster Ansel', sprite: 'master', portrait: 'portrait-master' },
