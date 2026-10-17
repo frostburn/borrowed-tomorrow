@@ -12,7 +12,7 @@ export const ARRIVAL = [
   SAY('Bram', 'The thirteenth. Festival tomorrow, then the afternoon train. Has something happened?'),
 ];
 export const B_JOURNAL:Record<string,{title:string;text:string}>={
-  'b-receipt':{title:'The signature comes true',text:'At 00:17 Nell signed for thirty-one living arrivals. Her last stroke crossed the date, exactly like the premature copy. The inspector tried to prevent this arrival. The people remain at Larkspur; sending a copy backward does not send them back.'},
+  'b-receipt':{title:'The signature comes true',text:'At 00:17 Nell signed for thirty-one living arrivals. Her last stroke trailed beneath her name, exactly like the premature copy. The inspector tried to prevent this arrival. The people remain at Larkspur; sending a copy backward does not send them back.'},
   'b-arrival':{title:'The day before',text:'It is 13 October in Rillbridge, the morning before the flood. Mira found her father, Bram. He has packed her suitcase for tomorrow’s train. He does not remember losing her.'},
   'b-family':{title:'Bram’s neighbor',text:'Bram will leave with Mira, but he needs help moving Elspeth from the schoolhouse. She cannot manage the bridge steps. There is a flat maintenance trolley at the sluice.'},
   'b-evidence':{title:'The blocked overflow',text:'Timber has jammed the overflow. A fresh crack runs below the water mark; the upstream gauge is still rising. Take the broken gauge plate to Tilda so she can call the town together.'},
