@@ -34,7 +34,7 @@ Production prompt briefs:
 
 **Kit:** a seventeen-year-old boy courier; short tousled chestnut hair, clean-shaven boyish face, bashful smile, dusty blue jacket, cream shirt, ochre scarf, brown satchel and boots, compact repeating crossbow. His new transparent portrait/actor sheet was generated with Nell’s art as the style and proportion references, then mechanically separated and point-sampled into native 128 × 128 and 80 × 80 canvases. No runtime rescaling or recoloring.
 
-Celia and Petra own matching unused sprite/portrait pairs for the future companion roster. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. Their actors also appear in Chapter Two: Celia joins, while Petra remains a staged rival and ally.
+Celia and Petra own matching unused sprite/portrait pairs for the future companion roster. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. Petra appears in Chapter Two as a staged rival and ally. Celia’s introduction is deferred; keep her matching art available for the workshop and a later chapter.
 
 Keep these identities consistent in dialogue, exploration, staging and battle. The captain's combat archetype remains the engine's officer rules, but his appearance is `alban`, never the retired inspector character.
 

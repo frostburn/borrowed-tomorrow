@@ -16,7 +16,9 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-coast');
     await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();
-    await nativeScene(page,'coast');await capture(page,`coast-arrival-${device}`);await dialogue(page);
+    await nativeScene(page,'coast');await capture(page,`coast-arrival-${device}`);
+    while(await page.locator('.dialogue h2').textContent()!=='The loading gate')await page.locator('.dialogue-actions button').first().click();
+    await expect(page.locator('.dialogue')).toContainText('Alban tears the permit');await capture(page,`kit-delivery-seized-${device}`);await dialogue(page);
     await approach(page,'kit-contact');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-kit');
     await nativeActor(page,'kit',{x:28,y:21});await capture(page,`kit-meeting-${device}`);
     await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
@@ -31,7 +33,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   });
 }
 
-test('@journey Chapter Two: Kit’s raid, Celia, Cinderbank rescue and the capital train',async({page})=>{
+test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital train',async({page})=>{
   test.setTimeout(240000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,checkpoint('chapterOneComplete'));
   await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();await dialogue(page);await visit(page,'kit-contact');
@@ -39,10 +41,11 @@ test('@journey Chapter Two: Kit’s raid, Celia, Cinderbank rescue and the capit
   expect((await inspect(page)).state.inventory.bag['courier-sight']).toBe(1);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();await page.getByRole('button',{name:'Equip on Kit',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
   await visit(page,'prison-coach');expect((await inspect(page)).state.flags.prisonersFreed).toBe(true);
-  await travel(page,'coast-ward','infirmary');await dialogue(page);expect((await inspect(page)).state.party.map(h=>h.id)).toEqual(['nell','orrin','kit','celia']);
-  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Orrin',exact:true}).click();await page.getByRole('button',{name:'Move to reserve',exact:true}).click();
-  await page.getByRole('button',{name:'Celia',exact:true}).click();await page.getByRole('button',{name:'Set active',exact:true}).click();await capture(page,'celia-formation');await page.getByRole('button',{name:'Close',exact:true}).click();
-  expect((await inspect(page)).state.activeParty).toEqual(['nell','kit','celia']);
+  await travel(page,'coast-ward','infirmary');await dialogue(page);expect((await inspect(page)).state.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();
+  await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true})).toHaveCount(0);
+  await capture(page,'chapter-two-three-travelers');await page.getByRole('button',{name:'Close',exact:true}).click();
+  expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
   await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await battle(page,'cinderbank-collector-battle');
   await visit(page,'siding-release');expect((await inspect(page)).state.flags.evacuationReady).toBe(true);
   await approach(page,'siding-alban');await dialogue(page);await battle(page,'coast-alban-battle');
@@ -55,16 +58,16 @@ test('@journey Chapter Two: Kit’s raid, Celia, Cinderbank rescue and the capit
 });
 
 
-test('four travelers fit the compact inventory and three-fighter phone HUD',async({page})=>{
+test('the three traveling companions fit the compact inventory and phone HUD',async({page})=>{
   await page.setViewportSize({width:320,height:740});await page.goto('/');await importSave(page,coastCheckpoint('wardSeen'));
   await expect(page.locator('.world-party')).toHaveAttribute('data-size','3');
   for(const name of ['Nell','Orrin','Kit'])await expect(page.locator('.world-party').getByText(name,{exact:true})).toBeInViewport();
   const boxes=await page.locator('.world-hero').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right};}));
   expect(boxes.every((b,i)=>i===0||b.left>=boxes[i-1].right)).toBe(true);await capture(page,'three-fighter-hud-phone');
   await page.getByRole('button',{name:'Equipment',exact:true}).click();
-  for(const name of ['Nell','Orrin','Kit','Celia'])await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name,exact:true})).toBeInViewport();
-  await page.getByRole('button',{name:'Celia',exact:true}).click();await expect(page.locator('.ci-character img')).toHaveJSProperty('naturalWidth',128);
-  await expect(page.locator('.ci-character img')).toHaveCSS('width','128px');await expect(page.getByRole('button',{name:'Set active',exact:true})).toBeDisabled();await capture(page,'four-travelers-inventory-phone');
+  for(const name of ['Nell','Orrin','Kit'])await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name,exact:true})).toBeInViewport();
+  await expect(page.getByRole('button',{name:'Celia',exact:true})).toHaveCount(0);await page.getByRole('button',{name:'Kit',exact:true}).click();await expect(page.locator('.ci-character img')).toHaveJSProperty('naturalWidth',128);
+  await expect(page.locator('.ci-character img')).toHaveCSS('width','128px');await expect(page.getByRole('button',{name:'Move to reserve',exact:true})).toBeVisible();await capture(page,'three-travelers-inventory-phone');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 

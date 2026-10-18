@@ -11,9 +11,9 @@ export const ENCOUNTERS: Record<string, Encounter> = {
     rocks: [[4, 1], [4, 5], [8, 2]], victory: 'The loading gate is clear. A courier sight goes into the bag. Open the barred coach.',
   },
   'coast-collector': {
-    id: 'coast-collector', name: 'Cinderbank · the collector guard', flag: 'coastCollectorWon', xp: 85, coins: 42, journal: 'coastCollector', item: 'medic-clasp', backdrop: { map: 'cinderbank', y: -300 },
+    id: 'coast-collector', name: 'Cinderbank · the collector guard', flag: 'coastCollectorWon', xp: 85, coins: 42, journal: 'coastCollector', item: 'work-coat', backdrop: { map: 'cinderbank', y: -300 },
     enemies: [{ kind: 'guardian', name: 'Collector guard', col: 7, row: 3, hp: 112 }, { kind: 'crow', name: 'Signal crow', col: 8, row: 1, hp: 34 }, { kind: 'crow', name: 'Signal crow', col: 8, row: 5, hp: 34 }],
-    rocks: [[4, 2], [5, 4], [7, 6]], vents: [[6, 2], [6, 3], [6, 4]], victory: 'The guard is down. A medic clasp goes into the bag. Open the collector casing beside the coal shed.',
+    rocks: [[4, 2], [5, 4], [7, 6]], vents: [[6, 2], [6, 3], [6, 4]], victory: 'The guard is down. A reinforced work coat goes into the bag. Open the collector casing beside the coal shed.',
   },
   'coast-recapture': {
     id: 'coast-recapture', name: 'Alban · the last crossing', flag: 'recaptureWon', xp: 90, coins: 50, journal: 'recapture', backdrop: { map: 'cinderbank', y: -300 },

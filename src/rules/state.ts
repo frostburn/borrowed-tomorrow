@@ -1,9 +1,9 @@
-import { decodeInventory, equipItem, newInventory, receiveItem, type Inventory } from './inventory';
+import { decodeInventory, equipItem, newInventory, receiveItem, SLOTS, unequipItem, type Inventory } from './inventory';
 import { BASE_STATS } from './progression';
 import { validParty } from './party';
 
 export const SAVE_FORMAT = 'borrowed-tomorrow';
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 export const CAMPAIGN = 'imperial-debt';
 export const NEXT_CHAPTER = 'chapter-two:iron-coast';
 export const THIRD_CHAPTER = 'chapter-three:capital';
@@ -71,14 +71,14 @@ export function decodeSave(text: string): GameState {
   if (s.format === SAVE_FORMAT && [1, 2, 3, 4].includes(s.version as number)) {
     throw new Error('This save belongs to the previous story. Keep it as a backup, then begin Chapter One: Leaving Home.');
   }
-  if (s.format !== SAVE_FORMAT || ![5, 6, SAVE_VERSION].includes(s.version as number) || s.campaign !== CAMPAIGN) throw new Error('Unsupported save format or campaign.');
+  if (s.format !== SAVE_FORMAT || ![5, 6, 7, SAVE_VERSION].includes(s.version as number) || s.campaign !== CAMPAIGN) throw new Error('Unsupported save format or campaign.');
   const number = (x: unknown, max: number): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
   const loc = s.location as GameState['location'] | undefined;
   if (!loc || !['station', 'yard', 'rillbridge', 'tunnel', 'coast', 'infirmary', 'cinderbank'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
     !number(loc.x, loc.map === 'rillbridge' ? 65 : ['coast','infirmary','cinderbank'].includes(loc.map) ? 63 : 41) || !number(loc.y, loc.map === 'rillbridge' ? 40 : ['coast','infirmary','cinderbank'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
   if (!number(s.xp, 1e7) || !number(s.coins, 1e7) || !number(s.bandages, 999) || !number(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
-  if (!['chapter-one','chapter-two'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER) || (s.version !== SAVE_VERSION && s.chapter !== 'chapter-one')) throw new Error('This chapter is not available in this build.');
-  if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > 4 || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
+  if (!['chapter-one','chapter-two'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER) || ([5, 6].includes(s.version as number) && s.chapter !== 'chapter-one')) throw new Error('This chapter is not available in this build.');
+  if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > (s.version === 7 ? 4 : 3) || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
   const party: HeroState[] = [];
   for (const h of s.party) {
     if (!h || !['nell', 'orrin', 'kit', 'celia'].includes(h.id) || party.some(p => p.id === h.id) || !number(h.hp, maxHp(h.id, { xp: s.xp })) || !number(h.focus, 6)) throw new Error('The party is invalid.');
@@ -91,7 +91,7 @@ export function decodeSave(text: string): GameState {
     flags[id] = value as boolean;
   }
   for (const id of ['orrin','kit','celia'] as const) if (Boolean(flags[`${id}Joined`]) !== party.some(h => h.id === id)) throw new Error('The party does not match the story progress.');
-  const activeParty = s.version === SAVE_VERSION ? s.activeParty : party.map(h => h.id);
+  const activeParty = [7, SAVE_VERSION].includes(s.version as number) ? s.activeParty : party.map(h => h.id);
   if (!validParty(activeParty, party.map(h => h.id)) || !activeParty.includes('nell')) throw new Error('The active party is invalid.');
   const prerequisites: Record<string, string> = {
     raidSeen: 'festivalSeen', escapeWon: 'raidSeen', orrinJoined: 'escapeWon', workshopWon: 'orrinJoined',
@@ -99,7 +99,7 @@ export function decodeSave(text: string): GameState {
     villageFreed: 'collectorDefeated', passSeen: 'villageFreed', captainConfronted: 'passSeen',
     captainDefeated: 'captainConfronted', chapterOneComplete: 'captainDefeated',
     coastSeen: 'chapterOneComplete', kitJoined: 'coastSeen', raidPlanned: 'kitJoined', raidConfronted: 'raidPlanned',
-    trainRaidWon: 'raidConfronted', prisonersFreed: 'trainRaidWon', celiaJoined: 'prisonersFreed', wardSeen: 'celiaJoined',
+    trainRaidWon: 'raidConfronted', prisonersFreed: 'trainRaidWon', celiaJoined: 'prisonersFreed', wardSeen: 'prisonersFreed',
     settlementSeen: 'wardSeen', coastCollectorWon: 'settlementSeen', evacuationReady: 'coastCollectorWon',
     recaptureConfronted: 'evacuationReady', recaptureWon: 'recaptureConfronted', chapterTwoComplete: 'recaptureWon',
   };
@@ -111,6 +111,7 @@ export function decodeSave(text: string): GameState {
     if (!flags.chapterOneComplete || !['coast','infirmary','cinderbank'].includes(loc.map) || Boolean(flags.chapterTwoComplete) !== (s.boundary === THIRD_CHAPTER) || s.boundary === NEXT_CHAPTER) throw new Error('The chapter departure is incomplete.');
     if ((loc.map === 'infirmary' && !flags.prisonersFreed) || (loc.map === 'cinderbank' && !flags.wardSeen)) throw new Error('This route has not opened yet.');
   }
+  if (s.version === SAVE_VERSION && (flags.celiaJoined || party.some(h => h.id === 'celia'))) throw new Error('Celia has not joined in these chapters.');
   if (flags.raidPlanned && typeof flags.raidDiversion !== 'boolean') throw new Error('The raid route is missing.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));
   if (!strings(s.journal, 300)) throw new Error('Invalid journal.');
@@ -122,8 +123,23 @@ export function decodeSave(text: string): GameState {
       receiveItem(inventory, 'work-coat', 2); equipItem(inventory, 'nell', 'work-coat'); equipItem(inventory, 'orrin', 'work-coat');
     }
   }
+  // The first Chapter Two draft recruited Celia early. Keep that draft's earned
+  // progress and equipment, but leave only the current three travelers on screen.
+  const formation = [...activeParty] as HeroId[];
+  if (s.version === 7 && s.chapter === 'chapter-two') {
+    const previous = formation.indexOf('celia');
+    const index = party.findIndex(h => h.id === 'celia');
+    if (index !== -1) party.splice(index, 1);
+    if (previous !== -1) {
+      formation.splice(previous, 1);
+      const replacement = party.find(h => !formation.includes(h.id));
+      if (replacement) formation.push(replacement.id);
+    }
+    for (const slot of SLOTS) unequipItem(inventory, 'celia', slot);
+    delete flags.celiaJoined;
+  }
   return {
-    format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: s.chapter as GameState['chapter'], location: { ...loc }, party, activeParty: [...activeParty] as HeroId[],
+    format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: s.chapter as GameState['chapter'], location: { ...loc }, party, activeParty: formation,
     flags, coins: s.coins, bandages: s.bandages, xp: s.xp, inventory, journal: [...new Set(s.journal)],
     boundary: s.boundary as GameState['boundary'], playSeconds: s.playSeconds,
   };

@@ -8,7 +8,7 @@ export function resumeChapterTwo(host: StoryHost) {
   const s = host.state, f = s.flags;
   if (!f.coastSeen) host.talk({ ...scenes.arrival(), done: () => host.commit('coastSeen', 'coast') });
   else if (s.location.map === 'infirmary' && !f.wardSeen) host.talk({ ...scenes.ward(), done: () => {
-    recruit(s, 'celia'); restoreParty(s); s.location = { map: 'infirmary', x: 31, y: 21 }; host.commit('wardSeen', 'ward'); host.toast('Celia joined. Choose up to three active fighters in Equipment.');
+    restoreParty(s); s.location = { map: 'infirmary', x: 31, y: 21 }; host.commit('wardSeen', 'ward');
   } });
   else if (s.location.map === 'cinderbank' && !f.settlementSeen) host.talk({ ...scenes.abandonment(), done: () => {
     s.location = { map: 'cinderbank', x: 27, y: 22 }; host.commit('settlementSeen', 'settlement');
@@ -52,14 +52,14 @@ export function interactChapterTwo(host: StoryHost, id: string) {
         { label: 'Keep moving', action: () => {} },
       ] }); return;
     case 'ward-rest':
-      host.talk({ lines: [SAY('Celia', 'There’s soup by the stove. Sit down while I check those bandages.')], choices: [
-        { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored, including reserves.'); } },
+      host.talk({ lines: [SAY('The railway ward', 'Soup is warming by the stove. Clean bandages are stacked on the supply bench.')], choices: [
+        { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
         { label: 'Buy a field bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
         { label: 'Keep moving', action: () => {} },
       ] }); return;
-    case 'ward-kit': say('Kit', f.chapterTwoComplete ? 'No one from the exchange is missing. I checked twice.' : 'The little boy in the first coach wants to drive Orrin’s engine. I said he could ask. Sorry, Orrin.'); return;
+    case 'ward-kit': say('Kit', f.chapterTwoComplete ? 'No one from the exchange is missing. I checked twice.' : 'The little boy in the first coach wants to deliver post on the engine. I told him to ask Orrin.'); return;
     case 'ward-clearance':
-      say('Celia', 'Medical service, southern siding below the capital. The seal is current. Once we get this train moving, I can take you as far as the engine works gate.'); return;
+      say('Kit', 'Medical service, southern siding below the capital. That’s the seal. I deliver there; the path comes out by the engine works gate.'); return;
     case 'ward-coast': host.travel('coast', 15, 25); return;
     case 'ward-siding': host.travel('cinderbank', 27, 22); return;
     case 'siding-ward': host.travel('infirmary', 41, 24); return;
@@ -71,7 +71,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       if (f.evacuationReady) return say('The broken collector', 'The casing is empty. The families are aboard the medical train.');
       host.talk({ ...scenes.evacuation(), done: () => { s.location = { map: 'cinderbank', x: 38, y: 23 }; restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
     case 'siding-coaches':
-      say('Celia', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. Clear the crossing; I’ll help you.' : 'The prisoners are safe in the coaches. Kit’s families are still in the houses beyond the collector.'); return;
+      say('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. The families from my delivery book are still in the houses beyond the collector.'); return;
     case 'siding-alban':
       if (!f.evacuationReady) return host.toast('Free the families at the collector before clearing the crossing.');
       if (f.recaptureWon) return;

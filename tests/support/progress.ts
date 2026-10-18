@@ -17,15 +17,14 @@ export function checkpoint(last: typeof ordered[number]): GameState {
   return s;
 }
 
-const coastOrder=['coastSeen','kitJoined','raidPlanned','raidConfronted','trainRaidWon','prisonersFreed','celiaJoined','wardSeen','settlementSeen','coastCollectorWon','evacuationReady','recaptureConfronted','recaptureWon','chapterTwoComplete'] as const;
+const coastOrder=['coastSeen','kitJoined','raidPlanned','raidConfronted','trainRaidWon','prisonersFreed','wardSeen','settlementSeen','coastCollectorWon','evacuationReady','recaptureConfronted','recaptureWon','chapterTwoComplete'] as const;
 export function coastCheckpoint(last:typeof coastOrder[number]):GameState {
   const s=checkpoint('chapterOneComplete');beginChapterTwo(s);
   for(const flag of coastOrder.slice(0,coastOrder.indexOf(last)+1))s.flags[flag]=true;
   if(s.flags.kitJoined)recruit(s,'kit');
   if(s.flags.raidPlanned)s.flags.raidDiversion=false;
   if(s.flags.trainRaidWon){s.xp+=70;s.coins+=32;receiveItem(s.inventory,'courier-sight');}
-  if(s.flags.celiaJoined)recruit(s,'celia');
-  if(s.flags.coastCollectorWon){s.xp+=85;s.coins+=42;receiveItem(s.inventory,'medic-clasp');}
+  if(s.flags.coastCollectorWon){s.xp+=85;s.coins+=42;receiveItem(s.inventory,'work-coat');}
   if(s.flags.recaptureWon){s.xp+=90;s.coins+=50;}
   if(s.flags.chapterTwoComplete)s.boundary=THIRD_CHAPTER;
   s.location=s.flags.settlementSeen?{map:'cinderbank',x:27,y:22}:s.flags.wardSeen?{map:'infirmary',x:31,y:21}:{map:'coast',x:24,y:26};

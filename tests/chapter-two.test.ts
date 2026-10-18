@@ -6,7 +6,7 @@ import type { Dialogue } from '../src/content/dialogue';
 import { awardVictory, createBattle } from '../src/rules/combat';
 import { MAPS, walkable } from '../src/content/maps';
 import * as scenes from '../src/content/chapter-two/scenes';
-import { checkpoint } from './support/progress';
+import { coastCheckpoint, checkpoint } from './support/progress';
 import { equipItem, ownedCopies, receiveItem } from '../src/rules/inventory';
 
 function journey() {
@@ -43,17 +43,34 @@ for(const diversion of [true,false])it(`raid ${diversion?'signals':'loading'} pa
   interactChapterTwo(j.host,'prison-coach');expect(j.state.flags.prisonersFreed).toBeUndefined();j.finish();
   expect(j.state.journal).toContain('prisoners');expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
 });
-it('recruits Celia into reserve and preserves builds and gear through formation changes and victory',()=>{
+it('keeps the ward as a safe stop and the traveling party at Nell, Orrin and Kit',()=>{
   const j=raid(true);interactChapterTwo(j.host,'prison-coach');j.finish();interactChapterTwo(j.host,'coast-ward');resumeChapterTwo(j.host);j.finish();
-  expect(j.state.party).toHaveLength(4);expect(j.state.activeParty).toHaveLength(3);expect(j.state.activeParty).not.toContain('celia');
-  receiveItem(j.state.inventory,'work-coat');equipItem(j.state.inventory,'orrin','work-coat');
+  expect(j.state.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);expect(j.state.flags.celiaJoined).toBeUndefined();
   expect(setActive(j.state,'celia',true)).toBe(false);expect(setActive(j.state,'nell',false)).toBe(false);
-  expect(setActive(j.state,'orrin',false)).toBe(true);expect(setActive(j.state,'celia',true)).toBe(true);
-  const b=createBattle('coast-collector',j.state);expect(b.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(['nell','kit','celia']);
-  b.result='victory';awardVictory(b,j.state);expect(j.state.inventory.characters.orrin.coat).toBe('work-coat');expect(j.state.party.find(h=>h.id==='orrin')!.hp).toBeGreaterThan(0);
-  // Set the actual story prerequisite before persisting the battle result.
+  receiveItem(j.state.inventory,'work-coat');equipItem(j.state.inventory,'orrin','work-coat');
+  const b=createBattle('coast-collector',j.state);expect(b.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(['nell','orrin','kit']);
+  b.result='victory';awardVictory(b,j.state);expect(j.state.inventory.characters.orrin.coat).toBe('work-coat');
   j.state.flags.settlementSeen=true;j.state.location={map:'cinderbank',x:27,y:22};
   expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
+});
+it('migrates the former four-person v7 chapter without losing progress or equipped copies',()=>{
+  const legacy=coastCheckpoint('chapterTwoComplete');recruit(legacy,'celia');legacy.activeParty=['nell','kit','celia'];
+  legacy.party[0].hp=27;legacy.playSeconds=998;
+  receiveItem(legacy.inventory,'medic-clasp');equipItem(legacy.inventory,'celia','medic-clasp');
+  receiveItem(legacy.inventory,'work-coat');equipItem(legacy.inventory,'celia','work-coat');
+  const restored=decodeSave(JSON.stringify({...legacy,version:7}));
+  expect(restored.version).toBe(8);expect(restored.party).toEqual(legacy.party.filter(h=>h.id!=='celia'));
+  expect(restored.activeParty).toEqual(['nell','kit','orrin']);expect(restored.flags.celiaJoined).toBeUndefined();
+  for(const key of ['coins','bandages','xp','journal','boundary','playSeconds','location'] as const)expect(restored[key]).toEqual(legacy[key]);
+  for(const item of ['medic-clasp','work-coat'] as const)expect(ownedCopies(restored.inventory,item)).toBe(ownedCopies(legacy.inventory,item));
+  expect(restored.inventory.characters.celia).toEqual({fitting:null,coat:null});expect(restored.inventory.bag['medic-clasp']).toBe(1);
+  expect(decodeSave(JSON.stringify(restored))).toEqual(restored);
+});
+it('defers Celia throughout the staged chapter and rejects premature recruitment in current saves',()=>{
+  const entries=[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners(),scenes.ward(),scenes.abandonment(),scenes.evacuation(),scenes.recapture(),scenes.departure()];
+  expect(entries.flatMap(s=>s.scene!.actors).some(a=>a.id==='celia')).toBe(false);
+  expect(entries.flatMap(s=>s.lines).some(l=>l.who==='Celia'||l.text.includes('Celia'))).toBe(false);
+  const s=coastCheckpoint('wardSeen');recruit(s,'celia');expect(()=>decodeSave(JSON.stringify(s))).toThrow();
 });
 it('finishes the local rescue before the capital departure and replays interrupted scenes safely',()=>{
   const j=raid(false);interactChapterTwo(j.host,'prison-coach');j.finish();interactChapterTwo(j.host,'coast-ward');resumeChapterTwo(j.host);j.finish();
@@ -63,7 +80,7 @@ it('finishes the local rescue before the capital departure and replays interrupt
   interactChapterTwo(j.host,'siding-release');expect(j.read().lines[0].text).toContain('families are aboard');
   interactChapterTwo(j.host,'siding-alban');j.finish();j.win();interactChapterTwo(j.host,'capital-engine');expect(j.state.boundary).toBeNull();j.finish();
   expect(j.state.boundary).toBe(THIRD_CHAPTER);expect(j.boundaries()).toBe(1);expect(j.state.journal).toContain('capitalDeparture');
-  expect(j.state.party.map(h=>h.id)).toEqual(['nell','orrin','kit','celia']);expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
+  expect(j.state.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
 });
 it('rejects impossible recruits, oversized active parties and crossed chapter boundaries',()=>{
   const s=journey().state;
