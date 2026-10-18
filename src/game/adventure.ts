@@ -11,6 +11,9 @@ import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
+import { ITEMS, ownedCopies } from '../rules/inventory';
+import { SUPPLIES, buySupply, canBuy } from '../rules/supplies';
+import { openInventory } from './inventory';
 import { bitmapText } from './pixel-font';
 import { worldView, narrowScreen } from './resolution';
 
@@ -135,6 +138,7 @@ export class Adventure extends Phaser.Scene {
     }
   }
   private showTitle() {
+    (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Chapter One · A journey beyond the empire';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey begins at home</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
@@ -184,6 +188,7 @@ export class Adventure extends Phaser.Scene {
     finally{this.busy=false;}
   }
   private showWorld() {
+    (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id);
@@ -304,6 +309,7 @@ export class Adventure extends Phaser.Scene {
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     if (this.ui.dialogueOpen && ['Enter',' ','e','E'].includes(e.key)) { e.preventDefault(); this.ui.advanceDialogue(); return; }
     if (this.blocked || this.busy || e.repeat) return;
+    if (e.key.toLowerCase()==='i') { this.inventory(); return; }
     if (e.key.toLowerCase()==='j') { if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.();else this.journal(); return; }
     if (this.mode==='world' && ['e','E','Enter',' '].includes(e.key)) { const near=this.closestObject(); if(near)this.interact(near); }
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
@@ -359,6 +365,7 @@ export class Adventure extends Phaser.Scene {
     this.mode='title';this.battle=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
   }
   private enterBattle(id: string) {
+    (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
@@ -515,19 +522,26 @@ export class Adventure extends Phaser.Scene {
       ]);return;
     }
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
+    (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map);this.audio.effect('win');
     this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+  }
+
+  inventory() {
+    if(this.practiceReady||this.cinematic||!(this.mode==='world'||this.mode==='battle'&&this.battle?.result==='victory'))return;
+    this.path=[];this.pendingObject=undefined;
+    openInventory(this.ui,this.state,()=>{this.autosave();if(this.mode==='world')this.renderWorldControls();});
   }
 
   journal() {
     if(this.mode==='title'){this.help();return;}
     const s=this.state,esc=this.ui.escape;
     const entries=s.journal.map(id=>JOURNAL[id]).filter(Boolean);
-    this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.gear.length?s.gear.map(id=>id==='brass-lantern'?'Brass lantern':'Reinforced work coats').join(', '):'Station issue'}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
+    this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One ends at a saved Iron Coast departure. Later chapters are planned. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One ends at a saved Iron Coast departure. Later chapters are planned. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
   }
   async toggleSound() { try {this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {
@@ -562,8 +576,18 @@ export class Adventure extends Phaser.Scene {
   private shop() {
     const s=this.state;
     this.ui.showModal('Iona’s supplies',`<div class="shopkeeper"><img src="${art(CHARACTERS.iona.portrait)}" alt="Iona"/><p>${s.flags.raidSeen?"“I’ll keep the station open. You find Tomas. And eat something before you go.”":"“Your brother’s home. You can stop checking every train now.”"}</p></div><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
-    const items=[{id:'bandage',name:'Bandage',description:'Restore 24 HP during battle.',cost:8},{id:'brass-lantern',name:'Brass lantern',description:'Nell deals 3 more damage.',cost:30},{id:'work-coats',name:'Reinforced work coats',description:'Both heroes take 1 less damage.',cost:25}];
     const target=this.ui.modal.querySelector('#shop-items')!;
-    for(const item of items){const row=document.createElement('div');row.className='equipment-row';row.innerHTML=`<div><h3>${item.name}</h3><p>${item.description}</p></div>`;row.append(this.ui.button({label:s.gear.includes(item.id)?'Equipped':`${item.cost} marks`,disabled:s.coins<item.cost||s.gear.includes(item.id)||(item.id==='bandage'&&s.bandages>=999),action:()=>{s.coins-=item.cost;if(item.id==='bandage')s.bandages++;else s.gear.push(item.id);this.autosave();this.renderWorldControls();this.shop();}}));target.append(row);}
+    for(const supply of SUPPLIES){
+      const id=supply.id,item=id==='bandage'?undefined:ITEMS[id];
+      if(item&&!item.heroes.some(h=>s.party.some(p=>p.id===h)))continue;
+      const name=item?.name??'Bandage',description=item?.description??'Restore 24 HP during battle.';
+      const owned=id==='bandage'?s.bandages:ownedCopies(s.inventory,id);
+      const row=document.createElement('div');row.className='equipment-row';row.setAttribute('role','group');row.setAttribute('aria-label',name);
+      row.innerHTML=`<div><h3>${name}</h3><p>${description}</p><small>${owned} owned${id==='bandage'?'':` · ${s.inventory.bag[id]??0} in bag`}</small></div>`;
+      row.append(this.ui.button({label:item?.slot==='fitting'&&owned?'Owned':`Buy · ${supply.cost} marks`,disabled:!canBuy(s,id),action:()=>{
+        if(!buySupply(s,id))return;
+        this.autosave();this.renderWorldControls();this.shop();if(item)this.ui.toast(`${name} added to the bag.`);
+      }}));target.append(row);
+    }
   }
 }

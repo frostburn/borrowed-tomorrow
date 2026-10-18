@@ -59,6 +59,6 @@ test('@journey inventory practice completes without campaign rewards',async({pag
   await page.getByRole('button',{name:'Equip on Orrin',exact:true}).click();
   await page.getByRole('button',{name:/^Pressure nozzle/}).click();await page.getByRole('button',{name:'Equip on Orrin',exact:true}).click();
   await page.getByRole('button',{name:'Test battle',exact:true}).click();await battle(page,'inventory-practice',true);
-  const state=(await inspect(page)).state;expect(state.xp).toBe(0);expect(state.coins).toBe(0);expect(state.gear).toEqual([]);expect(state.flags.workshopWon).toBeUndefined();
+  const state=(await inspect(page)).state;expect(state.xp).toBe(0);expect(state.coins).toBe(0);expect(Object.values(state.inventory.bag).every(n=>n===0)).toBe(true);expect(state.flags.workshopWon).toBeUndefined();
   await expect(page.getByRole('region',{name:'Character workshop'})).toBeVisible();
 });

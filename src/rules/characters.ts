@@ -1,9 +1,8 @@
 import { CHARACTERS } from '../content/characters';
 import type { AbilityId } from './combat';
-import { MAX_PARTY_SIZE, validParty } from './party';
+import { COMPANION_IDS, MAX_PARTY_SIZE, validParty, type CompanionId } from './party';
+export { COMPANION_IDS, type CompanionId } from './party';
 
-export const COMPANION_IDS = ['nell', 'orrin', 'kit', 'celia', 'petra'] as const;
-export type CompanionId = typeof COMPANION_IDS[number];
 export const COMPANIONS = {
   nell: { role: 'Porter', tool: 'Oil lantern', chapter: 1, description: 'A railway apprentice pursuing the soldiers who took her brother.', maxHp: 42, attack: 11, armor: 0, speed: 7, movement: 3 },
   orrin: { role: 'Mechanic', tool: 'Steam lance', chapter: 1, description: 'Builds engines, tests explanations, and stands by his friends.', maxHp: 54, attack: 13, armor: 0, speed: 5, movement: 2 },

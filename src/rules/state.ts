@@ -1,5 +1,7 @@
+import { decodeInventory, equipItem, newInventory, receiveItem, type Inventory } from './inventory';
+
 export const SAVE_FORMAT = 'borrowed-tomorrow';
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 export const CAMPAIGN = 'imperial-debt';
 export const NEXT_CHAPTER = 'chapter-two:iron-coast';
 export type HeroId = 'nell' | 'orrin';
@@ -16,7 +18,7 @@ export interface GameState {
   coins: number;
   bandages: number;
   xp: number;
-  gear: string[];
+  inventory: Inventory;
   journal: string[];
   boundary: typeof NEXT_CHAPTER | null;
   playSeconds: number;
@@ -25,7 +27,7 @@ export function newGame(): GameState {
   return {
     format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: 'chapter-one',
     location: { map: 'station', x: 21, y: 16 }, party: [{ id: 'nell', hp: 42, focus: 6 }],
-    flags: {}, coins: 18, bandages: 5, xp: 0, gear: [], journal: ['home'], boundary: null, playSeconds: 0,
+    flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), journal: ['home'], boundary: null, playSeconds: 0,
   };
 }
 export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
@@ -45,7 +47,7 @@ export function decodeSave(text: string): GameState {
   if (s.format === SAVE_FORMAT && [1, 2, 3, 4].includes(s.version as number)) {
     throw new Error('This save belongs to the previous story. Keep it as a backup, then begin Chapter One: Leaving Home.');
   }
-  if (s.format !== SAVE_FORMAT || s.version !== SAVE_VERSION || s.campaign !== CAMPAIGN) throw new Error('Unsupported save format or campaign.');
+  if (s.format !== SAVE_FORMAT || ![5, SAVE_VERSION].includes(s.version as number) || s.campaign !== CAMPAIGN) throw new Error('Unsupported save format or campaign.');
   const number = (x: unknown, max: number): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
   const loc = s.location as GameState['location'] | undefined;
   if (!loc || !['station', 'yard', 'rillbridge', 'tunnel'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
@@ -75,10 +77,18 @@ export function decodeSave(text: string): GameState {
   if ((loc.map === 'yard' && !flags.escapeWon) || (loc.map === 'rillbridge' && !flags.orrinJoined) || (loc.map === 'tunnel' && !flags.villageFreed)) throw new Error('This route has not opened yet.');
   if (Boolean(flags.chapterOneComplete) !== (s.boundary === NEXT_CHAPTER)) throw new Error('The chapter departure is incomplete.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));
-  if (!strings(s.journal, 300) || !strings(s.gear, 30) || s.gear.some(id => !['brass-lantern', 'work-coats'].includes(id))) throw new Error('Invalid journal or equipment.');
+  if (!strings(s.journal, 300)) throw new Error('Invalid journal.');
+  const inventory = s.version === 5 ? newInventory() : decodeInventory(JSON.stringify(s.inventory));
+  if (s.version === 5) {
+    if (!strings(s.gear, 30) || s.gear.some(id => !['brass-lantern', 'work-coats'].includes(id))) throw new Error('Invalid legacy equipment.');
+    if (s.gear.includes('brass-lantern')) { receiveItem(inventory, 'brass-reflector'); equipItem(inventory, 'nell', 'brass-reflector'); }
+    if (s.gear.includes('work-coats')) {
+      receiveItem(inventory, 'work-coat', 2); equipItem(inventory, 'nell', 'work-coat'); equipItem(inventory, 'orrin', 'work-coat');
+    }
+  }
   return {
     format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: 'chapter-one', location: { ...loc }, party,
-    flags, coins: s.coins, bandages: s.bandages, xp: s.xp, gear: [...new Set(s.gear)], journal: [...new Set(s.journal)],
+    flags, coins: s.coins, bandages: s.bandages, xp: s.xp, inventory, journal: [...new Set(s.journal)],
     boundary: s.boundary as GameState['boundary'], playSeconds: s.playSeconds,
   };
 }

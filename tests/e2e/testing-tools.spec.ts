@@ -45,7 +45,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await page.waitForTimeout(1000);await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
     battle=(await inspect(page)).battle!;expect(battle.result).toBe('victory');expect(battle.units.filter(u=>u.side==='enemy').every(u=>u.hp===0)).toBe(true);
     await page.getByRole('button',{name:'Back to workshop',exact:true}).click();
-    expect((await inspect(page)).state).toMatchObject({xp:before.xp,coins:before.coins,flags:before.flags,gear:before.gear,party:before.party});
+    expect((await inspect(page)).state).toMatchObject({xp:before.xp,coins:before.coins,flags:before.flags,inventory:before.inventory,party:before.party});
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   });
 }

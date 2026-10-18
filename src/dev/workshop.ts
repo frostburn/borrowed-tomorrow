@@ -31,6 +31,7 @@ class Workshop {
     try { const stored = localStorage.getItem(STORAGE); if (stored) this.inventory = decodeInventory(stored); }
     catch { this.message = 'Stored workshop inventory was unavailable. Starting with fresh equipment.'; }
     try { const stored = localStorage.getItem(CHARACTER_STORAGE); if(stored) this.settings = decodeCharacterSettings(stored); } catch { this.message = 'Stored character settings were unavailable. Using level defaults.'; }
+    document.getElementById('inventory-button')!.hidden = true;
     document.title = 'Borrowed Tomorrow · Character workshop';
     document.querySelector('.game-shell')!.classList.add('character-workshop');
     document.querySelector('.brand h1')!.textContent = 'Character workshop';
