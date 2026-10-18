@@ -41,9 +41,9 @@ export const raid = (diversion: boolean) => scene('two-raid', diversion ? 'THE S
 ]);
 
 export const freePrisoners = () => scene('two-prisoners', 'THE COACH OPENS', [
-  { id: 'nell', at: { x: 42, y: 16 } }, { id: 'orrin', at: { x: 39, y: 17 } }, { id: 'kit', at: { x: 44, y: 15 } }, { id: 'celia', at: { x: 46, y: 17 } },
+  { id: 'nell', at: { x: 26, y: 15 } }, { id: 'orrin', at: { x: 24, y: 16 } }, { id: 'kit', at: { x: 27, y: 14 } }, { id: 'celia', at: { x: 29, y: 16 } },
 ], [
-  line('Kit', 'Stand back from the lock. There.', { focus: { x: 43, y: 16 }, cut: true, cue: 'strike' }),
+  line('Kit', 'Stand back from the lock. There.', { focus: { x: 27, y: 13 }, cut: true, cue: 'strike' }),
   line('The prison coach', 'The door slides open. Hands reach for the rail. Celia takes a man’s weight while Kit helps the others down.'),
   line('Celia', 'Anyone who can walk, help someone who can’t. The ward is west of the exchange.'),
   line('Nell', 'Tomas! Is Tomas here?'),
@@ -54,7 +54,7 @@ export const freePrisoners = () => scene('two-prisoners', 'THE COACH OPENS', [
   line('Nell', 'He’s alive. And he left us a way to find him.'),
   line('Kit', 'We’ve got the dispatch case too. The medical train’s clearance is inside. Celia knows the capital wards.'),
   line('Nell', 'Thank you, Kit.'),
-  line('Kit', 'You’re—yes. The left door sticks. I’ll take it.', { actors: { kit: { to: { x: 45, y: 16 } } } }),
+  line('Kit', 'You’re—yes. The left door sticks. I’ll take it.', { actors: { kit: { to: { x: 28, y: 15 } } } }),
   line('Celia', 'Bring that case. And get these people somewhere warm.'),
 ]);
 

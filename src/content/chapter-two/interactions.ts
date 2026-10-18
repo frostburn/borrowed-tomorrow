@@ -42,7 +42,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
     case 'prison-coach':
       if (!f.trainRaidWon) return host.toast('The coach is under guard. Choose an approach with Kit.');
       if (f.prisonersFreed) return say('Nell', 'Empty. They’re all out. Tomas’s transfer slip is safe.');
-      host.talk({ ...scenes.freePrisoners(), done: () => { s.location = { map: 'coast', x: 42, y: 16 }; host.commit('prisonersFreed', 'prisoners'); } }); return;
+      host.talk({ ...scenes.freePrisoners(), done: () => { s.location = { map: 'coast', x: 26, y: 15 }; host.commit('prisonersFreed', 'prisoners'); } }); return;
     case 'coast-ward':
       if (!f.prisonersFreed) return host.toast('Open the prison coach before leaving.');
       host.travel('infirmary', 31, 24); return;

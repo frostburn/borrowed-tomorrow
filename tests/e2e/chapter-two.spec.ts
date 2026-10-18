@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { CHAPTER_TWO_AVAILABLE } from '../../src/content/chapters';
 import { coastCheckpoint, checkpoint } from '../support/progress';
-import { battle, capture, dialogue, inspect, nativeScene, nativeActor } from './controls';
+import { battle, capture, clickWorld, dialogue, inspect, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 
 test.skip(!CHAPTER_TWO_AVAILABLE, 'Chapter Two artwork is not installed in this source checkpoint.');
@@ -88,3 +88,22 @@ test('loading-gate route, ward supplies and the escape work on a phone',async({p
   await visit(page,'siding-release');await approach(page,'siding-alban');await dialogue(page);await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await visit(page,'capital-engine');
   await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);
 });
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
+  test(`the illustrated coach door opens from the saved post-raid position on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const saved=coastCheckpoint('trainRaidWon');saved.location={map:'coast',x:24,y:15};
+    await importSave(page,saved);await expect(page).toHaveTitle('Borrowed Tomorrow');
+    await capture(page,`coach-checkpoint-${device}`);
+    // Click the painted door above the platform, rather than a content-coordinate helper.
+    await clickWorld(page,26,11);
+    await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:5000}).toBe('two-prisoners');
+    await capture(page,`coach-opens-${device}`);await dialogue(page);
+    expect((await inspect(page)).state.flags.prisonersFreed).toBe(true);
+    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).state.flags.prisonersFreed).toBe(true);
+    await travel(page,'coast-ward','infirmary');await dialogue(page);
+    expect((await inspect(page)).state.flags.wardSeen).toBe(true);expect(errors).toEqual([]);
+  });
+}

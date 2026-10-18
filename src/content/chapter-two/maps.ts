@@ -6,7 +6,7 @@ export const CHAPTER_TWO_MAPS = {
       { id: 'kit-contact', x: 28, y: 21, label: 'Kit · the loading gate', sprite: 'kit', hiddenFlag: 'kitJoined' },
       { id: 'loading-gate', x: 23, y: 17, label: 'Loading gate · armored guardian', sign: true, hiddenFlag: 'trainRaidWon' },
       { id: 'signal-walk', x: 48, y: 17, label: 'Signal walk · ranged crows', sign: true, hiddenFlag: 'trainRaidWon' },
-      { id: 'prison-coach', x: 43, y: 15, label: 'Open the barred coach', sign: true, doneFlag: 'prisonersFreed' },
+      { id: 'prison-coach', x: 26, y: 14, label: 'Open the barred coach', sign: true, doneFlag: 'prisonersFreed', hitArea: { x: 24, y: 8, width: 4, height: 7 } },
       { id: 'coast-ward', x: 14, y: 24, label: 'West · Celia’s ward', sign: true },
       { id: 'coast-engine', x: 26, y: 31, label: 'Orrin’s engine · coal siding', sign: true },
     ] },

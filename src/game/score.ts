@@ -7,7 +7,7 @@ export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'kick' 
 export interface Note { instrument:Instrument; midi:number; beat:number; duration:number; velocity:number; pan:number }
 interface Arrangement { bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
-  coast:{bpm:96,lead:'reed',leadGain:.23,keys:.045,strings:.018,bass:.15,percussion:.026},
+  coast:{bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
   northglass:{bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
   relayhall:{bpm:74,lead:'reed',leadGain:.17,keys:.045,strings:.023,bass:.11,percussion:0},
   switching:{bpm:126,lead:'reed',leadGain:.23,keys:.047,strings:0,bass:.2,percussion:.12},
