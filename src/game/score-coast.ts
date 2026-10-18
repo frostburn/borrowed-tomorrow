@@ -2,7 +2,7 @@ import type { Note } from './score';
 // Harbor call, answer, a lifted middle phrase and a quieter return. Original melody.
 // C–Bm7b5–Em7–Am–Gm7–C7–F–Em–Dm–G–C, extended to sixteen bars.
 const chords = [
-  [36,60,64,67],[35,59,62,65],[40,59,62,67],[45,60,64,69],
+  [36,60,64,67],[35,57,62,65],[40,59,62,67],[45,60,64,69],
   [43,58,62,65],[36,58,64,67],[41,60,65,69],[40,59,64,67],
   [38,60,65,69],[43,59,62,67],[36,60,64,67],[45,60,64,69],
   [41,60,65,69],[38,60,65,69],[43,59,62,67],[36,60,64,67],
@@ -21,7 +21,7 @@ export function coastBar(bar: number): Note[] {
   const i=((bar%16)+16)%16, [root,...voicing]=chords[i], notes:Note[]=[];
   const add=(instrument:Note['instrument'],midi:number,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,midi,beat,duration,velocity,pan});
   for(const [beat,midi,duration] of melody[i])add('reed',midi,beat,duration,.23,-.2);
-  add('bass',root,0,2.8,.15);if(i%4!==3)add('bass',root+7,3,.7,.09);
+  add('bass',root,0,2.8,.15);if(i%4!==3)add('bass',root+(i===1?6:7),3,.7,.09);
   for(const [n,pitch] of voicing.entries())add('keys',pitch,n*.75,1.5,.045,.3);
   if(i>=8&&i<12)for(const pitch of voicing)add('strings',pitch-12,0,3.7,.018,.4);
   if(i%4!==3){add('hat',42,1.5,.08,.026,.45);add('hat',42,3.5,.08,.022,.45);}

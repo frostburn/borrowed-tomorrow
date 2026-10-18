@@ -67,7 +67,8 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       if (f.coastCollectorWon) return;
       host.battle('coast-collector'); return;
     case 'siding-release':
-      if (!f.coastCollectorWon || f.evacuationReady) return;
+      if (!f.coastCollectorWon) return;
+      if (f.evacuationReady) return say('The broken collector', 'The casing is empty. The families are aboard the medical train.');
       host.talk({ ...scenes.evacuation(), done: () => { s.location = { map: 'cinderbank', x: 38, y: 23 }; restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
     case 'siding-coaches':
       say('Celia', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. Clear the crossing; I’ll help you.' : 'The prisoners are safe in the coaches. Kit’s families are still in the houses beyond the collector.'); return;

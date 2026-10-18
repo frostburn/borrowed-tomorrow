@@ -64,6 +64,7 @@ it('Cinderbank and Bellwether have independent melodies with chord-supported dow
 });
 
 it('the Iron Coast theme loops with rests, independent phrases and supported harmony',()=>{
+  expect(new Set(scoreBar('coast',1).filter(n=>n.instrument==='bass'||n.instrument==='keys').map(n=>n.midi%12))).toEqual(new Set([11,2,5,9]));
   const melody=[];
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast',bar),lead=notes.filter(n=>n.instrument==='reed');

@@ -60,6 +60,7 @@ it('finishes the local rescue before the capital departure and replays interrupt
   interactChapterTwo(j.host,'ward-siding');resumeChapterTwo(j.host);j.finish();interactChapterTwo(j.host,'siding-alban');expect(j.battle()).toBe('coast-loading');
   interactChapterTwo(j.host,'siding-collector');j.win();interactChapterTwo(j.host,'siding-release');expect(j.state.flags.evacuationReady).toBeUndefined();
   const restored=decodeSave(JSON.stringify(j.state));expect(restored.flags.coastCollectorWon).toBe(true);j.finish();
+  interactChapterTwo(j.host,'siding-release');expect(j.read().lines[0].text).toContain('families are aboard');
   interactChapterTwo(j.host,'siding-alban');j.finish();j.win();interactChapterTwo(j.host,'capital-engine');expect(j.state.boundary).toBeNull();j.finish();
   expect(j.state.boundary).toBe(THIRD_CHAPTER);expect(j.boundaries()).toBe(1);expect(j.state.journal).toContain('capitalDeparture');
   expect(j.state.party.map(h=>h.id)).toEqual(['nell','orrin','kit','celia']);expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
