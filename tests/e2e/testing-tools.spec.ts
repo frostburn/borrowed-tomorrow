@@ -30,9 +30,16 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await expect(page.getByRole('heading',{name:'Practice defeated',exact:true})).toBeVisible();
     await expect(tools.getByRole('button',{name:'Win battle',exact:true})).toBeDisabled();
     await page.getByRole('button',{name:'Back to workshop',exact:true}).click();
-    await expect(tools).toHaveCount(0);await page.getByRole('button',{name:'Test battle',exact:true}).click();
+    await expect(tools).toHaveCount(0);
+    await page.getByRole('spinbutton',{name:'Nell Speed',exact:true}).fill('1');
+    await page.getByRole('button',{name:'Apply base stats',exact:true}).click();
+    await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
+    await page.getByRole('spinbutton',{name:'Orrin Speed',exact:true}).fill('1');
+    await page.getByRole('button',{name:'Apply base stats',exact:true}).click();
+    await page.getByRole('button',{name:'Test battle',exact:true}).click();
     // Win with an enemy timer pending, then ensure it cannot replace the result panel.
-    await page.locator('.actions').getByRole('button',{name:/^F\s+Defend$/}).click();
+    const opening=(await inspect(page)).battle!;
+    expect(opening.units.find(u=>u.id===opening.queue[0])!.side).toBe('enemy');
     await tools.getByRole('button',{name:'Win battle',exact:true}).click();
     await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
     await page.waitForTimeout(1000);await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
@@ -45,8 +52,13 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 test('forced campaign defeat and victory use the normal retry, rewards, continuation and save path',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto('/');const initial=checkpoint('raidSeen');await importSave(page,initial);await approach(page,'pursuit');
+  await page.goto('/');const initial=checkpoint('raidSeen');initial.party[0].hp=7;initial.party[0].focus=0;
+  await importSave(page,initial);await approach(page,'pursuit');
   const tools=page.getByRole('group',{name:'Development battle tools',exact:true});
+  expect((await inspect(page)).battle!.units[0].hp).toBe(7);
+  await tools.getByRole('button',{name:'Refill party',exact:true}).click();
+  expect((await inspect(page)).battle!.units[0]).toMatchObject({hp:42,focus:6});
+  expect((await inspect(page)).state.party).toEqual(initial.party);
   await tools.getByRole('button',{name:'Lose battle',exact:true}).click();
   await expect(page.getByRole('heading',{name:'The line can wait',exact:true})).toBeVisible();
   expect((await inspect(page)).state).toMatchObject({xp:initial.xp,coins:initial.coins,flags:initial.flags});
