@@ -55,6 +55,7 @@ test('forced campaign defeat and victory use the normal retry, rewards, continua
   await page.goto('/');const initial=checkpoint('raidSeen');initial.party[0].hp=7;initial.party[0].focus=0;
   await importSave(page,initial);await approach(page,'pursuit');
   const tools=page.getByRole('group',{name:'Development battle tools',exact:true});
+  await expect(tools).toBeVisible();
   expect((await inspect(page)).battle!.units[0].hp).toBe(7);
   await tools.getByRole('button',{name:'Refill party',exact:true}).click();
   expect((await inspect(page)).battle!.units[0]).toMatchObject({hp:42,focus:6});
