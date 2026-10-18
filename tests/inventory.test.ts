@@ -36,8 +36,9 @@ it('keeps space to unequip items at the copy limit', () => {
 });
 it('equipped gear changes actual combat damage, armor and initiative only for its wearer', () => {
   const inventory = newInventory(), state = newGame(); recruitOrrin(state);
-  // Old campaign gear must not leak into an explicit loadout.
-  state.gear = ['work-coats', 'brass-lantern'];
+  // An explicit practice loadout must override campaign equipment.
+  receiveItem(state.inventory,'work-coat',2);equipItem(state.inventory,'nell','work-coat');equipItem(state.inventory,'orrin','work-coat');
+  receiveItem(state.inventory,'brass-reflector');equipItem(state.inventory,'nell','brass-reflector');
   const before = createBattle('workshop', state, equipmentBonuses(inventory));
   receiveItem(inventory, 'brass-reflector'); receiveItem(inventory, 'heavy-coat');
   equipItem(inventory, 'nell', 'brass-reflector'); equipItem(inventory, 'nell', 'heavy-coat');

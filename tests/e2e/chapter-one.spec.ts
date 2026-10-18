@@ -126,7 +126,10 @@ test('@journey Chapter One: festival, raid, escape, rescue and the Iron Coast de
   await travel(page, 'west-yard', 'yard'); await visit(page, 'orrin');
   expect((await inspect(page)).state.party.map(h => h.id)).toEqual(['nell', 'orrin']);
   await visit(page, 'workshop-cache'); await battle(page, 'workshop-battle');
-  expect((await inspect(page)).state.gear).toContain('brass-lantern');
+  expect((await inspect(page)).state.inventory.bag['brass-reflector']).toBe(1);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();
+  await page.getByRole('button',{name:'Equip on Nell',exact:true}).click();
+  await page.getByRole('button',{name:'Close',exact:true}).click();
   await travel(page, 'branch', 'rillbridge'); await dialogue(page); await capture(page, 'frozen-village');
   await visit(page, 'collector'); await battle(page, 'collector-battle');
   await visit(page, 'release'); expect((await inspect(page)).state.flags.villageFreed).toBe(true);
@@ -145,6 +148,6 @@ test('@journey Chapter One: festival, raid, escape, rescue and the Iron Coast de
   await expect(page.getByRole('status')).toContainText('Place saved');
   await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Chapter One complete' })).toBeVisible();
-  const restored = (await inspect(page)).state; expect(restored.gear).toEqual(final.gear); expect(restored.journal).toEqual(final.journal);
+  const restored = (await inspect(page)).state; expect(restored.inventory).toEqual(final.inventory); expect(restored.journal).toEqual(final.journal);
   expect(restored.flags.villageFreed).toBe(true); expect(errors).toEqual([]);
 });

@@ -1,6 +1,6 @@
 # Borrowed Tomorrow
 
-Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Choose up to three companions from the five-character roster, adjust levels and base stats, discover level abilities, equip items and test the builds in combat. Production builds keep the current campaign equipment and progression.
+Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Choose up to three companions from the five-character roster, adjust levels and base stats, discover level abilities, equip items and test the builds in combat. The campaign has its own [character inventory](docs/character-inventory.md): open Equipment or press I outside combat. The workshop’s build editing remains dev-only.
 
 Dev-mode battles also include one-click Win battle, Lose battle, Refill party and Restart battle controls above the combat commands, in both the story and workshop.
 
@@ -45,7 +45,7 @@ Iona offers supplies and free rest in Larkspur. The pass shelter offers free res
 
 IndexedDB holds an autosave and three manual slots. Checkpoints occur at scene completion, travel and before battles; an immediate tab close also preserves the pending checkpoint. Reloading during a battle restores the preceding checkpoint. Save exports and imports use JSON.
 
-The reboot uses **version 5**, campaign `imperial-debt`. Saves from the previous story (versions 1–4) stay available to export and retain their manual slots. They cannot be loaded into the new campaign. Begin Chapter One for the rewritten adventure. The saved ending is `chapter-two:iron-coast`; no unavailable chapter button is offered.
+The reboot uses **version 6**, campaign `imperial-debt`. Version-5 saves migrate automatically, preserving progress and converting old gear into equivalent equipped items. Saves from the previous story (versions 1–4) stay available to export and retain their manual slots. They cannot be loaded into the new campaign. Begin Chapter One for the rewritten adventure. The saved ending is `chapter-two:iron-coast`; no unavailable chapter button is offered.
 
 ## Presentation and source
 

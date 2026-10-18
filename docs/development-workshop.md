@@ -1,6 +1,6 @@
 # Character workshop
 
-Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` keep the campaign; neither query parameter enables the workshop there.
+Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` include the campaign inventory; neither query parameter enables the workshop there.
 
 Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Each character has an independent level, build and loadout. **Add to party** and **Remove from party** edit the practice lineup: at least one and at most three companions may fight. Selecting a portrait edits that character without changing party membership. Reserves keep their builds and equipment; reloading preserves the selected lineup. The portrait column shows effective stats, including equipped bonuses.
 
@@ -56,18 +56,18 @@ Tools work during enemy turns and animations. Each action replaces the battle ob
 
 **Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
-Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both use version-2 records under their existing keys, migrate version-1 two-character records without losing edits or equipment, and validate stored data before use. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign IndexedDB saves and their version-5 data are unchanged.
+Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both use version-2 records under their existing keys, migrate version-1 two-character records without losing edits or equipment, and validate stored data before use. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-6 saves carry a separate inventory, with version-5 migration. Workshop storage never feeds campaign equipment.
 
 ## Implementation boundary
 
 - `src/rules/characters.ts` owns level defaults, stat ranges, learned abilities and validated character settings. Abilities are derived from level rather than trusted from storage.
 - `src/rules/inventory.ts` owns item definitions, spare-copy counts, character loadouts, validation and manual equip/unequip rules.
-- `createBattle` accepts optional equipment bonuses, character profiles and an explicit party of one to three distinct companions. Three-person parties spawn on separate hexes. The chapter-one save schema stays limited to its two recruited characters. Without these arguments, it retains the campaign's current gear, stats and fixed abilities. Both imports are type-only, so the prototype progression table and item catalog are not in production bundles.
+- `createBattle` accepts optional equipment bonuses, character profiles and an explicit party of one to three distinct companions. Three-person parties spawn on separate hexes. The chapter-one save schema stays limited to its two recruited characters. Without these arguments, it retains the campaign's current gear, stats and fixed abilities. The item catalog and inventory rules are shared with production; the prototype progression table remains dev-only.
 - `src/dev/workshop.ts` is imported only behind `import.meta.env.DEV`. Its styles, controls and fixture stock are excluded from builds.
 - `Adventure` supplies an isolated practice host around the existing renderer and controls. It skips campaign loading, autosaves and victory rewards. Delayed battle callbacks discard work belonging to an abandoned encounter.
 
-Integrating recruitment, reserves, character inventories, level progression, loot, shops and save migration into the story is a separate task.
+Character inventory, equipment loot, shops and save migration are integrated into the campaign. Recruitment, reserves and prototype level progression remain separate future tasks.
 
 ## Checks
 
-`npm run check` covers progression, validation, equipment conservation and actual combat effects. `npm run test:e2e:smoke` exercises character builds, ability controls and equipment on desktop and phone alongside the campaign checks. After building, `npm run test:e2e:production` verifies that both development routes, workshop controls, progression table and item catalog are absent from production. `npm run test:e2e:journeys` also completes an equipped practice battle and checks that it gives no campaign rewards.
+`npm run check` covers progression, validation, equipment conservation and actual combat effects. `npm run test:e2e:smoke` exercises character builds, ability controls and equipment on desktop and phone alongside the campaign checks. After building, `npm run test:e2e:production` verifies that both development routes, workshop controls, progression table are absent from production, while campaign equipment remains available. `npm run test:e2e:journeys` also completes an equipped practice battle and checks that it gives no campaign rewards.

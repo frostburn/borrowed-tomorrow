@@ -5,6 +5,7 @@ import { interactChapterOne, resumeChapter, type StoryHost } from '../src/conten
 import { objective } from '../src/content/chapter-one/story';
 import type { Dialogue } from '../src/content/dialogue';
 import * as scenes from '../src/content/scenes';
+import { receiveItem, equipItem } from '../src/rules/inventory';
 import { checkpoint } from './support/progress';
 
 function visit(state = newGame()) {
@@ -19,7 +20,7 @@ function visit(state = newGame()) {
 
 describe('campaign saves', () => {
   it('round-trips a departure and rejects old stories without inventing progress', () => {
-    const s = checkpoint('chapterOneComplete'); s.flags.workshopWon = true; s.gear = ['brass-lantern']; s.bandages = 11;
+    const s = checkpoint('chapterOneComplete'); s.flags.workshopWon = true; receiveItem(s.inventory,'brass-reflector'); equipItem(s.inventory,'nell','brass-reflector'); s.bandages = 11;
     expect(decodeSave(JSON.stringify(s))).toEqual(s);
     expect(s.boundary).toBe(NEXT_CHAPTER);
     for (const version of [1, 2, 3, 4]) expect(() => decodeSave(JSON.stringify({ ...s, version }))).toThrow('previous story');
@@ -30,7 +31,7 @@ describe('campaign saves', () => {
       { ...s, coins: -1 }, { ...s, campaign: 'old-railway' }, { ...s, location: { map: 'tunnel', x: 3, y: 13 } },
       { ...s, boundary: NEXT_CHAPTER }, { ...s, flags: { captainDefeated: true } },
       { ...s, party: [{ id: 'nell', hp: 1e9, focus: 6 }] }, { ...s, flags: { orrinJoined: true } },
-      { ...s, flags: { constructor: true } }, { ...s, gear: ['unavailable-sword'] },
+      { ...s, flags: { constructor: true } }, { ...s, inventory: { ...s.inventory, bag: { 'unavailable-sword': 1 } } },
     ]) expect(() => decodeSave(JSON.stringify(bad))).toThrow();
   });
 });

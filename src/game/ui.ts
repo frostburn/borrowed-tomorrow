@@ -16,10 +16,10 @@ export class UI {
   private onLine?: (index:number)=>void;
   private modalReturn?: HTMLElement;
   private toastTimer?: number;
-  constructor(root: HTMLElement, callbacks: { journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
+  constructor(root: HTMLElement, callbacks: { inventory: () => void; journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
     root.innerHTML = `<main class="game-shell">
       <header class="topbar"><div class="brand"><h1>Borrowed Tomorrow</h1><span id="location">The Wrong Platform</span></div>
-      <nav aria-label="Game menu"><button id="journal-button">Journal</button><button id="save-button">Save</button><button id="sound-button" aria-pressed="false">Sound off</button><button id="help-button" aria-label="Controls and combat help">?</button></nav></header>
+      <nav aria-label="Game menu"><button id="inventory-button" disabled>Equipment</button><button id="journal-button">Journal</button><button id="save-button">Save</button><button id="sound-button" aria-pressed="false">Sound off</button><button id="help-button" aria-label="Controls and combat help">?</button></nav></header>
       <div class="initiative" id="initiative"></div>
       <section class="stage-wrap" aria-label="Game world"><div id="canvas" tabindex="0" aria-label="Explore with arrow keys or WASD. E to interact. In battle use pointer or arrow keys to choose a hex."></div><div id="battle-pan" class="battle-pan" hidden aria-label="Battlefield view"><button id="pan-left" aria-label="Pan battlefield left">←</button><button id="pan-right" aria-label="Pan battlefield right">→</button></div><div id="scene-layer" class="scene-layer"></div></section>
       <section class="controls" id="controls" aria-label="Adventure controls"></section>
@@ -27,6 +27,7 @@ export class UI {
     </main><div id="modal" class="modal-backdrop" hidden></div><div id="toast" class="toast" role="status" hidden></div>`;
     const get = (id: string) => document.getElementById(id)!;
     this.canvas = get('canvas'); this.controls = get('controls'); this.initiative = get('initiative'); this.sceneLayer = get('scene-layer'); this.modal = get('modal'); this.status = get('status');this.battlePan=get('battle-pan');
+    get('inventory-button').onclick = callbacks.inventory;
     get('journal-button').onclick = callbacks.journal; get('save-button').onclick = callbacks.saves;
     get('sound-button').onclick = callbacks.sound; get('help-button').onclick = callbacks.help;
     get('pan-left').onclick=()=>callbacks.pan(-1);get('pan-right').onclick=()=>callbacks.pan(1);

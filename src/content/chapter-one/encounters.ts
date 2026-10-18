@@ -8,9 +8,9 @@ export const ENCOUNTERS: Record<string, Encounter> = {
     rocks: [[4, 4], [7, 1]], victory: 'The western road is open. Find Orrin in his workshop.',
   },
   workshop: {
-    id: 'workshop', name: 'The spare engine shed', flag: 'workshopWon', xp: 25, coins: 24, journal: 'workshop', gear: 'brass-lantern',
+    id: 'workshop', name: 'The spare engine shed', flag: 'workshopWon', xp: 25, coins: 24, journal: 'workshop', item: 'brass-reflector',
     enemies: [{ kind: 'hound', col: 6, row: 3 }, { kind: 'crow', col: 8, row: 1 }, { kind: 'crow', col: 8, row: 5 }],
-    rocks: [[5, 2], [5, 4], [8, 3]], victory: 'Orrin fits the brass reflector. Nell gains 3 attack power.',
+    rocks: [[5, 2], [5, 4], [8, 3]], victory: 'A brass reflector is added to the bag. Equip it to improve Nell’s lantern.',
   },
   collector: {
     id: 'collector', name: 'The imperial collector', flag: 'collectorDefeated', xp: 45, coins: 26, journal: 'collector',

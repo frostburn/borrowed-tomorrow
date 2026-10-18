@@ -174,5 +174,5 @@ test('@journey the future-companion trio wins practice and keeps its selected pa
   }
   await page.getByRole('button',{name:'Test battle',exact:true}).click();await battle(page,'companions-practice',true);
   await expect(page.getByRole('region',{name:'Practice party',exact:true})).toContainText('Kit · Celia · Petra');
-  const state=(await inspect(page)).state;expect(state.xp).toBe(0);expect(state.coins).toBe(0);expect(state.gear).toEqual([]);expect(errors).toEqual([]);
+  const state=(await inspect(page)).state;expect(state.xp).toBe(0);expect(state.coins).toBe(0);expect(Object.values(state.inventory.bag).every(n=>n===0)).toBe(true);expect(errors).toEqual([]);
 });

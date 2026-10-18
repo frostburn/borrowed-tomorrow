@@ -2,7 +2,7 @@ import { ENCOUNTERS } from '../content/chapter-one/encounters';
 export { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
-import type { EquipmentBonuses } from './inventory';
+import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
 import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
 import type { Effect } from '../game/synth';
@@ -44,7 +44,7 @@ export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; journal?:string; victory?:string; gear?:string }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -53,6 +53,7 @@ const ENEMY_STATS = {
 };
 
 export function createBattle(encounter: string, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
+  equipment ??= equipmentBonuses(state.inventory);
   const e = ENCOUNTERS[encounter];
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
   const ids = party ?? state.party.map(h => h.id);
@@ -65,8 +66,8 @@ export function createBattle(encounter: string, state: GameState, equipment?: Re
     return { id, name: profile?.name ?? (id === 'nell' ? 'Nell' : 'Orrin'), kind: id, role: profile?.role, side: 'party',
       hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
       speed: Math.max(1, (profile?.speed ?? (id === 'nell' ? 7 : 5)) + (equipment?.[id].speed ?? 0)), movement: profile?.movement ?? (id === 'nell' ? 3 : 2),
-      armor: (profile?.armor ?? 0) + (equipment ? equipment[id].armor : state.gear.includes('work-coats') ? 1 : 0),
-      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + (id === 'orrin' ? 2 : 0)) + (equipment ? equipment[id].attack : id === 'nell' && state.gear.includes('brass-lantern') ? 3 : 0),
+      armor: (profile?.armor ?? 0) + equipment[id].armor,
+      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + (id === 'orrin' ? 2 : 0)) + equipment[id].attack,
       abilities: profile ? [...profile.abilities] : id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] : ['strike', 'steam', 'bandage'], level: profile?.level,
       moved: false, defending: false, retaliated: false, waited: false };
   });
@@ -288,7 +289,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
 export function awardVictory(b: Battle, s: GameState) {
   const e = ENCOUNTERS[b.encounter];
   if (b.result !== 'victory' || s.flags[e.flag]) return;
-  if (e.gear && !s.gear.includes(e.gear)) s.gear.push(e.gear);
+  if (e.item) receiveItem(s.inventory, e.item);
   const oldLevel = level(s);
   s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
   for (const hero of s.party) {

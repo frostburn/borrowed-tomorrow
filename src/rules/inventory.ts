@@ -1,4 +1,4 @@
-import { COMPANION_IDS, type CompanionId } from './characters';
+import { COMPANION_IDS, type CompanionId } from './party';
 
 export const SLOTS = ['fitting', 'coat'] as const;
 export type EquipmentSlot = typeof SLOTS[number];
