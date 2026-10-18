@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
+import { checkpoint } from '../support/progress';
+import { receiveItem } from '../../src/rules/inventory';
+import { importSave } from './navigation';
+import { capture, inspect } from './controls';
 
 test('production ignores both workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -18,3 +22,22 @@ test('production ignores both workshop routes and omits its controls and progres
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools'))).toBe(false);
 });
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`production campaign inventory equips and saves individual loadouts on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.goto('/');
+    const state=checkpoint('orrinJoined');receiveItem(state.inventory,'brass-reflector');receiveItem(state.inventory,'heavy-coat');receiveItem(state.inventory,'work-coat');
+    await importSave(page,state);await page.getByRole('button',{name:'Equipment',exact:true}).click();
+    const inventory=page.getByRole('dialog',{name:'Character inventory'});
+    await inventory.getByRole('button',{name:/^Brass reflector/}).click();await inventory.getByRole('button',{name:'Equip on Nell',exact:true}).click();
+    await inventory.getByRole('button',{name:/^Heavy work coat/}).click();await inventory.getByRole('button',{name:'Equip on Nell',exact:true}).click();
+    await inventory.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
+    await inventory.getByRole('button',{name:/^Reinforced work coat/}).click();await inventory.getByRole('button',{name:'Equip on Orrin',exact:true}).click();
+    await capture(page,`campaign-inventory-production-${device}`);
+    const saved=(await inspect(page)).state.inventory;expect(saved.characters.nell).toEqual({fitting:'brass-reflector',coat:'heavy-coat'});expect(saved.characters.orrin).toEqual({fitting:null,coat:'work-coat'});
+    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).state.inventory).toEqual(saved);
+    await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+  });
+}
