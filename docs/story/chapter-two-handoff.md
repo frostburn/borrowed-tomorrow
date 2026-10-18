@@ -14,7 +14,7 @@ Load and validate new region assets before consuming this boundary. An error mus
 
 Arrive at the Iron Coast prison-train exchange. The player should see a train, a person or a recognizable sign of Tomas's passage promptly. Give Nell a concrete route toward the resistance's train raid. A helpful contact can introduce a conflict, but do not withhold basic information behind unrelated repairs or errands.
 
-Recruit the healer and introduce the imperial knight through this pursuit. The first raid frees prisoners and earns Tomas's destination in the capital. It also gives the knight a visible reason to question the empire. The later rescue in Chapter Three must bring Tomas back alive and remain a permanent accomplishment.
+Introduce Kit, a boy resistance courier and Nell’s peer, through the train raid. He occasionally stumbles over his words around Nell, then gets back to helping the prisoners. Keep this an innocent, unresolved gag, with no romance payoff. Recruit Celia, the physician, and introduce Petra, the imperial knight, through this pursuit. Petra helps the escape in Chapter Two and permanently joins in Chapter Three after refusing to surrender the escapees. The active combat party is capped at three, with the rest in reserve. Their builds, equipment and portraits are previewable in the Vite workshop; that preview is not a Chapter One recruitment event. The first raid frees prisoners and earns Tomas's destination in the capital. It also gives the knight a visible reason to question the empire. The later rescue in Chapter Three must bring Tomas back alive and remain a permanent accomplishment.
 
 ## What carries forward
 
