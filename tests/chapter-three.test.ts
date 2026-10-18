@@ -36,7 +36,7 @@ for(const pressure of [false,true])it(`rescues Tomas permanently and finishes vi
  interactChapterThree(j.h,'capital-departure');j.finish();expect(s.boundary).toBe('chapter-four:broken-world');expect(s.flags.tomasRescued).toBe(true);expect(s.party.some(h=>h.id==='celia')).toBe(false);expect(decodeSave(JSON.stringify(s))).toEqual(s);
 });
 it('offers usable loot once, leaves it in the bag and preserves the optional stores choice',()=>{
- const s=palaceCheckpoint('worksSeen'),j=host(s);interactChapterThree(j.h,'capital-cache');j.finish();interactChapterThree(j.h,'capital-cache');expect(ownedCopies(s.inventory,'lance-nozzle')).toBe(1);expect(s.inventory.characters.orrin.fitting).toBeNull();expect(equipItem(s.inventory,'orrin','lance-nozzle')).toBe(true);
+ const s=palaceCheckpoint('worksSeen'),j=host(s);interactChapterThree(j.h,'capital-cache');j.finish();interactChapterThree(j.h,'capital-cache');expect(ownedCopies(s.inventory,'baffled-nozzle')).toBe(1);expect(s.inventory.characters.orrin.fitting).toBeNull();expect(equipItem(s.inventory,'orrin','baffled-nozzle')).toBe(true);
  interactChapterThree(j.h,'works-locker');j.read().choices![1].action();expect(s.flags.palaceStoresWon).toBeUndefined();
  interactChapterThree(j.h,'works-locker');j.read().choices![0].action();j.win();const xp=s.xp;j.win();expect(s.xp).toBe(xp);expect(ownedCopies(s.inventory,'ratchet-sight')).toBe(1);expect(equipItem(s.inventory,'kit','ratchet-sight')).toBe(true);
 });

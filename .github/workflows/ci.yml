@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       full_journey:
-        description: Play Chapter One and render complete musical loops
+        description: Play all chapters and render complete musical loops
         type: boolean
         default: false
 concurrency:

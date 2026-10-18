@@ -198,7 +198,8 @@ export class Adventure extends Phaser.Scene {
       if (candidate.chapter === 'chapter-three' && !CHAPTER_THREE_AVAILABLE) throw new Error('Chapter Three artwork is not installed. Your saved journey is intact.');
       if (candidate.chapter === 'chapter-two' && !CHAPTER_TWO_AVAILABLE) throw new Error('Chapter Two artwork is not installed in this build. Your saved journey is intact.');
       if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y,candidate)) throw new Error('This save is inside an obstacle.');
-      await this.ensureRegion(candidate.location.map);
+      if(candidate.chapter==='chapter-three')for(const map of ['northglass','relayhall','conduit'] as const)await this.ensureRegion(map);
+      else await this.ensureRegion(candidate.location.map);
       this.state = candidate;
       this.battle = undefined; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
       if(this.state.boundary)this.boundaryPanel();
@@ -230,7 +231,12 @@ export class Adventure extends Phaser.Scene {
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85); this.layer!.add(this.player);
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
-    this.ui.initiative.textContent = map.id === 'station' && this.state.flags.raidSeen ? 'The festival is over. Iona is keeping the station open.'
+    this.ui.initiative.textContent = this.state.chapter==='chapter-three'&&this.state.flags.chapterThreeComplete?'Tomas is aboard. The medical train has escaped.'
+      : map.id==='northglass'&&this.state.flags.emperorMerged?'The capital is rising. Reach the medical engine.'
+      : map.id==='northglass'&&this.state.flags.petraJoined?'The works entrance is open. Tomas is inside.'
+      : map.id==='relayhall'&&this.state.flags.tomasRescued?'Tomas is safe. The intake console is below.'
+      : map.id==='conduit'&&this.state.flags.conduitGuardWon?'The regulator is down. Close the feeds.'
+      : map.id === 'station' && this.state.flags.raidSeen ? 'The festival is over. Iona is keeping the station open.'
       : map.id === 'rillbridge' && this.state.flags.villageFreed ? 'Rillbridge is awake. The eastern road is open.'
       : map.id === 'tunnel' && this.state.flags.captainDefeated ? 'The crossing is yours. The Iron Coast lies ahead.' : map.subtitle;
     this.renderWorldControls();

@@ -19,7 +19,7 @@ The semantic DOM is invisible; its hit areas, focus and file input remain access
 
 The scenery remains the original generated raster artwork. Tiled collision follows buildings, rail vehicles and walls. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
 
-The other restored scenery and unused character assets remain an art library for future chapters. Their old narrative roles do not survive the reboot. `scripts/restore-map-art.mjs` reconstructs larger lossless files from verified source chunks and checks byte lengths and SHA-256 without changing dimensions or colors.
+Restored scenery and character assets not assigned to the playable chapters remain an art library for future chapters. Their old narrative roles do not survive the reboot. `scripts/restore-map-art.mjs` reconstructs larger lossless files from verified source chunks and checks byte lengths and SHA-256 without changing dimensions or colors.
 
 ## Characters
 
@@ -54,3 +54,11 @@ The Iron Coast exchange uses a new built-in Image Gen raster (`public/art/coast.
 Production prompt brief: a detailed discrete-pixel fantasy railway harbor at blue dawn, brass lamps and navy iron; a barred prison train with imperial sun crests across the upper quarter; sea, cranes and masts beyond; one broad flat cobbled platform, signal hut, loading gate and clear exits. No people, writing, UI or hospital crosses. The Cinderbank artwork was a style reference only. Built-in Image Gen produced the source; lossless WebP preserves every RGBA pixel. No runtime resizing or recoloring.
 
 The exchange has an original sixteen-bar harbor melody (`score-coast.ts`) using the remembered C–Bm7b5–Em7–Am–Gm7–C7–F–Em–Dm–G–C harmonic reference, extended through a lifted phrase and quiet return. The ward and siding reuse their distinct retained arrangements. Combat retains the tactical and captain themes. Mobile three-fighter exploration lists names and HP without squeezing three native portraits into one row; actors in the world and combat remain 80 × 80.
+
+## Chapter Three scenery and characters
+
+The retained native 1536 × 1024 `northglass.webp` is the capital’s medical siding and `relayhall.webp` its control gallery. The new 1536 × 1024 `conduit.webp` is a subterranean extraction chamber, generated with the gallery and Cinderbank as style references. It shows a restrained faceless crystal vessel above a continuous stone floor, iron/brass machinery, amber and cyan lighting, a console and right access stair; no actors, words or UI are painted into the background. The lossless WebP preserves the source’s RGB pixels. Verified chunks and the manifest restore it before builds.
+
+The Emperor’s new `emperor.png` (80 × 80) and `portrait-emperor.png` (128 × 128) come from a transparent source sheet generated with Nell’s world actor and portrait as style/proportion references. Brief: weary older human man, shoulder-length silver hair, gray eyes, short silver beard, brass sun circlet, ivory/navy imperial coat and dark mourning ribbon. Two matching depictions, separated by transparent space, no scenery or lettering. Mechanical crop and point sampling export the native canvases; alpha is preserved and runtime never scales/recolors them.
+
+The Engine Warden exclusively uses the previously unused `relay-keeper` actor/portrait; the heart regulator uses `boiler-keeper`. Register both identities for consistent named dialogue and combat artwork. They are separate mechanical characters, not reskins of Alban or the emperor.

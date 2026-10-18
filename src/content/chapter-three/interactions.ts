@@ -14,7 +14,7 @@ export function resumeChapterThree(h:StoryHost){
 export function interactChapterThree(h:StoryHost,id:string){
   const s=h.state,f=s.flags;
   const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
-  const rest=()=>h.talk({lines:[SAY('The medical train','The ward staff have hot water and field supplies. Orrin’s engine is under steam.')],choices:[
+  const rest=()=>h.talk({lines:[SAY(s.location.map==='relayhall'?'Maintenance bench':'The medical train',s.location.map==='relayhall'?'Tomas left a flask and the ward’s field supplies on the bench.':'The ward staff have hot water and field supplies. Orrin’s engine is under steam.')],choices:[
     {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone restored.');}},
     {label:'Buy a field bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
     {label:'Keep moving',action:()=>{}},
@@ -26,8 +26,8 @@ export function interactChapterThree(h:StoryHost,id:string){
       h.talk({...scenes.refusal(),done:()=>{h.commit('capitalConfronted');h.battle('capital-arrest');}});return;
     case 'capital-engine':rest();return;
     case 'capital-cache':
-      if(f.capitalCache)return say('Orrin','Empty. The pressure nozzle is in our equipment bag.');
-      h.talk({lines:[SAY('Orrin','A pressure nozzle, still wrapped. That’ll fit my lance.')],done:()=>{receiveItem(s.inventory,'lance-nozzle');h.commit('capitalCache');h.toast('Pressure nozzle added to the bag · fits Orrin.');}});return;
+      if(f.capitalCache)return say('Orrin','Empty. The baffled nozzle is in our equipment bag.');
+      h.talk({lines:[SAY('Orrin','A baffled pressure nozzle. Quicker valve return than mine. That’ll fit my lance.')],done:()=>{receiveItem(s.inventory,'baffled-nozzle');h.commit('capitalCache');h.toast('Baffled pressure nozzle added to the bag · fits Orrin.');}});return;
     case 'capital-works':
       if(!f.petraJoined)return h.toast('The custody machines still hold the square.');
       h.travel('relayhall',31,32);return;
@@ -56,7 +56,7 @@ export function interactChapterThree(h:StoryHost,id:string){
     case 'heart-release':
       if(!f.conduitGuardWon)return;
       h.talk({...scenes.rupture(),done:()=>{f.extractionStopped=true;f.emperorMerged=true;restoreParty(s);s.location={map:'northglass',x:46,y:17};h.commit('emperorMerged','rupture');}});return;
-    case 'capital-tomas':say('Tomas','The patients are aboard. I saved you a place in the cab. Come on.');return;
+    case 'capital-tomas':say('Tomas',f.emperorMerged?'The patients are aboard. I saved you a place in the cab. Come on.':'I’m safe here with the patients. My bypass is still holding. Close the feeds, then we’ll leave together.');return;
     case 'capital-departure':
       if(!f.emperorMerged)return;
       if(f.chapterThreeComplete)return h.boundary();

@@ -10,6 +10,7 @@ export const ITEMS = {
   'courier-sight': { name: 'Courier sight', slot: 'fitting', heroes: ['kit'], description: 'A light sight for Kit’s crossbow.', bonuses: { attack: 3, armor: 0, speed: 1 } },
   'medic-clasp': { name: 'Medic clasp', slot: 'fitting', heroes: ['celia'], description: 'Keeps Celia’s field kit ready to hand.', bonuses: { attack: 0, armor: 1, speed: 1 } },
   'saber-hilt': { name: 'Balanced saber hilt', slot: 'fitting', heroes: ['petra'], description: 'A firm grip for Petra’s saber and shield.', bonuses: { attack: 3, armor: 1, speed: 0 } },
+  'baffled-nozzle': { name: 'Baffled pressure nozzle', slot: 'fitting', heroes: ['orrin'], description: 'A tighter steam jet and quicker valve return for Orrin’s lance.', bonuses: { attack: 4, armor: 0, speed: 1 } },
   'silver-reflector': { name: 'Silver reflector', slot: 'fitting', heroes: ['nell'], description: 'A silvered engine lens. Strengthens Nell’s lantern and shields its handle.', bonuses: { attack: 4, armor: 1, speed: 0 } },
   'ratchet-sight': { name: 'Ratchet sight', slot: 'fitting', heroes: ['kit'], description: 'A precise repeating-crossbow mechanism for Kit.', bonuses: { attack: 4, armor: 0, speed: 1 } },
   'insulated-coat': { name: 'Insulated work coat', slot: 'coat', heroes: COMPANION_IDS, description: 'Light heat-resistant lining. Protection without a speed penalty.', bonuses: { attack: 0, armor: 2, speed: 0 } },
