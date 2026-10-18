@@ -6,6 +6,8 @@ Keep canon and continuation notes under `docs/story/` in sync with playable cont
 
 Off-story mechanics work lives in the Vite-only character workshop (`?dev=workshop`; `?dev=inventory` opens its equipment tab). Keep its UI, fixtures and storage separate from campaign saves, and its entry behind `import.meta.env.DEV`. Production retains the current story equipment and character progression until an explicit integration task. The workshop roster includes Nell, Orrin, Kit, Celia and Petra, with one to three active combatants. Future recruits are author plans, not Chapter One party members. Read `docs/development-workshop.md` for character builds, level abilities, the manual equipment model and the practice harness.
 
+Vite dev battles also expose Win battle, Lose battle, Refill party and Restart battle controls in the command panel. Keep their module and styles behind `import.meta.env.DEV`; no mutation API is exposed in production. Forced outcomes must use normal battle completion, preserving story rewards and continuation while workshop practice stays isolated. Replace the battle object when using tools so delayed callbacks cannot act on it afterward.
+
 Nell is a seventeen-year-old girl (she/her). Kit is a boy her age whose occasional flustered responses to her are an innocent, unresolved running gag. Do not develop a mutual romance, confession, kiss or couple ending. Keep these author facts out of introductory exposition.
 
 For story work, read and apply `.agents/skills/write-game-prose/SKILL.md`. It covers dialogue, narration, journals, player choices, and disk handoffs.

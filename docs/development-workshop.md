@@ -41,6 +41,19 @@ Receiving equipment adds copies to the bag without equipping them. Equipping con
 
 ## Practice and persistence
 
+### Battle testing tools
+
+Every battle on the Vite dev server, including campaign encounters, has a **DEV** strip above the normal commands:
+
+| Control | Effect |
+| --- | --- |
+| Win battle | Defeat all enemies and open the normal victory panel with one click. Campaign battles award their usual rewards, journal entries and progress; Continue the journey resumes the story and saves normally. Practice gives no rewards. |
+| Lose battle | Down the party and open the normal defeat panel, allowing campaign retry testing without awarding progress. |
+| Refill party | Restore every party member to full HP and 6 focus, including downed companions. Keep positions, turn order, actions already used, enemy resources and shared bandages. |
+| Restart battle | Restore the encounter’s exact starting snapshot: formation, builds, HP/focus, bandages, round and turn order. Workshop edits and campaign state stay intact. |
+
+Tools work during enemy turns and animations. Each action replaces the battle object and discards pending callbacks from the previous one. Finished battles disable the controls; returning to exploration or the workshop removes them. These controls, their styles and their implementation are absent from production builds.
+
 **Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
 Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both use version-2 records under their existing keys, migrate version-1 two-character records without losing edits or equipment, and validate stored data before use. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign IndexedDB saves and their version-5 data are unchanged.
