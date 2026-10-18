@@ -23,4 +23,4 @@ export function portraitAsset(id: string): string {
   const aliases: Record<string, CharacterId> = { master: 'ansel', clerk: 'iona' };
   return CHARACTERS[(aliases[id] ?? id) as CharacterId]?.portrait ?? id;
 }
-export const NPC_SPRITES = ['tomas', 'alban', 'tilda', 'elspeth'] as const;
+export const NPC_SPRITES = ['tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;

@@ -21,3 +21,5 @@
 @media(max-width:1023px){.cinematic .dialogue-copy p{font-size:10px;line-height:12px}}
 
 .signatures{display:flex;gap:8px 24px;flex-wrap:wrap}.signature-copy{width:192px}.signature-copy span{font-size:10px;line-height:12px;display:block}
+
+@media(max-width:1023px){.world-party[data-size="3"] .world-hero{justify-content:center;text-align:center}.world-party[data-size="3"] .world-hero img{display:none}.world-party[data-size="3"] .world-hero small{font-size:10px;line-height:12px}}

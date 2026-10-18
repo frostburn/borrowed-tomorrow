@@ -1,0 +1,10 @@
+import { interactChapterOne, resumeChapter as resumeOne, type StoryHost } from './chapter-one/interactions';
+import { interactChapterTwo, resumeChapterTwo } from './chapter-two/interactions';
+import { JOURNAL as ONE, objective as oneObjective } from './chapter-one/story';
+import { JOURNAL as TWO, objective as twoObjective } from './chapter-two/story';
+import type { GameState } from '../rules/state';
+export { CHAPTER } from './chapter-one/story';
+export const JOURNAL = { ...ONE, ...TWO };
+export const objective = (s: GameState) => s.chapter === 'chapter-two' ? twoObjective(s) : oneObjective(s);
+export const resumeChapter = (h: StoryHost) => h.state.chapter === 'chapter-two' ? resumeChapterTwo(h) : resumeOne(h);
+export const interactChapter = (h: StoryHost, id: string) => h.state.chapter === 'chapter-two' ? interactChapterTwo(h, id) : interactChapterOne(h, id);

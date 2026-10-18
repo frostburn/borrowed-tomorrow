@@ -16,3 +16,7 @@ The user supplied these alternatives and asked us to remember them:
 - **Chrono Trigger:** non-functional chord vamps. Shared tones, bass placement, register and texture can carry a location without forcing each phrase through dominant–tonic harmony. The god's domain or another suspended location may suit this approach.
 
 Use a reference when a new location calls for it. Retain melodic identity, variation across a complete loop, written rests and clear accompaniment levels. Verify live and offline audio without clipping.
+
+## Iron Coast revision
+
+The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Low piano chords and root bass on half notes replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.

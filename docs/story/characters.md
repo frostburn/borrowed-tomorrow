@@ -1,4 +1,4 @@
-# Characters and knowledge — Chapter One
+# Characters and knowledge
 
 | Character | Motive and voice | Knowledge at the saved departure |
 | --- | --- | --- |
@@ -15,14 +15,23 @@
 Tomas and Alban have new matching portraits and actors. Ansel and Iona retain the original `master` and `clerk` art; these identities are not reused. Nell and Orrin retain their existing directional movement frames. Tilda and Elspeth retain their own matching art. Unseen speakers and narration have no portrait.
 
 
-## Planned companions — workshop preview
+## Companions and recruitment
 
-These three companions are available in the Vite workshop so their combat roles can be tested. Their recruitment and relationship scenes belong to later chapters; none has joined the playable Chapter One party. Kit has new matching art; Celia and Petra use previously unused asset pairs assigned to their reboot identities. The traveling cast may grow, but the active combat party has at most three members; reserves keep their own builds and equipment.
+These three companions are available in the Vite workshop so their combat roles can be tested. Only Kit joins in Chapter Two; Celia’s introduction and recruitment are deferred to a later chapter. Petra appears in that chapter and remains a planned Chapter Three recruit. None belongs to the Chapter One party. Kit has new matching art; Celia and Petra use previously unused asset pairs assigned to their reboot identities. Chapter Two travels with Nell, Orrin and Kit. The active combat party remains capped at three; leave its story explanation for later. Existing formation and equipment rules remain available for future recruits.
 
 | Companion | Introduction and recruitment plan | Personality and relationships | Combat role |
 | --- | --- | --- | --- |
-| Kit | A resistance courier at the Iron Coast exchange. Joins in Chapter Two while guiding the prison-train raid. His own priority is getting the prisoners and their families onto a safe route. | A seventeen-year-old boy, Nell’s peer. Short tousled brown hair, a dusty blue courier jacket, ochre scarf and satchel. Quick with routes and improvised solutions; occasionally loses his words when Nell thanks him, then gets back to the task. His flustered reactions are one-sided hints of puppy love; Nell need not notice. | Fast skirmisher with a repeating crossbow. Quick shot, armor-piercing bolts, a distracting feint and a volley. |
-| Celia | A physician educated in the Benefactor’s hospitals. Joins the Chapter Two rescue because injured prisoners need care and the official hospitals refuse them. | Older, precise, patient with frightened people and impatient with preventable harm. Her medical knowledge and concern for patients survive her loss of faith in the institution. She does not know the full divine bargain on recruitment. | Celestial bolt for ranged offense; Mend, focus restoration, Beacon and an area barrier for support. |
+| Kit | A registered courier whose medicine and letters are seized by Alban in the arrival cutscene. Guides Nell to recover his deliveries, then helps the prisoners and completes his rounds. Chooses to travel onward only after the evacuation. | A seventeen-year-old boy, Nell’s peer. Short tousled brown hair, a dusty blue courier jacket, ochre scarf and satchel. Quick with routes and improvised solutions; occasionally loses his words when Nell thanks him, then gets back to the task. His flustered reactions are one-sided hints of puppy love; Nell need not notice. | Fast skirmisher with a repeating crossbow. Quick shot, armor-piercing bolts, a distracting feint and a volley. |
+| Celia | A physician educated in the Benefactor’s hospitals. Introduction and recruitment belong to a later chapter, to be designed with the user. She does not appear in Chapter Two and has no established connection to Tomas yet. | Older, precise, patient with frightened people and impatient with preventable harm. Her medical knowledge and concern for patients survive her loss of faith in the institution. She does not know the full divine bargain on recruitment. | Celestial bolt for ranged offense; Mend, focus restoration, Beacon and an area barrier for support. |
 | Petra | An imperial knight pursuing the fragment in Chapter Two. Helps the escape after witnessing the army abandon a settlement; becomes a permanent companion in Chapter Three after refusing an order to hand the escapees back. | Disciplined, observant, slow to make excuses for herself. Her change of allegiance requires action and a cost; one conversation does not settle her loyalties. Her former commander remains a later opponent. | Armored vanguard. Shield bash pushes enemies, Taunt draws all enemies toward her, Saber sweep clears adjacent hexes, and Crushing blow pierces armor. |
 
 Keep Kit’s flustered moments brief, innocent and occasional. He has work, friends and obligations beyond Nell. Leave the hints unresolved throughout the story: no mutual-romance arc, confession, kiss, romance quest or couple ending. Nell’s ordinary friendliness does not imply reciprocation. Let the joke pass without humiliating him or explaining it to the player.
+
+
+## Knowledge at the Chapter Two departure
+
+Nell and Orrin have read Tomas’s transfer slip, freed the exchange prisoners, stopped the Cinderbank collection and seen the emperor’s order enforced by Alban. Tomas is alive in personal custody at the capital’s palace engine works. They have a current medical-train clearance and are pulling the medical coaches there with Orrin’s coal engine. They still cannot explain the lantern’s resonance or why they could move in Rillbridge.
+
+Kit knows the exchange and capital siding from his delivery rounds. Alban seized his medicine and letters; the rescue allowed him to complete those deliveries. He knows the families from his book and has chosen to see the passengers safely to the capital. Celia has not met the party; none of the Chapter Two events is part of her established knowledge.
+
+Petra knows Nell carries the sought fragment, objected to Alban’s abandonment order, cleared the platform and changed the points for the evacuation. She stayed behind to bring her soldiers off the west gate. She is not a recruit, a reserve or an enemy secretly controlling the escape. Alban survives both defeats. Ansel remains dead; Tomas remains captive until Chapter Three.

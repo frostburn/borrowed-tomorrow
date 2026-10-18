@@ -41,7 +41,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(saved.bag['work-coat']).toBe(1);expect(saved.bag['heavy-coat']).toBe(0);
     await page.getByRole('button',{name:'Close',exact:true}).click();await page.getByRole('button',{name:'Save',exact:true}).click();
     const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export current save',exact:true}).click();
-    const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));expect(exported.version).toBe(6);expect(exported.inventory).toEqual(saved);expect(exported).not.toHaveProperty('gear');
+    const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));expect(exported.version).toBe(8);expect(exported.inventory).toEqual(saved);expect(exported).not.toHaveProperty('gear');
     await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).state.inventory).toEqual(saved);
     await page.keyboard.press('i');await expect(page.getByRole('dialog',{name:'Character inventory'})).toBeVisible();
@@ -68,7 +68,7 @@ test('Continue migrates a version-five departure and preserves its equipped bonu
   for(let i=0;i<2;i++){
     await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
     await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
-    const migrated=(await inspect(page)).state;expect(migrated).toMatchObject({...fields,version:6,playSeconds:expect.any(Number)});
+    const migrated=(await inspect(page)).state;expect(migrated).toMatchObject({...fields,version:8,playSeconds:expect.any(Number)});
     expect(migrated.inventory.characters.nell).toEqual({fitting:'brass-reflector',coat:'work-coat'});
     expect(migrated.inventory.characters.orrin).toEqual({fitting:null,coat:'work-coat'});expect(migrated.inventory.bag['work-coat']).toBe(0);
   }

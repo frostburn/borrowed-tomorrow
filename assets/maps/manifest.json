@@ -28,5 +28,10 @@
     "bytes": 2451154,
     "sha256": "736bd5de7e2e46655adc5eb5808fe0e3103e9fa45b7a066261fc7b9f35d35689",
     "parts": 14
+  },
+  "coast": {
+    "bytes": 2933842,
+    "sha256": "9b5ab9d8068f22f038c570d653d7c429ee0c8d8d33a7a91148358d94f2b1bc32",
+    "parts": 16
   }
 }
