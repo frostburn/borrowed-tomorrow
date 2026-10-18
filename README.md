@@ -2,6 +2,8 @@
 
 Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Choose up to three companions from the five-character roster, adjust levels and base stats, discover level abilities, equip items and test the builds in combat. Production builds keep the current campaign equipment and progression.
 
+Dev-mode battles also include one-click Win battle, Lose battle, Refill party and Restart battle controls above the combat commands, in both the story and workshop.
+
 Nell's brother has finally returned from the capital—and the imperial train has followed him. A stolen crystal, a coal-fired engine and a village where time has stopped begin a JRPG about an empire living on tomorrow's promise.
 
 **Chapter One: Leaving Home** is playable from beginning to end: Larkspur's festival, the arrest of Nell's brother, the escape from the square, Orrin's recruitment, the frozen village of Rillbridge and a showdown with Captain Alban at the mountain pass. Three required battles and one optional workshop encounter use the existing tactical hex engine. Staged cutscenes carry the arrest, discoveries, rescue and departure. The chapter ends with a saved journey toward the Iron Coast.
