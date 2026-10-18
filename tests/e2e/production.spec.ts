@@ -2,7 +2,8 @@ import { CHAPTER_TWO_AVAILABLE } from '../../src/content/chapters';
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, checkpoint } from '../support/progress';
-import { receiveItem } from '../../src/rules/inventory';
+import { equipItem, receiveItem } from '../../src/rules/inventory';
+import { recruit } from '../../src/rules/state';
 import { importSave, approach } from './navigation';
 import { capture, inspect, dialogue } from './controls';
 
@@ -68,4 +69,24 @@ test('a source checkpoint without the art pack preserves the Iron Coast departur
   await expect(page.getByRole('button',{name:'Begin Chapter Two',exact:true})).toHaveCount(0);
   await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
   expect((await inspect(page)).state.boundary).toBe('chapter-two:iron-coast');
+});
+
+
+test('the earlier v7 ward save keeps its gear and progress with three travelers',async({page})=>{
+  test.skip(!CHAPTER_TWO_AVAILABLE,'Chapter Two art pack is not installed.');
+  await page.setViewportSize({width:390,height:844});await page.goto('/');
+  const old=coastCheckpoint('wardSeen');recruit(old,'celia');old.activeParty=['nell','kit','celia'];
+  receiveItem(old.inventory,'medic-clasp');equipItem(old.inventory,'celia','medic-clasp');
+  receiveItem(old.inventory,'work-coat');equipItem(old.inventory,'celia','work-coat');
+  await importSave(page,{...old,version:7});const migrated=(await inspect(page)).state;
+  expect(migrated.version).toBe(8);expect(migrated.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);
+  expect(migrated.activeParty).toEqual(['nell','kit','orrin']);expect(migrated.flags.wardSeen).toBe(true);
+  expect(migrated.coins).toBe(old.coins);expect(migrated.xp).toBe(old.xp);
+  expect(migrated.inventory.bag['medic-clasp']).toBe(1);expect(migrated.inventory.bag['work-coat']).toBe(1);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();
+  await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true})).toHaveCount(0);
+  await capture(page,'legacy-ward-three-travelers-phone');
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).state.inventory).toEqual(migrated.inventory);
+  expect((await inspect(page)).state.party).toEqual(migrated.party);
 });
