@@ -20,7 +20,7 @@ export function openInventory(ui: UI, state: GameState, changed: () => void) {
     const trial = structuredClone(state.inventory), fits = selected ? equipItem(trial, hero, selected) : false;
     const next = combatant(trial), item = selected ? ITEMS[selected] : undefined;
     target.innerHTML = `<div class="ci-characters" role="group" aria-label="Character">${state.party.map(p => `<button data-character="${p.id}" aria-pressed="${p.id === hero}" class="${p.id === hero ? 'selected' : ''}">${CHARACTERS[p.id].name}</button>`).join('')}</div>
-      <div class="ci-grid"><section class="ci-character" aria-label="${name} equipment"><img src="${art(CHARACTERS[hero].portrait)}" alt="${name}"/><h2>${name} · Lv ${level(state)}</h2><p>HP ${current.hp} / ${current.maxHp} · Move ${current.movement}</p>
+      <div class="ci-grid"><section class="ci-character" aria-label="${name} equipment"><img src="${art(CHARACTERS[hero].portrait)}" alt="${name}"/><h2>${name} <small>Lv ${level(state)}</small></h2><p>HP ${current.hp} / ${current.maxHp} · Move ${current.movement}</p>
       <div class="ci-stats">${stats.map(([label, value]) => `<div><small>${label}</small><p>${value(current)}</p></div>`).join('')}</div>
       <h3>Equipped</h3>${SLOTS.map(slot => `<div class="ci-slot"><small>${slot === 'fitting' ? 'Tool fitting' : 'Coat'}</small><p>${equipped[slot] ? esc(ITEMS[equipped[slot]!].name) : 'None'}</p><button data-slot="${slot}" ${equipped[slot] ? '' : 'disabled'}>Unequip ${slot === 'fitting' ? 'fitting' : 'coat'}</button></div>`).join('')}</section>
       <div class="ci-bag"><section aria-label="Shared bag"><h3>Shared bag</h3><p>${state.bandages} shared bandages</p><div class="ci-items">${items.map(id => {
