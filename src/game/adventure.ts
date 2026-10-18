@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { CHAPTER_TWO_AVAILABLE } from '../content/chapters';
+import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import type { StoryHost } from '../content/chapter-one/interactions';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
@@ -7,7 +7,7 @@ import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { beginChapterTwo, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { checkpoint, exportSave, listSaves, save } from './saves';
@@ -21,7 +21,7 @@ import { worldView, narrowScreen } from './resolution';
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
 const textures = ['nell','nell-left','nell-right','nell-back','orrin','orrin-left','orrin-right','orrin-back','master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
-const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
+const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
 
 export class Adventure extends Phaser.Scene {
   state: GameState = newGame();
@@ -180,20 +180,22 @@ export class Adventure extends Phaser.Scene {
     await this.regionLoad;
   }
   private async beginNextChapter() {
-    if (!CHAPTER_TWO_AVAILABLE || this.busy || this.state.chapter !== 'chapter-one' || !this.state.boundary) return;
-    this.busy = true;
-    this.ui.toast('Loading the Iron Coast…');
-    try {
-      for (const map of ['coast','infirmary','cinderbank'] as const) await this.ensureRegion(map);
-      if (!beginChapterTwo(this.state)) return;
-      this.ui.clearPanel(); this.showWorld(); this.autosave(); resumeChapter(this.storyHost());
-    } catch (error) { this.ui.toast(error instanceof Error ? error.message : 'Unable to load Chapter Two. Your departure is intact.'); }
-    finally { this.busy = false; }
+    const third=this.state.chapter==='chapter-two';
+    if(this.busy || (third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two'].includes(this.state.chapter) || !this.state.boundary)return;
+    this.busy=true;this.ui.toast(third?'Loading the capital…':'Loading the Iron Coast…');
+    try{
+      const maps=third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
+      for(const map of maps)await this.ensureRegion(map);
+      if(!(third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
+      this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());
+    }catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to load the chapter. Your departure is intact.');}
+    finally{this.busy=false;}
   }
   private async loadState(state: GameState) {
     if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
+      if (candidate.chapter === 'chapter-three' && !CHAPTER_THREE_AVAILABLE) throw new Error('Chapter Three artwork is not installed. Your saved journey is intact.');
       if (candidate.chapter === 'chapter-two' && !CHAPTER_TWO_AVAILABLE) throw new Error('Chapter Two artwork is not installed in this build. Your saved journey is intact.');
       if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y,candidate)) throw new Error('This save is inside an obstacle.');
       await this.ensureRegion(candidate.location.map);
@@ -366,8 +368,15 @@ export class Adventure extends Phaser.Scene {
     };
   }
   private boundaryPanel() {
+    if(this.state.chapter==='chapter-three'){
+      this.ui.panel('Chapter Three complete','<div class="chapter-name">Next: Chapter Four · The Broken World</div><p>Tomas is safe aboard the medical train. The rescued passengers escaped with you. The extraction feeds are shut.</p><p>The emperor has entered the vessel. The capital hangs above the valley, and time is failing beyond it.</p><p>Chapter Four is not yet playable. Your party, equipment and departure are saved.</p>',[
+        {label:'Return to the platform',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
+        {label:'Export departure save',action:()=>exportSave(this.state)},
+      ]);return;
+    }
     if (this.state.chapter === 'chapter-two') {
-      this.ui.panel('Chapter Two complete', '<div class="chapter-name">Next: Chapter Three · Beneath the Palace</div><p>The prison train is empty. The rescued prisoners and Cinderbank families are traveling with you. Kit and Celia are coming to the capital.</p><p>Tomas is alive at the palace engine works. Your medical-train clearance opens a route to him.</p><p>Chapter Three is not yet playable. Your party, equipment and capital departure are saved.</p>', [
+      this.ui.panel('Chapter Two complete', '<div class="chapter-name">Next: Chapter Three · Beneath the Palace</div><p>The rescued prisoners and Cinderbank families are traveling with Nell, Orrin and Kit.</p><p>Tomas is alive at the palace engine works. Your medical-train clearance opens a route to him.</p>'+(!CHAPTER_THREE_AVAILABLE?'<p>Chapter Three artwork is not installed. Your capital departure is saved.</p>':''), [
+        ...(CHAPTER_THREE_AVAILABLE?[{label:'Begin Chapter Three',action:()=>{void this.beginNextChapter();}}]:[]),
         { label: 'Return to the siding', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
         { label: 'Export departure save', action: () => exportSave(this.state) },
       ]); return;
@@ -397,7 +406,7 @@ export class Adventure extends Phaser.Scene {
   private enterBattle(id: string) {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(this.state.chapter==='chapter-three'?'switching':id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
@@ -548,7 +557,7 @@ export class Adventure extends Phaser.Scene {
     if(b.result==='defeat'){
       this.ui.panel('The line can wait', '<p>The party retreats to a safe spot. Your progress before this encounter is preserved.</p><p>Try separating them, using cover, or waiting for the enemy to approach.</p>',[
         {label:'Retry battle',action:()=>{restoreParty(this.state);this.startBattle(b.encounter);}},
-        {label:this.state.chapter==='chapter-two'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter==='chapter-two'){this.showWorld();this.autosave();}else void this.changeMap('station',21,19);}},
+        {label:this.state.chapter!=='chapter-one'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter!=='chapter-one'){this.showWorld();this.autosave();}else void this.changeMap('station',21,19);}},
       ]);return;
     }
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
@@ -571,7 +580,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two ends at the saved capital departure. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved Broken World departure. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
   }
   async toggleSound() { try {this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {

@@ -1,6 +1,7 @@
+import { ENCOUNTERS as THREE_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { ENCOUNTERS as ONE } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as TWO } from '../content/chapter-two/encounters';
-export const ENCOUNTERS = { ...ONE, ...TWO };
+export const ENCOUNTERS = { ...ONE, ...TWO, ...THREE_ENCOUNTERS };
 import { BASE_STATS, learnedAbilities } from './progression';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';

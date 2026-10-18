@@ -1,12 +1,14 @@
+import { conduitBar } from './score-conduit';
 import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'coast' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'conduit' | 'coast' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; midi:number; beat:number; duration:number; velocity:number; pan:number }
 interface Arrangement { bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  conduit:{bpm:68,lead:'bell',leadGain:.11,keys:.045,strings:.018,bass:.11,percussion:0},
   coast:{bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
   northglass:{bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
   relayhall:{bpm:74,lead:'reed',leadGain:.17,keys:.045,strings:.023,bass:.11,percussion:0},
@@ -35,6 +37,7 @@ const PHRASES:[number,number,number][][]=[
 const ROOTS=[50,46,53,48,50,46,43,45,53,48,46,45,50,46,45,50];
 /** A complete sixteen-bar score. Every location keeps the motif but changes its arrangement. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='conduit')return conduitBar(bar);
   if(mode==='coast')return coastBar(bar);
   if(mode==='northglass'||mode==='relayhall'||mode==='switching')return scoreD(mode,bar);
   if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting')return scoreC(mode,bar);
