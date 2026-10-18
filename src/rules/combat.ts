@@ -1,5 +1,8 @@
-import { ENCOUNTERS } from '../content/chapter-one/encounters';
-export { ENCOUNTERS } from '../content/chapter-one/encounters';
+import { ENCOUNTERS as ONE } from '../content/chapter-one/encounters';
+import { ENCOUNTERS as TWO } from '../content/chapter-two/encounters';
+export const ENCOUNTERS = { ...ONE, ...TWO };
+import { BASE_STATS, learnedAbilities } from './progression';
+import { CHARACTERS } from '../content/characters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
@@ -56,19 +59,19 @@ export function createBattle(encounter: string, state: GameState, equipment?: Re
   equipment ??= equipmentBonuses(state.inventory);
   const e = ENCOUNTERS[encounter];
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
-  const ids = party ?? state.party.map(h => h.id);
+  const ids = party ?? state.activeParty;
   const available = characters ? Object.keys(characters) as CompanionId[] : state.party.map(h => h.id);
   if (!validParty(ids, available)) throw new Error('Choose one to three distinct companions.');
   const units: Unit[] = ids.map((id, index) => {
     const profile = characters?.[id], legacy = state.party.find(h => h.id === id);
     if (!profile && !legacy) throw new Error('A companion needs a character profile.');
     const row = ids.length === 3 ? [1, 3, 5][index] : 2 + index * 2;
-    return { id, name: profile?.name ?? (id === 'nell' ? 'Nell' : 'Orrin'), kind: id, role: profile?.role, side: 'party',
+    return { id, name: profile?.name ?? CHARACTERS[id].name, kind: id, role: profile?.role, side: 'party',
       hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
-      speed: Math.max(1, (profile?.speed ?? (id === 'nell' ? 7 : 5)) + (equipment?.[id].speed ?? 0)), movement: profile?.movement ?? (id === 'nell' ? 3 : 2),
-      armor: (profile?.armor ?? 0) + equipment[id].armor,
-      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + (id === 'orrin' ? 2 : 0)) + equipment[id].attack,
-      abilities: profile ? [...profile.abilities] : id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] : ['strike', 'steam', 'bandage'], level: profile?.level,
+      speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment?.[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
+      armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
+      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
+      abilities: profile ? [...profile.abilities] : [...new Set([...(id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] as const : []), ...learnedAbilities(id, level(state))])], level: profile?.level,
       moved: false, defending: false, retaliated: false, waited: false };
   });
   e.enemies.forEach((enemy, i) => {
@@ -293,8 +296,8 @@ export function awardVictory(b: Battle, s: GameState) {
   const oldLevel = level(s);
   s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
   for (const hero of s.party) {
-    const unit = b.units.find(u => u.id === hero.id as HeroId)!;
-    hero.hp = Math.min(maxHp(hero.id, s), Math.max(1, unit.hp) + 8 + (level(s) - oldLevel) * 6);
+    const unit = b.units.find(u => u.id === hero.id as HeroId);
+    hero.hp = Math.min(maxHp(hero.id, s), Math.max(1, unit?.hp ?? hero.hp) + 8 + (level(s) - oldLevel) * 6);
     hero.focus = 6;
   }
 }

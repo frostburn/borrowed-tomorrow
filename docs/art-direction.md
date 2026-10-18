@@ -34,7 +34,7 @@ Production prompt briefs:
 
 **Kit:** a seventeen-year-old boy courier; short tousled chestnut hair, clean-shaven boyish face, bashful smile, dusty blue jacket, cream shirt, ochre scarf, brown satchel and boots, compact repeating crossbow. His new transparent portrait/actor sheet was generated with Nell’s art as the style and proportion references, then mechanically separated and point-sampled into native 128 × 128 and 80 × 80 canvases. No runtime rescaling or recoloring.
 
-Celia and Petra own matching unused sprite/portrait pairs for the future companion roster. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. The Vite workshop alone preloads these future companions’ combat actors.
+Celia and Petra own matching unused sprite/portrait pairs for the future companion roster. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. Their actors also appear in Chapter Two: Celia joins, while Petra remains a staged rival and ally.
 
 Keep these identities consistent in dialogue, exploration, staging and battle. The captain's combat archetype remains the engine's officer rules, but his appearance is `alban`, never the retired inspector character.
 
@@ -45,3 +45,12 @@ Stage key events with temporary actors, camera cuts and pans, sound cues and con
 Keep the crystal effects understated: a fleck in the lantern glass, a cold handle and a low beating resonance. The old sun mural is worn and incomplete. Do not overlay a divine eye, a radiant power symbol or a final-boss cutaway in Chapter One. Stage the pass scenes on the lower stone walkway (tile row 14), with the same footing in exploration and cinematic actors. The stone threshold ends at column 38; columns 39–41 are open air and blocked. Keep retreats and boarding inside that boundary.
 
 The opening pursuit uses Larkspur square; the other encounters retain the quiet yard clearing and explicit geometry. Blue shows reachable ground, brass/white outlines show targeting, and orange marks warn of end-of-round steam. Keep preview and resolution on the same hex geometry. Use native actors, cover rocks, HP bars and damage text. Pan on narrow screens rather than shrinking the battlefield.
+
+
+## Chapter Two scenery and music
+
+The Iron Coast exchange uses a new built-in Image Gen raster (`public/art/coast.webp`, 1536 × 1024), exported losslessly without scaling or palette changes. Its verified source chunks live in `assets/maps/coast.*.b64`; the manifest records its full SHA-256. The arrival establishes the sea and barred train before cutting to Nell, Orrin and Kit on the lower cobbles. All actors and movements use the same connected ground level. The retained `infirmary.webp` and `cinderbank.webp` assets now depict the railway ward and mining settlement’s medical siding; their former narrative identities remain discarded. Collisions exclude the train bodies, raised ward entrance, cargo and outer fences.
+
+Production prompt brief: a detailed discrete-pixel fantasy railway harbor at blue dawn, brass lamps and navy iron; a barred prison train with imperial sun crests across the upper quarter; sea, cranes and masts beyond; one broad flat cobbled platform, signal hut, loading gate and clear exits. No people, writing, UI or hospital crosses. The Cinderbank artwork was a style reference only. Built-in Image Gen produced the source; lossless WebP preserves every RGBA pixel. No runtime resizing or recoloring.
+
+The exchange has an original sixteen-bar harbor melody (`score-coast.ts`) using the remembered C–Bm7b5–Em7–Am–Gm7–C7–F–Em–Dm–G–C harmonic reference, extended through a lifted phrase and quiet return. The ward and siding reuse their distinct retained arrangements. Combat retains the tactical and captain themes. Mobile three-fighter exploration lists names and HP without squeezing three native portraits into one row; actors in the world and combat remain 80 × 80.

@@ -1,9 +1,10 @@
+import { CHAPTER_TWO_AVAILABLE } from '../../src/content/chapters';
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
-import { checkpoint } from '../support/progress';
+import { coastCheckpoint, checkpoint } from '../support/progress';
 import { receiveItem } from '../../src/rules/inventory';
-import { importSave } from './navigation';
-import { capture, inspect } from './controls';
+import { importSave, approach } from './navigation';
+import { capture, inspect, dialogue } from './controls';
 
 test('production ignores both workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -41,3 +42,30 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
   });
 }
+
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`production Chapter Two recruits and equips Kit, preserves reserves on ${device}`,async({page})=>{
+    test.skip(!CHAPTER_TWO_AVAILABLE,'Chapter Two art pack is not installed.');
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');await importSave(page,checkpoint('chapterOneComplete'));
+    await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();await dialogue(page);await approach(page,'kit-contact');await dialogue(page);
+    expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
+    const ward=coastCheckpoint('wardSeen');await page.getByRole('button',{name:'Save',exact:true}).click();
+    const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Import save file',exact:true}).click();await(await chooser).setFiles({name:'ward.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(ward))});
+    await expect(page.getByRole('dialog')).toHaveCount(0);await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();await page.getByRole('button',{name:'Equip on Kit',exact:true}).click();
+    await page.getByRole('button',{name:'Orrin',exact:true}).click();await page.getByRole('button',{name:'Move to reserve',exact:true}).click();await page.getByRole('button',{name:'Celia',exact:true}).click();await page.getByRole('button',{name:'Set active',exact:true}).click();
+    await capture(page,`chapter-two-production-${device}`);const saved=(await inspect(page)).state;
+    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.activeParty).toEqual(['nell','kit','celia']);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
+    expect((await inspect(page)).state.party).toHaveLength(4);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+  });
+}
+
+
+test('a source checkpoint without the art pack preserves the Iron Coast departure',async({page})=>{
+  test.skip(CHAPTER_TWO_AVAILABLE,'The full art pack is installed in this build.');
+  await page.goto('/');await importSave(page,checkpoint('chapterOneComplete'));
+  await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Begin Chapter Two',exact:true})).toHaveCount(0);
+  await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
+  expect((await inspect(page)).state.boundary).toBe('chapter-two:iron-coast');
+});

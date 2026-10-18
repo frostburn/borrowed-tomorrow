@@ -1,0 +1,86 @@
+import { buySupply } from '../../rules/supplies';
+import { SAY } from '../dialogue';
+import type { StoryHost } from '../chapter-one/interactions';
+import { THIRD_CHAPTER, recruit, remember, restoreParty } from '../../rules/state';
+import * as scenes from './scenes';
+
+export function resumeChapterTwo(host: StoryHost) {
+  const s = host.state, f = s.flags;
+  if (!f.coastSeen) host.talk({ ...scenes.arrival(), done: () => host.commit('coastSeen', 'coast') });
+  else if (s.location.map === 'infirmary' && !f.wardSeen) host.talk({ ...scenes.ward(), done: () => {
+    recruit(s, 'celia'); restoreParty(s); s.location = { map: 'infirmary', x: 31, y: 21 }; host.commit('wardSeen', 'ward'); host.toast('Celia joined. Choose up to three active fighters in Equipment.');
+  } });
+  else if (s.location.map === 'cinderbank' && !f.settlementSeen) host.talk({ ...scenes.abandonment(), done: () => {
+    s.location = { map: 'cinderbank', x: 27, y: 22 }; host.commit('settlementSeen', 'settlement');
+  } });
+}
+
+export function interactChapterTwo(host: StoryHost, id: string) {
+  const s = host.state, f = s.flags;
+  const say = (who: string, text: string) => host.talk({ lines: [SAY(who, text)] });
+  const raidId = () => f.raidDiversion ? 'coast-signals' : 'coast-loading';
+  const breach = (diversion: boolean) => {
+    if (!f.kitJoined) return host.toast('Meet Kit at the loading gate first.');
+    if (f.trainRaidWon) return say('Kit', 'The coach is clear. Let’s open it.');
+    if (f.raidPlanned) {
+      if (f.raidDiversion !== diversion) return host.toast(`Our approach is the ${f.raidDiversion ? 'signal walk' : 'loading gate'}.`);
+      if (f.raidConfronted) return host.battle(raidId());
+      host.talk({ ...scenes.raid(diversion), done: () => { host.commit('raidConfronted'); host.battle(raidId()); } });
+      return;
+    }
+    host.talk({ lines: [SAY('Kit', diversion ? 'The signal walk has three machines: two crows and a hound. More room to spread out, but less cover from their shots.' : 'The loading gate has a plated guardian and two hounds. My Piercing bolt can get through its armor. Keep clear of Orrin’s steam line.')], choices: [
+      { label: diversion ? 'Take the signal walk' : 'Breach the loading gate', action: () => { f.raidDiversion = diversion; host.commit('raidPlanned'); breach(diversion); } },
+      { label: 'Look at the other approach', action: () => {} },
+    ] });
+  };
+  switch (id) {
+    case 'kit-contact':
+      if (f.kitJoined) return say('Kit', 'Signal walk to the east, loading gate to the north. I’ll follow your lead.');
+      host.talk({ ...scenes.meetKit(), done: () => { recruit(s, 'kit'); remember(s, 'kit'); s.location = { map: 'coast', x: 26, y: 22 }; host.refresh(); host.save(); host.toast('Kit joined · Quick shot, Piercing bolt and Feint.'); } }); return;
+    case 'signal-walk': breach(true); return;
+    case 'loading-gate': breach(false); return;
+    case 'prison-coach':
+      if (!f.trainRaidWon) return host.toast('The coach is under guard. Choose an approach with Kit.');
+      if (f.prisonersFreed) return say('Nell', 'Empty. They’re all out. Tomas’s transfer slip is safe.');
+      host.talk({ ...scenes.freePrisoners(), done: () => { s.location = { map: 'coast', x: 42, y: 16 }; host.commit('prisonersFreed', 'prisoners'); } }); return;
+    case 'coast-ward':
+      if (!f.prisonersFreed) return host.toast('Open the prison coach before leaving.');
+      host.travel('infirmary', 31, 24); return;
+    case 'coast-engine':
+      host.talk({ lines: [SAY('Orrin', 'Still here. Coal in the bunker, pressure down. There’s a flask in the cab if you need a moment.')], choices: [
+        { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
+        { label: 'Keep moving', action: () => {} },
+      ] }); return;
+    case 'ward-rest':
+      host.talk({ lines: [SAY('Celia', 'There’s soup by the stove. Sit down while I check those bandages.')], choices: [
+        { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored, including reserves.'); } },
+        { label: 'Buy a field bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
+        { label: 'Keep moving', action: () => {} },
+      ] }); return;
+    case 'ward-kit': say('Kit', f.chapterTwoComplete ? 'No one from the exchange is missing. I checked twice.' : 'The little boy in the first coach wants to drive Orrin’s engine. I said he could ask. Sorry, Orrin.'); return;
+    case 'ward-clearance':
+      say('Celia', 'Medical service, southern siding below the capital. The seal is current. Once we get this train moving, I can take you as far as the engine works gate.'); return;
+    case 'ward-coast': host.travel('coast', 15, 25); return;
+    case 'ward-siding': host.travel('cinderbank', 27, 22); return;
+    case 'siding-ward': host.travel('infirmary', 41, 24); return;
+    case 'siding-collector':
+      if (f.coastCollectorWon) return;
+      host.battle('coast-collector'); return;
+    case 'siding-release':
+      if (!f.coastCollectorWon || f.evacuationReady) return;
+      host.talk({ ...scenes.evacuation(), done: () => { s.location = { map: 'cinderbank', x: 38, y: 23 }; restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
+    case 'siding-coaches':
+      say('Celia', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. Clear the crossing; I’ll help you.' : 'The prisoners are safe in the coaches. Kit’s families are still in the houses beyond the collector.'); return;
+    case 'siding-alban':
+      if (!f.evacuationReady) return host.toast('Free the families at the collector before clearing the crossing.');
+      if (f.recaptureWon) return;
+      if (f.recaptureConfronted) return host.battle('coast-recapture');
+      host.talk({ ...scenes.recapture(), done: () => { host.commit('recaptureConfronted'); host.battle('coast-recapture'); } }); return;
+    case 'capital-engine':
+      if (!f.recaptureWon) return host.toast('Alban still holds the far crossing.');
+      if (f.chapterTwoComplete) return host.boundary();
+      host.talk({ ...scenes.departure(), done: () => {
+        s.location = { map: 'cinderbank', x: 49, y: 26 }; f.chapterTwoComplete = true; s.boundary = THIRD_CHAPTER; remember(s, 'capitalDeparture'); host.refresh(); host.save(); host.endingMusic(); host.boundary();
+      } }); return;
+  }
+}

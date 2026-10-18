@@ -1,10 +1,10 @@
 # Next: Chapter Two — Prison Trains
 
-Only Chapter One is playable. Use [grand-outline.md](grand-outline.md) as the full seven-chapter direction. This departure is the start of the deliberate pursuit, not a request to continue the removed ghost-train story.
+This records the preserved Chapter One departure. Chapter Two now implements this pursuit; see [canon.md](canon.md) and [chapter-three-handoff.md](chapter-three-handoff.md). Use [grand-outline.md](grand-outline.md) as the full seven-chapter direction. This departure is the start of the deliberate pursuit, not a request to continue the removed ghost-train story.
 
 ## Exact save
 
-Version **6**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
+Original version **6** (also accepted from version 5 and migrated to version 7), format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
 
 Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`, `villageSeen`, `collectorConfronted`, `collectorDefeated`, `villageFreed`, `passSeen`, `captainConfronted`, `captainDefeated`, `chapterOneComplete`. Preserve optional `blessingRead`, `farewellSeen`, `waterSeen`, `workshopWon`, `muralRead` and `shelterSupplies`, plus every resource, equipped item, party HP/focus, journal entry and play-time value. Nell and Orrin are the two combatants. Preserve the complete `inventory` bag and loadouts; version-5 departures migrate automatically, including a reserved coat for Orrin if the old upgrade was bought before recruitment.
 

@@ -10,7 +10,7 @@ it('migrates version-five equipment without changing the departure or duplicatin
   const {inventory:_,...fields}=state;
   const legacy={...fields,version:5,gear:['brass-lantern','work-coats','work-coats']};
   const migrated=decodeSave(JSON.stringify(legacy));
-  expect(migrated).toMatchObject({...fields,version:6});expect(migrated).not.toHaveProperty('gear');
+  expect(migrated).toMatchObject({...fields,version:7});expect(migrated).not.toHaveProperty('gear');
   expect(equipmentBonuses(migrated.inventory)).toMatchObject({nell:{attack:3,armor:1,speed:0},orrin:{attack:0,armor:1,speed:0}});
   expect(ownedCopies(migrated.inventory,'brass-reflector')).toBe(1);expect(ownedCopies(migrated.inventory,'work-coat')).toBe(2);
   expect(decodeSave(JSON.stringify(migrated))).toEqual(migrated);

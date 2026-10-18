@@ -16,3 +16,6 @@ Version 6 stores `inventory` instead of the old `gear` list. Version-5 saves rem
 - `work-coats` becomes two reinforced coats, equipped on Nell and Orrin. Orrin’s copy stays reserved if he has not joined yet.
 
 Migration runs once: subsequent saves store the converted inventory, and reloading does not grant additional copies. Versions 1–4 remain previous-story saves, available to export but not load into this campaign. The dev workshop retains its own local storage and cannot grant campaign items or bonuses.
+
+
+Chapter Two recruits Kit and Celia. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-7 saves preserve the recruited roster and active formation separately. Version-6 imports keep their existing party active.

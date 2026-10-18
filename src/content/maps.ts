@@ -1,3 +1,4 @@
+import { CHAPTER_TWO_MAPS } from './chapter-two/maps';
 import stationMap from './chapter-one/maps/station.json' with { type: 'json' };
 import yardMap from './chapter-one/maps/yard.json' with { type: 'json' };
 import tunnelMap from './chapter-one/maps/tunnel.json' with { type: 'json' };
@@ -10,6 +11,7 @@ export function collision(map: { layers: { type: string; objects?: { x: number; 
   return map.layers.filter(l=>l.type==='objectgroup').flatMap(l=>l.objects??[]).map(o=>[o.x/TILE,o.y/TILE,o.width/TILE,o.height/TILE]);
 }
 export const MAPS: Record<MapId, MapData> = {
+  ...CHAPTER_TWO_MAPS,
   station: { id: 'station', name: 'Larkspur station', subtitle: 'Festival night · Tomas is home from the capital.', solid: collision(stationMap), objects: [
     { id: 'tomas', x: 25, y: 13, label: 'Tomas · your brother', sprite: 'tomas', hiddenFlag: 'raidSeen' },
     { id: 'ansel', x: 20, y: 12, label: 'Stationmaster Ansel', sprite: 'master', hiddenFlag: 'raidSeen' },

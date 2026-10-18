@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapter One is playable; Chapters Two–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One and Two are playable with their art installed; Chapters Three–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 
@@ -42,11 +42,11 @@ At the mountain pass, Alban blocks pursuit. He has already sent Tomas east in an
 
 **Goal:** find Tomas before the next transfer. **Payoff:** free the prisoners and learn his destination.
 
-The pursuit crosses a mining city and the Iron Coast. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Kit, a boy courier Nell’s own age, joins the raid to get the prisoners onto a safe route. He sometimes gets flustered when Nell thanks him; these innocent hints stay unresolved, without a romance arc or payoff. Recruit Celia, a physician educated in the Benefactor’s religion. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
+The pursuit reaches the Iron Coast exchange and Cinderbank mining settlement. Nell joins a resistance operation because its train raid offers a concrete route to Tomas. Kit, a boy courier Nell’s own age, joins the raid to get the prisoners onto a safe route. He sometimes gets flustered when Nell thanks him; these innocent hints stay unresolved, without a romance arc or payoff. Recruit Celia, a physician educated in the Benefactor’s religion. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
 
 The raid succeeds: prisoners escape, the army loses the train and the party learns that Tomas was moved to the capital because he discovered how the crystal engines are paid for. Alban attempts to recapture the freed prisoners. The knight witnesses the army sacrifice a settlement to keep the capital supplied, then helps the escape. Give the knight an earned defection, not an instant change of uniform after one conversation.
 
-Petra helps the escape but does not immediately join the party. Her permanent recruitment belongs to Chapter Three, when refusing to surrender the escapees makes her defection explicit. The party obtains a usable way into the capital. The emperor appears directly and the god's religion gains an uncomfortable second meaning. Answers establish that the stopped villages are collection, not accidental engine failures.
+Petra helps the escape but does not immediately join the party. Her permanent recruitment belongs to Chapter Three, when refusing to surrender the escapees makes her defection explicit. The party obtains a usable way into the capital. The emperor’s signed order puts the capital’s engine supply ahead of the evacuation. His direct appearance belongs to the capital chapter; the god’s religion gains an uncomfortable second meaning through Celia’s rejected patients. Answers establish that the stopped villages are collection, not accidental engine failures.
 
 ## Chapter Three — Beneath the Palace
 

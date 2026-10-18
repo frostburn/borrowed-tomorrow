@@ -1,12 +1,13 @@
 import Phaser from 'phaser';
+import { CHAPTER_TWO_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
-import { interactChapterOne, resumeChapter, type StoryHost } from '../content/chapter-one/interactions';
-import { CHAPTER, JOURNAL, objective } from '../content/chapter-one/story';
+import type { StoryHost } from '../content/chapter-one/interactions';
+import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
+import { beginChapterTwo, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { checkpoint, exportSave, listSaves, save } from './saves';
@@ -31,7 +32,7 @@ export class Adventure extends Phaser.Scene {
   private cinematic?:Cutscene;
   private grid?: Phaser.GameObjects.Graphics;
   private player?: Phaser.GameObjects.Image;
-  private follower?: Phaser.GameObjects.Image;
+  private followers: Phaser.GameObjects.Image[] = [];
   private actorImages = new Map<string, Phaser.GameObjects.Image>();
   private mode: 'title' | 'world' | 'battle' = 'title';
   private selected: Action = 'move';
@@ -114,7 +115,7 @@ export class Adventure extends Phaser.Scene {
   private clearLayer() {
     this.cinematic?.close();this.cinematic=undefined;
     this.path = []; this.pendingObject = undefined; this.near = undefined; this.moving = false;
-    this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.follower = undefined;this.actorImages.clear();
+    this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.followers = [];this.actorImages.clear();
     this.layer = this.add.container(0,0);
   }
   private background(name: string, y=0, x=0) { this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0)); }
@@ -160,23 +161,40 @@ export class Adventure extends Phaser.Scene {
     this.autosave();resumeChapter(this.storyHost());
   }
   private async ensureRegion(map: MapId) {
-    if (map !== 'rillbridge' || this.textures.exists('map-rillbridge')) return;
+    const texture = `map-${map}`;
+    if (this.textures.exists(texture)) return;
     if (!this.regionLoad) {
       this.regionLoad = new Promise<void>((resolve, reject) => {
         this.load.once('complete', () => {
-          if (this.textures.exists('map-rillbridge')) resolve();
-          else reject(new Error('Rillbridge could not load. Your checkpoint is intact; try the branch again.'));
+          if (this.textures.exists(texture)) {
+            const source = this.textures.get(texture).getSourceImage(), size = mapSize(MAPS[map]);
+            if (source.width === size.width && source.height === size.height) { resolve(); return; }
+            this.textures.remove(texture);
+          }
+          reject(new Error(`${MAPS[map].name} could not load. Your checkpoint is intact; try again.`));
         });
-        this.load.image('map-rillbridge', `${import.meta.env.BASE_URL}art/rillbridge.webp`);
+        this.load.image(texture, `${import.meta.env.BASE_URL}art/${map}.webp`);
         this.load.start();
       }).finally(() => { this.regionLoad = undefined; });
     }
     await this.regionLoad;
   }
+  private async beginNextChapter() {
+    if (!CHAPTER_TWO_AVAILABLE || this.busy || this.state.chapter !== 'chapter-one' || !this.state.boundary) return;
+    this.busy = true;
+    this.ui.toast('Loading the Iron Coast…');
+    try {
+      for (const map of ['coast','infirmary','cinderbank'] as const) await this.ensureRegion(map);
+      if (!beginChapterTwo(this.state)) return;
+      this.ui.clearPanel(); this.showWorld(); this.autosave(); resumeChapter(this.storyHost());
+    } catch (error) { this.ui.toast(error instanceof Error ? error.message : 'Unable to load Chapter Two. Your departure is intact.'); }
+    finally { this.busy = false; }
+  }
   private async loadState(state: GameState) {
     if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
+      if (candidate.chapter === 'chapter-two' && !CHAPTER_TWO_AVAILABLE) throw new Error('Chapter Two artwork is not installed in this build. Your saved journey is intact.');
       if (!walkable(MAPS[candidate.location.map], candidate.location.x, candidate.location.y,candidate)) throw new Error('This save is inside an obstacle.');
       await this.ensureRegion(candidate.location.map);
       this.state = candidate;
@@ -202,8 +220,10 @@ export class Adventure extends Phaser.Scene {
       }
     }
     const p = this.state.location;
-    if (this.state.flags.orrinJoined) {
-      this.follower = this.add.image((p.x - 1 + .5)*TILE,(p.y+.5)*TILE+7,'orrin').setOrigin(.5,.85); this.layer!.add(this.follower);
+    for (const [index, id] of this.state.activeParty.filter(id => id !== 'nell').entries()) {
+      const x = walkable(map,p.x-index-1,p.y,this.state) ? p.x-index-1 : p.x;
+      const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id);
+      this.followers.push(follower); this.layer!.add(follower);
     }
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85); this.layer!.add(this.player);
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
@@ -238,7 +258,7 @@ export class Adventure extends Phaser.Scene {
   private renderWorldControls() {
     if (this.mode !== 'world') return;
     const s = this.state, esc = this.ui.escape;
-    this.ui.controls.innerHTML = `<div class="world-party">${s.party.map(h => `<div class="world-hero"><img src="${art(h.id)}" alt=""/><div><strong>${h.id === 'nell' ? 'Nell':'Orrin'}</strong><small>HP ${h.hp}/${maxHp(h.id,s)} · Lv ${level(s)}</small></div></div>`).join('')}</div><div class="world-objective"><h3>${esc(this.near?.label ?? 'Next stop')}</h3><p>${esc(objective(s))}</p></div><div class="world-actions"><div class="dpad"></div><div class="interact-action"></div></div>`;
+    this.ui.controls.innerHTML = `<div class="world-party" data-size="${s.activeParty.length}">${s.party.filter(h => s.activeParty.includes(h.id)).map(h => `<div class="world-hero"><img src="${art(h.id)}" alt=""/><div><strong>${CHARACTERS[h.id].name}</strong><small>HP ${h.hp}/${maxHp(h.id,s)} · Lv ${level(s)}</small></div></div>`).join('')}</div><div class="world-objective"><h3>${esc(this.near?.label ?? 'Next stop')}</h3><p>${esc(objective(s))}</p></div><div class="world-actions"><div class="dpad"></div><div class="interact-action"></div></div>`;
     const pad = this.ui.controls.querySelector('.dpad')!;
     for (const [label, dx, dy] of [['↑',0,-1],['←',-1,0],['↓',0,1],['→',1,0]] as const) pad.append(this.ui.button({ label, action: () => { if (!this.blocked && !this.moving) this.stepWorld(dx,dy); } }));
     this.ui.controls.querySelector('.interact-action')!.append(this.ui.button({ label: this.near ? 'Interact' : 'Journal', key: this.near ? 'E' : 'J', action: () => this.near ? this.interact(this.near) : this.journal() }));
@@ -274,9 +294,12 @@ export class Adventure extends Phaser.Scene {
     this.face = dx < 0 ? 'nell-left' : dx > 0 ? 'nell-right' : dy < 0 ? 'nell-back' : 'nell';
     this.player!.setTexture(this.face); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
-    if (this.follower) {
-      this.follower.setTexture(dx < 0 ? 'orrin-left' : dx > 0 ? 'orrin-right' : dy < 0 ? 'orrin-back' : 'orrin');
-      this.tweens.add({ targets:this.follower, x:previous.x, y:previous.y, duration:150, ease:'Linear' });
+    let following = previous;
+    for (const follower of this.followers) {
+      const old = { x: follower.x, y: follower.y }, id = follower.getData('hero');
+      if (id === 'orrin') follower.setTexture(dx < 0 ? 'orrin-left' : dx > 0 ? 'orrin-right' : dy < 0 ? 'orrin-back' : 'orrin');
+      this.tweens.add({ targets:follower, x:following.x, y:following.y, duration:130, ease:'Linear' });
+      following = old;
     }
   }
   point(x:number,y:number,click:boolean){
@@ -331,7 +354,7 @@ export class Adventure extends Phaser.Scene {
     if (this.blocked || this.mode !== 'world') return;
     if(object.accessFlag&&!this.state.flags[object.accessFlag]){this.ui.toast('This route has not opened yet.');return;}
     this.path = []; this.pendingObject = undefined;
-    interactChapterOne(this.storyHost(), object.id);
+    interactChapter(this.storyHost(), object.id);
   }
   private storyHost(): StoryHost {
     return {
@@ -343,7 +366,14 @@ export class Adventure extends Phaser.Scene {
     };
   }
   private boundaryPanel() {
-    this.ui.panel('Chapter One complete', '<div class="chapter-name">Next: Chapter Two · Prison Trains</div><p>Rillbridge is awake. Alban has lost the crossing. Tomas is at the prison-train exchange on the Iron Coast.</p><p>Nell and Orrin have their own engine and a way east.</p><p>Chapter Two is not yet playable. Your departure, party, equipment and journal are saved for its continuation.</p>', [
+    if (this.state.chapter === 'chapter-two') {
+      this.ui.panel('Chapter Two complete', '<div class="chapter-name">Next: Chapter Three · Beneath the Palace</div><p>The prison train is empty. The rescued prisoners and Cinderbank families are traveling with you. Kit and Celia are coming to the capital.</p><p>Tomas is alive at the palace engine works. Your medical-train clearance opens a route to him.</p><p>Chapter Three is not yet playable. Your party, equipment and capital departure are saved.</p>', [
+        { label: 'Return to the siding', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
+        { label: 'Export departure save', action: () => exportSave(this.state) },
+      ]); return;
+    }
+    this.ui.panel('Chapter One complete', '<div class="chapter-name">Next: Chapter Two · Prison Trains</div><p>Rillbridge is awake. Alban has lost the crossing. Tomas is at the prison-train exchange on the Iron Coast.</p><p>Nell and Orrin have their own engine and a way east.</p>'+(!CHAPTER_TWO_AVAILABLE?'<p>Chapter Two artwork is not installed in this build. Your departure is saved.</p>':''), [
+      ...(CHAPTER_TWO_AVAILABLE ? [{ label: 'Begin Chapter Two', action: () => { void this.beginNextChapter(); } }] : []),
       { label: 'Return to the pass', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
       { label: 'Export departure save', action: () => exportSave(this.state) },
     ]);
@@ -367,7 +397,7 @@ export class Adventure extends Phaser.Scene {
   private enterBattle(id: string) {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
@@ -518,7 +548,7 @@ export class Adventure extends Phaser.Scene {
     if(b.result==='defeat'){
       this.ui.panel('The line can wait', '<p>The party retreats to a safe spot. Your progress before this encounter is preserved.</p><p>Try separating them, using cover, or waiting for the enemy to approach.</p>',[
         {label:'Retry battle',action:()=>{restoreParty(this.state);this.startBattle(b.encounter);}},
-        {label:'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();this.changeMap('station',21,19);}},
+        {label:this.state.chapter==='chapter-two'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter==='chapter-two'){this.showWorld();this.autosave();}else void this.changeMap('station',21,19);}},
       ]);return;
     }
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
@@ -529,7 +559,7 @@ export class Adventure extends Phaser.Scene {
   }
 
   inventory() {
-    if(this.practiceReady||this.cinematic||!(this.mode==='world'||this.mode==='battle'&&this.battle?.result==='victory'))return;
+    if(this.practiceReady||this.cinematic||this.busy||!(this.mode==='world'||this.mode==='battle'&&this.battle?.result==='victory'))return;
     this.path=[];this.pendingObject=undefined;
     openInventory(this.ui,this.state,()=>{this.autosave();if(this.mode==='world')this.renderWorldControls();});
   }
@@ -541,7 +571,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One ends at a saved Iron Coast departure. Later chapters are planned. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Gold marks indicate people and places worth investigating.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–5 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two ends at the saved capital departure. The previous story’s saves remain available to export, but cannot be loaded into this campaign.</p></article>');
   }
   async toggleSound() { try {this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {

@@ -70,7 +70,7 @@ describe('chapter progression', () => {
 });
 
 it('all map interactions have a connected, walkable approach', () => {
-  const starts = { station: { x: 21, y: 16 }, yard: { x: 35, y: 18 }, rillbridge: { x: 12, y: 18 }, tunnel: { x: 3, y: 13 } };
+  const starts = { coast: { x: 24, y: 26 }, infirmary: { x: 31, y: 24 }, cinderbank: { x: 27, y: 22 }, station: { x: 21, y: 16 }, yard: { x: 35, y: 18 }, rillbridge: { x: 12, y: 18 }, tunnel: { x: 3, y: 13 } };
   for (const map of Object.values(MAPS)) for (const object of map.objects) {
     const approaches = [{ x: object.x, y: object.y }, { x: object.x - 1, y: object.y }, { x: object.x + 1, y: object.y }, { x: object.x, y: object.y - 1 }, { x: object.x, y: object.y + 1 }];
     expect(approaches.some(p => walkable(map, p.x, p.y) && (p.x === starts[map.id].x && p.y === starts[map.id].y || worldPath(map, starts[map.id], p).length > 0)), `${map.id}: ${object.id}`).toBe(true);
