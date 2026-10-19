@@ -1,6 +1,6 @@
 # Chapter Four — The Broken World
 
-Continue the version-9 `chapter-four:broken-world` departure. Tomas and the medical passengers escaped the capital; none is taken again. A new pulse stopped the western line on their return to the Iron Coast ward. Nell wakes there with Tomas. Orrin and Kit are evacuating the nearby Breakwater works; Petra has gone up the sanctuary road with stranded patients.
+Continue the version-10 `chapter-four:broken-world` departure. Tomas and the medical passengers escaped the capital; none is taken again. A new pulse stopped the western line on their return to the Iron Coast ward. Nell wakes there with Tomas. Orrin and Kit are evacuating the nearby Breakwater works; Petra has gone up the sanctuary road with stranded patients.
 
 ## Playable progression
 

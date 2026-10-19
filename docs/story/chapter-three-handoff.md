@@ -4,11 +4,11 @@ Chapters One–Three are playable canon. This document records Chapter Three’s
 
 ## Exact save
 
-Version **8**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-two`, boundary **`chapter-three:capital`**. The final scene leaves Nell at `cinderbank` `(49,26)`; later exploration can change the coordinates. Only the boundary identifies the departure.
+Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-two`, boundary **`chapter-three:capital`**. The final scene leaves Nell at `cinderbank` `(49,26)`; later exploration can change the coordinates. Only the boundary identifies the departure.
 
 The complete Chapter One flag chain remains set. Chapter Two requires `coastSeen`, `kitJoined`, `raidPlanned`, `raidConfronted`, `trainRaidWon`, `prisonersFreed`, `wardSeen`, `settlementSeen`, `coastCollectorWon`, `evacuationReady`, `recaptureConfronted`, `recaptureWon`, `chapterTwoComplete`. Preserve `raidDiversion` (true for signal walk, false for loading gate), optional Chapter One flags, resources, XP, HP/focus, all inventory copies and loadouts, journals and play time.
 
-The recruited `party` contains Nell, Orrin and Kit. Celia has not appeared or joined. Version-7 imports remove her earlier draft recruitment and return her equipment to the bag while preserving the rest of the journey. `activeParty` contains Nell plus zero to two selected companions. Never discard or reset reserve equipment or health. Petra and Tomas are not combatants or reserves at this departure. Load and validate new scenery before consuming the boundary; leave it intact on failure.
+The recruited `party` contains Nell, Orrin and Kit. Celia has not appeared or joined. `activeParty` contains Nell plus zero to two selected companions. Never discard or reset reserve equipment or health. Petra and Tomas are not combatants or reserves at this departure. Load and validate new scenery before consuming the boundary; leave it intact on failure.
 
 ## Start with the capital route
 

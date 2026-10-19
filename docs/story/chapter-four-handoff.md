@@ -4,7 +4,7 @@ Chapters One–Four are playable canon. This document records the entry checkpoi
 
 ## Exact save
 
-Version **9**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-three`, boundary **`chapter-four:broken-world`**. The final staging checkpoint is `northglass` `(32,33)`; the departure scene has already carried the medical train out. Do not infer the story boundary from coordinates.
+Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-three`, boundary **`chapter-four:broken-world`**. The final staging checkpoint is `northglass` `(32,33)`; the departure scene has already carried the medical train out. Do not infer the story boundary from coordinates.
 
 Required new flags: `capitalSeen`, `capitalConfronted`, `capitalGateWon`, `petraJoined`, `worksSeen`, `worksWardenWon`, `tomasRescued`, `intakePlanned`, `conduitSeen`, `conduitGuardWon`, `extractionStopped`, `emperorMerged`, `chapterThreeComplete`. Preserve boolean `pressureRoute`, optional `capitalCache` and `palaceStoresWon`, every earlier flag, all resources, XP, HP/focus, inventory copies, loadouts, active formation, journal and play time.
 
