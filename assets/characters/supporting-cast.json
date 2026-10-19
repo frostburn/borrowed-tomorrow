@@ -89,26 +89,5 @@
     "height": 64,
     "width": 72,
     "source": "exec-293b11a5-91c4-4fec-aa66-a107f50801a9.png"
-  },
-  "hound": {
-    "name": "Hound",
-    "layout": "actor",
-    "height": 44,
-    "width": 68,
-    "source": "exec-46eef23f-183c-47b5-99c4-9fe78bd53434.png"
-  },
-  "crow": {
-    "name": "Crow",
-    "layout": "actor",
-    "height": 32,
-    "width": 48,
-    "source": "exec-c5276b13-6355-4d2c-8925-00fb3f748464.png"
-  },
-  "guardian": {
-    "name": "Guardian",
-    "layout": "actor",
-    "height": 64,
-    "width": 72,
-    "source": "exec-0f0d19de-a5f6-4794-9d6d-15995bb681cf.png"
   }
 }

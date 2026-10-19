@@ -9,11 +9,6 @@ STYLE MUST MATCH THE FIRST REFERENCE closely: compact 2.75-head-tall super-defor
 LAYOUT: vertical sheet. One large HEAD-AND-SHOULDERS portrait centered in the UPPER HALF, with its complete hair and shoulders visible. One complete compact FRONT-FACING world actor centered in the LOWER HALF, feet visible. The entire portrait is ABOVE the horizontal midpoint and the entire actor is BELOW it, with a wide transparent gap at midpoint. ONLY these two depictions; do not copy the four-direction layout of Nell's reference. Pixel clusters should be large enough to survive export to portrait 128x128 and world actor 80x80, actual figure 64 pixels tall. World face must retain clear eyes and a tiny mouth at that size. Same anatomy, costume, face and colors in both cutouts.
 BACKGROUND: genuine transparency. No labels, text, frames, panels, scenery, cast shadows, ground shadows, glow, floating specks, extra figures or extra poses.
 
-## Single-enemy prompt
-
-Use case: style-transfer. Asset type: ONE transparent JRPG world actor. Image 1 is Nell's approved party atlas, STYLE REFERENCE ONLY; image 2 is the existing enemy, IDENTITY AND MECHANICAL DESIGN reference only. Replace the old realistic finely textured rendering with the party's simplified late-16-bit/early-PC JRPG pixel clusters: crisp dark warm outline, warm upper-left highlights, blue-violet shadows, clear compact silhouette, broad readable metal panels and a few clean brass joints. Same world camera as Nell's front-facing actors, slightly from above, coherent level of detail. No human face or costume; do not draw Nell.
-COMPOSITION: ONE complete enemy in the center with generous genuine transparent margins. No portrait, extra pose, second figure, diagram, text, labels, palette, borders, scenery, floor or ground shadow. No floating debris, detached sparks, opaque backdrop, glow halo or steam cloud. Its entire silhouette and feet must fit well within the canvas. Design for an 80x80 export, using deliberate large clusters so the identity survives point sampling.
-
 ## Identity briefs
 
 ### master
@@ -68,20 +63,8 @@ The Sanctuary Warden: heavy weathered TEAL/GREEN verdigris and bronze cylindrica
 
 Inspector: a humanoid CLOCKWORK ENFORCER, NOT a human. Cold pale steel/iron articulated MASK face with TWO small amber glowing lens eyes, no hair, no flesh, no moustache, no beard. Charcoal peaked railway officer cap with brass sun badge, dark charcoal longcoat with brass trim and buttons, reddish-brown cross-body strap, mechanical gloved hands and dark heavy boots. Holds a long brass staff topped with a round RED STOP DISC in its anatomical LEFT hand; RIGHT arm rests by side. Severe rigid posture. Distinct from human Captain Alban. Portrait includes metal mask and cap; keep the face simplified into bold readable pixel clusters.
 
-### hound
-
-Hound: a low, lean but sturdy four-legged CLOCKWORK pursuit dog. Angular long bronze snout with steel jaw teeth, two pointed triangular ears, warm orange lens eyes, black iron neck and spine, riveted brown-bronze body armor with one visible circular shoulder gear, jointed mechanical legs ending in broad metal paws, short curved thin metal tail. Grounded standing ready stance in three-quarter view FACING LEFT, all FOUR legs anatomically clear. Not a living furry dog, wolf or toy. Large readable head and compact simplified mechanics to match Nell's world style. Native target approximately 64 pixels wide and 44 high, below the human characters' 64-pixel height.
-
-### crow
-
-Crow: a small CLOCKWORK signal crow standing on two bronze jointed legs and three-toed mechanical feet. Charcoal/navy-black layered feather-shaped metal panels, black angular beak, bright small amber/orange lens eye in a round brass fitting, thin bronze neck/collar and wing joints. Wings FOLDED against the body; long compact black metal tail. Three-quarter view FACING RIGHT, readable crow silhouette with one clear orange eye. No flying pose, perch, branch, human accessories, loose feathers or sparks. Simplify the panel clusters to match Nell's actor shading. Native target about 40 wide and 32 high; this is a small enemy.
-
-### guardian
-
-Guardian: a broad squat intimidating CLOCKWORK collector guard, much wider than a human but the same compact world-actor height. Rounded dark iron head with TWO small amber rectangular lens eyes under a heavy bronze brow, no mouth or human face. Rectangular orange furnace grate in the chest, heavy overlapping bronze shoulder plates, huge jointed forearms ending in CLOSED METAL FISTS, short armored mechanical legs and broad square bronze feet, ONE exhaust chimney rising from its anatomical LEFT shoulder. Warm bronze/blackened iron, brass edges, few rivets. Distinct from the Heart regulator: NO large round pressure gauge and NO clamp claws. Frontal ready stance, compact rather than realistic proportions. Target fits 72 wide by 64 high.
-
 ## Native export
 
-Run `node scripts/import-character-atlas.mjs <asset-id> <source.png>`. The supporting-cast manifest selects a portrait/actor pair or a single enemy actor. Pair exports find the transparent gap between the portrait and actor. Source and native cutouts discard detached alpha fragments; nearest-neighbor sampling copies complete source RGBA pixels. Per-view phases in `sampling-offsets.json` are selected from native face comparisons, with no painted corrections or palette conversion.
+Run `node scripts/import-character-atlas.mjs <asset-id> <source.png>`. The supporting-cast manifest records the retained portrait/actor replacements. Hound, Crow and Guardian use their original native PNGs; their rejected resampled replacements are not production sources. Pair exports find the transparent gap between the portrait and actor. Source and native cutouts discard detached alpha fragments; nearest-neighbor sampling copies complete source RGBA pixels. Per-view phases in `sampling-offsets.json` are selected from native face comparisons, with no painted corrections or palette conversion.
 
-Human and large mechanical figures use a 64-pixel height budget within the 80 x 80 canvas. The hound has a 44-pixel height budget and the crow 32; widths are bounded without stretching. Every world actor meets the common row-68 ground guide. Portraits remain 128 x 128. Runtime code renders the committed art at native size.
+The replacement figures use a 64-pixel height budget within the 80 x 80 canvas, with widths bounded without stretching and a row-68 ground guide. The three original enemy PNGs retain their original silhouettes and placement. Portraits remain 128 x 128. Runtime code renders the committed art at native size.

@@ -37,7 +37,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
     });
-    for(const actor of feet){expect(actor.width).toBe(80);expect(actor.height).toBe(80);expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(actor.hero==='crow'?40:actor.hero==='hound'?26:10);}
+    for(const actor of feet){
+      expect(actor.width).toBe(80);expect(actor.height).toBe(80);
+      // These enemies retain their original native silhouettes and placement.
+      if(['hound','crow','guardian'].includes(actor.hero))continue;
+      expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
+      expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
+      expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);
+    }
     await capture(page,`sprite-cast-${device}`);
     await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();
     await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Back',exact:true}).click();
