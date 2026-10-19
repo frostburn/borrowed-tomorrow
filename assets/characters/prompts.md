@@ -32,3 +32,9 @@ Built-in Image Gen redrew the left/right pair of each hero using the original at
 - Petra: shield on the left forearm, saber in the right hand. Left-facing shows the shield face and mostly hides the sword hand; right-facing shows the saber and only the far shield rim.
 
 Keep the original faces, costumes, lighting, pixel treatment, compact proportions and native foot anchor. No detached fragments, shadows, captions, frames or extra poses. Existing portraits remain unchanged.
+
+## Native face touch-ups
+
+The front and profile exports for Kit, Celia and Petra received a manual native-pixel pass after sampling: 101 RGB pixels in total. Kit retains the source's open brown eyes and gentle smile instead of the fringe and cheek pixels swallowing his expression. Celia's eyes are separated from her round spectacle rims; Petra's eyes are separated from her angled brows. These corrections are authored directly in the committed 80 x 80 PNGs. Review those native faces before replacing them with a fresh atlas export.
+
+The pass preserves every alpha value and every pixel outside the faces. Nell, Orrin, all portraits, back views, equipment handedness and foot anchors are unchanged. No runtime processing is involved.
