@@ -23,7 +23,7 @@ describe('campaign saves', () => {
     const s = checkpoint('chapterOneComplete'); s.flags.workshopWon = true; receiveItem(s.inventory,'brass-reflector'); equipItem(s.inventory,'nell','brass-reflector'); s.bandages = 11;
     expect(decodeSave(JSON.stringify(s))).toEqual(s);
     expect(s.boundary).toBe(NEXT_CHAPTER);
-    for (const version of [1, 2, 3, 4]) expect(() => decodeSave(JSON.stringify({ ...s, version }))).toThrow('previous story');
+    for (const version of [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]) expect(() => decodeSave(JSON.stringify({ ...s, version }))).toThrow('Unsupported save format');
   });
   it('rejects malformed parties, unopened routes and impossible departures', () => {
     const s = newGame();

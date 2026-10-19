@@ -65,7 +65,7 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
   });
 }
 
-test('Iron Coast round bass keeps the tuned fundamental without a sub-octave or biting third partial',async({page})=>{
+test('@ci Iron Coast round bass keeps the tuned fundamental without a sub-octave or biting third partial',async({page})=>{
  await page.goto('/');
  const spectra=await page.evaluate(async()=>{
   // @ts-expect-error Vite serves the shared live instrument rack.

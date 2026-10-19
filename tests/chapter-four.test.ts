@@ -13,10 +13,10 @@ function host(state:GameState){
  const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};resumeChapterFour(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},endingMusic(){}};
  return {h,read:()=>dialogue!,finish:()=>dialogue!.done!(),choice:(i:number)=>dialogue!.choices![i].action(),win:()=>{const b=createBattle(encounter,state);b.result='victory';awardVictory(b,state);},encounter:()=>encounter};
 }
-it('continues an exact v9 departure and retains the chosen formation, health and equipment',()=>{
+it('continues the current departure and retains the chosen formation, health and equipment',()=>{
  const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;old.playSeconds=2115;
  receiveItem(old.inventory,'baffled-nozzle');equipItem(old.inventory,'orrin','baffled-nozzle');
- const {reunionParty:_,...v9}=old,s=decodeSave(JSON.stringify({...v9,version:9}));
+ const s=decodeSave(JSON.stringify(old));
  expect(s).toEqual(old);expect(beginChapterFour(s)).toBe(true);expect(s.activeParty).toEqual(['nell']);expect(s.reunionParty).toEqual(old.activeParty);
  for(const key of ['party','inventory','coins','bandages','xp','playSeconds','flags','journal'] as const)expect(s[key]).toEqual(old[key]);
  expect(beginChapterFour(s)).toBe(false);expect(decodeSave(JSON.stringify(s))).toEqual(s);

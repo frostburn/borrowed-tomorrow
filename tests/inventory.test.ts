@@ -28,6 +28,15 @@ it('serializes copies and loadouts, rejecting malformed or incompatible equipmen
   for (const text of ['null', '{}', JSON.stringify({ ...inventory, bag: { 'unknown': 1 } }), JSON.stringify({ ...inventory, bag: { 'work-coat': -1 } })]) expect(() => decodeInventory(text)).toThrow();
   inventory.characters.orrin.fitting = 'brass-reflector'; expect(() => decodeInventory(JSON.stringify(inventory))).toThrow();
 });
+it('rejects extra or replaced character entries instead of discarding their equipped copies', () => {
+  const inventory = newInventory(); receiveItem(inventory, 'courier-sight'); equipItem(inventory, 'kit', 'courier-sight');
+  const { kit, ...others } = inventory.characters;
+  for (const characters of [{ ...inventory.characters, esme: kit }, { ...others, esme: kit }, []]) {
+    const text = JSON.stringify({ ...inventory, characters });
+    expect(() => decodeInventory(text)).toThrow();
+  }
+  expect(decodeInventory(JSON.stringify(inventory))).toEqual(inventory);
+});
 it('keeps space to unequip items at the copy limit', () => {
   const inventory = newInventory(); receiveItem(inventory, 'brass-reflector', 99); equipItem(inventory, 'nell', 'brass-reflector');
   expect(receiveItem(inventory, 'brass-reflector')).toBe(false);

@@ -9,6 +9,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --grep @ci",
+    "test:e2e:ci:production": "BT_PRODUCTION=1 playwright test --grep @ci",
     "test:e2e:production": "BT_PRODUCTION=1 playwright test",
     "test:e2e:smoke": "playwright test --grep-invert @journey",
     "test:e2e:journeys": "playwright test --grep @journey",

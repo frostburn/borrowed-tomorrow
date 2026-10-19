@@ -17,7 +17,7 @@ async function choices(page:import('@playwright/test').Page){
  while(await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).count())await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).click();
 }
 async function begin(page:import('@playwright/test').Page){
- await page.goto('/');await importSave(page,{...coastCheckpoint('chapterTwoComplete'),version:8});
+ await page.goto('/');await importSave(page,coastCheckpoint('chapterTwoComplete'));
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 }
@@ -60,8 +60,8 @@ test('the pressure route, optional stores refusal and escape work on a phone',as
  await travel(page,'works-depths','conduit');await capture(page,'conduit-arrival-phone');await dialogue(page);await approach(page,'heart-regulator');await battle(page,'heart-pressure-phone');await equip(page,'Kit','Insulated work coat');
  await approach(page,'heart-release');await capture(page,'emperor-rupture-phone');await dialogue(page);await visit(page,'capital-departure');await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await capture(page,'chapter-three-complete-phone');expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
 });
-test('failed chamber artwork preserves the v8 departure for retry',async({page})=>{
- await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,{...before,version:8});await page.route('**/art/conduit.webp',route=>route.abort());
+test('failed chamber artwork preserves the current departure for retry',async({page})=>{
+ await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.route('**/art/conduit.webp',route=>route.abort());
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
  await page.unroute('**/art/conduit.webp');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });

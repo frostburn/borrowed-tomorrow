@@ -64,14 +64,15 @@ export function equipmentBonuses(inventory: Inventory): Record<CompanionId, Equi
 }
 export function decodeInventory(text: string): Inventory {
   const raw = JSON.parse(text);
-  if (!raw || ![1, 2].includes(raw.version) || !raw.bag || typeof raw.bag !== 'object' || Array.isArray(raw.bag) || !raw.characters) throw new Error('Invalid inventory.');
+  if (!raw || raw.version !== 2 || !raw.bag || typeof raw.bag !== 'object' || Array.isArray(raw.bag) || !raw.characters) throw new Error('Invalid inventory.');
+  if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid inventory roster.');
   const inventory = newInventory();
   for (const [item, count] of Object.entries(raw.bag)) {
     if (!Object.hasOwn(ITEMS, item) || !Number.isInteger(count) || (count as number) < 0 || (count as number) > 99) throw new Error('Invalid item count.');
     inventory.bag[item as ItemId] = count as number;
   }
-  for (const hero of (raw.version === 1 ? ['nell', 'orrin'] as const : COMPANION_IDS)) for (const slot of SLOTS) {
-    const slots = raw.characters[hero] ?? (hero === 'kit' && raw.version === 2 ? raw.characters.esme : undefined);
+  for (const hero of COMPANION_IDS) for (const slot of SLOTS) {
+    const slots = raw.characters[hero];
     const item = slots?.[slot];
     if (item !== null && (typeof item !== 'string' || !Object.hasOwn(ITEMS, item) || ITEMS[item as ItemId].slot !== slot || !canEquip(hero, item as ItemId))) throw new Error('Invalid equipment.');
     inventory.characters[hero][slot] = item;
