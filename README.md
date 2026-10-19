@@ -1,6 +1,6 @@
 # Borrowed Tomorrow
 
-Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Choose up to three companions from the five-character roster, adjust levels and base stats, discover level abilities, equip items and test the builds in combat. The campaign has its own [character inventory](docs/character-inventory.md): open Equipment or press I outside combat. The workshop’s build editing remains dev-only.
+Vite development includes an off-story [character workshop](docs/development-workshop.md): open `/?dev=workshop` or choose **Workshop** on the title screen. Choose up to three companions from the five-character roster, adjust levels and base stats, discover level abilities, equip items and test the builds in combat. Its **Music** tab (directly `/?dev=music`) auditions every cue in spelling-aware 31-EDO, with bar seeking, instrument isolation and a pitch/frequency inspector. The campaign has its own [character inventory](docs/character-inventory.md): open Equipment or press I outside combat. The workshop’s build editing remains dev-only.
 
 Dev-mode battles also include one-click Win battle, Lose battle, Refill party and Restart battle controls above the combat commands, in both the story and workshop.
 

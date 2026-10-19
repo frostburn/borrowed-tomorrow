@@ -26,6 +26,7 @@ export class MusicWorkshop {
   private timer?:number;
   private auditionContext?:AudioContext;
   private auditionSynth?:Synth;
+  private auditionGain?:GainNode;
   private auditionUntil=0;
   private auditionGeneration=0;
   private auditionTimer?:number;
@@ -40,17 +41,18 @@ export class MusicWorkshop {
   }
   private endAudition(){
     this.auditionGeneration++;
-    if(this.auditionContext)this.auditionSynth?.stop(this.auditionContext.currentTime+.02);
+    if(this.auditionContext)this.auditionSynth?.release(this.auditionContext.currentTime);
     if(this.auditionTimer)clearTimeout(this.auditionTimer);this.auditionTimer=undefined;this.auditionUntil=0;
   }
   stop(){
+    const before=this.bar;
     if(this.audio.enabled)this.bar=this.audio.position().bar%scoreLength(this.mode);
-    this.audio.pause();this.endAudition();this.sound(false);this.notes();this.tick();
+    this.audio.pause();this.endAudition();this.sound(false);if(this.bar!==before)this.notes();this.tick();
   }
   private async audition(pitches:Pitch[]){
     this.stop();const generation=this.auditionGeneration;
     try{
-      if(!this.auditionContext){this.auditionContext=new AudioContext();const gain=this.auditionContext.createGain();gain.gain.value=.5;gain.connect(this.auditionContext.destination);this.auditionSynth=new Synth(this.auditionContext,gain);}
+      if(!this.auditionContext){this.auditionContext=new AudioContext();const gain=this.auditionContext.createGain();gain.gain.value=this.volume/150;this.auditionGain=gain;gain.connect(this.auditionContext.destination);this.auditionSynth=new Synth(this.auditionContext,gain);}
       const c=this.auditionContext;await c.resume();if(generation!==this.auditionGeneration)return;
       for(const [n,pitch]of pitches.entries())this.auditionSynth!.note('keys',pitch,c.currentTime+.03+n*.35,.85,.22/Math.sqrt(pitches.length),n? .15:-.15);
       this.auditionUntil=performance.now()+1400;this.sound(true);this.auditionTimer=window.setTimeout(()=>{this.sound(this.audio.enabled);this.auditionUntil=0;},1400);
@@ -74,7 +76,7 @@ export class MusicWorkshop {
     root.querySelector<HTMLButtonElement>('#music-next')!.onclick=()=>this.selectBar((this.bar+1)%scoreLength(this.mode));
     root.querySelector<HTMLInputElement>('#music-bar')!.onchange=e=>this.selectBar(Number((e.target as HTMLInputElement).value)-1);
     for(const b of root.querySelectorAll<HTMLButtonElement>('[data-part]'))b.onclick=()=>{this.part=b.dataset.part!;const playing=this.audio.enabled;this.render();if(playing)void this.play();};
-    const volume=(delta:number)=>{this.volume=Math.max(0,Math.min(100,this.volume+delta));this.audio.setVolume(this.volume/100);root.querySelector('#music-volume')!.textContent=`Volume ${this.volume}%`;};
+    const volume=(delta:number)=>{this.volume=Math.max(0,Math.min(100,this.volume+delta));this.audio.setVolume(this.volume/100);if(this.auditionGain&&this.auditionContext)this.auditionGain.gain.setTargetAtTime(this.volume/150,this.auditionContext.currentTime,.025);root.querySelector('#music-volume')!.textContent=`Volume ${this.volume}%`;};
     root.querySelector<HTMLButtonElement>('#music-quieter')!.onclick=()=>volume(-5);root.querySelector<HTMLButtonElement>('#music-louder')!.onclick=()=>volume(5);
     for(const b of root.querySelectorAll<HTMLButtonElement>('[data-fifth]'))b.onclick=()=>{const p=fifthsCircle()[Number(b.dataset.fifth)];void this.audition([p,transpose(p,'P5')]);};
     root.querySelector<HTMLButtonElement>('#music-sharp')!.onclick=()=>void this.audition(['C#4']);root.querySelector<HTMLButtonElement>('#music-flat')!.onclick=()=>void this.audition(['Db4']);root.querySelector<HTMLButtonElement>('#music-compare')!.onclick=()=>void this.audition(['C#4','Db4']);

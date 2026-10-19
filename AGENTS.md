@@ -20,6 +20,8 @@ Do not name characters Morrow, Vale, Rook, Sable, Voss, Mara, Dacre, Holt, Kestr
 
 The entire visible game, including text and menus, must use the same native-resolution framebuffer and integer scaling in physical pixels. A CSS pixel font or `image-rendering: pixelated` on only the world canvas is insufficient. Use a 1024 × 768 desktop layout; narrower layouts crop and pan the scene at the same pixel density. Render scenery, 128 × 128 portraits, and 80 × 80 actors at 1:1 native resolution. Preserve asset colors; never reduce the palette or fit an asset into a smaller box. Keep bitmap text and geometry aligned to the logical grid; verify at fractional device-pixel ratios as well as ordinary desktop and phone sizes.
 
+Music uses 31-tone equal temperament with A4 = 440 Hz. Score pitches retain explicit diatonic spellings: C# and Db are distinct. Use `src/game/tuning.ts` for octave shifts and spelled intervals, never round MIDI numbers or add semitones to a pitch. A fifth is 18 steps, a sharp/flat changes two steps, and the full circle contains 31 pitch classes. The Music workshop (`?dev=music`) and its review controls remain Vite-only and do not alter campaign or character settings.
+
 Keep audio procedural and asset-light. Compose phrases with variation, rests, and distinct location arrangements. Sound effects must correspond to the actual action: steam, lantern, melee, healing, movement, and menu interaction have different sounds.
 
 For new themes, read `docs/music-direction.md`. The retained Northglass score uses the supplied Evangelion progression. The Nichijou progression and non-functional Chrono Trigger-style vamps remain references for new themes; original melodies and clear phrase variation are required.

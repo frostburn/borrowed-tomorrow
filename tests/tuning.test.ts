@@ -34,7 +34,7 @@ it('spells raised leading tones and borrowed minor chords according to their har
  expect(pitches('coast',5)).toContain('Bb4');expect(pitches('switching',5)).toContain('Bb4');
  expect(pitches('refuge',20)).toContain('Ab5');expect(pitches('four-battle',7)).toContain('G#4');
  expect(pitches('sanctuary',18)).toContain('Db2');expect(pitches('breakwater',7)).toContain('D#5');
- for(const mode of Object.keys(ARRANGEMENTS) as Parameters<typeof scoreBar>[0][])for(let bar=0;bar<32;bar++)for(const n of scoreBar(mode,bar)){
-  expect(Number.isInteger(pitchSteps(n.pitch))).toBe(true);expect(pitchFrequency(n.pitch)).toBeGreaterThan(0);
- }
+ const pitchesUsed=new Set<Pitch>();
+ for(const mode of Object.keys(ARRANGEMENTS) as Parameters<typeof scoreBar>[0][])for(let bar=0;bar<32;bar++)for(const n of scoreBar(mode,bar))pitchesUsed.add(n.pitch);
+ for(const pitch of pitchesUsed){expect(Number.isInteger(pitchSteps(pitch))).toBe(true);expect(pitchFrequency(pitch)).toBeGreaterThan(0);}
 });
