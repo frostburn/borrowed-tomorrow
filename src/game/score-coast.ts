@@ -1,8 +1,9 @@
 import { octave, type Pitch } from './tuning';
 import type { Note } from './score';
-// C–Bm7b5–Em7–Am–Gm7–C7–F–Em–Dm–G–C, extended to sixteen bars.
+// C–Bm7b5/D–Em7–Am–Gm7–C7–F–Em–Dm–G–C, extended to sixteen bars.
+// Put the half-diminished chord in first inversion for a C–D–E bass ascent.
 const chords:Pitch[][] = [
-  ['C2','C4','E4','G4'],['B1','A3','D4','F4'],['E2','B3','D4','G4'],['A2','C4','E4','A4'],
+  ['C2','C4','E4','G4'],['D2','A3','B3','D4','F4'],['E2','B3','D4','G4'],['A2','C4','E4','A4'],
   ['G2','Bb3','D4','F4'],['C2','Bb3','E4','G4'],['F2','C4','F4','A4'],['E2','B3','E4','G4'],
   ['D2','C4','F4','A4'],['G2','B3','D4','G4'],['C2','C4','E4','G4'],['A2','C4','E4','A4'],
   ['F2','C4','F4','A4'],['D2','C4','F4','A4'],['G2','B3','D4','G4'],['C2','C4','E4','G4'],

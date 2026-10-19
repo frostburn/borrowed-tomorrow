@@ -37,7 +37,7 @@ Use a reference when a new location calls for it. Retain melodic identity, varia
 
 ## Iron Coast revision
 
-The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Its round bass uses a sine fundamental and a quiet octave, without the standard bass’s sub-octave or triangle overtones, keeping the meantone harmony clearer. The written bass roots and rhythm are preserved. Low piano chords and root bass on half notes replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.
+The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Its round bass uses a sine fundamental and a quiet octave, without the standard bass’s sub-octave or triangle overtones, keeping the meantone harmony clearer. Bar 2 voices Bm7b5/D: D replaces the low B, with B retained in the piano, giving a C–D–E bass ascent while keeping the half-diminished harmony. Low piano chords and half-note bass replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.
 
 ## Beneath the Palace
 
