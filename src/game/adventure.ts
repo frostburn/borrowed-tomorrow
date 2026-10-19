@@ -5,7 +5,7 @@ import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import type { StoryHost } from '../content/chapter-one/interactions';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
-import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
+import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
@@ -153,7 +153,7 @@ export class Adventure extends Phaser.Scene {
     ]);
   }
   private begin() {
-    this.state = newGame(); this.ui.clearPanel(); this.showWorld();
+    this.state = newGame(); this.state.location=arrival('station','start'); this.ui.clearPanel(); this.showWorld();
     this.autosave();resumeChapter(this.storyHost());
   }
   private async ensureRegion(map: MapId) {
@@ -577,7 +577,7 @@ export class Adventure extends Phaser.Scene {
     if(b.result==='defeat'){
       this.ui.panel('The line can wait', '<p>The party retreats to a safe spot. Your progress before this encounter is preserved.</p><p>Try separating them, using cover, or waiting for the enemy to approach.</p>',[
         {label:'Retry battle',action:()=>{restoreParty(this.state);this.startBattle(b.encounter);}},
-        {label:this.state.chapter!=='chapter-one'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter!=='chapter-one'){this.showWorld();this.autosave();}else void this.changeMap('station',21,19);}},
+        {label:this.state.chapter!=='chapter-one'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter!=='chapter-one'){this.showWorld();this.autosave();}else{const p=arrival('station','retreat');void this.changeMap(p.map,p.x,p.y);}}},
       ]);return;
     }
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
