@@ -32,3 +32,9 @@ Built-in Image Gen redrew the left/right pair of each hero using the original at
 - Petra: shield on the left forearm, saber in the right hand. Left-facing shows the shield face and mostly hides the sword hand; right-facing shows the saber and only the far shield rim.
 
 Keep the original faces, costumes, lighting, pixel treatment, compact proportions and native foot anchor. No detached fragments, shadows, captions, frames or extra poses. Existing portraits remain unchanged.
+
+## Sampling offsets
+
+Kit, Celia and Petra's front and profile actors are resampled from their existing source cutouts, with no painted pixel corrections. `sampling-offsets.json` records the selected horizontal and vertical phase for each view. Values are fractions of one destination pixel; positive values sample farther right/down in the source. The exporter samples source coordinate `floor((destination + 0.5 + offset) * sourceSize / destinationSize)` and copies that source pixel's complete RGBA value. This changes which source details survive without blending colors.
+
+Each selected phase was compared against a 5 x 5 grid of offsets from -0.4 to +0.4 in both axes. The choices preserve Kit's open eyes and small smile, Celia's spectacle outlines, and Petra's determined eyes. The existing scale, canvas and ground anchor are retained; detached alpha fragments are still removed after sampling. Nell, Orrin, portraits and back views are unchanged. These settings are authoring-only and are automatically applied by both atlas and side-pair exports.
