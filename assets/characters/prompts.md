@@ -16,6 +16,19 @@ Transparent JRPG character production atlas. One head-and-shoulders portrait in 
 
 ## Native export
 
-`node scripts/import-character-atlas.mjs <hero> <source.png>` separates the five cutouts with ImageMagick. It finds bounds from the opaque alpha region to exclude stray near-transparent atlas noise, then copies the original RGBA cutout. Point sampling is an authoring export, with no color quantization. All four actor views use one uniform scale and sit on an 80 x 80 transparent canvas with feet ending on row 67 (ground anchor at 68). Portraits occupy a 128 x 128 canvas. Gameplay renders these exports at 1:1; only the dev inspector offers deliberate integer enlargement.
+`node scripts/import-character-atlas.mjs <hero> <source.png>` separates the five cutouts with ImageMagick. Each cutout is isolated as its largest connected nontransparent silhouette before its bounds are measured. Detached neighboring-atlas fragments are removed again after point sampling; RGBA values within the retained silhouette are preserved. Point sampling is an authoring export, with no color quantization. All four actor views use one uniform scale and sit on an 80 x 80 transparent canvas with feet ending on row 67 (ground anchor at 68). Portraits occupy a 128 x 128 canvas. Gameplay renders these exports at 1:1; only the dev inspector offers deliberate integer enlargement.
 
 The generated source atlases remain attached to the work chat. The committed native exports are the production artwork; normal builds require neither Image Gen nor ImageMagick.
+
+
+## Handed side-view revision
+
+Built-in Image Gen redrew the left/right pair of each hero using the original atlas as an identity and style reference. Each new source is a two-column transparent sheet; import with `node scripts/import-character-atlas.mjs <hero> <pair.png> public/art sides`. The left-facing view exposes the anatomical left side; the right-facing view exposes the anatomical right side. Near-side equipment is visible, while far-side equipment is occluded by the body. These are distinct rotations, never mirrored sprites.
+
+- Nell: lantern in the right hand. The left-facing near left arm is empty, with only part of the far lantern visible. The right-facing near right hand clearly holds the lantern.
+- Orrin: steam lance in the right hand. Left-facing shows the empty near left glove and only the far nozzle; right-facing shows the near hand and full tool.
+- Kit: crossbow in the right hand, satchel at the left hip. Left-facing emphasizes the satchel and empty near hand; right-facing emphasizes the crossbow.
+- Celia: book under the left arm, satchel at the right hip. Left-facing shows the book cover and holding arm; right-facing shows an empty near arm, satchel and only the far book edge.
+- Petra: shield on the left forearm, saber in the right hand. Left-facing shows the shield face and mostly hides the sword hand; right-facing shows the saber and only the far shield rim.
+
+Keep the original faces, costumes, lighting, pixel treatment, compact proportions and native foot anchor. No detached fragments, shadows, captions, frames or extra poses. Existing portraits remain unchanged.

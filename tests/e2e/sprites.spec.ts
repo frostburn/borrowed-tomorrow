@@ -19,10 +19,23 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         const canvas=document.createElement('canvas');canvas.width=canvas.height=80;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
         const p=ctx.getImageData(0,0,80,80).data;let bottom=-1,top=80;
         for(let y=0;y<80;y++)for(let x=0;x<80;x++)if(p[(y*80+x)*4+3]>127){top=Math.min(top,y);bottom=Math.max(bottom,y);}
-        all.push({hero,suffix,top,bottom,width:image.naturalWidth,height:image.naturalHeight});
+        const visited=new Uint8Array(80*80);let components=0;
+        for(let seed=0;seed<80*80;seed++){
+          if(visited[seed]||!p[seed*4+3])continue;
+          components++;const queue=[seed];visited[seed]=1;
+          for(let at=0;at<queue.length;at++){
+            const x=queue[at]%80,y=Math.floor(queue[at]/80);
+            for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+              const nx=x+dx,ny=y+dy,next=ny*80+nx;
+              if(nx<0||nx>=80||ny<0||ny>=80||visited[next]||!p[next*4+3])continue;
+              visited[next]=1;queue.push(next);
+            }
+          }
+        }
+        all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
     });
-    for(const actor of feet){expect(actor.width).toBe(80);expect(actor.height).toBe(80);expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);}
+    for(const actor of feet){expect(actor.width).toBe(80);expect(actor.height).toBe(80);expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);}
     await capture(page,`sprite-cast-${device}`);
     await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();
     await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Back',exact:true}).click();
@@ -52,6 +65,22 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await expect(page.getByRole('spinbutton',{name:'Nell level',exact:true})).toHaveValue('1');
     await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Sprites',exact:true}).click();
     await expect(page.getByRole('button',{name:'Inspect Celia',exact:true})).toHaveAttribute('aria-pressed','true');
+    const collections=page.getByRole('group',{name:'Sprite collection',exact:true});
+    await collections.getByRole('button',{name:'NPCs (12)',exact:true}).click();
+    await expect(review.locator('[data-sprite-hero]')).toHaveCount(12);
+    await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
+    await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.png$/);
+    await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
+    await expect(review.locator('.sprite-file')).toContainText('master.png');
+    const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
+    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([1152,1152]);
+    await capture(page,`sprite-npcs-${device}`);
+    await collections.getByRole('button',{name:'Enemies (4)',exact:true}).click();
+    await review.getByRole('button',{name:'Inspect Hound',exact:true}).click();
+    const hound=review.getByRole('img',{name:'Hound actor',exact:true});
+    expect(await hound.evaluate(async element=>{const i=element as HTMLImageElement;await i.decode();const scale=window.borrowedTomorrowPixels.inspect().cssScale,r=i.getBoundingClientRect();return [i.naturalWidth,i.naturalHeight,Math.round(r.width/scale),Math.round(r.height/scale)];})).toEqual([80,80,80,80]);
+    await expect(review.locator('.sprite-reference')).toContainText('Portrait: not available');
+    expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
     expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });
  });

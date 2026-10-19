@@ -1,12 +1,19 @@
-import { CHARACTERS } from '../content/characters';
-import { ACTOR_DIRECTIONS, ACTOR_FEET, ACTOR_SIZE, actorAsset, type ActorDirection } from '../content/actors';
-import { COMPANION_IDS, type CompanionId } from '../rules/party';
+import { ACTOR_DIRECTIONS, ACTOR_FEET, ACTOR_SIZE, type ActorDirection } from '../content/actors';
+import type { CompanionId } from '../rules/party';
+import { SPRITE_CATALOG, SPRITE_GROUPS, spriteAsset, type SpriteEntry, type SpriteGroup } from './sprite-catalog';
 import { art } from '../game/ui';
 
 const backgrounds = { Slate: ['#182b32', '#234047'], Paper: ['#dac9a0', '#f4e5be'], Night: ['#080f19', '#101d28'] } as const;
 type Background = keyof typeof backgrounds;
+const equipmentSide: Record<CompanionId,string> = {
+  nell:'Lantern: right hand.', orrin:'Steam lance: right hand.',
+  kit:'Crossbow: right hand. Satchel: left hip.', celia:'Book: left arm. Satchel: right hip.',
+  petra:'Shield: left arm. Saber: right hand.',
+};
 export class SpriteWorkshop {
-  private hero: CompanionId = 'nell';
+  private hero = 'nell';
+  private group: SpriteGroup = 'Party';
+  private get entry() { return SPRITE_CATALOG.find(entry=>entry.id===this.hero)!; }
   private direction: ActorDirection = 'front';
   private background: Background = 'Slate';
   private zoom = 2;
@@ -29,15 +36,17 @@ export class SpriteWorkshop {
     return image;
   }
   private render() {
-    const host = this.host!;
-    host.innerHTML = `<section class="sprite-review" aria-label="Sprite review"><header><h2>Sprites</h2><p>Five travelers, one art direction. Portraits and lineup are native size.</p></header>
-      <div class="sprite-cast" role="group" aria-label="Playable characters">${COMPANION_IDS.map(hero=>`<button data-sprite-hero="${hero}" aria-label="Inspect ${CHARACTERS[hero].name}" aria-pressed="${hero===this.hero}"><img src="${art(CHARACTERS[hero].portrait)}" alt="${CHARACTERS[hero].name} portrait" width="128" height="128"/><span>${CHARACTERS[hero].name}</span></button>`).join('')}</div>
-      <div class="sprite-settings"><div role="group" aria-label="Facing">${ACTOR_DIRECTIONS.map(direction=>`<button data-facing="${direction}" aria-pressed="${direction===this.direction}">${direction[0].toUpperCase()+direction.slice(1)}</button>`).join('')}</div>
+    const host = this.host!, entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
+    if(!entry.directions.includes(this.direction))this.direction='front';
+    host.innerHTML = `<section class="sprite-review" aria-label="Sprite review"><header><h2>Sprites</h2><p>Compare character and enemy artwork at native size.</p></header>
+      <div class="sprite-settings" role="group" aria-label="Sprite collection">${SPRITE_GROUPS.map(group=>`<button data-sprite-group="${group}" aria-pressed="${group===this.group}">${group} (${SPRITE_CATALOG.filter(character=>character.group===group).length})</button>`).join('')}</div>
+      <div class="sprite-cast" role="group" aria-label="${this.group==='Party'?'Playable characters':this.group}">${entries.map(character=>`<button data-sprite-hero="${character.id}" aria-label="Inspect ${character.name}" aria-pressed="${character.id===this.hero}"><span class="sprite-card-image"><img ${character.portrait?'':'data-actor-only'} src="${art(character.portrait??character.sprite)}" alt="${character.name} ${character.portrait?'portrait':'actor'}" width="${character.portrait?128:80}" height="${character.portrait?128:80}"/></span><span>${character.name}</span></button>`).join('')}</div>
+      <div class="sprite-settings"><div role="group" aria-label="Facing">${ACTOR_DIRECTIONS.map(direction=>`<button data-facing="${direction}" aria-pressed="${direction===this.direction}" ${entry.directions.includes(direction)?'':'disabled'}>${direction[0].toUpperCase()+direction.slice(1)}</button>`).join('')}</div>
       <div role="group" aria-label="Preview background">${Object.keys(backgrounds).map(background=>`<button data-background="${background}" aria-pressed="${background===this.background}">${background}</button>`).join('')}</div>
       <button id="sprite-guides" aria-pressed="${this.guides}">Ground guides</button></div>
-      <section class="sprite-lineup"><h3>Party lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="480" height="112" aria-label="All five travelers at native size"></canvas></div></section>
-      <div class="sprite-inspector"><section><h3>${CHARACTERS[this.hero].name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${CHARACTERS[this.hero].name} ${this.direction} at ${this.zoom}x"></canvas></section>
-      <section class="sprite-reference"><h3>Four directions / 1x</h3><div class="sprite-scroll"><canvas role="img" width="352" height="112" aria-label="${CHARACTERS[this.hero].name} in all four directions"></canvas></div><p>Actor: 80 x 80<br/>Portrait: 128 x 128<br/>Feet: row 68 / center: column 40</p><p class="sprite-file">${actorAsset(this.hero,this.direction)}.png<br/>${CHARACTERS[this.hero].portrait}.png</p></section></div></section>`;
+      <section class="sprite-lineup"><h3>${this.group} lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entries.length*96}" height="112" aria-label="${this.group} at native size"></canvas></div></section>
+      <div class="sprite-inspector"><section><h3>${entry.name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${entry.name} ${this.direction} at ${this.zoom}x"></canvas></section>
+      <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':'One front view is available for this asset.'}</p><p>Actor: 80 x 80<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row 68 / center: column 40</p><p class="sprite-file">${spriteAsset(entry,this.direction)}.png${entry.portrait?'<br/>'+entry.portrait+'.png':''}</p></section></div></section>`;
     const bind = (selector: string, action: (button: HTMLButtonElement) => void) => {
       for (const button of host.querySelectorAll<HTMLButtonElement>(selector)) button.onclick = () => {
         const scroll = host.closest('.inventory-panel')!.scrollTop;
@@ -47,7 +56,8 @@ export class SpriteWorkshop {
         host.querySelector<HTMLButtonElement>(focus)?.focus({preventScroll:true});
       };
     };
-    bind('[data-sprite-hero]', button=>{ this.hero=button.dataset.spriteHero as CompanionId; });
+    bind('[data-sprite-hero]', button=>{ this.hero=button.dataset.spriteHero!; });
+    bind('[data-sprite-group]', button=>{ this.group=button.dataset.spriteGroup as SpriteGroup;this.hero=SPRITE_CATALOG.find(entry=>entry.group===this.group)!.id; });
     bind('[data-facing]', button=>{ this.direction=button.dataset.facing as ActorDirection; });
     bind('[data-background]', button=>{ this.background=button.dataset.background as Background; });
     bind('[data-zoom]', button=>{ this.zoom=Number(button.dataset.zoom); });
@@ -61,8 +71,8 @@ export class SpriteWorkshop {
     }
     ctx.imageSmoothingEnabled=false;
   }
-  private actor(ctx: CanvasRenderingContext2D, hero: CompanionId, direction: ActorDirection, x: number, y: number, zoom=1) {
-    const image=this.image(actorAsset(hero,direction)), size=ACTOR_SIZE*zoom;
+  private actor(ctx: CanvasRenderingContext2D, entry: SpriteEntry, direction: ActorDirection, x: number, y: number, zoom=1) {
+    const image=this.image(spriteAsset(entry,direction)), size=ACTOR_SIZE*zoom;
     if (this.guides) {
       ctx.strokeStyle='#87a3a2';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,size-1,size-1);
       ctx.fillStyle='#f4c77a';ctx.fillRect(x,y+ACTOR_FEET*zoom,size,1);
@@ -75,9 +85,10 @@ export class SpriteWorkshop {
     const [lineup, detail, directions]=this.host.querySelectorAll('canvas');
     const a=lineup.getContext('2d')!,b=detail.getContext('2d')!,c=directions.getContext('2d')!;
     for(const ctx of [a,b,c])this.backdrop(ctx);
-    COMPANION_IDS.forEach((hero,index)=>this.actor(a,hero,this.direction,8+96*index,16));
-    const offset=(240-ACTOR_SIZE*this.zoom)/2;this.actor(b,this.hero,this.direction,offset,offset,this.zoom);
-    ACTOR_DIRECTIONS.forEach((direction,index)=>this.actor(c,this.hero,direction,8+88*index,16));
+    const entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
+    entries.forEach((character,index)=>this.actor(a,character,this.direction,8+96*index,16));
+    const offset=(240-ACTOR_SIZE*this.zoom)/2;this.actor(b,entry,this.direction,offset,offset,this.zoom);
+    entry.directions.forEach((direction,index)=>this.actor(c,entry,direction,8+88*index,16));
     // A DOM mutation asks the shared native framebuffer to repaint these canvases.
     this.host.dataset.paint=String(Number(this.host.dataset.paint??0)+1);
   }
