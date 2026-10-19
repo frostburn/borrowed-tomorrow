@@ -20,12 +20,12 @@ export class Cutscene {
       const name=child.texture.key.replace(/-(left|right|back)$/,'');
       if(sprites.has(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
     }
-    this.layer=scene.add.container(0,0);
+    this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
-      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden);
-      this.layer.add(image);this.actors.set(actor.id,image);
+      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
+      world.add(image);this.actors.set(actor.id,image);
     }
-    scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=true;audio.cinematicMix(.25);
+    world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=true;audio.cinematicMix(.25);
   }
   get animating(){return !this.closed&&this.scene.cameras.main.panEffect.isRunning;}
   shot(shot?:Shot){
@@ -76,7 +76,7 @@ export class Cutscene {
   reframe(){if(this.focus){const p=pixel(this.focus);this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
     if(this.closed)return;this.closed=true;
-    for(const actor of this.actors.values())this.scene.tweens.killTweensOf(actor);
+    for(const actor of this.actors.values()){this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);
     this.audio.cinematicMix(1);

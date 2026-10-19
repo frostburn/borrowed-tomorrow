@@ -87,24 +87,7 @@ test('portraits, HUD sprites, and scenery retain their native pixels and colors'
     return {width:b.width/scale,height:b.height/scale,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight};
   });
   expect(actor).toEqual({width:80,height:80,naturalWidth:80,naturalHeight:80});
-  await expect.poll(()=>page.evaluate(async()=>{
-    const image=new Image();image.src='/art/station.webp';await image.decode();
-    const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
-    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
-    const reference=document.createElement('canvas');reference.width=32;reference.height=64;
-    reference.getContext('2d',{willReadFrequently:true})!.drawImage(image,view.scrollX+8,view.scrollY+16,32,64,0,0,32,64);
-    const expected=reference.getContext('2d',{willReadFrequently:true})!.getImageData(0,0,32,64).data;
-    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
-    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
-    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+16)*info.physicalScale;
-    if(Math.round(world.width/info.cssScale)!==view.width||Math.round(world.height/info.cssScale)!==view.height)return -1;
-    let missing=0;
-    for(let y=0;y<64;y++)for(let x=0;x<32;x++)for(let c=0;c<4;c++){
-      const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
-      if(actual[at]!==expected[(y*32+x)*4+c])missing++;
-    }
-    return missing;
-  }),{timeout:15000}).toBe(0);
+  await nativeScene(page,'station');
   if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/native-station.png`});
   await approach(page,'tomas');await expect(page.locator('.dialogue')).toBeVisible();
   while(await page.locator('.dialogue h2').textContent()!=='The broken crystal')await page.locator('.dialogue-actions button').click();

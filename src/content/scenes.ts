@@ -1,12 +1,11 @@
 import { SAY, type Dialogue, type Line } from './dialogue';
 import type { Cinematic, Shot } from './cinematics';
+import { stage } from './maps';
 
 const line = (who: string, text: string, shot?: Shot): Line => ({ ...SAY(who, text), shot });
 const scene = (id: string, title: string, actors: Cinematic['actors'], lines: Line[]): Dialogue => ({ scene: { id, title, actors }, lines });
 
-export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME', [
-  { id: 'nell', at: { x: 21, y: 16 } }, { id: 'ansel', at: { x: 20, y: 12 } },
-], [
+export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME', stage('station','one-festival'), [
   line('Larkspur · festival night', 'The last train is in. Music carries from the square, and every crystal lamp bears the imperial sun.', { focus: { x: 21, y: 14 }, cut: true, cue: 'return-call' }),
   line('Stationmaster Ansel', 'Off duty, Nell. Your brother’s by the festival lanterns. He asked if you still wanted to see the sea.'),
   line('Nell', 'He promised we’d go before I turned eighteen. I’m starting to think he means the night before.'),
@@ -14,10 +13,7 @@ export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME'
   line('Nell', 'I’ll make him pick a train this time.'),
 ]);
 
-export const raid = () => scene('one-raid', 'THE ARREST', [
-  { id: 'nell', at: { x: 24, y: 14 } }, { id: 'tomas', at: { x: 26, y: 13 } },
-  { id: 'ansel', at: { x: 20, y: 12 } }, { id: 'alban', at: { x: 32, y: 11 }, hidden: true },
-], [
+export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-raid'), [
   line('Tomas', 'You kept the lantern. I thought Ansel would have given you a crystal one by now.', { focus: { x: 25, y: 14 }, cut: true }),
   line('Nell', 'You kept finding reasons to stay in the capital. Are we going to the sea or aren’t we?'),
   line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.'),
@@ -36,9 +32,7 @@ export const raid = () => scene('one-raid', 'THE ARREST', [
   line('Nell', 'I’m bringing him home. Iona, stay with Ansel.'),
 ]);
 
-export const recruit = () => scene('one-orrin', 'A WAY EAST', [
-  { id: 'nell', at: { x: 27, y: 15 } }, { id: 'orrin', at: { x: 25, y: 13 } },
-], [
+export const recruit = () => scene('one-orrin', 'A WAY EAST', stage('yard','one-orrin'), [
   line('Orrin', 'I heard the train. Where’s Tomas?', { focus: { x: 26, y: 14 }, cut: true }),
   line('Nell', 'They took him. Alban killed Ansel. I couldn’t—'),
   line('Orrin', 'Sit down a moment. Here. I’ve got you.', { actors: { orrin: { to: { x: 26, y: 15 } } }, silence: true }),
@@ -50,10 +44,7 @@ export const recruit = () => scene('one-orrin', 'A WAY EAST', [
   line('Nell', 'It’s never done that before. I’ll try to give you some notice.'),
 ]);
 
-export const stillness = () => scene('one-stillness', 'RILLBRIDGE', [
-  { id: 'nell', at: { x: 14, y: 18 } }, { id: 'orrin', at: { x: 12, y: 18 } },
-  { id: 'elspeth', at: { x: 27, y: 19 } },
-], [
+export const stillness = () => scene('one-stillness', 'RILLBRIDGE', stage('rillbridge','one-stillness'), [
   line('The branch', 'Orrin leaves the engine before the town crossing. Smoke from a chimney stands in a straight column.', { focus: { x: 17, y: 18 }, cut: true, silence: true }),
   line('Nell', 'There’s water hanging over the river. Look at the people.'),
   line('Orrin', 'The lantern’s making my teeth ache. Is it louder here?', { actors: { nell: { to: { x: 15, y: 18 } } }, cue: 'resonance' }),
@@ -62,19 +53,14 @@ export const stillness = () => scene('one-stillness', 'RILLBRIDGE', [
   line('Nell', 'Tomas’s train came through here. We stop the machine, then we follow it.'),
 ]);
 
-export const collector = () => scene('one-collector', 'THE FIRST REPAYMENT', [
-  { id: 'nell', at: { x: 55, y: 18 } }, { id: 'orrin', at: { x: 53, y: 18 } },
-], [
+export const collector = () => scene('one-collector', 'THE FIRST REPAYMENT', stage('rillbridge','one-collector'), [
   line('The collector', 'Light leaves the houses in thin threads. Each thread enters the sun-shaped opening in the carriage.', { focus: { x: 57, y: 18 }, cut: true, cue: 'resonance' }),
   line('Captain Alban', 'Rillbridge collection complete. Record the repayment and clear the branch.'),
   line('Nell', 'Repayment? What did these people borrow?'),
   line('Orrin', 'Its guard’s turning. Stay out of the steam line. We can break the collector once it’s down.', { cue: 'steam' }),
 ]);
 
-export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', [
-  { id: 'nell', at: { x: 56, y: 18 } }, { id: 'orrin', at: { x: 58, y: 18 } },
-  { id: 'tilda', at: { x: 53, y: 18 }, hidden: true }, { id: 'elspeth', at: { x: 51, y: 18 }, hidden: true },
-], [
+export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', stage('rillbridge','one-release'), [
   line('Orrin', 'Keep the lantern up. I’m opening the casing.', { focus: { x: 57, y: 18 }, cut: true }),
   line('Rillbridge', 'The casing splits. Water falls, a plate smashes, and a woman finishes a word she began three days ago.', { cue: 'burst' }),
   line('Tilda', 'Who are you? Where’s the carriage?', { actors: { tilda: { visible: true, to: { x: 55, y: 18 } }, elspeth: { visible: true, to: { x: 53, y: 18 } } } }),
@@ -89,20 +75,14 @@ export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', [
   line('Elspeth', 'Go. We can look after each other now.'),
 ]);
 
-export const passArrival = () => scene('one-pass', 'THE CROSSING', [
-  { id: 'nell', at: { x: 5, y: 14 } }, { id: 'orrin', at: { x: 3, y: 14 } },
-  { id: 'alban', at: { x: 33, y: 14 } },
-], [
+export const passArrival = () => scene('one-pass', 'THE CROSSING', stage('tunnel','one-pass'), [
   line('Orrin', 'I’ve brought the engine up. We just need the crossing.', { focus: { x: 6, y: 14 }, cut: true }),
   line('Captain Alban', 'The crossing is closed.', { focus: { x: 32, y: 14 }, cue: 'punch' }),
   line('Nell', 'He’s waiting for us.'),
   line('Orrin', 'There’s an old shelter in the lower recess. Catch your breath before we go at him.', { focus: { x: 9, y: 14 } }),
 ]);
 
-export const confrontation = () => scene('one-captain', 'CAPTAIN ALBAN', [
-  { id: 'nell', at: { x: 29, y: 14 } }, { id: 'orrin', at: { x: 26, y: 14 } },
-  { id: 'alban', at: { x: 33, y: 14 } },
-], [
+export const confrontation = () => scene('one-captain', 'CAPTAIN ALBAN', stage('tunnel','one-captain'), [
   line('Nell', 'Where’s Tomas?', { focus: { x: 31, y: 14 }, cut: true }),
   line('Captain Alban', 'Already east of the border. Give me the lantern, and you can go home.'),
   line('Nell', 'You killed Ansel. You put that machine in Rillbridge. What happens when you come back for us?'),
@@ -111,10 +91,7 @@ export const confrontation = () => scene('one-captain', 'CAPTAIN ALBAN', [
   line('Orrin', 'His sun flare hits a whole cluster. Keep apart, and watch the orange steam outlets.', { cue: 'flare' }),
 ]);
 
-export const departure = () => scene('one-departure', 'LEAVING HOME', [
-  { id: 'nell', at: { x: 34, y: 14 } }, { id: 'orrin', at: { x: 32, y: 14 } },
-  { id: 'alban', at: { x: 37, y: 14 } },
-], [
+export const departure = () => scene('one-departure', 'LEAVING HOME', stage('tunnel','one-departure'), [
   line('Captain Alban', 'You’ve won a crossing. Your brother’s at the Iron Coast exchange by now.', { focus: { x: 36, y: 14 }, cut: true }),
   line('Nell', 'Then that’s where we’re going.'),
   line('Captain Alban', 'The exchange is under military guard. You won’t get near him.', { actors: { alban: { to: { x: 38, y: 14 } } } }),

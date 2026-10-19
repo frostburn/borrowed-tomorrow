@@ -10,14 +10,14 @@ The semantic DOM is invisible; its hit areas, focus and file input remain access
 
 ## Chapter One scenery
 
-| Source | Native size | Role |
+| Tile map | Native size | Role |
 | --- | --- | --- |
-| `station.webp` | 1008 × 624 | Larkspur festival and the arrest; native bunting and lantern details appear before the raid, Ansel's cap afterward |
-| `yard.webp` | 1008 × 624 | Orrin's workshop, independent engine, optional shed and quiet tactical clearing |
-| `rillbridge.webp` | 1595 × 986 | The village stopped by a collector; fixed suspended motes disappear when the village is freed |
-| `tunnel.webp` | 1008 × 624 | The eastern mountain pass, old shelter, hollow-sun mural and captain's blockade |
+| `station.json` | 1008 × 624 | Festival square below the arrest platform; bunting and the prison coach disappear after the raid, Ansel's cap appears |
+| `yard.json` | 1008 × 624 | Orrin's engine apron, northwest branch and southern spare shed |
+| `rillbridge.json` | 1536 × 672 | River crossing, bakery, collector carriage and north road; suspended drops and threads give way to running water and a broken casing |
+| `tunnel.json` | 1008 × 624 | Continuous stone shelf, mural recess, lower shelter and captain's crossing |
 
-The scenery remains the original generated raster artwork. Tiled collision follows buildings, rail vehicles and walls. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
+Chapter One uses original native 24 × 24 pixel tiles and real Tiled layers. Shared terrain, architectural parts, rails and props replace its former wholesale images. Tile properties define collision; map object layers own interactions, arrivals and initial scene casts. [Tile-map authoring](tile-maps.md) describes the files and story-state layers. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
 
 Restored scenery and character assets not assigned to the playable chapters remain an art library for future chapters. Their old narrative roles do not survive the reboot. `scripts/restore-map-art.mjs` reconstructs larger lossless files from verified source chunks and checks byte lengths and SHA-256 without changing dimensions or colors.
 

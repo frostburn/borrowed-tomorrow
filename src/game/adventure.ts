@@ -11,6 +11,9 @@ import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPi
 import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
+import { drawTileMap } from './tilemap';
+import { TILESET, TILE_TEXTURE } from '../content/tilemaps';
+import { CHAPTER_ONE_BATTLES } from '../content/chapter-one/maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
 import { ITEMS, ownedCopies } from '../rules/inventory';
@@ -62,7 +65,7 @@ export class Adventure extends Phaser.Scene {
   attach(ui: UI) { this.ui = ui; }
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
-    for (const name of ['station','yard','tunnel']) this.load.image(`map-${name}`, `${import.meta.env.BASE_URL}art/${name}.webp`);
+    this.load.spritesheet(TILE_TEXTURE,`${import.meta.env.BASE_URL}art/chapter-one-tiles.png`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
@@ -121,25 +124,15 @@ export class Adventure extends Phaser.Scene {
     this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.followers = [];this.actorImages.clear();
     this.layer = this.add.container(0,0);
   }
-  private background(name: string, y=0, x=0) { this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0)); }
-  private worldDetails(map:MapId){
-    const g=this.add.graphics();this.layer!.add(g);
-    if(map==='station'&&!this.state.flags.raidSeen){
-      g.lineStyle(1,0xd8b981,1).lineBetween(180,300,672,300);
-      for(let x=184;x<672;x+=24){g.fillStyle((x/24)%2?0x98434c:0xd6b471,1).fillTriangle(x,301,x+14,301,x+7,314);}
-      for(const x of [443,574]){g.fillStyle(0xf1d38f,1).fillRect(x,292,6,9);g.lineStyle(1,0xa97b42,1).strokeRect(x-2,290,10,13);}
-    }
-    if(map==='station'&&this.state.flags.raidSeen){
-      g.fillStyle(0x283942,1).fillRect(558,327,13,6).fillRect(555,332,19,3);g.fillStyle(0xb89855,1).fillRect(562,328,4,2);
-    }
-    if(map==='rillbridge'&&!this.state.flags.villageFreed){
-      g.fillStyle(0xc2e8ed,.9);
-      for(const [x,y] of [[44,13],[27,19],[25,15]])for(let i=0;i<4;i++)g.fillRect((x+.5)*TILE-26+i*16,(y+.5)*TILE-50+(i%2)*12,3,5);
-    }
-    if(map==='tunnel'){
-      const x=21.5*TILE,y=8*TILE;g.lineStyle(1,0x8c8067,.75).strokeCircle(x,y,17);
-      for(const [dx,dy] of [[0,-23],[23,0],[0,23],[-23,0]])g.lineBetween(x+dx,y+dy,x+Math.round(dx*.85),y+Math.round(dy*.85));
-    }
+  private background(name: MapId, y=0, x=0) {
+    const tiles=this.mode==='battle'?(CHAPTER_ONE_BATTLES[this.battle!.encounter]??MAPS[name].tiles):MAPS[name].tiles;
+    if(tiles)drawTileMap(this,this.layer!,tiles,this.state,x,this.mode==='battle'?0:y);
+    else this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0).setDepth(-1000));
+  }
+  private sortWorld(){
+    if(this.mode!=='world')return;
+    for(const child of this.layer?.list??[])if(child instanceof Phaser.GameObjects.Image&&child.getData('world-actor'))child.setDepth(child.y);
+    this.layer?.sort('depth');
   }
   private showTitle() {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
@@ -164,6 +157,10 @@ export class Adventure extends Phaser.Scene {
     this.autosave();resumeChapter(this.storyHost());
   }
   private async ensureRegion(map: MapId) {
+    if(MAPS[map].tiles){
+      if(!this.textures.exists(TILE_TEXTURE))throw new Error('The Chapter One tiles could not load. Your checkpoint is intact.');
+      return;
+    }
     const texture = `map-${map}`;
     if (this.textures.exists(texture)) return;
     if (!this.regionLoad) {
@@ -218,13 +215,12 @@ export class Adventure extends Phaser.Scene {
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id);
-    this.worldDetails(map.id);
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
-      if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
+      if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85).setData('world-actor',true));
       if (!object.doneFlag || !this.state.flags[object.doneFlag]) {
         const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a',3,true);
-        this.layer!.add(marker);
+        this.layer!.add(marker.setDepth(20000));
       }
     }
     const p = this.state.location;
@@ -232,10 +228,11 @@ export class Adventure extends Phaser.Scene {
     if(this.face.replace(/-(left|right|back)$/,'')!==leader)this.face=leader;
     for (const [index, id] of this.state.activeParty.filter(id => id !== leader).entries()) {
       const x = walkable(map,p.x-index-1,p.y,this.state) ? p.x-index-1 : p.x;
-      const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id);
+      const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id).setData('world-actor',true);
       this.followers.push(follower); this.layer!.add(follower);
     }
-    this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85); this.layer!.add(this.player);
+    this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('world-actor',true); this.layer!.add(this.player);
+    this.sortWorld();
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
     this.ui.initiative.textContent = this.state.chapter==='chapter-four'? (this.state.flags.chapterFourComplete?'The counterattack has a route. Tomas keeps the railway messages moving.':map.id==='refuge'?'The passengers are safe. The ward is a place to come back to.':map.id==='breakwater'?(this.state.flags.worksGateWon?'The machines are down. Open the south evacuation gate.':'Orrin and Kit · clear a path through the return-gate machines.'):this.state.flags.sanctuaryWardenWon?'The valley is moving. The old record is open.':this.state.flags.partyReunited?'The warden is repeating the emperor’s order.':this.state.flags.sealLead?'Celia · examine the lower seal on the great door.':'Petra and Celia · keep the patients safe beneath the arch.')
@@ -286,6 +283,7 @@ export class Adventure extends Phaser.Scene {
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
   update(time: number) {
+    this.sortWorld();
     if (this.mode !== 'title' && time - this.lastSecond > 1000) { this.lastSecond = time; this.state.playSeconds++; }
     if (this.mode !== 'world' || this.blocked || this.moving || this.busy) return;
     if (this.path.length) {
@@ -432,7 +430,7 @@ export class Adventure extends Phaser.Scene {
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
-    const backdrop=ENCOUNTERS[this.battle!.encounter].backdrop??{map:'yard',y:-66};
+    const backdrop=ENCOUNTERS[this.battle!.encounter].backdrop??{map:'yard' as const,y:0};
     this.background(backdrop.map,backdrop.y);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);

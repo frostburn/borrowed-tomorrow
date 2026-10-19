@@ -2,6 +2,10 @@ import { expect, type Page } from '@playwright/test';
 import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
+import { MAPS } from '../../src/content/maps';
+import { CHAPTER_ONE_BATTLES } from '../../src/content/chapter-one/maps';
+import { layerVisible, properties, TILESET, tileProperties } from '../../src/content/tilemaps';
+import type { MapId } from '../../src/rules/state';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -33,12 +37,25 @@ export async function capture(page: Page, name: string) { if(process.env.BT_QA_S
 
 /** Compare a native camera crop below the cinematic heading with the framebuffer. */
 export async function nativeScene(page:Page,map:string,yOffset=0){
-  await expect.poll(()=>page.evaluate(async({name,yOffset})=>{
-    const image=new Image();image.src=`/art/${name}.webp`;await image.decode();
+  const snapshot=await inspect(page),tiles=snapshot.mode==='battle'?CHAPTER_ONE_BATTLES[snapshot.battle!.encounter]??MAPS[map as MapId]?.tiles:MAPS[map as MapId]?.tiles;
+  const layers=tiles?.layers.filter(l=>l.data&&layerVisible(l,snapshot.state)).map(l=>({...l,sorted:!!properties(l).sort}));
+  await expect.poll(()=>page.evaluate(async({name,yOffset,tiles,layers,tileset,tileProperties})=>{
+    const image=new Image();image.src=tiles?'/art/chapter-one-tiles.png':`/art/${name}.webp`;await image.decode();
+    const scenery=document.createElement('canvas');scenery.width=tiles?tiles.width*24:image.width;scenery.height=tiles?tiles.height*24:image.height;
+    const ctx=scenery.getContext('2d')!;
+    if(tiles){
+      const props:{gid:number;x:number;y:number;depth:number}[]=[];
+      const draw=(gid:number,x:number,y:number)=>ctx.drawImage(image,(gid-1)%tileset.columns*24,Math.floor((gid-1)/tileset.columns)*24,24,24,x,y,24,24);
+      for(const layer of layers!)for(let i=0;i<layer.data!.length;i++){
+        const gid=layer.data![i];if(!gid)continue;const x=i%tiles.width*24,y=Math.floor(i/tiles.width)*24;
+        if(layer.sorted)props.push({gid,x,y,depth:y+Number(tileProperties[gid-1]?.sortOffset??(tileProperties[gid-1]?.name==='lamp-top'?48:24))});else draw(gid,x,y);
+      }
+      for(const p of props.sort((a,b)=>a.depth-b.depth))draw(p.gid,p.x,p.y);
+    }else ctx.drawImage(image,0,0);
     const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
     const reference=document.createElement('canvas');reference.width=32;reference.height=64;
-    reference.getContext('2d')!.drawImage(image,view.scrollX+8,view.scrollY+48+yOffset,32,64,0,0,32,64);
+    reference.getContext('2d')!.drawImage(scenery,Math.round(view.scrollX)+8,Math.round(view.scrollY)+48+(tiles?0:yOffset),32,64,0,0,32,64);
     const expected=reference.getContext('2d')!.getImageData(0,0,32,64).data;
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
@@ -49,7 +66,7 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
       if(actual[at]!==expected[(y*32+x)*4+c])missing++;
     }
     return missing;
-  },{name:map,yOffset}),{timeout:15000}).toBe(0);
+  },{name:map,yOffset,tiles,layers,tileset:TILESET,tileProperties}),{timeout:15000}).toBe(0);
 }
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
