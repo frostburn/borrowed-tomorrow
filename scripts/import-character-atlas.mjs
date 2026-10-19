@@ -17,7 +17,8 @@ const [width, height] = run(resolve(source), '-format', '%w %h', 'info:').split(
 const pairSplit = () => {
   const alpha = execFileSync('convert', [resolve(source), '-alpha', 'extract', '-depth', '8', 'gray:-'], {maxBuffer:16*1024*1024});
   let start = -1, bestStart = -1, bestLength = 0;
-  for (let y = Math.round(height * .35); y < Math.round(height * .75); y++) {
+  const end = Math.round(height * .75);
+  for (let y = Math.round(height * .35); y < end; y++) {
     let opaque = 0;
     for (let x = 0; x < width; x++) if (alpha[y * width + x] > 127) opaque++;
     if (opaque <= 1) { if (start < 0) start = y; }
@@ -26,6 +27,7 @@ const pairSplit = () => {
       start = -1;
     }
   }
+  if (start >= 0 && end - start > bestLength) { bestStart = start; bestLength = end - start; }
   if (bestLength < height * .01) throw new Error('The portrait and actor need a clear transparent gap.');
   return Math.round(bestStart + bestLength / 2);
 };
