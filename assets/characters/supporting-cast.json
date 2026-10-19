@@ -1,0 +1,102 @@
+{
+  "master": {
+    "name": "Stationmaster Ansel",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-20d77611-83ac-4d50-8815-4eb3b54a9e70.png"
+  },
+  "clerk": {
+    "name": "Iona",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-dfeb61aa-f1ca-4c28-a278-879765900653.png"
+  },
+  "tilda": {
+    "name": "Tilda",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-170544dc-b8fd-4b2d-9b42-5430fbc0ea0a.png"
+  },
+  "elspeth": {
+    "name": "Elspeth",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-6f7be812-20b1-425a-8c6c-c8d4354bae9d.png"
+  },
+  "tomas": {
+    "name": "Tomas",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "alban": {
+    "name": "Captain Alban",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "bram": {
+    "name": "Bram",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "dena": {
+    "name": "Dena",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "emperor": {
+    "name": "The Emperor",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "relay-keeper": {
+    "name": "The Engine Warden",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "boiler-keeper": {
+    "name": "Heart regulator",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "sluice-keeper": {
+    "name": "The Sanctuary Warden",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "inspector": {
+    "name": "Inspector",
+    "layout": "pair",
+    "height": 64,
+    "width": 72
+  },
+  "hound": {
+    "name": "Hound",
+    "layout": "actor",
+    "height": 44,
+    "width": 68
+  },
+  "crow": {
+    "name": "Crow",
+    "layout": "actor",
+    "height": 32,
+    "width": 48
+  },
+  "guardian": {
+    "name": "Guardian",
+    "layout": "actor",
+    "height": 64,
+    "width": 72
+  }
+}

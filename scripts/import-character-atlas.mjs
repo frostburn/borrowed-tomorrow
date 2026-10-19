@@ -1,18 +1,35 @@
-// Authoring only: separate a generated portrait + four-view atlas into native assets.
+// Authoring only: export party atlases, NPC portrait/actor pairs or enemy actors.
 // Requires ImageMagick. Gameplay uses the exported PNGs without resampling.
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const [hero, source, destination = 'public/art', layout = 'atlas'] = process.argv.slice(2);
-if (!['nell', 'orrin', 'kit', 'celia', 'petra'].includes(hero) || !source) {
-  throw new Error('Usage: node scripts/import-character-atlas.mjs <hero> <source.png> [output directory] [atlas|sides]');
+const [hero, source, destination = 'public/art', requestedLayout] = process.argv.slice(2);
+const supporting = JSON.parse(readFileSync(new URL('../assets/characters/supporting-cast.json', import.meta.url), 'utf8'));
+const layout = requestedLayout ?? supporting[hero]?.layout ?? 'atlas';
+if ((!['nell', 'orrin', 'kit', 'celia', 'petra'].includes(hero) && !supporting[hero]) || !source) {
+  throw new Error('Usage: node scripts/import-character-atlas.mjs <character> <source.png> [output directory] [atlas|sides|pair|actor]');
 }
-if (!['atlas','sides'].includes(layout)) throw new Error('Choose atlas or sides layout.');
+if (!['atlas','sides','pair','actor'].includes(layout)) throw new Error('Choose atlas, sides, pair or actor layout.');
 const run = (...args) => execFileSync('convert', args, { encoding: 'utf8' }).trim();
 const [width, height] = run(resolve(source), '-format', '%w %h', 'info:').split(' ').map(Number);
-const split = Math.round(height * .58), temporary = mkdtempSync(join(tmpdir(), 'bt-atlas-'));
+const pairSplit = () => {
+  const alpha = execFileSync('convert', [resolve(source), '-alpha', 'extract', '-depth', '8', 'gray:-'], {maxBuffer:16*1024*1024});
+  let start = -1, bestStart = -1, bestLength = 0;
+  for (let y = Math.round(height * .35); y < Math.round(height * .75); y++) {
+    let opaque = 0;
+    for (let x = 0; x < width; x++) if (alpha[y * width + x] > 127) opaque++;
+    if (opaque <= 1) { if (start < 0) start = y; }
+    else if (start >= 0) {
+      if (y - start > bestLength) { bestStart = start; bestLength = y - start; }
+      start = -1;
+    }
+  }
+  if (bestLength < height * .01) throw new Error('The portrait and actor need a clear transparent gap.');
+  return Math.round(bestStart + bestLength / 2);
+};
+const split = layout === 'pair' ? pairSplit() : Math.round(height * .58), temporary = mkdtempSync(join(tmpdir(), 'bt-atlas-'));
 // Authoring-only sampling phases, measured in fractions of one output pixel.
 const offsets = JSON.parse(readFileSync(new URL('../assets/characters/sampling-offsets.json', import.meta.url), 'utf8'));
 const sample = (path, size, w, h, offset, destination) => {
@@ -61,13 +78,15 @@ const trim = path => {
   run(path, '-crop', bounds, '+repage', path);
 };
 try {
-  if(layout==='atlas'){
+  if(layout==='atlas'||layout==='pair'){
   const portrait = join(temporary, 'portrait.png');
   run(resolve(source), '-crop', `${width}x${split}+0+0`, '+repage', portrait); trim(portrait);
   run('-size', '128x128', 'xc:none', '(', portrait, '-filter', 'point', '-resize', '124x124', ')', '-gravity', 'south', '-geometry', '+0+2', '-composite', resolve(destination, `portrait-${hero}.png`));
+  if(layout==='pair')isolate(resolve(destination, `portrait-${hero}.png`));
   }
-  const suffixes=layout==='sides'?['-left','-right']:['','-left','-right','-back'];
-  const top=layout==='sides'?0:split;
+  const single=layout==='pair'||layout==='actor';
+  const suffixes=single?['']:layout==='sides'?['-left','-right']:['','-left','-right','-back'];
+  const top=layout==='sides'||layout==='actor'?0:split;
   const views = suffixes.map((suffix, index) => {
     const left = Math.round(index * width / suffixes.length), right = Math.round((index + 1) * width / suffixes.length);
     const path = join(temporary, `${index}.png`);
@@ -76,10 +95,11 @@ try {
     return { suffix, path, size };
   });
   // One scale for the four views: never independently stretch a profile to fit.
-  const scale = Math.min(64 / Math.max(...views.map(v => v.size[1])), 72 / Math.max(...views.map(v => v.size[0])));
+  const target=single?supporting[hero]:undefined;
+  const scale = Math.min((target?.height??64) / Math.max(...views.map(v => v.size[1])), (target?.width??72) / Math.max(...views.map(v => v.size[0])));
   for (const { suffix, path, size } of views) {
     const w = Math.round(size[0] * scale), h = Math.round(size[1] * scale);
-    const output = resolve(destination, `${hero}${suffix}.png`), offset = offsets[`${hero}${suffix}`];
+    const output = resolve(destination, `${hero}${suffix}.png`), offset = offsets[`${hero}${suffix}`]??(single?[0,0]:undefined);
     if (offset) sample(path, size, w, h, offset, output);
     else run('-size', '80x80', 'xc:none', '(', path, '-filter', 'point', '-resize', `${w}x${h}!`, ')', '-geometry', `+${Math.floor((80-w)/2)}+${68-h}`, '-composite', output);
     // Point sampling can sever a one-pixel source bridge; remove any resulting
