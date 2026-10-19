@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { capture, dialogue, inspect, nativeScene } from './controls';
 import { approach } from './navigation';
 
-const modes=['coast','station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
+const modes=['conduit','coast','station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper','resonance'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
@@ -127,7 +127,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     };
     const scores=[];
     for(const mode of modes){
-      const bars=!full?4:['northglass','relayhall','switching'].includes(mode)?32:['coast','rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
+      const bars=!full?4:['northglass','relayhall','switching'].includes(mode)?32:['conduit','coast','rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
       const beat=60/ARRANGEMENTS[mode].bpm,c=new OfflineAudioContext(2,Math.ceil((bars*4*beat+2)*22050),22050);
       const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
       for(let bar=0;bar<bars;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+bar*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);

@@ -1,4 +1,4 @@
-import { beginChapterTwo, recruit, THIRD_CHAPTER, newGame, recruitOrrin, NEXT_CHAPTER, type GameState } from '../../src/rules/state';
+import { beginChapterTwo, beginChapterThree, recruit, THIRD_CHAPTER, newGame, recruitOrrin, NEXT_CHAPTER, type GameState } from '../../src/rules/state';
 
 import { receiveItem } from '../../src/rules/inventory';
 
@@ -28,5 +28,19 @@ export function coastCheckpoint(last:typeof coastOrder[number]):GameState {
   if(s.flags.recaptureWon){s.xp+=90;s.coins+=50;}
   if(s.flags.chapterTwoComplete)s.boundary=THIRD_CHAPTER;
   s.location=s.flags.settlementSeen?{map:'cinderbank',x:27,y:22}:s.flags.wardSeen?{map:'infirmary',x:31,y:21}:{map:'coast',x:24,y:26};
+  return s;
+}
+
+const palaceOrder=['capitalSeen','capitalConfronted','capitalGateWon','petraJoined','worksSeen','worksWardenWon','tomasRescued','intakePlanned','conduitSeen','conduitGuardWon','extractionStopped','emperorMerged','chapterThreeComplete'] as const;
+export function palaceCheckpoint(last:typeof palaceOrder[number]):GameState{
+  const s=coastCheckpoint('chapterTwoComplete');beginChapterThree(s);
+  for(const flag of palaceOrder.slice(0,palaceOrder.indexOf(last)+1))s.flags[flag]=true;
+  if(s.flags.capitalGateWon){s.xp+=85;s.coins+=48;}
+  if(s.flags.petraJoined){recruit(s,'petra');receiveItem(s.inventory,'saber-hilt');}
+  if(s.flags.worksWardenWon){s.xp+=100;s.coins+=58;receiveItem(s.inventory,'silver-reflector');}
+  if(s.flags.intakePlanned)s.flags.pressureRoute=false;
+  if(s.flags.conduitGuardWon){s.xp+=135;s.coins+=80;receiveItem(s.inventory,'insulated-coat');}
+  s.location=s.flags.emperorMerged?{map:'northglass',x:46,y:17}:s.flags.conduitSeen?{map:'conduit',x:25,y:30}:s.flags.worksSeen?{map:'relayhall',x:22,y:16}:{map:'northglass',x:32,y:31};
+  if(s.flags.chapterThreeComplete){s.boundary='chapter-four:broken-world';s.location={map:'northglass',x:32,y:33};}
   return s;
 }

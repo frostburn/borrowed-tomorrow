@@ -1,6 +1,6 @@
 # Next: Chapter Three — Beneath the Palace
 
-Chapters One and Two are playable canon. Continue the successful evacuation and the specific pursuit of Tomas; do not restart the discarded campaign.
+Chapters One–Three are playable canon. This document records Chapter Three’s preserved input; see chapter-four-handoff.md for its implemented ending. Continue the successful evacuation and the specific pursuit of Tomas; do not restart the discarded campaign.
 
 ## Exact save
 
@@ -24,4 +24,4 @@ Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature
 
 Celia’s introduction and faith conflict are deferred; choose their placement in a later chapter with the user. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
-The chapter must rescue Tomas, disable the extraction and make the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
+The implemented chapter rescues Tomas, disables extraction and makes the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.

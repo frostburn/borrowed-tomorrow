@@ -8,13 +8,25 @@ Iona sells bandages (8 marks), a brass reflector (30), a pressure nozzle (30, on
 
 Battles use the saved loadouts. The reflector and nozzle add 3 Attack to their owner. A reinforced coat adds 1 Armor. A heavy coat adds 2 Armor and subtracts 2 Speed. Equipment can be changed while exploring or from a campaign victory panel, before continuing. It cannot be changed during an ongoing battle.
 
-Chapter Two travels with Nell, Orrin and Kit. Celia remains a workshop preview for a later chapter. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-8 saves preserve the recruited roster and active formation separately. Version-6 imports keep their existing party active.
+Chapter Two travels with Nell, Orrin and Kit. Celia remains a workshop preview for a later chapter. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-9 saves preserve the recruited roster and active formation separately. Version-6 imports keep their existing party active.
 
 ## Existing saves
 
-Version 8 retains the shared inventory and active formation. Version-7 imports remove Celia’s earlier draft recruitment and return her equipped copies to the bag, while preserving the remaining travelers and all earned progress. Version-5, version-6 and version-7 saves remain loadable through Continue, manual slots and JSON import. Their story flags, resources, HP/focus, location, journal, play time and chapter boundary are preserved.
+Version 9 retains the shared inventory and active formation. Version-7 imports remove Celia’s earlier draft recruitment and return her equipped copies to the bag, while preserving the remaining travelers and all earned progress. Version-5, version-6 and version-7 saves remain loadable through Continue, manual slots and JSON import. Their story flags, resources, HP/focus, location, journal, play time and chapter boundary are preserved.
 
 - `brass-lantern` becomes one brass reflector, equipped on Nell.
 - `work-coats` becomes two reinforced coats, equipped on Nell and Orrin. Orrin’s copy stays reserved if he has not joined yet.
 
 Migration runs once: subsequent saves store the converted inventory, and reloading does not grant additional copies. Versions 1–4 remain previous-story saves, available to export but not load into this campaign. The dev workshop retains its own local storage and cannot grant campaign items or bonuses.
+
+## Chapter Three loot
+
+| Reward | Wearer | Source |
+| --- | --- | --- |
+| Baffled pressure nozzle | Orrin | Maintenance chest in the capital square |
+| Balanced saber hilt | Petra | Her permanent recruitment |
+| Silver reflector | Nell | Engine warden victory |
+| Ratchet sight | Kit | Optional sealed-stores patrol |
+| Insulated work coat | Any companion | Either heart-regulator route |
+
+Each reward enters the shared bag once. Compare and equip it manually in Equipment, including from the victory panel. Chapter Three recruits Petra into the roster; the active formation remains Nell plus at most two companions. Existing equipment remains on its wearer during formation changes.

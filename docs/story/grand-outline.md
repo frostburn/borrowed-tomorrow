@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One and Two are playable with their art installed; Chapters Three–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One–Three are playable with their art installed; Chapters Four–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 
@@ -50,13 +50,15 @@ Petra helps the escape but does not immediately join the party. Her permanent re
 
 ## Chapter Three — Beneath the Palace
 
-**Goal:** rescue Tomas and disable the extraction. **Payoff:** Tomas comes home alive. **Reversal:** the emperor merges with the conduit.
+**Goal:** rescue Tomas and disable extraction. **Payoff:** Tomas comes home alive. **Reversal:** the emperor merges with the conduit.
 
-Petra refuses an order to hand the escapees back and joins the party, accepting pursuit by her former comrades. Infiltrate the capital, interrupt an execution and fight through the palace. Tomas has been sabotaging the machinery from captivity; his work creates the opening the party uses. The rescue and reunion are substantial scenes, not a clue that sends Nell to another prison.
+The medical clearance admits the train to the capital’s south siding. Alban revokes the passengers’ protection; Petra breaks his command rod, refuses to surrender them and protects the coach doors while Nell’s party defeats the custody machines. She joins permanently afterward. Celia remains deferred. Four travelers may now choose three active fighters in Equipment; no story explanation for that limit is established here.
 
-The party disables the extraction machinery. The emperor makes a new decision in response: rather than surrender his miracles and face the Benefactor, he enters its restrained body. He becomes the conduit of its power. The capital tears free of the ground; the party escapes with Tomas as time begins failing across the continent.
+Tomas has been holding a valve open from captivity, disabling the outer alarm and creating the party’s opening. Interrupt the engine warden’s execution order, defeat it and free his restraints. Give the siblings a substantial reunion, including Tomas learning of Ansel’s death. The ward staff take Tomas to the coal engine; he remains safe and never becomes a combat unit.
 
-Do not negate the rescue or suggest that every action was secretly the villain's plan. Tomas's survival and the freed prisoners matter in the next chapters.
+Tomas explains that the collectors send people’s days into the restrained vessel below the palace. His bypass gives the party a choice: cut the crystal feeds and release a regulator shield by occupying both earth plates, or vent the pressure line and fight crows among steam outlets. An optional stores patrol and five manually equipped rewards support different companion builds.
+
+The emperor appears in person and refuses to stop collection, citing the capital’s dependence. The party defeats the heart regulator and shuts the feeds. In response, he chooses to enter the vessel rather than let the engines fail. The capital rises and time begins failing outside it. Nell escapes aboard the medical train with Tomas, the passengers and her companions. The rescue remains a permanent accomplishment; defeating the emperor and later the god remain distinct future goals.
 
 ## Chapter Four — The Broken World
 

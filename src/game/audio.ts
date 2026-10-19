@@ -1,3 +1,4 @@
+import type { MapId } from '../rules/state';
 import { ARRANGEMENTS, scoreBar, type MusicMode } from './score';
 import { Synth, type Effect } from './synth';
 
@@ -53,10 +54,10 @@ export class Audio {
       this.next+=beat*4;this.bar++;
     }
   }
-  effect(kind:Effect,surface:'coast'|'station'|'yard'|'tunnel'|'rillbridge'|'sluice'|'cinderbank'|'infirmary'|'northglass'|'relayhall'='station'){
+  effect(kind:Effect,surface:MapId|'sluice'='station'){
     if(!this.enabled||!this.context)return;
     const now=this.context.currentTime;
     if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
-    this.effects!.effect(kind,now+.005,surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
+    this.effects!.effect(kind,now+.005,surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='conduit'?'tunnel':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
   }
 }

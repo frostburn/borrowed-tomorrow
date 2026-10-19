@@ -59,7 +59,7 @@ it('migrates the former four-person v7 chapter without losing progress or equipp
   receiveItem(legacy.inventory,'medic-clasp');equipItem(legacy.inventory,'celia','medic-clasp');
   receiveItem(legacy.inventory,'work-coat');equipItem(legacy.inventory,'celia','work-coat');
   const restored=decodeSave(JSON.stringify({...legacy,version:7}));
-  expect(restored.version).toBe(8);expect(restored.party).toEqual(legacy.party.filter(h=>h.id!=='celia'));
+  expect(restored.version).toBe(9);expect(restored.party).toEqual(legacy.party.filter(h=>h.id!=='celia'));
   expect(restored.activeParty).toEqual(['nell','kit','orrin']);expect(restored.flags.celiaJoined).toBeUndefined();
   for(const key of ['coins','bandages','xp','journal','boundary','playSeconds','location'] as const)expect(restored[key]).toEqual(legacy[key]);
   for(const item of ['medic-clasp','work-coat'] as const)expect(ownedCopies(restored.inventory,item)).toBe(ownedCopies(legacy.inventory,item));

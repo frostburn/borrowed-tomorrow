@@ -1,5 +1,8 @@
 /** One identity per named character; reused art keeps its original identity. */
 export const CHARACTERS = {
+  emperor: { name:'The Emperor',sprite:'emperor',portrait:'portrait-emperor' },
+  engineWarden: { name:'The Engine Warden',sprite:'relay-keeper',portrait:'portrait-relay-keeper' },
+  heartRegulator: { name:'Heart regulator',sprite:'boiler-keeper',portrait:'portrait-boiler-keeper' },
   nell: { name: 'Nell', sprite: 'nell', portrait: 'portrait-nell' },
   orrin: { name: 'Orrin', sprite: 'orrin', portrait: 'portrait-orrin' },
   kit: { name: 'Kit', sprite: 'kit', portrait: 'portrait-kit' },
@@ -23,4 +26,4 @@ export function portraitAsset(id: string): string {
   const aliases: Record<string, CharacterId> = { master: 'ansel', clerk: 'iona' };
   return CHARACTERS[(aliases[id] ?? id) as CharacterId]?.portrait ?? id;
 }
-export const NPC_SPRITES = ['tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;
+export const NPC_SPRITES = ['emperor','relay-keeper','boiler-keeper','tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;
