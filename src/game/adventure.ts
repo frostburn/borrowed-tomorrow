@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
 import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import type { StoryHost } from '../content/chapter-one/interactions';
@@ -7,7 +8,7 @@ import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, mapSize, visibleObjects, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type MapId } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { checkpoint, exportSave, listSaves, save } from './saves';
@@ -20,7 +21,7 @@ import { worldView, narrowScreen } from './resolution';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
-const textures = ['nell','nell-left','nell-right','nell-back','orrin','orrin-left','orrin-right','orrin-back','master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
+const textures = [...PLAYABLE_ACTORS,'master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
 const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
 
 export class Adventure extends Phaser.Scene {
@@ -60,7 +61,7 @@ export class Adventure extends Phaser.Scene {
   constructor(private readonly practiceReady?: (scene: Adventure, ui: UI) => void, private readonly practiceActors: readonly string[] = []) { super('adventure'); }
   attach(ui: UI) { this.ui = ui; }
   preload() {
-    for (const name of [...textures,...(import.meta.env.DEV ? this.practiceActors : [])]) this.load.image(name, art(name));
+    for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     for (const name of ['station','yard','tunnel']) this.load.image(`map-${name}`, `${import.meta.env.BASE_URL}art/${name}.webp`);
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
@@ -307,13 +308,13 @@ export class Adventure extends Phaser.Scene {
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
     const leader=partyLeader(this.state);
-    this.face = leader==='nell'||leader==='orrin'?(dx<0?`${leader}-left`:dx>0?`${leader}-right`:dy<0?`${leader}-back`:leader):leader;
+    this.face = facingAsset(leader,dx,dy);
     this.player!.setTexture(this.face); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
     let following = previous;
     for (const follower of this.followers) {
-      const old = { x: follower.x, y: follower.y }, id = follower.getData('hero');
-      if (id === 'orrin') follower.setTexture(dx < 0 ? 'orrin-left' : dx > 0 ? 'orrin-right' : dy < 0 ? 'orrin-back' : 'orrin');
+      const old = { x: follower.x, y: follower.y }, id = follower.getData('hero') as HeroId;
+      follower.setTexture(facingAsset(id,following.x-old.x,following.y-old.y));
       this.tweens.add({ targets:follower, x:following.x, y:following.y, duration:130, ease:'Linear' });
       following = old;
     }
