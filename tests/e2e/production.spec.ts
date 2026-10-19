@@ -146,7 +146,9 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
    await page.keyboard.up(key);await expect.poll(async()=>(await inspect(page)).moving).toBe(false);
   }
   await expect(page.locator('.world-objective h3')).toHaveText('Close the extraction feeds');
-  await capture(page,`extraction-console-interact-${device}`);await page.getByRole('button',{name:'Interact',exact:true}).click();await dialogue(page);
+  await capture(page,`extraction-console-interact-${device}`);
+  const interact=page.locator('.interact-action').getByRole('button',{name:/Interact$/});await expect(interact).toBeVisible();
+  if(device==='desktop')await page.keyboard.press('e');else await interact.click();await dialogue(page);
   let state=(await inspect(page)).state;expect(state.flags.extractionStopped).toBe(true);expect(state.flags.tomasRescued).toBe(true);expect(state.inventory).toEqual(saved.inventory);expect(state.coins).toBe(saved.coins);expect(state.xp).toBe(saved.xp);
   await approach(page,'capital-departure');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();state=(await inspect(page)).state;
