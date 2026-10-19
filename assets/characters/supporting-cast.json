@@ -31,72 +31,84 @@
     "name": "Tomas",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-f26c8c66-2764-45bf-b599-e94241a3dc46.png"
   },
   "alban": {
     "name": "Captain Alban",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-05a0ca7a-694f-4559-88ae-84ad177be323.png"
   },
   "bram": {
     "name": "Bram",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-f6372ded-ce17-4148-8404-ed94b40c78a9.png"
   },
   "dena": {
     "name": "Dena",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-76529928-1bea-4557-a42f-4b6a85694d24.png"
   },
   "emperor": {
     "name": "The Emperor",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-5f7aaf74-ff97-4174-8c59-c634a372c871.png"
   },
   "relay-keeper": {
     "name": "The Engine Warden",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-d7bba64b-a28e-410a-975f-ba79643717cf.png"
   },
   "boiler-keeper": {
     "name": "Heart regulator",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-d5ea0d95-4f5e-42ec-966d-99dcefb0786e.png"
   },
   "sluice-keeper": {
     "name": "The Sanctuary Warden",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-74f2469b-04f8-4f99-a295-af4a96ab3412.png"
   },
   "inspector": {
     "name": "Inspector",
     "layout": "pair",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-293b11a5-91c4-4fec-aa66-a107f50801a9.png"
   },
   "hound": {
     "name": "Hound",
     "layout": "actor",
     "height": 44,
-    "width": 68
+    "width": 68,
+    "source": "exec-46eef23f-183c-47b5-99c4-9fe78bd53434.png"
   },
   "crow": {
     "name": "Crow",
     "layout": "actor",
     "height": 32,
-    "width": 48
+    "width": 48,
+    "source": "exec-c5276b13-6355-4d2c-8925-00fb3f748464.png"
   },
   "guardian": {
     "name": "Guardian",
     "layout": "actor",
     "height": 64,
-    "width": 72
+    "width": 72,
+    "source": "exec-0f0d19de-a5f6-4794-9d6d-15995bb681cf.png"
   }
 }

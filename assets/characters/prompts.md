@@ -20,6 +20,8 @@ Transparent JRPG character production atlas. One head-and-shoulders portrait in 
 
 The generated source atlases remain attached to the work chat. The committed native exports are the production artwork; normal builds require neither Image Gen nor ImageMagick.
 
+The matching NPC and enemy set uses the same renderer and authoring exporter. Its identity briefs, source manifest and size budgets are documented in [supporting-prompts.md](supporting-prompts.md) and [supporting-cast.json](supporting-cast.json).
+
 
 ## Handed side-view revision
 
