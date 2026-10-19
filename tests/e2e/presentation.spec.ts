@@ -136,7 +136,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
         const count=Math.min(8,bars-start),leadIn=full?2:0;
         const c=new OfflineAudioContext(2,Math.ceil(((count+leadIn)*4*beat+2)*22050),22050);
         const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-        for(let bar=start-leadIn;bar<start+count;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+(bar-start+leadIn)*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+        for(let bar=start-leadIn;bar<start+count;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar-start+leadIn)*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
         parts.push(summarize(await c.startRendering(),.03+leadIn*4*beat,.03+(leadIn+count)*4*beat));
       }
       scores.push({mode,rms:Math.sqrt(parts.reduce((sum,p)=>sum+p.rms*p.rms,0)/parts.length),peak:Math.max(...parts.map(p=>p.peak)),hash:parts.reduce((hash,p)=>(Math.imul(hash,31)+p.hash)|0,0)});

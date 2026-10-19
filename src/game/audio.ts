@@ -1,5 +1,5 @@
 import type { MapId } from '../rules/state';
-import { ARRANGEMENTS, scoreBar, type MusicMode } from './score';
+import { ARRANGEMENTS, scoreBar, type Instrument, type MusicMode } from './score';
 import { Synth, type Effect } from './synth';
 
 /** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
@@ -15,6 +15,10 @@ export class Audio {
   private bar=0;
   private mode:MusicMode='station';
   private pending:MusicMode='station';
+  private generation=0;
+  private instruments?:readonly Instrument[];
+  private volume=.75;
+  private history:{mode:MusicMode;bar:number;start:number;beat:number}[]=[];
   private steps=0;
   private lastStep=-1;
   enabled=false;
@@ -32,12 +36,30 @@ export class Audio {
     this.music=new Synth(c,music);this.effects=new Synth(c,fx);
   }
   async toggle():Promise<boolean>{
-    if(!this.context)this.initialize();const c=this.context!;await c.resume();
-    this.enabled=!this.enabled;this.master!.gain.setTargetAtTime(this.enabled?.75:0,c.currentTime,.025);
-    if(!this.enabled){this.music!.stop(c.currentTime+.08);this.effects!.stop(c.currentTime+.08);}
-    if(this.enabled){this.mode=this.pending;this.next=c.currentTime+.045;this.bar=0;this.schedule();}
-    if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
+    if(this.enabled)this.pause();else await this.play(this.pending);
     return this.enabled;
+  }
+  async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[]){
+    if(!Number.isInteger(bar)||bar<0)throw new Error('Invalid score bar.');
+    const generation=++this.generation;
+    if(!this.context)this.initialize();const c=this.context!;await c.resume();if(generation!==this.generation)return;
+    this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;
+    this.history=[];this.next=c.currentTime+.045;this.enabled=true;
+    this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
+    if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
+  }
+  pause(){
+    this.generation++;this.enabled=false;
+    if(this.context){const now=this.context.currentTime;this.master!.gain.setTargetAtTime(0,now,.025);this.music!.stop(now+.08);this.effects!.stop(now+.08);}
+    if(this.timer){clearInterval(this.timer);this.timer=undefined;}
+  }
+  setVolume(volume:number){
+    this.volume=Math.max(0,Math.min(1,volume));
+    if(this.context&&this.enabled)this.master!.gain.setTargetAtTime(this.volume,this.context.currentTime,.025);
+  }
+  position(){
+    const now=this.context?.currentTime??0,entry=[...this.history].reverse().find(e=>e.start<=now)??this.history[0];
+    return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(3.999,(now-entry.start)/entry.beat)):0,playing:this.enabled};
   }
   cinematicMix(level:number){
     this.cinematicLevel=Math.max(0,Math.min(1,level));
@@ -50,7 +72,8 @@ export class Audio {
     while(this.next<c.currentTime+.16){
       if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
       const beat=60/ARRANGEMENTS[this.mode].bpm;
-      for(const n of scoreBar(this.mode,this.bar))this.music!.note(n.instrument,n.midi,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+      this.history.push({mode:this.mode,bar:this.bar,start:this.next,beat});if(this.history.length>3)this.history.shift();
+      for(const n of scoreBar(this.mode,this.bar))if(!this.instruments||this.instruments.includes(n.instrument))this.music!.note(n.instrument,n.pitch,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
       this.next+=beat*4;this.bar++;
     }
   }

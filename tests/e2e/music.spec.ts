@@ -13,13 +13,13 @@ test('piano notes decay while sustained arrangements release cleanly at a transi
       return Math.sqrt(data.reduce((sum, n) => sum + n * n, 0) / data.length);
     };
     const piano = new OfflineAudioContext(2, 3 * 22050, 22050), keys = new Synth(piano, piano.destination);
-    keys.note('keys', 72, .03, 2, .2);
+    keys.note('keys', 'C5', .03, 2, .2);
     const struck = await piano.startRendering();
     const held = new OfflineAudioContext(2, 3 * 22050, 22050), pedal = new Synth(held, held.destination);
-    pedal.note('strings', 57, .03, 7, .15);
+    pedal.note('strings', 'A3', .03, 7, .15);
     pedal.release(1);
     // A note in the incoming arrangement must survive the old voices' release.
-    pedal.note('keys', 72, 1.5, .7, .2);
+    pedal.note('keys', 'C5', 1.5, .7, .2);
     const transition = await held.startRendering();
     return { attack: rms(struck, .05, .18), decay: rms(struck, 1.4, 1.7), held: rms(transition, .5, .8), silence: rms(transition, 1.15, 1.4), incoming: rms(transition, 1.52, 1.65) };
   });

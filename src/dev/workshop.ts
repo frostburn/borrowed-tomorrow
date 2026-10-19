@@ -1,3 +1,4 @@
+import { MusicWorkshop } from './music-workshop';
 import { Adventure } from '../game/adventure';
 import { mountGame } from '../game/mount';
 import { art, type UI } from '../game/ui';
@@ -23,7 +24,8 @@ function practiceState() {
 class Workshop {
   private inventory = stock();
   private settings = newCharacterSettings();
-  private tab: 'character' | 'equipment' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : 'character';
+  private music: MusicWorkshop;
+  private tab: 'character' | 'equipment' | 'music' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : 'character';
   private hero: CompanionId = 'nell';
   private selected: ItemId = 'brass-reflector';
   private message = 'Choose a character to adjust their build.';
@@ -40,6 +42,7 @@ class Workshop {
     document.getElementById('help-button')!.setAttribute('aria-label', 'Workshop help');
     this.ui.location('Vite development');
     this.scene.state = practiceState();
+    this.music=new MusicWorkshop(this.scene.audio,on=>this.ui.sound(on),message=>this.ui.toast(message));
     this.show();
   }
   private save(message: string) {
@@ -88,6 +91,8 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
+    if(this.tab==='music'){this.showMusic();return;}
+    this.music.hide();
     const scroll = this.ui.sceneLayer.querySelector('.inventory-panel')?.scrollTop ?? 0;
     this.scene.closePreview();
     document.querySelector('.game-shell')!.classList.add('inventory-open');
@@ -109,7 +114,7 @@ class Workshop {
     }).join('');
     this.ui.sceneLayer.innerHTML = `<section class="inventory-panel" aria-label="Character workshop">
       <div class="inv-characters" role="group" aria-label="Character">${COMPANION_IDS.map(id=>`<button data-hero="${id}" aria-label="${names[id]}" aria-pressed="${hero===id}" class="${hero===id?'selected':''}">${names[id]}<small>${this.settings.party.includes(id)?'Party':'Reserve'}</small></button>`).join('')}</div>
-      <div class="workshop-navigation"><nav class="workshop-tabs" aria-label="Workshop panels"><button data-tab="character" class="${this.tab === 'character' ? 'selected' : ''}" aria-pressed="${this.tab === 'character'}">Character</button><button data-tab="equipment" class="${this.tab === 'equipment' ? 'selected' : ''}" aria-pressed="${this.tab === 'equipment'}">Equipment</button></nav><section class="workshop-party" aria-label="Practice party"><div><small>Practice party · ${this.settings.party.length} / ${MAX_PARTY_SIZE}</small><p>${this.settings.party.map(id=>names[id]).join(' · ')}</p></div><button id="party-toggle" ${this.settings.party.includes(hero)?this.settings.party.length===1?'disabled':'':this.settings.party.length===MAX_PARTY_SIZE?'disabled':''}>${this.settings.party.includes(hero)?`Remove ${names[hero]} from party`:`Add ${names[hero]} to party`}</button>${!this.settings.party.includes(hero)&&this.settings.party.length===MAX_PARTY_SIZE?'<p class="party-full">Party full. Remove a member first.</p>':''}</section></div>
+      <div class="workshop-navigation">${this.tabs()}<section class="workshop-party" aria-label="Practice party"><div><small>Practice party · ${this.settings.party.length} / ${MAX_PARTY_SIZE}</small><p>${this.settings.party.map(id=>names[id]).join(' · ')}</p></div><button id="party-toggle" ${this.settings.party.includes(hero)?this.settings.party.length===1?'disabled':'':this.settings.party.length===MAX_PARTY_SIZE?'disabled':''}>${this.settings.party.includes(hero)?`Remove ${names[hero]} from party`:`Add ${names[hero]} to party`}</button>${!this.settings.party.includes(hero)&&this.settings.party.length===MAX_PARTY_SIZE?'<p class="party-full">Party full. Remove a member first.</p>':''}</section></div>
       <div class="inv-columns ${this.tab === 'character' ? 'character-columns' : ''}"><section class="inv-character" aria-label="${names[hero]} equipment">
         <div class="inv-identity"><img src="${art(CHARACTERS[hero].portrait)}" alt="${names[hero]}"/><div><h2>${names[hero]} · Lv ${this.settings.characters[hero].level}</h2><small>${COMPANIONS[hero].tool}</small><p class="inv-biography">${COMPANIONS[hero].role} · Chapter ${COMPANIONS[hero].chapter}<br/>${esc(COMPANIONS[hero].description)}</p><p class="inv-hp">HP ${current.maxHp} · Move ${current.movement}</p></div></div>
         <div class="inv-current-stats">${stats.map(([label, value]) => `<div><small>${label}</small><p>${value(current)}</p></div>`).join('')}</div>
@@ -123,7 +128,7 @@ class Workshop {
       const included=!this.settings.party.includes(hero);
       if(setPartyMember(this.settings,hero,included))this.save(`${names[hero]} ${included?'added to':'removed from'} the practice party.`);
     };
-    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};
+    this.bindTabs();
     for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-hero]')) button.onclick = () => { this.hero = button.dataset.hero as CompanionId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-hero="${this.hero}"]`)!.focus({preventScroll:true}); };
     for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-item]')) button.onclick = () => { this.selected = button.dataset.item as ItemId; this.show(); this.ui.sceneLayer.querySelector<HTMLButtonElement>(`[data-item="${this.selected}"]`)!.focus({preventScroll:true}); };
     for (const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-unequip]')) button.onclick = () => { if (unequipItem(this.inventory, hero, button.dataset.unequip as typeof SLOTS[number])) this.save('Equipment returned to the bag.'); };
@@ -135,7 +140,21 @@ class Workshop {
     this.ui.status.textContent = 'Vite development · Workshop saved separately';
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
+  private tabs(){
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+  }
+  private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
+  private showMusic(){
+    this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
+    this.ui.initiative.textContent='Music review / 31-tone equal temperament';
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<div id="music-workshop"></div></section>`;
+    this.bindTabs();this.music.show(this.ui.sceneLayer.querySelector('#music-workshop')!);
+    this.ui.status.textContent='Vite development / Music review does not change campaign saves';
+  }
+  toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
+    this.music.hide();
     document.querySelector('.game-shell')!.classList.remove('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled = true;
     this.scene.state = practiceState();
@@ -144,11 +163,11 @@ class Workshop {
     this.ui.status.textContent = 'Workshop / Esc returns to character settings · Practice earns no campaign progress';
   }
   help() {
-    this.ui.showModal('Character workshop', '<p>Choose any companion. Add or remove the selected companion from the practice party; one to three may fight. Reserves keep their equipment and builds. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses the selected party’s builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next three attacks, including retaliations. Celia’s weak Celestial bolt can target any enemy, ignoring distance and cover. Petra can use Shield bash once as an extra action before her main action; it pushes without damage, keeps movement available and prevents waiting afterward. Taunt draws every enemy toward her until her next turn. Selecting Pressure wave immediately previews its area; confirm to use it. It can hit allies and pushes only into clear hexes.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
+    this.ui.showModal('Character workshop', '<p>Choose any companion. Add or remove the selected companion from the practice party; one to three may fight. Reserves keep their equipment and builds. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses the selected party’s builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next three attacks, including retaliations. Celia’s weak Celestial bolt can target any enemy, ignoring distance and cover. Petra can use Shield bash once as an extra action before her main action; it pushes without damage, keeps movement available and prevents waiting afterward. Taunt draws every enemy toward her until her next turn. Selecting Pressure wave immediately previews its area; confirm to use it. It can hit allies and pushes only into clear hexes.</p><p>Music reviews every cue in 31-EDO. Play or stop, seek to a bar, and isolate instruments. Click a spelled pitch or a circle-of-fifths button to audition it. C# and Db remain distinct. Music stops when you leave the tab.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
   }
 }
 export function startWorkshop(root: HTMLElement) {
   let workshop: Workshop | undefined;
   const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite));
-  mountGame(root, scene, { journal: () => workshop?.show(), saves: () => workshop?.battle(), help: () => workshop?.help() });
+  mountGame(root, scene, { journal: () => workshop?.show(), saves: () => workshop?.battle(), sound: () => workshop?.toggleSound(), help: () => workshop?.help() });
 }

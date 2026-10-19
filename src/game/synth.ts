@@ -1,6 +1,6 @@
 import type { Instrument } from './score';
 export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
-const frequency=(midi:number)=>440*2**((midi-69)/12);
+import { pitchFrequency, type Pitch } from './tuning';
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
 export class Synth {
@@ -43,11 +43,11 @@ export class Synth {
     source.connect(filter);filter.connect(r.gain);source.start(when,.17);source.stop(r.end);
     source.onended=()=>{source.disconnect();filter.disconnect();r.cleanup();};
   }
-  note(instrument:Instrument,midi:number,when:number,duration:number,volume:number,pan=0){
+  note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0){
     if(instrument==='kick'){this.tone(120,when,.13,volume,'sine',pan,43);this.noise(when,.018,volume*.15,1600,600,pan);return;}
     if(instrument==='snare'){this.noise(when,duration,volume,1700,950,pan);this.tone(185,when,.07,volume*.35,'triangle',pan,110);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
-    const c=this.context,hz=frequency(midi),nodes:AudioNode[]=[];
+    const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
     const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings';
     const r=this.route(when,duration,volume,pan,strings?.12:bell?.003:plucked?.004:.025,bell?.65:strings?.35:.16,plucked);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
@@ -105,13 +105,13 @@ export class Synth {
         noise(0,.62,.45,600,4500);noise(.08,.35,.24,3600,800);tone(94,0,.5,.15,'triangle',42);
         tone(540,.03,.28,.075,'sine',260);break;
       case 'mend':
-        [74,77,81,86].forEach((midi,i)=>this.note('bell',midi,when+i*.085,.3,.19,i%2?.3:-.3));break;
-      case 'bandage':noise(0,.1,.12,2800,1300);noise(.14,.14,.12,1700,700);this.note('keys',74,when+.24,.25,.13);break;
+        (['D5','F5','A5','D6'] as Pitch[]).forEach((pitch,i)=>this.note('bell',pitch,when+i*.085,.3,.19,i%2?.3:-.3));break;
+      case 'bandage':noise(0,.1,.12,2800,1300);noise(.14,.14,.12,1700,700);this.note('keys','D5',when+.24,.25,.13);break;
       case 'peck':noise(0,.06,.16,750,1800);noise(.055,.05,.1,1500,500);tone(1700,.1,.035,.18,'triangle',820);break;
       case 'defend':tone(210,0,.065,.12,'triangle',190);tone(620,.015,.18,.08);break;
       case 'win':
-        [62,65,69,74,77,81,86].forEach((midi,i)=>this.note('bell',midi,when+i*.095,.5,.2,i%2?.3:-.3));
-        [50,57,62].forEach(midi=>this.note('strings',midi,when+.38,1.4,.11));break;
+        (['D4','F4','A4','D5','F5','A5','D6'] as Pitch[]).forEach((pitch,i)=>this.note('bell',pitch,when+i*.095,.5,.2,i%2?.3:-.3));
+        (['D3','A3','D4'] as Pitch[]).forEach(pitch=>this.note('strings',pitch,when+.38,1.4,.11));break;
     }
   }
 }
