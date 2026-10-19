@@ -2,6 +2,8 @@
 
 Open `src/content/chapter-one/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share `assets/tiles/chapter-one.tileset.json` and the native **24 × 24** atlas, `public/art/chapter-one-tiles.png`. The atlas is under 10 KB. It is original pixel artwork built from terrain, rails, architectural parts and reusable props; no whole-map painting was sliced into tiles. `node assets/tiles/draw-chapter-one.mjs` rebuilds the atlas and its tile definitions. Normal development and builds use the checked-in files directly.
 
+Keep existing tile IDs stable when extending the atlas: append new definitions so the maps' references keep their meaning.
+
 The four exploration maps and four tactical arenas use the same tile set. The chapter's former backgrounds and Rillbridge image fragments have been removed. Later chapters still use their current native scenery until their own map conversion.
 
 | Map | Grid | Story route |
@@ -31,6 +33,8 @@ The map owns three kinds of point-object layer:
 
 Point objects snap to cell centers. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked open air.
 
+Each exploration map's `safeArrival` property names an arrival on its main connected route. Loading a valid current-format save keeps its position when that cell is still walkable. If a layout edit covers or crops the cell, restoration selects the nearest floor connected to that arrival, using the active story layers. Progress, party resources and equipment stay intact. This uses the current save format only; it does not migrate retired versions.
+
 `tests/tilemaps.test.ts` verifies atlas references, layer dimensions, arrivals, bridge and cliff collision, state changes and clear tactical floors. Existing chapter tests cover interaction approaches and every staged endpoint. The manual Chapter One browser journey checks the full route, all four fights, equipment, departure and reload. Native rendering checks compose reference pixels from the tile atlas rather than a discarded background.
 
-`tests/e2e/tilemaps.spec.ts` also walks the phone routes through both river banks and the pass's side recesses. Its foreground check compares native canopy/actor pixels with Nell behind and in front of the same tree. These detailed browser checks stay outside the default `@ci` gate.
+`tests/e2e/tilemaps.spec.ts` also walks the phone routes through both river banks and the pass's side recesses. Its foreground check compares native canopy/actor pixels with Nell behind and in front of the same tree. Desktop and phone save checks restore former lower Rillbridge positions, save/reload them and walk back to the residents. These detailed browser checks stay outside the default `@ci` gate.

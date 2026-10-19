@@ -26,19 +26,34 @@ export const mapSize = (map:MapData) => ({width:map.width??WIDTH,height:map.heig
 export function walkable(map: MapData, x: number, y: number, state?:Pick<GameState,'flags'>): boolean {
   return x >= 0 && x < Math.floor(mapSize(map).width/TILE) && y >= 0 && y < Math.floor(mapSize(map).height/TILE) && !(map.gates??[]).some(g=>!state?.flags[g.openFlag]&&x>=g.x&&x<g.x+g.width&&y>=g.y&&y<g.y+g.height) && (map.tiles?tileWalkable(map.tiles,x,y,state):!map.solid.some(([sx, sy, w, h]) => x >= sx && x < sx + w && y >= sy && y < sy + h));
 }
-export function worldPath(map: MapData, from: { x: number; y: number }, to: { x: number; y: number }, state?:Pick<GameState,'flags'>): { x: number; y: number }[] {
-  if (!walkable(map, to.x, to.y, state)) return [];
+function searchWorld(map:MapData,from:{x:number;y:number},state?:Pick<GameState,'flags'>,to?:{x:number;y:number}){
   const columns=Math.floor(mapSize(map).width/TILE);
   const id = (p: { x: number; y: number }) => p.x + p.y * columns;
   const queue = [{ ...from }]; const previous = new Map<number, number>([[id(from), -1]]);
   for (let i = 0; i < queue.length; i++) {
-    const p = queue[i]; if (p.x === to.x && p.y === to.y) break;
+    const p = queue[i]; if (to&&p.x === to.x && p.y === to.y) break;
     for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
       const next = { x: p.x + dx, y: p.y + dy };
       if (!walkable(map, next.x, next.y, state) || previous.has(id(next))) continue;
       previous.set(id(next), id(p)); queue.push(next);
     }
   }
+  return {queue,previous,id,columns};
+}
+/** Layout edits may cover a saved floor or crop it away. Keep valid current
+ * saves on the nearest floor connected to the map's authored safe arrival. */
+export function restorePoint(map:MapData,point:{x:number;y:number},state?:Pick<GameState,'flags'>):{x:number;y:number}|undefined{
+  if(walkable(map,point.x,point.y,state))return {x:point.x,y:point.y};
+  if(!map.tiles)return;
+  const name=properties(map.tiles).safeArrival,anchor=mapPoints(map.tiles,'Arrivals').find(p=>p.name===name);
+  if(!anchor)return;
+  const start=gridPoint(anchor);if(!walkable(map,start.x,start.y,state))return;
+  const distance=(p:{x:number;y:number})=>Math.abs(p.x-point.x)+Math.abs(p.y-point.y);
+  return searchWorld(map,start,state).queue.reduce((best,p)=>distance(p)<distance(best)?p:best,start);
+}
+export function worldPath(map: MapData, from: { x: number; y: number }, to: { x: number; y: number }, state?:Pick<GameState,'flags'>): { x: number; y: number }[] {
+  if (!walkable(map, to.x, to.y, state)) return [];
+  const {previous,id,columns}=searchWorld(map,from,state,to);
   if (!previous.has(id(to))) return [];
   const path = []; let current = id(to);
   while (current !== id(from)) { path.push({ x: current % columns, y: Math.floor(current / columns) }); current = previous.get(current)!; }

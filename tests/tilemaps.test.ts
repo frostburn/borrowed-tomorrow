@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
-import { arrival, MAPS, stage, walkable, worldPath } from '../src/content/maps';
+import { arrival, MAPS, restorePoint, stage, walkable, worldPath } from '../src/content/maps';
 import { gridPoint, layerVisible, mapPoints, TILESET, tileWalkable } from '../src/content/tilemaps';
 import { cells, toPixel } from '../src/rules/hex';
-import { newGame } from '../src/rules/state';
+import { decodeSave, newGame } from '../src/rules/state';
 import { checkpoint } from './support/progress';
 
 it('Chapter One consists of complete native tile layers referencing one real atlas',()=>{
@@ -58,5 +58,23 @@ it('festival and collector scenery follow the actual campaign flags',()=>{
 it('each Chapter One arena keeps every tactical cell on open ground',()=>{
   for(const [id,map] of Object.entries(CHAPTER_ONE_BATTLES))for(const h of cells()){
     const p=toPixel(h);expect(tileWalkable(map,Math.floor(p.x/24),Math.floor(p.y/24)),`${id}: ${h.q},${h.r}`).toBe(true);
+  }
+});
+
+it('current-format saves survive cropped floors and newly covered cells',()=>{
+  const state=checkpoint('collectorDefeated'),map=MAPS.rillbridge;
+  for(const point of [{x:0,y:40},{x:31,y:40},{x:65,y:40},{x:44,y:8}]){
+    state.location={map:'rillbridge',...point};const decoded=decodeSave(JSON.stringify(state));
+    const restored=restorePoint(map,decoded.location,decoded)!;
+    expect(walkable(map,restored.x,restored.y,decoded)).toBe(true);
+    expect(worldPath(map,arrival('rillbridge','from-yard'),restored,decoded).length).toBeGreaterThan(0);
+    expect(decoded).toEqual(state);
+  }
+  expect(restorePoint(map,{x:31,y:40},state)).toEqual({x:31,y:27});
+  expect(restorePoint(map,{x:15,y:18},state)).toEqual({x:15,y:18});
+  // Every converted map supplies its own safe arrival; no old-art coordinates.
+  for(const [id,point] of [['station',{x:10,y:5}],['yard',{x:25,y:7}],['tunnel',{x:40,y:14}]] as const){
+    expect(walkable(MAPS[id],point.x,point.y)).toBe(false);
+    const p=restorePoint(MAPS[id],point,state)!;expect(walkable(MAPS[id],p.x,p.y,state)).toBe(true);
   }
 });

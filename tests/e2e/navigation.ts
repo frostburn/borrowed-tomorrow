@@ -15,6 +15,7 @@ export async function approach(page:Page,id:string){
     const {state,view}=await inspect(page),map=MAPS[state.location.map],objects=visibleObjects(map,state),object=objects.find(o=>o.id===id)!;
     expect(object,`Object ${id} in ${map.id}`).toBeTruthy();
     const visible=(p:{x:number;y:number})=>(p.x+.5)*24>view.scrollX+36&&(p.x+.5)*24<view.scrollX+view.width-36&&(p.y+.5)*24>view.scrollY+40&&(p.y+.5)*24<view.scrollY+view.height-36;
+    const visibleFloor=(p:{x:number;y:number})=>(p.x+.5)*24>view.scrollX+4&&(p.x+.5)*24<view.scrollX+view.width-4&&(p.y+.5)*24>view.scrollY+4&&(p.y+.5)*24<view.scrollY+view.height-4;
     if(visible(object)){
       await clickWorld(page,object.x,object.y);
       await expect.poll(async()=>!(await inspect(page)).moving,{timeout:20000}).toBe(true);
@@ -22,7 +23,7 @@ export async function approach(page:Page,id:string){
     }
     const approaches=[object,{x:object.x-1,y:object.y},{x:object.x+1,y:object.y},{x:object.x,y:object.y-1},{x:object.x,y:object.y+1}];
     const paths=approaches.filter(p=>walkable(map,p.x,p.y,state)).map(p=>worldPath(map,state.location,p,state)).filter(p=>p.length).sort((a,b)=>a.length-b.length);
-    const waypoint=[...paths[0]].reverse().find(p=>visible(p)&&objects.every(o=>Math.hypot(o.x-p.x,o.y-p.y)>=1.8&&(!o.hitArea||p.x<o.hitArea.x||p.x>=o.hitArea.x+o.hitArea.width||p.y<o.hitArea.y||p.y>=o.hitArea.y+o.hitArea.height)));
+    const waypoint=[...paths[0]].reverse().find(p=>visibleFloor(p)&&objects.every(o=>Math.hypot(o.x-p.x,o.y-p.y)>=1.8&&(!o.hitArea||p.x<o.hitArea.x||p.x>=o.hitArea.x+o.hitArea.width||p.y<o.hitArea.y||p.y>=o.hitArea.y+o.hitArea.height)));
     expect(waypoint,`Visible waypoint to ${id}`).toBeTruthy();
     await clickWorld(page,waypoint!.x,waypoint!.y);
     await expect.poll(async()=>{const x=await inspect(page);return !x.moving&&x.state.location.x===waypoint!.x&&x.state.location.y===waypoint!.y;},{timeout:20000}).toBe(true);

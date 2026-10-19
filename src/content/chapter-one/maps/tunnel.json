@@ -645,6 +645,7 @@
   "nextobjectid": 21,
   "orientation": "orthogonal",
   "properties": [
+    {"name": "safeArrival", "type": "string", "value": "from-village"},
     {
       "name": "name",
       "type": "string",

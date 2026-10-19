@@ -444,6 +444,7 @@
   "nextobjectid": 11,
   "orientation": "orthogonal",
   "properties": [
+    {"name": "safeArrival", "type": "string", "value": "from-station"},
     {
       "name": "name",
       "type": "string",

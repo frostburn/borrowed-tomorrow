@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { TILESET } from '../../src/content/tilemaps';
+import { MAPS, walkable } from '../../src/content/maps';
+import { receiveItem } from '../../src/rules/inventory';
 import { checkpoint } from '../support/progress';
 import { capture, dialogue, inspect, nativeScene } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
@@ -53,3 +55,21 @@ test('native foreground trees occlude actors behind them and yield to actors in 
     await capture(page,front?'tile-tree-front':'tile-tree-behind');
   }
 });
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`current-format Rillbridge saves below the redesigned map restore on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const old=checkpoint('collectorDefeated');old.location={map:'rillbridge',x:31,y:40};old.bandages=7;old.party[0].hp=17;receiveItem(old.inventory,'brass-reflector');
+    await importSave(page,old);const restored=(await inspect(page)).state;
+    expect(restored.location).toEqual({map:'rillbridge',x:31,y:27});
+    expect(restored).toMatchObject({flags:old.flags,inventory:old.inventory,party:old.party,activeParty:old.activeParty,journal:old.journal,coins:old.coins,bandages:7});
+    await page.getByRole('button',{name:'Save',exact:true}).click();
+    await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();await expect(page.getByRole('status')).toContainText('Place saved');
+    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).state.location).toEqual(restored.location);
+    expect((await inspect(page)).state.inventory).toEqual(old.inventory);
+    await visit(page,'tilda');const after=(await inspect(page)).state;
+    expect(walkable(MAPS.rillbridge,after.location.x,after.location.y,after)).toBe(true);expect(after.flags.villageFreed).toBeUndefined();expect(errors).toEqual([]);
+  });
+}

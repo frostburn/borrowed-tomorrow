@@ -773,6 +773,7 @@
   "nextobjectid": 20,
   "orientation": "orthogonal",
   "properties": [
+    {"name": "safeArrival", "type": "string", "value": "start"},
     {
       "name": "name",
       "type": "string",
