@@ -47,6 +47,8 @@ IndexedDB holds an autosave and three manual slots. Checkpoints occur at scene c
 
 The campaign uses **version 10**, campaign `imperial-debt`. Only that format is supported. Older saves are not migrated and are omitted from the save list; JSON imports with unsupported versions are rejected. Current version-10 saves keep their progress. The Chapter One ending is `chapter-two:iron-coast`; the installed Chapter Two art pack enables Begin Chapter Two. Its saved ending is `chapter-three:capital`. Chapter Three continues there and ends at `chapter-four:broken-world`. Chapter Four reunites the companions and ends at `chapter-five:anchors`. A source checkpoint without that art pack preserves the old departure and offers no unavailable chapter button.
 
+The Vite-only workshop includes Character, Equipment, Music and Sprites tabs. Open `/?dev=sprites` to compare the five playable characters, four directions and matching portraits against selectable backgrounds and ground guides.
+
 ## Presentation and source
 
 The whole visible game uses a 1024 × 768 native framebuffer and integer physical-pixel scaling, including text and menus. Scenery renders at 1:1 through a scrolling viewport; 80 × 80 actors and 128 × 128 portraits retain their native size. Phones crop and pan the same scene. New brother Tomas and Captain Alban have distinct matching actor/portrait pairs.

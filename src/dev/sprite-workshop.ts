@@ -35,13 +35,16 @@ export class SpriteWorkshop {
       <div class="sprite-settings"><div role="group" aria-label="Facing">${ACTOR_DIRECTIONS.map(direction=>`<button data-facing="${direction}" aria-pressed="${direction===this.direction}">${direction[0].toUpperCase()+direction.slice(1)}</button>`).join('')}</div>
       <div role="group" aria-label="Preview background">${Object.keys(backgrounds).map(background=>`<button data-background="${background}" aria-pressed="${background===this.background}">${background}</button>`).join('')}</div>
       <button id="sprite-guides" aria-pressed="${this.guides}">Ground guides</button></div>
-      <section class="sprite-lineup"><h3>Party lineup / 1x</h3><div class="sprite-scroll"><canvas width="480" height="112" aria-label="All five travelers at native size"></canvas></div></section>
-      <div class="sprite-inspector"><section><h3>${CHARACTERS[this.hero].name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas class="sprite-detail" width="240" height="240" aria-label="${CHARACTERS[this.hero].name} ${this.direction} at ${this.zoom}x"></canvas></section>
-      <section class="sprite-reference"><h3>Four directions / 1x</h3><div class="sprite-scroll"><canvas width="352" height="112" aria-label="${CHARACTERS[this.hero].name} in all four directions"></canvas></div><p>Actor: 80 x 80<br/>Portrait: 128 x 128<br/>Feet: row 68 / center: column 40</p><p class="sprite-file">${actorAsset(this.hero,this.direction)}.png<br/>${CHARACTERS[this.hero].portrait}.png</p></section></div></section>`;
+      <section class="sprite-lineup"><h3>Party lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="480" height="112" aria-label="All five travelers at native size"></canvas></div></section>
+      <div class="sprite-inspector"><section><h3>${CHARACTERS[this.hero].name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${CHARACTERS[this.hero].name} ${this.direction} at ${this.zoom}x"></canvas></section>
+      <section class="sprite-reference"><h3>Four directions / 1x</h3><div class="sprite-scroll"><canvas role="img" width="352" height="112" aria-label="${CHARACTERS[this.hero].name} in all four directions"></canvas></div><p>Actor: 80 x 80<br/>Portrait: 128 x 128<br/>Feet: row 68 / center: column 40</p><p class="sprite-file">${actorAsset(this.hero,this.direction)}.png<br/>${CHARACTERS[this.hero].portrait}.png</p></section></div></section>`;
     const bind = (selector: string, action: (button: HTMLButtonElement) => void) => {
       for (const button of host.querySelectorAll<HTMLButtonElement>(selector)) button.onclick = () => {
         const scroll = host.closest('.inventory-panel')!.scrollTop;
+        const attribute=button.getAttributeNames().find(name=>name.startsWith('data-'));
+        const focus=attribute?`[${attribute}="${button.getAttribute(attribute)}"]`:`#${button.id}`;
         action(button); this.render(); host.closest('.inventory-panel')!.scrollTop = scroll;
+        host.querySelector<HTMLButtonElement>(focus)?.focus({preventScroll:true});
       };
     };
     bind('[data-sprite-hero]', button=>{ this.hero=button.dataset.spriteHero as CompanionId; });

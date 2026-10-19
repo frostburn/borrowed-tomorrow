@@ -83,3 +83,10 @@ Open **Music** in the workshop or go directly to `/?dev=music`. This route and a
 - Click a circle-of-fifths member to hear its root and fifth. Compare C#4 and Db4 directly: these are distinct notes in 31-EDO. Each adjacent circle member advances 18 steps; the 31-member circle includes both sharp and flat spellings.
 
 Audio starts only after a playback or audition click. The header Sound control also starts/stops review audio. Leaving Music or entering a practice battle stops the review. The campaign uses the same 31-EDO score data, mixer and instruments.
+
+
+## Sprites
+
+Choose **Sprites** in the workshop or open `/?dev=sprites`. The five playable characters have matching native portraits and four-direction world actors. Compare the cast, choose Front / Left / Right / Back, and inspect one character at 1x, 2x or 3x with nearest-neighbor enlargement. Slate, Paper and Night backgrounds expose alpha edges. Ground guides show the frame, center and common foot anchor. Native lineup and direction strips scroll horizontally on a phone without shrinking the artwork.
+
+Review controls never write campaign saves, equipment or character builds. Leaving Music for Sprites stops music playback; practice still uses the selected character builds. The tab, direct route and review code are excluded from production. Production uses the same new actor and portrait files in exploration, cutscenes, inventory and combat.
