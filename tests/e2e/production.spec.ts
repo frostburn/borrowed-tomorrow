@@ -5,7 +5,7 @@ import { coastCheckpoint, palaceCheckpoint, checkpoint } from '../support/progre
 import { equipItem, receiveItem } from '../../src/rules/inventory';
 import { recruit } from '../../src/rules/state';
 import { importSave, approach } from './navigation';
-import { capture, inspect, dialogue } from './controls';
+import { capture, inspect, dialogue, clickWorld } from './controls';
 
 test('production ignores both workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -117,3 +117,39 @@ test('a source checkpoint without the chamber art preserves the capital departur
  await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
  expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
 });
+
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+ test(`production extraction console from the saved east side on ${device}`,async({page})=>{
+  test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+  await page.setViewportSize(viewport);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+  const saved=palaceCheckpoint('conduitGuardWon');saved.location={map:'conduit',x:52,y:22};
+  await importSave(page,saved);
+  // The marker must be visible in front of the painted gauge panel, not on unrelated floor.
+  await expect.poll(()=>page.evaluate(()=>{
+   const view=window.borrowedTomorrow.inspect().view,pixels=window.borrowedTomorrowPixels.inspect();
+   const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+   const x=pixels.physicalLeft+(Math.round((world.left-source.left)/pixels.cssScale)+47.5*24-view.scrollX-12)*pixels.physicalScale;
+   const y=pixels.physicalTop+(Math.round((world.top-source.top)/pixels.cssScale)+20.5*24-9-view.scrollY-18)*pixels.physicalScale;
+   const data=document.querySelector<HTMLCanvasElement>('.pixel-output')!.getContext('2d')!.getImageData(x,y,24*pixels.physicalScale,36*pixels.physicalScale).data;
+   let gold=0;for(let i=0;i<data.length;i+=4)if(data[i]===244&&data[i+1]===199&&data[i+2]===122)gold++;
+   return gold;
+  })).toBeGreaterThanOrEqual(90);
+  await capture(page,`extraction-console-marker-${device}`);
+  // Click the actual panel above the floor, rather than its internal interaction coordinate.
+  await clickWorld(page,47,17);await dialogue(page);expect((await inspect(page)).state.flags.extractionStopped).toBe(true);
+  await importSave(page,saved);
+  // Approach the same panel from the east with the ordinary movement controls.
+  for(const key of ['ArrowLeft','ArrowLeft','ArrowUp','ArrowUp']){
+   const old=(await inspect(page)).state.location;await page.keyboard.down(key);
+   await page.waitForFunction(([x,y])=>{const p=window.borrowedTomorrow.inspect().state.location;return p.x!==x||p.y!==y;},[old.x,old.y]);
+   await page.keyboard.up(key);await expect.poll(async()=>(await inspect(page)).moving).toBe(false);
+  }
+  await expect(page.locator('.world-objective h3')).toHaveText('Close the extraction feeds');
+  await capture(page,`extraction-console-interact-${device}`);await page.getByRole('button',{name:'Interact',exact:true}).click();await dialogue(page);
+  let state=(await inspect(page)).state;expect(state.flags.extractionStopped).toBe(true);expect(state.flags.tomasRescued).toBe(true);expect(state.inventory).toEqual(saved.inventory);expect(state.coins).toBe(saved.coins);expect(state.xp).toBe(saved.xp);
+  await approach(page,'capital-departure');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();state=(await inspect(page)).state;
+  expect(state.boundary).toBe('chapter-four:broken-world');expect(state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
+ });
+}

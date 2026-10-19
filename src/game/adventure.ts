@@ -104,9 +104,11 @@ export class Adventure extends Phaser.Scene {
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
   get animating(){return this.moving||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
-  private label(x:number,y:number,text:string,color:string,scale=3){
-    const canvas=document.createElement('canvas');canvas.width=text.length*6*scale;canvas.height=9*scale;
-    bitmapText(canvas.getContext('2d')!,text,0,scale,color,scale);
+  private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
+    const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*6*scale+padding*2;canvas.height=9*scale+padding*2;
+    const ctx=canvas.getContext('2d')!;
+    if(outline)for(const dx of [-1,0,1])for(const dy of [-1,0,1])if(dx||dy)bitmapText(ctx,text,padding+dx,scale+padding+dy,'#080f19',scale);
+    bitmapText(ctx,text,padding,scale+padding,color,scale);
     const name=`label-${this.labelId++}`;this.textures.addCanvas(name,canvas);
     const image=this.add.image(x,y,name).setOrigin(.5);
     image.once('destroy',()=>this.textures.remove(name));return image;
@@ -218,7 +220,7 @@ export class Adventure extends Phaser.Scene {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
       if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85));
       if (!object.doneFlag || !this.state.flags[object.doneFlag]) {
-        const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a');
+        const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a',3,true);
         this.layer!.add(marker);
       }
     }

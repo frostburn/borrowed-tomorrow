@@ -22,7 +22,7 @@ export const CHAPTER_THREE_MAPS = {
   conduit: {id:'conduit',name:'Beneath the palace · the extraction heart',subtitle:'Iron restraints. Crystal feeds. The same hum as Nell’s lantern.',width:1536,height:1024,
     solid:[[0,0,64,15],[0,15,8,27],[57,15,7,27],[8,36,13,6],[43,36,14,6],[21,41,22,1],[44,15,7,4],[8,15,8,3],[50,15,7,4]],objects:[
       {id:'heart-regulator',x:35,y:22,label:'Heart regulator · shut down the intake',sprite:'boiler-keeper',hiddenFlag:'conduitGuardWon'},
-      {id:'heart-release',x:43,y:20,label:'Close the extraction feeds',sign:true,requiredFlag:'conduitGuardWon',doneFlag:'extractionStopped',hitArea:{x:44,y:13,width:7,height:7}},
+      {id:'heart-release',x:47,y:20,label:'Close the extraction feeds',sign:true,requiredFlag:'conduitGuardWon',doneFlag:'extractionStopped',hitArea:{x:44,y:13,width:7,height:7}},
       {id:'heart-gallery',x:32,y:36,label:'Return to Tomas in the gallery',sign:true},
     ]},
 } satisfies Record<string,MapData>;
