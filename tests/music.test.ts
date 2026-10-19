@@ -1,7 +1,32 @@
 import { expect, it } from 'vitest';
-import { scoreBar } from '../src/game/score';
+import { scoreBar,type Note } from '../src/game/score';
 import { SIDING_HARMONY, WARD_HARMONY } from '../src/game/score-c';
 import { NORTHGLASS_CHORDS, NORTHGLASS_HARMONY } from '../src/game/score-d';
+
+it('Chapter Four has distinct complete phrases with a single lead and correctly wrapped loops',()=>{
+ const tunes=[];
+ for(const mode of ['refuge','breakwater','sanctuary','four-battle','four-warden'] as const){
+  const lead=mode==='sanctuary'?'bell':mode==='breakwater'?'keys':'reed',melody:Note[]=[];
+  for(let bar=0;bar<32;bar++){
+   const notes=scoreBar(mode,bar),line=notes.filter(n=>n.instrument===lead&&n.velocity>=.09);
+   for(const n of notes){expect(Number.isFinite(n.midi)).toBe(true);expect(n.midi).toBeGreaterThanOrEqual(29);expect(n.midi).toBeLessThanOrEqual(89);expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);}
+   melody.push(...line.map(n=>({...n,beat:n.beat+bar*4})));
+  }
+  for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThanOrEqual(melody[i].beat);
+  expect(melody.some((n,i)=>i>0&&melody[i-1].beat+melody[i-1].duration<n.beat)).toBe(true);
+  expect(scoreBar(mode,32)).toEqual(scoreBar(mode,0));expect(scoreBar(mode,-1)).toEqual(scoreBar(mode,31));
+  expect(melody.filter(n=>n.beat>=64&&n.beat<96).map(n=>[n.midi,n.beat-64,n.duration])).not.toEqual(melody.filter(n=>n.beat<32).map(n=>[n.midi,n.beat,n.duration]));
+  tunes.push(JSON.stringify(melody.map(n=>[n.beat,n.midi,n.duration])));
+ }
+ expect(new Set(tunes).size).toBe(5);
+});
+
+it('the sanctuary pedal carries across quiet bars without repeated bass attacks',()=>{
+ const opening=scoreBar('sanctuary',0),space=scoreBar('sanctuary',1);
+ expect(opening.find(n=>n.instrument==='bass')!.duration).toBeGreaterThan(4);
+ expect(space.some(n=>n.instrument==='bass'||n.instrument==='bell')).toBe(false);
+ expect(space.some(n=>n.instrument==='keys')).toBe(true);
+});
 
 it('Rillbridge’s long downbeats agree with its bass harmony and its lead remains a single voice',()=>{
   const all=[];

@@ -17,7 +17,7 @@ Tomas and Alban have new matching portraits and actors. Ansel and Iona retain th
 
 ## Companions and recruitment
 
-These three companions are available in the Vite workshop so their combat roles can be tested. Only Kit joins in Chapter Two; Celia’s introduction and recruitment are deferred to a later chapter. Petra appears in that chapter and joins permanently in Chapter Three. None belongs to the Chapter One party. Kit has new matching art; Celia and Petra use previously unused asset pairs assigned to their reboot identities. Chapter Two travels with Nell, Orrin and Kit. The active combat party remains capped at three; leave its story explanation for later. Existing formation and equipment rules remain available for future recruits.
+These three companions are available in the Vite workshop so their combat roles can be tested. Only Kit joins in Chapter Two; Celia is introduced and recruited in Chapter Four. Petra appears in that chapter and joins permanently in Chapter Three. None belongs to the Chapter One party. Kit has new matching art; Celia and Petra use previously unused asset pairs assigned to their reboot identities. Chapter Two travels with Nell, Orrin and Kit. The active combat party remains capped at three; leave its story explanation for later. Existing formation and equipment rules remain available for future recruits.
 
 | Companion | Introduction and recruitment plan | Personality and relationships | Combat role |
 | --- | --- | --- | --- |
@@ -43,3 +43,14 @@ Nell, Orrin, Kit and Petra freed Tomas and stopped the extraction feeds. Tomas e
 Tomas is alive with the medical passengers. He knows Ansel was killed by Alban and that Nell used Orrin’s coal engine to find him. His sabotage made the rescue possible; he remains an active supporting person, not a combat unit or a new kidnapping objective. Petra has openly refused an arrest order, broken Alban’s command rod and joined the party at a real cost. Celia has not met anyone in the party yet.
 
 The Emperor is an older human man with silver hair, gray eyes, a short beard, an ivory/navy coat, brass sun circlet and dark mourning ribbon. His first direct appearance is the extraction chamber. He claims the capital depends on the engines, refuses to release collection and chooses merger only after the feeds close. He has not yet offered Nell her old life or been defeated. His family history and final confrontation remain later story material.
+
+
+## Knowledge at the Chapter Four departure
+
+Nell, Orrin, Kit, Petra and Celia have reunited. They freed the Breakwater workers and the sanctuary-road patients, ended the local valley arrest and learned the three anchor locations: Hammerplain, Dawnwatch and Windmere. The guardians' record establishes that the founding dynasty pledged descendants' days for the Benefactor's gifts. Its source lies beyond the palace conduit, through the hollow sun; its claim can survive that conduit. The god still has not spoken. Nobody claims the lantern can reset the world.
+
+Celia first appears treating patients beneath the sanctuary arch. Petra earns her trust by refusing to return them to the stopped valley. Celia knows the guardians' script from hospice copies, recognizes missing passages and wants the complete record made public. She uses her own green-coat/medical-book actor and matching portrait. Her earlier workshop availability was never prior recruitment.
+
+Bram is the Breakwater foreman: a bearded man in a blue shirt and brown work apron, using the unused `bram` pair. He gets his nineteen workers out and knows the western airfield from an earlier job. Dena is the railway ward nurse: dark hair, green sleeves, white apron and cap, using the unused `dena` pair. She keeps all the train's passengers accounted for and treats new arrivals. The Sanctuary Warden uses the distinct unused `sluice-keeper` pair; its orders come through the imperial circuit, not a divine voice.
+
+Tomas remains safe at the railway refuge. His notes help compare the palace restraints with the guardian diagram; he organizes resistance messages while Nell chooses to lead the counterattack. Alban survives offstage and retains his planned Chapter Five resolution. Ansel's death is not reversed.

@@ -62,3 +62,14 @@ The retained native 1536 × 1024 `northglass.webp` is the capital’s medical si
 The Emperor’s new `emperor.png` (80 × 80) and `portrait-emperor.png` (128 × 128) come from a transparent source sheet generated with Nell’s world actor and portrait as style/proportion references. Brief: weary older human man, shoulder-length silver hair, gray eyes, short silver beard, brass sun circlet, ivory/navy imperial coat and dark mourning ribbon. Two matching depictions, separated by transparent space, no scenery or lettering. Mechanical crop and point sampling export the native canvases; alpha is preserved and runtime never scales/recolors them.
 
 The Engine Warden exclusively uses the previously unused `relay-keeper` actor/portrait; the heart regulator uses `boiler-keeper`. Register both identities for consistent named dialogue and combat artwork. They are separate mechanical characters, not reskins of Alban or the emperor.
+
+
+## Chapter Four scenery and cast
+
+`refuge` is the same railway ward and loads the existing native 1536 × 1024 `infirmary.webp`. `breakwater` assigns the unused 1591 × 988 `sluice.webp` to its first reboot location; no scaling or recoloring occurs. The alias is explicit in map data, so exploration, combat backdrops and deep save restores use the same art. Collision keeps actors on the cobbled floor below the flood wheels.
+
+The new `sanctuary.webp` is native 1536 × 1024, generated with built-in Image Gen. Production brief: a roofless mountain guardian hall, a hollow sun and three linked rings carved into its rear door, broad continuous stone floor, shallow rear stair, bench at the left arch, chest at the right arch, and an open lower exit; warm brass lamps, cool mountain shadows, no people, words or interface. The generated source was losslessly encoded to WebP with identical RGB pixels. Thirteen verified source parts restore it before development/build. Characters stop on the flat floor below the raised stairs; interaction areas cover the painted door, bench and chest and lead to accessible floor points.
+
+Bram, Dena and the Sanctuary Warden use previously unused matching native actor/portrait pairs. The warden owns `sluice-keeper`; neither its identity nor its art is shared with the two defeated palace machines. Temporary viewpoints use the actual Orrin, Petra and Celia world sprites. Native gold world markers retain the contrasting outline added after Chapter Three.
+
+The refuge’s garden fence and stone pillars are blocked. Reunion stages Celia on the central plaza and commits Nell to her own plaza position afterward; returning from the sanctuary also lands on the open paving.

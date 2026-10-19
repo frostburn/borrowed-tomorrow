@@ -8,11 +8,11 @@ Iona sells bandages (8 marks), a brass reflector (30), a pressure nozzle (30, on
 
 Battles use the saved loadouts. The reflector and nozzle add 3 Attack to their owner. A reinforced coat adds 1 Armor. A heavy coat adds 2 Armor and subtracts 2 Speed. Equipment can be changed while exploring or from a campaign victory panel, before continuing. It cannot be changed during an ongoing battle.
 
-Chapter Two travels with Nell, Orrin and Kit. Celia remains a workshop preview for a later chapter. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-9 saves preserve the recruited roster and active formation separately. Version-6 imports keep their existing party active.
+Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, after her introduction on the sanctuary road. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-10 saves preserve the recruited roster, active formation and a temporary reunion formation separately. Version-6 imports keep their existing party active.
 
 ## Existing saves
 
-Version 9 retains the shared inventory and active formation. Version-7 imports remove Celia’s earlier draft recruitment and return her equipped copies to the bag, while preserving the remaining travelers and all earned progress. Version-5, version-6 and version-7 saves remain loadable through Continue, manual slots and JSON import. Their story flags, resources, HP/focus, location, journal, play time and chapter boundary are preserved.
+Version 10 retains the shared inventory and active formation and migrates version-9 departures without changing earned progress. Version-7 imports remove Celia’s earlier draft recruitment and return her equipped copies to the bag, while preserving the remaining travelers and all earned progress. Version-5, version-6 and version-7 saves remain loadable through Continue, manual slots and JSON import. Their story flags, resources, HP/focus, location, journal, play time and chapter boundary are preserved.
 
 - `brass-lantern` becomes one brass reflector, equipped on Nell.
 - `work-coats` becomes two reinforced coats, equipped on Nell and Orrin. Orrin’s copy stays reserved if he has not joined yet.
@@ -30,3 +30,18 @@ Migration runs once: subsequent saves store the converted inventory, and reloadi
 | Insulated work coat | Any companion | Either heart-regulator route |
 
 Each reward enters the shared bag once. Compare and equip it manually in Equipment, including from the victory panel. Chapter Three recruits Petra into the roster; the active formation remains Nell plus at most two companions. Existing equipment remains on its wearer during formation changes.
+
+
+## Chapter Four equipment and temporary groups
+
+Version 10 adds `reunionParty`, preserving the player's formation while the separated companions lead their own stretches. The inventory opens on the current leader and retains every recruit's loadout. Absent characters can have equipment managed but cannot join that local group. Reunion restores the previous formation, clears `reunionParty`, and makes Celia available in the five-person roster. Three fighters remain the maximum.
+
+| Reward | Wearer | Source | Bonuses |
+| --- | --- | --- | --- |
+| Counterweighted return valve | Orrin | Either works approach | Attack +5, armor +1 |
+| Folding range sight | Kit | Survey-cart patrol | Attack +5, speed +1 |
+| Braced rescue coat | Any companion | Protecting the sanctuary-road patients | Armor +3 |
+| Silver field clasp | Celia | Right-arch field chest | Attack +3, armor +1, speed +1 |
+| Guardian prism | Nell | Sanctuary warden | Attack +5, armor +2 |
+
+Each goes to the bag once; nothing automatically replaces a fitted item. Version-9 departures and every earlier supported save retain their equipment and resources.

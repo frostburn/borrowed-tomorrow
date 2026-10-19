@@ -1,13 +1,19 @@
 import { conduitBar } from './score-conduit';
+import { returnBar } from './score-four';
 import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'conduit' | 'coast' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; midi:number; beat:number; duration:number; velocity:number; pan:number }
 interface Arrangement { bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  refuge:{bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
+  breakwater:{bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
+  sanctuary:{bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},
+  'four-battle':{bpm:138,lead:'reed',leadGain:.24,keys:.05,strings:.017,bass:.17,percussion:.12},
+  'four-warden':{bpm:120,lead:'reed',leadGain:.24,keys:.05,strings:.022,bass:.17,percussion:.12},
   conduit:{bpm:68,lead:'bell',leadGain:.11,keys:.045,strings:.018,bass:.11,percussion:0},
   coast:{bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
   northglass:{bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
@@ -37,6 +43,7 @@ const PHRASES:[number,number,number][][]=[
 const ROOTS=[50,46,53,48,50,46,43,45,53,48,46,45,50,46,45,50];
 /** A complete sixteen-bar score. Every location keeps the motif but changes its arrangement. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='refuge'||mode==='breakwater'||mode==='sanctuary'||mode==='four-battle'||mode==='four-warden')return returnBar(mode,bar);
   if(mode==='conduit')return conduitBar(bar);
   if(mode==='coast')return coastBar(bar);
   if(mode==='northglass'||mode==='relayhall'||mode==='switching')return scoreD(mode,bar);

@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One–Three are playable with their art installed; Chapters Four–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One–Four are playable with their art installed; Chapters Five–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 
@@ -64,11 +64,13 @@ The emperor appears in person and refuses to stop collection, citing the capital
 
 **Goal:** reunite the scattered party and find a way to fight back. **Payoff:** an informed, voluntary commitment to save the world.
 
-Nell wakes with Tomas safe and her original objective completed. She must decide what to do with the world left around them. Other companions carry playable stretches: Orrin organizes an escape from a damaged industrial city; the knight protects people from former comrades; the healer searches the original guardians' sanctuary.
+Nell wakes at the Iron Coast railway ward with Tomas beside her. All the medical passengers made it back; another pulse stopped the western line, injuring Nell and separating the companions as they helped the surrounding communities. Tomas and Dena keep the ward safe and coordinate messages. The player follows Orrin and Kit through Breakwater's dry service walk or flooded pump floor, defeats the return-gate machines, and physically opens the south evacuation gate. Bram brings all nineteen workers out. An optional survey-cart patrol rewards Kit's equipment.
 
-Reunite through actions that resolve local dangers. Discover three ancient anchors that stabilize the palace conduit. Breaking them will free regions from the emperor's expanding time arrest and expose his heart. Establish here that the Benefactor exists beyond the conduit, and that its claim can survive the emperor. A mural or vision shows the hollow sun and a path into its domain.
+Petra finds Celia treating people beneath the mountain sanctuary's arch. Imperial machines are trying to return them to the stopped valley. Celia joins after their introduction, and the player protects the patients with Petra and Celia. After victory, Celia leads a short search of the lower guardian seal. She finds a route to the old record, then brings the patients to Nell and Tomas. The companions reunite; the player's previous formation returns, with Celia available in reserve.
 
-Nell chooses to lead the counterattack. Tomas helps organize the resistance and stays an active supporting character, rather than being kidnapped again.
+Nell's party returns to the sanctuary and defeats its warden, which is carrying the emperor's arrest order through an old circuit. The local valley begins moving again. The guardians' record identifies three distant anchors—Hammerplain, Dawnwatch and Windmere—that hold the palace vessel steady. Breaking those anchors in Chapter Five will free their regions and expose the emperor. The founding pledge names future generations' days as payment for harvests, healing and light. The hollow-sun carving shows a route beyond the vessel to the Benefactor's source; its claim can outlive the conduit. The god stays silent.
+
+At the ward, Nell knowingly chooses to lead the counterattack. Tomas organizes the resistance's railway messages and keeps the rescued people safe. Bram supplies a route to a survey airship at the western airfield. The chapter resolves its local dangers and ends at the saved airfield departure, with five new manually fitted equipment rewards and growth through level nine.
 
 ## Chapter Five — Taking the World Back
 

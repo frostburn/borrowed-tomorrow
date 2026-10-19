@@ -48,7 +48,7 @@ export class Audio {
     const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
-      if(this.mode!==this.pending){this.mode=this.pending;this.bar=0;}
+      if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
       const beat=60/ARRANGEMENTS[this.mode].bpm;
       for(const n of scoreBar(this.mode,this.bar))this.music!.note(n.instrument,n.midi,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
       this.next+=beat*4;this.bar++;
@@ -58,6 +58,6 @@ export class Audio {
     if(!this.enabled||!this.context)return;
     const now=this.context.currentTime;
     if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
-    this.effects!.effect(kind,now+.005,surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='conduit'?'tunnel':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
+    this.effects!.effect(kind,now+.005,surface==='refuge'?'station':surface==='breakwater'?'yard':surface==='sanctuary'?'tunnel':surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='conduit'?'tunnel':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
   }
 }

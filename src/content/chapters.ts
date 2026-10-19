@@ -3,3 +3,4 @@ import mapSources from '../../assets/maps/manifest.json' with { type: 'json' };
 export const CHAPTER_TWO_AVAILABLE = Object.hasOwn(mapSources, 'coast');
 
 export const CHAPTER_THREE_AVAILABLE = ['northglass','relayhall','conduit'].every(id=>Object.hasOwn(mapSources,id));
+export const CHAPTER_FOUR_AVAILABLE = ['infirmary','sluice','sanctuary'].every(id=>Object.hasOwn(mapSources,id));
