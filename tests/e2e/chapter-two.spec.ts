@@ -12,7 +12,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     const {activeParty:_,...departure}=checkpoint('chapterOneComplete');
-    await importSave(page,{...departure,version:6});
+    await importSave(page,departure);
     await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-coast');
     await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();

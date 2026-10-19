@@ -38,11 +38,9 @@ export function characterProfiles(settings: CharacterSettings): Record<Companion
 }
 export function decodeCharacterSettings(text: string): CharacterSettings {
   const raw = JSON.parse(text), settings = newCharacterSettings();
-  if (!raw || ![1, 2].includes(raw.version) || !raw.characters) throw new Error('Invalid character settings.');
-  const ids: readonly CompanionId[] = raw.version === 1 ? ['nell', 'orrin'] : COMPANION_IDS;
-  for (const hero of ids) {
-    // Preserve builds from the first expanded workshop preview.
-    const build = raw.characters[hero] ?? (hero === 'kit' && raw.version === 2 ? raw.characters.esme : undefined);
+  if (!raw || raw.version !== 2 || !raw.characters) throw new Error('Invalid character settings.');
+  for (const hero of COMPANION_IDS) {
+    const build = raw.characters[hero];
     if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > 10) throw new Error('Invalid character level.');
     for (const stat of Object.keys(STAT_LIMITS) as CharacterStat[]) {
       if (!validStat(stat, build[stat])) throw new Error(`Invalid ${stat}.`);
@@ -50,10 +48,7 @@ export function decodeCharacterSettings(text: string): CharacterSettings {
     }
     settings.characters[hero].level = build.level;
   }
-  if (raw.version === 2) {
-    const party = Array.isArray(raw.party) ? raw.party.map((id: unknown) => id === 'esme' ? 'kit' : id) : raw.party;
-    if (!validParty(party, COMPANION_IDS)) throw new Error('Choose one to three distinct companions.');
-    settings.party = [...party];
-  }
+  if (!validParty(raw.party, COMPANION_IDS)) throw new Error('Choose one to three distinct companions.');
+  settings.party = [...raw.party];
   return settings;
 }

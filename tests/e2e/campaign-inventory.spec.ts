@@ -59,22 +59,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   });
 }
 
-test('Continue migrates a version-five departure and preserves its equipped bonuses on repeated reloads',async({page})=>{
-  await page.goto('/');const state=checkpoint('chapterOneComplete');state.bandages=13;state.playSeconds=900;
-  const {inventory:_,...fields}=state,legacy={...fields,version:5,gear:['brass-lantern','work-coats']};
-  await page.evaluate(async state=>{await new Promise<void>((resolve,reject)=>{
-    const request=indexedDB.open('borrowed-tomorrow',1);request.onsuccess=()=>{const db=request.result,tx=db.transaction('saves','readwrite');tx.objectStore('saves').put({slot:'autosave',savedAt:new Date().toISOString(),state});tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>reject(tx.error);};
-  });},legacy);
-  for(let i=0;i<2;i++){
-    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
-    await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
-    const migrated=(await inspect(page)).state;expect(migrated).toMatchObject({...fields,version:10,playSeconds:expect.any(Number)});
-    expect(migrated.inventory.characters.nell).toEqual({fitting:'brass-reflector',coat:'work-coat'});
-    expect(migrated.inventory.characters.orrin).toEqual({fitting:null,coat:'work-coat'});expect(migrated.inventory.bag['work-coat']).toBe(0);
-  }
-  const before=(await inspect(page)).state.inventory;
-  await importSave(page,legacy);expect((await inspect(page)).state.inventory).toEqual(before);
-});
+
 
 test('campaign portraits retain native geometry on a compact phone',async({page})=>{
   await page.setViewportSize({width:320,height:844});await page.goto('/');await importSave(page,checkpoint('orrinJoined'));

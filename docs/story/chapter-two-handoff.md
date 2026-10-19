@@ -4,9 +4,9 @@ This records the preserved Chapter One departure. Chapter Two now implements thi
 
 ## Exact save
 
-Original version **6** (also accepted from version 5 and migrated to version 9), format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
+Current save version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
 
-Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`, `villageSeen`, `collectorConfronted`, `collectorDefeated`, `villageFreed`, `passSeen`, `captainConfronted`, `captainDefeated`, `chapterOneComplete`. Preserve optional `blessingRead`, `farewellSeen`, `waterSeen`, `workshopWon`, `muralRead` and `shelterSupplies`, plus every resource, equipped item, party HP/focus, journal entry and play-time value. Nell and Orrin are the two combatants. Preserve the complete `inventory` bag and loadouts; version-5 departures migrate automatically, including a reserved coat for Orrin if the old upgrade was bought before recruitment.
+Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`, `villageSeen`, `collectorConfronted`, `collectorDefeated`, `villageFreed`, `passSeen`, `captainConfronted`, `captainDefeated`, `chapterOneComplete`. Preserve optional `blessingRead`, `farewellSeen`, `waterSeen`, `workshopWon`, `muralRead` and `shelterSupplies`, plus every resource, equipped item, party HP/focus, journal entry and play-time value. Nell and Orrin are the two combatants. Preserve the complete `inventory` bag and loadouts.
 
 Load and validate new region assets before consuming this boundary. An error must leave the departure available. Do not offer a nonworking Begin Chapter Two button before the content exists.
 

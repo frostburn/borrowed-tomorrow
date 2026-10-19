@@ -13,9 +13,9 @@ function host(state:GameState){
  const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},endingMusic(){}};
  return {h,finish:()=>dialogue!.done!(),read:()=>dialogue!,win:()=>{const b=createBattle(encounter,state);b.result='victory';awardVictory(b,state);},encounter:()=>encounter};
 }
-it('continues the exact v8 capital departure without changing gear, health or the raid choice',()=>{
+it('continues the current capital departure without changing gear, health or the raid choice',()=>{
  const source=coastCheckpoint('chapterTwoComplete');source.party[0].hp=29;source.playSeconds=1234;
- const s=decodeSave(JSON.stringify({...source,version:8})),before=structuredClone(s);
+ const s=decodeSave(JSON.stringify(source)),before=structuredClone(s);
  expect(beginChapterThree(s)).toBe(true);expect(s).toMatchObject({...before,chapter:'chapter-three',boundary:null,location:{map:'northglass',x:32,y:31}});
  expect(beginChapterThree(s)).toBe(false);expect(decodeSave(JSON.stringify(s))).toEqual(s);
 });

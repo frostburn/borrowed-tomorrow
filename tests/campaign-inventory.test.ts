@@ -1,36 +1,17 @@
 import { expect, it } from 'vitest';
 import { awardVictory, createBattle } from '../src/rules/combat';
 import { decodeSave, newGame, recruitOrrin } from '../src/rules/state';
-import { equipItem, equipmentBonuses, ownedCopies, receiveItem } from '../src/rules/inventory';
+import { equipItem, ownedCopies, receiveItem } from '../src/rules/inventory';
 import { buySupply } from '../src/rules/supplies';
 import { checkpoint } from './support/progress';
 
-it('migrates version-five equipment without changing the departure or duplicating copies',()=>{
-  const state=checkpoint('chapterOneComplete');state.bandages=17;state.playSeconds=913;
-  const {inventory:_,...fields}=state;
-  const legacy={...fields,version:5,gear:['brass-lantern','work-coats','work-coats']};
-  const migrated=decodeSave(JSON.stringify(legacy));
-  expect(migrated).toMatchObject({...fields,version:10});expect(migrated).not.toHaveProperty('gear');
-  expect(equipmentBonuses(migrated.inventory)).toMatchObject({nell:{attack:3,armor:1,speed:0},orrin:{attack:0,armor:1,speed:0}});
-  expect(ownedCopies(migrated.inventory,'brass-reflector')).toBe(1);expect(ownedCopies(migrated.inventory,'work-coat')).toBe(2);
-  expect(decodeSave(JSON.stringify(migrated))).toEqual(migrated);
-  expect(legacy.gear).toEqual(['brass-lantern','work-coats','work-coats']);
-});
-it('preserves the old coat upgrade for Orrin when he is recruited after migration',()=>{
-  const {inventory:_,...fields}=newGame();
-  const state=decodeSave(JSON.stringify({...fields,version:5,gear:['work-coats']}));
-  expect(state.party).toHaveLength(1);recruitOrrin(state);
-  expect(createBattle('workshop',state).units.filter(u=>u.side==='party').map(u=>u.armor)).toEqual([1,1]);
-  expect(ownedCopies(state.inventory,'work-coat')).toBe(2);
-});
-it('rejects invalid inventory and legacy gear while retaining old-story rejection',()=>{
+it('rejects invalid inventory and unsupported save versions',()=>{
   const s=newGame();
   for(const bad of [
     {...s,inventory:undefined},{...s,inventory:{...s.inventory,bag:{'work-coat':100}}},
     {...s,inventory:{...s.inventory,characters:{...s.inventory.characters,nell:{coat:'lance-nozzle',fitting:null}}}},
-    {...s,version:5,gear:['unknown']},{...s,version:5,gear:undefined},
   ])expect(()=>decodeSave(JSON.stringify(bad))).toThrow();
-  for(const version of [1,2,3,4])expect(()=>decodeSave(JSON.stringify({...s,version}))).toThrow('previous story');
+  for(const version of [1,2,3,4,5,6,7,8,9,11])expect(()=>decodeSave(JSON.stringify({...s,version}))).toThrow('Unsupported save format');
 });
 it('buys individual copies into the bag and never charges for unavailable purchases',()=>{
   const s=newGame();s.coins=100;

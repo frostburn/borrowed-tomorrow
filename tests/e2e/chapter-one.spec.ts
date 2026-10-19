@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
 import { newGame } from '../../src/rules/state';
 import { checkpoint } from '../support/progress';
 import { battle, capture, dialogue, inspect, clickHex, nativeScene, nativeActor } from './controls';
@@ -16,7 +15,7 @@ async function begin(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: 'Begin Chapter One' }).click(); await dialogue(page);
 }
 
-test('opening, interrupted raid and skip keep a coherent checkpoint on a phone', async ({ page }) => {
+test('@ci opening, interrupted raid and skip keep a coherent checkpoint on a phone', async ({ page }) => {
   const errors = errorsOn(page); await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/'); await page.getByRole('button', { name: 'Begin Chapter One' }).click();
@@ -46,9 +45,11 @@ test('opening, interrupted raid and skip keep a coherent checkpoint on a phone',
   expect(errors).toEqual([]);
 });
 
-test('old saves stay exportable and cannot resume the discarded story', async ({ page }) => {
+
+
+test('@ci unsupported save versions cannot resume or import', async ({ page }) => {
   const errors = errorsOn(page); await page.goto('/');
-  const old = { ...newGame(), version: 4, chapter: 'disk-c', location: { map: 'infirmary', x: 3, y: 3 } };
+  const old = { ...newGame(), version: 9 };
   await page.evaluate(async state => {
     await new Promise<void>((resolve, reject) => {
       const request = indexedDB.open('borrowed-tomorrow', 1);
@@ -61,19 +62,14 @@ test('old saves stay exportable and cannot resume the discarded story', async ({
   }, old);
   await page.reload(); await expect(page.getByRole('button', { name: 'Continue', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: 'Save files' }).click();
-  const row = page.locator('[data-slot="slot-1"]');
-  await expect(row.getByRole('button', { name: 'Load', exact: true })).toBeDisabled();
-  const download = page.waitForEvent('download'); await row.getByRole('button', { name: 'Export previous save' }).click();
-  const exported = await (await download).path(); expect(JSON.parse(await readFile(exported!, 'utf8')).version).toBe(4);
+  await expect(page.locator('[data-slot="slot-1"]').getByRole('button', { name: 'Load', exact: true })).toBeDisabled();
   const chooser = page.waitForEvent('filechooser'); await page.getByRole('button', { name: 'Import save file' }).click();
-  await (await chooser).setFiles({ name: 'previous-story.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(old)) });
-  await expect(page.getByRole('status')).toContainText('previous story'); expect((await inspect(page)).mode).toBe('title');
-  await page.getByRole('button', { name: 'Close', exact: true }).click();
-  await page.getByRole('button', { name: 'Begin Chapter One' }).click(); await dialogue(page);
-  expect((await inspect(page)).state.campaign).toBe('imperial-debt'); expect(errors).toEqual([]);
+  await (await chooser).setFiles({ name: 'unsupported.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(old)) });
+  await expect(page.getByRole('status')).toContainText('Unsupported save format'); expect((await inspect(page)).mode).toBe('title');
+  expect(errors).toEqual([]);
 });
 
-test('phone combat pans and confirms real healing without shrinking the actors', async ({ page }) => {
+test('@ci phone combat pans and confirms real healing without shrinking the actors', async ({ page }) => {
   const errors = errorsOn(page); await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/');
   const state = checkpoint('captainConfronted'); state.location = { map: 'tunnel', x: 30, y: 14 }; state.party[0].hp = 24;
   await importSave(page, state); await approach(page, 'captain');

@@ -3,12 +3,11 @@ import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, palaceCheckpoint, brokenCheckpoint, checkpoint } from '../support/progress';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
-import { recruit } from '../../src/rules/state';
 import { importSave, approach } from './navigation';
 import { capture, inspect, dialogue, clickWorld } from './controls';
 import { travel } from './navigation';
 
-test('production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
+test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   for (const route of ['workshop', 'inventory', 'music']) {
     await page.goto(`/?dev=${route}`);
@@ -27,7 +26,7 @@ test('production ignores all workshop routes and omits its controls and progress
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
-  test(`production campaign inventory equips and saves individual loadouts on ${device}`,async({page})=>{
+  test(`${device==='desktop'?'@ci ':''}production campaign inventory equips and saves individual loadouts on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.goto('/');
     const state=checkpoint('orrinJoined');receiveItem(state.inventory,'brass-reflector');receiveItem(state.inventory,'heavy-coat');receiveItem(state.inventory,'work-coat');
@@ -73,31 +72,14 @@ test('a source checkpoint without the art pack preserves the Iron Coast departur
 });
 
 
-test('the earlier v7 ward save keeps its gear and progress with three travelers',async({page})=>{
-  test.skip(!CHAPTER_TWO_AVAILABLE,'Chapter Two art pack is not installed.');
-  await page.setViewportSize({width:390,height:844});await page.goto('/');
-  const old=coastCheckpoint('wardSeen');recruit(old,'celia');old.activeParty=['nell','kit','celia'];
-  receiveItem(old.inventory,'medic-clasp');equipItem(old.inventory,'celia','medic-clasp');
-  receiveItem(old.inventory,'work-coat');equipItem(old.inventory,'celia','work-coat');
-  await importSave(page,{...old,version:7});const migrated=(await inspect(page)).state;
-  expect(migrated.version).toBe(10);expect(migrated.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);
-  expect(migrated.activeParty).toEqual(['nell','kit','orrin']);expect(migrated.flags.wardSeen).toBe(true);
-  expect(migrated.coins).toBe(old.coins);expect(migrated.xp).toBe(old.xp);
-  expect(migrated.inventory.bag['medic-clasp']).toBe(1);expect(migrated.inventory.bag['work-coat']).toBe(1);
-  await page.getByRole('button',{name:'Equipment',exact:true}).click();
-  await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true})).toHaveCount(0);
-  await capture(page,'legacy-ward-three-travelers-phone');
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
-  await expect.poll(async()=>(await inspect(page)).state.inventory).toEqual(migrated.inventory);
-  expect((await inspect(page)).state.party).toEqual(migrated.party);
-});
+
 
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production Chapter Three keeps Tomas safe and equipment through the departure on ${device}`,async({page})=>{
   test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
-  await importSave(page,{...coastCheckpoint('chapterTwoComplete'),version:8});await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await dialogue(page);
+  await importSave(page,coastCheckpoint('chapterTwoComplete'));await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await dialogue(page);
   await importSave(page,palaceCheckpoint('worksWardenWon'));await approach(page,'works-tomas');await dialogue(page);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Nell',exact:true}).click();await page.locator('.ci-items').getByRole('button',{name:/^Silver reflector/}).click();await page.getByRole('button',{name:'Equip on Nell',exact:true}).click();await capture(page,`silver-reflector-production-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.inventory.characters.nell.fitting).toBe('silver-reflector');
@@ -112,7 +94,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 test('a source checkpoint without the chamber art preserves the capital departure',async({page})=>{
  test.skip(CHAPTER_THREE_AVAILABLE,'The complete chamber art pack is installed.');
- await page.goto('/');const saved=coastCheckpoint('chapterTwoComplete');await importSave(page,{...saved,version:8});
+ await page.goto('/');const saved=coastCheckpoint('chapterTwoComplete');await importSave(page,saved);
  await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();
  await expect(page.getByRole('button',{name:'Begin Chapter Three',exact:true})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
@@ -161,7 +143,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;equipItem(old.inventory,'nell','silver-reflector');
-  const {reunionParty:_,...v9}=old;await importSave(page,{...v9,version:9});await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);
+  await importSave(page,old);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);
   expect((await inspect(page)).state).toMatchObject({inventory:old.inventory,party:old.party,activeParty:['nell'],reunionParty:old.activeParty});await capture(page,`chapter-four-production-arrival-${device}`);
   await approach(page,'refuge-tomas');await page.getByRole('button',{name:'Read Orrin’s signal',exact:true}).click();await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(['orrin','kit']);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.getByRole('button',{name:'Set active',exact:true})).toHaveCount(0);await page.getByRole('button',{name:'Close',exact:true}).click();

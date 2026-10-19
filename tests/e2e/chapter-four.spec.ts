@@ -30,8 +30,8 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   await capture(page,`celia-search-${device}`);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.activeParty[0]).toBe('celia');expect(errors).toEqual([]);
  });
 }
-test('failed sanctuary artwork preserves the v9 departure until retry',async({page})=>{
- await page.goto('/');const before=palaceCheckpoint('chapterThreeComplete');const {reunionParty:_,...v9}=before;await importSave(page,{...v9,version:9});await page.route('**/art/sanctuary.webp',route=>route.abort());
+test('failed sanctuary artwork preserves the current departure until retry',async({page})=>{
+ await page.goto('/');const before=palaceCheckpoint('chapterThreeComplete');await importSave(page,before);await page.route('**/art/sanctuary.webp',route=>route.abort());
  await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');
  expect((await inspect(page)).state).toMatchObject({chapter:'chapter-three',boundary:'chapter-four:broken-world',inventory:before.inventory,activeParty:before.activeParty,reunionParty:null});
  await page.unroute('**/art/sanctuary.webp');await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-morning');
@@ -40,7 +40,7 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
  test(`@journey Chapter Four ${route} route reunites the cast and earns every available reward on ${device}`,async({page})=>{
   test.setTimeout(600000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const departure=palaceCheckpoint('chapterThreeComplete');departure.activeParty=['nell','petra','kit'];equipItem(departure.inventory,'nell','silver-reflector');equipItem(departure.inventory,'nell','insulated-coat');equipItem(departure.inventory,'petra','saber-hilt');equipItem(departure.inventory,'kit','courier-sight');
-  const {reunionParty:_,...v9}=departure;await importSave(page,{...v9,version:9});await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await nativeScene(page,'infirmary');await capture(page,`broken-morning-${device}`);await dialogue(page);
+  await importSave(page,departure);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await nativeScene(page,'infirmary');await capture(page,`broken-morning-${device}`);await dialogue(page);
   await approach(page,'refuge-tomas');await page.getByRole('button',{name:'Read Orrin’s signal',exact:true}).click();await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(['orrin','kit']);await nativeScene(page,'sluice');await capture(page,`orrin-works-${device}`);
   await approach(page,'works-cart');await page.getByRole('button',{name:'Leave the cart sealed',exact:true}).click();expect((await inspect(page)).state.flags.worksStoresWon).toBeUndefined();
   if(route==='dry'){await approach(page,'works-cart');await page.getByRole('button',{name:'Open the survey cart · fight its patrol',exact:true}).click();await battle(page,`survey-cart-battle-${device}`);await equip(page,'Kit','Folding range sight');}

@@ -12,7 +12,7 @@ Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, a
 
 ## Existing saves
 
-Version 10 retains the shared inventory and active formation and migrates version-9 departures without changing earned progress. Version-7 imports remove Celia’s earlier draft recruitment and return her equipped copies to the bag, while preserving the remaining travelers and all earned progress. Version-5, version-6 and version-7 saves remain loadable through Continue, manual slots and JSON import. Their story flags, resources, HP/focus, location, journal, play time and chapter boundary are preserved.
+Version 10 stores the shared inventory and active formation. Only the current save format is supported; previous campaign versions are not migrated. Continue, manual slots and JSON imports all validate the same current-format data.
 
 - `brass-lantern` becomes one brass reflector, equipped on Nell.
 - `work-coats` becomes two reinforced coats, equipped on Nell and Orrin. Orrin’s copy stays reserved if he has not joined yet.

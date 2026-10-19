@@ -22,10 +22,10 @@ function raid(diversion:boolean) {
   interactChapterTwo(j.host,diversion?'signal-walk':'loading-gate');j.read().choices![0].action();j.finish();j.win();
   return j;
 }
-it('migrates an actual v6 departure without losing gear, choices, health or resources',()=>{
+it('continues the current departure without losing gear, choices, health or resources',()=>{
   const source=checkpoint('chapterOneComplete');source.flags.muralRead=true;source.party[0].hp=27;source.playSeconds=998;
   receiveItem(source.inventory,'work-coat',3);equipItem(source.inventory,'orrin','work-coat');
-  const {activeParty:_,...old}=source, s=decodeSave(JSON.stringify({...old,version:6})), before=structuredClone(s);
+  const s=decodeSave(JSON.stringify(source)), before=structuredClone(s);
   expect(s.activeParty).toEqual(['nell','orrin']);expect(beginChapterTwo(s)).toBe(true);
   expect(s).toMatchObject({...before,chapter:'chapter-two',boundary:null,location:{map:'coast',x:24,y:26}});
   expect(decodeSave(JSON.stringify(s))).toEqual(s);expect(beginChapterTwo(s)).toBe(false);
@@ -53,19 +53,7 @@ it('keeps the ward as a safe stop and the traveling party at Nell, Orrin and Kit
   j.state.flags.settlementSeen=true;j.state.location={map:'cinderbank',x:27,y:22};
   expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
 });
-it('migrates the former four-person v7 chapter without losing progress or equipped copies',()=>{
-  const legacy=coastCheckpoint('chapterTwoComplete');recruit(legacy,'celia');legacy.activeParty=['nell','kit','celia'];
-  legacy.party[0].hp=27;legacy.playSeconds=998;
-  receiveItem(legacy.inventory,'medic-clasp');equipItem(legacy.inventory,'celia','medic-clasp');
-  receiveItem(legacy.inventory,'work-coat');equipItem(legacy.inventory,'celia','work-coat');
-  const restored=decodeSave(JSON.stringify({...legacy,version:7}));
-  expect(restored.version).toBe(10);expect(restored.party).toEqual(legacy.party.filter(h=>h.id!=='celia'));
-  expect(restored.activeParty).toEqual(['nell','kit','orrin']);expect(restored.flags.celiaJoined).toBeUndefined();
-  for(const key of ['coins','bandages','xp','journal','boundary','playSeconds','location'] as const)expect(restored[key]).toEqual(legacy[key]);
-  for(const item of ['medic-clasp','work-coat'] as const)expect(ownedCopies(restored.inventory,item)).toBe(ownedCopies(legacy.inventory,item));
-  expect(restored.inventory.characters.celia).toEqual({fitting:null,coat:null});expect(restored.inventory.bag['medic-clasp']).toBe(1);
-  expect(decodeSave(JSON.stringify(restored))).toEqual(restored);
-});
+
 it('defers Celia throughout the staged chapter and rejects premature recruitment in current saves',()=>{
   const entries=[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners(),scenes.ward(),scenes.abandonment(),scenes.evacuation(),scenes.recapture(),scenes.departure()];
   expect(entries.flatMap(s=>s.scene!.actors).some(a=>a.id==='celia')).toBe(false);

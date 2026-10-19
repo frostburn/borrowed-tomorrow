@@ -37,7 +37,7 @@ The Abilities panel shows every unlock and whether it is known. Lowering level r
 
 Select an item in the shared bag, compare Attack / Armor / Speed, then equip it. Each character has a tool-fitting slot and a coat slot. Their basic tools remain part of the character. The brass reflector fits Nell's lantern; the pressure nozzle fits Orrin's lance. Coats fit all five characters, but each copy protects only its wearer. The heavy coat trades speed for protection.
 
-Receiving equipment adds copies to the bag without equipping them. Equipping consumes one spare copy and returns the old item to the bag. Unequip a shared item before giving that copy to the other character. The initial stock includes one heavy coat and one of each fitting. New workshops have three reinforced coats, enough for a full party. Existing inventory is preserved during migration.
+Receiving equipment adds copies to the bag without equipping them. Equipping consumes one spare copy and returns the old item to the bag. Unequip a shared item before giving that copy to the other character. The initial stock includes one heavy coat and one of each fitting. New workshops have three reinforced coats, enough for a full party.
 
 ## Practice and persistence
 
@@ -56,7 +56,7 @@ Tools work during enemy turns and animations. Each action replaces the battle ob
 
 **Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
-Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-workshop:v1`, preserving previous workshop loadouts. Character settings use `borrowed-tomorrow:character-workshop:v1`. Both use version-2 records under their existing keys, migrate version-1 two-character records without losing edits or equipment, and validate stored data before use. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-9 saves carry a separate inventory and active formation, with version-5/6/7/8 migration. Workshop storage never feeds campaign equipment.
+Equipment uses local-storage key `borrowed-tomorrow:inventory-workshop:v1`; character settings use `borrowed-tomorrow:character-workshop:v1`. Both accept only version-2 records containing the current five companions. Retired version-1 records and replaced-character aliases are not migrated; invalid records use the existing reset behavior. Current loadouts and stat edits remain supported. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-10 saves carry their own inventory and active formation. Workshop storage never feeds campaign equipment.
 
 ## Implementation boundary
 
@@ -66,11 +66,11 @@ Equipment retains the existing local-storage key `borrowed-tomorrow:inventory-wo
 - `src/dev/workshop.ts` is imported only behind `import.meta.env.DEV`. Its styles, controls and fixture stock are excluded from builds.
 - `Adventure` supplies an isolated practice host around the existing renderer and controls. It skips campaign loading, autosaves and victory rewards. Delayed battle callbacks discard work belonging to an abandoned encounter.
 
-Character inventory, equipment loot, shops and save migration are integrated into the campaign. Only Kit joins in Chapter Two; Petra joins in Chapter Three; Celia’s introduction is deferred. Equipment retains the formation controls for later recruits. The workshop’s arbitrary levels and stat edits remain isolated.
+Character inventory, equipment loot, shops and current-format saves are integrated into the campaign. Only Kit joins in Chapter Two; Petra joins in Chapter Three; Celia’s introduction is deferred. Equipment retains the formation controls for later recruits. The workshop’s arbitrary levels and stat edits remain isolated.
 
 ## Checks
 
-`npm run check` covers progression, validation, equipment conservation and actual combat effects. `npm run test:e2e:smoke` exercises character builds, ability controls and equipment on desktop and phone alongside the campaign checks. After building, `npm run test:e2e:production` verifies that both development routes, workshop controls and editable build settings are absent from production, while campaign equipment remains available. `npm run test:e2e:journeys` also completes an equipped practice battle and checks that it gives no campaign rewards.
+`npm run check` covers progression, validation, equipment conservation and actual combat effects. The optional `npm run test:e2e:smoke` suite exercises character builds, ability controls and equipment on desktop and phone alongside the campaign checks. After building, `npm run test:e2e:production` verifies that both development routes, workshop controls and editable build settings are absent from production, while campaign equipment remains available. `npm run test:e2e:journeys` also completes an equipped practice battle and checks that it gives no campaign rewards.
 
 ## Music
 

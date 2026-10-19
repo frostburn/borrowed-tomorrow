@@ -127,7 +127,7 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
   });
 }
 
-test('invalid stat edits are atomic and damaged character storage keeps equipment intact', async ({ page }) => {
+test('@ci invalid stat edits are atomic and damaged character storage keeps equipment intact', async ({ page }) => {
   await page.goto('/?dev=inventory');
   await expect(page.getByRole('region', { name: 'Shared bag' })).toBeVisible();
   await page.getByRole('button', { name: 'Equip on Nell', exact: true }).click();

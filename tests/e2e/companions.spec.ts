@@ -1,6 +1,4 @@
 import { expect, test, type Page } from '@playwright/test';
-import { defaultBuild, newCharacterSettings } from '../../src/rules/characters';
-import { equipItem, newInventory, receiveItem } from '../../src/rules/inventory';
 import { distance, equal, offset } from '../../src/rules/hex';
 import { movement, pushDestination, type Battle } from '../../src/rules/combat';
 import { battle, capture, clickHex, inspect } from './controls';
@@ -112,39 +110,9 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   });
 }
 
-test('old workshop builds and equipment migrate without losing existing edits',async({page})=>{
-  await page.goto('/');
-  await page.evaluate(({settings,inventory})=>{localStorage.setItem('borrowed-tomorrow:character-workshop:v1',JSON.stringify(settings));localStorage.setItem('borrowed-tomorrow:inventory-workshop:v1',JSON.stringify(inventory));},{
-    settings:{version:1,characters:{nell:{...defaultBuild('nell',4),attack:24},orrin:defaultBuild('orrin',2)}},
-    inventory:{version:1,bag:{'work-coat':1,'brass-reflector':0},characters:{nell:{fitting:'brass-reflector',coat:'work-coat'},orrin:{fitting:null,coat:null}}},
-  });
-  await page.goto('/?dev=workshop');await expect(page.getByRole('spinbutton',{name:'Nell level',exact:true})).toHaveValue('4');await expect(page.getByRole('spinbutton',{name:'Nell Attack',exact:true})).toHaveValue('24');
-  await expect(page.getByRole('region',{name:'Nell equipment'})).toContainText('Brass reflector');await choose(page,'Kit');await expect(page.getByRole('spinbutton',{name:'Kit level',exact:true})).toHaveValue('1');
-  await page.getByRole('button',{name:'Add Kit to party',exact:true}).click();await page.reload();
-  await expect(page.getByRole('region',{name:'Practice party',exact:true})).toContainText('Nell · Orrin · Kit');
-  await expect(page.getByRole('spinbutton',{name:'Nell Attack',exact:true})).toHaveValue('24');
-  const stored=await page.evaluate(()=>({settings:JSON.parse(localStorage.getItem('borrowed-tomorrow:character-workshop:v1')!),inventory:JSON.parse(localStorage.getItem('borrowed-tomorrow:inventory-workshop:v1')!)}));
-  expect(stored.settings.version).toBe(2);expect(stored.inventory.version).toBe(2);expect(stored.inventory.bag['work-coat']).toBe(1);
-});
 
-test('the replaced courier keeps his saved party, build and equipment after reload',async({page})=>{
-  const settings=newCharacterSettings();settings.party=['kit','celia','petra'];settings.characters.kit={...defaultBuild('kit',5),attack:29};
-  const inventory=newInventory();receiveItem(inventory,'courier-sight');receiveItem(inventory,'work-coat',3);
-  equipItem(inventory,'kit','courier-sight');equipItem(inventory,'kit','work-coat');
-  const {kit:build,...builds}=settings.characters,{kit:gear,...loadouts}=inventory.characters;
-  await page.goto('/');await page.evaluate(({settings,inventory})=>{
-    localStorage.setItem('borrowed-tomorrow:character-workshop:v1',JSON.stringify(settings));
-    localStorage.setItem('borrowed-tomorrow:inventory-workshop:v1',JSON.stringify(inventory));
-  },{settings:{...settings,characters:{...builds,esme:build},party:['esme','celia','petra']},inventory:{...inventory,characters:{...loadouts,esme:gear}}});
-  await page.goto('/?dev=workshop');await expect(page.getByRole('region',{name:'Practice party',exact:true})).toContainText('Kit · Celia · Petra');
-  await choose(page,'Kit');await expect(page.getByRole('spinbutton',{name:'Kit level',exact:true})).toHaveValue('5');
-  await expect(page.getByRole('spinbutton',{name:'Kit Attack',exact:true})).toHaveValue('29');
-  await expect(page.getByRole('region',{name:'Kit equipment'})).toContainText('Courier sight');
-  await page.getByRole('button',{name:'Apply base stats',exact:true}).click();await page.reload();await choose(page,'Kit');
-  await expect(page.getByRole('spinbutton',{name:'Kit Attack',exact:true})).toHaveValue('29');
-  const stored=await page.evaluate(()=>({settings:JSON.parse(localStorage.getItem('borrowed-tomorrow:character-workshop:v1')!),inventory:JSON.parse(localStorage.getItem('borrowed-tomorrow:inventory-workshop:v1')!)}));
-  expect(stored.settings).toEqual(settings);expect(stored.inventory).toEqual(inventory);
-});
+
+
 
 test('future-companion portraits keep their native geometry on a compact phone',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));

@@ -22,9 +22,13 @@ it('keeps one to three distinct active companions and preserves reserve builds',
   expect(setPartyMember(s,'nell',false)).toBe(true);expect(setPartyMember(s,'orrin',false)).toBe(true);
   expect(setPartyMember(s,'kit',false)).toBe(false);expect(s.party).toEqual(['kit']);expect(s.characters.kit.attack).toBe(25);
 });
-it('migrates two-character settings and round-trips the expanded roster and party',()=>{
+it('round-trips current character settings and rejects old or incomplete records',()=>{
   const nell={...defaultBuild('nell',4),attack:24},orrin=defaultBuild('orrin',2);
-  const s=decodeCharacterSettings(JSON.stringify({version:1,characters:{nell,orrin}}));
+  const current=newCharacterSettings();current.characters.nell=nell;current.characters.orrin=orrin;
+  const s=decodeCharacterSettings(JSON.stringify(current));
+  expect(()=>decodeCharacterSettings(JSON.stringify({...current,version:1}))).toThrow();
+  expect(()=>decodeCharacterSettings(JSON.stringify({...current,characters:{nell,orrin}}))).toThrow();
+  expect(()=>decodeInventory(JSON.stringify({...newInventory(),version:1}))).toThrow();
   expect(s.version).toBe(2);expect(s.characters.nell).toEqual(nell);expect(s.characters.orrin).toEqual(orrin);
   expect(s.characters.kit).toEqual(defaultBuild('kit'));expect(s.party).toEqual(['nell','orrin']);
   s.party=['kit','celia','petra'];expect(decodeCharacterSettings(JSON.stringify(s))).toEqual(s);
@@ -32,27 +36,9 @@ it('migrates two-character settings and round-trips the expanded roster and part
     expect(()=>decodeCharacterSettings(JSON.stringify({...s,party}))).toThrow();
   }
 });
-it('migrates old equipment without losing copies or assigning gear to newcomers',()=>{
-  const old={version:1,bag:{'work-coat':1,'brass-reflector':0},characters:{nell:{fitting:'brass-reflector',coat:'work-coat'},orrin:{fitting:null,coat:null}}};
-  const i=decodeInventory(JSON.stringify(old));
-  expect(i.version).toBe(2);expect(i.bag).toEqual(old.bag);expect(i.characters.nell).toEqual(old.characters.nell);
-  expect(i.characters.kit).toEqual({fitting:null,coat:null});expect(decodeInventory(JSON.stringify(i))).toEqual(i);
-});
-it('preserves the replaced courier’s build and lineup while rejecting duplicate aliases',()=>{
-  const current=newCharacterSettings();current.characters.kit={...defaultBuild('kit',5),attack:29};current.party=['kit','celia','petra'];
-  const {kit,...others}=current.characters;
-  const legacy={...current,characters:{...others,esme:kit},party:['esme','celia','petra']};
-  expect(decodeCharacterSettings(JSON.stringify(legacy))).toEqual(current);
-  expect(()=>decodeCharacterSettings(JSON.stringify({...legacy,party:['esme','kit']}))).toThrow();
-});
-it('transfers the replaced courier’s equipped items without losing or duplicating copies',()=>{
-  const current=newInventory();receiveItem(current,'courier-sight');receiveItem(current,'work-coat',3);
-  equipItem(current,'kit','courier-sight');equipItem(current,'kit','work-coat');equipItem(current,'petra','work-coat');
-  const {kit,...others}=current.characters;
-  const migrated=decodeInventory(JSON.stringify({...current,characters:{...others,esme:kit}}));
-  expect(migrated).toEqual(current);expect(equipmentBonuses(migrated).kit).toEqual({attack:3,armor:1,speed:1});
-  expect(decodeInventory(JSON.stringify(migrated))).toEqual(current);
-});
+
+
+
 it('fits new tools to their owner and shares three coats without sharing their bonuses',()=>{
   const i=newInventory();receiveItem(i,'courier-sight');receiveItem(i,'medic-clasp');receiveItem(i,'saber-hilt');receiveItem(i,'work-coat',3);
   for(const id of ['kit','celia','petra'] as const)expect(equipItem(i,id,'work-coat')).toBe(true);
