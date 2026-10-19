@@ -38,5 +38,10 @@
     "bytes": 2564848,
     "sha256": "d52cb5be73d57f967ccc11c50c826745bd464dfe9f2073b12c0398ee4debcb24",
     "parts": 14
+  },
+  "sanctuary": {
+    "bytes": 2519612,
+    "sha256": "a4bc4534707faa21ec883e77111db360b187abe8abf1b29c501300be702df24d",
+    "parts": 13
   }
 }

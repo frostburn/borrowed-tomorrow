@@ -79,7 +79,7 @@ test('the earlier v7 ward save keeps its gear and progress with three travelers'
   receiveItem(old.inventory,'medic-clasp');equipItem(old.inventory,'celia','medic-clasp');
   receiveItem(old.inventory,'work-coat');equipItem(old.inventory,'celia','work-coat');
   await importSave(page,{...old,version:7});const migrated=(await inspect(page)).state;
-  expect(migrated.version).toBe(9);expect(migrated.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);
+  expect(migrated.version).toBe(10);expect(migrated.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);
   expect(migrated.activeParty).toEqual(['nell','kit','orrin']);expect(migrated.flags.wardSeen).toBe(true);
   expect(migrated.coins).toBe(old.coins);expect(migrated.xp).toBe(old.xp);
   expect(migrated.inventory.bag['medic-clasp']).toBe(1);expect(migrated.inventory.bag['work-coat']).toBe(1);

@@ -1,4 +1,5 @@
 import { CHAPTER_THREE_MAPS } from './chapter-three/maps';
+import { CHAPTER_FOUR_MAPS } from './chapter-four/maps';
 import { CHAPTER_TWO_MAPS } from './chapter-two/maps';
 import stationMap from './chapter-one/maps/station.json' with { type: 'json' };
 import yardMap from './chapter-one/maps/yard.json' with { type: 'json' };
@@ -7,11 +8,12 @@ import villageMap from './chapter-one/maps/rillbridge.json' with { type: 'json' 
 import type { MapId, GameState } from '../rules/state';
 export const TILE = 24, WIDTH = 1008, HEIGHT = 624;
 export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; spriteHiddenFlag?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean; hitArea?: {x:number;y:number;width:number;height:number} }
-export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; objects: MapObject[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
+export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; art?:string; objects: MapObject[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export function collision(map: { layers: { type: string; objects?: { x: number; y: number; width: number; height: number }[] }[] }): [number, number, number, number][] {
   return map.layers.filter(l=>l.type==='objectgroup').flatMap(l=>l.objects??[]).map(o=>[o.x/TILE,o.y/TILE,o.width/TILE,o.height/TILE]);
 }
 export const MAPS: Record<MapId, MapData> = {
+  ...CHAPTER_FOUR_MAPS,
   ...CHAPTER_TWO_MAPS,
   ...CHAPTER_THREE_MAPS,
   station: { id: 'station', name: 'Larkspur station', subtitle: 'Festival night · Tomas is home from the capital.', solid: collision(stationMap), objects: [

@@ -58,6 +58,6 @@ export class Audio {
     if(!this.enabled||!this.context)return;
     const now=this.context.currentTime;
     if(kind==='move'){if(now-this.lastStep<.105)return;this.lastStep=now;this.steps++;}
-    this.effects!.effect(kind,now+.005,surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='conduit'?'tunnel':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
+    this.effects!.effect(kind,now+.005,surface==='refuge'?'station':surface==='breakwater'?'yard':surface==='sanctuary'?'tunnel':surface==='rillbridge'||surface==='infirmary'||surface==='relayhall'?'station':surface==='conduit'?'tunnel':surface==='coast'||surface==='sluice'||surface==='cinderbank'||surface==='northglass'?'yard':surface,this.steps);
   }
 }
