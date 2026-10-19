@@ -127,7 +127,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     };
     const scores=[];
     for(const mode of modes){
-      const bars=!full?4:['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:['refuge','breakwater','sanctuary','four-battle','four-warden','conduit','coast','rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
+      const bars=!full?4:['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:['conduit','coast','rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
       const beat=60/ARRANGEMENTS[mode].bpm,c=new OfflineAudioContext(2,Math.ceil((bars*4*beat+2)*22050),22050);
       const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
       for(let bar=0;bar<bars;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.midi,.03+bar*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
