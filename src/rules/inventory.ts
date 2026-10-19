@@ -65,6 +65,7 @@ export function equipmentBonuses(inventory: Inventory): Record<CompanionId, Equi
 export function decodeInventory(text: string): Inventory {
   const raw = JSON.parse(text);
   if (!raw || raw.version !== 2 || !raw.bag || typeof raw.bag !== 'object' || Array.isArray(raw.bag) || !raw.characters) throw new Error('Invalid inventory.');
+  if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid inventory roster.');
   const inventory = newInventory();
   for (const [item, count] of Object.entries(raw.bag)) {
     if (!Object.hasOwn(ITEMS, item) || !Number.isInteger(count) || (count as number) < 0 || (count as number) > 99) throw new Error('Invalid item count.');

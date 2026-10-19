@@ -39,6 +39,7 @@ export function characterProfiles(settings: CharacterSettings): Record<Companion
 export function decodeCharacterSettings(text: string): CharacterSettings {
   const raw = JSON.parse(text), settings = newCharacterSettings();
   if (!raw || raw.version !== 2 || !raw.characters) throw new Error('Invalid character settings.');
+  if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid character roster.');
   for (const hero of COMPANION_IDS) {
     const build = raw.characters[hero];
     if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > 10) throw new Error('Invalid character level.');

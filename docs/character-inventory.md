@@ -14,9 +14,6 @@ Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, a
 
 Version 10 stores the shared inventory and active formation. Only the current save format is supported; previous campaign versions are not migrated. Continue, manual slots and JSON imports all validate the same current-format data.
 
-- `brass-lantern` becomes one brass reflector, equipped on Nell.
-- `work-coats` becomes two reinforced coats, equipped on Nell and Orrin. Orrin’s copy stays reserved if he has not joined yet.
-
 The dev workshop retains its own local storage and cannot grant campaign items or bonuses.
 
 ## Chapter Three loot

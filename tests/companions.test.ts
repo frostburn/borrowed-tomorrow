@@ -39,6 +39,14 @@ it('round-trips current character settings and rejects old or incomplete records
 
 
 
+it('rejects extra or replaced character builds instead of silently discarding edits',()=>{
+  const settings=newCharacterSettings();settings.characters.kit.attack=29;
+  const {kit,...others}=settings.characters;
+  for(const characters of [{...settings.characters,esme:kit},{...others,esme:kit},[]]){
+    expect(()=>decodeCharacterSettings(JSON.stringify({...settings,characters}))).toThrow();
+  }
+  expect(decodeCharacterSettings(JSON.stringify(settings))).toEqual(settings);
+});
 it('fits new tools to their owner and shares three coats without sharing their bonuses',()=>{
   const i=newInventory();receiveItem(i,'courier-sight');receiveItem(i,'medic-clasp');receiveItem(i,'saber-hilt');receiveItem(i,'work-coat',3);
   for(const id of ['kit','celia','petra'] as const)expect(equipItem(i,id,'work-coat')).toBe(true);
