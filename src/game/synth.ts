@@ -7,22 +7,30 @@ export class Synth {
   private noiseBuffer:AudioBuffer;
   private random=0x6d2b79f5;
   private sources=new Set<AudioScheduledSourceNode>();
+  private envelopes=new Set<GainNode>();
   private track<T extends AudioScheduledSourceNode>(source:T):T{
     this.sources.add(source);source.addEventListener('ended',()=>this.sources.delete(source));return source;
   }
   stop(when:number){for(const source of this.sources)source.stop(when);}
+  /** Release the previous arrangement at its bar boundary, including held pedals. */
+  release(when:number){
+    for(const gain of this.envelopes){gain.gain.cancelAndHoldAtTime(when);gain.gain.exponentialRampToValueAtTime(.0001,when+.06);}
+    this.stop(when+.07);
+  }
   constructor(private context:BaseAudioContext,private output:AudioNode){
     this.noiseBuffer=context.createBuffer(1,context.sampleRate*2,context.sampleRate);
     const data=this.noiseBuffer.getChannelData(0);
     for(let i=0;i<data.length;i++){this.random^=this.random<<13;this.random^=this.random>>>17;this.random^=this.random<<5;data[i]=(this.random>>>0)/2147483648-1;}
   }
-  private route(when:number,duration:number,volume:number,pan:number,attack=.006,release=.15){
+  private route(when:number,duration:number,volume:number,pan:number,attack=.006,release=.15,plucked=false){
     const c=this.context,gain=c.createGain(),panner=c.createStereoPanner();
+    this.envelopes.add(gain);
     panner.pan.value=pan;gain.connect(panner);panner.connect(this.output);
     gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(Math.max(.0001,volume),when+attack);
-    gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*.6),when+Math.max(attack+.001,duration));
+    if(plucked)gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*.28),when+Math.min(.16,duration*.55));
+    gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*(plucked?.025:.6)),when+Math.max(attack+.001,duration));
     gain.gain.exponentialRampToValueAtTime(.0001,when+duration+release);
-    return {gain,end:when+duration+release+.01,cleanup:()=>{gain.disconnect();panner.disconnect();}};
+    return {gain,end:when+duration+release+.01,cleanup:()=>{this.envelopes.delete(gain);gain.disconnect();panner.disconnect();}};
   }
   tone(hz:number,when:number,duration:number,volume:number,type:OscillatorType='sine',pan=0,endHz=hz){
     const c=this.context,o=this.track(c.createOscillator()),r=this.route(when,duration,volume,pan,.003,.06);
@@ -41,10 +49,10 @@ export class Synth {
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
     const c=this.context,hz=frequency(midi),nodes:AudioNode[]=[];
     const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings';
-    const r=this.route(when,duration,volume,pan,strings?.12:bell?.003:plucked?.004:.025,bell?.65:strings?.35:.16);
+    const r=this.route(when,duration,volume,pan,strings?.12:bell?.003:plucked?.004:.025,bell?.65:strings?.35:.16,plucked);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
     filter.frequency.setValueAtTime(instrument==='bass'?650:bell?7000:plucked?2800:strings?1700:2400,when);
-    if(plucked)filter.frequency.exponentialRampToValueAtTime(500,when+duration);
+    if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
     filter.connect(r.gain);nodes.push(filter);
     const voices:OscillatorNode[]=[];
     const osc=(type:OscillatorType,detune=0,relative=1,mix=1)=>{
@@ -57,7 +65,7 @@ export class Synth {
       mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);nodes.push(mod,index);osc('sine',0,2,.1);
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
-    else if(plucked){osc('triangle',0,1,.8);osc('sine',0,2,.2);}
+    else if(plucked){osc('triangle',0,1,.76);osc('sine',0,2,.17);osc('sine',0,3.005,.055);}
     else {
       const reed=osc('triangle',0,1,.85);osc('sine',0,2,.15);
       const vibrato=this.track(c.createOscillator()),depth=c.createGain();vibrato.frequency.value=4.6;

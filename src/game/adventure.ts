@@ -427,7 +427,7 @@ export class Adventure extends Phaser.Scene {
   private enterBattle(id: string) {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(this.state.chapter==='chapter-four'?'four-battle':this.state.chapter==='chapter-three'?'switching':id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(this.state.chapter==='chapter-four'?(id==='sanctuary-warden'?'four-warden':'four-battle'):this.state.chapter==='chapter-three'?'switching':id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle() {
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();

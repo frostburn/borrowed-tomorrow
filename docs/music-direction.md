@@ -28,4 +28,14 @@ The capital and control gallery use the retained 32-bar Evangelion-inspired orig
 
 ## The Broken World
 
-`score-four.ts` carries one original sixteen-bar melody through the railway refuge (80 BPM reed), Breakwater (96 BPM keys), sanctuary (72 BPM lower bell) and battles (124 BPM reed). Open Cmaj9 / Dadd9 / Gmaj7 / Fmaj7 voicings avoid a forced dominant cadence. The second half lifts and answers the opening, with written rests and a quiet final bar. Chords use sustained support or two soft pulses instead of an upper arpeggio competing with the lead. The four arrangements share melodic rhythm and pitches; the sanctuary lowers its lead by an octave. Verify the complete new loops with Web Audio, as well as their bar and note bounds.
+`score-four.ts` now contains five distinct 32-bar compositions. They share small rising-third motifs, rather than replaying the same melody at different speeds.
+
+| Cue | Tempo | Form and arrangement |
+| --- | --- | --- |
+| Refuge — A Place to Return | 78 BPM | A reed call in A minor, a higher answer, an F-major middle coloured by F minor, and a quieter return into C. Piano replies fill phrase-ending rests; strings enter for the middle. |
+| Breakwater — Nineteen Out | 104 BPM | Syncopated piano in E Dorian, moving bass and light drums. The middle opens into longer notes and drops the percussion before the return. |
+| Sanctuary — Under the Hollow Sun | 66 BPM | Low bell calls over two-bar D-minor pedals, whole bars without a lead, and an F-minor/Db-major middle. Sparse piano replies; no drums. |
+| Ordinary battles — Hold the Line | 138 BPM | A separate A-minor theme, syncopated bass, short chord stabs, restrained fills, a broader middle and a pickup back into the loop. |
+| Sanctuary Warden — The Emperor's Order | 120 BPM | The sanctuary motif becomes a forceful D-minor lead with a lifted answer. The F-minor middle uses half-time drums, then returns to the opening. Only the warden encounter uses this cue. |
+
+The shared keys instrument has a struck attack and a two-stage decay, with quieter upper partials; sustained notes should no longer resemble an organ. Accompaniment and percussion change with musical sections and phrase endings. Verify all five full loops through the actual Web Audio rack, including transitions and live Sound controls. Keep these compositions procedural; rendered QA recordings are not runtime assets.
