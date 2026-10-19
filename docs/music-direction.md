@@ -24,3 +24,8 @@ The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recu
 ## Beneath the Palace
 
 The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. No competing arpeggio or percussion obscures the line. This applies the remembered suspended-harmony reference without copying a melody.
+
+
+## The Broken World
+
+`score-four.ts` carries one original sixteen-bar melody through the railway refuge (80 BPM reed), Breakwater (96 BPM keys), sanctuary (72 BPM lower bell) and battles (124 BPM reed). Open Cmaj9 / Dadd9 / Gmaj7 / Fmaj7 voicings avoid a forced dominant cadence. The second half lifts and answers the opening, with written rests and a quiet final bar. Chords use sustained support or two soft pulses instead of an upper arpeggio competing with the lead. The four arrangements share melodic rhythm and pitches; the sanctuary lowers its lead by an octave. Verify the complete new loops with Web Audio, as well as their bar and note bounds.

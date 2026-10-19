@@ -1,6 +1,6 @@
-# Next: Chapter Four — The Broken World
+# Entry to Chapter Four — The Broken World
 
-Chapters One–Three are playable canon. The brother’s rescue succeeded. Begin the next chapter from that accomplishment, not another disappearance.
+Chapters One–Four are playable canon. This document records the entry checkpoint; the implemented chapter ends at [chapter-five-handoff.md](chapter-five-handoff.md). The brother’s rescue succeeded. Begin the next chapter from that accomplishment, not another disappearance.
 
 ## Exact save
 
@@ -8,7 +8,7 @@ Version **9**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `ch
 
 Required new flags: `capitalSeen`, `capitalConfronted`, `capitalGateWon`, `petraJoined`, `worksSeen`, `worksWardenWon`, `tomasRescued`, `intakePlanned`, `conduitSeen`, `conduitGuardWon`, `extractionStopped`, `emperorMerged`, `chapterThreeComplete`. Preserve boolean `pressureRoute`, optional `capitalCache` and `palaceStoresWon`, every earlier flag, all resources, XP, HP/focus, inventory copies, loadouts, active formation, journal and play time.
 
-`party` contains Nell, Orrin, Kit and Petra; `activeParty` contains Nell and at most two of the others. Reserves keep equipment and share growth/recovery. Tomas is an alive supporting character, not a combatant. Celia has not appeared or joined. Her later introduction remains to be designed with the user. The three-fighter cap’s story explanation remains unset.
+`party` contains Nell, Orrin, Kit and Petra; `activeParty` contains Nell and at most two of the others. Reserves keep equipment and share growth/recovery. Tomas is an alive supporting character, not a combatant. Celia has not appeared or joined. Her first introduction and recruitment now take place on the Chapter Four sanctuary road. The three-fighter cap’s story explanation remains unset.
 
 ## What happened
 

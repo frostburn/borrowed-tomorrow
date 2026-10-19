@@ -18,7 +18,7 @@ export function resumeChapterFour(h:StoryHost){
  }});
  if(f.roadGuardWon&&!f.sealLead){f.sealLead=true;s.activeParty=['celia','petra'];h.refresh();h.save();}
  if(f.sealSeen&&!f.partyReunited)return h.talk({...scenes.reunion(),done:()=>{
-  const formation=[...s.reunionParty!];s.reunionParty=null;s.activeParty=formation;h.commit('partyReunited','partyReunited');
+  const formation=[...s.reunionParty!];s.reunionParty=null;s.activeParty=formation;s.location={map:'refuge',x:30,y:24};h.commit('partyReunited','partyReunited');
  }});
  if(s.location.map==='sanctuary'&&f.partyReunited&&!f.sanctuaryEntered)return h.talk({...scenes.threshold(),done:()=>h.commit('sanctuaryEntered','sanctuaryEntered')});
 }
@@ -69,7 +69,7 @@ export function interactChapterFour(h:StoryHost,id:string){
   case 'sanctuary-patrol':if(!f.roadGuardWon)h.battle('sanctuary-road');return;
   case 'sanctuary-seal':
    if(!f.sealLead||f.partyReunited)return;
-   h.talk({...scenes.seal(),done:()=>{f.sealSeen=true;remember(s,'sealSeen');groupAt(h,['celia','petra'],'refuge',39,25);}});return;
+   h.talk({...scenes.seal(),done:()=>{f.sealSeen=true;remember(s,'sealSeen');groupAt(h,['celia','petra'],'refuge',34,26);}});return;
   case 'sanctuary-warden':if(f.partyReunited&&!f.sanctuaryWardenWon)h.battle('sanctuary-warden');return;
   case 'sanctuary-record':
    if(!f.sanctuaryWardenWon)return;
@@ -78,6 +78,6 @@ export function interactChapterFour(h:StoryHost,id:string){
   case 'sanctuary-chest':
    if(f.sanctuaryCache)return say('Celia','The silver clasp is in the equipment bag. The chest is empty.');
    h.talk({lines:[SAY('Celia','A silver field clasp. They used these to steady the light when treating people. This one still fits.')],done:()=>{receiveItem(s.inventory,'field-clasp');h.commit('sanctuaryCache');h.toast('Silver field clasp added to the bag · fits Celia.');}});return;
-  case 'sanctuary-refuge':h.travel('refuge',43,25);return;
+  case 'sanctuary-refuge':h.travel('refuge',35,25);return;
  }
 }

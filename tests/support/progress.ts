@@ -56,7 +56,7 @@ export function brokenCheckpoint(last:typeof brokenOrder[number]):GameState{
  if(s.flags.sanctuaryWardenWon){s.xp+=210;s.coins+=108;receiveItem(s.inventory,'sun-prism');}
  if(s.flags.partyReunited){s.activeParty=[...s.reunionParty!];s.reunionParty=null;}
  else s.activeParty=separatedGroup(s.flags);
- s.location=s.flags.partyReunited?{map:'refuge',x:31,y:24}:s.flags.sealSeen?{map:'refuge',x:39,y:25}:s.flags.worksEvacuated?{map:'sanctuary',x:27,y:30}:s.flags.worksStarted?{map:'breakwater',x:31,y:27}:{map:'refuge',x:31,y:22};
+ s.location=s.flags.partyReunited?{map:'refuge',x:31,y:24}:s.flags.sealSeen?{map:'refuge',x:34,y:26}:s.flags.worksEvacuated?{map:'sanctuary',x:27,y:30}:s.flags.worksStarted?{map:'breakwater',x:31,y:27}:{map:'refuge',x:31,y:22};
  if(s.flags.sanctuaryEntered&&!s.flags.anchorsKnown)s.location={map:'sanctuary',x:32,y:30};
  if(s.flags.chapterFourComplete)s.boundary='chapter-five:anchors';
  return s;

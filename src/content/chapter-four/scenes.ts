@@ -16,7 +16,7 @@ export const morning=()=>scene('four-morning','CHAPTER FOUR · THE BROKEN WORLD'
  line('Tomas','Have some water first. I’ve got Orrin’s signal here.'),
 ]);
 export const works=()=>scene('four-works','ORRIN · THE RETURN GATE',[
- {id:'orrin',at:{x:31,y:27}},{id:'kit',at:{x:34,y:27}},{id:'bram',at:{x:29,y:19}},
+ {id:'orrin',at:{x:31,y:27}},{id:'kit',at:{x:34,y:26}},{id:'bram',at:{x:29,y:19}},
 ],[
  line('The works','Water hangs between the flood wheel’s paddles. Below it, workers pound on the return gate.',{focus:{x:32,y:12},cut:true,silence:true}),
  line('Bram','Nineteen in the pump house. The guardian won’t let us through.',{focus:{x:30,y:20},cut:true}),
@@ -63,7 +63,7 @@ export const seal=()=>scene('four-seal','CELIA · THE LOWER INSCRIPTION',[
 ]);
 export const reunion=()=>scene('four-reunion','THE SAME WARD',[
  {id:'nell',at:{x:30,y:24}},{id:'tomas',at:{x:33,y:22}},{id:'orrin',at:{x:25,y:24}},{id:'kit',at:{x:27,y:26}},
- {id:'petra',at:{x:37,y:25}},{id:'celia',at:{x:40,y:25}},{id:'dena',at:{x:36,y:22}},
+ {id:'petra',at:{x:37,y:25}},{id:'celia',at:{x:34,y:26}},{id:'dena',at:{x:36,y:22}},
 ],[
  line('Tomas','Bram’s nineteen are inside. Dena has places for the people from the road too.',{focus:{x:32,y:24},cut:true}),
  line('Nell','Orrin. I thought I’d have to chase your engine this time.'),
@@ -108,7 +108,7 @@ export const record=()=>scene('four-record','BEYOND THE HOLLOW SUN',[
 ]);
 export const decision=()=>scene('four-decision','WHAT WE DO NEXT',[
  {id:'nell',at:{x:30,y:24}},{id:'tomas',at:{x:33,y:22}},{id:'orrin',at:{x:25,y:24}},{id:'kit',at:{x:27,y:26}},
- {id:'petra',at:{x:37,y:25}},{id:'celia',at:{x:40,y:25}},{id:'bram',at:{x:24,y:21}},
+ {id:'petra',at:{x:37,y:25}},{id:'celia',at:{x:34,y:26}},{id:'bram',at:{x:24,y:21}},
 ],[
  line('Tomas','The ward clock’s moving. Bram brought word from the mill. Whatever you stopped up there, it helped.',{focus:{x:32,y:24},cut:true}),
  line('Nell','We found three anchors holding the palace steady. And a route beyond it.'),

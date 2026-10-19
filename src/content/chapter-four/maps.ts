@@ -1,12 +1,12 @@
 import type { MapData } from '../maps';
 export const CHAPTER_FOUR_MAPS={
  refuge:{id:'refuge',art:'infirmary',name:'Iron Coast · the railway refuge',subtitle:'The medical passengers are safe. Messages are arriving from the valley.',width:1536,height:1024,
-  solid:[[0,0,64,17],[0,17,9,25],[56,17,8,25],[9,28,8,14],[17,34,39,8],[43,18,13,3],[47,21,9,3],[40,30,16,4],[9,17,13,2]],objects:[
+  solid:[[0,0,64,17],[0,17,9,25],[56,17,8,25],[9,28,8,14],[17,34,39,8],[43,18,13,3],[47,21,9,3],[40,24,16,10],[9,17,13,2]],objects:[
    {id:'refuge-tomas',x:33,y:22,label:'Tomas · news from the valley',sprite:'tomas'},
    {id:'refuge-rest',x:30,y:19,label:'Dena · ward supplies and rest',sprite:'dena'},
    {id:'refuge-bram',x:24,y:24,label:'Bram · the workers are safe',sprite:'bram',requiredFlag:'worksEvacuated'},
    {id:'refuge-works',x:18,y:24,label:'Breakwater works · the evacuated yard',sign:true,requiredFlag:'partyReunited'},
-   {id:'refuge-sanctuary',x:44,y:25,label:'Mountain sanctuary',sign:true,requiredFlag:'partyReunited'},
+   {id:'refuge-sanctuary',x:37,y:22,label:'Mountain sanctuary',sign:true,requiredFlag:'partyReunited'},
   ]},
  breakwater:{id:'breakwater',art:'sluice',name:'Breakwater works · the evacuation gate',subtitle:'The flood wheels have stopped. Workers are trapped behind the return gate.',width:1591,height:988,
   solid:[[0,0,66,13],[0,13,7,28],[60,13,6,28],[7,33,16,8],[43,33,17,8],[23,39,20,2]],objects:[
