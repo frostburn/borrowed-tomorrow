@@ -1,7 +1,7 @@
 // Authoring only: separate a generated portrait + four-view atlas into native assets.
 // Requires ImageMagick. Gameplay uses the exported PNGs without resampling.
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -13,6 +13,24 @@ if (!['atlas','sides'].includes(layout)) throw new Error('Choose atlas or sides 
 const run = (...args) => execFileSync('convert', args, { encoding: 'utf8' }).trim();
 const [width, height] = run(resolve(source), '-format', '%w %h', 'info:').split(' ').map(Number);
 const split = Math.round(height * .58), temporary = mkdtempSync(join(tmpdir(), 'bt-atlas-'));
+// Authoring-only sampling phases, measured in fractions of one output pixel.
+const offsets = JSON.parse(readFileSync(new URL('../assets/characters/sampling-offsets.json', import.meta.url), 'utf8'));
+const sample = (path, size, w, h, offset, destination) => {
+  if (!Array.isArray(offset) || offset.length !== 2 || offset.some(v => !Number.isFinite(v) || Math.abs(v) > .5)) {
+    throw new Error('Sampling offsets must be two numbers between -0.5 and 0.5.');
+  }
+  const [sw, sh] = size, [ox, oy] = offset;
+  const source = execFileSync('convert', [path, '-depth', '8', 'rgba:-'], { maxBuffer: 16 * 1024 * 1024 });
+  const pixels = Buffer.alloc(80 * 80 * 4), left = Math.floor((80 - w) / 2), top = 68 - h;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const sx = Math.max(0, Math.min(sw - 1, Math.floor((x + .5 + ox) * sw / w)));
+    const sy = Math.max(0, Math.min(sh - 1, Math.floor((y + .5 + oy) * sh / h)));
+    const at = (sy * sw + sx) * 4;
+    source.copy(pixels, ((top + y) * 80 + left + x) * 4, at, at + 4);
+  }
+  // Copy complete source RGBA pixels: no interpolation, repainting or palette changes.
+  execFileSync('convert', ['-size', '80x80', '-depth', '8', 'rgba:-', destination], { input: pixels });
+};
 const isolate = path => {
   const [w,h] = run(path, '-format', '%w %h', 'info:').split(' ').map(Number);
   const pixels = execFileSync('convert', [path, '-depth', '8', 'rgba:-'], {maxBuffer:16*1024*1024});
@@ -61,7 +79,9 @@ try {
   const scale = Math.min(64 / Math.max(...views.map(v => v.size[1])), 72 / Math.max(...views.map(v => v.size[0])));
   for (const { suffix, path, size } of views) {
     const w = Math.round(size[0] * scale), h = Math.round(size[1] * scale);
-    run('-size', '80x80', 'xc:none', '(', path, '-filter', 'point', '-resize', `${w}x${h}!`, ')', '-geometry', `+${Math.floor((80-w)/2)}+${68-h}`, '-composite', resolve(destination, `${hero}${suffix}.png`));
+    const output = resolve(destination, `${hero}${suffix}.png`), offset = offsets[`${hero}${suffix}`];
+    if (offset) sample(path, size, w, h, offset, output);
+    else run('-size', '80x80', 'xc:none', '(', path, '-filter', 'point', '-resize', `${w}x${h}!`, ')', '-geometry', `+${Math.floor((80-w)/2)}+${68-h}`, '-composite', output);
     // Point sampling can sever a one-pixel source bridge; remove any resulting
     // detached flecks from the final native export as well.
     isolate(resolve(destination, `${hero}${suffix}.png`));

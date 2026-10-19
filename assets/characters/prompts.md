@@ -33,8 +33,8 @@ Built-in Image Gen redrew the left/right pair of each hero using the original at
 
 Keep the original faces, costumes, lighting, pixel treatment, compact proportions and native foot anchor. No detached fragments, shadows, captions, frames or extra poses. Existing portraits remain unchanged.
 
-## Native face touch-ups
+## Sampling offsets
 
-The front and profile exports for Kit, Celia and Petra received a manual native-pixel pass after sampling: 101 RGB pixels in total. Kit retains the source's open brown eyes and gentle smile instead of the fringe and cheek pixels swallowing his expression. Celia's eyes are separated from her round spectacle rims; Petra's eyes are separated from her angled brows. These corrections are authored directly in the committed 80 x 80 PNGs. Review those native faces before replacing them with a fresh atlas export.
+Kit, Celia and Petra's front and profile actors are resampled from their existing source cutouts, with no painted pixel corrections. `sampling-offsets.json` records the selected horizontal and vertical phase for each view. Values are fractions of one destination pixel; positive values sample farther right/down in the source. The exporter samples source coordinate `floor((destination + 0.5 + offset) * sourceSize / destinationSize)` and copies that source pixel's complete RGBA value. This changes which source details survive without blending colors.
 
-The pass preserves every alpha value and every pixel outside the faces. Nell, Orrin, all portraits, back views, equipment handedness and foot anchors are unchanged. No runtime processing is involved.
+Each selected phase was compared against a 5 x 5 grid of offsets from -0.4 to +0.4 in both axes. The choices preserve Kit's open eyes and small smile, Celia's spectacle outlines, and Petra's determined eyes. The existing scale, canvas and ground anchor are retained; detached alpha fragments are still removed after sampling. Nell, Orrin, portraits and back views are unchanged. These settings are authoring-only and are automatically applied by both atlas and side-pair exports.
