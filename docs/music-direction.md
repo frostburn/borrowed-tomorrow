@@ -2,6 +2,24 @@
 
 Compose original melodies with deliberate phrases and Japanese game/anime influence through harmony and pacing. These are compositional references, not requests for borrowed recordings or copied tunes.
 
+## Tuning and spelling
+
+All scores and pitched healing/victory cues use **31-EDO**, anchored to **A4 = 440 Hz**. Scores store explicit pitches such as `Bb4`, `F#4`, `D#5` and `Ab5`. `src/game/tuning.ts` calculates frequencies directly from spelling and constructs diatonic intervals. The semitone-coordinate helper exists only to verify the transcription; it never determines sound.
+
+| Pitch or interval | 31-EDO steps |
+| --- | --- |
+| C D E F G A B | 0 5 10 13 18 23 28 |
+| Sharp / flat | +2 / -2 |
+| Diatonic semitone | 3 |
+| Minor / major third | 8 / 10 |
+| Perfect fifth / octave | 18 / 31 |
+
+Keep the diatonic spelling through the fifth chain: `Bb -> F -> C -> G -> D -> A -> E -> B -> F# -> C#`. C# and Db differ by one 31-EDO step; so do A# and Bb. Do not merge them at a twelve-fifth boundary. The full pitch-class circle closes after 31 fifths. The Music tab displays all 31 classes with balanced sharp/flat spellings, including double accidentals.
+
+Raised leading tones use F# in D-major dominants, D# in B-major dominants, and G# in E-major dominants. Borrowed Gm7/C7 uses Bb; F-minor and Db-major sections use Ab and Db. The Iron Coast's descending F–Eb–D passing figure uses Eb, independently of D# in E-minor material. Chord-generated fifths and thirds retain their letter relationships under transposition.
+
+Non-musical steam, impacts, footsteps and the lantern's beating resonance retain their material sound design rather than being quantized. The spelling convention follows [31et.com's notation reference](https://31et.com/page/notation).
+
 ## Retained Evangelion reference
 
 The existing `score-d.ts` uses **F – Em – Am – Dm – G – Gm7 – C7 – F**, each chord one four-beat bar. The B-flat in Gm7 and C7 turns the G-major arrival toward F. Keep that audible in the bass and voicings.
@@ -19,7 +37,7 @@ Use a reference when a new location calls for it. Retain melodic identity, varia
 
 ## Iron Coast revision
 
-The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Low piano chords and root bass on half notes replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.
+The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Its round bass uses a sine fundamental and a quiet octave, without the standard bass’s sub-octave or triangle overtones, keeping the meantone harmony clearer. Bar 2 voices Bm7b5/D: D replaces the low B, with B retained in the piano, giving a C–D–E bass ascent while keeping the half-diminished harmony. Low piano chords and half-note bass replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.
 
 ## Beneath the Palace
 
