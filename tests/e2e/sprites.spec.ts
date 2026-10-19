@@ -14,7 +14,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     // Check every exported actor's real alpha bounds, including the new reserve directions.
     const feet=await page.evaluate(async()=>{
       const all=[];
-      for(const hero of ['nell','orrin','kit','celia','petra'])for(const suffix of ['','-left','-right','-back']){
+      const party=['nell','orrin','kit','celia','petra'];
+      const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian'];
+      for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
         const image=new Image();image.src=`/art/${hero}${suffix}.png`;await image.decode();
         const canvas=document.createElement('canvas');canvas.width=canvas.height=80;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
         const p=ctx.getImageData(0,0,80,80).data;let bottom=-1,top=80;
@@ -35,7 +37,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
     });
-    for(const actor of feet){expect(actor.width).toBe(80);expect(actor.height).toBe(80);expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);}
+    for(const actor of feet){
+      expect(actor.width).toBe(80);expect(actor.height).toBe(80);
+      // These enemies retain their original native silhouettes and placement.
+      if(['hound','crow','guardian'].includes(actor.hero))continue;
+      expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
+      expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
+      expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);
+    }
     await capture(page,`sprite-cast-${device}`);
     await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();
     await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Back',exact:true}).click();
@@ -81,6 +90,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     expect(await hound.evaluate(async element=>{const i=element as HTMLImageElement;await i.decode();const scale=window.borrowedTomorrowPixels.inspect().cssScale,r=i.getBoundingClientRect();return [i.naturalWidth,i.naturalHeight,Math.round(r.width/scale),Math.round(r.height/scale)];})).toEqual([80,80,80,80]);
     await expect(review.locator('.sprite-reference')).toContainText('Portrait: not available');
     expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
+    await capture(page,`sprite-enemies-${device}`);
     expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });
  });

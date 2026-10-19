@@ -1,0 +1,93 @@
+{
+  "master": {
+    "name": "Stationmaster Ansel",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-20d77611-83ac-4d50-8815-4eb3b54a9e70.png"
+  },
+  "clerk": {
+    "name": "Iona",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-dfeb61aa-f1ca-4c28-a278-879765900653.png"
+  },
+  "tilda": {
+    "name": "Tilda",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-170544dc-b8fd-4b2d-9b42-5430fbc0ea0a.png"
+  },
+  "elspeth": {
+    "name": "Elspeth",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-6f7be812-20b1-425a-8c6c-c8d4354bae9d.png"
+  },
+  "tomas": {
+    "name": "Tomas",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-f26c8c66-2764-45bf-b599-e94241a3dc46.png"
+  },
+  "alban": {
+    "name": "Captain Alban",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-05a0ca7a-694f-4559-88ae-84ad177be323.png"
+  },
+  "bram": {
+    "name": "Bram",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-f6372ded-ce17-4148-8404-ed94b40c78a9.png"
+  },
+  "dena": {
+    "name": "Dena",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-76529928-1bea-4557-a42f-4b6a85694d24.png"
+  },
+  "emperor": {
+    "name": "The Emperor",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-5f7aaf74-ff97-4174-8c59-c634a372c871.png"
+  },
+  "relay-keeper": {
+    "name": "The Engine Warden",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-d7bba64b-a28e-410a-975f-ba79643717cf.png"
+  },
+  "boiler-keeper": {
+    "name": "Heart regulator",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-d5ea0d95-4f5e-42ec-966d-99dcefb0786e.png"
+  },
+  "sluice-keeper": {
+    "name": "The Sanctuary Warden",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-74f2469b-04f8-4f99-a295-af4a96ab3412.png"
+  },
+  "inspector": {
+    "name": "Inspector",
+    "layout": "pair",
+    "height": 64,
+    "width": 72,
+    "source": "exec-293b11a5-91c4-4fec-aa66-a107f50801a9.png"
+  }
+}

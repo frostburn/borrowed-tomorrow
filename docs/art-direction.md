@@ -23,7 +23,7 @@ Restored scenery and character assets not assigned to the playable chapters rema
 
 ## Characters
 
-`src/content/characters.ts` registers each named character. Ansel and Iona exclusively own the original `master` and `clerk` sprite/portrait pairs. The five playable characters use one consistent pixel-art set with four directional actors each. Tilda retains her red hair, cream kerchief and green dress. Elspeth retains her wheelchair, plum shawl and blue register.
+`src/content/characters.ts` registers each named character. Ansel and Iona exclusively own the `master` and `clerk` sprite/portrait identities. The whole registered cast uses one consistent pixel-art style; the five playable characters have four directional actors each. Tilda retains her red hair, cream kerchief and green dress. Elspeth retains her wheelchair, plum shawl and blue register.
 
 **Tomas** and **Captain Alban** have new matching actor and portrait pairs, created with built-in Image Gen using Nell's actor and portrait as style and proportion references. The transparent source sheets were mechanically separated and exported into native 80 × 80 actor and 128 × 128 portrait canvases with point sampling. Only near-transparent background glow was discarded; runtime never rescales or recolors the exported assets. The character tests verify native dimensions and distinct image contents.
 
@@ -79,4 +79,14 @@ The refuge’s garden fence and stone pillars are blocked. Reunion stages Celia 
 
 Nell, Orrin, Kit, Celia and Petra now share one compact JRPG style: discrete pixel clusters, dark warm outlines, upper-left highlights and cool shadows. Portraits use the same simplified faces and costumes as their world actors. All five have front, left, right and back views. The 80 x 80 exports share a ground anchor at (40, 68); no world actor is stretched or recolored at runtime. Exploration leaders and followers use their actual direction of travel. Cutscenes and combat continue to use the same registered identities and native files.
 
-The Vite-only **Sprites** workshop compares the whole cast, native portraits, directional strips and deliberate integer zoom against light/dark backdrops with optional ground guides. The generated-atlas prompts and authoring export procedure are recorded in `assets/characters/prompts.md`. Existing NPC and scenery art stays outside this playable-character redraw.
+The Vite-only **Sprites** workshop compares the whole cast, native portraits, directional strips and deliberate integer zoom against light/dark backdrops with optional ground guides. The generated-atlas prompts and authoring export procedure are recorded in `assets/characters/prompts.md`.
+
+## Supporting cast and enemies
+
+All twelve registered NPCs and the Inspector use the party's compact proportions, simplified faces, warm outlines, upper-left highlights and blue-violet shadows. Each has a matching new portrait and front actor. Hound, Crow and Guardian retain their original native sprites: the attempted replacements lost too much detail during downsampling. Existing asset IDs preserve dialogue portraits, exploration encounters and named boss appearances across all four chapters.
+
+The old art supplied identity and costume references while Nell's approved atlas supplied rendering and proportions. Elspeth stays seated in her complete wheelchair; Tilda keeps her kerchief and apron; Ansel keeps his white moustache; Iona keeps her hat, spectacles and ledger. Alban remains visibly human, distinct from the Inspector's steel mask and orange lenses. The Engine Warden keeps its glass signal head and semaphore apparatus; the heart regulator keeps its pressure gauge and clamp hands; the Sanctuary Warden keeps its blue visor and large chest valve. The generic guardian has furnace armor and closed fists, without the regulator's pressure gauge.
+
+World actors use native 80 x 80 canvases. The replacement figures use the common ground anchor at (40, 68) and a 64-pixel height budget; the three original enemy sprites retain their original silhouettes and placement. Width limits preserve aspect ratios. Portraits remain native 128 x 128. The authoring exporter separates portrait/actor pairs at their transparent gap, removes detached fragments and applies recorded nearest-neighbor sampling phases without blending colors. Runtime rendering is unchanged.
+
+`assets/characters/supporting-prompts.md` records the built-in Image Gen prompts and export workflow. `supporting-cast.json` records source-sheet filenames and size budgets; `sampling-offsets.json` records selected actor phases. The workshop reviews every replacement against the same native ground guides as the party.
