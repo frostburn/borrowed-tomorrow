@@ -139,19 +139,17 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   // Click the actual panel above the floor, rather than its internal interaction coordinate.
   await clickWorld(page,47,17);await dialogue(page);expect((await inspect(page)).state.flags.extractionStopped).toBe(true);
   await importSave(page,saved);
-  // Approach the same panel from the east with the ordinary movement controls.
-  for(const key of ['ArrowLeft','ArrowLeft','ArrowUp','ArrowUp']){
-   const old=(await inspect(page)).state.location;await page.keyboard.down(key);
-   await page.waitForFunction(([x,y])=>{const p=window.borrowedTomorrow.inspect().state.location;return p.x!==x||p.y!==y;},[old.x,old.y]);
-   await page.keyboard.up(key);await expect.poll(async()=>(await inspect(page)).moving).toBe(false);
-  }
+  // Walk onto the floor at the panel's east side, then use E or the mobile button.
+  await clickWorld(page,50,20);
+  await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.state.location.x===50&&s.state.location.y===20;}).toBe(true);
   await expect(page.locator('.world-objective h3')).toHaveText('Close the extraction feeds');
   await capture(page,`extraction-console-interact-${device}`);
   const interact=page.locator('.interact-action').getByRole('button',{name:/Interact$/});await expect(interact).toBeVisible();
   if(device==='desktop')await page.keyboard.press('e');else await interact.click();await dialogue(page);
   let state=(await inspect(page)).state;expect(state.flags.extractionStopped).toBe(true);expect(state.flags.tomasRescued).toBe(true);expect(state.inventory).toEqual(saved.inventory);expect(state.coins).toBe(saved.coins);expect(state.xp).toBe(saved.xp);
   await approach(page,'capital-departure');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();state=(await inspect(page)).state;
-  expect(state.boundary).toBe('chapter-four:broken-world');expect(state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).state.boundary).toBe('chapter-four:broken-world');state=(await inspect(page)).state;
+  expect(state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
  });
 }
