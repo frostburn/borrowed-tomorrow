@@ -1,4 +1,5 @@
 import { MusicWorkshop } from './music-workshop';
+import { SpriteWorkshop } from './sprite-workshop';
 import { Adventure } from '../game/adventure';
 import { mountGame } from '../game/mount';
 import { art, type UI } from '../game/ui';
@@ -25,7 +26,8 @@ class Workshop {
   private inventory = stock();
   private settings = newCharacterSettings();
   private music: MusicWorkshop;
-  private tab: 'character' | 'equipment' | 'music' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : 'character';
+  private sprites = new SpriteWorkshop();
+  private tab: 'character' | 'equipment' | 'music' | 'sprites' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : 'character';
   private hero: CompanionId = 'nell';
   private selected: ItemId = 'brass-reflector';
   private message = 'Choose a character to adjust their build.';
@@ -91,6 +93,8 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
+    this.sprites.hide();
+    if(this.tab==='sprites'){this.showSprites();return;}
     if(this.tab==='music'){this.showMusic();return;}
     this.music.hide();
     const scroll = this.ui.sceneLayer.querySelector('.inventory-panel')?.scrollTop ?? 0;
@@ -141,7 +145,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
   private showMusic(){
@@ -152,8 +156,17 @@ class Workshop {
     this.bindTabs();this.music.show(this.ui.sceneLayer.querySelector('#music-workshop')!);
     this.ui.status.textContent='Vite development / Music review does not change campaign saves';
   }
+  private showSprites(){
+    this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
+    this.ui.initiative.textContent='Sprite review / Native artwork and ground anchors';
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<div id="sprite-workshop"></div></section>`;
+    this.bindTabs();this.sprites.show(this.ui.sceneLayer.querySelector('#sprite-workshop')!);
+    this.ui.status.textContent='Vite development / Sprite review does not change saves or builds';
+  }
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
+    this.sprites.hide();
     this.music.hide();
     document.querySelector('.game-shell')!.classList.remove('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled = true;
@@ -163,7 +176,7 @@ class Workshop {
     this.ui.status.textContent = 'Workshop / Esc returns to character settings · Practice earns no campaign progress';
   }
   help() {
-    this.ui.showModal('Character workshop', '<p>Choose any companion. Add or remove the selected companion from the practice party; one to three may fight. Reserves keep their equipment and builds. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses the selected party’s builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next three attacks, including retaliations. Celia’s weak Celestial bolt can target any enemy, ignoring distance and cover. Petra can use Shield bash once as an extra action before her main action; it pushes without damage, keeps movement available and prevents waiting afterward. Taunt draws every enemy toward her until her next turn. Selecting Pressure wave immediately previews its area; confirm to use it. It can hit allies and pushes only into clear hexes.</p><p>Music reviews every cue in 31-EDO. Play or stop, seek to a bar, and isolate instruments. Click a spelled pitch or a circle-of-fifths button to audition it. C# and Db remain distinct. Music stops when you leave the tab.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
+    this.ui.showModal('Character workshop', '<p>Choose any companion. Add or remove the selected companion from the practice party; one to three may fight. Reserves keep their equipment and builds. Character adjusts level and base stats and shows learned abilities. Changing level restores base stats; Apply base stats commits manual edits.</p><p>Equipment opens the shared bag and stat comparisons. Test battle uses the selected party’s builds and equipped items. Workshop or Escape returns here.</p><p>Guard absorbs damage until used up. Dazzle weakens the next three attacks, including retaliations. Celia’s weak Celestial bolt can target any enemy, ignoring distance and cover. Petra can use Shield bash once as an extra action before her main action; it pushes without damage, keeps movement available and prevents waiting afterward. Taunt draws every enemy toward her until her next turn. Selecting Pressure wave immediately previews its area; confirm to use it. It can hit allies and pushes only into clear hexes.</p><p>Music reviews every cue in 31-EDO. Play or stop, seek to a bar, and isolate instruments. Click a spelled pitch or a circle-of-fifths button to audition it. C# and Db remain distinct. Music stops when you leave the tab.</p><p>Sprites compares the five playable characters, all four directions and their native portraits. Choose a backdrop, toggle ground guides, and enlarge an actor by an integer factor for inspection. The lineup stays at native size.</p><p>The workshop saves separately from the campaign. Reset restores level 1 and the starting equipment stock.</p>');
   }
 }
 export function startWorkshop(root: HTMLElement) {

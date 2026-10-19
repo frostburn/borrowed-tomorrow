@@ -12,12 +12,12 @@
 | Elspeth | Retired teacher using a wheelchair; precise, independent, still counting people. | Recognizes her new weakness, helps organize the freed village and tells Nell to go. |
 | The Benefactor | Worshipped as the empire's patron; its actual nature belongs to the later author plan. | Makes no direct appearance and never speaks in Chapter One. The crystal's powers and origin remain uncertain. |
 
-Tomas and Alban have new matching portraits and actors. Ansel and Iona retain the original `master` and `clerk` art; these identities are not reused. Nell and Orrin retain their existing directional movement frames. Tilda and Elspeth retain their own matching art. Unseen speakers and narration have no portrait.
+Tomas and Alban have new matching portraits and actors. Ansel and Iona retain the original `master` and `clerk` art; these identities are not reused. Nell, Orrin, Kit, Celia and Petra share the new matching portrait and four-direction actor set. Tilda and Elspeth retain their own matching art. Unseen speakers and narration have no portrait.
 
 
 ## Companions and recruitment
 
-These three companions are available in the Vite workshop so their combat roles can be tested. Only Kit joins in Chapter Two; Celia is introduced and recruited in Chapter Four. Petra appears in that chapter and joins permanently in Chapter Three. None belongs to the Chapter One party. Kit has new matching art; Celia and Petra use previously unused asset pairs assigned to their reboot identities. Chapter Two travels with Nell, Orrin and Kit. The active combat party remains capped at three; leave its story explanation for later. Existing formation and equipment rules remain available for future recruits.
+These three companions are available in the Vite workshop so their combat roles can be tested. Only Kit joins in Chapter Two; Celia is introduced and recruited in Chapter Four. Petra appears in that chapter and joins permanently in Chapter Three. None belongs to the Chapter One party. All five playable characters use matching new artwork while retaining their established costumes and identities. Chapter Two travels with Nell, Orrin and Kit. The active combat party remains capped at three; leave its story explanation for later. Existing formation and equipment rules remain available for future recruits.
 
 | Companion | Introduction and recruitment plan | Personality and relationships | Combat role |
 | --- | --- | --- | --- |

@@ -23,7 +23,7 @@ Restored scenery and character assets not assigned to the playable chapters rema
 
 ## Characters
 
-`src/content/characters.ts` registers each named character. Ansel and Iona exclusively own the original `master` and `clerk` sprite/portrait pairs. Nell and Orrin retain their existing directional actors. Tilda retains her red hair, cream kerchief and green dress. Elspeth retains her wheelchair, plum shawl and blue register.
+`src/content/characters.ts` registers each named character. Ansel and Iona exclusively own the original `master` and `clerk` sprite/portrait pairs. The five playable characters use one consistent pixel-art set with four directional actors each. Tilda retains her red hair, cream kerchief and green dress. Elspeth retains her wheelchair, plum shawl and blue register.
 
 **Tomas** and **Captain Alban** have new matching actor and portrait pairs, created with built-in Image Gen using Nell's actor and portrait as style and proportion references. The transparent source sheets were mechanically separated and exported into native 80 × 80 actor and 128 × 128 portrait canvases with point sampling. Only near-transparent background glow was discarded; runtime never rescales or recolors the exported assets. The character tests verify native dimensions and distinct image contents.
 
@@ -34,7 +34,7 @@ Production prompt briefs:
 
 **Kit:** a seventeen-year-old boy courier; short tousled chestnut hair, clean-shaven boyish face, bashful smile, dusty blue jacket, cream shirt, ochre scarf, brown satchel and boots, compact repeating crossbow. His new transparent portrait/actor sheet was generated with Nell’s art as the style and proportion references, then mechanically separated and point-sampled into native 128 × 128 and 80 × 80 canvases. No runtime rescaling or recoloring.
 
-Celia and Petra own matching unused sprite/portrait pairs for the future companion roster. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. Petra appears in Chapter Two as a staged rival and ally. Celia’s introduction is deferred; keep her matching art available for the workshop and a later chapter.
+Celia and Petra retain their established identities in the new matching playable-character set. Celia has gray hair, a green coat and a medical book; Petra has short dark hair and an imperial uniform. Their old story roles remain discarded. Petra appears in Chapter Two as a staged rival and ally. Celia is introduced and recruited on the sanctuary road in Chapter Four; the workshop also makes her artwork available for review.
 
 Keep these identities consistent in dialogue, exploration, staging and battle. The captain's combat archetype remains the engine's officer rules, but his appearance is `alban`, never the retired inspector character.
 
@@ -73,3 +73,10 @@ The new `sanctuary.webp` is native 1536 × 1024, generated with built-in Image G
 Bram, Dena and the Sanctuary Warden use previously unused matching native actor/portrait pairs. The warden owns `sluice-keeper`; neither its identity nor its art is shared with the two defeated palace machines. Temporary viewpoints use the actual Orrin, Petra and Celia world sprites. Native gold world markers retain the contrasting outline added after Chapter Three.
 
 The refuge’s garden fence and stone pillars are blocked. Reunion stages Celia on the central plaza and commits Nell to her own plaza position afterward; returning from the sanctuary also lands on the open paving.
+
+
+## Playable-character redraw
+
+Nell, Orrin, Kit, Celia and Petra now share one compact JRPG style: discrete pixel clusters, dark warm outlines, upper-left highlights and cool shadows. Portraits use the same simplified faces and costumes as their world actors. All five have front, left, right and back views. The 80 x 80 exports share a ground anchor at (40, 68); no world actor is stretched or recolored at runtime. Exploration leaders and followers use their actual direction of travel. Cutscenes and combat continue to use the same registered identities and native files.
+
+The Vite-only **Sprites** workshop compares the whole cast, native portraits, directional strips and deliberate integer zoom against light/dark backdrops with optional ground guides. The generated-atlas prompts and authoring export procedure are recorded in `assets/characters/prompts.md`. Existing NPC and scenery art stays outside this playable-character redraw.
