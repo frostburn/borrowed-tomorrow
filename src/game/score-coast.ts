@@ -32,9 +32,10 @@ export function coastBar(bar: number): Note[] {
   const i=((bar%16)+16)%16, [root,...voicing]=chords[i], notes:Note[]=[];
   const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,pitch,beat,duration,velocity,pan});
   for(const [beat,pitch,duration] of melody[i])add('reed',pitch,beat,duration,i>=8&&i<12?.22:.2,-.15);
-  // Stable half-note support gives the melody room; no second moving treble line.
-  add('bass',root,0,i%4===3?3.4:1.8,.14);
-  if(i%4!==3)add('bass',root,2,1.7,.1);
+  // Round fundamental/octave support avoids a sub-octave and strong odd partials
+  // rubbing against the meantone chords. Preserve the written roots and rhythm.
+  add('round-bass',root,0,i%4===3?3.4:1.8,.14);
+  if(i%4!==3)add('round-bass',root,2,1.7,.1);
   for(const pitch of voicing){
     add('keys',octave(pitch,-1),0,1.7,.038,.25);
     if(i%4!==3)add('keys',octave(pitch,-1),2,1.5,.028,.25);

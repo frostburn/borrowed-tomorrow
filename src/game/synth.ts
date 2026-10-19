@@ -1,6 +1,6 @@
 import type { Instrument } from './score';
 export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
-import { pitchFrequency, type Pitch } from './tuning';
+import { isBass, pitchFrequency, type Pitch } from './tuning';
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
 export class Synth {
@@ -51,7 +51,7 @@ export class Synth {
     const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings';
     const r=this.route(when,duration,volume,pan,strings?.12:bell?.003:plucked?.004:.025,bell?.65:strings?.35:.16,plucked);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
-    filter.frequency.setValueAtTime(instrument==='bass'?650:bell?7000:plucked?2800:strings?1700:2400,when);
+    filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:2400,when);
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
     filter.connect(r.gain);nodes.push(filter);
     const voices:OscillatorNode[]=[];
@@ -64,6 +64,7 @@ export class Synth {
       mod.frequency.value=hz*2.76;index.gain.setValueAtTime(hz*.65,when);index.gain.exponentialRampToValueAtTime(.1,when+duration+.4);
       mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);nodes.push(mod,index);osc('sine',0,2,.1);
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
+    else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
     else if(plucked){osc('triangle',0,1,.76);osc('sine',0,2,.17);osc('sine',0,3.005,.055);}
     else {

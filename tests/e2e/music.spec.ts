@@ -64,3 +64,23 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     expect(errors).toEqual([]);
   });
 }
+
+test('Iron Coast round bass keeps the tuned fundamental without a sub-octave or biting third partial',async({page})=>{
+ await page.goto('/');
+ const spectra=await page.evaluate(async()=>{
+  // @ts-expect-error Vite serves the shared live instrument rack.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const out=[];
+  for(const instrument of ['bass','round-bass'] as const){
+   const c=new OfflineAudioContext(1,2*22050,22050),synth=new Synth(c,c.destination);synth.note(instrument,'A2',.03,1.5,.2);
+   const data=(await c.startRendering()).getChannelData(0),from=Math.round(.2*22050),length=22050;
+   const amplitude=(hz:number)=>{let re=0,im=0;for(let n=0;n<length;n++){const w=.5-.5*Math.cos(2*Math.PI*n/(length-1)),a=2*Math.PI*hz*n/22050;re+=data[from+n]*w*Math.cos(a);im+=data[from+n]*w*Math.sin(a);}return Math.hypot(re,im)/length;};
+   out.push({instrument,fundamental:amplitude(110),sub:amplitude(55),third:amplitude(330)});
+  }
+  return out;
+ });
+ const [ordinary,round]=spectra;
+ expect(round.fundamental).toBeGreaterThan(.01);
+ expect(round.sub/round.fundamental).toBeLessThan(.01);expect(round.third/round.fundamental).toBeLessThan(.01);
+ expect(ordinary.sub/ordinary.fundamental).toBeGreaterThan(.15);expect(ordinary.third/ordinary.fundamental).toBeGreaterThan(.04);
+});

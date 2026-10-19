@@ -1,4 +1,4 @@
-import { semitones } from '../src/game/tuning';
+import { isBass, semitones } from '../src/game/tuning';
 import { expect, it } from 'vitest';
 import { scoreBar,type Note } from '../src/game/score';
 import { SIDING_HARMONY, WARD_HARMONY } from '../src/game/score-c';
@@ -90,12 +90,12 @@ it('Cinderbank and Bellwether have independent melodies with chord-supported dow
 });
 
 it('the Iron Coast theme loops with rests, independent phrases and supported harmony',()=>{
-  expect(new Set(scoreBar('coast',1).filter(n=>n.instrument==='bass'||n.instrument==='keys').map(n=>semitones(n.pitch)%12))).toEqual(new Set([11,2,5,9]));
+  expect(new Set(scoreBar('coast',1).filter(n=>isBass(n.instrument)||n.instrument==='keys').map(n=>semitones(n.pitch)%12))).toEqual(new Set([11,2,5,9]));
   const melody=[];
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast',bar),lead=notes.filter(n=>n.instrument==='reed');
     expect(lead.length).toBeGreaterThan(0);
-    const support=notes.filter(n=>n.instrument==='keys'||n.instrument==='bass').map(n=>semitones(n.pitch)%12);
+    const support=notes.filter(n=>n.instrument==='keys'||isBass(n.instrument)).map(n=>semitones(n.pitch)%12);
     expect(support).toContain(semitones(lead[0].pitch)%12);
     for(const n of notes){expect(n.velocity).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
     melody.push(...lead.map(n=>({...n,beat:n.beat+bar*4})));

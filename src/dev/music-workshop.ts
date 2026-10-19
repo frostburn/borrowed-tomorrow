@@ -12,7 +12,7 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
   {mode:'northglass',title:'Capital medical siding',group:'3'}, {mode:'relayhall',title:'Control gallery',group:'3'}, {mode:'conduit',title:'Vessel chamber',group:'3'}, {mode:'switching',title:'Beneath the Palace battle',group:'3'},
   {mode:'sluice',title:'Retained sluice',group:'Library'}, {mode:'flood',title:'Retained flood battle',group:'Library'}, {mode:'shunting',title:'Retained shunting battle',group:'Library'},
 ];
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Bass:['bass'],Drums:['kick','snare','hat']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Bass:['bass','round-bass'],Drums:['kick','snare','hat']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 
 /** Development-only controls; playback uses the campaign's actual mixer and rack. */

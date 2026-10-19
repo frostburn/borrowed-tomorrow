@@ -27,6 +27,7 @@ export function transpose(pitch:Pitch,interval:Interval):Pitch{
   if(!Number.isInteger(alter)||Math.abs(alter)>4)throw new Error(`Unsupported spelling: ${pitch} ${interval}`);
   return `${letters[index]}${alter<0?'b'.repeat(-alter):'#'.repeat(alter)}${oct}` as Pitch;
 }
+export const isBass=(instrument:string)=>instrument==='bass'||instrument==='round-bass';
 export const isPercussion=(instrument:string)=>instrument==='kick'||instrument==='snare'||instrument==='hat';
 
 /** A balanced spelling of all 31 fifth-related classes; never merge # with b. */

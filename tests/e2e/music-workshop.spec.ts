@@ -23,7 +23,25 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 4',exact:true}).click();
    const bar=page.getByRole('spinbutton',{name:'Bar',exact:true});await bar.fill('21');await bar.press('Tab');
    await expect(page.locator('#music-notes')).toContainText('Ab5');await capture(page,`31edo-workshop-${device}`);
-   await page.getByRole('button',{name:'Compare C#4 / Db4',exact:true}).click();
+   const comparisonButton=page.getByRole('button',{name:'Compare C#4 / Db4',exact:true});
+   await comparisonButton.scrollIntoViewIfNeeded();
+   // Check the visible native raster: DOM text already contained # when the
+   // missing bitmap glyph incorrectly painted question marks.
+   await expect.poll(()=>comparisonButton.evaluate(button=>{
+    const text=button.firstChild!,range=document.createRange(),at=text.textContent!.indexOf('#');range.setStart(text,at);range.setEnd(text,at+1);
+    const box=range.getBoundingClientRect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),info=window.borrowedTomorrowPixels.inspect();
+    const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,data=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
+    const left=info.physicalLeft+Math.round((box.left-source.left)/info.cssScale)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((box.top-source.top)/info.cssScale)+1)*info.physicalScale;
+    const color=getComputedStyle(button).color.match(/\d+/g)!.slice(0,3).map(Number),mask=['01010','01010','11111','01010','11111','01010','01010'];let wrong=0;
+    for(let y=0;y<7;y++)for(let x=0;x<5;x++){
+     const i=((top+y*info.physicalScale)*canvas.width+left+x*info.physicalScale)*4;
+     const ink=color.every((c,n)=>data[i+n]===c);if(ink!==(mask[y][x]==='1'))wrong++;
+    }
+    return wrong;
+   })).toBe(0);
+   await capture(page,`31edo-sharp-${device}`);
+   await comparisonButton.click();
    const comparison=await starts();expect(comparison).toHaveLength(6);
    expect(comparison[0]).toBeCloseTo(440*2**(-21/31),2);expect(comparison[3]).toBeCloseTo(440*2**(-20/31),2);
    expect(comparison[3]/comparison[0]).toBeCloseTo(2**(1/31),6);
@@ -39,6 +57,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await page.getByRole('button',{name:'Next bar',exact:true}).click();await expect(bar).toHaveValue('1');
    await page.getByRole('button',{name:'Lower music volume',exact:true}).click();await expect(page.locator('#music-volume')).toHaveText('Volume 70%');
    await page.getByRole('button',{name:'Sound on',exact:true}).click();await expect(page.locator('#music-position')).toContainText('Stopped');
+   await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 2',exact:true}).click();
+   await page.locator('[data-cue="coast"]').click();
+   await expect(page.locator('#music-notes tbody')).toContainText('round-bass');
    await page.getByRole('button',{name:'Play',exact:true}).click();await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Character',exact:true}).click();
    await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();await expect(page.getByRole('spinbutton',{name:'Nell level',exact:true})).toHaveValue('1');
    expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
