@@ -4,11 +4,6 @@
     "sha256": "803a503f294aca2032182afb177e6ba559cd5303d4354cb9288550b5e8d111a1",
     "parts": 15
   },
-  "cinderbank": {
-    "bytes": 2796672,
-    "sha256": "321a46e58366c3f90ec634a599964220f91552a9ad51e2936b452148c19d149e",
-    "parts": 15
-  },
   "infirmary": {
     "bytes": 2598212,
     "sha256": "3268c829aa9cf8f6fac21b486a6445e9d62eab79f7f4315be57b5abd5aeafae3",
@@ -23,11 +18,6 @@
     "bytes": 2451154,
     "sha256": "736bd5de7e2e46655adc5eb5808fe0e3103e9fa45b7a066261fc7b9f35d35689",
     "parts": 14
-  },
-  "coast": {
-    "bytes": 2933842,
-    "sha256": "9b5ab9d8068f22f038c570d653d7c429ee0c8d8d33a7a91148358d94f2b1bc32",
-    "parts": 16
   },
   "conduit": {
     "bytes": 2564848,

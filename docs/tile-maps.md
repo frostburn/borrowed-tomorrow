@@ -1,10 +1,10 @@
-# Chapter One tile maps
+# Native tile maps
 
-Open `src/content/chapter-one/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Small native lossless PNG/WebP pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. `assets/tiles/tile-definitions.ts` provides ordinary imports for both the game and Node-based content tools. Each page is at most **192 × 192 pixels and 128 KB**, and is uploaded as its own image file. The dimensional pack comes from the supplied modular railway scenery and material sheets; no whole-map painting was sliced into tiles. `assets/tiles/README.md` records the importer and source crop manifest. Normal development and builds use the checked-in files directly.
+Open `src/content/chapter-one/maps/*.json` and `src/content/chapter-two/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Small native lossless PNG/WebP pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. `assets/tiles/tile-definitions.ts` provides ordinary imports for both the game and Node-based content tools. Each page is at most **192 × 192 pixels and 128 KB**, and is uploaded as its own image file. The dimensional pack comes from the supplied modular railway scenery and material sheets; no whole-map painting was sliced into tiles. `assets/tiles/README.md` records the importer and source crop manifest. Normal development and builds use the checked-in files directly.
 
 Keep existing tile IDs stable when extending the tile set: append new definitions so the maps' references keep their meaning.
 
-The four exploration maps and four tactical arenas use the same tile pages. The chapter's former backgrounds and Rillbridge image fragments have been removed. Later chapters still use their current native scenery until their own map conversion.
+Chapters One and Two share the tile pages: seven exploration maps and eight tactical arenas. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapters Three and Four retain native scenery, including the `infirmary` painting used by the Chapter Four refuge.
 
 | Map | Grid | Story route |
 | --- | --- | --- |
@@ -12,6 +12,9 @@ The four exploration maps and four tactical arenas use the same tile pages. The 
 | `yard` | 42 × 26 | Engine apron and Orrin first; spare shed to the south; disused branch to the northwest |
 | `rillbridge` | 64 × 28 | Leave the engine west of the river, cross the wooden bridge, pass the residents and reach the collector; the north road leads to the pass |
 | `tunnel` | 42 × 26 | Cave railway through the blockade; carved mural recess above, shelter below, engine and boarding quay at the east |
+| `coast` | 64 × 42 | Sea and cranes behind the barred coach; west loading gate and east signal walk lead around the guard barrier; ward exit and Orrin’s engine below |
+| `infirmary` | 64 × 42 | Windowed railway ward, medicine desk and stove; beds flank the clear central aisle between the exchange and siding exits |
+| `cinderbank` | 64 × 42 | Medical coaches, miners’ homes and coal shed frame the collector; evacuation leads east to Alban and the capital engine |
 
 The tactical `battle-*` maps frame clear fighting floors with location-specific tracks, train parts, machinery or cliffs. Their hex cells remain clear of scenery props. Combat rules, obstacles and rewards remain in `encounters.ts`.
 
@@ -37,9 +40,13 @@ The map owns three kinds of point-object layer:
 - **Arrivals:** named travel and scene-completion positions, resolved by `arrival(map, name)`. Preserve the names when changing a layout.
 - **Scene:scene-id:** initial character casts. Object names are registered character IDs; the optional boolean `hidden` property stages an initially absent actor. `stage(map, sceneId)` supplies the cast to the dialogue director. Staged moves and camera shots remain beside their dialogue in `scenes.ts`.
 
-Point objects snap to cell centers. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked rock beyond the boarding quay.
+Point objects snap to cell centers. A rectangular interaction object can cover a painted door: `approachX` and `approachY` select its reachable grid destination while the rectangle owns its clickable area. The prison-coach door uses this form. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked rock beyond the boarding quay.
+
+Chapter Two’s loading barrier hides after `trainRaidWon`; recovered medicine appears after `prisonersFreed`. At Cinderbank, `evacuationReady` replaces the working collector and suspended threads with its broken casing and supplies for the medical coaches. Neither state changes the rescue route. Through tracks reach both edges at coast rows 13/31 and Cinderbank rows 13/25.
 
 Each exploration map's `safeArrival` property names an arrival on its main connected route. Loading a valid current-format save keeps its position when that cell is still walkable. If a layout edit covers or crops the cell, restoration selects the nearest floor connected to that arrival, using the active story layers. Progress, party resources and equipment stay intact. This uses the current save format only; it does not migrate retired versions.
+
+Only tile pages used by the destination map are required to enter it. Failed page loads can be retried, and a chapter departure is consumed only after all destination maps load.
 
 `tests/tilemaps.test.ts` verifies atlas references, layer dimensions, arrivals, bridge and cliff collision, state changes and clear tactical floors. Existing chapter tests cover interaction approaches and every staged endpoint. The manual Chapter One browser journey checks the full route, all four fights, equipment, departure and reload. Native rendering checks compose reference pixels from the tile pages rather than a discarded background.
 

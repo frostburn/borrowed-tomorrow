@@ -1,20 +1,20 @@
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { CHAPTER_TWO_AVAILABLE } from '../../src/content/chapters';
+import { tilePages } from '../../src/content/tilemaps';
+import { CHAPTER_TWO_MAPS } from '../../src/content/chapter-two/maps';
 import { coastCheckpoint, checkpoint } from '../support/progress';
 import { battle, capture, clickWorld, dialogue, inspect, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 
-test.skip(!CHAPTER_TWO_AVAILABLE, 'Chapter Two artwork is not installed in this source checkpoint.');
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
   test(`Iron Coast arrival, interrupted Kit recruitment and native art on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
-    const {activeParty:_,...departure}=checkpoint('chapterOneComplete');
-    await importSave(page,departure);
-    await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
+    await page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-coast');
+    expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin']);
+    expect((await inspect(page)).state.xp).toBe(175);
     await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();
     await nativeScene(page,'coast');await capture(page,`coast-arrival-${device}`);
     while(await page.locator('.dialogue h2').textContent()!=='The loading gate')await page.locator('.dialogue-actions button').first().click();
@@ -32,6 +32,23 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   });
 }
+
+test('canonical Chapter Two replaces only the autosave and preserves manual saves',async({page})=>{
+  await page.goto('/');const original=checkpoint('chapterOneComplete');original.coins=37;
+  await importSave(page,original);await page.getByRole('button',{name:'Save',exact:true}).first().click();
+  await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();
+  await expect(page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true})).toBeEnabled();
+  await page.reload();await page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true}).click();
+  await expect(page.getByRole('dialog')).toContainText('Manual save slots remain available');
+  await page.getByRole('button',{name:'Start canonical save',exact:true}).click();await dialogue(page);
+  expect((await inspect(page)).state.chapter).toBe('chapter-two');expect((await inspect(page)).state.coins).not.toBe(37);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).state.flags.coastSeen).toBe(true);
+  await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();
+  await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
+  expect((await inspect(page)).state.coins).toBe(37);expect((await inspect(page)).state.inventory).toEqual(original.inventory);
+});
 
 test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital train',async({page})=>{
   test.setTimeout(240000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -72,12 +89,13 @@ test('the three traveling companions fit the compact inventory and phone HUD',as
 });
 
 test('failed region artwork keeps the original departure available for retry',async({page})=>{
+  const crane=tilePages(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.firstgid>=2544)!;
+  const url='**/'+crane.url;await page.route(url,route=>route.abort());
   await page.goto('/');const original=checkpoint('chapterOneComplete');await importSave(page,original);
-  await page.route('**/art/coast.webp',route=>route.abort());
   await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
   await expect(page.getByRole('status')).toContainText('checkpoint is intact');
   expect((await inspect(page)).state).toMatchObject({chapter:'chapter-one',boundary:'chapter-two:iron-coast',inventory:original.inventory});
-  await page.unroute('**/art/coast.webp');await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
+  await page.unroute(url);await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-coast');
 });
 

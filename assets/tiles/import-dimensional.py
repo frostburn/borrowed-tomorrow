@@ -97,7 +97,9 @@ for item,image,ay in foreground:
 # Cave materials have their own source and importer; keep their appended IDs
 # and original pixels when re-importing the railway scenery sheets.
 for image,tile in old:
-    if tile['type'].startswith('cave-'):tiles.append((image,dict(tile,id=len(tiles))))
+    if tile['type'].startswith(('cave-','coast-','ward-')):tiles.append((image,dict(tile,id=len(tiles))))
+for name,module in json.loads((root/'assets/tiles/modules.json').read_text()).items():
+    if name.startswith(('coast-','ward-')):modules[name]=module
 # Artwork dimensions are part of the map vocabulary. Catch source/crop changes
 # that would require deliberately re-stamping a map instead of corrupting IDs.
 if len(tiles)!=len(old) or any(a[1]['type']!=b[1]['type'] for a,b in zip(tiles,old)):

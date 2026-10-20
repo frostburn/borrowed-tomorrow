@@ -3,7 +3,7 @@ import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, ty
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 import { MAPS } from '../../src/content/maps';
-import { CHAPTER_ONE_BATTLES } from '../../src/content/chapter-one/maps';
+import { BATTLE_MAPS } from '../../src/content/battle-maps';
 import { layerVisible, properties, TILESET, tileProperties } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
 
@@ -37,7 +37,7 @@ export async function capture(page: Page, name: string) { if(process.env.BT_QA_S
 
 /** Compare a native camera crop below the cinematic heading with the framebuffer. */
 export async function nativeScene(page:Page,map:string,yOffset=0){
-  const snapshot=await inspect(page),tiles=snapshot.mode==='battle'?CHAPTER_ONE_BATTLES[snapshot.battle!.encounter]??MAPS[map as MapId]?.tiles:MAPS[map as MapId]?.tiles;
+  const snapshot=await inspect(page),tiles=snapshot.mode==='battle'?BATTLE_MAPS[snapshot.battle!.encounter]??MAPS[map as MapId]?.tiles:MAPS[map as MapId]?.tiles;
   const layers=tiles?.layers.filter(l=>l.data&&layerVisible(l,snapshot.state)).map(l=>({...l,sorted:!!properties(l).sort}));
   await expect.poll(()=>page.evaluate(async({name,yOffset,tiles,layers,tileset,tileProperties})=>{
     const image=new Image();if(!tiles){image.src=`/art/${name}.webp`;await image.decode();}

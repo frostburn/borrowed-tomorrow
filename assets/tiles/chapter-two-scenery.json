@@ -1,0 +1,8 @@
+[
+  {"name":"coast-crane","crop":[25,0,550,550],"size":[192,216],"block":[5,1]},
+  {"name":"coast-coal-shed","crop":[565,90,1160,515],"size":[264,192],"block":[9,1]},
+  {"name":"ward-bed","crop":[1205,90,1465,535],"size":[60,96],"block":[2,2]},
+  {"name":"ward-desk","crop":[30,595,455,980],"size":[96,96],"block":[4,1]},
+  {"name":"ward-wall","crop":[470,600,1190,950],"size":[240,120],"block":[10,0]},
+  {"name":"ward-stove","crop":[1230,555,1515,980],"size":[72,120],"block":[2,0]}
+]

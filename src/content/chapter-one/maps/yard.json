@@ -1169,6 +1169,22 @@
     {
       "firstgid": 2496,
       "source": "../../../../assets/tiles/pages/tiles-059.json"
+    },
+    {
+      "firstgid": 2544,
+      "source": "../../../../assets/tiles/pages/tiles-060.json"
+    },
+    {
+      "firstgid": 2608,
+      "source": "../../../../assets/tiles/pages/tiles-061.json"
+    },
+    {
+      "firstgid": 2672,
+      "source": "../../../../assets/tiles/pages/tiles-062.json"
+    },
+    {
+      "firstgid": 2736,
+      "source": "../../../../assets/tiles/pages/tiles-063.json"
     }
   ],
   "tilewidth": 24,

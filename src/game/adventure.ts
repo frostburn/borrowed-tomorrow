@@ -15,8 +15,8 @@ import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, deco
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { drawTileMap } from './tilemap';
-import { TILESET, TILE_PAGES } from '../content/tilemaps';
-import { CHAPTER_ONE_BATTLES } from '../content/chapter-one/maps';
+import { TILESET, TILE_PAGES, tilePages } from '../content/tilemaps';
+import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
 import { ITEMS, ownedCopies } from '../rules/inventory';
@@ -134,7 +134,7 @@ export class Adventure extends Phaser.Scene {
     this.layer = this.add.container(0,0);
   }
   private background(name: MapId, y=0, x=0) {
-    const tiles=this.mode==='battle'?(CHAPTER_ONE_BATTLES[this.battle!.encounter]??MAPS[name].tiles):MAPS[name].tiles;
+    const tiles=this.mode==='battle'?(BATTLE_MAPS[this.battle!.encounter]??MAPS[name].tiles):MAPS[name].tiles;
     if(tiles)drawTileMap(this,this.layer!,tiles,this.state,x,this.mode==='battle'?0:y);
     else this.layer!.add(this.add.image(x,y,`map-${name}`,'__BASE').setOrigin(0).setDepth(-1000));
   }
@@ -174,7 +174,18 @@ export class Adventure extends Phaser.Scene {
   }
   private async ensureRegion(map: MapId) {
     if(MAPS[map].tiles){
-      if(TILE_PAGES.some(page=>!this.textures.exists(page.name)))throw new Error('The Chapter One tiles could not load. Your checkpoint is intact.');
+      const missing=tilePages(MAPS[map].tiles).filter(page=>!this.textures.exists(page.name));
+      if(missing.length){
+        if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
+          this.load.once('complete',()=>{
+            if(missing.every(page=>this.textures.exists(page.name)))resolve();
+            else reject(new Error(`${MAPS[map].name} tiles could not load. Your checkpoint is intact; try again.`));
+          });
+          for(const page of missing)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+          this.load.start();
+        }).finally(()=>{this.regionLoad=undefined;});
+        await this.regionLoad;
+      }
       return;
     }
     const texture = `map-${map}`;

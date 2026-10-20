@@ -173,5 +173,47 @@
     "height": 5,
     "anchorX": 4,
     "anchorY": 4
+  },
+  "coast-crane": {
+    "firstgid": 2544,
+    "width": 8,
+    "height": 9,
+    "anchorX": 4,
+    "anchorY": 8
+  },
+  "coast-coal-shed": {
+    "firstgid": 2616,
+    "width": 11,
+    "height": 8,
+    "anchorX": 5,
+    "anchorY": 7
+  },
+  "ward-bed": {
+    "firstgid": 2704,
+    "width": 3,
+    "height": 4,
+    "anchorX": 1,
+    "anchorY": 3
+  },
+  "ward-desk": {
+    "firstgid": 2716,
+    "width": 4,
+    "height": 4,
+    "anchorX": 2,
+    "anchorY": 3
+  },
+  "ward-wall": {
+    "firstgid": 2732,
+    "width": 10,
+    "height": 5,
+    "anchorX": 5,
+    "anchorY": 4
+  },
+  "ward-stove": {
+    "firstgid": 2782,
+    "width": 3,
+    "height": 5,
+    "anchorX": 1,
+    "anchorY": 4
   }
 }
