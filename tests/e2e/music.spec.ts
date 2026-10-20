@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { brokenCheckpoint, coastCheckpoint } from '../support/progress';
-import { approach, importSave } from './navigation';
+import { approach, importSave, travel } from './navigation';
 import { capture, dialogue, inspect } from './controls';
 
 test('piano notes decay while sustained arrangements release cleanly at a transition', async ({ page }) => {
@@ -48,6 +48,10 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   test(`Chapter Two uses regional variations for both raids, the loading walk and Petra on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await observeMusic(page);
+    const ward=coastCheckpoint('wardSeen');ward.location={map:'infirmary',x:41,y:24};await importSave(page,ward);
+    await page.locator('#sound-button').click();await expect.poll(async()=>(await music(page)).mode).toBe('infirmary');
+    await travel(page,'ward-siding','cinderbank');await dialogue(page);
+    await expect.poll(async()=>(await music(page)).mode,{timeout:6000}).toBe('cinderbank');
     for(const [flag,object,expected]of [['kitJoined','signal-walk','coast-battle'],['kitJoined','loading-gate','coast-battle'],['settlementSeen','siding-collector','shunting'],['evacuationReady','siding-alban','petra-battle']] as const){
       const saved=coastCheckpoint(flag);if(saved.location.map==='cinderbank')saved.location=object==='siding-collector'?{map:'cinderbank',x:39,y:21}:{map:'cinderbank',x:45,y:26};
       await importSave(page,saved);if(!(await music(page)).enabled)await page.locator('#sound-button').click();
