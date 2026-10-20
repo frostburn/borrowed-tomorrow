@@ -36,7 +36,7 @@ export function orrinAttackPose(phase:OrrinAttackPhase,config:Readonly<RigPropor
   const pose=orrinPose(0,config),contact=phase==='contact';
   pose.hipHeight=config.hipHeight-.6;
   for(const side of ['left','right'] as const){
-    const leg=pose[side],origin={x:leg.hip.x,y:LOWER_BODY_ROOT.y+(side==='left'?3:-4),z:0},transform={origin,pitch:0};
+    const leg=pose[side],origin={x:leg.hip.x,y:LOWER_BODY_ROOT.y+(side==='left'?5:-5),z:0},transform={origin,pitch:0};
     leg.foot={...transform,heel:footPoint(transform,FOOT_HEEL*config.footScale,0),toe:footPoint(transform,FOOT_TOE*config.footScale,0),contact:'sole'};
     leg.planted=true;leg.phase=0;leg.hip={...leg.hip,z:pose.hipHeight};leg.ankle=footPoint(leg.foot,0,ANKLE_HEIGHT*config.footScale);
     const dy=leg.ankle.y-leg.hip.y,dz=leg.ankle.z-leg.hip.z,d=Math.hypot(dy,dz);
@@ -261,6 +261,10 @@ export function orrinLayers(pose:OrrinPose,direction:ActorDirection,textures:Cha
     layers.push(overallFabric(trouserLeg(side,pose,trousers,direction),pose,trousers,direction),
       bootFabric(limb(`${side}-shin`,leg.knee,leg.ankle,[3.2,2.8],[2.8,2.4],boot,direction,legWidth),pose,side,boot,direction),
       bootFabric(shoe(side,leg.foot,boot,direction,pose.proportions.footScale,legWidth*1.22),pose,side,boot,direction));
+  }
+  if(pose.action)for(const side of ['left','right'] as const){
+    const contour={group:`${side}-leg`,color:0x100e18,priority:orient(pose[side].foot.origin,direction).y};
+    for(const layer of layers)if(layer.id.startsWith(`${side}-`))layer.contour=contour;
   }
   layers.push(...arms(pose,source,direction));
   const dy=ORRIN_PROPORTIONS.hipHeight-pose.hipHeight,profile=direction==='left'||direction==='right';

@@ -37,6 +37,7 @@ it('Orrin runtime stride cancels planted-foot movement through heel and toe roll
 
 it('Orrin braces on fixed flat feet and drives the right-hand lance forward with rigid limbs',()=>{
   const windup=orrinAttackPose('windup'),contact=orrinAttackPose('contact');
+  expect(Math.abs(windup.left.foot.origin.y-windup.right.foot.origin.y)).toBeGreaterThanOrEqual(12*ORRIN_PROPORTIONS.footScale);
   for(const pose of [windup,contact]){
     for(const side of ['left','right'] as const){
       const leg=pose[side],arm=pose.arms[side];
