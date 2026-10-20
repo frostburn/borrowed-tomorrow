@@ -105,7 +105,7 @@ export class SpriteWorkshop {
   }
   private actor(ctx: CanvasRenderingContext2D, entry: SpriteEntry, direction: ActorDirection, x: number, y: number, zoom=1) {
     const frame=animatedHero(entry.id)?this.displayedFrame:undefined;
-    const image=this.image(frame===undefined?spriteAsset(entry,direction):motionPage(entry.id as 'nell'|'orrin',direction).asset),size=ACTOR_SIZE*zoom;
+    const image=this.image(frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,direction).asset:spriteAsset(entry,direction)),size=ACTOR_SIZE*zoom;
     if (this.guides) {
       ctx.strokeStyle='#87a3a2';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,size-1,size-1);
       ctx.fillStyle='#f4c77a';ctx.fillRect(x,y+ACTOR_FEET*zoom,size,1);

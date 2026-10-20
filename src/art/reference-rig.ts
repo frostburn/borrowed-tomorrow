@@ -2,7 +2,7 @@ import { REFERENCE_PROPORTIONS, type RigProportions } from './rig-proportions';
 import type { Point3 } from './actor-space';
 import { referencePose, REFERENCE_FRAMES, type LegSide, type WalkPose } from './walk-cycle';
 
-export const REFERENCE_WEAPONS = ['none','lantern','lance'] as const;
+export const REFERENCE_WEAPONS = ['none','lantern','lance','crossbow'] as const;
 export type ReferenceWeapon = typeof REFERENCE_WEAPONS[number];
 export const UPPER_ARM_LENGTH = REFERENCE_PROPORTIONS.upperArmLength;
 export const FOREARM_LENGTH = REFERENCE_PROPORTIONS.forearmLength;
@@ -14,13 +14,25 @@ function arm(side:LegSide,pose:WalkPose,weapon:ReferenceWeapon,config:Readonly<R
   const right=side==='right',holding=right&&weapon!=='none',cycle=pose.phase*2*Math.PI,swing=Math.cos(cycle);
   const x=(right?1:-1)*config.shoulderHalfWidth,shoulder={x,y:0,z:pose.hipHeight+config.shoulderHeight};
   const total=config.upperArmLength+config.forearmLength,scale=total/17;
-  const grip={x,y:holding?(weapon==='lantern'?(4+swing)*scale:(6+.6*swing)*scale):(right?1:-1)*5.5*swing*scale,
-    z:shoulder.z-total+(holding?(weapon==='lantern'?2.5+config.carryLift:6):1)};
+  const grip={x,y:holding?(weapon==='lantern'?(4+swing)*scale:weapon==='crossbow'?(4+.6*swing)*scale:(6+.6*swing)*scale):(right?1:-1)*5.5*swing*scale,
+    z:shoulder.z-total+(holding?(weapon==='lantern'?2.5+config.carryLift:weapon==='crossbow'?1.5+config.carryLift:6):1)};
   return armToGrip(shoulder,grip,config);
 }
 
 /** Rigid two-bone arm solve, shared by gait and authored action poses. */
 export function armToGrip(shoulder:Point3,grip:Point3,config:Readonly<RigProportions>):ArmPose {
+  if(grip.x!==shoulder.x){
+    // Cross-body support: Kit's off hand can reach the crossbow without
+    // flattening the arm or stretching either bone. Keep the sagittal path
+    // below unchanged for the accepted Nell/Orrin poses.
+    const wrist={...grip,z:grip.z+1.6},dx=wrist.x-shoulder.x,dy=wrist.y-shoulder.y,dz=wrist.z-shoulder.z;
+    const d=Math.hypot(dx,dy,dz),total=config.upperArmLength+config.forearmLength;
+    if(d>total||d<Math.abs(config.upperArmLength-config.forearmLength)||d===0)throw new RangeError('Arms cannot reach: adjust the grip or arm lengths.');
+    const along=(config.upperArmLength**2-config.forearmLength**2+d*d)/(2*d),bend=Math.sqrt(Math.max(0,config.upperArmLength**2-along*along));
+    const sagittal=Math.hypot(dy,dz),ny=sagittal?dz/sagittal:-1,nz=sagittal?-dy/sagittal:0;
+    const elbow={x:shoulder.x+along*dx/d,y:shoulder.y+along*dy/d+bend*ny,z:shoulder.z+along*dz/d+bend*nz};
+    return {shoulder,elbow,wrist,grip};
+  }
   const x=shoulder.x,total=config.upperArmLength+config.forearmLength;
   const wrist={...grip,z:grip.z+1.6};
   const dy=wrist.y-shoulder.y,dz=wrist.z-shoulder.z,d=Math.hypot(dy,dz);
@@ -34,7 +46,7 @@ export function armToGrip(shoulder:Point3,grip:Point3,config:Readonly<RigProport
 /** Attach arms to the accepted walk without changing its legs, feet or body rise. */
 export function referenceRig(phase:number,weapon:ReferenceWeapon='none',config:Readonly<RigProportions>=REFERENCE_PROPORTIONS):ReferencePose {
   const pose=referencePose(phase,config),arms={left:arm('left',pose,weapon,config),right:arm('right',pose,weapon,config)};
-  const pitch=(weapon==='lantern'?5*Math.sin(pose.phase*2*Math.PI):-24+2*Math.sin(pose.phase*2*Math.PI))*Math.PI/180;
+  const pitch=(weapon==='lantern'?5*Math.sin(pose.phase*2*Math.PI):weapon==='crossbow'?-65+3*Math.sin(pose.phase*2*Math.PI):-24+2*Math.sin(pose.phase*2*Math.PI))*Math.PI/180;
   return {...pose,arms,proportions:config,weapon:weapon==='none'?null:{kind:weapon,hand:'right',grip:arms.right.grip,pitch}};
 }
 export const referenceRigFrame=(frame:number,weapon:ReferenceWeapon='none',config:Readonly<RigProportions>=REFERENCE_PROPORTIONS)=>referenceRig(frame/REFERENCE_FRAMES,weapon,config);

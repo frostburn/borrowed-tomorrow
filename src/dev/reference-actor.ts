@@ -5,7 +5,7 @@ import type { SpriteLayer } from '../art/layered-sprite';
 import type { RigProportions } from '../art/rig-proportions';
 
 export const REFERENCE_ARM_LAYERS = ['left-upper-arm','left-forearm','left-hand','right-upper-arm','right-forearm','right-hand','right-weapon'] as const;
-export const REFERENCE_LAYERS = ['head','torso',...REFERENCE_ARM_LAYERS,'left-thigh','left-shin','left-foot','right-thigh','right-shin','right-foot'] as const;
+export const REFERENCE_LAYERS = ['head','torso','satchel',...REFERENCE_ARM_LAYERS,'left-thigh','left-shin','left-foot','right-thigh','right-shin','right-foot'] as const;
 export type ReferenceLayer=typeof REFERENCE_LAYERS[number];
 export const layerName=(id:string)=>id.split('-').map(word=>word[0].toUpperCase()+word.slice(1)).join(' ');
 
@@ -57,6 +57,15 @@ function weaponLayers(weapon:WeaponPose):SpriteLayer[]{
     piece([[-3.2,-11],[3.2,-11],[3.2,-10],[-3.2,-10]],6.4,0xa87a3f),
     piece([[-3.2,-5],[3.2,-5],[2,-3.8],[-2,-3.8]],6.4,0xa87a3f),
   ];
+  if(weapon.kind==='crossbow'){
+    const stave=part('right-weapon',[[9,-.8],[11,-.8],[11,1],[9,1]],0,19,0xa8804b);
+    stave.vertices=stave.vertices.map(p=>weaponPoint(weapon,p.y,p.z,p.x));
+    const string=part('right-weapon',[[3,-.3],[3.6,-.3],[3.6,.3],[3,.3]],0,17,0xd6c097);
+    string.vertices=string.vertices.map(p=>weaponPoint(weapon,p.y,p.z,p.x));
+    return [piece([[-5,-1.5],[14,-1.5],[16,0],[14,1.5],[-5,1.5]],3,0x795238),
+      piece([[-1,-4],[1,-4],[1,0],[-1,0]],2.5,0x573c2c),stave,string,
+      piece([[4,1.5],[16,1.5],[16,2.2],[4,2.2]],1,0xa6b1b4)];
+  }
   return [
     piece([[-9,-2],[-3,-2],[0,-.5],[0,1],[-4,2],[-9,2]],4,0x77583e),
     piece([[-1,-3],[2,-3],[2,1],[-1,1]],3,0x4a5960),

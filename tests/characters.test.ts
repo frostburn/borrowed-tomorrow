@@ -40,7 +40,7 @@ it('every playable character has four distinct native directional actors',()=>{
 });
 
 it('motion pages contain six walk frames and two attack frames within the image budget',()=>{
-  expect(MOTION_PAGES).toHaveLength(8);
+  expect(MOTION_PAGES).toHaveLength(12);
   for(const page of MOTION_PAGES){
     const bytes=readFileSync(new URL(`../public/art/${page.asset}.png`,import.meta.url));
     expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,320]);
