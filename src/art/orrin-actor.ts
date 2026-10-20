@@ -6,9 +6,21 @@ import { armToGrip, referenceRig, type ReferencePose, type WeaponPose } from './
 import { ORRIN_PROPORTIONS, type RigProportions } from './rig-proportions';
 import { REFERENCE_FRAMES } from './walk-cycle';
 
+// Native waist registration, in the actor's anatomical coordinates.
+const LOWER_BODY_ROOT={x:-1.5,y:-4};
+
 /** Orrin carries his native downward-pointing tool, with only a small gait swing. */
 export function orrinPose(phase:number,config:Readonly<RigProportions>=ORRIN_PROPORTIONS):ReferencePose {
   const pose=referenceRig(phase,'lance',config);
+  // The native overalls hang behind the chest and slightly toward anatomical
+  // left. Move the skeleton, not just its painted silhouette, so contacts and
+  // workshop joint/floor guides retain the same registration.
+  for(const side of ['left','right'] as const){
+    const leg=pose[side];
+    for(const point of [leg.hip,leg.knee,leg.ankle,leg.foot.origin,leg.foot.heel,leg.foot.toe]){
+      point.x+=LOWER_BODY_ROOT.x;point.y+=LOWER_BODY_ROOT.y;
+    }
+  }
   const shoulder=pose.arms.right.shoulder,grip={...pose.arms.right.grip,z:pose.arms.right.grip.z-3};
   pose.arms.right=armToGrip(shoulder,grip,config);pose.weapon!.grip=pose.arms.right.grip;
   pose.weapon!.pitch=2*Math.sin(pose.phase*2*Math.PI)*Math.PI/180;
@@ -94,12 +106,41 @@ function arms(pose:ReferencePose,source:PixelTexture,direction:ActorDirection):S
 }
 
 /** Overalls fill the volume behind moving sleeves and join the continuous seat. */
-function body(pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+function body(pose:ReferencePose,texture:PixelTexture,trousers:PixelTexture,direction:ActorDirection):SpriteLayer {
   const rings=[[3,8.5,4.5],[7,10,5.6],[13,10.1,5.4],[17,8.8,4.5]] as const;
-  return surface('torso',rings.map(([z,width,depth],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
+  const layer=surface('torso',rings.map(([z,width,depth],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,c=Math.cos(angle),s=Math.sin(angle);
-    return {point:{x:c*width,y:s*depth,z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:(1-row/(rings.length-1))*texture.height};
+    return {point:{x:c*width+LOWER_BODY_ROOT.x*Math.max(0,1-(z-3)/14),y:s*depth+LOWER_BODY_ROOT.y*Math.max(0,1-(z-3)/14),z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:(1-row/(rings.length-1))*texture.height};
   })),0xffffff,texture);
+  // The lower torso overlaps the seat in the depth buffer. It must use the
+  // same cloth field, rather than stretching the dark bib into a false hole.
+  const cloth=overallFabric({...layer,faces:layer.faces.map(face=>({...face}))},pose,trousers,direction);
+  layer.faces.forEach((face,i)=>{
+    if(face.points.some(index=>layer.vertices[index].z<=pose.hipHeight+7)){
+      face.texture=trousers;face.uv=cloth.faces[i].uv;
+    }
+  });
+  return layer;
+}
+
+/** Match the cloth field to Orrin's own seat, including the narrower profile
+ * depth. The same projected field covers both thighs and their overlapping seat. */
+function overallFabric(layer:SpriteLayer,pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const centre=project({x:LOWER_BODY_ROOT.x,y:LOWER_BODY_ROOT.y,z:pose.hipHeight},direction);
+  const profile=direction==='left'||direction==='right';
+  const width=profile?12*pose.proportions.legWidth/1.15:2*(pose.proportions.hipHalfWidth+4.5*pose.proportions.legWidth);
+  const top=centre.y-5,height=pose.proportions.legLength+6;
+  for(const face of layer.faces)face.uv=face.points.map(i=>{
+    const p=project(layer.vertices[i],direction);
+    return {u:(p.x-centre.x+width/2)/width*texture.width,v:(p.y-top)/height*texture.height};
+  });
+  return layer;
+}
+
+function overallSeat(pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const layer=pelvis(pose,texture,direction);
+  for(const p of layer.vertices){p.x+=LOWER_BODY_ROOT.x;p.y+=LOWER_BODY_ROOT.y;}
+  return overallFabric(layer,pose,texture,direction);
 }
 
 /** One native-scale leather field spans the calf and shoe. Projected UVs keep
@@ -152,16 +193,23 @@ export function orrinLayers(pose:ReferencePose,direction:ActorDirection,textures
       ||direction==='left'&&y>=39&&y<46&&x<36
       ||direction==='left'&&y>=46&&x<35
       ||direction==='right'&&y>=42&&x>=47;
-    if(oldArm)torso.pixels[at+3]=0;
+    const [r,g,b]=source.pixels.subarray(at,at+3);
+    // The idle's trouser/crotch pixels must not sit above a second moving seat.
+    // Keep the leather belt and pouches while removing the old navy lower body.
+    const oldTrousers=y>=43&&b>r*.85&&b>g;
+    if(oldArm||oldTrousers)torso.pixels[at+3]=0;
   }
-  const trousers=patch(source,33,43,15,14,(r,g,b)=>r<g*1.4&&b>r*.85);
+  const trouserRegions:Record<ActorDirection,readonly[number,number,number,number]>={
+    front:[33,43,18,14],left:[34,48,16,9],right:[28,46,13,12],back:[30,43,17,13],
+  };
+  const trousers=patch(source,...trouserRegions[direction],(r,g,b)=>r<g*1.4&&b>r*.85&&g>20);
   const bootRegions:Record<ActorDirection,readonly[number,number,number,number]>={front:[41,56,7,11],left:[42,56,8,11],right:[34,56,8,11],back:[35,57,8,10]};
   const boot=patch(source,...bootRegions[direction],(r,g,b)=>r>g*1.15&&g>b*1.1&&r>18);
   const bib=patch(source,35,30,10,10,(r,g,b)=>r<g*1.4&&b>r*.85);
-  const layers:SpriteLayer[]=[body(pose,bib,direction),pelvis(pose,trousers,direction)];
+  const layers:SpriteLayer[]=[body(pose,bib,trousers,direction),overallSeat(pose,trousers,direction)];
   for(const side of ['left','right'] as const){
     const leg=pose[side],{legWidth}=pose.proportions;
-    layers.push(trouserLeg(side,pose,trousers,direction),
+    layers.push(overallFabric(trouserLeg(side,pose,trousers,direction),pose,trousers,direction),
       bootFabric(limb(`${side}-shin`,leg.knee,leg.ankle,[3.2,2.8],[2.8,2.4],boot,direction,legWidth),pose,side,boot,direction),
       bootFabric(shoe(side,leg.foot,boot,direction,pose.proportions.footScale,legWidth*1.22),pose,side,boot,direction));
   }

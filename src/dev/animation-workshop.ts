@@ -150,12 +150,13 @@ export class AnimationWorkshop {
     const tick=this.currentTick(),frame=frameOf(tick),pose=this.pose(frame),stride=this.proportions.strideDistance,travel=tick/REFERENCE_FRAMES*stride;
     this.paintedTick=tick;const detail=this.host.querySelector<HTMLCanvasElement>('#reference-detail')!.getContext('2d')!,floor=this.host.querySelector<HTMLCanvasElement>('#reference-floor')!.getContext('2d')!,strip=this.host.querySelector<HTMLCanvasElement>('#reference-strip')!.getContext('2d')!;
     for(const ctx of [detail,floor,strip])this.backdrop(ctx);
+    const root={x:(pose.left.hip.x+pose.right.hip.x)/2,y:(pose.left.hip.y+pose.right.hip.y)/2};
     // Draw the floor in world coordinates relative to a camera following the root.
     for(let n=Math.floor(travel/(stride/2))-6;n<=Math.floor(travel/(stride/2))+6;n++){
-      const y=n*stride/2+stride*.3-travel,left=n%2===0,c=left?LEG_COLORS.left:LEG_COLORS.right;
-      const a=project({x:-28,y,z:0},this.direction),b=project({x:28,y,z:0},this.direction);
+      const y=root.y+n*stride/2+stride*.3-travel,left=n%2===0,c=left?LEG_COLORS.left:LEG_COLORS.right;
+      const a=project({x:root.x-28,y,z:0},this.direction),b=project({x:root.x+28,y,z:0},this.direction);
       line(floor,a.x+120,a.y+22,b.x+120,b.y+22,'#35535a');
-      const heel=project({x:(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_HEEL*this.proportions.footScale,z:0},this.direction),toe=project({x:(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_TOE*this.proportions.footScale,z:0},this.direction);
+      const heel=project({x:root.x+(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_HEEL*this.proportions.footScale,z:0},this.direction),toe=project({x:root.x+(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_TOE*this.proportions.footScale,z:0},this.direction);
       line(floor,heel.x+120,heel.y+22,toe.x+120,toe.y+22,color(c));
       for(const mark of [heel,toe]){floor.fillStyle=color(c);floor.fillRect(Math.round(mark.x)+119,Math.round(mark.y)+22,3,1);}
     }

@@ -2,6 +2,8 @@ import { NELL_PROPORTIONS, ORRIN_PROPORTIONS } from '../../src/art/rig-proportio
 // Browser plugin not available; exercise the native review through repository Playwright.
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { project } from '../../src/art/actor-space';
+import { LEG_COLORS } from '../../src/art/walk-cycle';
 import { renderLayers } from '../../src/art/layered-sprite';
 import { referenceRigFrame, type ReferenceWeapon } from '../../src/art/reference-rig';
 import { referenceLayers, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS } from '../../src/dev/reference-actor';
@@ -119,6 +121,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       expect(orrinData.skin).toBe('orrin');expect(orrinData.cycleDistance).toBe(ORRIN_PROPORTIONS.strideDistance);expect(orrinData.weapon).toBe('lance');
       expect(orrinData.frames[0].pose.weapon.grip).toEqual(orrinData.frames[0].pose.arms.right.grip);
       await review.getByRole('button',{name:'Solo Right Weapon',exact:true}).click();
+      const contacts=(['left','right'] as const).map(side=>{
+        const foot=orrinData.frames[0].pose[side].foot,point=project(foot.contact==='heel'?foot.heel:foot.toe,'back'),rgb=LEG_COLORS[side];
+        return {x:Math.round(point.x)+120,y:Math.round(point.y)+22,rgb:[rgb>>16&255,rgb>>8&255,rgb&255]};
+      });
+      await expect.poll(()=>page.locator('#reference-floor').evaluate((element,contacts)=>{
+        const ctx=(element as HTMLCanvasElement).getContext('2d')!;
+        return contacts.every(({x,y,rgb})=>{const actual=ctx.getImageData(x,y,1,1).data;return rgb.every((value,i)=>value===actual[i]);});
+      },contacts)).toBe(true);
       const lanceEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await lanceEvent).suggestedFilename()).toBe('orrin-back-right-weapon-walk.png');
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();
       await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'orrin',0,'right');
