@@ -158,7 +158,14 @@ export class Adventure extends Phaser.Scene {
       } },
       { label: 'Continue', disabled: !this.latestSave, action: () => { if (this.latestSave) this.loadState(this.latestSave); } },
       { label: 'Save files', action: () => this.saves() },
-      ...(import.meta.env.DEV ? [{label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}}] : []),
+      ...(import.meta.env.DEV ? [
+        {label:'Begin Chapter Two (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterTwoStart})=>this.loadState(chapterTwoStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Chapter Two save?','<p>This replaces the autosave with Nell and Orrin at the Iron Coast. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
+          else start();
+        }},
+        {label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}},
+      ] : []),
     ]);
   }
   private begin() {
