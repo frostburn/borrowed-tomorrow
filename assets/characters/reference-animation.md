@@ -12,7 +12,7 @@ Open `?dev=animation` in Vite or choose **Animation** in the workshop. The armle
 
 ## Gait
 
-`src/art/walk-cycle.ts` owns the motion. Each leg has two fixed 15-pixel bones. Two-bone inverse kinematics chooses the forward-bending knee solution for a foot target. The right leg follows the left by half a cycle. Hips rise by one pixel during mid-support.
+`src/art/walk-cycle.ts` owns the motion. Each leg has two fixed 15-pixel bones. Two-bone inverse kinematics chooses the forward-bending knee solution for a foot target. The right leg follows the left by half a cycle. Hips stay low during double support, rise by up to 2.4 pixels over the supporting foot, and settle at the next contact; the supporting leg straightens through mid-stance.
 
 One cycle advances the root 40 pixels. Each foot supports weight for 60% of a cycle, allowing double support at contact without an airborne phase. During support its local forward coordinate is `12 - 40 * legPhase`; root travel cancels this exactly, leaving that foot fixed in world space. The other 40% returns the foot forward with eased travel and six pixels of clearance. Ankle height is three pixels above the sole.
 

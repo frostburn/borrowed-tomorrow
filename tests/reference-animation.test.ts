@@ -15,6 +15,10 @@ it('the walk keeps both bone lengths fixed, clears the floor and always has supp
       expect(ankle.z).toBeGreaterThanOrEqual(ANKLE_HEIGHT-1e-10);
     }
   }
+  for(const [phase,side] of [[.3,'left'],[.8,'right']] as const){
+    const {hip,ankle}=referencePose(phase)[side];
+    expect(Math.hypot(hip.x-ankle.x,hip.y-ankle.y,hip.z-ankle.z)).toBeGreaterThan(LEG_LENGTH*1.95);
+  }
 });
 
 it('a planted foot remains fixed in world space throughout support, including cycle wrap',()=>{
@@ -60,6 +64,6 @@ it('all views rasterize six distinct native poses with clean alpha, editable lay
     }
     expect(new Set(hashes).size).toBe(6);
     const head=(frame:number)=>renderLayers(referenceLayers(referenceFrame(frame)),direction,new Set(['head']));
-    expect(head(0)).toEqual(head(3));expect(head(1)).toEqual(head(2));
+    for(let i=0;i<3;i++)expect(head(i)).toEqual(head(i+3));
   }
 });

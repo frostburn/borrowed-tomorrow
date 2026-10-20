@@ -29,7 +29,10 @@ function leg(side:LegSide,phase:number,hipHeight:number):LegPose {
 
 export function referencePose(phase:number):WalkPose {
   phase=wrap(phase);
-  const hipHeight=29.5+Math.sin(phase*Math.PI*2)**2;
+  // Stay low during double support, rise over the planted leg, then settle at
+  // the next contact. This straightens support without stretching either bone.
+  const half=phase% .5,doubleSupport=STANCE_FRACTION-.5,support=(half-doubleSupport)/(.5-doubleSupport);
+  const hipHeight=30.3+(support>0?2.4*Math.sin(Math.PI*support):0);
   return {phase,hipHeight,left:leg('left',phase,hipHeight),right:leg('right',phase+.5,hipHeight)};
 }
 

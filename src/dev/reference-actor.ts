@@ -31,11 +31,11 @@ export function referenceLayers(pose:WalkPose=referencePose(0),colored=true):Spr
   const z=pose.hipHeight;
   const torso=part('torso',[[-4,z-1],[4,z-1],[5,z+13],[3,z+17],[-3,z+17],[-5,z+13]],0,15,0x8e9b9c);
   const neck=part('torso',[[-2,z+16],[2,z+16],[2,z+20],[-2,z+20]],0,6,0xe4c494);
-  const head=part('head',[[-5,z+20],[-6,z+29],[-3,z+32],[3,z+32],[6,z+29],[5,z+20],[3,z+18],[-3,z+18]],0,13,0xe4c494);
+  const head=part('head',[[-5,z+20],[-6,z+28],[-3,z+30],[3,z+30],[6,z+28],[5,z+20],[3,z+18],[-3,z+18]],0,13,0xe4c494);
   const nose=part('head',[[5,z+23],[8,z+23],[8,z+25],[5,z+26]],0,3,0xe4c494);
   const eyes:SpriteLayer={id:'head',vertices:[],faces:[]};
   for(const x of [-3,3]){
-    const i=eyes.vertices.length;eyes.vertices.push({x:x-.7,y:6.1,z:z+27},{x:x+.7,y:6.1,z:z+27},{x:x+.7,y:6.1,z:z+28.5},{x:x-.7,y:6.1,z:z+28.5});
+    const i=eyes.vertices.length;eyes.vertices.push({x:x-.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+27.5},{x:x-.7,y:6.1,z:z+27.5});
     eyes.faces.push({points:[i,i+1,i+2,i+3],color:0x1c2930,unlit:true});
   }
   return [...legLayers('left',pose.left,colored),...legLayers('right',pose.right,colored),torso,neck,head,nose,eyes];
