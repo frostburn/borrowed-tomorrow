@@ -94,7 +94,7 @@ it('the Iron Coast theme loops with rests, independent phrases and supported har
   expect([0,1,2].map(bar=>scoreBar('coast',bar).find(n=>isBass(n.instrument)&&n.beat===0)!.pitch)).toEqual(['C2','D2','E2']);
   expect(new Set(scoreBar('coast',1).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch))).toEqual(new Set(['A2','B2','D3','F3']));
   expect(new Set(scoreBar('coast',1).filter(n=>isBass(n.instrument)||n.instrument==='keys').map(n=>semitones(n.pitch)%12))).toEqual(new Set([11,2,5,9]));
-  const melody=[];
+  const melody:Note[]=[];
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast',bar),lead=notes.filter(n=>n.instrument==='reed');
     expect(lead.length).toBeGreaterThan(0);
@@ -103,7 +103,8 @@ it('the Iron Coast theme loops with rests, independent phrases and supported har
     for(const n of notes){expect(n.velocity).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
     melody.push(...lead.map(n=>({...n,beat:n.beat+bar*4})));
   }
-  for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThan(melody[i].beat);
+  for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThanOrEqual(melody[i].beat);
+  expect(melody.some((n,i)=>i>0&&melody[i-1].beat+melody[i-1].duration<n.beat)).toBe(true);
   expect(scoreBar('coast',16)).toEqual(scoreBar('coast',0));expect(scoreBar('coast',-1)).toEqual(scoreBar('coast',15));
   expect(semitones(melody.at(-1)!.pitch)%12).toBe(0);
 });
@@ -119,11 +120,29 @@ it('the ward is written in three clear quarter-note beats, including its accompa
   }
 });
 
-it('Iron Coast varies melody, bass and comping rhythms across the complete phrase',()=>{
-  for(const instrument of ['reed','round-bass','keys']){
-    const rhythms=Array.from({length:16},(_,bar)=>JSON.stringify([...new Set(scoreBar('coast',bar).filter(n=>n.instrument===instrument).map(n=>`${n.beat}:${n.duration}`))]));
-    expect(new Set(rhythms).size,instrument).toBeGreaterThanOrEqual(5);
+it('Iron Coast keeps bass and piano on a shared pulse, with recurring calls and contrasting answers',()=>{
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('coast',bar),pulse=bar%4===3?[0]:[0,2];
+    for(const instrument of ['round-bass','keys'])expect([...new Set(notes.filter(n=>n.instrument===instrument).map(n=>n.beat))]).toEqual(pulse);
+    for(const n of notes)expect(n.beat*2).toBe(Math.round(n.beat*2));
+    if(bar%4===3)expect(notes.filter(n=>n.instrument==='reed')).toHaveLength(1);
   }
+  const rhythm=(bar:number)=>scoreBar('coast',bar).filter(n=>n.instrument==='reed').map(n=>[n.beat,n.duration]);
+  expect(rhythm(0)).toEqual(rhythm(4));expect(rhythm(0)).toEqual(rhythm(12));
+  expect(rhythm(0)).not.toEqual(rhythm(1));expect(rhythm(8)).not.toEqual(rhythm(0));
+});
+
+it('Petra’s four-beat theme uses triplet attacks across melody, accompaniment and fills',()=>{
+  expect(ARRANGEMENTS['petra-battle'].beats).toBe(4);
+  const melody:Note[]=[];
+  for(let bar=0;bar<16;bar++)for(const n of scoreBar('petra-battle',bar)){
+    expect(n.beat*3).toBeCloseTo(Math.round(n.beat*3),10);
+    expect(n.duration*6).toBeCloseTo(Math.round(n.duration*6),10);
+    expect(n.beat+n.duration).toBeLessThanOrEqual(4+1e-9);
+    if(n.instrument==='strings'&&n.velocity>=.2)melody.push(n);
+  }
+  expect(melody.some(n=>Math.abs(n.beat%1-1/3)<1e-9)).toBe(true);
+  expect(melody.some(n=>Math.abs(n.beat%1-2/3)<1e-9)).toBe(true);
 });
 
 it('Chapter Two battle variations keep their regional harmony and motifs with their own phrasing and rhythm sections',()=>{

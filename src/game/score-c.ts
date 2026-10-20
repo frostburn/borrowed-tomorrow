@@ -43,44 +43,58 @@ const ward:Tune=[
   [[0,'D5',1],[1,'B4',1.5]],[[0,'C5',2.5]],
 ];
 
-// Petra's broad B–E call is the siding melody under pressure, with its own
-// answering phrase. The B-major dominant keeps its written D# and F#.
-const crossing:Tune=[
-  [[0,'B4',1],[1.5,'E5',1],[3,'F#5',.4],[3.5,'G5',.4]],
-  [[0,'E5',2],[2.5,'B4',1]],
-  [[0,'E5',.75],[1.25,'G5',.5],[2.5,'E5',.75]],
-  [[0,'D#5',1.5],[2,'F#5',.75],[3,'B4',.75]],
-  [[0,'B4',.5],[.75,'E5',1.25],[2.5,'F#5',.5],[3,'G5',.75]],
-  [[0,'D5',1],[1.5,'B4',.5],[2.5,'G4',1]],
-  [[0,'C5',.75],[1.25,'E5',1],[2.75,'A5',.75]],
-  [[0,'D#5',2.5]],
-  [[0,'G5',1.5],[2,'E5',.5],[3,'C5',.75]],
-  [[0,'D5',1],[1.5,'B4',.5],[2.5,'G4',1]],
-  [[0,'E5',1],[1.5,'G5',.5],[2.5,'E5',.5],[3.25,'A4',.5]],
-  [[0,'D#5',1],[1.5,'F#5',.75],[3,'B4',.75]],
-  [[0,'B4',.5],[1,'E5',.75],[2,'G5',.75],[3.25,'E5',.5]],
-  [[0,'E5',1.5],[2,'C5',1.5]],
-  [[0,'F#5',.75],[1.25,'D#5',.75],[2.5,'B4',1]],
-  [[0,'E5',3.25]],
+// Petra keeps four quarter-note beats, each divided into three ticks. Melody
+// entries are triplet ticks, not beats; accompaniment uses the same divisions.
+const crossingTriplets:Tune=[
+  [[0,'B4',2],[3,'E5',4],[8,'F#5',1],[9,'G5',2]],
+  [[0,'E5',6],[8,'B4',3]],
+  [[0,'E5',2],[3,'G5',2],[6,'E5',4]],
+  [[0,'D#5',4],[6,'F#5',2],[9,'B4',2]],
+  [[0,'B4',2],[3,'E5',4],[8,'F#5',1],[9,'G5',2]],
+  [[0,'D5',4],[6,'B4',2],[9,'G4',2]],
+  [[0,'C5',2],[3,'E5',3],[8,'A5',3]],
+  [[0,'D#5',8]],
+  [[0,'G5',6],[7,'E5',2],[9,'C5',2]],
+  [[0,'D5',4],[6,'B4',2],[9,'G4',2]],
+  [[0,'E5',2],[3,'G5',2],[6,'E5',2],[9,'A4',2]],
+  [[0,'D#5',3],[4,'F#5',2],[8,'B4',3]],
+  [[0,'B4',2],[3,'E5',4],[8,'G5',1],[9,'E5',2]],
+  [[0,'E5',4],[6,'C5',4]],
+  [[0,'F#5',2],[3,'D#5',3],[8,'B4',3]],
+  [[0,'E5',10]],
 ];
 
 export function scoreC(mode:'cinderbank'|'infirmary'|'shunting'|'petra-battle',bar:number):Note[]{
   const index=((bar%16)+16)%16,quiet=mode==='infirmary',boss=mode==='petra-battle',battle=mode==='shunting'||boss;
   const {root,notes:voicing}=chords[(quiet?WARD_HARMONY:SIDING_HARMONY)[index]],notes:Note[]=[];
   const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,pitch,beat,duration,velocity,pan});
-  for(const [beat,pitch,duration] of (quiet?ward:boss?crossing:siding)[index])add(quiet?'keys':boss?'strings':'reed',pitch,beat,duration*(mode==='shunting'?.85:1),quiet?.22:boss?.22:battle?.23:.2,-.15);
+  for(const [beat,pitch,duration] of (quiet?ward:boss?crossingTriplets:siding)[index])add(quiet?'keys':boss?'strings':'reed',pitch,beat/(boss?3:1),duration/(boss?3:1)*(mode==='shunting'?.85:1),quiet?.22:boss?.22:battle?.23:.2,-.15);
   if(quiet){
     add('round-bass',root,0,index===15?2.8:2.65,.115,-.1);
     for(const beat of (index%4===3?[1]:[1,2]))for(const pitch of voicing)add('keys',pitch,beat,.65,beat===1?.033:.024,.25);
     if(index>=8&&index<12)for(const pitch of voicing)add('strings',pitch,0,2.8,.018,.2);
     return notes;
+  }else if(boss){
+    const broad=index>=8&&index<12,end=index%4===3;
+    for(const beat of (end?[0]:[0,2])){
+      for(const pitch of voicing)add('keys',pitch,beat,2/3,beat===0?.045:.028,.25);
+      add('round-bass',transpose(root,beat===2&&index%2?'P5':'P1'),beat,end?10/3:4/3,beat===0?.17:.11,-.1);
+    }
+    for(const beat of (end?[0]:[0,2]))add('kick','C2',beat,1/3,.1);
+    for(const beat of (end?[1]:broad?[2]:[1,3]))add('snare','D2',beat,1/3,.075,-.15);
+    for(const beat of (end?[2/3]:broad?[2/3,8/3]:[2/3,5/3,8/3,11/3]))add('hat','F#2',beat,1/6,.018,.4);
+    if(index===6||index===14){
+      for(const beat of [10/3,11/3])add('snare','D2',beat,1/6,.035,-.15);
+      add('round-bass',root,11/3,1/3,.085,-.1);
+    }
+    if(broad)for(const pitch of voicing)add('strings',pitch,0,10/3,.016,.2);
   }else if(battle){
     const broad=index>=8&&index<12,end=index%4===3;
-    for(const beat of (end?[0]:boss?[0,2]:index%2?[0,2.5]:[0,1.5,3]))for(const pitch of voicing)add('keys',pitch,beat,boss?.65:.4,beat===0?.045:.028,.25);
-    for(const beat of (end?[0,2.5]:broad?[0,2]:index%2?[0,1.5,3]:[0,.75,2.5]))add('round-bass',transpose(root,beat===2.5?'P5':'P1'),beat,boss?.8:.6,beat===0?.17:.11,-.1);
-    for(const beat of (end?[0]:broad?[0,2.5]:boss?[0,1.5,2.5]:[0,2]))add('kick','C2',beat,.18,.1);
-    for(const beat of (end?[1]:broad?[2]:[1,3]))add('snare','D2',beat,.16,boss?.075:.06,-.15);
-    for(const beat of (end?[.5,1.5]:boss?[.5,1.5,2.5]:index%2?[.5,2,3.5]:[.5,1.5,2.5,3.5]))add('hat','F#2',beat,.07,.022,.4);
+    for(const beat of (end?[0]:index%2?[0,2.5]:[0,1.5,3]))for(const pitch of voicing)add('keys',pitch,beat,.4,beat===0?.045:.028,.25);
+    for(const beat of (end?[0,2.5]:broad?[0,2]:index%2?[0,1.5,3]:[0,.75,2.5]))add('round-bass',transpose(root,beat===2.5?'P5':'P1'),beat,.6,beat===0?.17:.11,-.1);
+    for(const beat of (end?[0]:broad?[0,2.5]:[0,2]))add('kick','C2',beat,.18,.1);
+    for(const beat of (end?[1]:broad?[2]:[1,3]))add('snare','D2',beat,.16,.06,-.15);
+    for(const beat of (end?[.5,1.5]:index%2?[.5,2,3.5]:[.5,1.5,2.5,3.5]))add('hat','F#2',beat,.07,.022,.4);
     if(index===6||index===14)for(const beat of [3.25,3.75])add('snare','D2',beat,.1,.035,-.15);
     if(broad)for(const pitch of voicing)add('strings',pitch,0,3.5,.016,.2);
   }else{

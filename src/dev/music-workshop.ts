@@ -14,6 +14,10 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
 ];
 const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Bass:['bass','round-bass'],Drums:['kick','snare','hat']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
+const displayBeat=(beat:number)=>{
+  const whole=Math.floor(beat),third=Math.round((beat-whole)*3);
+  return third>0&&third<3&&Math.abs(beat-whole-third/3)<1e-6?`${whole+1}+${third}/3`:String(Number((beat+1).toFixed(3)));
+};
 
 /** Development-only controls; playback uses the campaign's actual mixer and rack. */
 export class MusicWorkshop {
@@ -86,7 +90,7 @@ export class MusicWorkshop {
     if(!this.container)return;
     this.container.querySelector('#music-notes-title')!.textContent=`Bar ${this.bar+1} / ${scoreLength(this.mode)}`;
     const notes=scoreBar(this.mode,this.bar).filter(n=>!parts[this.part]||parts[this.part]!.includes(n.instrument)).sort((a,b)=>a.beat-b.beat);
-    this.container.querySelector('#music-notes')!.innerHTML=`<table><thead><tr><th>Voice</th><th>Pitch</th><th>Step</th><th>Hz</th><th>Beat</th></tr></thead><tbody>${notes.map(n=>`<tr><td>${n.instrument}</td><td>${isPercussion(n.instrument)?'-':`<button data-pitch="${n.pitch}" aria-label="Hear ${n.pitch}">${n.pitch}</button>`}</td><td>${isPercussion(n.instrument)?'-':pc(n.pitch)}</td><td>${isPercussion(n.instrument)?'-':pitchFrequency(n.pitch).toFixed(2)}</td><td>${n.beat+1}</td></tr>`).join('')}</tbody></table>${notes.length?'':'<p>No notes in this part of the bar.</p>'}`;
+    this.container.querySelector('#music-notes')!.innerHTML=`<table><thead><tr><th>Voice</th><th>Pitch</th><th>Step</th><th>Hz</th><th>Beat</th></tr></thead><tbody>${notes.map(n=>`<tr><td>${n.instrument}</td><td>${isPercussion(n.instrument)?'-':`<button data-pitch="${n.pitch}" aria-label="Hear ${n.pitch}">${n.pitch}</button>`}</td><td>${isPercussion(n.instrument)?'-':pc(n.pitch)}</td><td>${isPercussion(n.instrument)?'-':pitchFrequency(n.pitch).toFixed(2)}</td><td>${displayBeat(n.beat)}</td></tr>`).join('')}</tbody></table>${notes.length?'':'<p>No notes in this part of the bar.</p>'}`;
     for(const b of this.container.querySelectorAll<HTMLButtonElement>('[data-pitch]'))b.onclick=()=>void this.audition([b.dataset.pitch as Pitch]);
   }
   private tick(){
