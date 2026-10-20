@@ -1,3 +1,4 @@
+import { ACTOR_DIRECTIONS } from '../src/content/actors';
 import { expect, it } from 'vitest';
 import { kitAttackPose, kitPose } from '../src/art/kit-actor';
 import { armToGrip, weaponPoint } from '../src/art/reference-rig';
@@ -19,16 +20,16 @@ function rigid(pose:ReturnType<typeof kitPose>){
 
 it('Kit keeps rigid compact limbs, grounded support, a right-hand bow and a left-hip satchel throughout his gait',()=>{
   expect(kitPose(1)).toEqual(kitPose(0));
-  for(let i=0;i<240;i++){
-    const pose=kitPose(i/240);rigid(pose);expect(pose.left.planted||pose.right.planted).toBe(true);
+  for(const direction of ACTOR_DIRECTIONS)for(let i=0;i<120;i++){
+    const pose=kitPose(i/120,KIT_PROPORTIONS,direction);rigid(pose);expect(pose.left.planted||pose.right.planted).toBe(true);
   }
 });
 
 it('Kit runtime travel cancels heel/toe movement during support',()=>{
   expect(WALK_STRIDE_DISTANCE.kit).toBe(KIT_PROPORTIONS.strideDistance);
   expect(walkFrameDistance('kit')*WALK_FRAMES).toBe(KIT_PROPORTIONS.strideDistance);
-  for(const side of ['left','right'] as const)for(let i=0;i<120;i++){
-    const phase=i/120,leg=kitPose(phase)[side],next=kitPose(phase+.0001)[side];
+  for(const direction of ACTOR_DIRECTIONS)for(const side of ['left','right'] as const)for(let i=0;i<120;i++){
+    const phase=i/120,leg=kitPose(phase,KIT_PROPORTIONS,direction)[side],next=kitPose(phase+.0001,KIT_PROPORTIONS,direction)[side];
     if(!leg.planted||leg.phase+.0001>=STANCE_FRACTION||leg.foot.contact!==next.foot.contact)continue;
     for(const key of ['heel','toe'] as const){
       if(leg.foot[key].z>1e-10||next.foot[key].z>1e-10)continue;

@@ -1,13 +1,19 @@
 import type { ActorDirection } from '../content/actors';
 import { cutout, garment, type ArmSkin, type Span } from './actor-garment';
 import { orient, project, type Point3 } from './actor-space';
-import { patch, surface, ROUND_SIDES, acrossView, viewPoint, decal, limb, pelvis, trouserLeg, shoe, type CharacterTextures } from './actor-skin';
+import { patch, surface, ROUND_SIDES, viewPoint, decal, limb, pelvis, trouserLeg, shoe, type CharacterTextures } from './actor-skin';
 import { renderLayers, type PixelTexture, type SpriteLayer } from './layered-sprite';
 import { armToGrip, referenceRig, weaponPoint, type ReferencePose, type WeaponPose } from './reference-rig';
 import { KIT_PROPORTIONS, type RigProportions } from './rig-proportions';
 import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, footPoint, REFERENCE_FRAMES } from './walk-cycle';
 
-const ROOT={x:-.5,y:-4},CARRY_PITCH=-65*Math.PI/180;
+// Register the independently drawn views at their own native waist. The left
+// profile's legs sit forward of the full seat; the other profile keeps its bind.
+const LOWER_ROOTS:Record<ActorDirection,Readonly<{x:number;y:number}>>={
+  front:{x:.5,y:-4},left:{x:-.5,y:-2},right:{x:-.5,y:-4},back:{x:-.5,y:-4},
+};
+const CARRY_PITCH=-65*Math.PI/180;
+const lowerRoot=(pose:ReferencePose)=>({x:(pose.left.hip.x+pose.right.hip.x)/2,y:(pose.left.hip.y+pose.right.hip.y)/2});
 export type KitAttackPhase='windup'|'contact';
 export interface KitPose extends ReferencePose {
   action?:KitAttackPhase;
@@ -15,21 +21,21 @@ export interface KitPose extends ReferencePose {
 }
 
 /** A compact courier, carrying the crossbow low in his anatomical right hand. */
-export function kitPose(phase:number,config:Readonly<RigProportions>=KIT_PROPORTIONS):KitPose {
-  const pose=referenceRig(phase,'crossbow',config);
+export function kitPose(phase:number,config:Readonly<RigProportions>=KIT_PROPORTIONS,direction:ActorDirection='front'):KitPose {
+  const pose=referenceRig(phase,'crossbow',config),root=LOWER_ROOTS[direction];
   for(const side of ['left','right'] as const)for(const point of [pose[side].hip,pose[side].knee,pose[side].ankle,pose[side].foot.origin,pose[side].foot.heel,pose[side].foot.toe]){
-    point.x+=ROOT.x;point.y+=ROOT.y;
+    point.x+=root.x;point.y+=root.y;
   }
   return {...pose,satchel:{anchor:{x:-8,y:-2,z:pose.hipHeight+3},pitch:2*Math.sin(pose.phase*2*Math.PI)*Math.PI/180}};
 }
-export const kitFrame=(frame:number,config:Readonly<RigProportions>=KIT_PROPORTIONS)=>kitPose(frame/REFERENCE_FRAMES,config);
+export const kitFrame=(frame:number,config:Readonly<RigProportions>=KIT_PROPORTIONS,direction:ActorDirection='front')=>kitPose(frame/REFERENCE_FRAMES,config,direction);
 
 /** Raise, brace, then release. The right hand holds the trigger while the left
  * reaches across to support the stock; both feet stay planted through contact. */
-export function kitAttackPose(phase:KitAttackPhase,config:Readonly<RigProportions>=KIT_PROPORTIONS):KitPose {
-  const pose=kitPose(0,config),contact=phase==='contact';pose.hipHeight=config.hipHeight-.5;
+export function kitAttackPose(phase:KitAttackPhase,config:Readonly<RigProportions>=KIT_PROPORTIONS,direction:ActorDirection='front'):KitPose {
+  const pose=kitPose(0,config,direction),contact=phase==='contact',root=lowerRoot(pose);pose.hipHeight=config.hipHeight-.5;
   for(const side of ['left','right'] as const){
-    const leg=pose[side],transform={origin:{x:leg.hip.x,y:ROOT.y+(side==='left'?5:-5),z:0},pitch:0};
+    const leg=pose[side],transform={origin:{x:leg.hip.x,y:root.y+(side==='left'?5:-5),z:0},pitch:0};
     leg.foot={...transform,heel:footPoint(transform,FOOT_HEEL*config.footScale,0),toe:footPoint(transform,FOOT_TOE*config.footScale,0),contact:'sole'};
     leg.planted=true;leg.phase=0;leg.hip={...leg.hip,z:pose.hipHeight};leg.ankle=footPoint(leg.foot,0,ANKLE_HEIGHT*config.footScale);
     const dy=leg.ankle.y-leg.hip.y,dz=leg.ankle.z-leg.hip.z,d=Math.hypot(dy,dz);
@@ -142,8 +148,8 @@ function armShell(id:string,a:Point3,b:Point3,radius:number,texture:PixelTexture
 }
 
 function cloth(layer:SpriteLayer,pose:KitPose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
-  const centre=project({x:ROOT.x,y:ROOT.y,z:pose.hipHeight},direction),profile=direction==='left'||direction==='right';
-  const width=profile?10*pose.proportions.legWidth/.95:2*(pose.proportions.hipHalfWidth+4.2*pose.proportions.legWidth);
+  const centre=project({...lowerRoot(pose),z:pose.hipHeight},direction),profile=direction==='left'||direction==='right';
+  const width=profile?(direction==='left'?12:10)*pose.proportions.legWidth/.95:2*(pose.proportions.hipHalfWidth+4.2*pose.proportions.legWidth);
   for(const face of layer.faces){face.texture=texture;face.unlit=true;face.uv=face.points.map(i=>{
     const p=project(layer.vertices[i],direction);return {u:(p.x-centre.x+width/2)/width*texture.width,v:(p.y-centre.y+5)/(pose.proportions.legLength+6)*texture.height};
   });}
@@ -151,10 +157,17 @@ function cloth(layer:SpriteLayer,pose:KitPose,texture:PixelTexture,direction:Act
 }
 
 function body(pose:KitPose,texture:PixelTexture,trousers:PixelTexture,direction:ActorDirection):SpriteLayer {
-  const layer=surface('torso',[[4,6.4,3.3],[8,7.2,4],[13,7.5,3.7],[16,6.5,3]].map(([z,w,d],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
+  const root=lowerRoot(pose);
+  const layer=surface('torso',[[4,6.4,3.3],[8,7.2,4],[13,7.5,3.7],[16,6.5,3]].map(([z,w,d])=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const c=Math.cos(i/ROUND_SIDES*Math.PI*2),s=Math.sin(i/ROUND_SIDES*Math.PI*2),lower=Math.max(0,1-(z-4)/12);
-    return {point:{x:c*w+ROOT.x*lower,y:s*d+ROOT.y*lower,z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:(1-row/3)*texture.height};
+    return {point:{x:c*w+root.x*lower,y:s*d+root.y*lower,z:pose.hipHeight+z},u:0,v:0};
   })),0xffffff,texture);
+  const dy=KIT_PROPORTIONS.hipHeight-pose.hipHeight;
+  // Sample the native torso in its own projected field. Wrapping a small blue
+  // swatch around every ring had magnified its darkest row into a false hole.
+  for(const face of layer.faces)face.uv=face.points.map(index=>{
+    const p=project(layer.vertices[index],direction);return {u:p.x-27,v:p.y-dy-26};
+  });
   // Below the native belt, use the seat's continuous brown fabric rather
   // than extending a dark blue jacket swatch into a false gap at the hips.
   const lower=cloth({...layer,faces:layer.faces.map(face=>({...face}))},pose,trousers,direction);
@@ -222,8 +235,13 @@ export function kitLayers(pose:KitPose,direction:ActorDirection,textures:Charact
   const trousers=patch(source,...regions[direction],(r,g,b)=>r>g*1.15&&g>b*1.05&&r>24);
   const boots:Record<ActorDirection,readonly[number,number,number,number]>={front:[35,56,6,11],left:[40,56,6,11],right:[34,56,6,11],back:[31,56,6,11]} as const;
   const boot=patch(source,...boots[direction],(r,g,b)=>r>g*1.25&&g>b*1.1&&r>24);
-  const jacket=patch(source,direction==='back'?35:36,30,6,11,(r,g,b)=>b>r&&b>g*.8);
-  const seat=pelvis(pose,trousers,direction);for(const p of seat.vertices){p.x+=ROOT.x;p.y+=ROOT.y;}
+  const jacket=patch(torso,27,26,29,18,()=>true),root=lowerRoot(pose);
+  const seat=pelvis(pose,trousers,direction);for(const p of seat.vertices){
+    // Keep the left profile's native rear fullness while bringing the legs
+    // under the belly. Moving the complete seat would cut away his backside.
+    if(direction==='left'&&p.y<0)p.y*=1.5;
+    p.x+=root.x;p.y+=root.y;
+  }
   const layers:SpriteLayer[]=[body(pose,jacket,trousers,direction),cloth(seat,pose,trousers,direction)];
   for(const side of ['left','right'] as const){
     const leg=pose[side],width=pose.proportions.legWidth,parts=[cloth(trouserLeg(side,pose,trousers,direction),pose,trousers,direction),
@@ -235,4 +253,4 @@ export function kitLayers(pose:KitPose,direction:ActorDirection,textures:Charact
   layers.push(decal('torso',torso,[27,26,29,18],dy,profile?8:5,direction),decal('head',head,[24,0,33,26],dy,profile?10:8,direction),satchel(pose,source,direction),...arms(pose,source,direction),...(pose.action?aimedCrossbow(pose.weapon!,textures.front,direction):[crossbow(pose.weapon!,textures,direction)]));
   return layers;
 }
-export const renderKit=(frame:number,direction:ActorDirection,textures:CharacterTextures)=>renderLayers(kitLayers(frame<REFERENCE_FRAMES?kitFrame(frame):kitAttackPose(frame===REFERENCE_FRAMES?'windup':'contact'),direction,textures),direction);
+export const renderKit=(frame:number,direction:ActorDirection,textures:CharacterTextures)=>renderLayers(kitLayers(frame<REFERENCE_FRAMES?kitFrame(frame,KIT_PROPORTIONS,direction):kitAttackPose(frame===REFERENCE_FRAMES?'windup':'contact',KIT_PROPORTIONS,direction),direction,textures),direction);

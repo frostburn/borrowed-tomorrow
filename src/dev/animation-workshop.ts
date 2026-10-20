@@ -51,10 +51,10 @@ export class AnimationWorkshop {
   private frames:Uint8ClampedArray[]=[];
   private native=document.createElement('canvas');
   private get selectedWeapon():ReferenceWeapon{return this.skin==='nell'?'lantern':this.skin==='orrin'?'lance':this.skin==='kit'?'crossbow':this.weapon;}
-  private pose(frame:number){return this.skin==='nell'?nellFrame(frame,this.proportions):this.skin==='orrin'?orrinFrame(frame,this.proportions):this.skin==='kit'?kitFrame(frame,this.proportions):referenceRigFrame(frame,this.weapon,this.proportions);}
+  private pose(frame:number){return this.skin==='nell'?nellFrame(frame,this.proportions):this.skin==='orrin'?orrinFrame(frame,this.proportions):this.skin==='kit'?kitFrame(frame,this.proportions,this.direction):referenceRigFrame(frame,this.weapon,this.proportions);}
   private layers(frame:number){
     const pose=this.pose(frame),textures=this.textures[this.skin];
-    return this.skin==='nell'&&textures?nellLayers(pose,this.direction,textures):this.skin==='orrin'&&textures?orrinLayers(pose,this.direction,textures):this.skin==='kit'&&textures?kitLayers(kitFrame(frame,this.proportions),this.direction,textures):referenceLayers(pose,this.anatomy);
+    return this.skin==='nell'&&textures?nellLayers(pose,this.direction,textures):this.skin==='orrin'&&textures?orrinLayers(pose,this.direction,textures):this.skin==='kit'&&textures?kitLayers(kitFrame(frame,this.proportions,this.direction),this.direction,textures):referenceLayers(pose,this.anatomy);
   }
   private loadSkin(skin:Exclude<Skin,'reference'>){
     if(this.textures[skin]||this.loading.has(skin))return;
@@ -111,7 +111,7 @@ export class AnimationWorkshop {
         for(let i=0;i<120;i++){
           if(this.skin==='nell')nellFrame(i/20,candidate);
           else if(this.skin==='orrin')orrinFrame(i/20,candidate);
-          else if(this.skin==='kit')kitFrame(i/20,candidate);
+          else if(this.skin==='kit')kitFrame(i/20,candidate,this.direction);
           else for(const weapon of REFERENCE_WEAPONS)referenceRigFrame(i/20,weapon,candidate);
         }
         this.measurements[this.skin]=candidate;
