@@ -21,6 +21,21 @@ async function begin(page:import('@playwright/test').Page){
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 }
+test('canonical Chapter Three replays arrival with earned equipment and preserves manual saves',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ const original=coastCheckpoint('kitJoined');original.coins=37;await importSave(page,original);
+ await page.getByRole('button',{name:'Save',exact:true}).first().click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();
+ await page.reload();await page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true}).click();
+ await expect(page.getByRole('dialog')).toContainText('Manual save slots remain available');await page.getByRole('button',{name:'Start canonical save',exact:true}).click();
+ await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ const started=(await inspect(page)).state;expect(started.xp).toBe(420);expect(started.activeParty).toEqual(['nell','orrin','kit']);expect(started.flags.petraJoined).toBeUndefined();
+ expect(started.inventory.characters.kit.fitting).toBe('courier-sight');expect(started.inventory.characters.orrin.coat).toBe('work-coat');
+ await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+ await expect.poll(async()=>(await inspect(page)).state.flags.capitalSeen).toBe(true);
+ await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();
+ expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',coins:37,inventory:original.inventory});expect(errors).toEqual([]);
+});
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`capital entry and interrupted Petra recruitment preserve gear on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await begin(page);

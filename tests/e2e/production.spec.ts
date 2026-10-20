@@ -15,6 +15,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
     await expect(page.getByRole('button', { name: 'Begin Chapter One', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Workshop', exact: true })).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true})).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Character workshop' })).toHaveCount(0);
     await expect(page.getByRole('group', { name: 'Development battle tools' })).toHaveCount(0);
   }
@@ -25,6 +26,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);
   expect(built).not.toContain('Begin Chapter Two (canonical)');
+  expect(built).not.toContain('Begin Chapter Three (canonical)');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
 });
