@@ -1,2 +1,2 @@
 import { exportRigAnimation } from './export-rig-animation.mjs';
-await exportRigAnimation('nell',8);
+await exportRigAnimation('nell');

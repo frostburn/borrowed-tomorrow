@@ -4,13 +4,14 @@ import { patch, surface, acrossView, ROUND_SIDES, viewPoint, decal, limb, pelvis
 import { renderLayers, type PixelTexture, type SpriteLayer } from './layered-sprite';
 import { armToGrip, referenceRig, type ReferencePose, type WeaponPose } from './reference-rig';
 import { ORRIN_PROPORTIONS, type RigProportions } from './rig-proportions';
-import { REFERENCE_FRAMES } from './walk-cycle';
+import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, footPoint, REFERENCE_FRAMES } from './walk-cycle';
 
 // Native waist registration, in the actor's anatomical coordinates.
 const LOWER_BODY_ROOT={x:-1.5,y:-4};
+export interface OrrinPose extends ReferencePose { action?:'windup'|'contact' }
 
 /** Orrin carries his native downward-pointing tool, with only a small gait swing. */
-export function orrinPose(phase:number,config:Readonly<RigProportions>=ORRIN_PROPORTIONS):ReferencePose {
+export function orrinPose(phase:number,config:Readonly<RigProportions>=ORRIN_PROPORTIONS):OrrinPose {
   const pose=referenceRig(phase,'lance',config);
   // The native overalls hang behind the chest and slightly toward anatomical
   // left. Move the skeleton, not just its painted silhouette, so contacts and
@@ -28,9 +29,32 @@ export function orrinPose(phase:number,config:Readonly<RigProportions>=ORRIN_PRO
 }
 export const orrinFrame=(frame:number,config:Readonly<RigProportions>=ORRIN_PROPORTIONS)=>orrinPose(frame/REFERENCE_FRAMES,config);
 
+export type OrrinAttackPhase='windup'|'contact';
+
+/** Brace both feet and drive the steam lance forward without changing costume. */
+export function orrinAttackPose(phase:OrrinAttackPhase,config:Readonly<RigProportions>=ORRIN_PROPORTIONS):OrrinPose {
+  const pose=orrinPose(0,config),contact=phase==='contact';
+  pose.hipHeight=config.hipHeight-.6;
+  for(const side of ['left','right'] as const){
+    const leg=pose[side],origin={x:leg.hip.x,y:LOWER_BODY_ROOT.y+(side==='left'?3:-4),z:0},transform={origin,pitch:0};
+    leg.foot={...transform,heel:footPoint(transform,FOOT_HEEL*config.footScale,0),toe:footPoint(transform,FOOT_TOE*config.footScale,0),contact:'sole'};
+    leg.planted=true;leg.phase=0;leg.hip={...leg.hip,z:pose.hipHeight};leg.ankle=footPoint(leg.foot,0,ANKLE_HEIGHT*config.footScale);
+    const dy=leg.ankle.y-leg.hip.y,dz=leg.ankle.z-leg.hip.z,d=Math.hypot(dy,dz);
+    if(d>config.legLength*2)throw new RangeError('Legs cannot reach the attack stance.');
+    const bend=Math.sqrt(Math.max(0,config.legLength**2-d*d/4));
+    leg.knee={x:leg.hip.x,y:leg.hip.y+dy/2-dz/d*bend,z:(leg.hip.z+leg.ankle.z)/2+dy/d*bend};
+    const shoulder={x:pose.arms[side].shoulder.x,y:0,z:pose.hipHeight+config.shoulderHeight},right=side==='right';
+    const reach=(config.upperArmLength+config.forearmLength)/15;
+    const grip={x:shoulder.x,y:(right?(contact?11:-3):(contact?-3:3))*reach,z:shoulder.z-(right?(contact?7:9):12)};
+    pose.arms[side]=armToGrip(shoulder,grip,config);
+  }
+  pose.weapon={...pose.weapon!,grip:pose.arms.right.grip,pitch:(contact?45:-15)*Math.PI/180};
+  return {...pose,action:phase};
+}
+
 /** Native standing artwork has no gait rise. Bind the relaxed arm phase at
  * the resting hip height so sleeves and belt share exactly the same body bob. */
-function orrinBind():ReferencePose {
+function orrinBind():OrrinPose {
   const pose=orrinPose(.25),rise=pose.hipHeight-ORRIN_PROPORTIONS.hipHeight;
   for(const arm of Object.values(pose.arms))for(const point of [arm.shoulder,arm.elbow,arm.wrist,arm.grip])point.z-=rise;
   return pose;
@@ -92,15 +116,25 @@ function garment(id:string,source:PixelTexture,spans:readonly Span[],a:ScreenPoi
   return {id,vertices,faces:[{points:[0,1,2,3],color:0xffffff,unlit:true,texture,uv:[{u:left,v:top},{u:right,v:top},{u:right,v:bottom},{u:left,v:bottom}]}]};
 }
 
-function arms(pose:ReferencePose,source:PixelTexture,direction:ActorDirection):SpriteLayer[]{
+function arms(pose:OrrinPose,source:PixelTexture,direction:ActorDirection):SpriteLayer[]{
   const bind=orrinBind(),layers:SpriteLayer[]=[];
   for(const side of ['left','right'] as const){
     const skin=ARM_SKINS[direction][side];
+    let pixels=source;
+    if(pose.action&&((direction==='left'&&side==='right')||(direction==='right'&&side==='left'))){
+      // Native far-hand fragments border the brass belt. Do not carry those
+      // neighbouring buckle pixels along with a hand that reaches past the bib.
+      pixels={...source,pixels:new Uint8ClampedArray(source.pixels)};
+      for(let i=0;i<pixels.pixels.length;i+=4){
+        const [r,g,b]=pixels.pixels.subarray(i,i+3);
+        if(g>r*.6&&b<g*.6)pixels.pixels[i+3]=0;
+      }
+    }
     const arm=pose.arms[side],rest=bind.arms[side];
     layers.push(
-      garment(`${side}-upper-arm`,source,skin.sleeve,skin.shoulder,skin.elbow,arm.shoulder,arm.elbow,rest.shoulder,rest.elbow,direction,pose.proportions.armWidth),
-      garment(`${side}-forearm`,source,skin.cuff,skin.elbow,skin.wrist,arm.elbow,arm.wrist,rest.elbow,rest.wrist,direction,pose.proportions.armWidth),
-      garment(`${side}-hand`,source,skin.hand,skin.wrist,skin.grip,arm.wrist,arm.grip,rest.wrist,rest.grip,direction,pose.proportions.armWidth));
+      garment(`${side}-upper-arm`,pixels,skin.sleeve,skin.shoulder,skin.elbow,arm.shoulder,arm.elbow,rest.shoulder,rest.elbow,direction,pose.proportions.armWidth),
+      garment(`${side}-forearm`,pixels,skin.cuff,skin.elbow,skin.wrist,arm.elbow,arm.wrist,rest.elbow,rest.wrist,direction,pose.proportions.armWidth),
+      garment(`${side}-hand`,pixels,skin.hand,skin.wrist,skin.grip,arm.wrist,arm.grip,rest.wrist,rest.grip,direction,pose.proportions.armWidth));
   }
   return layers;
 }
@@ -160,7 +194,8 @@ function bootFabric(layer:SpriteLayer,pose:ReferencePose,side:'left'|'right',tex
 }
 
 /** Registered directional cutouts; the partly hidden left nozzle is never mirrored. */
-function lance(weapon:WeaponPose,source:PixelTexture,direction:ActorDirection):SpriteLayer {
+function lance(weapon:WeaponPose,textures:CharacterTextures,direction:ActorDirection,action?:OrrinAttackPhase):SpriteLayer {
+  const source=textures[direction];
   const regions:Record<ActorDirection,readonly[number,number,number,number,number,number]>={
     front:[21,43,11,20,27,41],left:[22,44,13,10,31,43],right:[47,42,11,20,46,42],back:[51,43,8,21,52,42],
   };
@@ -175,6 +210,20 @@ function lance(weapon:WeaponPose,source:PixelTexture,direction:ActorDirection):S
   const bind=orrinBind().arms.right.grip,actual=project(weapon.grip,direction),rest=project(bind,direction);
   const grip={x:gx+actual.x-rest.x,y:gy+actual.y-rest.y},depth=orient(weapon.grip,direction).y+4,c=Math.cos(weapon.pitch),s=Math.sin(weapon.pitch);
   const mesh=decal('right-weapon',texture,[x,y,width,height],0,depth,direction),pivot=viewPoint(grip.x,grip.y,depth,direction);
+  if(direction==='left'&&action){
+    // The far carrying cutout contains only a visible nozzle. Turn the complete
+    // native front tool skin on a view-facing plane when that arm reaches out;
+    // this rotates the prop, never mirrors a character or changes its hand.
+    mesh.faces[0].texture=cutout(textures.front,spans.front);
+    mesh.faces[0].uv=[{u:21,v:43},{u:32,v:43},{u:32,v:63},{u:21,v:63}];
+    const angle=weapon.pitch+Math.PI/4,cos=Math.cos(angle),sin=Math.sin(angle);
+    mesh.vertices=[[21,43],[32,43],[32,63],[21,63]].map(([sx,sy])=>{
+      const dx=sx-27,dy=sy-41;
+      return viewPoint(grip.x+dx*cos-dy*sin,grip.y+dx*sin+dy*cos,depth,direction);
+    });
+    return mesh;
+  }
+
   mesh.vertices=[[x,y],[x+width,y],[x+width,y+height],[x,y+height]].map(([sx,sy])=>{
     const p=viewPoint(grip.x+sx-gx,grip.y+sy-gy,depth,direction),dy=p.y-pivot.y,dz=p.z-pivot.z;
     return {x:p.x,y:pivot.y+dy*c-dz*s,z:pivot.z+dy*s+dz*c};
@@ -182,7 +231,7 @@ function lance(weapon:WeaponPose,source:PixelTexture,direction:ActorDirection):S
   return mesh;
 }
 
-export function orrinLayers(pose:ReferencePose,direction:ActorDirection,textures:CharacterTextures):SpriteLayer[]{
+export function orrinLayers(pose:OrrinPose,direction:ActorDirection,textures:CharacterTextures):SpriteLayer[]{
   const source=textures[direction],head={...source,pixels:new Uint8ClampedArray(source.pixels)},torso={...source,pixels:new Uint8ClampedArray(source.pixels)};
   const armSpans=Object.values(ARM_SKINS[direction]).flatMap(skin=>[...skin.sleeve,...skin.cuff,...skin.hand]);
   for(let y=0;y<80;y++)for(let x=0;x<80;x++){
@@ -216,7 +265,7 @@ export function orrinLayers(pose:ReferencePose,direction:ActorDirection,textures
   layers.push(...arms(pose,source,direction));
   const dy=ORRIN_PROPORTIONS.hipHeight-pose.hipHeight,profile=direction==='left'||direction==='right';
   const rect:readonly[number,number,number,number]=[25,25,30,24];
-  layers.push(decal('torso',torso,rect,dy,profile?11:6,direction),decal('head',head,[20,0,40,34],dy,profile?12:8,direction),lance(pose.weapon!,source,direction));
+  layers.push(decal('torso',torso,rect,dy,profile?11:6,direction),decal('head',head,[20,0,40,34],dy,profile?12:8,direction),lance(pose.weapon!,textures,direction,pose.action));
   return layers;
 }
-export const renderOrrin=(frame:number,direction:ActorDirection,textures:CharacterTextures)=>renderLayers(orrinLayers(orrinFrame(frame),direction,textures),direction);
+export const renderOrrin=(frame:number,direction:ActorDirection,textures:CharacterTextures)=>renderLayers(orrinLayers(frame<REFERENCE_FRAMES?orrinFrame(frame):orrinAttackPose(frame===REFERENCE_FRAMES?'windup':'contact'),direction,textures),direction);

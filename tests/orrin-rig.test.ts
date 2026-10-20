@@ -1,5 +1,6 @@
+import { project } from '../src/art/actor-space';
 import { expect, it } from 'vitest';
-import { orrinPose } from '../src/art/orrin-actor';
+import { orrinAttackPose, orrinPose } from '../src/art/orrin-actor';
 import { ORRIN_PROPORTIONS } from '../src/art/rig-proportions';
 import { STANCE_FRACTION } from '../src/art/walk-cycle';
 import { walkFrameDistance, WALK_STRIDE_DISTANCE, WALK_FRAMES } from '../src/content/actor-motion';
@@ -31,4 +32,23 @@ it('Orrin runtime stride cancels planted-foot movement through heel and toe roll
       expect(leg.foot[key].y+phase*ORRIN_PROPORTIONS.strideDistance).toBeCloseTo(next.foot[key].y+(phase+.0001)*ORRIN_PROPORTIONS.strideDistance,9);
     }
   }
+});
+
+
+it('Orrin braces on fixed flat feet and drives the right-hand lance forward with rigid limbs',()=>{
+  const windup=orrinAttackPose('windup'),contact=orrinAttackPose('contact');
+  for(const pose of [windup,contact]){
+    for(const side of ['left','right'] as const){
+      const leg=pose[side],arm=pose.arms[side];
+      expect(leg.planted).toBe(true);expect(leg.foot.contact).toBe('sole');
+      expect(leg.foot.heel.z).toBe(0);expect(leg.foot.toe.z).toBe(0);expect(leg.foot).toEqual(windup[side].foot);
+      expect(leg.hip.x).toBe(orrinPose(0)[side].hip.x);expect(leg.hip.y).toBe(orrinPose(0)[side].hip.y);
+      for(const [a,b,length] of [[leg.hip,leg.knee,ORRIN_PROPORTIONS.legLength],[leg.knee,leg.ankle,ORRIN_PROPORTIONS.legLength],[arm.shoulder,arm.elbow,ORRIN_PROPORTIONS.upperArmLength],[arm.elbow,arm.wrist,ORRIN_PROPORTIONS.forearmLength]] as const)
+        expect(Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z)).toBeCloseTo(length,9);
+    }
+    expect(pose.weapon?.hand).toBe('right');expect(pose.weapon?.grip).toEqual(pose.arms.right.grip);expect(pose.weapon!.grip.x).toBeGreaterThan(0);
+  }
+  expect(windup.arms.right.grip.y).toBeLessThan(0);expect(contact.arms.right.grip.y).toBeGreaterThan(0);
+  expect(project(contact.arms.right.grip,'left').x).toBeLessThan(project(windup.arms.right.grip,'left').x);
+  expect(project(contact.arms.right.grip,'right').x).toBeGreaterThan(project(windup.arms.right.grip,'right').x);
 });
