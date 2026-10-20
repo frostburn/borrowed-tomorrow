@@ -2,13 +2,13 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { renderLayers } from '../../src/art/layered-sprite';
-import { referenceFrame } from '../../src/art/walk-cycle';
-import { referenceLayers, REFERENCE_LAYERS } from '../../src/dev/reference-actor';
+import { referenceRigFrame, type ReferenceWeapon } from '../../src/art/reference-rig';
+import { referenceLayers, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS } from '../../src/dev/reference-actor';
 import type { ActorDirection } from '../../src/content/actors';
 import { capture } from './controls';
 
-async function nativeFrame(page:Page,frame:number,direction:ActorDirection='right',visible:ReadonlySet<string>=new Set(REFERENCE_LAYERS),anatomy=true){
-  const pixels=Array.from(renderLayers(referenceLayers(referenceFrame(frame),anatomy),direction,visible));
+async function nativeFrame(page:Page,frame:number,direction:ActorDirection='right',visible:ReadonlySet<string>=new Set(REFERENCE_LAYERS),anatomy=true,weapon:ReferenceWeapon='lantern'){
+  const pixels=Array.from(renderLayers(referenceLayers(referenceRigFrame(frame,weapon),anatomy),direction,visible));
   await expect.poll(()=>page.locator('#reference-detail').evaluate((element,pixels)=>{
     const expected=document.createElement('canvas');expected.width=expected.height=240;const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=false;
     for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
@@ -34,17 +34,35 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       while(await host.getAttribute('data-frame')!=='0')await review.getByRole('button',{name:'Next frame',exact:true}).click();
       for(let frame=0;frame<6;frame++){await nativeFrame(page,frame);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
       await expect(host).toHaveAttribute('data-frame','0');await review.getByRole('button',{name:'Previous frame',exact:true}).click();await expect(host).toHaveAttribute('data-frame','5');await review.getByRole('button',{name:'Next frame',exact:true}).click();
-      for(const direction of ['front','left','right','back'] as const){await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();await nativeFrame(page,0,direction);}
+      for(const weapon of ['none','lantern','lance'] as const){
+        await review.locator(`[data-reference-weapon="${weapon}"]`).click();await expect(host).toHaveAttribute('data-weapon',weapon);
+        await expect(review.locator(`[data-reference-weapon="${weapon}"]`)).toHaveAttribute('aria-pressed','true');
+        for(const direction of ['front','left','right','back'] as const){await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();await nativeFrame(page,0,direction,new Set(REFERENCE_LAYERS),true,weapon);}
+      }
       await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
+      for(let frame=0;frame<6;frame++){await nativeFrame(page,frame,'right',new Set(REFERENCE_LAYERS),true,'lance');await review.getByRole('button',{name:'Next frame',exact:true}).click();}
+      await review.locator('[data-reference-weapon="lantern"]').click();
+      await review.getByRole('button',{name:'Arms and weapon',exact:true}).click();await expect(review.getByRole('button',{name:'Arms and weapon',exact:true})).toHaveAttribute('aria-pressed','false');
+      await nativeFrame(page,0,'right',new Set(REFERENCE_LAYERS.filter(id=>!REFERENCE_ARM_LAYERS.some(arm=>arm===id))));
+      await review.getByRole('button',{name:'Arms and weapon',exact:true}).click();await nativeFrame(page,0);
       await review.getByRole('button',{name:'Anatomy colors',exact:true}).click();await nativeFrame(page,0,'right',new Set(REFERENCE_LAYERS),false);await review.getByRole('button',{name:'Anatomy colors',exact:true}).click();
       await review.getByRole('button',{name:'Show Left Shin',exact:true}).click();await nativeFrame(page,0,'right',new Set(REFERENCE_LAYERS.filter(id=>id!=='left-shin')));
       await review.getByRole('button',{name:'Solo Right Foot',exact:true}).click();await expect(host).toHaveAttribute('data-layers','right-foot');await nativeFrame(page,0,'right',new Set(['right-foot']));
       const pngEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();const png=await pngEvent,bytes=await readFile((await png.path())!);
-      expect(png.suggestedFilename()).toBe('reference-right-right-foot-walk.png');expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,240]);
+      expect(png.suggestedFilename()).toBe('reference-lantern-right-right-foot-walk.png');expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,240]);
+      for(const weapon of ['lantern','lance'] as const){
+        await review.getByRole('button',{name:'Solo Right Weapon',exact:true}).click();await review.locator(`[data-reference-weapon="${weapon}"]`).click();
+        await expect(host).toHaveAttribute('data-layers','right-weapon');await nativeFrame(page,0,'right',new Set(['right-weapon']),true,weapon);
+        const event=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();const download=await event,content=await readFile((await download.path())!);
+        expect(download.suggestedFilename()).toBe(`reference-${weapon}-right-right-weapon-walk.png`);expect([content.readUInt32BE(16),content.readUInt32BE(20)]).toEqual([160,240]);
+        await review.getByRole('button',{name:'Show all layers',exact:true}).click();
+      }
+      await review.locator('[data-reference-weapon="lantern"]').click();
       const jsonEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const json=await jsonEvent,data=JSON.parse(await readFile((await json.path())!,'utf8'));
       expect(data.anchor).toEqual([40,68]);expect(data.layers).toEqual([...REFERENCE_LAYERS]);expect(data.frames).toHaveLength(6);
-      expect(data.version).toBe(2);expect(data.frames[0].pose.left.foot.contact).toBe('heel');expect(data.frames[3].pose.left.foot.contact).toBe('toe');
+      expect(data.version).toBe(3);expect(data.weapon).toBe('lantern');expect(data.frames[0].pose.left.foot.contact).toBe('heel');expect(data.frames[3].pose.left.foot.contact).toBe('toe');
       expect(data.frames[0].pose.left.foot.heel.z).toBeCloseTo(0);expect(data.frames[3].pose.left.foot.toe.z).toBeCloseTo(0);
+      for(const frame of data.frames){expect(frame.pose.weapon.hand).toBe('right');expect(frame.pose.weapon.grip).toEqual(frame.pose.arms.right.grip);expect(frame.pose.arms.left.shoulder.x).toBeLessThan(0);expect(frame.pose.arms.right.shoulder.x).toBeGreaterThan(0);}
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeFrame(page,0);
       await review.getByRole('button',{name:'Joint guides',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`layered-reference-${device}`);

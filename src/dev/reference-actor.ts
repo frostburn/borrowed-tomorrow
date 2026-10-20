@@ -1,8 +1,10 @@
-import { FOOT_HEEL, FOOT_TOE, footPoint, LEG_COLORS, referencePose, type LegPose, type WalkPose } from '../art/walk-cycle';
+import { FOOT_HEEL, FOOT_TOE, footPoint, LEG_COLORS, type LegPose } from '../art/walk-cycle';
+import { referenceRig, weaponPoint, type ArmPose, type ReferencePose, type WeaponPose } from '../art/reference-rig';
 import type { Point3 } from '../art/actor-space';
 import type { SpriteLayer } from '../art/layered-sprite';
 
-export const REFERENCE_LAYERS = ['head','torso','left-thigh','left-shin','left-foot','right-thigh','right-shin','right-foot'] as const;
+export const REFERENCE_ARM_LAYERS = ['left-upper-arm','left-forearm','left-hand','right-upper-arm','right-forearm','right-hand','right-weapon'] as const;
+export const REFERENCE_LAYERS = ['head','torso',...REFERENCE_ARM_LAYERS,'left-thigh','left-shin','left-foot','right-thigh','right-shin','right-foot'] as const;
 export type ReferenceLayer=typeof REFERENCE_LAYERS[number];
 export const layerName=(id:string)=>id.split('-').map(word=>word[0].toUpperCase()+word.slice(1)).join(' ');
 
@@ -32,8 +34,40 @@ function legLayers(side:'left'|'right',leg:LegPose,colored:boolean):SpriteLayer[
     shoe([[-3.8,1.2],[8,1.2],[8,2.2],[6.5,3.3],[1,5],[-3,5]],6,colored?(side==='left'?0x438e94:0xb77a3e):0x966b48)];
 }
 
-/** Armless mannequin: same parts and anatomy in all views; nothing is mirrored. */
-export function referenceLayers(pose:WalkPose=referencePose(0),colored=true):SpriteLayer[]{
+function armLayers(side:'left'|'right',arm:ArmPose,colored:boolean):SpriteLayer[]{
+  const color=colored?LEG_COLORS[side]:0x8e9b9c,g=arm.grip;
+  return [segment(`${side}-upper-arm`,arm.shoulder,arm.elbow,4.5,4.5,color),
+    segment(`${side}-forearm`,arm.elbow,arm.wrist,4,4,colored?color:0x778594),
+    part(`${side}-hand`,[[g.y-1.7,g.z-1.6],[g.y+1.7,g.z-1.6],[g.y+1.7,g.z+1.6],[g.y-1.7,g.z+1.6]],g.x,4.5,0xe4c494)];
+}
+
+function weaponLayers(weapon:WeaponPose):SpriteLayer[]{
+  const piece=(profile:readonly (readonly [number,number])[],width:number,color:number,unlit=false)=>{
+    const mesh=part('right-weapon',profile,0,width,color);
+    mesh.vertices=mesh.vertices.map(p=>weaponPoint(weapon,p.y,p.z,p.x));
+    if(unlit)for(const face of mesh.faces)face.unlit=true;
+    return mesh;
+  };
+  if(weapon.kind==='lantern')return [
+    piece([[-2,-4],[-1,-4],[-1,0],[-2,0]],2,0x9c793f),
+    piece([[1,-4],[2,-4],[2,0],[1,0]],2,0x9c793f),
+    piece([[-2,-.8],[2,-.8],[2,0],[-2,0]],2,0x9c793f),
+    piece([[-2.5,-10],[2.5,-10],[2.5,-5],[-2.5,-5]],5,0xffd57d,true),
+    piece([[-3.2,-11],[3.2,-11],[3.2,-10],[-3.2,-10]],6.4,0xa87a3f),
+    piece([[-3.2,-5],[3.2,-5],[2,-3.8],[-2,-3.8]],6.4,0xa87a3f),
+  ];
+  return [
+    piece([[-9,-2],[-3,-2],[0,-.5],[0,1],[-4,2],[-9,2]],4,0x77583e),
+    piece([[-1,-3],[2,-3],[2,1],[-1,1]],3,0x4a5960),
+    piece([[1,-2],[8,-2],[8,2],[1,2]],5.5,0xb28a4f),
+    piece([[6,-1],[16,-1],[16,1.5],[6,1.5]],3,0x9eafb2),
+    piece([[15,-2],[18,-2],[18,2.5],[15,2.5]],5,0x687d86),
+    piece([[17.5,-1],[18.2,-1],[18.2,1.5],[17.5,1.5]],3,0x293d45),
+  ];
+}
+
+/** One mannequin and right-hand attachment in all views; nothing is mirrored. */
+export function referenceLayers(pose:ReferencePose=referenceRig(0),colored=true):SpriteLayer[]{
   const z=pose.hipHeight;
   const torso=part('torso',[[-4,z-1],[4,z-1],[5,z+13],[3,z+17],[-3,z+17],[-5,z+13]],0,15,0x8e9b9c);
   const neck=part('torso',[[-2,z+16],[2,z+16],[2,z+20],[-2,z+20]],0,6,0xe4c494);
@@ -44,5 +78,6 @@ export function referenceLayers(pose:WalkPose=referencePose(0),colored=true):Spr
     const i=eyes.vertices.length;eyes.vertices.push({x:x-.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+27.5},{x:x-.7,y:6.1,z:z+27.5});
     eyes.faces.push({points:[i,i+1,i+2,i+3],color:0x1c2930,unlit:true});
   }
-  return [...legLayers('left',pose.left,colored),...legLayers('right',pose.right,colored),torso,neck,head,nose,eyes];
+  return [...legLayers('left',pose.left,colored),...legLayers('right',pose.right,colored),torso,neck,head,nose,eyes,
+    ...(pose.weapon?weaponLayers(pose.weapon):[]),...armLayers('left',pose.arms.left,colored),...armLayers('right',pose.arms.right,colored)];
 }

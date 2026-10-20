@@ -1,10 +1,11 @@
 import { expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { ACTOR_DIRECTIONS } from '../src/content/actors';
-import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, LEG_LENGTH, referenceFrame, referencePose, STANCE_FRACTION, STRIDE_DISTANCE } from '../src/art/walk-cycle';
+import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, LEG_LENGTH, referenceFrame as walkFrame, STANCE_FRACTION, STRIDE_DISTANCE } from '../src/art/walk-cycle';
+import { FOREARM_LENGTH, referenceRigFrame as referenceFrame, referenceRig as referencePose, REFERENCE_WEAPONS, UPPER_ARM_LENGTH, weaponPoint } from '../src/art/reference-rig';
 import { project } from '../src/art/actor-space';
 import { renderLayers } from '../src/art/layered-sprite';
-import { referenceLayers } from '../src/dev/reference-actor';
+import { REFERENCE_ARM_LAYERS, REFERENCE_LAYERS, referenceLayers } from '../src/dev/reference-actor';
 
 it('the walk keeps both bone lengths fixed, clears the floor and always has support',()=>{
   for(let i=0;i<240;i++){
@@ -13,8 +14,8 @@ it('the walk keeps both bone lengths fixed, clears the floor and always has supp
       const {hip,knee,ankle,foot}=pose[side];
       for(const [a,b] of [[hip,knee],[knee,ankle]])expect(Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z)).toBeCloseTo(LEG_LENGTH,10);
       for(const point of [foot.heel,foot.toe])expect(point.z).toBeGreaterThanOrEqual(-1e-10);
-      for(const layer of referenceLayers(pose))for(const vertex of layer.vertices)expect(vertex.z).toBeGreaterThanOrEqual(-1e-10);
     }
+    for(const layer of referenceLayers(pose))for(const vertex of layer.vertices)expect(vertex.z).toBeGreaterThanOrEqual(-1e-10);
   }
   for(const [phase,side] of [[.3,'left'],[.8,'right']] as const){
     const {hip,ankle}=referencePose(phase)[side];
@@ -71,18 +72,71 @@ it('anatomical right stays left in front, right in back, near in right profile a
   expect(project(right,'left').depth).toBeLessThan(project(left,'left').depth);
 });
 
-it('all views rasterize six distinct native poses with clean alpha, editable layers and a stable head',()=>{
-  for(const direction of ACTOR_DIRECTIONS){
+it('all loadouts and views rasterize six native poses with clean alpha, editable layers and a stable head',()=>{
+  for(const weapon of REFERENCE_WEAPONS)for(const direction of ACTOR_DIRECTIONS){
     const hashes=[];
     for(let frame=0;frame<6;frame++){
-      const layers=referenceLayers(referenceFrame(frame)),pixels=renderLayers(layers,direction);
+      const layers=referenceLayers(referenceFrame(frame,weapon)),pixels=renderLayers(layers,direction);
       expect(pixels).toHaveLength(80*80*4);hashes.push(createHash('sha256').update(pixels).digest('hex'));
       const alpha=pixels.filter((_,i)=>i%4===3);expect(new Set(alpha)).toEqual(new Set([0,255]));
       for(let i=0;i<80;i++)for(const pixel of [i,79*80+i,i*80,i*80+79])expect(pixels[pixel*4+3]).toBe(0);
       expect(renderLayers(layers,direction,new Set()).some(n=>n!==0)).toBe(false);
     }
     expect(new Set(hashes).size).toBe(6);
-    const head=(frame:number)=>renderLayers(referenceLayers(referenceFrame(frame)),direction,new Set(['head']));
+    const head=(frame:number)=>renderLayers(referenceLayers(referenceFrame(frame,weapon)),direction,new Set(['head']));
     for(let i=0;i<3;i++)expect(head(i)).toEqual(head(i+3));
+  }
+});
+
+it('both arm bones stay rigid and weapons stay attached to the anatomical right hand through the whole cycle',()=>{
+  for(const weapon of REFERENCE_WEAPONS){
+    expect(referencePose(1,weapon)).toEqual(referencePose(0,weapon));
+    for(let i=0;i<120;i++){
+      const pose=referencePose(i/120,weapon);
+      for(const side of ['left','right'] as const){
+        const {shoulder,elbow,wrist,grip}=pose.arms[side];
+        expect(Math.hypot(shoulder.y-elbow.y,shoulder.z-elbow.z)).toBeCloseTo(UPPER_ARM_LENGTH,10);
+        expect(Math.hypot(elbow.y-wrist.y,elbow.z-wrist.z)).toBeCloseTo(FOREARM_LENGTH,10);
+        expect(grip.x*(side==='right'?1:-1)).toBeGreaterThan(0);
+      }
+      if(weapon==='none')expect(pose.weapon).toBeNull();
+      else{
+        expect(pose.weapon?.hand).toBe('right');expect(pose.weapon?.grip).toEqual(pose.arms.right.grip);
+        expect(weaponPoint(pose.weapon!,0,0)).toEqual(pose.arms.right.grip);
+        for(const vertex of referenceLayers(pose).filter(layer=>layer.id==='right-weapon').flatMap(layer=>layer.vertices))expect(vertex.x).toBeGreaterThan(0);
+      }
+    }
+    for(let i=0;i<6;i++){
+      const pose=referenceFrame(i,weapon),walk=walkFrame(i);
+      expect(pose.left).toEqual(walk.left);expect(pose.right).toEqual(walk.right);expect(pose.hipHeight).toBe(walk.hipHeight);
+    }
+  }
+});
+
+it('right-hand grip depth and screen side are anatomical while the left arm counter-swings',()=>{
+  for(const weapon of REFERENCE_WEAPONS)for(let i=0;i<6;i++){
+    const pose=referenceFrame(i,weapon),left=pose.arms.left.grip,right=pose.arms.right.grip;
+    expect(project(right,'front').x).toBeLessThan(40);expect(project(right,'back').x).toBeGreaterThan(40);
+    // Compare at the same forward position and height to isolate the near/far side.
+    const opposite={...right,x:left.x};
+    expect(project(right,'right').depth).toBeGreaterThan(project(opposite,'right').depth);
+    expect(project(right,'left').depth).toBeLessThan(project(opposite,'left').depth);
+  }
+  expect(referenceFrame(0).arms.left.grip.y).toBeLessThan(0);expect(referenceFrame(3).arms.left.grip.y).toBeGreaterThan(0);
+  for(const weapon of ['lantern','lance'] as const){
+    const carry=Array.from({length:6},(_,i)=>referenceFrame(i,weapon).arms.right.grip.y);
+    expect(Math.max(...carry)-Math.min(...carry)).toBeLessThan(3);
+  }
+});
+
+it('arms and weapon layers isolate cleanly and hiding them preserves the armless reference',()=>{
+  const body=new Set(REFERENCE_LAYERS.filter(id=>!REFERENCE_ARM_LAYERS.some(arm=>arm===id)));
+  for(let i=0;i<6;i++)for(const direction of ACTOR_DIRECTIONS){
+    const base=renderLayers(referenceLayers(referenceFrame(i)),direction,body);
+    for(const weapon of ['lantern','lance'] as const){
+      const layers=referenceLayers(referenceFrame(i,weapon));
+      expect(renderLayers(layers,direction,body)).toEqual(base);
+      for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(true);
+    }
   }
 });
