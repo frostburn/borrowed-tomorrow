@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export six walk poses into bounded native pages, retaining native attacks.
+"""Export Orrin's six walk poses into native pages, retaining native attacks.
 Usage: python3 scripts/import-character-animation.py GENERATED_SOURCE_DIRECTORY
 Requires Pillow; source sheets stay outside git.
 """
@@ -27,7 +27,7 @@ def isolate(image):
     mask=bytearray(len(p))
     for i in largest:mask[i]=p[i]
     image.putalpha(Image.frombytes('L',image.size,bytes(mask)));return image
-for hero in ['nell','orrin']:
+for hero in ['orrin']:
     for direction,source in manifest[hero]['walkSources'].items():
       sheet=Image.open(sources/source).convert('RGBA')
       idle=Image.open(root/f"public/art/{hero}{'' if direction=='front' else '-'+direction}.png").convert('RGBA')

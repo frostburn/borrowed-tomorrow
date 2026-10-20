@@ -3,6 +3,7 @@ import { LAYERED_SIZE, renderLayers } from '../art/layered-sprite';
 import { FOOT_HEEL, FOOT_TOE, LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES, referencePose, STRIDE_DISTANCE } from '../art/walk-cycle';
 import { project } from '../art/actor-space';
 import { referenceRigFrame, REFERENCE_WEAPONS, weaponPoint, type ReferencePose, type ReferenceWeapon } from '../art/reference-rig';
+import { nellFrame, nellLayers, type NellTextures } from '../art/nell-actor';
 import { layerName, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS, referenceLayers } from './reference-actor';
 
 const phases=['Left contact','Left support','Right passing','Right contact','Right support','Left passing'];
@@ -15,6 +16,10 @@ export class AnimationWorkshop {
   private host?:HTMLElement;
   private direction:ActorDirection='right';
   private weapon:ReferenceWeapon='lantern';
+  private skin:'reference'|'nell'='reference';
+  private nellTextures?:NellTextures;
+  private nellLoading=false;
+  private nellError=false;
   private visible=new Set<string>(REFERENCE_LAYERS);
   private anatomy=true;
   private joints=false;
@@ -27,6 +32,18 @@ export class AnimationWorkshop {
   private paintedTick=NaN;
   private frames:Uint8ClampedArray[]=[];
   private native=document.createElement('canvas');
+  private get selectedWeapon(){return this.skin==='nell'?'lantern':this.weapon;}
+  private pose(frame:number){return this.skin==='nell'?nellFrame(frame):referenceRigFrame(frame,this.weapon);}
+  private layers(frame:number){const pose=this.pose(frame);return this.skin==='nell'&&this.nellTextures?nellLayers(pose,this.direction,this.nellTextures):referenceLayers(pose,this.anatomy);}
+  private loadNell(){
+    if(this.nellTextures||this.nellLoading)return;
+    this.nellLoading=true;this.nellError=false;
+    void Promise.all(ACTOR_DIRECTIONS.map(async direction=>{
+      const image=new Image();image.src=new URL(`../../assets/characters/nell-skin/${direction}.png`,import.meta.url).href;await image.decode();
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=80;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
+      return [direction,{width:80,height:80,pixels:ctx.getImageData(0,0,80,80).data}] as const;
+    })).then(entries=>{this.nellTextures=Object.fromEntries(entries) as NellTextures;}).catch(()=>{this.nellError=true;}).finally(()=>{this.nellLoading=false;if(this.host)this.render();});
+  }
 
   show(host:HTMLElement){this.host=host;this.started=performance.now();this.native.width=this.native.height=LAYERED_SIZE;this.render();}
   hide(){if(this.host)this.pause();this.host=undefined;if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;}
@@ -36,12 +53,13 @@ export class AnimationWorkshop {
     if(!this.host)return;
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
     const host=this.host;
-    host.innerHTML=`<section class="animation-review" aria-label="Layered animation reference"><header><h2>Layered reference</h2><p>Reference walker / 80 x 80 / six frames. Anatomical left: teal. Right: amber. Weapons stay in the right hand.</p></header>
-      <div class="animation-controls" role="group" aria-label="Reference weapon">${REFERENCE_WEAPONS.map(weapon=>`<button data-reference-weapon="${weapon}" aria-pressed="${weapon===this.weapon}">${weaponName[weapon]}</button>`).join('')}</div>
+    host.innerHTML=`<section class="animation-review" aria-label="Layered animation reference"><header><h2>Layered reference</h2><p>${this.skin==='nell'?'Nell / 80 x 80 / six rigged frames. Original face and costume pixels; right-hand lantern.':'Reference walker / 80 x 80 / six frames. Anatomical left: teal. Right: amber. Weapons stay in the right hand.'}</p></header>
+      <div class="animation-controls" role="group" aria-label="Reference skin"><button data-reference-skin="reference" aria-pressed="${this.skin==='reference'}">Mannequin</button><button data-reference-skin="nell" aria-pressed="${this.skin==='nell'}">Nell</button>${this.nellLoading?'<span>Loading Nell skin...</span>':this.nellError?'<span>Nell skin could not load. Select Nell to retry.</span>':''}</div>
+      <div class="animation-controls" role="group" aria-label="Reference weapon">${REFERENCE_WEAPONS.map(weapon=>`<button data-reference-weapon="${weapon}" aria-pressed="${weapon===this.selectedWeapon}" ${this.skin==='nell'&&weapon!=='lantern'?'disabled':''}>${weaponName[weapon]}</button>`).join('')}</div>
       <div class="animation-controls"><div role="group" aria-label="Reference facing">${ACTOR_DIRECTIONS.map(d=>`<button data-reference-facing="${d}" aria-pressed="${d===this.direction}">${layerName(d)}</button>`).join('')}</div>
       <div role="group" aria-label="Reference playback"><button id="reference-previous">Previous frame</button><button id="reference-play">${this.playing?'Pause':'Play'}</button><button id="reference-next">Next frame</button></div>
       <div role="group" aria-label="Reference speed">${[.5,1,2].map(speed=>`<button data-reference-speed="${speed}" aria-pressed="${speed===this.speed}">${speed}x</button>`).join('')}</div></div>
-      <p id="reference-phase" aria-live="off"></p><div class="animation-controls" role="group" aria-label="Reference guides"><button id="reference-joints" aria-pressed="${this.joints}">Joint guides</button><button id="reference-paths" aria-pressed="${this.paths}">Foot paths</button><button id="reference-anatomy" aria-pressed="${this.anatomy}">Anatomy colors</button></div>
+      <p id="reference-phase" aria-live="off"></p><div class="animation-controls" role="group" aria-label="Reference guides"><button id="reference-joints" aria-pressed="${this.joints}">Joint guides</button><button id="reference-paths" aria-pressed="${this.paths}">Foot paths</button><button id="reference-anatomy" aria-pressed="${this.anatomy}" ${this.skin==='nell'?'disabled':''}>Anatomy colors</button></div>
       <div class="animation-layout"><section><h3>Assembled / 3x</h3><canvas width="240" height="240" id="reference-detail" role="img" aria-label="Layered reference at 3x"></canvas></section>
       <section class="animation-floor"><h3>Moving floor / 1x</h3><div class="animation-scroll"><canvas width="320" height="128" id="reference-floor" role="img" aria-label="Reference walking over fixed foot contacts"></canvas></div><p id="reference-contacts"></p><p>Floor marks move 40 pixels per cycle. Each foot rolls from its fixed heel mark to its toe mark.</p></section>
       <section><h3>Layers</h3><div class="animation-layers">${REFERENCE_LAYERS.map(id=>`<div><button data-reference-layer="${id}" aria-label="Show ${layerName(id)}" aria-pressed="${this.visible.has(id)}">${layerName(id)}</button><button data-reference-solo="${id}" aria-label="Solo ${layerName(id)}" aria-pressed="${this.visible.size===1&&this.visible.has(id)}">Solo</button></div>`).join('')}</div><div class="animation-controls"><button id="reference-all">Show all layers</button><button id="reference-arms" aria-pressed="${REFERENCE_ARM_LAYERS.some(id=>this.visible.has(id))}">Arms and weapon</button></div></section></div>
@@ -56,6 +74,7 @@ export class AnimationWorkshop {
       };
     };
     bind('[data-reference-facing]',b=>{this.direction=b.dataset.referenceFacing as ActorDirection;});
+    bind('[data-reference-skin]',b=>{this.skin=b.dataset.referenceSkin as 'reference'|'nell';if(this.skin==='nell')this.loadNell();});
     bind('[data-reference-weapon]',b=>{this.weapon=b.dataset.referenceWeapon as ReferenceWeapon;});
     bind('[data-reference-speed]',b=>{const wasPlaying=this.playing;this.pause();this.speed=Number(b.dataset.referenceSpeed);this.started=performance.now();this.playing=wasPlaying;});
     bind('#reference-play',()=>{if(this.playing)this.pause();else{this.started=performance.now();this.playing=true;}});
@@ -71,7 +90,7 @@ export class AnimationWorkshop {
     bind('#reference-export-frame',()=>{this.exportPng(false);});
     bind('#reference-export-cycle',()=>{this.exportPng(true);});
     bind('#reference-export-pose',()=>{this.exportPose();});
-    this.frames=Array.from({length:REFERENCE_FRAMES},(_,i)=>renderLayers(referenceLayers(referenceRigFrame(i,this.weapon),this.anatomy),this.direction,this.visible));
+    this.frames=Array.from({length:REFERENCE_FRAMES},(_,i)=>renderLayers(this.layers(i),this.direction,this.visible));
     this.paint();this.loop();
   }
   private loop(){
@@ -85,7 +104,7 @@ export class AnimationWorkshop {
   private source(frame:number){this.native.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(this.frames[frame]),80,80),0,0);return this.native;}
   private paint(){
     if(!this.host)return;
-    const tick=this.currentTick(),frame=frameOf(tick),pose=referenceRigFrame(frame,this.weapon),travel=tick/REFERENCE_FRAMES*STRIDE_DISTANCE;
+    const tick=this.currentTick(),frame=frameOf(tick),pose=this.pose(frame),travel=tick/REFERENCE_FRAMES*STRIDE_DISTANCE;
     this.paintedTick=tick;const detail=this.host.querySelector<HTMLCanvasElement>('#reference-detail')!.getContext('2d')!,floor=this.host.querySelector<HTMLCanvasElement>('#reference-floor')!.getContext('2d')!,strip=this.host.querySelector<HTMLCanvasElement>('#reference-strip')!.getContext('2d')!;
     for(const ctx of [detail,floor,strip])this.backdrop(ctx);
     // Draw the floor in world coordinates relative to a camera following the root.
@@ -110,7 +129,7 @@ export class AnimationWorkshop {
     this.host.querySelector('#reference-phase')!.textContent=`Frame ${frame+1} / ${REFERENCE_FRAMES} · ${phases[frame]}`;
     const contact=(side:'left'|'right')=>pose[side].planted?`${pose[side].foot.contact} contact`:'swing';
     this.host.querySelector('#reference-contacts')!.textContent=`Left: ${contact('left')} · Right: ${contact('right')}`;
-    this.host.dataset.frame=String(frame);this.host.dataset.weapon=this.weapon;this.host.dataset.layers=[...this.visible].join(',');this.host.dataset.paint=String(Number(this.host.dataset.paint??0)+1);
+    this.host.dataset.frame=String(frame);this.host.dataset.skin=this.skin;this.host.dataset.weapon=this.selectedWeapon;this.host.dataset.layers=[...this.visible].join(',');this.host.dataset.paint=String(Number(this.host.dataset.paint??0)+1);
   }
   private drawJoints(ctx:CanvasRenderingContext2D,pose:ReferencePose,scale:number,dx:number,dy:number){
     for(const side of ['left','right'] as const){
@@ -132,11 +151,13 @@ export class AnimationWorkshop {
     if(cycle)for(let i=0;i<REFERENCE_FRAMES;i++)ctx.drawImage(this.source(i),i%2*80,Math.floor(i/2)*80);
     else ctx.drawImage(this.source(frameOf(this.currentTick())),0,0);
     const selection=this.visible.size===REFERENCE_LAYERS.length?'all':this.visible.size===1?[...this.visible][0]:'selection';
-    canvas.toBlob(blob=>{if(blob)download(blob,`reference-${this.weapon}-${this.direction}-${selection}-${cycle?'walk':'frame'}.png`);},'image/png');
+    const prefix=this.skin==='nell'?'nell':`reference-${this.weapon}`;
+    canvas.toBlob(blob=>{if(blob)download(blob,`${prefix}-${this.direction}-${selection}-${cycle?'walk':'frame'}.png`);},'image/png');
   }
   private exportPose(){
-    const document={version:3,size:[80,80],anchor:[40,68],direction:this.direction,weapon:this.weapon,frameMs:REFERENCE_FRAME_MS,cycleDistance:STRIDE_DISTANCE,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*STRIDE_DISTANCE,pose:referenceRigFrame(i,this.weapon)}))};
-    download(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`reference-${this.weapon}-${this.direction}-poses.json`);
+    const document={version:4,size:[80,80],anchor:[40,68],direction:this.direction,skin:this.skin,weapon:this.selectedWeapon,frameMs:REFERENCE_FRAME_MS,cycleDistance:STRIDE_DISTANCE,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*STRIDE_DISTANCE,pose:this.pose(i)}))};
+    const prefix=this.skin==='nell'?'nell':`reference-${this.weapon}`;
+    download(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`${prefix}-${this.direction}-poses.json`);
   }
 }
 

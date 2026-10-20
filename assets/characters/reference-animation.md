@@ -1,6 +1,6 @@
 # Layered walk reference
 
-Open `?dev=animation` in Vite or choose **Animation** in the workshop. The mannequin is an editable reference for establishing motion before applying character artwork. Choose Unarmed, Lantern (Nell) or Steam lance (Orrin). **Arms and weapon** hides the new parts together to recover the accepted armless reference. Its source is deterministic geometry and joint data, with no generated raster poses.
+Open `?dev=animation` in Vite or choose **Animation** in the workshop. The mannequin is an editable reference for establishing motion before applying character artwork. Choose the **Mannequin** or **Nell** skin. The mannequin offers Unarmed, Lantern (Nell) and Steam lance (Orrin); Nell uses her own lantern skin. **Arms and weapon** hides those parts together to recover the armless reference. The motion source is deterministic geometry and joint data, with no generated raster poses.
 
 ## Parts and coordinate system
 
@@ -9,6 +9,8 @@ Open `?dev=animation` in Vite or choose **Animation** in the workshop. The manne
 `src/art/actor-space.ts` defines anatomical right as positive x, forward as positive y and up as positive z. Four camera orientations project the same parts onto an 80 x 80 frame around ground anchor (40,68). Right is viewer left in front, viewer right in back, near in right profile and far in left profile. No part is mirrored to change direction.
 
 `src/art/layered-sprite.ts` rasterizes editable part geometry with a depth buffer. Parts occlude one another according to their actual positions, including when the legs cross. The silhouette has a one-pixel outline. Every output pixel is opaque or transparent; there is no antialiasing or runtime fitting of the frame.
+
+Nell attaches her native face/cap/braids and costume pixels to the same layered renderer, with twelve-pixel leg bones retargeted to her compact proportions. Her foot trajectories and right-hand grip use the accepted reference motion. Canonical 80 x 80 skin textures preserve source RGB with crisp alpha, so browser previews match the baked game frames exactly. Anatomy colors are disabled for this actual-art skin; joint guides still identify each side. See `nell-rig.md` for the source and export recipe. Gameplay uses the small baked PNG pages and does not load this authoring model.
 
 ## Gait
 
@@ -32,7 +34,7 @@ Every weapon part uses `weaponPoint` around the right hand's grip; the weapon po
 
 The 3x inspector and native six-frame strip use the same layer buffers as the exports. The moving floor follows the root: alternating teal/amber footprints mark fixed heel and toe locations. A supporting foot must roll between those marks across successive frames. The contact readout distinguishes heel, sole, toe and swing. Joint guides expose hips, knees, ankles, heels, toes, shoulders, elbows, wrists, grips and the right-hand weapon attachment. Foot paths show the local trajectory of each ankle. Switching a weapon preserves the current playback/frame state and layer selection.
 
-**Export frame PNG** writes the current visible layers on an 80 x 80 transparent frame. **Export six frames PNG** writes six such frames in a 160 x 240 page. Solo a layer before exporting to obtain that part's complete cycle. Guides, backgrounds and anatomy markers outside the character are excluded. Filenames include the weapon selection, camera direction and visible layer selection, so lantern and lance exports remain distinguishable. **Export pose data** writes all six leg/arm joint poses, foot origins/pitches, heel/toe landmarks, contact states, the right-hand weapon grip/pitch, root travel, anatomy IDs, camera direction and native anchor as version-3 JSON. These controls do not write campaign saves, inventory or character builds.
+**Export frame PNG** writes the current visible layers on an 80 x 80 transparent frame. **Export six frames PNG** writes six such frames in a 160 x 240 page. Solo a layer before exporting to obtain that part's complete cycle. Guides, backgrounds and anatomy markers outside the character are excluded. Filenames identify Nell or the mannequin's weapon selection, camera direction and visible layers. **Export pose data** writes the skin/weapon selection, all six leg/arm joint poses, foot origins/pitches, heel/toe landmarks, contact states, the right-hand weapon grip/pitch, root travel, anatomy IDs, camera direction and native anchor as version-4 JSON. These controls do not write campaign saves, inventory or character builds.
 
 To extend this reference, edit part profiles/materials and bone attachment data in the source, review one profile's contacts and passing poses, then inspect the other orientations. Keep the ground-contact pivots fixed and limb lengths constant when changing proportions or stride. New weapons must attach through the right grip rather than derive their hand from screen coordinates.
 

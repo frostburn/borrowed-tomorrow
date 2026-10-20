@@ -1,0 +1,13 @@
+# Nell's reference-based walk
+
+`src/art/nell-actor.ts` skins the accepted mannequin rig. `nellPose` keeps its foot positions, heel/toe rotations and 40-pixel root travel, retargets both leg bones to 12 pixels, lowers the hips by 5.8 pixels, then solves forward-bending knees. Arm lengths and the right-hand lantern attachment remain rigid. Her face and costume retain the original compact proportions.
+
+The four existing `public/art/nell*.png` idle actors supply independent directional skins. The exporter prepares four 80 x 80 skins in `assets/characters/nell-skin/`, copying source RGB and setting alpha to 0 or 255 at the existing 128 threshold. Both the workshop and exporter use these canonical pixels, avoiding canvas premultiplication rounding at partially transparent edges. Head/cap/face pixels keep their native size and move together vertically with the hips. Masked braid pixels remain attached to the head; the central jacket/overalls retain the original torso details. Moving upper arms, forearms, thighs, shins and boots are textured from small garment patches. Transparent samples in these solid material patches use the nearest valid garment sample. The lantern has native warm glass pixels and modeled brass cage bars. No direction is mirrored.
+
+`src/art/layered-sprite.ts` supports nearest-neighbor textured faces alongside solid materials. Texture alpha participates in the depth buffer: transparent head/costume pixels leave farther limbs visible, while the near arm can occlude the torso. Source RGB values are copied without blending or palette reduction. The assembled silhouette receives the same one-pixel outline as the reference.
+
+Open `?dev=animation` and choose **Nell** to inspect the actual skin with joint/foot guides, frame stepping and layer hide/solo controls. Nell uses her lantern preset; the mannequin retains Unarmed and Orrin lance options. The skin, source textures and authoring renderer stay dev-only. Native frame/cycle exports reflect the selected layers; pose JSON identifies the Nell skin and its right-hand attachment.
+
+Run `node scripts/export-nell-animation.mjs` to bake all four six-frame walks into `public/art/animation/nell-*.png`. The exporter uses Vite's development transform and Python/Pillow, keeps the existing attack row intact, and writes only four small 160 x 320 pages. Builds consume those pages without running the authoring tools. Re-running the exporter must produce identical PNG bytes. Idle actors, portrait and Orrin's pages remain unchanged.
+
+`src/content/actor-motion.ts` owns the production stride contract: Nell's cycle spans 40 native pixels, matching her fixed heel/toe contacts; Orrin retains 60 pixels. Keep the authoring stride and runtime distance in agreement when changing the gait.

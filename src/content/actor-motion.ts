@@ -7,8 +7,9 @@ export const WALK_PHASES = ['Left contact','Left support','Right passing','Right
 export const WALK_FRAMES = WALK_PHASES.length;
 export const WALK_FRAME_MS = 80;
 export const WALK_CYCLE_MS = WALK_FRAMES * WALK_FRAME_MS;
-// One stride covers 60 native pixels. In-game gait follows travel, not a timer.
-export const WALK_FRAME_DISTANCE = 10;
+// Nell's rig advances 40 pixels per stride; Orrin retains his existing 60-pixel walk.
+export const WALK_STRIDE_DISTANCE = {nell:40,orrin:60} as const;
+export const walkFrameDistance = (hero:MotionHero) => WALK_STRIDE_DISTANCE[hero]/WALK_FRAMES;
 export const ATTACK_WINDUP_FRAME = WALK_FRAMES;
 export const ATTACK_CONTACT_FRAME = WALK_FRAMES + 1;
 export const ATTACK_CONTACT_MS = 140;

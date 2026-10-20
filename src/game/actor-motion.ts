@@ -1,5 +1,5 @@
 import type Phaser from 'phaser';
-import { animatedHero, ATTACK_DURATION_MS, directionOf, motionFrame, motionPage, WALK_FRAME_DISTANCE, WALK_FRAME_MS, type ActorMotion, type MotionHero } from '../content/actor-motion';
+import { animatedHero, ATTACK_DURATION_MS, directionOf, motionFrame, motionPage, walkFrameDistance, WALK_FRAME_MS, type ActorMotion, type MotionHero } from '../content/actor-motion';
 
 type Image = Phaser.GameObjects.Image;
 interface Playback { hero:MotionHero;face:string;motion:ActorMotion;start:number;until:number;distance:number;x:number;y:number }
@@ -42,7 +42,7 @@ export class ActorAnimator {
     if(state.motion==='walk'){
       state.distance+=Math.hypot(image.x-state.x,image.y-state.y);state.x=image.x;state.y=image.y;
     }
-    const elapsed=state.motion==='walk'?state.distance/WALK_FRAME_DISTANCE*WALK_FRAME_MS:this.scene.time.now-state.start;
+    const elapsed=state.motion==='walk'?state.distance/walkFrameDistance(state.hero)*WALK_FRAME_MS:this.scene.time.now-state.start;
     const frame=motionFrame(state.motion,elapsed);
     if(frame===undefined)image.setTexture(state.face);
     else image.setTexture(motionPage(state.hero,directionOf(state.face)).key,frame);
