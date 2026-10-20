@@ -16,12 +16,18 @@ function arm(side:LegSide,pose:WalkPose,weapon:ReferenceWeapon,config:Readonly<R
   const total=config.upperArmLength+config.forearmLength,scale=total/17;
   const grip={x,y:holding?(weapon==='lantern'?(4+swing)*scale:(6+.6*swing)*scale):(right?1:-1)*5.5*swing*scale,
     z:shoulder.z-total+(holding?(weapon==='lantern'?2.5+config.carryLift:6):1)};
+  return armToGrip(shoulder,grip,config);
+}
+
+/** Rigid two-bone arm solve, shared by gait and authored action poses. */
+export function armToGrip(shoulder:Point3,grip:Point3,config:Readonly<RigProportions>):ArmPose {
+  const x=shoulder.x,total=config.upperArmLength+config.forearmLength;
   const wrist={...grip,z:grip.z+1.6};
-  const dy=wrist.y,dz=wrist.z-shoulder.z,d=Math.hypot(dy,dz);
+  const dy=wrist.y-shoulder.y,dz=wrist.z-shoulder.z,d=Math.hypot(dy,dz);
   if(d>total||d<Math.abs(config.upperArmLength-config.forearmLength))throw new RangeError("Arms cannot reach: adjust arm lengths or carry lift.");
   const along=(config.upperArmLength**2-config.forearmLength**2+d*d)/(2*d),bend=Math.sqrt(Math.max(0,config.upperArmLength**2-along*along));
   // Elbows bend back; the forearm reaches forward to the wrist. Both bones stay rigid.
-  const elbow={x,y:along*dy/d+bend*dz/d,z:shoulder.z+along*dz/d-bend*dy/d};
+  const elbow={x,y:shoulder.y+along*dy/d+bend*dz/d,z:shoulder.z+along*dz/d-bend*dy/d};
   return {shoulder,elbow,wrist,grip};
 }
 

@@ -2,14 +2,38 @@ import { NELL_PROPORTIONS, type RigProportions } from './rig-proportions';
 import { type ActorDirection } from '../content/actors';
 import { orient, project, type Point3 } from './actor-space';
 import { renderLayers, type PixelTexture, type SpriteLayer } from './layered-sprite';
-import { referenceRig, type ReferencePose, type WeaponPose } from './reference-rig';
-import { footPoint, REFERENCE_FRAMES, type FootPose } from './walk-cycle';
+import { armToGrip, referenceRig, type ReferencePose, type WeaponPose } from './reference-rig';
+import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, footPoint, REFERENCE_FRAMES, type FootPose } from './walk-cycle';
 
 export type NellTextures=Record<ActorDirection,PixelTexture>;
 
 /** Nell shares the gait solver, with dimensions registered to her native costume. */
 export const nellPose=(phase:number,config:Readonly<RigProportions>=NELL_PROPORTIONS):ReferencePose=>referenceRig(phase,'lantern',config);
 export const nellFrame=(frame:number,config:Readonly<RigProportions>=NELL_PROPORTIONS)=>nellPose(frame/REFERENCE_FRAMES,config);
+
+export type NellAttackPhase='windup'|'contact';
+
+/** Same costume and rigid skeleton as walking, braced on two flat feet. */
+export function nellAttackPose(phase:NellAttackPhase,config:Readonly<RigProportions>=NELL_PROPORTIONS):ReferencePose {
+  const pose=referenceRig(0,'lantern',config),contact=phase==='contact';
+  pose.hipHeight=config.hipHeight-.8;
+  for(const side of ['left','right'] as const){
+    const leg=pose[side],origin={x:leg.hip.x,y:side==='left'?3:-4,z:0},transform={origin,pitch:0};
+    leg.foot={...transform,heel:footPoint(transform,FOOT_HEEL*config.footScale,0),toe:footPoint(transform,FOOT_TOE*config.footScale,0),contact:'sole'};
+    leg.planted=true;leg.phase=0;leg.hip={...leg.hip,z:pose.hipHeight};leg.ankle=footPoint(leg.foot,0,ANKLE_HEIGHT*config.footScale);
+    const dy=leg.ankle.y,dz=leg.ankle.z-leg.hip.z,d=Math.hypot(dy,dz);
+    if(d>config.legLength*2)throw new RangeError("Legs cannot reach the attack stance.");
+    const bend=Math.sqrt(config.legLength**2-d*d/4);
+    leg.knee={x:leg.hip.x,y:dy/2-dz/d*bend,z:(leg.hip.z+leg.ankle.z)/2+dy/d*bend};
+    const shoulder={x:pose.arms[side].shoulder.x,y:0,z:pose.hipHeight+config.shoulderHeight};
+    const reach=(config.upperArmLength+config.forearmLength)/15,right=side==='right';
+    const grip={x:shoulder.x,y:(right?(contact?12:-5):(contact?-4:4))*reach,
+      z:shoulder.z-(right?(contact?4:7):12)};
+    pose.arms[side]=armToGrip(shoulder,grip,config);
+  }
+  pose.weapon={...pose.weapon!,grip:pose.arms.right.grip,pitch:(contact?8:-8)*Math.PI/180};
+  return pose;
+}
 
 function patch(source:PixelTexture,x:number,y:number,width:number,height:number,accept:(r:number,g:number,b:number)=>boolean):PixelTexture {
   const pixels=new Uint8ClampedArray(width*height*4);
@@ -206,4 +230,4 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
   layers.push(...lantern(pose.weapon!,source,direction));
   return layers;
 }
-export const renderNell=(frame:number,direction:ActorDirection,textures:NellTextures)=>renderLayers(nellLayers(nellFrame(frame),direction,textures),direction);
+export const renderNell=(frame:number,direction:ActorDirection,textures:NellTextures)=>renderLayers(nellLayers(frame<REFERENCE_FRAMES?nellFrame(frame):nellAttackPose(frame===REFERENCE_FRAMES?'windup':'contact'),direction,textures),direction);

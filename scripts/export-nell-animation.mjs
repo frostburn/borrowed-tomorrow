@@ -25,7 +25,7 @@ const textures=Object.fromEntries(Object.entries(sources).map(([direction,data])
 const server=await createServer({configFile:false,root,server:{middlewareMode:true},appType:'custom'});
 try{
   const {renderNell}=await server.ssrLoadModule('/src/art/nell-actor.ts');
-  const pages=Object.keys(textures).map(direction=>({direction,frames:Array.from({length:6},(_,frame)=>Buffer.from(renderNell(frame,direction,textures)).toString('base64'))}));
+  const pages=Object.keys(textures).map(direction=>({direction,frames:Array.from({length:8},(_,frame)=>Buffer.from(renderNell(frame,direction,textures)).toString('base64'))}));
   process.stdout.write(python(`
 import json,sys,base64
 from pathlib import Path
@@ -33,8 +33,7 @@ from PIL import Image
 root=Path(sys.argv[1])
 for data in json.load(sys.stdin):
     path=root/f"public/art/animation/nell-{data['direction']}.png"
-    previous=Image.open(path).convert('RGBA')
-    page=Image.new('RGBA',(160,320));page.paste(previous.crop((0,240,160,320)),(0,240))
+    page=Image.new('RGBA',(160,320))
     for frame,encoded in enumerate(data['frames']):
         image=Image.frombytes('RGBA',(80,80),base64.b64decode(encoded))
         page.paste(image,(frame%2*80,frame//2*80))
