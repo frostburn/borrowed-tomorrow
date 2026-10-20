@@ -17,7 +17,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    const starts=()=>page.evaluate(()=>(window as unknown as {pitchStarts:number[]}).pitchStarts);
    const clear=()=>page.evaluate(()=>{(window as unknown as {pitchStarts:number[]}).pitchStarts=[];});
    expect(await starts()).toEqual([]);const stored=await page.evaluate(()=>JSON.stringify(localStorage));
-   for(const [group,count]of [['Ch 1',7],['Ch 2',3],['Ch 3',4],['Ch 4',5],['Library',3]] as const){
+   for(const [group,count]of [['Ch 1',7],['Ch 2',6],['Ch 3',4],['Ch 4',5],['Library',2]] as const){
     await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:group,exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(count);
    }
    await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 4',exact:true}).click();
@@ -60,6 +60,27 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 2',exact:true}).click();
    await page.locator('[data-cue="coast"]').click();
    await expect(page.locator('#music-notes tbody')).toContainText('round-bass');
+   await page.locator('[data-cue="infirmary"]').click();await expect(page.locator('.music-review .music-description').first()).toContainText('78 BPM / 3/4');
+   await page.evaluate(async()=>{
+    // @ts-expect-error Vite serves the real shared synth.
+    const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+    const state=window as unknown as {wardBassStarts:number[]};state.wardBassStarts=[];
+    const note=Synth.prototype.note;
+    Synth.prototype.note=function(instrument,pitch,when,duration,volume,pan){if(instrument==='round-bass')state.wardBassStarts.push(when);note.call(this,instrument,pitch,when,duration,volume,pan);};
+   });
+   await page.getByRole('button',{name:'Play',exact:true}).click();
+   await expect.poll(()=>page.evaluate(()=>(window as unknown as {wardBassStarts:number[]}).wardBassStarts.length)).toBeGreaterThanOrEqual(2);
+   const beats=await page.evaluate(()=>(window as unknown as {wardBassStarts:number[]}).wardBassStarts);
+   expect(beats[1]-beats[0]).toBeCloseTo(3*60/78,5);
+   await expect(page.locator('#music-position')).not.toContainText('beat 4');await capture(page,`ward-three-four-${device}`);
+   for(const cue of ['coast-battle','shunting','petra-battle']){
+    await page.locator(`[data-cue="${cue}"]`).click();await expect(page.locator(`[data-cue="${cue}"]`)).toHaveAttribute('aria-pressed','true');
+    await expect(page.locator('.music-review .music-description').first()).toContainText('4/4');
+   }
+   await page.getByRole('group',{name:'Instrument audition'}).getByRole('button',{name:'Strings',exact:true}).click();
+   await bar.fill('12');await bar.press('Tab');
+   await expect(page.locator('#music-notes tbody')).toContainText('2+1/3');await expect(page.locator('#music-notes tbody')).toContainText('3+2/3');
+   await capture(page,`chapter-two-battle-music-${device}`);
    await page.getByRole('button',{name:'Play',exact:true}).click();await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Character',exact:true}).click();
    await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();await expect(page.getByRole('spinbutton',{name:'Nell level',exact:true})).toHaveValue('1');
    expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

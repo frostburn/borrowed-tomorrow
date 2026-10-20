@@ -11,6 +11,7 @@ import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } fro
 import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
 import type { Effect } from '../game/synth';
+import type { MusicMode } from '../game/score';
 
 export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
@@ -50,7 +51,7 @@ export interface Battle {
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },

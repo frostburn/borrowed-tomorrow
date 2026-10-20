@@ -1,6 +1,7 @@
 import { isBass, semitones } from '../src/game/tuning';
 import { expect, it } from 'vitest';
-import { scoreBar,type Note } from '../src/game/score';
+import { ARRANGEMENTS, scoreBar,type Note } from '../src/game/score';
+import { ENCOUNTERS } from '../src/rules/combat';
 import { SIDING_HARMONY, WARD_HARMONY } from '../src/game/score-c';
 import { NORTHGLASS_CHORDS, NORTHGLASS_HARMONY } from '../src/game/score-d';
 
@@ -67,7 +68,7 @@ it('Northglass voices the requested borrowed-chord progression beneath independe
   expect(melodies[0].filter(n=>n[1]>=64&&n[1]<96).map(n=>n[0])).not.toEqual(melodies[0].filter(n=>n[1]<32).map(n=>n[0]));
 });
 
-it('Cinderbank and Bellwether have independent melodies with chord-supported downbeats and full cadences',()=>{
+it('Cinderbank and the railway ward have independent melodies with chord-supported downbeats and full cadences',()=>{
   const chordPitchClasses={em:[4,7,11],c:[0,4,7],b:[11,3,6],g:[7,11,2],am:[9,0,4],f:[5,9,0],dm:[2,5,9]};
   const tunes=[];
   for(const mode of ['cinderbank','infirmary'] as const){
@@ -77,7 +78,7 @@ it('Cinderbank and Bellwether have independent melodies with chord-supported dow
       expect(lead.length).toBeGreaterThan(0);
       const chord=(mode==='infirmary'?WARD_HARMONY:SIDING_HARMONY)[bar];
       expect(chordPitchClasses[chord]).toContain(semitones(lead[0].pitch)%12);
-      melody.push(...lead.map(n=>({...n,beat:n.beat+bar*4})));
+      melody.push(...lead.map(n=>({...n,beat:n.beat+bar*ARRANGEMENTS[mode].beats})));
     }
     for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThanOrEqual(melody[i].beat);
     expect(Math.max(...melody.map(n=>semitones(n.pitch)))-Math.min(...melody.map(n=>semitones(n.pitch)))).toBeLessThanOrEqual(12);
@@ -93,7 +94,7 @@ it('the Iron Coast theme loops with rests, independent phrases and supported har
   expect([0,1,2].map(bar=>scoreBar('coast',bar).find(n=>isBass(n.instrument)&&n.beat===0)!.pitch)).toEqual(['C2','D2','E2']);
   expect(new Set(scoreBar('coast',1).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch))).toEqual(new Set(['A2','B2','D3','F3']));
   expect(new Set(scoreBar('coast',1).filter(n=>isBass(n.instrument)||n.instrument==='keys').map(n=>semitones(n.pitch)%12))).toEqual(new Set([11,2,5,9]));
-  const melody=[];
+  const melody:Note[]=[];
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast',bar),lead=notes.filter(n=>n.instrument==='reed');
     expect(lead.length).toBeGreaterThan(0);
@@ -102,7 +103,109 @@ it('the Iron Coast theme loops with rests, independent phrases and supported har
     for(const n of notes){expect(n.velocity).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
     melody.push(...lead.map(n=>({...n,beat:n.beat+bar*4})));
   }
-  for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThan(melody[i].beat);
+  for(let i=1;i<melody.length;i++)expect(melody[i-1].beat+melody[i-1].duration).toBeLessThanOrEqual(melody[i].beat);
+  expect(melody.some((n,i)=>i>0&&melody[i-1].beat+melody[i-1].duration<n.beat)).toBe(true);
   expect(scoreBar('coast',16)).toEqual(scoreBar('coast',0));expect(scoreBar('coast',-1)).toEqual(scoreBar('coast',15));
   expect(semitones(melody.at(-1)!.pitch)%12).toBe(0);
+});
+
+it('the ward is written in three clear quarter-note beats, including its accompaniment and cadence',()=>{
+  expect(ARRANGEMENTS.infirmary.beats).toBe(3);
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('infirmary',bar);
+    for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(3);expect(n.beat%1).toBe(0);expect(n.beat+n.duration).toBeLessThanOrEqual(3);}
+    expect(notes.filter(n=>isBass(n.instrument)).map(n=>n.beat)).toEqual([0]);
+    expect(notes.some(n=>n.instrument==='keys'&&n.beat===1&&n.velocity<.1)).toBe(true);
+    expect(notes.some(n=>['kick','snare','hat'].includes(n.instrument))).toBe(false);
+  }
+});
+
+it('Iron Coast keeps bass and piano on a shared pulse, with recurring calls and contrasting answers',()=>{
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('coast',bar),pulse=bar%4===3?[0]:[0,2];
+    for(const instrument of ['round-bass','keys'])expect([...new Set(notes.filter(n=>n.instrument===instrument).map(n=>n.beat))]).toEqual(pulse);
+    for(const n of notes)expect(n.beat*2).toBe(Math.round(n.beat*2));
+    if(bar%4===3)expect(notes.filter(n=>n.instrument==='reed')).toHaveLength(1);
+  }
+  const rhythm=(bar:number)=>scoreBar('coast',bar).filter(n=>n.instrument==='reed').map(n=>[n.beat,n.duration]);
+  expect(rhythm(4)).toEqual(rhythm(12));
+  expect(rhythm(0)).not.toEqual(rhythm(1));expect(rhythm(8)).not.toEqual(rhythm(0));
+});
+
+it('Iron Coast restores its original two opening bars, including the quiet accompaniment',()=>{
+  const leads=[
+    [[0,'E5',1.25],[1.5,'G5',.25],[2,'F5',.25],[2.5,'E5',.25],[3,'D5',.75]],
+    [[0,'D5',1.5],[2,'F5',.5],[3,'B4',.75]],
+  ];
+  for(const bar of [0,1]){
+    const notes=scoreBar('coast',bar);
+    expect(notes.filter(n=>n.instrument==='reed').map(n=>[n.beat,n.pitch,n.duration])).toEqual(leads[bar]);
+    expect(notes.filter(n=>n.instrument==='round-bass').map(n=>[n.beat,n.pitch,n.duration,n.velocity])).toEqual([[0,bar===0?'C2':'D2',1.8,.14],[2,bar===0?'C2':'D2',1.7,.1]]);
+    const keys=notes.filter(n=>n.instrument==='keys');
+    for(const beat of [0,2])expect(keys.filter(n=>n.beat===beat).map(n=>[n.pitch,n.duration,n.velocity,n.pan])).toEqual((bar===0?['C3','E3','G3']:['A2','B2','D3','F3']).map(pitch=>[pitch,beat===0?1.7:1.5,beat===0?.038:.028,.25]));
+    expect(notes.filter(n=>n.instrument==='hat').map(n=>[n.beat,n.duration,n.velocity])).toEqual([[1,.08,.018],[3,.08,.015]]);
+  }
+});
+
+it('the train raid develops paired calls and answers, opens its middle, and returns to a full groove',()=>{
+  const lead=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='reed');
+  const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
+  for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
+  for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
+  expect(lead(0).map(n=>n.pitch)).toEqual(['E5','G5','F5','E5','D5']);
+  expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','Eb5','D5','C5']);
+  expect(lead(15).map(n=>[n.pitch,n.duration])).toEqual([['C5',3]]);
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
+    expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
+    expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.05).map(n=>n.beat)).toEqual(middle?[2]:[1,3]);
+    expect(notes.some(n=>n.instrument==='strings')).toBe(middle);
+    if(bar===8||bar===10)expect(lead(bar).every(n=>n.duration>=1.5)).toBe(true);
+    expect(notes.filter(n=>n.instrument==='round-bass').map(n=>n.beat)).toEqual(middle?[0,2]:[0,1,2,3]);
+  }
+});
+
+it('Petra’s triplet melody rides over straight percussion with an unbroken battle backbeat',()=>{
+  expect(ARRANGEMENTS['petra-battle'].beats).toBe(4);
+  const melody:Note[]=[];
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('petra-battle',bar);
+    for(const n of notes){
+      if(['kick','snare','hat'].includes(n.instrument))expect(n.beat*4).toBe(Math.round(n.beat*4));
+      else{
+        expect(n.beat*3).toBeCloseTo(Math.round(n.beat*3),10);
+        expect(n.duration*6).toBeCloseTo(Math.round(n.duration*6),10);
+      }
+      expect(n.beat+n.duration).toBeLessThanOrEqual(4+1e-9);
+      if(n.instrument==='strings'&&n.velocity>=.2)melody.push(n);
+    }
+    expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
+    expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.07).map(n=>n.beat)).toEqual([1,3]);
+    expect(notes.filter(n=>n.instrument==='hat').map(n=>n.beat)).toEqual([0,.5,1,1.5,2,2.5,3,3.5]);
+  }
+  expect(melody.some(n=>Math.abs(n.beat%1-1/3)<1e-9)).toBe(true);
+  expect(melody.some(n=>Math.abs(n.beat%1-2/3)<1e-9)).toBe(true);
+});
+
+it('Chapter Two battle variations keep their regional harmony and motifs with their own phrasing and rhythm sections',()=>{
+  for(const [source,variation,lead] of [['coast','coast-battle','reed'],['cinderbank','shunting','reed'],['cinderbank','petra-battle','strings']] as const){
+    const line:Note[]=[];
+    for(let bar=0;bar<16;bar++){
+      const notes=scoreBar(variation,bar),original=scoreBar(source,bar);
+      expect(notes.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch).toBe(original.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch);
+      expect(notes.some(n=>n.instrument==='kick')).toBe(true);
+      for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);}
+      line.push(...notes.filter(n=>n.instrument===lead&&n.velocity>=.2).map(n=>({...n,beat:bar*4+n.beat})));
+    }
+    expect(scoreBar(variation,0).filter(n=>n.instrument===lead&&n.velocity>=.2).slice(0,2).map(n=>n.pitch)).toEqual(scoreBar(source,0).filter(n=>n.instrument==='reed').slice(0,2).map(n=>n.pitch));
+    for(let i=1;i<line.length;i++)expect(line[i-1].beat+line[i-1].duration).toBeLessThanOrEqual(line[i].beat);
+    expect(scoreBar(variation,16)).toEqual(scoreBar(variation,0));expect(scoreBar(variation,-1)).toEqual(scoreBar(variation,15));
+    expect(scoreBar(variation,0)).not.toEqual(scoreBar(source,0));
+  }
+});
+
+it('each chapter declares its battle music instead of falling through to the home score',()=>{
+  expect(['coast-signals','coast-loading','coast-collector','coast-recapture'].map(id=>ENCOUNTERS[id].music)).toEqual(['coast-battle','coast-battle','shunting','petra-battle']);
+  expect(ENCOUNTERS.captain.music).toBe('inspector');expect(ENCOUNTERS['capital-arrest'].music).toBe('switching');expect(ENCOUNTERS['sanctuary-warden'].music).toBe('four-warden');
+  for(const encounter of Object.values(ENCOUNTERS))expect(ARRANGEMENTS[encounter.music]).toBeDefined();
 });

@@ -5,33 +5,35 @@ import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number }
-interface Arrangement { bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
+interface Arrangement { beats:3|4; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
-  refuge:{bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
-  breakwater:{bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
-  sanctuary:{bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},
-  'four-battle':{bpm:138,lead:'reed',leadGain:.24,keys:.05,strings:.017,bass:.17,percussion:.12},
-  'four-warden':{bpm:120,lead:'reed',leadGain:.24,keys:.05,strings:.022,bass:.17,percussion:.12},
-  conduit:{bpm:68,lead:'bell',leadGain:.11,keys:.045,strings:.018,bass:.11,percussion:0},
-  coast:{bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
-  northglass:{bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
-  relayhall:{bpm:74,lead:'reed',leadGain:.17,keys:.045,strings:.023,bass:.11,percussion:0},
-  switching:{bpm:126,lead:'reed',leadGain:.23,keys:.047,strings:0,bass:.2,percussion:.12},
-  cinderbank:{bpm:84,lead:'reed',leadGain:.2,keys:.035,strings:.018,bass:.15,percussion:0},
-  infirmary:{bpm:66,lead:'keys',leadGain:.22,keys:.04,strings:.022,bass:.115,percussion:0},
-  shunting:{bpm:118,lead:'reed',leadGain:.24,keys:.065,strings:0,bass:.22,percussion:.16},
-  rillbridge:{bpm:88,lead:'reed',leadGain:.27,keys:.12,strings:.045,bass:.18,percussion:.028},
-  sluice:{bpm:76,lead:'bell',leadGain:.18,keys:.065,strings:.065,bass:.18,percussion:0},
-  flood:{bpm:124,lead:'reed',leadGain:.32,keys:.11,strings:.045,bass:.25,percussion:.19},
-  station:{bpm:82,lead:'reed',leadGain:.29,keys:.14,strings:.08,bass:.2,percussion:0},
-  yard:{bpm:94,lead:'keys',leadGain:.24,keys:.13,strings:.045,bass:.23,percussion:.075},
-  tunnel:{bpm:68,lead:'bell',leadGain:.18,keys:.04,strings:.15,bass:.2,percussion:0},
-  battle:{bpm:128,lead:'reed',leadGain:.32,keys:.17,strings:.08,bass:.27,percussion:.2},
-  inspector:{bpm:136,lead:'strings',leadGain:.3,keys:.16,strings:.12,bass:.29,percussion:.22},
-  ending:{bpm:78,lead:'bell',leadGain:.25,keys:.13,strings:.14,bass:.18,percussion:0},
+  refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
+  breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
+  sanctuary:{beats:4,bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},
+  'four-battle':{beats:4,bpm:138,lead:'reed',leadGain:.24,keys:.05,strings:.017,bass:.17,percussion:.12},
+  'four-warden':{beats:4,bpm:120,lead:'reed',leadGain:.24,keys:.05,strings:.022,bass:.17,percussion:.12},
+  conduit:{beats:4,bpm:68,lead:'bell',leadGain:.11,keys:.045,strings:.018,bass:.11,percussion:0},
+  'coast-battle':{beats:4,bpm:124,lead:'reed',leadGain:.23,keys:.04,strings:.016,bass:.16,percussion:.09},
+  'petra-battle':{beats:4,bpm:116,lead:'strings',leadGain:.22,keys:.045,strings:.016,bass:.17,percussion:.1},
+  coast:{beats:4,bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
+  northglass:{beats:4,bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
+  relayhall:{beats:4,bpm:74,lead:'reed',leadGain:.17,keys:.045,strings:.023,bass:.11,percussion:0},
+  switching:{beats:4,bpm:126,lead:'reed',leadGain:.23,keys:.047,strings:0,bass:.2,percussion:.12},
+  cinderbank:{beats:4,bpm:84,lead:'reed',leadGain:.2,keys:.035,strings:.018,bass:.15,percussion:0},
+  infirmary:{beats:3,bpm:78,lead:'keys',leadGain:.22,keys:.033,strings:.018,bass:.115,percussion:0},
+  shunting:{beats:4,bpm:126,lead:'reed',leadGain:.23,keys:.045,strings:.016,bass:.17,percussion:.1},
+  rillbridge:{beats:4,bpm:88,lead:'reed',leadGain:.27,keys:.12,strings:.045,bass:.18,percussion:.028},
+  sluice:{beats:4,bpm:76,lead:'bell',leadGain:.18,keys:.065,strings:.065,bass:.18,percussion:0},
+  flood:{beats:4,bpm:124,lead:'reed',leadGain:.32,keys:.11,strings:.045,bass:.25,percussion:.19},
+  station:{beats:4,bpm:82,lead:'reed',leadGain:.29,keys:.14,strings:.08,bass:.2,percussion:0},
+  yard:{beats:4,bpm:94,lead:'keys',leadGain:.24,keys:.13,strings:.045,bass:.23,percussion:.075},
+  tunnel:{beats:4,bpm:68,lead:'bell',leadGain:.18,keys:.04,strings:.15,bass:.2,percussion:0},
+  battle:{beats:4,bpm:128,lead:'reed',leadGain:.32,keys:.17,strings:.08,bass:.27,percussion:.2},
+  inspector:{beats:4,bpm:136,lead:'strings',leadGain:.3,keys:.16,strings:.12,bass:.29,percussion:.22},
+  ending:{beats:4,bpm:78,lead:'bell',leadGain:.25,keys:.13,strings:.14,bass:.18,percussion:0},
 };
 // D minor, four phrases: A, an answering A, B, and a resolving A.
 // Entries are beat, spelled pitch, duration. Empty beats are intentional rests.
@@ -46,9 +48,9 @@ const ROOTS:Pitch[]=['D3','Bb2','F3','C3','D3','Bb2','G2','A2','F3','C3','Bb2','
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
   if(mode==='refuge'||mode==='breakwater'||mode==='sanctuary'||mode==='four-battle'||mode==='four-warden')return returnBar(mode,bar);
   if(mode==='conduit')return conduitBar(bar);
-  if(mode==='coast')return coastBar(bar);
+  if(mode==='coast'||mode==='coast-battle')return coastBar(bar,mode==='coast-battle');
   if(mode==='northglass'||mode==='relayhall'||mode==='switching')return scoreD(mode,bar);
-  if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting')return scoreC(mode,bar);
+  if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting'||mode==='petra-battle')return scoreC(mode,bar);
   if(mode==='rillbridge'||mode==='sluice'||mode==='flood')return scoreB(mode,bar);
   const a=ARRANGEMENTS[mode],index=((bar%16)+16)%16,phrase=Math.floor(index/4),within=index%4;
   const tense=mode==='battle'||mode==='inspector',root=ROOTS[index];

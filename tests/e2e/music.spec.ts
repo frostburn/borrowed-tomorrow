@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
-import { brokenCheckpoint } from '../support/progress';
-import { approach, importSave } from './navigation';
-import { capture, inspect } from './controls';
+import { brokenCheckpoint, coastCheckpoint } from '../support/progress';
+import { approach, importSave, travel } from './navigation';
+import { capture, dialogue, inspect } from './controls';
 
 test('piano notes decay while sustained arrangements release cleanly at a transition', async ({ page }) => {
   await page.goto('/');
@@ -31,6 +31,39 @@ test('piano notes decay while sustained arrangements release cleanly at a transi
 
 async function music(page: Page) {
   return page.evaluate(() => (window as unknown as { musicStatus: () => { mode: string; pending: string; enabled: boolean; running: boolean } }).musicStatus());
+}
+async function observeMusic(page:Page){
+  await page.evaluate(async()=>{
+    // @ts-expect-error Observe the actual browser mixer without a production API.
+    const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');
+    const original=Audio.prototype.setMode;
+    Audio.prototype.setMode=function(mode){
+      const audio=this as unknown as {mode:string;pending:string;enabled:boolean;context?:AudioContext};
+      (window as unknown as {musicStatus:()=>unknown}).musicStatus=()=>({mode:audio.mode,pending:audio.pending,enabled:audio.enabled,running:audio.context?.state==='running'});
+      original.call(this,mode);
+    };
+  });
+}
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`Chapter Two uses regional variations for both raids, the loading walk and Petra on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await observeMusic(page);
+    const ward=coastCheckpoint('wardSeen');ward.location={map:'infirmary',x:41,y:24};await importSave(page,ward);
+    await page.locator('#sound-button').click();await expect.poll(async()=>(await music(page)).mode).toBe('infirmary');
+    await travel(page,'ward-siding','cinderbank');await dialogue(page);
+    await expect.poll(async()=>(await music(page)).mode,{timeout:6000}).toBe('cinderbank');
+    for(const [flag,object,expected]of [['kitJoined','signal-walk','coast-battle'],['kitJoined','loading-gate','coast-battle'],['settlementSeen','siding-collector','shunting'],['evacuationReady','siding-alban','petra-battle']] as const){
+      const saved=coastCheckpoint(flag);if(saved.location.map==='cinderbank')saved.location=object==='siding-collector'?{map:'cinderbank',x:39,y:21}:{map:'cinderbank',x:45,y:26};
+      await importSave(page,saved);if(!(await music(page)).enabled)await page.locator('#sound-button').click();
+      await expect.poll(async()=>(await music(page)).mode,{timeout:6000}).toBe(saved.location.map);
+      await approach(page,object);await dialogue(page);await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+      await expect.poll(async()=>(await music(page)).mode,{timeout:6000}).toBe(expected);
+      if(object==='siding-alban')await capture(page,`petra-chapter-two-music-${device}`);
+      await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+      await expect.poll(async()=>(await music(page)).mode,{timeout:6000}).toBe(saved.location.map);
+    }
+    await page.locator('#sound-button').click();expect((await music(page)).enabled).toBe(false);expect(errors).toEqual([]);
+  });
 }
 for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 390, height: 844 }]] as const) {
   test(`Chapter Four routes the live warden music and Sound control on ${device}`, async ({ page }) => {

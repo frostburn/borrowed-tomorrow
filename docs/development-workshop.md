@@ -80,10 +80,10 @@ Character inventory, equipment loot, shops and current-format saves are integrat
 
 Open **Music** in the workshop or go directly to `/?dev=music`. This route and all review UI are excluded from production. Music review does not write campaign saves, inventory or character builds.
 
-- Browse Chapters 1–4 or the retained Library to review all 22 arrangements. The selected cue shows its original tempo and 16- or 32-bar loop length.
+- Browse Chapters 1–4 or the retained Library to review all 24 arrangements. The selected cue shows its tempo, meter and 16- or 32-bar loop length. Chapter Two groups Iron Coast, Cinderbank, the 3/4 Railway Ward and all three battle variations together.
 - Play from the selected bar, Stop, or Restart cue. Previous/Next bar wrap around the loop; entering a bar number seeks directly. Playback follows the current bar in the inspector. Play after Stop begins at that bar's downbeat.
 - Isolate reed, piano, bell, strings, bass or drums, or return to All. Piano includes both its melodic and accompanying notes. Changing the instrument filter restarts the current bar. Volume changes the cue mix.
-- Inspect every note's spelling, step class (0–30), frequency and attack beat. Click a pitch to stop the cue and hear that note alone through the same synth rack.
+- Inspect every note's spelling, step class (0–30), frequency and attack beat. Triplet positions use readable fractions such as `2+1/3`. Click a pitch to stop the cue and hear that note alone through the same synth rack.
 - Click a circle-of-fifths member to hear its root and fifth. Compare C#4 and Db4 directly: these are distinct notes in 31-EDO. Each adjacent circle member advances 18 steps; the 31-member circle includes both sharp and flat spellings.
 
 Audio starts only after a playback or audition click. The header Sound control also starts/stops review audio. Leaving Music or entering a practice battle stops the review. The campaign uses the same 31-EDO score data, mixer and instruments.

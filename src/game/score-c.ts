@@ -30,42 +30,80 @@ const siding:Tune=[
   [[0,'E5',3.25]],
 ];
 
-// C major: a separate, slower receiving-hall melody, with space after each answer.
+// C major in 3/4: the right hand sings on the quarter-note pulse, with a bass
+// downbeat and soft left-hand chords on two and three. No displaced 4/4 accents.
 const ward:Tune=[
-  [[0,'C5',2],[2.5,'E5',1]],[[0,'G5',1.5],[2,'E5',.5],[3,'C5',.75]],
-  [[0,'F5',1.5],[2,'C5',.75],[3,'A4',.75]],[[0,'D5',2],[2.5,'B4',1]],
-  [[0,'C5',2],[2.5,'E5',1]],[[0,'E5',1.5],[2,'C5',.5],[3,'A4',.75]],
-  [[0,'F5',1.5],[2,'D5',1]],[[0,'B4',2.5]],
-  [[0,'A4',1.5],[2,'C5',.5],[3,'F5',.75]],[[0,'E5',2],[2.5,'C5',1]],
-  [[0,'D5',1.5],[2,'F5',.5],[3,'A4',.75]],[[0,'B4',2],[2.5,'D5',1]],
-  [[0,'C5',2],[2.5,'E5',1]],[[0,'F5',1.5],[2,'C5',1]],
-  [[0,'D5',1.5],[2,'B4',1]],[[0,'C5',3.25]],
+  [[0,'C5',2],[2,'E5',.75]],[[0,'G5',1],[1,'E5',.75],[2,'C5',.75]],
+  [[0,'F5',1.5],[2,'C5',.75]],[[0,'D5',2],[2,'B4',.75]],
+  [[0,'C5',2],[2,'E5',.75]],[[0,'E5',1],[1,'C5',.75],[2,'A4',.75]],
+  [[0,'F5',1],[1,'D5',1.5]],[[0,'B4',2.5]],
+  [[0,'A4',1],[1,'C5',.75],[2,'F5',.75]],[[0,'E5',2],[2,'C5',.75]],
+  [[0,'D5',1],[1,'F5',.75],[2,'A4',.75]],[[0,'B4',2],[2,'D5',.75]],
+  [[0,'C5',2],[2,'E5',.75]],[[0,'F5',1.5],[2,'C5',.75]],
+  [[0,'D5',1],[1,'B4',1.5]],[[0,'C5',2.5]],
 ];
 
-export function scoreC(mode:'cinderbank'|'infirmary'|'shunting',bar:number):Note[]{
-  const index=((bar%16)+16)%16,quiet=mode==='infirmary',battle=mode==='shunting';
+// Petra keeps four quarter-note beats, each divided into three ticks. Melody
+// entries are triplet ticks, not beats. Pitched support shares that grid;
+// percussion stays straight to drive the battle beneath the flexible lead.
+const crossingTriplets:Tune=[
+  [[0,'B4',2],[3,'E5',4],[8,'F#5',1],[9,'G5',2]],
+  [[0,'E5',6],[8,'B4',3]],
+  [[0,'E5',2],[3,'G5',2],[6,'E5',4]],
+  [[0,'D#5',4],[6,'F#5',2],[9,'B4',2]],
+  [[0,'B4',2],[3,'E5',4],[8,'F#5',1],[9,'G5',2]],
+  [[0,'D5',4],[6,'B4',2],[9,'G4',2]],
+  [[0,'C5',2],[3,'E5',3],[8,'A5',3]],
+  [[0,'D#5',8]],
+  [[0,'G5',6],[7,'E5',2],[9,'C5',2]],
+  [[0,'D5',4],[6,'B4',2],[9,'G4',2]],
+  [[0,'E5',2],[3,'G5',2],[6,'E5',2],[9,'A4',2]],
+  [[0,'D#5',3],[4,'F#5',2],[8,'B4',3]],
+  [[0,'B4',2],[3,'E5',4],[8,'G5',1],[9,'E5',2]],
+  [[0,'E5',4],[6,'C5',4]],
+  [[0,'F#5',2],[3,'D#5',3],[8,'B4',3]],
+  [[0,'E5',10]],
+];
+
+export function scoreC(mode:'cinderbank'|'infirmary'|'shunting'|'petra-battle',bar:number):Note[]{
+  const index=((bar%16)+16)%16,quiet=mode==='infirmary',boss=mode==='petra-battle',battle=mode==='shunting'||boss;
   const {root,notes:voicing}=chords[(quiet?WARD_HARMONY:SIDING_HARMONY)[index]],notes:Note[]=[];
   const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,pitch,beat,duration,velocity,pan});
-  for(const [beat,pitch,duration] of (quiet?ward:siding)[index])add(quiet?'keys':'reed',pitch,beat,duration,quiet?.22:battle?.24:.2,-.15);
-  for(const pitch of voicing){
-    if(quiet)add('strings',pitch,0,3.65,.022,.2);
-    else add('keys',pitch,0,1.4,battle?.05:.035,.25);
-  }
+  for(const [beat,pitch,duration] of (quiet?ward:boss?crossingTriplets:siding)[index])add(quiet?'keys':boss?'strings':'reed',pitch,beat/(boss?3:1),duration/(boss?3:1)*(mode==='shunting'?.85:1),quiet?.22:boss?.22:battle?.23:.2,-.15);
   if(quiet){
-    // Soft broken support below the melody; no competing piano line.
-    add('keys',voicing[0],0,2,.04,.25);add('keys',voicing[1],2,1.5,.035,.25);
-    if([3,7,11,14].includes(index))add('bell',octave(voicing[2],1),3.5,.45,.035,.45);
+    add('round-bass',root,0,index===15?2.8:2.65,.115,-.1);
+    for(const beat of (index%4===3?[1]:[1,2]))for(const pitch of voicing)add('keys',pitch,beat,.65,beat===1?.033:.024,.25);
+    if(index>=8&&index<12)for(const pitch of voicing)add('strings',pitch,0,2.8,.018,.2);
+    return notes;
+  }else if(boss){
+    const broad=index>=8&&index<12,end=index%4===3;
+    for(const beat of (end?[0]:[0,2])){
+      for(const pitch of voicing)add('keys',pitch,beat,2/3,beat===0?.045:.028,.25);
+      add('round-bass',transpose(root,beat===2&&index%2?'P5':'P1'),beat,end?10/3:4/3,beat===0?.17:.11,-.1);
+    }
+    for(const beat of [0,2])add('kick','C2',beat,.18,.1);
+    for(const beat of [1,3])add('snare','D2',beat,.16,.075,-.15);
+    for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.07,beat%1?.022:.012,.4);
+    if(index===6||index===14){
+      for(const beat of [3.25,3.75])add('snare','D2',beat,.1,.04,-.15);
+      add('round-bass',root,11/3,1/3,.085,-.1);
+    }
+    if(broad)for(const pitch of voicing)add('strings',pitch,0,10/3,.016,.2);
   }else if(battle){
-    for(let beat=.5;beat<4;beat+=.5)add('keys',voicing[(beat*2)%3],beat,.28,.065,.3);
-    for(const beat of [0,1.5,2.5])add('bass',transpose(root,beat===2.5?'P5':'P1'),beat,.7,.22,-.1);
-    for(const beat of [0,2])add('kick','C2',beat,.2,.16);
-    for(const beat of [1,3])add('snare','D2',beat,.18,.09,-.15);
-    for(const beat of [.5,1.5,2.5,3.5])add('hat','F#2',beat,.08,.03,.4);
+    const broad=index>=8&&index<12,end=index%4===3;
+    for(const beat of (end?[0]:index%2?[0,2.5]:[0,1.5,3]))for(const pitch of voicing)add('keys',pitch,beat,.4,beat===0?.045:.028,.25);
+    for(const beat of (end?[0,2.5]:broad?[0,2]:index%2?[0,1.5,3]:[0,.75,2.5]))add('round-bass',transpose(root,beat===2.5?'P5':'P1'),beat,.6,beat===0?.17:.11,-.1);
+    for(const beat of (end?[0]:broad?[0,2.5]:[0,2]))add('kick','C2',beat,.18,.1);
+    for(const beat of (end?[1]:broad?[2]:[1,3]))add('snare','D2',beat,.16,.06,-.15);
+    for(const beat of (end?[.5,1.5]:index%2?[.5,2,3.5]:[.5,1.5,2.5,3.5]))add('hat','F#2',beat,.07,.022,.4);
+    if(index===6||index===14)for(const beat of [3.25,3.75])add('snare','D2',beat,.1,.035,-.15);
+    if(broad)for(const pitch of voicing)add('strings',pitch,0,3.5,.016,.2);
   }else{
+    for(const pitch of voicing)add('keys',pitch,0,1.4,.035,.25);
     if(index!==15)for(const pitch of voicing.slice(1))add('keys',pitch,2.5,1,.025,.25);
     if(index===1||index===5||index===9)add('bell',octave(voicing[2],1),3.5,.45,.04,.4);
     if(index>=8&&index<12)for(const pitch of voicing)add('strings',pitch,0,3.6,.018,.2);
   }
-  if(!battle){add('bass',root,0,index===15?3.4:2.75,quiet?.115:.15,-.1);if(index!==15&&!quiet)add('bass',transpose(root,'P5'),3,.65,.065,-.1);}
+  if(!battle){add('bass',root,0,index===15?3.4:2.75,.15,-.1);if(index!==15)add('bass',transpose(root,'P5'),3,.65,.065,-.1);}
   return notes;
 }
