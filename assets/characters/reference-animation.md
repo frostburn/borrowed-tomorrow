@@ -10,7 +10,7 @@ Open `?dev=animation` in Vite or choose **Animation** in the workshop. The manne
 
 `src/art/layered-sprite.ts` rasterizes editable part geometry with a depth buffer. Parts occlude one another according to their actual positions, including when the legs cross. The silhouette has a one-pixel outline. Every output pixel is opaque or transparent; there is no antialiasing or runtime fitting of the frame.
 
-Nell attaches her native face/cap/braids and costume pixels to the same layered renderer, with twelve-pixel leg bones retargeted to her compact proportions. Her foot trajectories and right-hand grip use the accepted reference motion. Canonical 80 x 80 skin textures preserve source RGB with crisp alpha, so browser previews match the baked game frames exactly. Anatomy colors are disabled for this actual-art skin; joint guides still identify each side. See `nell-rig.md` for the source and export recipe. Gameplay uses the small baked PNG pages and does not load this authoring model.
+Nell attaches her native face/cap/braids and costume pixels to her own rounded clothing, glove and boot meshes, with twelve-pixel leg bones retargeted to her compact proportions. The reference supplies joint and foot motion; Nell does not reuse its rectangular placeholder solids. Her carrying elbow bends to hold the original native lantern artwork at her waist, attached to the anatomical right grip. Canonical 80 x 80 skin textures preserve source RGB with crisp alpha, so browser previews match the baked game frames exactly. Anatomy colors are disabled for this actual-art skin; joint guides still identify each side. See `nell-rig.md` for the source and export recipe. Gameplay uses the small baked PNG pages and does not load this authoring model.
 
 ## Gait
 
