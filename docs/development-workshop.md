@@ -93,4 +93,10 @@ Review controls never write campaign saves, equipment or character builds. Leavi
 
 Nell and Orrin also offer **Idle**, **Walk** and **Attack** previews. Walk cycles through six distinct poses per direction, labeled left contact/support, right passing, right contact/support and left passing. Play/Pause and Next frame review all six walking steps (wrapping 6 back to 1), attack wind-up/contact and recovery in any direction. The file label names the active page and frame. Pausing preserves the displayed frame; leaving the tab stops playback. Other characters retain their static direction review. Motion frames are native 80 x 80 images with the same (40, 68) ground anchor, and tools remain in their anatomical right hands through the complete cycle. In-game gait follows pixels traveled, preserving its phase through cells and turns.
 
+## Layered animation reference
+
+Choose **Animation** or open `?dev=animation` for a simplified armless walker made from separate head, torso and leg parts. Review all four directions, play/pause or step through the six poses, adjust playback speed, and hide or solo any layer. Teal identifies the anatomical left leg; amber identifies the right. Joint guides and ankle paths expose the motion. The moving floor shows fixed world contacts so sliding feet are visible. The native strip and 3x inspector use the same layer renderer.
+
+Export the current frame or all six frames as transparent native PNGs, with only the visible layers. Solo a part to export its cycle separately. Pose-data export includes named joints, root travel and the native anchor. Review settings are temporary and do not affect saves or character builds. The source model, coordinate system and support-foot constraints are described in `assets/characters/reference-animation.md`.
+
 Side-view equipment keeps its anatomical side, including Nell’s right-hand lantern. The inspector lists each playable character’s handed equipment. Native exports exclude detached alpha fragments, and the browser checks inspect all nonzero-alpha components, not just opaque bounds.

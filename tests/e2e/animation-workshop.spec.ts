@@ -1,0 +1,55 @@
+// Browser plugin not available; exercise the native review through repository Playwright.
+import { expect, test, type Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { renderLayers } from '../../src/art/layered-sprite';
+import { referenceFrame } from '../../src/art/walk-cycle';
+import { referenceLayers, REFERENCE_LAYERS } from '../../src/dev/reference-actor';
+import type { ActorDirection } from '../../src/content/actors';
+import { capture } from './controls';
+
+async function nativeFrame(page:Page,frame:number,direction:ActorDirection='right',visible:ReadonlySet<string>=new Set(REFERENCE_LAYERS),anatomy=true){
+  const pixels=Array.from(renderLayers(referenceLayers(referenceFrame(frame),anatomy),direction,visible));
+  await expect.poll(()=>page.locator('#reference-detail').evaluate((element,pixels)=>{
+    const expected=document.createElement('canvas');expected.width=expected.height=240;const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=false;
+    for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
+    const source=document.createElement('canvas');source.width=source.height=80;source.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(pixels),80,80),0,0);ctx.drawImage(source,0,0,240,240);
+    const actual=(element as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data,wanted=ctx.getImageData(0,0,240,240).data;
+    return actual.reduce((n,value,i)=>n+Number(value!==wanted[i]),0);
+  },pixels)).toBe(0);
+}
+
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['phone',{width:390,height:844},1]] as const){
+  test.describe(`layered reference on ${device}`,()=>{
+    test.use({viewport,deviceScaleFactor:dpr});
+    test('plays a complete walk, isolates layers and exports native frames without saving',async({page})=>{
+      const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+      await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/?dev=animation');
+      await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');expect(new URL(page.url()).searchParams.get('dev')).toBe('animation');
+      const review=page.getByRole('region',{name:'Layered animation reference',exact:true}),host=page.locator('#animation-workshop');
+      await expect(review).toBeVisible();await expect(page.locator('vite-error-overlay')).toHaveCount(0);
+      const stored=await page.evaluate(()=>JSON.stringify(localStorage));
+      const frames=await host.evaluate(h=>new Promise<string[]>(resolve=>{const seen=new Set<string>(),start=performance.now();const tick=()=>{seen.add((h as HTMLElement).dataset.frame!);if(seen.size===6||performance.now()-start>2000)resolve([...seen]);else requestAnimationFrame(tick);};tick();}));
+      expect(new Set(frames)).toEqual(new Set(['0','1','2','3','4','5']));
+      await review.getByRole('button',{name:'Pause',exact:true}).click();const paused=await host.getAttribute('data-frame');await page.waitForTimeout(160);expect(await host.getAttribute('data-frame')).toBe(paused);
+      while(await host.getAttribute('data-frame')!=='0')await review.getByRole('button',{name:'Next frame',exact:true}).click();
+      for(let frame=0;frame<6;frame++){await nativeFrame(page,frame);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
+      await expect(host).toHaveAttribute('data-frame','0');await review.getByRole('button',{name:'Previous frame',exact:true}).click();await expect(host).toHaveAttribute('data-frame','5');await review.getByRole('button',{name:'Next frame',exact:true}).click();
+      for(const direction of ['front','left','right','back'] as const){await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();await nativeFrame(page,0,direction);}
+      await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
+      await review.getByRole('button',{name:'Anatomy colors',exact:true}).click();await nativeFrame(page,0,'right',new Set(REFERENCE_LAYERS),false);await review.getByRole('button',{name:'Anatomy colors',exact:true}).click();
+      await review.getByRole('button',{name:'Show Left Shin',exact:true}).click();await nativeFrame(page,0,'right',new Set(REFERENCE_LAYERS.filter(id=>id!=='left-shin')));
+      await review.getByRole('button',{name:'Solo Right Foot',exact:true}).click();await expect(host).toHaveAttribute('data-layers','right-foot');await nativeFrame(page,0,'right',new Set(['right-foot']));
+      const pngEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();const png=await pngEvent,bytes=await readFile((await png.path())!);
+      expect(png.suggestedFilename()).toBe('reference-right-right-foot-walk.png');expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,240]);
+      const jsonEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const json=await jsonEvent,data=JSON.parse(await readFile((await json.path())!,'utf8'));
+      expect(data.anchor).toEqual([40,68]);expect(data.layers).toEqual([...REFERENCE_LAYERS]);expect(data.frames).toHaveLength(6);
+      await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeFrame(page,0);
+      await review.getByRole('button',{name:'Joint guides',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();
+      await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`layered-reference-${device}`);
+      expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
+      const old=await host.elementHandle(),paint=await host.getAttribute('data-paint');
+      await page.getByRole('navigation',{name:'Workshop panels',exact:true}).getByRole('button',{name:'Sprites',exact:true}).click();await page.waitForTimeout(160);
+      expect(await old!.evaluate(h=>(h as HTMLElement).dataset.paint)).toBe(paint);expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(errors).toEqual([]);
+    });
+  });
+}
