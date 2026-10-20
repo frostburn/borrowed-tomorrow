@@ -100,9 +100,10 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       await review.getByRole('spinbutton',{name:'Leg bone',exact:true}).fill('5');await review.getByRole('spinbutton',{name:'Leg bone',exact:true}).press('Tab');
       await expect(review.locator('#reference-proportion-error')).toContainText('Legs cannot reach');
       await expect(review.getByRole('spinbutton',{name:'Leg bone',exact:true})).toHaveValue('9');
+      await review.getByRole('spinbutton',{name:'Arm thickness (x)',exact:true}).fill('1.2');await review.getByRole('spinbutton',{name:'Arm thickness (x)',exact:true}).press('Tab');
       const customEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();
       const custom=JSON.parse(await readFile((await(await customEvent).path())!,'utf8'));
-      expect(custom.proportions.hipHalfWidth).toBe(3.5);expect(custom.cycleDistance).toBe(24);
+      expect(custom.proportions.armWidth).toBe(1.2);expect(custom.proportions.hipHalfWidth).toBe(3.5);expect(custom.cycleDistance).toBe(24);
       await review.getByRole('button',{name:'Reset proportions',exact:true}).click();await nativeFrame(page,0);
       await review.locator('#reference-proportions summary').click();
       await review.getByRole('button',{name:'Joint guides',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();

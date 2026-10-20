@@ -56,34 +56,34 @@ function surface(id:string,rings:SkinVertex[][],color:number,texture?:PixelTextu
 
 const acrossView=(direction:ActorDirection,c:number,s:number)=>direction==='front'?-c:direction==='back'?c:direction==='left'?-s:s;
 
-function limb(id:string,a:Point3,b:Point3,start:readonly[number,number],end:readonly[number,number],texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+function limb(id:string,a:Point3,b:Point3,start:readonly[number,number],end:readonly[number,number],texture:PixelTexture,direction:ActorDirection,fullness=1):SpriteLayer {
   const dy=b.y-a.y,dz=b.z-a.z,d=Math.hypot(dy,dz),ny=-dz/d,nz=dy/d;
   const stations=[[-.09,.15],[0,.85],[.2,1.05],[.55,1],[.85,.98],[1,.8],[1.09,.15]] as const;
   return surface(id,stations.map(([t,round])=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,c=Math.cos(angle),s=Math.sin(angle),at=Math.max(0,Math.min(1,t));
-    const rx=(start[0]+(end[0]-start[0])*at)*round,ry=(start[1]+(end[1]-start[1])*at)*round;
+    const rx=(start[0]+(end[0]-start[0])*at)*round*fullness,ry=(start[1]+(end[1]-start[1])*at)*round*fullness;
     return {point:{x:a.x+c*rx,y:a.y+dy*t+s*ry*ny,z:a.z+dz*t+s*ry*nz},
       u:(acrossView(direction,c,s)+1)/2*texture.width,v:at*texture.height};
   })),0xffffff,texture);
 }
 
-function rounded(id:string,center:Point3,radii:readonly[number,number,number],color:number):SpriteLayer {
+function rounded(id:string,center:Point3,radii:readonly[number,number,number],color:number,scale=1):SpriteLayer {
   const rings=Array.from({length:7},(_,row)=>{
     const v=row/6,ring=Math.max(.04,Math.sin(v*Math.PI));
     return Array.from({length:ROUND_SIDES},(_,i)=>{const angle=i/ROUND_SIDES*Math.PI*2;
-      return {point:{x:center.x+Math.cos(angle)*radii[0]*ring,y:center.y+Math.sin(angle)*radii[1]*ring,z:center.z+Math.cos(v*Math.PI)*radii[2]},u:0,v:0};});
+      return {point:{x:center.x+Math.cos(angle)*radii[0]*ring*scale,y:center.y+Math.sin(angle)*radii[1]*ring*scale,z:center.z+Math.cos(v*Math.PI)*radii[2]*scale},u:0,v:0};});
   });
   return surface(id,rings,color);
 }
 
-function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection,scale:number):SpriteLayer {
+function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection,scale:number,widthScale:number):SpriteLayer {
   // Rounded heel, close ankle, raised instep and a low tapered toe. The two
   // sole contact endpoints remain at the accepted heel/toe pivots.
   const stations=[[-4,1.1,0,3.5],[-3.2,1.85,0,5.4],[-1.5,2.2,.05,6],[0,2.15,.15,5.4],[2.5,2.3,.15,4.1],[5.2,2.4,0,3.5],[6.9,1.6,0,2.8],[8,.3,0,1.5]] as const;
   const height=Math.max(...stations.map(station=>station[3]));
   const layer=surface(`${side}-foot`,stations.map(([y,width,bottom,top])=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,x=Math.cos(angle)*width,z=(bottom+top)/2+Math.sin(angle)*(top-bottom)/2;
-    const p=footPoint(foot,y*scale,z*scale);p.x+=x*scale;
+    const p=footPoint(foot,y*scale,z*scale);p.x+=x*scale*1.3*widthScale;
     const u=direction==='front'?-x/5+.5:direction==='back'?x/5+.5:direction==='left'?1-(y+4)/12:(y+4)/12;
     return {point:p,u:u*texture.width,v:(1-z/height)*texture.height};
   })),0xffffff,texture);
@@ -121,13 +121,13 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
   // Native Nell has tall boots below the knee, rather than full-length trousers.
   const layers:SpriteLayer[]=[];
   for(const side of ['left','right'] as const){
-    const leg=pose[side],arm=pose.arms[side],inside=side==='right'?-1:1;
-    layers.push(limb(`${side}-thigh`,leg.hip,leg.knee,[2.8,2.6],[1.9,1.9],trousers,direction),
-      limb(`${side}-shin`,leg.knee,leg.ankle,[1.95,1.85],[1.7,1.55],boot,direction),shoe(side,leg.foot,boot,direction,pose.proportions.footScale),
-      limb(`${side}-upper-arm`,arm.shoulder,arm.elbow,[2.1,2.05],[1.6,1.55],sleeve,direction),
-      limb(`${side}-forearm`,arm.elbow,arm.wrist,[1.65,1.55],[1.2,1.15],sleeve,direction),
-      rounded(`${side}-hand`,arm.grip,[1.45,1.3,1.65],0xc59a68),
-      rounded(`${side}-hand`,{x:arm.grip.x+inside*1.1,y:arm.grip.y+.7,z:arm.grip.z+.2},[.65,.75,.85],0xb38758));
+    const leg=pose[side],arm=pose.arms[side],inside=side==='right'?-1:1,{armWidth,legWidth}=pose.proportions;
+    layers.push(limb(`${side}-thigh`,leg.hip,leg.knee,[4,3.5],[2.6,2.5],trousers,direction,legWidth),
+      limb(`${side}-shin`,leg.knee,leg.ankle,[2.5,2.25],[2.15,1.9],boot,direction,legWidth),shoe(side,leg.foot,boot,direction,pose.proportions.footScale,legWidth),
+      limb(`${side}-upper-arm`,arm.shoulder,arm.elbow,[2.8,2.6],[2.2,2.05],sleeve,direction,armWidth),
+      limb(`${side}-forearm`,arm.elbow,arm.wrist,[2.3,2.15],[1.75,1.65],sleeve,direction,armWidth),
+      rounded(`${side}-hand`,arm.grip,[1.85,1.65,2.05],0xc59a68,armWidth),
+      rounded(`${side}-hand`,{x:arm.grip.x+inside*1.45*armWidth,y:arm.grip.y+.7,z:arm.grip.z+.2},[.8,.9,1.05],0xb38758,armWidth));
   }
   const dy=NELL_PROPORTIONS.hipHeight-pose.hipHeight,bodyRect:readonly[number,number,number,number]=direction==='front'||direction==='back'?[33,27,14,22]:[34,27,12,22];
   layers.push(decal('torso',source,bodyRect,dy,4,direction),decal('head',head,[20,0,40,43],dy,7,direction));

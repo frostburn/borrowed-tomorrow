@@ -27,19 +27,19 @@ function legLayers(side:'left'|'right',leg:LegPose,colored:boolean,config:Readon
   const color=colored?LEG_COLORS[side]:0x778594,a=leg.ankle;
   const shoe=(profile:readonly (readonly [number,number])[],width:number,material:number)=>{
     const mesh=part(`${side}-foot`,profile,a.x,width,material);
-    mesh.vertices=mesh.vertices.map(p=>({...footPoint(leg.foot,p.y*config.footScale,p.z*config.footScale),x:a.x+(p.x-a.x)*config.footScale}));
+    mesh.vertices=mesh.vertices.map(p=>({...footPoint(leg.foot,p.y*config.footScale,p.z*config.footScale),x:a.x+(p.x-a.x)*config.footScale*config.legWidth}));
     return mesh;
   };
-  return [segment(`${side}-thigh`,leg.hip,leg.knee,5.5,5.5,color),segment(`${side}-shin`,leg.knee,a,4.5,4.5,color),
+  return [segment(`${side}-thigh`,leg.hip,leg.knee,5.5*config.legWidth,5.5*config.legWidth,color),segment(`${side}-shin`,leg.knee,a,4.5*config.legWidth,4.5*config.legWidth,color),
     shoe([[FOOT_HEEL,0],[FOOT_TOE,0],[FOOT_TOE,1.2],[FOOT_HEEL,1.2]],6.5,0x38434b),
     shoe([[-3.8,1.2],[8,1.2],[8,2.2],[6.5,3.3],[1,5],[-3,5]],6,colored?(side==='left'?0x438e94:0xb77a3e):0x966b48)];
 }
 
-function armLayers(side:'left'|'right',arm:ArmPose,colored:boolean):SpriteLayer[]{
-  const color=colored?LEG_COLORS[side]:0x8e9b9c,g=arm.grip;
-  return [segment(`${side}-upper-arm`,arm.shoulder,arm.elbow,4.5,4.5,color),
-    segment(`${side}-forearm`,arm.elbow,arm.wrist,4,4,colored?color:0x778594),
-    part(`${side}-hand`,[[g.y-1.7,g.z-1.6],[g.y+1.7,g.z-1.6],[g.y+1.7,g.z+1.6],[g.y-1.7,g.z+1.6]],g.x,4.5,0xe4c494)];
+function armLayers(side:'left'|'right',arm:ArmPose,colored:boolean,config:Readonly<RigProportions>):SpriteLayer[]{
+  const color=colored?LEG_COLORS[side]:0x8e9b9c,g=arm.grip,w=config.armWidth;
+  return [segment(`${side}-upper-arm`,arm.shoulder,arm.elbow,4.5*w,4.5*w,color),
+    segment(`${side}-forearm`,arm.elbow,arm.wrist,4*w,4*w,colored?color:0x778594),
+    part(`${side}-hand`,[[g.y-1.7*w,g.z-1.6*w],[g.y+1.7*w,g.z-1.6*w],[g.y+1.7*w,g.z+1.6*w],[g.y-1.7*w,g.z+1.6*w]],g.x,4.5*w,0xe4c494)];
 }
 
 function weaponLayers(weapon:WeaponPose):SpriteLayer[]{
@@ -86,5 +86,5 @@ export function referenceLayers(pose:ReferencePose=referenceRig(0),colored=true)
     else p.x*=config.shoulderHalfWidth/10;
   }
   return [...legLayers('left',pose.left,colored,config),...legLayers('right',pose.right,colored,config),torso,neck,head,nose,eyes,
-    ...(pose.weapon?weaponLayers(pose.weapon):[]),...armLayers('left',pose.arms.left,colored),...armLayers('right',pose.arms.right,colored)];
+    ...(pose.weapon?weaponLayers(pose.weapon):[]),...armLayers('left',pose.arms.left,colored,config),...armLayers('right',pose.arms.right,colored,config)];
 }

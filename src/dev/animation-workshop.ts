@@ -15,6 +15,7 @@ const measurements:readonly [keyof RigProportions,string,number,number,number][]
   ['strideDistance','Stride distance',12,44,1],['footScale','Foot size',.4,1.2,.05],['swingHeight','Foot lift',1,8,.1],
   ['shoulderHeight','Shoulder above hip',8,24,.1],['shoulderHalfWidth','Shoulder spacing',5,12,.1],
   ['upperArmLength','Upper arm',4,12,.1],['forearmLength','Forearm',4,11,.1],['carryLift','Lantern lift',0,8,.1],
+  ['armWidth','Arm thickness (x)',.6,1.6,.05],['legWidth','Leg thickness (x)',.6,1.6,.05],
   ['torsoHeight','Torso height',12,24,.1],['headScale','Head size',.7,1.8,.05],
 ];
 const weaponName={none:'Unarmed',lantern:'Lantern (Nell)',lance:'Steam lance (Orrin)'} as const;
