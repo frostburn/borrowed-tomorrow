@@ -2,6 +2,7 @@ import { FOOT_HEEL, FOOT_TOE, footPoint, LEG_COLORS, type LegPose } from '../art
 import { referenceRig, weaponPoint, type ArmPose, type ReferencePose, type WeaponPose } from '../art/reference-rig';
 import type { Point3 } from '../art/actor-space';
 import type { SpriteLayer } from '../art/layered-sprite';
+import type { RigProportions } from '../art/rig-proportions';
 
 export const REFERENCE_ARM_LAYERS = ['left-upper-arm','left-forearm','left-hand','right-upper-arm','right-forearm','right-hand','right-weapon'] as const;
 export const REFERENCE_LAYERS = ['head','torso',...REFERENCE_ARM_LAYERS,'left-thigh','left-shin','left-foot','right-thigh','right-shin','right-foot'] as const;
@@ -22,11 +23,11 @@ function segment(id:string,a:Point3,b:Point3,width:number,thickness:number,color
   return part(id,[[a.y+ny,a.z+nz],[b.y+ny,b.z+nz],[b.y-ny,b.z-nz],[a.y-ny,a.z-nz]],a.x,width,color);
 }
 
-function legLayers(side:'left'|'right',leg:LegPose,colored:boolean):SpriteLayer[]{
+function legLayers(side:'left'|'right',leg:LegPose,colored:boolean,config:Readonly<RigProportions>):SpriteLayer[]{
   const color=colored?LEG_COLORS[side]:0x778594,a=leg.ankle;
   const shoe=(profile:readonly (readonly [number,number])[],width:number,material:number)=>{
     const mesh=part(`${side}-foot`,profile,a.x,width,material);
-    mesh.vertices=mesh.vertices.map(p=>({...footPoint(leg.foot,p.y,p.z),x:p.x}));
+    mesh.vertices=mesh.vertices.map(p=>({...footPoint(leg.foot,p.y*config.footScale,p.z*config.footScale),x:a.x+(p.x-a.x)*config.footScale}));
     return mesh;
   };
   return [segment(`${side}-thigh`,leg.hip,leg.knee,5.5,5.5,color),segment(`${side}-shin`,leg.knee,a,4.5,4.5,color),
@@ -68,7 +69,7 @@ function weaponLayers(weapon:WeaponPose):SpriteLayer[]{
 
 /** One mannequin and right-hand attachment in all views; nothing is mirrored. */
 export function referenceLayers(pose:ReferencePose=referenceRig(0),colored=true):SpriteLayer[]{
-  const z=pose.hipHeight;
+  const z=pose.hipHeight,config=pose.proportions;
   const torso=part('torso',[[-4,z-1],[4,z-1],[5,z+13],[3,z+17],[-3,z+17],[-5,z+13]],0,15,0x8e9b9c);
   const neck=part('torso',[[-2,z+16],[2,z+16],[2,z+20],[-2,z+20]],0,6,0xe4c494);
   const head=part('head',[[-5,z+20],[-6,z+28],[-3,z+30],[3,z+30],[6,z+28],[5,z+20],[3,z+18],[-3,z+18]],0,13,0xe4c494);
@@ -78,6 +79,12 @@ export function referenceLayers(pose:ReferencePose=referenceRig(0),colored=true)
     const i=eyes.vertices.length;eyes.vertices.push({x:x-.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+26},{x:x+.7,y:6.1,z:z+27.5},{x:x-.7,y:6.1,z:z+27.5});
     eyes.faces.push({points:[i,i+1,i+2,i+3],color:0x1c2930,unlit:true});
   }
-  return [...legLayers('left',pose.left,colored),...legLayers('right',pose.right,colored),torso,neck,head,nose,eyes,
+  for(const mesh of [torso,neck,head,nose,eyes])for(const p of mesh.vertices){
+    const headPart=mesh===head||mesh===nose||mesh===eyes;
+    p.z=z+(headPart?config.torsoHeight+(p.z-z-17)*config.headScale:(p.z-z)*config.torsoHeight/17);
+    if(headPart){p.x*=config.headScale;p.y*=config.headScale;}
+    else p.x*=config.shoulderHalfWidth/10;
+  }
+  return [...legLayers('left',pose.left,colored,config),...legLayers('right',pose.right,colored,config),torso,neck,head,nose,eyes,
     ...(pose.weapon?weaponLayers(pose.weapon):[]),...armLayers('left',pose.arms.left,colored),...armLayers('right',pose.arms.right,colored)];
 }

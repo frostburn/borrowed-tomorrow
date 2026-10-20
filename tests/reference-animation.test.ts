@@ -1,3 +1,4 @@
+import { NELL_PROPORTIONS, REFERENCE_PROPORTIONS } from '../src/art/rig-proportions';
 import { expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { ACTOR_DIRECTIONS } from '../src/content/actors';
@@ -139,4 +140,29 @@ it('arms and weapon layers isolate cleanly and hiding them preserves the armless
       for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(true);
     }
   }
+});
+
+
+it('configurable proportions keep rigid bones and planted contacts across compact and tall presets',()=>{
+  for(const config of [REFERENCE_PROPORTIONS,NELL_PROPORTIONS,{...NELL_PROPORTIONS,hipHeight:18,legLength:10,strideDistance:26,upperArmLength:8}]){
+    for(let i=0;i<120;i++)for(const weapon of REFERENCE_WEAPONS){
+      const phase=i/120,pose=referencePose(phase,weapon,config);
+      expect(pose.left.planted||pose.right.planted).toBe(true);
+      for(const side of ['left','right'] as const){
+        const leg=pose[side],arm=pose.arms[side];
+        for(const [a,b,length] of [[leg.hip,leg.knee,config.legLength],[leg.knee,leg.ankle,config.legLength],[arm.shoulder,arm.elbow,config.upperArmLength],[arm.elbow,arm.wrist,config.forearmLength]] as const)
+          expect(Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z)).toBeCloseTo(length,9);
+        expect(Math.min(leg.foot.heel.z,leg.foot.toe.z)).toBeGreaterThanOrEqual(-1e-10);
+        if(leg.planted&&leg.phase+.0001<STANCE_FRACTION){
+          const mark=leg.foot.contact==='toe'?leg.foot.toe:leg.foot.heel;
+          const next=referencePose(phase+.0001,weapon,config)[side].foot;
+          const after=leg.foot.contact==='toe'?next.toe:next.heel;
+          if(next.contact===leg.foot.contact)expect(mark.y+phase*config.strideDistance).toBeCloseTo(after.y+(phase+.0001)*config.strideDistance,8);
+        }
+      }
+      expect(pose.weapon?.grip??null).toEqual(weapon==='none'?null:pose.arms.right.grip);
+    }
+    expect(referencePose(1,'lantern',config)).toEqual(referencePose(0,'lantern',config));
+  }
+  expect(()=>referencePose(0,'lantern',{...NELL_PROPORTIONS,legLength:5})).toThrow(/Legs cannot reach/);
 });

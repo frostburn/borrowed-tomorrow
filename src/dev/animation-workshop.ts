@@ -1,6 +1,7 @@
+import { NELL_PROPORTIONS, REFERENCE_PROPORTIONS, type RigProportions } from '../art/rig-proportions';
 import { ACTOR_DIRECTIONS, type ActorDirection } from '../content/actors';
 import { LAYERED_SIZE, renderLayers } from '../art/layered-sprite';
-import { FOOT_HEEL, FOOT_TOE, LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES, referencePose, STRIDE_DISTANCE } from '../art/walk-cycle';
+import { FOOT_HEEL, FOOT_TOE, LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES } from '../art/walk-cycle';
 import { project } from '../art/actor-space';
 import { referenceRigFrame, REFERENCE_WEAPONS, weaponPoint, type ReferencePose, type ReferenceWeapon } from '../art/reference-rig';
 import { nellFrame, nellLayers, type NellTextures } from '../art/nell-actor';
@@ -9,6 +10,13 @@ import { layerName, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS, referenceLayers } fr
 const phases=['Left contact','Left support','Right passing','Right contact','Right support','Left passing'];
 const color=(n:number)=>`#${n.toString(16).padStart(6,'0')}`;
 const frameOf=(tick:number)=>((tick%REFERENCE_FRAMES)+REFERENCE_FRAMES)%REFERENCE_FRAMES;
+const measurements:readonly [keyof RigProportions,string,number,number,number][]=[
+  ['legLength','Leg bone',5,18,.1],['hipHeight','Hip height',8,34,.1],['hipRise','Hip rise',0,3,.1],['hipHalfWidth','Hip spacing',2,6,.1],
+  ['strideDistance','Stride distance',12,44,1],['footScale','Foot size',.4,1.2,.05],['swingHeight','Foot lift',1,8,.1],
+  ['shoulderHeight','Shoulder above hip',8,24,.1],['shoulderHalfWidth','Shoulder spacing',5,12,.1],
+  ['upperArmLength','Upper arm',4,12,.1],['forearmLength','Forearm',4,11,.1],['carryLift','Lantern lift',0,8,.1],
+  ['torsoHeight','Torso height',12,24,.1],['headScale','Head size',.7,1.8,.05],
+];
 const weaponName={none:'Unarmed',lantern:'Lantern (Nell)',lance:'Steam lance (Orrin)'} as const;
 
 /** Dev-only source rig. Every canvas and export uses the same native layer renderer. */
@@ -17,6 +25,10 @@ export class AnimationWorkshop {
   private direction:ActorDirection='right';
   private weapon:ReferenceWeapon='lantern';
   private skin:'reference'|'nell'='reference';
+  private referenceProportions={...REFERENCE_PROPORTIONS};
+  private nellProportions={...NELL_PROPORTIONS};
+  private proportionError='';
+  private get proportions(){return this.skin==='nell'?this.nellProportions:this.referenceProportions;}
   private nellTextures?:NellTextures;
   private nellLoading=false;
   private nellError=false;
@@ -33,7 +45,7 @@ export class AnimationWorkshop {
   private frames:Uint8ClampedArray[]=[];
   private native=document.createElement('canvas');
   private get selectedWeapon(){return this.skin==='nell'?'lantern':this.weapon;}
-  private pose(frame:number){return this.skin==='nell'?nellFrame(frame):referenceRigFrame(frame,this.weapon);}
+  private pose(frame:number){return this.skin==='nell'?nellFrame(frame,this.proportions):referenceRigFrame(frame,this.weapon,this.proportions);}
   private layers(frame:number){const pose=this.pose(frame);return this.skin==='nell'&&this.nellTextures?nellLayers(pose,this.direction,this.nellTextures):referenceLayers(pose,this.anatomy);}
   private loadNell(){
     if(this.nellTextures||this.nellLoading)return;
@@ -52,19 +64,23 @@ export class AnimationWorkshop {
   private render(){
     if(!this.host)return;
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
-    const host=this.host;
+    const host=this.host,proportionsOpen=host.querySelector<HTMLDetailsElement>('#reference-proportions')?.open??false;
     host.innerHTML=`<section class="animation-review" aria-label="Layered animation reference"><header><h2>Layered reference</h2><p>${this.skin==='nell'?'Nell / 80 x 80 / six rigged frames. Original face and costume pixels; right-hand lantern.':'Reference walker / 80 x 80 / six frames. Anatomical left: teal. Right: amber. Weapons stay in the right hand.'}</p></header>
       <div class="animation-controls" role="group" aria-label="Reference skin"><button data-reference-skin="reference" aria-pressed="${this.skin==='reference'}">Mannequin</button><button data-reference-skin="nell" aria-pressed="${this.skin==='nell'}">Nell</button>${this.nellLoading?'<span>Loading Nell skin...</span>':this.nellError?'<span>Nell skin could not load. Select Nell to retry.</span>':''}</div>
+      <details id="reference-proportions"><summary>Proportions / native pixels</summary><p>Spacing is measured from the centre. Leg bone sets both thigh and shin. Nell keeps her native face and jacket pixels.</p>
+      <div class="animation-measurements">${measurements.map(([key,label,min,max,step])=>`<label>${label}<input aria-label="${label}" data-reference-measurement="${key}" type="number" min="${min}" max="${max}" step="${step}" value="${this.proportions[key]}" ${this.skin==='nell'&&(key==='headScale'||key==='torsoHeight')?'disabled':''}></label>`).join('')}</div>
+      <div class="animation-controls"><button id="reference-nell-proportions">Match Nell proportions</button><button id="reference-reset-proportions">Reset proportions</button></div><p id="reference-proportion-error" role="status">${this.proportionError}</p></details>
       <div class="animation-controls" role="group" aria-label="Reference weapon">${REFERENCE_WEAPONS.map(weapon=>`<button data-reference-weapon="${weapon}" aria-pressed="${weapon===this.selectedWeapon}" ${this.skin==='nell'&&weapon!=='lantern'?'disabled':''}>${weaponName[weapon]}</button>`).join('')}</div>
       <div class="animation-controls"><div role="group" aria-label="Reference facing">${ACTOR_DIRECTIONS.map(d=>`<button data-reference-facing="${d}" aria-pressed="${d===this.direction}">${layerName(d)}</button>`).join('')}</div>
       <div role="group" aria-label="Reference playback"><button id="reference-previous">Previous frame</button><button id="reference-play">${this.playing?'Pause':'Play'}</button><button id="reference-next">Next frame</button></div>
       <div role="group" aria-label="Reference speed">${[.5,1,2].map(speed=>`<button data-reference-speed="${speed}" aria-pressed="${speed===this.speed}">${speed}x</button>`).join('')}</div></div>
       <p id="reference-phase" aria-live="off"></p><div class="animation-controls" role="group" aria-label="Reference guides"><button id="reference-joints" aria-pressed="${this.joints}">Joint guides</button><button id="reference-paths" aria-pressed="${this.paths}">Foot paths</button><button id="reference-anatomy" aria-pressed="${this.anatomy}" ${this.skin==='nell'?'disabled':''}>Anatomy colors</button></div>
       <div class="animation-layout"><section><h3>Assembled / 3x</h3><canvas width="240" height="240" id="reference-detail" role="img" aria-label="Layered reference at 3x"></canvas></section>
-      <section class="animation-floor"><h3>Moving floor / 1x</h3><div class="animation-scroll"><canvas width="320" height="128" id="reference-floor" role="img" aria-label="Reference walking over fixed foot contacts"></canvas></div><p id="reference-contacts"></p><p>Floor marks move 40 pixels per cycle. Each foot rolls from its fixed heel mark to its toe mark.</p></section>
+      <section class="animation-floor"><h3>Moving floor / 1x</h3><div class="animation-scroll"><canvas width="320" height="128" id="reference-floor" role="img" aria-label="Reference walking over fixed foot contacts"></canvas></div><p id="reference-contacts"></p><p>Floor marks move ${this.proportions.strideDistance} pixels per cycle. Each foot rolls from its fixed heel mark to its toe mark.</p></section>
       <section><h3>Layers</h3><div class="animation-layers">${REFERENCE_LAYERS.map(id=>`<div><button data-reference-layer="${id}" aria-label="Show ${layerName(id)}" aria-pressed="${this.visible.has(id)}">${layerName(id)}</button><button data-reference-solo="${id}" aria-label="Solo ${layerName(id)}" aria-pressed="${this.visible.size===1&&this.visible.has(id)}">Solo</button></div>`).join('')}</div><div class="animation-controls"><button id="reference-all">Show all layers</button><button id="reference-arms" aria-pressed="${REFERENCE_ARM_LAYERS.some(id=>this.visible.has(id))}">Arms and weapon</button></div></section></div>
       <section><h3>Six-frame strip / 1x</h3><div class="animation-scroll"><canvas width="480" height="88" id="reference-strip" role="img" aria-label="Six native reference walk frames"></canvas></div></section>
       <div class="animation-controls" role="group" aria-label="Reference exports"><button id="reference-export-frame">Export frame PNG</button><button id="reference-export-cycle">Export six frames PNG</button><button id="reference-export-pose">Export pose data</button></div><p class="animation-note">PNG exports contain only the visible layers, at native size, on transparency. Guides stay in the workshop.</p></section>`;
+    host.querySelector<HTMLDetailsElement>('#reference-proportions')!.open=proportionsOpen;
     const bind=(selector:string,action:(button:HTMLButtonElement)=>void)=>{
       for(const button of host.querySelectorAll<HTMLButtonElement>(selector))button.onclick=()=>{
         const panel=host.closest('.inventory-panel')!,scroll=panel.scrollTop;
@@ -73,8 +89,20 @@ export class AnimationWorkshop {
         action(button);this.render();panel.scrollTop=scroll;host.querySelector<HTMLButtonElement>(focus)?.focus({preventScroll:true});
       };
     };
+    bind('#reference-nell-proportions',()=>{if(this.skin==='nell')this.nellProportions={...NELL_PROPORTIONS};else this.referenceProportions={...NELL_PROPORTIONS};this.proportionError='';});
+    bind('#reference-reset-proportions',()=>{if(this.skin==='nell')this.nellProportions={...NELL_PROPORTIONS};else this.referenceProportions={...REFERENCE_PROPORTIONS};this.proportionError='';});
+    for(const input of host.querySelectorAll<HTMLInputElement>('[data-reference-measurement]'))input.onchange=()=>{
+      const key=input.dataset.referenceMeasurement as keyof RigProportions,candidate={...this.proportions,[key]:input.valueAsNumber};
+      try{
+        if(!input.checkValidity()||!Number.isFinite(input.valueAsNumber))throw new RangeError('Enter a measurement within the displayed range.');
+        for(let i=0;i<120;i++)for(const weapon of this.skin==='nell'?['lantern'] as const:REFERENCE_WEAPONS)referenceRigFrame(i/20,weapon,candidate);
+        if(this.skin==='nell')this.nellProportions=candidate;else this.referenceProportions=candidate;
+        this.proportionError='';
+      }catch(error){this.proportionError=(error as Error).message;}
+      this.render();host.querySelector<HTMLInputElement>(`[data-reference-measurement="${key}"]`)?.focus({preventScroll:true});
+    };
     bind('[data-reference-facing]',b=>{this.direction=b.dataset.referenceFacing as ActorDirection;});
-    bind('[data-reference-skin]',b=>{this.skin=b.dataset.referenceSkin as 'reference'|'nell';if(this.skin==='nell')this.loadNell();});
+    bind('[data-reference-skin]',b=>{this.skin=b.dataset.referenceSkin as 'reference'|'nell';this.proportionError='';if(this.skin==='nell')this.loadNell();});
     bind('[data-reference-weapon]',b=>{this.weapon=b.dataset.referenceWeapon as ReferenceWeapon;});
     bind('[data-reference-speed]',b=>{const wasPlaying=this.playing;this.pause();this.speed=Number(b.dataset.referenceSpeed);this.started=performance.now();this.playing=wasPlaying;});
     bind('#reference-play',()=>{if(this.playing)this.pause();else{this.started=performance.now();this.playing=true;}});
@@ -104,21 +132,21 @@ export class AnimationWorkshop {
   private source(frame:number){this.native.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(this.frames[frame]),80,80),0,0);return this.native;}
   private paint(){
     if(!this.host)return;
-    const tick=this.currentTick(),frame=frameOf(tick),pose=this.pose(frame),travel=tick/REFERENCE_FRAMES*STRIDE_DISTANCE;
+    const tick=this.currentTick(),frame=frameOf(tick),pose=this.pose(frame),stride=this.proportions.strideDistance,travel=tick/REFERENCE_FRAMES*stride;
     this.paintedTick=tick;const detail=this.host.querySelector<HTMLCanvasElement>('#reference-detail')!.getContext('2d')!,floor=this.host.querySelector<HTMLCanvasElement>('#reference-floor')!.getContext('2d')!,strip=this.host.querySelector<HTMLCanvasElement>('#reference-strip')!.getContext('2d')!;
     for(const ctx of [detail,floor,strip])this.backdrop(ctx);
     // Draw the floor in world coordinates relative to a camera following the root.
-    for(let n=Math.floor(travel/20)-6;n<=Math.floor(travel/20)+6;n++){
-      const y=n*20+12-travel,left=n%2===0,c=left?LEG_COLORS.left:LEG_COLORS.right;
+    for(let n=Math.floor(travel/(stride/2))-6;n<=Math.floor(travel/(stride/2))+6;n++){
+      const y=n*stride/2+stride*.3-travel,left=n%2===0,c=left?LEG_COLORS.left:LEG_COLORS.right;
       const a=project({x:-28,y,z:0},this.direction),b=project({x:28,y,z:0},this.direction);
       line(floor,a.x+120,a.y+22,b.x+120,b.y+22,'#35535a');
-      const heel=project({x:left?-4:4,y:y+FOOT_HEEL,z:0},this.direction),toe=project({x:left?-4:4,y:y+FOOT_TOE,z:0},this.direction);
+      const heel=project({x:(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_HEEL*this.proportions.footScale,z:0},this.direction),toe=project({x:(left?-1:1)*this.proportions.hipHalfWidth,y:y+FOOT_TOE*this.proportions.footScale,z:0},this.direction);
       line(floor,heel.x+120,heel.y+22,toe.x+120,toe.y+22,color(c));
       for(const mark of [heel,toe]){floor.fillStyle=color(c);floor.fillRect(Math.round(mark.x)+119,Math.round(mark.y)+22,3,1);}
     }
     if(this.paths)for(const side of ['left','right'] as const){
       floor.fillStyle=color(LEG_COLORS[side]);
-      for(let i=0;i<36;i++){const p=project(referencePose(i/36)[side].ankle,this.direction);floor.fillRect(Math.round(p.x)+120,Math.round(p.y)+22,1,1);}
+      for(let i=0;i<36;i++){const p=project(this.pose(i/6)[side].ankle,this.direction);floor.fillRect(Math.round(p.x)+120,Math.round(p.y)+22,1,1);}
     }
     const source=this.source(frame);detail.drawImage(source,0,0,240,240);floor.drawImage(source,120,22);
     if(this.joints){
@@ -155,7 +183,7 @@ export class AnimationWorkshop {
     canvas.toBlob(blob=>{if(blob)download(blob,`${prefix}-${this.direction}-${selection}-${cycle?'walk':'frame'}.png`);},'image/png');
   }
   private exportPose(){
-    const document={version:4,size:[80,80],anchor:[40,68],direction:this.direction,skin:this.skin,weapon:this.selectedWeapon,frameMs:REFERENCE_FRAME_MS,cycleDistance:STRIDE_DISTANCE,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*STRIDE_DISTANCE,pose:this.pose(i)}))};
+    const document={version:5,size:[80,80],anchor:[40,68],direction:this.direction,skin:this.skin,weapon:this.selectedWeapon,frameMs:REFERENCE_FRAME_MS,cycleDistance:this.proportions.strideDistance,proportions:this.proportions,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*this.proportions.strideDistance,pose:this.pose(i)}))};
     const prefix=this.skin==='nell'?'nell':`reference-${this.weapon}`;
     download(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`${prefix}-${this.direction}-poses.json`);
   }

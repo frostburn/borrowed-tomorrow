@@ -39,3 +39,12 @@ The 3x inspector and native six-frame strip use the same layer buffers as the ex
 To extend this reference, edit part profiles/materials and bone attachment data in the source, review one profile's contacts and passing poses, then inspect the other orientations. Keep the ground-contact pivots fixed and limb lengths constant when changing proportions or stride. New weapons must attach through the right grip rather than derive their hand from screen coordinates.
 
 The lightweight kinematic tests cover support, floor clearance, constant world-space foot contacts, fixed leg/arm lengths, right-hand attachments, anatomical side projection, loop closure, native alpha, head registration, layer isolation and preservation of the armless body. Detailed workshop playback, all three weapon selections and PNG/JSON export checks stay in the manually run browser suite. Production ignores the route and omits its code and controls.
+
+
+## Configurable proportions
+
+`src/art/rig-proportions.ts` owns `RigProportions`, the original `REFERENCE_PROPORTIONS` and compact `NELL_PROPORTIONS`. The default dimensions above describe the unchanged original mannequin. The solver accepts an explicit configuration: leg length, hip baseline/rise/spacing, stride, foot size/lift, shoulder height/spacing, arm lengths and carrying lift. The mannequin also accepts torso height and head size. Feet, contact landmarks, floor guides and root travel all use the selected dimensions. Bones never stretch; unreachable combinations are rejected with a visible workshop message while retaining the last valid configuration.
+
+Expand **Proportions / native pixels** in Animation to edit native measurements. **Match Nell proportions** fits the mannequin to her compact skeleton; **Reset proportions** restores the current skin's defaults. Mannequin and Nell edits remain independent and session-only. Nell retains native face/jacket pixels, so her head/torso size controls are disabled. Configuration affects authoring geometry, not runtime image scaling. Pose JSON version 5 includes `proportions`, the configured cycle distance and every solved pose. PNG exports use the same settings and layer visibility. Changing the workshop does not write campaign saves or rebuild production pages.
+
+Nell's preset uses 9-pixel leg bones, 18.8-pixel hips, 0.8-pixel rise, 65% geometric foot size, 7/6-pixel arm bones and 24-pixel stride. Her runtime stride is registered separately in `src/content/actor-motion.ts`; keep it synchronized with the preset when baking her pages.

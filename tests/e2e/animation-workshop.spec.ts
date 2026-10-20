@@ -1,3 +1,4 @@
+import { NELL_PROPORTIONS } from '../../src/art/rig-proportions';
 // Browser plugin not available; exercise the native review through repository Playwright.
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
@@ -71,7 +72,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       await review.locator('[data-reference-weapon="lantern"]').click();
       const jsonEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const json=await jsonEvent,data=JSON.parse(await readFile((await json.path())!,'utf8'));
       expect(data.anchor).toEqual([40,68]);expect(data.layers).toEqual([...REFERENCE_LAYERS]);expect(data.frames).toHaveLength(6);
-      expect(data.version).toBe(4);expect(data.skin).toBe('reference');expect(data.weapon).toBe('lantern');expect(data.frames[0].pose.left.foot.contact).toBe('heel');expect(data.frames[3].pose.left.foot.contact).toBe('toe');
+      expect(data.version).toBe(5);expect(data.skin).toBe('reference');expect(data.weapon).toBe('lantern');expect(data.frames[0].pose.left.foot.contact).toBe('heel');expect(data.frames[3].pose.left.foot.contact).toBe('toe');
       expect(data.frames[0].pose.left.foot.heel.z).toBeCloseTo(0);expect(data.frames[3].pose.left.foot.toe.z).toBeCloseTo(0);
       for(const frame of data.frames){expect(frame.pose.weapon.hand).toBe('right');expect(frame.pose.weapon.grip).toEqual(frame.pose.arms.right.grip);expect(frame.pose.arms.left.shoulder.x).toBeLessThan(0);expect(frame.pose.arms.right.shoulder.x).toBeGreaterThan(0);}
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeFrame(page,0);
@@ -87,9 +88,23 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       const lamp=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await lamp).suggestedFilename()).toBe('nell-right-right-weapon-walk.png');
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeNell(page,0,'right');
       const nellJson=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const nellData=JSON.parse(await readFile((await(await nellJson).path())!,'utf8'));
-      expect(nellData.skin).toBe('nell');expect(nellData.weapon).toBe('lantern');expect(nellData.cycleDistance).toBe(40);expect(nellData.frames[0].pose.weapon.grip).toEqual(nellData.frames[0].pose.arms.right.grip);
+      expect(nellData.skin).toBe('nell');expect(nellData.weapon).toBe('lantern');expect(nellData.cycleDistance).toBe(NELL_PROPORTIONS.strideDistance);expect(nellData.frames[0].pose.weapon.grip).toEqual(nellData.frames[0].pose.arms.right.grip);
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`nell-rig-${device}`);
       await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Mannequin',exact:true}).click();await nativeFrame(page,0);
+      await review.locator('#reference-proportions summary').click();
+      await review.getByRole('button',{name:'Match Nell proportions',exact:true}).click();
+      await expect(review.getByRole('spinbutton',{name:'Leg bone',exact:true})).toHaveValue('9');
+      const compact=await page.locator('#reference-detail').evaluate(e=>(e as HTMLCanvasElement).toDataURL());
+      await review.getByRole('spinbutton',{name:'Hip spacing',exact:true}).fill('3.5');await review.getByRole('spinbutton',{name:'Hip spacing',exact:true}).press('Tab');
+      await expect.poll(()=>page.locator('#reference-detail').evaluate(e=>(e as HTMLCanvasElement).toDataURL())).not.toBe(compact);
+      await review.getByRole('spinbutton',{name:'Leg bone',exact:true}).fill('5');await review.getByRole('spinbutton',{name:'Leg bone',exact:true}).press('Tab');
+      await expect(review.locator('#reference-proportion-error')).toContainText('Legs cannot reach');
+      await expect(review.getByRole('spinbutton',{name:'Leg bone',exact:true})).toHaveValue('9');
+      const customEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();
+      const custom=JSON.parse(await readFile((await(await customEvent).path())!,'utf8'));
+      expect(custom.proportions.hipHalfWidth).toBe(3.5);expect(custom.cycleDistance).toBe(24);
+      await review.getByRole('button',{name:'Reset proportions',exact:true}).click();await nativeFrame(page,0);
+      await review.locator('#reference-proportions summary').click();
       await review.getByRole('button',{name:'Joint guides',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`layered-reference-${device}`);
       expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);

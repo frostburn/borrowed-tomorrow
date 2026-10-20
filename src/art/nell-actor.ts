@@ -1,32 +1,15 @@
+import { NELL_PROPORTIONS, type RigProportions } from './rig-proportions';
 import { type ActorDirection } from '../content/actors';
 import { orient, project, type Point3 } from './actor-space';
 import { renderLayers, type PixelTexture, type SpriteLayer } from './layered-sprite';
-import { FOREARM_LENGTH, referenceRig, UPPER_ARM_LENGTH, type ReferencePose, type WeaponPose } from './reference-rig';
+import { referenceRig, type ReferencePose, type WeaponPose } from './reference-rig';
 import { footPoint, REFERENCE_FRAMES, type FootPose } from './walk-cycle';
 
-export const NELL_LEG_LENGTH=12;
-export const NELL_HIP_DROP=5.8;
 export type NellTextures=Record<ActorDirection,PixelTexture>;
 
-/** Retarget Nell's proportions and carry pose; retain the reference's foot contacts and stride. */
-export function nellPose(phase:number):ReferencePose {
-  const pose=referenceRig(phase,'lantern'),drop=NELL_HIP_DROP;
-  pose.hipHeight-=drop;
-  for(const side of ['left','right'] as const){
-    const leg=pose[side];leg.hip={...leg.hip,z:pose.hipHeight};
-    const dy=leg.ankle.y,dz=leg.ankle.z-leg.hip.z,d=Math.hypot(dy,dz),bend=Math.sqrt(NELL_LEG_LENGTH**2-d*d/4);
-    leg.knee={x:leg.hip.x,y:dy/2-dz/d*bend,z:(leg.hip.z+leg.ankle.z)/2+dy/d*bend};
-    for(const joint of ['shoulder','elbow','wrist','grip'] as const)pose.arms[side][joint]={...pose.arms[side][joint],z:pose.arms[side][joint].z-drop};
-  }
-  // Nell carries her full-sized lantern at her waist with a bent elbow.
-  const arm=pose.arms.right;arm.grip={...arm.grip,z:arm.grip.z+6};arm.wrist={...arm.grip,z:arm.grip.z+1.6};
-  const dy=arm.wrist.y-arm.shoulder.y,dz=arm.wrist.z-arm.shoulder.z,d=Math.hypot(dy,dz);
-  const along=(UPPER_ARM_LENGTH**2-FOREARM_LENGTH**2+d*d)/(2*d),bend=Math.sqrt(UPPER_ARM_LENGTH**2-along*along);
-  arm.elbow={x:arm.shoulder.x,y:arm.shoulder.y+along*dy/d+bend*dz/d,z:arm.shoulder.z+along*dz/d-bend*dy/d};
-  pose.weapon={...pose.weapon!,grip:pose.arms.right.grip};
-  return pose;
-}
-export const nellFrame=(frame:number)=>nellPose(frame/REFERENCE_FRAMES);
+/** Nell shares the gait solver, with dimensions registered to her native costume. */
+export const nellPose=(phase:number,config:Readonly<RigProportions>=NELL_PROPORTIONS):ReferencePose=>referenceRig(phase,'lantern',config);
+export const nellFrame=(frame:number,config:Readonly<RigProportions>=NELL_PROPORTIONS)=>nellPose(frame/REFERENCE_FRAMES,config);
 
 function patch(source:PixelTexture,x:number,y:number,width:number,height:number,accept:(r:number,g:number,b:number)=>boolean):PixelTexture {
   const pixels=new Uint8ClampedArray(width*height*4);
@@ -93,14 +76,14 @@ function rounded(id:string,center:Point3,radii:readonly[number,number,number],co
   return surface(id,rings,color);
 }
 
-function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection,scale:number):SpriteLayer {
   // Rounded heel, close ankle, raised instep and a low tapered toe. The two
   // sole contact endpoints remain at the accepted heel/toe pivots.
   const stations=[[-4,1.1,0,3.5],[-3.2,1.85,0,5.4],[-1.5,2.2,.05,6],[0,2.15,.15,5.4],[2.5,2.3,.15,4.1],[5.2,2.4,0,3.5],[6.9,1.6,0,2.8],[8,.3,0,1.5]] as const;
   const height=Math.max(...stations.map(station=>station[3]));
   const layer=surface(`${side}-foot`,stations.map(([y,width,bottom,top])=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,x=Math.cos(angle)*width,z=(bottom+top)/2+Math.sin(angle)*(top-bottom)/2;
-    const p=footPoint(foot,y,z);p.x+=x;
+    const p=footPoint(foot,y*scale,z*scale);p.x+=x*scale;
     const u=direction==='front'?-x/5+.5:direction==='back'?x/5+.5:direction==='left'?1-(y+4)/12:(y+4)/12;
     return {point:p,u:u*texture.width,v:(1-z/height)*texture.height};
   })),0xffffff,texture);
@@ -135,20 +118,18 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
     if(!hair)head.pixels[at+3]=0;
   }
   const trousers=patch(source,37,45,6,10,(r,g,b)=>r<g*1.4&&b>r*.8),sleeve=patch(source,direction==='right'?33:29,30,4,10,(r,g,b)=>r>g*1.7&&r>b*1.4&&r>65),boot=patch(source,37,58,6,9,(r,g,b)=>r>g*1.2&&g>b*1.1);
-  // Keep cuffs visible and give the lower shin a boot shaft.
-  const shin={...trousers,pixels:new Uint8ClampedArray(trousers.pixels)};
-  for(let y=6;y<10;y++)for(let x=0;x<6;x++)shin.pixels.set(boot.pixels.subarray(((y-6)*6+x)*4,((y-6)*6+x)*4+4),(y*6+x)*4);
+  // Native Nell has tall boots below the knee, rather than full-length trousers.
   const layers:SpriteLayer[]=[];
   for(const side of ['left','right'] as const){
     const leg=pose[side],arm=pose.arms[side],inside=side==='right'?-1:1;
     layers.push(limb(`${side}-thigh`,leg.hip,leg.knee,[2.8,2.6],[1.9,1.9],trousers,direction),
-      limb(`${side}-shin`,leg.knee,leg.ankle,[1.95,1.85],[1.7,1.55],shin,direction),shoe(side,leg.foot,boot,direction),
+      limb(`${side}-shin`,leg.knee,leg.ankle,[1.95,1.85],[1.7,1.55],boot,direction),shoe(side,leg.foot,boot,direction,pose.proportions.footScale),
       limb(`${side}-upper-arm`,arm.shoulder,arm.elbow,[2.1,2.05],[1.6,1.55],sleeve,direction),
       limb(`${side}-forearm`,arm.elbow,arm.wrist,[1.65,1.55],[1.2,1.15],sleeve,direction),
       rounded(`${side}-hand`,arm.grip,[1.45,1.3,1.65],0xc59a68),
       rounded(`${side}-hand`,{x:arm.grip.x+inside*1.1,y:arm.grip.y+.7,z:arm.grip.z+.2},[.65,.75,.85],0xb38758));
   }
-  const dy=30.3-(pose.hipHeight+NELL_HIP_DROP),bodyRect:readonly[number,number,number,number]=direction==='front'||direction==='back'?[33,27,14,22]:[34,27,12,22];
+  const dy=NELL_PROPORTIONS.hipHeight-pose.hipHeight,bodyRect:readonly[number,number,number,number]=direction==='front'||direction==='back'?[33,27,14,22]:[34,27,12,22];
   layers.push(decal('torso',source,bodyRect,dy,4,direction),decal('head',head,[20,0,40,43],dy,7,direction));
   layers.push(...lantern(pose.weapon!,source,direction));
   return layers;
