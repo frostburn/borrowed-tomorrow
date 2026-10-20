@@ -5,6 +5,7 @@ import { CHARACTERS, portraitAsset } from '../src/content/characters';
 import { SAY } from '../src/content/dialogue';
 import { ACTOR_DIRECTIONS, actorAsset, facingAsset, PLAYABLE_ACTORS } from '../src/content/actors';
 import { COMPANION_IDS } from '../src/rules/party';
+import { MOTION_PAGES } from '../src/content/actor-motion';
 
 it('every named character has a distinct native sprite and portrait',()=>{
   const sprites:string[]=[],portraits:string[]=[];
@@ -35,5 +36,14 @@ it('every playable character has four distinct native directional actors',()=>{
     });
     expect(new Set(hashes).size).toBe(4);
     expect([facingAsset(hero,0,1),facingAsset(hero,-1,0),facingAsset(hero,1,0),facingAsset(hero,0,-1)]).toEqual(ACTOR_DIRECTIONS.map(direction=>actorAsset(hero,direction)));
+  }
+});
+
+it('motion pages contain four native actor frames within the image budget',()=>{
+  expect(MOTION_PAGES).toHaveLength(8);
+  for(const page of MOTION_PAGES){
+    const bytes=readFileSync(new URL(`../public/art/${page.asset}.png`,import.meta.url));
+    expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,160]);
+    expect(bytes.length).toBeLessThanOrEqual(131072);
   }
 });

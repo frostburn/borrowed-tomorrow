@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import { CHARACTERS } from '../content/characters';
 import type { Cinematic, Shot, StagePoint } from '../content/cinematics';
 import type { Audio } from './audio';
+import type { ActorAnimator } from './actor-motion';
+import { animatedHero } from '../content/actor-motion';
+import { facingAsset } from '../content/actors';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
@@ -14,16 +17,16 @@ export class Cutscene {
   private omen?:Phaser.GameObjects.Graphics;
   private closed=false;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
-  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio){
+  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
-      const name=child.texture.key.replace(/-(left|right|back)$/,'');
+      const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
       if(sprites.has(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
     }
     this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
       const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
-      world.add(image);this.actors.set(actor.id,image);
+      image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=true;audio.cinematicMix(.25);
   }
@@ -33,6 +36,7 @@ export class Cutscene {
     const camera=this.scene.cameras.main;camera.panEffect.reset();
     if(this.focus){const p=pixel(this.focus);camera.centerOn(p.x,p.y);}
     for(const actor of this.actors.values()){
+      this.motion.stop(actor);
       this.scene.tweens.killTweensOf(actor);const to=actor.getData('destination') as StagePoint|undefined;
       if(to){actor.setPosition(to.x,to.y);actor.setData('destination',undefined);}
     }
@@ -46,7 +50,9 @@ export class Cutscene {
       if(direction.visible!==undefined)actor.setVisible(direction.visible);
       if(direction.at){const p=pixel(direction.at);actor.setPosition(p.x,p.y);}
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
-      if(direction.to){const p=pixel(direction.to);actor.setData('destination',p);this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration:this.duration,ease:'Sine.easeInOut'});}
+      if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
+        if(animatedHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),this.duration);
+        this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration:this.duration,ease:'Sine.easeInOut'});}
     }
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
@@ -76,7 +82,7 @@ export class Cutscene {
   reframe(){if(this.focus){const p=pixel(this.focus);this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
     if(this.closed)return;this.closed=true;
-    for(const actor of this.actors.values()){this.scene.tweens.killTweensOf(actor);actor.destroy();}
+    for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);
     this.audio.cinematicMix(1);

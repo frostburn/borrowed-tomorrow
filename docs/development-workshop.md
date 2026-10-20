@@ -91,4 +91,6 @@ Choose **Sprites** in the workshop or open `/?dev=sprites`. The five playable ch
 
 Review controls never write campaign saves, equipment or character builds. Leaving Music for Sprites stops music playback; practice still uses the selected character builds. The tab, direct route and review code are excluded from production. Production uses the same new actor and portrait files in exploration, cutscenes, inventory and combat.
 
+Nell and Orrin also offer **Idle**, **Walk** and **Attack** previews. Play/Pause and Next frame review the walking steps, attack wind-up/contact and recovery in any direction. The file label names the active page and frame. Pausing preserves the displayed frame; leaving the tab stops playback. Other characters retain their static direction review. Motion frames are native 80 x 80 images with the same (40, 68) ground anchor, and profile tools remain in their anatomical right hands.
+
 Side-view equipment keeps its anatomical side, including Nell’s right-hand lantern. The inspector lists each playable character’s handed equipment. Native exports exclude detached alpha fragments, and the browser checks inspect all nonzero-alpha components, not just opaque bounds.

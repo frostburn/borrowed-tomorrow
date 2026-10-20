@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
+import { MOTION_PAGES, animatedHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
+import { ActorAnimator } from './actor-motion';
+import { battleEffect } from './battle-effects';
 import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import type { StoryHost } from '../content/chapter-one/interactions';
@@ -24,6 +27,8 @@ import { worldView, narrowScreen } from './resolution';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
+type BattleSnapshot = Map<string,{hex:Hex;hp:number;retaliated:boolean}>;
+interface BattleMotion { actorId:string;aim:Hex;ability?:AbilityId;path?:Hex[];affected?:Hex[] }
 const textures = [...PLAYABLE_ACTORS,'master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
 const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
 
@@ -38,6 +43,8 @@ export class Adventure extends Phaser.Scene {
   private player?: Phaser.GameObjects.Image;
   private followers: Phaser.GameObjects.Image[] = [];
   private actorImages = new Map<string, Phaser.GameObjects.Image>();
+  private motion=new ActorAnimator(this);
+  private battleFaces=new Map<string,string>();
   private mode: 'title' | 'world' | 'battle' = 'title';
   private selected: Action = 'move';
   private hover?: Hex;
@@ -66,6 +73,7 @@ export class Adventure extends Phaser.Scene {
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     for(const page of TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+    for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
@@ -79,7 +87,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null, state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -107,7 +115,7 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main,p=toPixel(hex);
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
-  get animating(){return this.moving||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
+  get animating(){return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*6*scale+padding*2;canvas.height=9*scale+padding*2;
     const ctx=canvas.getContext('2d')!;
@@ -119,6 +127,7 @@ export class Adventure extends Phaser.Scene {
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.motion.clear();
     this.cinematic?.close();this.cinematic=undefined;
     this.path = []; this.pendingObject = undefined; this.near = undefined; this.moving = false;
     this.tweens.killAll(); this.layer?.destroy(true); this.grid = undefined; this.player = undefined; this.followers = [];this.actorImages.clear();
@@ -233,7 +242,7 @@ export class Adventure extends Phaser.Scene {
       const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id).setData('world-actor',true);
       this.followers.push(follower); this.layer!.add(follower);
     }
-    this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('world-actor',true); this.layer!.add(this.player);
+    this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
     this.sortWorld();
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,true,1,1);
     this.ui.location(map.name);
@@ -251,7 +260,7 @@ export class Adventure extends Phaser.Scene {
   private talk(dialogue: Dialogue) {
     this.path = []; this.pendingObject = undefined;
     this.cinematic?.close();
-    const director=dialogue.scene&&this.layer?new Cutscene(this,this.layer,dialogue.scene,this.audio):undefined;
+    const director=dialogue.scene&&this.layer?new Cutscene(this,this.layer,dialogue.scene,this.audio,this.motion):undefined;
     this.cinematic=director;let finished=false;
     const finish=(action?:()=>void)=>{
       if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
@@ -285,6 +294,7 @@ export class Adventure extends Phaser.Scene {
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
   update(time: number) {
+    this.motion.update();
     this.sortWorld();
     if (this.mode !== 'title' && time - this.lastSecond > 1000) { this.lastSecond = time; this.state.playSeconds++; }
     if (this.mode !== 'world' || this.blocked || this.moving || this.busy) return;
@@ -309,12 +319,13 @@ export class Adventure extends Phaser.Scene {
     const previous = { x: this.player!.x, y: this.player!.y };
     const leader=partyLeader(this.state);
     this.face = facingAsset(leader,dx,dy);
-    this.player!.setTexture(this.face); p.x=x; p.y=y;this.audio.effect('move',p.map);
+    this.motion.walk(this.player!,this.face,130); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
     let following = previous;
     for (const follower of this.followers) {
       const old = { x: follower.x, y: follower.y }, id = follower.getData('hero') as HeroId;
-      follower.setTexture(facingAsset(id,following.x-old.x,following.y-old.y));
+      if(following.x!==old.x||following.y!==old.y)this.motion.walk(follower,facingAsset(id,following.x-old.x,following.y-old.y),130);
+      else this.motion.stop(follower);
       this.tweens.add({ targets:follower, x:following.x, y:following.y, duration:130, ease:'Linear' });
       following = old;
     }
@@ -426,25 +437,28 @@ export class Adventure extends Phaser.Scene {
     this.mode='title';this.battle=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
   }
   private enterBattle(id: string) {
+    this.battleFaces.clear();
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(this.state.chapter==='chapter-four'?(id==='sanctuary-warden'?'four-warden':'four-battle'):this.state.chapter==='chapter-three'?'switching':id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
   }
-  private drawBattle() {
+  private drawBattle(before?:BattleSnapshot) {
+    this.motion.clear();
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
     const backdrop=ENCOUNTERS[this.battle!.encounter].backdrop??{map:'yard' as const,y:0};
     this.background(backdrop.map,backdrop.y);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
-    if(turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
+    if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
     for(const rock of ENCOUNTERS[b.encounter].rocks){const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
-    for(const u of b.units){const p=toPixel(u.hex);
-      const img=this.add.image(p.x,p.y+9,u.appearance??u.kind).setOrigin(.5,.82).setAlpha(u.hp>0?1:.22);
+    for(const u of b.units){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
+      const img=this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
       if(u.side==='enemy')img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
-      if(u.hp>0){const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(p.x-23,p.y+18,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(p.x-22,p.y+19,44*u.hp/u.maxHp,4);this.layer.add(g);
-        const t=this.label(p.x,p.y+28,String(u.hp),'#f4e5be',2);this.layer.add(t);
-        if(u.guard||u.dazzledAttacks||tauntTarget(b,u))this.layer.add(this.label(p.x,p.y+44,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
+      if(hp>0){const badges=this.add.container(p.x,p.y+9);this.layer.add(badges);img.setData('badges',badges);
+        const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(-23,9,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(-22,10,44*hp/u.maxHp,4);badges.add(g);
+        badges.add(this.label(0,19,String(hp),'#f4e5be',2));
+        if(u.guard||u.dazzledAttacks||tauntTarget(b,u))badges.add(this.label(0,35,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
     this.drawGrid();this.drawInitiative();
@@ -542,23 +556,74 @@ export class Adventure extends Phaser.Scene {
   }
   private commitPlan() {
     const b=this.battle!,u=active(b),plan=this.plan;if(!u||!plan||this.busy)return;
-    const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));
-    const success=plan.action==='move'?!!move(b,u,plan.hex):cast(b,u,plan.action,plan.hex);
+    const before=this.battleSnapshot();
+    const affected=plan.action==='move'?[]:shape(b,u,plan.action,plan.hex);
+    const path=plan.action==='move'?move(b,u,plan.hex):undefined;
+    const success=plan.action==='move'?!!path:cast(b,u,plan.action,plan.hex);
     if(!success){this.plan=undefined;this.drawGrid();this.renderBattleControls();return;}
-    this.plan=undefined;this.hover=undefined;this.audio.effect(plan.action==='move'?'move':ABILITIES[plan.action].sound??plan.action as import('./synth').Effect,this.state.location.map);
+    this.plan=undefined;this.hover=undefined;
     if(plan.action==='move'||active(b)?.id===u.id&&u.moved)this.selected=u.abilities[0];else this.selected='move';
-    this.animateBattle(before);
+    this.animateBattle(before,{actorId:u.id,aim:plan.hex,...(plan.action==='move'?{path:path!}:{ability:plan.action,affected})});
   }
   private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
   private doWait() {if(this.busy||active(this.battle!)?.side!=='party')return;if(wait(this.battle!)){this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}}
-  private animateBattle(before: Map<string,{hex:Hex;hp:number}>) {
-    const battle=this.battle;
-    this.busy=true;this.drawBattle();this.renderBattleControls();
-    for(const u of this.battle!.units){const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
-      if(!equal(old.hex,u.hex)){const from=toPixel(old.hex),to=toPixel(u.hex);image.setPosition(from.x,from.y+9);this.tweens.add({targets:image,x:to.x,y:to.y+9,duration:280,ease:'Sine.easeInOut'});}
-      if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:900,onComplete:()=>text.destroy()});}
+  private battleSnapshot():BattleSnapshot {return new Map(this.battle!.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp,retaliated:v.retaliated}]));}
+  private animateBattle(before:BattleSnapshot,action?:BattleMotion) {
+    const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
+    const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
+    const from=actor?toPixel(before.get(actor.id)?.hex??actor.hex):undefined,to=action?toPixel(action.aim):undefined;
+    const face=hero&&animatedHero(hero)&&from&&to?facingAsset(hero,to.x-from.x,to.y-from.y):undefined;
+    if(face&&actor)this.battleFaces.set(actor.id,face);
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const path=action?.path,stepMs=reduced?0:95,impact=action?.ability&&!reduced?ATTACK_CONTACT_MS:0;
+    const duration=path?Math.max(80,path.length*stepMs+40):reduced?100:ATTACK_DURATION_MS;
+    this.busy=true;this.drawBattle(before);this.renderBattleControls();
+    if(actor){this.revealHex(before.get(actor.id)?.hex??actor.hex);const image=this.actorImages.get(actor.id)!;
+      if(face&&action?.ability&&action.ability!=='bandage')this.motion.attack(image,face);
+      if(path){
+        this.audio.effect('move',this.state.location.map);
+        const advance=(index:number)=>{
+          if(!valid()||!image.active||index>=path.length)return;
+          const p=toPixel(path[index]),walkFace=hero&&animatedHero(hero)?facingAsset(hero,p.x-image.x,p.y+9-image.y):undefined;
+          if(walkFace){this.battleFaces.set(actor.id,walkFace);this.motion.walk(image,walkFace,stepMs);}
+          this.tweens.add({targets:[image,image.getData('badges')].filter(Boolean),x:p.x,y:p.y+9,duration:stepMs,ease:'Linear',onComplete:()=>advance(index+1)});
+        };advance(0);
+      }
     }
-    this.time.delayedCall(380,()=>{if(this.battle!==battle||this.mode!=='battle')return;this.busy=false;if(this.battle?.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}});
+    const showImpact=()=>{
+      if(!valid()||path)return;
+      this.drawBattle();
+      if(actor&&action?.ability){
+        const image=this.actorImages.get(actor.id)!;
+        if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact);
+        this.revealHex(action.aim);
+        this.audio.effect(ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
+        if(face)battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face);
+      }
+      for(const u of battle.units){
+        const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
+        if(!equal(old.hex,u.hex)){
+          const start=toPixel(old.hex),end=toPixel(u.hex);image.setPosition(start.x,start.y+9);
+          const badges=image.getData('badges') as Phaser.GameObjects.Container|undefined;badges?.setPosition(start.x,start.y+9);
+          this.tweens.add({targets:[image,badges].filter(Boolean),x:end.x,y:end.y+9,duration:reduced?0:140,ease:'Sine.easeOut'});
+        }
+        if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;
+          const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);
+          this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:reduced?100:700,onComplete:()=>{if(text.active)text.destroy();}});
+        }
+        if(!old.retaliated&&u.retaliated&&animatedHero(u.kind)&&actor){
+          const p=toPixel(u.hex),target=toPixel(actor.hex),counterFace=facingAsset(u.kind,target.x-p.x,target.y-p.y);
+          this.battleFaces.set(u.id,counterFace);this.motion.attack(image,counterFace);
+        }
+      }
+    };
+    if(!path)this.time.delayedCall(impact,showImpact);
+    this.time.delayedCall(duration,()=>{
+      if(!valid())return;this.motion.clear();this.busy=false;
+      if(path)this.drawBattle();
+      const next=active(battle);if(next){this.revealHex(next.hex);this.shownTurn=next.id;}
+      if(battle.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}
+    });
   }
   private scheduleEnemy() {
     const b=this.battle;if(!b||b.result||active(b)?.side!=='enemy')return;
@@ -566,7 +631,7 @@ export class Adventure extends Phaser.Scene {
     this.time.delayedCall(480,()=>{
       if(this.mode!=='battle'||this.battle!==b)return;
       if(this.ui.modalOpen){this.busy=false;this.scheduleEnemy();return;}
-      const before=new Map(b.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));const action=enemyTurn(b);if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before);
+      const before=this.battleSnapshot(),attacker=active(b);const action=enemyTurn(b);if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex}:undefined);
     });
   }
   private battleEnded() {

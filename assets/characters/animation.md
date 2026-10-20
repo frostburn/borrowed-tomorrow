@@ -4,6 +4,12 @@ Created with built-in Image Gen using four-by-four templates made from the exist
 
 `animation-sources.json` selects original/revised cells. Source sheets stay outside git. Run `python3 scripts/import-character-animation.py /path/to/generated_images` with Pillow to repeat the export. It isolates the largest connected alpha silhouette, uses one scale per direction, anchors head alignment to the existing idle view, samples source pixels without blending or palette reduction, and removes detached fragments after sampling. Only the small native pages are committed.
 
+## Runtime playback
+
+The shared actor frame player animates exploration leaders/followers, staged cutscene moves and tactical paths. Walking keeps its gait phase across adjacent cells and turns, then restores the facing idle texture. Attacks use 140 ms wind-up, contact through 280 ms, and recovery to 380 ms, retaining the previous battle input delay. Damage visuals, skill effects and player attack sounds begin at contact. Battle HP labels travel with their actors. Pending presentation callbacks check battle identity so forced outcomes and restarts cannot replay old hits. Reduced-motion mode keeps idle artwork and shortens battle presentation.
+
+The Vite Sprites workshop shares the same pages and frame sequence, with pause and frame stepping. Idle sprites, portraits, character rules and combat damage are unchanged. `tests/e2e/actor-motion.spec.ts` covers directions, native cropped pixels, tactical paths, both heroes' attacks and interruption. These detailed checks remain outside default CI.
+
 ## Generation prompts
 
 ### Nell poses
