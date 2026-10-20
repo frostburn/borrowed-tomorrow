@@ -861,7 +861,7 @@
     },
     {
       "id": 15,
-      "name": "Miners\u2019 cottage west",
+      "name": "Miners’ cottage west",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -923,7 +923,7 @@
     },
     {
       "id": 16,
-      "name": "Miners\u2019 cottage north",
+      "name": "Miners’ cottage north",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -2320,7 +2320,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Open the collector \u00b7 protect the loading walk"
+              "value": "Open the collector · protect the loading walk"
             },
             {
               "name": "sprite",
@@ -2349,7 +2349,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Dena \u00b7 all aboard"
+              "value": "Dena · all aboard"
             },
             {
               "name": "requiredFlag",
@@ -2383,7 +2383,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Petra \u00b7 the far crossing"
+              "value": "Petra · the far crossing"
             },
             {
               "name": "sprite",
@@ -2417,7 +2417,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical coaches \u00b7 rescued prisoners"
+              "value": "Medical coaches · rescued prisoners"
             },
             {
               "name": "sign",
@@ -2441,7 +2441,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Board the engine \u00b7 capital line"
+              "value": "Board the engine · capital line"
             },
             {
               "name": "sign",
@@ -2494,7 +2494,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Alban \u00b7 behind the crossing"
+              "value": "Alban · behind the crossing"
             },
             {
               "name": "sprite",
@@ -3104,7 +3104,7 @@
           "visible": true,
           "width": 0,
           "height": 0,
-          "x": 708.0,
+          "x": 732.0,
           "y": 396.0
         },
         {

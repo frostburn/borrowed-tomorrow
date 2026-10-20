@@ -1747,7 +1747,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Dena \u00b7 ward supplies and rest"
+              "value": "Dena · ward supplies and rest"
             },
             {
               "name": "doneFlag",
@@ -1776,7 +1776,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Kit \u00b7 the waiting families"
+              "value": "Kit · the waiting families"
             },
             {
               "name": "sign",
@@ -1800,7 +1800,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical-train clearance \u00b7 capital"
+              "value": "Medical-train clearance · capital"
             },
             {
               "name": "sign",
@@ -1848,7 +1848,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Cinderbank siding \u00b7 collect the families"
+              "value": "Cinderbank siding · collect the families"
             },
             {
               "name": "sign",
@@ -2114,7 +2114,7 @@
     {
       "name": "name",
       "type": "string",
-      "value": "Iron Coast \u00b7 the railway ward"
+      "value": "Iron Coast · the railway ward"
     },
     {
       "name": "subtitle",

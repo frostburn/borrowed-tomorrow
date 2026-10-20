@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
-import { arrival, MAPS, restorePoint, stage, visiblePeople, walkable, worldPath } from '../src/content/maps';
+import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
 import { CIVILIAN_SPRITES } from '../src/content/civilians';
 import { gridPoint, layerVisible, mapPoints, tilePages, TILESET, tileWalkable } from '../src/content/tilemaps';
 import { cells, toPixel } from '../src/rules/hex';
@@ -20,7 +20,10 @@ it('silent Chapter Two people stand on floors apart from interactions, arrivals 
       expect(endpoints.some(p=>p.x===person.x&&p.y===person.y),`${map.id}:${person.id} endpoint`).toBe(false);
       for(const flag of ['coastSeen','prisonersFreed','wardSeen','settlementSeen','coastCollectorWon','evacuationReady'] as const){
         const state=coastCheckpoint(flag);
-        if(visiblePeople(map,state).includes(person))expect(walkable(map,person.x,person.y,state),`${map.id}:${person.id} floor`).toBe(true);
+        if(visiblePeople(map,state).includes(person)){
+          expect(walkable(map,person.x,person.y,state),`${map.id}:${person.id} floor`).toBe(true);
+          expect(visibleObjects(map,state).every(o=>Math.hypot(o.x-person.x,o.y-person.y)>=1.8),`${map.id}:${person.id} interaction radius`).toBe(true);
+        }
       }
     }
   }

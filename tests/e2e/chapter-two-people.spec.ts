@@ -38,7 +38,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         await expect(page.locator('.dialogue')).toHaveCount(0);
         if(flag==='wardSeen')await nativeActor(page,'civilian-patient',{x:25,y:20});
         if(flag==='settlementSeen')await nativeActor(page,'civilian-family',{x:19,y:21});
-        if(flag==='coastCollectorWon')await nativeActor(page,'civilian-family',{x:29,y:16});
+        if(flag==='coastCollectorWon')await nativeActor(page,'civilian-family',{x:30,y:16});
         await capture(page,`people-${flag}-${device}`);
       }
       await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
