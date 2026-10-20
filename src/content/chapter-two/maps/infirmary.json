@@ -2016,7 +2016,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-patient"
+              "value": "civilian-patient-green"
             },
             {
               "name": "hiddenFlag",
@@ -2040,7 +2040,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-traveler"
+              "value": "civilian-traveler-blue"
             },
             {
               "name": "hiddenFlag",
@@ -2064,7 +2064,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family"
+              "value": "civilian-family-blue"
             },
             {
               "name": "hiddenFlag",
@@ -2088,7 +2088,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-dockhand"
+              "value": "civilian-dockhand-rust"
             }
           ],
           "rotation": 0,

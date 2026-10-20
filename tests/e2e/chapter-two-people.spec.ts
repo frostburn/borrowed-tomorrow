@@ -17,7 +17,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       await page.getByRole('button',{name:'Skip scene',exact:true}).click();
 
       const coast=coastCheckpoint('coastSeen');coast.location={map:'coast',x:28,y:27};await importSave(page,coast);
-      await nativeActor(page,'civilian-family',{x:32,y:27});await nativeActor(page,'civilian-traveler',{x:22,y:29});
+      await nativeActor(page,'civilian-family-plum',{x:32,y:27});await nativeActor(page,'civilian-traveler',{x:22,y:29});
       await capture(page,`people-coast-${device}`);
       // Clicking a background person is ordinary navigation, never a talk target.
       await clickWorld(page,32,27);

@@ -16,6 +16,53 @@
     "offset": [
       26,
       5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          54,
+          26
+        ],
+        "phase": [
+          0.6,
+          0.6
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-dockhand-rust",
+        "rules": [
+          {
+            "box": [
+              20,
+              23,
+              60,
+              38
+            ],
+            "hue": [
+              0.52,
+              0.75
+            ],
+            "targetHue": 0.34
+          },
+          {
+            "box": [
+              20,
+              23,
+              60,
+              33
+            ],
+            "hue": [
+              0.07,
+              0.16
+            ],
+            "targetHue": 0.02
+          }
+        ]
+      }
     ]
   },
   {
@@ -35,6 +82,40 @@
     "offset": [
       23,
       5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          53,
+          27
+        ],
+        "phase": [
+          -0.2,
+          -0.4
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-traveler-blue",
+        "rules": [
+          {
+            "box": [
+              20,
+              22,
+              62,
+              64
+            ],
+            "hue": [
+              0.85,
+              1
+            ],
+            "targetHue": 0.58
+          }
+        ]
+      }
     ]
   },
   {
@@ -54,6 +135,96 @@
     "offset": [
       20,
       5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          20,
+          4,
+          44,
+          29
+        ],
+        "phase": [
+          0,
+          0.6
+        ]
+      },
+      {
+        "box": [
+          42,
+          27,
+          61,
+          46
+        ],
+        "phase": [
+          0.4,
+          -0.4
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-family-blue",
+        "rules": [
+          {
+            "box": [
+              20,
+              32,
+              45,
+              64
+            ],
+            "hue": [
+              0.1,
+              0.42
+            ],
+            "targetHue": 0.59
+          },
+          {
+            "box": [
+              43,
+              43,
+              61,
+              58
+            ],
+            "hue": [
+              0,
+              0.08
+            ],
+            "targetHue": 0.12
+          }
+        ]
+      },
+      {
+        "sprite": "civilian-family-plum",
+        "rules": [
+          {
+            "box": [
+              20,
+              32,
+              45,
+              64
+            ],
+            "hue": [
+              0.1,
+              0.42
+            ],
+            "targetHue": 0.9
+          },
+          {
+            "box": [
+              43,
+              43,
+              61,
+              58
+            ],
+            "hue": [
+              0,
+              0.08
+            ],
+            "targetHue": 0.47
+          }
+        ]
+      }
     ]
   },
   {
@@ -73,6 +244,40 @@
     "offset": [
       27,
       5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          54,
+          28
+        ],
+        "phase": [
+          0.6,
+          -0.6
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-patient-green",
+        "rules": [
+          {
+            "box": [
+              20,
+              28,
+              60,
+              64
+            ],
+            "hue": [
+              0.52,
+              0.75
+            ],
+            "targetHue": 0.35
+          }
+        ]
+      }
     ]
   }
 ]

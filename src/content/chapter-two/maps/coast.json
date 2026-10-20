@@ -2503,7 +2503,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-dockhand"
+              "value": "civilian-dockhand-rust"
             }
           ],
           "rotation": 0,
@@ -2541,7 +2541,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family"
+              "value": "civilian-family-plum"
             }
           ],
           "rotation": 0,
@@ -2589,7 +2589,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-traveler"
+              "value": "civilian-traveler-blue"
             },
             {
               "name": "requiredFlag",

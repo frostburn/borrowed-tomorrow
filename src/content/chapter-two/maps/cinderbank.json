@@ -3038,7 +3038,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family"
+              "value": "civilian-family-blue"
             },
             {
               "name": "hiddenFlag",
@@ -3062,7 +3062,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-dockhand"
+              "value": "civilian-dockhand-rust"
             },
             {
               "name": "hiddenFlag",
@@ -3144,7 +3144,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family"
+              "value": "civilian-family-blue"
             },
             {
               "name": "requiredFlag",
