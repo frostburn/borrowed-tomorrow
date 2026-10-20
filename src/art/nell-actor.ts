@@ -40,6 +40,22 @@ function decal(id:string,texture:PixelTexture,rect:readonly[number,number,number
     faces:[{points:[0,1,2,3],color:0xffffff,unlit:true,texture,uv:[{u:x,v:y},{u:x+w,v:y},{u:x+w,v:y+h},{u:x,v:y+h}]}]};
 }
 
+/** Native jacket flanks extend outside the central bib; exclude idle hands and tools. */
+function jacketSides(source:PixelTexture,direction:ActorDirection,dy:number):SpriteLayer {
+  // Half-open source spans: top, bottom, left, right. These parts stay with the
+  // torso while depth-tested arms swing across the restored lapels and hem.
+  const spans:Record<ActorDirection,readonly (readonly [number,number,number,number])[]>={
+    front:[[27,34,31,33],[34,40,30,33],[40,48,29,33],[27,35,47,49],[35,50,47,50]],
+    left:[[34,43,32,34],[40,46,46,50]],
+    right:[[38,45,31,34],[45,49,33,38]],
+    back:[[33,42,30,33],[42,49,29,33],[33,43,47,49],[43,49,47,50]],
+  };
+  const texture={...source,pixels:new Uint8ClampedArray(source.pixels)};
+  for(let y=0;y<source.height;y++)for(let x=0;x<source.width;x++)
+    if(!spans[direction].some(([top,bottom,left,right])=>y>=top&&y<bottom&&x>=left&&x<right))texture.pixels[(y*source.width+x)*4+3]=0;
+  return decal('torso',texture,[28,27,23,24],dy,4,direction);
+}
+
 interface SkinVertex { point:Point3;u:number;v:number }
 const ROUND_SIDES=12;
 
@@ -130,7 +146,7 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
       rounded(`${side}-hand`,{x:arm.grip.x+inside*1.45*armWidth,y:arm.grip.y+.7,z:arm.grip.z+.2},[.8,.9,1.05],0xb38758,armWidth));
   }
   const dy=NELL_PROPORTIONS.hipHeight-pose.hipHeight,bodyRect:readonly[number,number,number,number]=direction==='front'||direction==='back'?[33,27,14,22]:[34,27,12,22];
-  layers.push(decal('torso',source,bodyRect,dy,4,direction),decal('head',head,[20,0,40,43],dy,7,direction));
+  layers.push(decal('torso',source,bodyRect,dy,4,direction),jacketSides(source,direction,dy),decal('head',head,[20,0,40,43],dy,7,direction));
   layers.push(...lantern(pose.weapon!,source,direction));
   return layers;
 }

@@ -17,3 +17,5 @@ Run `node scripts/export-nell-animation.mjs` to bake all four six-frame walks in
 `src/content/actor-motion.ts` owns the production stride contract: Nell's cycle spans 24 native pixels, matching her fixed heel/toe contacts; Orrin retains 60 pixels. Keep the authoring stride and runtime distance in agreement when changing the gait.
 
 Nell has full overall thighs, substantial boot shafts and broader rounded sleeves/gloves. Her feet keep their compact heel-to-toe length with a wider upper. Shoulder spacing and 8/7-pixel arm bones preserve a visible arm silhouette; carrying lift bends the longer right arm while retaining the lantern height. These character-specific widths are independent of the mannequin and do not change her compact hip/head height.
+
+The jacket includes registered native side-panel spans in addition to the central bib/torso crop. These preserve the directional lapels, lower sides and hem without including idle hands or lantern pixels. All panels belong to the `torso` layer and move with the same hip offset; normal depth testing lets moving arms cover them. Do not narrow the jacket to the central rectangle when changing limb proportions.
