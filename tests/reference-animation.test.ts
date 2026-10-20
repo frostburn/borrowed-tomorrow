@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { ACTOR_DIRECTIONS } from '../src/content/actors';
-import { ANKLE_HEIGHT, LEG_LENGTH, referenceFrame, referencePose, STANCE_FRACTION, STRIDE_DISTANCE } from '../src/art/walk-cycle';
+import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, LEG_LENGTH, referenceFrame, referencePose, STANCE_FRACTION, STRIDE_DISTANCE } from '../src/art/walk-cycle';
 import { project } from '../src/art/actor-space';
 import { renderLayers } from '../src/art/layered-sprite';
 import { referenceLayers } from '../src/dev/reference-actor';
@@ -10,9 +10,10 @@ it('the walk keeps both bone lengths fixed, clears the floor and always has supp
   for(let i=0;i<240;i++){
     const pose=referencePose(i/240);expect(pose.left.planted||pose.right.planted).toBe(true);
     for(const side of ['left','right'] as const){
-      const {hip,knee,ankle}=pose[side];
+      const {hip,knee,ankle,foot}=pose[side];
       for(const [a,b] of [[hip,knee],[knee,ankle]])expect(Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z)).toBeCloseTo(LEG_LENGTH,10);
-      expect(ankle.z).toBeGreaterThanOrEqual(ANKLE_HEIGHT-1e-10);
+      for(const point of [foot.heel,foot.toe])expect(point.z).toBeGreaterThanOrEqual(-1e-10);
+      for(const layer of referenceLayers(pose))for(const vertex of layer.vertices)expect(vertex.z).toBeGreaterThanOrEqual(-1e-10);
     }
   }
   for(const [phase,side] of [[.3,'left'],[.8,'right']] as const){
@@ -21,15 +22,33 @@ it('the walk keeps both bone lengths fixed, clears the floor and always has supp
   }
 });
 
-it('a planted foot remains fixed in world space throughout support, including cycle wrap',()=>{
-  for(const [side,start,contact] of [['left',0,12],['right',.5,32]] as const){
+it('heel, sole and toe contacts stay fixed in world space as the ankle rolls, including cycle wrap',()=>{
+  for(const [side,start,origin] of [['left',0,12],['right',.5,32]] as const){
     for(let i=0;i<=120;i++){
-      const phase=start+STANCE_FRACTION*i/120,foot=referencePose(phase)[side];
-      expect(foot.planted).toBe(true);
-      expect(phase*STRIDE_DISTANCE+foot.ankle.y).toBeCloseTo(contact,10);
-      expect(foot.ankle.z-ANKLE_HEIGHT).toBeCloseTo(0,10);
+      const phase=start+STANCE_FRACTION*i/120,leg=referencePose(phase)[side],{foot}=leg;
+      expect(leg.planted).toBe(true);
+      for(const [point,offset] of [[foot.heel,FOOT_HEEL],[foot.toe,FOOT_TOE]] as const){
+        if(point.z>1e-10)continue;
+        expect(phase*STRIDE_DISTANCE+point.y).toBeCloseTo(origin+offset,10);
+      }
+      expect(Math.min(foot.heel.z,foot.toe.z)).toBeCloseTo(0,10);
     }
   }
+});
+
+it('shaped shoes land heel first, settle flat, push off the toe and clear both ends in swing',()=>{
+  const landing=referencePose(0).left,support=referencePose(.25).left,push=referencePose(.5).left,swing=referencePose(.8).left;
+  expect(landing.foot.contact).toBe('heel');expect(landing.foot.toe.z).toBeGreaterThan(3);
+  expect(support.foot.contact).toBe('sole');expect(support.ankle.z).toBe(ANKLE_HEIGHT);
+  expect(push.foot.contact).toBe('toe');expect(push.foot.heel.z).toBeGreaterThan(4);
+  expect(swing.foot.contact).toBe('air');expect(Math.min(swing.foot.heel.z,swing.foot.toe.z)).toBeGreaterThan(5);
+  for(let i=0;i<240;i++)for(const side of ['left','right'] as const){
+    const {foot}=referencePose(i/240)[side];
+    expect(Math.hypot(foot.toe.y-foot.heel.y,foot.toe.z-foot.heel.z)).toBeCloseTo(12,10);
+    expect(foot.toe.y).toBeGreaterThan(foot.heel.y);
+  }
+  const parts=referenceLayers(referencePose(.25)).filter(layer=>layer.id==='left-foot');
+  expect(new Set(parts.flatMap(layer=>layer.faces.map(face=>face.color))).size).toBe(2);
 });
 
 it('the opposite leg swings with a forward knee and the complete pose closes exactly',()=>{

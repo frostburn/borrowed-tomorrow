@@ -1,6 +1,6 @@
 import { ACTOR_DIRECTIONS, type ActorDirection } from '../content/actors';
 import { LAYERED_SIZE, renderLayers } from '../art/layered-sprite';
-import { LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES, referenceFrame, referencePose, STRIDE_DISTANCE } from '../art/walk-cycle';
+import { FOOT_HEEL, FOOT_TOE, LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES, referenceFrame, referencePose, STRIDE_DISTANCE } from '../art/walk-cycle';
 import { project } from '../art/actor-space';
 import { layerName, REFERENCE_LAYERS, referenceLayers } from './reference-actor';
 
@@ -39,7 +39,7 @@ export class AnimationWorkshop {
       <div role="group" aria-label="Reference speed">${[.5,1,2].map(speed=>`<button data-reference-speed="${speed}" aria-pressed="${speed===this.speed}">${speed}x</button>`).join('')}</div></div>
       <p id="reference-phase" aria-live="off"></p><div class="animation-controls" role="group" aria-label="Reference guides"><button id="reference-joints" aria-pressed="${this.joints}">Joint guides</button><button id="reference-paths" aria-pressed="${this.paths}">Foot paths</button><button id="reference-anatomy" aria-pressed="${this.anatomy}">Anatomy colors</button></div>
       <div class="animation-layout"><section><h3>Assembled / 3x</h3><canvas width="240" height="240" id="reference-detail" role="img" aria-label="Armless reference at 3x"></canvas></section>
-      <section class="animation-floor"><h3>Moving floor / 1x</h3><div class="animation-scroll"><canvas width="320" height="128" id="reference-floor" role="img" aria-label="Reference walking over fixed foot contacts"></canvas></div><p id="reference-contacts"></p><p>Floor marks move 40 pixels per cycle. A planted foot stays on its colored mark.</p></section>
+      <section class="animation-floor"><h3>Moving floor / 1x</h3><div class="animation-scroll"><canvas width="320" height="128" id="reference-floor" role="img" aria-label="Reference walking over fixed foot contacts"></canvas></div><p id="reference-contacts"></p><p>Floor marks move 40 pixels per cycle. Each foot rolls from its fixed heel mark to its toe mark.</p></section>
       <section><h3>Layers</h3><div class="animation-layers">${REFERENCE_LAYERS.map(id=>`<div><button data-reference-layer="${id}" aria-label="Show ${layerName(id)}" aria-pressed="${this.visible.has(id)}">${layerName(id)}</button><button data-reference-solo="${id}" aria-label="Solo ${layerName(id)}" aria-pressed="${this.visible.size===1&&this.visible.has(id)}">Solo</button></div>`).join('')}</div><button id="reference-all">Show all layers</button></section></div>
       <section><h3>Six-frame strip / 1x</h3><div class="animation-scroll"><canvas width="480" height="88" id="reference-strip" role="img" aria-label="Six native reference walk frames"></canvas></div></section>
       <div class="animation-controls" role="group" aria-label="Reference exports"><button id="reference-export-frame">Export frame PNG</button><button id="reference-export-cycle">Export six frames PNG</button><button id="reference-export-pose">Export pose data</button></div><p class="animation-note">PNG exports contain only the visible layers, at native size, on transparency. Guides stay in the workshop.</p></section>`;
@@ -87,7 +87,9 @@ export class AnimationWorkshop {
       const y=n*20+12-travel,left=n%2===0,c=left?LEG_COLORS.left:LEG_COLORS.right;
       const a=project({x:-28,y,z:0},this.direction),b=project({x:28,y,z:0},this.direction);
       line(floor,a.x+120,a.y+22,b.x+120,b.y+22,'#35535a');
-      const mark=project({x:left?-4:4,y,z:0},this.direction);floor.fillStyle=color(c);floor.fillRect(Math.round(mark.x)+118,Math.round(mark.y)+22,5,1);
+      const heel=project({x:left?-4:4,y:y+FOOT_HEEL,z:0},this.direction),toe=project({x:left?-4:4,y:y+FOOT_TOE,z:0},this.direction);
+      line(floor,heel.x+120,heel.y+22,toe.x+120,toe.y+22,color(c));
+      for(const mark of [heel,toe]){floor.fillStyle=color(c);floor.fillRect(Math.round(mark.x)+119,Math.round(mark.y)+22,3,1);}
     }
     if(this.paths)for(const side of ['left','right'] as const){
       floor.fillStyle=color(LEG_COLORS[side]);
@@ -100,13 +102,14 @@ export class AnimationWorkshop {
     for(let i=0;i<REFERENCE_FRAMES;i++)strip.drawImage(this.source(i),i*80,0);
     strip.fillStyle='#f4c77a';strip.fillRect(frame*80+8,83,64,2);
     this.host.querySelector('#reference-phase')!.textContent=`Frame ${frame+1} / ${REFERENCE_FRAMES} · ${phases[frame]}`;
-    this.host.querySelector('#reference-contacts')!.textContent=`Left: ${pose.left.planted?'planted':'swing'} · Right: ${pose.right.planted?'planted':'swing'}`;
+    const contact=(side:'left'|'right')=>pose[side].planted?`${pose[side].foot.contact} contact`:'swing';
+    this.host.querySelector('#reference-contacts')!.textContent=`Left: ${contact('left')} · Right: ${contact('right')}`;
     this.host.dataset.frame=String(frame);this.host.dataset.layers=[...this.visible].join(',');this.host.dataset.paint=String(Number(this.host.dataset.paint??0)+1);
   }
   private drawJoints(ctx:CanvasRenderingContext2D,pose:ReturnType<typeof referenceFrame>,scale:number,dx:number,dy:number){
     for(const side of ['left','right'] as const){
-      const points=[pose[side].hip,pose[side].knee,pose[side].ankle].map(p=>project(p,this.direction)),c=color(LEG_COLORS[side]);
-      for(let i=0;i<2;i++)line(ctx,Math.round(points[i].x)*scale+dx,Math.round(points[i].y)*scale+dy,Math.round(points[i+1].x)*scale+dx,Math.round(points[i+1].y)*scale+dy,c);
+      const points=[pose[side].hip,pose[side].knee,pose[side].ankle,pose[side].foot.heel,pose[side].foot.toe].map(p=>project(p,this.direction)),c=color(LEG_COLORS[side]);
+      for(const [a,b] of [[0,1],[1,2],[2,3],[2,4],[3,4]])line(ctx,Math.round(points[a].x)*scale+dx,Math.round(points[a].y)*scale+dy,Math.round(points[b].x)*scale+dx,Math.round(points[b].y)*scale+dy,c);
       for(const p of points){ctx.fillStyle='#f4e5be';ctx.fillRect(Math.round(p.x)*scale+dx,Math.round(p.y)*scale+dy,scale,scale);}
     }
   }
@@ -119,7 +122,7 @@ export class AnimationWorkshop {
     canvas.toBlob(blob=>{if(blob)download(blob,`reference-${this.direction}-${selection}-${cycle?'walk':'frame'}.png`);},'image/png');
   }
   private exportPose(){
-    const document={version:1,size:[80,80],anchor:[40,68],direction:this.direction,frameMs:REFERENCE_FRAME_MS,cycleDistance:STRIDE_DISTANCE,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*STRIDE_DISTANCE,pose:referenceFrame(i)}))};
+    const document={version:2,size:[80,80],anchor:[40,68],direction:this.direction,frameMs:REFERENCE_FRAME_MS,cycleDistance:STRIDE_DISTANCE,layers:REFERENCE_LAYERS,frames:Array.from({length:REFERENCE_FRAMES},(_,i)=>({frame:i,rootForward:i/REFERENCE_FRAMES*STRIDE_DISTANCE,pose:referenceFrame(i)}))};
     download(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`reference-${this.direction}-poses.json`);
   }
 }

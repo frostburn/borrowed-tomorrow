@@ -43,6 +43,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       expect(png.suggestedFilename()).toBe('reference-right-right-foot-walk.png');expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)]).toEqual([160,240]);
       const jsonEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const json=await jsonEvent,data=JSON.parse(await readFile((await json.path())!,'utf8'));
       expect(data.anchor).toEqual([40,68]);expect(data.layers).toEqual([...REFERENCE_LAYERS]);expect(data.frames).toHaveLength(6);
+      expect(data.version).toBe(2);expect(data.frames[0].pose.left.foot.contact).toBe('heel');expect(data.frames[3].pose.left.foot.contact).toBe('toe');
+      expect(data.frames[0].pose.left.foot.heel.z).toBeCloseTo(0);expect(data.frames[3].pose.left.foot.toe.z).toBeCloseTo(0);
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeFrame(page,0);
       await review.getByRole('button',{name:'Joint guides',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();await review.getByRole('button',{name:'Next frame',exact:true}).click();
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`layered-reference-${device}`);

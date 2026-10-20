@@ -1,4 +1,4 @@
-import { LEG_COLORS, referencePose, type LegPose, type WalkPose } from '../art/walk-cycle';
+import { FOOT_HEEL, FOOT_TOE, footPoint, LEG_COLORS, referencePose, type LegPose, type WalkPose } from '../art/walk-cycle';
 import type { Point3 } from '../art/actor-space';
 import type { SpriteLayer } from '../art/layered-sprite';
 
@@ -22,8 +22,14 @@ function segment(id:string,a:Point3,b:Point3,width:number,thickness:number,color
 
 function legLayers(side:'left'|'right',leg:LegPose,colored:boolean):SpriteLayer[]{
   const color=colored?LEG_COLORS[side]:0x778594,a=leg.ankle;
+  const shoe=(profile:readonly (readonly [number,number])[],width:number,material:number)=>{
+    const mesh=part(`${side}-foot`,profile,a.x,width,material);
+    mesh.vertices=mesh.vertices.map(p=>({...footPoint(leg.foot,p.y,p.z),x:p.x}));
+    return mesh;
+  };
   return [segment(`${side}-thigh`,leg.hip,leg.knee,5.5,5.5,color),segment(`${side}-shin`,leg.knee,a,4.5,4.5,color),
-    part(`${side}-foot`,[[a.y-3,a.z-3],[a.y+5,a.z-3],[a.y+5,a.z-1],[a.y+2,a.z+2],[a.y-3,a.z+2]],a.x,5.5,colored?color:0x725342)];
+    shoe([[FOOT_HEEL,0],[FOOT_TOE,0],[FOOT_TOE,1.2],[FOOT_HEEL,1.2]],6.5,0x38434b),
+    shoe([[-3.8,1.2],[8,1.2],[8,2.2],[6.5,3.3],[1,5],[-3,5]],6,colored?(side==='left'?0x438e94:0xb77a3e):0x966b48)];
 }
 
 /** Armless mannequin: same parts and anatomy in all views; nothing is mirrored. */
