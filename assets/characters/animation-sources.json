@@ -84,5 +84,47 @@
       "stance": "two planted flat feet",
       "weaponHand": "right"
     }
+  },
+  "kit": {
+    "walkRig": {
+      "module": "src/art/kit-actor.ts",
+      "exporter": "scripts/export-kit-animation.mjs",
+      "skinSource": "public/art/kit{,-left,-right,-back}.png",
+      "preparedSkin": "assets/characters/kit-skin/{front,left,right,back}.png",
+      "proportions": "src/art/rig-proportions.ts#KIT_PROPORTIONS",
+      "stridePixels": 26,
+      "legBonePixels": 10,
+      "hipHeightPixels": 20.4,
+      "footScale": 0.7,
+      "lowerBodyRoots": {
+        "front": [
+          -1.5,
+          -4
+        ],
+        "left": [
+          -0.5,
+          -2
+        ],
+        "right": [
+          -0.5,
+          -4
+        ],
+        "back": [
+          -0.5,
+          -4
+        ]
+      }
+    },
+    "attackRig": {
+      "module": "src/art/kit-actor.ts",
+      "pose": "kitAttackPose",
+      "phases": [
+        "windup",
+        "contact"
+      ],
+      "stance": "two planted flat feet",
+      "weaponHand": "right",
+      "supportHand": "left"
+    }
   }
 }

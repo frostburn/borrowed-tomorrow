@@ -9,7 +9,7 @@ const python=(code,input)=>{
   if(result.status!==0)throw new Error(result.stderr);return result.stdout;
 };
 export async function exportRigAnimation(hero){
-if(!['nell','orrin'].includes(hero))throw new Error('Unknown character export.');
+if(!['nell','orrin','kit'].includes(hero))throw new Error('Unknown character export.');
 const sources=JSON.parse(python(`
 hero='${hero}'
 import json,sys,base64
@@ -27,7 +27,7 @@ print(json.dumps(data))
 const textures=Object.fromEntries(Object.entries(sources).map(([direction,data])=>[direction,{width:data.width,height:data.height,pixels:new Uint8ClampedArray(Buffer.from(data.rgba,'base64'))}]));
 const server=await createServer({configFile:false,root,server:{middlewareMode:true},appType:'custom'});
 try{
-  const model=await server.ssrLoadModule(`/src/art/${hero}-actor.ts`),render=model[hero==='nell'?'renderNell':'renderOrrin'];
+  const model=await server.ssrLoadModule(`/src/art/${hero}-actor.ts`),render=model[`render${hero[0].toUpperCase()}${hero.slice(1)}`];
   const pages=Object.keys(textures).map(direction=>({direction,frames:Array.from({length:8},(_,frame)=>Buffer.from(render(frame,direction,textures)).toString('base64'))}));
   process.stdout.write(python(`
 import json,sys,base64
