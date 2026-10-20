@@ -3,7 +3,7 @@ import { cutout, garment, type ArmSkin, type Span } from './actor-garment';
 import { orient, project, type Point3 } from './actor-space';
 import { patch, surface, ROUND_SIDES, acrossView, viewPoint, decal, limb, pelvis, trouserLeg, shoe, type CharacterTextures } from './actor-skin';
 import { renderLayers, type PixelTexture, type SpriteLayer } from './layered-sprite';
-import { armToGrip, referenceRig, type ReferencePose, type WeaponPose } from './reference-rig';
+import { armToGrip, referenceRig, weaponPoint, type ReferencePose, type WeaponPose } from './reference-rig';
 import { KIT_PROPORTIONS, type RigProportions } from './rig-proportions';
 import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, footPoint, REFERENCE_FRAMES } from './walk-cycle';
 
@@ -94,13 +94,51 @@ const TORSO_SPANS:Record<ActorDirection,readonly Span[]>={
 
 function arms(pose:KitPose,source:PixelTexture,direction:ActorDirection):SpriteLayer[]{
   const bind=kitBind(),layers:SpriteLayer[]=[];
+  const sleeve=patch(source,27,28,28,9,(r,g,b)=>b>r&&b>g*.9);
+  const skin=patch(source,27,37,28,5,(r,g,b)=>r>g*1.1&&g>b*1.15&&r>100);
+  const glove=patch(source,27,42,28,5,(r,g,b)=>r>g*1.2&&g>b*1.1&&r>24&&r<170);
+  const bindGrip=project(bind.arms.right.grip,direction),gripArt=ARM_SKINS[direction].right.grip;
+  const socket={x:gripArt[0]-bindGrip.x,y:gripArt[1]-bindGrip.y};
   for(const side of ['left','right'] as const){
-    const skin=ARM_SKINS[direction][side],arm=pose.arms[side],rest=bind.arms[side];
-    layers.push(garment(`${side}-upper-arm`,source,skin.sleeve,skin.shoulder,skin.elbow,arm.shoulder,arm.elbow,rest.shoulder,rest.elbow,direction,pose.proportions.armWidth),
-      garment(`${side}-forearm`,source,skin.cuff,skin.elbow,skin.wrist,arm.elbow,arm.wrist,rest.elbow,rest.wrist,direction,pose.proportions.armWidth),
-      garment(`${side}-hand`,source,skin.hand,skin.wrist,skin.grip,arm.wrist,arm.grip,rest.wrist,rest.grip,direction,pose.proportions.armWidth));
+    const art=ARM_SKINS[direction][side],arm=pose.arms[side],rest=bind.arms[side];
+    const registered=(joint:'shoulder'|'elbow'|'wrist'|'grip')=>{
+      const p=project(arm[joint],direction),b=project(rest[joint],direction),s=art[joint];
+      // Both aiming hands share the weapon's native socket. Blending from the
+      // fixed shoulder to that socket avoids two independent idle-hand offsets
+      // pulling the support hand away from the crossbow in one profile.
+      const blend=pose.action?(joint==='shoulder'?0:joint==='elbow'?.5:1):0;
+      return viewPoint(p.x+(s[0]-b.x)*(1-blend)+socket.x*blend,p.y+(s[1]-b.y)*(1-blend)+socket.y*blend,orient(arm[joint],direction).y+1.5,direction);
+    };
+    const garmentPoint=(joint:'shoulder'|'elbow'|'wrist'|'grip')=>{
+      const p=project(registered(joint),direction);
+      return viewPoint(p.x,p.y,orient(arm[joint],direction).y,direction);
+    };
+    const bindPoint=(joint:'shoulder'|'elbow'|'wrist'|'grip')=>viewPoint(...art[joint],orient(rest[joint],direction).y,direction);
+    const segment=(id:string,spans:readonly Span[],a:'shoulder'|'elbow'|'wrist',b:'elbow'|'wrist'|'grip')=>
+      garment(id,source,spans,art[a],art[b],pose.action?garmentPoint(a):arm[a],pose.action?garmentPoint(b):arm[b],pose.action?bindPoint(a):rest[a],pose.action?bindPoint(b):rest[b],direction,pose.proportions.armWidth);
+    // Native cutouts retain the rolled cuffs and directional shading. Rounded
+    // backing keeps foreshortened, cross-body arms solid in front/back views.
+    layers.push(armShell(`${side}-upper-arm`,registered('shoulder'),registered('elbow'),2.1*pose.proportions.armWidth,sleeve,direction),
+      armShell(`${side}-forearm`,registered('elbow'),registered('wrist'),1.65*pose.proportions.armWidth,skin,direction),
+      armShell(`${side}-hand`,registered('wrist'),registered('grip'),1.7*pose.proportions.armWidth,glove,direction),
+      segment(`${side}-upper-arm`,art.sleeve,'shoulder','elbow'),segment(`${side}-forearm`,art.cuff,'elbow','wrist'),segment(`${side}-hand`,art.hand,'wrist','grip'));
   }
   return layers;
+}
+
+/** Full three-dimensional sleeves can bend across the chest, rather than
+ * collapsing a view-facing cutout to a line when aiming toward the camera. */
+function armShell(id:string,a:Point3,b:Point3,radius:number,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,length=Math.hypot(dx,dy,dz),d={x:dx/length,y:dy/length,z:dz/length};
+  const side=Math.hypot(d.z,d.x),u=side?{x:d.z/side,y:0,z:-d.x/side}:{x:1,y:0,z:0};
+  const v={x:d.y*u.z-d.z*u.y,y:d.z*u.x-d.x*u.z,z:d.x*u.y-d.y*u.x};
+  const layer=surface(id,[[-.16,.2],[0,.9],[.3,1],[.8,.9],[1, .8],[1.18,.15]].map(([t,round])=>Array.from({length:ROUND_SIDES},(_,i)=>{
+    const c=Math.cos(i/ROUND_SIDES*Math.PI*2)*radius*round,s=Math.sin(i/ROUND_SIDES*Math.PI*2)*radius*round;
+    return {point:{x:a.x+dx*t+u.x*c+v.x*s,y:a.y+dy*t+u.y*c+v.y*s,z:a.z+dz*t+u.z*c+v.z*s},u:0,v:0};
+  })),0xffffff,texture);
+  const top=project(a,direction),bottom=project(b,direction);
+  for(const face of layer.faces)face.uv=face.points.map(i=>{const p=project(layer.vertices[i],direction);return {u:(p.x-(top.x+bottom.x)/2)/(radius*2)*texture.width+texture.width/2,v:(p.y-Math.min(top.y,bottom.y))/Math.max(2,Math.abs(top.y-bottom.y))*texture.height};});
+  return layer;
 }
 
 function cloth(layer:SpriteLayer,pose:KitPose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
@@ -112,11 +150,20 @@ function cloth(layer:SpriteLayer,pose:KitPose,texture:PixelTexture,direction:Act
   return layer;
 }
 
-function body(pose:KitPose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
-  return surface('torso',[[4,6.4,3.3],[8,7.2,4],[13,7.5,3.7],[16,6.5,3]].map(([z,w,d],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
+function body(pose:KitPose,texture:PixelTexture,trousers:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const layer=surface('torso',[[4,6.4,3.3],[8,7.2,4],[13,7.5,3.7],[16,6.5,3]].map(([z,w,d],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const c=Math.cos(i/ROUND_SIDES*Math.PI*2),s=Math.sin(i/ROUND_SIDES*Math.PI*2),lower=Math.max(0,1-(z-4)/12);
     return {point:{x:c*w+ROOT.x*lower,y:s*d+ROOT.y*lower,z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:(1-row/3)*texture.height};
   })),0xffffff,texture);
+  // Below the native belt, use the seat's continuous brown fabric rather
+  // than extending a dark blue jacket swatch into a false gap at the hips.
+  const lower=cloth({...layer,faces:layer.faces.map(face=>({...face}))},pose,trousers,direction);
+  layer.faces.forEach((face,i)=>{
+    if(face.points.some(index=>layer.vertices[index].z<=pose.hipHeight+7)){
+      face.texture=trousers;face.uv=lower.faces[i].uv;
+    }
+  });
+  return layer;
 }
 
 function satchel(pose:KitPose,source:PixelTexture,direction:ActorDirection):SpriteLayer {
@@ -131,22 +178,36 @@ function satchel(pose:KitPose,source:PixelTexture,direction:ActorDirection):Spri
   return mesh;
 }
 
-/** Native downward carry cutouts turn with a right-hand-mounted bow. */
-function crossbow(weapon:WeaponPose,textures:CharacterTextures,direction:ActorDirection,action?:KitAttackPhase):SpriteLayer {
-  const skin=action&&direction==='left'?'right':direction,spans=BOW_SPANS[skin];
-  const texture=cutout(textures[skin],spans),left=Math.min(...spans.map(s=>s[2])),right=Math.max(...spans.map(s=>s[3])),top=Math.min(...spans.map(s=>s[0])),bottom=Math.max(...spans.map(s=>s[1]));
+/** Four independent native carry skins stay mounted to the right grip. */
+function crossbow(weapon:WeaponPose,textures:CharacterTextures,direction:ActorDirection):SpriteLayer {
+  const spans=BOW_SPANS[direction],texture=cutout(textures[direction],spans);
+  const left=Math.min(...spans.map(s=>s[2])),right=Math.max(...spans.map(s=>s[3])),top=Math.min(...spans.map(s=>s[0])),bottom=Math.max(...spans.map(s=>s[1]));
   const grips={front:[29,44],left:[33,44],right:[38,45],back:[51,44]} as const;
-  const [gx,gy]=grips[direction],sourceGrip=grips[skin],actual=project(weapon.grip,direction),rest=project(kitBind().arms.right.grip,direction),depth=orient(weapon.grip,direction).y+4;
+  const [gx,gy]=grips[direction],actual=project(weapon.grip,direction),rest=project(kitBind().arms.right.grip,direction),depth=orient(weapon.grip,direction).y+4;
   const pivot=viewPoint(gx+actual.x-rest.x,gy+actual.y-rest.y,depth,direction),angle=weapon.pitch-CARRY_PITCH,c=Math.cos(angle),s=Math.sin(angle);
   const mesh=decal('right-weapon',texture,[left,top,right-left,bottom-top],0,depth,direction);
   mesh.vertices=[[left,top],[right,top],[right,bottom],[left,bottom]].map(([x,y])=>{
-    // An aiming far profile reveals the complete prop's reverse side. Only
-    // that separate prop turns; the actor's face, arms and costume never flip.
-    const dx=(x-sourceGrip[0])*(skin!==direction?-1:1),p=viewPoint(project(pivot,direction).x+dx,project(pivot,direction).y+y-sourceGrip[1],depth,direction);
-    const dy=p.y-pivot.y,dz=p.z-pivot.z;
+    const p=viewPoint(x+actual.x-rest.x,y+actual.y-rest.y,depth,direction),dy=p.y-pivot.y,dz=p.z-pivot.z;
     return {x:p.x,y:pivot.y+dy*c-dz*s,z:pivot.z+dy*s+dz*c};
   });
   return mesh;
+}
+
+/** Aimed views expose the bow's span and stock. Native wood/steel samples keep
+ * its small carved silhouette readable when the carried cutout is foreshortened. */
+function aimedCrossbow(weapon:WeaponPose,source:PixelTexture,direction:ActorDirection):SpriteLayer[] {
+  const grip=project(weapon.grip,direction),rest=project(kitBind().arms.right.grip,direction),art=ARM_SKINS[direction].right.grip;
+  weapon={...weapon,grip:viewPoint(grip.x+art[0]-rest.x,grip.y+art[1]-rest.y,orient(weapon.grip,direction).y,direction)};
+  const wood=patch(source,22,44,11,13,(r,g,b)=>r>g*1.2&&g>b*1.1&&r>35);
+  const part=(a:Point3,b:Point3,radius:number)=>armShell('right-weapon',weaponPoint(weapon,a.y,a.z,a.x),weaponPoint(weapon,b.y,b.z,b.x),radius,wood,direction);
+  const layers=[part({x:0,y:-4,z:0},{x:0,y:12,z:0},1.2),part({x:0,y:0,z:-3},{x:0,y:0,z:0},1)];
+  for(const sign of [-1,1]){
+    layers.push(part({x:0,y:9,z:.1},{x:sign*5,y:9,z:.1},.85),part({x:sign*5,y:9,z:.1},{x:sign*7,y:7,z:.1},.65));
+    const a=weaponPoint(weapon,7,0,sign*7),b=weaponPoint(weapon,1,0,0),r=.25;
+    const mesh:SpriteLayer={id:'right-weapon',vertices:[{...a,z:a.z-r},{...b,z:b.z-r},{...b,z:b.z+r},{...a,z:a.z+r}],faces:[{points:[0,1,2,3],color:0xa9956b,unlit:true}]};
+    layers.push(mesh);
+  }
+  return layers;
 }
 
 export function kitLayers(pose:KitPose,direction:ActorDirection,textures:CharacterTextures):SpriteLayer[]{
@@ -163,7 +224,7 @@ export function kitLayers(pose:KitPose,direction:ActorDirection,textures:Charact
   const boot=patch(source,...boots[direction],(r,g,b)=>r>g*1.25&&g>b*1.1&&r>24);
   const jacket=patch(source,direction==='back'?35:36,30,6,11,(r,g,b)=>b>r&&b>g*.8);
   const seat=pelvis(pose,trousers,direction);for(const p of seat.vertices){p.x+=ROOT.x;p.y+=ROOT.y;}
-  const layers:SpriteLayer[]=[body(pose,jacket,direction),cloth(seat,pose,trousers,direction)];
+  const layers:SpriteLayer[]=[body(pose,jacket,trousers,direction),cloth(seat,pose,trousers,direction)];
   for(const side of ['left','right'] as const){
     const leg=pose[side],width=pose.proportions.legWidth,parts=[cloth(trouserLeg(side,pose,trousers,direction),pose,trousers,direction),
       limb(`${side}-shin`,leg.knee,leg.ankle,[2.8,2.5],[2.4,2.1],boot,direction,width),shoe(side,leg.foot,boot,direction,pose.proportions.footScale,width*1.1)];
@@ -171,7 +232,7 @@ export function kitLayers(pose:KitPose,direction:ActorDirection,textures:Charact
     layers.push(...parts);
   }
   const dy=KIT_PROPORTIONS.hipHeight-pose.hipHeight,profile=direction==='left'||direction==='right';
-  layers.push(decal('torso',torso,[27,26,29,18],dy,profile?8:5,direction),decal('head',head,[24,0,33,26],dy,profile?10:8,direction),satchel(pose,source,direction),...arms(pose,source,direction),crossbow(pose.weapon!,textures,direction,pose.action));
+  layers.push(decal('torso',torso,[27,26,29,18],dy,profile?8:5,direction),decal('head',head,[24,0,33,26],dy,profile?10:8,direction),satchel(pose,source,direction),...arms(pose,source,direction),...(pose.action?aimedCrossbow(pose.weapon!,textures.front,direction):[crossbow(pose.weapon!,textures,direction)]));
   return layers;
 }
 export const renderKit=(frame:number,direction:ActorDirection,textures:CharacterTextures)=>renderLayers(kitLayers(frame<REFERENCE_FRAMES?kitFrame(frame):kitAttackPose(frame===REFERENCE_FRAMES?'windup':'contact'),direction,textures),direction);

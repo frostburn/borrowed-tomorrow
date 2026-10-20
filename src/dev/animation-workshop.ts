@@ -20,7 +20,7 @@ const measurements:readonly [keyof RigProportions,string,number,number,number][]
   ['legLength','Leg bone',5,18,.1],['hipHeight','Hip height',8,34,.1],['hipRise','Hip rise',0,3,.1],['hipHalfWidth','Hip spacing',2,6,.1],
   ['strideDistance','Stride distance',12,44,1],['footScale','Foot size',.4,1.2,.05],['swingHeight','Foot lift',1,8,.1],
   ['shoulderHeight','Shoulder above hip',8,24,.1],['shoulderHalfWidth','Shoulder spacing',5,12,.1],
-  ['upperArmLength','Upper arm',4,12,.1],['forearmLength','Forearm',4,11,.1],['carryLift','Lantern lift',0,8,.1],
+  ['upperArmLength','Upper arm',4,12,.1],['forearmLength','Forearm',4,11,.1],['carryLift','Carrying lift',0,8,.1],
   ['armWidth','Arm thickness (x)',.6,1.6,.05],['legWidth','Leg thickness (x)',.6,1.6,.05],
   ['torsoHeight','Torso height',12,24,.1],['headScale','Head size',.7,1.8,.05],
 ];

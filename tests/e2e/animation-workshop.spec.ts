@@ -1,4 +1,4 @@
-import { NELL_PROPORTIONS, ORRIN_PROPORTIONS } from '../../src/art/rig-proportions';
+import { NELL_PROPORTIONS, ORRIN_PROPORTIONS, KIT_PROPORTIONS } from '../../src/art/rig-proportions';
 // Browser plugin not available; exercise the native review through repository Playwright.
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
@@ -21,7 +21,7 @@ async function nativeFrame(page:Page,frame:number,direction:ActorDirection='righ
   },pixels)).toBe(0);
 }
 
-async function nativeHero(page:Page,hero:'nell'|'orrin',frame:number,direction:ActorDirection){
+async function nativeHero(page:Page,hero:'nell'|'orrin'|'kit',frame:number,direction:ActorDirection){
   await expect.poll(()=>page.locator('#reference-detail').evaluate(async(element,{hero,frame,direction})=>{
     const image=new Image();image.src=`/art/animation/${hero}-${direction}.png`;await image.decode();
     const expected=document.createElement('canvas');expected.width=expected.height=240;const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=false;
@@ -66,12 +66,13 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       while(await host.getAttribute('data-frame')!=='0')await review.getByRole('button',{name:'Next frame',exact:true}).click();
       for(let frame=0;frame<6;frame++){await nativeFrame(page,frame);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
       await expect(host).toHaveAttribute('data-frame','0');await review.getByRole('button',{name:'Previous frame',exact:true}).click();await expect(host).toHaveAttribute('data-frame','5');await review.getByRole('button',{name:'Next frame',exact:true}).click();
-      for(const weapon of ['none','lantern','lance'] as const){
+      for(const weapon of ['none','lantern','lance','crossbow'] as const){
         await review.locator(`[data-reference-weapon="${weapon}"]`).click();await expect(host).toHaveAttribute('data-weapon',weapon);
         await expect(review.locator(`[data-reference-weapon="${weapon}"]`)).toHaveAttribute('aria-pressed','true');
         for(const direction of ['front','left','right','back'] as const){await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();await nativeFrame(page,0,direction,new Set(REFERENCE_LAYERS),true,weapon);}
       }
       await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
+      await review.locator('[data-reference-weapon="lance"]').click();
       for(let frame=0;frame<6;frame++){await nativeFrame(page,frame,'right',new Set(REFERENCE_LAYERS),true,'lance');await review.getByRole('button',{name:'Next frame',exact:true}).click();}
       await review.locator('[data-reference-weapon="lantern"]').click();
       await review.getByRole('button',{name:'Arms and weapon',exact:true}).click();await expect(review.getByRole('button',{name:'Arms and weapon',exact:true})).toHaveAttribute('aria-pressed','false');
@@ -133,8 +134,26 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();
       await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'orrin',0,'right');
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`orrin-rig-${device}`);
+      await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Kit',exact:true}).click();
+      await expect(host).toHaveAttribute('data-skin','kit');await expect(host).toHaveAttribute('data-weapon','crossbow');
+      for(const direction of ['front','left','right','back'] as const){
+        await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();
+        for(let frame=0;frame<6;frame++){await nativeHero(page,'kit',frame,direction);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
+      }
+      const kitJson=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();
+      const kitData=JSON.parse(await readFile((await(await kitJson).path())!,'utf8'));
+      expect(kitData.skin).toBe('kit');expect(kitData.weapon).toBe('crossbow');expect(kitData.cycleDistance).toBe(KIT_PROPORTIONS.strideDistance);
+      expect(kitData.frames[0].pose.satchel.anchor.x).toBeLessThan(0);expect(kitData.frames[0].pose.weapon.grip).toEqual(kitData.frames[0].pose.arms.right.grip);
+      await review.getByRole('button',{name:'Solo Satchel',exact:true}).click();
+      const satchel=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await satchel).suggestedFilename()).toBe('kit-back-satchel-walk.png');
+      await review.getByRole('button',{name:'Show all layers',exact:true}).click();
+      await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'kit',0,'right');
+      await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`kit-rig-${device}`);
       await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Mannequin',exact:true}).click();await nativeFrame(page,0);
       await review.locator('#reference-proportions summary').click();
+      await review.getByRole('button',{name:'Match Kit proportions',exact:true}).click();
+      await expect(review.getByRole('spinbutton',{name:'Leg bone',exact:true})).toHaveValue('10');
+      await expect(review.getByRole('spinbutton',{name:'Stride distance',exact:true})).toHaveValue('26');
       await review.getByRole('button',{name:'Match Nell proportions',exact:true}).click();
       await expect(review.getByRole('spinbutton',{name:'Leg bone',exact:true})).toHaveValue('9');
       const compact=await page.locator('#reference-detail').evaluate(e=>(e as HTMLCanvasElement).toDataURL());
