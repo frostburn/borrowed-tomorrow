@@ -44,10 +44,10 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(new Set(frames)).toEqual(new Set(['0','1','2','3','4','5']));
     await controls.getByRole('button',{name:'Pause',exact:true}).click();
     await review.getByRole('group',{name:'Sprite zoom',exact:true}).getByRole('button',{name:'3x',exact:true}).click();await review.getByRole('button',{name:'Ground guides',exact:true}).click();
-    for(const hero of ['nell','orrin','kit']){
+    for(const hero of ['nell','orrin','kit','petra']){
       await review.getByRole('button',{name:`Inspect ${hero[0].toUpperCase()+hero.slice(1)}`,exact:true}).click();
       await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
-      for(const motion of ['Walk','Attack']){
+      for(const motion of ['Walk','Attack',...(hero==='petra'?['Bash']:[])]){
       await controls.getByRole('button',{name:motion,exact:true}).click();await controls.getByRole('button',{name:'Pause',exact:true}).click();
       const stopped=await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame);
       await page.waitForTimeout(120);expect(await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame)).toBe(stopped);
@@ -66,7 +66,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
           return actual.reduce((n,v,i)=>n+Number(v!==expected[i]),0);
         },hero)).toBe(0);
       }
-      expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set([String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
+      expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set(motion==='Bash'?['8','9','idle']:[String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
       if(motion==='Walk'){
         await controls.getByRole('button',{name:'Play',exact:true}).click();await page.waitForTimeout(WALK_CYCLE_MS+100);
         await controls.getByRole('button',{name:'Pause',exact:true}).click();
@@ -120,4 +120,52 @@ test('walked battle paths and both attack poses finish before the next action; d
   await page.locator('.actions').getByRole('button',{name:/^\d\s+Strike$/}).click();await clickHex(page,choice.aim);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
   const samples=record(page,550);await page.getByRole('button',{name:'Win battle',exact:true}).click();await samples;
   await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();expect((await inspect(page)).battle!.result).toBe('victory');expect(errors).toEqual([]);
+});
+
+test('Petra walks in her introductory cutscene and uses distinct saber and shield actions in battle',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
+  await page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true}).click();
+  while(!(await page.locator('.dialogue').textContent())!.includes('The parcels are medicine'))await page.locator('.dialogue-actions button').first().click();
+  const moving=record(page,600);await page.locator('.dialogue-actions button').first().click();
+  expect((await moving).some(s=>s.actors.some(a=>a.hero==='petra'&&a.texture==='petra-motion-left'&&a.motion==='walk'))).toBe(true);
+  await capture(page,'petra-cutscene-walk');await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+  await page.goto('/?dev=workshop');
+  await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Petra',exact:true}).click();
+  await page.getByRole('button',{name:'Add Petra to party',exact:true}).click();
+  await page.getByRole('spinbutton',{name:'Petra Speed',exact:true}).fill('30');await page.getByRole('spinbutton',{name:'Petra Movement',exact:true}).fill('5');
+  await page.getByRole('button',{name:'Apply base stats',exact:true}).click();await page.getByRole('button',{name:'Test battle',exact:true}).click();
+  for(const ability of ['strike','bash'] as const){
+    if(ability==='bash')await page.getByRole('button',{name:'Restart battle',exact:true}).click();
+    await expect.poll(async()=>active(await combatSnapshot(page))?.kind).toBe('petra');
+    const choice=await aimAfterMoving(page,ability),before=(await inspect(page)).battle!;
+    await page.locator('.actions').getByRole('button',{name:new RegExp(`^\\d\\s+${ABILITIES[ability].name}${ability==='bash'?' · Extra':''}$`)}).click();await clickHex(page,choice.aim);
+    const sampling=record(page,550);await page.getByRole('button',{name:ability==='bash'?'Confirm ability':'Confirm attack',exact:true}).click();
+    const frames=(await sampling).flatMap(s=>s.actors.filter(a=>a.hero==='petra'&&a.motion===(ability==='bash'?'bash':'attack')).map(a=>a.frame));
+    expect(frames).toContain(ability==='bash'?'8':'6');expect(frames).toContain(ability==='bash'?'9':'7');
+    await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
+    if(ability==='bash'){
+      expect((await inspect(page)).battle!.units.map(u=>u.hp)).toEqual(before.units.map(u=>u.hp));
+      expect(active(await combatSnapshot(page))?.kind).toBe('petra');
+    }
+    await capture(page,`petra-${ability}-finished`);
+  }
+  expect(errors).toEqual([]);
+});
+
+test('Petra walks her boss route before raising her left shield at the crossing',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
+  const saved=coastCheckpoint('evacuationReady');saved.location={map:'cinderbank',x:45,y:26};await importSave(page,saved);
+  await approach(page,'siding-alban');await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  const seen:Awaited<ReturnType<typeof record>>=[];
+  for(let i=0;i<10&&!seen.some(s=>s.actors.some(a=>a.hero==='petra'&&a.motion==='bash'&&a.frame==='9'));i++){
+    const sampling=record(page,1700),s=await inspect(page);
+    if(!s.busy&&s.battle&&active({...s.battle,obstacles:new Set(s.battle.obstacles),water:new Set(s.battle.water),vents:new Set(s.battle.vents)} as Battle)?.side==='party')await page.locator('.actions').getByRole('button',{name:'F Defend',exact:true}).click();
+    seen.push(...await sampling);
+  }
+  expect(seen.some(s=>s.actors.some(a=>a.hero==='petra'&&a.motion==='walk'))).toBe(true);
+  for(const frame of ['8','9'])expect(seen.some(s=>s.actors.some(a=>a.hero==='petra'&&a.motion==='bash'&&a.frame===frame))).toBe(true);
+  const battle=(await inspect(page)).battle!,petra=battle.units.find(u=>u.appearance==='petra')!;
+  expect(battle.units.filter(u=>u.side==='party').every(u=>u.tauntedBy===petra.id)).toBe(true);
+  await capture(page,'petra-boss-turn');expect(errors).toEqual([]);
 });

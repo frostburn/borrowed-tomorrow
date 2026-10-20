@@ -17,6 +17,11 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
       g.lineBetween(target.x-8,target.y-15,target.x+8,target.y-41);
     }else if(ability==='repulse'){
       g.lineStyle(3,color,.8);g.strokeCircle(source.x,source.y-18,16+(reduced?30:p*65));
+    }else if(ability==='taunt'){
+      g.lineStyle(2,color,.8);g.strokeCircle(source.x,source.y-24,14+(reduced?18:p*28));
+    }else if(ability==='bash'){
+      g.lineStyle(3,color,.9);
+      for(let i=-1;i<=1;i++)g.lineBetween(target.x+i*8,target.y-36,target.x+i*12,target.y-21);
     }else{
       if(!healing){
         g.lineStyle(steam?7:2,color,.8);g.lineBetween(hand.x,hand.y,target.x,target.y-25);

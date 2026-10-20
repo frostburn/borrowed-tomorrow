@@ -21,10 +21,10 @@ export class ActorAnimator {
     this.actors.set(image,{hero,face,motion:'walk',start:now,until:now+duration+40,distance,x:image.x,y:image.y});
     this.paint(image,this.actors.get(image)!);
   }
-  attack(image:Image,face:string,elapsed=0){
+  attack(image:Image,face:string,elapsed=0,motion:'attack'|'bash'='attack'){
     const hero=face.split('-')[0];image.setData('actor-base',hero).setData('actor-face',face);
     if(!animatedHero(hero)||this.reduced.matches){this.stop(image);image.setTexture(face);return;}
-    const now=this.scene.time.now,state:Playback={hero,face,motion:'attack',start:now-elapsed,until:now+ATTACK_DURATION_MS-elapsed,distance:0,x:image.x,y:image.y};
+    const now=this.scene.time.now,state:Playback={hero,face,motion,start:now-elapsed,until:now+ATTACK_DURATION_MS-elapsed,distance:0,x:image.x,y:image.y};
     this.actors.set(image,state);this.paint(image,state);
   }
   stop(image:Image){

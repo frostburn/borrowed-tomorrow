@@ -269,18 +269,18 @@ export function wait(b: Battle): boolean {
 }
 
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
-export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void): AbilityId | 'defend' | undefined {
+export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   if(u.kind==='knight'){
     if(!u.bonusUsed){
       const victim=enemies.find(v=>legalAim(b,u,'bash',v.hex)&&pushDestination(b,u,v));
-      if(victim){cast(b,u,'bash',victim.hex);return 'bash';}
+      if(victim){const aim={...victim.hex};cast(b,u,'bash',aim);onAction?.('bash',aim);return 'bash';}
     }
     if(!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
       const visits=[...movement(b,u).values()].sort((a,z)=>Math.min(...enemies.map(v=>distance(a.hex,v.hex)))-Math.min(...enemies.map(v=>distance(z.hex,v.hex)))||a.cost-z.cost);
       if(visits[0]&&!equal(visits[0].hex,u.hex))move(b,u,visits[0].hex);
-      if(cast(b,u,'taunt',u.hex))return 'taunt';
+      if(cast(b,u,'taunt',u.hex)){onAction?.('taunt',{...u.hex});return 'taunt';}
     }
   }
   let best: { pos: Hex; aim: Hex; ability: AbilityId; score: number } | null = null;
@@ -307,6 +307,7 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void): 
   if (best) {
     if (!equal(original, best.pos)) move(b, u, best.pos);
     cast(b, u, best.ability, best.aim, onRetaliation);
+    onAction?.(best.ability,{...best.aim});
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];

@@ -126,5 +126,61 @@
       "weaponHand": "right",
       "supportHand": "left"
     }
+  },
+  "petra": {
+    "walkRig": {
+      "module": "src/art/petra-actor.ts",
+      "exporter": "scripts/export-petra-animation.mjs",
+      "skinSource": "public/art/petra{,-left,-right,-back}.png",
+      "preparedSkin": "assets/characters/petra-skin/{front,left,right,back}.png",
+      "proportions": "src/art/rig-proportions.ts#PETRA_PROPORTIONS",
+      "stridePixels": 24,
+      "legBonePixels": 9,
+      "hipHeightPixels": 18.8,
+      "footScale": 0.7,
+      "lowerBodyRoot": [
+        -0.5,
+        -2
+      ]
+    },
+    "attackRig": {
+      "module": "src/art/petra-actor.ts",
+      "pose": "petraAttackPose",
+      "phases": [
+        "windup",
+        "contact"
+      ],
+      "actions": [
+        "saber",
+        "bash"
+      ],
+      "stance": "two planted flat feet",
+      "weaponHand": "right",
+      "shieldHand": "left",
+      "saberFrames": [
+        6,
+        7
+      ],
+      "bashFrames": [
+        8,
+        9
+      ]
+    },
+    "nativePage": {
+      "columns": 2,
+      "rows": 5,
+      "frames": [
+        "left-contact",
+        "left-support",
+        "right-passing",
+        "right-contact",
+        "right-support",
+        "left-passing",
+        "windup",
+        "impact",
+        "bash-windup",
+        "bash-contact"
+      ]
+    }
   }
 }

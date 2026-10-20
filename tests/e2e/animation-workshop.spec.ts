@@ -1,4 +1,4 @@
-import { NELL_PROPORTIONS, ORRIN_PROPORTIONS, KIT_PROPORTIONS } from '../../src/art/rig-proportions';
+import { NELL_PROPORTIONS, ORRIN_PROPORTIONS, KIT_PROPORTIONS, PETRA_PROPORTIONS } from '../../src/art/rig-proportions';
 // Browser plugin not available; exercise the native review through repository Playwright.
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
@@ -21,7 +21,7 @@ async function nativeFrame(page:Page,frame:number,direction:ActorDirection='righ
   },pixels)).toBe(0);
 }
 
-async function nativeHero(page:Page,hero:'nell'|'orrin'|'kit',frame:number,direction:ActorDirection){
+async function nativeHero(page:Page,hero:'nell'|'orrin'|'kit'|'petra',frame:number,direction:ActorDirection){
   await expect.poll(()=>page.locator('#reference-detail').evaluate(async(element,{hero,frame,direction})=>{
     const image=new Image();image.src=`/art/animation/${hero}-${direction}.png`;await image.decode();
     const expected=document.createElement('canvas');expected.width=expected.height=240;const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=false;
@@ -66,7 +66,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       while(await host.getAttribute('data-frame')!=='0')await review.getByRole('button',{name:'Next frame',exact:true}).click();
       for(let frame=0;frame<6;frame++){await nativeFrame(page,frame);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
       await expect(host).toHaveAttribute('data-frame','0');await review.getByRole('button',{name:'Previous frame',exact:true}).click();await expect(host).toHaveAttribute('data-frame','5');await review.getByRole('button',{name:'Next frame',exact:true}).click();
-      for(const weapon of ['none','lantern','lance','crossbow'] as const){
+      for(const weapon of ['none','lantern','lance','crossbow','saber'] as const){
         await review.locator(`[data-reference-weapon="${weapon}"]`).click();await expect(host).toHaveAttribute('data-weapon',weapon);
         await expect(review.locator(`[data-reference-weapon="${weapon}"]`)).toHaveAttribute('aria-pressed','true');
         for(const direction of ['front','left','right','back'] as const){await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();await nativeFrame(page,0,direction,new Set(REFERENCE_LAYERS),true,weapon);}
@@ -149,6 +149,19 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();
       await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'kit',0,'right');
       await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`kit-rig-${device}`);
+      await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Petra',exact:true}).click();
+      await expect(host).toHaveAttribute('data-skin','petra');await expect(host).toHaveAttribute('data-weapon','saber');
+      for(const direction of ['front','left','right','back'] as const){
+        await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();
+        for(let frame=0;frame<6;frame++){await nativeHero(page,'petra',frame,direction);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
+      }
+      const petraJson=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();
+      const petraData=JSON.parse(await readFile((await(await petraJson).path())!,'utf8'));
+      expect(petraData.skin).toBe('petra');expect(petraData.cycleDistance).toBe(PETRA_PROPORTIONS.strideDistance);
+      expect(petraData.frames[0].pose.weapon.grip).toEqual(petraData.frames[0].pose.arms.right.grip);
+      expect(petraData.frames[0].pose.shield.grip).toEqual(petraData.frames[0].pose.arms.left.grip);
+      await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'petra',0,'right');
+      await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`petra-rig-${device}`);
       await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Mannequin',exact:true}).click();await nativeFrame(page,0);
       await review.locator('#reference-proportions summary').click();
       await review.getByRole('button',{name:'Match Kit proportions',exact:true}).click();

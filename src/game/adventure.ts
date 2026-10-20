@@ -600,15 +600,19 @@ export class Adventure extends Phaser.Scene {
   private animateBattle(before:BattleSnapshot,action?:BattleMotion) {
     const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
     const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
-    const from=actor?toPixel(before.get(actor.id)?.hex??actor.hex):undefined,to=action?toPixel(action.aim):undefined;
+    const from=actor?toPixel(action?.path&&action.ability?actor.hex:before.get(actor.id)?.hex??actor.hex):undefined,to=action?toPixel(action.aim):undefined;
     const face=hero&&animatedHero(hero)&&from&&to?facingAsset(hero,to.x-from.x,to.y-from.y):undefined;
     if(face&&actor)this.battleFaces.set(actor.id,face);
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const path=action?.path,stepMs=reduced?0:95,impact=action?.ability&&!reduced?ATTACK_CONTACT_MS:0;
-    const duration=path?Math.max(80,path.length*stepMs+40):reduced?100:ATTACK_DURATION_MS;
+    const path=action?.path,stepMs=reduced?0:95,travel=path?path.length*stepMs:0,impact=travel+(action?.ability&&!reduced?ATTACK_CONTACT_MS:0);
+    const duration=path&&!action?.ability?Math.max(80,travel+40):travel+(reduced?100:ATTACK_DURATION_MS);
     this.busy=true;this.drawBattle(before);this.renderBattleControls();
     if(actor){this.revealHex(before.get(actor.id)?.hex??actor.hex);const image=this.actorImages.get(actor.id)!;
-      if(face&&action?.ability&&action.ability!=='bandage')this.motion.attack(image,face);
+      const startAttack=()=>{
+        if(!valid()||!image.active)return;
+        if(face&&action?.ability&&action.ability!=='bandage'){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');}
+      };
+      if(path&&action?.ability)this.time.delayedCall(travel,startAttack);else startAttack();
       if(path){
         this.audio.effect('move',this.state.location.map);
         const advance=(index:number)=>{
@@ -620,18 +624,18 @@ export class Adventure extends Phaser.Scene {
       }
     }
     const showImpact=()=>{
-      if(!valid()||path)return;
+      if(!valid()||(path&&!action?.ability))return;
       this.drawBattle();
       if(actor&&action?.ability){
         const image=this.actorImages.get(actor.id)!;
-        if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact);
+        if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
         this.audio.effect(ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
         if(face)battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face);
       }
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
-        if(!equal(old.hex,u.hex)){
+        if(!equal(old.hex,u.hex)&&!(path&&u.id===actor?.id)){
           const start=toPixel(old.hex),end=toPixel(u.hex);image.setPosition(start.x,start.y+9);
           const badges=image.getData('badges') as Phaser.GameObjects.Container|undefined;badges?.setPosition(start.x,start.y+9);
           this.tweens.add({targets:[image,badges].filter(Boolean),x:end.x,y:end.y+9,duration:reduced?0:140,ease:'Sine.easeOut'});
@@ -640,13 +644,14 @@ export class Adventure extends Phaser.Scene {
           const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);
           this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:reduced?100:700,onComplete:()=>{if(text.active)text.destroy();}});
         }
-        if(action?.retaliations?.includes(u.id)&&animatedHero(u.kind)&&actor){
-          const p=toPixel(u.hex),target=toPixel(actor.hex),counterFace=facingAsset(u.kind,target.x-p.x,target.y-p.y);
+        const counterHero=u.appearance??u.kind;
+        if(action?.retaliations?.includes(u.id)&&animatedHero(counterHero)&&actor){
+          const p=toPixel(u.hex),target=toPixel(actor.hex),counterFace=facingAsset(counterHero,target.x-p.x,target.y-p.y);
           this.battleFaces.set(u.id,counterFace);this.motion.attack(image,counterFace);
         }
       }
     };
-    if(!path)this.time.delayedCall(impact,showImpact);
+    if(!path||action?.ability)this.time.delayedCall(impact,showImpact);
     this.time.delayedCall(duration,()=>{
       if(!valid())return;this.motion.clear();this.busy=false;
       if(path)this.drawBattle();
@@ -660,7 +665,13 @@ export class Adventure extends Phaser.Scene {
     this.time.delayedCall(480,()=>{
       if(this.mode!=='battle'||this.battle!==b)return;
       if(this.ui.modalOpen){this.busy=false;this.scheduleEnemy();return;}
-      const before=this.battleSnapshot(),attacker=active(b),retaliations:string[]=[];const action=enemyTurn(b,id=>retaliations.push(id));if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex,retaliations}:undefined);
+      const before=this.battleSnapshot(),attacker=active(b),retaliations:string[]=[];
+      const animated=attacker&&animatedHero(attacker.appearance??attacker.kind),routes=animated?movement(b,attacker):undefined;
+      let presentation:Pick<BattleMotion,'ability'|'aim'|'affected'>|undefined;
+      const action=enemyTurn(b,id=>retaliations.push(id),(ability,aim)=>{if(animated)presentation={ability,aim,affected:shape(b,attacker,ability,aim)};});
+      if(action&&!presentation)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);
+      const path=attacker?routes?.get(key(attacker.hex))?.path:undefined;
+      this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex,...presentation,...(path?.length?{path}:{}),retaliations}:undefined);
     });
   }
   private battleEnded() {

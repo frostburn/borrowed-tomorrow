@@ -23,3 +23,8 @@ export const KIT_PROPORTIONS:Readonly<RigProportions>={
   legLength:10,hipHeight:20.4,hipRise:.8,hipHalfWidth:3.5,strideDistance:26,footScale:.7,swingHeight:3.5,
   shoulderHeight:17.5,shoulderHalfWidth:9,upperArmLength:8,forearmLength:6.5,carryLift:0,torsoHeight:21,headScale:1.7,armWidth:1,legWidth:.95,
 };
+
+export const PETRA_PROPORTIONS:Readonly<RigProportions>={
+  legLength:9,hipHeight:18.8,hipRise:.55,hipHalfWidth:3.5,strideDistance:24,footScale:.7,swingHeight:3,
+  shoulderHeight:20,shoulderHalfWidth:8.8,upperArmLength:7.5,forearmLength:7,carryLift:0,torsoHeight:22,headScale:1.7,armWidth:1,legWidth:.85,
+};
