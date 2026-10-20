@@ -14,7 +14,7 @@ Chapters One and Two share the tile pages: seven exploration maps and eight tact
 | `tunnel` | 42 × 26 | Cave railway through the blockade; carved mural recess above, shelter below, engine and boarding quay at the east |
 | `coast` | 64 × 42 | Sea and cranes behind the barred coach; west loading gate and east signal walk lead around the guard barrier; ward exit and Orrin’s engine below |
 | `infirmary` | 64 × 42 | Windowed railway ward, medicine desk and stove; beds flank the clear central aisle between the exchange and siding exits |
-| `cinderbank` | 64 × 42 | Medical coaches, miners’ homes and coal shed frame the collector; evacuation leads east to Alban and the capital engine |
+| `cinderbank` | 64 × 42 | Medical coaches, miners’ homes and coal shed frame the collector; evacuation leads east to Petra shielding Alban at the capital crossing |
 
 The tactical `battle-*` maps frame clear fighting floors with location-specific tracks, train parts, machinery or cliffs. Their hex cells remain clear of scenery props. Combat rules, obstacles and rewards remain in `encounters.ts`.
 
@@ -38,7 +38,7 @@ Chapter Two uses feathered ballast, paving and dirt edges over the neighboring g
 
 Paving and ballast have separate overlapping layers at crossings. A row of paving underneath the ballast lets the join reveal the actual neighboring surface. Water-facing quays, ward cutaways and map boundaries retain their architectural hard edges. Keep enough overlap beneath a join rather than exposing a stripe of unrelated base terrain. The standard finite Tiled JSON files remain the layout source; builds consume the baked pages directly.
 
-Cinderbank’s capital engine anchors at (57, 25), leaving Alban at (48, 23) clear of its cab during exploration and the confrontation. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
+Cinderbank’s capital engine anchors at (57, 25), leaving Petra at (47, 23) and Alban at (49, 21) clear of its cab. Alban begins the confrontation at (49, 23) and retreats behind Petra. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
 
 ## Story objects
 
@@ -50,7 +50,7 @@ The map owns three kinds of point-object layer:
 
 Point objects snap to cell centers. A rectangular interaction object can cover a painted door: `approachX` and `approachY` select its reachable grid destination while the rectangle owns its clickable area. The prison-coach door uses this form. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked rock beyond the boarding quay.
 
-Chapter Two’s loading barrier hides after `trainRaidWon`; recovered medicine appears after `prisonersFreed`. At Cinderbank, `evacuationReady` replaces the working collector and suspended threads with its broken casing and supplies for the medical coaches. Neither state changes the rescue route. Through tracks reach both edges at coast rows 13/31 and Cinderbank rows 13/25.
+Chapter Two’s loading barrier hides after `trainRaidWon`; recovered medicine appears after `prisonersFreed`. At Cinderbank, `coastCollectorWon` replaces the working collector and suspended threads with its broken casing; `evacuationReady` adds supplies for the medical coaches. The boarding arena already shows the opened casing. Neither state changes the rescue route. Through tracks reach both edges at coast rows 13/31 and Cinderbank rows 13/25.
 
 Each exploration map's `safeArrival` property names an arrival on its main connected route. Loading a valid current-format save keeps its position when that cell is still walkable. If a layout edit covers or crops the cell, restoration selects the nearest floor connected to that arrival, using the active story layers. Progress, party resources and equipment stay intact. This uses the current save format only; it does not migrate retired versions.
 

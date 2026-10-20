@@ -1103,7 +1103,7 @@
     },
     {
       "id": 19,
-      "name": "Orrin\u2019s engine",
+      "name": "Orrin’s engine",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -1999,7 +1999,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Kit \u00b7 the loading gate"
+              "value": "Kit · the loading gate"
             },
             {
               "name": "sprite",
@@ -2028,7 +2028,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Loading gate \u00b7 armored guardian"
+              "value": "Loading gate · armored guardian"
             },
             {
               "name": "sign",
@@ -2057,7 +2057,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Signal walk \u00b7 ranged crows"
+              "value": "Signal walk · ranged crows"
             },
             {
               "name": "sign",
@@ -2124,7 +2124,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "West \u00b7 railway ward"
+              "value": "West · railway ward"
             },
             {
               "name": "sign",
@@ -2148,7 +2148,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Orrin\u2019s engine \u00b7 coal siding"
+              "value": "Orrin’s engine · coal siding"
             },
             {
               "name": "sign",
@@ -2289,6 +2289,19 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 25,
+          "name": "petra",
+          "type": "",
+          "point": true,
+          "x": 780.0,
+          "y": 444.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
         }
       ]
     },
@@ -2460,7 +2473,7 @@
     }
   ],
   "nextlayerid": 39,
-  "nextobjectid": 25,
+  "nextobjectid": 26,
   "orientation": "orthogonal",
   "properties": [
     {

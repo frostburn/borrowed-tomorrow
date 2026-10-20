@@ -9,15 +9,45 @@ import { approach, importSave, travel, visit } from './navigation';
 
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
-  test(`Alban is fully visible beside the engine before and during the confrontation on ${device}`,async({page})=>{
+  test(`Petra and Alban are fully visible at the crossing before and during the confrontation on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     const saved=coastCheckpoint('evacuationReady');saved.location={map:'cinderbank',x:45,y:26};await importSave(page,saved);
     // Allow the exploration ! marker; the unmarked cutscene must match in full.
-    await capture(page,`alban-crossing-${device}`);await nativeActor(page,'alban',{x:48,y:23},.1);
+    await capture(page,`alban-crossing-${device}`);await nativeActor(page,'alban',{x:49,y:21},.1);await nativeActor(page,'petra',{x:47,y:23},.1);
     await approach(page,'siding-alban');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-recapture');
-    await nativeActor(page,'alban',{x:48,y:23});await capture(page,`alban-confrontation-${device}`);
+    await nativeActor(page,'alban',{x:49,y:23});await nativeActor(page,'petra',{x:47,y:23});await capture(page,`alban-confrontation-${device}`);
+    await page.locator('.dialogue-actions button').first().click();
+    await expect(page.locator('.dialogue h2')).toHaveText('Captain Alban');
+    await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='alban')?.y).toBe((21.5)*24+7);
+    await nativeActor(page,'alban',{x:49,y:21});await nativeActor(page,'petra',{x:47,y:23});await capture(page,`alban-behind-petra-${device}`);
+    await dialogue(page);await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+    expect((await inspect(page)).battle!.units.some(u=>u.name==='Captain Alban')).toBe(false);
+    expect((await inspect(page)).actors.find(a=>a.hero==='petra')?.texture).toBe('petra-left');await capture(page,`petra-boss-${device}`);
     expect(errors).toEqual([]);
+  });
+
+  test(`boarding objective, safe blockages and development restart work on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const saved=coastCheckpoint('settlementSeen');saved.location={map:'cinderbank',x:39,y:21};await importSave(page,saved);
+    await approach(page,'siding-collector');await dialogue(page);
+    await expect(page.getByLabel('Boarding objective')).toContainText('Families aboard: 0/3');
+    await expect(page.getByLabel('Boarding objective')).toContainText('gold loading walk');
+    await nativeScene(page,'cinderbank');await capture(page,`loading-walk-${device}`);
+    for(let actions=0;actions<3;actions++){
+      const button=page.locator('.actions').getByRole('button',{name:/^F\s+Defend$/});await expect(button).toBeEnabled();await button.click();
+    }
+    await expect.poll(async()=>(await inspect(page)).battle!.round).toBe(2);
+    expect((await inspect(page)).battle!.result).toBeNull();
+    await expect(page.locator('.battle-log')).toContainText('wait safely');await capture(page,`loading-walk-blocked-${device}`);
+    await page.getByRole('button',{name:'Restart battle',exact:true}).click();
+    expect((await inspect(page)).battle!.round).toBe(1);expect((await inspect(page)).battle!.evacuation?.boarded).toBe(0);
+    await page.getByRole('button',{name:'Win battle',exact:true}).click();
+    expect((await inspect(page)).battle!.evacuation?.boarded).toBe(3);
+    await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+    await visit(page,'siding-release');expect((await inspect(page)).state.flags.evacuationReady).toBe(true);
+    expect((await inspect(page)).state.inventory.bag['work-coat']).toBe(1);expect(errors).toEqual([]);
   });
 
   test(`Iron Coast arrival, interrupted Kit recruitment and native art on ${device}`,async({page})=>{
@@ -29,7 +59,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect((await inspect(page)).state.xp).toBe(175);
     await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();
     await nativeScene(page,'coast');await capture(page,`coast-arrival-${device}`);
-    while(await page.locator('.dialogue h2').textContent()!=='The loading gate')await page.locator('.dialogue-actions button').first().click();
+    while(!(await page.locator('.dialogue').textContent())!.includes('Alban tears the permit'))await page.locator('.dialogue-actions button').first().click();
     await expect(page.locator('.dialogue')).toContainText('Alban tears the permit');await capture(page,`kit-delivery-seized-${device}`);await dialogue(page);
     await approach(page,'kit-contact');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-kit');
     await nativeActor(page,'kit',{x:28,y:21});await capture(page,`kit-meeting-${device}`);
@@ -90,9 +120,9 @@ test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital trai
   await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true})).toHaveCount(0);
   await capture(page,'chapter-two-three-travelers');await page.getByRole('button',{name:'Close',exact:true}).click();
   expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
-  await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await battle(page,'cinderbank-collector-battle');
+  await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await battle(page,'cinderbank-collector-battle');
   await visit(page,'siding-release');expect((await inspect(page)).state.flags.evacuationReady).toBe(true);
-  await approach(page,'siding-alban');await dialogue(page);await battle(page,'coast-alban-battle');
+  await approach(page,'siding-alban');await dialogue(page);await battle(page,'coast-petra-battle');
   await visit(page,'capital-engine');await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete');
   const final=(await inspect(page)).state;expect(final.boundary).toBe('chapter-three:capital');expect(final.flags.villageFreed).toBe(true);expect(final.inventory.characters.kit.fitting).toBe('courier-sight');
   const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export departure save',exact:true}).click();const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));
@@ -132,7 +162,7 @@ test('loading-gate route, ward supplies and the escape work on a phone',async({p
   await visit(page,'prison-coach');await travel(page,'coast-ward','infirmary');await dialogue(page);await nativeScene(page,'infirmary');await capture(page,'railway-ward-phone');
   const before=(await inspect(page)).state;await approach(page,'ward-rest');await expect(page.locator('.dialogue')).toBeVisible();await capture(page,'ward-care-menu-phone');
   await page.getByRole('button',{name:'Buy a field bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
-  await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await expect(page.getByRole('button',{name:'Win battle',exact:true})).toBeVisible();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+  await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toBeVisible();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await visit(page,'siding-release');await approach(page,'siding-alban');await dialogue(page);await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await visit(page,'capital-engine');
   await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);
 });

@@ -55,7 +55,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
         { label: 'Keep moving', action: () => {} },
       ] }); return;
     case 'ward-rest':
-      host.talk({ lines: [SAY('The railway ward', 'Soup is warming by the stove. Clean bandages are stacked on the supply bench.')], choices: [
+      host.talk({ lines: [SAY('Dena', 'Soup is warming by the stove. Clean bandages are stacked on the supply bench.')], choices: [
         { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
         { label: 'Buy a field bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
         { label: 'Keep moving', action: () => {} },
@@ -68,20 +68,21 @@ export function interactChapterTwo(host: StoryHost, id: string) {
     case 'siding-ward': travel('infirmary','from-siding'); return;
     case 'siding-collector':
       if (f.coastCollectorWon) return;
-      host.battle('coast-collector'); return;
+      host.talk({...scenes.boarding(),done:()=>host.battle('coast-collector')}); return;
     case 'siding-release':
       if (!f.coastCollectorWon) return;
-      if (f.evacuationReady) return say('The broken collector', 'The casing is empty. The families are aboard the medical train.');
+      if (f.evacuationReady) return say('The broken collector', 'The casing is open. Dena has everyone aboard the medical train.');
       host.talk({ ...scenes.evacuation(), done: () => { s.location = arrival('cinderbank','evacuated'); restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
     case 'siding-coaches':
-      say('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. The families from my delivery book are still in the houses beyond the collector.'); return;
+      say('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. That letter is for the family at the green door. We still need to reach them.'); return;
+    case 'siding-captain':
     case 'siding-alban':
       if (!f.evacuationReady) return host.toast('Free the families at the collector before clearing the crossing.');
       if (f.recaptureWon) return;
       if (f.recaptureConfronted) return host.battle('coast-recapture');
       host.talk({ ...scenes.recapture(), done: () => { host.commit('recaptureConfronted'); host.battle('coast-recapture'); } }); return;
     case 'capital-engine':
-      if (!f.recaptureWon) return host.toast('Alban still holds the far crossing.');
+      if (!f.recaptureWon) return host.toast('Petra still holds the far crossing.');
       if (f.chapterTwoComplete) return host.boundary();
       host.talk({ ...scenes.departure(), done: () => {
         s.location = arrival('cinderbank','departure'); f.chapterTwoComplete = true; s.boundary = THIRD_CHAPTER; remember(s, 'capitalDeparture'); host.refresh(); host.save(); host.endingMusic(); host.boundary();

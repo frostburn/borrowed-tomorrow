@@ -107,7 +107,7 @@ it('Chapter Two props block their feet, story layers change, and the painted coa
   expect(walkable(cinder,0,0,before)).toBe(false);expect(walkable(coast,0,20,before)).toBe(false);
   const door=coast.objects.find(o=>o.id==='prison-coach')!;
   expect(door.hitArea).toEqual({x:24,y:8,width:4,height:7});expect(worldPath(coast,{x:24,y:26},door,before).length).toBeGreaterThan(0);
-  for(const [map,name,flag] of [[coast,'Loading barrier','trainRaidWon'],[cinder,'Collector working','evacuationReady'],[cinder,'Suspended drops and threads','evacuationReady']] as const){
+  for(const [map,name,flag] of [[coast,'Loading barrier','trainRaidWon'],[cinder,'Collector working','coastCollectorWon'],[cinder,'Suspended drops and threads','coastCollectorWon']] as const){
     const layer=map.tiles!.layers.find(l=>l.name===name)!;
     expect(layerVisible(layer,{flags:{}})).toBe(true);expect(layerVisible(layer,{flags:{[flag]:true}})).toBe(false);
   }
