@@ -80,11 +80,6 @@
           "value": false
         },
         {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        },
-        {
           "name": "module",
           "type": "string",
           "value": "footbridge"
@@ -129,11 +124,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -153,11 +143,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": true
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -181,11 +166,6 @@
           "name": "empty",
           "type": "bool",
           "value": true
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -205,11 +185,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": true
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -233,11 +208,6 @@
           "name": "empty",
           "type": "bool",
           "value": true
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -259,11 +229,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -285,11 +250,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -311,11 +271,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -337,11 +292,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -363,11 +313,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -389,11 +334,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -415,11 +355,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -441,11 +376,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -467,11 +397,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -493,11 +418,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -726,11 +646,6 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
           "value": true
         }
       ]
@@ -753,11 +668,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -779,11 +689,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -805,11 +710,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -831,11 +731,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -857,11 +752,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -883,11 +773,6 @@
           "name": "empty",
           "type": "bool",
           "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
         }
       ]
     },
@@ -907,11 +792,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -934,11 +814,6 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
           "value": true
         }
       ]
@@ -959,11 +834,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -986,11 +856,6 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
           "value": true
         }
       ]
@@ -1011,11 +876,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -1038,11 +898,6 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
           "value": true
         }
       ]
@@ -1063,11 +918,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }
@@ -1090,11 +940,6 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
           "value": true
         }
       ]
@@ -1115,11 +960,6 @@
         },
         {
           "name": "empty",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "walkable",
           "type": "bool",
           "value": true
         }

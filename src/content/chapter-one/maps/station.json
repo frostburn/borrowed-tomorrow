@@ -406,7 +406,7 @@
     },
     {
       "id": 10,
-      "name": "Scenery",
+      "name": "Stone stairway",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -442,13 +442,7 @@
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
       ],
-      "properties": [
-        {
-          "name": "sort",
-          "type": "bool",
-          "value": true
-        }
-      ]
+      "properties": []
     },
     {
       "id": 11,
@@ -1667,6 +1661,10 @@
     {
       "firstgid": 2257,
       "source": "../../../../assets/tiles/pages/tiles-035-1.json"
+    },
+    {
+      "firstgid": 2264,
+      "source": "../../../../assets/tiles/pages/tiles-055.json"
     }
   ],
   "tilewidth": 24,

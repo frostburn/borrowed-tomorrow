@@ -3,7 +3,7 @@ import { TILESET, tileProperties } from '../../src/content/tilemaps';
 import { MAPS, walkable } from '../../src/content/maps';
 import { receiveItem } from '../../src/rules/inventory';
 import { checkpoint } from '../support/progress';
-import { capture, dialogue, inspect, nativeScene } from './controls';
+import { capture, clickWorld, dialogue, inspect, nativeActor, nativeScene } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 
 test('phone routes connect the workshop, both river banks, residents and pass recesses',async({page})=>{
@@ -70,6 +70,20 @@ test('native foreground trees occlude actors behind them and yield to actors in 
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+  test(`actors stand above the bridge deck and cross both banks on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const state=checkpoint('villageSeen');state.activeParty=['nell'];state.location={map:'rillbridge',x:24,y:18};await importSave(page,state);
+    // Compare actual opaque actor pixels against her native sprite: the deck
+    // used to cover these feet and legs despite the cell being walkable.
+    await nativeActor(page,'nell',{x:24,y:18});await capture(page,`tile-bridge-${device}`);
+    for(const x of [31,25,19,24]){
+      await clickWorld(page,x,18);
+      await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.state.location.x===x&&s.state.location.y===18;},{timeout:15000}).toBe(true);
+    }
+    expect(errors).toEqual([]);
+  });
+
   test(`current-format Rillbridge saves below the redesigned map restore on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

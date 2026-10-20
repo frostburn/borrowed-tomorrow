@@ -2,7 +2,7 @@
   "name": "Chapter One",
   "tilewidth": 24,
   "tileheight": 24,
-  "tilecount": 2263,
+  "tilecount": 2303,
   "pages": [
     {
       "type": "tileset",
@@ -993,6 +993,24 @@
       "firstgid": 2257,
       "source": "../../../../assets/tiles/pages/tiles-035-1.json",
       "url": "art/chapter-one/tiles-035-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-055",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 40,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-055.webp",
+      "imagewidth": 192,
+      "imageheight": 120,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2264,
+      "source": "../../../../assets/tiles/pages/tiles-055.json",
+      "url": "art/chapter-one/tiles-055.webp"
     }
   ]
 }

@@ -56,9 +56,25 @@ it('bridge floors override river tiles while the banks and pass drop stay blocke
   const village=MAPS.rillbridge,pass=MAPS.tunnel;
   expect(walkable(village,23,10)).toBe(false);
   expect(walkable(village,23,18)).toBe(true);
+  expect(walkable(village,23,17)).toBe(false);
+  expect(walkable(village,23,19)).toBe(false);
   expect(worldPath(village,{x:15,y:18},{x:58,y:18}).length).toBeGreaterThan(40);
   expect(walkable(pass,38,14)).toBe(true);expect(walkable(pass,39,14)).toBe(false);
   expect(walkable(pass,12,18)).toBe(false);
+});
+
+it('through tracks reach both map edges and remain on a supported railway shelf',()=>{
+  const rail=TILESET.tiles.find(t=>t.type==='rail-h')!.id+1;
+  for(const [id,rows] of [['station',[6,8]],['yard',[8,11]],['rillbridge',[14]],['tunnel',[10,12]]] as const){
+    const map=MAPS[id].tiles!,fittings=map.layers.find(l=>l.name==='Railway fittings')!;
+    for(const row of rows)for(let x=0;x<map.width;x++){
+      expect(fittings.data![row*map.width+x],`${id}: track ${x},${row}`).toBe(rail);
+      const under=map.layers.slice(0,map.layers.indexOf(fittings)).some(l=>{
+        const gid=l.data?.[row*map.width+x];return gid&&!/^(void|water-)/.test(TILESET.tiles[gid-1].type);
+      });
+      expect(under,`${id}: support ${x},${row}`).toBe(true);
+    }
+  }
 });
 
 it('festival and collector scenery follow the actual campaign flags',()=>{

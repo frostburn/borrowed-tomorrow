@@ -6,7 +6,7 @@
  {"name":"coach","crop":[0,337,276,507],"size":[288,168],"block":[10,1]},
  {"name":"engine","crop":[277,320,547,507],"size":[288,192],"block":[10,1]},
  {"name":"prison-coach","crop":[550,342,778,507],"size":[264,168],"block":[9,1]},
- {"name":"footbridge","crop":[780,350,1024,503],"size":[192,120],"floor":true},
+ {"name":"footbridge","crop":[780,350,1024,503],"size":[192,120],"floorRows":[2],"foreground":{"railY":90,"postY":70,"postWidth":24}},
  {"name":"fir","crop":[0,510,212,825],"size":[168,264],"block":[2,0]},
  {"name":"canopy","crop":[204,520,459,820],"size":[216,240],"block":[2,0]},
  {"name":"ledge","crop":[450,566,765,826],"size":[192,168],"block":[7,0]},

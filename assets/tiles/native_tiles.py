@@ -26,7 +26,8 @@ def join(image,mask):
 def write_pages(root,tiles):
     images=root/'public/art/chapter-one';definitions=root/'assets/tiles/pages';pages=[];start=0;outputs=[]
     existing=json.loads((root/'assets/tiles/chapter-one.tileset.json').read_text())
-    plan=existing.get('pages') if existing.get('tilecount')==len(tiles) else None
+    # Appending definitions must not repack already published image pages.
+    plan=existing.get('pages',[]) if existing.get('tilecount',0)<=len(tiles) else []
     def encode(count,cols,extension):
         image=Image.new('RGBA',(cols*S,math.ceil(count/cols)*S))
         for i,(piece,_) in enumerate(tiles[start:start+count]):image.paste(piece,(i%cols*S,i//cols*S))
@@ -35,7 +36,7 @@ def write_pages(root,tiles):
         else:image.save(output,format='WEBP',lossless=True,quality=75,method=2,exact=True)
         return image,output.getvalue()
     while start<len(tiles):
-        if plan:
+        if len(pages)<len(plan):
             previous=plan[len(pages)];count=previous['tilecount'];cols=previous['columns'];name=previous['name'];extension='.png' if previous['url'].endswith('.png') else '.webp'
             assert previous['firstgid']==start+1
             image,binary=encode(count,cols,extension)

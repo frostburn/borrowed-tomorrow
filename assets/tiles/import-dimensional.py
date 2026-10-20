@@ -14,7 +14,7 @@ S=24
 root=Path(__file__).resolve().parents[2]
 manifest=json.loads((root/'assets/tiles/scenery.json').read_text())
 source=Image.open(sys.argv[1]).convert('RGBA');terrain=Image.open(sys.argv[2]).convert('RGBA')
-old=load_tiles(root);tiles=list(old[:161]);modules={}
+old=load_tiles(root);tiles=list(old[:161]);modules={};foreground=[]
 def add(name,image,**props):
     ident=len(tiles);tiles.append((image,dict(id=ident,type=name,properties=[dict(name='name',type='string',value=name)]+[dict(name=k,type='bool' if isinstance(v,bool) else 'int' if isinstance(v,int) else 'string',value=v) for k,v in props.items()])))
     return ident+1
@@ -43,10 +43,16 @@ for item in manifest:
     crop=crop.resize((round(crop.width*scale),round(crop.height*scale)),Image.Resampling.NEAREST)
     w,h=math.ceil(crop.width/S),math.ceil(crop.height/S);image=Image.new('RGBA',(w*S,h*S));image.paste(crop,((image.width-crop.width)//2,image.height-crop.height))
     ax,ay=w//2,h-1;first=1+len(tiles);modules[item['name']]=dict(firstgid=first,width=w,height=h,anchorX=ax,anchorY=ay)
+    if item.get('foreground'):
+        foreground.append((item,image.copy(),ay));alpha=image.getchannel('A');mask=alpha.load();f=item['foreground']
+        for yy in range(image.height):
+          for xx in range(image.width):
+            if yy>=(f['postY'] if xx<f['postWidth'] or xx>=image.width-f['postWidth'] else f['railY']):mask[xx,yy]=0
+        image.putalpha(alpha)
     for y in range(h):
       for x in range(w):
         piece=image.crop((x*S,y*S,(x+1)*S,(y+1)*S));p=dict(sortOffset=(ay-y)*S+19,empty=piece.getchannel('A').getbbox() is None)
-        if item.get('floor'):p['walkable']=True
+        if item.get('floor') or y in item.get('floorRows',[]):p['walkable']=True
         elif item.get('block'):
           bw,up=item['block']
           if ax-bw//2<=x<ax-bw//2+bw and ay-up<=y<=ay:p['walkable']=False
@@ -75,6 +81,19 @@ for _,tile in old:
     if not match:continue
     name,x,y,mask=match.groups();source=tiles[byname[f'{name}-field-{x}-{y}']-1][0]
     gid=add(tile['type'],join(source,int(mask)),walkable=name!='water');byname[tile['type']]=gid
+# Bridge decks render below actors. Split the near rail and posts
+# into a sorted foreground module; every retained pixel comes from the source.
+for item,image,ay in foreground:
+    f=item['foreground'];front=image.copy();alpha=front.getchannel('A');mask=alpha.load()
+    for y in range(image.height):
+      for x in range(image.width):
+        if y<(f['postY'] if x<f['postWidth'] or x>=image.width-f['postWidth'] else f['railY']):mask[x,y]=0
+    front.putalpha(alpha);w,h=image.width//S,image.height//S
+    name=item['name']+'-front';modules[name]=dict(firstgid=len(tiles)+1,width=w,height=h,anchorX=w//2,anchorY=ay)
+    for y in range(h):
+      for x in range(w):
+        piece=front.crop((x*S,y*S,(x+1)*S,(y+1)*S))
+        add(f'{name}-{x}-{y}',piece,sortOffset=(ay-y)*S+19,empty=piece.getchannel('A').getbbox() is None)
 # Artwork dimensions are part of the map vocabulary. Catch source/crop changes
 # that would require deliberately re-stamping a map instead of corrupting IDs.
 if len(tiles)!=len(old) or any(a[1]['type']!=b[1]['type'] for a,b in zip(tiles,old)):

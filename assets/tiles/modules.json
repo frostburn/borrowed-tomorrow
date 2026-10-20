@@ -166,5 +166,12 @@
     "height": 3,
     "anchorX": 2,
     "anchorY": 2
+  },
+  "footbridge-front": {
+    "firstgid": 2264,
+    "width": 8,
+    "height": 5,
+    "anchorX": 4,
+    "anchorY": 4
   }
 }
