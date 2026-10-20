@@ -1,0 +1,10 @@
+{
+  "source": "Cave material sheet generated in the work chat; authoring source stays outside git",
+  "grid": [2, 2],
+  "fields": [
+    {"name":"cave-wall","quadrant":[0,0],"size":[192,192],"repeatY":false,"walkable":false},
+    {"name":"cave-roof","quadrant":[1,0],"size":[192,192],"repeatY":true,"walkable":false},
+    {"name":"cave-floor","quadrant":[0,1],"size":[192,192],"repeatY":true,"walkable":true},
+    {"name":"cave-ledge","quadrant":[1,1],"size":[192,144],"repeatY":false,"walkable":"top row only"}
+  ]
+}

@@ -1,0 +1,785 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-059",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 48,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-059.webp",
+  "imagewidth": 192,
+  "imageheight": 144,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "cave-ledge-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "cave-ledge-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "cave-ledge-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "cave-ledge-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "cave-ledge-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "cave-ledge-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "cave-ledge-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "cave-ledge-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "cave-ledge-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "cave-ledge-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "cave-ledge-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "cave-ledge-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "cave-ledge-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "cave-ledge-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "cave-ledge-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "cave-ledge-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "cave-ledge-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "cave-ledge-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "cave-ledge-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "cave-ledge-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "cave-ledge-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "cave-ledge-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "cave-ledge-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "cave-ledge-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "cave-ledge-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "cave-ledge-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "cave-ledge-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "cave-ledge-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "cave-ledge-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "cave-ledge-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "cave-ledge-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "cave-ledge-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "cave-ledge-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "cave-ledge-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "cave-ledge-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "cave-ledge-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "cave-ledge-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "cave-ledge-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "cave-ledge-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "cave-ledge-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "cave-ledge-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-0-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "cave-ledge-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-1-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "cave-ledge-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-2-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "cave-ledge-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-3-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "cave-ledge-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-4-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "cave-ledge-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-5-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "cave-ledge-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "cave-ledge-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-ledge-7-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

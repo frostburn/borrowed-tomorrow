@@ -94,6 +94,10 @@ for item,image,ay in foreground:
       for x in range(w):
         piece=front.crop((x*S,y*S,(x+1)*S,(y+1)*S))
         add(f'{name}-{x}-{y}',piece,sortOffset=(ay-y)*S+19,empty=piece.getchannel('A').getbbox() is None)
+# Cave materials have their own source and importer; keep their appended IDs
+# and original pixels when re-importing the railway scenery sheets.
+for image,tile in old:
+    if tile['type'].startswith('cave-'):tiles.append((image,dict(tile,id=len(tiles))))
 # Artwork dimensions are part of the map vocabulary. Catch source/crop changes
 # that would require deliberately re-stamping a map instead of corrupting IDs.
 if len(tiles)!=len(old) or any(a[1]['type']!=b[1]['type'] for a,b in zip(tiles,old)):

@@ -1,0 +1,1041 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-056",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-056.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "cave-wall-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "cave-wall-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "cave-wall-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "cave-wall-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "cave-wall-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "cave-wall-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "cave-wall-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "cave-wall-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "cave-wall-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "cave-wall-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "cave-wall-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "cave-wall-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "cave-wall-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "cave-wall-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "cave-wall-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "cave-wall-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "cave-wall-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "cave-wall-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "cave-wall-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "cave-wall-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "cave-wall-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "cave-wall-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "cave-wall-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "cave-wall-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "cave-wall-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "cave-wall-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "cave-wall-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "cave-wall-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "cave-wall-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "cave-wall-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "cave-wall-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "cave-wall-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "cave-wall-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "cave-wall-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "cave-wall-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "cave-wall-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "cave-wall-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "cave-wall-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "cave-wall-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "cave-wall-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "cave-wall-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "cave-wall-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "cave-wall-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "cave-wall-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "cave-wall-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "cave-wall-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "cave-wall-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "cave-wall-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "cave-wall-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "cave-wall-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "cave-wall-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "cave-wall-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "cave-wall-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "cave-wall-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "cave-wall-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "cave-wall-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "cave-wall-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-0-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "cave-wall-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-1-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "cave-wall-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-2-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "cave-wall-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-3-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "cave-wall-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-4-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "cave-wall-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-5-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "cave-wall-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-6-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "cave-wall-7-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cave-wall-7-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

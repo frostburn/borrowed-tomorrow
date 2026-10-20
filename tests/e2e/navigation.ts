@@ -3,6 +3,7 @@ import { MAPS, visibleObjects, walkable, worldPath } from '../../src/content/map
 import { inspect, clickWorld, dialogue } from './controls';
 
 export async function importSave(page:Page,state:unknown){
+  await page.waitForFunction(()=>!!window.borrowedTomorrow);
   await page.getByRole('button',{name:/^Save files$|^Save$/}).first().click();
   const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Import save file'}).click();
   await (await chooser).setFiles({name:'arrival.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(state))});

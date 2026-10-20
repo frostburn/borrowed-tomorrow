@@ -11,7 +11,7 @@ The four exploration maps and four tactical arenas use the same tile pages. The 
 | `station` | 42 × 26 | Festival square below the arrest platform; Iona's stall, memorial and west exit share one connected plaza |
 | `yard` | 42 × 26 | Engine apron and Orrin first; spare shed to the south; disused branch to the northwest |
 | `rillbridge` | 64 × 28 | Leave the engine west of the river, cross the wooden bridge, pass the residents and reach the collector; the north road leads to the pass |
-| `tunnel` | 42 × 26 | Stone shelf through the blockade; mural recess above, rest shelter below, engine and boarding quay at the east |
+| `tunnel` | 42 × 26 | Cave railway through the blockade; carved mural recess above, shelter below, engine and boarding quay at the east |
 
 The tactical `battle-*` maps frame clear fighting floors with location-specific tracks, train parts, machinery or cliffs. Their hex cells remain clear of scenery props. Combat rules, obstacles and rewards remain in `encounters.ts`.
 
@@ -22,6 +22,8 @@ Ground, paths, structures and details draw as native Phaser tile-map layers. Lay
 Walkable bridge decks and stair treads are floor layers below actors. The footbridge's near rail and posts form a separate sorted layer, cut from the same source pixels without overlapping the deck image. Only its middle deck row crosses the river; the railings and water above/below it stay blocked. The importer records the split in `scenery.json` and appends foreground tiles without repacking existing image pages.
 
 Through tracks continue to both map edges. The yard's engine stands on row 11; the pass uses rows 10 and 12, with shelf terrain beneath the eastern ends. Rillbridge's eastern carriage stands on row 14, aligned with the line, and a stone viaduct supports that line over the river.
+
+The eastern pass and captain arena share cave wall, roof, floor and cutaway ledge tiles. Solid roof/wall tiles block movement; floor tiles open the existing route. Ledge lips are floor, with blocked faces below them, drawn beneath actors. The cave sheet is an independent material source, exported by `assets/tiles/import-caves.py`; re-importing railway scenery preserves those appended tile IDs. See `assets/tiles/caves.md` for the art brief and crop recipe.
 
 Tile definitions carry an optional boolean `walkable` property. Navigation reads the same active tile layers as rendering, in map order. The last explicit value wins: a bridge deck can make water passable, while a wall, trunk or carriage blocks the floor beneath it. Decorative tiles omit the property. Do not add separate collision rectangles to these maps. Keep painted floor edges and navigable cells aligned.
 
@@ -35,7 +37,7 @@ The map owns three kinds of point-object layer:
 - **Arrivals:** named travel and scene-completion positions, resolved by `arrival(map, name)`. Preserve the names when changing a layout.
 - **Scene:scene-id:** initial character casts. Object names are registered character IDs; the optional boolean `hidden` property stages an initially absent actor. `stage(map, sceneId)` supplies the cast to the dialogue director. Staged moves and camera shots remain beside their dialogue in `scenes.ts`.
 
-Point objects snap to cell centers. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked open air.
+Point objects snap to cell centers. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked rock beyond the boarding quay.
 
 Each exploration map's `safeArrival` property names an arrival on its main connected route. Loading a valid current-format save keeps its position when that cell is still walkable. If a layout edit covers or crops the cell, restoration selects the nearest floor connected to that arrival, using the active story layers. Progress, party resources and equipment stay intact. This uses the current save format only; it does not migrate retired versions.
 
