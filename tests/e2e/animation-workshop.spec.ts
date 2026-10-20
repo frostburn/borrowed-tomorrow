@@ -40,6 +40,24 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       const review=page.getByRole('region',{name:'Layered animation reference',exact:true}),host=page.locator('#animation-workshop');
       await expect(review).toBeVisible();await expect(page.locator('vite-error-overlay')).toHaveCount(0);
       const stored=await page.evaluate(()=>JSON.stringify(localStorage));
+      // Check the visible compositor too: closed details have measurable child
+      // boxes even though the browser's disclosure slot hides their contents.
+      await review.locator('#reference-proportions summary').evaluate(summary=>{
+        const probe=document.createElement('div');probe.id='closed-disclosure-probe';
+        probe.style.cssText='height:24px;background:rgb(197,21,153)';summary.after(probe);
+      });
+      const probePixels=()=>page.locator('.pixel-output').evaluate(element=>{
+        const canvas=element as HTMLCanvasElement,pixels=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
+        let count=0;for(let i=0;i<pixels.length;i+=4)if(pixels[i]===197&&pixels[i+1]===21&&pixels[i+2]===153)count++;return count;
+      });
+      await expect.poll(probePixels).toBe(0);
+      await review.locator('#reference-proportions summary').click();
+      await page.locator('#closed-disclosure-probe').scrollIntoViewIfNeeded();
+      await expect.poll(probePixels).toBeGreaterThan(500);
+      await review.locator('#reference-proportions summary').click();
+      await expect.poll(probePixels).toBe(0);
+      await page.locator('#closed-disclosure-probe').evaluate(element=>element.remove());
+
       const frames=await host.evaluate(h=>new Promise<string[]>(resolve=>{const seen=new Set<string>(),start=performance.now();const tick=()=>{seen.add((h as HTMLElement).dataset.frame!);if(seen.size===6||performance.now()-start>2000)resolve([...seen]);else requestAnimationFrame(tick);};tick();}));
       expect(new Set(frames)).toEqual(new Set(['0','1','2','3','4','5']));
       await review.getByRole('button',{name:'Pause',exact:true}).click();const paused=await host.getAttribute('data-frame');await page.waitForTimeout(160);expect(await host.getAttribute('data-frame')).toBe(paused);
