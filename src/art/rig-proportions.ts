@@ -13,3 +13,8 @@ export const NELL_PROPORTIONS:Readonly<RigProportions>={
   legLength:9,hipHeight:18.8,hipRise:.8,hipHalfWidth:3,strideDistance:24,footScale:.65,swingHeight:3.5,
   shoulderHeight:18,shoulderHalfWidth:9,upperArmLength:8,forearmLength:7,carryLift:4,torsoHeight:22,headScale:1.7,armWidth:1,legWidth:1,
 };
+
+export const ORRIN_PROPORTIONS:Readonly<RigProportions>={
+  legLength:9.5,hipHeight:19.5,hipRise:.8,hipHalfWidth:4.5,strideDistance:28,footScale:.75,swingHeight:3.5,
+  shoulderHeight:21,shoulderHalfWidth:11.5,upperArmLength:8,forearmLength:7,carryLift:0,torsoHeight:22,headScale:1.6,armWidth:1,legWidth:1.15,
+};

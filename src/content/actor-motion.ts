@@ -7,8 +7,8 @@ export const WALK_PHASES = ['Left contact','Left support','Right passing','Right
 export const WALK_FRAMES = WALK_PHASES.length;
 export const WALK_FRAME_MS = 80;
 export const WALK_CYCLE_MS = WALK_FRAMES * WALK_FRAME_MS;
-// Nell's rig advances 24 pixels per stride; Orrin retains his existing 60-pixel walk.
-export const WALK_STRIDE_DISTANCE = {nell:24,orrin:60} as const;
+// Match the authored heel/toe contacts for each character's rig.
+export const WALK_STRIDE_DISTANCE = {nell:24,orrin:28} as const;
 export const walkFrameDistance = (hero:MotionHero) => WALK_STRIDE_DISTANCE[hero]/WALK_FRAMES;
 export const ATTACK_WINDUP_FRAME = WALK_FRAMES;
 export const ATTACK_CONTACT_FRAME = WALK_FRAMES + 1;

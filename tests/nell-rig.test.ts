@@ -23,7 +23,7 @@ it('Nell retains the reference foot contacts and rigid limbs after retargeting',
 
 it('Nell playback cancels planted-foot travel using her authored stride distance',()=>{
   expect(WALK_STRIDE_DISTANCE.nell).toBe(NELL_PROPORTIONS.strideDistance);expect(walkFrameDistance('nell')*REFERENCE_FRAMES).toBe(NELL_PROPORTIONS.strideDistance);
-  expect(walkFrameDistance('orrin')).toBe(10);
+  expect(walkFrameDistance('orrin')*REFERENCE_FRAMES).toBe(28);
   for(let frame=0;frame<6;frame++){
     const pose=nellPose(frame/6),travel=frame*walkFrameDistance('nell');
     for(const side of ['left','right'] as const){
