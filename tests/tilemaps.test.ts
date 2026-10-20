@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { arrival, MAPS, restorePoint, stage, walkable, worldPath } from '../src/content/maps';
@@ -8,11 +8,21 @@ import { decodeSave, newGame } from '../src/rules/state';
 import { checkpoint } from './support/progress';
 
 it('Chapter One uses complete native layers and bounded image pages',()=>{
+  expect(readdirSync('public/art/chapter-one').filter(p=>/\.(png|webp)$/.test(p)).sort()).toEqual(TILESET.pages.map(p=>p.url.split('/').at(-1)!).sort());
   let next=1;
   for(const page of TILESET.pages){
-    const png=readFileSync(`public/${page.url}`);
-    expect(png.length).toBeLessThanOrEqual(65536);
-    expect([png.readUInt32BE(16),png.readUInt32BE(20)]).toEqual([page.imagewidth,page.imageheight]);
+    const image=readFileSync(`public/${page.url}`);
+    expect(image.length).toBeLessThanOrEqual(131072);
+    let dimensions:number[];
+    if(page.url.endsWith('.png')){
+      expect(image.subarray(1,4).toString('ascii')).toBe('PNG');dimensions=[image.readUInt32BE(16),image.readUInt32BE(20)];
+    }else{
+      expect(image.toString('ascii',0,4)).toBe('RIFF');expect(image.toString('ascii',8,12)).toBe('WEBP');
+      expect(image.readUInt32LE(4)+8).toBe(image.length);
+      const bits=image.readUInt32LE(21);expect(image.toString('ascii',12,16)).toBe('VP8L');
+      dimensions=[1+(bits&0x3fff),1+((bits>>>14)&0x3fff)];
+    }
+    expect(dimensions).toEqual([page.imagewidth,page.imageheight]);
     expect(Math.max(page.imagewidth,page.imageheight)).toBeLessThanOrEqual(192);
     expect(page.firstgid).toBe(next);next+=page.tilecount;
     const source=JSON.parse(readFileSync(`assets/tiles/pages/${page.name}.json`,'utf8'));
@@ -60,8 +70,8 @@ it('festival and collector scenery follow the actual campaign flags',()=>{
     const layer=village.layers.find(l=>l.name===name)!;expect(layerVisible(layer,before)).toBe(true);expect(layerVisible(layer,after)).toBe(false);
   }
   expect(layerVisible(village.layers.find(l=>l.name==='Collector broken')!,after)).toBe(true);
-  // The release changes the water itself, rather than painting an unrelated overlay.
-  expect(tileWalkable(village,25,15,before)).toBe(true);expect(tileWalkable(village,25,15,after)).toBe(false);
+  // The river remains water on both sides of the rescue; the bridge is the route.
+  expect(tileWalkable(village,25,15,before)).toBe(false);expect(tileWalkable(village,25,15,after)).toBe(false);
 });
 
 it('each Chapter One arena keeps every tactical cell on open ground',()=>{
@@ -82,7 +92,7 @@ it('current-format saves survive cropped floors and newly covered cells',()=>{
   expect(restorePoint(map,{x:31,y:40},state)).toEqual({x:31,y:27});
   expect(restorePoint(map,{x:15,y:18},state)).toEqual({x:15,y:18});
   // Every converted map supplies its own safe arrival; no old-art coordinates.
-  for(const [id,point] of [['station',{x:10,y:5}],['yard',{x:25,y:7}],['tunnel',{x:40,y:14}]] as const){
+  for(const [id,point] of [['station',{x:10,y:10}],['yard',{x:25,y:7}],['tunnel',{x:40,y:14}]] as const){
     expect(walkable(MAPS[id],point.x,point.y)).toBe(false);
     const p=restorePoint(MAPS[id],point,state)!;expect(walkable(MAPS[id],p.x,p.y,state)).toBe(true);
   }

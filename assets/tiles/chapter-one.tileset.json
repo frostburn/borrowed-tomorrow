@@ -2,2749 +2,997 @@
   "name": "Chapter One",
   "tilewidth": 24,
   "tileheight": 24,
-  "tilecount": 161,
-  "tiles": [
-    {
-      "id": 0,
-      "type": "grass-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "grass-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 1,
-      "type": "earth-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "earth-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "type": "paving-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "paving-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "type": "ballast-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "ballast-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "type": "water-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "water-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "type": "cliff-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "cliff-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "type": "grass-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "grass-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "type": "earth-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "earth-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "type": "paving-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "paving-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 9,
-      "type": "ballast-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "ballast-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 10,
-      "type": "water-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "water-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 11,
-      "type": "cliff-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "cliff-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "type": "grass-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "grass-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 13,
-      "type": "earth-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "earth-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 14,
-      "type": "paving-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "paving-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "type": "ballast-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "ballast-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 16,
-      "type": "water-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "water-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 17,
-      "type": "cliff-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "cliff-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 18,
-      "type": "grass-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "grass-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 19,
-      "type": "earth-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "earth-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 20,
-      "type": "paving-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "paving-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 21,
-      "type": "ballast-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "ballast-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 22,
-      "type": "water-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "water-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 23,
-      "type": "cliff-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "cliff-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 24,
-      "type": "void",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "void"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 25,
-      "type": "bank-w",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bank-w"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 26,
-      "type": "bank-e",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bank-e"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 27,
-      "type": "quay",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "quay"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 28,
-      "type": "steps",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "steps"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 29,
-      "type": "bridge",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bridge"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 30,
-      "type": "path-n",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "path-n"
-        }
-      ]
-    },
-    {
-      "id": 31,
-      "type": "path-s",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "path-s"
-        }
-      ]
-    },
-    {
-      "id": 32,
-      "type": "path-w",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "path-w"
-        }
-      ]
-    },
-    {
-      "id": 33,
-      "type": "path-e",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "path-e"
-        }
-      ]
-    },
-    {
-      "id": 34,
-      "type": "rail-h",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "rail-h"
-        }
-      ]
-    },
-    {
-      "id": 35,
-      "type": "rail-v",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "rail-v"
-        }
-      ]
-    },
-    {
-      "id": 36,
-      "type": "buffers",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "buffers"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 37,
-      "type": "platform-edge",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "platform-edge"
-        }
-      ]
-    },
-    {
-      "id": 38,
-      "type": "plaster-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "plaster-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 39,
-      "type": "plaster-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "plaster-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 40,
-      "type": "brick-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "brick-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 41,
-      "type": "brick-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "brick-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 42,
-      "type": "workshop-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "workshop-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 43,
-      "type": "workshop-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "workshop-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 44,
-      "type": "window-dark",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "window-dark"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 45,
-      "type": "window-lit",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "window-lit"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 46,
-      "type": "door",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "door"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 47,
-      "type": "arch",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "arch"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": 48,
-      "type": "roof-slate-middle",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-slate-middle"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 49,
-      "type": "roof-slate-top",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-slate-top"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 50,
-      "type": "roof-slate-bottom",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-slate-bottom"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 51,
-      "type": "roof-slate-left",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-slate-left"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 52,
-      "type": "roof-slate-right",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-slate-right"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 53,
-      "type": "roof-copper-middle",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-copper-middle"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 54,
-      "type": "roof-copper-top",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-copper-top"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 55,
-      "type": "roof-copper-bottom",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-copper-bottom"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 56,
-      "type": "roof-copper-left",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-copper-left"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 57,
-      "type": "roof-copper-right",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-copper-right"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 58,
-      "type": "roof-shadow",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "roof-shadow"
-        }
-      ]
-    },
-    {
-      "id": 59,
-      "type": "awning-red",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "awning-red"
-        }
-      ]
-    },
-    {
-      "id": 60,
-      "type": "counter",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "counter"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 61,
-      "type": "bread",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bread"
-        }
-      ]
-    },
-    {
-      "id": 62,
-      "type": "crate",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "crate"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 63,
-      "type": "barrel",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "barrel"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 64,
-      "type": "coal",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "coal"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 65,
-      "type": "tools",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tools"
-        }
-      ]
-    },
-    {
-      "id": 66,
-      "type": "flowers",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "flowers"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 67,
-      "type": "sign",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sign"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 68,
-      "type": "lamp-top",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "lamp-top"
-        }
-      ]
-    },
-    {
-      "id": 69,
-      "type": "lamp-base",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "lamp-base"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 70,
-      "type": "bunting",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bunting"
-        }
-      ]
-    },
-    {
-      "id": 71,
-      "type": "torn-bunting",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "torn-bunting"
-        }
-      ]
-    },
-    {
-      "id": 72,
-      "type": "cap",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "cap"
-        }
-      ]
-    },
-    {
-      "id": 73,
-      "type": "paper",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "paper"
-        }
-      ]
-    },
-    {
-      "id": 74,
-      "type": "rail-fence",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "rail-fence"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 75,
-      "type": "rail-shadow",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "rail-shadow"
-        }
-      ]
-    },
-    {
-      "id": 76,
-      "type": "bedroll",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "bedroll"
-        }
-      ]
-    },
-    {
-      "id": 77,
-      "type": "stove",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "stove"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 78,
-      "type": "motes",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "motes"
-        }
-      ]
-    },
-    {
-      "id": 79,
-      "type": "drops",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "drops"
-        }
-      ]
-    },
-    {
-      "id": 80,
-      "type": "thread",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "thread"
-        }
-      ]
-    },
-    {
-      "id": 81,
-      "type": "pipe-h",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pipe-h"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 82,
-      "type": "pipe-v",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pipe-v"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 83,
-      "type": "steam-grate",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "steam-grate"
-        }
-      ]
-    },
-    {
-      "id": 84,
-      "type": "train-roof",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "train-roof"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 85,
-      "type": "train-window",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "train-window"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 86,
-      "type": "train-body",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "train-body"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 87,
-      "type": "train-door",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "train-door"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 88,
-      "type": "train-wheels",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "train-wheels"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 89,
-      "type": "engine-boiler",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "engine-boiler"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 90,
-      "type": "engine-cab",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "engine-cab"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 91,
-      "type": "engine-chimney",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "engine-chimney"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": 92,
-      "type": "tree-0-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-0-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 93,
-      "type": "tree-1-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-1-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 94,
-      "type": "tree-2-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-2-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 95,
-      "type": "tree-3-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-3-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 96,
-      "type": "tree-0-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-0-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 97,
-      "type": "tree-1-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-1-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 98,
-      "type": "tree-2-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-2-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 99,
-      "type": "tree-3-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-3-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 100,
-      "type": "tree-0-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-0-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 101,
-      "type": "tree-1-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-1-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 102,
-      "type": "tree-2-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-2-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 103,
-      "type": "tree-3-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-3-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 104,
-      "type": "tree-0-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-0-3"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 105,
-      "type": "tree-1-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-1-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 106,
-      "type": "tree-2-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-2-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 107,
-      "type": "tree-3-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "tree-3-3"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 108,
-      "type": "pine-0-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-0-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 109,
-      "type": "pine-1-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-1-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 110,
-      "type": "pine-2-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-2-0"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 111,
-      "type": "pine-0-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-0-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 112,
-      "type": "pine-1-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-1-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 113,
-      "type": "pine-2-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-2-1"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 114,
-      "type": "pine-0-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-0-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 115,
-      "type": "pine-1-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-1-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 116,
-      "type": "pine-2-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-2-2"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 117,
-      "type": "pine-0-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-0-3"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 118,
-      "type": "pine-1-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-1-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 119,
-      "type": "pine-2-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "pine-2-3"
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 120,
-      "type": "sun-mural-0-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-0-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 121,
-      "type": "sun-mural-1-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-1-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 122,
-      "type": "sun-mural-2-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-2-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 123,
-      "type": "sun-mural-0-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-0-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 124,
-      "type": "sun-mural-1-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-1-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 125,
-      "type": "sun-mural-2-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-2-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 126,
-      "type": "sun-mural-0-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-0-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 127,
-      "type": "sun-mural-1-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-1-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 128,
-      "type": "sun-mural-2-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "sun-mural-2-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 129,
-      "type": "collector-0-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-0-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 130,
-      "type": "collector-1-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-1-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 131,
-      "type": "collector-2-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-2-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 132,
-      "type": "collector-3-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-3-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 133,
-      "type": "collector-0-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-0-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 134,
-      "type": "collector-1-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-1-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 135,
-      "type": "collector-2-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-2-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 136,
-      "type": "collector-3-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-3-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 137,
-      "type": "collector-0-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-0-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 138,
-      "type": "collector-1-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-1-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 139,
-      "type": "collector-2-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-2-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 140,
-      "type": "collector-3-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-3-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 141,
-      "type": "collector-0-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-0-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 142,
-      "type": "collector-1-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-1-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 143,
-      "type": "collector-2-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-2-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 144,
-      "type": "collector-3-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "collector-3-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 145,
-      "type": "broken-collector-0-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-0-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 146,
-      "type": "broken-collector-1-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-1-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 147,
-      "type": "broken-collector-2-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-2-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 148,
-      "type": "broken-collector-3-0",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-3-0"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 96
-        }
-      ]
-    },
-    {
-      "id": 149,
-      "type": "broken-collector-0-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-0-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 150,
-      "type": "broken-collector-1-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-1-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 151,
-      "type": "broken-collector-2-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-2-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 152,
-      "type": "broken-collector-3-1",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-3-1"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 72
-        }
-      ]
-    },
-    {
-      "id": 153,
-      "type": "broken-collector-0-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-0-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 154,
-      "type": "broken-collector-1-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-1-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 155,
-      "type": "broken-collector-2-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-2-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 156,
-      "type": "broken-collector-3-2",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-3-2"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 48
-        }
-      ]
-    },
-    {
-      "id": 157,
-      "type": "broken-collector-0-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-0-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 158,
-      "type": "broken-collector-1-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-1-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 159,
-      "type": "broken-collector-2-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-2-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    },
-    {
-      "id": 160,
-      "type": "broken-collector-3-3",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "value": "broken-collector-3-3"
-        },
-        {
-          "name": "walkable",
-          "type": "bool",
-          "value": false
-        },
-        {
-          "name": "sortOffset",
-          "type": "int",
-          "value": 24
-        }
-      ]
-    }
-  ],
+  "tilecount": 2263,
   "pages": [
     {
       "type": "tileset",
       "version": "1.10",
       "tiledversion": "1.11.2",
-      "name": "chapter-one-000",
+      "name": "tiles-000",
       "tilewidth": 24,
       "tileheight": 24,
       "tilecount": 64,
       "columns": 8,
-      "image": "../../../public/art/chapter-one/chapter-one-000.png",
+      "image": "../../../public/art/chapter-one/tiles-000.webp",
       "imagewidth": 192,
       "imageheight": 192,
       "margin": 0,
       "spacing": 0,
       "firstgid": 1,
-      "source": "../../../../assets/tiles/pages/chapter-one-000.json",
-      "url": "art/chapter-one/chapter-one-000.png"
+      "source": "../../../../assets/tiles/pages/tiles-000.json",
+      "url": "art/chapter-one/tiles-000.webp"
     },
     {
       "type": "tileset",
       "version": "1.10",
       "tiledversion": "1.11.2",
-      "name": "chapter-one-001",
+      "name": "tiles-001",
       "tilewidth": 24,
       "tileheight": 24,
       "tilecount": 64,
       "columns": 8,
-      "image": "../../../public/art/chapter-one/chapter-one-001.png",
+      "image": "../../../public/art/chapter-one/tiles-001.webp",
       "imagewidth": 192,
       "imageheight": 192,
       "margin": 0,
       "spacing": 0,
       "firstgid": 65,
-      "source": "../../../../assets/tiles/pages/chapter-one-001.json",
-      "url": "art/chapter-one/chapter-one-001.png"
+      "source": "../../../../assets/tiles/pages/tiles-001.json",
+      "url": "art/chapter-one/tiles-001.webp"
     },
     {
       "type": "tileset",
       "version": "1.10",
       "tiledversion": "1.11.2",
-      "name": "chapter-one-002",
+      "name": "tiles-002",
       "tilewidth": 24,
       "tileheight": 24,
-      "tilecount": 33,
+      "tilecount": 64,
       "columns": 8,
-      "image": "../../../public/art/chapter-one/chapter-one-002.png",
+      "image": "../../../public/art/chapter-one/tiles-002.webp",
       "imagewidth": 192,
-      "imageheight": 120,
+      "imageheight": 192,
       "margin": 0,
       "spacing": 0,
       "firstgid": 129,
-      "source": "../../../../assets/tiles/pages/chapter-one-002.json",
-      "url": "art/chapter-one/chapter-one-002.png"
+      "source": "../../../../assets/tiles/pages/tiles-002.json",
+      "url": "art/chapter-one/tiles-002.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-003",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-003.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 193,
+      "source": "../../../../assets/tiles/pages/tiles-003.json",
+      "url": "art/chapter-one/tiles-003.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-004",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-004.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 257,
+      "source": "../../../../assets/tiles/pages/tiles-004.json",
+      "url": "art/chapter-one/tiles-004.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-005",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-005.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 321,
+      "source": "../../../../assets/tiles/pages/tiles-005.json",
+      "url": "art/chapter-one/tiles-005.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-006",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-006.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 385,
+      "source": "../../../../assets/tiles/pages/tiles-006.json",
+      "url": "art/chapter-one/tiles-006.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-007",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-007.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 449,
+      "source": "../../../../assets/tiles/pages/tiles-007.json",
+      "url": "art/chapter-one/tiles-007.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-008",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-008.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 513,
+      "source": "../../../../assets/tiles/pages/tiles-008.json",
+      "url": "art/chapter-one/tiles-008.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-009",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-009.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 577,
+      "source": "../../../../assets/tiles/pages/tiles-009.json",
+      "url": "art/chapter-one/tiles-009.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-010",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-010.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 641,
+      "source": "../../../../assets/tiles/pages/tiles-010.json",
+      "url": "art/chapter-one/tiles-010.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-011",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-011.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 705,
+      "source": "../../../../assets/tiles/pages/tiles-011.json",
+      "url": "art/chapter-one/tiles-011.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-012",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-012.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 769,
+      "source": "../../../../assets/tiles/pages/tiles-012.json",
+      "url": "art/chapter-one/tiles-012.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-013",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-013.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 833,
+      "source": "../../../../assets/tiles/pages/tiles-013.json",
+      "url": "art/chapter-one/tiles-013.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-014",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-014.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 897,
+      "source": "../../../../assets/tiles/pages/tiles-014.json",
+      "url": "art/chapter-one/tiles-014.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-015",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-015.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 961,
+      "source": "../../../../assets/tiles/pages/tiles-015.json",
+      "url": "art/chapter-one/tiles-015.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-016",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-016.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1025,
+      "source": "../../../../assets/tiles/pages/tiles-016.json",
+      "url": "art/chapter-one/tiles-016.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-017",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-017.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1089,
+      "source": "../../../../assets/tiles/pages/tiles-017.json",
+      "url": "art/chapter-one/tiles-017.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-018",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-018.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1153,
+      "source": "../../../../assets/tiles/pages/tiles-018.json",
+      "url": "art/chapter-one/tiles-018.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-019",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-019.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1217,
+      "source": "../../../../assets/tiles/pages/tiles-019.json",
+      "url": "art/chapter-one/tiles-019.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-020",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-020.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1281,
+      "source": "../../../../assets/tiles/pages/tiles-020.json",
+      "url": "art/chapter-one/tiles-020.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-021",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-021.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1345,
+      "source": "../../../../assets/tiles/pages/tiles-021.json",
+      "url": "art/chapter-one/tiles-021.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-022",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-022.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1409,
+      "source": "../../../../assets/tiles/pages/tiles-022.json",
+      "url": "art/chapter-one/tiles-022.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-023",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-023.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1473,
+      "source": "../../../../assets/tiles/pages/tiles-023.json",
+      "url": "art/chapter-one/tiles-023.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-024",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-024.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1537,
+      "source": "../../../../assets/tiles/pages/tiles-024.json",
+      "url": "art/chapter-one/tiles-024.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-025",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-025.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1601,
+      "source": "../../../../assets/tiles/pages/tiles-025.json",
+      "url": "art/chapter-one/tiles-025.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-026-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-026-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1665,
+      "source": "../../../../assets/tiles/pages/tiles-026-0.json",
+      "url": "art/chapter-one/tiles-026-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-026-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-026-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1681,
+      "source": "../../../../assets/tiles/pages/tiles-026-1.json",
+      "url": "art/chapter-one/tiles-026-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-026-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-026-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1697,
+      "source": "../../../../assets/tiles/pages/tiles-026-2.json",
+      "url": "art/chapter-one/tiles-026-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-026-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-026-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1713,
+      "source": "../../../../assets/tiles/pages/tiles-026-3.json",
+      "url": "art/chapter-one/tiles-026-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-027",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-027.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1729,
+      "source": "../../../../assets/tiles/pages/tiles-027.json",
+      "url": "art/chapter-one/tiles-027.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-028",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-028.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1793,
+      "source": "../../../../assets/tiles/pages/tiles-028.json",
+      "url": "art/chapter-one/tiles-028.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-029",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-029.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1857,
+      "source": "../../../../assets/tiles/pages/tiles-029.json",
+      "url": "art/chapter-one/tiles-029.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-030-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-030-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1921,
+      "source": "../../../../assets/tiles/pages/tiles-030-0.json",
+      "url": "art/chapter-one/tiles-030-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-030-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-030-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1937,
+      "source": "../../../../assets/tiles/pages/tiles-030-1.json",
+      "url": "art/chapter-one/tiles-030-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-030-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-030-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1953,
+      "source": "../../../../assets/tiles/pages/tiles-030-2.json",
+      "url": "art/chapter-one/tiles-030-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-030-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-030-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1969,
+      "source": "../../../../assets/tiles/pages/tiles-030-3.json",
+      "url": "art/chapter-one/tiles-030-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-031-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-031-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1985,
+      "source": "../../../../assets/tiles/pages/tiles-031-0.json",
+      "url": "art/chapter-one/tiles-031-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-031-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-031-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2001,
+      "source": "../../../../assets/tiles/pages/tiles-031-1.json",
+      "url": "art/chapter-one/tiles-031-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-031-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-031-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2017,
+      "source": "../../../../assets/tiles/pages/tiles-031-2.json",
+      "url": "art/chapter-one/tiles-031-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-031-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-031-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2033,
+      "source": "../../../../assets/tiles/pages/tiles-031-3.json",
+      "url": "art/chapter-one/tiles-031-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-032-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-032-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2049,
+      "source": "../../../../assets/tiles/pages/tiles-032-0.json",
+      "url": "art/chapter-one/tiles-032-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-032-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-032-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2065,
+      "source": "../../../../assets/tiles/pages/tiles-032-1.json",
+      "url": "art/chapter-one/tiles-032-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-032-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-032-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2081,
+      "source": "../../../../assets/tiles/pages/tiles-032-2.json",
+      "url": "art/chapter-one/tiles-032-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-032-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-032-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2097,
+      "source": "../../../../assets/tiles/pages/tiles-032-3.json",
+      "url": "art/chapter-one/tiles-032-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-033-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-033-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2113,
+      "source": "../../../../assets/tiles/pages/tiles-033-0.json",
+      "url": "art/chapter-one/tiles-033-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-033-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-033-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2129,
+      "source": "../../../../assets/tiles/pages/tiles-033-1.json",
+      "url": "art/chapter-one/tiles-033-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-033-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-033-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2145,
+      "source": "../../../../assets/tiles/pages/tiles-033-2.json",
+      "url": "art/chapter-one/tiles-033-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-033-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-033-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2161,
+      "source": "../../../../assets/tiles/pages/tiles-033-3.json",
+      "url": "art/chapter-one/tiles-033-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-034-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-034-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2177,
+      "source": "../../../../assets/tiles/pages/tiles-034-0.json",
+      "url": "art/chapter-one/tiles-034-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-034-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-034-1.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2193,
+      "source": "../../../../assets/tiles/pages/tiles-034-1.json",
+      "url": "art/chapter-one/tiles-034-1.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-034-2",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-034-2.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2209,
+      "source": "../../../../assets/tiles/pages/tiles-034-2.json",
+      "url": "art/chapter-one/tiles-034-2.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-034-3",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-034-3.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2225,
+      "source": "../../../../assets/tiles/pages/tiles-034-3.json",
+      "url": "art/chapter-one/tiles-034-3.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-035-0",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 16,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-035-0.png",
+      "imagewidth": 96,
+      "imageheight": 96,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2241,
+      "source": "../../../../assets/tiles/pages/tiles-035-0.json",
+      "url": "art/chapter-one/tiles-035-0.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-035-1",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 7,
+      "columns": 4,
+      "image": "../../../public/art/chapter-one/tiles-035-1.png",
+      "imagewidth": 96,
+      "imageheight": 48,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 2257,
+      "source": "../../../../assets/tiles/pages/tiles-035-1.json",
+      "url": "art/chapter-one/tiles-035-1.png"
     }
   ]
 }

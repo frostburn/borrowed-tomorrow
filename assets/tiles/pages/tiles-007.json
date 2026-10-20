@@ -1,0 +1,1436 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-007",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-007.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "bakery-9-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bakery-9-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "shelter-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "shelter"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 8
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 8
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "shelter-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "shelter-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "shelter-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "shelter-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "shelter-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "shelter-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "shelter-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "shelter-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "shelter-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "shelter-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "shelter-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "shelter-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "shelter-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "shelter-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "shelter-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "shelter-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "shelter-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "shelter-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "shelter-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "shelter-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "shelter-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "shelter-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "shelter-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "shelter-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "shelter-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "shelter-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "shelter-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "shelter-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "shelter-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "shelter-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "shelter-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "shelter-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "shelter-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "shelter-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "shelter-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "shelter-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "shelter-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "shelter-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "shelter-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "shelter-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "shelter-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "shelter-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "shelter-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "shelter-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "shelter-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "shelter-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "shelter-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "shelter-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "shelter-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "shelter-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "shelter-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "shelter-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "shelter-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "shelter-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "shelter-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-7-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "shelter-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-0-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "shelter-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-1-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "shelter-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-2-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "shelter-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-3-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "shelter-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-4-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "shelter-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-5-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "shelter-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "shelter-6-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

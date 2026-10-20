@@ -1,0 +1,273 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-032-3",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 16,
+  "columns": 4,
+  "image": "../../../public/art/chapter-one/tiles-032-3.png",
+  "imagewidth": 96,
+  "imageheight": 96,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "paving-join-0-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-0-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "paving-join-1-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-1-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "paving-join-2-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-2-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "paving-join-6-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-6-5-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ballast-join-3-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-3-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ballast-join-4-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-4-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "ballast-join-5-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-5-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "ballast-join-6-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-6-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "ballast-join-7-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-7-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "ballast-join-0-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-0-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "ballast-join-1-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-1-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "ballast-join-2-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-2-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "ballast-join-7-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-7-6-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "ballast-join-0-7-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-0-7-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "ballast-join-1-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-1-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ballast-join-2-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-2-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

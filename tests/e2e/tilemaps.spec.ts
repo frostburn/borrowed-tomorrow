@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { TILESET } from '../../src/content/tilemaps';
+import { TILESET, tileProperties } from '../../src/content/tilemaps';
 import { MAPS, walkable } from '../../src/content/maps';
 import { receiveItem } from '../../src/rules/inventory';
 import { checkpoint } from '../support/progress';
@@ -26,34 +26,45 @@ test('native foreground trees occlude actors behind them and yield to actors in 
   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   for(const [row,front] of [[22,false],[24,true]] as const){
     const state=checkpoint('festivalSeen');state.location={map:'station',x:1,y:row};await importSave(page,state);
-    await expect.poll(()=>page.evaluate(async({row,front,tileset})=>{
+    await expect.poll(()=>page.evaluate(async({row,tileset,tileProperties,map})=>{
       const actor=new Image();actor.src='/art/nell.png';await actor.decode();
       const pages=await Promise.all(tileset.pages.map(async p=>{const image=new Image();image.src=`/${p.url}`;await image.decode();return image;}));
-      const sprite=document.createElement('canvas');sprite.width=80;sprite.height=80;const s=sprite.getContext('2d')!;s.drawImage(actor,0,0);const actorPixels=s.getImageData(0,0,80,80).data;
-      const tree=document.createElement('canvas');tree.width=96;tree.height=96;const t=tree.getContext('2d')!;
-      for(let y=0;y<4;y++)for(let x=0;x<4;x++){
-        const id=tileset.tiles.find(tile=>tile.type===`tree-${x}-${y}`)!.id;
-        const i=tileset.pages.findIndex(p=>id+1>=p.firstgid&&id+1<p.firstgid+p.tilecount),p=tileset.pages[i],frame=id+1-p.firstgid;
-        t.drawImage(pages[i],frame%p.columns*24,Math.floor(frame/p.columns)*24,24,24,x*24,y*24,24,24);
+      const reference=document.createElement('canvas');reference.width=map.width*24;reference.height=map.height*24;const ctx=reference.getContext('2d')!;
+      const tree=document.createElement('canvas');tree.width=reference.width;tree.height=reference.height;const t=tree.getContext('2d')!;
+      const draw=(context:CanvasRenderingContext2D,gid:number,x:number,y:number)=>{
+        const i=tileset.pages.findIndex(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount),p=tileset.pages[i],frame=gid-p.firstgid;
+        context.drawImage(pages[i],frame%p.columns*24,Math.floor(frame/p.columns)*24,24,24,x,y,24,24);
+      };
+      const queue:{gid:number;x:number;y:number;depth:number}[]=[];
+      for(const layer of map.layers){
+        if(!layer.data||!layer.visible||layer.properties?.some(p=>p.name==='requiredFlag'))continue;
+        const sorted=layer.properties?.some(p=>p.name==='sort'&&p.value===true);
+        for(let i=0;i<layer.data.length;i++){
+          const gid=layer.data[i];if(!gid||tileProperties[gid-1]?.empty)continue;
+          const x=i%map.width*24,y=Math.floor(i/map.width)*24;
+          if(sorted){queue.push({gid,x,y,depth:y+Number(tileProperties[gid-1]?.sortOffset??24)});if(String(tileProperties[gid-1]?.name).startsWith('canopy-')&&x<120)draw(t,gid,x,y);}
+          else draw(ctx,gid,x,y);
+        }
       }
-      const treePixels=t.getImageData(0,0,96,96).data,view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+      const actorX=36-40,actorY=(row+.5)*24+7-68;
+      queue.push({gid:0,x:actorX,y:actorY,depth:(row+.5)*24+7});
+      for(const p of queue.sort((a,b)=>a.depth-b.depth))if(p.gid)draw(ctx,p.gid,p.x,p.y);else ctx.drawImage(actor,p.x,p.y);
+      const expected=ctx.getImageData(0,0,reference.width,reference.height).data,canopy=t.getImageData(0,0,tree.width,tree.height).data;
+      const sprite=document.createElement('canvas');sprite.width=80;sprite.height=80;sprite.getContext('2d')!.drawImage(actor,0,0);const pixels=sprite.getContext('2d')!.getImageData(0,0,80,80).data;
+      const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
       const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
       const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
       const left=info.physicalLeft+Math.round((world.left-source.left)/info.cssScale)*info.physicalScale,top=info.physicalTop+Math.round((world.top-source.top)/info.cssScale)*info.physicalScale;
-      const actorX=36-40,actorY=(row+.5)*24+7-68;let compared=0,missing=0;
-      // The retained actor has fractional alpha. Compose it over the opaque
-      // canopy using the source alpha rather than treating it as solid RGB.
-      if(front)t.drawImage(actor,actorX,actorY-480);
-      const expected=t.getImageData(0,0,96,96).data;
-      for(let y=0;y<96;y++)for(let x=0;x<96;x++){
-        const sx=x-actorX,sy=480+y-actorY;if(sx<0||sx>=80||sy<0||sy>=80)continue;
-        const a=(sy*80+sx)*4,b=(y*96+x)*4;if(actorPixels[a+3]<200||treePixels[b+3]!==255)continue;
-        const out=((top+(480+y-view.scrollY)*info.physicalScale)*output.width+left+(x-view.scrollX)*info.physicalScale)*4;
-        for(let c=0;c<4;c++)if(Math.abs(actual[out+c]-expected[b+c])>1)missing++;
+      let compared=0,missing=0,maxDelta=0;const examples:number[][]=[];
+      for(let sy=0;sy<80;sy++)for(let sx=0;sx<80;sx++){
+        const x=actorX+sx,y=actorY+sy;if(x<0||y<0||x>=reference.width||y>=reference.height||y<view.scrollY||y>=view.scrollY+view.height)continue;
+        const a=(sy*80+sx)*4,b=(y*tree.width+x)*4;if(pixels[a+3]<200||canopy[b+3]<200)continue;
+        const out=((top+(y-view.scrollY)*info.physicalScale)*output.width+left+(x-view.scrollX)*info.physicalScale)*4;
+        for(let c=0;c<4;c++){const delta=Math.abs(actual[out+c]-expected[b+c]);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[out+c],expected[b+c]]);}}
         compared++;
       }
-      return compared>100?missing:-1;
-    },{row,front,tileset:TILESET}),{timeout:15000}).toBe(0);
+      return compared>100&&!missing?'ok':JSON.stringify({compared,missing,maxDelta,examples});
+    },{row,tileset:TILESET,tileProperties,map:MAPS.station.tiles!}),{timeout:15000}).toBe('ok');
     await capture(page,front?'tile-tree-front':'tile-tree-behind');
   }
 });

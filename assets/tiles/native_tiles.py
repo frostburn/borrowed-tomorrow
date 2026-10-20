@@ -25,23 +25,36 @@ def join(image,mask):
 
 def write_pages(root,tiles):
     images=root/'public/art/chapter-one';definitions=root/'assets/tiles/pages';pages=[];start=0;outputs=[]
+    existing=json.loads((root/'assets/tiles/chapter-one.tileset.json').read_text())
+    plan=existing.get('pages') if existing.get('tilecount')==len(tiles) else None
+    def encode(count,cols,extension):
+        image=Image.new('RGBA',(cols*S,math.ceil(count/cols)*S))
+        for i,(piece,_) in enumerate(tiles[start:start+count]):image.paste(piece,(i%cols*S,i//cols*S))
+        output=BytesIO()
+        if extension=='.png':image.save(output,format='PNG',optimize=True)
+        else:image.save(output,format='WEBP',lossless=True,quality=75,method=2,exact=True)
+        return image,output.getvalue()
     while start<len(tiles):
-        low,high=1,min(64,len(tiles)-start);best=None
-        while low<=high:
-            count=(low+high)//2;cols=min(8,count);image=Image.new('RGBA',(cols*S,math.ceil(count/cols)*S))
-            for i,(piece,_) in enumerate(tiles[start:start+count]):image.paste(piece,(i%cols*S,i//cols*S))
-            output=BytesIO();image.save(output,format='WEBP',lossless=True,quality=75,method=2,exact=True);binary=output.getvalue()
-            if len(binary)<=MAX_IMAGE_BYTES:best=(count,cols,image,binary);low=count+1
-            else:high=count-1
-        if best is None:raise ValueError('A single tile exceeds the image budget')
-        count,cols,image,binary=best
+        if plan:
+            previous=plan[len(pages)];count=previous['tilecount'];cols=previous['columns'];name=previous['name'];extension='.png' if previous['url'].endswith('.png') else '.webp'
+            assert previous['firstgid']==start+1
+            image,binary=encode(count,cols,extension)
+        else:
+            low,high=1,min(64,len(tiles)-start);best=None;extension='.webp';name=f'tiles-{len(pages):03}'
+            while low<=high:
+                count=(low+high)//2;cols=min(8,count);image,binary=encode(count,cols,extension)
+                if len(binary)<=MAX_IMAGE_BYTES:best=(count,cols,image,binary);low=count+1
+                else:high=count-1
+            if best is None:raise ValueError('A single tile exceeds the image budget')
+            count,cols,image,binary=best
+        assert len(binary)<=MAX_IMAGE_BYTES, 'Page exceeds the 128 KB upload guard'
+        assert image.width<=192 and image.height<=192
         assert Image.open(BytesIO(binary)).convert('RGBA').tobytes()==image.tobytes(), 'Lossless page changed native pixels'
-        name=f'tiles-{len(pages):03}'
-        page=dict(type='tileset',version='1.10',tiledversion='1.11.2',name=name,tilewidth=S,tileheight=S,tilecount=count,columns=cols,image=f'../../../public/art/chapter-one/{name}.webp',imagewidth=image.width,imageheight=image.height,margin=0,spacing=0)
-        outputs.append((images/f'{name}.webp',binary))
+        page=dict(type='tileset',version='1.10',tiledversion='1.11.2',name=name,tilewidth=S,tileheight=S,tilecount=count,columns=cols,image=f'../../../public/art/chapter-one/{name}{extension}',imagewidth=image.width,imageheight=image.height,margin=0,spacing=0)
+        outputs.append((images/f'{name}{extension}',binary))
         local=[dict(t,id=i) for i,(_,t) in enumerate(tiles[start:start+count])]
         outputs.append((definitions/f'{name}.json',(json.dumps(dict(page,tiles=local),indent=2)+'\n').encode()))
-        pages.append(dict(page,firstgid=start+1,source=f'../../../../assets/tiles/pages/{name}.json',url=f'art/chapter-one/{name}.webp'));start+=count
+        pages.append(dict(page,firstgid=start+1,source=f'../../../../assets/tiles/pages/{name}.json',url=f'art/chapter-one/{name}{extension}'));start+=count
     # Finish encoding and verification before replacing any working files.
     for folder,pattern in [(images,'*.png'),(images,'*.webp'),(definitions,'*.json')]:
         for file in folder.glob(pattern):file.unlink()

@@ -1,0 +1,991 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-000",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-000.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "grass-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "earth-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "paving-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "ballast-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "water-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "water-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "cliff-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cliff-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "grass-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "earth-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "paving-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "ballast-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "water-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "water-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "cliff-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cliff-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "grass-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "earth-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "paving-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ballast-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "water-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "water-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "cliff-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cliff-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "grass-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "earth-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "paving-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "ballast-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "water-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "water-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "cliff-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cliff-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "void",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "void"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "bank-w",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bank-w"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "bank-e",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bank-e"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "quay",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "quay"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "steps",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "steps"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "bridge",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bridge"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "path-n",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "path-n"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "path-s",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "path-s"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "path-w",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "path-w"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "path-e",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "path-e"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "rail-h",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "rail-h"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "rail-v",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "rail-v"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "buffers",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "buffers"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "platform-edge",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "platform-edge"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "plaster-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "plaster-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "plaster-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "plaster-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "brick-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "brick-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "brick-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "brick-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "workshop-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "workshop-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "window-dark",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "window-dark"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "window-lit",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "window-lit"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "door",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "door"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "arch",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "arch"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "roof-slate-middle",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-slate-middle"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "roof-slate-top",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-slate-top"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "roof-slate-bottom",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-slate-bottom"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "roof-slate-left",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-slate-left"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "roof-slate-right",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-slate-right"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "roof-copper-middle",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-copper-middle"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "roof-copper-top",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-copper-top"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "roof-copper-bottom",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-copper-bottom"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "roof-copper-left",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-copper-left"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "roof-copper-right",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-copper-right"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "roof-shadow",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "roof-shadow"
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "awning-red",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "awning-red"
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "counter",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "counter"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "bread",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bread"
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "crate",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "barrel",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

@@ -16,3 +16,6 @@ playwright-report/
 
 /public/art/conduit.webp
 /public/art/sanctuary.webp
+
+# Authoring interpreter cache.
+assets/tiles/__pycache__/

@@ -1,7 +1,8 @@
+import pageDefinitions from '../../assets/tiles/tile-definitions';
 import tileset from '../../assets/tiles/chapter-one.tileset.json' with { type: 'json' };
 import type { GameState } from '../rules/state';
 
-export const TILESET = tileset;
+export const TILESET = {...tileset,tiles:pageDefinitions.flatMap((p,i)=>p.tiles.map(t=>({...t,id:t.id+tileset.pages[i].firstgid-1})))};
 export const TILE_PAGES = TILESET.pages;
 export const tileFrame = (gid:number) => {
   const page=TILE_PAGES.find(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount)!;

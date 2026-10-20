@@ -1,0 +1,129 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-035-1",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 7,
+  "columns": 4,
+  "image": "../../../public/art/chapter-one/tiles-035-1.png",
+  "imagewidth": 96,
+  "imageheight": 48,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "ballast-join-7-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-7-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "ballast-join-0-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-0-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ballast-join-1-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-1-0-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "ballast-join-0-1-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-0-1-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ballast-join-1-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-1-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ballast-join-0-2-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-0-2-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "ballast-join-1-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-1-2-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}
