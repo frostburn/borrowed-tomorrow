@@ -128,18 +128,60 @@ it('Iron Coast keeps bass and piano on a shared pulse, with recurring calls and 
     if(bar%4===3)expect(notes.filter(n=>n.instrument==='reed')).toHaveLength(1);
   }
   const rhythm=(bar:number)=>scoreBar('coast',bar).filter(n=>n.instrument==='reed').map(n=>[n.beat,n.duration]);
-  expect(rhythm(0)).toEqual(rhythm(4));expect(rhythm(0)).toEqual(rhythm(12));
+  expect(rhythm(4)).toEqual(rhythm(12));
   expect(rhythm(0)).not.toEqual(rhythm(1));expect(rhythm(8)).not.toEqual(rhythm(0));
 });
 
-it('Petra’s four-beat theme uses triplet attacks across melody, accompaniment and fills',()=>{
+it('Iron Coast restores its original two opening bars, including the quiet accompaniment',()=>{
+  const leads=[
+    [[0,'E5',1.25],[1.5,'G5',.25],[2,'F5',.25],[2.5,'E5',.25],[3,'D5',.75]],
+    [[0,'D5',1.5],[2,'F5',.5],[3,'B4',.75]],
+  ];
+  for(const bar of [0,1]){
+    const notes=scoreBar('coast',bar);
+    expect(notes.filter(n=>n.instrument==='reed').map(n=>[n.beat,n.pitch,n.duration])).toEqual(leads[bar]);
+    expect(notes.filter(n=>n.instrument==='round-bass').map(n=>[n.beat,n.pitch,n.duration,n.velocity])).toEqual([[0,bar===0?'C2':'D2',1.8,.14],[2,bar===0?'C2':'D2',1.7,.1]]);
+    const keys=notes.filter(n=>n.instrument==='keys');
+    for(const beat of [0,2])expect(keys.filter(n=>n.beat===beat).map(n=>[n.pitch,n.duration,n.velocity,n.pan])).toEqual((bar===0?['C3','E3','G3']:['A2','B2','D3','F3']).map(pitch=>[pitch,beat===0?1.7:1.5,beat===0?.038:.028,.25]));
+    expect(notes.filter(n=>n.instrument==='hat').map(n=>[n.beat,n.duration,n.velocity])).toEqual([[1,.08,.018],[3,.08,.015]]);
+  }
+});
+
+it('the train raid develops paired calls and answers, opens its middle, and returns to a full groove',()=>{
+  const lead=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='reed');
+  const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
+  for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
+  for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
+  expect(lead(0).map(n=>n.pitch)).toEqual(['E5','G5','F5','E5','D5']);
+  expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','Eb5','D5','C5']);
+  expect(lead(15).map(n=>[n.pitch,n.duration])).toEqual([['C5',3]]);
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
+    expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
+    expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.05).map(n=>n.beat)).toEqual(middle?[2]:[1,3]);
+    expect(notes.some(n=>n.instrument==='strings')).toBe(middle);
+    if(bar===8||bar===10)expect(lead(bar).every(n=>n.duration>=1.5)).toBe(true);
+    expect(notes.filter(n=>n.instrument==='round-bass').map(n=>n.beat)).toEqual(middle?[0,2]:[0,1,2,3]);
+  }
+});
+
+it('Petra’s triplet melody rides over straight percussion with an unbroken battle backbeat',()=>{
   expect(ARRANGEMENTS['petra-battle'].beats).toBe(4);
   const melody:Note[]=[];
-  for(let bar=0;bar<16;bar++)for(const n of scoreBar('petra-battle',bar)){
-    expect(n.beat*3).toBeCloseTo(Math.round(n.beat*3),10);
-    expect(n.duration*6).toBeCloseTo(Math.round(n.duration*6),10);
-    expect(n.beat+n.duration).toBeLessThanOrEqual(4+1e-9);
-    if(n.instrument==='strings'&&n.velocity>=.2)melody.push(n);
+  for(let bar=0;bar<16;bar++){
+    const notes=scoreBar('petra-battle',bar);
+    for(const n of notes){
+      if(['kick','snare','hat'].includes(n.instrument))expect(n.beat*4).toBe(Math.round(n.beat*4));
+      else{
+        expect(n.beat*3).toBeCloseTo(Math.round(n.beat*3),10);
+        expect(n.duration*6).toBeCloseTo(Math.round(n.duration*6),10);
+      }
+      expect(n.beat+n.duration).toBeLessThanOrEqual(4+1e-9);
+      if(n.instrument==='strings'&&n.velocity>=.2)melody.push(n);
+    }
+    expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
+    expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.07).map(n=>n.beat)).toEqual([1,3]);
+    expect(notes.filter(n=>n.instrument==='hat').map(n=>n.beat)).toEqual([0,.5,1,1.5,2,2.5,3,3.5]);
   }
   expect(melody.some(n=>Math.abs(n.beat%1-1/3)<1e-9)).toBe(true);
   expect(melody.some(n=>Math.abs(n.beat%1-2/3)<1e-9)).toBe(true);

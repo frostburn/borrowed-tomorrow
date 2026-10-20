@@ -44,7 +44,8 @@ const ward:Tune=[
 ];
 
 // Petra keeps four quarter-note beats, each divided into three ticks. Melody
-// entries are triplet ticks, not beats; accompaniment uses the same divisions.
+// entries are triplet ticks, not beats. Pitched support shares that grid;
+// percussion stays straight to drive the battle beneath the flexible lead.
 const crossingTriplets:Tune=[
   [[0,'B4',2],[3,'E5',4],[8,'F#5',1],[9,'G5',2]],
   [[0,'E5',6],[8,'B4',3]],
@@ -80,11 +81,11 @@ export function scoreC(mode:'cinderbank'|'infirmary'|'shunting'|'petra-battle',b
       for(const pitch of voicing)add('keys',pitch,beat,2/3,beat===0?.045:.028,.25);
       add('round-bass',transpose(root,beat===2&&index%2?'P5':'P1'),beat,end?10/3:4/3,beat===0?.17:.11,-.1);
     }
-    for(const beat of (end?[0]:[0,2]))add('kick','C2',beat,1/3,.1);
-    for(const beat of (end?[1]:broad?[2]:[1,3]))add('snare','D2',beat,1/3,.075,-.15);
-    for(const beat of (end?[2/3]:broad?[2/3,8/3]:[2/3,5/3,8/3,11/3]))add('hat','F#2',beat,1/6,.018,.4);
+    for(const beat of [0,2])add('kick','C2',beat,.18,.1);
+    for(const beat of [1,3])add('snare','D2',beat,.16,.075,-.15);
+    for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.07,beat%1?.022:.012,.4);
     if(index===6||index===14){
-      for(const beat of [10/3,11/3])add('snare','D2',beat,1/6,.035,-.15);
+      for(const beat of [3.25,3.75])add('snare','D2',beat,.1,.04,-.15);
       add('round-bass',root,11/3,1/3,.085,-.1);
     }
     if(broad)for(const pitch of voicing)add('strings',pitch,0,10/3,.016,.2);
