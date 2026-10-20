@@ -9,7 +9,7 @@ const python=(code,input)=>{
   if(result.status!==0)throw new Error(result.stderr);return result.stdout;
 };
 export async function exportRigAnimation(hero){
-if(!['nell','orrin','kit'].includes(hero))throw new Error('Unknown character export.');
+if(!['nell','orrin','kit','petra'].includes(hero))throw new Error('Unknown character export.');
 const sources=JSON.parse(python(`
 hero='${hero}'
 import json,sys,base64
@@ -28,7 +28,7 @@ const textures=Object.fromEntries(Object.entries(sources).map(([direction,data])
 const server=await createServer({configFile:false,root,server:{middlewareMode:true},appType:'custom'});
 try{
   const model=await server.ssrLoadModule(`/src/art/${hero}-actor.ts`),render=model[`render${hero[0].toUpperCase()}${hero.slice(1)}`];
-  const pages=Object.keys(textures).map(direction=>({direction,frames:Array.from({length:8},(_,frame)=>Buffer.from(render(frame,direction,textures)).toString('base64'))}));
+  const pages=Object.keys(textures).map(direction=>({direction,frames:Array.from({length:hero==='petra'?10:8},(_,frame)=>Buffer.from(render(frame,direction,textures)).toString('base64'))}));
   process.stdout.write(python(`
 import json,sys,base64
 from pathlib import Path
@@ -36,7 +36,7 @@ from PIL import Image
 root=Path(sys.argv[1])
 for data in json.load(sys.stdin):
     path=root/f"public/art/animation/${hero}-{data['direction']}.png"
-    page=Image.new('RGBA',(160,320))
+    page=Image.new('RGBA',(160,((len(data['frames'])+1)//2)*80))
     for frame,encoded in enumerate(data['frames']):
         image=Image.frombytes('RGBA',(80,80),base64.b64decode(encoded))
         page.paste(image,(frame%2*80,frame//2*80))

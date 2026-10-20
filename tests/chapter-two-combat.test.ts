@@ -54,8 +54,9 @@ it('Petra, rather than Alban, holds the crossing and draws every party member on
 it('Petra can bash without damage before spending her main action on an attack',()=>{
   const b=createBattle('coast-recapture',coastCheckpoint('evacuationReady')),petra=b.units.find(u=>u.appearance==='petra')!,nell=b.units.find(u=>u.id==='nell')!;
   b.round=2;b.queue=[petra.id,...b.queue.filter(id=>id!==petra.id)];petra.hex=offset(6,3);nell.hex=offset(5,3);
-  const hp=nell.hp;
-  expect(enemyTurn(b)).toBe('bash');expect(nell.hp).toBe(hp);expect(active(b)).toBe(petra);expect(petra.bonusUsed).toBe(true);
+  const hp=nell.hp,aim={...nell.hex},actions:unknown[]=[];
+  expect(enemyTurn(b,undefined,(ability,hex)=>actions.push({ability,hex}))).toBe('bash');expect(nell.hp).toBe(hp);expect(active(b)).toBe(petra);expect(petra.bonusUsed).toBe(true);
+  expect(actions).toEqual([{ability:'bash',hex:aim}]);expect(nell.hex).not.toEqual(aim);
   expect(['strike','sweep']).toContain(enemyTurn(b));expect(active(b)?.id).not.toBe(petra.id);expect(nell.hp).toBeLessThan(hp);
 });
 

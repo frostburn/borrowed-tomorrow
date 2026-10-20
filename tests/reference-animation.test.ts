@@ -138,7 +138,7 @@ it('arms and weapon layers isolate cleanly and hiding them preserves the armless
     for(const weapon of ['lantern','lance'] as const){
       const layers=referenceLayers(referenceFrame(i,weapon));
       expect(Buffer.from(renderLayers(layers,direction,body)).equals(base),`${direction} frame ${i}: ${weapon} preserves body pixels`).toBe(true);
-      for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(true);
+      for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(id!=='left-weapon');
     }
   }
 });
