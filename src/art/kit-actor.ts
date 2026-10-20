@@ -10,7 +10,7 @@ import { ANKLE_HEIGHT, FOOT_HEEL, FOOT_TOE, footPoint, REFERENCE_FRAMES } from '
 // Register the independently drawn views at their own native waist. The left
 // profile's legs sit forward of the full seat; the other profile keeps its bind.
 const LOWER_ROOTS:Record<ActorDirection,Readonly<{x:number;y:number}>>={
-  front:{x:.5,y:-4},left:{x:-.5,y:-2},right:{x:-.5,y:-4},back:{x:-.5,y:-4},
+  front:{x:-1.5,y:-4},left:{x:-.5,y:-2},right:{x:-.5,y:-4},back:{x:-.5,y:-4},
 };
 const CARRY_PITCH=-65*Math.PI/180;
 const lowerRoot=(pose:ReferencePose)=>({x:(pose.left.hip.x+pose.right.hip.x)/2,y:(pose.left.hip.y+pose.right.hip.y)/2});

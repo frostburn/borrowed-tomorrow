@@ -98,7 +98,7 @@
       "footScale": 0.7,
       "lowerBodyRoots": {
         "front": [
-          0.5,
+          -1.5,
           -4
         ],
         "left": [
