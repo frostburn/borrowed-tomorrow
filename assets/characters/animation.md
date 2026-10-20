@@ -1,16 +1,18 @@
 # Nell and Orrin motion frames
 
-Created with built-in Image Gen using four-by-four templates made from the existing native directional actors. Idle actors and portraits remain unchanged. Each direction has one 160 x 160 PNG page containing four 80 x 80 frames: step A, step B, wind-up, contact. Foot anchor remains (40, 68). Neither side view is mirrored; equipment stays in the right hand.
+Created with built-in Image Gen using registration and leg-pose guides made from the existing native directional actors. Idle actors and portraits remain unchanged. Each direction has one 160 x 320 PNG page containing eight 80 x 80 frames. Frames 0–5 are a complete six-frame walk: left contact, left support, right passing, right contact, right support, left passing. Frames 6–7 retain the existing native wind-up/contact artwork. Ground anchor remains (40, 68). Neither side view is mirrored; equipment stays in the right hand through every pose.
 
-`animation-sources.json` selects original/revised cells. Source sheets stay outside git. Run `python3 scripts/import-character-animation.py /path/to/generated_images` with Pillow to repeat the export. It isolates the largest connected alpha silhouette, uses one scale per direction, anchors head alignment to the existing idle view, samples source pixels without blending or palette reduction, and removes detached fragments after sampling. Only the small native pages are committed.
+`animation-sources.json` records the selected six-pose sources and the original attack sources. Source sheets stay outside git. Run `python3 scripts/character-walk-guides.py /path/to/references` with Pillow to reproduce the six leg-position diagrams with fixed, right-handed upper bodies. The diagrams are generation references, not game artwork. `walk-prompts.json` contains the complete production prompts, including profile occlusion and equipment constraints; early drafts that mirrored equipment or repeated contact poses were discarded.
+
+Run `python3 scripts/import-character-animation.py /path/to/generated_images` to repeat the native export. It removes low-alpha backdrop haze, isolates the connected silhouette, uses one scale per direction and a fixed cap registration, samples source pixels without blending or palette reduction, and removes detached fragments after sampling. It retains each existing page's final native attack row verbatim. Only the small native pages are committed; each is below 53 KB.
 
 ## Runtime playback
 
-The shared actor frame player animates exploration leaders/followers, staged cutscene moves and tactical paths. Walking keeps its gait phase across adjacent cells and turns, then restores the facing idle texture. Attacks use 140 ms wind-up, contact through 280 ms, and recovery to 380 ms, retaining the previous battle input delay. Damage visuals, skill effects and player attack sounds begin at contact. Battle HP labels travel with their actors. Pending presentation callbacks check battle identity so forced outcomes and restarts cannot replay old hits. Reduced-motion mode keeps idle artwork and shortens battle presentation.
+The shared actor frame player animates exploration leaders/followers, staged cutscene moves and tactical paths. Walking advances one pose per 10 native pixels traveled: a full two-step stride covers 60 pixels. This preserves gait across adjacent cells and turns, scales to tactical/cutscene travel speeds, and stops cycling when an actor stops translating. Stopping restores the facing idle texture. The workshop previews all six poses at 80 ms each, with phase labels, pause and wraparound frame stepping. Attacks use 140 ms wind-up, contact through 280 ms, and recovery to 380 ms, retaining the previous battle input delay. Damage visuals, skill effects and player attack sounds begin at contact. Battle HP labels travel with their actors. Pending presentation callbacks check battle identity so forced outcomes and restarts cannot replay old hits. Retaliations are captured before round-end flag resets so counters still animate on the final turn of a round. Reduced-motion mode keeps idle artwork and shortens battle presentation.
 
 The Vite Sprites workshop shares the same pages and frame sequence, with pause and frame stepping. Idle sprites, portraits, character rules and combat damage are unchanged. `tests/e2e/actor-motion.spec.ts` covers directions, native cropped pixels, tactical paths, both heroes' attacks and interruption. These detailed checks remain outside default CI.
 
-## Generation prompts
+## Original attack-source prompts
 
 ### Nell poses
 

@@ -48,6 +48,15 @@ describe('position-sensitive combat', () => {
     b.queue=['orrin',...b.queue.filter(id=>id!=='orrin')];const before=orrin.hp;
     cast(b,orrin,'strike',hound.hex);expect(orrin.hp).toBe(before);
   });
+  it.each(['nell','orrin'])('captures %s retaliation before the next round resets its flag',hero=>{
+    const b=createBattle('collector',party()),defender=b.units.find(u=>u.kind===hero)!,hound=b.units.find(u=>u.kind==='hound')!;
+    b.units=[defender,hound];b.queue=[hound.id];b.obstacles.clear();b.vents.clear();
+    defender.hex=offset(5,3);hound.hex=offset(4,3);defender.hp=hound.hp=100;
+    const round=b.round,counters:string[]=[];
+    expect(enemyTurn(b,id=>counters.push(id))).toBe('strike');
+    expect(b.round).toBe(round+1);expect(defender.retaliated).toBe(false);
+    expect(counters).toEqual([defender.id]);expect(hound.hp).toBeLessThan(100);
+  });
   it('enemies can reach a legal action without occupying another unit or an obstacle', () => {
     const b=createBattle('captain',party());
     for(let turn=0;turn<35&&!b.result;turn++){

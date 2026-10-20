@@ -1,11 +1,15 @@
 {
-  "layout": {"rows":["front","left","right","back"],"columns":["step-a","step-b","windup","impact"]},
+  "attackSourceLayout": {"rows":["front","left","right","back"],"columns":["step-a","step-b","windup","impact"]},
+  "walkLayout": {"columns":3,"rows":2,"phases":["left-contact","left-support","right-passing","right-contact","right-support","left-passing"]},
+  "nativePage": {"columns":2,"rows":4,"frames":["left-contact","left-support","right-passing","right-contact","right-support","left-passing","windup","impact"]},
   "nell": {
+    "walkSources":{"front":"exec-79683e03-0bb0-49b1-9cd6-dbeb51c29b8f.png","left":"exec-40ca2679-3a1d-4600-b12f-3232f8ed0411.png","right":"exec-b92d9b37-4c2c-4247-be38-b07bb684ae70.png","back":"exec-577b5488-25b8-4509-b779-ed907d5f9b31.png"},
     "original":"exec-b72a1255-3dbc-4268-9aae-248a02dabea6.png",
     "revision":"exec-02a45c75-4f0f-4dd5-aaf3-49f3b4d7b6dc.png",
     "revisedCells":[[0,0],[0,1],[1,0],[1,1],[1,3],[2,0],[3,0],[3,1]]
   },
   "orrin": {
+    "walkSources":{"front":"exec-61d545cb-1130-4f55-b57f-6f701746f14c.png","left":"exec-d1b5b3ae-e31e-40b1-bac4-fc3d4680066d.png","right":"exec-4c0c7a7e-012c-4c27-8b95-98ec8e2318fa.png","back":"exec-df2a447c-d6f1-414e-9c68-0cfd3ec6dcc5.png"},
     "original":"exec-91155563-58bb-486c-9a30-391e7abc4233.png",
     "revision":"exec-51ef181d-af04-4e59-a1c9-a0860e92d73a.png",
     "revisedCells":[[0,0],[0,1],[1,0],[1,1],[2,0],[2,1],[3,0],[3,1]]

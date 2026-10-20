@@ -27,8 +27,8 @@ import { worldView, narrowScreen } from './resolution';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
-type BattleSnapshot = Map<string,{hex:Hex;hp:number;retaliated:boolean}>;
-interface BattleMotion { actorId:string;aim:Hex;ability?:AbilityId;path?:Hex[];affected?:Hex[] }
+type BattleSnapshot = Map<string,{hex:Hex;hp:number}>;
+interface BattleMotion { actorId:string;aim:Hex;ability?:AbilityId;path?:Hex[];affected?:Hex[];retaliations?:string[] }
 const textures = [...PLAYABLE_ACTORS,'master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES];
 const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE' };
 
@@ -557,17 +557,18 @@ export class Adventure extends Phaser.Scene {
   private commitPlan() {
     const b=this.battle!,u=active(b),plan=this.plan;if(!u||!plan||this.busy)return;
     const before=this.battleSnapshot();
+    const retaliations:string[]=[];
     const affected=plan.action==='move'?[]:shape(b,u,plan.action,plan.hex);
     const path=plan.action==='move'?move(b,u,plan.hex):undefined;
-    const success=plan.action==='move'?!!path:cast(b,u,plan.action,plan.hex);
+    const success=plan.action==='move'?!!path:cast(b,u,plan.action,plan.hex,id=>retaliations.push(id));
     if(!success){this.plan=undefined;this.drawGrid();this.renderBattleControls();return;}
     this.plan=undefined;this.hover=undefined;
     if(plan.action==='move'||active(b)?.id===u.id&&u.moved)this.selected=u.abilities[0];else this.selected='move';
-    this.animateBattle(before,{actorId:u.id,aim:plan.hex,...(plan.action==='move'?{path:path!}:{ability:plan.action,affected})});
+    this.animateBattle(before,{actorId:u.id,aim:plan.hex,...(plan.action==='move'?{path:path!}:{ability:plan.action,affected,retaliations})});
   }
   private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
   private doWait() {if(this.busy||active(this.battle!)?.side!=='party')return;if(wait(this.battle!)){this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}}
-  private battleSnapshot():BattleSnapshot {return new Map(this.battle!.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp,retaliated:v.retaliated}]));}
+  private battleSnapshot():BattleSnapshot {return new Map(this.battle!.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]));}
   private animateBattle(before:BattleSnapshot,action?:BattleMotion) {
     const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
     const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
@@ -611,7 +612,7 @@ export class Adventure extends Phaser.Scene {
           const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);
           this.tweens.add({targets:text,y:p.y-80,alpha:0,duration:reduced?100:700,onComplete:()=>{if(text.active)text.destroy();}});
         }
-        if(!old.retaliated&&u.retaliated&&animatedHero(u.kind)&&actor){
+        if(action?.retaliations?.includes(u.id)&&animatedHero(u.kind)&&actor){
           const p=toPixel(u.hex),target=toPixel(actor.hex),counterFace=facingAsset(u.kind,target.x-p.x,target.y-p.y);
           this.battleFaces.set(u.id,counterFace);this.motion.attack(image,counterFace);
         }
@@ -631,7 +632,7 @@ export class Adventure extends Phaser.Scene {
     this.time.delayedCall(480,()=>{
       if(this.mode!=='battle'||this.battle!==b)return;
       if(this.ui.modalOpen){this.busy=false;this.scheduleEnemy();return;}
-      const before=this.battleSnapshot(),attacker=active(b);const action=enemyTurn(b);if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex}:undefined);
+      const before=this.battleSnapshot(),attacker=active(b),retaliations:string[]=[];const action=enemyTurn(b,id=>retaliations.push(id));if(action)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex,retaliations}:undefined);
     });
   }
   private battleEnded() {

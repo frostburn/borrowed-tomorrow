@@ -2,7 +2,7 @@ import { ACTOR_DIRECTIONS, ACTOR_FEET, ACTOR_SIZE, type ActorDirection } from '.
 import type { CompanionId } from '../rules/party';
 import { SPRITE_CATALOG, SPRITE_GROUPS, spriteAsset, type SpriteEntry, type SpriteGroup } from './sprite-catalog';
 import { art } from '../game/ui';
-import { animatedHero, motionFrame, motionPage, type ActorMotion } from '../content/actor-motion';
+import { animatedHero, ATTACK_CONTACT_FRAME, ATTACK_CONTACT_MS, ATTACK_WINDUP_FRAME, motionFrame, motionPage, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, WALK_PHASES, type ActorMotion } from '../content/actor-motion';
 
 const backgrounds = { Slate: ['#182b32', '#234047'], Paper: ['#dac9a0', '#f4e5be'], Night: ['#080f19', '#101d28'] } as const;
 type Background = keyof typeof backgrounds;
@@ -76,18 +76,18 @@ export class SpriteWorkshop {
     bind('#sprite-guides', ()=>{ this.guides=!this.guides; });
     bind('[data-motion]',button=>{this.motion=button.dataset.motion as ActorMotion;this.frame=0;this.started=performance.now();this.playing=this.motion!=='idle';});
     bind('#sprite-play',()=>{
-      if(this.playing)this.pause();else{this.started=performance.now()-(this.motion==='walk'?this.frame*130:[0,140,280][this.frame]);this.playing=true;}
+      if(this.playing)this.pause();else{this.started=performance.now()-(this.motion==='walk'?this.frame*WALK_FRAME_MS:[0,ATTACK_CONTACT_MS,280][this.frame]);this.playing=true;}
     });
-    bind('#sprite-next-frame',()=>{this.pause();this.frame=(this.frame+1)%(this.motion==='attack'?3:2);});
+    bind('#sprite-next-frame',()=>{this.pause();this.frame=(this.frame+1)%(this.motion==='attack'?3:WALK_FRAMES);});
     this.paint();
     this.playLoop();
   }
   private currentFrame(){
     if(this.motion==='idle')return undefined;
-    if(this.playing)return motionFrame(this.motion,(performance.now()-this.started)%(this.motion==='walk'?260:600));
-    return this.motion==='walk'?this.frame%2:[2,3,undefined][this.frame%3];
+    if(this.playing)return motionFrame(this.motion,(performance.now()-this.started)%(this.motion==='walk'?WALK_CYCLE_MS:600));
+    return this.motion==='walk'?this.frame%WALK_FRAMES:[ATTACK_WINDUP_FRAME,ATTACK_CONTACT_FRAME,undefined][this.frame%3];
   }
-  private pause(){const frame=this.currentFrame();this.frame=this.motion==='walk'?(frame??0):frame===2?0:frame===3?1:2;this.playing=false;}
+  private pause(){const frame=this.currentFrame();this.frame=this.motion==='walk'?(frame??0):frame===ATTACK_WINDUP_FRAME?0:frame===ATTACK_CONTACT_FRAME?1:2;this.playing=false;}
   private playLoop(){
     if(!this.host||!this.playing)return;
     this.raf=requestAnimationFrame(()=>{
@@ -120,7 +120,7 @@ export class SpriteWorkshop {
     for(const ctx of [a,b,c])this.backdrop(ctx);
     const entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
     const frame=this.currentFrame();this.displayedFrame=frame;this.paintedFrame=frame??-1;
-    this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':frame<2?`Step ${frame===0?'A':'B'}`:frame===2?'Wind-up':'Contact';
+    this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:frame===ATTACK_WINDUP_FRAME?'Wind-up':'Contact';
     this.host.dataset.frame=String(frame??'idle');
     const asset=frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
     this.host.querySelector('.sprite-file')!.innerHTML=`${asset}.png${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+entry.portrait+'.png':''}`;

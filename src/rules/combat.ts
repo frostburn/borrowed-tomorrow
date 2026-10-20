@@ -203,7 +203,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   log(b, `${u.name} moves ${visit.path.length} hexes (${visit.cost} movement).`);
   return visit.path;
 }
-export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
+export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?:(defenderId:string)=>void): boolean {
   if (!legalAim(b, u, id, aim)) return false;
   const a = ABILITIES[id];
   u.focus -= a.cost;
@@ -229,6 +229,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
       defender.retaliated = true;
       const {amount} = hurt(defender, u, 'strike');consumeDazzle(defender);
       log(b, `${defender.name} retaliates for ${amount}.`);
+      onRetaliation?.(defender.id);
     }
   }
   if((!a.heal&&!a.effect)||a.effect==='push')consumeDazzle(u);
@@ -253,7 +254,7 @@ export function wait(b: Battle): boolean {
 }
 
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
-export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
+export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   let best: { pos: Hex; aim: Hex; ability: AbilityId; score: number } | null = null;
@@ -278,7 +279,7 @@ export function enemyTurn(b: Battle): AbilityId | 'defend' | undefined {
   u.hex = original;
   if (best) {
     if (!equal(original, best.pos)) move(b, u, best.pos);
-    cast(b, u, best.ability, best.aim);
+    cast(b, u, best.ability, best.aim, onRetaliation);
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
