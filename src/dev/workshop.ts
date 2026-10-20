@@ -1,5 +1,6 @@
 import { MusicWorkshop } from './music-workshop';
 import { SpriteWorkshop } from './sprite-workshop';
+import { AnimationWorkshop } from './animation-workshop';
 import { Adventure } from '../game/adventure';
 import { mountGame } from '../game/mount';
 import { art, type UI } from '../game/ui';
@@ -27,7 +28,8 @@ class Workshop {
   private settings = newCharacterSettings();
   private music: MusicWorkshop;
   private sprites = new SpriteWorkshop();
-  private tab: 'character' | 'equipment' | 'music' | 'sprites' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : 'character';
+  private animation = new AnimationWorkshop();
+  private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : 'character';
   private hero: CompanionId = 'nell';
   private selected: ItemId = 'brass-reflector';
   private message = 'Choose a character to adjust their build.';
@@ -94,6 +96,8 @@ class Workshop {
   }
   show() {
     this.sprites.hide();
+    this.animation.hide();
+    if(this.tab==='animation'){this.showAnimation();return;}
     if(this.tab==='sprites'){this.showSprites();return;}
     if(this.tab==='music'){this.showMusic();return;}
     this.music.hide();
@@ -145,7 +149,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites','animation'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
   private showMusic(){
@@ -164,9 +168,18 @@ class Workshop {
     this.bindTabs();this.sprites.show(this.ui.sceneLayer.querySelector('#sprite-workshop')!);
     this.ui.status.textContent='Vite development / Sprite review does not change saves or builds';
   }
+  private showAnimation(){
+    this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
+    this.ui.initiative.textContent='Layered animation / Reference walk';
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<div id="animation-workshop"></div></section>`;
+    this.bindTabs();this.animation.show(this.ui.sceneLayer.querySelector('#animation-workshop')!);
+    this.ui.status.textContent='Vite development / Animation reference does not change saves or character art';
+  }
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
     this.sprites.hide();
+    this.animation.hide();
     this.music.hide();
     document.querySelector('.game-shell')!.classList.remove('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled = true;

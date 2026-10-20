@@ -132,7 +132,11 @@ export class PixelDisplay {
         const x=r.x+left+Math.floor((r.w-left-right-w)/2),y=r.y+top+Math.floor((r.h-top-bottom-h)/2);
         add(ctx=>{ctx.drawImage(element,x,y);});
       }else{
+        // A closed disclosure retains measurable descendant boxes in Chromium.
+        // Its UA content slot hides them; computed display alone does not.
+        const summary=element instanceof HTMLDetailsElement&&!element.open?element.querySelector(':scope > summary'):undefined;
         for(const node of element.childNodes){
+          if(summary!==undefined&&node!==summary)continue;
           if(node instanceof HTMLElement)walk(node);
           else if(node.nodeType===Node.TEXT_NODE){
             const text=node.textContent??'',range=document.createRange(),color=style.color;
