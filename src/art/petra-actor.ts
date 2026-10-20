@@ -90,11 +90,15 @@ function armorArm(pose:PetraPose,source:PixelTexture,direction:ActorDirection):S
   const metal=patch(source,28,26,23,10,(r,g,b)=>r>g*1.15&&g>b*1.25&&g>30);
   const leather=patch(source,26,35,28,10,(r,g,b)=>r>g*1.15&&g>b&&r>25&&r<160);
   for(const side of ['left','right'] as const){
-    const art=ARMS[direction][side],arm=pose.arms[side],at=rest.arms[side];
+    const art=ARMS[direction][side],nativeArm=pose.arms[side],at=rest.arms[side];
+    // Register native armor and its solid backing to the same far shield arm.
+    const arm=pose.action&&direction==='right'&&side==='left'?{
+      shoulder:nativeArm.shoulder,elbow:{...nativeArm.elbow,y:nativeArm.elbow.y+5},
+      wrist:{...nativeArm.wrist,y:nativeArm.wrist.y+10},grip:{...nativeArm.grip,y:nativeArm.grip.y+10},
+    }:nativeArm;
     const registered=(joint:'shoulder'|'elbow'|'wrist'|'grip')=>{
       const p=project(arm[joint],direction),b=project(at[joint],direction),s=art[joint];
-      const reach=pose.action&&direction==='right'&&side==='left'?(joint==='shoulder'?0:joint==='elbow'?5:10):0;
-      return viewPoint(s[0]+p.x-b.x+reach,s[1]+p.y-b.y,orient(arm[joint],direction).y+3,direction);
+      return viewPoint(s[0]+p.x-b.x,s[1]+p.y-b.y,orient(arm[joint],direction).y+3,direction);
     };
     // Rounded armor beneath native cutouts keeps foreshortened limbs solid.
     layers.push(limb(`${side}-upper-arm`,registered('shoulder'),registered('elbow'),[2.1,1.9],[1.8,1.6],metal,direction,pose.proportions.armWidth),
@@ -123,10 +127,10 @@ function shield(pose:PetraPose,textures:CharacterTextures,direction:ActorDirecti
 }
 
 function saber(pose:PetraPose,textures:CharacterTextures,direction:ActorDirection):SpriteLayer{
-  const face=pose.action&&direction==='left'?'front':direction,spans=SABERS[face],texture=cutout(textures[face],spans);
+  const face=pose.action&&(direction==='left'||direction==='right'&&pose.attack==='saber')?'front':direction,spans=SABERS[face],texture=cutout(textures[face],spans);
   const left=Math.min(...spans.map(s=>s[2])),right=Math.max(...spans.map(s=>s[3])),top=Math.min(...spans.map(s=>s[0])),bottom=Math.max(...spans.map(s=>s[1]));
   const actual=project(pose.arms.right.grip,direction),rest=project(bind().arms.right.grip,direction),art=ARMS[direction].right.grip,source=ARMS[face].right.grip;
-  const angles={front:[135,-65],left:[-135,70],right:[-130,-40],back:[-145,65]};
+  const angles={front:[135,-65],left:[-135,70],right:[135,-90],back:[-145,65]};
   const angle=(pose.action&&pose.attack==='saber'?angles[direction][pose.action==='contact'?1:0]:0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),depth=orient(pose.arms.right.grip,direction).y+4;
   const mesh=decal('right-weapon',texture,[left,top,right-left,bottom-top],0,depth,direction);
   mesh.vertices=[[left,top],[right,top],[right,bottom],[left,bottom]].map(([x,y])=>{
@@ -137,7 +141,8 @@ function saber(pose:PetraPose,textures:CharacterTextures,direction:ActorDirectio
 
 export function petraLayers(pose:PetraPose,direction:ActorDirection,textures:CharacterTextures):SpriteLayer[]{
   const source=textures[direction],head={...source,pixels:new Uint8ClampedArray(source.pixels)},torso={...source,pixels:new Uint8ClampedArray(source.pixels)};
-  const remove=[...Object.values(ARMS[direction]).flatMap(a=>[...a.sleeve,...a.cuff,...a.hand]),...SHIELDS[direction],...SABERS[direction]];
+  const remove=[...Object.values(ARMS[direction]).flatMap(a=>[...a.sleeve,...a.cuff,...a.hand]),...SHIELDS[direction],...SABERS[direction],
+    ...(pose.action&&direction==='right'?[[49,51,41,43],[51,53,43,45]] as const:[])];
   for(let y=0;y<80;y++)for(let x=0;x<80;x++){
     const at=(y*80+x)*4;
     if(y>=26)head.pixels[at+3]=0;
