@@ -5,10 +5,12 @@ import { CHAPTER_ONE_MAPS } from './chapter-one/maps';
 import { gridPoint, mapPoints, properties, tileWalkable, type TileMap } from './tilemaps';
 import type { Cinematic } from './cinematics';
 import type { CharacterId } from './characters';
+import type { CivilianSprite } from './civilians';
 import type { MapId, GameState } from '../rules/state';
 export const TILE = 24, WIDTH = 1008, HEIGHT = 624;
 export interface MapObject { id: string; x: number; y: number; label: string; sprite?: string; spriteHiddenFlag?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean; hitArea?: {x:number;y:number;width:number;height:number} }
-export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; art?:string; tiles?:TileMap; objects: MapObject[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
+export interface MapPerson { id:string; x:number; y:number; sprite:CivilianSprite; hiddenFlag?:string; requiredFlag?:string }
+export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; art?:string; tiles?:TileMap; objects: MapObject[]; people?:MapPerson[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export const MAPS: Record<MapId, MapData> = {
   ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
 };
@@ -22,6 +24,7 @@ export function stage(map:MapId,id:string):Cinematic['actors']{
   return mapPoints(MAPS[map].tiles!,`Scene:${id}`).map(p=>({id:p.name as CharacterId,at:gridPoint(p),hidden:properties(p).hidden===true}));
 }
 export function visibleObjects(map: MapData, s: GameState): MapObject[] { return map.objects.filter(o => (!o.hiddenFlag || !s.flags[o.hiddenFlag]) && (!o.requiredFlag || s.flags[o.requiredFlag])); }
+export function visiblePeople(map:MapData,s:Pick<GameState,'flags'>):MapPerson[]{ return (map.people??[]).filter(p=>(!p.hiddenFlag||!s.flags[p.hiddenFlag])&&(!p.requiredFlag||s.flags[p.requiredFlag])); }
 export const mapSize = (map:MapData) => ({width:map.width??WIDTH,height:map.height??HEIGHT});
 export function walkable(map: MapData, x: number, y: number, state?:Pick<GameState,'flags'>): boolean {
   return x >= 0 && x < Math.floor(mapSize(map).width/TILE) && y >= 0 && y < Math.floor(mapSize(map).height/TILE) && !(map.gates??[]).some(g=>!state?.flags[g.openFlag]&&x>=g.x&&x<g.x+g.width&&y>=g.y&&y<g.y+g.height) && (map.tiles?tileWalkable(map.tiles,x,y,state):!map.solid.some(([sx, sy, w, h]) => x >= sx && x < sx + w && y >= sy && y < sy + h));

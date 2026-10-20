@@ -1,4 +1,5 @@
 import { CHARACTERS } from '../content/characters';
+import { CIVILIANS } from '../content/civilians';
 import { ACTOR_DIRECTIONS, actorAsset, type ActorDirection } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 
@@ -12,6 +13,7 @@ const isHero = (id: string): id is CompanionId => (COMPANION_IDS as readonly str
 export const SPRITE_CATALOG: SpriteEntry[] = [
   ...COMPANION_IDS.map(hero=>({id:hero,...CHARACTERS[hero],group:'Party' as const,hero,directions:ACTOR_DIRECTIONS})),
   ...Object.entries(CHARACTERS).filter(([id])=>!isHero(id)).map(([id,character])=>({id,...character,group:'NPCs' as const,directions:['front'] as const})),
+  ...Object.entries(CIVILIANS).map(([sprite,role])=>({id:sprite,sprite,...role,group:'NPCs' as const,directions:['front'] as const})),
   ...[
     {id:'hound',name:'Hound'}, {id:'crow',name:'Crow'},
     {id:'inspector',name:'Inspector',portrait:'portrait-inspector'}, {id:'guardian',name:'Guardian'},

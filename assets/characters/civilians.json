@@ -1,0 +1,283 @@
+[
+  {
+    "sprite": "civilian-dockhand",
+    "source": "exec-c485dca6-be58-4094-ad06-6430f5072247.png",
+    "sha256": "acaf91732b443da2c2103b0bb063e5137b113b798edc7402e955bf19902f9c85",
+    "crop": [
+      240,
+      194,
+      784,
+      1404
+    ],
+    "nativeSize": [
+      28,
+      63
+    ],
+    "offset": [
+      26,
+      5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          54,
+          26
+        ],
+        "phase": [
+          0.6,
+          0.6
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-dockhand-rust",
+        "rules": [
+          {
+            "box": [
+              20,
+              23,
+              60,
+              38
+            ],
+            "hue": [
+              0.52,
+              0.75
+            ],
+            "targetHue": 0.34
+          },
+          {
+            "box": [
+              20,
+              23,
+              60,
+              33
+            ],
+            "hue": [
+              0.07,
+              0.16
+            ],
+            "targetHue": 0.02
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sprite": "civilian-traveler",
+    "source": "exec-3a3e026d-cc7c-4adb-bc33-e6f321faf5ee.png",
+    "sha256": "956b251933ce1ae63f99ed40d14db3dd022763408401c83121cb88bbd52c1b9c",
+    "crop": [
+      342,
+      123,
+      913,
+      1156
+    ],
+    "nativeSize": [
+      35,
+      63
+    ],
+    "offset": [
+      23,
+      5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          53,
+          27
+        ],
+        "phase": [
+          -0.2,
+          -0.4
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-traveler-blue",
+        "rules": [
+          {
+            "box": [
+              20,
+              22,
+              62,
+              64
+            ],
+            "hue": [
+              0.85,
+              1
+            ],
+            "targetHue": 0.58
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sprite": "civilian-family",
+    "source": "exec-1e517fed-2d34-4bb1-8218-3c3f67a94f1e.png",
+    "sha256": "7f41bf38645f6f6bf2780f9069f117c891fd494d267c5d977d6964372891a751",
+    "crop": [
+      314,
+      125,
+      959,
+      1143
+    ],
+    "nativeSize": [
+      40,
+      63
+    ],
+    "offset": [
+      20,
+      5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          20,
+          4,
+          44,
+          29
+        ],
+        "phase": [
+          0,
+          0.6
+        ]
+      },
+      {
+        "box": [
+          42,
+          27,
+          61,
+          46
+        ],
+        "phase": [
+          0.4,
+          -0.4
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-family-blue",
+        "rules": [
+          {
+            "box": [
+              20,
+              32,
+              45,
+              64
+            ],
+            "hue": [
+              0.1,
+              0.42
+            ],
+            "targetHue": 0.59
+          },
+          {
+            "box": [
+              43,
+              43,
+              61,
+              58
+            ],
+            "hue": [
+              0,
+              0.08
+            ],
+            "targetHue": 0.12
+          }
+        ]
+      },
+      {
+        "sprite": "civilian-family-plum",
+        "rules": [
+          {
+            "box": [
+              20,
+              32,
+              45,
+              64
+            ],
+            "hue": [
+              0.1,
+              0.42
+            ],
+            "targetHue": 0.9
+          },
+          {
+            "box": [
+              43,
+              43,
+              61,
+              58
+            ],
+            "hue": [
+              0,
+              0.08
+            ],
+            "targetHue": 0.47
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sprite": "civilian-patient",
+    "source": "exec-e790b3bf-0f09-4d54-9264-173d4dd1985b.png",
+    "sha256": "07c9d328f5384ddcf4697a67769e24d14fba9b0e5dc6970a7e66a42b41a0e10e",
+    "crop": [
+      403,
+      87,
+      860,
+      1197
+    ],
+    "nativeSize": [
+      26,
+      63
+    ],
+    "offset": [
+      27,
+      5
+    ],
+    "headSamples": [
+      {
+        "box": [
+          27,
+          4,
+          54,
+          28
+        ],
+        "phase": [
+          0.6,
+          -0.6
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "sprite": "civilian-patient-green",
+        "rules": [
+          {
+            "box": [
+              20,
+              28,
+              60,
+              64
+            ],
+            "hue": [
+              0.52,
+              0.75
+            ],
+            "targetHue": 0.35
+          }
+        ]
+      }
+    ]
+  }
+]

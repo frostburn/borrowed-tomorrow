@@ -2,13 +2,45 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
-import { arrival, MAPS, restorePoint, stage, walkable, worldPath } from '../src/content/maps';
+import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
+import { CIVILIAN_SPRITES } from '../src/content/civilians';
 import { gridPoint, layerVisible, mapPoints, tilePages, TILESET, tileWalkable } from '../src/content/tilemaps';
 import { cells, toPixel } from '../src/rules/hex';
 import { decodeSave, newGame } from '../src/rules/state';
 import { coastCheckpoint, checkpoint } from './support/progress';
 
 const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES};
+
+it('silent Chapter Two people stand on floors apart from interactions, arrivals and scene casts',()=>{
+  for(const map of Object.values(CHAPTER_TWO_MAPS)){
+    expect(map.people!.length).toBeGreaterThan(0);
+    const endpoints=[...map.objects,...mapPoints(map.tiles!,'Arrivals').map(gridPoint),...map.tiles!.layers.filter(l=>l.name.startsWith('Scene:')).flatMap(l=>l.objects!.map(gridPoint))];
+    for(const person of map.people!){
+      expect(CIVILIAN_SPRITES).toContain(person.sprite);
+      expect(endpoints.some(p=>p.x===person.x&&p.y===person.y),`${map.id}:${person.id} endpoint`).toBe(false);
+      for(const flag of ['coastSeen','prisonersFreed','wardSeen','settlementSeen','coastCollectorWon','evacuationReady'] as const){
+        const state=coastCheckpoint(flag);
+        if(visiblePeople(map,state).includes(person)){
+          expect(walkable(map,person.x,person.y,state),`${map.id}:${person.id} floor`).toBe(true);
+          expect(visibleObjects(map,state).every(o=>Math.hypot(o.x-person.x,o.y-person.y)>=1.8),`${map.id}:${person.id} interaction radius`).toBe(true);
+        }
+      }
+    }
+  }
+});
+
+it('rescued people leave the exchange and families board the Cinderbank coaches with story progress',()=>{
+  const people=(map:keyof typeof CHAPTER_TWO_MAPS,flag:Parameters<typeof coastCheckpoint>[0])=>visiblePeople(CHAPTER_TWO_MAPS[map],coastCheckpoint(flag)).map(p=>p.id);
+  expect(people('coast','trainRaidWon')).not.toContain('released-patient');
+  expect(people('coast','prisonersFreed')).toContain('released-patient');
+  expect(people('coast','wardSeen')).not.toContain('released-patient');
+  expect(people('infirmary','wardSeen')).toContain('end-bed-patient');
+  expect(people('infirmary','settlementSeen')).not.toContain('end-bed-patient');
+  expect(people('cinderbank','settlementSeen')).toContain('shed-family');
+  expect(people('cinderbank','settlementSeen')).not.toContain('boarding-family');
+  expect(people('cinderbank','coastCollectorWon')).toEqual(['boarding-family','boarding-traveler','boarding-second-family']);
+  expect(people('cinderbank','evacuationReady')).toEqual([]);
+});
 
 it('converted chapters use complete native layers and bounded image pages',()=>{
   expect(readdirSync('public/art/chapter-one').filter(p=>/\.(png|webp)$/.test(p)).sort()).toEqual(TILESET.pages.map(p=>p.url.split('/').at(-1)!).sort());
