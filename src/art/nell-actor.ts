@@ -48,9 +48,11 @@ function jacketSides(source:PixelTexture,direction:ActorDirection,dy:number):Spr
     front:[[27,34,31,33],[34,40,30,33],[40,48,29,33],[27,35,47,49],[35,50,47,50]],
     left:[[34,43,32,34],[40,46,46,50]],
     right:[[38,45,31,34],[45,49,33,38]],
-    back:[[27,34,31,33],[27,34,47,49],[33,42,30,33],[42,49,29,33],[33,43,47,49],[43,49,47,50]],
+    back:[[27,34,31,33],[27,34,47,49],[33,40,30,33],[40,42,30,32],[42,44,29,32],[44,47,28,31],[47,49,28,30],[33,43,47,49],[43,49,47,50]],
   };
   const texture={...source,pixels:new Uint8ClampedArray(source.pixels)};
+  // Rear-left spans follow the coat's tapered outline, excluding the idle
+  // trouser edge that would otherwise paint a fixed notch into moving hips.
   for(let y=0;y<source.height;y++)for(let x=0;x<source.width;x++)
     if(!spans[direction].some(([top,bottom,left,right])=>y>=top&&y<bottom&&x>=left&&x<right))texture.pixels[(y*source.width+x)*4+3]=0;
   if(direction!=='front')return [decal('torso',texture,[28,27,23,24],dy,direction==='back'?4:8,direction)];
