@@ -73,19 +73,20 @@ it('anatomical right stays left in front, right in back, near in right profile a
   expect(project(right,'left').depth).toBeLessThan(project(left,'left').depth);
 });
 
-it('all loadouts and views rasterize six native poses with clean alpha, editable layers and a stable head',()=>{
-  for(const weapon of REFERENCE_WEAPONS)for(const direction of ACTOR_DIRECTIONS){
+it.each(REFERENCE_WEAPONS)('%s loadout rasterizes every view with clean alpha, editable layers and a stable head',(weapon)=>{
+  for(const direction of ACTOR_DIRECTIONS){
     const hashes=[];
     for(let frame=0;frame<6;frame++){
       const layers=referenceLayers(referenceFrame(frame,weapon)),pixels=renderLayers(layers,direction);
       expect(pixels).toHaveLength(80*80*4);hashes.push(createHash('sha256').update(pixels).digest('hex'));
       const alpha=pixels.filter((_,i)=>i%4===3);expect(new Set(alpha)).toEqual(new Set([0,255]));
-      for(let i=0;i<80;i++)for(const pixel of [i,79*80+i,i*80,i*80+79])expect(pixels[pixel*4+3]).toBe(0);
+      const border=Array.from({length:80},(_,i)=>[i,79*80+i,i*80,i*80+79]).flat();
+      expect(border.every(pixel=>pixels[pixel*4+3]===0),`${direction} frame ${frame}: clear border`).toBe(true);
       expect(renderLayers(layers,direction,new Set()).some(n=>n!==0)).toBe(false);
     }
     expect(new Set(hashes).size).toBe(6);
-    const head=(frame:number)=>renderLayers(referenceLayers(referenceFrame(frame,weapon)),direction,new Set(['head']));
-    for(let i=0;i<3;i++)expect(head(i)).toEqual(head(i+3));
+    const head=(frame:number)=>Buffer.from(renderLayers(referenceLayers(referenceFrame(frame,weapon)),direction,new Set(['head'])));
+    for(let i=0;i<3;i++)expect(head(i).equals(head(i+3)),`${direction} frame ${i}: stable head pixels`).toBe(true);
   }
 });
 
@@ -133,10 +134,10 @@ it('right-hand grip depth and screen side are anatomical while the left arm coun
 it('arms and weapon layers isolate cleanly and hiding them preserves the armless reference',()=>{
   const body=new Set(REFERENCE_LAYERS.filter(id=>!REFERENCE_ARM_LAYERS.some(arm=>arm===id)));
   for(let i=0;i<6;i++)for(const direction of ACTOR_DIRECTIONS){
-    const base=renderLayers(referenceLayers(referenceFrame(i)),direction,body);
+    const base=Buffer.from(renderLayers(referenceLayers(referenceFrame(i)),direction,body));
     for(const weapon of ['lantern','lance'] as const){
       const layers=referenceLayers(referenceFrame(i,weapon));
-      expect(renderLayers(layers,direction,body)).toEqual(base);
+      expect(Buffer.from(renderLayers(layers,direction,body)).equals(base),`${direction} frame ${i}: ${weapon} preserves body pixels`).toBe(true);
       for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(true);
     }
   }

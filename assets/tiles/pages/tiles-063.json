@@ -1,0 +1,1383 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-063",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 61,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-063.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "ward-wall-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "ward-wall-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-5-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ward-wall-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-6-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "ward-wall-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-7-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ward-wall-8-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-8-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ward-wall-9-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-9-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "ward-wall-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "ward-wall-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "ward-wall-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "ward-wall-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "ward-wall-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "ward-wall-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-5-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "ward-wall-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-6-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "ward-wall-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-7-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "ward-wall-8-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-8-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ward-wall-9-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-9-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "ward-wall-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "ward-wall-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "ward-wall-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "ward-wall-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "ward-wall-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "ward-wall-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "ward-wall-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "ward-wall-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "ward-wall-8-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-8-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ward-wall-9-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-9-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "ward-wall-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "ward-wall-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "ward-wall-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "ward-wall-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "ward-wall-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-4-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "ward-wall-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-5-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "ward-wall-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-6-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "ward-wall-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-7-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "ward-wall-8-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-8-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ward-wall-9-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-9-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "ward-wall-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "ward-wall-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "ward-wall-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "ward-wall-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-3-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "ward-wall-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-4-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "ward-wall-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-5-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "ward-wall-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-6-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "ward-wall-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-7-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "ward-wall-8-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-8-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ward-wall-9-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-9-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "ward-stove-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "ward-stove"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "ward-stove-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "ward-stove-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "ward-stove-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "ward-stove-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "ward-stove-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "ward-stove-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "ward-stove-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "ward-stove-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ward-stove-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "ward-stove-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "ward-stove-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "ward-stove-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "ward-stove-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "ward-stove-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-stove-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

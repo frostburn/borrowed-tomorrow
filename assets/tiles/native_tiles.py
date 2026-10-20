@@ -63,7 +63,7 @@ def write_pages(root,tiles):
     (root/'assets/tiles/chapter-one.tileset.json').write_text(json.dumps(dict(name='Chapter One',tilewidth=S,tileheight=S,tilecount=len(tiles),pages=pages),indent=2)+'\n')
     imports='// Generated native page imports, shared by Vite and content tooling.\n'+''.join(f"import p{i} from './pages/{p['name']}.json' with {{ type: 'json' }};\n" for i,p in enumerate(pages))
     (root/'assets/tiles/tile-definitions.ts').write_text(imports+'export default ['+','.join(f'p{i}' for i in range(len(pages)))+'];\n')
-    for file in (root/'src/content/chapter-one/maps').glob('*.json'):
+    for file in (root/'src/content').glob('chapter-*/maps/*.json'):
         text=file.read_text();start=text.index('  "tilesets": [');end=text.index('  "tilewidth":',start)
         refs=json.dumps([dict(firstgid=p['firstgid'],source=p['source']) for p in pages],indent=2)
         file.write_text(text[:start]+'  "tilesets": '+refs.replace('\n','\n  ')+',\n'+text[end:])

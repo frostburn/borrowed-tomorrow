@@ -4,6 +4,10 @@ Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=
 
 Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Each character has an independent level, build and loadout. **Add to party** and **Remove from party** edit the practice lineup: at least one and at most three companions may fight. Selecting a portrait edits that character without changing party membership. Reserves keep their builds and equipment; reloading preserves the selected lineup. The portrait column shows effective stats, including equipped bonuses.
 
+## Canonical Chapter Two start
+
+On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-10 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
+
 ## Future companions
 
 The workshop previews companions planned for later story chapters. Kit is a fast Iron Coast boy courier who gets flustered around Nell; Celia is an older physician; Petra is an imperial knight whose defection develops across Chapters Two and Three. Recruitment plans and the constraints on Kit’s unresolved puppy-love gag live in `docs/story/characters.md`. Kit has new matching artwork; Celia and Petra use the unused art library. Each has an 80 × 80 actor and 128 × 128 portrait.

@@ -76,7 +76,8 @@ for index,name in enumerate(['grass','earth','paving','ballast','water','granite
       for x in range(count):add(f'{name}-field-{x}-{y}',patch.crop((x*S%period,y*S%period,x*S%period+S,y*S%period+S)),walkable=name!='water')
 # Rebuild every previously authored join in stable order, preserving map IDs.
 byname={t['type']:t['id']+1 for _,t in tiles}
-for _,tile in old:
+legacy_end=json.loads((root/'assets/tiles/modules.json').read_text())['footbridge-front']['firstgid']-1
+for _,tile in old[:legacy_end]:
     match=re.fullmatch(r'(grass|earth|paving|ballast|water|granite)-join-(\d+)-(\d+)-(\d+)',tile['type'])
     if not match:continue
     name,x,y,mask=match.groups();source=tiles[byname[f'{name}-field-{x}-{y}']-1][0]
@@ -94,10 +95,15 @@ for item,image,ay in foreground:
       for x in range(w):
         piece=front.crop((x*S,y*S,(x+1)*S,(y+1)*S))
         add(f'{name}-{x}-{y}',piece,sortOffset=(ay-y)*S+19,empty=piece.getchannel('A').getbbox() is None)
-# Cave materials have their own source and importer; keep their appended IDs
-# and original pixels when re-importing the railway scenery sheets.
-for image,tile in old:
-    if tile['type'].startswith('cave-'):tiles.append((image,dict(tile,id=len(tiles))))
+# Preserve every later vocabulary entry in order. Appended joins are rebuilt
+# from the refreshed fields in their original slots, after the newer scenery.
+for image,tile in old[len(tiles):]:
+    match=re.fullmatch(r'(grass|earth|paving|ballast|water|granite)-join-(\d+)-(\d+)-(\d+)',tile['type'])
+    if match:
+        name,x,y,mask=match.groups();image=join(tiles[byname[f'{name}-field-{x}-{y}']-1][0],int(mask))
+    tiles.append((image,dict(tile,id=len(tiles))))
+for name,module in json.loads((root/'assets/tiles/modules.json').read_text()).items():
+    if name.startswith(('coast-','ward-')):modules[name]=module
 # Artwork dimensions are part of the map vocabulary. Catch source/crop changes
 # that would require deliberately re-stamping a map instead of corrupting IDs.
 if len(tiles)!=len(old) or any(a[1]['type']!=b[1]['type'] for a,b in zip(tiles,old)):

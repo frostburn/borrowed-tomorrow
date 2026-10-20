@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { layerVisible, properties, TILESET, TILE_PAGES, tileFrame, tileProperties, type TileMap } from '../content/tilemaps';
+import { layerVisible, properties, TILESET, tilePages, tileFrame, tileProperties, type TileMap } from '../content/tilemaps';
 import type { GameState } from '../rules/state';
 
 // Phaser's rounded Canvas Image path expands destination frames by 0.5px.
@@ -13,9 +13,9 @@ class NativeTile extends Phaser.GameObjects.Image {
 
 /** Native Tiled layers, with foreground props sorted at their ground anchors. */
 export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Container,data:TileMap,state:GameState,x=0,y=0){
-  const key='chapter-one-map';
-  scene.cache.tilemap.add(key,{format:Phaser.Tilemaps.Formats.TILED_JSON,data:{...data,layers:data.layers.filter(l=>l.data&&!properties(l).sort&&layerVisible(l,state)),tilesets:TILE_PAGES.map(({source,url,...page})=>({...page,tiles:TILESET.tiles.slice(page.firstgid-1,page.firstgid-1+page.tilecount).map(t=>({...t,id:t.id-page.firstgid+1}))}))}});
-  const map=scene.make.tilemap({key,insertNull:true}),sets=TILE_PAGES.map(page=>map.addTilesetImage(page.name,page.name)!);
+  const key='world-map',pages=tilePages(data);
+  scene.cache.tilemap.add(key,{format:Phaser.Tilemaps.Formats.TILED_JSON,data:{...data,layers:data.layers.filter(l=>l.data&&!properties(l).sort&&layerVisible(l,state)),tilesets:pages.map(({source,url,...page})=>({...page,tiles:TILESET.tiles.slice(page.firstgid-1,page.firstgid-1+page.tilecount).map(t=>({...t,id:t.id-page.firstgid+1}))}))}});
+  const map=scene.make.tilemap({key,insertNull:true}),sets=pages.map(page=>map.addTilesetImage(page.name,page.name)!);
   let depth=-1000;
   for(const layer of data.layers){
     if(!layer.data||!layerVisible(layer,state))continue;

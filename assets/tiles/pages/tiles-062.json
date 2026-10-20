@@ -1,0 +1,1596 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-062",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-062.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "coast-coal-shed-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-1-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "coast-coal-shed-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-2-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "coast-coal-shed-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-3-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "coast-coal-shed-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-4-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "coast-coal-shed-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-5-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "coast-coal-shed-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-6-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "coast-coal-shed-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-7-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "coast-coal-shed-8-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-8-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "coast-coal-shed-9-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-9-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "coast-coal-shed-10-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-10-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "coast-coal-shed-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-0-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "coast-coal-shed-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-1-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "coast-coal-shed-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-2-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "coast-coal-shed-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-3-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "coast-coal-shed-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-4-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "coast-coal-shed-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-5-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "coast-coal-shed-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-6-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "coast-coal-shed-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-7-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "coast-coal-shed-8-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-8-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "coast-coal-shed-9-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-9-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "coast-coal-shed-10-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-10-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "coast-coal-shed-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-0-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "coast-coal-shed-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-1-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "coast-coal-shed-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-2-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "coast-coal-shed-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-3-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "coast-coal-shed-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-4-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "coast-coal-shed-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-5-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "coast-coal-shed-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-6-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "coast-coal-shed-7-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-7-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "coast-coal-shed-8-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-8-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "coast-coal-shed-9-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-9-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "coast-coal-shed-10-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coast-coal-shed-10-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "ward-bed-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "ward-bed"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "ward-bed-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "ward-bed-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ward-bed-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "ward-bed-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "ward-bed-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "ward-bed-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "ward-bed-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "ward-bed-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "ward-bed-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "ward-bed-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "ward-bed-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-bed-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "ward-desk-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "ward-desk"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 2
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ward-desk-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "ward-desk-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "ward-desk-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "ward-desk-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "ward-desk-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "ward-desk-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "ward-desk-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "ward-desk-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "ward-desk-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "ward-desk-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ward-desk-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "ward-desk-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "ward-desk-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "ward-desk-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "ward-desk-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-desk-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "ward-wall-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "ward-wall"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 10
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "ward-wall-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "ward-wall-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "ward-wall-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ward-wall-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}
