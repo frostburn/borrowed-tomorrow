@@ -55,7 +55,7 @@ it('keeps the ward as a safe stop and the traveling party at Nell, Orrin and Kit
 });
 
 it('defers Celia throughout the staged chapter and rejects premature recruitment in current saves',()=>{
-  const entries=[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners(),scenes.ward(),scenes.abandonment(),scenes.evacuation(),scenes.recapture(),scenes.departure()];
+  const entries=[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners(),scenes.ward(),scenes.abandonment(),scenes.boarding(),scenes.evacuation(),scenes.recapture(),scenes.departure()];
   expect(entries.flatMap(s=>s.scene!.actors).some(a=>a.id==='celia')).toBe(false);
   expect(entries.flatMap(s=>s.lines).some(l=>l.who==='Celia'||l.text.includes('Celia'))).toBe(false);
   const s=coastCheckpoint('wardSeen');recruit(s,'celia');expect(()=>decodeSave(JSON.stringify(s))).toThrow();
@@ -63,9 +63,9 @@ it('defers Celia throughout the staged chapter and rejects premature recruitment
 it('finishes the local rescue before the capital departure and replays interrupted scenes safely',()=>{
   const j=raid(false);interactChapterTwo(j.host,'prison-coach');j.finish();interactChapterTwo(j.host,'coast-ward');resumeChapterTwo(j.host);j.finish();
   interactChapterTwo(j.host,'ward-siding');resumeChapterTwo(j.host);j.finish();interactChapterTwo(j.host,'siding-alban');expect(j.battle()).toBe('coast-loading');
-  interactChapterTwo(j.host,'siding-collector');j.win();interactChapterTwo(j.host,'siding-release');expect(j.state.flags.evacuationReady).toBeUndefined();
+  interactChapterTwo(j.host,'siding-collector');expect(j.read().scene?.id).toBe('two-boarding');j.finish();j.win();interactChapterTwo(j.host,'siding-release');expect(j.state.flags.evacuationReady).toBeUndefined();
   const restored=decodeSave(JSON.stringify(j.state));expect(restored.flags.coastCollectorWon).toBe(true);j.finish();
-  interactChapterTwo(j.host,'siding-release');expect(j.read().lines[0].text).toContain('families are aboard');
+  interactChapterTwo(j.host,'siding-release');expect(j.read().lines[0].text).toContain('everyone aboard');
   interactChapterTwo(j.host,'siding-alban');j.finish();j.win();interactChapterTwo(j.host,'capital-engine');expect(j.state.boundary).toBeNull();j.finish();
   expect(j.state.boundary).toBe(THIRD_CHAPTER);expect(j.boundaries()).toBe(1);expect(j.state.journal).toContain('capitalDeparture');
   expect(j.state.party.map(h=>h.id)).toEqual(['nell','orrin','kit']);expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
@@ -75,7 +75,7 @@ it('rejects impossible recruits, oversized active parties and crossed chapter bo
   for(const bad of [ {...s,boundary:THIRD_CHAPTER}, {...s,flags:{...s.flags,kitJoined:true}}, {...s,chapter:'chapter-one'}, {...s,activeParty:['nell','orrin','kit','celia']}, {...s,location:{map:'infirmary',x:31,y:21}} ])expect(()=>decodeSave(JSON.stringify(bad))).toThrow();
 });
 it('every Chapter Two staged actor and move has solid, walkable footing',()=>{
-  const scripts={coast:[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners()],infirmary:[scenes.ward()],cinderbank:[scenes.abandonment(),scenes.evacuation(),scenes.recapture(),scenes.departure()]};
+  const scripts={coast:[scenes.arrival(),scenes.meetKit(),scenes.raid(true),scenes.raid(false),scenes.freePrisoners()],infirmary:[scenes.ward()],cinderbank:[scenes.abandonment(),scenes.boarding(),scenes.evacuation(),scenes.recapture(),scenes.departure()]};
   for(const [id,entries] of Object.entries(scripts))for(const entry of entries){
     const points=[...entry.scene!.actors.map(a=>a.at),...entry.lines.flatMap(l=>Object.values(l.shot?.actors??{}).flatMap(d=>[d?.at,d?.to].filter(p=>!!p)))];
     for(const p of points)expect(walkable(MAPS[id as keyof typeof MAPS],p!.x,p!.y),`${entry.scene!.id}: ${p!.x},${p!.y}`).toBe(true);

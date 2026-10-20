@@ -48,13 +48,15 @@ export interface Unit {
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
+  evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { id: string; name: string; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
   guardian: { name: 'Rail guardian', hp: 68, speed: 2, movement: 2, armor: 2, abilities: ['steam', 'strike'] as AbilityId[], bonus: -6 },
   inspector: { name: 'Imperial officer', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
+  knight: { name: 'Imperial knight', hp: 142, speed: 5, movement: 3, armor: 3, abilities: ['strike','bash','taunt','sweep'] as AbilityId[], bonus: 2 },
 };
 
 export function createBattle(encounter: string, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
@@ -85,6 +87,7 @@ export function createBattle(encounter: string, state: GameState, equipment?: Re
     water:new Set((e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
     vents:new Set((e.vents??[]).map(([c,r])=>key(offset(c,r)))),
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
+    evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   nextRound(battle);
   return battle;
@@ -175,8 +178,19 @@ function ended(b:Battle){
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
   if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return true; }
-  if (!sides.has('enemy')) { b.result = 'victory'; log(b, 'The line is clear.'); return true; }
+  if (!sides.has('enemy')) {
+    if(b.evacuation){b.evacuation.boarded=b.evacuation.groups;log(b,'The machines are down. Dena brings the remaining families aboard.');}
+    b.result = 'victory'; log(b, 'The line is clear.'); return true;
+  }
   return false;
+}
+function boardFamilies(b:Battle){
+  const e=b.evacuation;if(!e)return;
+  if(alive(b).some(u=>u.side==='enemy'&&e.route.some(h=>equal(h,u.hex)))){
+    log(b,'A machine blocks the loading walk. The families wait safely behind the shed.');return;
+  }
+  e.boarded++;log(b,`Dena brings a family aboard: ${e.boarded}/${e.groups}.`);
+  if(e.boarded===e.groups){b.result='victory';log(b,'The last family is aboard. Dena bars the coach doors.');}
 }
 function checkGrounding(b:Battle){
   const circuit=b.grounding;
@@ -191,7 +205,7 @@ function finishTurn(b: Battle) {
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
     for(const u of alive(b))if(u.kind!=='crow'&&b.vents.has(key(u.hex))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
-    if(!ended(b))nextRound(b);
+    if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
 export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
@@ -257,14 +271,26 @@ export function wait(b: Battle): boolean {
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
+  if(u.kind==='knight'){
+    if(!u.bonusUsed){
+      const victim=enemies.find(v=>legalAim(b,u,'bash',v.hex)&&pushDestination(b,u,v));
+      if(victim){cast(b,u,'bash',victim.hex);return 'bash';}
+    }
+    if(!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
+      const visits=[...movement(b,u).values()].sort((a,z)=>Math.min(...enemies.map(v=>distance(a.hex,v.hex)))-Math.min(...enemies.map(v=>distance(z.hex,v.hex)))||a.cost-z.cost);
+      if(visits[0]&&!equal(visits[0].hex,u.hex))move(b,u,visits[0].hex);
+      if(cast(b,u,'taunt',u.hex))return 'taunt';
+    }
+  }
   let best: { pos: Hex; aim: Hex; ability: AbilityId; score: number } | null = null;
   const original = u.hex;
   for (const reach of movement(b, u).values()) {
     u.hex = reach.hex;
     for (const id of u.abilities) {
+      if(id==='taunt'||id==='bash')continue; // Knight support actions are handled before damage scoring.
       for (const aim of cells()) {
         if (!legalAim(b, u, id, aim)) continue;
-        let score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0);
+        let score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0)+(b.evacuation?.route.some(h=>equal(h,u.hex))?10:0);
         for (const v of targets(b, u, id, aim)) {
           score += (v.side !== u.side ? 1 : -2.5) * (Math.min(v.hp, damage(u, v, id)) + (v.hp <= damage(u, v, id) ? 8 : 0));
         }
@@ -284,7 +310,7 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void): 
   } else {
     const visits = [...movement(b, u).values()];
     const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).map(v=>key(v.hex))]),h=>u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
-    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...enemies.map(v=>distance(h,v.hex))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.map(v=>v.hex)).map(goal=>distance(h,goal))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
     visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);

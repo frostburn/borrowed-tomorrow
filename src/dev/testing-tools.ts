@@ -26,6 +26,7 @@ export function renderTestingTools(ui: UI, target: HTMLElement, host: BattleTool
   ui.actionRow(group, [
     { label: 'Win battle', disabled, action: () => run(b => {
       for (const unit of b.units) if (unit.side === 'enemy') unit.hp = 0;
+      if (b.evacuation) b.evacuation.boarded = b.evacuation.groups;
       b.result = 'victory'; b.log.push('Development tools: battle won.');
     }) },
     { label: 'Lose battle', disabled, action: () => run(b => {

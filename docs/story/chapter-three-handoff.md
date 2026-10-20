@@ -16,7 +16,7 @@ Orrin’s coal engine is pulling the medical coaches. Rescued prisoners and Cind
 
 Tomas is alive in personal custody at the palace engine works. A fellow prisoner kept his transfer slip for Nell, including the note that collectors feed the engines. His sabotage should create a real opening for the rescue. Bring him home alive in this chapter and keep that accomplishment permanent.
 
-Petra changed the points and stayed to bring her soldiers off the west gate. She has not declared complete allegiance. In Chapter Three she must refuse an order to surrender the escapees, accept the cost and join deliberately. The active formation remains capped at three after she joins. Alban survived, lost the crossing and failed to recapture the prisoners; do not return these people to captivity to recreate the same objective.
+Petra defended Alban as Chapter Two’s boss and was disarmed at the crossing. When Alban then ordered fire on the medical coaches, she refused and lost her commission. She witnessed Orrin’s coal engine carry the passengers without a crystal, then stayed to countermand the firing order among her soldiers. She has not joined Nell. In Chapter Three Alban offers to restore her commission if she seals the coaches; she refuses publicly, breaks his command rod and joins deliberately. The active formation remains capped at three after she joins. Alban survived, lost the crossing and failed to recapture the prisoners; do not return these people to captivity to recreate the same objective.
 
 ## What remains unknown
 

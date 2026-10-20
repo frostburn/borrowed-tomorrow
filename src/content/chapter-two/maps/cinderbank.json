@@ -861,7 +861,7 @@
     },
     {
       "id": 15,
-      "name": "Miners\u2019 cottage west",
+      "name": "Miners’ cottage west",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -923,7 +923,7 @@
     },
     {
       "id": 16,
-      "name": "Miners\u2019 cottage north",
+      "name": "Miners’ cottage north",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -1356,7 +1356,7 @@
         {
           "name": "hiddenFlag",
           "type": "string",
-          "value": "evacuationReady"
+          "value": "coastCollectorWon"
         }
       ]
     },
@@ -1423,7 +1423,7 @@
         {
           "name": "requiredFlag",
           "type": "string",
-          "value": "evacuationReady"
+          "value": "coastCollectorWon"
         }
       ]
     },
@@ -1485,7 +1485,7 @@
         {
           "name": "hiddenFlag",
           "type": "string",
-          "value": "evacuationReady"
+          "value": "coastCollectorWon"
         }
       ]
     },
@@ -2320,7 +2320,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Coal shed \u00b7 collector guard"
+              "value": "Open the collector · protect the loading walk"
             },
             {
               "name": "sprite",
@@ -2349,12 +2349,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "The collector casing"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
+              "value": "Dena · all aboard"
             },
             {
               "name": "requiredFlag",
@@ -2365,10 +2360,15 @@
               "name": "doneFlag",
               "type": "string",
               "value": "evacuationReady"
+            },
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "dena"
             }
           ],
-          "x": 996,
-          "y": 468,
+          "x": 876.0,
+          "y": 540.0,
           "width": 0,
           "height": 0,
           "point": true
@@ -2383,12 +2383,12 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Alban \u00b7 the far crossing"
+              "value": "Petra · the far crossing"
             },
             {
               "name": "sprite",
               "type": "string",
-              "value": "alban"
+              "value": "petra"
             },
             {
               "name": "hiddenFlag",
@@ -2401,8 +2401,8 @@
               "value": "evacuationReady"
             }
           ],
-          "x": 1164,
-          "y": 564,
+          "x": 1140.0,
+          "y": 564.0,
           "width": 0,
           "height": 0,
           "point": true
@@ -2417,7 +2417,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical coaches \u00b7 rescued prisoners"
+              "value": "Medical coaches · rescued prisoners"
             },
             {
               "name": "sign",
@@ -2441,7 +2441,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Board the engine \u00b7 capital line"
+              "value": "Board the engine · capital line"
             },
             {
               "name": "sign",
@@ -2478,6 +2478,40 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 37,
+          "name": "siding-captain",
+          "type": "",
+          "point": true,
+          "x": 1188.0,
+          "y": 516.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Alban · behind the crossing"
+            },
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "alban"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "recaptureWon"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "evacuationReady"
+            }
+          ]
         }
       ]
     },
@@ -2619,6 +2653,19 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 27,
+          "name": "dena",
+          "type": "",
+          "point": true,
+          "x": 780.0,
+          "y": 588.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
         }
       ]
     },
@@ -2683,6 +2730,19 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 32,
+          "name": "dena",
+          "type": "",
+          "point": true,
+          "x": 876.0,
+          "y": 540.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
         }
       ]
     },
@@ -2747,6 +2807,19 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 33,
+          "name": "petra",
+          "type": "",
+          "point": true,
+          "x": 1140.0,
+          "y": 564.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
         }
       ]
     },
@@ -2798,12 +2871,115 @@
           "width": 0,
           "height": 0,
           "point": true
+        },
+        {
+          "id": 34,
+          "name": "petra",
+          "type": "",
+          "point": true,
+          "x": 1140.0,
+          "y": 588.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        },
+        {
+          "id": 35,
+          "name": "alban",
+          "type": "",
+          "point": true,
+          "x": 1188.0,
+          "y": 540.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        },
+        {
+          "id": 36,
+          "name": "dena",
+          "type": "",
+          "point": true,
+          "x": 1068.0,
+          "y": 588.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Scene:two-boarding",
+      "type": "objectgroup",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "draworder": "topdown",
+      "objects": [
+        {
+          "id": 28,
+          "name": "nell",
+          "type": "",
+          "point": true,
+          "x": 900.0,
+          "y": 492.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        },
+        {
+          "id": 29,
+          "name": "orrin",
+          "type": "",
+          "point": true,
+          "x": 924.0,
+          "y": 468.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        },
+        {
+          "id": 30,
+          "name": "kit",
+          "type": "",
+          "point": true,
+          "x": 852.0,
+          "y": 540.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
+        },
+        {
+          "id": 31,
+          "name": "dena",
+          "type": "",
+          "point": true,
+          "x": 804.0,
+          "y": 564.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": []
         }
       ]
     }
   ],
-  "nextlayerid": 44,
-  "nextobjectid": 27,
+  "nextlayerid": 45,
+  "nextobjectid": 38,
   "orientation": "orthogonal",
   "properties": [
     {
