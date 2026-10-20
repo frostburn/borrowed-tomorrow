@@ -1,10 +1,10 @@
 # Chapter One tile maps
 
-Open `src/content/chapter-one/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share `assets/tiles/chapter-one.tileset.json` and the native **24 × 24** atlas, `public/art/chapter-one-tiles.png`. The atlas is under 10 KB. It is original pixel artwork built from terrain, rails, architectural parts and reusable props; no whole-map painting was sliced into tiles. `node assets/tiles/draw-chapter-one.mjs` rebuilds the atlas and its tile definitions. Normal development and builds use the checked-in files directly.
+Open `src/content/chapter-one/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Three small native PNG pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. Each page is at most **192 × 192 pixels and 64 KB**, and is uploaded as its own image file. The retained artwork is original pixel art; no whole-map painting was sliced into tiles. `node assets/tiles/draw-chapter-one.mjs` rebuilds the pages, catalog and map references. Normal development and builds use the checked-in files directly.
 
-Keep existing tile IDs stable when extending the atlas: append new definitions so the maps' references keep their meaning.
+Keep existing tile IDs stable when extending the tile set: append new definitions so the maps' references keep their meaning.
 
-The four exploration maps and four tactical arenas use the same tile set. The chapter's former backgrounds and Rillbridge image fragments have been removed. Later chapters still use their current native scenery until their own map conversion.
+The four exploration maps and four tactical arenas use the same tile pages. The chapter's former backgrounds and Rillbridge image fragments have been removed. Later chapters still use their current native scenery until their own map conversion.
 
 | Map | Grid | Story route |
 | --- | --- | --- |
@@ -38,3 +38,9 @@ Each exploration map's `safeArrival` property names an arrival on its main conne
 `tests/tilemaps.test.ts` verifies atlas references, layer dimensions, arrivals, bridge and cliff collision, state changes and clear tactical floors. Existing chapter tests cover interaction approaches and every staged endpoint. The manual Chapter One browser journey checks the full route, all four fights, equipment, departure and reload. Native rendering checks compose reference pixels from the tile atlas rather than a discarded background.
 
 `tests/e2e/tilemaps.spec.ts` also walks the phone routes through both river banks and the pass's side recesses. Its foreground check compares native canopy/actor pixels with Nell behind and in front of the same tree. Desktop and phone save checks restore former lower Rillbridge positions, save/reload them and walk back to the residents. These detailed browser checks stay outside the default `@ci` gate.
+
+## Image publication budget
+
+Large authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
+
+After staging, run `npm run check:art-upload`. It checks the exact staged blobs for every added or modified raster image and refuses any over 64 KB. Upload each approved file independently. The content tests separately check native dimensions, page sizes, contiguous IDs and map references. The existing flat artwork is retained by this recovery checkpoint; replacement dimensional artwork remains to be rebuilt because its uncommitted source sheets did not survive the interrupted workspace.

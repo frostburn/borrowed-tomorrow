@@ -2,7 +2,11 @@ import tileset from '../../assets/tiles/chapter-one.tileset.json' with { type: '
 import type { GameState } from '../rules/state';
 
 export const TILESET = tileset;
-export const TILE_TEXTURE = 'chapter-one-tiles';
+export const TILE_PAGES = TILESET.pages;
+export const tileFrame = (gid:number) => {
+  const page=TILE_PAGES.find(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount)!;
+  return {key:page.name,frame:gid-page.firstgid};
+};
 export interface Property { name:string; type:string; value:string|number|boolean }
 export interface TileLayer { id:number; name:string; type:string; width?:number; height?:number; data?:number[]; visible:boolean; properties?:Property[]; objects?:TileObject[] }
 export interface TileObject { name:string; x:number; y:number; properties?:Property[] }

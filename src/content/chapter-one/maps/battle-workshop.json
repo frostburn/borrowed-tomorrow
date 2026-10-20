@@ -201,7 +201,15 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "../../../../assets/tiles/chapter-one.tileset.json"
+      "source": "../../../../assets/tiles/pages/chapter-one-000.json"
+    },
+    {
+      "firstgid": 65,
+      "source": "../../../../assets/tiles/pages/chapter-one-001.json"
+    },
+    {
+      "firstgid": 129,
+      "source": "../../../../assets/tiles/pages/chapter-one-002.json"
     }
   ],
   "tilewidth": 24,

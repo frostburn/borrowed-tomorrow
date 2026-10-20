@@ -12,7 +12,7 @@ import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, deco
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { drawTileMap } from './tilemap';
-import { TILESET, TILE_TEXTURE } from '../content/tilemaps';
+import { TILESET, TILE_PAGES } from '../content/tilemaps';
 import { CHAPTER_ONE_BATTLES } from '../content/chapter-one/maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -65,7 +65,7 @@ export class Adventure extends Phaser.Scene {
   attach(ui: UI) { this.ui = ui; }
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
-    this.load.spritesheet(TILE_TEXTURE,`${import.meta.env.BASE_URL}art/chapter-one-tiles.png`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+    for(const page of TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
@@ -158,7 +158,7 @@ export class Adventure extends Phaser.Scene {
   }
   private async ensureRegion(map: MapId) {
     if(MAPS[map].tiles){
-      if(!this.textures.exists(TILE_TEXTURE))throw new Error('The Chapter One tiles could not load. Your checkpoint is intact.');
+      if(TILE_PAGES.some(page=>!this.textures.exists(page.name)))throw new Error('The Chapter One tiles could not load. Your checkpoint is intact.');
       return;
     }
     const texture = `map-${map}`;

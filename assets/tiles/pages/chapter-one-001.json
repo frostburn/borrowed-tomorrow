@@ -1,0 +1,1036 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "chapter-one-001",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/chapter-one-001.png",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "coal",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "coal"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "tools",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tools"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "flowers",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "flowers"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "sign",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sign"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "lamp-top",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "lamp-top"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "lamp-base",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "lamp-base"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "bunting",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bunting"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "torn-bunting",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "torn-bunting"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "cap",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "cap"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "paper",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paper"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "rail-fence",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "rail-fence"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "rail-shadow",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "rail-shadow"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "bedroll",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "bedroll"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "stove",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "stove"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "motes",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "motes"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "drops",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "drops"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "thread",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "thread"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "pipe-h",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pipe-h"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "pipe-v",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pipe-v"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "steam-grate",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "steam-grate"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "train-roof",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "train-roof"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "train-window",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "train-window"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "train-body",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "train-body"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "train-door",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "train-door"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "train-wheels",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "train-wheels"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "engine-boiler",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "engine-boiler"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "engine-cab",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "engine-cab"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "engine-chimney",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "engine-chimney"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "tree-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "tree-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "tree-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "tree-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "tree-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "tree-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "tree-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "tree-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "tree-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "tree-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "tree-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "tree-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "tree-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "tree-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "tree-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-2-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "tree-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "tree-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "pine-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "pine-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "pine-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "pine-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "pine-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "pine-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "pine-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "pine-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "pine-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "pine-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "pine-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "pine-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "pine-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "sun-mural-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "sun-mural-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "sun-mural-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "sun-mural-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "sun-mural-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-1-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "sun-mural-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-2-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "sun-mural-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "sun-mural-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    }
+  ]
+}

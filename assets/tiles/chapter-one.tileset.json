@@ -1,17 +1,8 @@
 {
-  "type": "tileset",
-  "version": "1.10",
-  "tiledversion": "1.11.2",
   "name": "Chapter One",
   "tilewidth": 24,
   "tileheight": 24,
   "tilecount": 161,
-  "columns": 16,
-  "image": "../../public/art/chapter-one-tiles.png",
-  "imagewidth": 384,
-  "imageheight": 264,
-  "margin": 0,
-  "spacing": 0,
   "tiles": [
     {
       "id": 0,
@@ -2698,6 +2689,62 @@
           "value": 24
         }
       ]
+    }
+  ],
+  "pages": [
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "chapter-one-000",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/chapter-one-000.png",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 1,
+      "source": "../../../../assets/tiles/pages/chapter-one-000.json",
+      "url": "art/chapter-one/chapter-one-000.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "chapter-one-001",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/chapter-one-001.png",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 65,
+      "source": "../../../../assets/tiles/pages/chapter-one-001.json",
+      "url": "art/chapter-one/chapter-one-001.png"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "chapter-one-002",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 33,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/chapter-one-002.png",
+      "imagewidth": 192,
+      "imageheight": 120,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 129,
+      "source": "../../../../assets/tiles/pages/chapter-one-002.json",
+      "url": "art/chapter-one/chapter-one-002.png"
     }
   ]
 }

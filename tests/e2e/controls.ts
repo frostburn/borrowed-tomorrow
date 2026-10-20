@@ -40,12 +40,13 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
   const snapshot=await inspect(page),tiles=snapshot.mode==='battle'?CHAPTER_ONE_BATTLES[snapshot.battle!.encounter]??MAPS[map as MapId]?.tiles:MAPS[map as MapId]?.tiles;
   const layers=tiles?.layers.filter(l=>l.data&&layerVisible(l,snapshot.state)).map(l=>({...l,sorted:!!properties(l).sort}));
   await expect.poll(()=>page.evaluate(async({name,yOffset,tiles,layers,tileset,tileProperties})=>{
-    const image=new Image();image.src=tiles?'/art/chapter-one-tiles.png':`/art/${name}.webp`;await image.decode();
+    const image=new Image();if(!tiles){image.src=`/art/${name}.webp`;await image.decode();}
+    const pages=tiles?await Promise.all(tileset.pages.map(async p=>{const img=new Image();img.src=`/${p.url}`;await img.decode();return img;})):[];
     const scenery=document.createElement('canvas');scenery.width=tiles?tiles.width*24:image.width;scenery.height=tiles?tiles.height*24:image.height;
     const ctx=scenery.getContext('2d')!;
     if(tiles){
       const props:{gid:number;x:number;y:number;depth:number}[]=[];
-      const draw=(gid:number,x:number,y:number)=>ctx.drawImage(image,(gid-1)%tileset.columns*24,Math.floor((gid-1)/tileset.columns)*24,24,24,x,y,24,24);
+      const draw=(gid:number,x:number,y:number)=>{const i=tileset.pages.findIndex(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount),p=tileset.pages[i],id=gid-p.firstgid;ctx.drawImage(pages[i],id%p.columns*24,Math.floor(id/p.columns)*24,24,24,x,y,24,24);};
       for(const layer of layers!)for(let i=0;i<layer.data!.length;i++){
         const gid=layer.data![i];if(!gid)continue;const x=i%tiles.width*24,y=Math.floor(i/tiles.width)*24;
         if(layer.sorted)props.push({gid,x,y,depth:y+Number(tileProperties[gid-1]?.sortOffset??(tileProperties[gid-1]?.name==='lamp-top'?48:24))});else draw(gid,x,y);

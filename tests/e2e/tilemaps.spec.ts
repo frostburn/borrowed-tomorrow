@@ -27,12 +27,14 @@ test('native foreground trees occlude actors behind them and yield to actors in 
   for(const [row,front] of [[22,false],[24,true]] as const){
     const state=checkpoint('festivalSeen');state.location={map:'station',x:1,y:row};await importSave(page,state);
     await expect.poll(()=>page.evaluate(async({row,front,tileset})=>{
-      const actor=new Image(),atlas=new Image();actor.src='/art/nell.png';atlas.src='/art/chapter-one-tiles.png';await Promise.all([actor.decode(),atlas.decode()]);
+      const actor=new Image();actor.src='/art/nell.png';await actor.decode();
+      const pages=await Promise.all(tileset.pages.map(async p=>{const image=new Image();image.src=`/${p.url}`;await image.decode();return image;}));
       const sprite=document.createElement('canvas');sprite.width=80;sprite.height=80;const s=sprite.getContext('2d')!;s.drawImage(actor,0,0);const actorPixels=s.getImageData(0,0,80,80).data;
       const tree=document.createElement('canvas');tree.width=96;tree.height=96;const t=tree.getContext('2d')!;
       for(let y=0;y<4;y++)for(let x=0;x<4;x++){
         const id=tileset.tiles.find(tile=>tile.type===`tree-${x}-${y}`)!.id;
-        t.drawImage(atlas,id%tileset.columns*24,Math.floor(id/tileset.columns)*24,24,24,x*24,y*24,24,24);
+        const i=tileset.pages.findIndex(p=>id+1>=p.firstgid&&id+1<p.firstgid+p.tilecount),p=tileset.pages[i],frame=id+1-p.firstgid;
+        t.drawImage(pages[i],frame%p.columns*24,Math.floor(frame/p.columns)*24,24,24,x*24,y*24,24,24);
       }
       const treePixels=t.getImageData(0,0,96,96).data,view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
       const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();

@@ -1,0 +1,710 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "chapter-one-002",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 33,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/chapter-one-002.png",
+  "imagewidth": 192,
+  "imageheight": 120,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "sun-mural-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "sun-mural-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "collector-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "collector-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "collector-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "collector-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-3-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "collector-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "collector-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-1-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "collector-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-2-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "collector-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-3-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "collector-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "collector-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "collector-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "collector-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-3-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "collector-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-0-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "collector-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "collector-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-2-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "collector-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "collector-3-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "broken-collector-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "broken-collector-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "broken-collector-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "broken-collector-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-3-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "broken-collector-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-0-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "broken-collector-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-1-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "broken-collector-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-2-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "broken-collector-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-3-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 72
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "broken-collector-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "broken-collector-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "broken-collector-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "broken-collector-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-3-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "broken-collector-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-0-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "broken-collector-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-1-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "broken-collector-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-2-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "broken-collector-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "broken-collector-3-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 24
+        }
+      ]
+    }
+  ]
+}

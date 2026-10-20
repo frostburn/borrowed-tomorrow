@@ -1,9 +1,9 @@
 // Native pixel artwork, authored as reusable 24px tiles. No scenery is sampled.
 // Run from the repository root: node assets/tiles/draw-chapter-one.mjs
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-const S=24,COLS=16,tiles=[];
+const S=24,COLS=8,tiles=[];
 const P={ink:'#151e2d',deep:'#1d2b3c',shade:'#27394b',slate:'#354b5a',stone:'#526773',light:'#7f9294',cream:'#d7c5a0',gold:'#c79b55',shine:'#f4d991',wood:'#6e5149',woodL:'#a47b59',woodD:'#403541',brick:'#79515a',red:'#aa6664',roof:'#385666',roofL:'#527586',roofD:'#243948',leaf:'#2b4c49',leafL:'#41675a',leafH:'#65816a',soil:'#574c48',soilL:'#706159',soilD:'#454047',grass:'#304b49',grassL:'#3e5a50',water:'#234757',waterL:'#426b79'};
 const color=c=>{c=P[c]??c;return [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16),255];};
 class Pixels{
@@ -124,10 +124,38 @@ stamp('broken-collector',4,4,false,p=>{
 // PNG encoder keeps the authoring tool dependency-free.
 const crc=b=>{let c=0xffffffff;for(const v of b){c^=v;for(let i=0;i<8;i++)c=(c>>>1)^(c&1?0xedb88320:0);}return (c^0xffffffff)>>>0;};
 const chunk=(type,data)=>{const t=Buffer.from(type),n=Buffer.alloc(4),c=Buffer.alloc(4);n.writeUInt32BE(data.length);c.writeUInt32BE(crc(Buffer.concat([t,data])));return Buffer.concat([n,t,data,c]);};
-const rows=Math.ceil(tiles.length/COLS),atlas=new Pixels(COLS*S,rows*S);
-tiles.forEach(({p},i)=>{const x=i%COLS*S,y=Math.floor(i/COLS)*S;for(let yy=0;yy<S;yy++)p.data.copy(atlas.data,((y+yy)*atlas.w+x)*4,yy*S*4,(yy+1)*S*4);});
-const raw=Buffer.alloc((atlas.w*4+1)*atlas.h);for(let y=0;y<atlas.h;y++)atlas.data.copy(raw,y*(atlas.w*4+1)+1,y*atlas.w*4,(y+1)*atlas.w*4);
-const header=Buffer.alloc(13);header.writeUInt32BE(atlas.w);header.writeUInt32BE(atlas.h,4);header[8]=8;header[9]=6;
-writeFileSync('public/art/chapter-one-tiles.png',Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',header),chunk('IDAT',deflateSync(raw,{level:9})),chunk('IEND',Buffer.alloc(0))]));
-writeFileSync('assets/tiles/chapter-one.tileset.json',JSON.stringify({type:'tileset',version:'1.10',tiledversion:'1.11.2',name:'Chapter One',tilewidth:S,tileheight:S,tilecount:tiles.length,columns:COLS,image:'../../public/art/chapter-one-tiles.png',imagewidth:atlas.w,imageheight:atlas.h,margin:0,spacing:0,tiles:tiles.map(({name,walkable,sortOffset},id)=>({id,type:name,properties:[{name:'name',type:'string',value:name},...(walkable===undefined?[]:[{name:'walkable',type:'bool',value:walkable}]),...(sortOffset===undefined?[]:[{name:'sortOffset',type:'int',value:sortOffset}])]}))},null,2)+'\n');
-console.log(`${tiles.length} native tiles · ${atlas.w} × ${atlas.h}`);
+// Small native pages are the committed source of truth. Never upload a large
+// authoring sheet: export its real tiles first and enforce this byte budget.
+const pageSize=COLS*COLS,pages=[];
+mkdirSync('public/art/chapter-one',{recursive:true});
+mkdirSync('assets/tiles/pages',{recursive:true});
+function png(atlas){
+  const raw=Buffer.alloc((atlas.w*4+1)*atlas.h);for(let y=0;y<atlas.h;y++)atlas.data.copy(raw,y*(atlas.w*4+1)+1,y*atlas.w*4,(y+1)*atlas.w*4);
+  const header=Buffer.alloc(13);header.writeUInt32BE(atlas.w);header.writeUInt32BE(atlas.h,4);header[8]=8;header[9]=6;
+  return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',header),chunk('IDAT',deflateSync(raw,{level:9})),chunk('IEND',Buffer.alloc(0))]);
+}
+const definitions=tiles.map(({name,walkable,sortOffset},id)=>({id,type:name,properties:[{name:'name',type:'string',value:name},...(walkable===undefined?[]:[{name:'walkable',type:'bool',value:walkable}]),...(sortOffset===undefined?[]:[{name:'sortOffset',type:'int',value:sortOffset}])]}));
+for(let start=0;start<tiles.length;start+=pageSize){
+  const part=tiles.slice(start,start+pageSize),atlas=new Pixels(COLS*S,Math.ceil(part.length/COLS)*S),name=`chapter-one-${String(start/pageSize).padStart(3,'0')}`;
+  part.forEach(({p},i)=>{const x=i%COLS*S,y=Math.floor(i/COLS)*S;for(let yy=0;yy<S;yy++)p.data.copy(atlas.data,((y+yy)*atlas.w+x)*4,yy*S*4,(yy+1)*S*4);});
+  const bytes=png(atlas);if(bytes.length>65536)throw new Error(`${name} exceeds the 64 KB image limit; reduce the page size.`);
+  const page={type:'tileset',version:'1.10',tiledversion:'1.11.2',name,tilewidth:S,tileheight:S,tilecount:part.length,columns:COLS,image:`../../../public/art/chapter-one/${name}.png`,imagewidth:atlas.w,imageheight:atlas.h,margin:0,spacing:0,tiles:definitions.slice(start,start+pageSize).map(t=>({...t,id:t.id-start}))};
+  writeFileSync(`public/art/chapter-one/${name}.png`,bytes);
+  writeFileSync(`assets/tiles/pages/${name}.json`,JSON.stringify(page,null,2)+'\n');
+  const {tiles:pageTiles,...pageInfo}=page;
+  pages.push({...pageInfo,firstgid:start+1,source:`../../../../assets/tiles/pages/${name}.json`,url:`art/chapter-one/${name}.png`});
+}
+writeFileSync('assets/tiles/chapter-one.tileset.json',JSON.stringify({name:'Chapter One',tilewidth:S,tileheight:S,tilecount:tiles.length,tiles:definitions,pages},null,2)+'\n');
+for(const file of readdirSync('src/content/chapter-one/maps')){
+  if(!file.endsWith('.json'))continue;
+  const {readFileSync}=await import('node:fs'),path=`src/content/chapter-one/maps/${file}`,map=JSON.parse(readFileSync(path,'utf8'));
+  map.tilesets=pages.map(({firstgid,source})=>({firstgid,source}));
+  const text=JSON.stringify(map,null,2).replace(/"data": \[([\d,\s]+)\]/g,(_,body)=>{
+    const cells=body.split(',').map(Number),rows=[];
+    for(let i=0;i<cells.length;i+=map.width)rows.push('        '+cells.slice(i,i+map.width).join(','));
+    return '"data": [\n'+rows.join(',\n')+'\n      ]';
+  });
+  writeFileSync(path,text+'\n');
+}
+rmSync('public/art/chapter-one-tiles.png',{force:true});
+console.log(`${tiles.length} native tiles · ${pages.length} pages · at most ${COLS*S} × ${COLS*S} pixels / 64 KB per image`);

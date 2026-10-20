@@ -7,11 +7,20 @@ import { cells, toPixel } from '../src/rules/hex';
 import { decodeSave, newGame } from '../src/rules/state';
 import { checkpoint } from './support/progress';
 
-it('Chapter One consists of complete native tile layers referencing one real atlas',()=>{
-  const png=readFileSync('public/art/chapter-one-tiles.png');
-  expect([png.readUInt32BE(16),png.readUInt32BE(20)]).toEqual([TILESET.imagewidth,TILESET.imageheight]);
+it('Chapter One uses complete native layers and bounded image pages',()=>{
+  let next=1;
+  for(const page of TILESET.pages){
+    const png=readFileSync(`public/${page.url}`);
+    expect(png.length).toBeLessThanOrEqual(65536);
+    expect([png.readUInt32BE(16),png.readUInt32BE(20)]).toEqual([page.imagewidth,page.imageheight]);
+    expect(Math.max(page.imagewidth,page.imageheight)).toBeLessThanOrEqual(192);
+    expect(page.firstgid).toBe(next);next+=page.tilecount;
+    const source=JSON.parse(readFileSync(`assets/tiles/pages/${page.name}.json`,'utf8'));
+    expect(source.tiles.map((t:{id:number})=>({...t,id:t.id+page.firstgid-1}))).toEqual(TILESET.tiles.slice(page.firstgid-1,next-1));
+  }
+  expect(next-1).toBe(TILESET.tilecount);
   for(const data of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES)]){
-    expect([data.tilewidth,data.tileheight]).toEqual([24,24]);expect(data.tilesets).toHaveLength(1);
+    expect([data.tilewidth,data.tileheight]).toEqual([24,24]);expect(data.tilesets).toEqual(TILESET.pages.map(({firstgid,source})=>({firstgid,source})));
     expect(data.layers.some(l=>l.type==='imagelayer')).toBe(false);
     for(const l of data.layers.filter(l=>l.type==='tilelayer')){
       expect(l.data).toHaveLength(data.width*data.height);
