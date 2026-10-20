@@ -134,10 +134,10 @@ it('right-hand grip depth and screen side are anatomical while the left arm coun
 it('arms and weapon layers isolate cleanly and hiding them preserves the armless reference',()=>{
   const body=new Set(REFERENCE_LAYERS.filter(id=>!REFERENCE_ARM_LAYERS.some(arm=>arm===id)));
   for(let i=0;i<6;i++)for(const direction of ACTOR_DIRECTIONS){
-    const base=renderLayers(referenceLayers(referenceFrame(i)),direction,body);
+    const base=Buffer.from(renderLayers(referenceLayers(referenceFrame(i)),direction,body));
     for(const weapon of ['lantern','lance'] as const){
       const layers=referenceLayers(referenceFrame(i,weapon));
-      expect(renderLayers(layers,direction,body)).toEqual(base);
+      expect(Buffer.from(renderLayers(layers,direction,body)).equals(base),`${direction} frame ${i}: ${weapon} preserves body pixels`).toBe(true);
       for(const id of REFERENCE_ARM_LAYERS)expect(renderLayers(layers,direction,new Set([id])).some(n=>n!==0)).toBe(true);
     }
   }
