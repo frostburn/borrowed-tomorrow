@@ -18,7 +18,7 @@ export class Audio {
   private generation=0;
   private instruments?:readonly Instrument[];
   private volume=.75;
-  private history:{mode:MusicMode;bar:number;start:number;beat:number}[]=[];
+  private history:{mode:MusicMode;bar:number;start:number;beat:number;beats:number}[]=[];
   private steps=0;
   private lastStep=-1;
   enabled=false;
@@ -59,7 +59,7 @@ export class Audio {
   }
   position(){
     const now=this.context?.currentTime??0,entry=[...this.history].reverse().find(e=>e.start<=now)??this.history[0];
-    return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(3.999,(now-entry.start)/entry.beat)):0,playing:this.enabled};
+    return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(entry.beats-.001,(now-entry.start)/entry.beat)):0,playing:this.enabled};
   }
   cinematicMix(level:number){
     this.cinematicLevel=Math.max(0,Math.min(1,level));
@@ -71,10 +71,10 @@ export class Audio {
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
       if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
-      const beat=60/ARRANGEMENTS[this.mode].bpm;
-      this.history.push({mode:this.mode,bar:this.bar,start:this.next,beat});if(this.history.length>3)this.history.shift();
+      const {bpm,beats}=ARRANGEMENTS[this.mode],beat=60/bpm;
+      this.history.push({mode:this.mode,bar:this.bar,start:this.next,beat,beats});if(this.history.length>3)this.history.shift();
       for(const n of scoreBar(this.mode,this.bar))if(!this.instruments||this.instruments.includes(n.instrument))this.music!.note(n.instrument,n.pitch,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
-      this.next+=beat*4;this.bar++;
+      this.next+=beat*beats;this.bar++;
     }
   }
   effect(kind:Effect,surface:MapId|'sluice'='station'){

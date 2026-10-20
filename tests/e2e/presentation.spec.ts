@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { capture, dialogue, inspect, nativeScene } from './controls';
 import { approach } from './navigation';
 
-const modes=['refuge','breakwater','sanctuary','four-battle','four-warden','conduit','coast','station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
+const modes=['refuge','breakwater','sanctuary','four-battle','four-warden','conduit','coast','coast-battle','petra-battle','station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper','resonance'] as const;
 
 test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
@@ -103,7 +103,7 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     // @ts-expect-error Vite serves this browser-only module import.
     const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
     // @ts-expect-error Vite serves this browser-only module import.
-    const {scoreBar,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
+    const {scoreBar,scoreLength,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
     const summarize=(buffer:AudioBuffer,start=0,end=buffer.duration)=>{
       const data=buffer.getChannelData(0);let sum=0,peak=0,hash=0;const a=Math.round(start*buffer.sampleRate),z=Math.min(data.length,Math.round(end*buffer.sampleRate));
       for(let i=a;i<z;i++){const n=data[i];sum+=n*n;peak=Math.max(peak,Math.abs(n));if(i%211===0)hash=(Math.imul(hash,31)+Math.round(n*10000))|0;}
@@ -111,16 +111,16 @@ test('the actual Web Audio instruments render distinct scores and action sounds 
     };
     const scores=[];
     for(const mode of modes){
-      const bars=!full?4:['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:['conduit','coast','rillbridge','sluice','flood','cinderbank','infirmary','shunting'].includes(mode)?16:4;
-      const beat=60/ARRANGEMENTS[mode].bpm,parts=[];
+      const bars=full?scoreLength(mode):4;
+      const {beats,bpm}=ARRANGEMENTS[mode],beat=60/bpm,parts=[];
       // Bound each offline graph. Two preceding bars retain held voices at the
       // section boundary; the first section also checks the loop's return.
       for(let start=0;start<bars;start+=8){
         const count=Math.min(8,bars-start),leadIn=full?2:0;
-        const c=new OfflineAudioContext(2,Math.ceil(((count+leadIn)*4*beat+2)*22050),22050);
+        const c=new OfflineAudioContext(2,Math.ceil(((count+leadIn)*beats*beat+2)*22050),22050);
         const gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-        for(let bar=start-leadIn;bar<start+count;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar-start+leadIn)*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
-        parts.push(summarize(await c.startRendering(),.03+leadIn*4*beat,.03+(leadIn+count)*4*beat));
+        for(let bar=start-leadIn;bar<start+count;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar-start+leadIn)*beats*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+        parts.push(summarize(await c.startRendering(),.03+leadIn*beats*beat,.03+(leadIn+count)*beats*beat));
       }
       scores.push({mode,rms:Math.sqrt(parts.reduce((sum,p)=>sum+p.rms*p.rms,0)/parts.length),peak:Math.max(...parts.map(p=>p.peak)),hash:parts.reduce((hash,p)=>(Math.imul(hash,31)+p.hash)|0,0)});
     }

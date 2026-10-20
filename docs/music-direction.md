@@ -35,9 +35,19 @@ The user supplied these alternatives and asked us to remember them:
 
 Use a reference when a new location calls for it. Retain melodic identity, variation across a complete loop, written rests and clear accompaniment levels. Verify live and offline audio without clipping.
 
-## Iron Coast revision
+## Chapter Two — regional themes and battles
 
-The harbor uses the Nichijou harmony at 88 BPM. Its two-bar call and answer recur with the same rhythm over the changing chords; a lifted third phrase leads into a quieter return and tonic cadence. One reed carries the melody. Its round bass uses a sine fundamental and a quiet octave, without the standard bass’s sub-octave or triangle overtones, keeping the meantone harmony clearer. Bar 2 voices Bm7b5/D: D replaces the low B, with B retained in the piano, giving a C–D–E bass ascent while keeping the half-diminished harmony. Low piano chords and half-note bass replace the competing upper arpeggio; sustained strings enter only for the lifted phrase. Keep the passing notes short and the phrase endings open, so the harmony can move without the lead sounding like a new tune each bar.
+Iron Coast keeps the Nichijou harmony at 88 BPM and its E–G melodic call. The sixteen-bar form now gives the answers different lengths, leaves held phrase endings, broadens the middle and varies the return. Bass replies, piano comping and the light percussion have separately written rests rather than repeating the same two-bar rhythm throughout. Preserve the round bass's sine fundamental and quiet octave. Bar 2 remains Bm7b5/D: D replaces the low B, with B retained in the piano, keeping the accepted C–D–E bass ascent and half-diminished harmony.
+
+Railway Ward is a C-major piano waltz in **3/4 at 78 BPM**. Its sixteen bars are rewritten around three quarter-note beats: a bass downbeat, gentle left-hand chords on two and three, and clear right-hand phrases. Cadences omit the third accompaniment beat; strings enter only in the middle. The scheduler, bar-boundary changes, playback position and Music inspector all use the cue's authored meter.
+
+| Encounter | Cue | Source and treatment |
+| --- | --- | --- |
+| Signal walk / loading gate | `coast-battle` · Iron Coast — train raid | Harbor harmony and E–G call at 124 BPM; clipped replies, a higher middle, varied bass and chord stabs, and lighter phrase-ending drums |
+| Collector / boarding defense | `shunting` · Cinderbank — loading walk | Cinderbank's E-minor melody at 126 BPM; shorter articulation, moving round bass, chord replies and a broader middle |
+| Petra's crossing | `petra-battle` · The last crossing | Cinderbank's B–E call at 116 BPM, expanded into a firm string lead, longer answers and a heavier rhythm; D# and F# retain the B-major dominant's spelling |
+
+Each encounter declares its music cue in content. Future chapters must choose their own regional battle arrangement explicitly; they cannot silently inherit Chapter One's score. Chapter Three keeps its related switching arrangement, and Chapter Four keeps its existing battle and warden themes. All six Chapter Two cues are grouped together in the Music workshop with their tempo and meter. Rendered QA audio is never a runtime asset.
 
 ## Beneath the Palace
 
