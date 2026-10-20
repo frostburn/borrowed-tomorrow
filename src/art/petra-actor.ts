@@ -127,7 +127,7 @@ function saber(pose:PetraPose,textures:CharacterTextures,direction:ActorDirectio
   const left=Math.min(...spans.map(s=>s[2])),right=Math.max(...spans.map(s=>s[3])),top=Math.min(...spans.map(s=>s[0])),bottom=Math.max(...spans.map(s=>s[1]));
   const actual=project(pose.arms.right.grip,direction),rest=project(bind().arms.right.grip,direction),art=ARMS[direction].right.grip,source=ARMS[face].right.grip;
   const angles={front:[135,-65],left:[-135,70],right:[-130,-40],back:[-145,65]};
-  const angle=(pose.action&&pose.attack==='saber'?angles[direction][pose.action==='contact'?1:0]:2*Math.sin(pose.phase*Math.PI*2))*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),depth=orient(pose.arms.right.grip,direction).y+4;
+  const angle=(pose.action&&pose.attack==='saber'?angles[direction][pose.action==='contact'?1:0]:0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),depth=orient(pose.arms.right.grip,direction).y+4;
   const mesh=decal('right-weapon',texture,[left,top,right-left,bottom-top],0,depth,direction);
   mesh.vertices=[[left,top],[right,top],[right,bottom],[left,bottom]].map(([x,y])=>{
     const dx=x-source[0],dy=y-source[1];return viewPoint(art[0]+actual.x-rest.x+dx*c-dy*s,art[1]+actual.y-rest.y+dx*s+dy*c,depth,direction);

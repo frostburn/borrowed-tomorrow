@@ -48,7 +48,7 @@ export function armToGrip(shoulder:Point3,grip:Point3,config:Readonly<RigProport
 /** Attach arms to the accepted walk without changing its legs, feet or body rise. */
 export function referenceRig(phase:number,weapon:ReferenceWeapon='none',config:Readonly<RigProportions>=REFERENCE_PROPORTIONS):ReferencePose {
   const pose=referencePose(phase,config),arms={left:arm('left',pose,weapon,config),right:arm('right',pose,weapon,config)};
-  const pitch=(weapon==='lantern'?5*Math.sin(pose.phase*2*Math.PI):weapon==='crossbow'?-65+3*Math.sin(pose.phase*2*Math.PI):weapon==='saber'?-70+2*Math.sin(pose.phase*2*Math.PI):-24+2*Math.sin(pose.phase*2*Math.PI))*Math.PI/180;
+  const pitch=(weapon==='lantern'?5*Math.sin(pose.phase*2*Math.PI):weapon==='crossbow'?-65+3*Math.sin(pose.phase*2*Math.PI):weapon==='saber'?-70:-24+2*Math.sin(pose.phase*2*Math.PI))*Math.PI/180;
   return {...pose,arms,proportions:config,weapon:weapon==='none'?null:{kind:weapon,hand:'right',grip:arms.right.grip,pitch},...(weapon==='saber'?{shield:{hand:'left' as const,grip:arms.left.grip,pitch:0}}:{})};
 }
 export const referenceRigFrame=(frame:number,weapon:ReferenceWeapon='none',config:Readonly<RigProportions>=REFERENCE_PROPORTIONS)=>referenceRig(frame/REFERENCE_FRAMES,weapon,config);
