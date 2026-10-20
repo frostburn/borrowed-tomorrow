@@ -41,19 +41,30 @@ function decal(id:string,texture:PixelTexture,rect:readonly[number,number,number
 }
 
 /** Native jacket flanks extend outside the central bib; exclude idle hands and tools. */
-function jacketSides(source:PixelTexture,direction:ActorDirection,dy:number):SpriteLayer {
+function jacketSides(source:PixelTexture,direction:ActorDirection,dy:number):SpriteLayer[] {
   // Half-open source spans: top, bottom, left, right. These parts stay with the
   // torso while depth-tested arms swing across the restored lapels and hem.
   const spans:Record<ActorDirection,readonly (readonly [number,number,number,number])[]>={
     front:[[27,34,31,33],[34,40,30,33],[40,48,29,33],[27,35,47,49],[35,50,47,50]],
     left:[[34,43,32,34],[40,46,46,50]],
     right:[[38,45,31,34],[45,49,33,38]],
-    back:[[33,42,30,33],[42,49,29,33],[33,43,47,49],[43,49,47,50]],
+    back:[[27,34,31,33],[27,34,47,49],[33,42,30,33],[42,49,29,33],[33,43,47,49],[43,49,47,50]],
   };
   const texture={...source,pixels:new Uint8ClampedArray(source.pixels)};
   for(let y=0;y<source.height;y++)for(let x=0;x<source.width;x++)
     if(!spans[direction].some(([top,bottom,left,right])=>y>=top&&y<bottom&&x>=left&&x<right))texture.pixels[(y*source.width+x)*4+3]=0;
-  return decal('torso',texture,[28,27,23,24],dy,4,direction);
+  if(direction!=='front')return [decal('torso',texture,[28,27,23,24],dy,direction==='back'?4:8,direction)];
+  const layers=[decal('torso',texture,[28,27,23,9],dy,4,direction)];
+  for(let y=36;y<51;y++)for(const side of ['left','right'] as const){
+    const left=side==='left',x=left?28:45,width=left?7:6,flare=Math.round((y-36)/5);
+    const mesh=decal('torso',texture,[x,y,width,1],dy,4,direction);
+    mesh.vertices=[[x,y],[x+width,y],[x+width,y+1],[x,y+1]].map(([sx,sy])=>{
+      const weight=left?(x+width-sx)/width:(sx-x)/width;
+      return viewPoint(sx+(left?-1:1)*flare*weight,sy+dy,4,direction);
+    });
+    layers.push(mesh);
+  }
+  return layers;
 }
 
 interface SkinVertex { point:Point3;u:number;v:number }
@@ -90,6 +101,16 @@ function rounded(id:string,center:Point3,radii:readonly[number,number,number],co
       return {point:{x:center.x+Math.cos(angle)*radii[0]*ring*scale,y:center.y+Math.sin(angle)*radii[1]*ring*scale,z:center.z+Math.cos(v*Math.PI)*radii[2]*scale},u:0,v:0};});
   });
   return surface(id,rings,color);
+}
+
+/** A continuous trouser seat overlaps the waist and both upper thigh caps. */
+function pelvis(pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const {hipHalfWidth,legWidth}=pose.proportions,width=hipHalfWidth+3.5*legWidth;
+  const stations=[[5,.78,2.4],[3.5,.98,3],[1,1,3.2],[-1.5,.9,2.6],[-3,.65,1.9]] as const;
+  return surface('torso',stations.map(([z,full,depth],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
+    const angle=i/ROUND_SIDES*Math.PI*2,c=Math.cos(angle),s=Math.sin(angle);
+    return {point:{x:c*width*full,y:s*depth,z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:row/(stations.length-1)*texture.height};
+  })),0xffffff,texture);
 }
 
 function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection,scale:number,widthScale:number):SpriteLayer {
@@ -133,9 +154,10 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
     const hair=braid&&r>g*1.25&&g>r*.32&&b<g*.85;
     if(!hair)head.pixels[at+3]=0;
   }
-  const trousers=patch(source,37,45,6,10,(r,g,b)=>r<g*1.4&&b>r*.8),sleeve=patch(source,direction==='right'?33:29,30,4,10,(r,g,b)=>r>g*1.7&&r>b*1.4&&r>65),boot=patch(source,37,58,6,9,(r,g,b)=>r>g*1.2&&g>b*1.1);
+  const sleeveRegions:Record<ActorDirection,readonly[number,number,number,number]>={front:[47,29,4,9],left:[39,29,4,9],right:[35,29,4,9],back:[28,29,4,9]};
+  const trousers=patch(source,37,45,6,10,(r,g,b)=>r<g*1.4&&b>r*.8),sleeve=patch(source,...sleeveRegions[direction],(r,g,b)=>r>g*1.7&&r>b*1.4&&r>65),boot=patch(source,37,58,6,9,(r,g,b)=>r>g*1.2&&g>b*1.1);
   // Native Nell has tall boots below the knee, rather than full-length trousers.
-  const layers:SpriteLayer[]=[];
+  const layers:SpriteLayer[]=[pelvis(pose,trousers,direction)];
   for(const side of ['left','right'] as const){
     const leg=pose[side],arm=pose.arms[side],inside=side==='right'?-1:1,{armWidth,legWidth}=pose.proportions;
     layers.push(limb(`${side}-thigh`,leg.hip,leg.knee,[4,3.5],[2.6,2.5],trousers,direction,legWidth),
@@ -146,7 +168,7 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
       rounded(`${side}-hand`,{x:arm.grip.x+inside*1.45*armWidth,y:arm.grip.y+.7,z:arm.grip.z+.2},[.8,.9,1.05],0xb38758,armWidth));
   }
   const dy=NELL_PROPORTIONS.hipHeight-pose.hipHeight,bodyRect:readonly[number,number,number,number]=direction==='front'||direction==='back'?[33,27,14,22]:[34,27,12,22];
-  layers.push(decal('torso',source,bodyRect,dy,4,direction),jacketSides(source,direction,dy),decal('head',head,[20,0,40,43],dy,7,direction));
+  layers.push(decal('torso',source,bodyRect,dy,direction==='left'||direction==='right'?8:4,direction),...jacketSides(source,direction,dy),decal('head',head,[20,0,40,43],dy,7,direction));
   layers.push(...lantern(pose.weapon!,source,direction));
   return layers;
 }
