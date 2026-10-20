@@ -1103,7 +1103,7 @@
     },
     {
       "id": 19,
-      "name": "Orrin’s engine",
+      "name": "Orrin\u2019s engine",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -1999,7 +1999,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Kit · the loading gate"
+              "value": "Kit \u00b7 the loading gate"
             },
             {
               "name": "sprite",
@@ -2028,7 +2028,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Loading gate · armored guardian"
+              "value": "Loading gate \u00b7 armored guardian"
             },
             {
               "name": "sign",
@@ -2057,7 +2057,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Signal walk · ranged crows"
+              "value": "Signal walk \u00b7 ranged crows"
             },
             {
               "name": "sign",
@@ -2124,7 +2124,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "West · railway ward"
+              "value": "West \u00b7 railway ward"
             },
             {
               "name": "sign",
@@ -2148,7 +2148,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Orrin’s engine · coal siding"
+              "value": "Orrin\u2019s engine \u00b7 coal siding"
             },
             {
               "name": "sign",
@@ -2470,10 +2470,156 @@
           "point": true
         }
       ]
+    },
+    {
+      "draworder": "topdown",
+      "id": 39,
+      "name": "People",
+      "objects": [
+        {
+          "id": 26,
+          "name": "quay-parcels",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 468.0,
+          "y": 540.0
+        },
+        {
+          "id": 27,
+          "name": "crane-worker",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 1116.0,
+          "y": 516.0
+        },
+        {
+          "id": 28,
+          "name": "waiting-traveler",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 540.0,
+          "y": 708.0
+        },
+        {
+          "id": 29,
+          "name": "waiting-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 780.0,
+          "y": 660.0
+        },
+        {
+          "id": 30,
+          "name": "released-patient",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-patient"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "prisonersFreed"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "wardSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 708.0,
+          "y": 420.0
+        },
+        {
+          "id": 31,
+          "name": "released-traveler",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "prisonersFreed"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "wardSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 612.0,
+          "y": 444.0
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
     }
   ],
-  "nextlayerid": 39,
-  "nextobjectid": 26,
+  "nextlayerid": 40,
+  "nextobjectid": 32,
   "orientation": "orthogonal",
   "properties": [
     {

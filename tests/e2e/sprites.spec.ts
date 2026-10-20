@@ -15,7 +15,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const feet=await page.evaluate(async()=>{
       const all=[];
       const party=['nell','orrin','kit','celia','petra'];
-      const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian'];
+      const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
         const image=new Image();image.src=`/art/${hero}${suffix}.png`;await image.decode();
         const canvas=document.createElement('canvas');canvas.width=canvas.height=80;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
@@ -75,14 +75,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Sprites',exact:true}).click();
     await expect(page.getByRole('button',{name:'Inspect Celia',exact:true})).toHaveAttribute('aria-pressed','true');
     const collections=page.getByRole('group',{name:'Sprite collection',exact:true});
-    await collections.getByRole('button',{name:'NPCs (12)',exact:true}).click();
-    await expect(review.locator('[data-sprite-hero]')).toHaveCount(12);
+    await collections.getByRole('button',{name:'NPCs (16)',exact:true}).click();
+    await expect(review.locator('[data-sprite-hero]')).toHaveCount(16);
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
     await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.png$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
     await expect(review.locator('.sprite-file')).toContainText('master.png');
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
-    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([1152,1152]);
+    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([1536,1536]);
     await capture(page,`sprite-npcs-${device}`);
     await collections.getByRole('button',{name:'Enemies (4)',exact:true}).click();
     await review.getByRole('button',{name:'Inspect Hound',exact:true}).click();

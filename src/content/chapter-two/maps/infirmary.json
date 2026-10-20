@@ -1747,7 +1747,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Dena · ward supplies and rest"
+              "value": "Dena \u00b7 ward supplies and rest"
             },
             {
               "name": "doneFlag",
@@ -1776,7 +1776,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Kit · the waiting families"
+              "value": "Kit \u00b7 the waiting families"
             },
             {
               "name": "sign",
@@ -1800,7 +1800,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical-train clearance · capital"
+              "value": "Medical-train clearance \u00b7 capital"
             },
             {
               "name": "sign",
@@ -1848,7 +1848,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Cinderbank siding · collect the families"
+              "value": "Cinderbank siding \u00b7 collect the families"
             },
             {
               "name": "sign",
@@ -1978,16 +1978,143 @@
           "properties": []
         }
       ]
+    },
+    {
+      "draworder": "topdown",
+      "id": 32,
+      "name": "People",
+      "objects": [
+        {
+          "id": 13,
+          "name": "end-bed-patient",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-patient"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "settlementSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 612.0,
+          "y": 492.0
+        },
+        {
+          "id": 14,
+          "name": "window-bed-patient",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-patient"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "settlementSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 1188.0,
+          "y": 660.0
+        },
+        {
+          "id": 15,
+          "name": "bedside-traveler",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "settlementSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 612.0,
+          "y": 684.0
+        },
+        {
+          "id": 16,
+          "name": "visiting-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "settlementSeen"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 924.0,
+          "y": 684.0
+        },
+        {
+          "id": 17,
+          "name": "ward-delivery",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 900.0,
+          "y": 468.0
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
     }
   ],
-  "nextlayerid": 32,
-  "nextobjectid": 13,
+  "nextlayerid": 33,
+  "nextobjectid": 18,
   "orientation": "orthogonal",
   "properties": [
     {
       "name": "name",
       "type": "string",
-      "value": "Iron Coast · the railway ward"
+      "value": "Iron Coast \u00b7 the railway ward"
     },
     {
       "name": "subtitle",

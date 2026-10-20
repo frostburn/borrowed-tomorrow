@@ -861,7 +861,7 @@
     },
     {
       "id": 15,
-      "name": "Miners’ cottage west",
+      "name": "Miners\u2019 cottage west",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -923,7 +923,7 @@
     },
     {
       "id": 16,
-      "name": "Miners’ cottage north",
+      "name": "Miners\u2019 cottage north",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -2320,7 +2320,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Open the collector · protect the loading walk"
+              "value": "Open the collector \u00b7 protect the loading walk"
             },
             {
               "name": "sprite",
@@ -2349,7 +2349,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Dena · all aboard"
+              "value": "Dena \u00b7 all aboard"
             },
             {
               "name": "requiredFlag",
@@ -2383,7 +2383,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Petra · the far crossing"
+              "value": "Petra \u00b7 the far crossing"
             },
             {
               "name": "sprite",
@@ -2417,7 +2417,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical coaches · rescued prisoners"
+              "value": "Medical coaches \u00b7 rescued prisoners"
             },
             {
               "name": "sign",
@@ -2441,7 +2441,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Board the engine · capital line"
+              "value": "Board the engine \u00b7 capital line"
             },
             {
               "name": "sign",
@@ -2494,7 +2494,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Alban · behind the crossing"
+              "value": "Alban \u00b7 behind the crossing"
             },
             {
               "name": "sprite",
@@ -2976,10 +2976,205 @@
           "properties": []
         }
       ]
+    },
+    {
+      "draworder": "topdown",
+      "id": 45,
+      "name": "People",
+      "objects": [
+        {
+          "id": 38,
+          "name": "shed-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 468.0,
+          "y": 516.0
+        },
+        {
+          "id": 39,
+          "name": "shed-traveler",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 420.0,
+          "y": 564.0
+        },
+        {
+          "id": 40,
+          "name": "platform-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 612.0,
+          "y": 444.0
+        },
+        {
+          "id": 41,
+          "name": "loading-worker",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 780.0,
+          "y": 420.0
+        },
+        {
+          "id": 42,
+          "name": "boarding-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "evacuationReady"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 708.0,
+          "y": 396.0
+        },
+        {
+          "id": 43,
+          "name": "boarding-traveler",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "evacuationReady"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 780.0,
+          "y": 420.0
+        },
+        {
+          "id": 44,
+          "name": "boarding-second-family",
+          "point": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "coastCollectorWon"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "evacuationReady"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 0,
+          "height": 0,
+          "x": 852.0,
+          "y": 396.0
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
     }
   ],
-  "nextlayerid": 45,
-  "nextobjectid": 38,
+  "nextlayerid": 46,
+  "nextobjectid": 45,
   "orientation": "orthogonal",
   "properties": [
     {

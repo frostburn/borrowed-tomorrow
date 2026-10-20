@@ -23,6 +23,7 @@ Save version 10 identifies campaign `imperial-debt` and stores a shared equipmen
 
 ## Chapter Two — Prison Trains
 
+- Silent dock workers and waiting families populate the exchange; freed prisoners appear beside the opened coach until reaching the ward. Patients, visitors and a supply worker occupy the ward. Cinderbank families wait near the sheds, gather at the medical coaches after the collector fight, and leave the platform when boarding completes. These nameless people add no dialogue or errands, and their appearances follow existing rescue flags.
 - The explicit `chapter-two:iron-coast` boundary opens the chapter. All three regional maps load before it is consumed; failure preserves the complete departure. A source checkpoint without the coast art pack offers no Begin Chapter Two button.
 - Kit arrives as a registered courier delivering medicine and letters. Alban tears his permit, seizes the satchel and throws it into the barred coach. Petra pulls a hound off Kit’s satchel and asks Alban to honor the permit, but still makes Kit stand back. Nell watches from farther down the platform; Alban does not see her during this encounter.
 - At the loading gate Nell returns a piece of Kit’s permit and asks about Tomas. Kit saw Tomas at the transfer window that morning, when the army refused to let him send a letter. Kit agrees to guide Nell and Orrin to recover his deliveries. He is not a resistance operative or a volunteer train robber. `kitJoined` commits only when this conversation completes.
