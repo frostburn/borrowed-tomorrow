@@ -1,0 +1,293 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-071",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 11,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-071.webp",
+  "imagewidth": 192,
+  "imageheight": 48,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "palace-vessel-7-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "palace-vessel-8-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "palace-vessel-0-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "palace-vessel-1-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "palace-vessel-2-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "palace-vessel-3-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "palace-vessel-4-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "palace-vessel-5-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "palace-vessel-6-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-6-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "palace-vessel-7-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "palace-vessel-8-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-12"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

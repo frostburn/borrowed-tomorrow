@@ -2,14 +2,32 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
+import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
 import { CIVILIAN_SPRITES } from '../src/content/civilians';
 import { gridPoint, layerVisible, mapPoints, tilePages, TILESET, tileWalkable } from '../src/content/tilemaps';
 import { cells, toPixel } from '../src/rules/hex';
 import { decodeSave, newGame } from '../src/rules/state';
-import { coastCheckpoint, checkpoint } from './support/progress';
+import { coastCheckpoint, palaceCheckpoint, checkpoint } from './support/progress';
 
-const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES};
+const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS,...CHAPTER_THREE_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES,...CHAPTER_THREE_BATTLES};
+
+it('Chapter Three doors and consoles have reachable approaches beside their physical artwork',()=>{
+  const state=palaceCheckpoint('conduitGuardWon');
+  for(const [map,id,blocked] of [['northglass','capital-works',{x:47,y:12}],['relayhall','works-plan',{x:32,y:21}],['conduit','heart-release',{x:47,y:18}]] as const){
+    const m=MAPS[map],object=m.objects.find(o=>o.id===id)!;
+    expect(walkable(m,blocked.x,blocked.y,state)).toBe(false);
+    expect(walkable(m,object.x,object.y,state)).toBe(true);
+    const start=gridPoint(mapPoints(m.tiles!,'Arrivals')[0]);expect(worldPath(m,start,object,state).length).toBeGreaterThan(0);
+    const restored=restorePoint(m,blocked,state)!;expect(walkable(m,restored.x,restored.y,state)).toBe(true);
+  }
+  expect(visiblePeople(MAPS.northglass,palaceCheckpoint('capitalSeen'))).toHaveLength(4);
+  expect(visiblePeople(MAPS.northglass,palaceCheckpoint('emperorMerged'))).toHaveLength(0);
+  expect(visiblePeople(MAPS.relayhall,palaceCheckpoint('tomasRescued'))).toHaveLength(0);
+  for(const map of Object.values(CHAPTER_THREE_MAPS))for(const person of map.people!){
+    expect(CIVILIAN_SPRITES).toContain(person.sprite);expect(walkable(map,person.x,person.y)).toBe(true);
+  }
+});
 
 it('silent Chapter Two people stand on floors apart from interactions, arrivals and scene casts',()=>{
   for(const map of Object.values(CHAPTER_TWO_MAPS)){

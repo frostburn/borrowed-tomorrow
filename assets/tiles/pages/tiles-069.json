@@ -1,0 +1,1426 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-069",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-069.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "palace-controls-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "palace-controls-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "palace-controls-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "palace-controls-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-5-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "palace-controls-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-6-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "palace-controls-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-7-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "palace-controls-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "palace-controls-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "palace-controls-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "palace-controls-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "palace-controls-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "palace-controls-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-5-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "palace-controls-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-6-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "palace-controls-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-7-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "palace-controls-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "palace-controls-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "palace-controls-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "palace-controls-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "palace-controls-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "palace-controls-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "palace-controls-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "palace-controls-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "palace-vessel-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "palace-vessel"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 9
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 13
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "palace-vessel-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "palace-vessel-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "palace-vessel-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "palace-vessel-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "palace-vessel-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "palace-vessel-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-6-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "palace-vessel-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "palace-vessel-8-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 307
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "palace-vessel-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "palace-vessel-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "palace-vessel-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "palace-vessel-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "palace-vessel-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "palace-vessel-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "palace-vessel-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-6-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "palace-vessel-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "palace-vessel-8-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 283
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "palace-vessel-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "palace-vessel-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "palace-vessel-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "palace-vessel-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "palace-vessel-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "palace-vessel-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "palace-vessel-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "palace-vessel-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "palace-vessel-8-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 259
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "palace-vessel-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "palace-vessel-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "palace-vessel-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "palace-vessel-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "palace-vessel-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "palace-vessel-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "palace-vessel-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-6-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "palace-vessel-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-7-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "palace-vessel-8-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-8-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 235
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "palace-vessel-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "palace-vessel-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "palace-vessel-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "palace-vessel-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-3-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "palace-vessel-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-4-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "palace-vessel-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-vessel-5-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

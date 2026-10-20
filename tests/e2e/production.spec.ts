@@ -85,14 +85,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  });
 }
 
-test('a source checkpoint without the chamber art preserves the capital departure',async({page})=>{
- test.skip(CHAPTER_THREE_AVAILABLE,'The complete chamber art pack is installed.');
- await page.goto('/');const saved=coastCheckpoint('chapterTwoComplete');await importSave(page,saved);
- await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();
- await expect(page.getByRole('button',{name:'Begin Chapter Three',exact:true})).toHaveCount(0);
- await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
- expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
-});
+
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production extraction console from the saved east side on ${device}`,async({page})=>{

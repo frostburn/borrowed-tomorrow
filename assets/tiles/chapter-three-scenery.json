@@ -1,0 +1,5 @@
+[
+  {"name":"palace-gate","input":0,"size":[336,216],"block":[12,0]},
+  {"name":"palace-controls","input":1,"size":[192,96],"block":[8,0]},
+  {"name":"palace-vessel","input":2,"size":[240,312],"block":[8,2]}
+]

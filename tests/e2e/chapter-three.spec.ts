@@ -1,9 +1,12 @@
 import { test,expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { CHAPTER_THREE_AVAILABLE } from '../../src/content/chapters';
+import { CHAPTER_THREE_MAPS } from '../../src/content/chapter-three/maps';
+import { tilePages } from '../../src/content/tilemaps';
+import { MAPS,arrival,walkable,worldPath } from '../../src/content/maps';
 import { coastCheckpoint,palaceCheckpoint } from '../support/progress';
 import { approach,importSave,travel,visit } from './navigation';
-import { battle,capture,dialogue,inspect,nativeScene } from './controls';
+import { battle,capture,clickWorld,dialogue,inspect,nativeScene } from './controls';
 test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
 async function equip(page:import('@playwright/test').Page,hero:string,item:string){
  await page.getByRole('button',{name:'Equipment',exact:true}).click();
@@ -75,8 +78,30 @@ test('the pressure route, optional stores refusal and escape work on a phone',as
  await travel(page,'works-depths','conduit');await capture(page,'conduit-arrival-phone');await dialogue(page);await approach(page,'heart-regulator');await battle(page,'heart-pressure-phone');await equip(page,'Kit','Insulated work coat');
  await approach(page,'heart-release');await capture(page,'emperor-rupture-phone');await dialogue(page);await visit(page,'capital-departure');await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await capture(page,'chapter-three-complete-phone');expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
 });
-test('failed chamber artwork preserves the current departure for retry',async({page})=>{
- await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.route('**/art/conduit.webp',route=>route.abort());
+test('failed chamber tiles preserve the current departure for retry',async({page})=>{
+ const otherPages=new Set(Object.values(MAPS).filter(m=>m.id!=='conduit'&&m.tiles).flatMap(m=>tilePages(m.tiles!).map(p=>p.name)));
+ const chamberPage=tilePages(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>!otherPages.has(p.name))!;expect(chamberPage).toBeTruthy();
+ await page.route(`**/${chamberPage.url}`,route=>route.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
- await page.unroute('**/art/conduit.webp');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.unroute(`**/${chamberPage.url}`);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+});
+
+test('covered Chapter Three saves restore onto connected native floors at fractional DPR',async({browser})=>{
+ const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
+ try{
+  const page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+  for(const [map,point,startName] of [['northglass',{x:47,y:12},'start'],['relayhall',{x:32,y:21},'from-siding'],['conduit',{x:32,y:17},'from-gallery']] as const){
+   const saved=palaceCheckpoint('conduitGuardWon');saved.location={map,...point};saved.party[0].hp=19;saved.bandages=7;
+   await importSave(page,saved);const restored=(await inspect(page)).state;
+   expect(walkable(MAPS[map],restored.location.x,restored.location.y,restored)).toBe(true);
+   expect(restored).toMatchObject({flags:saved.flags,inventory:saved.inventory,party:saved.party,activeParty:saved.activeParty,coins:saved.coins,bandages:7});
+   await nativeScene(page,map);await capture(page,`chapter-three-${map}-fractional-dpr`);
+   const path=worldPath(MAPS[map],restored.location,arrival(map,startName),restored);
+   const target=path.slice(0,5).reverse().find(p=>MAPS[map].objects.every(o=>Math.hypot(o.x-p.x,o.y-p.y)>=1.8&&(!o.hitArea||p.x<o.hitArea.x||p.x>=o.hitArea.x+o.hitArea.width||p.y<o.hitArea.y||p.y>=o.hitArea.y+o.hitArea.height)))!;expect(target).toBeTruthy();
+   await clickWorld(page,target.x,target.y);await expect.poll(async()=>(await inspect(page)).state.location,{timeout:20000}).toEqual({map,...target});
+   expect(await page.evaluate(()=>window.borrowedTomorrowPixels.inspect().physicalScale)).toBe(2);
+   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location).toEqual({map,...target});
+  }
+  expect(errors).toEqual([]);
+ }finally{await context.close();}
 });

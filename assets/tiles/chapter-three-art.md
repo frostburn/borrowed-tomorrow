@@ -1,0 +1,21 @@
+# Palace scenery modules
+
+Built-in Image Gen supplied three independent transparent prop sources in this work chat. The user has authorized publishing artwork generated here. The large sources stay outside git; only their small native tile pages are published. No whole-map painting was sliced into tiles.
+
+The sources share the approved railway art's slightly elevated orthographic front view, level horizontal edges, slate/ivory architecture, rounded green iron, warm brass and fine painted pixel detail. This is dimensional illustrated scenery rather than flat diagram tiles. The existing native railway, cave and paving pixels remain unchanged.
+
+## Production briefs
+
+- **Palace gate:** one isolated compact imperial railway entrance facade, ivory limestone, blue slate roof, three tall arches with glazed central double doors, a modest brass sun emblem, warm wall lamps and a low stone doorstep. Slightly elevated orthographic front view, shallow visible roof/sill depth, no isometric diamond perspective. Rich fine pixel texture; no people, ground island, labels, grid or detached particles. Complete silhouette and transparent margins. Native budget: 336 x 216.
+- **Instrument bank:** one continuous low green-enamel brass/iron console, five round ivory pressure gauges with black pointers, valve wheels, short softly cyan glass feed tubes and a worn base. Slightly elevated orthographic front view shows the tabletop and legs. Rounded metal, restrained highlights and cool shadows match the locomotives. No room, floor island, people, labels, numbers, fog or rays. Transparent background. Native budget: 192 x 96.
+- **Restrained vessel:** one faceless milky-crystal obelisk held by dark iron ribs, chains and a circular brass/green boiler base, with paired short feed pipes. Faint cool light; no face, humanoid, deity or monster anatomy. Slightly elevated orthographic front view, rounded detailed machinery and restrained highlights. No chamber, floor island, people, labels, loose particles, cloud or rays. Complete silhouette on transparency. Native budget: 240 x 312.
+
+## Native export
+
+Run `python3 assets/tiles/import-chapter-three.py GATE.png CONTROLS.png VESSEL.png`. `chapter-three-scenery.json` records input order, budgets and physical footprints. The importer trims the largest opaque silhouette, removes detached alpha specks, samples once with nearest-neighbor interpolation and preserves selected source RGB. The resulting modules are 14 x 9, 8 x 3 and 9 x 13 tiles. Their 24px pieces join the shared catalog without repacking existing pages or changing earlier IDs.
+
+The native page writer verifies decoded RGBA equality, dimensions no greater than 192 x 192 and a 128 KB cap for every image before replacing files. The terrain-edge baker appends reusable joins. Gameplay reads only these lossless PNG/WebP pages, ordinary Tiled JSON and tile properties; no source art, image conversion, recoloring or resizing runs in the browser.
+
+Sorted pieces use one ground anchor per module. The gate's front step, instrument-bank base and vessel's lower footprint block movement; their overhead pixels do not create rectangular invisible walls. Doors and consoles have map-owned clickable rectangles with reachable approaches. Stage the actors in clear space beside the props, and leave every tactical hex clear.
+
+`npm run check:art-upload` must pass after staging and before publication. Upload each approved page separately. Source images, overview renders and browser screenshots stay outside the repository.

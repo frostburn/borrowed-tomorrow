@@ -1,10 +1,10 @@
 # Native tile maps
 
-Open `src/content/chapter-one/maps/*.json` and `src/content/chapter-two/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Small native lossless PNG/WebP pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. `assets/tiles/tile-definitions.ts` provides ordinary imports for both the game and Node-based content tools. Each page is at most **192 × 192 pixels and 128 KB**, and is uploaded as its own image file. The dimensional pack comes from the supplied modular railway scenery and material sheets; no whole-map painting was sliced into tiles. `assets/tiles/README.md` records the importer and source crop manifest. Normal development and builds use the checked-in files directly.
+Open `src/content/chapter-one/maps/*.json` , `src/content/chapter-two/maps/*.json` and `src/content/chapter-three/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Small native lossless PNG/WebP pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. `assets/tiles/tile-definitions.ts` provides ordinary imports for both the game and Node-based content tools. Each page is at most **192 × 192 pixels and 128 KB**, and is uploaded as its own image file. The dimensional pack comes from the supplied modular railway scenery and material sheets; no whole-map painting was sliced into tiles. `assets/tiles/README.md` records the importer and source crop manifest. Normal development and builds use the checked-in files directly.
 
 Keep existing tile IDs stable when extending the tile set: append new definitions so the maps' references keep their meaning.
 
-Chapters One and Two share the tile pages: seven exploration maps and eight tactical arenas. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapters Three and Four retain native scenery, including the `infirmary` painting used by the Chapter Four refuge.
+Chapters One–Three share the tile pages: ten exploration maps and thirteen tactical arenas. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapter Three appends palace gates, instrument banks and the restrained vessel. Its former whole paintings and encoded parts are removed. Chapter Four retains native scenery, including the `infirmary` painting used by the Chapter Four refuge.
 
 | Map | Grid | Story route |
 | --- | --- | --- |
@@ -15,6 +15,9 @@ Chapters One and Two share the tile pages: seven exploration maps and eight tact
 | `coast` | 64 × 42 | Sea and cranes behind the barred coach; west loading gate and east signal walk lead around the guard barrier; ward exit and Orrin’s engine below |
 | `infirmary` | 64 × 42 | Windowed railway ward, medicine desk and stove; beds flank the clear central aisle between the exchange and siding exits |
 | `cinderbank` | 64 × 42 | Medical coaches, miners’ homes and coal shed frame the collector; evacuation leads east to Petra shielding Alban at the capital crossing |
+| `northglass` | 64 × 42 | A medical platform below the palace gate; patients, supplies and the coal engine remain visible while Petra refuses the renewed arrest |
+| `relayhall` | 64 × 42 | Tomas’s bypass bench behind the instrument banks; central intake controls, western stairs and optional sealed stores |
+| `conduit` | 64 × 42 | The restrained vessel behind a clear service deck; actual feed console on the right and gallery return stair in the south |
 
 The tactical `battle-*` maps frame clear fighting floors with location-specific tracks, train parts, machinery or cliffs. Their hex cells remain clear of scenery props. Combat rules, obstacles and rewards remain in `encounters.ts`.
 
@@ -66,3 +69,12 @@ Only tile pages used by the destination map are required to enter it. Failed pag
 Large authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
 
 After staging, run `npm run check:art-upload`. It checks the exact staged blobs for every added or modified raster image and refuses Chapter One pages over 128 KB (128 KB for other raster files). Upload each approved file independently. The content tests separately check native dimensions, page sizes, contiguous IDs and map references. The supplied previews have been recovered as 24 scenery modules and six terrain fields, exported into bounded native pages.
+
+
+## Chapter Three
+
+The palace gate, control bank and vessel are reusable modules exported into small pages by `assets/tiles/import-chapter-three.py`; see `assets/tiles/chapter-three-art.md`. Existing page bytes and tile IDs stay stable. The chapter shares dimensional stone, cave and railway materials with earlier maps; no whole painting is subdivided into pieces. Each of the five encounters owns a clear tiled floor, including both regulator approaches.
+
+Interactions, named arrivals and initial casts live in the three Tiled maps. The engine works door and feed console have clickable rectangles over their actual artwork and reachable approaches below it. Staged moves remain in the dialogue; do not leave actors hidden behind props when changing those endpoints. Current-format saves covered by a console or the vessel restore through the same connected-floor rules as earlier chapters.
+
+Patients and families remain beside the medical coaches until the escape; the gallery fitters leave after Tomas is freed. Feed-light layers disappear after extraction stops. Dena helps unload the patients and protects them during the renewed arrest. These supporting people add no errands. The chapter still saves Tomas permanently, offers both intake routes and all five equipment rewards, and preserves the Chapter Four departure.
