@@ -103,14 +103,46 @@ function rounded(id:string,center:Point3,radii:readonly[number,number,number],co
   return surface(id,rings,color);
 }
 
+/** One projected fabric field spans the seat and legs, without a UV seam at each hip. */
+function trouserFabric(layer:SpriteLayer,pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const width=pose.proportions.hipHalfWidth+4.5*pose.proportions.legWidth;
+  const top=68-pose.hipHeight-5,height=pose.proportions.legLength+6;
+  for(const face of layer.faces)face.uv=face.points.map(index=>{
+    const p=project(layer.vertices[index],direction);
+    return {u:(p.x-40+width)/(width*2)*texture.width,v:(p.y-top)/height*texture.height};
+  });
+  return layer;
+}
+
+/** Full upper trouser legs stay anchored at the waist before bending toward the knees. */
+function trouserLeg(side:'left'|'right',pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
+  const {hip,knee}=pose[side],fullness=pose.proportions.legWidth,dy=knee.y-hip.y,dz=knee.z-hip.z;
+  // The top three rings belong to the waist/seat, not a capped cylinder rotating
+  // on the hip. The lower rings progressively follow the upper-leg bone.
+  const rings=[
+    {y:0,z:5,rx:3.8,ry:2.2,turn:0},{y:0,z:2,rx:4.25,ry:3.2,turn:0},
+    {y:dy*.12,z:dz*.12,rx:4.35,ry:3.5,turn:.3},
+    {y:dy*.4,z:dz*.4,rx:4.1,ry:3.3,turn:.75},
+    {y:dy*.75,z:dz*.75,rx:3.6,ry:3.05,turn:1},
+    {y:dy*1.02,z:dz*1.02,rx:3.05,ry:2.7,turn:1},
+    {y:dy*1.12,z:dz*1.12,rx:2.4,ry:2.1,turn:1},
+  ];
+  const layer=surface(`${side}-thigh`,rings.map(({y,z,rx,ry,turn})=>Array.from({length:ROUND_SIDES},(_,i)=>{
+    const angle=i/ROUND_SIDES*Math.PI*2,c=Math.cos(angle),s=Math.sin(angle),tilt=Math.atan2(dy,-dz)*turn;
+    return {point:{x:hip.x+c*rx*fullness,y:hip.y+y+s*ry*fullness*Math.cos(tilt),z:hip.z+z+s*ry*fullness*Math.sin(tilt)},u:0,v:0};
+  })),0xffffff,texture);
+  return trouserFabric(layer,pose,texture,direction);
+}
+
 /** A continuous trouser seat overlaps the waist and both upper thigh caps. */
 function pelvis(pose:ReferencePose,texture:PixelTexture,direction:ActorDirection):SpriteLayer {
-  const {hipHalfWidth,legWidth}=pose.proportions,width=hipHalfWidth+3.5*legWidth;
-  const stations=[[5,.78,2.4],[3.5,.98,3],[1,1,3.2],[-1.5,.9,2.6],[-3,.65,1.9]] as const;
-  return surface('torso',stations.map(([z,full,depth],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
+  const {hipHalfWidth,legWidth}=pose.proportions,width=hipHalfWidth+4.1*legWidth;
+  const stations=[[5,.8,2.4],[3.5,.98,3.3],[1,1,3.8],[-1.5,.94,3.1],[-4,.7,2.2]] as const;
+  const layer=surface('torso',stations.map(([z,full,depth],row)=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,c=Math.cos(angle),s=Math.sin(angle);
     return {point:{x:c*width*full,y:s*depth,z:pose.hipHeight+z},u:(acrossView(direction,c,s)+1)/2*texture.width,v:row/(stations.length-1)*texture.height};
   })),0xffffff,texture);
+  return trouserFabric(layer,pose,texture,direction);
 }
 
 function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:ActorDirection,scale:number,widthScale:number):SpriteLayer {
@@ -120,7 +152,7 @@ function shoe(side:'left'|'right',foot:FootPose,texture:PixelTexture,direction:A
   const height=Math.max(...stations.map(station=>station[3]));
   const layer=surface(`${side}-foot`,stations.map(([y,width,bottom,top])=>Array.from({length:ROUND_SIDES},(_,i)=>{
     const angle=i/ROUND_SIDES*Math.PI*2,x=Math.cos(angle)*width,z=(bottom+top)/2+Math.sin(angle)*(top-bottom)/2;
-    const p=footPoint(foot,y*scale,z*scale);p.x+=x*scale*1.3*widthScale;
+    const p=footPoint(foot,y*scale,z*scale);p.x+=x*scale*1.5*widthScale;
     const u=direction==='front'?-x/5+.5:direction==='back'?x/5+.5:direction==='left'?1-(y+4)/12:(y+4)/12;
     return {point:p,u:u*texture.width,v:(1-z/height)*texture.height};
   })),0xffffff,texture);
@@ -155,13 +187,13 @@ export function nellLayers(pose:ReferencePose,direction:ActorDirection,textures:
     if(!hair)head.pixels[at+3]=0;
   }
   const sleeveRegions:Record<ActorDirection,readonly[number,number,number,number]>={front:[47,29,4,9],left:[39,29,4,9],right:[35,29,4,9],back:[28,29,4,9]};
-  const trousers=patch(source,37,45,6,10,(r,g,b)=>r<g*1.4&&b>r*.8),sleeve=patch(source,...sleeveRegions[direction],(r,g,b)=>r>g*1.7&&r>b*1.4&&r>65),boot=patch(source,37,58,6,9,(r,g,b)=>r>g*1.2&&g>b*1.1);
+  const trousers=patch(source,33,43,14,14,(r,g,b)=>r<g*1.4&&b>r*.8),sleeve=patch(source,...sleeveRegions[direction],(r,g,b)=>r>g*1.7&&r>b*1.4&&r>65),boot=patch(source,37,58,6,9,(r,g,b)=>r>g*1.2&&g>b*1.1);
   // Native Nell has tall boots below the knee, rather than full-length trousers.
   const layers:SpriteLayer[]=[pelvis(pose,trousers,direction)];
   for(const side of ['left','right'] as const){
     const leg=pose[side],arm=pose.arms[side],inside=side==='right'?-1:1,{armWidth,legWidth}=pose.proportions;
-    layers.push(limb(`${side}-thigh`,leg.hip,leg.knee,[4,3.5],[2.6,2.5],trousers,direction,legWidth),
-      limb(`${side}-shin`,leg.knee,leg.ankle,[2.5,2.25],[2.15,1.9],boot,direction,legWidth),shoe(side,leg.foot,boot,direction,pose.proportions.footScale,legWidth),
+    layers.push(trouserLeg(side,pose,trousers,direction),
+      limb(`${side}-shin`,leg.knee,leg.ankle,[3,2.6],[2.5,2.15],boot,direction,legWidth),shoe(side,leg.foot,boot,direction,pose.proportions.footScale,legWidth),
       limb(`${side}-upper-arm`,arm.shoulder,arm.elbow,[2.8,2.6],[2.2,2.05],sleeve,direction,armWidth),
       limb(`${side}-forearm`,arm.elbow,arm.wrist,[2.3,2.15],[1.75,1.65],sleeve,direction,armWidth),
       rounded(`${side}-hand`,arm.grip,[1.85,1.65,2.05],0xc59a68,armWidth),
