@@ -71,7 +71,7 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
 }
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
-export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}){
+export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
   await expect.poll(()=>page.evaluate(async({sprite,at})=>{
     const actor=new Image();actor.src=`/art/${sprite}.png`;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
@@ -83,14 +83,16 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+x-view.scrollX)*info.physicalScale;
     const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+y-view.scrollY)*info.physicalScale;
-    let missing=0;
+    let missing=0,compared=0;
     for(let row=0;row<80;row++)for(let col=0;col<80;col++)for(let c=0;c<4;c++){
-      if(expected[(row*80+col)*4+3]!==255)continue;
+      // Native exports retain alpha around 250–254; requiring 255 silently
+      // skipped whole characters. Allow only the small compositing delta.
+      if(expected[(row*80+col)*4+3]<250)continue;
       const index=((top+row*info.physicalScale)*output.width+left+col*info.physicalScale)*4+c;
-      if(actual[index]!==expected[(row*80+col)*4+c])missing++;
+      compared++;if(Math.abs(actual[index]-expected[(row*80+col)*4+c])>6)missing++;
     }
-    return missing;
-  },{sprite,at}),{timeout:15000}).toBe(0);
+    return compared>=600?missing/compared:1;
+  },{sprite,at}),{timeout:15000}).toBeLessThanOrEqual(maxObscuredFraction);
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {

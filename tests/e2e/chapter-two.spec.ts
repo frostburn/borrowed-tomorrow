@@ -9,6 +9,17 @@ import { approach, importSave, travel, visit } from './navigation';
 
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
+  test(`Alban is fully visible beside the engine before and during the confrontation on ${device}`,async({page})=>{
+    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+    const saved=coastCheckpoint('evacuationReady');saved.location={map:'cinderbank',x:45,y:26};await importSave(page,saved);
+    // Allow the exploration ! marker; the unmarked cutscene must match in full.
+    await capture(page,`alban-crossing-${device}`);await nativeActor(page,'alban',{x:48,y:23},.1);
+    await approach(page,'siding-alban');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-recapture');
+    await nativeActor(page,'alban',{x:48,y:23});await capture(page,`alban-confrontation-${device}`);
+    expect(errors).toEqual([]);
+  });
+
   test(`Iron Coast arrival, interrupted Kit recruitment and native art on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

@@ -32,6 +32,14 @@ Tile definitions carry an optional boolean `walkable` property. Navigation reads
 
 Layer properties `requiredFlag` and `hiddenFlag` name existing campaign flags. They apply to both drawing and collision. Larkspur's festival line and prison coach disappear after the arrest; the cap appears. Rillbridge's suspended drops, threads and intact collector give way to running water and the broken casing after the release. These are story states, without confirming the crystal's nature.
 
+## Terrain transitions
+
+Chapter Two uses feathered ballast, paving and dirt edges over the neighboring ground. Tile layers marked `blendEdges: true` are baked by `python3 assets/tiles/blend-terrains.py`; the tool chooses reusable edge/corner tiles from their neighbors and appends missing variants without changing earlier IDs or pixels. Each join changes only edge alpha over seven native pixels. Solid centers keep their source colors, scale and walkability. There is no runtime filtering or palette reduction.
+
+Paving and ballast have separate overlapping layers at crossings. A row of paving underneath the ballast lets the join reveal the actual neighboring surface. Water-facing quays, ward cutaways and map boundaries retain their architectural hard edges. Keep enough overlap beneath a join rather than exposing a stripe of unrelated base terrain. The standard finite Tiled JSON files remain the layout source; builds consume the baked pages directly.
+
+Cinderbank’s capital engine anchors at (57, 25), leaving Alban at (48, 23) clear of its cab during exploration and the confrontation. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
+
 ## Story objects
 
 The map owns three kinds of point-object layer:
