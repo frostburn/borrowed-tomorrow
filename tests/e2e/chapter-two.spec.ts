@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { tilePages } from '../../src/content/tilemaps';
 import { CHAPTER_TWO_MAPS } from '../../src/content/chapter-two/maps';
+import { MAPS, walkable } from '../../src/content/maps';
 import { coastCheckpoint, checkpoint } from '../support/progress';
 import { battle, capture, clickWorld, dialogue, inspect, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
@@ -48,6 +49,21 @@ test('canonical Chapter Two replaces only the autosave and preserves manual save
   await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
   expect((await inspect(page)).state.coins).toBe(37);expect((await inspect(page)).state.inventory).toEqual(original.inventory);
+});
+
+test('Chapter Two covered saves restore to native tiled floors at fractional DPR',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
+  const page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+  for(const [map,point] of [['coast',{x:24,y:13}],['infirmary',{x:15,y:22}],['cinderbank',{x:45,y:16}]] as const){
+    const saved=coastCheckpoint('evacuationReady');saved.location={map,...point};saved.bandages=7;saved.party[0].hp=19;
+    await importSave(page,saved);const restored=(await inspect(page)).state;
+    expect(walkable(MAPS[map],restored.location.x,restored.location.y,restored)).toBe(true);
+    expect(restored).toMatchObject({flags:saved.flags,inventory:saved.inventory,party:saved.party,activeParty:saved.activeParty,coins:saved.coins,bandages:7});
+    await nativeScene(page,map);await capture(page,`chapter-two-${map}-fractional-dpr`);
+    expect(await page.evaluate(()=>window.borrowedTomorrowPixels.inspect().physicalScale)).toBe(2);
+  }
+  expect(errors).toEqual([]);await context.close();
 });
 
 test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital train',async({page})=>{
