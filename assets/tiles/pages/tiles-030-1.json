@@ -1,0 +1,273 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-030-1",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 16,
+  "columns": 4,
+  "image": "../../../public/art/chapter-one/tiles-030-1.png",
+  "imagewidth": 96,
+  "imageheight": 96,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "earth-join-7-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-7-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "earth-join-8-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-8-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "earth-join-9-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-9-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "earth-join-0-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-0-2-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "earth-join-1-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-1-2-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ballast-join-5-6-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-5-6-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "ballast-join-3-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-3-6-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "earth-join-4-7-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-4-7-11"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "ballast-join-5-7-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-5-7-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "ballast-join-3-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-3-7-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "earth-join-6-7-13",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-6-7-13"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "earth-join-7-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-7-7-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "earth-join-4-8-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-4-8-10"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "ballast-join-5-0-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-5-0-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "ballast-join-4-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "ballast-join-4-0-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "earth-join-7-8-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-7-8-10"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

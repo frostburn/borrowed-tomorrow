@@ -1,0 +1,1396 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-004",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-004.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "station-house-7-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "station-house-7-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "station-house-8-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "station-house-8-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "station-house-9-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "station-house-9-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "station-house-10-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "station-house-10-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "workshop-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "workshop"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 11
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 9
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "workshop-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "workshop-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "workshop-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "workshop-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "workshop-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-5-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "workshop-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-6-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "workshop-7-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-7-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "workshop-8-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-8-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "workshop-9-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-9-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "workshop-10-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-10-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 211
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "workshop-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "workshop-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "workshop-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "workshop-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "workshop-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "workshop-5-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-5-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "workshop-6-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-6-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "workshop-7-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-7-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "workshop-8-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-8-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "workshop-9-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-9-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "workshop-10-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-10-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 187
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "workshop-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "workshop-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "workshop-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "workshop-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "workshop-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "workshop-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "workshop-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "workshop-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "workshop-8-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-8-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "workshop-9-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-9-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "workshop-10-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-10-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 163
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "workshop-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "workshop-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "workshop-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "workshop-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "workshop-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "workshop-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-5-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "workshop-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-6-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "workshop-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-7-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "workshop-8-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-8-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "workshop-9-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-9-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "workshop-10-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-10-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 139
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "workshop-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "workshop-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "workshop-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "workshop-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "workshop-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "workshop-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-5-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "workshop-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-6-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "workshop-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-7-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "workshop-8-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-8-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "workshop-9-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-9-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "workshop-10-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-10-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "workshop-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-0-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "workshop-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-1-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "workshop-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-2-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "workshop-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-3-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "workshop-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "workshop-4-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

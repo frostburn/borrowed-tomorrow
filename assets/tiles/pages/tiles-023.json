@@ -1,0 +1,1041 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-023",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-023.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "earth-field-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "earth-field-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "earth-field-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "earth-field-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "earth-field-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "earth-field-8-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "earth-field-9-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "earth-field-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-0-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "earth-field-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-1-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "earth-field-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-2-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "earth-field-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "earth-field-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "earth-field-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "earth-field-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "earth-field-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "earth-field-8-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "earth-field-9-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "earth-field-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-0-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "earth-field-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-1-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "earth-field-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-2-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "earth-field-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "earth-field-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "earth-field-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "earth-field-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "earth-field-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "earth-field-8-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "earth-field-9-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "earth-field-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-0-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "earth-field-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-1-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "earth-field-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-2-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "earth-field-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "earth-field-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "earth-field-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "earth-field-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "earth-field-7-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "earth-field-8-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "earth-field-9-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "earth-field-0-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-0-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "earth-field-1-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-1-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "earth-field-2-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-2-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "earth-field-3-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "earth-field-4-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "earth-field-5-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "earth-field-6-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "earth-field-7-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "earth-field-8-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "earth-field-9-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "earth-field-0-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-0-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "earth-field-1-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-1-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "earth-field-2-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-2-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "earth-field-3-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-3-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "earth-field-4-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-4-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "earth-field-5-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-5-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "earth-field-6-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-6-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "earth-field-7-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-7-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "earth-field-8-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-8-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "earth-field-9-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-field-9-9"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "paving-field-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-0-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "paving-field-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-1-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "paving-field-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-2-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "paving-field-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-3-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "paving-field-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-4-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "paving-field-5-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-5-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "paving-field-6-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-field-6-0"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

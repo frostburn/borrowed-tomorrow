@@ -1,0 +1,273 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-032-2",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 16,
+  "columns": 4,
+  "image": "../../../public/art/chapter-one/tiles-032-2.png",
+  "imagewidth": 96,
+  "imageheight": 96,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "paving-join-1-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-1-4-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "paving-join-2-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-2-4-1"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "paving-join-6-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-6-4-3"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "paving-join-2-5-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-2-5-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "paving-join-3-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-3-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "paving-join-4-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-4-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "paving-join-5-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-5-5-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "earth-join-0-3-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-0-3-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "earth-join-1-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-1-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "earth-join-2-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-2-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "earth-join-3-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-3-3-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "earth-join-4-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "earth-join-4-3-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "paving-join-3-5-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-3-5-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "paving-join-5-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-5-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "paving-join-6-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-6-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "paving-join-7-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "paving-join-7-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

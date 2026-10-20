@@ -3,7 +3,6 @@ import type { Encounter } from '../../rules/combat';
 export const ENCOUNTERS: Record<string, Encounter> = {
   pursuit: {
     id: 'pursuit', name: 'Escape from Larkspur', flag: 'escapeWon', xp: 40, coins: 18, journal: 'escape',
-    backdrop: { map: 'station', y: -144 },
     enemies: [{ kind: 'hound', name: 'Pursuit hound', col: 5, row: 2, hp: 18, bonus: -6 }, { kind: 'hound', name: 'Pursuit hound', col: 6, row: 3, hp: 18, bonus: -6 }],
     rocks: [[4, 4], [7, 1]], victory: 'The western road is open. Find Orrin in his workshop.',
   },

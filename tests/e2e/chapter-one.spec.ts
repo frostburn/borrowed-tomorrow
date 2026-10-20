@@ -49,6 +49,7 @@ test('@ci opening, interrupted raid and skip keep a coherent checkpoint on a pho
 
 test('@ci unsupported save versions cannot resume or import', async ({ page }) => {
   const errors = errorsOn(page); await page.goto('/');
+  await page.waitForFunction(()=>!!window.borrowedTomorrow);
   const old = { ...newGame(), version: 9 };
   await page.evaluate(async state => {
     await new Promise<void>((resolve, reject) => {

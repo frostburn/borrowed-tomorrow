@@ -5,7 +5,6 @@ playwright-report/
 *.local
 
 # Reconstructed lossless map files; native sources are in assets/maps/.
-/public/art/rillbridge.webp
 /public/art/sluice.webp
 /public/art/cinderbank.webp
 /public/art/infirmary.webp
@@ -17,3 +16,6 @@ playwright-report/
 
 /public/art/conduit.webp
 /public/art/sanctuary.webp
+
+# Authoring interpreter cache.
+assets/tiles/__pycache__/

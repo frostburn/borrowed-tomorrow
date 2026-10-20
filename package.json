@@ -16,7 +16,8 @@
     "test:e2e:journeys": "playwright test --grep @journey",
     "check": "npm run test && npm run build",
     "predev": "node scripts/restore-map-art.mjs",
-    "prebuild": "node scripts/restore-map-art.mjs"
+    "prebuild": "node scripts/restore-map-art.mjs",
+    "check:art-upload": "node scripts/check-art-upload.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"

@@ -56,7 +56,7 @@ The whole visible game uses a 1024 × 768 native framebuffer and integer physica
 - `src/rules/`: framework-independent combat, hex geometry and save validation.
 - `src/content/chapter-one/` and `chapter-two/`: objectives, journals, interactions, encounters and collision.
 - `src/content/scenes.ts`: dialogue and staging; `src/content/dialogue.ts`: shared dialogue types.
-- `src/content/maps.ts`: map data, collision and pathfinding.
+- `src/content/maps.ts`: map data and pathfinding; Chapter One uses [real tile maps and layers](docs/tile-maps.md) with collision defined by the tiles.
 - `src/game/`: Phaser scene, cutscene director, native bitmap UI, procedural music and save storage.
 - `public/art/`: production artwork. Larger scenery sources in `assets/maps/` are restored and verified before dev/build. Retained unused art and scores are available for future chapters.
 - `docs/story/`: full outline, playable canon, character knowledge and exact next-chapter handoff.

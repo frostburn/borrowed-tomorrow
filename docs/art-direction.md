@@ -10,14 +10,14 @@ The semantic DOM is invisible; its hit areas, focus and file input remain access
 
 ## Chapter One scenery
 
-| Source | Native size | Role |
+| Tile map | Native size | Role |
 | --- | --- | --- |
-| `station.webp` | 1008 × 624 | Larkspur festival and the arrest; native bunting and lantern details appear before the raid, Ansel's cap afterward |
-| `yard.webp` | 1008 × 624 | Orrin's workshop, independent engine, optional shed and quiet tactical clearing |
-| `rillbridge.webp` | 1595 × 986 | The village stopped by a collector; fixed suspended motes disappear when the village is freed |
-| `tunnel.webp` | 1008 × 624 | The eastern mountain pass, old shelter, hollow-sun mural and captain's blockade |
+| `station.json` | 1008 × 624 | Festival square below the arrest platform; bunting and the prison coach disappear after the raid, Ansel's cap appears |
+| `yard.json` | 1008 × 624 | Orrin's engine apron, northwest branch and southern spare shed |
+| `rillbridge.json` | 1536 × 672 | River crossing, bakery, collector carriage and north road; suspended drops and threads give way to running water and a broken casing |
+| `tunnel.json` | 1008 × 624 | Continuous stone shelf, mural recess, lower shelter and captain's crossing |
 
-The scenery remains the original generated raster artwork. Tiled collision follows buildings, rail vehicles and walls. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
+Chapter One uses original native 24 × 24 pixel tiles and real Tiled layers. Shared terrain, architectural parts, rails and props replace its former wholesale images. Tile properties define collision; map object layers own interactions, arrivals and initial scene casts. [Tile-map authoring](tile-maps.md) describes the files and story-state layers. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
 
 Restored scenery and character assets not assigned to the playable chapters remain an art library for future chapters. Their old narrative roles do not survive the reboot. `scripts/restore-map-art.mjs` reconstructs larger lossless files from verified source chunks and checks byte lengths and SHA-256 without changing dimensions or colors.
 
@@ -51,13 +51,13 @@ The opening pursuit uses Larkspur square; the other encounters retain the quiet 
 
 The Iron Coast exchange uses a new built-in Image Gen raster (`public/art/coast.webp`, 1536 × 1024), exported losslessly without scaling or palette changes. Its verified source chunks live in `assets/maps/coast.*.b64`; the manifest records its full SHA-256. The arrival establishes the sea and barred train before cutting to Nell, Orrin and Kit on the lower cobbles. All actors and movements use the same connected ground level. The retained `infirmary.webp` and `cinderbank.webp` assets now depict the railway ward and mining settlement’s medical siding; their former narrative identities remain discarded. Collisions exclude the train bodies, raised ward entrance, cargo and outer fences.
 
-Production prompt brief: a detailed discrete-pixel fantasy railway harbor at blue dawn, brass lamps and navy iron; a barred prison train with imperial sun crests across the upper quarter; sea, cranes and masts beyond; one broad flat cobbled platform, signal hut, loading gate and clear exits. No people, writing, UI or hospital crosses. The Cinderbank artwork was a style reference only. Built-in Image Gen produced the source; lossless WebP preserves every RGBA pixel. No runtime resizing or recoloring.
+Production prompt brief: a detailed discrete-pixel fantasy railway harbor at blue dawn, brass lamps and navy iron; a barred prison train with imperial sun crests across the upper quarter; sea, cranes and masts beyond; one broad flat cobbled platform, signal hut, loading gate and clear exits. No people, writing, UI or hospital crosses. The Cinderbank artwork was a style reference only. Built-in Image Gen produced the source; lossless PNG/WebP preserves every RGBA pixel. No runtime resizing or recoloring.
 
 The exchange has an original sixteen-bar harbor melody (`score-coast.ts`) using the remembered C–Bm7b5–Em7–Am–Gm7–C7–F–Em–Dm–G–C harmonic reference, extended through a lifted phrase and quiet return. The ward and siding reuse their distinct retained arrangements. Combat retains the tactical and captain themes. Mobile three-fighter exploration lists names and HP without squeezing three native portraits into one row; actors in the world and combat remain 80 × 80.
 
 ## Chapter Three scenery and characters
 
-The retained native 1536 × 1024 `northglass.webp` is the capital’s medical siding and `relayhall.webp` its control gallery. The new 1536 × 1024 `conduit.webp` is a subterranean extraction chamber, generated with the gallery and Cinderbank as style references. It shows a restrained faceless crystal vessel above a continuous stone floor, iron/brass machinery, amber and cyan lighting, a console and right access stair; no actors, words or UI are painted into the background. The lossless WebP preserves the source’s RGB pixels. Verified chunks and the manifest restore it before builds.
+The retained native 1536 × 1024 `northglass.webp` is the capital’s medical siding and `relayhall.webp` its control gallery. The new 1536 × 1024 `conduit.webp` is a subterranean extraction chamber, generated with the gallery and Cinderbank as style references. It shows a restrained faceless crystal vessel above a continuous stone floor, iron/brass machinery, amber and cyan lighting, a console and right access stair; no actors, words or UI are painted into the background. The lossless PNG/WebP preserves the source’s RGB pixels. Verified chunks and the manifest restore it before builds.
 
 The Emperor’s new `emperor.png` (80 × 80) and `portrait-emperor.png` (128 × 128) come from a transparent source sheet generated with Nell’s world actor and portrait as style/proportion references. Brief: weary older human man, shoulder-length silver hair, gray eyes, short silver beard, brass sun circlet, ivory/navy imperial coat and dark mourning ribbon. Two matching depictions, separated by transparent space, no scenery or lettering. Mechanical crop and point sampling export the native canvases; alpha is preserved and runtime never scales/recolors them.
 
@@ -90,3 +90,10 @@ The old art supplied identity and costume references while Nell's approved atlas
 World actors use native 80 x 80 canvases. The replacement figures use the common ground anchor at (40, 68) and a 64-pixel height budget; the three original enemy sprites retain their original silhouettes and placement. Width limits preserve aspect ratios. Portraits remain native 128 x 128. The authoring exporter separates portrait/actor pairs at their transparent gap, removes detached fragments and applies recorded nearest-neighbor sampling phases without blending colors. Runtime rendering is unchanged.
 
 `assets/characters/supporting-prompts.md` records the built-in Image Gen prompts and export workflow. `supporting-cast.json` records source-sheet filenames and size budgets; `sampling-offsets.json` records selected actor phases. The workshop reviews every replacement against the same native ground guides as the party.
+
+
+## Chapter One modular scenery
+
+Chapter One uses the supplied atmospheric railway scenery and six terrain fields as a shared vocabulary: pitched slate roofs and warm windows, rounded iron boilers, layered foliage, mossy cliff faces, stone steps and bridge masonry. Place reusable modules around each scene's route rather than tracing the former whole-map paintings. The station has a raised arrest platform and market square; the workshop centers on the engine and optional shed; Rillbridge frames the crossing and collector; the pass uses a broad supported stone shelf with mural and shelter recesses.
+
+The native 24px pieces retain full colors and transparency. Terrain joins soften the grid, and smaller paving stones keep the scale consistent with 80px actors. Foreground modules share ground-anchor depth across all their pieces so actors pass naturally behind canopies and in front of trunks. Every image page is lossless PNG/WebP, at most 128 KB, with decoded RGBA pixels verified during export. Source sheets remain outside git. See `assets/tiles/README.md` and `docs/tile-maps.md` for import and publication rules.

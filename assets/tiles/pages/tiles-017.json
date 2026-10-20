@@ -1,0 +1,1561 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-017",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-017.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "market-stall-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "market-stall-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "market-stall-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-5-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "market-stall-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-6-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "market-stall-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-7-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "market-stall-0-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-0-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "market-stall-1-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-1-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "market-stall-2-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-2-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "market-stall-3-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-3-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "market-stall-4-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-4-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "market-stall-5-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-5-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "market-stall-6-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-6-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "market-stall-7-3",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-7-3"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "market-stall-0-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-0-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "market-stall-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-1-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "market-stall-2-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-2-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "market-stall-3-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-3-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "market-stall-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-4-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "market-stall-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-5-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "market-stall-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-6-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "market-stall-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-7-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "market-stall-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-0-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "market-stall-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-1-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "market-stall-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-2-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "market-stall-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-3-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "market-stall-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-4-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "market-stall-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-5-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "market-stall-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-6-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "market-stall-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "market-stall-7-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "crate-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "crate"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "crate-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "crate-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "crate-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "crate-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "crate-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "crate-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "crate-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "crate-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "crate-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "barrel-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "barrel"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 2
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "barrel-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "barrel-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "barrel-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "barrel-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "barrel-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "barrel-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "planter-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "planter"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 2
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "planter-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "planter-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "planter-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "planter-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "planter-0-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-0-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "planter-1-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-1-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "planter-2-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-2-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "planter-3-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-3-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "planter-4-1",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-4-1"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "planter-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-0-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "planter-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-1-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "planter-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-2-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "planter-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-3-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "planter-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "planter-4-2"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "fence-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "fence-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "fence"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 8
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "fence-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "fence-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "fence-2-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "fence-2-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "fence-3-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "fence-3-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "fence-4-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "fence-4-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "station-house": {
+    "firstgid": 162,
+    "width": 11,
+    "height": 9,
+    "anchorX": 5,
+    "anchorY": 8
+  },
+  "workshop": {
+    "firstgid": 261,
+    "width": 11,
+    "height": 9,
+    "anchorX": 5,
+    "anchorY": 8
+  },
+  "bakery": {
+    "firstgid": 360,
+    "width": 10,
+    "height": 9,
+    "anchorX": 5,
+    "anchorY": 8
+  },
+  "shelter": {
+    "firstgid": 450,
+    "width": 8,
+    "height": 8,
+    "anchorX": 4,
+    "anchorY": 7
+  },
+  "coach": {
+    "firstgid": 514,
+    "width": 12,
+    "height": 7,
+    "anchorX": 6,
+    "anchorY": 6
+  },
+  "engine": {
+    "firstgid": 598,
+    "width": 12,
+    "height": 8,
+    "anchorX": 6,
+    "anchorY": 7
+  },
+  "prison-coach": {
+    "firstgid": 694,
+    "width": 11,
+    "height": 7,
+    "anchorX": 5,
+    "anchorY": 6
+  },
+  "footbridge": {
+    "firstgid": 771,
+    "width": 8,
+    "height": 5,
+    "anchorX": 4,
+    "anchorY": 4
+  },
+  "fir": {
+    "firstgid": 811,
+    "width": 7,
+    "height": 11,
+    "anchorX": 3,
+    "anchorY": 10
+  },
+  "canopy": {
+    "firstgid": 888,
+    "width": 9,
+    "height": 10,
+    "anchorX": 4,
+    "anchorY": 9
+  },
+  "ledge": {
+    "firstgid": 978,
+    "width": 8,
+    "height": 6,
+    "anchorX": 4,
+    "anchorY": 5
+  },
+  "river-wall": {
+    "firstgid": 1026,
+    "width": 8,
+    "height": 4,
+    "anchorX": 4,
+    "anchorY": 3
+  },
+  "lamp": {
+    "firstgid": 1058,
+    "width": 2,
+    "height": 6,
+    "anchorX": 1,
+    "anchorY": 5
+  },
+  "market-stall": {
+    "firstgid": 1070,
+    "width": 8,
+    "height": 6,
+    "anchorX": 4,
+    "anchorY": 5
+  },
+  "crate": {
+    "firstgid": 1118,
+    "width": 3,
+    "height": 3,
+    "anchorX": 1,
+    "anchorY": 2
+  },
+  "barrel": {
+    "firstgid": 1127,
+    "width": 2,
+    "height": 3,
+    "anchorX": 1,
+    "anchorY": 2
+  },
+  "planter": {
+    "firstgid": 1133,
+    "width": 5,
+    "height": 3,
+    "anchorX": 2,
+    "anchorY": 2
+  },
+  "fence": {
+    "firstgid": 1148,
+    "width": 8,
+    "height": 3,
+    "anchorX": 4,
+    "anchorY": 2
+  },
+  "sun-mural": {
+    "firstgid": 1172,
+    "width": 6,
+    "height": 6,
+    "anchorX": 3,
+    "anchorY": 5
+  },
+  "stone-steps": {
+    "firstgid": 1208,
+    "width": 6,
+    "height": 4,
+    "anchorX": 3,
+    "anchorY": 3
+  },
+  "collector-machine": {
+    "firstgid": 1232,
+    "width": 5,
+    "height": 6,
+    "anchorX": 2,
+    "anchorY": 5
+  },
+  "collector-broken": {
+    "firstgid": 1262,
+    "width": 5,
+    "height": 4,
+    "anchorX": 2,
+    "anchorY": 3
+  },
+  "bunting": {
+    "firstgid": 1282,
+    "width": 9,
+    "height": 4,
+    "anchorX": 4,
+    "anchorY": 3
+  },
+  "supplies": {
+    "firstgid": 1318,
+    "width": 4,
+    "height": 3,
+    "anchorX": 2,
+    "anchorY": 2
+  },
+  "footbridge-front": {
+    "firstgid": 2264,
+    "width": 8,
+    "height": 5,
+    "anchorX": 4,
+    "anchorY": 4
+  }
+}
