@@ -121,7 +121,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage' && b.bandages <= 0) return false;
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
-  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' ? !shape(b,u,id,aim).some(h => equal(h,forced.hex)) : !equal(aim,forced.hex))) return false;
+  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => equal(h,forced.hex)) : !equal(aim,forced.hex))) return false;
   if (a.shape === 'line') return !equal(u.hex, aim) && distance(u.hex, aim) <= a.range && shape(b, u, id, aim).length > 0;
   if (!a.unrestricted && (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles))) return false;
   const v = unitAt(b, aim);

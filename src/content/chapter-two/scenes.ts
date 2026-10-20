@@ -75,7 +75,7 @@ export const ward = () => scene('infirmary', 'two-ward', 'THE WARD AT THE END OF
   line('Kit', 'Two parcels and the letters. Could you sign here? The permit didn’t make it.', { cue: 'paper' }),
   line('Dena', 'The fever medicine. Good. I’ve been stretching the last bottle since yesterday.'),
   line('The railway ward', 'Dena checks the bottles, then signs Kit’s book. A prisoner warms both hands around the cup she gives him.'),
-  line('Dena', 'The hospital sent them back without release papers. We’ll make room here.'),
+  line('Dena', 'The hospital won’t take them without release papers. We’ll make room here.'),
   line('Kit', 'One of these letters is for the family by Cinderbank’s coal shed. Their father’s in the first coach.'),
   line('Dena', 'His little girl came here twice asking for him. The army promised them seats on the evacuation train.'),
   line('Orrin', 'This clearance gets our coaches onto the capital line. I can couple up and leave from here.'),

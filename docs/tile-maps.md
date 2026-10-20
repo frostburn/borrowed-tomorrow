@@ -38,7 +38,7 @@ Chapter Two uses feathered ballast, paving and dirt edges over the neighboring g
 
 Paving and ballast have separate overlapping layers at crossings. A row of paving underneath the ballast lets the join reveal the actual neighboring surface. Water-facing quays, ward cutaways and map boundaries retain their architectural hard edges. Keep enough overlap beneath a join rather than exposing a stripe of unrelated base terrain. The standard finite Tiled JSON files remain the layout source; builds consume the baked pages directly.
 
-Cinderbank’s capital engine anchors at (57, 25), leaving Petra at (47, 23) and Alban at (49, 21) clear of its cab. Alban begins the confrontation at (48, 23) and retreats behind Petra. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
+Cinderbank’s capital engine anchors at (57, 25), leaving Petra at (47, 23) and Alban at (49, 21) clear of its cab. Alban begins the confrontation at (49, 23) and retreats behind Petra. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
 
 ## Story objects
 

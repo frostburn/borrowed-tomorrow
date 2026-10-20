@@ -457,6 +457,7 @@ export class Adventure extends Phaser.Scene {
   }
   private enterBattle(id: string) {
     this.battleFaces.clear();
+    for(const u of this.battle!.units)if(u.side==='enemy'&&COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))this.battleFaces.set(u.id,facingAsset((u.appearance??u.kind) as CompanionId,-1,0));
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(this.state.chapter==='chapter-four'?(id==='sanctuary-warden'?'four-warden':'four-battle'):this.state.chapter==='chapter-three'?'switching':id==='captain'||id==='coast-recapture'?'inspector':'battle');this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();

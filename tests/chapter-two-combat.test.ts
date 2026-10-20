@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { active, awardVictory, createBattle, defend, enemyTurn, type Battle } from '../src/rules/combat';
+import { active, awardVictory, cast, createBattle, defend, enemyTurn, legalAim, type Battle } from '../src/rules/combat';
 import { equal, offset } from '../src/rules/hex';
 import { coastCheckpoint } from './support/progress';
 import { ownedCopies } from '../src/rules/inventory';
@@ -57,4 +57,13 @@ it('Petra can bash without damage before spending her main action on an attack',
   const hp=nell.hp;
   expect(enemyTurn(b)).toBe('bash');expect(nell.hp).toBe(hp);expect(active(b)).toBe(petra);expect(petra.bonusUsed).toBe(true);
   expect(['strike','sweep']).toContain(enemyTurn(b));expect(active(b)?.id).not.toBe(petra.id);expect(nell.hp).toBeLessThan(hp);
+});
+
+it('a taunted surrounding attack remains usable when Petra is in its affected hexes',()=>{
+  const state=coastCheckpoint('evacuationReady');state.xp=370;
+  const b=createBattle('coast-recapture',state),petra=b.units.find(u=>u.appearance==='petra')!,orrin=b.units.find(u=>u.id==='orrin')!;
+  petra.hex=offset(5,3);orrin.hex=offset(4,3);b.queue=[petra.id,orrin.id,...b.queue.filter(id=>id!==petra.id&&id!==orrin.id)];
+  expect(cast(b,petra,'taunt',petra.hex)).toBe(true);expect(legalAim(b,orrin,'repulse',orrin.hex)).toBe(true);
+  petra.hex=offset(6,3);expect(legalAim(b,orrin,'repulse',orrin.hex)).toBe(false);
+  petra.hex=offset(5,3);const hp=petra.hp;expect(cast(b,orrin,'repulse',orrin.hex)).toBe(true);expect(petra.hp).toBeLessThan(hp);
 });

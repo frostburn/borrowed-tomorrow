@@ -8,7 +8,7 @@ Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `c
 
 The complete Chapter One flag chain remains set. Chapter Two requires `coastSeen`, `kitJoined`, `raidPlanned`, `raidConfronted`, `trainRaidWon`, `prisonersFreed`, `wardSeen`, `settlementSeen`, `coastCollectorWon`, `evacuationReady`, `recaptureConfronted`, `recaptureWon`, `chapterTwoComplete`. Preserve `raidDiversion` (true for signal walk, false for loading gate), optional Chapter One flags, resources, XP, HP/focus, all inventory copies and loadouts, journals and play time.
 
-The recruited `party` contains Nell, Orrin and Kit. Celia has not appeared or joined. `activeParty` contains Nell plus zero to two selected companions. Never discard or reset reserve equipment or health. Petra and Tomas are not combatants or reserves at this departure. Load and validate new scenery before consuming the boundary; leave it intact on failure.
+The recruited `party` contains Nell, Orrin and Kit. Celia has not appeared or joined. `activeParty` contains Nell plus zero to two selected companions. Never discard or reset reserve equipment or health. Petra and Tomas are not roster members or reserves at this departure. Load and validate new scenery before consuming the boundary; leave it intact on failure.
 
 ## Start with the capital route
 
@@ -22,6 +22,6 @@ Petra defended Alban as Chapter Two’s boss and was disarmed at the crossing. W
 
 Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature, the emperor’s private motive or the Benefactor’s domain. The lantern has only offered sensory clues. No divine voice or boss cutaway has appeared. Establish later discoveries through actions and evidence. The emperor’s order prioritized the capital’s engines over a promised evacuation; his first direct appearance belongs here.
 
-Celia’s introduction and faith conflict are deferred; choose their placement in a later chapter with the user. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
+Celia’s introduction and faith conflict begin on the Chapter Four sanctuary road. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
 The implemented chapter rescues Tomas, disables extraction and makes the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
