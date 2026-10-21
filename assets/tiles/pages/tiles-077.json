@@ -446,7 +446,7 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
+          "value": true
         },
         {
           "name": "module",
@@ -618,7 +618,7 @@
         {
           "name": "empty",
           "type": "bool",
-          "value": false
+          "value": true
         }
       ]
     },

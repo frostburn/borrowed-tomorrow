@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Export the imperial exterior without repacking accepted tiles.
 
-Usage: python3 assets/tiles/import-palace.py PORTICO.png WING.png
+Usage: python3 assets/tiles/import-palace.py HALL.png WING.png PAVILION.png
 Authoring images stay outside git; runtime uses the bounded lossless tile pages.
 """
 import json
@@ -38,7 +38,10 @@ for item in manifest:
     w, h = width // S, height // S
     source = clean_cutout(source)
     source = source.crop(source.getbbox())
-    scale = min(width / source.width, height / source.height)
+    fit_width, fit_height = item.get('contentSize', item['size'])
+    if not (0 < fit_width <= width and 0 < fit_height <= height):
+        raise ValueError('Content budget must fit the fixed module canvas')
+    scale = min(fit_width / source.width, fit_height / source.height)
     source = clean_cutout(source.resize((round(source.width*scale), round(source.height*scale)), Image.Resampling.NEAREST))
     image = Image.new('RGBA', (width, height))
     image.paste(source, ((width-source.width)//2, height-source.height))
