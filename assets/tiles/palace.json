@@ -1,0 +1,6 @@
+[
+  {"name":"palace-portico","input":0,"size":[384,312],"block":[16,0]},
+  {"name":"palace-wing","input":1,"size":[192,240],"block":[8,0]},
+  {"name":"palace-marble-wall","input":2,"size":[192,168],"block":[8,0]},
+  {"name":"palace-marble","input":3,"size":[192,192],"floor":true}
+]

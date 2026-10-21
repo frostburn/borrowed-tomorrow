@@ -18,4 +18,17 @@ The native page writer verifies decoded RGBA equality, dimensions no greater tha
 
 Sorted pieces use one ground anchor per module. The gate's front step, instrument-bank base and vessel's lower footprint block movement; their overhead pixels do not create rectangular invisible walls. Doors and consoles have map-owned clickable rectangles with reachable approaches. Stage the actors in clear space beside the props, and leave every tactical hex clear.
 
+## Grand palace and marble kit
+
+Four further built-in Image Gen sources provide independent reusable assets, rather than a whole exterior or room painting. `palace.json` records their native export budgets. The production briefs were:
+
+- **Central portico:** monumental ivory limestone imperial entrance, tall glazed doors, substantial Corinthian columns, sculpted pediment and a blue slate domed cupola with a gilded sun finial. Slightly elevated orthographic front view, level cornices, shallow roof depth, cool recesses, brass lamps and fine dimensional painted pixel detail. Complete silhouette on genuine transparency; no people, landscape, ground island, lettering or particles. Native budget: 384 x 312.
+- **Wing bay:** repeatable two-story limestone facade with three arched windows per story, engaged edge pilasters, sculpted string courses, blue mansard roof and roof balustrade. The same camera, materials, lighting and detailed pixel style as the portico. Straight joining edges and horizontal base, complete silhouette on transparency; no perspective sidewalls, ground, people or text. Native budget: 192 x 240.
+- **Marble wall bay:** interior ivory/blue-gray veined marble, arched blue glass window, rounded engaged Corinthian columns, brass capitals, sculpted cornice and dark marble dado. Front orthographic view with shallow relief; complete silhouette on transparency and no floor, furniture, people or lettering. Native budget: 192 x 168.
+- **Marble field:** seamless opaque top-down square texture, four slabs across and down, alternating warm ivory and pale blue-gray marble with subtle veins, thin joints and restrained brass corner inlays. Calm broad surfaces, gentle reflected light, no perspective, border, cast shadows, props or vignette. Native budget: 192 x 192; each slab spans 2 x 2 gameplay tiles.
+
+Run `python3 assets/tiles/import-palace.py PORTICO.png WING.png WALL.png FLOOR.png`. It appends stable IDs, keeps fixed module extents, samples once without palette reduction and removes detached alpha fragments before and after sampling. The wall's native lower dado also supplies cutaway pieces. Exported module dimensions are 16 x 13, 8 x 10 and 8 x 7 tiles; the marble field is 8 x 8. Only bounded lossless tile pages enter git.
+
+Northglass joins the portico to three wing placements, with the earlier gate serving as the medical receiving pavilion. The opening and departure shots frame the dome. The control gallery uses marble floors, window bays and a low marble cutaway; both gallery encounter floors and both vessel encounter floors share its dedicated marble material. The underground service deck retains exposed cavern stone around its edges. The outdoor arrest floor remains courtyard paving. Existing interaction destinations, casts, console approaches and tactical cells stay on open connected floor.
+
 `npm run check:art-upload` must pass after staging and before publication. Upload each approved page separately. Source images, overview renders and browser screenshots stay outside the repository.

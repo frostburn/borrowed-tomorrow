@@ -580,6 +580,38 @@
     {
       "firstgid": 3267,
       "source": "../../../../assets/tiles/pages/tiles-073.json"
+    },
+    {
+      "firstgid": 3313,
+      "source": "../../../../assets/tiles/pages/tiles-074.json"
+    },
+    {
+      "firstgid": 3377,
+      "source": "../../../../assets/tiles/pages/tiles-075.json"
+    },
+    {
+      "firstgid": 3441,
+      "source": "../../../../assets/tiles/pages/tiles-076.json"
+    },
+    {
+      "firstgid": 3505,
+      "source": "../../../../assets/tiles/pages/tiles-077.json"
+    },
+    {
+      "firstgid": 3569,
+      "source": "../../../../assets/tiles/pages/tiles-078.json"
+    },
+    {
+      "firstgid": 3633,
+      "source": "../../../../assets/tiles/pages/tiles-079.json"
+    },
+    {
+      "firstgid": 3697,
+      "source": "../../../../assets/tiles/pages/tiles-080.json"
+    },
+    {
+      "firstgid": 3725,
+      "source": "../../../../assets/tiles/pages/tiles-081.json"
     }
   ],
   "tilewidth": 24,

@@ -236,5 +236,26 @@
     "height": 13,
     "anchorX": 4,
     "anchorY": 12
+  },
+  "palace-portico": {
+    "firstgid": 3313,
+    "width": 16,
+    "height": 13,
+    "anchorX": 8,
+    "anchorY": 12
+  },
+  "palace-wing": {
+    "firstgid": 3521,
+    "width": 8,
+    "height": 10,
+    "anchorX": 4,
+    "anchorY": 9
+  },
+  "palace-marble-wall": {
+    "firstgid": 3601,
+    "width": 8,
+    "height": 7,
+    "anchorX": 4,
+    "anchorY": 6
   }
 }
