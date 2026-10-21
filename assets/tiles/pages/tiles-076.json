@@ -1039,6 +1039,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1058,6 +1063,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1081,6 +1091,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1100,6 +1115,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1123,6 +1143,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1142,6 +1167,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1165,6 +1195,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1184,6 +1219,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1207,6 +1247,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1226,6 +1271,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1249,6 +1299,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1268,6 +1323,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1291,6 +1351,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1310,6 +1375,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }
@@ -1333,6 +1403,11 @@
           "name": "empty",
           "type": "bool",
           "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
         }
       ]
     },
@@ -1352,6 +1427,11 @@
         },
         {
           "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
           "type": "bool",
           "value": false
         }

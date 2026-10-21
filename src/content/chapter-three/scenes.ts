@@ -5,7 +5,7 @@ import { stage } from '../maps';
 const line=(who:string,text:string,shot?:Shot):Line=>({...SAY(who,text),shot});
 const scene=(map:MapId,id:string,title:string,lines:Line[]):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 export const arrival=()=>scene('northglass','three-capital','CHAPTER THREE · BENEATH THE PALACE',[
-  line('The south medical siding','The clerk checks the clearance, breaks the platform seal and waves the medical coaches through.',{focus:{x:47,y:9},cut:true,cue:'paper'}),
+  line('The south medical siding','The clerk checks the clearance, breaks the platform seal and waves the medical coaches through.',{focus:{x:47,y:6},cut:true,cue:'paper'}),
   line('Kit','Same seal. I told you it was the right siding.',{focus:{x:32,y:30},cut:true}),
   line('Dena','Keep this step clear. The man with the sling first.'),
   line('Orrin','I’ll keep the coal engine under steam. We can leave whenever you’re ready.'),
@@ -92,7 +92,7 @@ export const rupture=()=>scene('conduit','three-rupture','THE FEEDS CLOSE',[
   line('Orrin','Tomas is at our engine. We’re leaving together.',{focus:{x:31,y:28},cut:true}),
 ]);
 export const departure=()=>scene('northglass','three-departure','THE BROTHER WHO CAME HOME',[
-  line('The south siding','The medical coaches are full. Above the roof, the palace rises through a cloud of broken stone.',{focus:{x:47,y:9},cut:true,cue:'steam'}),
+  line('The south siding','The medical coaches are full. Above the roof, the palace rises through a cloud of broken stone.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
   line('Tomas','Nell! Here!',{focus:{x:33,y:31},cut:true}),
   line('Nell','You’re staying where I can see you.'),
   line('Tomas','I can manage that.'),
