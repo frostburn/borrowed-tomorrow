@@ -1,0 +1,11 @@
+diff --git a/rust/src/main.rs b/rust/src/main.rs
+index b7daccb..7eba238 100644
+--- a/rust/src/main.rs
++++ b/rust/src/main.rs
+@@ -3,0 +4 @@ use pixelfixer::{autocorr, core, reconstruct, runlengths, selfsim};
++#[cfg(windows)]
+@@ -33,0 +35,4 @@ fn peak_rss() -> u64 {
++// Telemetry only: no Windows process API is linked on other platforms.
++#[cfg(not(windows))]
++fn peak_rss() -> u64 { 0 }
++

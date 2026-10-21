@@ -2,6 +2,7 @@ import { ACTOR_DIRECTIONS, ACTOR_FEET, ACTOR_SIZE, type ActorDirection } from '.
 import type { CompanionId } from '../rules/party';
 import { SPRITE_CATALOG, SPRITE_GROUPS, spriteAsset, type SpriteEntry, type SpriteGroup } from './sprite-catalog';
 import { art } from '../game/ui';
+import { mountCivilianReconstruction } from './civilian-reconstruction';
 import { animatedHero, ATTACK_CONTACT_MS, motionFrame, motionPage, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, WALK_PHASES, type ActorMotion } from '../content/actor-motion';
 
 const backgrounds = { Slate: ['#182b32', '#234047'], Paper: ['#dac9a0', '#f4e5be'], Night: ['#080f19', '#101d28'] } as const;
@@ -81,6 +82,7 @@ export class SpriteWorkshop {
     bind('#sprite-next-frame',()=>{this.pause();this.frame=(this.frame+1)%(this.motion==='walk'?WALK_FRAMES:3);});
     this.paint();
     this.playLoop();
+    mountCivilianReconstruction(host,entry.id);
   }
   private currentFrame(){
     if(this.motion==='idle')return undefined;

@@ -1,5 +1,7 @@
 # Development workshop
 
+The **Sprites** tab offers Pixel Art Fixer comparisons when a base civilian is selected under NPCs. It shows campaign, prior point-sampled, smooth and recovered-grid art at actual dimensions with 1x/2x/3x nearest-neighbor zoom. Recovered civilians are held for review: two detections require arbitration and every recovered figure exceeds the campaign's native height budget. See `assets/characters/pixel-fixer.md` for the pinned Rust conversion and decisions. Review files remain dev-only; campaign civilians use their pre-PR pixels.
+
 The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen exploration maps and thirteen tiled battlefields without loading or changing campaign progress. Choose a chapter and World/Battle, then select the map by its stable ID. The initial view is Northglass.
 
 Drag with the mouse or scroll to pan; touch scrolling also works. Review at 1x or 2x integer zoom. Click a cell, use the X/Y fields, or move the selection with arrow keys. Arrival centers the map's first named arrival. The inspector lists the cell's tile layers, GIDs, art names, native page files and frame numbers. Hidden tiles remain listed so a bad seam can still be identified after isolating a layer.
