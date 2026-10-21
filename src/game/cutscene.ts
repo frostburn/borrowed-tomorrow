@@ -3,7 +3,7 @@ import { CHARACTERS } from '../content/characters';
 import type { Cinematic, Shot, StagePoint } from '../content/cinematics';
 import type { Audio } from './audio';
 import type { ActorAnimator } from './actor-motion';
-import { animatedHero } from '../content/actor-motion';
+import { walkingHero } from '../content/actor-motion';
 import { facingAsset } from '../content/actors';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
@@ -51,7 +51,7 @@ export class Cutscene {
       if(direction.at){const p=pixel(direction.at);actor.setPosition(p.x,p.y);}
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
-        if(animatedHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),this.duration);
+        if(walkingHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),this.duration);
         this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration:this.duration,ease:'Sine.easeInOut'});}
     }
     if(shot.omen){

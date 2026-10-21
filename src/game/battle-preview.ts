@@ -5,9 +5,13 @@ import type { Hex } from '../rules/hex';
 /** Development presentation hooks; campaign encounters need no adapter. */
 export interface BattlePreview {
   encounter:Encounter;
+  /** Passive motion must keep the visible framebuffer refreshing between inputs. */
+  animating?:(battle:Battle)=>boolean;
   prepare?:(battle:Battle)=>void;
   background:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
   actor?:(scene:Phaser.Scene,unit:Unit,hp:number)=>Phaser.GameObjects.Image|undefined;
+  attackTiming?:(unit:Unit)=>{contact:number;duration:number}|undefined;
+  attack?:(scene:Phaser.Scene,image:Phaser.GameObjects.Image,unit:Unit,elapsed:number)=>void;
   overlay?:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
   pick?:(battle:Battle,action:AbilityId|'move',x:number,y:number)=>Hex|undefined;
   hint?:(battle:Battle)=>string;

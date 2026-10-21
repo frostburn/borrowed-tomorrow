@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="480" viewBox="0 0 1024 480">
+<title>The hollow sun domain</title>
+<metadata>{"reference":"8b21977:src/dev/boss-preview.ts / domain geometry","method":"Original broad polygonal planes; accepted platform footprint and camera geometry retained"}</metadata>
+<rect width="1024" height="480" fill="#0c1c2c"/>
+<path d="M0 0H1024V132L912 93 822 145 681 103 545 155 398 101 267 134 118 84 0 113Z" fill="#172f43"/>
+<path d="M0 371 153 323 291 360 456 305 621 367 802 327 1024 361V480H0Z" fill="#112537"/>
+<rect x="39" y="38" width="2" height="2" fill="#8da2a2"/>
+<rect x="102" y="94" width="2" height="2" fill="#8da2a2"/>
+<rect x="153" y="27" width="2" height="2" fill="#8da2a2"/>
+<rect x="276" y="52" width="2" height="2" fill="#8da2a2"/>
+<rect x="343" y="17" width="2" height="2" fill="#8da2a2"/>
+<rect x="612" y="38" width="2" height="2" fill="#8da2a2"/>
+<rect x="739" y="22" width="2" height="2" fill="#8da2a2"/>
+<rect x="884" y="43" width="2" height="2" fill="#8da2a2"/>
+<rect x="961" y="26" width="2" height="2" fill="#8da2a2"/>
+<rect x="927" y="188" width="2" height="2" fill="#8da2a2"/>
+<rect x="35" y="234" width="2" height="2" fill="#8da2a2"/>
+<rect x="64" y="336" width="2" height="2" fill="#8da2a2"/>
+<rect x="977" y="321" width="2" height="2" fill="#8da2a2"/>
+<path d="M249 94 277 56 347 17 407 0H433L348 38 299 81 275 113Z M690 0 747 39 780 93 794 153 788 208 777 209 779 150 764 100 731 55 664 12Z" fill="#53636b"/>
+<path d="M258 92 287 58 353 24 416 0H430L355 35 296 69 272 104Z M677 0 738 42 770 96 784 153 780 190 774 154 760 101 727 57 664 11Z" fill="#8d805c"/>
+<path d="M131 88H797L856 158V437L791 478H128L78 430V159Z" fill="#0b1928"/>
+<path d="M131 72H797L856 142V421L791 462H128L78 414V143Z" fill="#354b58"/>
+<path d="M131 72H797L814 92H148L98 151V406L144 445H786L837 413V149L814 123 837 133 856 155V421L791 462H128L78 414V143Z" fill="#71817d"/>
+<path d="M148 94H783L833 152V407L782 443H148L101 401V152Z" fill="#283f50"/>
+<path d="M148 94H783L762 153 577 193 395 166 101 257V152Z" fill="#3f5660"/>
+<path d="M101 342 312 270 508 313 701 270 833 307V407L782 443H148L101 401Z" fill="#203647"/>
+<path d="M170 445 373 382 556 407 733 351 830 362V407L782 443Z" fill="#314b57"/>
+<path d="M136 193 334 127 611 135 793 204 810 330 637 413 360 430 143 349Z" fill="none" stroke="#8d805c" stroke-width="2" stroke-linejoin="round"/>
+<path d="M143 204 336 141 609 149 780 214 796 322 633 397 362 414 157 340Z" fill="none" stroke="#536c74" stroke-width="1" stroke-linejoin="round"/>
+<path d="M334 127 360 430M611 135 637 413M136 264 810 266M144 349 796 322M143 204 780 214" fill="none" stroke="#142a3c" stroke-width="2" stroke-linejoin="round"/>
+<path d="M369 246 424 227 520 229 574 250 553 281 499 294 422 289 371 275Z" fill="#142a3c"/>
+<polygon points="12.5,110 47.5,98 55.5,114 22,130" fill="#536873"/>
+<polygon points="12.5,110 22,130 55.5,114 30,158" fill="#233e50"/>
+<polygon points="12.5,110 22,130 30,158 11,144" fill="#162c40"/>
+<polygon points="901,72 963,60 971,76 924,92" fill="#536873"/>
+<polygon points="901,72 924,92 971,76 932,120" fill="#233e50"/>
+<polygon points="901,72 924,92 932,120 913,106" fill="#162c40"/>
+<polygon points="873.5,392 938.5,380 946.5,396 898,412" fill="#536873"/>
+<polygon points="873.5,392 898,412 946.5,396 906,440" fill="#233e50"/>
+<polygon points="873.5,392 898,412 906,440 887,426" fill="#162c40"/>
+<polygon points="22,402 46,390 54,406 26,422" fill="#536873"/>
+<polygon points="22,402 26,422 54,406 34,450" fill="#233e50"/>
+<polygon points="22,402 26,422 34,450 15,436" fill="#162c40"/>
+</svg>

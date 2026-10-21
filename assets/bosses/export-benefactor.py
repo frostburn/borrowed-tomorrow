@@ -1,35 +1,57 @@
 #!/usr/bin/env python3
-"""Export the development boss into small native pages, never the source sheet.
-Usage: python3 assets/bosses/export-benefactor.py SOURCE.png
+"""Derive a vector portrait and articulated motion from the editable boss SVG.
+
+Usage: python3 assets/bosses/export-benefactor.py
+No bitmap input, panel assembly or resizing is involved. The boss and domain
+SVGs are editable originals and this exporter never overwrites them.
 """
-import sys
-from io import BytesIO
 from pathlib import Path
-from PIL import Image
+from xml.etree import ElementTree as ET
+from copy import deepcopy
 
 root=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(root/'assets/tiles'))
-from native_tiles import clean_cutout
+art=root/'src/dev/art'
+source=(art/'benefactor.svg').read_text()
+svg=ET.fromstring(source)
+assert (svg.attrib['width'],svg.attrib['height'])==('360','288')
+# Keep the same native face/chest framing as the approved preview.
+portrait=source.replace('width="360" height="288" viewBox="0 0 360 288"',
+                        'width="128" height="128" viewBox="116 20 128 128"',1)
+assert portrait!=source
+portrait=portrait.replace('<title>The Benefactor</title>', '<title>The Benefactor, portrait</title>',1)
+target=art/'benefactor-portrait.svg'
+target.write_text(portrait)
+assert target.stat().st_size<=131072
+print(f'{target.relative_to(root)}: {target.stat().st_size} bytes; vector viewBox crop, no raster conversion')
 
-source=clean_cutout(Image.open(sys.argv[1]).convert('RGBA'))
-# Keep the source's pixel spacing: never crop and stretch its opaque bounds.
-# Image Gen may trim the requested 1440 x 1152 canvas. Restore transparent
-# margins without scaling, then sample once at a fixed integer ratio.
-factor=4
-canvas_size=(360*factor,288*factor)
-if source.width>canvas_size[0] or source.height>canvas_size[1]:
-    raise ValueError(f'Source {source.size} exceeds {canvas_size}; regenerate instead of fitting it')
-canvas=Image.new('RGBA',canvas_size)
-offset=((canvas.width-source.width)//2,(canvas.height-source.height)//2)
-canvas.paste(source,offset)
-image=clean_cutout(canvas.resize((360,288),Image.Resampling.NEAREST))
-print(f'Source {source.size}; transparent padding at {offset}; exact {factor}:1 reduction')
-out=root/'src/dev/art';out.mkdir(exist_ok=True)
-def save(piece,name):
-    data=BytesIO();piece.save(data,format='WEBP',lossless=True,quality=75,method=2,exact=True)
-    assert len(data.getvalue())<=131072
-    assert Image.open(BytesIO(data.getvalue())).convert('RGBA').tobytes()==piece.tobytes()
-    (out/name).write_bytes(data.getvalue());print(f'{name}: {len(data.getvalue())} bytes')
-for y in range(2):
-    for x in range(3):save(image.crop((x*120,y*144,(x+1)*120,(y+1)*144)),f'benefactor-{x}-{y}.webp')
-save(image.crop((116,20,244,148)),'benefactor-portrait.webp')
+# Every pose references the same editable geometry. No repeated source panels.
+ET.register_namespace('','http://www.w3.org/2000/svg')
+ns='{http://www.w3.org/2000/svg}'
+parts=[e for e in svg if e.get('id')]
+assert len(parts)==11
+page=ET.Element(ns+'svg',{'width':'720','height':'1728','viewBox':'0 0 720 1728'})
+ET.SubElement(page,ns+'title').text='The Benefactor: eight breathing and four judgment poses'
+defs=ET.SubElement(page,ns+'defs');defs.extend(deepcopy(parts))
+# rise, mantle opening, forearm rotation, hand follow-through
+poses=[(r,s,-s*.8,0)for r,s in [(0,0),(-1,.4),(-2,.8),(-3,1.2),(-4,1.6),(-3,1.2),(-2,.8),(-1,.4)]]
+poses += [(-2,1,-35,0),(-4,2,-85,0),(0,2,0,5),(-1,.8,-20,2)]
+for i,(rise,spread,angle,drop) in enumerate(poses):
+    frame=ET.SubElement(page,ns+'svg',{'x':str(i%2*360),'y':str(i//2*288),'width':'360','height':'288','viewBox':'0 0 360 288'})
+    for part in parts:
+        name=part.get('id');transform=''
+        if name=='halo' and rise:transform=f'translate(0 {rise*.5:g})'
+        elif name=='body-back' and rise:transform=f'translate(0 282) scale(1 {1-rise/177:g}) translate(0 -282)'
+        elif name in ('cowl','heart') and rise:transform=f'translate(0 {rise*(.8 if name=="heart" else 1):g})'
+        elif name=='vestment' and rise:transform=f'translate(180 282) scale({1-rise*.001:g} {1-rise/177:g}) translate(-180 -282)'
+        elif name.startswith('mantle-') and spread:transform=f'translate({-spread if name.endswith("left") else spread:g} 0)'
+        elif name.startswith('arm-') and rise:transform=f'translate(0 {rise*.35:g})'
+        elif name.startswith('forearm-'):
+            left=name.endswith('left')
+            if rise or drop:transform=f'translate(0 {rise*.35+drop:g})'
+            if angle:transform+=f' rotate({angle if left else -angle:g} {62 if left else 298} 184)'
+        use=ET.SubElement(frame,ns+'use',{'href':'#'+name})
+        if transform:use.set('transform',transform.strip())
+ET.indent(page,space=' ')
+target=art/'benefactor-motion.svg';target.write_text(ET.tostring(page,encoding='unicode')+'\n')
+assert target.stat().st_size<=131072
+print(f'{target.relative_to(root)}: {target.stat().st_size} bytes; 12 native vector poses, shared part definitions')

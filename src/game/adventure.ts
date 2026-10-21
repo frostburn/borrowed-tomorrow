@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
-import { MOTION_PAGES, animatedHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
+import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
 import { battleEffect } from './battle-effects';
 import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
@@ -127,7 +127,10 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main,p=toPixel(hex);
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
-  get animating(){return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
+  get animating(){
+    const preview=import.meta.env.DEV&&this.mode==='battle'&&this.battle?this.battlePreview?.animating?.(this.battle):false;
+    return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
+  }
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*(scale===1?8:6*scale)+padding*2;canvas.height=9*scale+padding*2;
     const ctx=canvas.getContext('2d')!;
@@ -653,15 +656,18 @@ export class Adventure extends Phaser.Scene {
     const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
     const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
     const from=actor?toPixel(action?.path&&action.ability?actor.hex:before.get(actor.id)?.hex??actor.hex):undefined,to=action?toPixel(action.aim):undefined;
-    const face=hero&&animatedHero(hero)&&from&&to?facingAsset(hero,to.x-from.x,to.y-from.y):undefined;
+    const face=hero&&walkingHero(hero)&&from&&to?facingAsset(hero,to.x-from.x,to.y-from.y):undefined;
     if(face&&actor)this.battleFaces.set(actor.id,face);
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const path=action?.path,stepMs=reduced?0:95,travel=path?path.length*stepMs:0,impact=travel+(action?.ability&&!reduced?ATTACK_CONTACT_MS:0);
-    const duration=path&&!action?.ability?Math.max(80,travel+40):travel+(reduced?100:ATTACK_DURATION_MS);
+    const preview=import.meta.env.DEV?this.battlePreview:undefined;
+    const timing=actor&&action?.ability?preview?.attackTiming?.(actor):undefined;
+    const path=action?.path,stepMs=reduced?0:95,travel=path?path.length*stepMs:0,impact=travel+(action?.ability&&!reduced?(timing?.contact??ATTACK_CONTACT_MS):0);
+    const duration=path&&!action?.ability?Math.max(80,travel+40):travel+(reduced?100:(timing?.duration??ATTACK_DURATION_MS));
     this.busy=true;this.drawBattle(before);this.renderBattleControls();
     if(actor){this.revealHex(before.get(actor.id)?.hex??actor.hex);const image=this.actorImages.get(actor.id)!;
       const startAttack=()=>{
         if(!valid()||!image.active)return;
+        if(!reduced&&timing)preview?.attack?.(this,image,actor,0);
         if(face&&action?.ability&&action.ability!=='bandage'){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');}
       };
       if(path&&action?.ability)this.time.delayedCall(travel,startAttack);else startAttack();
@@ -669,7 +675,7 @@ export class Adventure extends Phaser.Scene {
         this.audio.effect('move',this.state.location.map);
         const advance=(index:number)=>{
           if(!valid()||!image.active||index>=path.length)return;
-          const p=toPixel(path[index]),walkFace=hero&&animatedHero(hero)?facingAsset(hero,p.x-image.x,p.y+9-image.y):undefined;
+          const p=toPixel(path[index]),walkFace=hero&&walkingHero(hero)?facingAsset(hero,p.x-image.x,p.y+9-image.y):undefined;
           if(walkFace){this.battleFaces.set(actor.id,walkFace);this.motion.walk(image,walkFace,stepMs);}
           this.tweens.add({targets:[image,image.getData('badges')].filter(Boolean),x:p.x,y:p.y+9,duration:stepMs,ease:'Linear',onComplete:()=>advance(index+1)});
         };advance(0);
@@ -680,6 +686,7 @@ export class Adventure extends Phaser.Scene {
       this.drawBattle();
       if(actor&&action?.ability){
         const image=this.actorImages.get(actor.id)!;
+        if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
         if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
         this.audio.effect(ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);

@@ -57,9 +57,10 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await detail.scrollIntoViewIfNeeded();
     // Match the review canvas against nearest-neighbor expansion of the real source.
     await expect.poll(()=>detail.evaluate(async element=>{
-      const canvas=element as HTMLCanvasElement,image=new Image();image.src='/art/celia-back.png';await image.decode();
+      const canvas=element as HTMLCanvasElement,image=new Image();image.src='/art/vector/celia-back.svg';await image.decode();
+      const native=document.createElement('canvas');native.width=image.naturalWidth;native.height=image.naturalHeight;native.getContext('2d')!.drawImage(image,0,0);
       const reference=document.createElement('canvas');reference.width=reference.height=240;const ctx=reference.getContext('2d')!;ctx.imageSmoothingEnabled=false;
-      for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#f4e5be':'#dac9a0';ctx.fillRect(x,y,8,8);}ctx.drawImage(image,0,0,240,240);
+      for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#f4e5be':'#dac9a0';ctx.fillRect(x,y,8,8);}ctx.drawImage(native,0,0,240,240);
       const expected=ctx.getImageData(0,0,240,240).data,actual=canvas.getContext('2d')!.getImageData(0,0,240,240).data;
       return actual.reduce((n,value,index)=>n+Number(value!==expected[index]),0);
     })).toBe(0);

@@ -46,7 +46,7 @@ class Drawing:
         for kind, points, fill, edge in self.shapes:
             color = PALETTE[fill]
             if kind == 'line':
-                draw.line(points, fill=color, width=edge)
+                draw.line(points, fill=color, width=max(1,round(edge)))
             else:
                 outline = PALETTE[edge] if edge else None
                 if kind == 'polygon':
