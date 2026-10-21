@@ -1,8 +1,8 @@
 [
   {
     "sprite": "civilian-dockhand",
-    "source": "exec-7fd64952-2079-46b6-9e98-c130c60fe9ce.png",
-    "sha256": "51bba9f2a3fff483e827fdeb9447bd86d927f36fd1de8b7bd00f7cdd8ec8cccf",
+    "source": "exec-052f6f64-6a45-4897-b79f-f4c6e822de23.png",
+    "sha256": "5dc1fa89ef02eee0417aae1384ae20c2f97e27d30e0ca967a774f488861921ff",
     "variants": [
       {
         "sprite": "civilian-dockhand-rust",
@@ -10,7 +10,7 @@
           {
             "box": [
               20,
-              23,
+              19,
               60,
               38
             ],
@@ -22,14 +22,14 @@
           },
           {
             "box": [
-              20,
+              29,
               23,
-              60,
-              33
+              51,
+              50
             ],
             "hue": [
-              0.07,
-              0.16
+              0.06,
+              0.17
             ],
             "targetHue": 0.02
           }
@@ -40,10 +40,10 @@
       1254,
       1254
     ],
-    "reductionFactor": 16,
+    "reductionFactor": 19,
     "protectedRegions": [
       [
-        28,
+        31,
         4,
         50,
         25
@@ -51,27 +51,27 @@
       [
         24,
         32,
+        35,
+        43
+      ],
+      [
+        51,
+        32,
+        58,
+        44
+      ],
+      [
         33,
-        41
-      ],
-      [
-        48,
-        31,
-        56,
-        41
-      ],
-      [
-        30,
-        34,
-        49,
-        45
+        32,
+        52,
+        44
       ]
     ]
   },
   {
     "sprite": "civilian-traveler",
-    "source": "exec-e41bab55-4d21-411f-86a5-74443a06da61.png",
-    "sha256": "e963f6d316fe90f793023a3b2d3a7200d9584e64636a379a4d219a7d0475032c",
+    "source": "exec-63d61c9d-3ab6-4034-a44d-05a54eb7cf65.png",
+    "sha256": "8548d60de88cdd398cb2ccee7a92792c48bbf1194fb31df0ab6de1a69fac6eff",
     "variants": [
       {
         "sprite": "civilian-traveler-blue",
@@ -96,7 +96,7 @@
       1254,
       1254
     ],
-    "reductionFactor": 16,
+    "reductionFactor": 19,
     "protectedRegions": [
       [
         28,
@@ -126,8 +126,8 @@
   },
   {
     "sprite": "civilian-family",
-    "source": "exec-564c27f2-2c6e-43da-95e2-1685863adf15.png",
-    "sha256": "2a9f27afb2c5c4cd06935b4dde490dbcefd17804b82486e9e03a2ee390c2dacd",
+    "source": "exec-efe5be5e-f20e-4289-a1c0-9fb76830156d.png",
+    "sha256": "2e6044525798970b288b72bb8c5441d35e5e0360b1be3cb6b2369f41eb4d2bfc",
     "variants": [
       {
         "sprite": "civilian-family-blue",
@@ -135,13 +135,13 @@
           {
             "box": [
               20,
-              32,
+              30,
               45,
-              64
+              61
             ],
             "hue": [
-              0.16,
-              0.42
+              0.12,
+              0.45
             ],
             "targetHue": 0.59
           },
@@ -149,8 +149,8 @@
             "box": [
               43,
               43,
-              61,
-              58
+              60,
+              57
             ],
             "hue": [
               0,
@@ -166,13 +166,13 @@
           {
             "box": [
               20,
-              32,
+              30,
               45,
-              64
+              61
             ],
             "hue": [
-              0.16,
-              0.42
+              0.12,
+              0.45
             ],
             "targetHue": 0.9
           },
@@ -180,8 +180,8 @@
             "box": [
               43,
               43,
-              61,
-              58
+              60,
+              57
             ],
             "hue": [
               0,
@@ -196,44 +196,44 @@
       1254,
       1254
     ],
-    "reductionFactor": 16,
+    "reductionFactor": 19,
     "protectedRegions": [
       [
-        24,
-        5,
+        27,
+        6,
         43,
-        24
+        25
       ],
       [
-        43,
-        30,
+        46,
+        31,
         59,
-        45
+        44
       ],
       [
-        20,
+        22,
         35,
         26,
         44
       ],
       [
-        40,
-        38,
-        45,
+        42,
+        36,
+        46,
         44
       ],
       [
-        50,
+        52,
         46,
-        55,
+        56,
         50
       ]
     ]
   },
   {
     "sprite": "civilian-patient",
-    "source": "exec-8cdbf937-f305-447e-82c4-f9406c8ba758.png",
-    "sha256": "d464be8c11dc81ded1012dfd970b793f780d322bd91ebb51f33ab06abba1a72c",
+    "source": "exec-69999bcb-96b9-4222-aa45-e051bdcea515.png",
+    "sha256": "ae261a407628a14442b4feda48487c37a5460779b1278e2bd60d1168709e7697",
     "variants": [
       {
         "sprite": "civilian-patient-green",
@@ -258,7 +258,7 @@
       1254,
       1254
     ],
-    "reductionFactor": 16,
+    "reductionFactor": 19,
     "protectedRegions": [
       [
         28,

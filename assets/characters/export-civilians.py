@@ -26,9 +26,9 @@ for entry in json.loads((root / 'assets/characters/civilians.json').read_text())
     canvas = Image.new('RGBA', (80 * factor, 80 * factor))
     assert image.width <= canvas.width and image.height <= canvas.height, 'Regenerate oversized sources'
     canvas.paste(image, ((canvas.width - image.width) // 2, (canvas.height - image.height) // 2))
-    # Sample the complete canvas once. Never fit the opaque bounds to a budget,
-    # stretch either axis, or sample the face on a different grid from its body.
-    sprite = clean_cutout(canvas.resize((80, 80), Image.Resampling.NEAREST))
+    # Filter the smooth source once, including its alpha, before making the
+    # native silhouette binary. Faces and bodies use the same sampling grid.
+    sprite = clean_cutout(canvas.resize((80, 80), Image.Resampling.LANCZOS))
     bounds = sprite.getbbox()
     assert bounds is not None
     sprite = sprite.crop(bounds)
