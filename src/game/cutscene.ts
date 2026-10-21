@@ -5,6 +5,8 @@ import type { Audio } from './audio';
 import type { ActorAnimator } from './actor-motion';
 import { walkingHero } from '../content/actor-motion';
 import { facingAsset } from '../content/actors';
+import { EMPEROR_WALK } from '../content/cinematic-art';
+import { ConduitCinematic } from './conduit-cinematic';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
@@ -16,6 +18,8 @@ export class Cutscene {
   private focus?:StagePoint;
   private omen?:Phaser.GameObjects.Graphics;
   private closed=false;
+  private effects?:ConduitCinematic;
+  private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
@@ -28,21 +32,25 @@ export class Cutscene {
       const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
+    if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
-  get animating(){return !this.closed&&this.scene.cameras.main.panEffect.isRunning;}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
-    const camera=this.scene.cameras.main;camera.panEffect.reset();
-    if(this.focus){const p=pixel(this.focus);camera.centerOn(p.x,p.y);}
+    const duration=this.duration?(shot.duration??this.duration):0;
+    const camera=this.scene.cameras.main;camera.stopFollow();camera.panEffect.reset();
+    if(this.tracked?.active)camera.centerOn(this.tracked.x,this.tracked.y);
+    else if(this.focus){const p=pixel(this.focus);camera.centerOn(p.x,p.y);}
+    this.tracked=undefined;
     for(const actor of this.actors.values()){
       this.motion.stop(actor);
       this.scene.tweens.killTweensOf(actor);const to=actor.getData('destination') as StagePoint|undefined;
-      if(to){actor.setPosition(to.x,to.y);actor.setData('destination',undefined);}
+      if(to){actor.setPosition(to.x,to.y);actor.setData('destination',undefined);const idle=actor.getData('cinematic-idle');if(idle)actor.setTexture(idle);}
     }
     if(shot.focus){
       this.focus=shot.focus;const p=pixel(shot.focus);
-      if(shot.cut||!this.duration)camera.centerOn(p.x,p.y);else camera.pan(p.x,p.y,this.duration,'Sine.easeInOut',true);
+      if(shot.cut||!duration)camera.centerOn(p.x,p.y);else camera.pan(p.x,p.y,duration,'Sine.easeInOut',true);
     }
     for(const [id,direction] of Object.entries(shot.actors??{})){
       const actor=this.actors.get(id);if(!actor||!direction)continue;
@@ -51,9 +59,15 @@ export class Cutscene {
       if(direction.at){const p=pixel(direction.at);actor.setPosition(p.x,p.y);}
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
-        if(walkingHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),this.duration);
-        this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration:this.duration,ease:'Sine.easeInOut'});}
+        if(walkingHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
+        const emperor=hero==='emperor'&&this.scene.textures.exists(EMPEROR_WALK[0]),start={x:actor.x,y:actor.y};
+        if(emperor)actor.setData('cinematic-idle','emperor-left');
+        this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration,ease:'Sine.easeInOut',
+          onUpdate:()=>{if(emperor&&duration)actor.setTexture(EMPEROR_WALK[Math.floor(Math.hypot(actor.x-start.x,actor.y-start.y)/7)%EMPEROR_WALK.length]);},
+          onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
+    if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
+    if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){
@@ -79,9 +93,9 @@ export class Cutscene {
     }
     this.audio.cinematicMix(shot.silence?0:.25);if(shot.cue)this.audio.effect(shot.cue);
   }
-  reframe(){if(this.focus){const p=pixel(this.focus);this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
+  reframe(){const p=this.tracked?.active?this.tracked:this.focus?pixel(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;
+    if(this.closed)return;this.closed=true;this.effects?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

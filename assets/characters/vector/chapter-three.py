@@ -75,6 +75,38 @@ def engine_warden():
     d.oval((17,15,21,21),'gold');d.oval((18,16,20,20),'white')
     return d
 
+def emperor_profile(step=0,reach=False):
+    d=Drawing()
+    # Independent left profile: silver mane, dark collar and ivory split mantle.
+    for x,travel,lift in [(18,-step,0),(23,step,2 if step else 0)]:
+        d.poly([(x-2,45),(x+2,45),(x+travel+2,61-lift),(x+travel-2,61-lift)],'navy')
+        boots(d,x+travel,top=59-lift,bottom=67-lift,facing='left')
+    d.poly([(17,27),(25,27),(28,39),(29+step,57),(25,60),(21,51),(17,58),(12-step,57),(14,39)],'cream')
+    d.poly([(17,28),(20,28),(19,47),(15,56),(12-step,57),(14,39)],'white')
+    d.poly([(25,29),(27,36),(27,49),(29+step,57),(25,60),(23,49)],'gold')
+    d.poly([(17,26),(23,26),(23,43),(20,49),(16,44)],'navy')
+    d.line([(17,27),(18,40),(20,47)],'gold')
+    d.poly([(15,25),(22,25),(24,30),(19,34),(15,30)],'ink')
+    d.line([(15,27),(19,32),(23,28)],'gold')
+    sleeve(d,(23,30),(25+step,39),(23+step,46),'cream',False)
+    if reach:
+        sleeve(d,(17,30),(11,31),(5,37),'cream',False)
+        d.line([(6,34),(8,37)],'gold',2)
+    else:
+        sleeve(d,(17,31),(14-step,39),(15-step,46),'cream',False)
+        d.line([(13-step,40),(16-step,40)],'gold',2)
+    d.oval((16,28,19,31),'gold')
+    d.poly([(15,8),(21,5),(26,9),(28,16),(26,25),(23,28),(20,24),(15,25),(13,19)],'shade')
+    d.poly([(16,12),(22,12),(23,17),(21,23),(18,26),(14,23),(13,20),(10,19),(14,16)],'skin')
+    d.poly([(20,17),(23,17),(21,23),(18,26),(14,23),(16,21)],'brown')
+    d.poly([(13,14),(14,9),(20,5),(26,8),(28,14),(25,13),(22,10),(18,13)],'silver')
+    d.poly([(14,11),(20,6),(24,8),(19,9),(16,13)],'white')
+    d.poly([(23,11),(27,14),(27,22),(24,27),(21,25),(24,20)],'silver')
+    d.line([(13,14),(21,13)],'gold',2);d.rect((13,16,16,16),'hair')
+    d.rect((14,18,15,18),'ink');d.line([(12,22),(16,22)],'brown')
+    d.poly([(13,23),(17,23),(18,25),(16,27),(14,26)],'silver')
+    return d
+
 def regulator():
     d=Drawing()
     for x in (14,26):
@@ -107,6 +139,8 @@ def export():
     out=Path(__file__).resolve().parents[3]/'public/art/vector'
     for name,model in zip(CAST,(emperor,engine_warden,regulator)):
         (out/f'{name}.svg').write_text(model().svg())
+    for name,pose in [('emperor-left',emperor_profile()),('emperor-left-step-0',emperor_profile(2)),('emperor-left-step-1',emperor_profile(-2)),('emperor-reach',emperor_profile(reach=True))]:
+        (out/f'{name}.svg').write_text(pose.svg())
     print('Exported Emperor, Engine Warden and Heart regulator as native SVG actors')
 
 if __name__=='__main__':export()

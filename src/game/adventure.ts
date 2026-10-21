@@ -21,6 +21,7 @@ import { vectorSurface } from './vector-image';
 import { drawTileMap } from './tilemap';
 import { TILESET, tilePages } from '../content/tilemaps';
 import { CHAPTER_ONE_SCENE_ASSETS, sceneAssets } from '../content/scene-art';
+import { cinematicAssets } from '../content/cinematic-art';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -215,7 +216,7 @@ export class Adventure extends Phaser.Scene {
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
       const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map(maps.flatMap(m=>sceneAssets(m)).map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map)].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
       if(missing.length||svg.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
