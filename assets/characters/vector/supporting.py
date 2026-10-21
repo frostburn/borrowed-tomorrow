@@ -52,7 +52,7 @@ def person(name):
             d.line([(x-2,53),(x+2,53)],'gold')
         d.rect((15,61,25,64),'silver','ink')
         d.rect((15,59,18,62),'brown');d.rect((22,59,25,62),'brown')
-        d.oval((13,64,16,67),'ink');d.oval((24,64,27,67),'ink')
+        d.oval((13,64,16,68),'ink');d.oval((24,64,27,68),'ink')
         d.rect((15,40,25,46),'blue','gold')
         sleeve(d,(14,31),(13,38),(16,42),'plum',False);sleeve(d,(26,31),(27,38),(24,42),'plum',False)
     else:

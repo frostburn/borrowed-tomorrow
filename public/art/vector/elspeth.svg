@@ -18,8 +18,8 @@
 <rect x="15" y="61" width="11" height="4" fill="#b7c1b8" stroke="#202d35" stroke-width="1"/>
 <rect x="15" y="59" width="4" height="4" fill="#80553d"/>
 <rect x="22" y="59" width="4" height="4" fill="#80553d"/>
-<ellipse cx="14.5" cy="65.5" rx="1.5" ry="1.5" fill="#202d35" stroke="#202d35" stroke-width="1"/>
-<ellipse cx="25.5" cy="65.5" rx="1.5" ry="1.5" fill="#202d35" stroke="#202d35" stroke-width="1"/>
+<ellipse cx="14.5" cy="66.0" rx="1.5" ry="2.0" fill="#202d35" stroke="#202d35" stroke-width="1"/>
+<ellipse cx="25.5" cy="66.0" rx="1.5" ry="2.0" fill="#202d35" stroke="#202d35" stroke-width="1"/>
 <rect x="15" y="40" width="11" height="7" fill="#547a96" stroke="#d9ae62" stroke-width="1"/>
 <polyline points="14,31 13,38 16,42" fill="none" stroke="#202d35" stroke-width="4"/>
 <polyline points="14,31 13,38 16,42" fill="none" stroke="#825875" stroke-width="2"/>

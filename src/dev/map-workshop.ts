@@ -11,7 +11,7 @@ const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
 type Point={x:number;y:number};
 export class MapWorkshop {
-  private entry=MAP_REVIEWS.find(m=>m.id===new URLSearchParams(location.search).get('map'))??MAP_REVIEWS.find(m=>m.id==='northglass')!;
+  private entry=MAP_REVIEWS.find(m=>m.id===new URLSearchParams(location.search).get('map'))??MAP_REVIEWS.find(m=>m.id==='station')!;
   private zoom=1;
   private selected:Point={x:47,y:9};
   private hidden=new Set<number>();

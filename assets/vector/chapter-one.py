@@ -51,7 +51,7 @@ def building(name,w,h):
   for xx in range(24+(9 if yy%36 else 0),int(w-38),35):s.line([(xx,yy-13),(xx,yy)],'mortar',1)
  if name=='workshop':
   s.poly([(4,eave),(4,55),(48,18),(48,48),(96,14),(96,46),(150,12),(150,42),(w-3,62),(w-3,eave)],roof)
-  for x in (48,96,150):s.poly([(x-24,48),(x-4,30),(x-4,48)],'ice' if False else 'silver')
+  for x in (48,96,150):s.poly([(x-24,48),(x-4,30),(x-4,48)],'silver')
  elif name=='shelter':
   s.poly([(4,eave),(23,35),(w-33,17),(w-1,eave)],roof)
  else:
@@ -142,7 +142,7 @@ def module(name,w,h):
   else:
    s.poly([(15,h-9),(22,63),(36,44),(84,44),(101,64),(108,h-9)],'navy')
    s.rect(34,56,52,h-74,'teal','gold');s.oval(60,54,28,27,'copper')
-   s.oval(60,54,19,18,'navy','gold');s.oval(60,54,8,8,'ice' if False else 'silver')
+   s.oval(60,54,19,18,'navy','gold');s.oval(60,54,8,8,'silver')
    for x in (26,94):s.rect(x-5,24,10,h-36,'copper','ink');s.oval(x,22,8,6,'gold')
    s.poly([(15,h-9),(37,h-18),(82,h-18),(108,h-9)],'brown')
    s.line([(43,90),(43,h-31)],'gold');s.line([(60,90),(60,h-31)],'gold');s.line([(77,90),(77,h-31)],'gold')

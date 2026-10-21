@@ -57,6 +57,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(await page.locator('.inventory-panel').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
    await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
    await page.goto('/');await page.getByRole('button',{name:'Continue',exact:true}).click();
+   // Later-chapter scenery is fetched after choosing Continue, rather than at
+   // the chapter-one title. Wait for restoration before comparing the save.
+   await expect.poll(async()=>(await inspect(page)).state.chapter).toBe(before.chapter);
    const after=(await inspect(page)).state;expect(after).toMatchObject({chapter:before.chapter,location:before.location,flags:before.flags,inventory:before.inventory,party:before.party,activeParty:before.activeParty,coins:before.coins,xp:before.xp});
   });
  });

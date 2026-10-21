@@ -69,9 +69,12 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
         await expect.poll(()=>detail.evaluate(async(canvas,{idleUrl,motionUrl})=>{
           const host=canvas.closest('#sprite-workshop') as HTMLElement,frame=host.dataset.frame;
           const image=new Image();image.src=frame==='idle'?idleUrl:motionUrl;await image.decode();
+          // SVG drawImage at 3x rerenders the vectors at 3x. Compare the game's
+          // native-size decode followed by nearest enlargement instead.
+          const native=document.createElement('canvas');native.width=image.naturalWidth;native.height=image.naturalHeight;native.getContext('2d')!.drawImage(image,0,0);
           const ref=document.createElement('canvas');ref.width=ref.height=240;const ctx=ref.getContext('2d')!;ctx.imageSmoothingEnabled=false;
           for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
-          if(frame==='idle')ctx.drawImage(image,0,0,240,240);else{const f=Number(frame);ctx.drawImage(image,f%2*80,Math.floor(f/2)*80,80,80,0,0,240,240);}
+          if(frame==='idle')ctx.drawImage(native,0,0,240,240);else{const f=Number(frame);ctx.drawImage(native,f%2*80,Math.floor(f/2)*80,80,80,0,0,240,240);}
           const actual=(canvas as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data,expected=ctx.getImageData(0,0,240,240).data;
           return actual.reduce((n,v,i)=>n+Number(v!==expected[i]),0);
         },{idleUrl:`/${artPath(hero+'-right')}`,motionUrl:`/${artPath('animation/'+hero+'-right')}`})).toBe(0);

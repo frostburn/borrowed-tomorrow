@@ -45,10 +45,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       const fit=civilianPresentation(actor.hero);
       if(fit){expect([actor.width,actor.height]).toEqual([fit.width,fit.height]);expect([actor.top,actor.bottom]).toEqual([fit.bounds[1],fit.bounds[3]-1]);continue;}
       expect(actor.width).toBe(80);expect(actor.height).toBe(80);
-      // These enemies retain their original native silhouettes and placement.
-      if(['hound','crow','guardian'].includes(actor.hero))continue;
       expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
       expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
+      if(['hound','crow','guardian'].includes(actor.hero))continue;
       expect(actor.top).toBeGreaterThanOrEqual(vectorAsset(actor.hero)?2:4);expect(actor.top).toBeLessThanOrEqual(10);
     }
     await capture(page,`sprite-cast-${device}`);
@@ -86,7 +85,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
     await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.svg$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
-    await expect(review.locator('.sprite-file')).toContainText('master.png');
+    await expect(review.locator('.sprite-file')).toContainText(artPath('master'));
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
     expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([2016,2016]);
     await capture(page,`sprite-npcs-${device}`);
