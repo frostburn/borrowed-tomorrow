@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="120" viewBox="0 0 192 120">
+<title>footbridge-front</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [0, 420, 340, 595], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="0,88 192,84 192,92 0,97" fill="#695547"/>
+<polygon points="0,87 192,83 192,86 0,91" fill="#9a7e58"/>
+<polygon points="7,72 15,70 16,112 7,115" fill="#695547"/>
+<polygon points="5,71 12,66 19,69 16,76 7,77" fill="#a09b7d"/>
+<polygon points="177,72 185,70 186,112 177,115" fill="#695547"/>
+<polygon points="175,71 182,66 189,69 186,76 177,77" fill="#a09b7d"/>
+</svg>

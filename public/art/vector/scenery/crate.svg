@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+<title>crate</title><metadata>{"reference": "feb2d47^:public/art/tunnel.webp", "crop": [570, 438, 614, 485], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="5,19 45,7 68,22 67,62 27,72 6,57" fill="#695547"/>
+<polygon points="5,19 45,7 68,22 28,34" fill="#9a7e58"/>
+<polygon points="28,34 68,22 67,62 27,72" fill="#895e48"/>
+<polyline points="8,22 25,35 26,67" fill="none" stroke="#213747" stroke-width="3"/>
+<polyline points="31,38 63,59" fill="none" stroke="#9a7e58" stroke-width="4"/>
+<polyline points="62,27 32,65" fill="none" stroke="#9a7e58" stroke-width="4"/>
+</svg>

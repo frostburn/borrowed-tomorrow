@@ -1,11 +1,12 @@
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
-import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, vectorMap, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
+import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
 import { walkable } from '../content/maps';
 import { bitmapText } from '../game/pixel-font';
 import { art } from '../game/ui';
 import { vectorSurface } from '../game/vector-image';
 import { vectorAsset } from '../content/art-assets';
+import { sceneArt, visibleSceneArt } from '../content/scene-art';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -63,7 +64,7 @@ export class MapWorkshop {
     host.innerHTML=`<section class="map-review" aria-label="Map review"><header><h2>Maps</h2><p>Click a cell to identify its art. Copy reference includes coordinates, layers and a link to this view.</p></header>
       <div class="map-toolbar" role="group" aria-label="Map chapters">${[1,2,3,4].map(ch=>`<button data-map-chapter="${ch}" aria-pressed="${ch===e.chapter}">Chapter ${ch}</button>`).join('')}<span class="map-divider"></span>${['World','Battle'].map(kind=>`<button data-map-kind="${kind}" aria-pressed="${kind===e.kind}" ${MAP_REVIEWS.some(m=>m.chapter===e.chapter&&m.kind===kind)?'':'disabled'}>${kind}</button>`).join('')}</div>
       <div class="map-library" role="group" aria-label="Maps in chapter">${MAP_REVIEWS.filter(m=>m.chapter===e.chapter&&m.kind===e.kind).map(m=>`<button data-map="${m.id}" aria-pressed="${m.id===e.id}">${esc(m.id)}</button>`).join('')}</div>
-      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?vectorMap(e.tiles)?'24px vector tiles / SVG':'24px tiles':'Native painting'}</p>
+      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?sceneArt(e.tiles)?'Traced SVG scene / 24px navigation':'24px tiles':'Native painting'}</p>
       <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
@@ -111,16 +112,22 @@ export class MapWorkshop {
   private active(l:TileLayer){return !this.hidden.has(l.id)&&layerVisible(l,{flags:this.flags});}
   private tile(ctx:CanvasRenderingContext2D,gid:number,x:number,y:number){
     const frame=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===frame.key)!;const img=this.image(`${import.meta.env.BASE_URL}${page.url}`);
-    if(img.complete&&img.naturalWidth)ctx.drawImage(vectorMap(this.entry.tiles)?vectorSurface(img):img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
+    if(img.complete&&img.naturalWidth)ctx.drawImage(img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
   }
   private paint(){
     const host=this.host!,e=this.entry,canvas=host.querySelector<HTMLCanvasElement>('#map-preview')!,ctx=canvas.getContext('2d')!;
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
-    if(e.tiles){
+    const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
+    if(pieces){
+      for(const piece of pieces){
+        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y);};
+        if(piece.depth>=0)sorted.push({depth:piece.depth,draw});else draw();
+      }
+    }else if(e.tiles){
       for(const page of tilePages(e.tiles))this.image(`${import.meta.env.BASE_URL}${page.url}`);
       for(const l of this.layers.filter(l=>this.active(l))){
-        for(const [i,gid] of l.data!.entries())if(gid&&(vectorMap(e.tiles)||!tileProperties[gid-1].empty)){
+        for(const [i,gid] of l.data!.entries())if(gid&&!tileProperties[gid-1].empty){
           const x=i%e.tiles.width*24,y=Math.floor(i/e.tiles.width)*24,draw=()=>this.tile(ctx,gid,x,y);
           if(properties(l).sort)sorted.push({depth:y+Number(tileProperties[gid-1].sortOffset??24),draw});else draw();
         }
@@ -146,14 +153,20 @@ export class MapWorkshop {
     if(this.overlays.has('markers'))for(const l of e.tiles?.layers.filter(l=>l.type==='objectgroup'&&!l.name.startsWith('Scene:'))??[]){for(const o of l.objects??[]){const p=properties(o);if(p.hiddenFlag&&this.flags[String(p.hiddenFlag)]||p.requiredFlag&&!this.flags[String(p.requiredFlag)])continue;ctx.strokeStyle='#73d5de';ctx.lineWidth=1;ctx.strokeRect(Math.floor(o.x)+.5,Math.floor(o.y)+.5,o.width||6,o.height||6);bitmapText(ctx,o.name,Math.floor(o.x)+8,Math.floor(o.y),'#73d5de',1);}}
     ctx.strokeStyle='#f4c77a';ctx.lineWidth=2;ctx.strokeRect(this.selected.x*24+1,this.selected.y*24+1,22,22);
     this.inspector();
-    const urls=e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}art/${e.world!.art??e.id}.webp`];
+    const urls=pieces?pieces.map(p=>`${import.meta.env.BASE_URL}${p.url}`):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}art/${e.world!.art??e.id}.webp`];
     const missing=urls.filter(url=>this.failed.has(url)),loading=urls.filter(url=>!this.images.get(url)?.complete);
     const status=host.querySelector('#map-load')!;status.textContent=missing.length?'Some artwork is unavailable. Retry missing art or choose another map.':loading.length?'Loading map art...':'Map art loaded.';host.dataset.ready=String(!missing.length&&!loading.length);host.dataset.paint=String(Number(host.dataset.paint??0)+1);
   }
   private stack(){const {x,y}=this.selected;return this.layers.filter(l=>l.data![y*this.entry.tiles!.width+x]).map(l=>({layer:l,gid:l.data![y*this.entry.tiles!.width+x]})).reverse();}
+  private source(layer:TileLayer,gid:number){
+    const pieces=sceneArt(this.entry.tiles);
+    if(pieces){const x=this.selected.x*24,y=this.selected.y*24;return pieces.filter(p=>p.layerId===layer.id&&x>=p.x&&y>=p.y&&x<p.x+p.width&&y<p.y+p.height).map(p=>p.url).join(', ');}
+    const f=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===f.key)!;
+    return `${page.url} / frame ${f.frame}`;
+  }
   private inspector(){
     const host=this.host!,{x,y}=this.selected,stack=this.stack();
-    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{const f=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===f.key)!;return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(page.url)} / frame ${f.frame}</p>`;}).join('')||'<p>No tile at this cell; native painting.</p>'}`;
+    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(this.source(layer,gid))}</p>`;}).join('')||'<p>No tile at this cell; native painting.</p>'}`;
   }
   private syncUrl(){
     if(!this.host)return;const url=new URL(location.href),q=url.searchParams,view=this.host.querySelector<HTMLElement>('.map-viewport')!;
@@ -161,7 +174,7 @@ export class MapWorkshop {
     for(const [key,value] of [['mapHide',[...this.hidden].sort((a,b)=>a-b).join(',')],['mapFlags',Object.keys(this.flags).filter(f=>this.flags[f]).sort().join(',')],['mapScene',this.scene]])if(value)q.set(key,value);else q.delete(key);
     if(url.href!==location.href)history.replaceState(null,'',url);
   }
-  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${tileFrame(gid,this.entry.tiles).key}`).join('\n')}\n${location.href}`;}
+  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${this.source(layer,gid)}`).join('\n')}\n${location.href}`;}
   private download(){
     const host=this.host!,view=host.querySelector<HTMLElement>('.map-viewport')!,source=host.querySelector<HTMLCanvasElement>('#map-preview')!,crop=document.createElement('canvas');crop.width=view.clientWidth;crop.height=view.clientHeight;
     crop.getContext('2d')!.drawImage(source,view.scrollLeft,view.scrollTop,crop.width,crop.height,0,0,crop.width,crop.height);

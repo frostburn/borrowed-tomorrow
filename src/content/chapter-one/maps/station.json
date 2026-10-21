@@ -1422,7 +1422,8 @@
   "nextobjectid": 20,
   "orientation": "orthogonal",
   "properties": [
-    {"name":"artStyle","type":"string","value":"vector"},
+    {"name":"sceneArt","type":"string","value":"station"},
+    {"name":"artStyle","type":"string","value":"rotoscope"},
     {
       "name": "safeArrival",
       "type": "string",

@@ -1,27 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 64 128" preserveAspectRatio="none" shape-rendering="crispEdges">
-<polygon points="3,127 6,100 22,83 42,83 58,100 62,127" fill="#626d7f" stroke="#202d35" stroke-width="1"/>
-<polygon points="25,77 39,77 40,95 32,101 24,94" fill="#dfa77d" stroke="#202d35" stroke-width="1"/>
-<polygon points="23,87 41,87 38,127 26,127" fill="#efe1bd" stroke="#202d35" stroke-width="1"/>
-<polyline points="32,93 32,108" fill="none" stroke="#202d35" stroke-width="2"/>
-<polygon points="30,96 34,96 35,110 31,114" fill="#202d35" stroke="#202d35" stroke-width="1"/>
-<rect x="17" y="113" width="32" height="15" fill="#80553d" stroke="#202d35" stroke-width="1"/>
-<rect x="20" y="116" width="26" height="12" fill="#efe1bd"/>
-<ellipse cx="20.0" cy="46.0" rx="12.5" ry="24.0" fill="#593e35" stroke="#202d35" stroke-width="1"/>
-<polygon points="10.0,34 30.0,34 32.5,52 27.5,70 20.0,76 10.0,67 7.5,52" fill="#dfa77d" stroke="#202d35" stroke-width="1"/>
-<polygon points="7.5,43 5.0,31 15.0,19 30.0,22 35.0,34 32.5,46 25.0,31 15.0,37" fill="#593e35" stroke="#202d35" stroke-width="1"/>
-<polyline points="10.0,46 15.0,46" fill="none" stroke="#593e35" stroke-width="1"/>
-<polyline points="25.0,46 30.0,46" fill="none" stroke="#593e35" stroke-width="1"/>
-<rect x="12.5" y="52" width="1.0" height="4" fill="#202d35"/>
-<rect x="27.5" y="52" width="1.0" height="4" fill="#202d35"/>
-<polyline points="20.0,52 17.5,61 22.5,61" fill="none" stroke="#80553d" stroke-width="1"/>
-<polyline points="15.0,67 25.0,67" fill="none" stroke="#80553d" stroke-width="1"/>
-<ellipse cx="11.25" cy="53.5" rx="6.25" ry="7.5" fill="#dfa77d" stroke="#d9ae62" stroke-width="1"/>
-<ellipse cx="28.75" cy="53.5" rx="6.25" ry="7.5" fill="#dfa77d" stroke="#d9ae62" stroke-width="1"/>
-<polyline points="17.5,52 22.5,52" fill="none" stroke="#d9ae62" stroke-width="1"/>
-<rect x="10.0" y="52" width="3.5" height="4" fill="#202d35"/>
-<rect x="27.5" y="52" width="3.5" height="4" fill="#202d35"/>
-<polygon points="5.0,34 7.5,7 30.0,7 35.0,34" fill="#626d7f" stroke="#202d35" stroke-width="1"/>
-<rect x="5.0" y="25" width="31.0" height="10" fill="#202d35"/>
-<ellipse cx="20.0" cy="35.5" rx="20.0" ry="4.5" fill="#626d7f" stroke="#202d35" stroke-width="1"/>
-<rect x="17.5" y="16" width="6.0" height="7" fill="#d9ae62"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>clerk portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-clerk.png", "method": "Hand-traced portrait silhouette, pose and clothing; original polygonal face planes"}</metadata>
+<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
+<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
+<polygon points="0,105 128,65 128,128 0,128" fill="#1b303a"/>
+<polygon points="5,128 13,104 36,87 53,83 84,86 106,105 118,128" fill="#6c7170"/>
+<polygon points="13,109 38,94 51,105 47,128 5,128" fill="#858a80"/>
+<polygon points="80,91 102,105 117,128 82,128" fill="#46545b"/>
+<polygon points="49,84 58,93 74,91 82,99 69,113 54,105" fill="#f1d8ae"/>
+<polygon points="60,97 67,99 70,126 60,128 63,107" fill="#233d52"/>
+<polygon points="36,90 31,102 47,110 44,120 55,108 48,95" fill="#3c4c55"/>
+<polygon points="84,92 93,101 79,109 82,119 73,112" fill="#344752"/>
+<polygon points="30,33 47,22 77,25 92,42 93,64 82,80 45,82 29,67" fill="#372a25"/>
+<polygon points="42,35 68,30 84,42 86,55 91,65 84,70 81,79 68,86 51,81 40,67 35,51" fill="#d49c70"/>
+<polygon points="38,41 49,43 48,64 57,77 71,82 67,86 50,80 38,65" fill="#ad7253"/>
+<polygon points="52,36 68,34 79,43 81,55 68,59 54,51" fill="#efc596"/>
+<polygon points="30,41 43,30 68,28 82,36 75,42 61,38 55,44 47,41 39,56 40,70 34,77 27,65 32,56 26,54" fill="#623d29"/>
+<polygon points="32,41 44,33 55,32 47,39 41,49 37,55 33,55" fill="#9b5d32"/>
+<polygon points="82,39 91,45 93,66 86,74 82,65 87,54" fill="#623d29"/>
+<polygon points="55,52 61,51 64,54 61,56 55,55" fill="#80523e"/>
+<polygon points="56,54 62,53 61,55 57,55" fill="#f1d8ae"/>
+<polygon points="59,53 61,53 61,56 59,56" fill="#122634"/>
+<polygon points="75,51 81,50 84,53 81,55 75,54" fill="#80523e"/>
+<polygon points="76,53 82,52 81,54 77,54" fill="#f1d8ae"/>
+<polygon points="79,52 81,52 81,55 79,55" fill="#122634"/>
+<polygon points="75,57 73,66 80,69 82,67 77,64" fill="#ad7253"/>
+<polygon points="77,58 79,65 81,66 78,67" fill="#efc596"/>
+<polyline points="64,74 77,72 73,75" fill="none" stroke="#80523e" stroke-width="2"/>
+<polyline points="49,50 62,49 64,60 58,64 50,61 49,50" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="71,49 84,48 86,59 80,63 72,60 71,49" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="65,54 71,53" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="48,53 40,50" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polygon points="25,31 28,18 46,9 68,10 86,19 93,34 80,40 48,36" fill="#454b50"/>
+<polygon points="30,23 38,16 52,13 67,15 81,23 80,28 48,25" fill="#6a6862"/>
+<polygon points="24,31 47,28 82,35 98,40 85,45 47,37 21,38" fill="#122634"/>
+<polyline points="28,32 48,31 80,38" fill="none" stroke="#c69c5c" stroke-width="3"/>
+<polygon points="46,28 52,28 52,35 46,35" fill="#c69c5c"/>
+<polygon points="48,30 50,30 50,33 48,33" fill="#122634"/>
+<polygon points="66,128 81,104 119,99 122,128" fill="#623d29"/>
+<polygon points="73,126 84,109 113,105 115,128" fill="#baa989"/>
+<polygon points="58,119 69,111 82,112 87,118 83,123 73,121 67,128 59,128" fill="#d49c70"/>
 </svg>

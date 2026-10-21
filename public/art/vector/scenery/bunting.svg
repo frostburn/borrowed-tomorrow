@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="216" height="96" viewBox="0 0 216 96">
+<title>bunting</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [359, 178, 1072, 293], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polyline points="1,16 55,28 111,35 166,27 215,14" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polygon points="8,19.2593 25,22.2593 15,45.2593" fill="#895e48"/>
+<polygon points="31,22.8796 48,25.8796 38,48.8796" fill="#bd945a"/>
+<polygon points="54,26.5 71,29.5 61,52.5" fill="#638487"/>
+<polygon points="77,30.1204 94,33.1204 84,56.1204" fill="#895e48"/>
+<polygon points="100,33.7407 117,36.7407 107,59.7407" fill="#bd945a"/>
+<polygon points="123,32.6389 140,35.6389 130,58.6389" fill="#638487"/>
+<polygon points="146,29.0185 163,32.0185 153,55.0185" fill="#895e48"/>
+<polygon points="169,25.3981 186,28.3981 176,51.3981" fill="#bd945a"/>
+<polygon points="192,21.7778 209,24.7778 199,47.7778" fill="#638487"/>
+</svg>

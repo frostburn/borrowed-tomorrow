@@ -1,15 +1,12 @@
 import pageDefinitions from '../../assets/tiles/tile-definitions';
 import tileset from '../../assets/tiles/chapter-one.tileset.json' with { type: 'json' };
 import type { GameState } from '../rules/state';
-import vectorPages from './vector-tiles.json' with { type: 'json' };
 
 export const TILESET = {...tileset,tiles:pageDefinitions.flatMap((p,i)=>p.tiles.map(t=>({...t,id:t.id+tileset.pages[i].firstgid-1})))};
 export const TILE_PAGES = TILESET.pages;
-/** Chapter one reuses the layouts and collision IDs with new vector scenery. */
-export const vectorMap = (map?:TileMap) => !!map && properties(map).artStyle==='vector';
-export const VECTOR_TILE_PAGES = TILE_PAGES.filter(p=>vectorPages.includes(p.name)).map(p=>({...p,name:`vector-${p.name}`,url:`art/vector/tiles/${p.name}.svg`}));
+/** SVG scene maps retain these IDs for navigation, without loading tile pages. */
 export function mapTilePages(map?:TileMap){
-  return vectorMap(map)?VECTOR_TILE_PAGES:TILE_PAGES;
+  return map&&properties(map).sceneArt?[]:TILE_PAGES;
 }
 /** Only pages referenced by this map are required to enter it. */
 export function tilePages(map:TileMap){

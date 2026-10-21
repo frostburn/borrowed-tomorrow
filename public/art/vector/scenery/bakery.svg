@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="216" viewBox="0 0 240 216">
+<title>bakery</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [856, 0, 1233, 280], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="9,92 225,86 225,208 12,214" fill="#53676c"/>
+<polygon points="199,86 225,86 225,208 202,197" fill="#304653"/>
+<polygon points="2,91 32,20 207,19 239,88 202,103 167,78 130,104 92,80 56,106" fill="#142536"/>
+<polygon points="8,85 36,25 202,24 225,78 200,90 166,65 130,91 91,65 57,92" fill="#3e5969"/>
+<polygon points="36,27 203,26 217,52 26,54" fill="#263e53"/>
+<polygon points="25,61 215,60 220,66 21,67" fill="#638487"/>
+<polygon points="173,2 190,2 190,31 173,31" fill="#53676c"/>
+<polygon points="169,0 194,0 194,7 169,7" fill="#78827a"/>
+<polygon points="33,114 71,112 71,164 33,166" fill="#0c1726"/>
+<polygon points="36,117 68,115 68,160 36,162" fill="#ab693e"/>
+<polygon points="37,118 66,116 66,157 37,160" fill="#dca05b"/>
+<polygon points="39,119 64,117 64,154 39,157" fill="#f5dca4"/>
+<polyline points="52,114 52,164" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="33,142 71,140" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="30,166 75,164 74,170 31,172" fill="#78827a"/>
+<polygon points="87,113 128,111 128,160 87,162" fill="#0c1726"/>
+<polygon points="90,116 125,114 125,156 90,158" fill="#ab693e"/>
+<polygon points="91,117 123,115 123,153 91,156" fill="#dca05b"/>
+<polygon points="93,118 121,116 121,150 93,153" fill="#f5dca4"/>
+<polyline points="107.5,113 107.5,160" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="87,139.32 128,137.32" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="84,162 132,160 131,166 85,168" fill="#78827a"/>
+<polygon points="148,118 183,115 183,207 147,210" fill="#0c1726"/>
+<polygon points="152,125 178,123 178,202 152,205" fill="#695547"/>
+<polygon points="172,172 175,172 175,176 172,176" fill="#dca05b"/>
+<polygon points="21,105 136,101 148,121 14,126" fill="#d5c9a0"/>
+<polygon points="14,123 148,118 145,132 18,136" fill="#304653"/>
+<polygon points="25,105 42,104 46,124 23,127" fill="#a05847"/>
+<polygon points="63,105 80,104 84,124 61,127" fill="#a05847"/>
+<polygon points="101,105 118,104 122,124 99,127" fill="#a05847"/>
+<polygon points="24,167 137,163 139,190 24,195" fill="#695547"/>
+<polygon points="27,171 133,168 133,185 28,189" fill="#dca05b"/>
+<polygon points="35,177 43,173 50,175 50,183 35,184" fill="#f5dca4"/>
+<polygon points="58,176 66,172 73,174 73,182 58,183" fill="#f5dca4"/>
+<polygon points="82,175 90,171 97,173 97,181 82,182" fill="#f5dca4"/>
+<polygon points="107,174 115,170 122,172 122,180 107,181" fill="#f5dca4"/>
+<polygon points="9,207 226,198 231,211 10,216" fill="#213747"/>
+</svg>

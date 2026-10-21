@@ -4,11 +4,11 @@ import math
 from PIL import Image, ImageDraw
 
 PALETTE = {
-    'ink': '#202d35', 'navy': '#34475b', 'green': '#55745c',
-    'teal': '#518589', 'red': '#b85343', 'plum': '#825875',
+    'ink': '#142536', 'navy': '#263e53', 'green': '#385d4a',
+    'teal': '#638487', 'red': '#a95243', 'plum': '#825875',
     'brown': '#80553d', 'silver': '#b7c1b8', 'shade': '#687478',
     'blue': '#547a96', 'leaf': '#8ca66d', 'ice': '#a9d3cd',
-    'skin': '#dfa77d', 'rose': '#c58077', 'gold': '#d9ae62', 'white': '#efe1bd',
+    'skin': '#d49c70', 'rose': '#c58077', 'gold': '#d9ae62', 'white': '#f5dca4',
     'hair': '#593e35', 'cream': '#d8c59b', 'slate': '#626d7f',
     'steel': '#8b9b9b', 'copper': '#b7784e', 'leather': '#9a7151',
 }
@@ -67,7 +67,9 @@ class Drawing:
                 coords = ' '.join(f'{x},{y}' for x, y in points)
                 elements.append(f'<polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{edge}"/>')
                 continue
-            stroke = f' stroke="{PALETTE[edge]}" stroke-width="1"' if edge else ''
+            # Costume/face planes meet directly. Retain intentional gold/metal
+            # fittings and explicit tool lines, without outlining every polygon.
+            stroke = f' stroke="{PALETTE[edge]}" stroke-width="1"' if edge and edge!='ink' else ''
             if kind == 'polygon':
                 coords = ' '.join(f'{x},{y}' for x, y in points)
                 elements.append(f'<polygon points="{coords}" fill="{color}"{stroke}/>')
@@ -280,45 +282,6 @@ def orrin(direction, walk=None, attack=None):
     return d
 
 
-def portrait(hero):
-    d=Drawing(64,128)
-    if hero=='nell':
-        d.poly([(9,127),(11,95),(22,81),(27,77),(39,77),(45,83),(54,97),(58,127)],'red')
-        d.poly([(27,76),(37,76),(39,92),(32,103),(25,92)],'skin')
-        d.poly([(25,88),(31,99),(32,107),(35,99),(40,88),(43,111),(43,127),(21,127),(21,111)],'white')
-        d.poly([(22,100),(25,100),(25,116),(39,116),(39,100),(43,100),(45,127),(19,127)],'navy')
-        d.poly([(21,31),(26,24),(39,25),(44,38),(43,68),(38,79),(31,84),(24,75),(20,60)],'skin')
-        d.poly([(20,30),(25,25),(41,27),(44,38),(39,44),(34,34),(29,45),(25,46),(22,61),(19,54)],'brown')
-        braid(d,20,54,44);braid(d,44,54,44)
-        d.poly([(18,23),(26,14),(40,15),(46,25),(46,34),(18,34)],'red')
-        d.poly([(18,34),(45,34),(48,38),(20,39),(16,37)],'ink')
-        d.rect((32,22,35,28),'gold','ink')
-        d.line([(25,49),(29,48)]);d.line([(36,48),(40,49)])
-        d.oval((26,52,28,56),'ink',None);d.oval((37,52,39,56),'ink',None)
-        d.line([(33,53),(32,64),(35,64)],'brown')
-        d.line([(29,71),(33,73),(37,71)],'ink')
-        d.line([(16,99),(23,104),(19,123)],'ink')
-        d.line([(48,99),(42,104),(46,123)],'ink')
-    else:
-        d.poly([(4,127),(7,99),(19,85),(25,79),(39,79),(45,85),(57,100),(60,127)],'white')
-        d.poly([(25,77),(39,77),(41,95),(32,102),(23,94)],'skin')
-        d.poly([(17,91),(23,91),(24,109),(41,109),(42,91),(48,93),(49,127),(15,127)],'navy')
-        d.rect((19,110,44,124),'navy','ink')
-        d.rect((28,113,35,118),'gold','ink')
-        d.poly([(20,30),(27,23),(39,25),(45,38),(46,62),(41,80),(33,87),(24,80),(18,65)],'skin')
-        d.poly([(19,54),(24,57),(26,64),(31,62),(34,64),(39,57),(45,54),(45,76),(38,90),(30,94),(21,80),(18,65)],'brown')
-        d.line([(24,48),(29,46)],'ink',2);d.line([(35,46),(41,48)],'ink',2)
-        d.rect((26,50,28,54),'ink');d.rect((37,50,39,54),'ink')
-        d.line([(33,49),(32,61),(36,61)],'ink')
-        d.line([(26,69),(32,67),(38,69)],'ink')
-        d.poly([(17,24),(23,15),(39,14),(46,24),(46,35),(17,35)],'navy')
-        d.poly([(16,35),(46,35),(49,40),(20,41),(15,38)],'ink')
-        d.line([(21,26),(43,26)],'brown',3)
-        for x in (25,38):
-            d.oval((x-4,21,x+4,32),'gold');d.oval((x-2,23,x+2,30),'silver')
-    return d
-
-
 def export(root, heroes=('nell','orrin')):
     art=root/'public/art/vector'
     (art/'animation').mkdir(parents=True,exist_ok=True)
@@ -344,8 +307,6 @@ def export(root, heroes=('nell','orrin')):
             if hero=='orrin':assert len({frame.tobytes() for frame in rendered[:6]})==6
             for image in [drawing.render(),*rendered]:
                 assert all(p[3] in (0,255) and (p[3]==0 or p[:3] in allowed) for _,p in image.getcolors(image.width*image.height))
-        drawing=portrait(hero)
-        (art/f'portrait-{hero}.svg').write_text(drawing.svg())
     print('Exported vector actors:', ', '.join(heroes))
 
 

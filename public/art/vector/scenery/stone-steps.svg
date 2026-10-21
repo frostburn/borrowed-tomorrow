@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="96" viewBox="0 0 144 96">
+<title>stone-steps</title><metadata>{"reference": "feb2d47^:public/art/station.webp", "crop": [446, 248, 545, 306], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="0,3 144,0 144,14 0,18" fill="#304653"/>
+<polygon points="0,0 144,0 144,5 0,9" fill="#78827a"/>
+<polygon points="0,19 144,16 144,30 0,34" fill="#304653"/>
+<polygon points="0,16 144,16 144,21 0,25" fill="#78827a"/>
+<polygon points="0,35 144,32 144,46 0,50" fill="#304653"/>
+<polygon points="0,32 144,32 144,37 0,41" fill="#78827a"/>
+<polygon points="0,51 144,48 144,62 0,66" fill="#304653"/>
+<polygon points="0,48 144,48 144,53 0,57" fill="#78827a"/>
+<polygon points="0,67 144,64 144,78 0,82" fill="#304653"/>
+<polygon points="0,64 144,64 144,69 0,73" fill="#78827a"/>
+<polygon points="0,83 144,80 144,94 0,98" fill="#304653"/>
+<polygon points="0,80 144,80 144,85 0,89" fill="#78827a"/>
+</svg>

@@ -38,9 +38,10 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    // The map canvas also passes through the shared physical-pixel framebuffer.
    await expect.poll(()=>page.evaluate(()=>{
     const source=document.querySelector<HTMLCanvasElement>('#map-preview')!,output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,origin=document.querySelector('.pixel-source')!.getBoundingClientRect(),r=source.getBoundingClientRect(),info=window.borrowedTomorrowPixels.inspect();
-    const x=(48*24+8)*2,y=(12*24+8)*2,size=16,expected=source.getContext('2d')!.getImageData(x,y,size,size).data,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
+    const x=(48*24+8)*2,y=(12*24+8)*2,size=16,expected=source.getContext('2d')!.getImageData(0,0,source.width,source.height).data,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const left=info.physicalLeft+(Math.round((r.left-origin.left)/info.cssScale)+x)*info.physicalScale,top=info.physicalTop+(Math.round((r.top-origin.top)/info.cssScale)+y)*info.physicalScale;
-    let different=0;for(let yy=0;yy<size;yy++)for(let xx=0;xx<size;xx++)for(let c=0;c<4;c++)if(actual[((top+yy*info.physicalScale)*output.width+left+xx*info.physicalScale)*4+c]!==expected[(yy*size+xx)*4+c])different++;return different;
+    const gx=Math.round((r.left-origin.left)/info.cssScale)+x,gy=Math.round((r.top-origin.top)/info.cssScale)+y,u=info.rasterUnit;
+    let different=0;for(let yy=0;yy<size;yy++)for(let xx=0;xx<size;xx++)for(let c=0;c<4;c++){const sx=x+Math.floor((gx+xx)/u)*u-gx,sy=y+Math.floor((gy+yy)/u)*u-gy;if(actual[((top+yy*info.physicalScale)*output.width+left+xx*info.physicalScale)*4+c]!==expected[(sy*source.width+sx)*4+c])different++;}return different;
    })).toBe(0);
    await capture(page,`maps-review-${device}`);
    const download=page.waitForEvent('download');await review.getByRole('button',{name:'Download view PNG',exact:true}).click();

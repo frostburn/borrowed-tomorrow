@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="168" viewBox="0 0 192 168">
+<title>market-stall</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [300, 545, 620, 800], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="22,54 30,53 27,159 18,164" fill="#695547"/>
+<polygon points="157,47 166,46 171,153 162,157" fill="#695547"/>
+<polygon points="3,65 30,23 152,13 188,50 180,76 7,88" fill="#a09b7d"/>
+<polygon points="30,23 152,13 180,51 8,66" fill="#d5c9a0"/>
+<polygon points="7,65 180,50 180,76 7,88" fill="#304653"/>
+<polygon points="37,22 56,20 62,63 39,65" fill="#a05847"/>
+<polygon points="39,66 62,64 62,80 39,82" fill="#895e48"/>
+<polygon points="81,22 100,20 106,63 83,65" fill="#a05847"/>
+<polygon points="83,66 106,64 106,80 83,82" fill="#895e48"/>
+<polygon points="125,22 144,20 150,63 127,65" fill="#a05847"/>
+<polygon points="127,66 150,64 150,80 127,82" fill="#895e48"/>
+<polygon points="12,131 178,119 181,157 15,167" fill="#695547"/>
+<polygon points="11,126 177,114 185,123 14,138" fill="#9a7e58"/>
+<polygon points="25,125 29,118 42,117 46,123 43,130 27,132" fill="#dca05b"/>
+<polygon points="50,125 54,118 67,117 71,123 68,130 52,132" fill="#dca05b"/>
+<polygon points="75,125 79,118 92,117 96,123 93,130 77,132" fill="#dca05b"/>
+<polygon points="100,125 104,118 117,117 121,123 118,130 102,132" fill="#dca05b"/>
+<polygon points="125,125 129,118 142,117 146,123 143,130 127,132" fill="#dca05b"/>
+<polygon points="150,125 154,118 167,117 171,123 168,130 152,132" fill="#dca05b"/>
+</svg>

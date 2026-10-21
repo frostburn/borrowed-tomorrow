@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="120" viewBox="0 0 192 120">
+<title>footbridge</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [0, 420, 340, 595], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="0,49 192,45 192,68 0,73" fill="#695547"/>
+<polygon points="0,49 192,45 192,51 0,55" fill="#9a7e58"/>
+<polyline points="10,49 10,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="31,49 31,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="52,49 52,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="73,49 73,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="94,49 94,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="115,49 115,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="136,49 136,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="157,49 157,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polyline points="178,49 178,70" fill="none" stroke="#9a7e58" stroke-width="2"/>
+<polygon points="0,43 192,40 192,47 0,51" fill="#304653"/>
+<polygon points="2,32 10,30 11,72 2,74" fill="#9a7e58"/>
+<polygon points="180,29 189,28 190,70 180,71" fill="#9a7e58"/>
+</svg>

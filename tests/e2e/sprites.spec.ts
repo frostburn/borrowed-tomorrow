@@ -70,7 +70,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       const canvas=element as HTMLCanvasElement,info=window.borrowedTomorrowPixels.inspect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),r=canvas.getBoundingClientRect();
       const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data,expected=canvas.getContext('2d')!.getImageData(0,0,240,240).data;
       const left=info.physicalLeft+Math.round((r.left-source.left)/info.cssScale)*info.physicalScale,top=info.physicalTop+Math.round((r.top-source.top)/info.cssScale)*info.physicalScale;
-      let mismatches=0;for(let y=0;y<240;y++)for(let x=0;x<240;x++)for(let c=0;c<4;c++)if(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]!==expected[(y*240+x)*4+c])mismatches++;
+      const gx=Math.round((r.left-source.left)/info.cssScale),gy=Math.round((r.top-source.top)/info.cssScale),u=info.rasterUnit;
+      let mismatches=0;for(let y=1;y<239;y++)for(let x=1;x<239;x++)for(let c=0;c<4;c++){const sx=Math.floor((gx+x)/u)*u-gx,sy=Math.floor((gy+y)/u)*u-gy;if(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]!==expected[(sy*240+sx)*4+c])mismatches++;}
       return mismatches;
     })).toBe(0);
     await capture(page,`sprite-detail-${device}`);

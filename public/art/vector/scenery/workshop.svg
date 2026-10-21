@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="216" viewBox="0 0 264 216">
+<title>workshop</title><metadata>{"reference": "feb2d47^:public/art/yard.webp", "crop": [53, 17, 220, 189], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="21,92 149,30 243,93 243,204 24,213" fill="#695547"/>
+<polygon points="149,30 243,93 243,204 207,188 208,98" fill="#304653"/>
+<polygon points="6,97 130,4 153,4 261,87 241,100 140,27 26,111" fill="#142536"/>
+<polygon points="15,94 135,9 238,85 208,86 138,33 35,109" fill="#3e5969"/>
+<polygon points="140,8 254,88 241,94 141,25" fill="#263e53"/>
+<polygon points="45,95 141,42 205,96 205,186 47,199" fill="#53676c"/>
+<polygon points="56,106 199,99 198,183 55,195" fill="#695547"/>
+<polygon points="110,64 138,62 138,90 110,92" fill="#0c1726"/>
+<polygon points="113,67 135,65 135,86 113,88" fill="#3e5969"/>
+<polygon points="114,68 133,66 133,83 114,86" fill="#638487"/>
+<polyline points="124,64 124,90" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="110,78.56 138,76.56" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="107,92 142,90 141,96 108,98" fill="#78827a"/>
+<polygon points="58,113 89,111 89,157 58,159" fill="#0c1726"/>
+<polygon points="61,116 86,114 86,153 61,155" fill="#ab693e"/>
+<polygon points="62,117 84,115 84,150 62,153" fill="#dca05b"/>
+<polygon points="64,118 82,116 82,147 64,150" fill="#f5dca4"/>
+<polyline points="73.5,113 73.5,157" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="58,137.64 89,135.64" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="55,159 93,157 92,163 56,165" fill="#78827a"/>
+<polygon points="172,107 196,105 196,146 172,148" fill="#0c1726"/>
+<polygon points="175,110 193,108 193,142 175,144" fill="#ab693e"/>
+<polygon points="176,111 191,109 191,139 176,142" fill="#dca05b"/>
+<polygon points="178,112 189,110 189,136 178,139" fill="#f5dca4"/>
+<polyline points="184,107 184,146" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="172,128.84 196,126.84" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="169,148 200,146 199,152 170,154" fill="#78827a"/>
+<polygon points="100,113 162,108 163,194 100,200" fill="#0c1726"/>
+<polygon points="104,117 129,115 130,197 104,200" fill="#695547"/>
+<polygon points="128,119 160,115 157,195 130,195" fill="#213747"/>
+<polyline points="106,126 124,125 124,181 107,184" fill="none" stroke="#9a7e58" stroke-width="3"/>
+<polyline points="134,118 134,195" fill="none" stroke="#895e48" stroke-width="3"/>
+<polygon points="20,188 238,181 247,193 25,208" fill="#9a7e58"/>
+<polygon points="23,201 247,187 247,207 24,216" fill="#213747"/>
+<polygon points="35,170 40,169 41,204 35,206" fill="#9a7e58"/>
+<polygon points="66,170 71,169 72,204 66,206" fill="#9a7e58"/>
+<polygon points="204,170 209,169 210,204 204,206" fill="#9a7e58"/>
+<polygon points="229,170 234,169 235,204 229,206" fill="#9a7e58"/>
+<polyline points="30,181 236,170" fill="none" stroke="#9a7e58" stroke-width="4"/>
+<polyline points="35,176 65,196 94,173" fill="none" stroke="#9a7e58" stroke-width="3"/>
+</svg>

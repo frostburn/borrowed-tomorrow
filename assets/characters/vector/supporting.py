@@ -103,43 +103,12 @@ def person(name):
     return d
 
 
-def portrait(name):
-    d=Drawing(64,128)
-    color={'master':'navy','clerk':'slate','tomas':'navy','alban':'navy','tilda':'green','elspeth':'plum'}[name]
-    if name=='elspeth':
-        d.rect((9,76,55,127),'brown','ink')
-        d.line([(8,79),(8,124)],'gold',2);d.line([(56,79),(56,124)],'gold',2)
-    d.poly([(3,127),(6,100),(22,83),(42,83),(58,100),(62,127)],color)
-    d.poly([(25,77),(39,77),(40,95),(32,101),(24,94)],'skin')
-    if name in ('master','clerk','tomas'):
-        d.poly([(23,87),(41,87),(38,127),(26,127)],'brown' if name=='master' else 'white')
-    if name=='master':
-        d.poly([(25,88),(39,88),(32,99)],'white');d.line([(32,97),(32,110)],'ink',2)
-        d.oval((10,101,17,111),'gold');d.line([(39,109),(39,121),(31,123)],'gold')
-    if name=='clerk':
-        d.line([(32,93),(32,108)],'ink',2);d.poly([(30,96),(34,96),(35,110),(31,114)],'ink')
-        d.rect((17,113,48,127),'brown','ink');d.rect((20,116,45,127),'white')
-    if name=='tomas':
-        d.poly([(20,85),(42,89),(40,97),(31,98),(26,122),(17,120)],'red')
-        d.line([(46,92),(28,127)],'leather',4);d.oval((40,95,45,101),'gold')
-    if name=='alban':
-        d.poly([(21,88),(43,88),(44,119),(32,126),(20,118)],'white')
-        d.line([(19,90),(43,125)],'red',4)
-        d.oval((29,104,35,114),'gold');d.rect((7,96,17,100),'gold','ink');d.rect((47,96,57,100),'gold','ink')
-    if name=='tilda':d.poly([(24,88),(40,88),(39,107),(49,127),(15,127),(25,107)],'white')
-    if name=='elspeth':
-        d.poly([(22,86),(42,86),(52,106),(33,115),(12,105)],'plum')
-        d.rect((20,117,46,127),'blue','gold')
-    start=len(d.shapes);head(d,name);d.transform(start,2.5,3,20,4,10)
-    return d
-
-
 def enemy(name):
     d=Drawing()
     if name=='hound':
         for x in (13,27):
             d.line([(x,47),(x-1,57),(x+1,66)],'ink',4);d.line([(x,48),(x-1,57),(x+1,65)],'copper',2)
-            d.poly([(x-1,64),(x+3,64),(x+4,67),(x-2,67)],'brown')
+            d.poly([(x-1,64),(x+3,64),(x+4,68),(x-2,68)],'brown')
         d.poly([(13,32),(29,33),(31,43),(27,50),(14,48),(10,40)],'brown')
         d.oval((17,33,27,48),'copper');d.oval((19,36,25,45),'gold');d.line([(21,37),(21,44)],'brown')
         d.poly([(11,43),(7,39),(6,30),(3,30),(4,24),(8,23),(8,16),(11,20),(14,15),(14,28),(17,34)],'copper')
@@ -156,7 +125,7 @@ def enemy(name):
     elif name=='guardian':
         for x in (15,25):
             d.rect((x-2,46,x+2,62),'copper','ink');d.oval((x-3,50,x+3,56),'gold')
-            d.poly([(x-3,61),(x+2,61),(x+4,67),(x-4,67)],'brown')
+            d.poly([(x-3,61),(x+2,61),(x+4,68),(x-4,68)],'brown')
         d.rect((11,23,29,49),'brown','ink');d.oval((12,21,28,50),'copper')
         d.rect((15,29,25,43),'navy','ink')
         for x in (17,20,23):d.line([(x,31),(x,41)],'gold')
@@ -167,11 +136,11 @@ def enemy(name):
         d.line([(32,31),(34,41),(31,49)],'ink',5);d.line([(32,31),(34,41),(31,49)],'copper',3)
         d.rect((3,45,10,51),'brown','ink');d.line([(7,49),(4,59)],'silver',2)
     else:
-        d.poly([(4,65),(7,53),(14,49),(18,37),(26,38),(31,51),(35,56),(36,67),(9,67)],'slate')
+        d.poly([(4,65),(7,53),(14,49),(18,37),(26,38),(31,51),(35,56),(36,68),(9,68)],'slate')
         d.poly([(7,53),(15,51),(18,39),(24,40),(20,54),(14,60)],'silver')
-        d.poly([(20,54),(24,40),(29,50),(28,64),(15,67)],'shade')
+        d.poly([(20,54),(24,40),(29,50),(28,64),(15,68)],'shade')
         d.line([(14,51),(19,55),(17,64)],'ink')
-        d.poly([(6,64),(11,61),(15,65),(13,67),(5,67)],'green',None)
+        d.poly([(6,64),(11,61),(15,65),(13,68),(5,68)],'green',None)
     return d
 
 
@@ -179,7 +148,6 @@ def export(root):
     out=root/'public/art/vector';out.mkdir(parents=True,exist_ok=True)
     for name in CAST:
         (out/f'{name}.svg').write_text(person(name).svg())
-        (out/f'portrait-{name}.svg').write_text(portrait(name).svg())
     for name in ('hound','crow','guardian','rock'):(out/f'{name}.svg').write_text(enemy(name).svg())
     print('Exported chapter-one supporting cast and enemies as SVG')
 

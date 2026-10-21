@@ -19,7 +19,8 @@ import { Cutscene } from './cutscene';
 import { vectorAsset } from '../content/art-assets';
 import { vectorSurface } from './vector-image';
 import { drawTileMap } from './tilemap';
-import { TILESET, VECTOR_TILE_PAGES, tilePages } from '../content/tilemaps';
+import { TILESET, tilePages } from '../content/tilemaps';
+import { SCENE_ASSETS } from '../content/scene-art';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -82,13 +83,13 @@ export class Adventure extends Phaser.Scene {
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
-    for(const page of VECTOR_TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+    for(const asset of SCENE_ASSETS)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
     for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
-    for(const key of [...textures,...MOTION_PAGES.map(page=>page.key),...VECTOR_TILE_PAGES.map(page=>page.name)]){
-      if(vectorAsset(key)||key.startsWith('vector-')){
+    for(const key of [...textures,...MOTION_PAGES.map(page=>page.key),...SCENE_ASSETS.map(asset=>asset.key)]){
+      if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
         const texture=this.textures.get(key);
         for(const source of texture.source)if(source.image instanceof HTMLImageElement){
           const canvas=vectorSurface(source.image);
@@ -137,7 +138,7 @@ export class Adventure extends Phaser.Scene {
   }
   get animating(){return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
-    const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*6*scale+padding*2;canvas.height=9*scale+padding*2;
+    const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*(scale===1?8:6*scale)+padding*2;canvas.height=9*scale+padding*2;
     const ctx=canvas.getContext('2d')!;
     if(outline)for(const dx of [-1,0,1])for(const dy of [-1,0,1])if(dx||dy)bitmapText(ctx,text,padding+dx,scale+padding+dy,'#080f19',scale);
     bitmapText(ctx,text,padding,scale+padding,color,scale);

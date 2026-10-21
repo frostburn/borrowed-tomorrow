@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="192" viewBox="0 0 288 192">
+<title>engine</title><metadata>{"reference": "feb2d47^:public/art/yard.webp", "crop": [701, 35, 1008, 185], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<ellipse cx="62" cy="165" rx="24" ry="20" fill="#0c1726"/>
+<ellipse cx="62" cy="163" rx="17" ry="14" fill="#253e48"/>
+<ellipse cx="62" cy="162" rx="10" ry="8" fill="#638487"/>
+<ellipse cx="59" cy="159" rx="4" ry="4" fill="#304653"/>
+<ellipse cx="110" cy="165" rx="24" ry="20" fill="#0c1726"/>
+<ellipse cx="110" cy="163" rx="17" ry="14" fill="#253e48"/>
+<ellipse cx="110" cy="162" rx="10" ry="8" fill="#638487"/>
+<ellipse cx="107" cy="159" rx="4" ry="4" fill="#304653"/>
+<ellipse cx="155" cy="165" rx="24" ry="20" fill="#0c1726"/>
+<ellipse cx="155" cy="163" rx="17" ry="14" fill="#253e48"/>
+<ellipse cx="155" cy="162" rx="10" ry="8" fill="#638487"/>
+<ellipse cx="152" cy="159" rx="4" ry="4" fill="#304653"/>
+<ellipse cx="230" cy="165" rx="18" ry="15" fill="#0c1726"/>
+<ellipse cx="230" cy="163" rx="12" ry="10" fill="#253e48"/>
+<ellipse cx="230" cy="162" rx="10" ry="8" fill="#638487"/>
+<ellipse cx="227" cy="159" rx="4" ry="4" fill="#304653"/>
+<polygon points="29,78 166,69 186,86 187,133 38,147 24,127" fill="#142536"/>
+<polygon points="35,81 167,73 180,86 180,122 34,135" fill="#253e48"/>
+<polygon points="36,80 164,73 176,84 171,94 35,102" fill="#638487"/>
+<polygon points="31,110 180,96 180,128 40,141" fill="#213747"/>
+<ellipse cx="31" cy="106" rx="18" ry="29" fill="#0c1726"/>
+<ellipse cx="32" cy="103" rx="13" ry="24" fill="#253e48"/>
+<ellipse cx="30" cy="100" rx="7" ry="15" fill="#304653"/>
+<polygon points="66,77 71,77 73,133 67,134" fill="#bd945a"/>
+<polygon points="123,77 128,77 130,133 124,134" fill="#bd945a"/>
+<polygon points="166,77 171,77 173,133 167,134" fill="#bd945a"/>
+<polygon points="57,79 60,29 75,28 80,78" fill="#213747"/>
+<polygon points="60,29 75,28 77,34 59,35" fill="#638487"/>
+<polygon points="54,25 80,25 80,30 54,30" fill="#253e48"/>
+<polygon points="105,73 107,57 121,56 128,73" fill="#bd945a"/>
+<ellipse cx="116" cy="55" rx="9" ry="7" fill="#9a7e58"/>
+<polygon points="188,59 264,54 267,138 186,145" fill="#253e48"/>
+<polygon points="189,64 256,60 257,100 189,105" fill="#213747"/>
+<polygon points="202,66 221,64 221,97 202,99" fill="#0c1726"/>
+<polygon points="205,69 218,67 218,93 205,95" fill="#3e5969"/>
+<polygon points="206,70 216,68 216,90 206,93" fill="#638487"/>
+<polyline points="211.5,66 211.5,97" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="202,83.36 221,81.36" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="199,99 225,97 224,103 200,105" fill="#78827a"/>
+<polygon points="230,64 250,62 250,95 230,97" fill="#0c1726"/>
+<polygon points="233,67 247,65 247,91 233,93" fill="#3e5969"/>
+<polygon points="234,68 245,66 245,88 234,91" fill="#638487"/>
+<polyline points="240,64 240,95" fill="none" stroke="#695547" stroke-width="3"/>
+<polyline points="230,81.36 250,79.36" fill="none" stroke="#695547" stroke-width="2"/>
+<polygon points="227,97 254,95 253,101 228,103" fill="#78827a"/>
+<polygon points="180,59 184,47 267,41 279,53 268,59" fill="#263e53"/>
+<polyline points="189,48 265,43" fill="none" stroke="#638487" stroke-width="3"/>
+<polygon points="180,105 258,101 258,135 184,141" fill="#304653"/>
+<polygon points="10,143 264,131 271,145 18,158" fill="#253e48"/>
+<polygon points="25,139 174,126 184,134 37,148" fill="#895e48"/>
+<polyline points="55,166 151,161" fill="none" stroke="#638487" stroke-width="5"/>
+<polygon points="7,151 18,130 29,133 34,155" fill="#304653"/>
+<ellipse cx="41" cy="99" rx="7" ry="10" fill="#dca05b"/>
+<ellipse cx="39" cy="97" rx="3" ry="5" fill="#f5dca4"/>
+</svg>

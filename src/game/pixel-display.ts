@@ -1,5 +1,6 @@
 import { bitmapText } from './pixel-font';
 import { displayWidth, DISPLAY_HEIGHT } from './resolution';
+import { RASTER_UNIT, rasterize, snapRaster } from './raster';
 
 /** Panel and text colors. Asset colors pass through unchanged. */
 export const PALETTE = ['#080f19','#101d28','#182b32','#234047','#35535a','#557179','#87a3a2',
@@ -19,6 +20,7 @@ export class PixelDisplay {
   readonly host: HTMLDivElement;
   private ctx:CanvasRenderingContext2D;
   private frame=document.createElement('canvas');
+  private raster=document.createElement('canvas');
   private presentCtx:CanvasRenderingContext2D;
   private lower=document.createElement('canvas');
   private upper=document.createElement('canvas');
@@ -49,7 +51,7 @@ export class PixelDisplay {
     for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
     window.addEventListener('resize',()=>this.layout());this.layout();
-    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,palette:PALETTE})};
+    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,palette:PALETTE})};
   }
   attach(canvas:HTMLCanvasElement){this.native=canvas;}
   private layout(){
@@ -94,11 +96,13 @@ export class PixelDisplay {
     ctx.drawImage(this.lower,0,0);
     const r=this.worldRect;ctx.drawImage(this.native,r.x,r.y,r.w,r.h);
     ctx.drawImage(this.upper,0,0);
+    rasterize(this.frame,this.raster);
     // Expand in the bitmap itself. CSS fractional sizing can otherwise smooth pixels
     // at fractional DPR even when the final device scale is an integer.
     this.presentCtx.imageSmoothingEnabled=false;
     this.presentCtx.fillStyle=PALETTE[0];this.presentCtx.fillRect(0,0,this.output.width,this.output.height);
-    this.presentCtx.drawImage(this.frame,this.physicalLeft,this.physicalTop,this.width*this.physicalScale,this.height*this.physicalScale);
+    this.presentCtx.save();this.presentCtx.beginPath();this.presentCtx.rect(this.physicalLeft,this.physicalTop,this.width*this.physicalScale,this.height*this.physicalScale);this.presentCtx.clip();
+    this.presentCtx.drawImage(this.raster,this.physicalLeft,this.physicalTop,this.raster.width*RASTER_UNIT*this.physicalScale,this.raster.height*RASTER_UNIT*this.physicalScale);this.presentCtx.restore();
   }
   /** Measure the DOM only after changes; the world canvas still updates each frame. */
   private rebuild(){
@@ -112,7 +116,7 @@ export class PixelDisplay {
       add(ctx=>{ctx.save();ctx.globalAlpha*=Number.isFinite(alpha)?alpha:1;},true);
       if(background!=='rgba(0, 0, 0, 0)'&&background!=='transparent')add(ctx=>{ctx.fillStyle=background;ctx.fillRect(r.x,r.y,r.w,r.h);});
       for(const [side,x,y,w,h] of [['top',r.x,r.y,r.w,Number.parseFloat(style.borderTopWidth)],['bottom',r.x,r.y+r.h-Number.parseFloat(style.borderBottomWidth),r.w,Number.parseFloat(style.borderBottomWidth)],['left',r.x,r.y,Number.parseFloat(style.borderLeftWidth),r.h],['right',r.x+r.w-Number.parseFloat(style.borderRightWidth),r.y,Number.parseFloat(style.borderRightWidth),r.h]] as const){
-        if(w&&h){const color=style.getPropertyValue(`border-${side}-color`);add(ctx=>{ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));});}
+        if(w&&h){const color=style.getPropertyValue(`border-${side}-color`);add(ctx=>{ctx.fillStyle=color;ctx.fillRect(snapRaster(x),snapRaster(y),Math.max(RASTER_UNIT,snapRaster(w)),Math.max(RASTER_UNIT,snapRaster(h)));});}
       }
       if(style.overflowX!=='visible'||style.overflowY!=='visible')add(ctx=>{ctx.beginPath();ctx.rect(r.x,r.y,r.w,r.h);ctx.clip();},true);
       if(element===this.world){this.worldRect=r;add(()=>{},false,true);}
