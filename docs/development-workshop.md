@@ -1,4 +1,12 @@
-# Character workshop
+# Development workshop
+
+The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen exploration maps and thirteen tiled battlefields without loading or changing campaign progress. Choose a chapter and World/Battle, then select the map by its stable ID. The initial view is Northglass.
+
+Drag with the mouse or scroll to pan; touch scrolling also works. Review at 1x or 2x integer zoom. Click a cell, use the X/Y fields, or move the selection with arrow keys. Arrival centers the map's first named arrival. The inspector lists the cell's tile layers, GIDs, art names, native page files and frame numbers. Hidden tiles remain listed so a bad seam can still be identified after isolating a layer.
+
+Layer buttons toggle individual tile layers; Only isolates one and Reset layers restores the full stack. Story flags compare authored scenery phases. Scene cast previews the map-owned initial actor placements. Actors, Grid, Collision and Markers are separate overlays; collision follows both the selected story flags and visible tile layers. Painted Chapter Four maps retain their native dimensions and offer people/collision review, with a retry message when their optional art is unavailable.
+
+**Copy reference** copies the map ID, selected cell/pixel coordinates, scene, flags, tile sources and a review link. The address bar also retains map, selection, pan, integer zoom, overlays and layer visibility, so a copied link reopens that view. **Download view PNG** exports the visible map crop for attaching to feedback. No campaign saves, inventory, character builds or repository map files are written. All of this code remains Vite-only.
 
 Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` include the campaign inventory; neither query parameter enables the workshop there.
 

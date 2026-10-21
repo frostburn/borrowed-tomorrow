@@ -9,7 +9,7 @@ import { travel } from './navigation';
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
-  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation']) {
+  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation', 'maps']) {
     await page.goto(`/?dev=${route}`);
     await expect(page).toHaveTitle('Borrowed Tomorrow');
     await expect(page.getByRole('button', { name: 'Begin Chapter One', exact: true })).toBeVisible();
@@ -29,6 +29,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   expect(built).not.toContain('Begin Chapter Three (canonical)');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
+  for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
