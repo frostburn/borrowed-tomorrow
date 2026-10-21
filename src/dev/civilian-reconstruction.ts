@@ -2,8 +2,6 @@ import report from '../../assets/characters/pixel-fixer-civilians.json';
 import { art } from '../game/ui';
 import { civilianPresentation } from '../content/civilians';
 
-const assets=import.meta.glob<string>('./art/civilian-review/*.png',{eager:true,query:'?url',import:'default'});
-
 /** Review the recovered grid at its actual size; never fit it to an actor box. */
 export function mountCivilianReconstruction(host:HTMLElement,id:string){
   const role=id.replace('civilian-','');
@@ -16,9 +14,7 @@ export function mountCivilianReconstruction(host:HTMLElement,id:string){
   host.querySelector('.sprite-review')!.append(section);
   const variants=[
     ['Campaign',art(id)],
-    ['Previous point sample',assets[`./art/civilian-review/${role}-sampled.png`]],
-    ['Smooth attempt',assets[`./art/civilian-review/${role}-smooth.png`]],
-    ['Recovered grid',assets[`./art/civilian-review/${role}-fixed.png`]],
+    ['Recovered grid',art(id)],
   ];
   const row=section.querySelector('.civilian-comparisons')!;
   let zoom=1;

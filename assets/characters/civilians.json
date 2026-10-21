@@ -1,7 +1,7 @@
 [
   {
     "sprite": "civilian-dockhand",
-    "source": "src/dev/art/civilian-review/dockhand-fixed.png",
+    "source": "public/art/civilian-dockhand.png",
     "sha256": "f16c8e89d1a952a7b9bf65598fbd1dda32e48b966db6886483698d17f5497feb",
     "bounds": [
       38,
@@ -72,7 +72,7 @@
   },
   {
     "sprite": "civilian-traveler",
-    "source": "src/dev/art/civilian-review/traveler-fixed.png",
+    "source": "public/art/civilian-traveler.png",
     "sha256": "c30285d5a5fefa40e79bfb81bd19d8437ed388fd1b37e25e14a5a2940be87c62",
     "bounds": [
       37,
@@ -130,7 +130,7 @@
   },
   {
     "sprite": "civilian-family",
-    "source": "src/dev/art/civilian-review/family-fixed.png",
+    "source": "public/art/civilian-family.png",
     "sha256": "6cb974e5eb135dc2fff9b141d743c928715d7d59f877419a8e5cb029097f92c0",
     "bounds": [
       34,
@@ -238,7 +238,7 @@
   },
   {
     "sprite": "civilian-patient",
-    "source": "src/dev/art/civilian-review/patient-fixed.png",
+    "source": "public/art/civilian-patient.png",
     "sha256": "c7cfe01723ea209aabc20441c1d824b06b9c779936fd8414bbd7e706355e7a83",
     "bounds": [
       45,

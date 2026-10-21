@@ -1,6 +1,6 @@
 # Development workshop
 
-The **Sprites** tab offers Pixel Art Fixer comparisons when a base civilian is selected under NPCs. It shows the campaign's filtered 63px standing-height presentation alongside the prior point sample, smooth attempt and full recovered grid. Raw-grid zoom remains nearest-neighbor at 1x/2x/3x; ordinary actor previews use the same uniform fit as the game. The approved recovered artwork and native-resolution clothing variants now ship in the campaign. See `assets/characters/pixel-fixer.md` for conversion, dimensions and reproduction. Historical comparisons and review controls remain dev-only.
+The **Sprites** tab offers Pixel Art Fixer comparisons when a base civilian is selected under NPCs. It shows the campaign's filtered 63px standing-height presentation alongside the full recovered grid, using the same campaign PNG for both. Raw-grid zoom remains nearest-neighbor at 1x/2x/3x; ordinary actor previews use the same uniform fit as the game. The approved recovered artwork and native-resolution clothing variants now ship in the campaign. See `assets/characters/pixel-fixer.md` for conversion, dimensions and reproduction. Review controls remain dev-only; rejected historical comparison assets have been removed.
 
 The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen exploration maps and thirteen tiled battlefields without loading or changing campaign progress. Choose a chapter and World/Battle, then select the map by its stable ID. The initial view is Northglass.
 

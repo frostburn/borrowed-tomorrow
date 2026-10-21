@@ -31,6 +31,6 @@ output; variants preserve their dimensions and alpha. No Rust/tool dependency is
 needed for normal game builds. Full conversion from retained large sources,
 detection caveats and the pinned Rust build are in [pixel-fixer.md](pixel-fixer.md).
 
-The Sprites workshop shows the in-game fit next to the previous point sample,
-smooth attempt and raw recovered grid. Raw-grid comparisons keep integer zoom
+The Sprites workshop shows the in-game fit next to the raw recovered grid,
+using the same campaign PNG for both presentations. Raw-grid comparisons keep integer zoom
 and nearest-neighbor filtering so reconstruction details remain inspectable.

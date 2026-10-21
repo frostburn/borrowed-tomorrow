@@ -1,4 +1,4 @@
-"""Reproduce native Pixel Art Fixer review assets; never writes campaign art.
+"""Reproduce the four native Pixel Art Fixer campaign base sprites.
 
 python assets/characters/reconstruct-civilians.py SOURCE_DIR --fixer-root FIXER_ROOT
 Dependencies/build recipe: pixel-fixer.md. Pillow is authoring-only.
@@ -16,7 +16,7 @@ root = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('sources', type=Path)
 parser.add_argument('--fixer-root', type=Path, required=True)
-parser.add_argument('--output-dir', type=Path, default=root / 'src/dev/art/civilian-review')
+parser.add_argument('--output-dir', type=Path, default=root / 'public/art')
 args = parser.parse_args()
 manifest = json.loads((root / 'assets/characters/pixel-fixer-civilians.json').read_text())
 checkout = args.fixer_root.resolve()
@@ -47,9 +47,9 @@ with tempfile.TemporaryDirectory(prefix='civilian-reconstruction-') as temporary
         data = output.read_bytes()
         if len(data) > 131072 or hashlib.sha256(data).hexdigest() != entry['outputSha256']:
             raise ValueError('Changed reconstruction: inspect before accepting new bytes')
-        outputs.append((output.name, data))
+        outputs.append((Path(entry['output']).name, data))
         print(f"{entry['role']}: {image.size}, {entry['confidence']}; {entry['campaignDecision']}")
-# All sources and detections must validate before replacing any review image.
+# All sources and detections must validate before replacing any base image.
 args.output_dir.mkdir(parents=True, exist_ok=True)
 for name, data in outputs:
     (args.output_dir / name).write_bytes(data)

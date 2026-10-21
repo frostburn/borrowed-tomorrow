@@ -52,11 +52,12 @@ reproduction. Nothing in this exporter calls an image resize operation.
 ## In-game review
 
 Vite-only Sprites (`?dev=sprites`) → NPCs → select a base civilian role → scroll
-to Pixel Art Fixer review. Compare the filtered campaign fit, prior point sample,
-smooth attempt and untouched recovered grid. Raw grids retain labeled native
+to Pixel Art Fixer review. Compare the filtered campaign fit and untouched
+recovered grid, both using the same canonical campaign PNG. Raw grids retain labeled native
 dimensions and 1x/2x/3x nearest-neighbor zoom. Wider comparisons scroll. No saves
-change. Historical comparison PNGs and controls remain dev-only. The four fixed
-PNGs now also ship under `public/art`, together with five native-color variants.
+change. Review controls remain dev-only. The four fixed PNGs ship only under
+`public/art`, together with five native-color variants. Rejected smooth/point
+samples and duplicate reconstruction files have been removed.
 Other characters were not batch-replaced.
 
 ## Reproduction outside game dependencies
@@ -90,8 +91,8 @@ The Python wrapper requires authoring-only Pillow (already available in this
 task). It invokes Rust, not an ordinary downscaler. It validates tool revision,
 source hashes, both detection counts/consensus, binary alpha, native dimensions,
 output hashes and upload size before writing any image. Its default destination
-is the four master reconstructions; the separate exporter copies these into
-campaign art and builds native-resolution clothing variants.
+is the four canonical campaign base PNGs under `public/art`; the separate
+exporter validates those masters and builds native-resolution clothing variants.
 An independent export matched all four files byte for byte. No network or fixer
 installation runs in the game, build or CI. Large sources remain outside git;
 reproduction requires their recorded names/hashes, while normal game use does not.

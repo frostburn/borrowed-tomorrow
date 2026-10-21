@@ -12,7 +12,7 @@
         1254,
         1254
       ],
-      "output": "src/dev/art/civilian-review/dockhand-fixed.png",
+      "output": "public/art/civilian-dockhand.png",
       "outputSha256": "f16c8e89d1a952a7b9bf65598fbd1dda32e48b966db6886483698d17f5497feb",
       "full": {
         "cols": 128,
@@ -46,7 +46,7 @@
         1254,
         1254
       ],
-      "output": "src/dev/art/civilian-review/traveler-fixed.png",
+      "output": "public/art/civilian-traveler.png",
       "outputSha256": "c30285d5a5fefa40e79bfb81bd19d8437ed388fd1b37e25e14a5a2940be87c62",
       "full": {
         "cols": 137,
@@ -80,7 +80,7 @@
         1254,
         1254
       ],
-      "output": "src/dev/art/civilian-review/family-fixed.png",
+      "output": "public/art/civilian-family.png",
       "outputSha256": "6cb974e5eb135dc2fff9b141d743c928715d7d59f877419a8e5cb029097f92c0",
       "full": {
         "cols": 136,
@@ -114,7 +114,7 @@
         1254,
         1254
       ],
-      "output": "src/dev/art/civilian-review/patient-fixed.png",
+      "output": "public/art/civilian-patient.png",
       "outputSha256": "c7cfe01723ea209aabc20441c1d824b06b9c779936fd8414bbd7e706355e7a83",
       "full": {
         "cols": 128,

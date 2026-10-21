@@ -13,13 +13,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       await page.getByRole('button',{name:`Inspect ${name}`,exact:true}).click();
       const review=page.getByRole('region',{name:'Pixel Art Fixer review',exact:true});
       await expect(review).toContainText('Used in campaign at 63 pixels tall');
+      await expect(review.getByRole('img')).toHaveCount(2);
       const canvas=review.getByRole('img',{name:`Recovered grid ${role} at 1x`,exact:true});
       await expect(canvas).toHaveAttribute('width',String(width));await expect(canvas).toHaveAttribute('height',String(height));
       await review.getByRole('group',{name:'Reconstruction zoom'}).getByRole('button',{name:'2x',exact:true}).click();
       const zoomed=review.getByRole('img',{name:`Recovered grid ${role} at 2x`,exact:true});await zoomed.scrollIntoViewIfNeeded();
       await expect.poll(()=>zoomed.evaluate(async(element,role)=>{
         const actual=element as HTMLCanvasElement,expected=document.createElement('canvas');expected.width=actual.width;expected.height=actual.height;
-        const ctx=expected.getContext('2d')!,image=new Image();image.src=`/src/dev/art/civilian-review/${role}-fixed.png`;await image.decode();
+        const ctx=expected.getContext('2d')!,image=new Image();image.src=`/art/civilian-${role}.png`;await image.decode();
         ctx.imageSmoothingEnabled=false;
         for(let y=0;y<expected.height;y+=8)for(let x=0;x<expected.width;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
         ctx.drawImage(image,0,0,image.width*2,image.height*2);
