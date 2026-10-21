@@ -2,7 +2,7 @@
   "name": "Chapter One",
   "tilewidth": 24,
   "tileheight": 24,
-  "tilecount": 3841,
+  "tilecount": 4003,
   "pages": [
     {
       "type": "tileset",
@@ -1515,6 +1515,60 @@
       "firstgid": 3810,
       "source": "../../../../assets/tiles/pages/tiles-083.json",
       "url": "art/chapter-one/tiles-083.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-084",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-084.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 3842,
+      "source": "../../../../assets/tiles/pages/tiles-084.json",
+      "url": "art/chapter-one/tiles-084.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-085",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 64,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-085.webp",
+      "imagewidth": 192,
+      "imageheight": 192,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 3906,
+      "source": "../../../../assets/tiles/pages/tiles-085.json",
+      "url": "art/chapter-one/tiles-085.webp"
+    },
+    {
+      "type": "tileset",
+      "version": "1.10",
+      "tiledversion": "1.11.2",
+      "name": "tiles-086",
+      "tilewidth": 24,
+      "tileheight": 24,
+      "tilecount": 34,
+      "columns": 8,
+      "image": "../../../public/art/chapter-one/tiles-086.webp",
+      "imagewidth": 192,
+      "imageheight": 120,
+      "margin": 0,
+      "spacing": 0,
+      "firstgid": 3970,
+      "source": "../../../../assets/tiles/pages/tiles-086.json",
+      "url": "art/chapter-one/tiles-086.webp"
     }
   ]
 }

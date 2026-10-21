@@ -41,6 +41,8 @@ Chapter Two uses feathered ballast, paving and dirt edges over the neighboring g
 
 Paving and ballast have separate overlapping layers at crossings. A row of paving underneath the ballast lets the join reveal the actual neighboring surface. Water-facing quays, ward cutaways and map boundaries retain their architectural hard edges. Keep enough overlap beneath a join rather than exposing a stripe of unrelated base terrain. The standard finite Tiled JSON files remain the layout source; builds consume the baked pages directly.
 
+Chapter Three's steel service walks blend into their underlying masonry or cavern floor; its four interior battle floors use the same edge treatment. The baker recognizes `works-stone` and `works-deck` fields and appends alpha-only variants, preserving their RGB and walkability. Equally visible floor layers with the same string `blendGroup` form one continuous surface for neighbor selection: the conduit's central deck and pressure walk use `service-deck`, so their shared boundary stays solid. Walls, stairs, machinery and architectural cutaways are not feathered. Re-running the baker is idempotent; only maps whose tile choices change are reserialized.
+
 Cinderbank’s capital engine anchors at (57, 25), leaving Petra at (47, 23) and Alban at (49, 21) clear of its cab. Alban begins the confrontation at (49, 23) and retreats behind Petra. A walkable cell alone does not guarantee visibility: review the actor’s full silhouette against foreground scenery, as well as its footing.
 
 ## Story objects

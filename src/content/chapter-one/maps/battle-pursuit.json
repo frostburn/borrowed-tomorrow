@@ -620,6 +620,18 @@
     {
       "firstgid": 3810,
       "source": "../../../../assets/tiles/pages/tiles-083.json"
+    },
+    {
+      "firstgid": 3842,
+      "source": "../../../../assets/tiles/pages/tiles-084.json"
+    },
+    {
+      "firstgid": 3906,
+      "source": "../../../../assets/tiles/pages/tiles-085.json"
+    },
+    {
+      "firstgid": 3970,
+      "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
   "tilewidth": 24,
