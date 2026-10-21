@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { equipItem } from '../../src/rules/inventory';
 import { brokenCheckpoint,palaceCheckpoint } from '../support/progress';
 import { approach,importSave,travel,visit } from './navigation';
-import { battle,capture,dialogue,inspect,nativeScene } from './controls';
+import { battle,capture,dialogue,inspect,nativeScene,nativeActor,clickWorld } from './controls';
 async function choices(page:Page){
  await expect(page.locator('.dialogue')).toBeVisible();
  while(await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).count())await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).click();
@@ -15,12 +15,14 @@ async function equip(page:Page,hero:string,item:string){
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`Chapter Four replays Celia’s introduction and keeps formation editable on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
-  const state=brokenCheckpoint('refugeSeen');state.location={map:'breakwater',x:25,y:29};state.activeParty=['nell','petra','kit'];await importSave(page,state);
+  const state=brokenCheckpoint('refugeSeen');state.location={map:'breakwater',x:25,y:29};state.activeParty=device==='desktop'?['nell']:['nell','petra'];await importSave(page,state);
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-harbor');expect((await inspect(page)).state.party).toHaveLength(4);await capture(page,`celia-introduction-${device}`);
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-harbor');
   await dialogue(page);expect((await inspect(page)).state.party).toHaveLength(5);expect((await inspect(page)).state.activeParty).toEqual(state.activeParty);
-  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Kit',exact:true}).click();await page.getByRole('button',{name:'Move to reserve',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true}).click();await page.getByRole('button',{name:'Set active',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
-  expect((await inspect(page)).state.activeParty).toEqual(['nell','petra','celia']);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.activeParty).toEqual(['nell','petra','celia']);expect(errors).toEqual([]);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();
+  if(device==='phone'){await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Petra',exact:true}).click();await page.getByRole('button',{name:'Move to reserve',exact:true}).click();}
+  await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true}).click();await page.getByRole('button',{name:'Set active',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
+  expect((await inspect(page)).state.activeParty).toEqual(['nell','celia']);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.activeParty).toEqual(['nell','celia']);expect(errors).toEqual([]);
  });
 }
 test('failed sanctuary vectors preserve the exact Chapter Three departure until retry',async({page})=>{
@@ -50,3 +52,26 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
  });
 }
+
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+ test.describe(`Chapter Four painted controls and sea wall on ${device}`,()=>{
+  test.use({viewport,deviceScaleFactor:dpr});
+  test('uses the actual wheel and clamp artwork, and keeps both siblings visible beside the boat',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+   const gate=brokenCheckpoint('worksGateWon');gate.location={map:'breakwater',x:34,y:25};await importSave(page,gate);await clickWorld(page,34,20);
+   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-gate');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.harborOpened).toBe(true);
+   const cable=brokenCheckpoint('roadGuardWon');cable.location={map:'sanctuary',x:43,y:28};await importSave(page,cable);await clickWorld(page,44,22);
+   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-cable');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.signalCut).toBe(true);
+   const home=brokenCheckpoint('anchorsKnown');await importSave(page,home);await approach(page,'refuge-tomas');
+   for(let n=0;n<14&&!((await page.locator('.dialogue').textContent())??'').includes('I’m glad we got here.');n++)await page.locator('.dialogue-actions button').first().click();
+   await expect(page.locator('.dialogue')).toContainText('I’m glad we got here.');await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='nell')?.motion).toBe('idle');
+   const nell=(await inspect(page)).actors.find(a=>a.hero==='nell')!;await nativeActor(page,nell.texture,{x:8,y:28},.08);await nativeActor(page,'tomas',{x:10,y:28},.08);await capture(page,`sea-wall-visible-${device}`);
+   await choices(page);await page.getByRole('button',{name:'Prepare our equipment first',exact:true}).click();expect((await inspect(page)).state.flags.seaWalkSeen).toBe(true);
+   await approach(page,'refuge-tomas');expect((await inspect(page)).cinematic).toBeNull();await expect(page.locator('.dialogue')).toContainText('Ready to go?');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();expect(errors).toEqual([]);
+  });
+ });
+}
+test('canonical Chapter Four opens the rewritten chapter with four recruits and earned equipment',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.getByRole('button',{name:'Begin Chapter Four (canonical)',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-home');await capture(page,'canonical-coast-opening');
+ await dialogue(page);const s=(await inspect(page)).state;expect(s.chapter).toBe('chapter-four');expect(s.xp).toBe(740);expect(s.party.map(h=>h.id)).toEqual(['nell','orrin','kit','petra']);expect(s.activeParty).toEqual(['nell','orrin','kit']);expect(s.flags.tomasRescued).toBe(true);expect(s.flags.celiaJoined).toBeUndefined();
+});

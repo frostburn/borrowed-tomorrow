@@ -5,7 +5,7 @@ const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:'refuge'|'breakwater'|'sanctuary',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 
 export const home=()=>scene('refuge','four-home','Chapter Four · A Light on the Water',[
- line('The railway refuge','The medical train rests beside the ward. Out on the water, a wave stands above an empty fishing boat.',{focus:{x:31,y:17},cut:true}),
+ line('The railway refuge','The medical train rests beside the ward. Out on the water, a wave stands above an empty fishing boat.',{focus:{x:46,y:15},cut:true}),
  line('Tomas','Dena has everyone inside. I checked the coaches twice.',{focus:{x:31,y:27}}),
  line('Nell','You can sit down now. Nobody’s taking you anywhere.'),
  line('Tomas','I was going to say the same to you.'),
@@ -45,8 +45,8 @@ export const openGate=()=>scene('breakwater','four-gate','A way through',[
  line('Celia','The stair’s clear now. Come and see what they connected to my old hospice.'),
 ]);
 export const terrace=()=>scene('sanctuary','four-terrace','The signal sanctuary',[
- line('The sanctuary','An imperial cable climbs the old sea wall and enters a bronze ring. Far inland, the capital hangs above the dark valley.',{focus:{x:32,y:17},cut:true}),
- line('Celia','We used to bring the ward beds onto this terrace in summer. That cable wasn’t here.'),
+ line('The sanctuary','An imperial cable climbs the old sea wall and enters a bronze ring. Far inland, the capital hangs above the dark valley.',{focus:{x:32,y:13},cut:true}),
+ line('Celia','We used to bring the ward beds onto this terrace in summer. That cable wasn’t here.',{focus:{x:32,y:28}}),
  line('The Sanctuary Warden','The coast is held for its protection. Return to shelter.'),
  line('Petra','People are trapped below. Release the signal.'),
  line('The Sanctuary Warden','The capital must stand. Orders cannot be amended here.'),
@@ -65,8 +65,8 @@ export const cable=()=>scene('sanctuary','four-cable','The return line',[
  line('Celia','Then we empty that reserve.'),
 ]);
 export const record=()=>scene('sanctuary','four-chart','Behind the imperial plate',[
- line('The coast','The ring has stopped. Below the terrace, the suspended wave has fallen. A ferry bell answers from the harbor.',{focus:{x:32,y:18},cue:'win'}),
- line('Nell','Look. The boat’s moving.'),
+ line('The coast','The ring has stopped. Below the terrace, the suspended wave has fallen. A ferry bell answers from the harbor.',{focus:{x:32,y:13},cut:true,cue:'win'}),
+ line('Nell','Look. The boat’s moving.',{focus:{x:32,y:21}}),
  line('Celia','Orrin, help me with this plate. They bolted it over the old inscription.'),
  line('The founding pledge','“For harvest, healing and light, we entrust the days of our children, and their children after them.”',{document:{heading:'The founding pledge',lines:['HARVEST · HEALING · LIGHT','THE DAYS OF OUR CHILDREN','AND THEIR CHILDREN AFTER THEM'],stamp:'A DYNASTIC SEAL'}}),
  line('Celia','Our hospice oath stopped at “healing and light.” They left the rest off every copy I taught from.'),

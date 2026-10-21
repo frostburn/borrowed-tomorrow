@@ -45,7 +45,7 @@ export function palaceCheckpoint(last:typeof palaceOrder[number]):GameState{
   return s;
 }
 
-export const brokenOrder=['refugeSeen','worksArrival','worksRouteSet','worksGateWon','harborOpened','sanctuaryEntered','roadGuardWon','signalCut','sanctuaryWardenWon','anchorsKnown','chapterFourComplete'] as const;
+export const brokenOrder=['refugeSeen','worksArrival','worksRouteSet','worksGateWon','harborOpened','sanctuaryEntered','roadGuardWon','signalCut','sanctuaryWardenWon','anchorsKnown','seaWalkSeen','chapterFourComplete'] as const;
 export function brokenCheckpoint(last:typeof brokenOrder[number]):GameState{
  const s=palaceCheckpoint('chapterThreeComplete');beginChapterFour(s);
  for(const flag of brokenOrder.slice(0,brokenOrder.indexOf(last)+1))s.flags[flag]=true;

@@ -4,7 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, palaceCheckpoint, brokenCheckpoint, checkpoint } from '../support/progress';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
 import { importSave, approach } from './navigation';
-import { capture, inspect, dialogue, clickWorld } from './controls';
+import { capture, inspect, dialogue, clickWorld, battle } from './controls';
 import { travel } from './navigation';
 import {sampleRegulator} from './conduit-controls';
 
@@ -133,13 +133,14 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production Chapter Four preserves the roster and completes the new anchor departure on ${device}`,async({page})=>{
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;equipItem(old.inventory,'nell','silver-reflector');
   await importSave(page,old);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);
   expect((await inspect(page)).state).toMatchObject({inventory:old.inventory,party:old.party,activeParty:old.activeParty});await capture(page,`chapter-four-production-arrival-${device}`);
   await travel(page,'refuge-works','breakwater');await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(old.activeParty);expect((await inspect(page)).state.party).toHaveLength(5);
-  const deep=brokenCheckpoint('sanctuaryWardenWon');deep.activeParty=old.activeParty;equipItem(deep.inventory,'celia','rescue-coat');equipItem(deep.inventory,'nell','sun-prism');await importSave(page,deep);
+  const deep=brokenCheckpoint('signalCut');deep.activeParty=['nell','petra','celia'];deep.bandages=15;equipItem(deep.inventory,'celia','rescue-coat');equipItem(deep.inventory,'nell','silver-reflector');equipItem(deep.inventory,'petra','saber-hilt');await importSave(page,deep);
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('sanctuary');
+  await approach(page,'sanctuary-bench');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();await approach(page,'sanctuary-warden');await battle(page,`production-sanctuary-warden-${device}`);expect((await inspect(page)).state.inventory.bag['sun-prism']).toBe(1);
   await approach(page,'sanctuary-record');await dialogue(page);await travel(page,'sanctuary-refuge','refuge');await approach(page,'refuge-tomas');await dialogue(page);
   await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();await capture(page,`chapter-four-production-complete-${device}`);const saved=(await inspect(page)).state;
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.boundary).toBe('chapter-five:anchors');expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);

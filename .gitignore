@@ -7,3 +7,4 @@ playwright-report/
 # Authoring interpreter cache.
 assets/tiles/__pycache__/
 assets/characters/vector/__pycache__/
+assets/vector/__pycache__/

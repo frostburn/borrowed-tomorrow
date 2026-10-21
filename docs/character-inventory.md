@@ -8,7 +8,7 @@ Iona sells bandages (8 marks), a brass reflector (30), a pressure nozzle (30, on
 
 Battles use the saved loadouts. The reflector and nozzle add 3 Attack to their owner. A reinforced coat adds 1 Armor. A heavy coat adds 2 Armor and subtracts 2 Speed. Equipment can be changed while exploring or from a campaign victory panel, before continuing. It cannot be changed during an ongoing battle.
 
-Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, after her introduction on the sanctuary road. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-10 saves preserve the recruited roster, active formation and a temporary reunion formation separately.
+Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, after her introduction at the Breakwater pump house. All recruited travelers appear in Equipment, including reserves. Use **Move to reserve** and **Set active** to choose up to three active fighters; Nell leads the party. A full formation requires freeing a place before adding someone. Equipment remains on its wearer when their formation changes, and reserves gain the shared campaign experience. Version-10 saves preserve the recruited roster and active formation separately.
 
 ## Existing saves
 

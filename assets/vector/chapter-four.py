@@ -26,6 +26,9 @@ def svg(name,w,h,parts):
 def props(**kw):return [{'name':k,'type':'bool' if isinstance(v,bool) else 'int' if isinstance(v,int) else 'string','value':v} for k,v in kw.items()]
 def point(name,x,y,**kw):return {'name':name,'point':True,'x':x*24+12,'y':y*24+12,'properties':props(**kw)}
 def interaction(name,x,y,label,**kw):return point(name,x,y,label=label,**kw)
+def control(name,x,y,label,box,**kw):
+ a,b,w,h=box
+ return {'name':name,'x':a*24,'y':b*24,'width':w*24,'height':h*24,'properties':props(label=label,approachX=x,approachY=y,**kw)}
 def group(id,name,objects=None,**kw):return {'id':id,'name':name,'type':'objectgroup','visible':True,'objects':objects or [],'properties':props(**kw)}
 def tile(id,name,data,w,h,**kw):return {'id':id,'name':name,'type':'tilelayer','width':w,'height':h,'visible':True,'data':data,'properties':props(**kw)}
 def cells(rects,w,h,gid=3):
@@ -145,7 +148,10 @@ def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,bac
  # The unnatural raised wave disappears in all locations after the local victory.
  lid=len(layers)+1;layers.append(group(lid,'Suspended water',hiddenFlag='sanctuaryWardenWon'))
  wave=[poly([(82,388),(137,340),(156,288),(188,253),(223,264),(201,306),(172,337),(170,385),(208,411)],'#8aaca8'),poly([(156,288),(188,253),(223,264),(204,274),(180,273),(168,294)],'#d1d2b4'),line([(175,290),(173,321),(152,353)],'#bed0ba',4)]
- add(id+'-wave',['<g transform="translate(620 0)">',*wave,'</g>'],depth=-998,layer=lid)
+ if id!='sanctuary':
+  wave.extend([poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(168,402),(200,398)],'#9b895d',3)])
+  shift=1000 if id=='refuge' else 550
+  add(id+'-wave',[f'<g transform="translate({shift} 0)">',*wave,'</g>'],depth=-998,layer=lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v) for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v) for k,v in cast.items()]))
  write_map(id,name,subtitle,w,h,layers,next(iter(arrivals)))
@@ -162,7 +168,7 @@ def write_map(id,name,subtitle,w,h,layers,safe=None):
  (MAP/f'{id}.json').write_text(text+'\n')
 
 refuge_f=[(9,20,47,15),(2,25,10,7),(17,18,26,4),(50,23,14,6)]
-refuge_decor=[('refuge-ward',ward(),652,264,384,240,504,{}),('refuge-ferry',ferry(),360,192,12,526,718,{'requiredFlag':'harborOpened'}),('refuge-supplies',crate(),84,80,1040,652,732,{'requiredFlag':'harborOpened'})]
+refuge_decor=[('refuge-ward',ward(),652,264,384,240,504,{}),('refuge-ferry',ferry(),360,192,12,408,600,{'requiredFlag':'harborOpened'}),('refuge-supplies',crate(),84,80,1040,652,732,{'requiredFlag':'harborOpened'})]
 # The real coal engine and coach persist on continuous railway tracks.
 back=seascape(1536,1008)
 for yy in (846,888):
@@ -184,7 +190,7 @@ for module,x in [('engine',1080),('coach',660)]:
 harbor_f=[(9,25,45,11),(23,21,18,5),(28,17,14,5),(39,18,19,5),(11,22,14,5),(4,29,9,5),(50,23,14,5)]
 decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1038,378,570,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,139,630,822,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
 world('breakwater','Breakwater · the sea gate','The winding wheel is on the middle pier. A service stair climbs east.',harbor_f,[(13,19,12,5),(43,17,5,2)],[
- interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian',hiddenFlag='worksGateWon'),interaction('works-wheel',34,23,'Winding wheel · open the sea gate',sign=True,doneFlag='harborOpened'),interaction('works-cart',12,29,'Survey cart · folding range sight',sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',54,20,'Service stair · signal sanctuary',sign=True,accessFlag='harborOpened')],
+ interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',54,20,'Service stair · signal sanctuary',sign=True,accessFlag='harborOpened')],
  {'refuge':(25,29),'gate':(34,25),'sanctuary':(50,21)},
  {'four-harbor':{'nell':(28,27),'orrin':(31,28),'kit':(26,28),'petra':(33,27),'celia':(24,24),'bram':(25,25)},'four-gate':{'nell':(32,25),'orrin':(31,24),'kit':(37,25),'petra':(38,27),'celia':(30,26),'bram':(29,28)}},
  [point('ferry-injury',22,24,sprite='civilian-patient-green',hiddenFlag='harborOpened'),point('deck-worker',30,20,sprite='civilian-dockhand',hiddenFlag='harborOpened'),point('returning-worker',17,32,sprite='civilian-dockhand-rust',requiredFlag='harborOpened')],decor)
@@ -195,7 +201,7 @@ back=seascape(1536,1008,True)
 # Imperial cable rises from the mainland over the eastern bridge.
 back.extend([line([(1536,540),(1250,535),(1080,540),(1050,432),(960,410),(850,377)],'#182f41',13),line([(1536,536),(1250,531),(1080,536),(1050,428),(960,406),(850,373)],'#a08e63',5)])
 world('sanctuary','The signal sanctuary · the hollow sun','The eastern bridge carries the palace line. The bronze ring watches the coast.',sanctuary_f,[(26,14,15,4)], [
- interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian',hiddenFlag='roadGuardWon'),interaction('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',sign=True,doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',hiddenFlag='sanctuaryWardenWon'),interaction('sanctuary-record',32,18,'Bronze ring · the covered chart',sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),interaction('sanctuary-chest',22,29,'Hospice field chest · silver clasp',sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,38,'Service stair · Breakwater harbor',sign=True),interaction('sanctuary-refuge',11,32,'Coastal path · railway refuge',sign=True)],
+ interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian',hiddenFlag='roadGuardWon'),control('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',(41,21,6,4),sign=True,doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',hiddenFlag='sanctuaryWardenWon'),control('sanctuary-record',32,18,'Bronze ring · the covered chart',(29,15,7,3),sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),control('sanctuary-chest',22,29,'Hospice field chest · silver clasp',(20,26,4,3),sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,38,'Service stair · Breakwater harbor',sign=True),interaction('sanctuary-refuge',11,32,'Coastal path · railway refuge',sign=True)],
  {'harbor':(32,32),'cable':(40,27)},
  {'four-terrace':{'nell':(31,30),'orrin':(34,31),'kit':(29,32),'petra':(36,30),'celia':(29,29),'sanctuaryWarden':(32,19)},'four-cable':{'nell':(40,28),'orrin':(42,28),'kit':(39,30),'petra':(43,29),'celia':(38,28),'sanctuaryWarden':(32,19)},'four-chart':{'nell':(31,21),'orrin':(35,21),'kit':(30,23),'petra':(37,23),'celia':(33,19)}},[],decor,back)
 
@@ -220,5 +226,9 @@ for id in ['works-dry','works-wet','works-survey','sanctuary-road','sanctuary-wa
  layers=[tile(1,'Distant coast',[5]*(w*h),w,h),tile(2,'Clear tactical floor',[3]*(w*h),w,h)]
  write_map(key,('Signal terrace' if temple else 'Breakwater')+' · '+id,'Tactical arena',w,h,layers)
  manifest[key]=[{'key':f'scene-four-{key}-{i}','url':url,'x':0,'y':0,'width':1008,'height':624,'depth':-1001+i,'layerId':i} for i,url in enumerate([url1,url2],1)]
+# This directory contains generated SVGs only. Retire outputs no longer registered.
+used={Path(e['url']).name for entries in manifest.values() for e in entries if e['url'].startswith('art/vector/chapter-four/')}
+for file in ART.glob('*.svg'):
+ if file.name not in used:file.unlink()
 (ROOT/'src/content/chapter-four/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('Exported 3 story maps, 5 battle maps and native SVG artwork for Chapter Four')

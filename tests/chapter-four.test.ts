@@ -36,8 +36,8 @@ for(const flooded of [false,true])it(`opens the harbor by the ${flooded?'pump fl
  interactChapterFour(j.h,'sanctuary-cable');j.finish();expect(s.flags.signalCut).toBe(true);
  interactChapterFour(j.h,'sanctuary-warden');j.win();interactChapterFour(j.h,'sanctuary-record');j.finish();
  expect(s.flags.anchorsKnown).toBe(true);expect(s.flags.tomasRescued).toBe(true);
- interactChapterFour(j.h,'sanctuary-refuge');interactChapterFour(j.h,'refuge-tomas');j.choice(1);expect(s.boundary).toBeNull();
- interactChapterFour(j.h,'refuge-tomas');j.choice(0);expect(s.boundary).toBe('chapter-five:anchors');expect(s.activeParty).toEqual(['nell','petra','celia']);expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ interactChapterFour(j.h,'sanctuary-refuge');interactChapterFour(j.h,'refuge-tomas');j.choice(1);expect(s.boundary).toBeNull();expect(s.flags.seaWalkSeen).toBe(true);
+ interactChapterFour(j.h,'refuge-tomas');expect(j.read().scene).toBeUndefined();j.choice(0);expect(s.boundary).toBe('chapter-five:anchors');expect(s.activeParty).toEqual(['nell','petra','celia']);expect(decodeSave(JSON.stringify(s))).toEqual(s);
 });
 it('replays interrupted scenes without changing formations or duplicating Celia',()=>{
  for(const flag of brokenOrder){
@@ -67,4 +67,15 @@ it('stages every actor and move on connected floor, and leaves the god silent',(
  }
  const before=visiblePeople(MAPS.breakwater,brokenCheckpoint('worksArrival')),after=visiblePeople(MAPS.refuge,brokenCheckpoint('harborOpened'));
  expect(before.some(p=>p.id==='ferry-injury')).toBe(true);expect(after.some(p=>p.id==='ferry-family')).toBe(true);
+});
+
+it('preserves solo and two-fighter formations when Celia joins, including replay',()=>{
+ for(const formation of [['nell'],['nell','petra']] as const){
+  const s=brokenCheckpoint('refugeSeen');s.activeParty=[...formation];s.location=arrival('breakwater','refuge');const j=host(s);
+  resumeChapterFour(j.h);j.finish();j.finish();expect(s.activeParty).toEqual(formation);expect(s.party).toHaveLength(5);expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ }
+});
+it('keeps a full bandage bag saveable without charging for another bandage',()=>{
+ const s=brokenCheckpoint('refugeSeen');s.bandages=999;const before=s.coins,j=host(s);
+ interactChapterFour(j.h,'refuge-rest');j.choice(1);expect(s.bandages).toBe(999);expect(s.coins).toBe(before);expect(decodeSave(JSON.stringify(s))).toEqual(s);
 });

@@ -22,5 +22,5 @@ export function objective(s:GameState):string{
  if(!f.signalCut)return 'Disconnect the return cable at the eastern bridge’s copper clamp.';
  if(!f.sanctuaryWardenWon)return 'Climb to the bronze ring and defeat the Sanctuary Warden.';
  if(!f.anchorsKnown)return 'Examine the chart beneath the bronze ring.';
- return 'Bring the copied chart to Tomas at the railway refuge.';
+ return f.seaWalkSeen?'Speak to Tomas when you are ready for the western airfield.':'Bring the copied chart to Tomas at the railway refuge.';
 }

@@ -6,7 +6,7 @@ Chapters One–Four are playable canon. Continue the voluntary counterattack fro
 
 Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-four`, boundary **`chapter-five:anchors`**. Staging is `refuge` `(12,28)` on the sea wall. Infer completion from the boundary and flags, never coordinates alone. The survey airship has not been acquired.
 
-Required Chapter Four flags: `refugeSeen`, `worksArrival`, `celiaJoined`, `worksRouteSet`, `worksGateWon`, `harborOpened`, `sanctuaryEntered`, `roadGuardWon`, `signalCut`, `sanctuaryWardenWon`, `anchorsKnown`, `chapterFourComplete`. Preserve boolean `worksFlooded`, optional `worksStoresWon` and `sanctuaryCache`, earlier flags including `tomasRescued`, `pressureRoute` and the train-raid choice, resources, XP, individual HP/focus, gear copies, loadouts, active formation, journal and play time.
+Required Chapter Four flags: `refugeSeen`, `worksArrival`, `celiaJoined`, `worksRouteSet`, `worksGateWon`, `harborOpened`, `sanctuaryEntered`, `roadGuardWon`, `signalCut`, `sanctuaryWardenWon`, `anchorsKnown`, `seaWalkSeen`, `chapterFourComplete`. Preserve boolean `worksFlooded`, optional `worksStoresWon` and `sanctuaryCache`, earlier flags including `tomasRescued`, `pressureRoute` and the train-raid choice, resources, XP, individual HP/focus, gear copies, loadouts, active formation, journal and play time.
 
 The roster is Nell, Orrin, Kit, Petra and Celia. Nell and at most two companions fight. Formation remains the player's choice throughout Chapter Four; there are no temporary viewpoints or reunion fields. Reserve gear remains fitted.
 

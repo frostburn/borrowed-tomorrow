@@ -1,6 +1,7 @@
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import { FIFTH_CHAPTER, recruit, remember, restoreParty } from '../../rules/state';
+import { buySupply } from '../../rules/supplies';
 import { receiveItem } from '../../rules/inventory';
 import type { StoryHost } from '../chapter-one/interactions';
 import * as scenes from './scenes';
@@ -9,7 +10,8 @@ export function resumeChapterFour(h:StoryHost){
  const {state:s}=h,f=s.flags;
  if(!f.refugeSeen)return h.talk({...scenes.home(),done:()=>h.commit('refugeSeen','refugeSeen')});
  if(s.location.map==='breakwater'&&!f.worksArrival)return h.talk({...scenes.harbor(),done:()=>{
-  recruit(s,'celia');h.commit('worksArrival','worksArrival');
+  const formation=[...s.activeParty];recruit(s,'celia');s.activeParty=formation;
+  h.commit('worksArrival','worksArrival');
  }});
  if(s.location.map==='sanctuary'&&!f.sanctuaryEntered)return h.talk({...scenes.terrace(),done:()=>h.commit('sanctuaryEntered','sanctuaryEntered')});
 }
@@ -20,15 +22,15 @@ export function interactChapterFour(h:StoryHost,id:string){
  switch(id){
   case 'refuge-rest':case 'works-bench':case 'sanctuary-bench':return h.talk({lines:[SAY('Supplies','There’s a sheltered place to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
-   {label:'Buy a bandage · 8 marks',action:()=>{if(s.coins<8)return h.toast('Not enough marks.');s.coins-=8;s.bandages++;h.refresh();h.save();h.toast('Bandage added.');}},
+   {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Leave',action:()=>{}},
   ]});
   case 'refuge-tomas':
    if(f.chapterFourComplete)return say('Tomas','I’ll keep the messages coming. The western airfield is marked on your map.');
    if(!f.anchorsKnown)return say('Tomas',f.harborOpened?'The ferry crews are here. Bram’s already taking food back across the basin. Find the sanctuary signal; we’ll keep everyone warm.':'Dena’s got the ward. I’ve got the messages. Take those blankets down the eastern harbor path.');
-   return h.talk({...scenes.decision(),choices:[
-    {label:'Leave for the western airfield',action:()=>{s.flags.chapterFourComplete=true;remember(s,'anchorsDeparture');s.boundary=FIFTH_CHAPTER;s.location=arrival('refuge','departure');h.refresh();h.save();h.boundary();}},
-    {label:'Prepare our equipment first',action:()=>{}},
+   return h.talk({...(f.seaWalkSeen?{lines:[SAY('Tomas','The airfield road is marked. Ready to go?')]}:scenes.decision()),choices:[
+    {label:'Leave for the western airfield',action:()=>{f.seaWalkSeen=true;s.flags.chapterFourComplete=true;remember(s,'anchorsDeparture');s.boundary=FIFTH_CHAPTER;s.location=arrival('refuge','departure');h.refresh();h.save();h.boundary();}},
+    {label:'Prepare our equipment first',action:()=>{f.seaWalkSeen=true;h.save();}},
    ]});
   case 'refuge-bram':return say('Bram',f.sanctuaryWardenWon?'A whole tide came in without stopping. First ferry leaves at dawn, if you want anything brought up.':'The gate’s open. I can keep this ward fed while you deal with the signal.');
   case 'refuge-works':return go('breakwater','refuge');

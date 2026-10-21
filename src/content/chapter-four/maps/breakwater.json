@@ -676,14 +676,25 @@
         },
         {
           "name": "works-wheel",
-          "point": true,
-          "x": 828,
-          "y": 564,
+          "x": 768,
+          "y": 456,
+          "width": 120,
+          "height": 96,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Winding wheel \u00b7 open the sea gate"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 34
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 23
             },
             {
               "name": "sign",
@@ -700,14 +711,25 @@
         },
         {
           "name": "works-cart",
-          "point": true,
-          "x": 300,
-          "y": 708,
+          "x": 240,
+          "y": 600,
+          "width": 96,
+          "height": 96,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Survey cart \u00b7 folding range sight"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 29
             },
             {
               "name": "sign",

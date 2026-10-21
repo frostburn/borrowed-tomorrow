@@ -34,10 +34,10 @@
       "key": "scene-four-refuge-ferry",
       "url": "art/vector/chapter-four/refuge-ferry.svg",
       "x": 12,
-      "y": 526,
+      "y": 408,
       "width": 360,
       "height": 192,
-      "depth": 718,
+      "depth": 600,
       "layerId": 4
     },
     {
@@ -243,16 +243,6 @@
       "height": 80,
       "depth": 696,
       "layerId": 3
-    },
-    {
-      "key": "scene-four-sanctuary-wave",
-      "url": "art/vector/chapter-four/sanctuary-wave.svg",
-      "x": 0,
-      "y": 0,
-      "width": 1536,
-      "height": 1008,
-      "depth": -998,
-      "layerId": 6
     }
   ],
   "battle-works-dry": [

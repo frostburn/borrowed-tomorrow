@@ -638,14 +638,25 @@
         },
         {
           "name": "sanctuary-cable",
-          "point": true,
-          "x": 1044,
-          "y": 636,
+          "x": 984,
+          "y": 504,
+          "width": 144,
+          "height": 96,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Copper clamp \u00b7 disconnect the return line"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 43
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 26
             },
             {
               "name": "sign",
@@ -686,14 +697,25 @@
         },
         {
           "name": "sanctuary-record",
-          "point": true,
-          "x": 780,
-          "y": 444,
+          "x": 696,
+          "y": 360,
+          "width": 168,
+          "height": 72,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Bronze ring \u00b7 the covered chart"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 32
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 18
             },
             {
               "name": "sign",
@@ -715,14 +737,25 @@
         },
         {
           "name": "sanctuary-chest",
-          "point": true,
-          "x": 540,
-          "y": 708,
+          "x": 480,
+          "y": 624,
+          "width": 96,
+          "height": 72,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Hospice field chest \u00b7 silver clasp"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 22
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 29
             },
             {
               "name": "sign",
