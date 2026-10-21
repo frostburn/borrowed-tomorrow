@@ -28,6 +28,8 @@ test('canonical Chapter Three replays arrival with earned equipment and preserve
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
  const original=coastCheckpoint('kitJoined');original.coins=37;await importSave(page,original);
  await page.getByRole('button',{name:'Save',exact:true}).first().click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();
+ // Wait for the IndexedDB write and refreshed slot controls before unloading.
+ await expect(page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true})).toBeEnabled();
  await page.reload();await page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true}).click();
  await expect(page.getByRole('dialog')).toContainText('Manual save slots remain available');await page.getByRole('button',{name:'Start canonical save',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
