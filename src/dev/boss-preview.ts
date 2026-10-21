@@ -1,13 +1,9 @@
-import Phaser from 'phaser';
 import type { BattlePreview } from '../game/battle-preview';
-import { bitmapText } from '../game/pixel-font';
-import { ABILITIES, active, legalAim, targets, unitAt, type Unit } from '../rules/combat';
-import { occupiedHexes } from '../rules/footprint';
-import { distance, fromPixel, offset, toPixel } from '../rules/hex';
+import { offset } from '../rules/hex';
 import { BOSS_ENCOUNTER, BOSS_ID, bossTurn, bossUnit, prepareBoss } from './boss-battle';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
-import { vectorSurface } from '../game/vector-image';
+import { nativeTexture, bossLabel as label, bossPlacement as placement, pickBossBody } from './boss-display';
 import boss from './art/benefactor-motion.svg?url';
 import domain from './art/benefactor-domain.svg?url';
 import portrait from './art/benefactor-portrait.svg?url';
@@ -16,26 +12,7 @@ import { breathe, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_C
 export {portrait as BOSS_PORTRAIT};
 const textureKey='benefactor-motion',domainKey='benefactor-domain';
 export const BOSS_ASSETS=[{key:textureKey,url:boss},{key:domainKey,url:domain}];
-let labelId=0;
 let masks:Uint8Array[]|undefined,currentFrame=0;
-function nativeTexture(scene:Phaser.Scene,key:string){
-  const texture=scene.textures.get(key);
-  for(const source of texture.source)if(source.image instanceof HTMLImageElement){
-    source.source=source.image=vectorSurface(source.image);source.isCanvas=true;source.update();
-  }
-  texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-  return texture;
-}
-function label(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
-  const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=9*scale;
-  bitmapText(canvas.getContext('2d')!,value,0,scale,color,scale);
-  const key=`boss-label-${labelId++}`;scene.textures.addCanvas(key,canvas);
-  const text=scene.add.image(Math.round(x),Math.round(y),key).setOrigin(.5);world.add(text);
-  text.once('destroy',()=>scene.textures.remove(key));
-}
-function placement(unit:Unit){
-  return {x:Math.round(toPixel(unit.hex).x),y:Math.round(Math.max(...occupiedHexes(unit).map(h=>toPixel(h).y))+24)};
-}
 
 export const BOSS_PRESENTATION:BattlePreview={
   encounter:BOSS_ENCOUNTER,prepare:prepareBoss,enemyTurn:bossTurn,focus:offset(5,2),
@@ -73,15 +50,6 @@ export const BOSS_PRESENTATION:BattlePreview={
     }
   },
   pick(b,action,x,y){
-    if(action==='move'||ABILITIES[action].heal||['guard','focus','taunt'].includes(ABILITIES[action].effect??''))return;
-    const boss=bossUnit(b),u=active(b);if(!u||u.side!=='party'||boss.hp<=0)return;
-    const p=placement(boss);if(x<p.x-180||x>p.x+180||y<p.y-288||y>p.y)return;
-    const clicked=fromPixel(x,y);
-    const direct=unitAt(b,clicked);if(direct&&direct.id!==BOSS_ID)return;
-    if(unitAt(b,clicked)?.id===BOSS_ID&&legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===BOSS_ID))return clicked;
-    const px=Math.floor(x-p.x+180),py=Math.floor(y-p.y+288);
-    if(px<0||px>=360||py<0||py>=288||masks?.[currentFrame][py*360+px]===0)return;
-    const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
-    return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??parts[0];
+    return pickBossBody(b,action,x,y,bossUnit(b),360,288,masks?.[currentFrame]);
   },
 };

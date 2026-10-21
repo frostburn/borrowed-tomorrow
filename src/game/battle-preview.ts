@@ -1,6 +1,7 @@
 import type Phaser from 'phaser';
 import type { AbilityId, Battle, Encounter, Unit, enemyTurn } from '../rules/combat';
 import type { Hex } from '../rules/hex';
+import type { Effect } from './synth';
 
 /** Development presentation hooks; campaign encounters need no adapter. */
 export interface BattlePreview {
@@ -12,6 +13,8 @@ export interface BattlePreview {
   actor?:(scene:Phaser.Scene,unit:Unit,hp:number)=>Phaser.GameObjects.Image|undefined;
   attackTiming?:(unit:Unit)=>{contact:number;duration:number}|undefined;
   attack?:(scene:Phaser.Scene,image:Phaser.GameObjects.Image,unit:Unit,elapsed:number)=>void;
+  attackSound?:(unit:Unit,ability:AbilityId)=>Effect|undefined;
+  attackEffect?:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,image:Phaser.GameObjects.Image,unit:Unit,ability:AbilityId,affected:Hex[])=>boolean;
   overlay?:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
   pick?:(battle:Battle,action:AbilityId|'move',x:number,y:number)=>Hex|undefined;
   hint?:(battle:Battle)=>string;

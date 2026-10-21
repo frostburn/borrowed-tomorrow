@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="1440" viewBox="0 0 512 1440">
+ <title>Heart regulator: eight pressure-cycle and four discharge poses</title>
+ <defs>
+  <g id="rear-foot">
+   <path d="M117 145H139L145 174 140 181H115L110 175Z" fill="#101d28" />
+   <path d="M122 148H134L138 171H118Z" fill="#7c6247" />
+   <path d="M118 170H139L142 177H114Z" fill="#b99b63" />
+  </g>
+  <g id="pipes">
+   <path d="M159 88V35L167 27H197V18H211V41H180V99Z" fill="#101d28" />
+   <path d="M164 87V38L170 32H202V21H207V37H175V96Z" fill="#9c784e" />
+   <path d="M165 39 171 34H204V25H207V37H175V87H170V39Z" fill="#cfaf70" />
+   <path d="M196 16H214V23H196ZM164 49H180V56H164ZM164 79H180V86H164Z" fill="#b99b63" />
+   <path d="M83 81H64L54 92V123H47V89L61 74H83Z" fill="#101d28" />
+   <path d="M82 78H62L51 90V122H56V93L64 84H82Z" fill="#9c784e" />
+  </g>
+  <g id="legs">
+   <path d="M94 156 110 162 105 190 96 210 99 222H72L75 206 85 184Z M146 157 164 153 171 183 180 208 181 224H154L155 208 149 190Z" fill="#101d28" />
+   <path d="M95 163 104 166 98 189 88 209 90 217H78L82 206 92 185Z" fill="#9d7a50" />
+   <path d="M153 162 160 159 166 185 173 208 174 217H162L163 208 156 188Z" fill="#7c6247" />
+   <path d="M87 182 101 186 98 197 84 192Z M153 184 167 181 171 192 157 196Z" fill="#cfaf70" />
+   <path d="M75 211 97 213 108 229 103 237H62L62 228Z M156 213 178 210 193 226 193 237H151L146 231Z" fill="#101d28" />
+   <path d="M77 216 94 217 102 229H67Z M160 218 176 216 187 229H153Z" fill="#aa8353" />
+   <path d="M67 229H103V233H64Z M152 229H189V233H151Z" fill="#cfaf70" />
+   <path d="M78 219 88 220 92 226H71Z M162 220 172 218 181 226H157Z" fill="#e1c68c" />
+  </g>
+  <g id="left-arm">
+   <path d="M81 99 67 97 49 122 51 149 65 160 79 149 75 127 87 114Z" fill="#101d28" />
+   <path d="M73 106 64 104 55 123 57 142 65 149 72 143 68 125 80 111Z" fill="#9c784e" />
+   <path d="M60 116 65 108 71 110 63 127 65 144 60 140Z" fill="#cfaf70" />
+   <path d="M60 134 73 131 79 150 76 168 64 176 49 168 48 153Z" fill="#101d28" />
+   <path d="M60 139 70 137 74 150 71 164 64 169 54 164 54 153Z" fill="#728d87" />
+   <path d="M58 142 64 139 63 154 58 161 54 158 55 151Z" fill="#a7b5a7" />
+   <path d="M52 162 62 159 74 163 73 171 65 185 57 178 49 175Z" fill="#101d28" />
+   <path d="M55 165 62 163 69 165 67 173 64 177 61 172 56 175 53 172Z" fill="#9c784e" />
+  </g>
+  <g id="right-arm">
+   <path d="M174 97 189 98 205 122 202 149 189 160 175 149 180 127 166 112Z" fill="#101d28" />
+   <path d="M182 105 189 106 198 125 196 142 189 150 181 142 186 125 173 110Z" fill="#7c6247" />
+   <path d="M190 111 194 119 191 139 187 144 184 139 190 124 185 115Z" fill="#b99b63" />
+   <path d="M182 132 196 135 207 153 206 168 191 176 177 169 174 150Z" fill="#101d28" />
+   <path d="M183 138 193 140 201 154 200 165 191 170 181 164 180 151Z" fill="#486d69" />
+   <path d="M183 141 188 141 188 157 183 164 180 158Z" fill="#8da49a" />
+   <path d="M178 163 190 159 203 164 207 176 198 181 191 186 184 175 177 171Z" fill="#101d28" />
+   <path d="M182 166 190 164 200 167 202 173 198 176 194 173 191 179 187 173 182 171Z" fill="#9c784e" />
+  </g>
+  <g id="boiler">
+   <path d="M93 75 156 72 177 91 181 146 163 177 94 179 75 153 77 98Z" fill="#101d28" />
+   <path d="M96 80 153 78 171 95 174 145 158 170 98 172 82 150 84 100Z" fill="#7c6247" />
+   <path d="M96 84 113 80 108 149 99 163 87 147 89 102Z" fill="#b89460" />
+   <path d="M115 81 151 82 167 98 170 143 156 162 110 165 112 144Z" fill="#486d69" />
+   <path d="M148 85 166 101 168 142 156 158 146 158 153 137Z" fill="#294b4e" />
+   <path d="M82 111 173 109 174 119 82 121Z M85 148 172 146 166 156 92 160Z" fill="#cfaf70" />
+   <path d="M105 129H153L155 151 146 161H106L101 150Z" fill="#101d28" />
+   <path d="M110 135H147L149 149 142 155H111L108 149Z" fill="#7b4631" />
+   <path d="M113 136H119V154H113Z M125 134H131V156H125Z M137 136H143V154H137Z" fill="#d0aa67" />
+   <path d="M116 139H119V151H116Z M128 137H131V153H128Z M140 140H143V151H140Z" fill="#efe0ad" />
+   <path d="M89 98H94V104H89Z M159 96H164V102H159Z M91 140H96V146H91Z M159 134H164V140H159Z" fill="#e1c68c" />
+  </g>
+  <g id="cowl">
+   <path d="M90 78 90 59 102 42 128 34 152 40 166 57 168 82Z" fill="#101d28" />
+   <path d="M96 60 106 47 129 40 149 46 160 60 161 77 95 79Z" fill="#294b4e" />
+   <path d="M99 60 108 49 128 43 141 46 124 50 110 64Z" fill="#8da49a" />
+   <path d="M145 48 157 61 158 76 145 76Z" fill="#192e3b" />
+   <path d="M90 72 165 70 168 81 91 83Z" fill="#b99b63" />
+   <path d="M95 75 161 73 163 77 96 79Z" fill="#e1c68c" />
+   <path d="M102 83H118V94H102Z M139 82H155V93H139Z" fill="#101d28" />
+   <path d="M106 85H114V91H106Z M143 84H151V90H143Z" fill="#e1c68c" />
+   <path d="M107 85H112V88H107Z M144 84H149V87H144Z" fill="#f2e8c6" />
+  </g>
+  <g id="dial">
+   <path d="M119 91H140L152 101V118L141 128H120L109 118V102Z" fill="#101d28" />
+   <path d="M120 95H139L148 103V116L139 124H121L113 116V104Z" fill="#cfaf70" />
+   <path d="M122 99H137L144 105V114L137 120H123L117 114V106Z" fill="#efe0ad" />
+   <path d="M121 104 123 107 M129 100V104 M138 103 135 106" stroke="#7c6247" stroke-width="2" />
+   <path d="M127 110H132V115H127Z" fill="#294b4e" />
+  </g>
+  <g id="exhaust">
+   <path d="M200 15 194 8 196 3 203 0 208 5 207 10 214 14Z" fill="#8da49a" opacity=".55" />
+  </g>
+ </defs>
+ <svg x="0" y="0" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 0) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 0) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 0)" />
+  <use href="#cowl" transform="translate(0 0)" />
+  <use href="#dial" transform="translate(0 0)" />
+  <use href="#exhaust" transform="translate(-1 0)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 0) rotate(0 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 0)" />
+ </svg>
+ <svg x="256" y="0" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -0.5) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -0.5) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -1)" />
+  <use href="#cowl" transform="translate(0 -1)" />
+  <use href="#dial" transform="translate(0 -1)" />
+  <use href="#exhaust" transform="translate(0 3)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -1) rotate(4 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -1)" />
+ </svg>
+ <svg x="0" y="240" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -1) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -1) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -2)" />
+  <use href="#cowl" transform="translate(0 -2)" />
+  <use href="#dial" transform="translate(0 -2)" />
+  <use href="#exhaust" transform="translate(1 2)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+ </svg>
+ <svg x="256" y="240" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -1.5) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -1.5) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -3)" />
+  <use href="#cowl" transform="translate(0 -3)" />
+  <use href="#dial" transform="translate(0 -3)" />
+  <use href="#exhaust" transform="translate(-1 1)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -3) rotate(12 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -3)" />
+ </svg>
+ <svg x="0" y="480" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -2) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -2) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -4)" />
+  <use href="#cowl" transform="translate(0 -4)" />
+  <use href="#dial" transform="translate(0 -4)" />
+  <use href="#exhaust" transform="translate(0 0)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -4) rotate(16 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -4)" />
+ </svg>
+ <svg x="256" y="480" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -1.5) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -1.5) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -3)" />
+  <use href="#cowl" transform="translate(0 -3)" />
+  <use href="#dial" transform="translate(0 -3)" />
+  <use href="#exhaust" transform="translate(1 3)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -3) rotate(12 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -3)" />
+ </svg>
+ <svg x="0" y="720" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -1) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -1) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -2)" />
+  <use href="#cowl" transform="translate(0 -2)" />
+  <use href="#dial" transform="translate(0 -2)" />
+  <use href="#exhaust" transform="translate(-1 2)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+ </svg>
+ <svg x="256" y="720" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -0.5) rotate(0 66 110)" />
+  <use href="#right-arm" transform="translate(0 -0.5) rotate(0 190 110)" />
+  <use href="#boiler" transform="translate(0 -1)" />
+  <use href="#cowl" transform="translate(0 -1)" />
+  <use href="#dial" transform="translate(0 -1)" />
+  <use href="#exhaust" transform="translate(0 1)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -1) rotate(4 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -1)" />
+ </svg>
+ <svg x="0" y="960" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -1) rotate(-12 66 110)" />
+  <use href="#right-arm" transform="translate(0 -1) rotate(12 190 110)" />
+  <use href="#boiler" transform="translate(0 -2)" />
+  <use href="#cowl" transform="translate(0 -2)" />
+  <use href="#dial" transform="translate(0 -2)" />
+  <use href="#exhaust" transform="translate(1 0)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(20 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+ </svg>
+ <svg x="256" y="960" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 -2) rotate(-25 66 110)" />
+  <use href="#right-arm" transform="translate(0 -2) rotate(25 190 110)" />
+  <use href="#boiler" transform="translate(0 -4)" />
+  <use href="#cowl" transform="translate(0 -4)" />
+  <use href="#dial" transform="translate(0 -4)" />
+  <use href="#exhaust" transform="translate(-1 3)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -4) rotate(34 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -4)" />
+ </svg>
+ <svg x="0" y="1200" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 0.5) rotate(12 66 110)" />
+  <use href="#right-arm" transform="translate(0 0.5) rotate(-12 190 110)" />
+  <use href="#boiler" transform="translate(0 1)" />
+  <use href="#cowl" transform="translate(0 1)" />
+  <use href="#dial" transform="translate(0 1)" />
+  <use href="#exhaust" transform="translate(0 2)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 1) rotate(-20 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 1)" />
+ </svg>
+ <svg x="256" y="1200" width="256" height="240" viewBox="0 0 256 240">
+  <use href="#rear-foot" />
+  <use href="#pipes" />
+  <use href="#legs" />
+  <use href="#left-arm" transform="translate(0 0) rotate(5 66 110)" />
+  <use href="#right-arm" transform="translate(0 0) rotate(-5 190 110)" />
+  <use href="#boiler" transform="translate(0 0)" />
+  <use href="#cowl" transform="translate(0 0)" />
+  <use href="#dial" transform="translate(0 0)" />
+  <use href="#exhaust" transform="translate(1 1)" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 0) rotate(-8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 0)" />
+ </svg>
+</svg>

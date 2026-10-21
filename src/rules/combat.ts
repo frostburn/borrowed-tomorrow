@@ -231,6 +231,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   if (!legalAim(b, u, id, aim)) return false;
   const a = ABILITIES[id];
   u.focus -= a.cost;
+  const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
   if (id === 'bandage') b.bandages--;
   const hit = targets(b, u, id, aim);
   for (const v of hit) {
@@ -242,11 +243,11 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     else if(a.heal){const amount=damage(u,v,id);v.hp=Math.min(v.maxHp,v.hp+amount);log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id);
-      log(b,`${u.name}: ${a.name} hits ${v.name} for ${amount}${absorbed?` (${absorbed} guarded)`:''}${v.hp?'.':' — down.'}`);
+      log(b,`${u.name}: ${attackName} hits ${v.name} for ${amount}${absorbed?` (${absorbed} guarded)`:''}${v.hp?'.':' — down.'}`);
     }
     if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
-  if (!hit.length) log(b, `${u.name}'s ${a.name} strikes empty ground.`);
+  if (!hit.length) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
     if (defender && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {

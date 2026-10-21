@@ -149,3 +149,18 @@ Run `python3 assets/bosses/export-benefactor.py` to regenerate `benefactor-portr
 Chapter Two now reviews native 80px SVG civilians and new vector Kit/Petra/Dena/Inspector assets in Sprites. The former Pixel Art Fixer comparison panel is retired. The Animation panel retains the old Kit/Petra raster rig studies as authoring references; current campaign artwork and all four directional motion pages are in Sprites. See `assets/vector/chapter-two.md`.
 
 The Benefactor breathes through eight phases over 3.2 seconds. Judgment raises the forearms inward, gathers, releases at 420ms and recovers by 920ms. Shoulder spikes and serrated porcelain remain visible throughout. Restart and outcomes cancel pending animations; reduced motion displays the resting pose. All five companions now have directional walking playback in Sprites; Celia’s Walk keeps the book in her left arm.
+
+## Conduit guardian preview
+
+Open `/?dev=boss&boss=conduit` or choose **Bosses → Heart regulator**. The Chapter Three preset uses level-7 Nell, Orrin and Kit with six bandages. **Use workshop party** uses the current builds and equipment. The party faces upward toward a 256 × 240 vector expansion of the existing boiler keeper, above a compact triangle of three adjacent occupied hexes. Each contact or painted body can target the same unit; blasts and lines damage it once. Its feet are anchored. The original campaign encounters, loot and checkpoints remain unchanged while this version is reviewed.
+
+| Route | Approach |
+| --- | --- |
+| Sealed intake | Hold both blue earth plates simultaneously to drop the seal permanently; a feed hound guards the flank. Requires at least two workshop companions. |
+| Pressure walk | The seal is down; two pressure crows and four hot floor vents guard the approach. A solo workshop party can use this route. |
+
+Pressure lock marks a hero's surrounding hexes, Scouring jets mark three columns, and Crossfeed purge sweeps one row. Red X warnings stay fixed for the round; Taunt redirects the discharge. These attacks use the existing pattern damage, defensive effects and initiative rules, with mechanical steam effects and sound. Eight idle pressure poses and four discharge poses reuse the scene-clock playback, attack timing and reduced-motion handling from the Benefactor. Restart, forced outcomes and workshop exit cancel pending attacks and remove motion listeners. The preview never writes campaign saves or rewards.
+
+The route and boss selection are shareable in the URL (`&route=pressure` selects pressure walk); both are session-only review settings. `src/dev/conduit-battle.ts` owns the prototype rules, `conduit-preview.ts` the presentation, and `boss-display.ts` the shared native decode, labels, placement and alpha-based projected-body picking. `src/dev/art/conduit-regulator.svg` and `conduit-chamber.svg` are editable originals. Run `python3 assets/bosses/export-conduit.py` for the vector portrait and motion page. All imports remain behind the existing Vite-only workshop entry.
+
+Run `npm run check`, `tests/e2e/conduit-boss.spec.ts` and the existing boss presentation checks. These detailed browser cases cover desktop/phone framing, both routes, actual earth-plate release, single-hit targeting, warning resolution, preset/workshop parties, idle output with the pointer parked, attack/restart cleanup, reduced motion and campaign isolation. They stay outside default CI. The existing production-exclusion check also verifies that these encounters and SVGs are absent from the build.

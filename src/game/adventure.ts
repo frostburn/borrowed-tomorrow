@@ -706,8 +706,8 @@ export class Adventure extends Phaser.Scene {
         if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
         if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
-        this.audio.effect(ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
-        if(face||ABILITIES[action.ability].shape==='pattern')battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'');
+        this.audio.effect(preview?.attackSound?.(actor,action.ability)??ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
+        if((face||ABILITIES[action.ability].shape==='pattern')&&!preview?.attackEffect?.(this,this.layer!,image,actor,action.ability,action.affected??[]))battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'');
       }
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
