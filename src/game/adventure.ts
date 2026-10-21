@@ -28,6 +28,7 @@ import { ITEMS, ownedCopies } from '../rules/inventory';
 import { SUPPLIES, buySupply, canBuy } from '../rules/supplies';
 import { openInventory } from './inventory';
 import { bitmapText } from './pixel-font';
+import { PixelLabel } from './pixel-label';
 import { worldView, narrowScreen } from './resolution';
 import { occupiedHexes } from '../rules/footprint';
 import type { BattlePreview } from './battle-preview';
@@ -132,12 +133,17 @@ export class Adventure extends Phaser.Scene {
     return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
   }
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
-    const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*(scale===1?8:6*scale)+padding*2;canvas.height=9*scale+padding*2;
+    const pixelAligned=this.mode==='battle',padding=outline?1:0,canvas=document.createElement('canvas');
+    canvas.width=text.length*(scale===1?8:6*scale)+padding*2;
+    // The compact face is five rows of 2px stems, with 2px leading/trailing space.
+    canvas.height=(pixelAligned&&scale===1?14:9*scale)+padding*2;
     const ctx=canvas.getContext('2d')!;
     if(outline)for(const dx of [-1,0,1])for(const dy of [-1,0,1])if(dx||dy)bitmapText(ctx,text,padding+dx,scale+padding+dy,'#080f19',scale);
     bitmapText(ctx,text,padding,scale+padding,color,scale);
     const name=`label-${this.labelId++}`;this.textures.addCanvas(name,canvas);
-    const image=this.add.image(x,y,name).setOrigin(.5);
+    const image=pixelAligned?this.add.existing(new PixelLabel(this,x,y,name)):this.add.image(x,y,name);
+    image.setOrigin(.5);
+    if(pixelAligned)image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     image.once('destroy',()=>this.textures.remove(name));return image;
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
