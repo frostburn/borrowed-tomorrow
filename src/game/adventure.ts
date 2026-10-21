@@ -61,6 +61,7 @@ export class Adventure extends Phaser.Scene {
   private arrowKeys?: Phaser.Types.Input.Keyboard.CursorKeys;
   private letters?: Record<string, Phaser.Input.Keyboard.Key>;
   private battleCursor: Hex = offset(4, 3);
+  private handledKeys=new WeakSet<KeyboardEvent>();
   private near?: MapObject;
   private lastSecond = 0;
   private latestSave?: GameState;
@@ -387,6 +388,8 @@ export class Adventure extends Phaser.Scene {
     this.ui.canvas.focus();
   }
   private keydown(e: KeyboardEvent) {
+    // One DOM event must never both select and confirm a tactical action.
+    if(this.handledKeys.has(e))return;this.handledKeys.add(e);
     const tag = (e.target as HTMLElement)?.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.(); else if(this.cinematic){this.ui.skipDialogue();} else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
@@ -472,6 +475,7 @@ export class Adventure extends Phaser.Scene {
   }
   private enterBattle() {
     this.battleFaces.clear();
+    this.battleCursor={...active(this.battle!)!.hex};
     if(import.meta.env.DEV&&this.battlePreview)for(const u of this.battle!.units)if(u.side==='party')this.battleFaces.set(u.id,facingAsset(u.kind as CompanionId,0,-1));
     for(const u of this.battle!.units)if(u.side==='enemy'&&COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))this.battleFaces.set(u.id,facingAsset((u.appearance??u.kind) as CompanionId,-1,0));
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
@@ -562,6 +566,7 @@ export class Adventure extends Phaser.Scene {
       initial:()=>this.testingBattle,
       apply:battle=>{
         this.tweens.killAll();this.battle=battle;this.busy=false;this.plan=undefined;this.hover=undefined;this.selected='move';
+        this.battleCursor={...active(battle)!.hex};
         this.drawBattle();this.renderBattleControls();
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },

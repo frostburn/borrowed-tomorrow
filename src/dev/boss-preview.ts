@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { BattlePreview } from '../game/battle-preview';
 import { bitmapText } from '../game/pixel-font';
-import { active, legalAim, targets, unitAt, type Unit } from '../rules/combat';
+import { ABILITIES, active, legalAim, targets, unitAt, type Unit } from '../rules/combat';
 import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, offset, toPixel } from '../rules/hex';
 import { BOSS_ENCOUNTER, BOSS_ID, bossTurn, bossUnit, prepareBoss } from './boss-battle';
@@ -20,6 +20,7 @@ export const BOSS_ASSETS=[p00,p10,p20,p01,p11,p21].map((url,i)=>({key:`benefacto
 const textureKey='benefactor-native';
 const points=(items:{x:number;y:number}[])=>items.map(p=>new Phaser.Math.Vector2(p.x,p.y));
 let labelId=0;
+let nativePixels:Uint8ClampedArray|undefined;
 function label(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
   const canvas=document.createElement('canvas');canvas.width=value.length*6*scale;canvas.height=9*scale;
   bitmapText(canvas.getContext('2d')!,value,0,scale,color,scale);
@@ -60,6 +61,7 @@ export const BOSS_PRESENTATION:BattlePreview={
     if(!scene.textures.exists(textureKey)){
       const texture=scene.textures.createCanvas(textureKey,360,288)!;
       BOSS_ASSETS.forEach((page,i)=>texture.context.drawImage(scene.textures.get(page.key).getSourceImage() as HTMLImageElement,i%3*120,Math.floor(i/3)*144));
+      nativePixels=texture.context.getImageData(0,0,360,288).data;
       texture.refresh();
     }
     const p=placement(unit);return scene.add.image(p.x,p.y,textureKey).setOrigin(.5,1);
@@ -77,11 +79,14 @@ export const BOSS_PRESENTATION:BattlePreview={
     }
   },
   pick(b,action,x,y){
-    if(action==='move')return;
+    if(action==='move'||ABILITIES[action].heal||['guard','focus','taunt'].includes(ABILITIES[action].effect??''))return;
     const boss=bossUnit(b),u=active(b);if(!u||u.side!=='party'||boss.hp<=0)return;
     const p=placement(boss);if(x<p.x-180||x>p.x+180||y<p.y-288||y>p.y)return;
     const clicked=fromPixel(x,y);
+    const direct=unitAt(b,clicked);if(direct&&direct.id!==BOSS_ID)return;
     if(unitAt(b,clicked)?.id===BOSS_ID&&legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===BOSS_ID))return clicked;
+    const px=Math.floor(x-p.x+180),py=Math.floor(y-p.y+288);
+    if(px<0||px>=360||py<0||py>=288||nativePixels?.[(py*360+px)*4+3]===0)return;
     const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
     return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??parts[0];
   },

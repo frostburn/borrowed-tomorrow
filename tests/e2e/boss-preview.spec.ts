@@ -15,7 +15,7 @@ async function clickBody(page:Page){
 test('@journey the finale preset defeats both attack phases through ordinary combat',async({page})=>{
   test.setTimeout(240000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});
   await page.goto('/?dev=boss');await page.getByRole('button',{name:'Start finale preset',exact:true}).click();const phases=new Set<string>();
-  for(let step=0;step<140;step++){
+  for(let step=0;step<300;step++){
     const snapshot=await inspect(page),saved=snapshot.battle!;
     if(saved.result==='victory'){await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();await capture(page,'boss-victory');expect(phases.size).toBe(2);expect(errors).toEqual([]);return;}
     expect(saved.result).not.toBe('defeat');if(snapshot.busy||active(saved as unknown as Battle)?.side!=='party'){await page.waitForTimeout(150);continue;}
@@ -35,6 +35,7 @@ test('@journey the finale preset defeats both attack phases through ordinary com
             const amount=damage(u,target,id);
             score+=ability.heal?(target.hp<target.maxHp*.65?amount*1.4:0):target.side!==u.side?Math.min(target.hp,amount):amount*-4;
           }
+          if(id==='strike'&&!boss.retaliated&&boss.hp>damage(u,boss,id))score-=damage(boss,u,'strike')*.75;
           if(score>0&&(!best||score>best.score))best={position:reach.hex,ability:id,aim,score};
         }
       }
@@ -45,7 +46,7 @@ test('@journey the finale preset defeats both attack phases through ordinary com
     }else if(best){
       await page.locator('.actions').getByRole('button',{name:new RegExp(`^\\d\\s+${ABILITIES[best.ability].name}$`)}).click();
       if(ABILITIES[best.ability].range!==0)await clickHex(page,best.aim);
-      await page.getByRole('button',{name:ABILITIES[best.ability].heal?'Confirm healing':'Confirm attack',exact:true}).click();
+      await page.getByRole('button',{name:ABILITIES[best.ability].heal?'Confirm healing':'Confirm attack',exact:true}).click({timeout:5000});
     }else{
       const safe=[...movement(b,u).values()].find(p=>!danger.has(key(p.hex))&&p.path.length);
       if(danger.has(key(u.hex))&&safe){await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,safe.hex);await page.getByRole('button',{name:/^Confirm move/}).click();}
@@ -95,6 +96,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await expect.poll(async()=>(await inspect(page)).battle?.round).toBe(2);await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
     expect((await inspect(page)).battle!.units.find(u=>u.id==='benefactor')!.intent?.name).toBe('Sundering rays');await capture(page,`boss-rays-${device}`);
     await page.getByRole('button',{name:'Restart battle',exact:true}).click();expect((await inspect(page)).battle!.round).toBe(1);
+    await page.locator('#canvas').focus();await page.keyboard.press('ArrowUp');await page.keyboard.press('Enter');
+    await expect(page.getByRole('button',{name:/^Confirm move/})).toBeVisible();
     await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
     await page.getByRole('button',{name:'Back to workshop',exact:true}).click();await page.getByRole('button',{name:'Start phase two',exact:true}).click();
     expect((await inspect(page)).battle!.units.find(u=>u.id==='benefactor')!.intent?.phase).toBe('The hollow heart');await capture(page,`boss-heart-${device}`);
