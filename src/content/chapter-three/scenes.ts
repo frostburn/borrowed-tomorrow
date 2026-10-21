@@ -78,18 +78,18 @@ export const heart=()=>scene('conduit','three-heart','THE VESSEL BELOW',[
 ]);
 export const rupture=()=>scene('conduit','three-rupture','THE FEEDS CLOSE',[
   line('Orrin','Tomas’s bypass is holding. Turning the feeds off.',{focus:{x:42,y:22},cut:true,cue:'steam'}),
-  line('The intake console','The needles fall to zero. Along the pipes, the traveling light stops.',{silence:true}),
+  line('The intake console','The needles fall to zero. Along the pipes, the traveling light stops.',{silence:true,effect:'feeds-close'}),
   line('Nell','It’s stopped.'),
   line('The Emperor','The lamps will fail by nightfall. The heating. The lifts to the hospitals.'),
   line('Petra','Open your stores. Let the workers keep the pumps running. You still have people.'),
   line('The Emperor','I have buried enough of them.'),
-  line('The chamber','He turns away from the console and steps onto the vessel’s service deck.',{focus:{x:36,y:19},cut:true,cue:'click',actors:{emperor:{to:{x:36,y:19}}}}),
+  line('The chamber','He turns away from the console and steps onto the vessel’s service deck.',{focus:{x:47,y:19},cut:true,track:'emperor',duration:2000,cue:'click',actors:{emperor:{face:'emperor-left',to:{x:36,y:19}}}}),
   line('Nell','What are you doing?'),
   line('The Emperor','If the world will not give us another peaceful day, I will keep this one.'),
-  line('The vessel','The emperor presses his bare hand against the iron collar. Pale light runs up his sleeve and draws him out of sight.',{focus:{x:32,y:12},cut:true,cue:'resonance',actors:{emperor:{visible:false}}}),
-  line('The chamber','The restraints pull taut. A crack runs through the ceiling. Stone dust rises instead of falling.',{cue:'punch'}),
-  line('Kit','The stairs! Nell, now!'),
-  line('Orrin','Tomas is at our engine. We’re leaving together.',{focus:{x:31,y:28},cut:true}),
+  line('The vessel','The emperor presses his bare hand against the iron collar. Pale light runs up his sleeve and draws him out of sight.',{focus:{x:32,y:13},duration:2400,cue:'resonance',effect:'vessel-entry',actors:{emperor:{face:'emperor-reach'}}}),
+  line('The chamber','The restraints pull taut. A crack runs through the ceiling. Stone dust rises instead of falling.',{cue:'punch',effect:'chamber-rupture'}),
+  line('Kit','The stairs! Nell, now!',{focus:{x:40,y:23},cut:true,track:'nell',duration:1800,actors:{nell:{to:{x:25,y:32}},orrin:{to:{x:24,y:31}},kit:{to:{x:23,y:32}},petra:{to:{x:26,y:31}}}}),
+  line('Orrin','Tomas is at our engine. We’re leaving together.',{track:'nell',duration:1200,actors:{nell:{to:{x:25,y:35}},orrin:{to:{x:24,y:34}},kit:{to:{x:23,y:35}},petra:{to:{x:26,y:34}}}}),
 ]);
 export const departure=()=>scene('northglass','three-departure','THE BROTHER WHO CAME HOME',[
   line('The south siding','The medical coaches are full. Above the roof, the palace rises through a cloud of broken stone.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
