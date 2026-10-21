@@ -1,6 +1,6 @@
 # Native tile maps
 
-Chapter One uses the [traced SVG scene kit](../assets/vector/README.md), with broad architecture and lighting interpreted from its original generated paintings. Its eight maps declare `artStyle: rotoscope` and a `sceneArt` key. Whole continuous ground layers and whole SVG props replace the old vector tile pages. Tiled retains collision IDs, routes, layer flags, interactions, casts and registered ground anchors. The game and Maps workshop use the same scene manifest and SVG URLs. Chapter Two now uses the same system for all seven of its layouts; [source notes](../assets/vector/chapter-two.md). Chapter Three keeps its native tile pages. A shared final 2px display raster gives all graphics and text matching pixel weight.
+Chapter One uses the [traced SVG scene kit](../assets/vector/README.md), with broad architecture and lighting interpreted from its original generated paintings. Its eight maps declare `artStyle: rotoscope` and a `sceneArt` key. Whole continuous ground layers and whole SVG props replace the old vector tile pages. Tiled retains collision IDs, routes, layer flags, interactions, casts and registered ground anchors. The game and Maps workshop use the same scene manifest and SVG URLs. Chapter Two now uses the same system for all seven of its layouts; [source notes](../assets/vector/chapter-two.md). Chapter Three uses the same system across its eight layouts; [source notes](../assets/vector/chapter-three.md). A shared final 2px display raster gives all graphics and text matching pixel weight.
 
 Open `src/content/chapter-one/maps/*.json` , `src/content/chapter-two/maps/*.json` and `src/content/chapter-three/maps/*.json` directly in Tiled. Each file is an ordinary finite orthogonal map with uncompressed numeric tile layers. They share a **24 × 24** tile vocabulary, catalogued in `assets/tiles/chapter-one.tileset.json`. Small native lossless PNG/WebP pages live in `public/art/chapter-one/`; each has a standard external Tiled tileset in `assets/tiles/pages/`. Maps reference those page tilesets directly, so they remain editable in Tiled. `assets/tiles/tile-definitions.ts` provides ordinary imports for both the game and Node-based content tools. Each page is at most **192 × 192 pixels and 128 KB**, and is uploaded as its own image file. The dimensional pack comes from the supplied modular railway scenery and material sheets; no whole-map painting was sliced into tiles. `assets/tiles/README.md` records the importer and source crop manifest. Normal development and builds use the checked-in files directly.
 
@@ -25,7 +25,7 @@ The tactical `battle-*` maps frame clear fighting floors with location-specific 
 
 ## Layers and collision
 
-Chapter Three draws native Phaser tile-map layers. Chapters One/Two use SVG scene pieces. Chapter One compiles material layers into continuous SVG planes and groups the module cells into whole SVG props. Layers with the boolean `sort` property draw their individual tiles among the actors at their ground anchors. Multi-tile trees and machinery use each tile's `sortOffset` property to share one ground depth; walking in front of a canopy draws the character in front of it. Actor depth also updates during cutscenes and movement. No layer or actor is scaled or recolored.
+Chapters One–Three use SVG scene pieces. Chapter One compiles material layers into continuous SVG planes and groups the module cells into whole SVG props. Layers with the boolean `sort` property draw their individual tiles among the actors at their ground anchors. Multi-tile trees and machinery use each tile's `sortOffset` property to share one ground depth; walking in front of a canopy draws the character in front of it. Actor depth also updates during cutscenes and movement. No layer or actor is scaled or recolored.
 
 Walkable bridge decks and stair treads are floor layers below actors. The footbridge's near rail and posts form a separate sorted layer, cut from the same source pixels without overlapping the deck image. Only its middle deck row crosses the river; the railings and water above/below it stay blocked. The importer records the split in `scenery.json` and appends foreground tiles without repacking existing image pages.
 
@@ -62,7 +62,7 @@ Chapter Two’s loading barrier hides after `trainRaidWon`; recovered medicine a
 
 Each exploration map's `safeArrival` property names an arrival on its main connected route. Loading a valid current-format save keeps its position when that cell is still walkable. If a layout edit covers or crops the cell, restoration selects the nearest floor connected to that arrival, using the active story layers. Progress, party resources and equipment stay intact. This uses the current save format only; it does not migrate retired versions.
 
-Only tile pages used by the destination map are required to enter it. Failed page loads can be retried, and a chapter departure is consumed only after all destination maps load.
+Only SVG scene sources used by the destination and its battlefields are required to enter it. Failed loads can be retried, and a chapter departure is consumed only after all destination maps load.
 
 `tests/tilemaps.test.ts` verifies atlas references, layer dimensions, arrivals, bridge and cliff collision, state changes and clear tactical floors. Existing chapter tests cover interaction approaches and every staged endpoint. The manual Chapter One browser journey checks the full route, all four fights, equipment, departure and reload. Native rendering checks compose reference pixels from the tile pages rather than a discarded background.
 
@@ -70,12 +70,14 @@ Only tile pages used by the destination map are required to enter it. Failed pag
 
 ## Image publication budget
 
-Whole-map SVG scenes are allowed for Chapter One; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
+Whole-map SVG scenes are allowed for Chapters One–Three; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
 
 After staging, run `npm run check:art-upload`. It checks the exact staged blobs for every added or modified raster image and refuses Chapter One pages over 128 KB (128 KB for other raster files). Upload each approved file independently. The content tests separately check native dimensions, page sizes, contiguous IDs and map references. The supplied previews have been recovered as 24 scenery modules and six terrain fields, exported into bounded native pages.
 
 
 ## Chapter Three
+
+The current runtime renders the whole SVG engine-complex originals described in [Chapter Three vector artwork](../assets/vector/chapter-three.md). Tiled remains the layout, collision, staging and flag source; its raster page thumbnails and the following historical import recipes are retained for editing, not runtime fallbacks. The vector compiler preserves module extents, registered pipe ports and sorted ground depths.
 
 The palace gate, control bank and vessel are reusable modules exported into small pages by `assets/tiles/import-chapter-three.py`; see `assets/tiles/chapter-three-art.md`. Existing page bytes and tile IDs stay stable. The chapter shares dimensional stone, cave and railway materials with earlier maps; no whole painting is subdivided into pieces. Each of the five encounters owns a clear tiled floor, including both regulator approaches.
 

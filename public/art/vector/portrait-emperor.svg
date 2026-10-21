@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>emperor portrait</title><metadata>{"reference": "ee63fb0:public/art/portrait-emperor.png", "method": "Hand-drawn silhouette, face and material planes interpreted from the archived portrait; editable vector original"}</metadata>
+<rect x="0" y="0" width="128" height="128" fill="#142a37"/>
+<polygon points="0,0 128,0 128,32 43,13 0,68" fill="#28434f"/>
+<polygon points="0,111 128,67 128,128 0,128" fill="#1c343e"/>
+<polygon points="0,128 8,104 31,88 51,83 80,83 107,99 122,113 128,128" fill="#b7b09a"/>
+<polygon points="4,128 16,106 35,96 28,128" fill="#e5d6b1"/>
+<polygon points="95,94 115,108 124,128 94,128" fill="#a99c80"/>
+<polygon points="38,89 52,79 80,80 94,95 89,128 36,128" fill="#263e53"/>
+<polygon points="39,87 53,83 67,101 80,83 94,91 84,121 68,128 49,118" fill="#142a37"/>
+<polyline points="43,88 53,84 67,105 80,85 89,91 80,119 66,124 51,115 43,88" fill="none" stroke="#c69c5c" stroke-width="3" stroke-linejoin="bevel"/>
+<polygon points="14,107 28,95 41,99 35,117 20,120" fill="#263e53"/>
+<polygon points="94,97 105,98 118,112 113,121 97,115" fill="#263e53"/>
+<ellipse cx="28" cy="107" rx="7" ry="7" fill="#805c3f"/>
+<polygon points="28,98 31,104 37,107 31,110 28,116 25,110 19,107 25,104" fill="#c69c5c"/>
+<ellipse cx="106" cy="111" rx="7" ry="7" fill="#805c3f"/>
+<polygon points="106,102 109,108 115,111 109,114 106,120 103,114 97,111 103,108" fill="#c69c5c"/>
+<polyline points="37,101 29,128" fill="none" stroke="#c69c5c" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="95,100 101,128" fill="none" stroke="#c69c5c" stroke-width="3" stroke-linejoin="bevel"/>
+<polygon points="28,40 31,24 48,12 72,8 93,17 105,32 108,58 103,76 110,87 97,92 88,83 77,94 48,91 35,82 22,88 29,70 22,61" fill="#667777"/>
+<polygon points="43,30 68,23 86,31 94,48 91,69 79,89 64,94 49,84 37,65 35,46" fill="#d49c70"/>
+<polygon points="36,47 45,52 49,70 64,86 79,89 64,94 49,84 37,65" fill="#a96e51"/>
+<polygon points="48,34 68,28 83,35 87,48 76,53 56,48" fill="#efc596"/>
+<polygon points="80,52 89,49 92,65 85,72 82,67" fill="#b67e59"/>
+<polygon points="27,47 29,30 42,17 59,10 77,11 94,20 106,37 100,42 85,31 71,23 59,32 47,36 39,48 36,64 30,73 23,78 29,60" fill="#b7c1b8"/>
+<polygon points="31,37 43,22 60,14 77,15 65,20 50,25 40,40 34,47" fill="#e1dfca"/>
+<polygon points="52,29 63,18 76,17 85,24 71,22 64,31 48,41" fill="#8b9b95"/>
+<polygon points="86,30 101,40 106,53 102,68 106,80 97,85 90,77 95,61 91,45" fill="#b7c1b8"/>
+<polygon points="89,34 98,41 100,53 96,65 98,77 94,71 91,56" fill="#e0ddc6"/>
+<polygon points="35,61 40,71 46,76 46,86 34,80 28,86 33,76" fill="#b7c1b8"/>
+<polyline points="44,42 65,38 86,43" fill="none" stroke="#805c3f" stroke-width="5" stroke-linejoin="bevel"/>
+<polyline points="45,40 65,36 86,41" fill="none" stroke="#c69c5c" stroke-width="3" stroke-linejoin="bevel"/>
+<polygon points="61,36 65,31 69,37 65,42" fill="#c69c5c"/>
+<polygon points="45,54 52,51 59,54 57,57 47,57" fill="#704d40"/>
+<polygon points="72,54 82,51 88,54 85,57 74,57" fill="#704d40"/>
+<polygon points="47,54 56,54 54,56 48,56" fill="#e5d6b1"/>
+<polygon points="75,54 85,53 83,56 76,56" fill="#e5d6b1"/>
+<rect x="51" y="53" width="3" height="4" fill="#142a37"/>
+<rect x="79" y="53" width="3" height="4" fill="#142a37"/>
+<polyline points="44,49 57,50" fill="none" stroke="#758781" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="73,49 86,47" fill="none" stroke="#758781" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="47,61 54,63" fill="none" stroke="#ae7658" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="78,63 85,60" fill="none" stroke="#ae7658" stroke-width="2" stroke-linejoin="bevel"/>
+<polygon points="68,56 65,67 70,71 77,68 74,65 71,55" fill="#ae7658"/>
+<polygon points="69,57 69,66 73,68 74,66" fill="#efc596"/>
+<polyline points="58,79 71,78 78,80" fill="none" stroke="#794f3d" stroke-width="2" stroke-linejoin="bevel"/>
+<polygon points="58,82 65,84 73,82 75,87 68,93 61,91" fill="#b7c1b8"/>
+<polygon points="62,84 68,86 72,84 68,91" fill="#e1dfca"/>
+<polyline points="51,68 54,73" fill="none" stroke="#a96e51" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="81,71 78,75" fill="none" stroke="#a96e51" stroke-width="2" stroke-linejoin="bevel"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="96" viewBox="0 0 144 96"><title>works-stairs</title><metadata>{"reference": "ee63fb0:assets/tiles/engine-works.json / metal stairs", "method": "Original planar vector interpretation of the accepted engine-complex kit; original module extents and ground anchor"}</metadata>
+<polygon points="15,0 130,0 144,96 0,96" fill="#142a37"/>
+<polygon points="18,2 126,2 130,22 14,22" fill="#6f8c7b"/>
+<polygon points="13,20 131,20 133,35 11,35" fill="#3f6159"/>
+<rect x="13" y="20" width="118" height="4" fill="#9aa89a"/>
+<rect x="12" y="35" width="120" height="4" fill="#253f49"/>
+<rect x="17" y="32" width="110" height="3" fill="#bf995b"/>
+<polygon points="10,39 134,39 136,54 8,54" fill="#3f6159"/>
+<rect x="10" y="39" width="124" height="4" fill="#9aa89a"/>
+<rect x="9" y="54" width="126" height="4" fill="#253f49"/>
+<rect x="14" y="51" width="116" height="3" fill="#bf995b"/>
+<polygon points="7,58 137,58 139,73 5,73" fill="#3f6159"/>
+<rect x="7" y="58" width="130" height="4" fill="#9aa89a"/>
+<rect x="6" y="73" width="132" height="4" fill="#253f49"/>
+<rect x="11" y="70" width="122" height="3" fill="#bf995b"/>
+<polygon points="4,77 140,77 142,92 2,92" fill="#3f6159"/>
+<rect x="4" y="77" width="136" height="4" fill="#9aa89a"/>
+<rect x="3" y="92" width="138" height="4" fill="#253f49"/>
+<rect x="8" y="89" width="128" height="3" fill="#bf995b"/>
+<polygon points="8,4 17,4 6,93 0,96" fill="#596f70"/>
+<polygon points="128,4 136,4 144,96 138,93" fill="#304a54"/>
+</svg>

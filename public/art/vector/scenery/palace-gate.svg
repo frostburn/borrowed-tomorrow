@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="336" height="216" viewBox="0 0 336 216"><title>palace-gate</title><metadata>{"reference": "ee63fb0:assets/tiles/palace.json / receiving pavilion", "method": "Original planar vector interpretation of the accepted engine-complex kit; original module extents and ground anchor"}</metadata>
+<polygon points="0,83 21,54 49,42 286,42 317,57 336,83 336,216 0,216" fill="#142a37"/>
+<rect x="0" y="98" width="336" height="110" fill="#7f8984"/>
+<rect x="0" y="205" width="336" height="11" fill="#253f49"/>
+<polygon points="0,83 25,59 52,49 283,49 313,62 336,84 336,102 0,102" fill="#3f6159"/>
+<polygon points="2,81 29,62 54,53 282,53 310,65 331,82" fill="#6f8c7b"/>
+<polyline points="45,98 45,81 51,55" fill="none" stroke="#80623e" stroke-width="6" stroke-linejoin="bevel"/>
+<polyline points="44,98 44,81 50,55" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="100,98 100,81 106,55" fill="none" stroke="#80623e" stroke-width="6" stroke-linejoin="bevel"/>
+<polyline points="99,98 99,81 105,55" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="227,98 227,81 233,55" fill="none" stroke="#80623e" stroke-width="6" stroke-linejoin="bevel"/>
+<polyline points="226,98 226,81 232,55" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="286,98 286,81 292,55" fill="none" stroke="#80623e" stroke-width="6" stroke-linejoin="bevel"/>
+<polyline points="285,98 285,81 291,55" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<rect x="0" y="97" width="336" height="7" fill="#80623e"/>
+<rect x="0" y="97" width="336" height="3" fill="#bf995b"/>
+<polygon points="25,194 25,140 33,126 56,118 79,126 87,140 87,194" fill="#142a37"/>
+<polygon points="30,189 30,141 37,130 56,124 75,130 82,141 82,189" fill="#8da9a8"/>
+<polygon points="31,142 56,127 56,188 31,188" fill="#b7c7bd"/>
+<polygon points="56,127 80,142 80,188 56,188" fill="#567780"/>
+<polygon points="32,143 44,135 44,188 32,188" fill="#d1d6bd"/>
+<polyline points="56,125 56,190" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="29,148.4 83,148.4" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="29,173.48 83,173.48" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="22" y="194" width="68" height="6" fill="#bf995b"/>
+<rect x="22" y="200" width="68" height="5" fill="#253f49"/>
+<polygon points="249,194 249,140 257,126 280,118 303,126 311,140 311,194" fill="#142a37"/>
+<polygon points="254,189 254,141 261,130 280,124 299,130 306,141 306,189" fill="#8da9a8"/>
+<polygon points="255,142 280,127 280,188 255,188" fill="#b7c7bd"/>
+<polygon points="280,127 304,142 304,188 280,188" fill="#567780"/>
+<polygon points="256,143 268,135 268,188 256,188" fill="#d1d6bd"/>
+<polyline points="280,125 280,190" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="253,148.4 307,148.4" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="253,173.48 307,173.48" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="246" y="194" width="68" height="6" fill="#bf995b"/>
+<rect x="246" y="200" width="68" height="5" fill="#253f49"/>
+<polygon points="112,204 112,138 122,115 146,101 184,101 207,115 222,138 222,204" fill="#253f49"/>
+<polygon points="119,204 119,140 128,121 149,108 181,108 201,121 214,140 214,204" fill="#bf995b"/>
+<polygon points="125,204 125,141 133,126 151,115 179,115 195,126 207,141 207,204" fill="#142a37"/>
+<polygon points="130,198 130,143 138,130 155,121 164,121 164,198" fill="#8da9a8"/>
+<polygon points="169,121 178,121 190,130 201,144 201,198 169,198" fill="#587981"/>
+<polyline points="166,120 166,202" fill="none" stroke="#3f6159" stroke-width="5" stroke-linejoin="bevel"/>
+<polyline points="129,165 202,165" fill="none" stroke="#3f6159" stroke-width="5" stroke-linejoin="bevel"/>
+<rect x="154" y="171" width="3" height="13" fill="#bf995b"/>
+<rect x="176" y="171" width="3" height="13" fill="#bf995b"/>
+<polygon points="3,100 18,100 22,109 22,208 3,208" fill="#142a37"/>
+<rect x="6" y="104" width="12" height="104" fill="#3f6159"/>
+<rect x="7" y="106" width="4" height="100" fill="#6f8c7b"/>
+<rect x="15" y="106" width="4" height="100" fill="#253f49"/>
+<rect x="1" y="110" width="22" height="7" fill="#80623e"/>
+<rect x="1" y="110" width="22" height="3" fill="#bf995b"/>
+<rect x="1" y="154.0" width="22" height="7" fill="#80623e"/>
+<rect x="1" y="154.0" width="22" height="3" fill="#bf995b"/>
+<rect x="1" y="198" width="22" height="7" fill="#80623e"/>
+<rect x="1" y="198" width="22" height="3" fill="#bf995b"/>
+<polygon points="96,100 111,100 115,109 115,208 96,208" fill="#142a37"/>
+<rect x="99" y="104" width="12" height="104" fill="#3f6159"/>
+<rect x="100" y="106" width="4" height="100" fill="#6f8c7b"/>
+<rect x="108" y="106" width="4" height="100" fill="#253f49"/>
+<rect x="94" y="110" width="22" height="7" fill="#80623e"/>
+<rect x="94" y="110" width="22" height="3" fill="#bf995b"/>
+<rect x="94" y="154.0" width="22" height="7" fill="#80623e"/>
+<rect x="94" y="154.0" width="22" height="3" fill="#bf995b"/>
+<rect x="94" y="198" width="22" height="7" fill="#80623e"/>
+<rect x="94" y="198" width="22" height="3" fill="#bf995b"/>
+<polygon points="218,100 233,100 237,109 237,208 218,208" fill="#142a37"/>
+<rect x="221" y="104" width="12" height="104" fill="#3f6159"/>
+<rect x="222" y="106" width="4" height="100" fill="#6f8c7b"/>
+<rect x="230" y="106" width="4" height="100" fill="#253f49"/>
+<rect x="216" y="110" width="22" height="7" fill="#80623e"/>
+<rect x="216" y="110" width="22" height="3" fill="#bf995b"/>
+<rect x="216" y="154.0" width="22" height="7" fill="#80623e"/>
+<rect x="216" y="154.0" width="22" height="3" fill="#bf995b"/>
+<rect x="216" y="198" width="22" height="7" fill="#80623e"/>
+<rect x="216" y="198" width="22" height="3" fill="#bf995b"/>
+<polygon points="314,100 329,100 333,109 333,208 314,208" fill="#142a37"/>
+<rect x="317" y="104" width="12" height="104" fill="#3f6159"/>
+<rect x="318" y="106" width="4" height="100" fill="#6f8c7b"/>
+<rect x="326" y="106" width="4" height="100" fill="#253f49"/>
+<rect x="312" y="110" width="22" height="7" fill="#80623e"/>
+<rect x="312" y="110" width="22" height="3" fill="#bf995b"/>
+<rect x="312" y="154.0" width="22" height="7" fill="#80623e"/>
+<rect x="312" y="154.0" width="22" height="3" fill="#bf995b"/>
+<rect x="312" y="198" width="22" height="7" fill="#80623e"/>
+<rect x="312" y="198" width="22" height="3" fill="#bf995b"/>
+<polygon points="116,202 218,202 226,211 108,211" fill="#b5b49a"/>
+<rect x="108" y="211" width="118" height="5" fill="#253f49"/>
+<polygon points="178,87 186,84 178,81" fill="#bf995b"/>
+<polygon points="172.657,93.8995 180.435,97.435 176.899,89.6569" fill="#bf995b"/>
+<polygon points="164,95 167,103 170,95" fill="#bf995b"/>
+<polygon points="157.101,89.6569 153.565,97.435 161.343,93.8995" fill="#bf995b"/>
+<polygon points="156,81 148,84 156,87" fill="#bf995b"/>
+<polygon points="161.343,74.1005 153.565,70.565 157.101,78.3431" fill="#bf995b"/>
+<polygon points="170,73 167,65 164,73" fill="#bf995b"/>
+<polygon points="176.899,78.3431 180.435,70.565 172.657,74.1005" fill="#bf995b"/>
+<ellipse cx="167" cy="84" rx="12" ry="12" fill="#80623e"/>
+<ellipse cx="167" cy="84" rx="9" ry="9" fill="#bf995b"/>
+<polygon points="167,75 174,84 167,93 160,84" fill="#dfc082"/>
+<polygon points="167,75 167,93 160,84" fill="#a57c44"/>
+</svg>

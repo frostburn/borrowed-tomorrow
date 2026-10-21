@@ -2,7 +2,7 @@ import { test,expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { CHAPTER_THREE_AVAILABLE } from '../../src/content/chapters';
 import { CHAPTER_THREE_MAPS } from '../../src/content/chapter-three/maps';
-import { tilePages } from '../../src/content/tilemaps';
+import { sceneAssets } from '../../src/content/scene-art';
 import { MAPS,arrival,walkable,worldPath } from '../../src/content/maps';
 import { coastCheckpoint,palaceCheckpoint } from '../support/progress';
 import { approach,importSave,travel,visit } from './navigation';
@@ -78,12 +78,11 @@ test('the pressure route, optional stores refusal and escape work on a phone',as
  await travel(page,'works-depths','conduit');await capture(page,'conduit-arrival-phone');await dialogue(page);await approach(page,'heart-regulator');await battle(page,'heart-pressure-phone');await equip(page,'Kit','Insulated work coat');
  await approach(page,'heart-release');await capture(page,'emperor-rupture-phone');await dialogue(page);await visit(page,'capital-departure');await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await capture(page,'chapter-three-complete-phone');expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
 });
-test('failed chamber tiles preserve the current departure for retry',async({page})=>{
- const otherPages=new Set(Object.values(MAPS).filter(m=>m.id!=='conduit'&&m.tiles).flatMap(m=>tilePages(m.tiles!).map(p=>p.name)));
- const chamberPage=tilePages(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>!otherPages.has(p.name))!;expect(chamberPage).toBeTruthy();
- await page.route(`**/${chamberPage.url}`,route=>route.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);
+test('failed chamber SVG preserves the current departure for retry',async({page})=>{
+ const chamberArt=sceneAssets(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>p.key==='scenery-palace-vessel')!;expect(chamberArt).toBeTruthy();
+ await page.route(`**/${chamberArt.url}`,route=>route.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
- await page.unroute(`**/${chamberPage.url}`);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.unroute(`**/${chamberArt.url}`);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
 
 test('covered Chapter Three saves restore onto connected native floors at fractional DPR',async({browser})=>{

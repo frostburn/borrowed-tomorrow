@@ -1,5 +1,7 @@
 # Imperial conduit scenery modules
 
+This records the historical raster kit. Chapter Three now renders whole SVG interpretations of these accepted forms; see [current source/export instructions](../vector/chapter-three.md). Keep the shared tile IDs and editor thumbnails stable.
+
 Built-in Image Gen supplied three independent transparent prop sources in this work chat. The user has authorized publishing artwork generated here. The large sources stay outside git; only their small native tile pages are published. No whole-map painting was sliced into tiles.
 
 The sources share the approved railway art's slightly elevated orthographic front view, level horizontal edges, rounded green iron, warm brass and fine painted pixel detail. The accepted vessel and factory wall guide the exterior as well as the interior. This is dimensional illustrated scenery rather than flat diagram tiles. The existing native railway, cave and paving pixels remain unchanged.

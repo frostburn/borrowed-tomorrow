@@ -1,4 +1,4 @@
-# Chapter One: traced vector scenery
+# Cinematic vector scenery
 
 The current direction takes its broad silhouettes, flat lighting planes and sparse outlines from cinematic polygonal adventures such as Another World. The old generated paintings supply architecture, rooflines, train silhouettes, cave recesses and lighting references. They are interpreted around the playable story layout rather than shipped as bitmaps.
 
@@ -12,9 +12,9 @@ node scripts/export-chapter-one-art.mjs
 
 The compiler uses Python's standard library. It unions the material cells into continuous contours, draws broad lighting/geological planes and continuous rails, then registers each whole SVG prop using its original module coordinates and ground depth. It never opens, quantizes or downsamples a reference painting. Source references can be recovered from full git history: station/yard/tunnel at `feb2d47^:public/art/{name}.webp`; Rillbridge's encoded map pack at that revision. Do not restore those retired bitmap files to the runtime bundle.
 
-All eight Tiled maps declare `artStyle: rotoscope` and a `sceneArt` manifest key. Tiled still owns the 24px navigation grid, layer IDs, interactions, arrivals, scene casts, story flags and collision. No gameplay coordinates change. One SVG plane replaces each material layer; whole props remain sorted among actors. The bridge deck stays under feet and its near rail sorts separately. Required/hidden flags select the same layer IDs in the game and Maps workshop. Chapter Two now shares this scene system; Chapter Three retains its native tile pages, loaded on demand.
+All eight Tiled maps declare `artStyle: rotoscope` and a `sceneArt` manifest key. Tiled still owns the 24px navigation grid, layer IDs, interactions, arrivals, scene casts, story flags and collision. No gameplay coordinates change. One SVG plane replaces each material layer; whole props remain sorted among actors. The bridge deck stays under feet and its near rail sorts separately. Required/hidden flags select the same layer IDs in the game and Maps workshop. Chapters Two and Three share this scene system, with their SVGs loaded on demand.
 
-`?dev=maps` renders these same SVG pieces and identifies their actual source paths. Layer isolation, story flags, actor casts, review links, collision overlays and PNG review exports remain available. Tiled's thumbnails still show the shared legacy tile vocabulary retained for editor thumbnails and Chapter Three. The old chapter-one SVG tile pages/registry are retired.
+`?dev=maps` renders these same SVG pieces and identifies their actual source paths. Layer isolation, story flags, actor casts, review links, collision overlays and PNG review exports remain available. Tiled's thumbnails still show the shared legacy tile vocabulary retained for editor thumbnails. The old chapter-one SVG tile pages/registry are retired.
 
 ## Shared rasterization
 
@@ -26,4 +26,8 @@ Run `npm run check`, the Chapter One journey, map/foreground/bridge and sprite s
 
 ## Chapter Two
 
-The seven Chapter Two layouts now compile with the same scene system; see [the Chapter Two guide](chapter-two.md). Their eight new whole SVG scenery originals, Kit/Petra motion, Dena, Inspector and native civilian variants extend the palette into the harbor and ward. `node scripts/export-chapter-two-art.mjs` rebuilds their computed outputs. Chapter One keeps its initial art kit; Chapter Two scene assets load on demand with the destination and its battles. Chapter Three still uses native tile pages.
+The seven Chapter Two layouts now compile with the same scene system; see [the Chapter Two guide](chapter-two.md). Their eight new whole SVG scenery originals, Kit/Petra motion, Dena, Inspector and native civilian variants extend the palette into the harbor and ward. `node scripts/export-chapter-two-art.mjs` rebuilds their computed outputs. Chapter One keeps its initial art kit; Chapter Two scene assets load on demand with the destination and its battles. Chapter Three now shares this system; see [its guide](chapter-three.md).
+
+## Chapter Three
+
+All eight Chapter Three layouts now use whole SVG scene pieces. Seven new editable originals preserve the pressure hall, factory wings, medical pavilion, instrument bank, vessel, window bay and stairs. Registered vector pipes and steel/masonry fields keep the existing story geometry; [Chapter Three guide](chapter-three.md). `node scripts/export-chapter-three-art.mjs` rebuilds computed maps and the three supporting actors without overwriting any original scenery or portrait.
