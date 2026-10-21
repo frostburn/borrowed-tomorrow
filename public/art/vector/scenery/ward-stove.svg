@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="120" viewBox="0 0 72 120"><title>ward-stove</title><metadata>{"reference": "babe8ca:assets/tiles/chapter-two-scenery.json / ward stove", "method": "Original polygonal interpretation of archived railway scenery; registered to Tiled module footprint"}</metadata>
+<polygon points="24,0 35,0 36,51 47,55 47,65 32,64 25,54" fill="#132b3b"/>
+<polygon points="26,0 30,0 31,50 42,58 42,61 29,54" fill="#6e9096"/>
+<polygon points="9,61 52,55 64,65 61,107 49,115 13,112" fill="#132b3b"/>
+<polygon points="13,65 50,60 56,66 54,104 15,108" fill="#345562"/>
+<polygon points="19,73 45,70 48,96 21,100" fill="#0c1f2f"/>
+<polygon points="22,78 42,76 43,92 24,95" fill="#b0714e"/>
+<polygon points="25,91 27,79 32,85 37,76 39,88 36,94" fill="#dba36b"/>
+<polygon points="13,107 21,108 20,118 12,119" fill="#6e9096"/>
+<polygon points="50,106 58,105 61,117 54,119" fill="#6e9096"/>
+<polygon points="7,61 53,54 65,62 13,70" fill="#6e9096"/>
+<polyline points="48,76 54,75" fill="none" stroke="#bd9968" stroke-width="3"/>
+</svg>

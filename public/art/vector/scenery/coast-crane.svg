@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="216" viewBox="0 0 192 216"><title>coast-crane</title><metadata>{"reference": "babe8ca:public/art/coast.webp / western lattice crane", "method": "Original polygonal interpretation of archived railway scenery; registered to Tiled module footprint"}</metadata>
+<polygon points="13,197 75,190 94,202 85,215 14,216 3,208" fill="#536b75"/>
+<polygon points="11,195 75,189 89,198 25,205" fill="#87989c"/>
+<polygon points="26,195 31,68 49,55 65,70 69,192" fill="#132b3b"/>
+<polygon points="33,74 44,69 55,76 60,192 33,196" fill="#345562"/>
+<polyline points="34,88 57,114 35,123" fill="none" stroke="#6e9096" stroke-width="4"/>
+<polyline points="34,122 57,148 35,157" fill="none" stroke="#6e9096" stroke-width="4"/>
+<polyline points="34,156 57,182 35,191" fill="none" stroke="#6e9096" stroke-width="4"/>
+<polygon points="33,69 14,25 21,18 53,62" fill="#2a4351"/>
+<polygon points="18,18 145,5 181,24 174,40 55,82 34,70" fill="#132b3b"/>
+<polygon points="25,23 144,11 168,25 53,73 42,67 158,24 143,18 35,30" fill="#6e9096"/>
+<polyline points="44,32 56,61 77,26 89,49 110,20 122,37 143,16" fill="none" stroke="#345562" stroke-width="4"/>
+<polygon points="19,17 145,3 163,11 144,10 110,16 73,18 36,25 18,24" fill="#c2c9bd"/>
+<ellipse cx="173" cy="29" rx="11" ry="12" fill="#345562"/>
+<ellipse cx="173" cy="29" rx="6" ry="7" fill="#bd9968"/>
+<ellipse cx="173" cy="29" rx="3" ry="4" fill="#0c1f2f"/>
+<polyline points="169,40 169,155" fill="none" stroke="#6e9096" stroke-width="2"/>
+<polyline points="177,40 177,155" fill="none" stroke="#6e9096" stroke-width="2"/>
+<polygon points="166,155 180,155 181,164 176,168 176,176 169,179 163,174 163,170 167,170 170,174 172,172 172,165 166,162" fill="#bd9968"/>
+<polygon points="27,142 16,144 16,169 28,168" fill="#625649"/>
+<ellipse cx="25" cy="154" rx="9" ry="11" fill="#345562"/>
+<ellipse cx="25" cy="154" rx="5" ry="6" fill="#bd9968"/>
+<polyline points="26,154 28,116 38,99" fill="none" stroke="#6e9096" stroke-width="3"/>
+</svg>

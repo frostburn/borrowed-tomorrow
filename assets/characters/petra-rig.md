@@ -1,3 +1,5 @@
+> Historical authoring notes. Current Chapter Two campaign artwork uses SVG models; see `assets/vector/chapter-two.md`. Raster skin studies remain dev-only references.
+
 # Petra's armored rig
 
 `src/art/petra-actor.ts` binds Petra's four native idle actors to the layered reference. Face, hair, armor, tabard, gloves, saber and shield retain their original RGB pixels. Each profile uses its own artwork; nothing is mirrored or downsampled. Idle actors and portraits stay unchanged.

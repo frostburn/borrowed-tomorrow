@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="192" viewBox="0 0 264 192"><title>coast-coal-shed</title><metadata>{"reference": "babe8ca:public/art/cinderbank.webp / iron coal shed", "method": "Original polygonal interpretation of archived railway scenery; registered to Tiled module footprint"}</metadata>
+<polygon points="15,75 243,66 247,183 16,192" fill="#132b3b"/>
+<polygon points="20,83 235,77 237,170 21,181" fill="#625649"/>
+<polygon points="198,78 238,76 239,173 204,166" fill="#2a4351"/>
+<polygon points="3,77 45,13 210,11 263,66 241,82 131,56 18,91" fill="#0c1f2f"/>
+<polygon points="11,73 48,20 207,18 250,63 237,69 133,48 28,79" fill="#345562"/>
+<polygon points="21,56 48,17 208,15 232,40 206,36 181,27 140,31 104,25 63,30" fill="#c2c9bd"/>
+<polyline points="25,76 131,51 241,72" fill="none" stroke="#6e9096" stroke-width="3"/>
+<polygon points="74,92 190,85 193,175 75,183" fill="#0c1f2f"/>
+<polygon points="80,169 98,143 112,151 132,128 148,136 161,123 177,142 187,150 189,171" fill="#273d48"/>
+<polygon points="80,169 98,153 115,162 131,140 145,151 161,136 178,154 185,164 158,173 113,175" fill="#3a5058"/>
+<polygon points="29,101 61,101 61,146 29,146" fill="#0c1f2f"/>
+<polygon points="32,104 58,104 58,143 32,143" fill="#b0714e"/>
+<polygon points="33,105 56,105 54,138 33,141" fill="#dba36b"/>
+<polygon points="34,106 53,106 53,137 34,137" fill="#e8ddbb"/>
+<polyline points="45,101 45,146" fill="none" stroke="#625649" stroke-width="3"/>
+<polyline points="29,125.75 61,125.75" fill="none" stroke="#625649" stroke-width="2"/>
+<polygon points="19,80 26,79 28,180 20,184" fill="#6e9096"/>
+<polygon points="68,80 75,79 77,180 69,184" fill="#6e9096"/>
+<polygon points="196,80 203,79 205,180 197,184" fill="#6e9096"/>
+<polygon points="236,80 243,79 245,180 237,184" fill="#6e9096"/>
+<polyline points="77,96 132,54 194,90" fill="none" stroke="#6e9096" stroke-width="3"/>
+<polygon points="14,181 243,170 253,180 20,192" fill="#2a4351"/>
+</svg>

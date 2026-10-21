@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'public/art/vector/scenes'
 KIT=ROOT/'public/art/vector/scenery'
 C={'grass':'#29483e','earth':'#756e5b','paving':'#737c76','ballast':'#424e50','water':'#294858',
-   'cave-floor':'#49565a','cave-wall':'#2d404a','cave-roof':'#101f2d','cave-ledge':'#263b47'}
+   'cave-floor':'#49565a','cave-wall':'#2d404a','cave-roof':'#101f2d','cave-ledge':'#263b47','granite':'#334a58','void':'#0a1724'}
 
 def prop(obj):return {p['name']:p['value'] for p in obj.get('properties',[])}
 def polygon(points,color):return '<polygon points="'+' '.join(f'{x:g},{y:g}' for x,y in points)+'" fill="'+color+'"/>'
@@ -42,7 +42,7 @@ def outline(cells):
         paths.append(simple)
     return paths
 
-def field(kind,cells,w,h):
+def field(kind,cells,w,h,scene=''):
     contours=outline(cells)
     # Chamfer organic material boundaries once at contour turns, not per cell.
     # Centers and all navigation IDs stay aligned; masonry/rail fixtures stay square.
@@ -57,10 +57,15 @@ def field(kind,cells,w,h):
         paths.append('M'+' L'.join(f'{x},{y}' for x,y in corners)+' Z')
     path=' '.join(paths)
     out=[f'<defs><clipPath id="{kind}"><path d="{path}" clip-rule="evenodd"/></clipPath></defs>',f'<g clip-path="url(#{kind})">',rect(0,0,w,h,C[kind])]
-    if kind=='grass':
+    if kind=='void':pass
+    elif kind=='granite':
+        out.extend([polygon([(0,0),(w,0),(w,h*.3),(w*.7,h*.2),(w*.5,h*.34),(w*.22,h*.15),(0,h*.3)],'#405864'),polygon([(0,h*.77),(w*.2,h*.7),(w*.55,h*.88),(w*.8,h*.65),(w,h*.78),(w,h),(0,h)],'#203b4b')])
+    elif kind=='grass':
         for pts,c in [([(0,0),(w,0),(w,80),(w*.7,138),(w*.41,64),(0,112)],'#1e3c36'),([(0,h*.7),(w*.21,h*.53),(w*.49,h*.69),(w*.76,h*.56),(w,h*.68),(w,h),(0,h)],'#233e36'),([(w*.08,h*.4),(w*.4,h*.18),(w*.57,h*.27),(w*.27,h*.52)],'#315044'),([(w*.58,h*.8),(w*.71,h*.66),(w*.9,h*.72),(w,h*.9),(w*.77,h*.86)],'#385546')]:out.append(polygon(pts,c))
     elif kind in ('earth','paving','ballast','cave-floor'):
         colors={'earth':['#827966','#696956','#91836a'],'paving':['#80877d','#5f7070','#969789'],'ballast':['#50605e','#39484c','#62716a'],'cave-floor':['#586267','#3d4f55','#667172']}[kind]
+        if scene=='infirmary' and kind=='paving':colors=['#9c9e8a','#7e8c84','#b0b09a']
+        elif (scene in ('coast','cinderbank') or scene.startswith('battle-coast')) and kind=='paving':colors=['#819398','#5e7580','#9ba9a6']
         out += [polygon([(0,h*.3),(w*.27,h*.2),(w*.57,h*.52),(w,h*.32),(w,h*.6),(w*.55,h*.65),(w*.25,h*.33)],colors[0]),polygon([(0,h*.72),(w*.3,h*.59),(w*.6,h*.79),(w,h*.61),(w,h),(0,h)],colors[1]),polygon([(w*.51,0),(w*.72,0),(w*.42,h*.47),(w*.35,h*.53)],colors[2])]
         # Sparse, long seams: stone slabs and fractured rock, not tile outlines.
         if kind=='paving':
@@ -87,6 +92,9 @@ def field(kind,cells,w,h):
                 for i,(x,y) in enumerate(pts):
                     xx,yy=pts[(i+1)%len(pts)]
                     if xx>x and yy==y:out.append(polygon([(x,y),(xx,y),(xx,y+6),(x,y+9)],'#7b8580'))
+    if scene=='coast' and kind=='water':
+        out.extend([rect(0,0,w,169,'#788e9c'),rect(0,76,w,68,'#9da395'),polygon([(0,67),(96,5),(179,44),(269,4),(360,69),(448,38),(554,95),(668,33),(764,81),(873,8),(989,54),(1094,17),(1220,71),(1335,22),(w,71),(w,151),(0,151)],'#34566e'),polygon([(0,112),(167,61),(278,99),(428,75),(574,124),(746,91),(915,120),(1076,73),(1259,111),(w,84),(w,169),(0,169)],'#23465e')])
+        for x in (137,423,1001,1280):out.append(line([(x,95),(x,215)],'#7897a1',3));out.append(polygon([(x-32,212),(x+37,211),(x+22,225),(x-20,225)],'#18394c'))
     out.append('</g>');return ''.join(out)
 
 def runs(cells):
@@ -117,15 +125,16 @@ def fittings(kind,cells):
             else:raise ValueError(kind)
     return ''.join(out)
 
-def export():
+def export(chapter='one'):
     OUT.mkdir(parents=True,exist_ok=True)
     tileset=json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text());defs={}
     for page in tileset['pages']:
         data=json.loads((ROOT/'assets/tiles/pages'/f'{page["name"]}.json').read_text())
         defs.update({page['firstgid']+t['id']:t for t in data['tiles']})
     manifest={}
+    if chapter=='two':C.update(water='#25465c',paving='#71838a',earth='#657374',ballast='#3c5261')
     modules={p.stem:p for p in KIT.glob('*.svg')}
-    for file in sorted((ROOT/'src/content/chapter-one/maps').glob('*.json')):
+    for file in sorted((ROOT/f'src/content/chapter-{chapter}/maps').glob('*.json')):
         data=json.loads(file.read_text());w=data['width']*24;h=data['height']*24;entries=[];floor_depth=-1000
         folder=OUT/file.stem;folder.mkdir(exist_ok=True)
         for layer in data['layers']:
@@ -135,16 +144,17 @@ def export():
                 if not gid:continue
                 t=defs[gid];name=t['type'];x=i%data['width'];y=i//data['width'];m=re.fullmatch(r'(.+)-(\d+)-(\d+)',name)
                 if m and m[1] in modules:
-                    module,xx,yy=m.groups();ox=(x-int(xx))*24;oy=(y-int(yy))*24
+                    module,xx,yy=m.groups();module='miners-cottage' if file.stem=='cinderbank' and module=='shelter' else module;ox=(x-int(xx))*24;oy=(y-int(yy))*24
                     depth=y*24+int(prop(t).get('sortOffset',24)) if prop(layer).get('sort') else floor_depth
                     instances[(module,ox,oy)]={'key':f'scenery-{module}','url':f'art/vector/scenery/{module}.svg','x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
                     if kind not in C:kind=re.sub(r'-\d+-\d+$','',kind)
+                    if chapter=='two' and kind=='cave-roof':kind='granite'
                     fields[kind].add((x,y))
             if fields:
                 parts=[]
-                for kind,cells in fields.items():parts.append(field(kind,cells,w,h) if kind in C else fittings(kind,cells))
+                for kind,cells in fields.items():parts.append(field(kind,cells,w,h,file.stem) if kind in C else fittings(kind,cells))
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
                 if layer['name']=='Paths and platforms':
                     lamps=set()
@@ -162,7 +172,10 @@ def export():
             source=(ROOT/'public'/e['url']).read_text();m=re.search(r'width="(\d+)" height="(\d+)"',source)
             e.update(width=int(m[1]),height=int(m[2]))
         manifest[file.stem]=entries
-    (ROOT/'src/content/chapter-one/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    (ROOT/f'src/content/chapter-{chapter}/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print(f'Compiled {len(manifest)} SVG scenes; {len(list(OUT.glob("*/*.svg")))} continuous layers and {len(modules)} traced scenery originals')
 
-if __name__=='__main__':export()
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--chapter',choices=('one','two'),default='one')
+    export(parser.parse_args().chapter)

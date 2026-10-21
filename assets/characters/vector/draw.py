@@ -142,17 +142,18 @@ def legs(d, direction, hero, walk=None):
             phase=(walk/6+i*.5)%1
             support=phase<.5
             progress=phase*2 if support else (phase-.5)*2
-            # Nell has a 24px stride: support covers half the travel,
+            # Support covers half the runtime stride (Kit 26px; Nell/Petra 24px),
             # with x coordinates halved for the actor SVG's 2:1 viewBox.
-            travel=(6-12*progress if support else -6+12*progress) if hero=='nell' else (14-28*progress if support else -14+28*progress)
-            lift=0 if support else math.sin(progress*math.pi)*4
+            stride=26 if hero=='kit' else 24
+            travel=(stride/4-stride/2*progress if support else -stride/4+stride/2*progress) if hero!='orrin' else (14-28*progress if support else -14+28*progress)
+            lift=0 if support else math.sin(progress*math.pi)*(6 if hero=='petra' else 4)
             if side:x+=travel/2*(-1 if direction=='left' else 1)
-            else:y+=travel*(-1 if direction=='back' else 1)/(1 if hero=='nell' else 2)
+            else:y+=travel*(-1 if direction=='back' else 1)/(1 if hero!='orrin' else 2)
             y-=lift
         knee_x=(hip+x)/2
         knee_y=(43+y-8)/2
         d.poly([(hip-1.5,39),(hip+1.5,39),(knee_x+1.5,knee_y),
-                (x+1,y-7),(x-1,y-7),(knee_x-1.5,knee_y)],'navy')
+                (x+1,y-7),(x-1,y-7),(knee_x-1.5,knee_y)],'ink' if hero=='petra' and i==(0 if side else 1) else 'navy')
         boots(d,x,y-10,y,direction)
     if not side:d.line([(20,43),(20,49)],'blue' if direction=='front' else 'ink')
 

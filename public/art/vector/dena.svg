@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 40 80" preserveAspectRatio="none" shape-rendering="crispEdges">
+<polygon points="16.5,39 19.5,39 19.5,51.0 19,60 17,60 16.5,51.0" fill="#263e53"/>
+<polygon points="17,57 19,57 19,65 20,66 20,67 16,67 16,64" fill="#80553d"/>
+<polyline points="16,67 20,67" fill="none" stroke="#142536" stroke-width="1"/>
+<polygon points="20.5,39 23.5,39 23.5,51.0 23,60 21,60 20.5,51.0" fill="#263e53"/>
+<polygon points="21,57 23,57 23,65 24,66 24,67 20,67 20,64" fill="#80553d"/>
+<polyline points="20,67 24,67" fill="none" stroke="#142536" stroke-width="1"/>
+<polyline points="20,43 20,49" fill="none" stroke="#547a96" stroke-width="1"/>
+<polygon points="15,25 24,25 27,36 28,59 23,62 15,60 12,56 13,36" fill="#638487"/>
+<polygon points="16,29 23,29 25,56 22,59 14,57" fill="#f5dca4"/>
+<polyline points="14,27 12,35 14,43" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="14,27 12,35 14,43" fill="none" stroke="#638487" stroke-width="2"/>
+<polyline points="13,41 15,41" fill="none" stroke="#f5dca4" stroke-width="1"/>
+<ellipse cx="14.0" cy="43.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<polyline points="25,27 27,35 25,43" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="25,27 27,35 25,43" fill="none" stroke="#638487" stroke-width="2"/>
+<polyline points="24,41 26,41" fill="none" stroke="#f5dca4" stroke-width="1"/>
+<ellipse cx="25.0" cy="43.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<rect x="19" y="18" width="3" height="8" fill="#d49c70"/>
+<polygon points="16,11 20,8 24,11 25,16 23,22 20,24 17,22 15,16" fill="#d49c70"/>
+<rect x="17" y="15" width="2" height="2" fill="#142536"/>
+<rect x="22" y="15" width="2" height="2" fill="#142536"/>
+<polyline points="19,20 22,20" fill="none" stroke="#80553d" stroke-width="1"/>
+<polygon points="14,13 14,9 18,5 23,7 26,11 25,18 23,14 21,10 17,12 16,21 14,23" fill="#80553d"/>
+<polygon points="14,9 16,5 21,3 25,7 26,10 21,8 16,11" fill="#f5dca4"/>
+<polyline points="16,31 23,31" fill="none" stroke="#d8c59b" stroke-width="1"/>
+</svg>

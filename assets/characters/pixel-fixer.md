@@ -1,3 +1,5 @@
+> Historical authoring notes. Current Chapter Two campaign artwork uses SVG models; see `assets/vector/chapter-two.md`. Raster skin studies remain dev-only references.
+
 # Civilian grid reconstruction
 
 Converted the retained pixel-art sources from the first civilian regeneration;

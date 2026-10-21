@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="168" viewBox="0 0 192 168"><title>ledge</title><metadata>{"reference": "babe8ca:public/art/cinderbank.webp / stone railway terrace", "method": "Original polygonal interpretation of archived railway scenery; registered to Tiled module footprint"}</metadata>
+<polygon points="0,0 192,0 192,168 0,168" fill="#132b3b"/>
+<polygon points="0,12 71,4 132,11 192,0 192,73 160,146 102,168 0,157" fill="#2a4351"/>
+<polygon points="0,13 71,5 90,62 53,126 0,151" fill="#536b75"/>
+<polygon points="71,5 132,12 148,64 103,141 90,62" fill="#405a68"/>
+<polygon points="132,12 192,0 192,60 160,148 103,164 148,64" fill="#536b75"/>
+<polygon points="0,0 192,0 192,6 142,17 101,10 70,14 25,10 0,16" fill="#c2c9bd"/>
+</svg>

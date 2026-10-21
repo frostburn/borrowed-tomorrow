@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { tilePages } from '../../src/content/tilemaps';
+import { sceneAssets } from '../../src/content/scene-art';
 import { CHAPTER_TWO_MAPS } from '../../src/content/chapter-two/maps';
 import { MAPS, walkable } from '../../src/content/maps';
 import { coastCheckpoint, checkpoint } from '../support/progress';
@@ -70,7 +70,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
     await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();
     await expect(page.getByRole('region',{name:'Kit equipment'})).toContainText('Move 4');
-    await expect(page.locator('.ci-character img')).toHaveAttribute('src',/portrait-kit.png$/);await capture(page,`kit-inventory-${device}`);
+    await expect(page.locator('.ci-character img')).toHaveAttribute('src',/portrait-kit.svg$/);await capture(page,`kit-inventory-${device}`);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   });
 }
@@ -146,7 +146,7 @@ test('the three traveling companions fit the compact inventory and phone HUD',as
 });
 
 test('failed region artwork keeps the original departure available for retry',async({page})=>{
-  const crane=tilePages(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.firstgid>=2544)!;
+  const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.key==='scenery-coast-crane')!;
   const url='**/'+crane.url;await page.route(url,route=>route.abort());
   await page.goto('/');const original=checkpoint('chapterOneComplete');await importSave(page,original);
   await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();

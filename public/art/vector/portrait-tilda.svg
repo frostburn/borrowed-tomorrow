@@ -1,43 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<title>tilda portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-tilda.png", "method": "Hand-traced portrait silhouette, pose and clothing; original polygonal face planes"}</metadata>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>tilda portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-tilda.png", "construction": "female: tapering lower face, shallow chin, compact nasal tip; individual cheek/age planes", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
 <polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
 <polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="0,105 128,65 128,128 0,128" fill="#1b303a"/>
 <polygon points="0,128 7,103 30,87 49,80 83,82 108,99 126,128" fill="#35584d"/>
 <polygon points="7,107 31,94 40,128 0,128" fill="#5d7660"/>
 <polygon points="91,89 113,108 124,128 96,128" fill="#263e39"/>
 <polygon points="36,92 52,82 68,94 82,85 96,99 92,128 38,128" fill="#baa989"/>
 <polygon points="43,94 53,90 67,101 84,91 88,101 86,128 44,128" fill="#f1d8ae"/>
-<polygon points="53,75 54,88 66,97 80,87 77,76" fill="#d49c70"/>
-<polygon points="27,33 39,17 63,13 81,22 96,39 98,65 87,84 69,91 47,84 31,71 25,52" fill="#372a25"/>
-<polygon points="42,35 66,28 84,39 90,54 97,65 89,72 86,81 72,89 56,85 42,77 34,62 34,47" fill="#d49c70"/>
-<polygon points="37,41 46,45 46,65 56,80 72,85 69,89 52,84 39,74 33,59" fill="#ad7253"/>
-<polygon points="51,35 67,32 81,40 85,54 77,62 62,58 51,49" fill="#efc596"/>
-<polygon points="30,43 42,31 62,27 80,32 90,43 86,49 80,41 70,43 65,36 56,44 49,41 43,52 39,48 35,61 32,65 27,57" fill="#9b5d32"/>
-<polygon points="86,39 96,47 98,59 91,63 96,72 89,79 81,78 87,70 84,62 90,55" fill="#623d29"/>
-<polygon points="25,71 33,68 38,76 33,85 25,82 23,76" fill="#623d29"/>
-<polygon points="26,72 31,70 35,76 31,80 26,78" fill="#9b5d32"/>
-<polygon points="21,83 29,80 34,88 29,97 21,94 19,88" fill="#623d29"/>
-<polygon points="22,84 27,82 31,88 27,92 22,90" fill="#9b5d32"/>
-<polygon points="21,95 29,92 34,100 29,109 21,106 19,100" fill="#623d29"/>
-<polygon points="22,96 27,94 31,100 27,104 22,102" fill="#9b5d32"/>
-<polygon points="17,107 25,104 30,112 25,121 17,118 15,112" fill="#623d29"/>
-<polygon points="18,108 23,106 27,112 23,116 18,114" fill="#9b5d32"/>
-<polygon points="25,40 20,31 30,16 51,7 70,10 82,18 63,20 46,24 36,36 33,52" fill="#baa989"/>
+<polygon points="51,76 54,89 67,98 81,87 77,75" fill="#d49c70"/>
+<polygon points="27,34 40,17 67,16 87,31 101,52 95,74 80,89 47,85 29,66" fill="#372a25"/>
+<polygon points="38,39 49,28 69,27 83,36 89,51 92,64 87,73 81,81 69,87 56,85 43,77 35,64 34,51" fill="#d49c70"/>
+<polygon points="38,39 52,41 51,61 58,74 69,81 74,82 67,85 54,78 44,66 39,50" fill="#ad7253"/>
+<polygon points="55,33 69,32 78,41 79,53 69,59 56,52" fill="#efc596"/>
+<polygon points="55,53 58,51 63,51 65,53 62,55 57,55" fill="#a7765e"/>
+<polygon points="57,53 63,52 63,54 57,54" fill="#f1d8ae"/>
+<polygon points="60,52 62,52 62,55 60,55" fill="#122634"/>
+<polygon points="73,52 76,50 81,50 83,52 80,54 75,54" fill="#a7765e"/>
+<polygon points="75,52 81,51 81,53 75,53" fill="#f1d8ae"/>
+<polygon points="78,51 80,51 80,54 78,54" fill="#122634"/>
+<polyline points="55,48 61,47 65,48" fill="none" stroke="#623d29" stroke-width="1.5"/>
+<polyline points="74,47 79,46 83,48" fill="none" stroke="#623d29" stroke-width="1.5"/>
+<polygon points="76,56 76,63 80,65 77,67 73,65" fill="#bd8463"/>
+<polygon points="77,57 79,63 80,64 77,64" fill="#efc596"/>
+<polygon points="65,74 70,73 75,74 79,72 76,76 69,77" fill="#9d6054"/>
+<polygon points="66,74 76,73 74,75 68,76" fill="#f1d8ae"/>
+<polygon points="26,42 32,37 39,40 42,47 36,52 28,49" fill="#9b5d32"/>
+<polygon points="32,42 36,41 39,46 34,48" fill="#623d29"/>
+<polygon points="33,29 39,24 46,27 49,34 43,39 35,36" fill="#9b5d32"/>
+<polygon points="39,29 43,28 46,33 41,35" fill="#623d29"/>
+<polygon points="47,24 53,19 60,22 63,29 57,34 49,31" fill="#9b5d32"/>
+<polygon points="53,24 57,23 60,28 55,30" fill="#623d29"/>
+<polygon points="63,23 69,18 76,21 79,28 73,33 65,30" fill="#9b5d32"/>
+<polygon points="69,23 73,22 76,27 71,29" fill="#623d29"/>
+<polygon points="77,28 83,23 90,26 93,33 87,38 79,35" fill="#9b5d32"/>
+<polygon points="83,28 87,27 90,32 85,34" fill="#623d29"/>
+<polygon points="85,39 91,34 98,37 101,44 95,49 87,46" fill="#9b5d32"/>
+<polygon points="91,39 95,38 98,43 93,45" fill="#623d29"/>
+<polygon points="88,55 94,50 101,53 104,60 98,65 90,62" fill="#9b5d32"/>
+<polygon points="94,55 98,54 101,59 96,61" fill="#623d29"/>
+<polygon points="85,70 91,65 98,68 101,75 95,80 87,77" fill="#9b5d32"/>
+<polygon points="91,70 95,69 98,74 93,76" fill="#623d29"/>
+<polygon points="24,61 30,56 37,59 40,66 34,71 26,68" fill="#9b5d32"/>
+<polygon points="30,61 34,60 37,65 32,67" fill="#623d29"/>
+<polygon points="27,77 33,72 40,75 43,82 37,87 29,84" fill="#9b5d32"/>
+<polygon points="33,77 37,76 40,81 35,83" fill="#623d29"/>
+<polygon points="25,38 21,30 30,16 51,7 70,10 82,18 63,20 46,24 36,36 33,49" fill="#baa989"/>
 <polygon points="23,30 34,17 51,11 67,13 55,19 42,21 32,34" fill="#f1d8ae"/>
 <polygon points="26,38 32,45 27,62 20,72 18,63" fill="#f1d8ae"/>
-<polygon points="58,51 64,50 67,53 64,55 58,54" fill="#80523e"/>
-<polygon points="59,53 65,52 64,54 60,54" fill="#f1d8ae"/>
-<polygon points="62,52 64,52 64,55 62,55" fill="#122634"/>
-<polygon points="78,50 84,49 87,52 84,54 78,53" fill="#80523e"/>
-<polygon points="79,52 85,51 84,53 80,53" fill="#f1d8ae"/>
-<polygon points="82,51 84,51 84,54 82,54" fill="#122634"/>
-<polyline points="57,48 65,47" fill="none" stroke="#623d29" stroke-width="2"/>
-<polyline points="77,47 85,48" fill="none" stroke="#623d29" stroke-width="2"/>
-<polygon points="78,57 76,66 83,69 85,67 80,64" fill="#ad7253"/>
-<polygon points="80,58 82,65 84,66 81,67" fill="#efc596"/>
-<polygon points="65,74 80,71 77,76 71,78" fill="#80523e"/>
-<polygon points="68,74 77,73 74,75" fill="#f1d8ae"/>
 <polygon points="5,126 20,114 44,111 65,117 79,128" fill="#d49c70"/>
 <polygon points="21,119 43,116 58,121 62,128 15,128" fill="#efc596"/>
 </svg>

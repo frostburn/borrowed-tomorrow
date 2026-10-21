@@ -1,3 +1,5 @@
+> Historical authoring notes. Current Chapter Two campaign artwork uses SVG models; see `assets/vector/chapter-two.md`. Raster skin studies remain dev-only references.
+
 # Kit's courier rig
 
 `src/art/kit-actor.ts` binds the accepted four native idle actors to the layered gait. The original idle actors and portrait are unchanged. Face, hair, scarf, shirt, rolled sleeves, gloves and satchel retain native RGB pixels and native dimensions. Profiles are independent artwork; none is mirrored.

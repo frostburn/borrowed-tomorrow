@@ -3,7 +3,6 @@ import { PLAYABLE_ACTORS } from '../../src/content/actors';
 import { SPRITE_CATALOG } from '../../src/dev/sprite-catalog';
 import { expect, test } from '@playwright/test';
 import { capture } from './controls';
-import { civilianPresentation } from '../../src/content/civilians';
 
 for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
  test.describe(`sprites on ${device}`,()=>{
@@ -42,8 +41,6 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       }return all;
     },Object.fromEntries([...PLAYABLE_ACTORS,...SPRITE_CATALOG.map(e=>e.sprite)].map(name=>[name,`/${artPath(name)}`])));
     for(const actor of feet){
-      const fit=civilianPresentation(actor.hero);
-      if(fit){expect([actor.width,actor.height]).toEqual([fit.width,fit.height]);expect([actor.top,actor.bottom]).toEqual([fit.bounds[1],fit.bounds[3]-1]);continue;}
       expect(actor.width).toBe(80);expect(actor.height).toBe(80);
       expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
       expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
