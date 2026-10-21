@@ -11,11 +11,18 @@ export class Synth {
   private track<T extends AudioScheduledSourceNode>(source:T):T{
     this.sources.add(source);source.addEventListener('ended',()=>this.sources.delete(source));return source;
   }
-  stop(when:number){for(const source of this.sources)source.stop(when);}
+  private fadeOut(start:number,end:number){
+    for(const gain of this.envelopes){gain.gain.cancelAndHoldAtTime(start);gain.gain.linearRampToValueAtTime(0,end);}
+    for(const source of this.sources)source.stop(end+.01);
+  }
+  stop(when:number){
+    const now=this.context.currentTime,end=Math.max(when,now+.005);
+    this.fadeOut(Math.max(now,end-.005),end);
+  }
   /** Release the previous arrangement at its bar boundary, including held pedals. */
   release(when:number){
-    for(const gain of this.envelopes){gain.gain.cancelAndHoldAtTime(when);gain.gain.exponentialRampToValueAtTime(.0001,when+.06);}
-    this.stop(when+.07);
+    const start=Math.max(when,this.context.currentTime);
+    this.fadeOut(start,start+.06);
   }
   constructor(private context:BaseAudioContext,private output:AudioNode){
     this.noiseBuffer=context.createBuffer(1,context.sampleRate*2,context.sampleRate);
@@ -25,25 +32,34 @@ export class Synth {
   private route(when:number,duration:number,volume:number,pan:number,attack=.006,release=.15,plucked=false){
     const c=this.context,gain=c.createGain(),panner=c.createStereoPanner();
     this.envelopes.add(gain);
+    gain.gain.value=0;
     panner.pan.value=pan;gain.connect(panner);panner.connect(this.output);
     gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(Math.max(.0001,volume),when+attack);
     if(plucked)gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*.28),when+Math.min(.16,duration*.55));
     gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*(plucked?.025:.6)),when+Math.max(attack+.001,duration));
     gain.gain.exponentialRampToValueAtTime(.0001,when+duration+release);
+    // Exponential envelopes cannot reach zero. Finish quietly before stopping
+    // the sources, rather than chopping their remaining waveform at the floor.
+    gain.gain.linearRampToValueAtTime(0,when+duration+release+.005);
     return {gain,end:when+duration+release+.01,cleanup:()=>{this.envelopes.delete(gain);gain.disconnect();panner.disconnect();}};
   }
   tone(hz:number,when:number,duration:number,volume:number,type:OscillatorType='sine',pan=0,endHz=hz){
+    when=Math.max(when,this.context.currentTime);
     const c=this.context,o=this.track(c.createOscillator()),r=this.route(when,duration,volume,pan,.003,.06);
     o.type=type;o.frequency.setValueAtTime(hz,when);o.frequency.exponentialRampToValueAtTime(endHz,when+duration);
     o.connect(r.gain);o.start(when);o.stop(r.end);o.onended=()=>{o.disconnect();r.cleanup();};
   }
   noise(when:number,duration:number,volume:number,hz:number,endHz=hz,pan=0,type:BiquadFilterType='bandpass'){
+    when=Math.max(when,this.context.currentTime);
     const c=this.context,source=this.track(c.createBufferSource()),filter=c.createBiquadFilter(),r=this.route(when,duration,volume,pan,.004,.08);
     source.buffer=this.noiseBuffer;filter.type=type;filter.Q.value=.8;filter.frequency.setValueAtTime(hz,when);filter.frequency.exponentialRampToValueAtTime(endHz,when+duration);
     source.connect(filter);filter.connect(r.gain);source.start(when,.17);source.stop(r.end);
     source.onended=()=>{source.disconnect();filter.disconnect();r.cleanup();};
   }
   note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0){
+    // A delayed scheduler must play the attack now, not start halfway through
+    // an envelope whose timestamp has already passed on the audio clock.
+    when=Math.max(when,this.context.currentTime);
     if(instrument==='kick'){this.tone(120,when,.13,volume,'sine',pan,43);this.noise(when,.018,volume*.15,1600,600,pan);return;}
     if(instrument==='snare'){this.noise(when,duration,volume,1700,950,pan);this.tone(185,when,.07,volume*.35,'triangle',pan,110);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
