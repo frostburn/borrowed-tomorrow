@@ -55,19 +55,23 @@ test('@journey the finale preset defeats both attack phases through ordinary com
   }
   throw new Error('The finale preset did not win within the action budget.');
 });
-/** Compare the assembled boss's opaque native chest pixels with the physical framebuffer. */
+/** Compare native SVG chest pixels with the common 2px physical framebuffer. */
 async function nativeBoss(page:Page,portrait:string){
   await expect.poll(()=>page.evaluate(async portrait=>{
     const canvas=document.createElement('canvas');canvas.width=360;canvas.height=288;const ctx=canvas.getContext('2d')!;
-    for(let i=0;i<6;i++){const img=new Image();img.src=portrait.replace('benefactor-portrait.webp',`benefactor-${i%3}-${Math.floor(i/3)}.webp`);await img.decode();ctx.drawImage(img,i%3*120,Math.floor(i/3)*144);}
-    const expected=ctx.getImageData(164,112,32,48).data,view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
+    const img=new Image();img.src=new URL('benefactor.svg',new URL(portrait,location.href)).href;await img.decode();ctx.drawImage(img,0,0);
+    const expected=ctx.getImageData(0,0,360,288).data,view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect(),output=document.querySelector<HTMLCanvasElement>('.pixel-output')!;
     const actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
-    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+283+164-view.scrollX)*info.physicalScale;
-    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+50+112)*info.physicalScale;
+    const gx=Math.round((world.left-source.left)/info.cssScale)+283+164-view.scrollX,gy=Math.round((world.top-source.top)/info.cssScale)+50+112;
+    const left=info.physicalLeft+gx*info.physicalScale,top=info.physicalTop+gy*info.physicalScale;
     let different=0,compared=0;
-    for(let y=0;y<48;y++)for(let x=0;x<32;x++)if(expected[(y*32+x)*4+3]===255)for(let c=0;c<4;c++){
-      compared++;if(Math.abs(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]-expected[(y*32+x)*4+c])>1)different++;
+    for(let y=0;y<48;y++)for(let x=0;x<32;x++){
+      const sx=164+Math.floor((gx+x)/info.rasterUnit)*info.rasterUnit-gx,sy=112+Math.floor((gy+y)/info.rasterUnit)*info.rasterUnit-gy,index=(sy*360+sx)*4;
+      if(expected[index+3]!==255)continue;
+      for(let c=0;c<4;c++){
+        compared++;if(Math.abs(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]-expected[index+c])>1)different++;
+      }
     }
     return compared>1000?different:-1;
   },portrait)).toBe(0);
@@ -82,6 +86,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await page.goto('/?dev=boss');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
     await expect(page.getByRole('region',{name:'Boss battle preview'})).toBeVisible();
     const portrait=(await page.locator('img[alt="The hollow sun"]').getAttribute('src'))!;
+    expect(portrait).toContain('benefactor-portrait.svg');
     await page.getByRole('button',{name:'Start finale preset',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).battle?.encounter).toBe('dev-benefactor');
     const start=await inspect(page),boss=start.battle!.units.find(u=>u.id==='benefactor')!;

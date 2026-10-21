@@ -7,20 +7,24 @@ import { distance, fromPixel, offset, toPixel } from '../rules/hex';
 import { BOSS_ENCOUNTER, BOSS_ID, bossTurn, bossUnit, prepareBoss } from './boss-battle';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
-import p00 from './art/benefactor-0-0.webp?url';
-import p10 from './art/benefactor-1-0.webp?url';
-import p20 from './art/benefactor-2-0.webp?url';
-import p01 from './art/benefactor-0-1.webp?url';
-import p11 from './art/benefactor-1-1.webp?url';
-import p21 from './art/benefactor-2-1.webp?url';
-import portrait from './art/benefactor-portrait.webp?url';
+import { vectorSurface } from '../game/vector-image';
+import boss from './art/benefactor.svg?url';
+import domain from './art/benefactor-domain.svg?url';
+import portrait from './art/benefactor-portrait.svg?url';
 
 export {portrait as BOSS_PORTRAIT};
-export const BOSS_ASSETS=[p00,p10,p20,p01,p11,p21].map((url,i)=>({key:`benefactor-page-${i}`,url}));
-const textureKey='benefactor-native';
-const points=(items:{x:number;y:number}[])=>items.map(p=>new Phaser.Math.Vector2(p.x,p.y));
+const textureKey='benefactor-vector',domainKey='benefactor-domain';
+export const BOSS_ASSETS=[{key:textureKey,url:boss},{key:domainKey,url:domain}];
 let labelId=0;
 let nativePixels:Uint8ClampedArray|undefined;
+function nativeTexture(scene:Phaser.Scene,key:string){
+  const texture=scene.textures.get(key);
+  for(const source of texture.source)if(source.image instanceof HTMLImageElement){
+    source.source=source.image=vectorSurface(source.image);source.isCanvas=true;source.update();
+  }
+  texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+  return texture;
+}
 function label(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
   const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=9*scale;
   bitmapText(canvas.getContext('2d')!,value,0,scale,color,scale);
@@ -38,32 +42,13 @@ export const BOSS_PRESENTATION:BattlePreview={
   facing:unit=>unit.side==='party'?actorAsset(unit.kind as CompanionId,'back'):undefined,
   hint:b=>`${bossUnit(b).intent?.name??'Judgment'}: red X hexes are struck on the god's turn.`,
   background(scene,world){
-    const g=scene.add.graphics();world.add(g);g.fillStyle(0x090e20).fillRect(0,0,1024,480);
-    for(let i=0;i<105;i++){
-      const x=(i*137+29)%1024,y=(i*79+17)%470;g.fillStyle(i%4?0x496077:0xa9c3c7,.65).fillRect(x,y,i%8?1:2,1);
-    }
-    g.lineStyle(1,0x9b8053,.4).strokeCircle(463,170,213).strokeCircle(463,170,219);
-    const platform=[{x:131,y:72},{x:797,y:72},{x:856,y:142},{x:856,y:421},{x:791,y:462},{x:128,y:462},{x:78,y:414},{x:78,y:143}];
-    g.fillStyle(0x0e1424).fillPoints(points(platform.map(p=>({x:p.x,y:p.y+16}))),true);
-    g.fillStyle(0x1b2233).fillPoints(points(platform),true);g.lineStyle(2,0x806e52,.8).strokePoints(points(platform),true);
-    g.lineStyle(1,0x354457,.7);
-    for(let x=105;x<850;x+=61)g.lineBetween(x,145,x,435);
-    for(let y=145;y<440;y+=53)g.lineBetween(90,y,846,y);
-    g.lineStyle(2,0x7b705a,.45).strokeEllipse(463,274,714,337).strokeEllipse(463,274,728,349);
-    g.fillStyle(0x090e20,.6).fillEllipse(463,327,321,52);
-    for(const [x,y,w] of [[30,110,35],[932,72,62],[906,392,65],[34,402,24]]){
-      g.fillStyle(0x263047).fillPoints(points([{x:x-w/2,y},{x:x+w/2,y:y-12},{x:x+w/2+8,y:y+4},{x:x-8,y:y+20}]),true);
-      g.fillStyle(0x12192b).fillPoints(points([{x:x-w/2,y},{x:x-8,y:y+20},{x:x+w/2+8,y:y+4},{x,y:y+48}]),true);
-    }
+    nativeTexture(scene,domainKey);
+    world.add(scene.add.image(0,0,domainKey).setOrigin(0));
   },
   actor(scene,unit){
     if(unit.id!==BOSS_ID)return;
-    if(!scene.textures.exists(textureKey)){
-      const texture=scene.textures.createCanvas(textureKey,360,288)!;
-      BOSS_ASSETS.forEach((page,i)=>texture.context.drawImage(scene.textures.get(page.key).getSourceImage() as HTMLImageElement,i%3*120,Math.floor(i/3)*144));
-      nativePixels=texture.context.getImageData(0,0,360,288).data;
-      texture.refresh();
-    }
+    const surface=nativeTexture(scene,textureKey).getSourceImage() as HTMLCanvasElement;
+    nativePixels??=surface.getContext('2d')!.getImageData(0,0,360,288).data;
     const p=placement(unit);return scene.add.image(p.x,p.y,textureKey).setOrigin(.5,1);
   },
   overlay(scene,world,b){
