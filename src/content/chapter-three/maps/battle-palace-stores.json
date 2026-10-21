@@ -554,6 +554,8 @@
   "nextobjectid": 1,
   "orientation": "orthogonal",
   "properties": [
+    {"name": "sceneArt", "type": "string", "value": "battle-palace-stores"},
+    {"name": "artStyle", "type": "string", "value": "rotoscope"},
     {
       "name": "name",
       "type": "string",

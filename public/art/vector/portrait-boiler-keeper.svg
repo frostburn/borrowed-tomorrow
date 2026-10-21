@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>boiler-keeper portrait</title><metadata>{"reference": "ee63fb0:public/art/portrait-boiler-keeper.png", "method": "Hand-drawn silhouette, face and material planes interpreted from the archived portrait; editable vector original"}</metadata>
+<rect x="0" y="0" width="128" height="128" fill="#142a37"/>
+<polygon points="0,0 128,0 128,32 43,13 0,68" fill="#28434f"/>
+<polygon points="0,111 128,67 128,128 0,128" fill="#1c343e"/>
+<polyline points="110,20 110,115" fill="none" stroke="#142a37" stroke-width="19" stroke-linejoin="bevel"/>
+<polyline points="110,20 110,115" fill="none" stroke="#805c3f" stroke-width="13" stroke-linejoin="bevel"/>
+<polyline points="106,20 106,109" fill="none" stroke="#c18a56" stroke-width="4" stroke-linejoin="bevel"/>
+<rect x="100" y="14" width="21" height="7" fill="#c69c5c"/>
+<rect x="102" y="19" width="17" height="3" fill="#805c3f"/>
+<rect x="100" y="38" width="21" height="7" fill="#c69c5c"/>
+<rect x="102" y="43" width="17" height="3" fill="#805c3f"/>
+<rect x="100" y="84" width="21" height="7" fill="#c69c5c"/>
+<rect x="102" y="89" width="17" height="3" fill="#805c3f"/>
+<polygon points="17,128 14,87 26,65 90,63 103,87 103,128" fill="#142a37"/>
+<polygon points="20,128 19,87 29,69 85,68 96,88 97,128" fill="#805c3f"/>
+<polygon points="23,89 32,74 44,73 42,128 23,128" fill="#b0784d"/>
+<polygon points="43,75 86,74 92,89 92,128 43,128" fill="#594c3f"/>
+<polygon points="24,48 28,31 39,23 60,20 80,27 90,39 93,63 84,77 33,76" fill="#142a37"/>
+<polygon points="29,45 33,33 43,27 59,25 78,31 87,43" fill="#263e53"/>
+<polygon points="35,36 45,29 58,27 72,31 78,36" fill="#7c8581"/>
+<rect x="26" y="44" width="64" height="8" fill="#c69c5c"/>
+<rect x="29" y="51" width="60" height="23" fill="#805c3f"/>
+<rect x="35" y="54" width="49" height="15" fill="#59472f"/>
+<ellipse cx="47" cy="60" rx="7" ry="8" fill="#142a37"/>
+<ellipse cx="47" cy="59" rx="5" ry="6" fill="#c69c5c"/>
+<polygon points="45,54 49,55 49,63 45,64" fill="#f2d79c"/>
+<ellipse cx="72" cy="60" rx="7" ry="8" fill="#142a37"/>
+<ellipse cx="72" cy="59" rx="5" ry="6" fill="#c69c5c"/>
+<polygon points="70,54 74,55 74,63 70,64" fill="#f2d79c"/>
+<ellipse cx="67" cy="91" rx="19" ry="20" fill="#142a37"/>
+<ellipse cx="66" cy="90" rx="16" ry="17" fill="#c69c5c"/>
+<ellipse cx="66" cy="90" rx="12" ry="13" fill="#e5d6b1"/>
+<polyline points="65,91 73,81" fill="none" stroke="#142a37" stroke-width="3" stroke-linejoin="bevel"/>
+<ellipse cx="65" cy="91" rx="2" ry="2" fill="#805c3f"/>
+<polygon points="44,112 85,112 89,128 41,128" fill="#142a37"/>
+<polygon points="48,116 53,116 53,128 48,128" fill="#c69c5c"/>
+<polygon points="58,116 63,116 63,128 58,128" fill="#c69c5c"/>
+<polygon points="68,116 73,116 73,128 68,128" fill="#c69c5c"/>
+<polygon points="78,116 83,116 83,128 78,128" fill="#c69c5c"/>
+<rect x="32" y="82" width="3" height="3" fill="#c69c5c"/>
+<rect x="87" y="81" width="3" height="3" fill="#c69c5c"/>
+<rect x="32" y="105" width="3" height="3" fill="#c69c5c"/>
+<rect x="90" y="106" width="3" height="3" fill="#c69c5c"/>
+<rect x="32" y="47" width="3" height="3" fill="#c69c5c"/>
+<rect x="84" y="47" width="3" height="3" fill="#c69c5c"/>
+<polygon points="13,78 23,74 30,83 27,99 17,102 9,94" fill="#142a37"/>
+<polygon points="14,80 21,78 26,85 23,96 16,98 12,93" fill="#c69c5c"/>
+<polyline points="16,98 12,116 18,127" fill="none" stroke="#142a37" stroke-width="14" stroke-linejoin="bevel"/>
+<polyline points="16,98 12,116 18,127" fill="none" stroke="#805c3f" stroke-width="8" stroke-linejoin="bevel"/>
+</svg>

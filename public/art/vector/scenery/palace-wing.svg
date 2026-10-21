@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="240" viewBox="0 0 192 240"><title>palace-wing</title><metadata>{"reference": "ee63fb0:assets/tiles/palace.json / factory wing", "method": "Original planar vector interpretation of the accepted engine-complex kit; original module extents and ground anchor"}</metadata>
+<polygon points="0,40 17,21 48,12 143,12 176,22 192,40 192,240 0,240" fill="#142a37"/>
+<rect x="0" y="65" width="192" height="168" fill="#7f8984"/>
+<polygon points="0,65 192,65 192,80 0,74" fill="#a1a494"/>
+<rect x="0" y="146" width="192" height="9" fill="#253f49"/>
+<rect x="0" y="147" width="192" height="3" fill="#bf995b"/>
+<rect x="0" y="230" width="192" height="10" fill="#253f49"/>
+<polygon points="0,40 20,24 47,17 145,17 174,26 192,40 192,66 0,66" fill="#3f6159"/>
+<polygon points="2,39 23,27 48,20 145,20 174,29 186,39" fill="#6f8c7b"/>
+<rect x="0" y="60" width="192" height="7" fill="#80623e"/>
+<rect x="0" y="60" width="192" height="3" fill="#bf995b"/>
+<polyline points="15,60 15,39 20,23" fill="none" stroke="#80623e" stroke-width="5" stroke-linejoin="bevel"/>
+<polyline points="92,60 92,39 97,23" fill="none" stroke="#80623e" stroke-width="5" stroke-linejoin="bevel"/>
+<polyline points="171,60 171,39 176,23" fill="none" stroke="#80623e" stroke-width="5" stroke-linejoin="bevel"/>
+<polygon points="28,134 28,103 36,89 55.5,81 75,89 83,103 83,134" fill="#142a37"/>
+<polygon points="33,129 33,104 40,93 55.5,87 71,93 78,104 78,129" fill="#8da9a8"/>
+<polygon points="34,105 55.5,90 55.5,128 34,128" fill="#b7c7bd"/>
+<polygon points="55.5,90 76,105 76,128 55.5,128" fill="#567780"/>
+<polygon points="35,106 47,98 47,128 35,128" fill="#d1d6bd"/>
+<polyline points="55.5,88 55.5,130" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="32,102.2 79,102.2" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="32,119.69 79,119.69" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="25" y="134" width="61" height="6" fill="#bf995b"/>
+<rect x="25" y="140" width="61" height="5" fill="#253f49"/>
+<polygon points="28,215 28,184 36,170 55.5,162 75,170 83,184 83,215" fill="#142a37"/>
+<polygon points="33,210 33,185 40,174 55.5,168 71,174 78,185 78,210" fill="#8da9a8"/>
+<polygon points="34,186 55.5,171 55.5,209 34,209" fill="#b7c7bd"/>
+<polygon points="55.5,171 76,186 76,209 55.5,209" fill="#567780"/>
+<polygon points="35,187 47,179 47,209 35,209" fill="#d1d6bd"/>
+<polyline points="55.5,169 55.5,211" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="32,183.2 79,183.2" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="32,200.69 79,200.69" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="25" y="215" width="61" height="6" fill="#bf995b"/>
+<rect x="25" y="221" width="61" height="5" fill="#253f49"/>
+<polygon points="108,134 108,103 116,89 135.5,81 155,89 163,103 163,134" fill="#142a37"/>
+<polygon points="113,129 113,104 120,93 135.5,87 151,93 158,104 158,129" fill="#8da9a8"/>
+<polygon points="114,105 135.5,90 135.5,128 114,128" fill="#b7c7bd"/>
+<polygon points="135.5,90 156,105 156,128 135.5,128" fill="#567780"/>
+<polygon points="115,106 127,98 127,128 115,128" fill="#d1d6bd"/>
+<polyline points="135.5,88 135.5,130" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="112,102.2 159,102.2" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="112,119.69 159,119.69" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="105" y="134" width="61" height="6" fill="#bf995b"/>
+<rect x="105" y="140" width="61" height="5" fill="#253f49"/>
+<polygon points="108,215 108,184 116,170 135.5,162 155,170 163,184 163,215" fill="#142a37"/>
+<polygon points="113,210 113,185 120,174 135.5,168 151,174 158,185 158,210" fill="#8da9a8"/>
+<polygon points="114,186 135.5,171 135.5,209 114,209" fill="#b7c7bd"/>
+<polygon points="135.5,171 156,186 156,209 135.5,209" fill="#567780"/>
+<polygon points="115,187 127,179 127,209 115,209" fill="#d1d6bd"/>
+<polyline points="135.5,169 135.5,211" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="112,183.2 159,183.2" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="112,200.69 159,200.69" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="105" y="215" width="61" height="6" fill="#bf995b"/>
+<rect x="105" y="221" width="61" height="5" fill="#253f49"/>
+<polygon points="0,63 16,63 20,72 20,237 0,237" fill="#142a37"/>
+<rect x="3" y="67" width="13" height="170" fill="#3f6159"/>
+<rect x="4" y="69" width="4" height="166" fill="#6f8c7b"/>
+<rect x="13" y="69" width="4" height="166" fill="#253f49"/>
+<rect x="-2" y="73" width="23" height="7" fill="#80623e"/>
+<rect x="-2" y="73" width="23" height="3" fill="#bf995b"/>
+<rect x="-2" y="150.0" width="23" height="7" fill="#80623e"/>
+<rect x="-2" y="150.0" width="23" height="3" fill="#bf995b"/>
+<rect x="-2" y="227" width="23" height="7" fill="#80623e"/>
+<rect x="-2" y="227" width="23" height="3" fill="#bf995b"/>
+<polygon points="172,63 188,63 192,72 192,237 172,237" fill="#142a37"/>
+<rect x="175" y="67" width="13" height="170" fill="#3f6159"/>
+<rect x="176" y="69" width="4" height="166" fill="#6f8c7b"/>
+<rect x="185" y="69" width="4" height="166" fill="#253f49"/>
+<rect x="170" y="73" width="23" height="7" fill="#80623e"/>
+<rect x="170" y="73" width="23" height="3" fill="#bf995b"/>
+<rect x="170" y="150.0" width="23" height="7" fill="#80623e"/>
+<rect x="170" y="150.0" width="23" height="3" fill="#bf995b"/>
+<rect x="170" y="227" width="23" height="7" fill="#80623e"/>
+<rect x="170" y="227" width="23" height="3" fill="#bf995b"/>
+<polyline points="62,138 62,145" fill="none" stroke="#5d7273" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="141,138 141,145" fill="none" stroke="#5d7273" stroke-width="2" stroke-linejoin="bevel"/>
+</svg>

@@ -21,4 +21,4 @@ The twelve portrait SVGs are editable originals, separate from the body exporter
 
 Review with `?dev=maps&map=coast`, `?dev=maps&map=infirmary`, `?dev=maps&map=cinderbank` and `?dev=sprites`. Check the chapter's four battle maps, layer isolation, scene casts, story flags and both desktop/phone viewports. The shared final 2px raster continues to cover artwork and text. Stage explicit files and run `npm run check:art-upload` before publishing; self-contained SVGs retain the 128 KiB per-file byte budget.
 
-The original generated paintings are composition/lighting references from history, not runtime fallbacks. Chapter Four's refuge still uses the separate `infirmary.webp` painting. Shared legacy tile pages remain for Chapter Three and Tiled thumbnails, so they must not be deleted merely because Chapters One/Two no longer load them.
+The original generated paintings are composition/lighting references from history, not runtime fallbacks. Chapter Four's refuge still uses the separate `infirmary.webp` painting. Shared legacy tile pages remain for Tiled thumbnails and collision definitions; Chapters One–Three now render SVG scenes.

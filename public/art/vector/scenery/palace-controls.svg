@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="72" viewBox="0 0 192 72"><title>palace-controls</title><metadata>{"reference": "ee63fb0:assets/tiles/chapter-three-scenery.json / instrument bank", "method": "Original planar vector interpretation of the accepted engine-complex kit; original module extents and ground anchor"}</metadata>
+<polygon points="13,43 23,43 25,67 11,67" fill="#142a37"/>
+<rect x="15" y="46" width="5" height="18" fill="#3f6159"/>
+<polygon points="169,43 179,43 181,67 167,67" fill="#142a37"/>
+<rect x="171" y="46" width="5" height="18" fill="#3f6159"/>
+<polygon points="0,28 15,20 176,20 192,29 190,47 2,47" fill="#142a37"/>
+<polygon points="3,29 17,24 175,24 188,29 181,36 10,36" fill="#6f8c7b"/>
+<rect x="7" y="37" width="177" height="17" fill="#3f6159"/>
+<rect x="7" y="38" width="177" height="3" fill="#bf995b"/>
+<rect x="11" y="52" width="169" height="7" fill="#253f49"/>
+<polygon points="25,28 26,8 34,8 35,28" fill="#80623e"/>
+<ellipse cx="30" cy="16" rx="14" ry="15" fill="#142a37"/>
+<ellipse cx="29" cy="15" rx="12" ry="13" fill="#bf995b"/>
+<ellipse cx="29" cy="15" rx="9" ry="10" fill="#e6d7ae"/>
+<polygon points="21,15 29,7 29,24 21,21" fill="#b9baa5"/>
+<polyline points="29,16 34,9" fill="none" stroke="#253f49" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="29" cy="16" rx="2" ry="2" fill="#253f49"/>
+<polygon points="57,28 58,8 66,8 67,28" fill="#80623e"/>
+<ellipse cx="62" cy="16" rx="14" ry="15" fill="#142a37"/>
+<ellipse cx="61" cy="15" rx="12" ry="13" fill="#bf995b"/>
+<ellipse cx="61" cy="15" rx="9" ry="10" fill="#e6d7ae"/>
+<polygon points="53,15 61,7 61,24 53,21" fill="#b9baa5"/>
+<polyline points="61,16 62,13" fill="none" stroke="#253f49" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="61" cy="16" rx="2" ry="2" fill="#253f49"/>
+<polygon points="89,28 90,8 98,8 99,28" fill="#80623e"/>
+<ellipse cx="94" cy="16" rx="14" ry="15" fill="#142a37"/>
+<ellipse cx="93" cy="15" rx="12" ry="13" fill="#bf995b"/>
+<ellipse cx="93" cy="15" rx="9" ry="10" fill="#e6d7ae"/>
+<polygon points="85,15 93,7 93,24 85,21" fill="#b9baa5"/>
+<polyline points="93,16 90,9" fill="none" stroke="#253f49" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="93" cy="16" rx="2" ry="2" fill="#253f49"/>
+<polygon points="121,28 122,8 130,8 131,28" fill="#80623e"/>
+<ellipse cx="126" cy="16" rx="14" ry="15" fill="#142a37"/>
+<ellipse cx="125" cy="15" rx="12" ry="13" fill="#bf995b"/>
+<ellipse cx="125" cy="15" rx="9" ry="10" fill="#e6d7ae"/>
+<polygon points="117,15 125,7 125,24 117,21" fill="#b9baa5"/>
+<polyline points="125,16 130,13" fill="none" stroke="#253f49" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="125" cy="16" rx="2" ry="2" fill="#253f49"/>
+<polygon points="153,28 154,8 162,8 163,28" fill="#80623e"/>
+<ellipse cx="158" cy="16" rx="14" ry="15" fill="#142a37"/>
+<ellipse cx="157" cy="15" rx="12" ry="13" fill="#bf995b"/>
+<ellipse cx="157" cy="15" rx="9" ry="10" fill="#e6d7ae"/>
+<polygon points="149,15 157,7 157,24 149,21" fill="#b9baa5"/>
+<polyline points="157,16 158,9" fill="none" stroke="#253f49" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="157" cy="16" rx="2" ry="2" fill="#253f49"/>
+<ellipse cx="23" cy="42" rx="6" ry="5" fill="#80623e"/>
+<polyline points="17,42 29,42" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="23,37 23,47" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="76" cy="42" rx="6" ry="5" fill="#80623e"/>
+<polyline points="70,42 82,42" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="76,37 76,47" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="135" cy="42" rx="6" ry="5" fill="#80623e"/>
+<polyline points="129,42 141,42" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="135,37 135,47" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<ellipse cx="170" cy="42" rx="6" ry="5" fill="#80623e"/>
+<polyline points="164,42 176,42" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<polyline points="170,37 170,47" fill="none" stroke="#bf995b" stroke-width="2" stroke-linejoin="bevel"/>
+<rect x="45" y="32" width="12" height="4" fill="#a0c3b5"/>
+<rect x="47" y="32" width="4" height="4" fill="#d0ddd0"/>
+<rect x="100" y="32" width="12" height="4" fill="#a0c3b5"/>
+<rect x="102" y="32" width="4" height="4" fill="#d0ddd0"/>
+<rect x="151" y="32" width="12" height="4" fill="#a0c3b5"/>
+<rect x="153" y="32" width="4" height="4" fill="#d0ddd0"/>
+</svg>

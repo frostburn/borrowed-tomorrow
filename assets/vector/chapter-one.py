@@ -12,7 +12,8 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'public/art/vector/scenes'
 KIT=ROOT/'public/art/vector/scenery'
 C={'grass':'#29483e','earth':'#756e5b','paving':'#737c76','ballast':'#424e50','water':'#294858',
-   'cave-floor':'#49565a','cave-wall':'#2d404a','cave-roof':'#101f2d','cave-ledge':'#263b47','granite':'#334a58','void':'#0a1724'}
+   'cave-floor':'#49565a','cave-wall':'#2d404a','cave-roof':'#101f2d','cave-ledge':'#263b47','granite':'#334a58','void':'#0a1724',
+   'works-stone':'#858e85','works-deck':'#607c78'}
 
 def prop(obj):return {p['name']:p['value'] for p in obj.get('properties',[])}
 def polygon(points,color):return '<polygon points="'+' '.join(f'{x:g},{y:g}' for x,y in points)+'" fill="'+color+'"/>'
@@ -60,6 +61,32 @@ def field(kind,cells,w,h,scene=''):
     if kind=='void':pass
     elif kind=='granite':
         out.extend([polygon([(0,0),(w,0),(w,h*.3),(w*.7,h*.2),(w*.5,h*.34),(w*.22,h*.15),(0,h*.3)],'#405864'),polygon([(0,h*.77),(w*.2,h*.7),(w*.55,h*.88),(w*.8,h*.65),(w,h*.78),(w,h),(0,h)],'#203b4b')])
+    elif kind in ('works-stone','works-deck'):
+        steel=kind=='works-deck'
+        out += [polygon([(0,0),(w,0),(w,h*.2),(w*.3,h*.65),(0,h*.47)],'#738b7e' if steel else '#989e90'),polygon([(0,h*.8),(w*.4,h*.6),(w,h*.77),(w,h),(0,h)],'#4d686b' if steel else '#75857f')]
+        # Large plates/slabs share world coordinates, including the two connected
+        # service-deck layers. No tile repetition or resampling of old textures.
+        seam='#48646b' if steel else '#7a8981'
+        for y in range(24,h,96 if steel else 120):
+            out.append(line([(0,y),(w,y)],seam,2))
+            for x in range(48+(y//96%2)*144,w,288):
+                out.append(line([(x,y),(x,y+(96 if steel else 120))],seam,2))
+                if steel:out.extend([rect(x+5,y+5,3,3,'#b3a77c'),rect(x-8,y+87,3,3,'#b3a77c')])
+    elif scene in ('conduit','battle-heart-feeds','battle-heart-pressure') and kind.startswith('cave-'):
+        # Cavern planes span this chamber's full canvas, rather than reusing
+        # Chapter One's smaller tunnel drawing. The servicing floor stays clear.
+        if kind=='cave-roof':
+            out.extend([polygon([(0,0),(w,0),(w,h*.12),(w*.8,h*.04),(w*.67,h*.16),(w*.48,h*.06),(w*.3,h*.13),(w*.12,h*.04),(0,h*.2)],'#1b303d'),polygon([(0,h*.65),(w*.16,h*.71),(w*.3,h*.95),(w*.55,h*.89),(w*.7,h*.97),(w,h*.7),(w,h),(0,h)],'#152c3b')])
+        elif kind=='cave-floor':
+            out.extend([polygon([(0,h*.44),(w*.3,h*.35),(w*.58,h*.57),(w,h*.4),(w,h*.7),(w*.56,h*.73),(w*.24,h*.59),(0,h*.64)],'#566a6b'),polygon([(0,h*.83),(w*.2,h*.7),(w*.5,h*.91),(w*.76,h*.77),(w,h*.86),(w,h),(0,h)],'#2f4956')])
+        else:
+            for pts,c in [([(0,.08),(.15,.03),(.19,.15),(.12,.35),(0,.31)],'#425963'),([(.15,.03),(.32,.08),(.36,.18),(.29,.37),(.12,.35),(.19,.15)],'#294450'),([(.32,.08),(.47,.02),(.53,.15),(.45,.34),(.29,.37),(.36,.18)],'#53676a'),([(.47,.02),(.64,.1),(.62,.27),(.69,.36),(.45,.34),(.53,.15)],'#263e4b'),([(.64,.1),(.8,.03),(.85,.17),(.76,.35),(.69,.36),(.62,.27)],'#3d5862'),([(.8,.03),(1,.09),(1,.35),(.91,.31),(.76,.35),(.85,.17)],'#4a6369')]:
+                out.append(polygon([(w*x,h*y) for x,y in pts],c))
+            if kind=='cave-ledge':
+                for pts in contours:
+                    for i,(x,y) in enumerate(pts):
+                        xx,yy=pts[(i+1)%len(pts)]
+                        if xx>x and yy==y:out.extend([polygon([(x,y),(xx,y),(xx,y+6),(x,y+10)],'#7d8a85'),polygon([(x,y+10),(xx,y+6),(xx,y+24),(x,y+36)],'#36505c')])
     elif kind=='grass':
         for pts,c in [([(0,0),(w,0),(w,80),(w*.7,138),(w*.41,64),(0,112)],'#1e3c36'),([(0,h*.7),(w*.21,h*.53),(w*.49,h*.69),(w*.76,h*.56),(w,h*.68),(w,h),(0,h)],'#233e36'),([(w*.08,h*.4),(w*.4,h*.18),(w*.57,h*.27),(w*.27,h*.52)],'#315044'),([(w*.58,h*.8),(w*.71,h*.66),(w*.9,h*.72),(w,h*.9),(w*.77,h*.86)],'#385546')]:out.append(polygon(pts,c))
     elif kind in ('earth','paving','ballast','cave-floor'):
@@ -95,6 +122,8 @@ def field(kind,cells,w,h,scene=''):
     if scene=='coast' and kind=='water':
         out.extend([rect(0,0,w,169,'#788e9c'),rect(0,76,w,68,'#9da395'),polygon([(0,67),(96,5),(179,44),(269,4),(360,69),(448,38),(554,95),(668,33),(764,81),(873,8),(989,54),(1094,17),(1220,71),(1335,22),(w,71),(w,151),(0,151)],'#34566e'),polygon([(0,112),(167,61),(278,99),(428,75),(574,124),(746,91),(915,120),(1076,73),(1259,111),(w,84),(w,169),(0,169)],'#23465e')])
         for x in (137,423,1001,1280):out.append(line([(x,95),(x,215)],'#7897a1',3));out.append(polygon([(x-32,212),(x+37,211),(x+22,225),(x-20,225)],'#18394c'))
+    if scene=='northglass' and kind=='granite':
+        out.extend([rect(0,0,w,136,'#829698'),polygon([(0,87),(w*.13,38),(w*.26,94),(w*.43,47),(w*.61,107),(w*.78,40),(w,89),(w,160),(0,160)],'#536e79'),polygon([(0,134),(w*.19,82),(w*.35,121),(w*.51,80),(w*.75,136),(w,98),(w,182),(0,182)],'#304f60')])
     out.append('</g>');return ''.join(out)
 
 def runs(cells):
@@ -107,7 +136,18 @@ def runs(cells):
 
 def fittings(kind,cells):
     out=[]
-    if kind in ('rail-h','platform-edge','steps'):
+    if kind=='works-cutaway':
+        for x,y,w in runs(cells):out.extend([rect(x,y,w,24,'#29434f'),rect(x,y,w,5,'#8b9a8c'),rect(x,y+5,w,3,'#b69b69'),rect(x,y+20,w,4,'#142a37')])
+    elif kind.startswith('works-pipe-'):
+        ports={'h':'WE','v':'NS','ne':'NE','nw':'NW','se':'SE','sw':'SW','t':'WES','cross':'NWES'}[kind.removeprefix('works-pipe-')]
+        ends={'N':(12,0),'S':(12,24),'W':(0,12),'E':(24,12)}
+        for x,y in sorted(cells):
+            x*=24;y*=24
+            for color,width in [('#183340',11),('#45675f',7),('#9aaf96',2)]:
+                for port in ports:
+                    xx,yy=ends[port];out.append(line([(x+12,y+12),(x+xx,y+yy)],color,width))
+            if len(ports)>2:out.extend([rect(x+8,y+8,8,8,'#b39660'),rect(x+10,y+10,4,4,'#45675f')])
+    elif kind in ('rail-h','platform-edge','steps'):
         for x,y,w in runs(cells):
             if kind=='rail-h':
                 for xx in range(x+3,x+w,13):out.append(polygon([(xx,y),(xx+6,y),(xx+5,y+24),(xx-1,y+24)],'#5e594b'))
@@ -133,6 +173,7 @@ def export(chapter='one'):
         defs.update({page['firstgid']+t['id']:t for t in data['tiles']})
     manifest={}
     if chapter=='two':C.update(water='#25465c',paving='#71838a',earth='#657374',ballast='#3c5261')
+    if chapter=='three':C.update(grass='#384f43',paving='#8a9690',ballast='#40575d')
     modules={p.stem:p for p in KIT.glob('*.svg')}
     for file in sorted((ROOT/f'src/content/chapter-{chapter}/maps').glob('*.json')):
         data=json.loads(file.read_text());w=data['width']*24;h=data['height']*24;entries=[];floor_depth=-1000
@@ -177,5 +218,5 @@ def export(chapter='one'):
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--chapter',choices=('one','two'),default='one')
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--chapter',choices=('one','two','three'),default='one')
     export(parser.parse_args().chapter)

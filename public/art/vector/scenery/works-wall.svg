@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="168" viewBox="0 0 192 168"><title>works-wall</title><metadata>{"reference": "ee63fb0:assets/tiles/engine-works.json / factory wall", "method": "Original planar vector interpretation of the accepted engine-complex kit; original module extents and ground anchor"}</metadata>
+<rect x="0" y="8" width="192" height="160" fill="#142a37"/>
+<rect x="8" y="14" width="176" height="140" fill="#7f8984"/>
+<polygon points="8,16 184,16 184,41 8,33" fill="#9c9f90"/>
+<rect x="8" y="145" width="176" height="20" fill="#3f6159"/>
+<rect x="8" y="145" width="176" height="4" fill="#bf995b"/>
+<polygon points="39,134 39,48 47,34 96,26 145,34 153,48 153,134" fill="#142a37"/>
+<polygon points="44,129 44,49 51,38 96,32 141,38 148,49 148,129" fill="#8da9a8"/>
+<polygon points="45,50 96,35 96,128 45,128" fill="#b7c7bd"/>
+<polygon points="96,35 146,50 146,128 96,128" fill="#567780"/>
+<polygon points="46,51 58,43 58,128 46,128" fill="#d1d6bd"/>
+<polyline points="96,33 96,130" fill="none" stroke="#253f49" stroke-width="4" stroke-linejoin="bevel"/>
+<polyline points="43,69.2 149,69.2" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<polyline points="43,104.84 149,104.84" fill="none" stroke="#253f49" stroke-width="3" stroke-linejoin="bevel"/>
+<rect x="36" y="134" width="120" height="6" fill="#bf995b"/>
+<rect x="36" y="140" width="120" height="5" fill="#253f49"/>
+<polygon points="0,6 15,6 19,15 19,164 0,164" fill="#142a37"/>
+<rect x="3" y="10" width="12" height="154" fill="#3f6159"/>
+<rect x="4" y="12" width="4" height="150" fill="#6f8c7b"/>
+<rect x="12" y="12" width="4" height="150" fill="#253f49"/>
+<rect x="-2" y="16" width="22" height="7" fill="#80623e"/>
+<rect x="-2" y="16" width="22" height="3" fill="#bf995b"/>
+<rect x="-2" y="85.0" width="22" height="7" fill="#80623e"/>
+<rect x="-2" y="85.0" width="22" height="3" fill="#bf995b"/>
+<rect x="-2" y="154" width="22" height="7" fill="#80623e"/>
+<rect x="-2" y="154" width="22" height="3" fill="#bf995b"/>
+<polygon points="173,6 188,6 192,15 192,164 173,164" fill="#142a37"/>
+<rect x="176" y="10" width="12" height="154" fill="#3f6159"/>
+<rect x="177" y="12" width="4" height="150" fill="#6f8c7b"/>
+<rect x="185" y="12" width="4" height="150" fill="#253f49"/>
+<rect x="171" y="16" width="22" height="7" fill="#80623e"/>
+<rect x="171" y="16" width="22" height="3" fill="#bf995b"/>
+<rect x="171" y="85.0" width="22" height="7" fill="#80623e"/>
+<rect x="171" y="85.0" width="22" height="3" fill="#bf995b"/>
+<rect x="171" y="154" width="22" height="7" fill="#80623e"/>
+<rect x="171" y="154" width="22" height="3" fill="#bf995b"/>
+<polyline points="22,146 22,50 30,38 41,38" fill="none" stroke="#142a37" stroke-width="11" stroke-linejoin="bevel"/>
+<polyline points="22,145 22,51 31,40 41,40" fill="none" stroke="#bf995b" stroke-width="6" stroke-linejoin="bevel"/>
+<polyline points="167,145 167,51 159,40 150,40" fill="none" stroke="#142a37" stroke-width="11" stroke-linejoin="bevel"/>
+<polyline points="167,145 167,51 158,40 150,40" fill="none" stroke="#80623e" stroke-width="6" stroke-linejoin="bevel"/>
+<rect x="12" y="157" width="4" height="3" fill="#bf995b"/>
+<rect x="70" y="157" width="4" height="3" fill="#bf995b"/>
+<rect x="122" y="157" width="4" height="3" fill="#bf995b"/>
+<rect x="180" y="157" width="4" height="3" fill="#bf995b"/>
+<rect x="0" y="164" width="192" height="4" fill="#142a37"/>
+</svg>

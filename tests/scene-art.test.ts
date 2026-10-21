@@ -2,12 +2,13 @@ import { describe,it,expect } from 'vitest';
 import { readFileSync,statSync } from 'node:fs';
 import { CHAPTER_ONE_MAPS,CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS,CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
+import { CHAPTER_THREE_MAPS,CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { sceneArt,visibleSceneArt,SCENE_ASSETS } from '../src/content/scene-art';
 import { properties,tilePages } from '../src/content/tilemaps';
 
 describe('traced SVG scenes',()=>{
  it('covers every painted story layer with self-contained, correctly sized vector sources',()=>{
-  for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES)]){
+  for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES)]){
    const pieces=sceneArt(map)!;expect(pieces.length).toBeGreaterThan(0);expect(tilePages(map)).toEqual([]);
    for(const layer of map.layers.filter(l=>l.data?.some(Boolean)))expect(pieces.some(p=>p.layerId===layer.id)).toBe(true);
    for(const p of pieces){
@@ -32,5 +33,10 @@ describe('traced SVG scenes',()=>{
   const bridge=sceneArt(village)!.find(p=>p.key==='scenery-footbridge')!,rail=sceneArt(village)!.find(p=>p.key==='scenery-footbridge-front')!;
   expect(bridge.depth).toBeLessThan(0);expect(rail.depth).toBeGreaterThan(0);
   expect(visibleSceneArt(village,{flags:{}},new Set([bridge.layerId]))!.some(p=>p.key===bridge.key)).toBe(false);
+  for(const map of [CHAPTER_THREE_MAPS.relayhall.tiles!,CHAPTER_THREE_MAPS.conduit.tiles!]){
+   const light=map.layers.find(l=>properties(l).hiddenFlag==='extractionStopped')!;
+   expect(visibleSceneArt(map,{flags:{}})!.some(p=>p.layerId===light.id)).toBe(true);
+   expect(visibleSceneArt(map,{flags:{extractionStopped:true}})!.some(p=>p.layerId===light.id)).toBe(false);
+  }
  });
 });

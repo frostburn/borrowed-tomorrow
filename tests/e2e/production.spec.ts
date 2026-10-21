@@ -97,7 +97,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   await page.setViewportSize(viewport);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   const saved=palaceCheckpoint('conduitGuardWon');saved.location={map:'conduit',x:52,y:22};
   await importSave(page,saved);
-  // The marker must be visible in front of the painted gauge panel, not on unrelated floor.
+  // The marker stays visible at the gauge panel's registered approach.
   await expect.poll(()=>page.evaluate(()=>{
    const view=window.borrowedTomorrow.inspect().view,pixels=window.borrowedTomorrowPixels.inspect();
    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
@@ -105,8 +105,10 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
    const y=pixels.physicalTop+(Math.round((world.top-source.top)/pixels.cssScale)+20.5*24-9-view.scrollY-18)*pixels.physicalScale;
    const data=document.querySelector<HTMLCanvasElement>('.pixel-output')!.getContext('2d')!.getImageData(x,y,24*pixels.physicalScale,36*pixels.physicalScale).data;
    let gold=0;for(let i=0;i<data.length;i+=4)if(data[i]===244&&data[i+1]===199&&data[i+2]===122)gold++;
-   return gold;
-  })).toBeGreaterThanOrEqual(90);
+   // This registered diamond occupies 80 logical output pixels after the
+   // shared 2px raster. Normalize physical scaling and require the exact count.
+   return {gold:gold/(pixels.physicalScale**2),raster:pixels.rasterUnit};
+  })).toEqual({gold:80,raster:2});
   await capture(page,`extraction-console-marker-${device}`);
   // Click the actual panel above the floor, rather than its internal interaction coordinate.
   await clickWorld(page,47,17);await dialogue(page);expect((await inspect(page)).state.flags.extractionStopped).toBe(true);
