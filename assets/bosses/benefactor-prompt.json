@@ -1,0 +1,37 @@
+{
+  "tool": "Built-in Image Gen",
+  "prompt": "Use case: identity-preserve / pixel-art game sprite.\nReference image: the approved Benefactor boss design. Preserve its identity, silhouette, proportions, frontal pose, and ivory / antique-gold / indigo / turquoise palette. Redraw this same god as deliberate low-resolution pixel art, not a detailed painting with a pixel filter.\nOUTPUT CANVAS REQUEST: 1440 x 1152 pixels, landscape 5:4. This represents a 360 x 288 logical pixel sprite enlarged EXACTLY 4 times. Every logical pixel should appear as one flat-color 4 x 4 square aligned to the same grid. Keep pixel clusters chunky and intentional, no subpixel details, anti-aliasing, stippling or grain. Think of actually drawing at 360 x 288 first, then nearest-neighbor enlarging 4 times. The final reduction is exactly 4:1; fine detail smaller than a 4x4 block will be lost.\nSubject: a colossal nonhuman hollow-sun god, empty black circular face aperture, thick broken antique-gold solar halo attached behind the shoulders, short broad sun rays, ivory and gray-blue architectural mantle plates, modest pale-turquoise crystalline chest heart, huge articulated arms descending outward, enormous open cupped hands at lower left and right. Connected arms, hands and torso. Compact layered mantle base, no long legs. Preserve the reference's epic imposing design and dimensional material shading, upper-left light.\nFraming: full connected silhouette inside the canvas, centered, at least 24 actual pixels of transparent margin on every side, including above the halo and below the mantle. Do not crop or tightly trim the canvas. Front view facing tiny heroes below, slight elevated orthographic camera. Symmetrical weight, dark outlines, crisp readable contours. Simplify engraved microdetail into clear gold bands and broad shaded clusters. Keep the dark aperture empty. No face or beard.\nTrue transparent background. No scene, floor, ground, text, UI, grid lines, disconnected sparkles, smoky aura, gradients, photographic textures, 3D-render gloss, or drop shadow. Important: the requested 4x grid applies to every contour and interior shade, not just the outside silhouette.",
+  "requestedSourceSize": [
+    1440,
+    1152
+  ],
+  "actualSourceSize": [
+    1402,
+    1122
+  ],
+  "sourcePaddingOffset": [
+    19,
+    15
+  ],
+  "reductionFactor": 4,
+  "resampling": "Nearest-neighbor, exactly 4:1 after transparent padding; no opaque-bounds crop or fit-to-box scaling",
+  "nativeSize": [
+    360,
+    288
+  ],
+  "pageSize": [
+    120,
+    144
+  ],
+  "pages": [
+    3,
+    2
+  ],
+  "portraitCrop": [
+    116,
+    20,
+    244,
+    148
+  ],
+  "reference": "Approved Benefactor source from the initial generation (identity and composition)"
+}

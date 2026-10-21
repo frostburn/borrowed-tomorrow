@@ -1,3 +1,5 @@
+import { BOSS_ASSETS, BOSS_PRESENTATION, BOSS_PORTRAIT } from './boss-preview';
+import { createBossBattle } from './boss-battle';
 import { MusicWorkshop } from './music-workshop';
 import { SpriteWorkshop } from './sprite-workshop';
 import { AnimationWorkshop } from './animation-workshop';
@@ -31,7 +33,7 @@ class Workshop {
   private sprites = new SpriteWorkshop();
   private animation = new AnimationWorkshop();
   private maps = new MapWorkshop(message=>this.ui.toast(message));
-  private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' = new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
+  private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private hero: CompanionId = 'nell';
   private selected: ItemId = 'brass-reflector';
   private message = 'Choose a character to adjust their build.';
@@ -97,9 +99,11 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
+    document.querySelector('.game-shell')!.classList.remove('boss-battle-preview');
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
+    if(this.tab==='bosses'){this.showBosses();return;}
     if(this.tab==='maps'){this.showMaps();return;}
     if(this.tab==='animation'){this.showAnimation();return;}
     if(this.tab==='sprites'){this.showSprites();return;}
@@ -153,7 +157,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites','animation','maps'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
   private showMusic(){
@@ -188,8 +192,29 @@ class Workshop {
     this.bindTabs();this.maps.show(this.ui.sceneLayer.querySelector('#map-workshop')!);
     this.ui.status.textContent='Vite development / Map review does not change campaign saves';
   }
+  private showBosses(){
+    this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
+    this.ui.initiative.textContent='Epic boss battle preview';
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<section class="boss-preview" aria-label="Boss battle preview"><img src="${BOSS_PORTRAIT}" width="128" height="128" alt="The hollow sun"/><div><h2>The Benefactor</h2><p>A towering enemy occupies nineteen hexes above the party. Every occupied hex targets the same enemy; area attacks damage it once.</p><p>Red X hexes show its next attack. Move clear before its turn, or protect the threatened heroes. Taunt draws judgment onto its user. The god is anchored and cannot be pushed.</p><p>The hollow heart opens at half health, widening its attacks. The finale preset uses level-10 Nell, Petra and Celia with twelve bandages.</p><div id="boss-start"></div><p class="inv-note">Workshop party: ${this.settings.party.map(id=>`${names[id]} Lv ${this.settings.characters[id].level}`).join(' · ')}. This preview earns no campaign progress.</p></div></section></section>`;
+    this.bindTabs();this.ui.actionRow(this.ui.sceneLayer.querySelector('#boss-start')!,[
+      {label:'Start finale preset',action:()=>this.bossBattle(false)},
+      {label:'Start phase two',action:()=>this.bossBattle(false,true)},
+      {label:'Use workshop party',action:()=>this.bossBattle(true)},
+    ]);this.ui.status.textContent='Vite development / Boss battle preview';
+  }
+  private bossBattle(workshop:boolean,phaseTwo=false){
+    this.sprites.hide();this.animation.hide();this.maps.hide();this.music.hide();
+    document.querySelector('.game-shell')!.classList.remove('inventory-open');
+    document.querySelector('.game-shell')!.classList.add('boss-battle-preview');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=true;
+    this.scene.state=practiceState();
+    const battle=createBossBattle(workshop?characterProfiles(this.settings):undefined,workshop?equipmentBonuses(this.inventory):undefined,workshop?this.settings.party:undefined,phaseTwo);
+    this.scene.previewBattle(battle,()=>this.show(),BOSS_PRESENTATION);
+  }
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
+    if(this.tab==='bosses'){this.bossBattle(true);return;}
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
@@ -207,6 +232,6 @@ class Workshop {
 }
 export function startWorkshop(root: HTMLElement) {
   let workshop: Workshop | undefined;
-  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite));
+  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite), BOSS_ASSETS);
   mountGame(root, scene, { journal: () => workshop?.show(), saves: () => workshop?.battle(), sound: () => workshop?.toggleSound(), help: () => workshop?.help() });
 }

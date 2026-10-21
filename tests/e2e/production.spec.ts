@@ -9,7 +9,7 @@ import { travel } from './navigation';
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
-  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation', 'maps']) {
+  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation', 'maps', 'boss']) {
     await page.goto(`/?dev=${route}`);
     await expect(page).toHaveTitle('Borrowed Tomorrow');
     await expect(page.getByRole('button', { name: 'Begin Chapter One', exact: true })).toBeVisible();
@@ -22,6 +22,8 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
   for (const devOnly of ['Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
+  for(const devOnly of ['dev-benefactor','Epic boss battle preview','benefactor-page-'])expect(built).not.toContain(devOnly);
+  expect(files.some(f=>f.startsWith('benefactor'))).toBe(false);
   expect(errors).toEqual([]);
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);

@@ -12,7 +12,9 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:240,onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
-    if(ability==='strike'){
+    if(ABILITIES[ability].shape==='pattern'){
+      for(const hex of affected){const at=toPixel(hex);g.fillStyle(0xf9dbad,.17).fillRect(Math.round(at.x-16),0,32,Math.round(at.y));g.lineStyle(3,0xf8dfb5,.85).lineBetween(at.x,0,at.x,at.y);g.strokeEllipse(at.x,at.y,38+p*12,16+p*10);}
+    }else if(ability==='strike'){
       g.lineStyle(3,color,1);g.lineBetween(target.x-12,target.y-39,target.x+12,target.y-17);
       g.lineBetween(target.x-8,target.y-15,target.x+8,target.y-41);
     }else if(ability==='repulse'){
