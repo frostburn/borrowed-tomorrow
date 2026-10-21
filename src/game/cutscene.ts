@@ -28,7 +28,7 @@ export class Cutscene {
       const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
-    world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=true;audio.cinematicMix(.25);
+    world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
   get animating(){return !this.closed&&this.scene.cameras.main.panEffect.isRunning;}
   shot(shot?:Shot){

@@ -1,5 +1,6 @@
 import report from '../../assets/characters/pixel-fixer-civilians.json';
 import { art } from '../game/ui';
+import { civilianPresentation } from '../content/civilians';
 
 const assets=import.meta.glob<string>('./art/civilian-review/*.png',{eager:true,query:'?url',import:'default'});
 
@@ -8,9 +9,10 @@ export function mountCivilianReconstruction(host:HTMLElement,id:string){
   const role=id.replace('civilian-','');
   const entry=report.entries.find(entry=>entry.role===role);
   if(!entry)return;
+  const fit=civilianPresentation(id)!;
   const section=document.createElement('section');section.className='civilian-reconstruction';
   section.setAttribute('aria-label','Pixel Art Fixer review');
-  section.innerHTML=`<h3>Pixel Art Fixer / ${role}</h3><p>Recovered ${entry.full.cols} x ${entry.full.rows}. ${entry.confidence}. Figure height: ${entry.bounds[3]-entry.bounds[1]} pixels; campaign budget: ${report.campaignMaxOpaqueHeight}.</p><p>Held for review: native pixels would make this actor oversized. No resizing is applied here. Campaign uses its pre-PR artwork.</p><p>${entry.review}</p><div role="group" aria-label="Reconstruction zoom">${[1,2,3].map(z=>`<button data-recovery-zoom="${z}" aria-pressed="${z===1}">${z}x</button>`).join('')}</div><div class="sprite-scroll"><div class="civilian-comparisons"></div></div>`;
+  section.innerHTML=`<h3>Pixel Art Fixer / ${role}</h3><p>Recovered ${entry.full.cols} x ${entry.full.rows}. ${entry.confidence}. Source figure height: ${entry.bounds[3]-entry.bounds[1]} pixels.</p><p>Used in campaign at ${report.campaignStandingHeight} pixels tall with uniform filtered scaling. The recovered grid below remains at its original size.</p><p>${entry.review}</p><div role="group" aria-label="Reconstruction zoom">${[1,2,3].map(z=>`<button data-recovery-zoom="${z}" aria-pressed="${z===1}">${z}x</button>`).join('')}</div><div class="sprite-scroll"><div class="civilian-comparisons"></div></div>`;
   host.querySelector('.sprite-review')!.append(section);
   const variants=[
     ['Campaign',art(id)],
@@ -30,13 +32,16 @@ export function mountCivilianReconstruction(host:HTMLElement,id:string){
     if(!section.isConnected)return;
     for(const {label,image,canvas,title} of images){
       if(!image.complete||!image.naturalWidth)continue;
-      canvas.width=image.naturalWidth*zoom;canvas.height=image.naturalHeight*zoom;
+      canvas.width=(label==='Campaign'?80:image.naturalWidth)*zoom;canvas.height=(label==='Campaign'?80:image.naturalHeight)*zoom;
       canvas.style.width=`${canvas.width}px`;canvas.style.height=`${canvas.height}px`;
       canvas.setAttribute('aria-label',`${label} ${role} at ${zoom}x`);
-      title.textContent=`${label} / ${image.naturalWidth} x ${image.naturalHeight}`;
-      const ctx=canvas.getContext('2d')!;ctx.imageSmoothingEnabled=false;
+      title.textContent=label==='Campaign'?`Campaign / ${report.campaignStandingHeight}px figure`:`${label} / ${image.naturalWidth} x ${image.naturalHeight}`;
+      const ctx=canvas.getContext('2d')!;ctx.imageSmoothingEnabled=label==='Campaign';
       for(let y=0;y<canvas.height;y+=8)for(let x=0;x<canvas.width;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
-      ctx.drawImage(image,0,0,canvas.width,canvas.height);
+      if(label==='Campaign'){
+        const scale=fit.scale*zoom;
+        ctx.drawImage(image,40*zoom-image.width*fit.originX*scale,68*zoom-image.height*fit.originY*scale,image.width*scale,image.height*scale);
+      }else ctx.drawImage(image,0,0,canvas.width,canvas.height);
     }
     section.dataset.paint=String(Number(section.dataset.paint??0)+1);
   }

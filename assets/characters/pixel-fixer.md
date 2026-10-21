@@ -14,10 +14,10 @@ the committed PNGs are the CLI's exact bytes.
 
 | Role | Full grid | Fast grid | Source periods X/Y | Opaque height | Decision |
 | --- | --- | --- | --- | --- | --- |
-| Dock worker | 128 x 128 | 128 x 128 | 9.7969 / 9.7969 | 104 | Strong agreement; too tall for campaign |
-| Traveler | 137 x 133 | 132 x 133 | 9.1440 / 9.4423 | 99 | Arbitration; hold for grid/size review |
-| Parent/child | 136 x 127 | 136 x 126 | 9.2091 / 9.8896 | 102 | Arbitration; hold for grid/size review |
-| Ward patient | 128 x 128 | 128 x 128 | 9.7969 / 9.7969 | 100 | Strong agreement; too tall for campaign |
+| Dock worker | 128 x 128 | 128 x 128 | 9.7969 / 9.7969 | 104 | Approved with runtime scaling |
+| Traveler | 137 x 133 | 132 x 133 | 9.1440 / 9.4423 | 99 | Approved after visual review; runtime scaling |
+| Parent/child | 136 x 127 | 136 x 126 | 9.2091 / 9.8896 | 102 | Approved after visual review; runtime scaling |
+| Ward patient | 128 x 128 | 128 x 128 | 9.7969 / 9.7969 | 100 | Approved with runtime scaling |
 
 Strong agreement is not a calibrated probability. Worker/patient full mode
 reports `rl+ss+fu`, fast mode `rl+ss`. Both other fast results explicitly report
@@ -35,21 +35,29 @@ explaining why the former 16:1 sampler discarded real cells. The original older
 sources were also checked: grids 90 x 141, 131 x 119, 146 x 131, 139 x 132; all
 arbitrated, with opaque heights 111, 98, 109, 116. None solves the size mismatch.
 
-**No reconstruction is approved for campaign replacement.** The existing 80 x 80
-frames contain roughly 63-pixel figures. Fitting these 99–104-pixel figures
-would discard recovered cells; drawing them 1:1 makes civilians oversized.
-All nine campaign PNGs are restored byte for byte from the pre-PR baseline
-`47f59cd946a0de2895b18839c540797ad422499b`, removing the smooth-art clash. The
-baseline manifest/exporter remains the recipe for those existing campaign files.
+**The user approved all four fixed versions and relaxed strict canvas pixels.**
+The campaign ships their native PNGs and five clothing variants, without an
+extra authoring downscale. `civilianPresentation` computes a uniform scale of
+63 / opaque height and anchors each actor at its real soles. Thus the 99–104px
+source figures fit the other cast at 63 game pixels, preserving proportions.
+The renderer uses filtered fractional scaling rather than enforcing exact
+source-to-canvas pixels. Detector disagreements remain documented as provenance,
+not unresolved campaign holds.
+
+Export the campaign files from the committed native reconstructions with
+`python assets/characters/export-civilians.py`. This copies each base PNG exactly
+and recolors native texels for variants. `--output-dir` supports independent
+reproduction. Nothing in this exporter calls an image resize operation.
 
 ## In-game review
 
 Vite-only Sprites (`?dev=sprites`) → NPCs → select a base civilian role → scroll
-to Pixel Art Fixer review. Compare campaign, prior point sample, smooth attempt
-and untouched recovered grid. Real dimensions are labeled; zoom is 1x/2x/3x
-nearest-neighbor on the shared native framebuffer. Wider comparisons scroll and
-never shrink. No saves change. The twelve comparison PNGs live in `src/dev/art`
-and remain absent from production. Other characters were not batch-replaced.
+to Pixel Art Fixer review. Compare the filtered campaign fit, prior point sample,
+smooth attempt and untouched recovered grid. Raw grids retain labeled native
+dimensions and 1x/2x/3x nearest-neighbor zoom. Wider comparisons scroll. No saves
+change. Historical comparison PNGs and controls remain dev-only. The four fixed
+PNGs now also ship under `public/art`, together with five native-color variants.
+Other characters were not batch-replaced.
 
 ## Reproduction outside game dependencies
 
@@ -82,7 +90,8 @@ The Python wrapper requires authoring-only Pillow (already available in this
 task). It invokes Rust, not an ordinary downscaler. It validates tool revision,
 source hashes, both detection counts/consensus, binary alpha, native dimensions,
 output hashes and upload size before writing any image. Its default destination
-is the four workshop reconstructions; it cannot overwrite campaign art.
+is the four master reconstructions; the separate exporter copies these into
+campaign art and builds native-resolution clothing variants.
 An independent export matched all four files byte for byte. No network or fixer
 installation runs in the game, build or CI. Large sources remain outside git;
 reproduction requires their recorded names/hashes, while normal game use does not.

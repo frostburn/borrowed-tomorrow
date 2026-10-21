@@ -12,7 +12,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     for(const [role,name,width,height] of [['dockhand','Dock worker',128,128],['traveler','Traveler',137,133],['family','Parent and child',136,127],['patient','Ward patient',128,128]] as const){
       await page.getByRole('button',{name:`Inspect ${name}`,exact:true}).click();
       const review=page.getByRole('region',{name:'Pixel Art Fixer review',exact:true});
-      await expect(review).toContainText('Held for review');
+      await expect(review).toContainText('Used in campaign at 63 pixels tall');
       const canvas=review.getByRole('img',{name:`Recovered grid ${role} at 1x`,exact:true});
       await expect(canvas).toHaveAttribute('width',String(width));await expect(canvas).toHaveAttribute('height',String(height));
       await review.getByRole('group',{name:'Reconstruction zoom'}).getByRole('button',{name:'2x',exact:true}).click();
