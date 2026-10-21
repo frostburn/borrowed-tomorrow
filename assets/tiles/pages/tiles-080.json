@@ -15,12 +15,12 @@
   "tiles": [
     {
       "id": 0,
-      "type": "palace-marble-field-4-4",
+      "type": "works-stone-field-4-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-4-4"
+          "value": "works-stone-field-4-4"
         },
         {
           "name": "walkable",
@@ -31,12 +31,12 @@
     },
     {
       "id": 1,
-      "type": "palace-marble-field-5-4",
+      "type": "works-stone-field-5-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-5-4"
+          "value": "works-stone-field-5-4"
         },
         {
           "name": "walkable",
@@ -47,12 +47,12 @@
     },
     {
       "id": 2,
-      "type": "palace-marble-field-6-4",
+      "type": "works-stone-field-6-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-6-4"
+          "value": "works-stone-field-6-4"
         },
         {
           "name": "walkable",
@@ -63,12 +63,12 @@
     },
     {
       "id": 3,
-      "type": "palace-marble-field-7-4",
+      "type": "works-stone-field-7-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-7-4"
+          "value": "works-stone-field-7-4"
         },
         {
           "name": "walkable",
@@ -79,12 +79,12 @@
     },
     {
       "id": 4,
-      "type": "palace-marble-field-0-5",
+      "type": "works-stone-field-0-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-0-5"
+          "value": "works-stone-field-0-5"
         },
         {
           "name": "walkable",
@@ -95,12 +95,12 @@
     },
     {
       "id": 5,
-      "type": "palace-marble-field-1-5",
+      "type": "works-stone-field-1-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-1-5"
+          "value": "works-stone-field-1-5"
         },
         {
           "name": "walkable",
@@ -111,12 +111,12 @@
     },
     {
       "id": 6,
-      "type": "palace-marble-field-2-5",
+      "type": "works-stone-field-2-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-2-5"
+          "value": "works-stone-field-2-5"
         },
         {
           "name": "walkable",
@@ -127,12 +127,12 @@
     },
     {
       "id": 7,
-      "type": "palace-marble-field-3-5",
+      "type": "works-stone-field-3-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-3-5"
+          "value": "works-stone-field-3-5"
         },
         {
           "name": "walkable",
@@ -143,12 +143,12 @@
     },
     {
       "id": 8,
-      "type": "palace-marble-field-4-5",
+      "type": "works-stone-field-4-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-4-5"
+          "value": "works-stone-field-4-5"
         },
         {
           "name": "walkable",
@@ -159,12 +159,12 @@
     },
     {
       "id": 9,
-      "type": "palace-marble-field-5-5",
+      "type": "works-stone-field-5-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-5-5"
+          "value": "works-stone-field-5-5"
         },
         {
           "name": "walkable",
@@ -175,12 +175,12 @@
     },
     {
       "id": 10,
-      "type": "palace-marble-field-6-5",
+      "type": "works-stone-field-6-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-6-5"
+          "value": "works-stone-field-6-5"
         },
         {
           "name": "walkable",
@@ -191,12 +191,12 @@
     },
     {
       "id": 11,
-      "type": "palace-marble-field-7-5",
+      "type": "works-stone-field-7-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-7-5"
+          "value": "works-stone-field-7-5"
         },
         {
           "name": "walkable",
@@ -207,12 +207,12 @@
     },
     {
       "id": 12,
-      "type": "palace-marble-field-0-6",
+      "type": "works-stone-field-0-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-0-6"
+          "value": "works-stone-field-0-6"
         },
         {
           "name": "walkable",
@@ -223,12 +223,12 @@
     },
     {
       "id": 13,
-      "type": "palace-marble-field-1-6",
+      "type": "works-stone-field-1-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-1-6"
+          "value": "works-stone-field-1-6"
         },
         {
           "name": "walkable",
@@ -239,12 +239,12 @@
     },
     {
       "id": 14,
-      "type": "palace-marble-field-2-6",
+      "type": "works-stone-field-2-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-2-6"
+          "value": "works-stone-field-2-6"
         },
         {
           "name": "walkable",
@@ -255,12 +255,12 @@
     },
     {
       "id": 15,
-      "type": "palace-marble-field-3-6",
+      "type": "works-stone-field-3-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-3-6"
+          "value": "works-stone-field-3-6"
         },
         {
           "name": "walkable",
@@ -271,12 +271,12 @@
     },
     {
       "id": 16,
-      "type": "palace-marble-field-4-6",
+      "type": "works-stone-field-4-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-4-6"
+          "value": "works-stone-field-4-6"
         },
         {
           "name": "walkable",
@@ -287,12 +287,12 @@
     },
     {
       "id": 17,
-      "type": "palace-marble-field-5-6",
+      "type": "works-stone-field-5-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-5-6"
+          "value": "works-stone-field-5-6"
         },
         {
           "name": "walkable",
@@ -303,12 +303,12 @@
     },
     {
       "id": 18,
-      "type": "palace-marble-field-6-6",
+      "type": "works-stone-field-6-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-6-6"
+          "value": "works-stone-field-6-6"
         },
         {
           "name": "walkable",
@@ -319,12 +319,12 @@
     },
     {
       "id": 19,
-      "type": "palace-marble-field-7-6",
+      "type": "works-stone-field-7-6",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-7-6"
+          "value": "works-stone-field-7-6"
         },
         {
           "name": "walkable",
@@ -335,12 +335,12 @@
     },
     {
       "id": 20,
-      "type": "palace-marble-field-0-7",
+      "type": "works-stone-field-0-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-0-7"
+          "value": "works-stone-field-0-7"
         },
         {
           "name": "walkable",
@@ -351,12 +351,12 @@
     },
     {
       "id": 21,
-      "type": "palace-marble-field-1-7",
+      "type": "works-stone-field-1-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-1-7"
+          "value": "works-stone-field-1-7"
         },
         {
           "name": "walkable",
@@ -367,12 +367,12 @@
     },
     {
       "id": 22,
-      "type": "palace-marble-field-2-7",
+      "type": "works-stone-field-2-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-2-7"
+          "value": "works-stone-field-2-7"
         },
         {
           "name": "walkable",
@@ -383,12 +383,12 @@
     },
     {
       "id": 23,
-      "type": "palace-marble-field-3-7",
+      "type": "works-stone-field-3-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-3-7"
+          "value": "works-stone-field-3-7"
         },
         {
           "name": "walkable",
@@ -399,12 +399,12 @@
     },
     {
       "id": 24,
-      "type": "palace-marble-field-4-7",
+      "type": "works-stone-field-4-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-4-7"
+          "value": "works-stone-field-4-7"
         },
         {
           "name": "walkable",
@@ -415,12 +415,12 @@
     },
     {
       "id": 25,
-      "type": "palace-marble-field-5-7",
+      "type": "works-stone-field-5-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-5-7"
+          "value": "works-stone-field-5-7"
         },
         {
           "name": "walkable",
@@ -431,12 +431,12 @@
     },
     {
       "id": 26,
-      "type": "palace-marble-field-6-7",
+      "type": "works-stone-field-6-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-6-7"
+          "value": "works-stone-field-6-7"
         },
         {
           "name": "walkable",
@@ -447,12 +447,12 @@
     },
     {
       "id": 27,
-      "type": "palace-marble-field-7-7",
+      "type": "works-stone-field-7-7",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-marble-field-7-7"
+          "value": "works-stone-field-7-7"
         },
         {
           "name": "walkable",

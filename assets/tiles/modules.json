@@ -251,11 +251,18 @@
     "anchorX": 4,
     "anchorY": 9
   },
-  "palace-marble-wall": {
+  "works-wall": {
     "firstgid": 3601,
     "width": 8,
     "height": 7,
     "anchorX": 4,
     "anchorY": 6
+  },
+  "works-stairs": {
+    "firstgid": 3810,
+    "width": 6,
+    "height": 4,
+    "anchorX": 3,
+    "anchorY": 3
   }
 }
