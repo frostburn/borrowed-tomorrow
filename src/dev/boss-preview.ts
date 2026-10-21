@@ -7,7 +7,7 @@ import { nativeTexture, bossLabel as label, bossPlacement as placement, pickBoss
 import boss from './art/benefactor-motion.svg?url';
 import domain from './art/benefactor-domain.svg?url';
 import portrait from './art/benefactor-portrait.svg?url';
-import { breathe, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
+import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 
 export {portrait as BOSS_PORTRAIT};
 const textureKey='benefactor-motion',domainKey='benefactor-domain';
@@ -33,7 +33,7 @@ export const BOSS_PRESENTATION:BattlePreview={
       return Uint8Array.from({length:360*288},(_,p)=>pixels[p*4+3]);
     });
     const p=placement(unit),image=scene.add.image(p.x,p.y,textureKey,0).setOrigin(.5,1);
-    breathe(scene,image,hp>0,frame=>{currentFrame=frame;});return image;
+    animateBoss(scene,image,hp>0,frame=>{currentFrame=frame;});return image;
   },
   attackTiming:unit=>unit.id===BOSS_ID?{contact:BOSS_ATTACK_CONTACT,duration:BOSS_ATTACK_DURATION}:undefined,
   attack:(scene,image,unit,elapsed)=>{if(unit.id===BOSS_ID)bossAttack(scene,image,elapsed);},

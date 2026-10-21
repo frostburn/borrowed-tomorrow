@@ -60,14 +60,18 @@ test('one workshop companion can preview pressure walk but cannot start an unsol
 test('the regulator cycles pressure with a parked pointer, discharges, and cancels attacks on restart',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto(`${route}&route=pressure`);await page.getByRole('button',{name:'Start Chapter Three preset',exact:true}).click();await page.mouse.move(0,0);
- const samples=(ms:number)=>page.evaluate(ms=>new Promise<{frame:string;motion:string;pixels:number}[]>(resolve=>{
-  const rows:{frame:string;motion:string;pixels:number}[]=[],start=performance.now();let last=-100;
+ const samples=(ms:number)=>page.evaluate(ms=>new Promise<{frame:string;motion:string;pixels:number;casing:number;drive:number}[]>(resolve=>{
+  const rows:{frame:string;motion:string;pixels:number;casing:number;drive:number}[]=[],start=performance.now();let last=-100;
+  const info=window.borrowedTomorrowPixels.inspect(),view=window.borrowedTomorrow.inspect().view,source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+  const hash=(p:Uint8ClampedArray)=>{let h=2166136261;for(const v of p)h=Math.imul(h^v,16777619);return h>>>0;};
+  const region=(ctx:CanvasRenderingContext2D,x:number,y:number,w:number,h:number)=>hash(ctx.getImageData(info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+335+x-view.scrollX)*info.physicalScale,info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+46+y)*info.physicalScale,w*info.physicalScale,h*info.physicalScale).data);
   const tick=()=>{if(performance.now()-last>100){last=performance.now();const s=window.borrowedTomorrow.inspect(),a=s.actors.find(a=>a.hero==='conduit-regulator');if(a){
    const c=document.querySelector<HTMLCanvasElement>('.pixel-output')!,p=c.getContext('2d')!.getImageData(0,0,c.width,c.height).data;let hash=2166136261;for(let i=0;i<p.length;i+=16)hash=Math.imul(hash^p[i],16777619);
-   rows.push({frame:a.frame,motion:a.motion,pixels:hash>>>0});
+   const ctx=c.getContext('2d')!;rows.push({frame:a.frame,motion:a.motion,pixels:hash>>>0,casing:region(ctx,100,46,58,34),drive:region(ctx,104,177,48,51)});
   }}if(performance.now()-start>=ms)resolve(rows);else requestAnimationFrame(tick);};tick();
  }),ms);
- const idle=await samples(3400);expect(new Set(idle.map(s=>s.frame)).size).toBe(8);expect(new Set(idle.map(s=>s.pixels)).size).toBeGreaterThan(3);
+ const idle=await samples(1800);expect(new Set(idle.map(s=>s.frame)).size).toBe(8);expect(idle.every(s=>s.motion==='mechanical')).toBe(true);expect(new Set(idle.map(s=>s.pixels)).size).toBeGreaterThan(3);
+ expect(new Set(idle.map(s=>s.casing)).size,'the cowl and casing remain rigid through the idle cycle').toBe(1);expect(new Set(idle.map(s=>s.drive)).size,'the crank and pistons visibly operate').toBeGreaterThan(3);
  for(let i=0;i<2;i++){await ready(page);await page.getByRole('button',{name:/^F\s+Defend$/}).click();}
  await ready(page);await page.getByRole('button',{name:/^F\s+Defend$/}).click();
  const attack=await samples(1800);expect(attack.some(s=>Number(s.frame)>=8&&s.motion==='attack')).toBe(true);await expect.poll(async()=>(await inspect(page)).battle!.round).toBe(2);

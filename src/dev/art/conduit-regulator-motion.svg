@@ -24,6 +24,39 @@
    <path d="M67 229H103V233H64Z M152 229H189V233H151Z" fill="#cfaf70" />
    <path d="M78 219 88 220 92 226H71Z M162 220 172 218 181 226H157Z" fill="#e1c68c" />
   </g>
+  <g id="rod-left">
+   <path d="M135 190 113 207.3205" stroke="#101d28" stroke-width="7" />
+   <path d="M135 190 113 207.3205" stroke="#b99b63" stroke-width="3" />
+  </g>
+  <g id="rod-right">
+   <path d="M121 190 143 207.3205" stroke="#101d28" stroke-width="7" />
+   <path d="M121 190 143 207.3205" stroke="#9c784e" stroke-width="3" />
+  </g>
+  <g id="piston-left">
+   <path d="M110 183.3205H116V211.3205H110Z" fill="#101d28" />
+   <path d="M112 184.3205H114V207.3205H112Z" fill="#c0c9b4" />
+   <path d="M108 204.3205H118V210.3205H108Z" fill="#cfaf70" />
+  </g>
+  <g id="piston-right">
+   <path d="M140 183.3205H146V211.3205H140Z" fill="#101d28" />
+   <path d="M142 184.3205H144V207.3205H142Z" fill="#c0c9b4" />
+   <path d="M138 204.3205H148V210.3205H138Z" fill="#cfaf70" />
+  </g>
+  <g id="drive-frame">
+   <path d="M105 174H121V201H105Z M135 174H151V201H135Z" fill="#101d28" />
+   <path d="M108 177H118V198H108Z M138 177H148V198H138Z" fill="#7c6247" />
+   <path d="M108 177H112V198H108Z M138 177H142V198H138Z" fill="#b99b63" />
+   <path d="M104 194H122V200H104Z M134 194H152V200H134Z" fill="#cfaf70" />
+   <path d="M120 175H136V187H120Z" fill="#294b4e" />
+  </g>
+  <g id="crank">
+   <path d="M122 178H134L141 185V195L134 202H122L115 195V185Z" fill="#101d28" />
+   <path d="M123 181H133L138 186V194L133 199H123L118 194V186Z" fill="#b99b63" />
+   <path d="M124 184H132L135 187V193L132 196H124L121 193V187Z" fill="#294b4e" />
+   <path d="M121 188H135V192H121Z M126 183H130V197H126Z" fill="#cfaf70" />
+   <path d="M127 181H131V185H127Z" fill="#a95035" />
+   <path d="M126 188H130V192H126Z" fill="#efe0ad" />
+  </g>
   <g id="left-arm">
    <path d="M81 99 67 97 49 122 51 149 65 160 79 149 75 127 87 114Z" fill="#101d28" />
    <path d="M73 106 64 104 55 123 57 142 65 149 72 143 68 125 80 111Z" fill="#9c784e" />
@@ -76,163 +109,235 @@
    <path d="M127 110H132V115H127Z" fill="#294b4e" />
   </g>
   <g id="exhaust">
-   <path d="M200 15 194 8 196 3 203 0 208 5 207 10 214 14Z" fill="#8da49a" opacity=".55" />
+   <path d="M200 15 197 12 199 9 203 10 206 8 209 11 208 14 211 15Z" fill="#8da49a" opacity=".65" />
   </g>
  </defs>
  <svg x="0" y="0" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 0) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 0) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 0)" />
-  <use href="#cowl" transform="translate(0 0)" />
-  <use href="#dial" transform="translate(0 0)" />
-  <use href="#exhaust" transform="translate(-1 0)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 0) rotate(0 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 0)" />
+  <use href="#rod-left" transform="translate(135.00000 190.00000) rotate(-0.00000) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(121.00000 190.00000) rotate(0.00000) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 0.00000)" />
+  <use href="#piston-right" transform="translate(0 0.00000)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(0 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 0) translate(204 15) scale(1) translate(-204 -15)" opacity="1.0" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(0 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="0" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -0.5) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -0.5) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -1)" />
-  <use href="#cowl" transform="translate(0 -1)" />
-  <use href="#dial" transform="translate(0 -1)" />
-  <use href="#exhaust" transform="translate(0 3)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -1) rotate(4 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -1)" />
+  <use href="#rod-left" transform="translate(132.94975 194.94975) rotate(-6.34884) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(123.05025 185.05025) rotate(6.34884) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 7.27631)" />
+  <use href="#piston-right" transform="translate(0 -2.62318)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(45 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -2) translate(204 15) scale(1.2) translate(-204 -15)" opacity="0.77" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="0" y="240" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -1) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -1) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -2)" />
-  <use href="#cowl" transform="translate(0 -2)" />
-  <use href="#dial" transform="translate(0 -2)" />
-  <use href="#exhaust" transform="translate(1 2)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(8 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+  <use href="#rod-left" transform="translate(128.00000 197.00000) rotate(-19.39442) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(128.00000 183.00000) rotate(19.39442) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 13.32267)" />
+  <use href="#piston-right" transform="translate(0 -0.67733)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(90 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -4) translate(204 15) scale(1.4) translate(-204 -15)" opacity="0.54" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(16 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="240" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -1.5) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -1.5) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -3)" />
-  <use href="#cowl" transform="translate(0 -3)" />
-  <use href="#dial" transform="translate(0 -3)" />
-  <use href="#exhaust" transform="translate(-1 1)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -3) rotate(12 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -3)" />
+  <use href="#rod-left" transform="translate(123.05025 194.94975) rotate(-30.75183) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(132.94975 185.05025) rotate(30.75183) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 13.76336)" />
+  <use href="#piston-right" transform="translate(0 3.86387)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(135 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -6) translate(204 15) scale(1.6) translate(-204 -15)" opacity="0.30999999999999994" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(24 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="0" y="480" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -2) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -2) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -4)" />
-  <use href="#cowl" transform="translate(0 -4)" />
-  <use href="#dial" transform="translate(0 -4)" />
-  <use href="#exhaust" transform="translate(0 0)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -4) rotate(16 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -4)" />
+  <use href="#rod-left" transform="translate(121.00000 190.00000) rotate(-35.18524) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(135.00000 190.00000) rotate(35.18524) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 9.51231)" />
+  <use href="#piston-right" transform="translate(0 9.51231)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(180 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 0) translate(204 15) scale(1) translate(-204 -15)" opacity="1.0" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-16 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="480" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -1.5) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -1.5) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -3)" />
-  <use href="#cowl" transform="translate(0 -3)" />
-  <use href="#dial" transform="translate(0 -3)" />
-  <use href="#exhaust" transform="translate(1 3)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -3) rotate(12 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -3)" />
+  <use href="#rod-left" transform="translate(123.05025 185.05025) rotate(-30.75183) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(132.94975 194.94975) rotate(30.75183) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 3.86387)" />
+  <use href="#piston-right" transform="translate(0 13.76336)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(225 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -2) translate(204 15) scale(1.2) translate(-204 -15)" opacity="0.77" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-12 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="0" y="720" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -1) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -1) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -2)" />
-  <use href="#cowl" transform="translate(0 -2)" />
-  <use href="#dial" transform="translate(0 -2)" />
-  <use href="#exhaust" transform="translate(-1 2)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(8 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+  <use href="#rod-left" transform="translate(128.00000 183.00000) rotate(-19.39442) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(128.00000 197.00000) rotate(19.39442) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 -0.67733)" />
+  <use href="#piston-right" transform="translate(0 13.32267)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(270 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -4) translate(204 15) scale(1.4) translate(-204 -15)" opacity="0.54" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="720" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -0.5) rotate(0 66 110)" />
-  <use href="#right-arm" transform="translate(0 -0.5) rotate(0 190 110)" />
-  <use href="#boiler" transform="translate(0 -1)" />
-  <use href="#cowl" transform="translate(0 -1)" />
-  <use href="#dial" transform="translate(0 -1)" />
-  <use href="#exhaust" transform="translate(0 1)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -1) rotate(4 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -1)" />
+  <use href="#rod-left" transform="translate(132.94975 185.05025) rotate(-6.34884) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(123.05025 194.94975) rotate(6.34884) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 -2.62318)" />
+  <use href="#piston-right" transform="translate(0 7.27631)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(315 128 190)" />
+  <use href="#left-arm" />
+  <use href="#right-arm" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -6) translate(204 15) scale(1.6) translate(-204 -15)" opacity="0.30999999999999994" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-4 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="0" y="960" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -1) rotate(-12 66 110)" />
-  <use href="#right-arm" transform="translate(0 -1) rotate(12 190 110)" />
-  <use href="#boiler" transform="translate(0 -2)" />
-  <use href="#cowl" transform="translate(0 -2)" />
-  <use href="#dial" transform="translate(0 -2)" />
-  <use href="#exhaust" transform="translate(1 0)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -2) rotate(20 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -2)" />
+  <use href="#rod-left" transform="translate(135.00000 190.00000) rotate(-0.00000) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(121.00000 190.00000) rotate(0.00000) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 0.00000)" />
+  <use href="#piston-right" transform="translate(0 0.00000)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(0 128 190)" />
+  <use href="#left-arm" transform="rotate(-12 66 110)" />
+  <use href="#right-arm" transform="rotate(12 190 110)" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 0) translate(204 15) scale(1) translate(-204 -15)" opacity="1.0" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(20 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="960" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 -2) rotate(-25 66 110)" />
-  <use href="#right-arm" transform="translate(0 -2) rotate(25 190 110)" />
-  <use href="#boiler" transform="translate(0 -4)" />
-  <use href="#cowl" transform="translate(0 -4)" />
-  <use href="#dial" transform="translate(0 -4)" />
-  <use href="#exhaust" transform="translate(-1 3)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 -4) rotate(34 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 -4)" />
+  <use href="#rod-left" transform="translate(128.00000 197.00000) rotate(-19.39442) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(128.00000 183.00000) rotate(19.39442) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 13.32267)" />
+  <use href="#piston-right" transform="translate(0 -0.67733)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(90 128 190)" />
+  <use href="#left-arm" transform="rotate(-25 66 110)" />
+  <use href="#right-arm" transform="rotate(25 190 110)" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -2) translate(204 15) scale(1.2) translate(-204 -15)" opacity="0.77" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(34 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="0" y="1200" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 0.5) rotate(12 66 110)" />
-  <use href="#right-arm" transform="translate(0 0.5) rotate(-12 190 110)" />
-  <use href="#boiler" transform="translate(0 1)" />
-  <use href="#cowl" transform="translate(0 1)" />
-  <use href="#dial" transform="translate(0 1)" />
-  <use href="#exhaust" transform="translate(0 2)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 1) rotate(-20 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 1)" />
+  <use href="#rod-left" transform="translate(121.00000 190.00000) rotate(-35.18524) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(135.00000 190.00000) rotate(35.18524) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 9.51231)" />
+  <use href="#piston-right" transform="translate(0 9.51231)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(180 128 190)" />
+  <use href="#left-arm" transform="rotate(12 66 110)" />
+  <use href="#right-arm" transform="rotate(-12 190 110)" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -4) translate(204 15) scale(1.4) translate(-204 -15)" opacity="0.54" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-20 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
  <svg x="256" y="1200" width="256" height="240" viewBox="0 0 256 240">
   <use href="#rear-foot" />
   <use href="#pipes" />
   <use href="#legs" />
-  <use href="#left-arm" transform="translate(0 0) rotate(5 66 110)" />
-  <use href="#right-arm" transform="translate(0 0) rotate(-5 190 110)" />
-  <use href="#boiler" transform="translate(0 0)" />
-  <use href="#cowl" transform="translate(0 0)" />
-  <use href="#dial" transform="translate(0 0)" />
-  <use href="#exhaust" transform="translate(1 1)" />
-  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="translate(0 0) rotate(-8 130 112)" />
-  <path d="M127 110H132V115H127Z" fill="#294b4e" transform="translate(0 0)" />
+  <use href="#rod-left" transform="translate(128.00000 183.00000) rotate(-19.39442) translate(-135 -190)" />
+  <use href="#rod-right" transform="translate(128.00000 197.00000) rotate(19.39442) translate(-121 -190)" />
+  <use href="#piston-left" transform="translate(0 -0.67733)" />
+  <use href="#piston-right" transform="translate(0 13.32267)" />
+  <use href="#drive-frame" />
+  <use href="#crank" transform="rotate(270 128 190)" />
+  <use href="#left-arm" transform="rotate(5 66 110)" />
+  <use href="#right-arm" transform="rotate(-5 190 110)" />
+  <use href="#boiler" />
+  <use href="#cowl" />
+  <use href="#dial" />
+  <use href="#exhaust" transform="translate(0 -6) translate(204 15) scale(1.6) translate(-204 -15)" opacity="0.30999999999999994" />
+  <path d="M128 112 139 104 132 115Z" fill="#a95035" transform="rotate(-8 130 112)" />
+  <path d="M127 110H132V115H127Z" fill="#294b4e" />
  </svg>
 </svg>

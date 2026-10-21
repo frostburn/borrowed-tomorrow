@@ -5,7 +5,7 @@ import type { CompanionId } from '../rules/party';
 import { offset, toPixel } from '../rules/hex';
 import { CONDUIT_ENCOUNTERS, REGULATOR_ID, conduitTurn, prepareConduit, regulatorUnit, type ConduitRoute } from './conduit-battle';
 import { nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
-import { breathe, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
+import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 import motion from './art/conduit-regulator-motion.svg?url';
 import chamber from './art/conduit-chamber.svg?url';
 import portrait from './art/conduit-regulator-portrait.svg?url';
@@ -47,7 +47,7 @@ export function conduitPresentation(route:ConduitRoute):BattlePreview{
         return Uint8Array.from({length:256*240},(_,p)=>pixels[p*4+3]);
       });
       const p=bossPlacement(u),image=scene.add.image(p.x,p.y,textureKey,0).setOrigin(.5,1);
-      breathe(scene,image,hp>0,frame=>{currentFrame=frame;});return image;
+      animateBoss(scene,image,hp>0,frame=>{currentFrame=frame;},{motion:'mechanical',cycleMs:1600});return image;
     },
     attackTiming:u=>u.id===REGULATOR_ID?{contact:BOSS_ATTACK_CONTACT,duration:BOSS_ATTACK_DURATION}:undefined,
     attack:(scene,image,u,elapsed)=>{if(u.id===REGULATOR_ID)bossAttack(scene,image,elapsed);},
