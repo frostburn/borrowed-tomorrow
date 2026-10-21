@@ -1,9 +1,30 @@
 """Lossless small-page IO shared by the authoring importer."""
 import json,math,re
+from collections import deque
 from io import BytesIO
 from PIL import Image,ImageChops
 S=24
 MAX_IMAGE_BYTES=131072
+
+def clean_cutout(image):
+    """Binary alpha and one connected silhouette, before/after native sampling."""
+    pixels=image.getchannel('A').point(lambda a:255 if a>=128 else 0).tobytes()
+    seen=bytearray(len(pixels));largest=[]
+    for i,alpha in enumerate(pixels):
+        if not alpha or seen[i]:continue
+        todo=deque([i]);seen[i]=1;component=[]
+        while todo:
+            at=todo.popleft();component.append(at);x,y=at%image.width,at//image.width
+            for xx,yy in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
+                if 0<=xx<image.width and 0<=yy<image.height:
+                    k=yy*image.width+xx
+                    if pixels[k] and not seen[k]:seen[k]=1;todo.append(k)
+        if len(component)>len(largest):largest=component
+    if not largest:raise ValueError('Source contains no opaque silhouette')
+    alpha=bytearray(len(pixels))
+    for i in largest:alpha[i]=255
+    image.putalpha(Image.frombytes('L',image.size,bytes(alpha)))
+    return image
 
 def load_tiles(root):
     catalog=json.loads((root/'assets/tiles/chapter-one.tileset.json').read_text());tiles=[]

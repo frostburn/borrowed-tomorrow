@@ -1,0 +1,45 @@
+# Imperial conduit scenery modules
+
+Built-in Image Gen supplied three independent transparent prop sources in this work chat. The user has authorized publishing artwork generated here. The large sources stay outside git; only their small native tile pages are published. No whole-map painting was sliced into tiles.
+
+The sources share the approved railway art's slightly elevated orthographic front view, level horizontal edges, rounded green iron, warm brass and fine painted pixel detail. The accepted vessel and factory wall guide the exterior as well as the interior. This is dimensional illustrated scenery rather than flat diagram tiles. The existing native railway, cave and paving pixels remain unchanged.
+
+## Production briefs
+
+- **Receiving pavilion:** three broad arched bays in gray quarry masonry beneath a riveted green barrel roof, with central glazed double doors, brass retaining collars, a modest sun medallion and warm lamps. This replaces the original limestone/slate gate in its stable 14 x 9 module. Native budget: 336 x 216; exported by `import-palace.py` with the other exterior modules.
+- **Instrument bank:** one continuous low green-enamel brass/iron console, five round ivory pressure gauges with black pointers, valve wheels, short softly cyan glass feed tubes and a worn base. Slightly elevated orthographic front view shows the tabletop and legs. Rounded metal, restrained highlights and cool shadows match the locomotives. No room, floor island, people, labels, numbers, fog or rays. Transparent background. Native budget: 192 x 96.
+- **Restrained vessel:** one faceless milky-crystal obelisk held by dark iron ribs, chains and a circular brass/green boiler base, with paired short feed pipes. Faint cool light; no face, humanoid, deity or monster anatomy. Slightly elevated orthographic front view, rounded detailed machinery and restrained highlights. No chamber, floor island, people, labels, loose particles, cloud or rays. Complete silhouette on transparency. Native budget: 240 x 312.
+
+## Native export
+
+`import-chapter-three.py` and `chapter-three-scenery.json` record the original gate/controls/vessel import. The gate's current replacement comes from the exterior importer below; do not re-import its rejected original source. Controls and vessel remain accepted and unchanged. The importers trim the largest opaque silhouette, remove detached alpha specks, sample once with nearest-neighbor interpolation and preserve selected source RGB. The resulting modules are 14 x 9, 8 x 3 and 9 x 13 tiles. Their 24px pieces join the shared catalog without repacking existing pages or changing earlier IDs.
+
+The native page writer verifies decoded RGBA equality, dimensions no greater than 192 x 192 and a 128 KB cap for every image before replacing files. The terrain-edge baker appends reusable joins. Gameplay reads only these lossless PNG/WebP pages, ordinary Tiled JSON and tile properties; no source art, image conversion, recoloring or resizing runs in the browser.
+
+Sorted pieces use one ground anchor per module. The gate's front step, instrument-bank base and vessel's lower footprint block movement; their overhead pixels do not create rectangular invisible walls. Doors and consoles have map-owned clickable rectangles with reachable approaches. Stage the actors in clear space beside the props, and leave every tactical hex clear.
+
+## Imperial exterior
+
+Built-in Image Gen supplied three independent exterior modules using the accepted restrained vessel and factory window bay as material/rendering references. `imperial-exterior-prompts.json` preserves the exact prompts and `palace.json` records native export budgets. The former limestone/slate palace is replaced; the stable module names remain for existing maps and review links.
+
+- **Pressure hall (`palace-portico`):** a broad ribbed green-iron pressure dome, heavy retaining bands and a brass sun crest above a gray masonry entrance. Paired cylindrical pipe buttresses frame dark green double doors; low barrel-roofed shoulders hold factory windows. Upper-left daylight, cool recesses, fine dimensional painted pixel detail and genuine transparency. No exposed crystal, people, landscape, ground island, lettering, smoke or particles. Fixed canvas: 384 x 312; content fits within 384 x 288 to reserve headroom below the cinematic strip.
+- **Factory wing (`palace-wing`):** repeatable two-story quarry-stone facade with two broad arched factory windows per story, green-iron barrel roof, thick enamel supports, brass feed header and connected downpipes. Level joining edges and horizontal base, matching camera and light, no perspective sidewalls or palace ornament. Fixed canvas: 192 x 240; content fits within 192 x 224.
+- **Receiving pavilion (`palace-gate`):** the three-bay entrance described above, using the same materials and brass sun mark. Fixed canvas: 336 x 216.
+
+Run `python3 assets/tiles/import-palace.py HALL.png WING.png PAVILION.png`. It keeps fixed module extents, samples once without palette reduction and removes detached alpha fragments before and after sampling. The hall is 16 x 13 tiles, each wing 8 x 10 and the pavilion 14 x 9. Northglass joins the hall to three wings and the receiving pavilion, with the accepted `works-stairs` opening the approach. The hall projects one tile forward; its two foot rows block the wall while the stair floor opens the central approach. Opening and departure shots frame the complete pressure dome below the cinematic title strip. The arrest arena repeats the lower wing bays, clipped above the map edge so every fighting cell remains clear. This replacement changes only the three exterior modules' pixels/definitions (GIDs 2936–3061 and 3313–3600); it appends no page and preserves every accepted interior tile.
+
+## Vessel-derived engine works
+
+The relayhall and conduit are working facilities behind the imperial exterior. The accepted vessel supplied the reference image for all five new sources through built-in Image Gen. Their exact prompts are in `engine-works-prompts.json`; `engine-works.json` records native budgets and pipe registrations. No new room painting was sliced into tiles.
+
+- **Factory wall:** gray masonry, a broad arched iron factory window, rounded green enamel supports and brass feed pipes. Orthographic front view, shallow dimensional relief and warm upper-left highlights. The fixed native module is 192 x 168, aligned at its lower edge. Its steel base supplies cutaway strips.
+- **Masonry floor:** a seamless medium-value warm-gray quarry-stone field with broad worn surfaces and restrained joints. Opaque top-down 192 x 192; no white checker pattern, marble veins or decorative inlays.
+- **Steel deck:** a seamless 192 x 192 field of long muted green-gray steel plates, recessed seams and sparing brass bolts. Broad matte centers and restrained wear keep dark-clothed actors readable.
+- **Metal stairs:** four gray-green iron treads, brass nosing, thick low side stringers and a top landing. Transparent front view from above; fixed 144 x 96 native module, drawn below actors as walkable floor.
+- **Pipe fittings:** eight independent transparent pieces: horizontal, vertical, four elbows, a south-facing T and a cross. The same rounded enamel and brass as the vessel. Each exports to 24 x 24 with connection centers registered at cell-edge midpoints, using selected source RGB without procedural repainting.
+
+Run `python3 assets/tiles/import-engine-works.py WALL.png STONE.png DECK.png STAIRS.png PIPES.png`. The importer cleans alpha before and after sampling, replaces only the rejected marble wall/cutaway/floor slots (3601–3724), and appends steel, stairs and fittings. Rejected marble definitions and pixels are removed. All other old tile IDs and decoded pixels, including the imperial exterior, remain intact. Page boundaries stay stable; every exported image is lossless, no greater than 192 x 192 and no larger than 128 KB. Large sources stay outside git.
+
+The gallery has masonry floors and steel service walks between its stair, workbench and instrument banks. Its intake manifold descends into the central control table. The cavern chamber has steel servicing decks; a joined feed connects the vessel to the right-hand console, with a pressure branch and a pipe beneath the auxiliary governor. Feed lights follow the actual pipe run and hide after shutdown. Gallery/store battle floors share the masonry and factory wall bays; both regulator floors use steel with cavern framing. The outdoor arrest remains on courtyard paving. All approaches, casts and tactical cells remain on connected floor.
+
+Run `python3 assets/tiles/blend-terrains.py` after importing or editing the interior floors. Layers marked `blendEdges` receive seven-pixel perimeter joins over the actual stone beneath them. The chamber's two steel layers share `blendGroup: service-deck`, keeping their internal connection solid. The same joins soften all four interior encounter floors. These are new reusable 24 x 24 alpha variants in bounded native pages, not blur or runtime filtering; source RGB, base tile IDs, collision, walls, stairs and props remain intact.

@@ -1,0 +1,353 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-081",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 21,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-081.webp",
+  "imagewidth": 192,
+  "imageheight": 72,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "grass-join-7-0-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-7-0-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "grass-join-6-0-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-0-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "grass-join-7-1-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-7-1-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "grass-join-6-1-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-1-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "grass-join-7-2-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-7-2-8"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "grass-join-6-2-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-2-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "grass-join-6-3-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-3-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "grass-join-6-4-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-4-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "grass-join-6-5-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-5-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "grass-join-6-6-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-6-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "grass-join-6-7-2",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-7-2"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "grass-join-7-1-12",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-7-1-12"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "grass-join-0-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-0-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "grass-join-1-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-1-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "grass-join-2-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-2-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "grass-join-3-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-3-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "grass-join-4-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-4-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "grass-join-5-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-5-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "grass-join-6-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "grass-join-7-1-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-7-1-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "grass-join-6-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "grass-join-6-1-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

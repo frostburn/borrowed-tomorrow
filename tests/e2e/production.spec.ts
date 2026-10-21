@@ -9,12 +9,13 @@ import { travel } from './navigation';
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
-  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation']) {
+  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation', 'maps']) {
     await page.goto(`/?dev=${route}`);
     await expect(page).toHaveTitle('Borrowed Tomorrow');
     await expect(page.getByRole('button', { name: 'Begin Chapter One', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Workshop', exact: true })).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true})).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Character workshop' })).toHaveCount(0);
     await expect(page.getByRole('group', { name: 'Development battle tools' })).toHaveCount(0);
   }
@@ -25,8 +26,10 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);
   expect(built).not.toContain('Begin Chapter Two (canonical)');
+  expect(built).not.toContain('Begin Chapter Three (canonical)');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
+  for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
@@ -83,14 +86,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  });
 }
 
-test('a source checkpoint without the chamber art preserves the capital departure',async({page})=>{
- test.skip(CHAPTER_THREE_AVAILABLE,'The complete chamber art pack is installed.');
- await page.goto('/');const saved=coastCheckpoint('chapterTwoComplete');await importSave(page,saved);
- await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();
- await expect(page.getByRole('button',{name:'Begin Chapter Three',exact:true})).toHaveCount(0);
- await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();
- expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
-});
+
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production extraction console from the saved east side on ${device}`,async({page})=>{

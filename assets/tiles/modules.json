@@ -215,5 +215,54 @@
     "height": 5,
     "anchorX": 1,
     "anchorY": 4
+  },
+  "palace-gate": {
+    "firstgid": 2936,
+    "width": 14,
+    "height": 9,
+    "anchorX": 7,
+    "anchorY": 8
+  },
+  "palace-controls": {
+    "firstgid": 3062,
+    "width": 8,
+    "height": 3,
+    "anchorX": 4,
+    "anchorY": 2
+  },
+  "palace-vessel": {
+    "firstgid": 3086,
+    "width": 9,
+    "height": 13,
+    "anchorX": 4,
+    "anchorY": 12
+  },
+  "palace-portico": {
+    "firstgid": 3313,
+    "width": 16,
+    "height": 13,
+    "anchorX": 8,
+    "anchorY": 12
+  },
+  "palace-wing": {
+    "firstgid": 3521,
+    "width": 8,
+    "height": 10,
+    "anchorX": 4,
+    "anchorY": 9
+  },
+  "works-wall": {
+    "firstgid": 3601,
+    "width": 8,
+    "height": 7,
+    "anchorX": 4,
+    "anchorY": 6
+  },
+  "works-stairs": {
+    "firstgid": 3810,
+    "width": 6,
+    "height": 4,
+    "anchorX": 3,
+    "anchorY": 3
   }
 }

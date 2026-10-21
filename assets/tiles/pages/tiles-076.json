@@ -1,0 +1,1441 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-076",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-076.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "palace-portico-0-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-0-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "palace-portico-1-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-1-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "palace-portico-2-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-2-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "palace-portico-3-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-3-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "palace-portico-4-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-4-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "palace-portico-5-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-5-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "palace-portico-6-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-6-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "palace-portico-7-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-7-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "palace-portico-8-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-8-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "palace-portico-9-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-9-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "palace-portico-10-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-10-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "palace-portico-11-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-11-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "palace-portico-12-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-12-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "palace-portico-13-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-13-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "palace-portico-14-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-14-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "palace-portico-15-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-15-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "palace-portico-0-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-0-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "palace-portico-1-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-1-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "palace-portico-2-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-2-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "palace-portico-3-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-3-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "palace-portico-4-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-4-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "palace-portico-5-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-5-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "palace-portico-6-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-6-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "palace-portico-7-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-7-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "palace-portico-8-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-8-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "palace-portico-9-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-9-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "palace-portico-10-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-10-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "palace-portico-11-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-11-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "palace-portico-12-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-12-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "palace-portico-13-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-13-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "palace-portico-14-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-14-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "palace-portico-15-9",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-15-9"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "palace-portico-0-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-0-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "palace-portico-1-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-1-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "palace-portico-2-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-2-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "palace-portico-3-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-3-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "palace-portico-4-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-4-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "palace-portico-5-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-5-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "palace-portico-6-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-6-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "palace-portico-7-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-7-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "palace-portico-8-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-8-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "palace-portico-9-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-9-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "palace-portico-10-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-10-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "palace-portico-11-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-11-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "palace-portico-12-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-12-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "palace-portico-13-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-13-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "palace-portico-14-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-14-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "palace-portico-15-10",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-15-10"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "palace-portico-0-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-0-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "palace-portico-1-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-1-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "palace-portico-2-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-2-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "palace-portico-3-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-3-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "palace-portico-4-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-4-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "palace-portico-5-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-5-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "palace-portico-6-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-6-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "palace-portico-7-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-7-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "palace-portico-8-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-8-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "palace-portico-9-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-9-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "palace-portico-10-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-10-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "palace-portico-11-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-11-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "palace-portico-12-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-12-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "palace-portico-13-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-13-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "palace-portico-14-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-14-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "palace-portico-15-11",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-portico-15-11"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

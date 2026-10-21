@@ -1,0 +1,1446 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-068",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 64,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-068.webp",
+  "imagewidth": 192,
+  "imageheight": 192,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "palace-gate-8-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-8-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "palace-gate-9-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-9-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "palace-gate-10-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-10-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "palace-gate-11-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-11-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "palace-gate-12-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-12-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "palace-gate-13-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-13-4"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 115
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "palace-gate-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-0-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "palace-gate-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-1-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "palace-gate-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-2-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "palace-gate-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-3-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "palace-gate-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-4-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "palace-gate-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-5-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "palace-gate-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-6-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "palace-gate-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-7-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "palace-gate-8-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-8-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "palace-gate-9-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-9-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "palace-gate-10-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-10-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "palace-gate-11-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-11-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "palace-gate-12-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-12-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "palace-gate-13-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-13-5"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 91
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "palace-gate-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-0-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "palace-gate-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-1-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "palace-gate-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-2-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "palace-gate-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-3-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "palace-gate-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-4-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "palace-gate-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-5-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "palace-gate-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-6-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "palace-gate-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-7-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "palace-gate-8-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-8-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "palace-gate-9-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-9-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "palace-gate-10-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-10-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "palace-gate-11-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-11-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "palace-gate-12-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-12-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "palace-gate-13-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-13-6"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "palace-gate-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-0-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "palace-gate-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-1-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "palace-gate-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-2-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "palace-gate-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-3-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "palace-gate-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-4-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "type": "palace-gate-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-5-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "palace-gate-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-6-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "type": "palace-gate-7-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-7-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "palace-gate-8-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-8-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "palace-gate-9-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-9-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "palace-gate-10-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-10-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "palace-gate-11-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-11-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "type": "palace-gate-12-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-12-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "type": "palace-gate-13-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-13-7"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 43
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "type": "palace-gate-0-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-0-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "type": "palace-gate-1-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-1-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "palace-gate-2-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-2-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "palace-gate-3-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-3-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": "palace-gate-4-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-4-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "type": "palace-gate-5-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-5-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "type": "palace-gate-6-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-6-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "type": "palace-gate-7-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-7-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "type": "palace-gate-8-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-8-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "type": "palace-gate-9-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-9-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "type": "palace-gate-10-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-10-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "type": "palace-gate-11-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-11-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "type": "palace-gate-12-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-12-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "type": "palace-gate-13-8",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-gate-13-8"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 19
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "type": "palace-controls-0-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-0-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "module",
+          "type": "string",
+          "value": "palace-controls"
+        },
+        {
+          "name": "moduleWidth",
+          "type": "int",
+          "value": 8
+        },
+        {
+          "name": "moduleHeight",
+          "type": "int",
+          "value": 3
+        },
+        {
+          "name": "anchorX",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "name": "anchorY",
+          "type": "int",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "type": "palace-controls-1-0",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "palace-controls-1-0"
+        },
+        {
+          "name": "sortOffset",
+          "type": "int",
+          "value": 67
+        },
+        {
+          "name": "empty",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

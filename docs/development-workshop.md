@@ -1,4 +1,12 @@
-# Character workshop
+# Development workshop
+
+The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen exploration maps and thirteen tiled battlefields without loading or changing campaign progress. Choose a chapter and World/Battle, then select the map by its stable ID. The initial view is Northglass.
+
+Drag with the mouse or scroll to pan; touch scrolling also works. Review at 1x or 2x integer zoom. Click a cell, use the X/Y fields, or move the selection with arrow keys. Arrival centers the map's first named arrival. The inspector lists the cell's tile layers, GIDs, art names, native page files and frame numbers. Hidden tiles remain listed so a bad seam can still be identified after isolating a layer.
+
+Layer buttons toggle individual tile layers; Only isolates one and Reset layers restores the full stack. Story flags compare authored scenery phases. Scene cast previews the map-owned initial actor placements. Actors, Grid, Collision and Markers are separate overlays; collision follows both the selected story flags and visible tile layers. Painted Chapter Four maps retain their native dimensions and offer people/collision review, with a retry message when their optional art is unavailable.
+
+**Copy reference** copies the map ID, selected cell/pixel coordinates, scene, flags, tile sources and a review link. The address bar also retains map, selection, pan, integer zoom, overlays and layer visibility, so a copied link reopens that view. **Download view PNG** exports the visible map crop for attaching to feedback. No campaign saves, inventory, character builds or repository map files are written. All of this code remains Vite-only.
 
 Run `npm run dev`, then choose **Workshop** on the title screen, or open `/?dev=workshop`. The former `/?dev=inventory` link opens the Equipment tab. The workshop exists only in Vite's dev server. `npm run build` and `npm run preview` include the campaign inventory; neither query parameter enables the workshop there.
 
@@ -7,6 +15,11 @@ Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Ea
 ## Canonical Chapter Two start
 
 On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-10 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
+
+
+## Canonical Chapter Three start
+
+On the Vite dev title, **Begin Chapter Three (canonical)** starts a fresh level-5 save (420 XP) with Nell, Orrin and Kit at the capital medical siding. It records the loading-gate raid, all rescued passengers and the victory over Petra at the crossing; she has refused Alban but has not joined. Nell carries her brass reflector, Kit his courier sight, and Orrin the reinforced work coat. The remaining earned marks and five bandages are available, everyone has full HP/focus, and the capital arrival replays normally. It uses no workshop settings and follows the same autosave confirmation/manual-slot rules as the Chapter Two start. The factory and button are absent from production.
 
 ## Future companions
 

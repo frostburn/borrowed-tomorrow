@@ -1,0 +1,17 @@
+{
+  "wall":{"name":"works-wall","input":0,"size":[192,168],"firstgid":3601,"block":[8,0]},
+  "stone":{"name":"works-stone","input":1,"size":[192,192],"firstgid":3661},
+  "deck":{"name":"works-deck","input":2,"size":[192,192]},
+  "stairs":{"name":"works-stairs","input":3,"size":[144,96]},
+  "cutaway":{"name":"works-cutaway","firstgid":3657,"crop":[72,120,120,168]},
+  "pipes":[
+    {"name":"works-pipe-h","crop":[150,119,520,281],"ports":"WE"},
+    {"name":"works-pipe-v","crop":[681,32,826,338],"ports":"NS"},
+    {"name":"works-pipe-ne","crop":[254,373,520,641],"ports":"NE"},
+    {"name":"works-pipe-nw","crop":[566,373,831,641],"ports":"NW"},
+    {"name":"works-pipe-se","crop":[253,744,520,998],"ports":"SE"},
+    {"name":"works-pipe-sw","crop":[566,743,832,998],"ports":"SW"},
+    {"name":"works-pipe-t","crop":[150,1114,520,1381],"ports":"WES"},
+    {"name":"works-pipe-cross","crop":[566,1022,941,1381],"ports":"NWES"}
+  ]
+}

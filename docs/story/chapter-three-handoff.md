@@ -25,3 +25,9 @@ Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature
 Celia’s introduction and faith conflict begin on the Chapter Four sanctuary road. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
 The implemented chapter rescues Tomas, disables extraction and makes the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
+
+## Tiled implementation and development start
+
+The title’s Vite-only canonical Chapter Three start records the loading-gate route and the complete evacuation at 420 XP, with Nell/Orrin/Kit active and their earned equipment. It replays the capital arrival; Petra is not yet recruited. Regular Chapter Two departures still preserve the player’s actual raid choice, formation, resources and gear.
+
+The three exploration maps and five battle floors use native tile layers. Interactions, arrivals and initial casts belong to their Tiled map; new layouts restore covered current-format saves onto connected floor. Dena and the same passengers continue into the medical siding. The gallery fitters leave with Tomas after the rescue. All equipment rewards, both intake approaches and the exact Chapter Four boundary remain available.

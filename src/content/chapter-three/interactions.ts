@@ -1,7 +1,8 @@
 import { buySupply } from '../../rules/supplies';
 import { receiveItem } from '../../rules/inventory';
-import { FOURTH_CHAPTER,recruit,remember,restoreParty } from '../../rules/state';
+import { FOURTH_CHAPTER,recruit,remember,restoreParty,type MapId } from '../../rules/state';
 import { SAY } from '../dialogue';
+import { arrival } from '../maps';
 import type { StoryHost } from '../chapter-one/interactions';
 import * as scenes from './scenes';
 export function resumeChapterThree(h:StoryHost){
@@ -13,6 +14,7 @@ export function resumeChapterThree(h:StoryHost){
 }
 export function interactChapterThree(h:StoryHost,id:string){
   const s=h.state,f=s.flags;
+  const travel=(map:MapId,name:string)=>{const p=arrival(map,name);h.travel(map,p.x,p.y);};
   const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
   const rest=()=>h.talk({lines:[SAY(s.location.map==='relayhall'?'Maintenance bench':'The medical train',s.location.map==='relayhall'?'Tomas left a flask and the ward’s field supplies on the bench.':'The ward staff have hot water and field supplies. Orrin’s engine is under steam.')],choices:[
     {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone restored.');}},
@@ -30,11 +32,11 @@ export function interactChapterThree(h:StoryHost,id:string){
       h.talk({lines:[SAY('Orrin','A baffled pressure nozzle. Quicker valve return than mine. That’ll fit my lance.')],done:()=>{receiveItem(s.inventory,'baffled-nozzle');h.commit('capitalCache');h.toast('Baffled pressure nozzle added to the bag · fits Orrin.');}});return;
     case 'capital-works':
       if(!f.petraJoined)return h.toast('The custody machines still hold the square.');
-      h.travel('relayhall',31,32);return;
+      travel('relayhall','from-siding');return;
     case 'works-warden':h.battle('works-warden');return;
     case 'works-tomas':
       if(f.tomasRescued)return say('Tomas','My bypass will hold. Close the feeds below. I’ll wait with the patients at Orrin’s engine.');
-      h.talk({...scenes.rescue(),done:()=>{restoreParty(s);s.location={map:'relayhall',x:22,y:16};h.commit('tomasRescued','reunion');}});return;
+      h.talk({...scenes.rescue(),done:()=>{restoreParty(s);s.location=arrival('relayhall','after-rescue');h.commit('tomasRescued','reunion');}});return;
     case 'works-locker':
       if(f.palaceStoresWon)return say('Kit','That sight mechanism’s in the bag. The rest is packing straw.');
       h.talk({lines:[SAY('Kit','There’s a ratchet sight in there that fits my crossbow. The lock is wired to a sentinel and a hound.')],choices:[
@@ -49,17 +51,17 @@ export function interactChapterThree(h:StoryHost,id:string){
         {label:'Take the pressure walk · crows and vents',action:()=>{f.pressureRoute=true;h.commit('intakePlanned','intake');}},
         {label:'Prepare our equipment first',action:()=>{}},
       ]});return;
-    case 'works-depths':if(!f.intakePlanned)return h.toast('Choose an intake approach at the control table.');h.travel('conduit',25,30);return;
-    case 'works-siding':h.travel('northglass',46,15);return;
-    case 'heart-gallery':h.travel('relayhall',12,14);return;
+    case 'works-depths':if(!f.intakePlanned)return h.toast('Choose an intake approach at the control table.');travel('conduit','from-gallery');return;
+    case 'works-siding':travel('northglass','from-works');return;
+    case 'heart-gallery':travel('relayhall','from-depths');return;
     case 'heart-regulator':h.battle(f.pressureRoute?'heart-pressure':'heart-feeds');return;
     case 'heart-release':
       if(!f.conduitGuardWon)return;
-      h.talk({...scenes.rupture(),done:()=>{f.extractionStopped=true;f.emperorMerged=true;restoreParty(s);s.location={map:'northglass',x:46,y:17};h.commit('emperorMerged','rupture');}});return;
+      h.talk({...scenes.rupture(),done:()=>{f.extractionStopped=true;f.emperorMerged=true;restoreParty(s);s.location=arrival('northglass','after-rupture');h.commit('emperorMerged','rupture');}});return;
     case 'capital-tomas':say('Tomas',f.emperorMerged?'The patients are aboard. I saved you a place in the cab. Come on.':'I’m safe here with the patients. My bypass is still holding. Close the feeds, then we’ll leave together.');return;
     case 'capital-departure':
       if(!f.emperorMerged)return;
       if(f.chapterThreeComplete)return h.boundary();
-      h.talk({...scenes.departure(),done:()=>{s.location={map:'northglass',x:32,y:33};f.chapterThreeComplete=true;s.boundary=FOURTH_CHAPTER;remember(s,'brokenDeparture');h.refresh();h.save();h.endingMusic();h.boundary();}});return;
+      h.talk({...scenes.departure(),done:()=>{s.location=arrival('northglass','departure');f.chapterThreeComplete=true;s.boundary=FOURTH_CHAPTER;remember(s,'brokenDeparture');h.refresh();h.save();h.endingMusic();h.boundary();}});return;
   }
 }

@@ -166,6 +166,11 @@ export class Adventure extends Phaser.Scene {
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Two save?','<p>This replaces the autosave with Nell and Orrin at the Iron Coast. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
           else start();
         }},
+        {label:'Begin Chapter Three (canonical)',disabled:!CHAPTER_THREE_AVAILABLE,action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterThreeStart})=>this.loadState(chapterThreeStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Chapter Three save?','<p>This replaces the autosave with Nell, Orrin and Kit at the capital medical siding. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
+          else start();
+        }},
         {label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}},
       ] : []),
     ]);

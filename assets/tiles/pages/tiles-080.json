@@ -1,0 +1,465 @@
+{
+  "type": "tileset",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "name": "tiles-080",
+  "tilewidth": 24,
+  "tileheight": 24,
+  "tilecount": 28,
+  "columns": 8,
+  "image": "../../../public/art/chapter-one/tiles-080.webp",
+  "imagewidth": 192,
+  "imageheight": 96,
+  "margin": 0,
+  "spacing": 0,
+  "tiles": [
+    {
+      "id": 0,
+      "type": "works-stone-field-4-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-4-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "works-stone-field-5-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-5-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "works-stone-field-6-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-6-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "works-stone-field-7-4",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-7-4"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "works-stone-field-0-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-0-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "works-stone-field-1-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-1-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "works-stone-field-2-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-2-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "works-stone-field-3-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-3-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "works-stone-field-4-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-4-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "works-stone-field-5-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-5-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "works-stone-field-6-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-6-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "works-stone-field-7-5",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-7-5"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "works-stone-field-0-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-0-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "works-stone-field-1-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-1-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "works-stone-field-2-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-2-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "works-stone-field-3-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-3-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "works-stone-field-4-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-4-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "works-stone-field-5-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-5-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "works-stone-field-6-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-6-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "works-stone-field-7-6",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-7-6"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "works-stone-field-0-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-0-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "works-stone-field-1-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-1-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "works-stone-field-2-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-2-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "works-stone-field-3-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-3-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "works-stone-field-4-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-4-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "works-stone-field-5-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-5-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "works-stone-field-6-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-6-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "works-stone-field-7-7",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "value": "works-stone-field-7-7"
+        },
+        {
+          "name": "walkable",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}
