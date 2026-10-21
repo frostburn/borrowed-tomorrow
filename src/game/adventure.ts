@@ -26,6 +26,8 @@ import { SUPPLIES, buySupply, canBuy } from '../rules/supplies';
 import { openInventory } from './inventory';
 import { bitmapText } from './pixel-font';
 import { worldView, narrowScreen } from './resolution';
+import { occupiedHexes } from '../rules/footprint';
+import type { BattlePreview } from './battle-preview';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
@@ -69,11 +71,14 @@ export class Adventure extends Phaser.Scene {
   private practiceReturn?: () => void;
   private testingTools?: typeof import('../dev/testing-tools').renderTestingTools;
   private testingBattle?: Battle;
+  private battlePreview?:BattlePreview;
+  private get battleDefinition(){return import.meta.env.DEV&&this.battlePreview?this.battlePreview.encounter:ENCOUNTERS[this.battle!.encounter];}
 
-  constructor(private readonly practiceReady?: (scene: Adventure, ui: UI) => void, private readonly practiceActors: readonly string[] = []) { super('adventure'); }
+  constructor(private readonly practiceReady?: (scene: Adventure, ui: UI) => void, private readonly practiceActors: readonly string[] = [], private readonly previewAssets:readonly {key:string;url:string}[] = []) { super('adventure'); }
   attach(ui: UI) { this.ui = ui; }
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
+    if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
     for(const page of TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
     for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
@@ -361,12 +366,13 @@ export class Adventure extends Phaser.Scene {
   point(x:number,y:number,click:boolean){
     if(click){this.pointerClick({x,y});return;}
     if(this.mode!=='battle'||this.blocked||this.busy)return;
-    const hex=fromPixel(x+this.cameras.main.scrollX,y+this.cameras.main.scrollY);
+    const wx=x+this.cameras.main.scrollX,wy=y+this.cameras.main.scrollY;
+    const hex=(import.meta.env.DEV?this.battlePreview?.pick?.(this.battle!,this.selected,wx,wy):undefined)??fromPixel(wx,wy);
     if(inside(hex)&&(!this.hover||!equal(this.hover,hex))){this.hover=hex;this.drawGrid();this.updatePreview();}
   }
   private pointerClick(pointer: {x:number;y:number}) {
     if (this.blocked || this.busy) return;
-    if (this.mode === 'battle') { const h = fromPixel(pointer.x+this.cameras.main.scrollX,pointer.y+this.cameras.main.scrollY); if (inside(h)) this.chooseHex(h); return; }
+    if (this.mode === 'battle') { const x=pointer.x+this.cameras.main.scrollX,y=pointer.y+this.cameras.main.scrollY;const h=(import.meta.env.DEV?this.battlePreview?.pick?.(this.battle!,this.selected,x,y):undefined)??fromPixel(x,y); if (inside(h)) this.chooseHex(h); return; }
     if (this.mode !== 'world') return;
     const point={x:pointer.x+this.cameras.main.scrollX,y:pointer.y+this.cameras.main.scrollY};
     const dest = { x:Math.floor(point.x/TILE), y:Math.floor(point.y/TILE) };
@@ -451,40 +457,48 @@ export class Adventure extends Phaser.Scene {
 
   private startBattle(id: string) {
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
-    this.enterBattle(id);
+    this.enterBattle();
   }
   /** A standalone harness: no campaign saves, flags, loot or experience. */
-  previewBattle(battle: Battle, returnToWorkshop: () => void) {
+  previewBattle(battle: Battle, returnToWorkshop: () => void, presentation?:BattlePreview) {
     if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
-    this.practiceReturn=returnToWorkshop;this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
+    this.practiceReturn=returnToWorkshop;this.battlePreview=presentation;this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
     this.battle=battle;this.mode='battle';this.busy=false;this.selected='move';this.plan=undefined;this.hover=undefined;
-    this.enterBattle(battle.encounter);
+    this.enterBattle();
   }
   closePreview() {
     if(!import.meta.env.DEV||!this.practiceReady)return;
-    this.mode='title';this.battle=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
+    this.mode='title';this.battle=undefined;this.battlePreview=undefined;this.busy=false;this.clearLayer();this.ui.closeModal();this.ui.clearPanel();this.ui.battlePan.hidden=true;
   }
-  private enterBattle(id: string) {
+  private enterBattle() {
     this.battleFaces.clear();
+    if(import.meta.env.DEV&&this.battlePreview)for(const u of this.battle!.units)if(u.side==='party')this.battleFaces.set(u.id,facingAsset(u.kind as CompanionId,0,-1));
     for(const u of this.battle!.units)if(u.side==='enemy'&&COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))this.battleFaces.set(u.id,facingAsset((u.appearance??u.kind) as CompanionId,-1,0));
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
-    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();this.audio.setMode(ENCOUNTERS[id].music);this.drawBattle();this.renderBattleControls();this.ui.location(ENCOUNTERS[id].name);this.ui.canvas.focus();this.scheduleEnemy();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();
+    if(import.meta.env.DEV&&this.battlePreview?.focus)this.revealHex(this.battlePreview.focus);
+    this.audio.setMode(this.battleDefinition.music);this.drawBattle();this.renderBattleControls();this.ui.location(this.battleDefinition.name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle(before?:BattleSnapshot) {
+    if(import.meta.env.DEV)this.battlePreview?.prepare?.(this.battle!);
+    if(import.meta.env.DEV&&!this.busy&&this.battlePreview?.facing)for(const unit of this.battle!.units){const facing=this.battlePreview.facing(unit);if(facing)this.battleFaces.set(unit.id,facing);}
     this.motion.clear();
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
-    const backdrop=ENCOUNTERS[this.battle!.encounter].backdrop??{map:'yard' as const,y:0};
-    this.background(backdrop.map,backdrop.y);
+    const backdrop=this.battleDefinition.backdrop??{map:'yard' as const,y:0};
+    if(import.meta.env.DEV&&this.battlePreview)this.battlePreview.background(this,this.layer,this.battle!);
+    else this.background(backdrop.map,backdrop.y);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
-    for(const rock of ENCOUNTERS[b.encounter].rocks){const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
-    for(const u of b.units){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
-      const img=this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
-      if(u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
+    for(const rock of this.battleDefinition.rocks){const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
+    const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
+    for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
+      const custom=import.meta.env.DEV?this.battlePreview?.actor?.(this,u,hp):undefined;
+      const img=(custom??this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
+      if(!custom&&u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
-      if(hp>0){const badges=this.add.container(p.x,p.y+9);this.layer.add(badges);img.setData('badges',badges);
+      if(hp>0&&!custom){const badges=this.add.container(p.x,p.y+9);this.layer.add(badges);img.setData('badges',badges);
         const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(-23,9,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(-22,10,44*hp/u.maxHp,4);badges.add(g);
         badges.add(this.label(0,19,String(hp),'#f4e5be',2));
         if(u.guard||u.dazzledAttacks||tauntTarget(b,u))badges.add(this.label(0,35,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
@@ -492,6 +506,7 @@ export class Adventure extends Phaser.Scene {
     }
     if(b.evacuation){this.layer.add(this.add.image(850,440,'dena').setOrigin(.5,.85));this.layer.add(this.label(850,461,'To coaches','#f4d598',1));}
     this.drawGrid();this.drawInitiative();
+    if(import.meta.env.DEV)this.battlePreview?.overlay?.(this,this.layer,b);
   }
   private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1) {
     const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+HEX_SIZE*Math.cos(a),p.y+HEX_SIZE*Math.sin(a));});
@@ -503,6 +518,8 @@ export class Adventure extends Phaser.Scene {
     const aimed=this.plan?.hex??this.hover;
     const canAct=u?.side==='party'&&!b.result&&!this.busy;
     const reachableHexes=canAct&&this.selected==='move'?movement(b,u!):undefined;
+    const occupied=new Set(b.units.filter(v=>v.hp>0&&v.footprint?.length).flatMap(v=>occupiedHexes(v).map(key)));
+    const danger=new Set(b.units.filter(v=>v.hp>0).flatMap(v=>v.intent?.cells.map(key)??[]));
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     for(const h of cells()){
       const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1;
@@ -511,11 +528,14 @@ export class Adventure extends Phaser.Scene {
       if(b.vents.has(id)){color=0xb95025;alpha=.4;stroke=0xffbf6a;}
       if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;}
       else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;}
+      if(occupied.has(id)){color=0x29233b;alpha=.5;stroke=0xbe965d;width=2;}
+      if(danger.has(id)){color=0xad4937;alpha=.4;stroke=0xf7ae73;width=2;}
       if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);if(alpha===.12){color=0xd7a548;alpha=.22;}}
       this.hexPolygon(h,color,alpha,stroke,width);
+      if(danger.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(p.x-6,p.y-6,p.x+6,p.y+6);this.grid.lineBetween(p.x-6,p.y+6,p.x+6,p.y-6);}
       if(b.evacuation?.route.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(2,0xf4cc72,.95);this.grid.lineBetween(p.x-9,p.y+15,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+10,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+20,p.x+9,p.y+15);}
       if(b.grounding?.plates.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(3,0xb7f0df,1);this.grid.lineBetween(p.x,p.y-9,p.x,p.y+7);for(let row=0;row<3;row++)this.grid.lineBetween(p.x-10+row*3,p.y+7+row*5,p.x+10-row*3,p.y+7+row*5);}
       if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
@@ -534,7 +554,7 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${(import.meta.env.DEV?this.battlePreview?.portrait?.(u):undefined)??art(character?.portrait??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="actions"></div><p class="hint" id="battle-hint"></p><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     if(b.evacuation){const objective=document.createElement('p');objective.className='hint';objective.setAttribute('aria-label','Boarding objective');objective.textContent=`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Keep machines off the gold loading walk. One family boards after each clear round; clearing all machines brings everyone aboard.`;actions.before(objective);}
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-panel')!,{
@@ -557,6 +577,7 @@ export class Adventure extends Phaser.Scene {
     const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?'Orange vents: 6 HP to ground units at round end. Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):ABILITIES[this.selected].description;
+    if(import.meta.env.DEV&&this.battlePreview?.hint)hint.textContent=this.battlePreview.hint(b)+' '+hint.textContent;
     confirm.innerHTML='';
     if(!aimed)return;
     if(this.selected==='move'){
@@ -636,7 +657,7 @@ export class Adventure extends Phaser.Scene {
         if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
         this.audio.effect(ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
-        if(face)battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face);
+        if(face||ABILITIES[action.ability].shape==='pattern')battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'');
       }
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
@@ -659,7 +680,7 @@ export class Adventure extends Phaser.Scene {
     if(!path||action?.ability)this.time.delayedCall(impact,showImpact);
     this.time.delayedCall(duration,()=>{
       if(!valid())return;this.motion.clear();this.busy=false;
-      if(path)this.drawBattle();
+      if(path||(import.meta.env.DEV&&this.battlePreview))this.drawBattle();
       const next=active(battle);if(next){this.revealHex(next.hex);this.shownTurn=next.id;}
       if(battle.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}
     });
@@ -673,7 +694,8 @@ export class Adventure extends Phaser.Scene {
       const before=this.battleSnapshot(),attacker=active(b),retaliations:string[]=[];
       const animated=attacker&&animatedHero(attacker.appearance??attacker.kind),routes=animated?movement(b,attacker):undefined;
       let presentation:Pick<BattleMotion,'ability'|'aim'|'affected'>|undefined;
-      const action=enemyTurn(b,id=>retaliations.push(id),(ability,aim)=>{if(animated)presentation={ability,aim,affected:shape(b,attacker,ability,aim)};});
+      const run=(import.meta.env.DEV?this.battlePreview?.enemyTurn:undefined)??enemyTurn;
+      const action=run(b,id=>retaliations.push(id),(ability,aim)=>{if(attacker&&(animated||this.battlePreview))presentation={ability,aim,affected:shape(b,attacker,ability,aim)};});
       if(action&&!presentation)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);
       const path=attacker?routes?.get(key(attacker.hex))?.path:undefined;
       this.animateBattle(before,attacker?{actorId:attacker.id,aim:attacker.hex,...presentation,...(path?.length?{path}:{}),retaliations}:undefined);

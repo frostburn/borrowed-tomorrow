@@ -1,0 +1,23 @@
+{
+  "tool": "Built-in Image Gen",
+  "prompt": "Use case: stylized-concept. Asset type: a new transparent colossal final-boss sprite for Borrowed Tomorrow, a dimensional pixel-art JRPG. The reference image is ONLY the game's native painted-pixel rendering style and warm metallic lighting; do not copy the mechanical guardian's anatomy or boiler details.\nPrimary request: The Benefactor, an awe-inspiring nonhuman celestial god built around the damaged hollow-sun motif. Front view facing down toward the tiny heroes, with a wide monumental upper body, an empty black circular aperture where a head would be, and a thick broken antique-gold solar halo physically attached behind its shoulders. Short substantial sun rays, not needle-like noise. Layered ivory and gray-blue porcelain plates form a flowing architectural mantle; an exposed pale turquoise crystalline heart glows modestly at the chest. Two enormous articulated arms descend outward, with broad open hands near the lower left and right corners, palms angled toward the player. Hands and arms must remain visibly connected to the torso. The lower body is a compact layered mantle/base, no long legs or ground island. Recesses are dark indigo; material shadows have weight and depth. Regality comes from scale, stern symmetry and the hollow sun, not a king's crown.\nComposition: one connected isolated silhouette, wider than tall (about 1.25:1), full halo, arms and hands all inside generous transparent margins. Designed to be sampled once into a 360 x 288 native-pixel sprite, about five times the heroes' height. Broad readable pixel clusters, carefully shaped contours and dimensional hand-painted pixel detail, upper-left light with restrained cool crystal highlights. Slight elevated orthographic front camera, level horizontal forms. No perspective scene or isometric diamond.\nConstraints: real transparent background. No humans, small companions, battlefield, scenery, floor, words, letters, numbers, UI, floating detached particles, smoke, rays of light, gradient aura or drop shadow outside the silhouette. No bearded face, sexual anatomy, engine pipes, locomotive, industrial boiler, angel feathers, photorealism, glossy 3D-render finish or blurred edges. Preserve the complete silhouette; make it read as a towering ominous god rather than a small character scaled up.",
+  "nativeSize": [
+    360,
+    288
+  ],
+  "pageSize": [
+    120,
+    144
+  ],
+  "pages": [
+    3,
+    2
+  ],
+  "portraitCrop": [
+    116,
+    20,
+    244,
+    148
+  ],
+  "reference": "public/art/guardian.png (rendering style only)"
+}

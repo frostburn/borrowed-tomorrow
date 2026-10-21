@@ -12,10 +12,12 @@ import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
 import type { Effect } from '../game/synth';
 import type { MusicMode } from '../game/score';
+import { occupiedHexes, bodyDistance } from './footprint';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush';
-export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
+export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
+export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
+  judgment: {id:'judgment',name:'Judgment',description:'Strike the announced hexes. The warning remains visible before the attack.',range:0,power:24,cost:0,shape:'pattern',sound:'flare'},
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },
   steam: { id: 'steam', name: 'Steam lance', description: 'Four hexes along one of six directions. Pierces units, hits allies, stops at rocks. 2 focus.', range: 4, power: 16, cost: 2, shape: 'line' },
@@ -45,6 +47,8 @@ export interface Unit {
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
+  footprint?:Hex[]; anchored?:boolean;
+  intent?:{round:number;name:string;cells:Hex[];power:number;phase:string};
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
@@ -60,9 +64,9 @@ const ENEMY_STATS = {
   knight: { name: 'Imperial knight', hp: 142, speed: 5, movement: 3, armor: 3, abilities: ['strike','bash','taunt','sweep'] as AbilityId[], bonus: 2 },
 };
 
-export function createBattle(encounter: string, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
+export function createBattle(encounter: string | Encounter, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
   equipment ??= equipmentBonuses(state.inventory);
-  const e = ENCOUNTERS[encounter];
+  const e = typeof encounter==='string'?ENCOUNTERS[encounter]:encounter;
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
   const ids = party ?? state.activeParty;
   const available = characters ? Object.keys(characters) as CompanionId[] : state.party.map(h => h.id);
@@ -84,7 +88,7 @@ export function createBattle(encounter: string, state: GameState, equipment?: Re
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
       appearance:enemy.appearance,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
-  const battle: Battle = { encounter, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
+  const battle: Battle = { encounter:e.id, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
     vents:new Set((e.vents??[]).map(([c,r])=>key(offset(c,r)))),
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
@@ -95,22 +99,24 @@ export function createBattle(encounter: string, state: GameState, equipment?: Re
 }
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
-export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => equal(u.hex, hex));
+export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
 export function movement(b: Battle, u: Unit) {
-  const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).map(v => key(v.hex))]);
-  return reachable(u.hex, u.moved ? 0 : u.movement, blocked, h=>u.kind!=='crow'&&b.water.has(key(h))?2:1);
+  const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).flatMap(v => occupiedHexes(v).map(key))]);
+  const anchors=u.footprint?.length?new Set(cells().filter(h=>occupiedHexes(u,h).some(part=>!inside(part)||blocked.has(key(part)))).map(key)):blocked;
+  return reachable(u.hex, u.moved||u.anchored ? 0 : u.movement, anchors, h=>u.kind!=='crow'&&occupiedHexes(u,h).some(part=>b.water.has(key(part)))?2:1);
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
-  if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).map(v => v.hex);
+  if (a.shape === 'pattern') return u.intent?.cells??[];
+  if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).flatMap(v => occupiedHexes(v));
   if (a.shape === 'blast') return blast(aim);
-  if (a.shape === 'line') return ray(u.hex, aim, a.range, b.obstacles);
+  if (a.shape === 'line') return ray(occupiedHexes(u).sort((x,y)=>distance(x,aim)-distance(y,aim))[0], aim, a.range, b.obstacles);
   return [aim];
 }
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const a = ABILITIES[id], affected = new Set(shape(b, u, id, aim).map(key));
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
-  return alive(b).filter(v => affected.has(key(v.hex)) && (!friendly || v.side === u.side) && (!(a.shape === 'blast' && a.range === 0) || v.id !== u.id));
+  return alive(b).filter(v => occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || v.id !== u.id));
 }
 export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
   return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
@@ -122,9 +128,10 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage' && b.bandages <= 0) return false;
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
-  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => equal(h,forced.hex)) : !equal(aim,forced.hex))) return false;
-  if (a.shape === 'line') return !equal(u.hex, aim) && distance(u.hex, aim) <= a.range && shape(b, u, id, aim).length > 0;
-  if (!a.unrestricted && (distance(u.hex, aim) > a.range || b.obstacles.has(key(aim)) || !visible(u.hex, aim, b.obstacles))) return false;
+  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
+  if(a.shape==='pattern')return equal(aim,u.hex)&&!!u.intent;
+  if (a.shape === 'line') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
+  if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
   const v = unitAt(b, aim);
   if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&t.hp<t.maxHp);
   if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<a.power);
@@ -132,7 +139,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (a.shape === 'single') {
     if (!v || v.side === u.side) return false;
     if (a.effect==='weaken' && v.dazzledAttacks) return false;
-    if (id === 'peck' && alive(b).some(t => t.side !== u.side && distance(t.hex, u.hex) === 1)) return false;
+    if (id === 'peck' && alive(b).some(t => t.side !== u.side && bodyDistance(t, u) === 1)) return false;
   }
   return true;
 }
@@ -148,7 +155,8 @@ export function damage(u: Unit, v: Unit, id: AbilityId): number {
 function attackDamage(u: Unit, v: Unit, id: AbilityId) {
   const a = ABILITIES[id];
   const armor = Math.max(0, v.armor - (a.pierce ?? 0));
-  return Math.max(1, Math.round((a.power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.dazzledAttacks ? .6 : 1)));
+  const power=a.shape==='pattern'?(u.intent?.power??a.power):a.power;
+  return Math.max(1, Math.round((power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.dazzledAttacks ? .6 : 1)));
 }
 function consumeDazzle(u: Unit) { if (u.dazzledAttacks) u.dazzledAttacks--; }
 function hurt(u: Unit, v: Unit, id: AbilityId) {
@@ -159,9 +167,10 @@ function hurt(u: Unit, v: Unit, id: AbilityId) {
   return { amount, absorbed };
 }
 export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
-  if (distance(u.hex, v.hex) !== 1) return;
-  const hex = { q: v.hex.q * 2 - u.hex.q, r: v.hex.r * 2 - u.hex.r };
-  if (inside(hex) && !b.obstacles.has(key(hex)) && !unitAt(b, hex)) return hex;
+  if (v.anchored || bodyDistance(u,v) !== 1) return;
+  const pair=occupiedHexes(u).flatMap(a=>occupiedHexes(v).map(z=>({a,z,d:distance(a,z)}))).sort((a,z)=>a.d-z.d)[0];
+  const hex = { q: v.hex.q+pair.z.q-pair.a.q, r: v.hex.r+pair.z.r-pair.a.r };
+  if (occupiedHexes(v,hex).every(h=>inside(h)&&!b.obstacles.has(key(h))&&(!unitAt(b,h)||unitAt(b,h)!.id===v.id))) return hex;
 }
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {
@@ -187,7 +196,7 @@ function ended(b:Battle){
 }
 function boardFamilies(b:Battle){
   const e=b.evacuation;if(!e)return;
-  if(alive(b).some(u=>u.side==='enemy'&&e.route.some(h=>equal(h,u.hex)))){
+  if(e.route.some(h=>unitAt(b,h)?.side==='enemy')){
     log(b,'A machine blocks the loading walk. The families wait safely behind the shed.');return;
   }
   e.boarded++;log(b,`Dena brings a family aboard: ${e.boarded}/${e.groups}.`);
@@ -195,7 +204,7 @@ function boardFamilies(b:Battle){
 }
 function checkGrounding(b:Battle){
   const circuit=b.grounding;
-  if(!circuit||circuit.open||!circuit.plates.every(h=>alive(b).some(u=>u.side==='party'&&equal(u.hex,h))))return;
+  if(!circuit||circuit.open||!circuit.plates.every(h=>unitAt(b,h)?.side==='party'))return;
   circuit.open=true;for(const u of b.units)u.sealed=false;
   log(b,'Both earth contacts close. The keeper’s shield drops and stays down.');
 }
@@ -205,7 +214,7 @@ function finishTurn(b: Battle) {
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
-    for(const u of alive(b))if(u.kind!=='crow'&&b.vents.has(key(u.hex))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of alive(b))if(u.kind!=='crow'&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
@@ -240,7 +249,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   if (!hit.length) log(b, `${u.name}'s ${a.name} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
-    if (defender && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && distance(u.hex, defender.hex) === 1) {
+    if (defender && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {
       defender.retaliated = true;
       const {amount} = hurt(defender, u, 'strike');consumeDazzle(defender);
       log(b, `${defender.name} retaliates for ${amount}.`);
@@ -311,8 +320,8 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).map(v=>key(v.hex))]),h=>u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
-    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.map(v=>v.hex)).map(goal=>distance(h,goal))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
+    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
     visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);
