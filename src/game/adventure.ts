@@ -295,11 +295,7 @@ export class Adventure extends Phaser.Scene {
     const p = this.state.location;
     const leader=partyLeader(this.state);
     if(this.face.replace(/-(left|right|back)$/,'')!==leader)this.face=leader;
-    for (const [index, id] of this.state.activeParty.filter(id => id !== leader).entries()) {
-      const x = walkable(map,p.x-index-1,p.y,this.state) ? p.x-index-1 : p.x;
-      const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id).setData('world-actor',true);
-      this.followers.push(follower); this.layer!.add(follower);
-    }
+    this.syncWorldFollowers();
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
     this.sortWorld();
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1);
@@ -368,6 +364,20 @@ export class Adventure extends Phaser.Scene {
     else {
       const near = this.closestObject();
       if (near?.id !== this.near?.id) { this.near = near; this.renderWorldControls(); }
+    }
+  }
+  private syncWorldFollowers() {
+    const ids=this.state.activeParty.filter(id=>id!==partyLeader(this.state));
+    if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
+    for(const follower of this.followers){
+      this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
+    }
+    this.followers=[];
+    const p=this.state.location,map=MAPS[p.map];
+    for(const [index,id] of ids.entries()){
+      const x=walkable(map,p.x-index-1,p.y,this.state)?p.x-index-1:p.x;
+      const follower=this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id).setData('world-actor',true);
+      this.followers.push(follower);this.layer!.add(follower);
     }
   }
   private stepWorld(dx: number, dy: number) {
@@ -757,7 +767,10 @@ export class Adventure extends Phaser.Scene {
   inventory() {
     if(this.practiceReady||this.cinematic||this.busy||!(this.mode==='world'||this.mode==='battle'&&this.battle?.result==='victory'))return;
     this.path=[];this.pendingObject=undefined;
-    openInventory(this.ui,this.state,()=>{this.autosave();if(this.mode==='world')this.renderWorldControls();});
+    openInventory(this.ui,this.state,()=>{
+      this.autosave();
+      if(this.mode==='world'){this.syncWorldFollowers();this.sortWorld();this.renderWorldControls();}
+    });
   }
 
   journal() {
