@@ -4,14 +4,6 @@ test-results/
 playwright-report/
 *.local
 
-# Reconstructed lossless map files; native sources are in assets/maps/.
-/public/art/sluice.webp
-/public/art/infirmary.webp
-
-
-
-/public/art/sanctuary.webp
-
 # Authoring interpreter cache.
 assets/tiles/__pycache__/
 assets/characters/vector/__pycache__/

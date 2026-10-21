@@ -36,10 +36,10 @@ test('Nell, Orrin and Kit walk in four directions; skipped moving cutscenes stay
   expect((await inspect(page)).actors.filter(a=>a.hero==='nell')).toHaveLength(1);expect(errors).toEqual([]);
 });
 
-test('Celia leads the sanctuary search with six-pose directional walks and restores her idle book pose',async({page})=>{
+test('Celia follows the party with six-pose directional walks and restores her idle book pose',async({page})=>{
   test.skip(!CHAPTER_FOUR_AVAILABLE,'Chapter Four art pack is not installed.');
   await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
-  const state=brokenCheckpoint('sealLead');state.location={map:'sanctuary',x:27,y:30};await importSave(page,state);
+  const state=brokenCheckpoint('signalCut');state.activeParty=['nell','celia'];state.location={map:'sanctuary',x:27,y:30};await importSave(page,state);
   for(const [x,y,direction]of [[31,30,'right'],[31,28,'back'],[27,28,'left'],[27,30,'front']]as const){
     const stream=record(page);await clickWorld(page,x,y);const samples=await stream;
     const frames=samples.flatMap(s=>s.actors.filter(a=>a.hero==='celia'&&a.motion==='walk'&&a.texture===`celia-motion-${direction}`).map(a=>a.frame));

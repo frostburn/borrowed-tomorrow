@@ -1,4 +1,4 @@
-# Entry to Chapter Four — The Broken World
+# Entry to Chapter Four — A Light on the Water
 
 Chapters One–Four are playable canon. This document records the entry checkpoint; the implemented chapter ends at [chapter-five-handoff.md](chapter-five-handoff.md). The brother’s rescue succeeded. Begin the next chapter from that accomplishment, not another disappearance.
 
@@ -8,7 +8,7 @@ Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `c
 
 Required new flags: `capitalSeen`, `capitalConfronted`, `capitalGateWon`, `petraJoined`, `worksSeen`, `worksWardenWon`, `tomasRescued`, `intakePlanned`, `conduitSeen`, `conduitGuardWon`, `extractionStopped`, `emperorMerged`, `chapterThreeComplete`. Preserve boolean `pressureRoute`, optional `capitalCache` and `palaceStoresWon`, every earlier flag, all resources, XP, HP/focus, inventory copies, loadouts, active formation, journal and play time.
 
-`party` contains Nell, Orrin, Kit and Petra; `activeParty` contains Nell and at most two of the others. Reserves keep equipment and share growth/recovery. Tomas is an alive supporting character, not a combatant. Celia has not appeared or joined. Her first introduction and recruitment now take place on the Chapter Four sanctuary road. The three-fighter cap’s story explanation remains unset.
+`party` contains Nell, Orrin, Kit and Petra; `activeParty` contains Nell and at most two of the others. Reserves keep equipment and share growth/recovery. Tomas is an alive supporting character, not a combatant. Celia has not appeared or joined. Her first introduction and recruitment now take place at the Chapter Four harbor. The three-fighter cap is a game mechanic and needs no story explanation.
 
 ## What happened
 
@@ -22,4 +22,4 @@ Five rewards are available: baffled pressure nozzle for Orrin (square chest), ba
 
 ## Continue from the outline
 
-The floating capital, failing time and a safe Tomas give Nell a new choice beyond her completed pursuit. Let companions resolve distinct local dangers and reunite deliberately. Introduce the ancient anchors through action and earn knowledge that the Benefactor exists beyond the restrained conduit. The god still has not spoken; the full bargain and a route into its own domain remain discoveries to earn before the separate final chapter. Do not erase Ansel’s death or undo any completed rescue.
+The floating capital, failing time and a safe Tomas give Nell a new choice beyond her completed pursuit. Keep the four travelers together. Let opening the harbor and stopping its signal earn their next purpose. Introduce the ancient anchors through action and earn knowledge that the Benefactor exists beyond the restrained conduit. The god still has not spoken; the full bargain and a route into its own domain remain discoveries to earn before the separate final chapter. Do not erase Ansel’s death or undo any completed rescue.

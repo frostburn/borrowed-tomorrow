@@ -8,11 +8,11 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
   heart:{title:'The emperor’s engine',text:'The emperor refuses to stop collection. The restrained vessel below the palace feeds his engines. Stop its regulator, then close the feeds ourselves.'},
   heartGuard:{title:'Close the feeds',text:'The heart regulator is down. We found an insulated coat that any companion can equip. Close the extraction feeds at the console on the right.'},
   rupture:{title:'The capital rises',text:'We stopped the extraction. The emperor entered the vessel rather than let his engines fail. The capital is tearing free of the ground. Tomas has reached our coal engine. Get to the south platform and leave together.'},
-  brokenDeparture:{title:'Tomas came with us',text:'Tomas escaped alive with the passengers. The capital is suspended above the valley; clocks and signals outside it have begun to fail. Nell, Orrin, Kit and Petra left together. Our rescue stands. Next: Chapter Four — The Broken World.'},
+  brokenDeparture:{title:'Tomas came with us',text:'Tomas escaped alive with the passengers. The capital is suspended above the valley; clocks and signals outside it have begun to fail. Nell, Orrin, Kit and Petra left together. Our rescue stands. Next: Chapter Four — A Light on the Water.'},
 };
 export function objective(s:GameState):string{
   const f=s.flags;
-  if(f.chapterThreeComplete)return 'Chapter Three complete. Next: The Broken World.';
+  if(f.chapterThreeComplete)return 'Chapter Three complete. Next: A Light on the Water.';
   if(f.emperorMerged)return 'Reach Tomas and board the medical engine at the south platform.';
   if(!f.petraJoined)return f.capitalGateWon?'Speak to Petra after the arrest attempt.':'Meet Petra in the square beside the medical siding.';
   if(!f.worksWardenWon)return 'Enter the engine works and stop Tomas’s execution.';

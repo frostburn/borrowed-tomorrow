@@ -29,16 +29,8 @@ The dev workshop retains its own local storage and cannot grant campaign items o
 Each reward enters the shared bag once. Compare and equip it manually in Equipment, including from the victory panel. Chapter Three recruits Petra into the roster; the active formation remains Nell plus at most two companions. Existing equipment remains on its wearer during formation changes.
 
 
-## Chapter Four equipment and temporary groups
+## Chapter Four equipment and formation
 
-Version 10 adds `reunionParty`, preserving the player's formation while the separated companions lead their own stretches. The inventory opens on the current leader and retains every recruit's loadout. Absent characters can have equipment managed but cannot join that local group. Reunion restores the previous formation, clears `reunionParty`, and makes Celia available in the five-person roster. Three fighters remain the maximum.
+The rewritten Chapter Four keeps the four-person roster and the player's active formation from Chapter Three. Celia joins at the harbor, initially in reserve when three are active. Normal Equipment swaps remain available throughout. No temporary groups or reunion formation is stored; Nell continues to lead. The three-fighter cap is a game mechanic.
 
-| Reward | Wearer | Source | Bonuses |
-| --- | --- | --- | --- |
-| Counterweighted return valve | Orrin | Either works approach | Attack +5, armor +1 |
-| Folding range sight | Kit | Survey-cart patrol | Attack +5, speed +1 |
-| Braced rescue coat | Any companion | Protecting the sanctuary-road patients | Armor +3 |
-| Silver field clasp | Celia | Right-arch field chest | Attack +3, armor +1, speed +1 |
-| Guardian prism | Nell | Sanctuary warden | Attack +5, armor +2 |
-
-Each goes to the bag once; nothing automatically replaces a fitted item. Current-format departures retain their equipment and resources.
+Once-only bag rewards are Orrin's return valve (either gate route), Kit's folding sight (survey cart), a rescue coat (sanctuary bridge), Celia's field clasp (hospice chest) and Nell's guardian prism (warden). Skipping the cart/chest never blocks progress. Existing individual HP, focus and loadouts persist into the chapter and its anchor departure. Reserves retain their equipment and share growth/recovery.

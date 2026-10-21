@@ -20,7 +20,6 @@ export interface GameState {
   location: { map: MapId; x: number; y: number };
   party: HeroState[];
   activeParty: HeroId[];
-  reunionParty: HeroId[] | null;
   flags: Record<string, boolean>;
   coins: number;
   bandages: number;
@@ -33,7 +32,7 @@ export interface GameState {
 export function newGame(): GameState {
   return {
     format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: 'chapter-one',
-    location: { map: 'station', x: 21, y: 16 }, party: [{ id: 'nell', hp: 42, focus: 6 }], activeParty: ['nell'], reunionParty:null,
+    location: { map: 'station', x: 21, y: 16 }, party: [{ id: 'nell', hp: 42, focus: 6 }], activeParty: ['nell'],
     flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), journal: ['home'], boundary: null, playSeconds: 0,
   };
 }
@@ -53,7 +52,7 @@ export function recruit(s: GameState, id: 'kit' | 'celia' | 'petra') {
   s.flags[`${id}Joined`] = true;
 }
 export function setActive(s: GameState, id: HeroId, included: boolean): boolean {
-  if (s.reunionParty || id === 'nell' || !s.party.some(h => h.id === id) || s.activeParty.includes(id) === included) return false;
+  if (id === 'nell' || !s.party.some(h => h.id === id) || s.activeParty.includes(id) === included) return false;
   if (included && s.activeParty.length >= 3) return false;
   s.activeParty = included ? [...s.activeParty, id] : s.activeParty.filter(h => h !== id);
   return true;
@@ -71,17 +70,9 @@ export function beginChapterThree(s: GameState): boolean {
 }
 export function beginChapterFour(s:GameState):boolean {
   if(s.chapter!=='chapter-three'||s.boundary!==FOURTH_CHAPTER||!s.flags.chapterThreeComplete)return false;
-  s.reunionParty=[...s.activeParty];s.activeParty=['nell'];
-  s.chapter='chapter-four';s.boundary=null;s.location={map:'refuge',x:31,y:22};return true;
+  s.chapter='chapter-four';s.boundary=null;s.location={map:'refuge',x:31,y:28};return true;
 }
-/** Fixed local groups keep absent travelers out of exploration and combat. */
-export function separatedGroup(flags:Record<string,boolean>):HeroId[]{
-  if(!flags.worksStarted)return ['nell'];
-  if(!flags.worksEvacuated)return ['orrin','kit'];
-  if(!flags.celiaJoined)return ['petra'];
-  return flags.sealLead?['celia','petra']:['petra','celia'];
-}
-export const partyLeader=(s:GameState):HeroId=>s.reunionParty?s.activeParty[0]:'nell';
+export const partyLeader=(_s:GameState):HeroId=>'nell';
 export function remember(s: GameState, entry: string) { if (!s.journal.includes(entry)) s.journal.push(entry); }
 
 /** Validate the current save format; older formats are not migrated. */
@@ -93,7 +84,7 @@ export function decodeSave(text: string): GameState {
   const number = (x: unknown, max: number): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
   const loc = s.location as GameState['location'] | undefined;
   if (!loc || !['station', 'yard', 'rillbridge', 'tunnel', 'coast', 'infirmary', 'cinderbank', 'northglass', 'relayhall', 'conduit', 'refuge', 'breakwater', 'sanctuary'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
-    !number(loc.x, ['rillbridge','breakwater'].includes(loc.map) ? 65 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','sanctuary'].includes(loc.map) ? 63 : 41) || !number(loc.y, ['rillbridge','breakwater'].includes(loc.map) ? 40 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','sanctuary'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
+    !number(loc.x, loc.map==='rillbridge' ? 65 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary'].includes(loc.map) ? 63 : 41) || !number(loc.y, loc.map==='rillbridge' ? 40 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
   if (!number(s.xp, 1e7) || !number(s.coins, 1e7) || !number(s.bandages, 999) || !number(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
   if (!['chapter-one','chapter-two','chapter-three','chapter-four'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER && s.boundary !== FOURTH_CHAPTER && s.boundary !== FIFTH_CHAPTER)) throw new Error('This chapter is not available in this build.');
   if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > (s.chapter === 'chapter-four' ? 5 : s.chapter === 'chapter-three' ? 4 : 3) || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
@@ -110,24 +101,24 @@ export function decodeSave(text: string): GameState {
   }
   for (const id of ['orrin','kit','celia','petra'] as const) if (Boolean(flags[`${id}Joined`]) !== party.some(h => h.id === id)) throw new Error('The party does not match the story progress.');
   const activeParty = s.activeParty;
-  if (!validParty(activeParty, party.map(h => h.id)) || (s.chapter!=='chapter-four'&&!activeParty.includes('nell'))) throw new Error('The active party is invalid.');
+  if (!validParty(activeParty, party.map(h => h.id)) || !activeParty.includes('nell')) throw new Error('The active party is invalid.');
   const prerequisites: Record<string, string> = {
     raidSeen: 'festivalSeen', escapeWon: 'raidSeen', orrinJoined: 'escapeWon', workshopWon: 'orrinJoined',
     villageSeen: 'orrinJoined', collectorConfronted: 'villageSeen', collectorDefeated: 'collectorConfronted',
     villageFreed: 'collectorDefeated', passSeen: 'villageFreed', captainConfronted: 'passSeen',
     captainDefeated: 'captainConfronted', chapterOneComplete: 'captainDefeated',
     coastSeen: 'chapterOneComplete', kitJoined: 'coastSeen', raidPlanned: 'kitJoined', raidConfronted: 'raidPlanned',
-    trainRaidWon: 'raidConfronted', prisonersFreed: 'trainRaidWon', celiaJoined: 'roadSeen', wardSeen: 'prisonersFreed',
+    trainRaidWon: 'raidConfronted', prisonersFreed: 'trainRaidWon', celiaJoined: 'worksArrival', wardSeen: 'prisonersFreed',
     settlementSeen: 'wardSeen', coastCollectorWon: 'settlementSeen', evacuationReady: 'coastCollectorWon',
     recaptureConfronted: 'evacuationReady', recaptureWon: 'recaptureConfronted', chapterTwoComplete: 'recaptureWon',
     capitalSeen:'chapterTwoComplete',capitalConfronted:'capitalSeen',capitalGateWon:'capitalConfronted',petraJoined:'capitalGateWon',
     worksSeen:'petraJoined',worksWardenWon:'worksSeen',tomasRescued:'worksWardenWon',palaceStoresWon:'worksSeen',
     intakePlanned:'tomasRescued',conduitSeen:'intakePlanned',conduitGuardWon:'conduitSeen',extractionStopped:'conduitGuardWon',
     emperorMerged:'extractionStopped',chapterThreeComplete:'emperorMerged',
-    brokenMorning:'chapterThreeComplete',worksStarted:'brokenMorning',worksArrival:'worksStarted',worksRouteSet:'worksArrival',
-    worksGateWon:'worksRouteSet',worksEvacuated:'worksGateWon',worksStoresWon:'worksArrival',roadSeen:'worksEvacuated',
-    roadGuardWon:'celiaJoined',sealLead:'roadGuardWon',sealSeen:'sealLead',partyReunited:'sealSeen',sanctuaryEntered:'partyReunited',
-    sanctuaryWardenWon:'sanctuaryEntered',sanctuaryCache:'partyReunited',anchorsKnown:'sanctuaryWardenWon',chapterFourComplete:'anchorsKnown',
+    refugeSeen:'chapterThreeComplete',worksArrival:'refugeSeen',worksRouteSet:'worksArrival',
+    worksGateWon:'worksRouteSet',worksStoresWon:'worksArrival',harborOpened:'worksGateWon',
+    sanctuaryEntered:'harborOpened',roadGuardWon:'sanctuaryEntered',signalCut:'roadGuardWon',
+    sanctuaryWardenWon:'signalCut',sanctuaryCache:'sanctuaryEntered',anchorsKnown:'sanctuaryWardenWon',chapterFourComplete:'anchorsKnown',
   };
   for (const [flag, required] of Object.entries(prerequisites)) if (flags[flag] && !flags[required]) throw new Error('The story checkpoint is incomplete.');
   if ((loc.map === 'yard' && !flags.escapeWon) || (loc.map === 'rillbridge' && !flags.orrinJoined) || (loc.map === 'tunnel' && !flags.villageFreed)) throw new Error('This route has not opened yet.');
@@ -145,24 +136,18 @@ export function decodeSave(text: string): GameState {
     if (flags.intakePlanned && typeof flags.pressureRoute!=='boolean') throw new Error('The intake route is missing.');
   }
   if (s.chapter!=='chapter-four' && (flags.celiaJoined || party.some(h => h.id === 'celia'))) throw new Error('Celia has not joined in these chapters.');
-  const reunionParty=s.reunionParty;
   if(s.chapter==='chapter-four'){
     if(!flags.chapterThreeComplete||!['refuge','breakwater','sanctuary'].includes(loc.map)||Boolean(flags.chapterFourComplete)!==(s.boundary===FIFTH_CHAPTER)||(s.boundary!==null&&s.boundary!==FIFTH_CHAPTER))throw new Error('The chapter departure is incomplete.');
-    if(flags.worksRouteSet&&typeof flags.worksFlooded!=='boolean')throw new Error('The works route is missing.');
-    if(Boolean(flags.roadSeen)!==Boolean(flags.celiaJoined))throw new Error('Celia’s introduction is incomplete.');
-    if(!flags.partyReunited){
-      if(!validParty(reunionParty,party.map(h=>h.id))||!reunionParty.includes('nell')||reunionParty.includes('celia'))throw new Error('The reunion formation is invalid.');
-      if(JSON.stringify(activeParty)!==JSON.stringify(separatedGroup(flags)))throw new Error('This group is elsewhere.');
-      const expected=flags.sealSeen?'refuge':flags.worksEvacuated?'sanctuary':flags.worksStarted?'breakwater':'refuge';
-      if(loc.map!==expected)throw new Error('This group is elsewhere.');
-    }else if(reunionParty!==null||!activeParty.includes('nell'))throw new Error('The reunited party is invalid.');
-  }else if(reunionParty!==null||flags.brokenMorning||flags.worksStarted||flags.chapterFourComplete)throw new Error('The chapter departure is incomplete.');
+    if(flags.worksRouteSet&&typeof flags.worksFlooded!=='boolean')throw new Error('The harbor route is missing.');
+    if(Boolean(flags.worksArrival)!==Boolean(flags.celiaJoined))throw new Error('Celia’s introduction is incomplete.');
+    if((loc.map==='breakwater'&&!flags.refugeSeen)||(loc.map==='sanctuary'&&!flags.harborOpened))throw new Error('This route has not opened yet.');
+  }else if(flags.refugeSeen||flags.worksArrival||flags.chapterFourComplete)throw new Error('The chapter departure is incomplete.');
   if (flags.raidPlanned && typeof flags.raidDiversion !== 'boolean') throw new Error('The raid route is missing.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));
   if (!strings(s.journal, 300)) throw new Error('Invalid journal.');
   const inventory = decodeInventory(JSON.stringify(s.inventory));
   return {
-    format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: s.chapter as GameState['chapter'], location: { ...loc }, party, activeParty: [...activeParty], reunionParty:reunionParty as HeroId[]|null,
+    format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: s.chapter as GameState['chapter'], location: { ...loc }, party, activeParty: [...activeParty],
     flags, coins: s.coins, bandages: s.bandages, xp: s.xp, inventory, journal: [...new Set(s.journal)],
     boundary: s.boundary as GameState['boundary'], playSeconds: s.playSeconds,
   };

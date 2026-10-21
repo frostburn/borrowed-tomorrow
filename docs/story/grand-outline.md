@@ -1,12 +1,12 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One–Four are playable with their art installed; Chapters Five–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One–Four are playable with bundled vector artwork; Chapters Five–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 
 Seventeen-year-old Nell wants to leave her provincial railway town and see the sea with her older brother, Tomas. Imperial soldiers take him during Larkspur's festival. A fleck of the crystal he stole catches in Nell's lantern. It hums, and the handle feels strangely cold. With Orrin, a young mechanic, she pursues the prison trains.
 
-The pursuit becomes a rebellion, a rescue that succeeds while the world changes, a struggle to reunite and fight back, an assault on an emperor becoming a god, and finally a journey beyond the mortal world to defeat the god itself. Railways connect a broad fantasy continent: forests, mines, rival kingdoms, ancient temples, a coast and an airship journey. The tone has warmth, humor, frightening discoveries and room to enjoy traveling with the party.
+The pursuit becomes a rebellion, a rescue that succeeds while the world changes, a choice to fight back, an assault on an emperor becoming a god, and finally a journey beyond the mortal world to defeat the god itself. Railways connect a broad fantasy continent: forests, mines, rival kingdoms, ancient temples, a coast and an airship journey. The tone has warmth, humor, frightening discoveries and room to enjoy traveling with the party.
 
 ## What the title means
 
@@ -42,7 +42,7 @@ At the mountain pass, Alban blocks pursuit. He has already sent Tomas east in an
 
 **Goal:** find Tomas before the next transfer. **Payoff:** free the prisoners and learn his destination.
 
-The pursuit reaches the Iron Coast exchange and Cinderbank mining settlement. Kit, a registered courier Nell’s own age, is delivering medicine and letters when Alban seizes his bag and tears his permit. Nell sees the interference before meeting him. He guides her toward Tomas’s coach to recover his deliveries; helping the prisoners and their families draws him into the larger pursuit. He sometimes gets flustered when Nell thanks him; these innocent hints stay unresolved, without a romance arc or payoff. Kit is the only new traveling companion here. Celia’s introduction and recruitment remain on the sanctuary road in Chapter Four. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
+The pursuit reaches the Iron Coast exchange and Cinderbank mining settlement. Kit, a registered courier Nell’s own age, is delivering medicine and letters when Alban seizes his bag and tears his permit. Nell sees the interference before meeting him. He guides her toward Tomas’s coach to recover his deliveries; helping the prisoners and their families draws him into the larger pursuit. He sometimes gets flustered when Nell thanks him; these innocent hints stay unresolved, without a romance arc or payoff. Kit is the only new traveling companion here. Celia’s introduction and recruitment remain at Breakwater harbor in Chapter Four. Introduce Petra, an imperial knight pursuing the fragment, initially a rival with a sincere belief in the empire’s protection.
 
 The raid succeeds: prisoners escape and Nell receives Tomas’s transfer slip naming the palace engine works. Dena signs for Kit’s recovered medicine and takes the prisoners in after the hospital refused them. Orrin can take the medical coaches straight to the capital. Nell chooses an extra run down the branch to collect Cinderbank’s families; Kit’s remaining letter belongs to a child whose father is already aboard.
 
@@ -64,17 +64,17 @@ Tomas explains that the collectors send people’s days into the restrained vess
 
 The emperor appears in person and refuses to stop collection, citing the capital’s dependence. The party defeats the heart regulator and shuts the feeds. In response, he chooses to enter the vessel rather than let the engines fail. The capital rises and time begins failing outside it. Nell escapes aboard the medical train with Tomas, the passengers and her companions. The rescue remains a permanent accomplishment; defeating the emperor and later the god remain distinct future goals.
 
-## Chapter Four — The Broken World
+## Chapter Four — A Light on the Water
 
-**Goal:** reunite the scattered party and find a way to fight back. **Payoff:** an informed, voluntary commitment to save the world.
+**Goal:** reopen the harbor and release the coast from the capital's signal. **Payoff:** the rescue becomes a voluntary counterattack, with a first plan for reaching the Emperor.
 
-Nell wakes at the Iron Coast railway ward with Tomas beside her. All the medical passengers made it back; another pulse stopped the western line, injuring Nell and separating the companions as they helped the surrounding communities. Tomas and Dena keep the ward safe and coordinate messages. The player follows Orrin and Kit through Breakwater's dry service walk or flooded pump floor, defeats the return-gate machines, and physically opens the south evacuation gate. Bram brings all nineteen workers out. An optional survey-cart patrol rewards Kit's equipment.
+The medical train returns to the Iron Coast refuge. Tomas and Dena are settling the same rescued passengers; the four travelers have stayed together. Bram's ferry crews are stranded safely behind the sea gate. Nell takes blankets to the pump house, where Celia is treating them. Celia joins to stop the signal causing their injuries, without changing the player's formation.
 
-Petra finds Celia treating people beneath the mountain sanctuary's arch. Imperial machines are trying to return them to the stopped valley. Celia joins after their introduction, and the player protects the patients with Petra and Celia. After victory, Celia leads a short search of the lower guardian seal. She finds a route to the old record, then brings the patients to Nell and Tomas. The companions reunite; the player's previous formation returns, with Celia available in reserve.
+Choose a dry chain walk or shallow pump floor to defeat the gate machines, then wind the gate open by hand. The crews come home and Bram starts supply runs. Climb the service stair to Celia's old sanctuary hospice. Its bronze astronomical ring is wired to the capital; the former hospice warden now obeys the Emperor's preservation order. Clear the return-line bridge, disconnect the imperial cable and defeat its local reserve. The wave falls and the coast moves again.
 
-Nell's party returns to the sanctuary and defeats its warden, which is carrying the emperor's arrest order through an old circuit. The local valley begins moving again. The guardians' record identifies three distant anchors—Hammerplain, Dawnwatch and Windmere—that hold the palace vessel steady. Breaking those anchors in Chapter Five will free their regions and expose the emperor. The founding pledge names future generations' days as payment for harvests, healing and light. The hollow-sun carving shows a route beyond the vessel to the Benefactor's source; its claim can outlive the conduit. The god stays silent.
+Behind an imperial plate, Celia discovers the missing terms of the hospice oath: the dynasty pledged descendants' days for the Benefactor's boons. The healing was real, but the people being charged never agreed to the price. An operating chart identifies the three distant anchors—Hammerplain, Dawnwatch and Windmere—supporting the palace conduit. An older diagram places a source beyond the hollow sun. The party copies the evidence; the god stays silent.
 
-At the ward, Nell knowingly chooses to lead the counterattack. Tomas organizes the resistance's railway messages and keeps the rescued people safe. Bram supplies a route to a survey airship at the western airfield. The chapter resolves its local dangers and ends at the saved airfield departure, with five new manually fitted equipment rewards and growth through level nine.
+Nell and Tomas take their promised walk to the sea. Her original pursuit has succeeded. She chooses to go after the anchors, while he keeps the rescued communities in contact. Celia leaves a complete copy of the pledge with Dena. Bram knows a survey airship at the western airfield. The three active fighters remain a mechanical choice throughout, without a story explanation. End at the saved `chapter-five:anchors` departure.
 
 ## Chapter Five — Taking the World Back
 
@@ -110,7 +110,7 @@ The original anchors taught the party how the god joins mortal days to its body.
 
 Release the stolen days and surviving captives. Do not use a reset to erase the adventure: Ansel and people killed by violence remain dead, decisions and relationships remain, and towns still need rebuilding. Divine engines and effortless miracles cease. Ordinary skill, cooperation and the alternatives developed by Orrin's region make a livable future possible.
 
-End at Larkspur station. Tomas is home. Nell finally boards an ordinary steam train with her friends to see the sea. The first morning after their return has no imperial blessing and needs none.
+End at Larkspur station. Tomas is home. Nell boards an ordinary steam train with her brother and friends for a holiday by the sea. The first morning after their return has no imperial blessing and needs none.
 
 ## Why a young protagonist can win
 

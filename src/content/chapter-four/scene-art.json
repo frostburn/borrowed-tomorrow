@@ -1,0 +1,368 @@
+{
+  "refuge": [
+    {
+      "key": "scene-four-refuge-coast",
+      "url": "art/vector/chapter-four/refuge-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-refuge-floor",
+      "url": "art/vector/chapter-four/refuge-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-four-refuge-ward",
+      "url": "art/vector/chapter-four/refuge-ward.svg",
+      "x": 384,
+      "y": 240,
+      "width": 652,
+      "height": 264,
+      "depth": 504,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-refuge-ferry",
+      "url": "art/vector/chapter-four/refuge-ferry.svg",
+      "x": 12,
+      "y": 526,
+      "width": 360,
+      "height": 192,
+      "depth": 718,
+      "layerId": 4
+    },
+    {
+      "key": "scene-four-refuge-supplies",
+      "url": "art/vector/chapter-four/refuge-supplies.svg",
+      "x": 1040,
+      "y": 652,
+      "width": 84,
+      "height": 80,
+      "depth": 732,
+      "layerId": 5
+    },
+    {
+      "key": "scene-four-refuge-wave",
+      "url": "art/vector/chapter-four/refuge-wave.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998,
+      "layerId": 6
+    },
+    {
+      "key": "scenery-engine",
+      "url": "art/vector/scenery/engine.svg",
+      "x": 1080,
+      "y": 662,
+      "width": 288,
+      "height": 192,
+      "depth": 854,
+      "layerId": 3
+    },
+    {
+      "key": "scenery-coach",
+      "url": "art/vector/scenery/coach.svg",
+      "x": 660,
+      "y": 686,
+      "width": 288,
+      "height": 168,
+      "depth": 854,
+      "layerId": 3
+    }
+  ],
+  "breakwater": [
+    {
+      "key": "scene-four-breakwater-coast",
+      "url": "art/vector/chapter-four/breakwater-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-breakwater-floor",
+      "url": "art/vector/chapter-four/breakwater-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-four-harbor-pumphouse",
+      "url": "art/vector/chapter-four/harbor-pumphouse.svg",
+      "x": 300,
+      "y": 312,
+      "width": 312,
+      "height": 264,
+      "depth": 576,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-harbor-ferry-out",
+      "url": "art/vector/chapter-four/harbor-ferry-out.svg",
+      "x": 1038,
+      "y": 378,
+      "width": 360,
+      "height": 192,
+      "depth": 570,
+      "layerId": 4
+    },
+    {
+      "key": "scene-four-harbor-ferry-in",
+      "url": "art/vector/chapter-four/harbor-ferry-in.svg",
+      "x": 139,
+      "y": 630,
+      "width": 360,
+      "height": 192,
+      "depth": 822,
+      "layerId": 5
+    },
+    {
+      "key": "scene-four-harbor-gate-closed",
+      "url": "art/vector/chapter-four/harbor-gate-closed.svg",
+      "x": 912,
+      "y": 264,
+      "width": 312,
+      "height": 192,
+      "depth": 456,
+      "layerId": 6
+    },
+    {
+      "key": "scene-four-harbor-gate-open",
+      "url": "art/vector/chapter-four/harbor-gate-open.svg",
+      "x": 912,
+      "y": 264,
+      "width": 312,
+      "height": 192,
+      "depth": 456,
+      "layerId": 7
+    },
+    {
+      "key": "scene-four-harbor-wheel",
+      "url": "art/vector/chapter-four/harbor-wheel.svg",
+      "x": 788,
+      "y": 456,
+      "width": 80,
+      "height": 96,
+      "depth": 552,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-harbor-survey",
+      "url": "art/vector/chapter-four/harbor-survey.svg",
+      "x": 244,
+      "y": 613,
+      "width": 84,
+      "height": 80,
+      "depth": 693,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-breakwater-wave",
+      "url": "art/vector/chapter-four/breakwater-wave.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998,
+      "layerId": 8
+    }
+  ],
+  "sanctuary": [
+    {
+      "key": "scene-four-sanctuary-coast",
+      "url": "art/vector/chapter-four/sanctuary-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-sanctuary-floor",
+      "url": "art/vector/chapter-four/sanctuary-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-four-sanctuary-ring",
+      "url": "art/vector/chapter-four/sanctuary-ring.svg",
+      "x": 456,
+      "y": 132,
+      "width": 648,
+      "height": 312,
+      "depth": 444,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-sanctuary-clamp-live",
+      "url": "art/vector/chapter-four/sanctuary-clamp-live.svg",
+      "x": 984,
+      "y": 504,
+      "width": 144,
+      "height": 96,
+      "depth": 600,
+      "layerId": 4
+    },
+    {
+      "key": "scene-four-sanctuary-clamp-cut",
+      "url": "art/vector/chapter-four/sanctuary-clamp-cut.svg",
+      "x": 984,
+      "y": 504,
+      "width": 144,
+      "height": 96,
+      "depth": 600,
+      "layerId": 5
+    },
+    {
+      "key": "scene-four-sanctuary-fieldchest",
+      "url": "art/vector/chapter-four/sanctuary-fieldchest.svg",
+      "x": 482,
+      "y": 616,
+      "width": 84,
+      "height": 80,
+      "depth": 696,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-sanctuary-wave",
+      "url": "art/vector/chapter-four/sanctuary-wave.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998,
+      "layerId": 6
+    }
+  ],
+  "battle-works-dry": [
+    {
+      "key": "scene-four-battle-works-dry-1",
+      "url": "art/vector/chapter-four/battle-works-dry-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-battle-works-dry-2",
+      "url": "art/vector/chapter-four/battle-works-dry-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-works-wet": [
+    {
+      "key": "scene-four-battle-works-wet-1",
+      "url": "art/vector/chapter-four/battle-works-wet-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-battle-works-wet-2",
+      "url": "art/vector/chapter-four/battle-works-wet-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-works-survey": [
+    {
+      "key": "scene-four-battle-works-survey-1",
+      "url": "art/vector/chapter-four/battle-works-survey-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-battle-works-survey-2",
+      "url": "art/vector/chapter-four/battle-works-survey-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-sanctuary-road": [
+    {
+      "key": "scene-four-battle-sanctuary-road-1",
+      "url": "art/vector/chapter-four/battle-sanctuary-road-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-battle-sanctuary-road-2",
+      "url": "art/vector/chapter-four/battle-sanctuary-road-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-sanctuary-warden": [
+    {
+      "key": "scene-four-battle-sanctuary-warden-1",
+      "url": "art/vector/chapter-four/battle-sanctuary-warden-coast.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-four-battle-sanctuary-warden-2",
+      "url": "art/vector/chapter-four/battle-sanctuary-warden-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ]
+}

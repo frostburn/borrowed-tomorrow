@@ -66,9 +66,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
  });
 }
 
-test('native painted maps report missing artwork and retry without losing the reference',async({page})=>{
- const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/art/infirmary.webp',route=>route.abort());await page.goto('/?dev=maps&map=refuge&cell=32,27');
+test('Chapter Four vector maps report missing artwork and retry without losing the reference',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/art/vector/chapter-four/refuge-coast.svg',route=>route.abort());await page.goto('/?dev=maps&map=refuge&cell=32,27');
  const host=page.locator('#map-workshop');await expect(host.locator('#map-load')).toContainText('artwork is unavailable');
- const url=page.url();await page.unroute('**/art/infirmary.webp');await host.getByRole('button',{name:'Retry missing art',exact:true}).click();await expect(host).toHaveAttribute('data-ready','true');expect(page.url()).toBe(url);
- await expect(host.locator('.map-meta')).toContainText('Native painting');expect(errors).toEqual([]);
+ const url=page.url();await page.unroute('**/art/vector/chapter-four/refuge-coast.svg');await host.getByRole('button',{name:'Retry missing art',exact:true}).click();await expect(host).toHaveAttribute('data-ready','true');expect(page.url()).toBe(url);
+ await expect(host.locator('.map-meta')).toContainText('SVG scene');expect(errors).toEqual([]);
 });

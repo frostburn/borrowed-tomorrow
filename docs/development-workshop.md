@@ -23,6 +23,10 @@ On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creat
 
 On the Vite dev title, **Begin Chapter Three (canonical)** starts a fresh level-5 save (420 XP) with Nell, Orrin and Kit at the capital medical siding. It records the loading-gate raid, all rescued passengers and the victory over Petra at the crossing; she has refused Alban but has not joined. Nell carries her brass reflector, Kit his courier sight, and Orrin the reinforced work coat. The remaining earned marks and five bandages are available, everyone has full HP/focus, and the capital arrival replays normally. It uses no workshop settings and follows the same autosave confirmation/manual-slot rules as the Chapter Two start. The factory and button are absent from production.
 
+## Canonical Chapter Four start
+
+In Vite dev mode, **Begin Chapter Four (canonical)** starts A Light on the Water at the railway refuge. Tomas and every medical passenger are rescued; Nell, Orrin, Kit and Petra are recruited, with Nell/Orrin/Kit active and Celia unintroduced. The party has 740 XP (level seven), the main Chapter Three rewards and manually fitted equipment. The opening replays, manual slots remain untouched and the control/factory are absent from production. Use Maps to inspect `refuge`, `breakwater`, `sanctuary` and their five battle arenas.
+
 ## Future companions
 
 The workshop previews companions planned for later story chapters. Kit is a fast Iron Coast boy courier who gets flustered around Nell; Celia is an older physician; Petra is an imperial knight whose defection develops across Chapters Two and Three. Recruitment plans and the constraints on Kit’s unresolved puppy-love gag live in `docs/story/characters.md`. Kit, Celia and Petra use matching vector artwork while preserving their established costumes. Each has an 80 × 80 actor and 128 × 128 portrait.
