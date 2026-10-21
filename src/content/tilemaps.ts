@@ -4,13 +4,17 @@ import type { GameState } from '../rules/state';
 
 export const TILESET = {...tileset,tiles:pageDefinitions.flatMap((p,i)=>p.tiles.map(t=>({...t,id:t.id+tileset.pages[i].firstgid-1})))};
 export const TILE_PAGES = TILESET.pages;
+/** SVG scene maps retain these IDs for navigation, without loading tile pages. */
+export function mapTilePages(map?:TileMap){
+  return map&&properties(map).sceneArt?[]:TILE_PAGES;
+}
 /** Only pages referenced by this map are required to enter it. */
 export function tilePages(map:TileMap){
   const gids=new Set(map.layers.flatMap(l=>l.data??[]));
-  return TILE_PAGES.filter(p=>{for(const gid of gids)if(gid>=p.firstgid&&gid<p.firstgid+p.tilecount)return true;return false;});
+  return mapTilePages(map).filter(p=>{for(const gid of gids)if(gid>=p.firstgid&&gid<p.firstgid+p.tilecount)return true;return false;});
 }
-export const tileFrame = (gid:number) => {
-  const page=TILE_PAGES.find(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount)!;
+export const tileFrame = (gid:number,map?:TileMap) => {
+  const page=mapTilePages(map).find(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount)!;
   return {key:page.name,frame:gid-page.firstgid};
 };
 export interface Property { name:string; type:string; value:string|number|boolean }

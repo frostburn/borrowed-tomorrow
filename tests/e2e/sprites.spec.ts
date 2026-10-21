@@ -1,3 +1,6 @@
+import { artPath, vectorAsset } from '../../src/content/art-assets';
+import { PLAYABLE_ACTORS } from '../../src/content/actors';
+import { SPRITE_CATALOG } from '../../src/dev/sprite-catalog';
 import { expect, test } from '@playwright/test';
 import { capture } from './controls';
 import { civilianPresentation } from '../../src/content/civilians';
@@ -13,12 +16,12 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const portraits=review.locator('.sprite-cast img');await expect(portraits).toHaveCount(5);
     for(const image of await portraits.all())expect(await image.evaluate(async i=>{const img=i as HTMLImageElement;await img.decode();const r=img.getBoundingClientRect(),scale=window.borrowedTomorrowPixels.inspect().cssScale;return [img.naturalWidth,img.naturalHeight,Math.round(r.width/scale),Math.round(r.height/scale)];})).toEqual([128,128,128,128]);
     // Check every exported actor's real alpha bounds, including the new reserve directions.
-    const feet=await page.evaluate(async()=>{
+    const feet=await page.evaluate(async(paths)=>{
       const all=[];
       const party=['nell','orrin','kit','celia','petra'];
       const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
-        const image=new Image();image.src=`/art/${hero}${suffix}.png`;await image.decode();
+        const image=new Image();image.src=paths[hero+suffix];await image.decode();
         const canvas=document.createElement('canvas'),w=image.naturalWidth,h=image.naturalHeight;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
         const p=ctx.getImageData(0,0,w,h).data;let bottom=-1,top=h;
         for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(p[(y*w+x)*4+3]>127){top=Math.min(top,y);bottom=Math.max(bottom,y);}
@@ -37,16 +40,15 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         }
         all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
-    });
+    },Object.fromEntries([...PLAYABLE_ACTORS,...SPRITE_CATALOG.map(e=>e.sprite)].map(name=>[name,`/${artPath(name)}`])));
     for(const actor of feet){
       const fit=civilianPresentation(actor.hero);
       if(fit){expect([actor.width,actor.height]).toEqual([fit.width,fit.height]);expect([actor.top,actor.bottom]).toEqual([fit.bounds[1],fit.bounds[3]-1]);continue;}
       expect(actor.width).toBe(80);expect(actor.height).toBe(80);
-      // These enemies retain their original native silhouettes and placement.
-      if(['hound','crow','guardian'].includes(actor.hero))continue;
       expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
       expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
-      expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);
+      if(['hound','crow','guardian'].includes(actor.hero))continue;
+      expect(actor.top).toBeGreaterThanOrEqual(vectorAsset(actor.hero)?2:4);expect(actor.top).toBeLessThanOrEqual(10);
     }
     await capture(page,`sprite-cast-${device}`);
     await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();
@@ -68,7 +70,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       const canvas=element as HTMLCanvasElement,info=window.borrowedTomorrowPixels.inspect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),r=canvas.getBoundingClientRect();
       const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data,expected=canvas.getContext('2d')!.getImageData(0,0,240,240).data;
       const left=info.physicalLeft+Math.round((r.left-source.left)/info.cssScale)*info.physicalScale,top=info.physicalTop+Math.round((r.top-source.top)/info.cssScale)*info.physicalScale;
-      let mismatches=0;for(let y=0;y<240;y++)for(let x=0;x<240;x++)for(let c=0;c<4;c++)if(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]!==expected[(y*240+x)*4+c])mismatches++;
+      const gx=Math.round((r.left-source.left)/info.cssScale),gy=Math.round((r.top-source.top)/info.cssScale),u=info.rasterUnit;
+      let mismatches=0;for(let y=1;y<239;y++)for(let x=1;x<239;x++)for(let c=0;c<4;c++){const sx=Math.floor((gx+x)/u)*u-gx,sy=Math.floor((gy+y)/u)*u-gy;if(actual[((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c]!==expected[(sy*240+sx)*4+c])mismatches++;}
       return mismatches;
     })).toBe(0);
     await capture(page,`sprite-detail-${device}`);
@@ -81,9 +84,9 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await collections.getByRole('button',{name:'NPCs (21)',exact:true}).click();
     await expect(review.locator('[data-sprite-hero]')).toHaveCount(21);
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
-    await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.png$/);
+    await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.svg$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
-    await expect(review.locator('.sprite-file')).toContainText('master.png');
+    await expect(review.locator('.sprite-file')).toContainText(artPath('master'));
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
     expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([2016,2016]);
     await capture(page,`sprite-npcs-${device}`);

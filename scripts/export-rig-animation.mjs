@@ -9,7 +9,7 @@ const python=(code,input)=>{
   if(result.status!==0)throw new Error(result.stderr);return result.stdout;
 };
 export async function exportRigAnimation(hero){
-if(!['nell','orrin','kit','petra'].includes(hero))throw new Error('Unknown character export.');
+if(!['kit','petra'].includes(hero))throw new Error('Unknown rig export; Nell and Orrin use vector sources.');
 const sources=JSON.parse(python(`
 hero='${hero}'
 import json,sys,base64

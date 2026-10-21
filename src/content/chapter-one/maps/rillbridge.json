@@ -1559,6 +1559,8 @@
   "nextobjectid": 21,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"sceneArt","type":"string","value":"rillbridge"},
+    {"name":"artStyle","type":"string","value":"rotoscope"},
     {
       "name": "safeArrival",
       "type": "string",

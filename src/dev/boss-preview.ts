@@ -22,7 +22,7 @@ const points=(items:{x:number;y:number}[])=>items.map(p=>new Phaser.Math.Vector2
 let labelId=0;
 let nativePixels:Uint8ClampedArray|undefined;
 function label(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
-  const canvas=document.createElement('canvas');canvas.width=value.length*6*scale;canvas.height=9*scale;
+  const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=9*scale;
   bitmapText(canvas.getContext('2d')!,value,0,scale,color,scale);
   const key=`boss-label-${labelId++}`;scene.textures.addCanvas(key,canvas);
   const text=scene.add.image(Math.round(x),Math.round(y),key).setOrigin(.5);world.add(text);

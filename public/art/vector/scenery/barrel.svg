@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="72" viewBox="0 0 48 72">
+<title>barrel</title><metadata>{"reference": "feb2d47^:public/art/station.webp", "crop": [181, 423, 204, 467], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="9,13 35,10 43,22 43,56 35,68 12,72 5,61 4,25" fill="#695547"/>
+<polygon points="11,15 32,13 35,22 36,59 30,66 12,68" fill="#9a7e58"/>
+<ellipse cx="23" cy="15" rx="17" ry="7" fill="#304653"/>
+<polygon points="4,30 43,26 44,33 4,37" fill="#213747"/>
+<polygon points="5,54 42,50 41,57 7,61" fill="#213747"/>
+</svg>

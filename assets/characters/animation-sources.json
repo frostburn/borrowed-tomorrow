@@ -40,50 +40,67 @@
     ]
   },
   "nell": {
-    "walkRig": {
-      "module": "src/art/nell-actor.ts",
-      "exporter": "scripts/export-nell-animation.mjs",
-      "skinSource": "public/art/nell{,-left,-right,-back}.png",
-      "preparedSkin": "assets/characters/nell-skin/{front,left,right,back}.png",
-      "proportions": "src/art/rig-proportions.ts#NELL_PROPORTIONS",
-      "stridePixels": 24,
-      "legBonePixels": 9,
-      "hipHeightPixels": 18.8,
-      "footScale": 0.65
-    },
-    "attackRig": {
-      "module": "src/art/nell-actor.ts",
-      "pose": "nellAttackPose",
-      "phases": [
-        "windup",
-        "contact"
-      ],
-      "stance": "two planted flat feet",
-      "weaponHand": "right"
-    }
+    "vectorModel": "assets/characters/vector/draw.py#nell",
+    "palette": "warm railway colors (stylistic, extensible)",
+    "logicalSize": [
+      40,
+      80
+    ],
+    "nativeSize": [
+      80,
+      80
+    ],
+    "groundAnchor": [
+      40,
+      68
+    ],
+    "walk": false,
+    "attackFrames": [
+      0,
+      1,
+      2
+    ],
+    "frameStartMs": [
+      0,
+      140,
+      220
+    ],
+    "idleAtMs": 300,
+    "exporter": "scripts/export-nell-animation.mjs",
+    "format": "SVG",
+    "runtimeDirectory": "public/art/vector/animation"
   },
   "orrin": {
-    "walkRig": {
-      "module": "src/art/orrin-actor.ts",
-      "exporter": "scripts/export-orrin-animation.mjs",
-      "skinSource": "public/art/orrin{,-left,-right,-back}.png",
-      "preparedSkin": "assets/characters/orrin-skin/{front,left,right,back}.png",
-      "proportions": "src/art/rig-proportions.ts#ORRIN_PROPORTIONS",
-      "stridePixels": 28,
-      "legBonePixels": 9.5,
-      "hipHeightPixels": 19.5,
-      "footScale": 0.75
-    },
-    "attackRig": {
-      "module": "src/art/orrin-actor.ts",
-      "pose": "orrinAttackPose",
-      "phases": [
-        "windup",
-        "contact"
-      ],
-      "stance": "two planted flat feet",
-      "weaponHand": "right"
-    }
+    "vectorModel": "assets/characters/vector/draw.py#orrin",
+    "palette": "warm railway colors (stylistic, extensible)",
+    "logicalSize": [
+      40,
+      80
+    ],
+    "nativeSize": [
+      80,
+      80
+    ],
+    "groundAnchor": [
+      40,
+      68
+    ],
+    "walkFrames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "stridePixels": 28,
+    "attackFrames": [
+      6,
+      7
+    ],
+    "exporter": "scripts/export-orrin-animation.mjs",
+    "format": "SVG",
+    "runtimeDirectory": "public/art/vector/animation"
   },
   "kit": {
     "walkRig": {

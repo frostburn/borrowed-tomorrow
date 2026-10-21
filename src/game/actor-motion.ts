@@ -1,5 +1,5 @@
 import type Phaser from 'phaser';
-import { animatedHero, ATTACK_DURATION_MS, directionOf, motionFrame, motionPage, walkFrameDistance, WALK_FRAME_MS, type ActorMotion, type MotionHero } from '../content/actor-motion';
+import { animatedHero, walkingHero, ATTACK_DURATION_MS, directionOf, motionFrame, motionPage, walkFrameDistance, WALK_FRAME_MS, type ActorMotion, type MotionHero } from '../content/actor-motion';
 
 type Image = Phaser.GameObjects.Image;
 interface Playback { hero:MotionHero;face:string;motion:ActorMotion;start:number;until:number;distance:number;x:number;y:number }
@@ -12,7 +12,7 @@ export class ActorAnimator {
   get active(){return this.actors.size>0;}
   walk(image:Image,face:string,duration:number){
     const hero=face.split('-')[0];image.setData('actor-base',hero).setData('actor-face',face);
-    if(!animatedHero(hero)||this.reduced.matches){this.stop(image);image.setTexture(face);return;}
+    if(!walkingHero(hero)||this.reduced.matches){this.stop(image);image.setTexture(face);return;}
     const now=this.scene.time.now,old=this.actors.get(image);
     // Carry stride distance through cell boundaries and turns. A planted foot then
     // moves back relative to the body at the same speed the body travels forward.
@@ -42,8 +42,8 @@ export class ActorAnimator {
     if(state.motion==='walk'){
       state.distance+=Math.hypot(image.x-state.x,image.y-state.y);state.x=image.x;state.y=image.y;
     }
-    const elapsed=state.motion==='walk'?state.distance/walkFrameDistance(state.hero)*WALK_FRAME_MS:this.scene.time.now-state.start;
-    const frame=motionFrame(state.motion,elapsed);
+    const elapsed=state.motion==='walk'&&walkingHero(state.hero)?state.distance/walkFrameDistance(state.hero)*WALK_FRAME_MS:this.scene.time.now-state.start;
+    const frame=motionFrame(state.motion,elapsed,state.hero);
     if(frame===undefined)image.setTexture(state.face);
     else image.setTexture(motionPage(state.hero,directionOf(state.face)).key,frame);
     image.setData('actor-motion',state.motion);

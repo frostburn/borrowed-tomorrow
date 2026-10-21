@@ -1,9 +1,7 @@
-import { NELL_PROPORTIONS, ORRIN_PROPORTIONS, KIT_PROPORTIONS, PETRA_PROPORTIONS } from '../../src/art/rig-proportions';
+import { KIT_PROPORTIONS, PETRA_PROPORTIONS } from '../../src/art/rig-proportions';
 // Browser plugin not available; exercise the native review through repository Playwright.
 import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { project } from '../../src/art/actor-space';
-import { LEG_COLORS } from '../../src/art/walk-cycle';
 import { renderLayers } from '../../src/art/layered-sprite';
 import { referenceRigFrame, type ReferenceWeapon } from '../../src/art/reference-rig';
 import { referenceLayers, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS } from '../../src/dev/reference-actor';
@@ -21,7 +19,7 @@ async function nativeFrame(page:Page,frame:number,direction:ActorDirection='righ
   },pixels)).toBe(0);
 }
 
-async function nativeHero(page:Page,hero:'nell'|'orrin'|'kit'|'petra',frame:number,direction:ActorDirection){
+async function nativeHero(page:Page,hero:'kit'|'petra',frame:number,direction:ActorDirection){
   await expect.poll(()=>page.locator('#reference-detail').evaluate(async(element,{hero,frame,direction})=>{
     const image=new Image();image.src=`/art/animation/${hero}-${direction}.png`;await image.decode();
     const expected=document.createElement('canvas');expected.width=expected.height=240;const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=false;
@@ -97,43 +95,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['p
       expect(data.frames[0].pose.left.foot.heel.z).toBeCloseTo(0);expect(data.frames[3].pose.left.foot.toe.z).toBeCloseTo(0);
       for(const frame of data.frames){expect(frame.pose.weapon.hand).toBe('right');expect(frame.pose.weapon.grip).toEqual(frame.pose.arms.right.grip);expect(frame.pose.arms.left.shoulder.x).toBeLessThan(0);expect(frame.pose.arms.right.shoulder.x).toBeGreaterThan(0);}
       await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeFrame(page,0);
-      await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Nell',exact:true}).click();await expect(host).toHaveAttribute('data-skin','nell');
-      await expect(review.getByRole('button',{name:'Anatomy colors',exact:true})).toBeDisabled();await expect(review.locator('[data-reference-weapon="lance"]')).toBeDisabled();
-      for(const direction of ['front','left','right','back'] as const){
-        await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();
-        for(let frame=0;frame<6;frame++){await nativeHero(page,'nell',frame,direction);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
-      }
-      await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'nell',0,'right');
-      const nellPng=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await nellPng).suggestedFilename()).toBe('nell-right-all-walk.png');
-      await review.getByRole('button',{name:'Solo Right Weapon',exact:true}).click();await expect(host).toHaveAttribute('data-layers','right-weapon');
-      const lamp=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await lamp).suggestedFilename()).toBe('nell-right-right-weapon-walk.png');
-      await review.getByRole('button',{name:'Show all layers',exact:true}).click();await nativeHero(page,'nell',0,'right');
-      const nellJson=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const nellData=JSON.parse(await readFile((await(await nellJson).path())!,'utf8'));
-      expect(nellData.skin).toBe('nell');expect(nellData.weapon).toBe('lantern');expect(nellData.cycleDistance).toBe(NELL_PROPORTIONS.strideDistance);expect(nellData.frames[0].pose.weapon.grip).toEqual(nellData.frames[0].pose.arms.right.grip);
-      await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`nell-rig-${device}`);
-      await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
-      await expect(host).toHaveAttribute('data-skin','orrin');await expect(host).toHaveAttribute('data-weapon','lance');
-      await expect(review.locator('[data-reference-weapon="lantern"]')).toBeDisabled();
-      for(const direction of ['front','left','right','back'] as const){
-        await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:direction[0].toUpperCase()+direction.slice(1),exact:true}).click();
-        for(let frame=0;frame<6;frame++){await nativeHero(page,'orrin',frame,direction);await review.getByRole('button',{name:'Next frame',exact:true}).click();}
-      }
-      const orrinJson=page.waitForEvent('download');await review.getByRole('button',{name:'Export pose data',exact:true}).click();const orrinData=JSON.parse(await readFile((await(await orrinJson).path())!,'utf8'));
-      expect(orrinData.skin).toBe('orrin');expect(orrinData.cycleDistance).toBe(ORRIN_PROPORTIONS.strideDistance);expect(orrinData.weapon).toBe('lance');
-      expect(orrinData.frames[0].pose.weapon.grip).toEqual(orrinData.frames[0].pose.arms.right.grip);
-      await review.getByRole('button',{name:'Solo Right Weapon',exact:true}).click();
-      const contacts=(['left','right'] as const).map(side=>{
-        const foot=orrinData.frames[0].pose[side].foot,point=project(foot.contact==='heel'?foot.heel:foot.toe,'back'),rgb=LEG_COLORS[side];
-        return {x:Math.round(point.x)+120,y:Math.round(point.y)+22,rgb:[rgb>>16&255,rgb>>8&255,rgb&255]};
-      });
-      await expect.poll(()=>page.locator('#reference-floor').evaluate((element,contacts)=>{
-        const ctx=(element as HTMLCanvasElement).getContext('2d')!;
-        return contacts.every(({x,y,rgb})=>{const actual=ctx.getImageData(x,y,1,1).data;return rgb.every((value,i)=>value===actual[i]);});
-      },contacts)).toBe(true);
-      const lanceEvent=page.waitForEvent('download');await review.getByRole('button',{name:'Export six frames PNG',exact:true}).click();expect((await lanceEvent).suggestedFilename()).toBe('orrin-back-right-weapon-walk.png');
-      await review.getByRole('button',{name:'Show all layers',exact:true}).click();
-      await review.getByRole('group',{name:'Reference facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();await nativeHero(page,'orrin',0,'right');
-      await page.locator('#reference-detail').scrollIntoViewIfNeeded();await capture(page,`orrin-rig-${device}`);
+      await expect(review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Nell',exact:true})).toHaveCount(0);
+      await expect(review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Orrin',exact:true})).toHaveCount(0);
       await review.getByRole('group',{name:'Reference skin',exact:true}).getByRole('button',{name:'Kit',exact:true}).click();
       await expect(host).toHaveAttribute('data-skin','kit');await expect(host).toHaveAttribute('data-weapon','crossbow');
       for(const direction of ['front','left','right','back'] as const){

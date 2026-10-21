@@ -1,4 +1,6 @@
-/** Authored 5 × 7 glyphs. Each bit is one logical pixel, not a vector-font sample. */
+import smallRows from './small-font.json' with { type: 'json' };
+import { RASTER_UNIT, snapRaster } from './raster';
+/** Authored masks; the compact face keeps small labels readable on the common grid. */
 const rows: Record<string, string[]> = {
   ' ': ['00000','00000','00000','00000','00000','00000','00000'],
   A:['01110','10001','10001','11111','10001','10001','10001'],B:['11110','10001','10001','11110','10001','10001','11110'],
@@ -53,6 +55,12 @@ export function glyph(character: string): string[] {
   return rows[character] ?? rows[({ '♯':'#','’':"'",'‘':"'",'“':'"','”':'"','−':'-','—':'-','–':'-' } as Record<string,string>)[character]] ?? rows['?'];
 }
 export function bitmapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, color: string, scale=1) {
-  ctx.fillStyle=color;let cursor=Math.round(x);
-  for(const char of text){const mask=glyph(char);for(let row=0;row<7;row++)for(let col=0;col<5;col++)if(mask[row][col]==='1')ctx.fillRect(cursor+col*scale,Math.round(y)+row*scale,scale,scale);cursor+=6*scale;}
+  const compact=scale===1,unit=compact?RASTER_UNIT:scale;
+  ctx.fillStyle=color;let cursor=snapRaster(x);
+  const aliases:Record<string,string>={'♯':'#','’':"'",'‘':"'",'“':'"','”':'"','−':'-','—':'-','–':'-'};
+  for(const char of text){
+    const mask=compact?(smallRows as Record<string,string[]>)[(aliases[char]??char).toUpperCase()]??smallRows['?']:glyph(char);
+    for(let row=0;row<mask.length;row++)for(let col=0;col<mask[row].length;col++)if(mask[row][col]==='1')ctx.fillRect(cursor+col*unit,snapRaster(y)+row*unit,unit,unit);
+    cursor+=(compact?4:6)*unit;
+  }
 }

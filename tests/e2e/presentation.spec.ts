@@ -5,7 +5,7 @@ import { approach } from './navigation';
 const modes=['refuge','breakwater','sanctuary','four-battle','four-warden','conduit','coast','coast-battle','petra-battle','station','yard','tunnel','battle','inspector','ending','rillbridge','sluice','flood','cinderbank','infirmary','shunting','northglass','relayhall','switching'] as const;
 const effects=['click','move','strike','burst','flare','steam','mend','bandage','peck','defend','win','punch','return-call','paper','resonance'] as const;
 
-test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional DPR',async({browser})=>{
+test('art and text share chunky square pixels at fractional DPR',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
   const page=await context.newPage();await page.goto('/');await expect(page.getByRole('button',{name:'Begin Chapter One'})).toBeVisible({timeout:15000});
   await expect.poll(()=>page.evaluate(()=>{
@@ -15,8 +15,8 @@ test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional
   const result=await page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,r=canvas.getBoundingClientRect(),dpr=devicePixelRatio;
     const p=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
-    const info=window.borrowedTomorrowPixels.inspect(),k=info.physicalScale;let uneven=0;
-    for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
+    const info=window.borrowedTomorrowPixels.inspect(),k=info.physicalScale*info.rasterUnit;let uneven=0;
+    for(let y=0;y<Math.floor(info.height/info.rasterUnit);y++)for(let x=0;x<Math.floor(info.width/info.rasterUnit);x++){
       const start=((info.physicalTop+y*k)*canvas.width+info.physicalLeft+x*k)*4;
       for(let dy=0;dy<k;dy++)for(let dx=0;dx<k;dx++){
         const at=start+(dy*canvas.width+dx)*4;
@@ -24,9 +24,9 @@ test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional
       }
     }
     // The backing raster is already enlarged into equal physical blocks.
-    return {width:info.width,height:info.height,uneven,physicalScale:k,xScale:r.width*dpr/canvas.width,yScale:r.height*dpr/canvas.height,left:r.left*dpr,top:r.top*dpr};
+    return {width:info.width,height:info.height,uneven,physicalScale:info.physicalScale,rasterUnit:info.rasterUnit,xScale:r.width*dpr/canvas.width,yScale:r.height*dpr/canvas.height,left:r.left*dpr,top:r.top*dpr};
   });
-  expect(result.width).toBe(1024);expect(result.height).toBe(768);expect(result.uneven).toBe(0);expect(result.physicalScale).toBe(2);expect(result.xScale).toBeCloseTo(1,4);expect(result.yScale).toBeCloseTo(1,4);
+  expect(result.width).toBe(1024);expect(result.height).toBe(768);expect(result.uneven).toBe(0);expect(result.physicalScale).toBe(2);expect(result.rasterUnit).toBe(2);expect(result.xScale).toBeCloseTo(1,4);expect(result.yScale).toBeCloseTo(1,4);
   // CSS layout stores 1/64px units; the device raster rounds this subpixel error.
   expect(result.left).toBeCloseTo(Math.round(result.left),1);expect(result.top).toBeCloseTo(Math.round(result.top),1);
   // Compare the browser's displayed pixels, not just the canvas backing store.
@@ -57,7 +57,7 @@ test('native 1024 by 768 artwork enlarges in equal physical pixels at fractional
   await context.close();
 });
 
-test('portraits, HUD sprites, and scenery retain their native pixels and colors',async({page})=>{
+test('portraits, HUD sprites and scenery share the display raster without palette reduction',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Begin Chapter One'}).click();
   while(await page.locator('.dialogue h2').textContent()!=='Nell')await page.locator('.dialogue-actions button').click();
   await expect(page.locator('.dialogue h2')).toHaveText('Nell');
@@ -76,7 +76,8 @@ test('portraits, HUD sprites, and scenery retain their native pixels and colors'
     if(reference.width!==128||reference.height!==128||Math.round(box.width/info.cssScale)!==128||Math.round(box.height/info.cssScale)!==128)return -2;
     for(let y=0;y<128;y++)for(let x=0;x<128;x++)for(let c=0;c<4;c++){
       const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
-      if(actual[at]!==expected[(y*128+x)*4+c])missing++;
+      const gx=Math.round((box.left-source.left)/info.cssScale),gy=Math.round((box.top-source.top)/info.cssScale),u=info.rasterUnit,sx=Math.floor((gx+x)/u)*u-gx,sy=Math.floor((gy+y)/u)*u-gy;
+      if(sx>=0&&sy>=0&&sx<128&&sy<128&&actual[at]!==expected[(sy*128+sx)*4+c])missing++;
     }
     return missing;
   }),{timeout:15000}).toBe(0);

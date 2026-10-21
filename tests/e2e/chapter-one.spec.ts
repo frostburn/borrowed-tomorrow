@@ -96,7 +96,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-pass');
     await page.locator('.dialogue-actions button').click();
     await expect(page.locator('.dialogue h2')).toHaveText('Captain Alban');
-    await expect(page.locator('.dialogue-portrait img')).toHaveAttribute('src',/\/art\/portrait-alban\.png$/);
+    await expect(page.locator('.dialogue-portrait img')).toHaveAttribute('src',/\/art\/vector\/portrait-alban\.svg$/);
     await nativeActor(page,'alban',{x:33,y:14});await capture(page,`pass-arrival-${device}`);
     await dialogue(page);await approach(page,'captain');
     await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-captain');

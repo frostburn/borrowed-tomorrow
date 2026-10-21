@@ -270,6 +270,8 @@
   "nextobjectid": 1,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"sceneArt","type":"string","value":"battle-workshop"},
+    {"name":"artStyle","type":"string","value":"rotoscope"},
     {
       "name": "name",
       "type": "string",

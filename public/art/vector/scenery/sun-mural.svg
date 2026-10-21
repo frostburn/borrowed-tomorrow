@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="168" viewBox="0 0 144 168">
+<title>sun-mural</title><metadata>{"reference": "feb2d47^:public/art/tunnel.webp", "crop": [377, 51, 627, 218], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="6,167 8,27 29,7 113,2 136,23 141,167" fill="#213747"/>
+<polygon points="13,162 15,30 33,14 110,11 127,30 131,161" fill="#53676c"/>
+<polygon points="25,143 26,41 117,35 120,141" fill="#304653"/>
+<ellipse cx="72" cy="67" rx="25" ry="26" fill="#bd945a"/>
+<ellipse cx="72" cy="67" rx="17" ry="18" fill="#a09b7d"/>
+<polygon points="72,40 83,57 81,76 70,85 56,69 58,51" fill="#d5c9a0"/>
+<polyline points="102,67 110,67" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="93.2132,88.2132 98.8701,93.8701" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="72,97 72,105" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="50.7868,88.2132 45.1299,93.8701" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="42,67 34,67" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="50.7868,45.7868 45.1299,40.1299" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="72,37 72,29" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polyline points="93.2132,45.7868 98.8701,40.1299" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polygon points="47,127 72,100 99,125 96,132 49,135" fill="#bd945a"/>
+<polygon points="55,126 72,108 89,124" fill="#304653"/>
+<polyline points="28,145 115,141" fill="none" stroke="#a09b7d" stroke-width="3"/>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>elspeth portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-elspeth.png", "method": "Hand-traced portrait silhouette, pose and clothing; original polygonal face planes"}</metadata>
+<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
+<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
+<polygon points="0,105 128,65 128,128 0,128" fill="#1b303a"/>
+<polygon points="9,128 13,72 22,67 30,74 30,128" fill="#623d29"/>
+<polygon points="15,77 20,71 24,77 24,128 17,128" fill="#c69c5c"/>
+<polygon points="94,71 101,67 107,73 111,128 99,128" fill="#623d29"/>
+<polygon points="98,76 101,71 104,77 107,128 102,128" fill="#c69c5c"/>
+<polygon points="14,128 22,99 47,85 75,84 98,99 112,128" fill="#653f50"/>
+<polygon points="22,103 46,90 59,112 45,128 14,128" fill="#895767"/>
+<polygon points="78,91 97,103 110,128 79,128 65,111" fill="#4a3345"/>
+<polygon points="49,84 60,96 76,87 85,99 72,128 53,128" fill="#233d52"/>
+<polygon points="57,82 63,94 73,96 79,85 76,77" fill="#ad7253"/>
+<polygon points="56,89 66,99 76,91 72,108 61,105" fill="#f1d8ae"/>
+<polygon points="27,29 37,16 61,12 79,22 93,40 89,67 77,83 50,82 35,69 28,48" fill="#8f8a83"/>
+<polygon points="43,31 64,24 82,37 85,53 94,65 86,69 82,81 69,88 53,83 42,72 35,54" fill="#d49c70"/>
+<polygon points="38,39 48,42 48,62 58,77 74,82 69,88 53,81 41,70 35,52" fill="#ad7253"/>
+<polygon points="53,31 66,29 77,37 82,53 72,59 58,52" fill="#efc596"/>
+<polygon points="23,39 21,26 30,19 31,10 44,12 52,5 63,9 73,7 83,17 88,31 84,42 77,37 77,28 63,26 51,36 40,39 37,54 31,58 26,52" fill="#b3aaa0"/>
+<polygon points="26,31 33,24 33,16 46,19 54,12 63,16 73,12 79,20 63,20 50,30 38,32 32,43" fill="#f1d8ae"/>
+<polygon points="25,32 18,35 16,46 21,56 32,58 30,50 24,47" fill="#baa989"/>
+<polygon points="57,51 63,50 66,53 63,55 57,54" fill="#80523e"/>
+<polygon points="58,53 64,52 63,54 59,54" fill="#f1d8ae"/>
+<polygon points="61,52 63,52 63,55 61,55" fill="#122634"/>
+<polygon points="77,50 83,49 86,52 83,54 77,53" fill="#80523e"/>
+<polygon points="78,52 84,51 83,53 79,53" fill="#f1d8ae"/>
+<polygon points="81,51 83,51 83,54 81,54" fill="#122634"/>
+<polygon points="78,57 76,66 83,69 85,67 80,64" fill="#ad7253"/>
+<polygon points="80,58 82,65 84,66 81,67" fill="#efc596"/>
+<polyline points="64,76 78,74" fill="none" stroke="#80523e" stroke-width="2"/>
+<polyline points="53,64 55,69" fill="none" stroke="#ad7253" stroke-width="2"/>
+<polyline points="56,47 64,46" fill="none" stroke="#baa989" stroke-width="3"/>
+<polyline points="77,46 85,47" fill="none" stroke="#baa989" stroke-width="3"/>
+<polyline points="51,50 64,49 66,58 61,62 52,59 51,50" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="73,49 86,48 88,57 83,61 74,58 73,49" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="66,53 73,52" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polyline points="50,53 39,48" fill="none" stroke="#c69c5c" stroke-width="2"/>
+<polygon points="64,128 74,113 109,108 119,128" fill="#3e596b"/>
+<polygon points="72,125 77,117 106,113 113,128" fill="#baa989"/>
+</svg>

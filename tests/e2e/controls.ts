@@ -1,11 +1,13 @@
+import { artPath } from '../../src/content/art-assets';
 import { expect, type Page } from '@playwright/test';
 import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 import { MAPS } from '../../src/content/maps';
 import { BATTLE_MAPS } from '../../src/content/battle-maps';
-import { layerVisible, properties, TILESET, tileProperties } from '../../src/content/tilemaps';
+import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
+import { visibleSceneArt } from '../../src/content/scene-art';
 import { civilianPresentation } from '../../src/content/civilians';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
@@ -27,7 +29,7 @@ export async function dialogue(page: Page) {
     const who=await page.locator('.dialogue h2').textContent(),portrait=who?speakerPortrait(who):undefined;
     if(portrait){
       const image=page.locator('.dialogue-portrait img');
-      await expect(image).toHaveAttribute('src',new RegExp(`/art/${portrait}\\.png$`));
+      await expect(image).toHaveAttribute('src',new RegExp(`/${artPath(portrait).replaceAll('.','\\.')}$`));
       await expect.poll(()=>image.evaluate(img=>{const i=img as HTMLImageElement;return i.complete&&i.naturalWidth===128&&i.naturalHeight===128;})).toBe(true);
     }
     await page.locator('.dialogue-actions button').first().click();
@@ -40,12 +42,14 @@ export async function capture(page: Page, name: string) { if(process.env.BT_QA_S
 export async function nativeScene(page:Page,map:string,yOffset=0){
   const snapshot=await inspect(page),tiles=snapshot.mode==='battle'?BATTLE_MAPS[snapshot.battle!.encounter]??MAPS[map as MapId]?.tiles:MAPS[map as MapId]?.tiles;
   const layers=tiles?.layers.filter(l=>l.data&&layerVisible(l,snapshot.state)).map(l=>({...l,sorted:!!properties(l).sort}));
-  await expect.poll(()=>page.evaluate(async({name,yOffset,tiles,layers,tileset,tileProperties})=>{
+  await expect.poll(()=>page.evaluate(async({name,yOffset,tiles,layers,tileset,tileProperties,pieces})=>{
     const image=new Image();if(!tiles){image.src=`/art/${name}.webp`;await image.decode();}
     const pages=tiles?await Promise.all(tileset.pages.map(async p=>{const img=new Image();img.src=`/${p.url}`;await img.decode();return img;})):[];
     const scenery=document.createElement('canvas');scenery.width=tiles?tiles.width*24:image.width;scenery.height=tiles?tiles.height*24:image.height;
     const ctx=scenery.getContext('2d')!;
-    if(tiles){
+    if(pieces){
+      for(const piece of [...pieces].sort((a,b)=>a.depth-b.depth)){const img=new Image();img.src=`/${piece.url}`;await img.decode();const native=document.createElement('canvas');native.width=img.naturalWidth;native.height=img.naturalHeight;native.getContext('2d')!.drawImage(img,0,0);ctx.drawImage(native,piece.x,piece.y);}
+    }else if(tiles){
       const props:{gid:number;x:number;y:number;depth:number}[]=[];
       const draw=(gid:number,x:number,y:number)=>{const i=tileset.pages.findIndex(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount),p=tileset.pages[i],id=gid-p.firstgid;ctx.drawImage(pages[i],id%p.columns*24,Math.floor(id/p.columns)*24,24,24,x,y,24,24);};
       for(const layer of layers!)for(let i=0;i<layer.data!.length;i++){
@@ -56,25 +60,25 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
     }else ctx.drawImage(image,0,0);
     const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
-    const reference=document.createElement('canvas');reference.width=32;reference.height=64;
-    reference.getContext('2d')!.drawImage(scenery,Math.round(view.scrollX)+8,Math.round(view.scrollY)+48+(tiles?0:yOffset),32,64,0,0,32,64);
-    const expected=reference.getContext('2d')!.getImageData(0,0,32,64).data;
+    const expected=ctx.getImageData(0,0,scenery.width,scenery.height).data;
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
-    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+8)*info.physicalScale;
-    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+48)*info.physicalScale;
+    const worldX=Math.round((world.left-source.left)/info.cssScale),worldY=Math.round((world.top-source.top)/info.cssScale),u=info.rasterUnit;
+    const sample=(n:number)=>Math.floor(n/u)*u;
     let missing=0,maxDelta=0;const examples:number[][]=[];
-    for(let y=0;y<64;y++)for(let x=0;x<32;x++)for(let c=0;c<4;c++){
-      const at=((top+y*info.physicalScale)*output.width+left+x*info.physicalScale)*4+c;
-      const delta=Math.abs(actual[at]-expected[(y*32+x)*4+c]);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[at],expected[(y*32+x)*4+c]]);}
+    for(let y=48;y<112;y++)for(let x=8;x<40;x++)for(let c=0;c<4;c++){
+      const at=((info.physicalTop+(worldY+y)*info.physicalScale)*output.width+info.physicalLeft+(worldX+x)*info.physicalScale)*4+c;
+      const sx=Math.round(view.scrollX)+sample(worldX+x)-worldX,sy=Math.round(view.scrollY)+sample(worldY+y)-worldY+(tiles?0:yOffset);
+      const want=expected[(sy*scenery.width+sx)*4+c];
+      const delta=Math.abs(actual[at]-want);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[at],want]);}
     }
     return missing?JSON.stringify({missing,maxDelta,examples}):'ok';
-  },{name:map,yOffset,tiles,layers,tileset:TILESET,tileProperties}),{timeout:15000}).toBe('ok');
+  },{name:map,yOffset,tiles,layers,tileset:{...TILESET,pages:mapTilePages(tiles)},tileProperties,pieces:tiles?visibleSceneArt(tiles,snapshot.state):undefined}),{timeout:15000}).toBe('ok');
 }
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
 export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
-  await expect.poll(()=>page.evaluate(async({sprite,at,fit})=>{
-    const actor=new Image();actor.src=`/art/${sprite}.png`;await actor.decode();
+  await expect.poll(()=>page.evaluate(async({spriteUrl,at,fit})=>{
+    const actor=new Image();actor.src=spriteUrl;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
     const reference=document.createElement('canvas');reference.width=80;reference.height=80;
     const ctx=reference.getContext('2d')!;
@@ -86,21 +90,23 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+x-view.scrollX)*info.physicalScale;
     const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+y-view.scrollY)*info.physicalScale;
+    const gx=Math.round((world.left-source.left)/info.cssScale)+x-Math.round(view.scrollX),gy=Math.round((world.top-source.top)/info.cssScale)+y-Math.round(view.scrollY),u=info.rasterUnit;
     let missing=0,compared=0;
     for(let row=0;row<80;row++)for(let col=0;col<80;col++)for(let c=0;c<4;c++){
       // Native exports retain alpha around 250–254; requiring 255 silently
       // skipped whole characters. Allow only the small compositing delta.
       // Filtered edge pixels blend with scenery; compare only opaque interiors
       // there. Older unscaled PNGs also carry intentional alpha around 250.
-      if(expected[(row*80+col)*4+3]<(fit?255:250))continue;
+      const sx=Math.floor((gx+col)/u)*u-gx,sy=Math.floor((gy+row)/u)*u-gy;
+      if(sx<0||sy<0||sx>=80||sy>=80||expected[(sy*80+sx)*4+3]<(fit?255:250))continue;
       const index=((top+row*info.physicalScale)*output.width+left+col*info.physicalScale)*4+c;
-      compared++;if(Math.abs(actual[index]-expected[(row*80+col)*4+c])>6)missing++;
+      compared++;if(Math.abs(actual[index]-expected[(sy*80+sx)*4+c])>6)missing++;
     }
     return compared>=600?missing/compared:1;
   // Phaser's transformed draw and Canvas drawImage use slightly different
   // subpixel rounding at filtered boundaries. Keep geometry assertions exact
   // and allow up to 1% differing color channels for scaled civilian artwork.
-  },{sprite,at,fit:civilianPresentation(sprite)}),{timeout:15000}).toBeLessThanOrEqual(Math.max(maxObscuredFraction,civilianPresentation(sprite)?0.01:0));
+  },{spriteUrl:`/${artPath(sprite)}`,at,fit:civilianPresentation(sprite)}),{timeout:15000}).toBeLessThanOrEqual(Math.max(maxObscuredFraction,civilianPresentation(sprite)?0.01:0));
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {

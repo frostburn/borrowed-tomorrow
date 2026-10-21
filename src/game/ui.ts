@@ -1,7 +1,8 @@
 import type { Choice, Dialogue } from '../content/dialogue';
 import { portraitAsset, speakerPortrait } from '../content/characters';
+import { artPath } from '../content/art-assets';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
-export const art = (name: string) => `${import.meta.env.BASE_URL}art/${name}.png`;
+export const art = (name: string) => `${import.meta.env.BASE_URL}${artPath(name)}`;
 export interface Button { label: string; action: () => void; disabled?: boolean; selected?: boolean; key?: string; title?: string }
 export class UI {
   readonly canvas: HTMLElement;

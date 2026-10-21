@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="144" viewBox="0 0 120 144">
+<title>collector-machine</title><metadata>{"reference": "feb2d47^:public/art/tunnel.webp", "crop": [407, 68, 594, 155], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="9,136 14,45 29,28 88,24 105,43 114,137" fill="#142536"/>
+<polygon points="23,49 89,43 94,126 19,130" fill="#253e48"/>
+<polygon points="26,52 53,48 55,124 24,128" fill="#638487"/>
+<polygon points="36,37 41,9 67,6 85,27 80,57 52,65 36,52" fill="#bd945a"/>
+<ellipse cx="60" cy="32" rx="21" ry="22" fill="#213747"/>
+<ellipse cx="60" cy="31" rx="14" ry="15" fill="#638487"/>
+<polygon points="51,19 62,17 70,25 67,39 55,43 49,34" fill="#86a19c"/>
+<polygon points="14,13 22,12 25,132 14,134" fill="#895e48"/>
+<polygon points="14,13 17,13 19,131 14,133" fill="#bd945a"/>
+<polygon points="94,13 102,12 105,132 94,134" fill="#895e48"/>
+<polygon points="94,13 97,13 99,131 94,133" fill="#bd945a"/>
+<polygon points="44,76 48,76 49,117 44,119" fill="#bd945a"/>
+<polygon points="61,76 65,76 66,117 61,119" fill="#bd945a"/>
+<polygon points="77,76 81,76 82,117 77,119" fill="#bd945a"/>
+<polygon points="6,133 105,125 118,137 9,144" fill="#304653"/>
+</svg>

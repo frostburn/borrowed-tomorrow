@@ -1,5 +1,6 @@
+import { artPath } from '../../src/content/art-assets';
 import { expect, test } from '@playwright/test';
-import { TILESET, tileProperties } from '../../src/content/tilemaps';
+import { visibleSceneArt } from '../../src/content/scene-art';
 import { MAPS, walkable } from '../../src/content/maps';
 import { receiveItem } from '../../src/rules/inventory';
 import { checkpoint } from '../support/progress';
@@ -26,29 +27,20 @@ test('native foreground trees occlude actors behind them and yield to actors in 
   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   for(const [row,front] of [[22,false],[24,true]] as const){
     const state=checkpoint('festivalSeen');state.location={map:'station',x:1,y:row};await importSave(page,state);
-    await expect.poll(()=>page.evaluate(async({row,tileset,tileProperties,map})=>{
-      const actor=new Image();actor.src='/art/nell.png';await actor.decode();
-      const pages=await Promise.all(tileset.pages.map(async p=>{const image=new Image();image.src=`/${p.url}`;await image.decode();return image;}));
+    await expect.poll(()=>page.evaluate(async({row,pieces,map,actorUrl})=>{
+      const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();const native=document.createElement('canvas');native.width=image.naturalWidth;native.height=image.naturalHeight;native.getContext('2d')!.drawImage(image,0,0);return native;};
+      const actor=await decode(actorUrl);
       const reference=document.createElement('canvas');reference.width=map.width*24;reference.height=map.height*24;const ctx=reference.getContext('2d')!;
       const tree=document.createElement('canvas');tree.width=reference.width;tree.height=reference.height;const t=tree.getContext('2d')!;
-      const draw=(context:CanvasRenderingContext2D,gid:number,x:number,y:number)=>{
-        const i=tileset.pages.findIndex(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount),p=tileset.pages[i],frame=gid-p.firstgid;
-        context.drawImage(pages[i],frame%p.columns*24,Math.floor(frame/p.columns)*24,24,24,x,y,24,24);
-      };
-      const queue:{gid:number;x:number;y:number;depth:number}[]=[];
-      for(const layer of map.layers){
-        if(!layer.data||!layer.visible||layer.properties?.some(p=>p.name==='requiredFlag'))continue;
-        const sorted=layer.properties?.some(p=>p.name==='sort'&&p.value===true);
-        for(let i=0;i<layer.data.length;i++){
-          const gid=layer.data[i];if(!gid||tileProperties[gid-1]?.empty)continue;
-          const x=i%map.width*24,y=Math.floor(i/map.width)*24;
-          if(sorted){queue.push({gid,x,y,depth:y+Number(tileProperties[gid-1]?.sortOffset??24)});if(String(tileProperties[gid-1]?.name).startsWith('canopy-')&&x<120)draw(t,gid,x,y);}
-          else draw(ctx,gid,x,y);
-        }
+      const queue:{image:HTMLCanvasElement;x:number;y:number;depth:number}[]=[];
+      for(const piece of pieces!){
+        const image=await decode(`/${piece.url}`);
+        if(piece.depth>=0){queue.push({image,x:piece.x,y:piece.y,depth:piece.depth});if(piece.key==='scenery-canopy'&&piece.x<120)t.drawImage(image,piece.x,piece.y);}
+        else ctx.drawImage(image,piece.x,piece.y);
       }
       const actorX=36-40,actorY=(row+.5)*24+7-68;
-      queue.push({gid:0,x:actorX,y:actorY,depth:(row+.5)*24+7});
-      for(const p of queue.sort((a,b)=>a.depth-b.depth))if(p.gid)draw(ctx,p.gid,p.x,p.y);else ctx.drawImage(actor,p.x,p.y);
+      queue.push({image:actor,x:actorX,y:actorY,depth:(row+.5)*24+7});
+      for(const p of queue.sort((a,b)=>a.depth-b.depth))ctx.drawImage(p.image,p.x,p.y);
       const expected=ctx.getImageData(0,0,reference.width,reference.height).data,canopy=t.getImageData(0,0,tree.width,tree.height).data;
       const sprite=document.createElement('canvas');sprite.width=80;sprite.height=80;sprite.getContext('2d')!.drawImage(actor,0,0);const pixels=sprite.getContext('2d')!.getImageData(0,0,80,80).data;
       const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
@@ -58,13 +50,15 @@ test('native foreground trees occlude actors behind them and yield to actors in 
       let compared=0,missing=0,maxDelta=0;const examples:number[][]=[];
       for(let sy=0;sy<80;sy++)for(let sx=0;sx<80;sx++){
         const x=actorX+sx,y=actorY+sy;if(x<0||y<0||x>=reference.width||y>=reference.height||y<view.scrollY||y>=view.scrollY+view.height)continue;
-        const a=(sy*80+sx)*4,b=(y*tree.width+x)*4;if(pixels[a+3]<200||canopy[b+3]<200)continue;
+        const a=(sy*80+sx)*4,u=info.rasterUnit,gx=Math.round((world.left-source.left)/info.cssScale)+x-Math.round(view.scrollX),gy=Math.round((world.top-source.top)/info.cssScale)+y-Math.round(view.scrollY);
+        const bx=Math.round(view.scrollX)+Math.floor(gx/u)*u-Math.round((world.left-source.left)/info.cssScale),by=Math.round(view.scrollY)+Math.floor(gy/u)*u-Math.round((world.top-source.top)/info.cssScale),b=(by*tree.width+bx)*4;
+        if(pixels[a+3]<200||canopy[b+3]<200)continue;
         const out=((top+(y-view.scrollY)*info.physicalScale)*output.width+left+(x-view.scrollX)*info.physicalScale)*4;
         for(let c=0;c<4;c++){const delta=Math.abs(actual[out+c]-expected[b+c]);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[out+c],expected[b+c]]);}}
         compared++;
       }
       return compared>100&&!missing?'ok':JSON.stringify({compared,missing,maxDelta,examples});
-    },{row,tileset:TILESET,tileProperties,map:MAPS.station.tiles!}),{timeout:15000}).toBe('ok');
+    },{row,pieces:visibleSceneArt(MAPS.station.tiles!,state),map:MAPS.station.tiles!,actorUrl:`/${artPath('nell')}`}),{timeout:15000}).toBe('ok');
     await capture(page,front?'tile-tree-front':'tile-tree-behind');
   }
 });

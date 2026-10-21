@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>tomas portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-tomas.png", "method": "Hand-traced portrait silhouette, pose and clothing; original polygonal face planes"}</metadata>
+<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
+<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
+<polygon points="0,105 128,65 128,128 0,128" fill="#1b303a"/>
+<polygon points="5,128 15,99 39,85 53,79 80,82 106,99 120,128" fill="#233d52"/>
+<polygon points="15,103 36,91 49,111 39,128 7,128" fill="#3e596b"/>
+<polygon points="89,88 106,100 118,128 88,128" fill="#122634"/>
+<polygon points="48,80 56,94 72,95 84,83 82,97 65,113 49,99" fill="#ad7253"/>
+<polygon points="33,90 48,83 60,97 79,85 91,93 76,108 64,105 68,128 52,128 53,107 44,106" fill="#9c503b"/>
+<polygon points="42,90 49,88 61,101 79,91 84,94 67,106 56,102" fill="#bd7550"/>
+<polygon points="33,91 28,103 43,111 39,128 50,128 51,104" fill="#c69c5c"/>
+<polygon points="30,34 39,20 69,16 89,33 94,57 84,78 69,88 46,82 33,68" fill="#372a25"/>
+<polygon points="42,32 66,26 82,37 85,52 91,63 85,68 81,80 69,87 52,80 41,67 35,49" fill="#d49c70"/>
+<polygon points="38,38 49,43 48,63 59,77 74,82 68,87 50,79 40,66 35,49" fill="#ad7253"/>
+<polygon points="53,33 67,29 78,37 82,51 73,57 57,52" fill="#efc596"/>
+<polygon points="25,42 28,31 21,28 36,25 32,16 46,19 45,8 57,16 63,5 69,14 82,9 81,20 94,20 88,29 96,35 87,40 89,51 81,47 74,36 66,40 61,33 51,43 47,37 41,52 35,49 35,61 29,60 31,48" fill="#623d29"/>
+<polygon points="30,33 43,29 41,22 51,25 52,17 61,24 65,15 69,24 78,21 73,28 63,28 56,34 48,31 40,41 35,42" fill="#9b5d32"/>
+<polygon points="55,51 61,50 64,53 61,55 55,54" fill="#80523e"/>
+<polygon points="56,53 62,52 61,54 57,54" fill="#f1d8ae"/>
+<polygon points="59,52 61,52 61,55 59,55" fill="#122634"/>
+<polygon points="75,50 81,49 84,52 81,54 75,53" fill="#80523e"/>
+<polygon points="76,52 82,51 81,53 77,53" fill="#f1d8ae"/>
+<polygon points="79,51 81,51 81,54 79,54" fill="#122634"/>
+<polyline points="54,48 63,47" fill="none" stroke="#372a25" stroke-width="3"/>
+<polyline points="75,46 83,48" fill="none" stroke="#372a25" stroke-width="3"/>
+<polygon points="76,56 74,65 81,68 83,66 78,63" fill="#ad7253"/>
+<polygon points="78,57 80,64 82,65 79,66" fill="#efc596"/>
+<polyline points="63,74 77,73 73,76" fill="none" stroke="#80523e" stroke-width="2"/>
+<polygon points="49,67 54,71 53,74 49,70" fill="#ad7253"/>
+</svg>

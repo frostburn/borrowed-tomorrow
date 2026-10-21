@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="168" viewBox="0 0 288 168">
+<title>coach</title><metadata>{"reference": "feb2d47^:public/art/station.webp", "crop": [794, 125, 1008, 220], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="6,136 280,132 285,145 10,151" fill="#0c1726"/>
+<ellipse cx="47" cy="149" rx="21" ry="14" fill="#0c1726"/>
+<ellipse cx="47" cy="148" rx="14" ry="10" fill="#253e48"/>
+<ellipse cx="47" cy="147" rx="8" ry="6" fill="#638487"/>
+<ellipse cx="45" cy="145" rx="3" ry="3" fill="#86a19c"/>
+<ellipse cx="229" cy="149" rx="21" ry="14" fill="#0c1726"/>
+<ellipse cx="229" cy="148" rx="14" ry="10" fill="#253e48"/>
+<ellipse cx="229" cy="147" rx="8" ry="6" fill="#638487"/>
+<ellipse cx="227" cy="145" rx="3" ry="3" fill="#86a19c"/>
+<polygon points="11,55 24,38 253,35 280,51 282,65 10,68" fill="#142536"/>
+<polygon points="26,42 251,39 270,51 19,57" fill="#3e5969"/>
+<polygon points="13,67 278,59 278,128 13,137" fill="#253e48"/>
+<polygon points="14,68 278,61 278,83 14,89" fill="#304653"/>
+<polygon points="14,115 277,107 277,121 14,130" fill="#213747"/>
+<polygon points="28,74.3194 57,73.3194 57,109.319 28,110.319" fill="#bd945a"/>
+<polygon points="31,77.3194 54,76.3194 54,105.319 31,106.319" fill="#0c1726"/>
+<polygon points="33,79.3194 52,78.3194 52,103.319 33,104.319" fill="#dca05b"/>
+<polygon points="34,80.3194 44,79.3194 44,100.319 34,101.319" fill="#f5dca4"/>
+<polygon points="71,73.2743 100,72.2743 100,108.274 71,109.274" fill="#bd945a"/>
+<polygon points="74,76.2743 97,75.2743 97,104.274 74,105.274" fill="#0c1726"/>
+<polygon points="76,78.2743 95,77.2743 95,102.274 76,103.274" fill="#dca05b"/>
+<polygon points="77,79.2743 87,78.2743 87,99.2743 77,100.274" fill="#f5dca4"/>
+<polygon points="114,72.2292 143,71.2292 143,107.229 114,108.229" fill="#bd945a"/>
+<polygon points="117,75.2292 140,74.2292 140,103.229 117,104.229" fill="#0c1726"/>
+<polygon points="119,77.2292 138,76.2292 138,101.229 119,102.229" fill="#dca05b"/>
+<polygon points="120,78.2292 130,77.2292 130,98.2292 120,99.2292" fill="#f5dca4"/>
+<polygon points="157,71.184 186,70.184 186,106.184 157,107.184" fill="#bd945a"/>
+<polygon points="160,74.184 183,73.184 183,102.184 160,103.184" fill="#0c1726"/>
+<polygon points="162,76.184 181,75.184 181,100.184 162,101.184" fill="#dca05b"/>
+<polygon points="163,77.184 173,76.184 173,97.184 163,98.184" fill="#f5dca4"/>
+<polygon points="200,70.1389 229,69.1389 229,105.139 200,106.139" fill="#bd945a"/>
+<polygon points="203,73.1389 226,72.1389 226,101.139 203,102.139" fill="#0c1726"/>
+<polygon points="205,75.1389 224,74.1389 224,99.1389 205,100.139" fill="#dca05b"/>
+<polygon points="206,76.1389 216,75.1389 216,96.1389 206,97.1389" fill="#f5dca4"/>
+<polygon points="237,64 267,63 267,126 237,127" fill="#213747"/>
+<polygon points="241,69 263,68 263,99 241,100" fill="#0c1726"/>
+<polygon points="243,72 260,71 260,97 243,98" fill="#638487"/>
+<polyline points="15,133 275,124" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polygon points="2,145 18,145 18,149 2,149" fill="#253e48"/>
+<polygon points="270,138 288,138 288,142 270,142" fill="#253e48"/>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 40 80" preserveAspectRatio="none" shape-rendering="crispEdges">
+<polygon points="15,30 25,30 29,59 27,64 13,64 11,59" fill="#385d4a"/>
+<polygon points="15,61 17,61 17,65 18,66 18,67 14,67 14,64" fill="#80553d"/>
+<polyline points="14,67 18,67" fill="none" stroke="#142536" stroke-width="1"/>
+<polygon points="23,61 25,61 25,65 26,66 26,67 22,67 22,64" fill="#80553d"/>
+<polyline points="22,67 26,67" fill="none" stroke="#142536" stroke-width="1"/>
+<rect x="18" y="24" width="5" height="7" fill="#d49c70"/>
+<polygon points="15,27 25,27 27,35 26,49 22,52 20,48 17,52 13,49 13,36" fill="#385d4a"/>
+<polygon points="17,28 23,28 23,38 26,60 14,60 17,38" fill="#f5dca4"/>
+<polyline points="14,39 26,39" fill="none" stroke="#d8c59b" stroke-width="1"/>
+<polyline points="14,30 12,38 17,40" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="14,30 12,38 17,40" fill="none" stroke="#385d4a" stroke-width="2"/>
+<ellipse cx="17.0" cy="40.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<polyline points="26,30 28,38 23,40" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="26,30 28,38 23,40" fill="none" stroke="#385d4a" stroke-width="2"/>
+<ellipse cx="23.0" cy="40.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<polygon points="14,39 25,39 26,43 15,44" fill="#f5dca4"/>
+<ellipse cx="20.0" cy="16.0" rx="5.0" ry="8.0" fill="#b7784e"/>
+<polygon points="16,12 24,12 25,18 23,24 20,26 16,23 15,18" fill="#d49c70"/>
+<polygon points="15,15 14,11 18,7 24,8 26,12 25,16 22,11 18,13" fill="#b7784e"/>
+<polyline points="16,16 18,16" fill="none" stroke="#b7784e" stroke-width="1"/>
+<polyline points="22,16 24,16" fill="none" stroke="#b7784e" stroke-width="1"/>
+<rect x="17" y="18" width="1" height="2" fill="#142536"/>
+<rect x="23" y="18" width="1" height="2" fill="#142536"/>
+<polyline points="20,18 19,21 21,21" fill="none" stroke="#80553d" stroke-width="1"/>
+<polyline points="18,23 22,23" fill="none" stroke="#80553d" stroke-width="1"/>
+<polygon points="14,12 15,7 20,5 25,8 26,13 22,10 17,10" fill="#f5dca4"/>
+<polygon points="26,10 29,11 27,16 25,14" fill="#d8c59b"/>
+</svg>

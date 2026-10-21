@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="144" viewBox="0 0 48 144">
+<title>lamp</title><metadata>{"reference": "feb2d47^:public/art/station.webp", "crop": [646, 123, 673, 240], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="17,138 18,130 21,124 21,45 18,39 16,16 24,4 32,15 31,39 27,46 27,124 31,132 33,141 15,144" fill="#0c1726"/>
+<polygon points="21,46 23,46 23,130 20,137 17,139 28,139 26,130 25,45" fill="#638487"/>
+<polygon points="16,17 24,10 32,17 30,39 18,41" fill="#bd945a"/>
+<polygon points="19,20 28,18 27,36 19,38" fill="#dca05b"/>
+<polygon points="21,21 26,20 25,35 21,36" fill="#f5dca4"/>
+<polyline points="24,16 24,40" fill="none" stroke="#253e48" stroke-width="2"/>
+<polygon points="12,17 24,3 36,16 30,19" fill="#213747"/>
+<polygon points="23,0 26,0 26,5 23,5" fill="#bd945a"/>
+</svg>

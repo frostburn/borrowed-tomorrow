@@ -17,7 +17,15 @@ export const BASH_CONTACT_FRAME = WALK_FRAMES + 3;
 export const ATTACK_CONTACT_MS = 140;
 export const ATTACK_DURATION_MS = 380;
 export const animatedHero = (hero:string):hero is MotionHero => MOTION_HEROES.some(id=>id===hero);
-export const motionPage = (hero:MotionHero,direction:ActorDirection) => ({key:`${hero}-motion-${direction}`,asset:`animation/${hero}-${direction}`,frames:hero==='petra'?10:8});
+export const walkingHero = (hero:string):hero is MotionHero => animatedHero(hero);
+export const NELL_ATTACK_TIMES = [0, ATTACK_CONTACT_MS, 220, 300] as const;
+export const motionPage = (hero:MotionHero,direction:ActorDirection) => ({key:`${hero}-motion-${direction}`,asset:`animation/${hero}-${direction}`,frames:hero==='nell'?9:hero==='petra'?10:8});
 export const MOTION_PAGES = MOTION_HEROES.flatMap(hero=>ACTOR_DIRECTIONS.map(direction=>motionPage(hero,direction)));
 export const directionOf = (face:string):ActorDirection => ACTOR_DIRECTIONS.find(direction=>face.endsWith(`-${direction}`))??'front';
-export const motionFrame = (motion:ActorMotion,elapsed:number):number|undefined => motion==='walk'?Math.floor(Math.max(0,elapsed)/WALK_FRAME_MS)%WALK_FRAMES:motion==='attack'||motion==='bash'?(elapsed<ATTACK_CONTACT_MS?(motion==='bash'?BASH_WINDUP_FRAME:ATTACK_WINDUP_FRAME):elapsed<280?(motion==='bash'?BASH_CONTACT_FRAME:ATTACK_CONTACT_FRAME):undefined):undefined;
+export const motionFrame = (motion:ActorMotion,elapsed:number,hero?:string):number|undefined => {
+  if(hero==='nell'&&motion==='attack'){
+    if(elapsed>=NELL_ATTACK_TIMES[3])return undefined;
+    return WALK_FRAMES+(elapsed<NELL_ATTACK_TIMES[1]?0:elapsed<NELL_ATTACK_TIMES[2]?1:2);
+  }
+  return motion==='walk'?Math.floor(Math.max(0,elapsed)/WALK_FRAME_MS)%WALK_FRAMES:motion==='attack'||motion==='bash'?(elapsed<ATTACK_CONTACT_MS?(motion==='bash'?BASH_WINDUP_FRAME:ATTACK_WINDUP_FRAME):elapsed<280?(motion==='bash'?BASH_CONTACT_FRAME:ATTACK_CONTACT_FRAME):undefined):undefined;
+};

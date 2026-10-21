@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="168" viewBox="0 0 264 168">
+<title>prison-coach</title><metadata>{"reference": "feb2d47^:public/art/station.webp", "crop": [794, 125, 1008, 220], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="6,136 256,132 261,145 10,151" fill="#0c1726"/>
+<ellipse cx="47" cy="149" rx="21" ry="14" fill="#0c1726"/>
+<ellipse cx="47" cy="148" rx="14" ry="10" fill="#253e48"/>
+<ellipse cx="47" cy="147" rx="8" ry="6" fill="#638487"/>
+<ellipse cx="45" cy="145" rx="3" ry="3" fill="#86a19c"/>
+<ellipse cx="205" cy="149" rx="21" ry="14" fill="#0c1726"/>
+<ellipse cx="205" cy="148" rx="14" ry="10" fill="#253e48"/>
+<ellipse cx="205" cy="147" rx="8" ry="6" fill="#638487"/>
+<ellipse cx="203" cy="145" rx="3" ry="3" fill="#86a19c"/>
+<polygon points="11,55 24,38 229,35 256,51 258,65 10,68" fill="#142536"/>
+<polygon points="26,42 227,39 246,51 19,57" fill="#3e5969"/>
+<polygon points="13,67 254,59 254,128 13,137" fill="#253e48"/>
+<polygon points="14,68 254,61 254,83 14,89" fill="#304653"/>
+<polygon points="14,115 253,107 253,121 14,130" fill="#213747"/>
+<polygon points="28,74.2576 57,73.2576 57,109.258 28,110.258" fill="#bd945a"/>
+<polygon points="31,77.2576 54,76.2576 54,105.258 31,106.258" fill="#0c1726"/>
+<polygon points="33,79.2576 52,78.2576 52,103.258 33,104.258" fill="#638487"/>
+<polyline points="38,76.2576 38,107.258" fill="none" stroke="#142536" stroke-width="3"/>
+<polyline points="48,76.2576 48,107.258" fill="none" stroke="#142536" stroke-width="3"/>
+<polygon points="71,73.1174 100,72.1174 100,108.117 71,109.117" fill="#bd945a"/>
+<polygon points="74,76.1174 97,75.1174 97,104.117 74,105.117" fill="#0c1726"/>
+<polygon points="76,78.1174 95,77.1174 95,102.117 76,103.117" fill="#638487"/>
+<polyline points="81,75.1174 81,106.117" fill="none" stroke="#142536" stroke-width="3"/>
+<polyline points="91,75.1174 91,106.117" fill="none" stroke="#142536" stroke-width="3"/>
+<polygon points="114,71.9773 143,70.9773 143,106.977 114,107.977" fill="#bd945a"/>
+<polygon points="117,74.9773 140,73.9773 140,102.977 117,103.977" fill="#0c1726"/>
+<polygon points="119,76.9773 138,75.9773 138,100.977 119,101.977" fill="#638487"/>
+<polyline points="124,73.9773 124,104.977" fill="none" stroke="#142536" stroke-width="3"/>
+<polyline points="134,73.9773 134,104.977" fill="none" stroke="#142536" stroke-width="3"/>
+<polygon points="157,70.8371 186,69.8371 186,105.837 157,106.837" fill="#bd945a"/>
+<polygon points="160,73.8371 183,72.8371 183,101.837 160,102.837" fill="#0c1726"/>
+<polygon points="162,75.8371 181,74.8371 181,99.8371 162,100.837" fill="#638487"/>
+<polyline points="167,72.8371 167,103.837" fill="none" stroke="#142536" stroke-width="3"/>
+<polyline points="177,72.8371 177,103.837" fill="none" stroke="#142536" stroke-width="3"/>
+<polygon points="200,69.697 229,68.697 229,104.697 200,105.697" fill="#bd945a"/>
+<polygon points="203,72.697 226,71.697 226,100.697 203,101.697" fill="#0c1726"/>
+<polygon points="205,74.697 224,73.697 224,98.697 205,99.697" fill="#638487"/>
+<polyline points="210,71.697 210,102.697" fill="none" stroke="#142536" stroke-width="3"/>
+<polyline points="220,71.697 220,102.697" fill="none" stroke="#142536" stroke-width="3"/>
+<polygon points="213,64 243,63 243,126 213,127" fill="#213747"/>
+<polygon points="217,69 239,68 239,99 217,100" fill="#0c1726"/>
+<polygon points="219,72 236,71 236,97 219,98" fill="#638487"/>
+<polyline points="15,133 251,124" fill="none" stroke="#bd945a" stroke-width="3"/>
+<polygon points="2,145 18,145 18,149 2,149" fill="#253e48"/>
+<polygon points="246,138 264,138 264,142 246,142" fill="#253e48"/>
+</svg>
