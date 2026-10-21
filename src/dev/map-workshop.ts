@@ -68,7 +68,7 @@ export class MapWorkshop {
       <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
-      <aside class="map-sidebar"><h3>Layers</h3><p>Toggle layers or use Only to isolate one.</p><div class="map-layers" role="group" aria-label="Map layers">${this.layers.map(l=>`<div><button data-map-layer="${l.id}" aria-label="Show ${esc(l.name)}" aria-pressed="${!this.hidden.has(l.id)}">${esc(l.name)}${layerVisible(l,{flags:this.flags})?'':' (story hidden)'}</button><button data-map-only="${l.id}" aria-label="Only ${esc(l.name)}">Only</button></div>`).join('')||'<p>Single native painting; no tile layers.</p>'}</div>
+      <aside class="map-sidebar"><h3>Layers</h3><p>Toggle layers or use Only to isolate one.</p><div class="map-layers" role="group" aria-label="Map layers">${this.layers.map(l=>`<div><button data-map-layer="${l.id}" aria-label="Show ${esc(l.name)}" aria-pressed="${!this.hidden.has(l.id)}">${esc(l.name)}${layerVisible(l,{flags:this.flags})?'':' (story hidden)'}</button><button data-map-only="${l.id}" aria-label="Only ${esc(l.name)}">Only</button></div>`).join('')||'<p>Single scene; no tile layers.</p>'}</div>
       ${this.scenes.length?`<details><summary>Scene cast</summary><div class="map-scenes" role="group" aria-label="Scene cast"><button data-map-scene="" aria-pressed="${!this.scene}">None</button>${this.scenes.map(l=>`<button data-map-scene="${esc(l.name)}" aria-pressed="${l.name===this.scene}">${esc(l.name.slice(6))}</button>`).join('')}</div></details>`:''}
       ${reviewFlags(e).length?`<details><summary>Story flags</summary><div class="map-flags" role="group" aria-label="Map story flags">${reviewFlags(e).map(f=>`<button data-map-flag="${f}" aria-pressed="${!!this.flags[f]}">${f}</button>`).join('')}</div></details>`:''}<button id="map-retry">Retry missing art</button></aside></div></section>`;
     const bind=(selector:string,action:(b:HTMLButtonElement)=>void)=>{for(const b of host.querySelectorAll<HTMLButtonElement>(selector))b.onclick=()=>{
@@ -132,7 +132,7 @@ export class MapWorkshop {
           if(properties(l).sort)sorted.push({depth:y+Number(tileProperties[gid-1].sortOffset??24),draw});else draw();
         }
       }
-    }else{const img=this.image(`${import.meta.env.BASE_URL}art/${e.world!.art??e.id}.webp`);if(img.complete&&img.naturalWidth)ctx.drawImage(img,0,0);}
+    }else{const img=this.image(`${import.meta.env.BASE_URL}${e.image??`art/${e.world!.art??e.id}.webp`}`);if(img.complete&&img.naturalWidth)ctx.drawImage(e.image?vectorSurface(img):img,0,0);}
     if(this.overlays.has('actors')){
       const cast=e.tiles?mapPoints(e.tiles,this.scene):[],castSprites=new Set<string>(cast.map(o=>CHARACTERS[o.name as keyof typeof CHARACTERS]?.sprite));
       const visible=(o:{hiddenFlag?:string;requiredFlag?:string})=>(!o.hiddenFlag||!this.flags[o.hiddenFlag])&&(!o.requiredFlag||this.flags[o.requiredFlag]);
@@ -142,7 +142,7 @@ export class MapWorkshop {
       for(const o of cast){const character=CHARACTERS[o.name as keyof typeof CHARACTERS];if(character&&!properties(o).hidden)actor(character.sprite,gridPoint(o));}
     }
     sorted.sort((a,b)=>a.depth-b.depth).forEach(p=>p.draw());
-    if(this.overlays.has('collision')){
+    if(this.overlays.has('collision')&&!e.image){
       const world=e.world?{...e.world,tiles:e.tiles?{...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))}:undefined}:undefined;
       for(let y=0;y<Math.floor(e.height/24);y++)for(let x=0;x<Math.floor(e.width/24);x++){
         let floor=false;if(world)floor=walkable(world,x,y,{flags:this.flags});else for(const l of this.layers.filter(l=>this.active(l))){const value=tileProperties[l.data![y*e.tiles!.width+x]-1]?.walkable;if(typeof value==='boolean')floor=value;}
@@ -153,7 +153,7 @@ export class MapWorkshop {
     if(this.overlays.has('markers'))for(const l of e.tiles?.layers.filter(l=>l.type==='objectgroup'&&!l.name.startsWith('Scene:'))??[]){for(const o of l.objects??[]){const p=properties(o);if(p.hiddenFlag&&this.flags[String(p.hiddenFlag)]||p.requiredFlag&&!this.flags[String(p.requiredFlag)])continue;ctx.strokeStyle='#73d5de';ctx.lineWidth=1;ctx.strokeRect(Math.floor(o.x)+.5,Math.floor(o.y)+.5,o.width||6,o.height||6);bitmapText(ctx,o.name,Math.floor(o.x)+8,Math.floor(o.y),'#73d5de',1);}}
     ctx.strokeStyle='#f4c77a';ctx.lineWidth=2;ctx.strokeRect(this.selected.x*24+1,this.selected.y*24+1,22,22);
     this.inspector();
-    const urls=pieces?pieces.map(p=>`${import.meta.env.BASE_URL}${p.url}`):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}art/${e.world!.art??e.id}.webp`];
+    const urls=pieces?pieces.map(p=>`${import.meta.env.BASE_URL}${p.url}`):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}${e.image??`art/${e.world!.art??e.id}.webp`}`];
     const missing=urls.filter(url=>this.failed.has(url)),loading=urls.filter(url=>!this.images.get(url)?.complete);
     const status=host.querySelector('#map-load')!;status.textContent=missing.length?'Some artwork is unavailable. Retry missing art or choose another map.':loading.length?'Loading map art...':'Map art loaded.';host.dataset.ready=String(!missing.length&&!loading.length);host.dataset.paint=String(Number(host.dataset.paint??0)+1);
   }
@@ -166,7 +166,7 @@ export class MapWorkshop {
   }
   private inspector(){
     const host=this.host!,{x,y}=this.selected,stack=this.stack();
-    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(this.source(layer,gid))}</p>`;}).join('')||'<p>No tile at this cell; native painting.</p>'}`;
+    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(this.source(layer,gid))}</p>`;}).join('')||(this.entry.image?`<p>Whole boss arena: ${esc(this.entry.image)}. Review tactical hexes and actors in Bosses.</p>`:'<p>No tile at this cell; native painting.</p>')}`;
   }
   private syncUrl(){
     if(!this.host)return;const url=new URL(location.href),q=url.searchParams,view=this.host.querySelector<HTMLElement>('.map-viewport')!;
@@ -174,7 +174,7 @@ export class MapWorkshop {
     for(const [key,value] of [['mapHide',[...this.hidden].sort((a,b)=>a-b).join(',')],['mapFlags',Object.keys(this.flags).filter(f=>this.flags[f]).sort().join(',')],['mapScene',this.scene]])if(value)q.set(key,value);else q.delete(key);
     if(url.href!==location.href)history.replaceState(null,'',url);
   }
-  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${this.source(layer,gid)}`).join('\n')}\n${location.href}`;}
+  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${this.source(layer,gid)}`).join('\n')}\n${this.entry.image??''}\n${location.href}`;}
   private download(){
     const host=this.host!,view=host.querySelector<HTMLElement>('.map-viewport')!,source=host.querySelector<HTMLCanvasElement>('#map-preview')!,crop=document.createElement('canvas');crop.width=view.clientWidth;crop.height=view.clientHeight;
     crop.getContext('2d')!.drawImage(source,view.scrollLeft,view.scrollTop,crop.width,crop.height,0,0,crop.width,crop.height);

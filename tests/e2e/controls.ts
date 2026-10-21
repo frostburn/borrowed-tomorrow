@@ -106,6 +106,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
+  const danger=new Set(b.units.filter(v=>v.side==='enemy'&&v.hp>0).flatMap(v=>v.intent?.cells.map(keyFor)??[]));
   for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend','beacon'] as AbilityId[])
     if(legalAim(b,u,id,ally.hex))return {action:id,hex:ally.hex};
   if(b.grounding&&!b.grounding.open){
@@ -120,12 +121,12 @@ function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
     u.hex=visit.hex;
     for(const id of u.abilities.filter(id=>!ABILITIES[id].heal && !['guard','dazzle'].includes(id)))for(const h of cells()){
       if(!legalAim(b,u,id,h))continue;
-      const score=targets(b,u,id,h).reduce((sum,v)=>sum+(v.side!==u.side?1:-4)*(Math.min(v.hp,damage(u,v,id))+(v.hp<=damage(u,v,id)?8:0)),0)-visit.path.length*.1-(b.vents.has(keyFor(visit.hex))?7:0);
+      const score=targets(b,u,id,h).reduce((sum,v)=>sum+(v.side!==u.side?1:-4)*(Math.min(v.hp,damage(u,v,id))+(v.hp<=damage(u,v,id)?8:0)),0)-visit.path.length*.1-(b.vents.has(keyFor(visit.hex))?7:0)-(danger.has(keyFor(visit.hex))?30:0);
       if(score>0&&(!best||score>best.score))best={action:id,hex:h,pos:visit.hex,score};
     }
   }
   u.hex=original;
-  if(!best)return {action:'defend'};
+  if(!best){const safe=danger.has(keyFor(original))?[...movement(b,u).values()].find(p=>p.path.length&&!danger.has(keyFor(p.hex))&&!b.vents.has(keyFor(p.hex))):undefined;return safe?{action:'move',hex:safe.hex}:{action:'defend'};}
   return equal(best.pos,original)?{action:best.action,hex:best.hex}:{action:'move',hex:best.pos};
 }
 export async function battle(page: Page, screenshot?: string, practice=false) {

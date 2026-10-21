@@ -65,4 +65,4 @@
 
 .boss-preview{display:flex;align-items:start;gap:24px;max-width:880px}.boss-preview>img{width:128px;height:128px;flex:none;background:#090e20;border:1px solid #806e52}.boss-preview h2{margin:0 0 16px}.boss-preview p{font-size:12px;line-height:18px;margin-bottom:16px}#boss-start{display:flex;flex-wrap:wrap;gap:8px}@media(max-width:1023px){.boss-preview{flex-direction:column;gap:16px}.boss-preview p{font-size:10px;font-family:SwitchyardCompact,monospace;line-height:14px}.boss-preview h2{font-size:16px;line-height:20px}#boss-start button{min-height:32px}}
 
-.boss-battle-preview .battle-pan{top:50px;right:4px}
+.boss-library{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px}.boss-library [aria-pressed="true"]{border-color:#f4c77a;background:#234047}.boss-route{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 16px;font-size:12px}.boss-route [aria-pressed="true"]{border-color:#f4c77a;background:#234047}
