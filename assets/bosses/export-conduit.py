@@ -25,25 +25,21 @@ for part in defs:
 for i in range(12):
     angle=[0,0,0,0,0,0,0,0,-12,-25,12,5][i]
     crank=45*i if i<8 else [0,90,180,270][i-8]
-    joints={}
-    for side,x,phase,old_pin in [('left',113,0,135),('right',143,pi,121)]:
-        a=crank*pi/180+phase;px=128+7*cos(a);py=190+7*sin(a)
-        y=py+sqrt(28**2-(px-x)**2)
-        assert abs(hypot(x-px,y-py)-28)<1e-8
-        joints[side]=(px,py,y,old_pin)
+    # One horizontal shoulder compressor; the lower chassis has no moving parts.
+    a=crank*pi/180;px=40+7*cos(a);py=85+7*sin(a)
+    slider=px+sqrt(24**2-(85-py)**2)
+    assert abs(hypot(slider-px,85-py)-24)<1e-8
     frame=ET.SubElement(page,ns+'svg',{'x':str(i%2*256),'y':str(i//2*240),'width':'256','height':'240','viewBox':'0 0 256 240'})
     for part in parts:
         name=part.get('id');transform=''
         # The boiler, cowl, dial face, chassis, feet and idle arms are rigid.
         if name in ('left-arm','right-arm') and angle:
             left=name=='left-arm';transform=f'rotate({angle if left else -angle} {66 if left else 190} 110)'
-        elif name=='crank':transform=f'rotate({crank} 128 190)'
-        elif name.startswith('piston-'):
-            y=joints[name.split('-')[1]][2];transform=f'translate(0 {y-207.320508:.5f})'
-        elif name.startswith('rod-'):
-            side=name.split('-')[1];px,py,y,old_pin=joints[side];x=113 if side=='left' else 143
-            rotation=degrees(atan2(y-py,x-px)-atan2(17.320508,x-old_pin))
-            transform=f'translate({px:.5f} {py:.5f}) rotate({rotation:.5f}) translate({-old_pin} -190)'
+        elif name=='pump-crank':transform=f'rotate({crank} 40 85)'
+        elif name=='pump-piston':transform=f'translate({slider-71:.5f} 0)'
+        elif name=='pump-rod':
+            rotation=degrees(atan2(85-py,slider-px))
+            transform=f'translate({px:.5f} {py:.5f}) rotate({rotation:.5f}) translate(-47 -85)'
         elif name=='exhaust':
             phase=i%4;transform=f'translate(0 {-phase*2}) translate(204 15) scale({1+phase*.2:g}) translate(-204 -15)'
         use=ET.SubElement(frame,ns+'use',{'href':'#'+name})
