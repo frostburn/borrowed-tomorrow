@@ -1,0 +1,145 @@
+{
+  "tool": "Retro-Diffusion/pixel-art-fixer",
+  "revision": "ef376e57e1c272633ca2dbf5f29ec3fcf6596465",
+  "implementation": "Rust CLI, process full (two_stage_pack)",
+  "linuxPatch": "pixel-fixer-linux.patch",
+  "entries": [
+    {
+      "role": "dockhand",
+      "source": "exec-7fd64952-2079-46b6-9e98-c130c60fe9ce.png",
+      "sourceSha256": "51bba9f2a3fff483e827fdeb9447bd86d927f36fd1de8b7bd00f7cdd8ec8cccf",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "output": "public/art/civilian-dockhand.png",
+      "outputSha256": "f16c8e89d1a952a7b9bf65598fbd1dda32e48b966db6886483698d17f5497feb",
+      "full": {
+        "cols": 128,
+        "rows": 128,
+        "step_x": 9.7969,
+        "step_y": 9.7969,
+        "consensus": "rl+ss+fu"
+      },
+      "fast": {
+        "cols": 128,
+        "rows": 128,
+        "step_x": 9.796063,
+        "step_y": 9.796063,
+        "consensus": "fastmode:rl+ss"
+      },
+      "bounds": [
+        38,
+        14,
+        89,
+        118
+      ],
+      "confidence": "strong agreement",
+      "campaignDecision": "approved: render uniformly at 63px standing height",
+      "review": "Eyes, cap brim, hands, parcel straps and boot separation retained; rim shading is coarser."
+    },
+    {
+      "role": "traveler",
+      "source": "exec-e41bab55-4d21-411f-86a5-74443a06da61.png",
+      "sourceSha256": "e963f6d316fe90f793023a3b2d3a7200d9584e64636a379a4d219a7d0475032c",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "output": "public/art/civilian-traveler.png",
+      "outputSha256": "c30285d5a5fefa40e79bfb81bd19d8437ed388fd1b37e25e14a5a2940be87c62",
+      "full": {
+        "cols": 137,
+        "rows": 133,
+        "step_x": 9.144,
+        "step_y": 9.4423,
+        "consensus": "arbitrated"
+      },
+      "fast": {
+        "cols": 132,
+        "rows": 133,
+        "step_x": 9.517973,
+        "step_y": 9.43825,
+        "consensus": "fastmode:lowconf"
+      },
+      "bounds": [
+        37,
+        20,
+        95,
+        119
+      ],
+      "confidence": "review: detector arbitration",
+      "campaignDecision": "approved: render uniformly at 63px standing height",
+      "review": "Eyes, beard, case handle and boot separation retained; disagreeing grid counts may unevenly space coat details."
+    },
+    {
+      "role": "family",
+      "source": "exec-564c27f2-2c6e-43da-95e2-1685863adf15.png",
+      "sourceSha256": "2a9f27afb2c5c4cd06935b4dde490dbcefd17804b82486e9e03a2ee390c2dacd",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "output": "public/art/civilian-family.png",
+      "outputSha256": "6cb974e5eb135dc2fff9b141d743c928715d7d59f877419a8e5cb029097f92c0",
+      "full": {
+        "cols": 136,
+        "rows": 127,
+        "step_x": 9.2091,
+        "step_y": 9.8896,
+        "consensus": "arbitrated"
+      },
+      "fast": {
+        "cols": 136,
+        "rows": 126,
+        "step_x": 9.209102,
+        "step_y": 9.926029,
+        "consensus": "fastmode:lowconf"
+      },
+      "bounds": [
+        34,
+        15,
+        103,
+        117
+      ],
+      "confidence": "review: detector arbitration",
+      "campaignDecision": "approved: render uniformly at 63px standing height",
+      "review": "Two faces, joined hands and four boots remain readable; non-square source periods and a one-row detector disagreement require review."
+    },
+    {
+      "role": "patient",
+      "source": "exec-8cdbf937-f305-447e-82c4-f9406c8ba758.png",
+      "sourceSha256": "d464be8c11dc81ded1012dfd970b793f780d322bd91ebb51f33ab06abba1a72c",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "output": "public/art/civilian-patient.png",
+      "outputSha256": "c7cfe01723ea209aabc20441c1d824b06b9c779936fd8414bbd7e706355e7a83",
+      "full": {
+        "cols": 128,
+        "rows": 128,
+        "step_x": 9.7969,
+        "step_y": 9.7969,
+        "consensus": "rl+ss+fu"
+      },
+      "fast": {
+        "cols": 128,
+        "rows": 128,
+        "step_x": 9.832722,
+        "step_y": 9.832722,
+        "consensus": "fastmode:rl+ss"
+      },
+      "bounds": [
+        45,
+        16,
+        84,
+        116
+      ],
+      "confidence": "strong agreement",
+      "campaignDecision": "approved: render uniformly at 63px standing height",
+      "review": "Eyes, cup rim, bandage and separate slippers retained; small shawl folds simplified."
+    }
+  ],
+  "campaignStandingHeight": 63
+}

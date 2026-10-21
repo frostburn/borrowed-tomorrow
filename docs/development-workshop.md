@@ -1,5 +1,7 @@
 # Development workshop
 
+The **Sprites** tab offers Pixel Art Fixer comparisons when a base civilian is selected under NPCs. It shows the campaign's filtered 63px standing-height presentation alongside the full recovered grid, using the same campaign PNG for both. Raw-grid zoom remains nearest-neighbor at 1x/2x/3x; ordinary actor previews use the same uniform fit as the game. The approved recovered artwork and native-resolution clothing variants now ship in the campaign. See `assets/characters/pixel-fixer.md` for conversion, dimensions and reproduction. Review controls remain dev-only; rejected historical comparison assets have been removed.
+
 The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen exploration maps and thirteen tiled battlefields without loading or changing campaign progress. Choose a chapter and World/Battle, then select the map by its stable ID. The initial view is Northglass.
 
 Drag with the mouse or scroll to pan; touch scrolling also works. Review at 1x or 2x integer zoom. Click a cell, use the X/Y fields, or move the selection with arrow keys. Arrival centers the map's first named arrival. The inspector lists the cell's tile layers, GIDs, art names, native page files and frame numbers. Hidden tiles remain listed so a bad seam can still be identified after isolating a layer.

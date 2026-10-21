@@ -15,7 +15,7 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
   const sceneCanvas=document.createElement('canvas');sceneCanvas.getContext('2d',{willReadFrequently:true});
   const viewport=worldView();
   const game=new Phaser.Game({
-    type:Phaser.CANVAS,canvas:sceneCanvas,parent:display.host,backgroundColor:'#0a171a',pixelArt:true,antialias:false,
+    type:Phaser.CANVAS,canvas:sceneCanvas,parent:display.host,backgroundColor:'#0a171a',pixelArt:false,antialias:true,roundPixels:false,
     width:viewport.width,height:viewport.height,scale:{mode:Phaser.Scale.NONE},
     scene:[adventure],audio:{noAudio:true},banner:false,
   });

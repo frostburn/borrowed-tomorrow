@@ -1,49 +1,60 @@
-"""Export the four small native sprites from local generated originals.
+"""Export full-resolution reconstructed civilians and their clothing variants.
 
-Usage: python assets/characters/export-civilians.py SOURCE_DIRECTORY
-Large originals stay outside the repository; the manifest pins their hashes.
+Usage: python assets/characters/export-civilians.py [--output-dir DIRECTORY]
+No image resizing occurs here. The game fits all figures to 63 pixels in height.
 """
-import hashlib
+import argparse
 import colorsys
+import hashlib
 import json
-import sys
+from io import BytesIO
 from pathlib import Path
-
 from PIL import Image
 
 root = Path(__file__).resolve().parents[2]
-sources = Path(sys.argv[1])
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output-dir', type=Path, default=root / 'public/art')
+args = parser.parse_args()
+outputs = []
 for entry in json.loads((root / 'assets/characters/civilians.json').read_text()):
-    source = sources / entry['source']
-    assert hashlib.sha256(source.read_bytes()).hexdigest() == entry['sha256'], source
-    image = Image.open(source).convert('RGBA')
-    image.putalpha(image.getchannel('A').point(lambda a: 255 if a >= 200 else 0))
-    sprite = image.crop(entry['crop']).resize(entry['nativeSize'], Image.Resampling.NEAREST)
-    frame = Image.new('RGBA', (80, 80))
-    frame.alpha_composite(sprite, entry['offset'])
-    # Choose the face's sampling phase independently of the body. This retains
-    # small pupils/mouths without moving boots, hands or costume contours.
-    x0, y0, x1, y1 = entry['crop']
-    w, h = entry['nativeSize']
-    for head in entry['headSamples']:
-        dx, dy = head['phase']
-        dx *= (x1 - x0) / w
-        dy *= (y1 - y0) / h
-        sampled = image.transform((w, h), Image.Transform.EXTENT,
-                                  (x0 + dx, y0 + dy, x1 + dx, y1 + dy), Image.Resampling.NEAREST)
-        candidate = Image.new('RGBA', (80, 80))
-        candidate.alpha_composite(sampled, entry['offset'])
-        frame.paste(candidate.crop(head['box']), head['box'])
-    frame.save(root / f"public/art/{entry['sprite']}.png", optimize=True)
+    source = root / entry['source']
+    data = source.read_bytes()
+    if hashlib.sha256(data).hexdigest() != entry['sha256']:
+        raise ValueError(f'Reconstruction hash mismatch: {source}')
+    frame = Image.open(source).convert('RGBA')
+    if list(frame.getchannel('A').getbbox()) != entry['bounds']:
+        raise ValueError(f'Changed actor bounds: {source}')
+    outputs.append((entry['sprite'], data))
+    left, top, right, bottom = entry['bounds']
+    scale = entry['displayHeight'] / (bottom - top)
+    center = (left + right) / 2
     for variant in entry['variants']:
         recolored = frame.copy()
-        for rule in variant['rules']:
-            left, top, right, bottom = rule['box']
-            for y in range(top, bottom):
-                for x in range(left, right):
-                    r, g, b, a = recolored.getpixel((x, y))
+        for y in range(frame.height):
+            for x in range(frame.width):
+                # Recolor masks use the familiar 80px review coordinates;
+                # map the native source into that space without resampling it.
+                cx = 40 + (x + .5 - center) * scale
+                cy = 68 + (y + .5 - bottom) * scale
+                if any(l <= cx < r and t <= cy < b for l, t, r, b in entry['protectedRegions']):
+                    continue
+                r, g, b, a = recolored.getpixel((x, y))
+                if not a:
+                    continue
+                for rule in variant['rules']:
+                    l, t, rr, bb = rule['box']
                     hue, saturation, value = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-                    if a and saturation >= .18 and value >= .16 and rule['hue'][0] <= hue <= rule['hue'][1]:
+                    if l <= cx < rr and t <= cy < bb and saturation >= .18 and value >= .16 and rule['hue'][0] <= hue <= rule['hue'][1]:
                         rgb = colorsys.hsv_to_rgb(rule['targetHue'], saturation, value)
-                        recolored.putpixel((x, y), (*[round(c * 255) for c in rgb], a))
-        recolored.save(root / f"public/art/{variant['sprite']}.png", optimize=True)
+                        r, g, b = [round(c * 255) for c in rgb]
+                recolored.putpixel((x, y), (r, g, b, a))
+        encoded = BytesIO()
+        recolored.save(encoded, format='PNG', optimize=True)
+        outputs.append((variant['sprite'], encoded.getvalue()))
+for name, data in outputs:
+    if len(data) > 131072:
+        raise ValueError(f'Image exceeds upload budget: {name}')
+args.output_dir.mkdir(parents=True, exist_ok=True)
+for name, data in outputs:
+    (args.output_dir / f'{name}.png').write_bytes(data)
+    print(f'{name}: {len(data)} bytes')

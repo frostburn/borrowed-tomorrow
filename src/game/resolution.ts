@@ -1,4 +1,4 @@
-/** Art is measured in native pixels. Smaller screens crop the view; they never shrink assets. */
+/** Stable game-space layout; sprite sources may be filtered to their authored display size. */
 export const DESKTOP_WIDTH = 1024;
 export const DISPLAY_HEIGHT = 768;
 export const NARROW_WIDTH = 384;

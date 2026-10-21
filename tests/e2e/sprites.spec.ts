@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { capture } from './controls';
+import { civilianPresentation } from '../../src/content/civilians';
 
 for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
  test.describe(`sprites on ${device}`,()=>{
@@ -18,18 +19,18 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
         const image=new Image();image.src=`/art/${hero}${suffix}.png`;await image.decode();
-        const canvas=document.createElement('canvas');canvas.width=canvas.height=80;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
-        const p=ctx.getImageData(0,0,80,80).data;let bottom=-1,top=80;
-        for(let y=0;y<80;y++)for(let x=0;x<80;x++)if(p[(y*80+x)*4+3]>127){top=Math.min(top,y);bottom=Math.max(bottom,y);}
-        const visited=new Uint8Array(80*80);let components=0;
-        for(let seed=0;seed<80*80;seed++){
+        const canvas=document.createElement('canvas'),w=image.naturalWidth,h=image.naturalHeight;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
+        const p=ctx.getImageData(0,0,w,h).data;let bottom=-1,top=h;
+        for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(p[(y*w+x)*4+3]>127){top=Math.min(top,y);bottom=Math.max(bottom,y);}
+        const visited=new Uint8Array(w*h);let components=0;
+        for(let seed=0;seed<w*h;seed++){
           if(visited[seed]||!p[seed*4+3])continue;
           components++;const queue=[seed];visited[seed]=1;
           for(let at=0;at<queue.length;at++){
-            const x=queue[at]%80,y=Math.floor(queue[at]/80);
+            const x=queue[at]%w,y=Math.floor(queue[at]/w);
             for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
-              const nx=x+dx,ny=y+dy,next=ny*80+nx;
-              if(nx<0||nx>=80||ny<0||ny>=80||visited[next]||!p[next*4+3])continue;
+              const nx=x+dx,ny=y+dy,next=ny*w+nx;
+              if(nx<0||nx>=w||ny<0||ny>=h||visited[next]||!p[next*4+3])continue;
               visited[next]=1;queue.push(next);
             }
           }
@@ -38,6 +39,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       }return all;
     });
     for(const actor of feet){
+      const fit=civilianPresentation(actor.hero);
+      if(fit){expect([actor.width,actor.height]).toEqual([fit.width,fit.height]);expect([actor.top,actor.bottom]).toEqual([fit.bounds[1],fit.bounds[3]-1]);continue;}
       expect(actor.width).toBe(80);expect(actor.height).toBe(80);
       // These enemies retain their original native silhouettes and placement.
       if(['hound','crow','guardian'].includes(actor.hero))continue;
