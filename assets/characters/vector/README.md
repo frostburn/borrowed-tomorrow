@@ -1,29 +1,34 @@
-# Rasterized vector character pilot
+# Chapter-one vector characters
 
-Nell and Orrin are the initial experiment for the new chapter-one direction. Their actors, portraits and motion poses use original vector constructions inspired by the flat fills, black contours and wide pixels of early Sierra/AGI games. Their identity remains practical railway clothing, Nell's two braids and right-hand lantern, and Orrin's cap/goggles, beard and right-hand steam lance.
+Chapter one uses original vector artwork inspired by early Sierra adventure games: simple silhouettes, flat color areas, dark contours and tall figures. This is a stylistic reference, not an EGA recreation. Colors use a warm railway palette that can grow when a scene needs it.
 
-## Source and reproduction
+## Authoring and reproduction
 
-`draw.py` is the authoring source: a shared scene graph of meaningful polygons, ellipses and polylines, a 16-color EGA palette, separate directional constructions and explicit pose parameters. It emits both inspectable SVGs and PNGs. The SVG files are generated views of those shapes; edit the model and regenerate rather than editing the SVG exports alone. No generated bitmap, pixel-grid detector, image resampling or previous sprite is an input.
+`draw.py` defines Nell and Orrin with polygons, ellipses, polylines and explicit poses. `supporting.py` uses the same primitives for Ansel, Iona, Tomas, Alban, Tilda and Elspeth, plus the hound, crow, guardian and tactical rocks. The models export self-contained SVGs to `public/art/vector/`. These SVGs are the **actual runtime assets**, including portraits and motion pages. No generated bitmap, grid detector, downsampler or raster source is involved. Edit the model and regenerate; editing its SVG output alone will be overwritten on export.
 
 ```sh
-# Python and Pillow are task-environment tools, not game dependencies.
+# Rebuild the entire chapter, including map tiles:
+node scripts/export-chapter-one-art.mjs
+# Only the two leads, or a single lead:
 node scripts/export-vector-characters.mjs
-# Or export one character:
 node scripts/export-nell-animation.mjs
 node scripts/export-orrin-animation.mjs
+# Only supporting cast:
+python3 assets/characters/vector/supporting.py
 ```
 
-Shapes rasterize directly at 40 x 80 for world actors and 64 x 128 for portraits. Each logical pixel is replicated into two horizontal output pixels, yielding native 80 x 80 actors and 128 x 128 portraits. This deliberate rectangular-pixel grid has no antialiasing, dithering, interpolated colors or palette reduction. PNG transparency is binary. Runtime uses native scale with nearest filtering. The SVG viewBox has the same 2:1 horizontal expansion for inspection.
+Python/Pillow are task-environment authoring tools, not game dependencies. Pillow validates the leads' planted attack stances and distinct walking poses; its temporary raster renders are never exported or loaded by the game. No extra runtime dependency is needed.
 
-World figures occupy approximately 63px in height with a shared sole anchor `(40,68)`. Nell has four idle views and three lantern attack frames, with idle translation during movement. Orrin has four idle views, six walk frames and two lance attack frames. Front/right/back/left views preserve anatomical handedness through drawing order: the left-facing right arm/tool is behind the body, while the right-facing right arm is near the camera. No profile is a mirrored bitmap. Orrin's walking support foot moves backward 28 output pixels per cycle to counter distance-based character travel.
+The SVG viewBox expands 40 x 80 logical actor coordinates into 80 x 80 frames; portraits expand 64 x 128 into 128 x 128. This retains the accepted wide-pixel proportions without requiring a fixed palette or a historical display mode. Browser SVG decoding supplies Phaser's native-size textures, cached once in memory to keep cropping/playback efficient, while the UI and workshops load those same SVG URLs. Phaser's Canvas renderer necessarily paints pixels internally; the repository ships vectors rather than pre-rasterized substitutes. Nearest filtering and native-scale actors retain the graphic contours. All files are self-contained: no embedded images, linked resources or fonts.
 
-The exporter checks binary alpha and palette membership. Individual PNGs are small; motion pages remain 160 x 160 (Nell) and 160 x 320 (Orrin). Existing game IDs, combat timing, save data, inventories and the other characters remain intact. No vector drawing runtime is shipped: the game loads only the PNGs.
+## Identity and motion
+
+World actors use sole anchor `(40,68)`. Nell retains her red work jacket, two braids and anatomical right-hand lantern. She translates her four directional idle poses during movement. Each 160 x 160 attack page has wind-up, contact and follow-through in frames 0–2 at 0/140/220ms, restoring idle at 300ms. Orrin keeps his cap, goggles, beard, cream sleeves and right-hand steam lance. Each 160 x 320 page holds six walk poses and two attack poses. His planted foot counters the 28px distance-based stride. Left/right constructions are independent, with the far right arm/tool occluded in left profile.
+
+The supporting cast keeps its established costume identities. Elspeth remains seated with her complete wheelchair, wheels, casters and footplate. Alban remains human and distinct from the mechanical Inspector. Shared people/enemy IDs use the same vector appearance when they recur in later chapters; Kit, Celia, Petra and later-only supporting actors retain their existing art.
 
 ## Review
 
-Open the dev Sprites tab (`?dev=sprites`) and compare Nell/Orrin at 1x–3x against Paper, Slate and Night. Review all four directions, Attack, Play/Pause and frame stepping. Nell's Walk stays disabled; Orrin keeps six walk poses. Portraits use the same palette and shape language. The old Nell/Orrin layered skins are removed from Animation; its mannequin and Kit/Petra tools remain available.
+Open `?dev=sprites` for native and enlarged comparisons, independent facing views and motion playback. Nell's Walk remains disabled. Check NPCs and Enemies as well as Party. `?dev=maps&map=station` reviews the matching environments; see [the scenery guide](../../vector/README.md). Workshop review never changes campaign saves.
 
-The surrounding chapter-one art is intentionally still the existing scenery. This PR is the place to expand that scenery once the two-character visual direction is accepted. Future scenery can reuse the same vector scene graph, palette and raster grid; this pilot does not change map layout or collision.
-
-Historical reference: [ScummVM's AGI picture implementation](https://github.com/scummvm/scummvm/blob/master/engines/agi/picture.h) documents the original engine's vector picture drawing. This project uses its own vector character source and does not claim that original AGI character views were vector resources.
+The old lead rigs, PNG runtime replacements and duplicate inspection-only SVGs are retired. The Animation tab retains its mannequin and Kit/Petra tools. No gameplay, save format, equipment, dialogue, combat timing or progression changes accompany this art pass.

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { layerVisible, properties, TILESET, tilePages, tileFrame, tileProperties, type TileMap } from '../content/tilemaps';
+import { layerVisible, properties, TILESET, tilePages, tileFrame, tileProperties, vectorMap, type TileMap } from '../content/tilemaps';
 import type { GameState } from '../rules/state';
 
 // Phaser's rounded Canvas Image path expands destination frames by 0.5px.
@@ -21,10 +21,10 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
     if(!layer.data||!layerVisible(layer,state))continue;
     if(properties(layer).sort){
       for(let i=0;i<layer.data.length;i++){
-        const gid=layer.data[i];if(!gid||tileProperties[gid-1]?.empty)continue;
+        const gid=layer.data[i];if(!gid||(!vectorMap(data)&&tileProperties[gid-1]?.empty))continue;
         const xx=i%data.width*data.tilewidth,yy=Math.floor(i/data.width)*data.tileheight;
         const offset=Number(tileProperties[gid-1]?.sortOffset??24);
-        const frame=tileFrame(gid);
+        const frame=tileFrame(gid,data);
         const prop=new NativeTile(scene,x+xx,y+yy,frame.key,frame.frame).setOrigin(0).setDepth(y+yy+offset).setData('tile-prop',true);
         scene.add.existing(prop);world.add(prop);
       }

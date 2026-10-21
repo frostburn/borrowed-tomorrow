@@ -1,18 +1,16 @@
-"""Small vector scene graphs, rasterized directly on an AGI-like rectangular grid.
-
-The same meaningful polygons, ellipses and lines also export as inspectable SVG.
-No source bitmap sampling, antialiasing, palette reduction or image generation.
-"""
+"""Vector-authored character models. Export SVGs for browser-native loading."""
 from pathlib import Path
 import math
 from PIL import Image, ImageDraw
 
 PALETTE = {
-    'ink': '#000000', 'navy': '#0000aa', 'green': '#00aa00',
-    'teal': '#00aaaa', 'red': '#aa0000', 'plum': '#aa00aa',
-    'brown': '#aa5500', 'silver': '#aaaaaa', 'shade': '#555555',
-    'blue': '#5555ff', 'leaf': '#55ff55', 'ice': '#55ffff',
-    'skin': '#ff5555', 'rose': '#ff55ff', 'gold': '#ffff55', 'white': '#ffffff',
+    'ink': '#202d35', 'navy': '#34475b', 'green': '#55745c',
+    'teal': '#518589', 'red': '#b85343', 'plum': '#825875',
+    'brown': '#80553d', 'silver': '#b7c1b8', 'shade': '#687478',
+    'blue': '#547a96', 'leaf': '#8ca66d', 'ice': '#a9d3cd',
+    'skin': '#dfa77d', 'rose': '#c58077', 'gold': '#d9ae62', 'white': '#efe1bd',
+    'hair': '#593e35', 'cream': '#d8c59b', 'slate': '#626d7f',
+    'steel': '#8b9b9b', 'copper': '#b7784e', 'leather': '#9a7151',
 }
 
 
@@ -249,7 +247,7 @@ def orrin(direction, walk=None, attack=None):
         d.line([(15,39),(25,39)],'brown');d.rect((20,38,21,39),'gold')
         if direction=='front':sleeve(d,(26,24),(29,32),(29,41),'white',False)
         else:sleeve(d,(14,24),(11,32),(11,41),'white',False)
-    d.rect((18,19,22,24),'skin')
+    d.rect((18,17,22,24),'skin')
     head_start=len(d.shapes)
     if direction=='front':
         d.oval((16,10,24,23),'skin')
@@ -322,31 +320,32 @@ def portrait(hero):
 
 
 def export(root, heroes=('nell','orrin')):
-    art=root/'public/art'
-    sources=Path(__file__).resolve().parent
+    art=root/'public/art/vector'
+    (art/'animation').mkdir(parents=True,exist_ok=True)
     allowed={tuple(bytes.fromhex(c[1:])) for c in PALETTE.values()}
     for hero, model in (('nell',nell),('orrin',orrin)):
         if hero not in heroes:continue
         for direction in ('front','left','right','back'):
             drawing=model(direction)
             suffix='' if direction=='front' else '-'+direction
-            drawing.render().save(art/f'{hero}{suffix}.png',optimize=True)
-            (sources/f'{hero}-{direction}.svg').write_text(drawing.svg())
+            (art/f'{hero}{suffix}.svg').write_text(drawing.svg())
             frames=([nell(direction,attack=i) for i in range(3)] if hero=='nell' else
                     [orrin(direction,walk=i) for i in range(6)]+[orrin(direction,attack=i) for i in range(2)])
-            page=Image.new('RGBA',(160,((len(frames)+1)//2)*80))
+            height=((len(frames)+1)//2)*80
+            page='<svg xmlns="http://www.w3.org/2000/svg" width="160" height="'+str(height)+'" viewBox="0 0 160 '+str(height)+'">\n'
+            for i,frame in enumerate(frames):
+                svg=frame.svg().replace('<svg ',f'<svg x="{i%2*80}" y="{i//2*80}" ',1)
+                page+=svg
+            (art/f'animation/{hero}-{direction}.svg').write_text(page+'</svg>\n')
             rendered=[frame.render() for frame in frames]
-            for i,frame in enumerate(rendered):page.paste(frame,(i%2*80,i//2*80))
-            page.save(art/f'animation/{hero}-{direction}.png',optimize=True)
             stance=drawing.render().crop((0,56,80,80)).tobytes()
             for frame in rendered if hero=='nell' else rendered[6:]:
                 assert frame.crop((0,56,80,80)).tobytes()==stance, 'Attack changed the planted stance'
             if hero=='orrin':assert len({frame.tobytes() for frame in rendered[:6]})==6
-            for image in [drawing.render(),page]:
+            for image in [drawing.render(),*rendered]:
                 assert all(p[3] in (0,255) and (p[3]==0 or p[:3] in allowed) for _,p in image.getcolors(image.width*image.height))
         drawing=portrait(hero)
-        drawing.render().save(art/f'portrait-{hero}.png',optimize=True)
-        (sources/f'portrait-{hero}.svg').write_text(drawing.svg())
+        (art/f'portrait-{hero}.svg').write_text(drawing.svg())
     print('Exported vector actors:', ', '.join(heroes))
 
 

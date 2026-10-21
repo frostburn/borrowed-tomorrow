@@ -41,7 +41,7 @@
   },
   "nell": {
     "vectorModel": "assets/characters/vector/draw.py#nell",
-    "palette": "EGA 16",
+    "palette": "warm railway colors (stylistic, extensible)",
     "logicalSize": [
       40,
       80
@@ -66,11 +66,13 @@
       220
     ],
     "idleAtMs": 300,
-    "exporter": "scripts/export-nell-animation.mjs"
+    "exporter": "scripts/export-nell-animation.mjs",
+    "format": "SVG",
+    "runtimeDirectory": "public/art/vector/animation"
   },
   "orrin": {
     "vectorModel": "assets/characters/vector/draw.py#orrin",
-    "palette": "EGA 16",
+    "palette": "warm railway colors (stylistic, extensible)",
     "logicalSize": [
       40,
       80
@@ -96,7 +98,9 @@
       6,
       7
     ],
-    "exporter": "scripts/export-orrin-animation.mjs"
+    "exporter": "scripts/export-orrin-animation.mjs",
+    "format": "SVG",
+    "runtimeDirectory": "public/art/vector/animation"
   },
   "kit": {
     "walkRig": {

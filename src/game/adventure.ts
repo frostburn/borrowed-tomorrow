@@ -16,8 +16,10 @@ import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPi
 import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
+import { vectorAsset } from '../content/art-assets';
+import { vectorSurface } from './vector-image';
 import { drawTileMap } from './tilemap';
-import { TILESET, TILE_PAGES, tilePages } from '../content/tilemaps';
+import { TILESET, VECTOR_TILE_PAGES, tilePages } from '../content/tilemaps';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -80,13 +82,20 @@ export class Adventure extends Phaser.Scene {
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
-    for(const page of TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+    for(const page of VECTOR_TILE_PAGES)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
     for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
-    for(const key of [...PLAYABLE_ACTORS,...MOTION_PAGES.map(page=>page.key)]){
-      if(/^(nell|orrin)(-|$)/.test(key))this.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    for(const key of [...textures,...MOTION_PAGES.map(page=>page.key),...VECTOR_TILE_PAGES.map(page=>page.name)]){
+      if(vectorAsset(key)||key.startsWith('vector-')){
+        const texture=this.textures.get(key);
+        for(const source of texture.source)if(source.image instanceof HTMLImageElement){
+          const canvas=vectorSurface(source.image);
+          source.source=source.image=canvas;source.isCanvas=true;source.update();
+        }
+        texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
     }
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
@@ -190,7 +199,10 @@ export class Adventure extends Phaser.Scene {
   }
   private async ensureRegion(map: MapId) {
     if(MAPS[map].tiles){
-      const missing=tilePages(MAPS[map].tiles).filter(page=>!this.textures.exists(page.name));
+      // Later chapters load their scenery and local battle pages together.
+      // Chapter one already has its complete SVG kit at the title screen.
+      const pages=[...tilePages(MAPS[map].tiles),...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&id in BATTLE_MAPS?tilePages(BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]):[])];
+      const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
       if(missing.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
           this.load.once('complete',()=>{

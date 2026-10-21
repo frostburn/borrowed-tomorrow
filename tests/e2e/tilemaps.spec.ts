@@ -1,5 +1,6 @@
+import { artPath } from '../../src/content/art-assets';
 import { expect, test } from '@playwright/test';
-import { TILESET, tileProperties } from '../../src/content/tilemaps';
+import { TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import { MAPS, walkable } from '../../src/content/maps';
 import { receiveItem } from '../../src/rules/inventory';
 import { checkpoint } from '../support/progress';
@@ -26,8 +27,8 @@ test('native foreground trees occlude actors behind them and yield to actors in 
   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   for(const [row,front] of [[22,false],[24,true]] as const){
     const state=checkpoint('festivalSeen');state.location={map:'station',x:1,y:row};await importSave(page,state);
-    await expect.poll(()=>page.evaluate(async({row,tileset,tileProperties,map})=>{
-      const actor=new Image();actor.src='/art/nell.png';await actor.decode();
+    await expect.poll(()=>page.evaluate(async({row,tileset,tileProperties,map,actorUrl})=>{
+      const actor=new Image();actor.src=actorUrl;await actor.decode();
       const pages=await Promise.all(tileset.pages.map(async p=>{const image=new Image();image.src=`/${p.url}`;await image.decode();return image;}));
       const reference=document.createElement('canvas');reference.width=map.width*24;reference.height=map.height*24;const ctx=reference.getContext('2d')!;
       const tree=document.createElement('canvas');tree.width=reference.width;tree.height=reference.height;const t=tree.getContext('2d')!;
@@ -40,7 +41,7 @@ test('native foreground trees occlude actors behind them and yield to actors in 
         if(!layer.data||!layer.visible||layer.properties?.some(p=>p.name==='requiredFlag'))continue;
         const sorted=layer.properties?.some(p=>p.name==='sort'&&p.value===true);
         for(let i=0;i<layer.data.length;i++){
-          const gid=layer.data[i];if(!gid||tileProperties[gid-1]?.empty)continue;
+          const gid=layer.data[i];if(!gid)continue;
           const x=i%map.width*24,y=Math.floor(i/map.width)*24;
           if(sorted){queue.push({gid,x,y,depth:y+Number(tileProperties[gid-1]?.sortOffset??24)});if(String(tileProperties[gid-1]?.name).startsWith('canopy-')&&x<120)draw(t,gid,x,y);}
           else draw(ctx,gid,x,y);
@@ -64,7 +65,7 @@ test('native foreground trees occlude actors behind them and yield to actors in 
         compared++;
       }
       return compared>100&&!missing?'ok':JSON.stringify({compared,missing,maxDelta,examples});
-    },{row,tileset:TILESET,tileProperties,map:MAPS.station.tiles!}),{timeout:15000}).toBe('ok');
+    },{row,tileset:{...TILESET,pages:mapTilePages(MAPS.station.tiles)},tileProperties,map:MAPS.station.tiles!,actorUrl:`/${artPath('nell')}`}),{timeout:15000}).toBe('ok');
     await capture(page,front?'tile-tree-front':'tile-tree-behind');
   }
 });

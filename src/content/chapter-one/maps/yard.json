@@ -910,6 +910,7 @@
   "nextobjectid": 11,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"artStyle","type":"string","value":"vector"},
     {
       "name": "safeArrival",
       "type": "string",

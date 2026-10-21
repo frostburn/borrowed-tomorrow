@@ -1,6 +1,6 @@
 # Playable character motion frames
 
-Nell and Orrin use the rasterized vector sources documented in [vector/README.md](vector/README.md). Rebuild both characters, including portraits, with `node scripts/export-vector-characters.mjs`, or run their individual `export-nell-animation.mjs` / `export-orrin-animation.mjs` commands. Their previous sampled sprites, skins and rig models are retired. All native frames are 80 x 80, anchored at (40,68), with binary alpha and a 16-color palette.
+Nell and Orrin load the SVG vector sources documented in [vector/README.md](vector/README.md). Rebuild both characters, including portraits, with `node scripts/export-vector-characters.mjs`, or run their individual `export-nell-animation.mjs` / `export-orrin-animation.mjs` commands. Their previous sampled sprites, skins and rig models are retired. All native frames are 80 x 80, anchored at (40,68), with the shared warm, extensible vector palette.
 
 Nell has no walk cycle; she translates her directional idle pose. Each 160 x 160 motion page has wind-up, contact and follow-through in frames 0–2. Orrin retains six walking poses plus two lance attacks in frames 6–7 on 160 x 320 pages. His support foot counters the 28px distance-based stride. Both characters have independent left/right constructions and anatomical right-hand tools.
 

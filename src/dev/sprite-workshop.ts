@@ -1,7 +1,9 @@
 import { ACTOR_DIRECTIONS, ACTOR_FEET, ACTOR_SIZE, type ActorDirection } from '../content/actors';
 import type { CompanionId } from '../rules/party';
 import { SPRITE_CATALOG, SPRITE_GROUPS, spriteAsset, type SpriteEntry, type SpriteGroup } from './sprite-catalog';
+import { artPath, vectorAsset } from '../content/art-assets';
 import { art } from '../game/ui';
+import { vectorSurface } from '../game/vector-image';
 import { mountCivilianReconstruction } from './civilian-reconstruction';
 import { civilianPresentation } from '../content/civilians';
 import { animatedHero, walkingHero, ATTACK_CONTACT_MS, NELL_ATTACK_TIMES, motionFrame, motionPage, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, WALK_PHASES, type ActorMotion } from '../content/actor-motion';
@@ -63,7 +65,7 @@ export class SpriteWorkshop {
       <div class="sprite-settings" role="group" aria-label="Animation preview">${(['idle','walk','attack',...(entry.id==='petra'?['bash' as const]:[])] as const).map(motion=>`<button data-motion="${motion}" aria-pressed="${this.motion===motion}" ${motion==='walk'?!walkingHero(entry.id)?'disabled':'':motion!=='idle'&&!animatedHero(entry.id)?'disabled':''}>${motion[0].toUpperCase()+motion.slice(1)}</button>`).join('')}<button id="sprite-play" ${this.motion==='idle'?'disabled':''}>${this.playing?'Pause':'Play'}</button><button id="sprite-next-frame" ${this.motion==='idle'?'disabled':''}>Next frame</button><span id="sprite-frame" aria-live="off"></span></div>
       <section class="sprite-lineup"><h3>${this.group} lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entries.length*96}" height="112" aria-label="${this.group} at native size"></canvas></div></section>
       <div class="sprite-inspector"><section><h3>${entry.name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${entry.name} ${this.direction} at ${this.zoom}x"></canvas></section>
-      <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':'One front view is available for this asset.'}</p><p>Actor: ${fit?`${fit.width} x ${fit.height} / scaled to 63px standing height`:'80 x 80'}<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row ${ACTOR_FEET} / center: column 40${entry.id==='nell'||entry.id==='orrin'?'<br/>Rasterized vectors / 16 colors / 2:1 logical pixels.':''}</p><p class="sprite-file">${spriteAsset(entry,this.direction)}.png${entry.portrait?'<br/>'+entry.portrait+'.png':''}</p></section></div></section>`;
+      <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':'One front view is available for this asset.'}</p><p>Actor: ${fit?`${fit.width} x ${fit.height} / scaled to 63px standing height`:'80 x 80'}<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row ${ACTOR_FEET} / center: column 40${vectorAsset(entry.sprite)?'<br/>Vector source / SVG / 2:1 logical proportions.':''}</p><p class="sprite-file">${artPath(spriteAsset(entry,this.direction))}${entry.portrait?'<br/>'+artPath(entry.portrait):''}</p></section></div></section>`;
     const bind = (selector: string, action: (button: HTMLButtonElement) => void) => {
       for (const button of host.querySelectorAll<HTMLButtonElement>(selector)) button.onclick = () => {
         const scroll = host.closest('.inventory-panel')!.scrollTop;
@@ -118,13 +120,14 @@ export class SpriteWorkshop {
       ctx.fillStyle='#557179';ctx.fillRect(x+40*zoom,y,1,size);
     }
     if(image.complete&&image.naturalWidth){
+      const source=vectorAsset(entry.sprite)?vectorSurface(image):image;
       const fit=civilianPresentation(entry.sprite);
       if(fit){
         const scale=fit.scale*zoom;ctx.imageSmoothingEnabled=true;
         ctx.drawImage(image,x+40*zoom-image.width*fit.originX*scale,y+68*zoom-image.height*fit.originY*scale,image.width*scale,image.height*scale);
         ctx.imageSmoothingEnabled=false;
-      }else if(frame===undefined)ctx.drawImage(image,x,y,size,size);
-      else ctx.drawImage(image,frame%2*80,Math.floor(frame/2)*80,80,80,x,y,size,size);
+      }else if(frame===undefined)ctx.drawImage(source,x,y,size,size);
+      else ctx.drawImage(source,frame%2*80,Math.floor(frame/2)*80,80,80,x,y,size,size);
     }
   }
   private paint() {
@@ -137,7 +140,7 @@ export class SpriteWorkshop {
     this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':entry.id==='nell'?['Wind-up','Contact','Follow-through'][frame]:frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:frame%2===0?'Wind-up':'Contact';
     this.host.dataset.frame=String(frame??'idle');
     const asset=frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
-    this.host.querySelector('.sprite-file')!.innerHTML=`${asset}.png${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+entry.portrait+'.png':''}`;
+    this.host.querySelector('.sprite-file')!.innerHTML=`${artPath(asset)}${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+artPath(entry.portrait):''}`;
     entries.forEach((character,index)=>this.actor(a,character,this.direction,8+96*index,16+68-ACTOR_FEET));
     const offset=(240-ACTOR_SIZE*this.zoom)/2;this.actor(b,entry,this.direction,offset,offset,this.zoom);
     entry.directions.forEach((direction,index)=>this.actor(c,entry,direction,8+88*index,16+68-ACTOR_FEET));

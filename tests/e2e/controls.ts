@@ -1,10 +1,11 @@
+import { artPath } from '../../src/content/art-assets';
 import { expect, type Page } from '@playwright/test';
 import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 import { MAPS } from '../../src/content/maps';
 import { BATTLE_MAPS } from '../../src/content/battle-maps';
-import { layerVisible, properties, TILESET, tileProperties } from '../../src/content/tilemaps';
+import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
 import { civilianPresentation } from '../../src/content/civilians';
 
@@ -27,7 +28,7 @@ export async function dialogue(page: Page) {
     const who=await page.locator('.dialogue h2').textContent(),portrait=who?speakerPortrait(who):undefined;
     if(portrait){
       const image=page.locator('.dialogue-portrait img');
-      await expect(image).toHaveAttribute('src',new RegExp(`/art/${portrait}\\.png$`));
+      await expect(image).toHaveAttribute('src',new RegExp(`/${artPath(portrait).replaceAll('.','\\.')}$`));
       await expect.poll(()=>image.evaluate(img=>{const i=img as HTMLImageElement;return i.complete&&i.naturalWidth===128&&i.naturalHeight===128;})).toBe(true);
     }
     await page.locator('.dialogue-actions button').first().click();
@@ -68,13 +69,13 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
       const delta=Math.abs(actual[at]-expected[(y*32+x)*4+c]);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[at],expected[(y*32+x)*4+c]]);}
     }
     return missing?JSON.stringify({missing,maxDelta,examples}):'ok';
-  },{name:map,yOffset,tiles,layers,tileset:TILESET,tileProperties}),{timeout:15000}).toBe('ok');
+  },{name:map,yOffset,tiles,layers,tileset:{...TILESET,pages:mapTilePages(tiles)},tileProperties}),{timeout:15000}).toBe('ok');
 }
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
 export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
-  await expect.poll(()=>page.evaluate(async({sprite,at,fit})=>{
-    const actor=new Image();actor.src=`/art/${sprite}.png`;await actor.decode();
+  await expect.poll(()=>page.evaluate(async({spriteUrl,at,fit})=>{
+    const actor=new Image();actor.src=spriteUrl;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
     const reference=document.createElement('canvas');reference.width=80;reference.height=80;
     const ctx=reference.getContext('2d')!;
@@ -100,7 +101,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
   // Phaser's transformed draw and Canvas drawImage use slightly different
   // subpixel rounding at filtered boundaries. Keep geometry assertions exact
   // and allow up to 1% differing color channels for scaled civilian artwork.
-  },{sprite,at,fit:civilianPresentation(sprite)}),{timeout:15000}).toBeLessThanOrEqual(Math.max(maxObscuredFraction,civilianPresentation(sprite)?0.01:0));
+  },{spriteUrl:`/${artPath(sprite)}`,at,fit:civilianPresentation(sprite)}),{timeout:15000}).toBeLessThanOrEqual(Math.max(maxObscuredFraction,civilianPresentation(sprite)?0.01:0));
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {

@@ -1,9 +1,11 @@
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
-import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, TILESET, type TileLayer } from '../content/tilemaps';
+import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, vectorMap, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
 import { walkable } from '../content/maps';
 import { bitmapText } from '../game/pixel-font';
 import { art } from '../game/ui';
+import { vectorSurface } from '../game/vector-image';
+import { vectorAsset } from '../content/art-assets';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -61,7 +63,7 @@ export class MapWorkshop {
     host.innerHTML=`<section class="map-review" aria-label="Map review"><header><h2>Maps</h2><p>Click a cell to identify its art. Copy reference includes coordinates, layers and a link to this view.</p></header>
       <div class="map-toolbar" role="group" aria-label="Map chapters">${[1,2,3,4].map(ch=>`<button data-map-chapter="${ch}" aria-pressed="${ch===e.chapter}">Chapter ${ch}</button>`).join('')}<span class="map-divider"></span>${['World','Battle'].map(kind=>`<button data-map-kind="${kind}" aria-pressed="${kind===e.kind}" ${MAP_REVIEWS.some(m=>m.chapter===e.chapter&&m.kind===kind)?'':'disabled'}>${kind}</button>`).join('')}</div>
       <div class="map-library" role="group" aria-label="Maps in chapter">${MAP_REVIEWS.filter(m=>m.chapter===e.chapter&&m.kind===e.kind).map(m=>`<button data-map="${m.id}" aria-pressed="${m.id===e.id}">${esc(m.id)}</button>`).join('')}</div>
-      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?'24px tiles':'Native painting'}</p>
+      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?vectorMap(e.tiles)?'24px vector tiles / SVG':'24px tiles':'Native painting'}</p>
       <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
@@ -108,8 +110,8 @@ export class MapWorkshop {
   private select(p:Point){this.selected=this.clamp(p);this.host!.querySelector<HTMLInputElement>('#map-x')!.value=String(this.selected.x);this.host!.querySelector<HTMLInputElement>('#map-y')!.value=String(this.selected.y);this.paint();this.syncUrl();}
   private active(l:TileLayer){return !this.hidden.has(l.id)&&layerVisible(l,{flags:this.flags});}
   private tile(ctx:CanvasRenderingContext2D,gid:number,x:number,y:number){
-    const frame=tileFrame(gid),page=TILESET.pages.find(p=>p.name===frame.key)!;const img=this.image(`${import.meta.env.BASE_URL}${page.url}`);
-    if(img.complete&&img.naturalWidth)ctx.drawImage(img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
+    const frame=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===frame.key)!;const img=this.image(`${import.meta.env.BASE_URL}${page.url}`);
+    if(img.complete&&img.naturalWidth)ctx.drawImage(vectorMap(this.entry.tiles)?vectorSurface(img):img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
   }
   private paint(){
     const host=this.host!,e=this.entry,canvas=host.querySelector<HTMLCanvasElement>('#map-preview')!,ctx=canvas.getContext('2d')!;
@@ -118,7 +120,7 @@ export class MapWorkshop {
     if(e.tiles){
       for(const page of tilePages(e.tiles))this.image(`${import.meta.env.BASE_URL}${page.url}`);
       for(const l of this.layers.filter(l=>this.active(l))){
-        for(const [i,gid] of l.data!.entries())if(gid&&!tileProperties[gid-1].empty){
+        for(const [i,gid] of l.data!.entries())if(gid&&(vectorMap(e.tiles)||!tileProperties[gid-1].empty)){
           const x=i%e.tiles.width*24,y=Math.floor(i/e.tiles.width)*24,draw=()=>this.tile(ctx,gid,x,y);
           if(properties(l).sort)sorted.push({depth:y+Number(tileProperties[gid-1].sortOffset??24),draw});else draw();
         }
@@ -127,7 +129,7 @@ export class MapWorkshop {
     if(this.overlays.has('actors')){
       const cast=e.tiles?mapPoints(e.tiles,this.scene):[],castSprites=new Set<string>(cast.map(o=>CHARACTERS[o.name as keyof typeof CHARACTERS]?.sprite));
       const visible=(o:{hiddenFlag?:string;requiredFlag?:string})=>(!o.hiddenFlag||!this.flags[o.hiddenFlag])&&(!o.requiredFlag||this.flags[o.requiredFlag]);
-      const actor=(sprite:string,p:Point)=>{const image=this.image(art(sprite)),y=(p.y+.5)*24+7;sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(image,(p.x+.5)*24-40,y-68);}});};
+      const actor=(sprite:string,p:Point)=>{const image=this.image(art(sprite)),y=(p.y+.5)*24+7;sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,(p.x+.5)*24-40,y-68);}});};
       for(const o of e.world?.objects??[])if(o.sprite&&visible(o)&&(!o.spriteHiddenFlag||!this.flags[o.spriteHiddenFlag])&&!castSprites.has(o.sprite))actor(o.sprite,o);
       for(const p of e.world?.people??[])if(visible(p))actor(p.sprite,p);
       for(const o of cast){const character=CHARACTERS[o.name as keyof typeof CHARACTERS];if(character&&!properties(o).hidden)actor(character.sprite,gridPoint(o));}
@@ -151,7 +153,7 @@ export class MapWorkshop {
   private stack(){const {x,y}=this.selected;return this.layers.filter(l=>l.data![y*this.entry.tiles!.width+x]).map(l=>({layer:l,gid:l.data![y*this.entry.tiles!.width+x]})).reverse();}
   private inspector(){
     const host=this.host!,{x,y}=this.selected,stack=this.stack();
-    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{const f=tileFrame(gid),page=TILESET.pages.find(p=>p.name===f.key)!;return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(page.url)} / frame ${f.frame}</p>`;}).join('')||'<p>No tile at this cell; native painting.</p>'}`;
+    host.querySelector('.map-inspector')!.innerHTML=`<h3>Cell (${x}, ${y}) / pixel (${x*24}, ${y*24})</h3><p>Top layer first. Hidden entries remain listed for identification.</p>${stack.map(({layer,gid})=>{const f=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===f.key)!;return `<p class="map-tile-source ${this.active(layer)?'':'map-muted'}"><strong>${esc(layer.name)}</strong>${this.active(layer)?'':' / hidden'}<br/>${gid}: ${esc(TILESET.tiles[gid-1].type)}<br/>${esc(page.url)} / frame ${f.frame}</p>`;}).join('')||'<p>No tile at this cell; native painting.</p>'}`;
   }
   private syncUrl(){
     if(!this.host)return;const url=new URL(location.href),q=url.searchParams,view=this.host.querySelector<HTMLElement>('.map-viewport')!;
@@ -159,7 +161,7 @@ export class MapWorkshop {
     for(const [key,value] of [['mapHide',[...this.hidden].sort((a,b)=>a-b).join(',')],['mapFlags',Object.keys(this.flags).filter(f=>this.flags[f]).sort().join(',')],['mapScene',this.scene]])if(value)q.set(key,value);else q.delete(key);
     if(url.href!==location.href)history.replaceState(null,'',url);
   }
-  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${tileFrame(gid).key}`).join('\n')}\n${location.href}`;}
+  private reference(){return `Map: ${this.entry.id} / Chapter ${this.entry.chapter} / ${this.entry.kind}\nCell: (${this.selected.x}, ${this.selected.y}) / pixel (${this.selected.x*24}, ${this.selected.y*24})\nScene: ${this.scene||'none'}\nFlags: ${Object.keys(this.flags).filter(f=>this.flags[f]).join(', ')||'none'}\n${this.stack().map(({layer,gid})=>`${this.active(layer)?'Visible':'Hidden'}: ${layer.name} / ${gid}: ${TILESET.tiles[gid-1].type} / ${tileFrame(gid,this.entry.tiles).key}`).join('\n')}\n${location.href}`;}
   private download(){
     const host=this.host!,view=host.querySelector<HTMLElement>('.map-viewport')!,source=host.querySelector<HTMLCanvasElement>('#map-preview')!,crop=document.createElement('canvas');crop.width=view.clientWidth;crop.height=view.clientHeight;
     crop.getContext('2d')!.drawImage(source,view.scrollLeft,view.scrollTop,crop.width,crop.height,0,0,crop.width,crop.height);

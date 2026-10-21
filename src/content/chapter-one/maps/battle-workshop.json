@@ -270,6 +270,7 @@
   "nextobjectid": 1,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"artStyle","type":"string","value":"vector"},
     {
       "name": "name",
       "type": "string",

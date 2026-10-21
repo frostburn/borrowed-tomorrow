@@ -1422,6 +1422,7 @@
   "nextobjectid": 20,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"artStyle","type":"string","value":"vector"},
     {
       "name": "safeArrival",
       "type": "string",

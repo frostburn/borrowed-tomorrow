@@ -1,3 +1,4 @@
+import { artPath } from '../../src/content/art-assets';
 import { expect, test, type Page } from '@playwright/test';
 import { active, ABILITIES, legalAim, movement, targets, type AbilityId, type Battle } from '../../src/rules/combat';
 import { toPixel, type Hex } from '../../src/rules/hex';
@@ -65,15 +66,15 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
         await controls.getByRole('button',{name:'Next frame',exact:true}).click();
         seen.add((await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame))!);
         const detail=review.locator('.sprite-detail');await detail.scrollIntoViewIfNeeded();
-        await expect.poll(()=>detail.evaluate(async(canvas,hero)=>{
+        await expect.poll(()=>detail.evaluate(async(canvas,{idleUrl,motionUrl})=>{
           const host=canvas.closest('#sprite-workshop') as HTMLElement,frame=host.dataset.frame;
-          const image=new Image();image.src=frame==='idle'?`/art/${hero}-right.png`:`/art/animation/${hero}-right.png`;await image.decode();
+          const image=new Image();image.src=frame==='idle'?idleUrl:motionUrl;await image.decode();
           const ref=document.createElement('canvas');ref.width=ref.height=240;const ctx=ref.getContext('2d')!;ctx.imageSmoothingEnabled=false;
           for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#234047':'#182b32';ctx.fillRect(x,y,8,8);}
           if(frame==='idle')ctx.drawImage(image,0,0,240,240);else{const f=Number(frame);ctx.drawImage(image,f%2*80,Math.floor(f/2)*80,80,80,0,0,240,240);}
           const actual=(canvas as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data,expected=ctx.getImageData(0,0,240,240).data;
           return actual.reduce((n,v,i)=>n+Number(v!==expected[i]),0);
-        },hero)).toBe(0);
+        },{idleUrl:`/${artPath(hero+'-right')}`,motionUrl:`/${artPath('animation/'+hero+'-right')}`})).toBe(0);
       }
       expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set(hero==='nell'?['0','1','2','idle']:motion==='Bash'?['8','9','idle']:[String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
       if(hero==='nell'||hero==='orrin')await capture(page,`${hero}-vector-native-${device}`);

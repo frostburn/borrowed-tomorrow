@@ -1,3 +1,6 @@
+import { artPath, vectorAsset } from '../../src/content/art-assets';
+import { PLAYABLE_ACTORS } from '../../src/content/actors';
+import { SPRITE_CATALOG } from '../../src/dev/sprite-catalog';
 import { expect, test } from '@playwright/test';
 import { capture } from './controls';
 import { civilianPresentation } from '../../src/content/civilians';
@@ -13,12 +16,12 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const portraits=review.locator('.sprite-cast img');await expect(portraits).toHaveCount(5);
     for(const image of await portraits.all())expect(await image.evaluate(async i=>{const img=i as HTMLImageElement;await img.decode();const r=img.getBoundingClientRect(),scale=window.borrowedTomorrowPixels.inspect().cssScale;return [img.naturalWidth,img.naturalHeight,Math.round(r.width/scale),Math.round(r.height/scale)];})).toEqual([128,128,128,128]);
     // Check every exported actor's real alpha bounds, including the new reserve directions.
-    const feet=await page.evaluate(async()=>{
+    const feet=await page.evaluate(async(paths)=>{
       const all=[];
       const party=['nell','orrin','kit','celia','petra'];
       const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
-        const image=new Image();image.src=`/art/${hero}${suffix}.png`;await image.decode();
+        const image=new Image();image.src=paths[hero+suffix];await image.decode();
         const canvas=document.createElement('canvas'),w=image.naturalWidth,h=image.naturalHeight;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
         const p=ctx.getImageData(0,0,w,h).data;let bottom=-1,top=h;
         for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(p[(y*w+x)*4+3]>127){top=Math.min(top,y);bottom=Math.max(bottom,y);}
@@ -37,7 +40,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         }
         all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
-    });
+    },Object.fromEntries([...PLAYABLE_ACTORS,...SPRITE_CATALOG.map(e=>e.sprite)].map(name=>[name,`/${artPath(name)}`])));
     for(const actor of feet){
       const fit=civilianPresentation(actor.hero);
       if(fit){expect([actor.width,actor.height]).toEqual([fit.width,fit.height]);expect([actor.top,actor.bottom]).toEqual([fit.bounds[1],fit.bounds[3]-1]);continue;}
@@ -46,7 +49,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
       if(['hound','crow','guardian'].includes(actor.hero))continue;
       expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
       expect(actor.components,`${actor.hero}${actor.suffix} has no detached alpha fragments`).toBe(1);
-      expect(actor.top).toBeGreaterThanOrEqual(4);expect(actor.top).toBeLessThanOrEqual(10);
+      expect(actor.top).toBeGreaterThanOrEqual(vectorAsset(actor.hero)?2:4);expect(actor.top).toBeLessThanOrEqual(10);
     }
     await capture(page,`sprite-cast-${device}`);
     await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();
@@ -81,7 +84,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await collections.getByRole('button',{name:'NPCs (21)',exact:true}).click();
     await expect(review.locator('[data-sprite-hero]')).toHaveCount(21);
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
-    await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.png$/);
+    await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.svg$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
     await expect(review.locator('.sprite-file')).toContainText('master.png');
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});

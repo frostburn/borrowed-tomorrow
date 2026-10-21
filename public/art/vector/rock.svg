@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 40 80" preserveAspectRatio="none" shape-rendering="crispEdges">
+<polygon points="4,65 7,53 14,49 18,37 26,38 31,51 35,56 36,67 9,67" fill="#626d7f" stroke="#202d35" stroke-width="1"/>
+<polygon points="7,53 15,51 18,39 24,40 20,54 14,60" fill="#b7c1b8" stroke="#202d35" stroke-width="1"/>
+<polygon points="20,54 24,40 29,50 28,64 15,67" fill="#687478" stroke="#202d35" stroke-width="1"/>
+<polyline points="14,51 19,55 17,64" fill="none" stroke="#202d35" stroke-width="1"/>
+<polygon points="6,64 11,61 15,65 13,67 5,67" fill="#55745c"/>
+</svg>

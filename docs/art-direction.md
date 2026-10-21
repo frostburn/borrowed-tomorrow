@@ -1,6 +1,6 @@
-# Current vector character pilot
+# Chapter-one vector direction
 
-Nell and Orrin now use original rasterized vector graphics inspired by early Sierra/AGI: flat 16-color fills, black contours, taller figures and wide logical pixels. Four views, portraits and all active motion poses come from one reproducible shape model, rather than sampled generated artwork. See [the vector source guide](../assets/characters/vector/README.md). This is a two-character pilot; chapter-one scenery and the remaining cast await feedback before conversion. The historical art descriptions below still describe those unchanged assets.
+Chapter one now uses original vector-authored actors, portraits, motion poses and scenery. Its graphic shapes, tall figures, dark contours and warm colors draw on early Sierra adventure art without a fixed historical palette. The game loads self-contained SVGs; browser decoding supplies native textures for the existing Canvas engine. Rebuild the chapter with `node scripts/export-chapter-one-art.mjs`. See [the cast guide](../assets/characters/vector/README.md) and [the scenery guide](../assets/vector/README.md). The following earlier source-art descriptions remain historical for chapter one and still apply to unchanged later-chapter scenery/cast.
 
 # Art and interface
 
