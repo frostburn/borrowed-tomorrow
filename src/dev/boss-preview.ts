@@ -8,15 +8,16 @@ import { BOSS_ENCOUNTER, BOSS_ID, bossTurn, bossUnit, prepareBoss } from './boss
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
 import { vectorSurface } from '../game/vector-image';
-import boss from './art/benefactor.svg?url';
+import boss from './art/benefactor-motion.svg?url';
 import domain from './art/benefactor-domain.svg?url';
 import portrait from './art/benefactor-portrait.svg?url';
+import { breathe, bossAttack, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 
 export {portrait as BOSS_PORTRAIT};
-const textureKey='benefactor-vector',domainKey='benefactor-domain';
+const textureKey='benefactor-motion',domainKey='benefactor-domain';
 export const BOSS_ASSETS=[{key:textureKey,url:boss},{key:domainKey,url:domain}];
 let labelId=0;
-let nativePixels:Uint8ClampedArray|undefined;
+let masks:Uint8Array[]|undefined,currentFrame=0;
 function nativeTexture(scene:Phaser.Scene,key:string){
   const texture=scene.textures.get(key);
   for(const source of texture.source)if(source.image instanceof HTMLImageElement){
@@ -45,12 +46,19 @@ export const BOSS_PRESENTATION:BattlePreview={
     nativeTexture(scene,domainKey);
     world.add(scene.add.image(0,0,domainKey).setOrigin(0));
   },
-  actor(scene,unit){
+  actor(scene,unit,hp){
     if(unit.id!==BOSS_ID)return;
-    const surface=nativeTexture(scene,textureKey).getSourceImage() as HTMLCanvasElement;
-    nativePixels??=surface.getContext('2d')!.getImageData(0,0,360,288).data;
-    const p=placement(unit);return scene.add.image(p.x,p.y,textureKey).setOrigin(.5,1);
+    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
+    if(!texture.has('0'))for(let i=0;i<BOSS_FRAME_COUNT;i++)texture.add(String(i),0,i%2*360,Math.floor(i/2)*288,360,288);
+    masks??=Array.from({length:BOSS_FRAME_COUNT},(_,i)=>{
+      const pixels=surface.getContext('2d')!.getImageData(i%2*360,Math.floor(i/2)*288,360,288).data;
+      return Uint8Array.from({length:360*288},(_,p)=>pixels[p*4+3]);
+    });
+    const p=placement(unit),image=scene.add.image(p.x,p.y,textureKey,0).setOrigin(.5,1);
+    breathe(scene,image,hp>0,frame=>{currentFrame=frame;});return image;
   },
+  attackTiming:unit=>unit.id===BOSS_ID?{contact:BOSS_ATTACK_CONTACT,duration:BOSS_ATTACK_DURATION}:undefined,
+  attack:(scene,image,unit,elapsed)=>{if(unit.id===BOSS_ID)bossAttack(scene,image,elapsed);},
   overlay(scene,world,b){
     const boss=bossUnit(b),p=placement(boss),g=scene.add.graphics();world.add(g);
     label(scene,world,p.x,12,`The Benefactor  ${boss.hp}/${boss.maxHp}`,2);
@@ -71,7 +79,7 @@ export const BOSS_PRESENTATION:BattlePreview={
     const direct=unitAt(b,clicked);if(direct&&direct.id!==BOSS_ID)return;
     if(unitAt(b,clicked)?.id===BOSS_ID&&legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===BOSS_ID))return clicked;
     const px=Math.floor(x-p.x+180),py=Math.floor(y-p.y+288);
-    if(px<0||px>=360||py<0||py>=288||nativePixels?.[(py*360+px)*4+3]===0)return;
+    if(px<0||px>=360||py<0||py>=288||masks?.[currentFrame][py*360+px]===0)return;
     const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
     return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??parts[0];
   },

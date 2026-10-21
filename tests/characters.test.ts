@@ -44,7 +44,7 @@ it('every playable character has four distinct native directional actors',()=>{
 });
 
 it('motion pages match each character frame layout within the image budget',()=>{
-  expect(MOTION_PAGES).toHaveLength(16);
+  expect(MOTION_PAGES).toHaveLength(20);
   for(const page of MOTION_PAGES){
     const bytes=imageBytes(page.asset);
     expect(dimensions(bytes)).toEqual([160,Math.ceil(page.frames/2)*80]);
@@ -59,6 +59,8 @@ it('the complete six-step walk wraps without entering attack poses',()=>{
   expect(motionFrame('attack',139)).toBe(ATTACK_WINDUP_FRAME);
   expect(motionFrame('attack',140)).toBe(ATTACK_CONTACT_FRAME);
   expect(motionFrame('attack',280)).toBeUndefined();
+  expect(walkingHero('celia')).toBe(true);
+  expect(motionFrame('attack',140,'celia')).toBeUndefined();
 });
 
 

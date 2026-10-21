@@ -2,7 +2,8 @@ import { artPath } from '../../src/content/art-assets';
 import { expect, test, type Page } from '@playwright/test';
 import { active, ABILITIES, legalAim, movement, targets, type AbilityId, type Battle } from '../../src/rules/combat';
 import { toPixel, type Hex } from '../../src/rules/hex';
-import { checkpoint, coastCheckpoint } from '../support/progress';
+import { checkpoint, coastCheckpoint, brokenCheckpoint } from '../support/progress';
+import { CHAPTER_FOUR_AVAILABLE } from '../../src/content/chapters';
 import { approach, importSave } from './navigation';
 import { capture, clickHex, clickWorld, inspect } from './controls';
 import { ATTACK_CONTACT_FRAME, ATTACK_WINDUP_FRAME, WALK_CYCLE_MS, WALK_FRAMES } from '../../src/content/actor-motion';
@@ -35,6 +36,21 @@ test('Nell, Orrin and Kit walk in four directions; skipped moving cutscenes stay
   expect((await inspect(page)).actors.filter(a=>a.hero==='nell')).toHaveLength(1);expect(errors).toEqual([]);
 });
 
+test('Celia leads the sanctuary search with six-pose directional walks and restores her idle book pose',async({page})=>{
+  test.skip(!CHAPTER_FOUR_AVAILABLE,'Chapter Four art pack is not installed.');
+  await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
+  const state=brokenCheckpoint('sealLead');state.location={map:'sanctuary',x:27,y:30};await importSave(page,state);
+  for(const [x,y,direction]of [[31,30,'right'],[31,28,'back'],[27,28,'left'],[27,30,'front']]as const){
+    const stream=record(page);await clickWorld(page,x,y);const samples=await stream;
+    const frames=samples.flatMap(s=>s.actors.filter(a=>a.hero==='celia'&&a.motion==='walk'&&a.texture===`celia-motion-${direction}`).map(a=>a.frame));
+    expect(new Set(frames).size).toBeGreaterThanOrEqual(3);
+    expect(frames.every(f=>Number(f)<6)).toBe(true);
+    await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.actors.some(a=>a.hero==='celia'&&a.motion==='idle');}).toBe(true);
+    expect((await inspect(page)).state.location).toEqual({map:'sanctuary',x,y});
+  }
+  await capture(page,'celia-walk-sanctuary');
+});
+
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`sprite workshop plays, pauses and steps native motion frames on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/?dev=sprites');
@@ -50,10 +66,10 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(new Set(frames)).toEqual(new Set(['0','1','2','3','4','5']));
     await controls.getByRole('button',{name:'Pause',exact:true}).click();
     await review.getByRole('group',{name:'Sprite zoom',exact:true}).getByRole('button',{name:'3x',exact:true}).click();await review.getByRole('button',{name:'Ground guides',exact:true}).click();
-    for(const hero of ['nell','orrin','kit','petra']){
+    for(const hero of ['nell','orrin','kit','petra','celia']){
       await review.getByRole('button',{name:`Inspect ${hero[0].toUpperCase()+hero.slice(1)}`,exact:true}).click();
       await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
-      for(const motion of ['Walk','Attack',...(hero==='petra'?['Bash']:[])]){
+      for(const motion of ['Walk',...(hero==='celia'?[]:['Attack']),...(hero==='petra'?['Bash']:[])]){
       await controls.getByRole('button',{name:motion,exact:true}).click();await controls.getByRole('button',{name:'Pause',exact:true}).click();
       const stopped=await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame);
       await page.waitForTimeout(120);expect(await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame)).toBe(stopped);
@@ -84,7 +100,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
       }
     }
     await capture(page,`actor-animation-${device}`);expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
-    await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeDisabled();
+    await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeEnabled();await expect(controls.getByRole('button',{name:'Attack',exact:true})).toBeDisabled();
     expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(errors).toEqual([]);
   });
 }

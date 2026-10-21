@@ -114,3 +114,39 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
   });
  });
 }
+
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ test.describe(`boss motion on ${device}`,()=>{
+  test.use({viewport,deviceScaleFactor:dpr});
+  test('breathes, gathers judgment before contact, recovers and cancels a restarted attack',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
+   await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/?dev=boss');
+   await page.getByRole('button',{name:'Start finale preset',exact:true}).click();
+   const frames=async(ms:number)=>page.evaluate(ms=>new Promise<{frame:string;motion:string;busy:boolean;x:number;y:number}[]>(resolve=>{
+    const samples:{frame:string;motion:string;busy:boolean;x:number;y:number}[]=[],start=performance.now();
+    const tick=()=>{const s=window.borrowedTomorrow.inspect(),a=s.actors.find(a=>a.hero==='benefactor');if(a)samples.push({frame:a.frame,motion:a.motion,busy:s.busy,x:a.x,y:a.y});if(performance.now()-start>=ms)resolve(samples);else requestAnimationFrame(tick)};tick();
+   }),ms);
+   const breathing=await frames(3300);
+   expect(new Set(breathing.map(s=>s.frame))).toEqual(new Set(['0','1','2','3','4','5','6','7']));
+   expect(breathing.every(s=>s.motion==='breathe'&&!s.busy)).toBe(true);
+   expect(new Set(breathing.map(s=>`${s.x},${s.y}`)).size).toBe(1);
+   for(let i=0;i<2;i++){await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);}
+   const striking=frames(2200);await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+   const seen=await striking;
+   for(const frame of ['8','9','10','11'])expect(seen.some(s=>s.frame===frame&&s.motion==='attack'&&s.busy)).toBe(true);
+   await expect.poll(async()=>{const s=await inspect(page);return s.battle!.round===2&&!s.busy&&s.actors.find(a=>a.hero==='benefactor')?.motion==='breathe';}).toBe(true);
+   await capture(page,`boss-breathing-${device}`);
+   await page.getByRole('button',{name:'Restart battle',exact:true}).click();
+   for(let i=0;i<3;i++){await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.getByRole('button',{name:/^F\s+Defend$/}).click();}
+   await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='benefactor')?.frame).toBe('8');
+   await capture(page,`boss-windup-${device}`);
+   await page.getByRole('button',{name:'Restart battle',exact:true}).click();
+   const restarted=await frames(1200);expect(restarted.every(s=>Number(s.frame)<8&&s.motion==='breathe')).toBe(true);
+   expect((await inspect(page)).battle!.round).toBe(1);
+   await page.emulateMedia({reducedMotion:'reduce'});
+   await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='benefactor')?.motion).toBe('idle');
+   expect((await inspect(page)).actors.find(a=>a.hero==='benefactor')?.frame).toBe('0');
+   expect(errors).toEqual([]);
+  });
+ });
+}

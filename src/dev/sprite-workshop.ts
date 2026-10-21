@@ -50,7 +50,7 @@ export class SpriteWorkshop {
   private render() {
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
     const host = this.host!, entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
-    if(!animatedHero(entry.id)){this.motion='idle';this.playing=false;}
+    if(this.motion!=='walk'&&!animatedHero(entry.id)){this.motion='idle';this.playing=false;}
     if(this.motion==='walk'&&!walkingHero(entry.id)){this.motion='idle';this.playing=false;}
     if(!entry.directions.includes(this.direction))this.direction='front';
     host.innerHTML = `<section class="sprite-review" aria-label="Sprite review"><header><h2>Sprites</h2><p>Compare character and enemy artwork at native size.</p></header>
@@ -108,8 +108,8 @@ export class SpriteWorkshop {
     ctx.imageSmoothingEnabled=false;
   }
   private actor(ctx: CanvasRenderingContext2D, entry: SpriteEntry, direction: ActorDirection, x: number, y: number, zoom=1) {
-    const frame=animatedHero(entry.id)?(entry.id===this.entry.id?this.displayedFrame:this.currentFrame(entry.id)):undefined;
-    const image=this.image(frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,direction).asset:spriteAsset(entry,direction)),size=ACTOR_SIZE*zoom;
+    const frame=walkingHero(entry.id)?(entry.id===this.entry.id?this.displayedFrame:this.currentFrame(entry.id)):undefined;
+    const image=this.image(frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,direction).asset:spriteAsset(entry,direction)),size=ACTOR_SIZE*zoom;
     if (this.guides) {
       ctx.strokeStyle='#87a3a2';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,size-1,size-1);
       ctx.fillStyle='#f4c77a';ctx.fillRect(x,y+ACTOR_FEET*zoom,size,1);
@@ -130,7 +130,7 @@ export class SpriteWorkshop {
     const frame=this.currentFrame();this.displayedFrame=frame;this.paintedFrame=frame??-1;
     this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:entry.id==='nell'?['Wind-up','Contact','Follow-through'][frame-WALK_FRAMES]:frame%2===0?'Wind-up':'Contact';
     this.host.dataset.frame=String(frame??'idle');
-    const asset=frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
+    const asset=frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
     this.host.querySelector('.sprite-file')!.innerHTML=`${artPath(asset)}${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+artPath(entry.portrait):''}`;
     entries.forEach((character,index)=>this.actor(a,character,this.direction,8+96*index,16+68-ACTOR_FEET));
     const offset=(240-ACTOR_SIZE*this.zoom)/2;this.actor(b,entry,this.direction,offset,offset,this.zoom);
