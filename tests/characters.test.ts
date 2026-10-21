@@ -5,7 +5,7 @@ import { CHARACTERS, portraitAsset } from '../src/content/characters';
 import { SAY } from '../src/content/dialogue';
 import { ACTOR_DIRECTIONS, actorAsset, facingAsset, PLAYABLE_ACTORS } from '../src/content/actors';
 import { COMPANION_IDS } from '../src/rules/party';
-import { ATTACK_CONTACT_FRAME, ATTACK_WINDUP_FRAME, motionFrame, MOTION_PAGES, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES } from '../src/content/actor-motion';
+import { ATTACK_CONTACT_FRAME, ATTACK_WINDUP_FRAME, motionFrame, MOTION_PAGES, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, walkingHero } from '../src/content/actor-motion';
 
 it('every named character has a distinct native sprite and portrait',()=>{
   const sprites:string[]=[],portraits:string[]=[];
@@ -39,7 +39,7 @@ it('every playable character has four distinct native directional actors',()=>{
   }
 });
 
-it('motion pages contain six walk frames and two attack frames within the image budget',()=>{
+it('motion pages match each character frame layout within the image budget',()=>{
   expect(MOTION_PAGES).toHaveLength(16);
   for(const page of MOTION_PAGES){
     const bytes=readFileSync(new URL(`../public/art/${page.asset}.png`,import.meta.url));
@@ -55,4 +55,11 @@ it('the complete six-step walk wraps without entering attack poses',()=>{
   expect(motionFrame('attack',139)).toBe(ATTACK_WINDUP_FRAME);
   expect(motionFrame('attack',140)).toBe(ATTACK_CONTACT_FRAME);
   expect(motionFrame('attack',280)).toBeUndefined();
+});
+
+
+it('Nell moves in idle and plays all three vector attack frames before restoring idle',()=>{
+  expect(walkingHero('nell')).toBe(false);expect(walkingHero('orrin')).toBe(true);
+  expect([0,80,160,480].map(t=>motionFrame('walk',t,'nell'))).toEqual([undefined,undefined,undefined,undefined]);
+  expect([0,139,140,219,220,299,300,380].map(t=>motionFrame('attack',t,'nell'))).toEqual([0,0,1,1,2,2,undefined,undefined]);
 });

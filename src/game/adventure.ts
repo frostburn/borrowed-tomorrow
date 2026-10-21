@@ -85,6 +85,9 @@ export class Adventure extends Phaser.Scene {
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
+    for(const key of [...PLAYABLE_ACTORS,...MOTION_PAGES.map(page=>page.key)]){
+      if(/^(nell|orrin)(-|$)/.test(key))this.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    }
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));

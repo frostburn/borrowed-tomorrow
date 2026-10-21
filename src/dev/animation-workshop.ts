@@ -1,19 +1,17 @@
 import { petraFrame, petraLayers } from '../art/petra-actor';
 import { kitFrame, kitLayers } from '../art/kit-actor';
 import { type CharacterTextures } from '../art/actor-skin';
-import { orrinFrame, orrinLayers } from '../art/orrin-actor';
 import { NELL_PROPORTIONS, ORRIN_PROPORTIONS, KIT_PROPORTIONS, PETRA_PROPORTIONS, REFERENCE_PROPORTIONS, type RigProportions } from '../art/rig-proportions';
 import { ACTOR_DIRECTIONS, type ActorDirection } from '../content/actors';
 import { LAYERED_SIZE, renderLayers } from '../art/layered-sprite';
 import { FOOT_HEEL, FOOT_TOE, LEG_COLORS, REFERENCE_FRAME_MS, REFERENCE_FRAMES } from '../art/walk-cycle';
 import { project } from '../art/actor-space';
 import { referenceRigFrame, REFERENCE_WEAPONS, weaponPoint, type ReferencePose, type ReferenceWeapon } from '../art/reference-rig';
-import { nellFrame, nellLayers } from '../art/nell-actor';
 import { layerName, REFERENCE_ARM_LAYERS, REFERENCE_LAYERS, referenceLayers } from './reference-actor';
 
-const skinNames={reference:'Mannequin',nell:'Nell',orrin:'Orrin',kit:'Kit',petra:'Petra'} as const;
+const skinNames={reference:'Mannequin',kit:'Kit',petra:'Petra'} as const;
 type Skin=keyof typeof skinNames;
-const defaults={reference:REFERENCE_PROPORTIONS,nell:NELL_PROPORTIONS,orrin:ORRIN_PROPORTIONS,kit:KIT_PROPORTIONS,petra:PETRA_PROPORTIONS};
+const defaults={reference:REFERENCE_PROPORTIONS,kit:KIT_PROPORTIONS,petra:PETRA_PROPORTIONS};
 const phases=['Left contact','Left support','Right passing','Right contact','Right support','Left passing'];
 const color=(n:number)=>`#${n.toString(16).padStart(6,'0')}`;
 const frameOf=(tick:number)=>((tick%REFERENCE_FRAMES)+REFERENCE_FRAMES)%REFERENCE_FRAMES;
@@ -33,7 +31,7 @@ export class AnimationWorkshop {
   private direction:ActorDirection='right';
   private weapon:ReferenceWeapon='lantern';
   private skin:Skin='reference';
-  private measurements:Record<Skin,RigProportions>={reference:{...REFERENCE_PROPORTIONS},nell:{...NELL_PROPORTIONS},orrin:{...ORRIN_PROPORTIONS},kit:{...KIT_PROPORTIONS},petra:{...PETRA_PROPORTIONS}};
+  private measurements:Record<Skin,RigProportions>={reference:{...REFERENCE_PROPORTIONS},kit:{...KIT_PROPORTIONS},petra:{...PETRA_PROPORTIONS}};
   private proportionError='';
   private get proportions(){return this.measurements[this.skin];}
   private textures:Partial<Record<Skin,CharacterTextures>>={};
@@ -51,11 +49,11 @@ export class AnimationWorkshop {
   private paintedTick=NaN;
   private frames:Uint8ClampedArray[]=[];
   private native=document.createElement('canvas');
-  private get selectedWeapon():ReferenceWeapon{return this.skin==='nell'?'lantern':this.skin==='orrin'?'lance':this.skin==='kit'?'crossbow':this.skin==='petra'?'saber':this.weapon;}
-  private pose(frame:number){return this.skin==='nell'?nellFrame(frame,this.proportions):this.skin==='orrin'?orrinFrame(frame,this.proportions):this.skin==='kit'?kitFrame(frame,this.proportions,this.direction):this.skin==='petra'?petraFrame(frame,this.proportions):referenceRigFrame(frame,this.weapon,this.proportions);}
+  private get selectedWeapon():ReferenceWeapon{return this.skin==='kit'?'crossbow':this.skin==='petra'?'saber':this.weapon;}
+  private pose(frame:number){return this.skin==='kit'?kitFrame(frame,this.proportions,this.direction):this.skin==='petra'?petraFrame(frame,this.proportions):referenceRigFrame(frame,this.weapon,this.proportions);}
   private layers(frame:number){
     const pose=this.pose(frame),textures=this.textures[this.skin];
-    return this.skin==='nell'&&textures?nellLayers(pose,this.direction,textures):this.skin==='orrin'&&textures?orrinLayers(pose,this.direction,textures):this.skin==='kit'&&textures?kitLayers(kitFrame(frame,this.proportions,this.direction),this.direction,textures):this.skin==='petra'&&textures?petraLayers(petraFrame(frame,this.proportions),this.direction,textures):referenceLayers(pose,this.anatomy);
+    return this.skin==='kit'&&textures?kitLayers(kitFrame(frame,this.proportions,this.direction),this.direction,textures):this.skin==='petra'&&textures?petraLayers(petraFrame(frame,this.proportions),this.direction,textures):referenceLayers(pose,this.anatomy);
   }
   private loadSkin(skin:Exclude<Skin,'reference'>){
     if(this.textures[skin]||this.loading.has(skin))return;
@@ -75,8 +73,8 @@ export class AnimationWorkshop {
     if(!this.host)return;
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
     const host=this.host,proportionsOpen=host.querySelector<HTMLDetailsElement>('#reference-proportions')?.open??false;
-    host.innerHTML=`<section class="animation-review" aria-label="Layered animation reference"><header><h2>Layered reference</h2><p>${this.skin!=='reference'?`${skinNames[this.skin]} / 80 x 80 / six rigged frames. Original face and costume pixels; right-hand ${this.skin==='nell'?'lantern':this.skin==='orrin'?'steam lance':this.skin==='petra'?'saber, left-hand shield':'crossbow'}.`:'Reference walker / 80 x 80 / six frames. Anatomical left: teal. Right: amber. Weapons stay in the right hand.'}</p></header>
-      <div class="animation-controls" role="group" aria-label="Reference skin">${(['reference','nell','orrin','kit','petra'] as const).map(skin=>`<button data-reference-skin="${skin}" aria-pressed="${this.skin===skin}">${skinNames[skin]}</button>`).join('')}${this.loading.has(this.skin)?`<span>Loading ${skinNames[this.skin]} skin...</span>`:this.errors.has(this.skin)?`<span>${skinNames[this.skin]} skin could not load. Select it to retry.</span>`:''}</div>
+    host.innerHTML=`<section class="animation-review" aria-label="Layered animation reference"><header><h2>Layered reference</h2><p>${this.skin!=='reference'?`${skinNames[this.skin]} / 80 x 80 / six rigged frames. Original face and costume pixels; right-hand ${this.skin==='petra'?'saber, left-hand shield':'crossbow'}.`:'Reference walker / 80 x 80 / six frames. Anatomical left: teal. Right: amber. Weapons stay in the right hand.'}</p></header>
+      <div class="animation-controls" role="group" aria-label="Reference skin">${(['reference','kit','petra'] as const).map(skin=>`<button data-reference-skin="${skin}" aria-pressed="${this.skin===skin}">${skinNames[skin]}</button>`).join('')}${this.loading.has(this.skin)?`<span>Loading ${skinNames[this.skin]} skin...</span>`:this.errors.has(this.skin)?`<span>${skinNames[this.skin]} skin could not load. Select it to retry.</span>`:''}</div>
       <details id="reference-proportions"><summary><span data-proportion-indicator aria-hidden="true">${proportionsOpen?'-':'+'}</span> Proportions / native pixels</summary><p>Spacing is measured from the centre. Leg bone sets both thigh and shin. Character skins keep their native face and costume pixels.</p>
       <div class="animation-measurements">${measurements.map(([key,label,min,max,step])=>`<label>${label}<input aria-label="${label}" data-reference-measurement="${key}" type="number" min="${min}" max="${max}" step="${step}" value="${this.proportions[key]}" ${this.skin!=='reference'&&(key==='headScale'||key==='torsoHeight')?'disabled':''}></label>`).join('')}</div>
       <div class="animation-controls"><button id="reference-nell-proportions">Match Nell proportions</button><button id="reference-orrin-proportions">Match Orrin proportions</button><button id="reference-kit-proportions">Match Kit proportions</button><button id="reference-petra-proportions">Match Petra proportions</button><button id="reference-reset-proportions">Reset proportions</button></div><p id="reference-proportion-error" role="status">${this.proportionError}</p></details>
@@ -111,9 +109,7 @@ export class AnimationWorkshop {
       try{
         if(!input.checkValidity()||!Number.isFinite(input.valueAsNumber))throw new RangeError('Enter a measurement within the displayed range.');
         for(let i=0;i<120;i++){
-          if(this.skin==='nell')nellFrame(i/20,candidate);
-          else if(this.skin==='orrin')orrinFrame(i/20,candidate);
-          else if(this.skin==='kit')kitFrame(i/20,candidate,this.direction);
+          if(this.skin==='kit')kitFrame(i/20,candidate,this.direction);
           else if(this.skin==='petra')petraFrame(i/20,candidate);
           else for(const weapon of REFERENCE_WEAPONS)referenceRigFrame(i/20,weapon,candidate);
         }

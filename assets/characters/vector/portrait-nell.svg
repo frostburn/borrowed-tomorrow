@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 64 128" preserveAspectRatio="none" shape-rendering="crispEdges">
+<polygon points="9,127 11,95 22,81 27,77 39,77 45,83 54,97 58,127" fill="#aa0000" stroke="#000000" stroke-width="1"/>
+<polygon points="27,76 37,76 39,92 32,103 25,92" fill="#ff5555" stroke="#000000" stroke-width="1"/>
+<polygon points="25,88 31,99 32,107 35,99 40,88 43,111 43,127 21,127 21,111" fill="#ffffff" stroke="#000000" stroke-width="1"/>
+<polygon points="22,100 25,100 25,116 39,116 39,100 43,100 45,127 19,127" fill="#0000aa" stroke="#000000" stroke-width="1"/>
+<polygon points="21,31 26,24 39,25 44,38 43,68 38,79 31,84 24,75 20,60" fill="#ff5555" stroke="#000000" stroke-width="1"/>
+<polygon points="20,30 25,25 41,27 44,38 39,44 34,34 29,45 25,46 22,61 19,54" fill="#aa5500" stroke="#000000" stroke-width="1"/>
+<polygon points="19,54 21,54 22,95 20,98 18,95" fill="#aa5500" stroke="#000000" stroke-width="1"/>
+<polyline points="19,57 21,58" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,61 21,62" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,65 21,66" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,69 21,70" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,73 21,74" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,77 21,78" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,81 21,82" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,85 21,86" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,89 21,90" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,93 21,94" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="19,96 21,96" fill="none" stroke="#aa0000" stroke-width="1"/>
+<polygon points="43,54 45,54 46,95 44,98 42,95" fill="#aa5500" stroke="#000000" stroke-width="1"/>
+<polyline points="43,57 45,58" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,61 45,62" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,65 45,66" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,69 45,70" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,73 45,74" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,77 45,78" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,81 45,82" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,85 45,86" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,89 45,90" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,93 45,94" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="43,96 45,96" fill="none" stroke="#aa0000" stroke-width="1"/>
+<polygon points="18,23 26,14 40,15 46,25 46,34 18,34" fill="#aa0000" stroke="#000000" stroke-width="1"/>
+<polygon points="18,34 45,34 48,38 20,39 16,37" fill="#000000" stroke="#000000" stroke-width="1"/>
+<rect x="32" y="22" width="4" height="7" fill="#ffff55" stroke="#000000" stroke-width="1"/>
+<polyline points="25,49 29,48" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="36,48 40,49" fill="none" stroke="#000000" stroke-width="1"/>
+<ellipse cx="27.0" cy="54.0" rx="1.0" ry="2.0" fill="#000000"/>
+<ellipse cx="38.0" cy="54.0" rx="1.0" ry="2.0" fill="#000000"/>
+<polyline points="33,53 32,64 35,64" fill="none" stroke="#aa5500" stroke-width="1"/>
+<polyline points="29,71 33,73 37,71" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="16,99 23,104 19,123" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline points="48,99 42,104 46,123" fill="none" stroke="#000000" stroke-width="1"/>
+</svg>

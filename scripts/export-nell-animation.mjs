@@ -1,2 +1,2 @@
-import { exportRigAnimation } from './export-rig-animation.mjs';
-await exportRigAnimation('nell');
+import { exportVectorCharacters } from './export-vector-characters.mjs';
+exportVectorCharacters('nell');

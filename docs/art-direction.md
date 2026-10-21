@@ -1,3 +1,7 @@
+# Current vector character pilot
+
+Nell and Orrin now use original rasterized vector graphics inspired by early Sierra/AGI: flat 16-color fills, black contours, taller figures and wide logical pixels. Four views, portraits and all active motion poses come from one reproducible shape model, rather than sampled generated artwork. See [the vector source guide](../assets/characters/vector/README.md). This is a two-character pilot; chapter-one scenery and the remaining cast await feedback before conversion. The historical art descriptions below still describe those unchanged assets.
+
 # Art and interface
 
 ## Native presentation

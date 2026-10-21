@@ -129,7 +129,8 @@ export class PixelDisplay {
         const right=Math.round(parseFloat(style.borderRightWidth)+parseFloat(style.paddingRight));
         const bottom=Math.round(parseFloat(style.borderBottomWidth)+parseFloat(style.paddingBottom));
         const w=r.w-left-right,h=r.h-top-bottom;
-        add(ctx=>{ctx.imageSmoothingEnabled=true;ctx.drawImage(element,r.x+left,r.y+top,w,h);ctx.imageSmoothingEnabled=false;});
+        const nearest=style.imageRendering==='pixelated'||style.imageRendering==='crisp-edges';
+        add(ctx=>{ctx.imageSmoothingEnabled=!nearest;ctx.drawImage(element,r.x+left,r.y+top,w,h);ctx.imageSmoothingEnabled=false;});
       }else{
         // A closed disclosure retains measurable descendant boxes in Chromium.
         // Its UA content slot hides them; computed display alone does not.
