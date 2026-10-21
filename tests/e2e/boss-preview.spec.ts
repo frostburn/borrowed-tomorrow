@@ -122,14 +122,24 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
    await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/?dev=boss');
    await page.getByRole('button',{name:'Start finale preset',exact:true}).click();
-   const frames=async(ms:number)=>page.evaluate(ms=>new Promise<{frame:string;motion:string;busy:boolean;x:number;y:number}[]>(resolve=>{
-    const samples:{frame:string;motion:string;busy:boolean;x:number;y:number}[]=[],start=performance.now();
-    const tick=()=>{const s=window.borrowedTomorrow.inspect(),a=s.actors.find(a=>a.hero==='benefactor');if(a)samples.push({frame:a.frame,motion:a.motion,busy:s.busy,x:a.x,y:a.y});if(performance.now()-start>=ms)resolve(samples);else requestAnimationFrame(tick)};tick();
+   const frames=async(ms:number)=>page.evaluate(ms=>new Promise<{frame:string;motion:string;busy:boolean;x:number;y:number;pixels:number}[]>(resolve=>{
+    const samples:{frame:string;motion:string;busy:boolean;x:number;y:number;pixels:number}[]=[],start=performance.now();
+    const info=window.borrowedTomorrowPixels.inspect(),view=window.borrowedTomorrow.inspect().view;
+    const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+    const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,ctx=output.getContext('2d')!;
+    const left=info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+447-view.scrollX)*info.physicalScale;
+    const top=info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+162)*info.physicalScale;
+    const tick=()=>{const s=window.borrowedTomorrow.inspect(),a=s.actors.find(a=>a.hero==='benefactor');if(a){
+      let pixels=2166136261;for(const value of ctx.getImageData(left,top,32*info.physicalScale,48*info.physicalScale).data)pixels=Math.imul(pixels^value,16777619);
+      samples.push({frame:a.frame,motion:a.motion,busy:s.busy,x:a.x,y:a.y,pixels:pixels>>>0});
+    }if(performance.now()-start>=ms)resolve(samples);else requestAnimationFrame(tick)};tick();
    }),ms);
+   await page.mouse.move(0,0);await page.waitForTimeout(150);
    const breathing=await frames(3300);
    expect(new Set(breathing.map(s=>s.frame))).toEqual(new Set(['0','1','2','3','4','5','6','7']));
    expect(breathing.every(s=>s.motion==='breathe'&&!s.busy)).toBe(true);
    expect(new Set(breathing.map(s=>`${s.x},${s.y}`)).size).toBe(1);
+   expect(new Set(breathing.map(s=>s.pixels)).size,'visible chest breathes without pointer input').toBeGreaterThanOrEqual(3);
    for(let i=0;i<2;i++){await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);}
    const striking=frames(2200);await page.getByRole('button',{name:/^F\s+Defend$/}).click();
    const seen=await striking;
@@ -146,6 +156,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    await page.emulateMedia({reducedMotion:'reduce'});
    await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='benefactor')?.motion).toBe('idle');
    expect((await inspect(page)).actors.find(a=>a.hero==='benefactor')?.frame).toBe('0');
+   await page.waitForTimeout(100);
+   expect(new Set((await frames(900)).map(s=>s.pixels)).size,'reduced motion leaves the visible chest still').toBe(1);
    expect(errors).toEqual([]);
   });
  });

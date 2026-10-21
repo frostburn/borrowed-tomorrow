@@ -7,6 +7,7 @@ export const BOSS_ATTACK_DURATION=920;
 export const BOSS_FRAME_COUNT=12;
 const attacks=new WeakMap<Phaser.GameObjects.Image,number>();
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+export const bossMotionEnabled=()=>!reduced.matches;
 
 export function bossMotionFrame(now:number,started?:number){
   const elapsed=started===undefined?BOSS_ATTACK_DURATION:now-started;

@@ -127,7 +127,10 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main,p=toPixel(hex);
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
-  get animating(){return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0;}
+  get animating(){
+    const preview=import.meta.env.DEV&&this.mode==='battle'&&this.battle?this.battlePreview?.animating?.(this.battle):false;
+    return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
+  }
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const padding=outline?1:0,canvas=document.createElement('canvas');canvas.width=text.length*(scale===1?8:6*scale)+padding*2;canvas.height=9*scale+padding*2;
     const ctx=canvas.getContext('2d')!;

@@ -5,6 +5,8 @@ import type { Hex } from '../rules/hex';
 /** Development presentation hooks; campaign encounters need no adapter. */
 export interface BattlePreview {
   encounter:Encounter;
+  /** Passive motion must keep the visible framebuffer refreshing between inputs. */
+  animating?:(battle:Battle)=>boolean;
   prepare?:(battle:Battle)=>void;
   background:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
   actor?:(scene:Phaser.Scene,unit:Unit,hp:number)=>Phaser.GameObjects.Image|undefined;

@@ -11,7 +11,7 @@ import { vectorSurface } from '../game/vector-image';
 import boss from './art/benefactor-motion.svg?url';
 import domain from './art/benefactor-domain.svg?url';
 import portrait from './art/benefactor-portrait.svg?url';
-import { breathe, bossAttack, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
+import { breathe, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 
 export {portrait as BOSS_PORTRAIT};
 const textureKey='benefactor-motion',domainKey='benefactor-domain';
@@ -39,6 +39,7 @@ function placement(unit:Unit){
 
 export const BOSS_PRESENTATION:BattlePreview={
   encounter:BOSS_ENCOUNTER,prepare:prepareBoss,enemyTurn:bossTurn,focus:offset(5,2),
+  animating:b=>bossUnit(b).hp>0&&bossMotionEnabled(),
   portrait:unit=>unit.id===BOSS_ID?portrait:undefined,
   facing:unit=>unit.side==='party'?actorAsset(unit.kind as CompanionId,'back'):undefined,
   hint:b=>`${bossUnit(b).intent?.name??'Judgment'}: red X hexes are struck on the god's turn.`,
