@@ -6,7 +6,7 @@ from copy import deepcopy
 from math import sin, cos, sqrt, atan2, degrees, pi, hypot
 
 root=Path(__file__).resolve().parents[2]
-art=root/'src/dev/art'
+art=root/'public/art/vector/bosses'
 source=(art/'conduit-regulator.svg').read_text()
 portrait=source.replace('width="256" height="240" viewBox="0 0 256 240"','width="128" height="128" viewBox="64 34 128 128"',1)
 assert portrait!=source

@@ -27,3 +27,5 @@
 
 /* Keep the vector pilot palette intact when portrait cards are resized. */
 img[src*="/art/vector/"]{image-rendering:pixelated}
+
+.boss-battle .battle-pan{top:50px;right:4px}

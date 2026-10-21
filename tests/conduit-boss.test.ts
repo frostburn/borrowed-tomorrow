@@ -1,8 +1,12 @@
 import {expect,it} from 'vitest';
-import {active,cast,damage,defend,legalAim,move,movement,shape,targets,unitAt} from '../src/rules/combat';
+import {active,cast,damage,defend,legalAim,move,movement,shape,targets,unitAt,enemyTurn,createBattle,awardVictory} from '../src/rules/combat';
 import {occupiedHexes} from '../src/rules/footprint';
 import {cells,distance,inside,key,offset} from '../src/rules/hex';
-import {createConduitBattle,prepareConduit,regulatorUnit,conduitTurn,REGULATOR_ID} from '../src/dev/conduit-battle';
+import {createConduitBattle} from '../src/dev/conduit-battle';
+import {prepareConduit,regulatorUnit} from '../src/rules/conduit';
+import {REGULATOR_ID} from '../src/content/chapter-three/regulator';
+import {palaceCheckpoint} from './support/progress';
+import {ownedCopies} from '../src/rules/inventory';
 
 it.each(['feeds','pressure'] as const)('%s keeps a three-contact anchored base above a Chapter Three party',route=>{
  const b=createConduitBattle(route),boss=regulatorUnit(b),body=occupiedHexes(boss),heroes=b.units.filter(u=>u.side==='party');
@@ -31,10 +35,22 @@ it('pressure warnings stay fixed, cycle by round, and Taunt redirects the actual
  const warning=structuredClone(boss.intent!.cells);b.units[0].hex=offset(1,6);prepareConduit(b);expect(boss.intent!.cells).toEqual(warning);
  b.round=2;prepareConduit(b);expect(boss.intent!.name).toBe('Scouring jets');expect(boss.intent!.cells.every(h=>h.r>=4)).toBe(true);
  boss.tauntedBy=petra.id;prepareConduit(b);expect(boss.intent!.cells).toEqual([petra.hex]);
- b.queue=[REGULATOR_ID,petra.id];const hp=petra.hp;expect(conduitTurn(b)).toBe('judgment');expect(petra.hp).toBeLessThan(hp);expect(b.log.some(t=>t.includes('Pressure lock on Petra hits Petra'))).toBe(true);
+ b.queue=[REGULATOR_ID,petra.id];const hp=petra.hp;expect(enemyTurn(b)).toBe('judgment');expect(petra.hp).toBeLessThan(hp);expect(b.log.some(t=>t.includes('Pressure lock on Petra hits Petra'))).toBe(true);
  b.round=3;prepareConduit(b);expect(boss.intent!.name).toBe('Crossfeed purge');expect(boss.intent!.cells.every(h=>h.r===4)).toBe(true);
 });
 it('a solo workshop fighter can use pressure walk, while sealed intake requires two earth contacts',()=>{
  expect(()=>createConduitBattle('feeds',undefined,undefined,['nell'])).toThrow('at least two');
  expect(createConduitBattle('pressure',undefined,undefined,['nell']).units.filter(u=>u.side==='party')).toHaveLength(1);
+});
+it.each(['feeds','pressure'] as const)('the campaign %s route uses real health, gear and resources and awards its original reward once',route=>{
+ const state=palaceCheckpoint('conduitSeen');state.party[0].hp=31;state.party[0].focus=2;state.bandages=3;
+ const before=structuredClone(state),b=createBattle(`heart-${route}`,state),boss=regulatorUnit(b);
+ expect(occupiedHexes(boss)).toHaveLength(3);expect(boss.intent!.name).toBe('Pressure lock');expect(b.units.find(u=>u.id==='nell')).toMatchObject({hp:31,focus:2});expect(b.bandages).toBe(3);expect(state).toEqual(before);
+ b.result='victory';awardVictory(b,state);expect(state.flags.conduitGuardWon).toBe(true);expect(state.xp).toBe(before.xp+135);expect(state.coins).toBe(before.coins+80);expect(ownedCopies(state.inventory,'insulated-coat')).toBe(1);expect(state.inventory.characters).toEqual(before.inventory.characters);
+ const rewarded=structuredClone(state);awardVictory(b,state);expect(state).toEqual(rewarded);expect(state.flags.tomasRescued).toBe(true);
+});
+it('a missed discharge consumes the turn and announces the next pattern without a renderer',()=>{
+ const b=createConduitBattle('pressure'),boss=regulatorUnit(b);b.queue=[REGULATOR_ID];
+ const old=structuredClone(boss.intent!.cells);b.units.filter(u=>u.side==='party').forEach((hero,i)=>{hero.hex=offset(8+i,5);});
+ expect(enemyTurn(b)).toBe('judgment');expect(b.round).toBe(2);expect(boss.intent!.name).toBe('Scouring jets');expect(boss.intent!.round).toBe(2);expect(b.log.some(t=>t.includes('Pressure lock strikes empty ground'))).toBe(true);expect(old).not.toEqual(boss.intent!.cells);
 });

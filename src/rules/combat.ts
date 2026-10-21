@@ -13,6 +13,8 @@ import { validParty } from './party';
 import type { Effect } from '../game/synth';
 import type { MusicMode } from '../game/score';
 import { occupiedHexes, bodyDistance } from './footprint';
+import { configureConduit, prepareConduit } from './conduit';
+import { REGULATOR_ID } from '../content/chapter-three/regulator';
 
 export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
@@ -55,7 +57,7 @@ export interface Battle {
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -71,6 +73,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   const ids = party ?? state.activeParty;
   const available = characters ? Object.keys(characters) as CompanionId[] : state.party.map(h => h.id);
   if (!validParty(ids, available)) throw new Error('Choose one to three distinct companions.');
+  if(e.boss==='conduit'&&e.grounding&&ids.length<2)throw new Error('The sealed intake needs at least two companions for its earth plates.');
   const units: Unit[] = ids.map((id, index) => {
     const profile = characters?.[id], legacy = state.party.find(h => h.id === id);
     if (!profile && !legacy) throw new Error('A companion needs a character profile.');
@@ -94,6 +97,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
     evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
+  if(e.boss==='conduit')configureConduit(battle);
   nextRound(battle);
   return battle;
 }
@@ -177,6 +181,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
+  prepareConduit(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -281,6 +286,11 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(u.id===REGULATOR_ID){
+    prepareConduit(b);const aim={...u.hex};
+    if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}
+    return;
+  }
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   if(u.kind==='knight'){
     if(!u.bonusUsed){

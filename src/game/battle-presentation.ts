@@ -3,8 +3,8 @@ import type { AbilityId, Battle, Encounter, Unit, enemyTurn } from '../rules/com
 import type { Hex } from '../rules/hex';
 import type { Effect } from './synth';
 
-/** Development presentation hooks; campaign encounters need no adapter. */
-export interface BattlePreview {
+/** Optional encounter presentation shared by campaign and workshop battles. */
+export interface BattlePresentation {
   encounter:Encounter;
   /** Passive motion must keep the visible framebuffer refreshing between inputs. */
   animating?:(battle:Battle)=>boolean;

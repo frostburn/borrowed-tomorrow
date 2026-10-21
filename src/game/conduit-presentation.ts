@@ -1,18 +1,16 @@
 import type Phaser from 'phaser';
-import type { BattlePreview } from '../game/battle-preview';
+import type { BattlePresentation } from './battle-presentation';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
 import { offset, toPixel } from '../rules/hex';
-import { CONDUIT_ENCOUNTERS, REGULATOR_ID, conduitTurn, prepareConduit, regulatorUnit, type ConduitRoute } from './conduit-battle';
+import type { Encounter } from '../rules/combat';
+import { REGULATOR_ID } from '../content/chapter-three/regulator';
+import { prepareConduit, regulatorUnit } from '../rules/conduit';
 import { nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
 import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
-import motion from './art/conduit-regulator-motion.svg?url';
-import chamber from './art/conduit-chamber.svg?url';
-import portrait from './art/conduit-regulator-portrait.svg?url';
-
-export {portrait as CONDUIT_PORTRAIT};
+export const CONDUIT_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/bosses/conduit-regulator-portrait.svg`;
 const textureKey='conduit-regulator-motion',chamberKey='conduit-chamber';
-export const CONDUIT_ASSETS=[{key:textureKey,url:motion},{key:chamberKey,url:chamber}];
+export const CONDUIT_ASSETS=[{key:textureKey,url:'art/vector/bosses/conduit-regulator-motion.svg'},{key:chamberKey,url:'art/vector/bosses/conduit-chamber.svg'},{key:'conduit-regulator-portrait',url:'art/vector/bosses/conduit-regulator-portrait.svg'}];
 let masks:Uint8Array[]|undefined,currentFrame=0;
 
 function pressureEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},affected:{q:number;r:number}[]){
@@ -30,11 +28,11 @@ function pressureEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,so
   },onComplete:()=>{if(g.active)g.destroy();}});
 }
 
-export function conduitPresentation(route:ConduitRoute):BattlePreview{
+export function conduitPresentation(encounter:Encounter):BattlePresentation{
   return {
-    encounter:CONDUIT_ENCOUNTERS[route],prepare:prepareConduit,enemyTurn:conduitTurn,focus:offset(5,3),
+    encounter,prepare:prepareConduit,focus:offset(5,3),
     animating:b=>regulatorUnit(b).hp>0&&bossMotionEnabled(),
-    portrait:u=>u.id===REGULATOR_ID?portrait:undefined,
+    portrait:u=>u.id===REGULATOR_ID?CONDUIT_PORTRAIT:undefined,
     facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
     hint:b=>`${regulatorUnit(b).intent?.name??'Pressure cycle'}: move clear of the red X hexes before the regulator fires.`,
     background(scene,world){nativeTexture(scene,chamberKey);world.add(scene.add.image(0,0,chamberKey).setOrigin(0));},

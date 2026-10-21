@@ -1,7 +1,8 @@
 import { BOSS_ASSETS, BOSS_PRESENTATION, BOSS_PORTRAIT } from './boss-preview';
 import { createBossBattle } from './boss-battle';
-import { CONDUIT_ASSETS, CONDUIT_PORTRAIT, conduitPresentation } from './conduit-preview';
-import { createConduitBattle, type ConduitRoute } from './conduit-battle';
+import { CONDUIT_ASSETS, CONDUIT_PORTRAIT, conduitPresentation } from '../game/conduit-presentation';
+import { createConduitBattle, CONDUIT_ENCOUNTERS } from './conduit-battle';
+import type { ConduitRoute } from '../content/chapter-three/regulator';
 import { MusicWorkshop } from './music-workshop';
 import { SpriteWorkshop } from './sprite-workshop';
 import { AnimationWorkshop } from './animation-workshop';
@@ -103,7 +104,6 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
-    document.querySelector('.game-shell')!.classList.remove('boss-battle-preview');
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
@@ -216,12 +216,11 @@ class Workshop {
     if(this.boss==='conduit'&&workshop&&this.conduitRoute==='feeds'&&this.settings.party.length<2)return;
     this.sprites.hide();this.animation.hide();this.maps.hide();this.music.hide();
     document.querySelector('.game-shell')!.classList.remove('inventory-open');
-    document.querySelector('.game-shell')!.classList.add('boss-battle-preview');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=true;
     this.scene.state=practiceState();
     const profiles=workshop?characterProfiles(this.settings):undefined,equipment=workshop?equipmentBonuses(this.inventory):undefined,party=workshop?this.settings.party:undefined;
     const battle=this.boss==='conduit'?createConduitBattle(this.conduitRoute,profiles,equipment,party):createBossBattle(profiles,equipment,party,phaseTwo);
-    this.scene.previewBattle(battle,()=>this.show(),this.boss==='conduit'?conduitPresentation(this.conduitRoute):BOSS_PRESENTATION);
+    this.scene.previewBattle(battle,()=>this.show(),this.boss==='conduit'?conduitPresentation(CONDUIT_ENCOUNTERS[this.conduitRoute]):BOSS_PRESENTATION);
   }
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
@@ -243,6 +242,6 @@ class Workshop {
 }
 export function startWorkshop(root: HTMLElement) {
   let workshop: Workshop | undefined;
-  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite), [...BOSS_ASSETS,...CONDUIT_ASSETS]);
+  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite), [...BOSS_ASSETS,...CONDUIT_ASSETS.map(a=>({...a,url:`${import.meta.env.BASE_URL}${a.url}`}))]);
   mountGame(root, scene, { journal: () => workshop?.show(), saves: () => workshop?.battle(), sound: () => workshop?.toggleSound(), help: () => workshop?.help() });
 }

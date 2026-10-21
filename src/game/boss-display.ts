@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
-import { bitmapText } from '../game/pixel-font';
+import { bitmapText } from './pixel-font';
 import { ABILITIES, active, legalAim, targets, unitAt, type AbilityId, type Battle, type Unit } from '../rules/combat';
 import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, toPixel } from '../rules/hex';
-import { vectorSurface } from '../game/vector-image';
+import { vectorSurface } from './vector-image';
 
 let labelId=0;
 export function nativeTexture(scene:Phaser.Scene,key:string){

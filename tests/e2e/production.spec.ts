@@ -6,6 +6,7 @@ import { equipItem, receiveItem } from '../../src/rules/inventory';
 import { importSave, approach } from './navigation';
 import { capture, inspect, dialogue, clickWorld } from './controls';
 import { travel } from './navigation';
+import {sampleRegulator} from './conduit-controls';
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -22,8 +23,8 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
   for (const devOnly of ['Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
-  for(const devOnly of ['dev-benefactor','Epic boss battle preview','benefactor-motion','boss-paint','dev-conduit-feeds','dev-conduit-pressure','conduit-regulator-motion'])expect(built).not.toContain(devOnly);
-  expect(files.some(f=>f.startsWith('benefactor')||f.startsWith('conduit-regulator')||f.startsWith('conduit-chamber'))).toBe(false);
+  for(const devOnly of ['dev-benefactor','Epic boss battle preview','benefactor-motion','dev-conduit-feeds','dev-conduit-pressure'])expect(built).not.toContain(devOnly);
+  expect(files.some(f=>f.startsWith('benefactor'))).toBe(false);
   expect(errors).toEqual([]);
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);
@@ -155,4 +156,54 @@ test('a source checkpoint without sanctuary art keeps the Broken World departure
  test.skip(CHAPTER_FOUR_AVAILABLE,'The complete sanctuary art pack is installed.');
  await page.goto('/');await importSave(page,palaceCheckpoint('chapterThreeComplete'));
  await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Begin Chapter Four',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();expect((await inspect(page)).state.boundary).toBe('chapter-four:broken-world');
+});
+
+for(const [route,viewport,dpr] of [['feeds',{width:1280,height:800},1],['pressure',{width:390,height:844},1.25]] as const){
+ test(`production three-hex conduit guardian resolves ${route} and preserves the escape handoff`,async({browser})=>{
+  const {battle,clickHex}=await import('./controls');const {occupiedHexes}=await import('../../src/rules/footprint');const {offset}=await import('../../src/rules/hex');
+  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
+  try{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+   const before=palaceCheckpoint('conduitSeen');before.flags.pressureRoute=route==='pressure';equipItem(before.inventory,'nell','silver-reflector');equipItem(before.inventory,'orrin','work-coat');equipItem(before.inventory,'kit','courier-sight');
+   await page.goto('/');await importSave(page,before);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('conduit');await approach(page,'heart-regulator');
+   const initial=await inspect(page),boss=initial.battle!.units.find(u=>u.id==='conduit-regulator')!;expect(occupiedHexes(boss)).toHaveLength(3);expect(boss.anchored).toBe(true);expect(boss.intent!.name).toBe('Pressure lock');
+   expect(initial.battle!.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(before.activeParty);expect(initial.actors.filter(a=>before.activeParty.some(id=>id===a.hero)).every(a=>a.texture.endsWith('-back'))).toBe(true);
+   await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
+   if(route==='feeds'){await page.emulateMedia({reducedMotion:'no-preference'});await page.mouse.move(0,0);const frames=await sampleRegulator(page,1800);expect(frames.every(s=>s.motion==='mechanical')).toBe(true);expect(new Set(frames.map(s=>s.pixels)).size).toBeGreaterThan(3);expect(new Set(frames.map(s=>s.chassis)).size).toBe(1);expect(new Set(frames.map(s=>s.drive)).size).toBeGreaterThan(3);await page.emulateMedia({reducedMotion:'reduce'});}
+   else expect(await page.locator('.battle-pan').evaluate(el=>getComputedStyle(el).top)).toBe('50px');
+   await capture(page,`campaign-regulator-${route}`);
+   await page.getByRole('button',{name:/^3\s+Quick shot$/}).click();
+   const view=initial.view,box=(await page.locator('#canvas canvas').boundingBox())!;await page.mouse.click(box.x+(463-view.scrollX)*box.width/view.width,box.y+150*box.height/view.height);await expect(page.locator('#confirmation')).toContainText('Heart regulator');
+   await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(route==='feeds'?7:6,5));
+   await battle(page);const won=(await inspect(page)).state;
+   expect(won.flags).toMatchObject({conduitGuardWon:true,tomasRescued:true});expect(won.xp).toBe(before.xp+135);expect(won.coins).toBe(before.coins+80);expect(won.inventory.bag['insulated-coat']).toBe(1);expect(won.inventory.characters).toEqual(before.inventory.characters);expect(won.activeParty).toEqual(before.activeParty);
+   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.conduitGuardWon).toBe(true);expect((await inspect(page)).state.inventory).toEqual(won.inventory);
+   await approach(page,'heart-release');await dialogue(page);expect((await inspect(page)).state.flags).toMatchObject({emperorMerged:true,extractionStopped:true,tomasRescued:true});expect((await inspect(page)).state.inventory).toEqual(won.inventory);await capture(page,`campaign-regulator-escape-${route}`);expect(errors).toEqual([]);
+  }finally{await context.close();}
+ });
+}
+
+test('production sealed intake rejects a solo formation before combat',async({page})=>{
+ const saved=palaceCheckpoint('conduitSeen');saved.activeParty=['nell'];await page.goto('/');await importSave(page,saved);await approach(page,'heart-regulator');
+ await expect(page.getByRole('status')).toContainText('two active companions');expect((await inspect(page)).mode).toBe('world');
+ await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();await page.getByRole('button',{name:'Set active',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();await approach(page,'heart-regulator');expect((await inspect(page)).battle?.encounter).toBe('heart-feeds');
+});
+
+test('production guardian defeat retries a fresh machine without granting progress',async({page})=>{
+ const {active}=await import('../../src/rules/combat');
+ const saved=palaceCheckpoint('conduitSeen');saved.activeParty=['nell','kit'];for(const hero of saved.party)hero.hp=1;
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,saved);await approach(page,'heart-regulator');
+ for(let i=0;i<16;i++){
+  await expect.poll(async()=>{const s=await inspect(page);return !!s.battle!.result||!s.busy&&active(s.battle! as unknown as import('../../src/rules/combat').Battle)?.side==='party';}).toBe(true);
+  if((await inspect(page)).battle!.result)break;
+  await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+ }
+ await expect(page.getByRole('heading',{name:'The line can wait',exact:true})).toBeVisible();await page.getByRole('button',{name:'Retry battle',exact:true}).click();
+ const retried=await inspect(page),boss=retried.battle!.units.find(u=>u.id==='conduit-regulator')!;expect(retried.battle!.round).toBe(1);expect(boss.hp).toBe(210);expect(boss.sealed).toBe(true);expect(retried.state.flags.conduitGuardWon).toBeUndefined();expect(retried.state.xp).toBe(saved.xp);expect(retried.state.inventory).toEqual(saved.inventory);
+});
+
+test('production missing regulator SVG keeps the capital departure intact for retry',async({page})=>{
+ await page.route('**/art/vector/bosses/conduit-regulator-motion.svg',r=>r.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
+ await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
+ await page.unroute('**/art/vector/bosses/conduit-regulator-motion.svg');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });

@@ -1,20 +1,20 @@
-import type { BattlePreview } from '../game/battle-preview';
+import type { BattlePresentation } from '../game/battle-presentation';
 import { offset } from '../rules/hex';
 import { BOSS_ENCOUNTER, BOSS_ID, bossTurn, bossUnit, prepareBoss } from './boss-battle';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
-import { nativeTexture, bossLabel as label, bossPlacement as placement, pickBossBody } from './boss-display';
+import { nativeTexture, bossLabel as label, bossPlacement as placement, pickBossBody } from '../game/boss-display';
 import boss from './art/benefactor-motion.svg?url';
 import domain from './art/benefactor-domain.svg?url';
 import portrait from './art/benefactor-portrait.svg?url';
-import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
+import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from '../game/boss-motion';
 
 export {portrait as BOSS_PORTRAIT};
 const textureKey='benefactor-motion',domainKey='benefactor-domain';
 export const BOSS_ASSETS=[{key:textureKey,url:boss},{key:domainKey,url:domain}];
 let masks:Uint8Array[]|undefined,currentFrame=0;
 
-export const BOSS_PRESENTATION:BattlePreview={
+export const BOSS_PRESENTATION:BattlePresentation={
   encounter:BOSS_ENCOUNTER,prepare:prepareBoss,enemyTurn:bossTurn,focus:offset(5,2),
   animating:b=>bossUnit(b).hp>0&&bossMotionEnabled(),
   portrait:unit=>unit.id===BOSS_ID?portrait:undefined,
