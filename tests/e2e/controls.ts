@@ -8,7 +8,6 @@ import { BATTLE_MAPS } from '../../src/content/battle-maps';
 import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
 import { visibleSceneArt } from '../../src/content/scene-art';
-import { civilianPresentation } from '../../src/content/civilians';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -77,13 +76,12 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
 export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
-  await expect.poll(()=>page.evaluate(async({spriteUrl,at,fit})=>{
+  await expect.poll(()=>page.evaluate(async({spriteUrl,at})=>{
     const actor=new Image();actor.src=spriteUrl;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
     const reference=document.createElement('canvas');reference.width=80;reference.height=80;
     const ctx=reference.getContext('2d')!;
-    if(fit){ctx.imageSmoothingEnabled=true;ctx.drawImage(actor,40-actor.width*fit.originX*fit.scale,68-actor.height*fit.originY*fit.scale,actor.width*fit.scale,actor.height*fit.scale);}
-    else ctx.drawImage(actor,0,0);
+    ctx.drawImage(actor,0,0);
     const expected=ctx.getImageData(0,0,80,80).data;
     const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
@@ -98,15 +96,12 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
       // Filtered edge pixels blend with scenery; compare only opaque interiors
       // there. Older unscaled PNGs also carry intentional alpha around 250.
       const sx=Math.floor((gx+col)/u)*u-gx,sy=Math.floor((gy+row)/u)*u-gy;
-      if(sx<0||sy<0||sx>=80||sy>=80||expected[(sy*80+sx)*4+3]<(fit?255:250))continue;
+      if(sx<0||sy<0||sx>=80||sy>=80||expected[(sy*80+sx)*4+3]<250)continue;
       const index=((top+row*info.physicalScale)*output.width+left+col*info.physicalScale)*4+c;
       compared++;if(Math.abs(actual[index]-expected[(sy*80+sx)*4+c])>6)missing++;
     }
     return compared>=600?missing/compared:1;
-  // Phaser's transformed draw and Canvas drawImage use slightly different
-  // subpixel rounding at filtered boundaries. Keep geometry assertions exact
-  // and allow up to 1% differing color channels for scaled civilian artwork.
-  },{spriteUrl:`/${artPath(sprite)}`,at,fit:civilianPresentation(sprite)}),{timeout:15000}).toBeLessThanOrEqual(Math.max(maxObscuredFraction,civilianPresentation(sprite)?0.01:0));
+  },{spriteUrl:`/${artPath(sprite)}`,at}),{timeout:15000}).toBeLessThanOrEqual(maxObscuredFraction);
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {

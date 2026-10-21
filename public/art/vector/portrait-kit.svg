@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>kit portrait</title><metadata>{"reference": "babe8ca:public/art/portrait-kit.png", "construction": "male youth: short jaw, open expression", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
+<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
+<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
+<polygon points="4,128 14,100 39,85 53,80 79,82 107,99 122,128" fill="#233d52"/>
+<polygon points="10,113 33,92 43,128 4,128" fill="#3e596b"/>
+<polygon points="91,91 109,105 121,128 91,128" fill="#122634"/>
+<polygon points="51,77 55,92 66,100 79,86 76,76" fill="#d49c70"/>
+<polygon points="37,88 49,82 64,97 79,85 92,94 77,107 66,105 69,128 53,128 52,108 43,106" fill="#c69c5c"/>
+<polygon points="45,89 51,87 64,101 80,91 85,94 67,107 55,101" fill="#e0b579"/>
+<polygon points="34,97 42,96 38,128 30,128" fill="#623d29"/>
+<polygon points="34,108 41,108 41,115 34,115" fill="#c69c5c"/>
+<polygon points="31,37 39,20 65,16 88,29 94,49 89,69 77,85 53,83 37,69" fill="#372a25"/>
+<polygon points="42,34 65,27 81,36 84,50 90,61 84,67 80,78 70,85 56,81 44,69 37,52" fill="#d49c70"/>
+<polygon points="40,38 49,43 49,63 58,76 72,82 69,85 54,79 42,67 37,51" fill="#ad7253"/>
+<polygon points="54,34 67,31 78,38 81,50 73,56 57,52" fill="#efc596"/>
+<polygon points="54,52 57,50 62,50 64,52 61,54 56,54" fill="#a7765e"/>
+<polygon points="56,52 62,51 62,53 56,53" fill="#f1d8ae"/>
+<polygon points="59,51 61,51 61,54 59,54" fill="#122634"/>
+<polygon points="74,51 77,49 82,49 84,51 81,53 76,53" fill="#a7765e"/>
+<polygon points="76,51 82,50 82,52 76,52" fill="#f1d8ae"/>
+<polygon points="79,50 81,50 81,53 79,53" fill="#122634"/>
+<polyline points="54,47 63,46" fill="none" stroke="#623d29" stroke-width="2"/>
+<polyline points="75,46 83,47" fill="none" stroke="#623d29" stroke-width="2"/>
+<polygon points="77,55 76,64 82,66 78,68 74,65" fill="#ad7253"/>
+<polyline points="65,74 77,73 74,76" fill="none" stroke="#80523e" stroke-width="2"/>
+<polygon points="25,42 29,31 22,28 36,25 33,16 46,19 46,8 57,16 64,5 69,14 81,10 81,21 94,22 88,29 95,37 87,41 88,51 81,47 74,36 66,40 61,34 52,43 47,38 41,53 35,49 35,61 29,60 31,48" fill="#623d29"/>
+<polygon points="31,34 43,29 42,22 52,25 53,18 62,24 66,16 69,25 78,22 73,29 64,29 56,35 48,32 40,42 35,43" fill="#9b5d32"/>
+</svg>

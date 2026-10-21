@@ -1,5 +1,5 @@
 import mapSources from '../../assets/maps/manifest.json' with { type: 'json' };
-/** Chapters One–Three ship their native tile pages with the source. */
+/** Chapters One–Three ship their scene assets with the source. */
 export const CHAPTER_TWO_AVAILABLE = true;
 
 export const CHAPTER_THREE_AVAILABLE = true;

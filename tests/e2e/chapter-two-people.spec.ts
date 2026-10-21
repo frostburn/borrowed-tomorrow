@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { CIVILIAN_SPRITES, civilianPresentation } from '../../src/content/civilians';
+import { CIVILIAN_SPRITES } from '../../src/content/civilians';
 import { MAPS, visiblePeople } from '../../src/content/maps';
 import { coastCheckpoint } from '../support/progress';
 import { capture, clickWorld, inspect, nativeActor } from './controls';
@@ -35,9 +35,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         expect(snapshot.people.map(p=>p.id).sort()).toEqual(expected.map(p=>p.id).sort());
         for(const person of snapshot.people){
           expect(CIVILIAN_SPRITES).toContain(person.texture);expect(person.depth).toBe(person.y);
-          const fit=civilianPresentation(person.texture)!;
-          expect(person.scale).toBeCloseTo(fit.scale,8);expect(person.originX).toBeCloseTo(fit.originX,8);expect(person.originY).toBeCloseTo(fit.originY,8);
-          expect([person.sourceWidth,person.sourceHeight]).toEqual([fit.width,fit.height]);expect(person.filter).toBe(0);
+          expect(person.scale).toBeCloseTo(1,8);expect(person.originX).toBeCloseTo(.5,8);expect(person.originY).toBeCloseTo(.85,8);
+          expect([person.sourceWidth,person.sourceHeight]).toEqual([80,80]);expect(person.filter).toBe(1);
         }
         expect(snapshot.state.flags).toEqual(saved.flags);
         await expect(page.locator('.dialogue')).toHaveCount(0);

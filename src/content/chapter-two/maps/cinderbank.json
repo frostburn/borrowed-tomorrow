@@ -3177,6 +3177,8 @@
   "nextobjectid": 45,
   "orientation": "orthogonal",
   "properties": [
+    {"name":"sceneArt","type":"string","value":"cinderbank"},
+    {"name":"artStyle","type":"string","value":"rotoscope"},
     {
       "name": "name",
       "type": "string",

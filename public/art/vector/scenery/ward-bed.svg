@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96"><title>ward-bed</title><metadata>{"reference": "babe8ca:assets/tiles/chapter-two-scenery.json / iron bed and linen", "method": "Original polygonal interpretation of archived railway scenery; registered to Tiled module footprint"}</metadata>
+<polygon points="9,27 14,27 14,91 9,91" fill="#132b3b"/>
+<polygon points="10,28 12,28 12,88 10,88" fill="#6e9096"/>
+<ellipse cx="11" cy="26" rx="4" ry="4" fill="#bd9968"/>
+<polygon points="56,27 61,27 61,91 56,91" fill="#132b3b"/>
+<polygon points="57,28 59,28 59,88 57,88" fill="#6e9096"/>
+<ellipse cx="58" cy="26" rx="4" ry="4" fill="#bd9968"/>
+<polygon points="12,34 48,31 62,68 23,79 10,73" fill="#2a4351"/>
+<polygon points="13,30 47,28 60,65 23,75 11,69" fill="#d5cbb0"/>
+<polygon points="17,29 43,27 48,41 20,45" fill="#e8ddbb"/>
+<polygon points="18,45 49,41 59,65 23,74" fill="#b99a6b"/>
+<polygon points="20,47 36,45 45,69 24,74" fill="#cfb988"/>
+<polyline points="11,71 24,79 62,69" fill="none" stroke="#6e9096" stroke-width="3"/>
+<polyline points="10,35 11,70 24,76" fill="none" stroke="#6e9096" stroke-width="2"/>
+<polyline points="56,32 61,65" fill="none" stroke="#6e9096" stroke-width="2"/>
+</svg>

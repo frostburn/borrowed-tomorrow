@@ -4,8 +4,9 @@ import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-on
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
+import { sceneAssets } from '../src/content/scene-art';
 import { CIVILIAN_SPRITES } from '../src/content/civilians';
-import { gridPoint, layerVisible, mapPoints, tilePages, TILESET, tileWalkable } from '../src/content/tilemaps';
+import { gridPoint, layerVisible, mapPoints, TILESET, tileWalkable } from '../src/content/tilemaps';
 import { cells, toPixel } from '../src/rules/hex';
 import { decodeSave, newGame } from '../src/rules/state';
 import { coastCheckpoint, palaceCheckpoint, checkpoint } from './support/progress';
@@ -163,8 +164,8 @@ it('Chapter Two props block their feet, story layers change, and the painted coa
   }
   expect(layerVisible(cinder.tiles!.layers.find(l=>l.name==='Collector broken')!,after)).toBe(true);
   // A missing ward/crane page cannot prevent Chapter One from loading.
-  const first=new Set(Object.values(CHAPTER_ONE_MAPS).flatMap(m=>tilePages(m.tiles!).map(p=>p.name)));
-  expect(tilePages(coast.tiles!).some(p=>!first.has(p.name))).toBe(true);
+  const first=new Set(Object.values(CHAPTER_ONE_MAPS).flatMap(m=>sceneAssets(m.tiles!).map(p=>p.key)));
+  expect(sceneAssets(coast.tiles!).some(p=>!first.has(p.key))).toBe(true);
 });
 
 it('Chapter Two restores covered current-save cells without changing progress, equipment or resources',()=>{

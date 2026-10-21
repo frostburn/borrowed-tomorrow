@@ -6,7 +6,7 @@ import { ActorAnimator } from './actor-motion';
 import { battleEffect } from './battle-effects';
 import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
-import { CIVILIAN_SPRITES, civilianPresentation } from '../content/civilians';
+import { CIVILIAN_SPRITES } from '../content/civilians';
 import type { StoryHost } from '../content/chapter-one/interactions';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
@@ -20,7 +20,7 @@ import { vectorAsset } from '../content/art-assets';
 import { vectorSurface } from './vector-image';
 import { drawTileMap } from './tilemap';
 import { TILESET, tilePages } from '../content/tilemaps';
-import { SCENE_ASSETS } from '../content/scene-art';
+import { CHAPTER_ONE_SCENE_ASSETS, sceneAssets } from '../content/scene-art';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -83,21 +83,12 @@ export class Adventure extends Phaser.Scene {
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
-    for(const asset of SCENE_ASSETS)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
+    for(const asset of CHAPTER_ONE_SCENE_ASSETS)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
     for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
-    for(const key of [...textures,...MOTION_PAGES.map(page=>page.key),...SCENE_ASSETS.map(asset=>asset.key)]){
-      if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
-        const texture=this.textures.get(key);
-        for(const source of texture.source)if(source.image instanceof HTMLImageElement){
-          const canvas=vectorSurface(source.image);
-          source.source=source.image=canvas;source.isCanvas=true;source.update();
-        }
-        texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-      }
-    }
+    this.prepareVectors([...textures,...MOTION_PAGES.map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));
@@ -198,19 +189,33 @@ export class Adventure extends Phaser.Scene {
     this.state = newGame(); this.state.location=arrival('station','start'); this.ui.clearPanel(); this.showWorld();
     this.autosave();resumeChapter(this.storyHost());
   }
+  private prepareVectors(keys:Iterable<string>){
+    for(const key of keys){
+      if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
+        const texture=this.textures.get(key);
+        for(const source of texture.source)if(source.image instanceof HTMLImageElement){
+          const canvas=vectorSurface(source.image);
+          source.source=source.image=canvas;source.isCanvas=true;source.update();
+        }
+        texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+      }
+    }
+  }
   private async ensureRegion(map: MapId) {
     if(MAPS[map].tiles){
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
-      const pages=[...tilePages(MAPS[map].tiles),...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&id in BATTLE_MAPS?tilePages(BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]):[])];
+      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map(maps.flatMap(m=>sceneAssets(m)).map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
-      if(missing.length){
+      if(missing.length||svg.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
           this.load.once('complete',()=>{
-            if(missing.every(page=>this.textures.exists(page.name)))resolve();
-            else reject(new Error(`${MAPS[map].name} tiles could not load. Your checkpoint is intact; try again.`));
+            if(missing.every(page=>this.textures.exists(page.name))&&svg.every(a=>this.textures.exists(a.key))){this.prepareVectors(svg.map(a=>a.key));resolve();}
+            else reject(new Error(`${MAPS[map].name} scenery could not load. Your checkpoint is intact; try again.`));
           });
           for(const page of missing)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
+          for(const asset of svg)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
           this.load.start();
         }).finally(()=>{this.regionLoad=undefined;});
         await this.regionLoad;
@@ -274,8 +279,7 @@ export class Adventure extends Phaser.Scene {
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id);
     for(const person of visiblePeople(map,this.state)){
-      const presentation=civilianPresentation(person.sprite)!;
-      this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(presentation.originX,presentation.originY).setScale(presentation.scale).setData('world-actor',true).setData('person',person.id));
+      this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>inspector portrait</title><metadata>{"reference": "babe8ca:public/art/portrait-inspector.png", "construction": "mechanical: joined metal face plates and glowing optical lenses", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
+<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
+<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
+<polygon points="0,128 13,99 37,84 51,78 85,81 111,99 128,128" fill="#122634"/>
+<polygon points="12,106 34,90 53,108 42,128 1,128" fill="#3e596b"/>
+<polygon points="44,82 52,79 70,101 58,114 48,100" fill="#c69c5c"/>
+<polygon points="80,85 89,82 98,95 79,115 72,102" fill="#c69c5c"/>
+<polygon points="89,95 101,103 74,128 58,128" fill="#623d29"/>
+<polygon points="76,112 85,112 85,121 76,121" fill="#c69c5c"/>
+<polygon points="79,115 82,115 82,118 79,118" fill="#122634"/>
+<polygon points="37,33 68,25 90,38 93,60 86,79 72,91 52,85 40,71 33,52" fill="#8caaa6"/>
+<polygon points="37,37 49,41 49,64 60,79 72,89 54,83 41,69 34,51" fill="#607879"/>
+<polygon points="55,34 70,31 83,39 86,49 74,55 57,50" fill="#9ab5a9"/>
+<polygon points="48,47 85,44 89,55 84,65 52,66 44,57" fill="#122634"/>
+<polygon points="50,52 59,50 65,56 61,64 52,64 48,58" fill="#c69c5c"/>
+<polygon points="53,54 59,53 61,57 58,60 53,59" fill="#efad58"/>
+<polygon points="55,56 58,56 58,59 55,59" fill="#f1d8ae"/>
+<polygon points="71,50 80,48 86,54 82,62 73,62 69,56" fill="#c69c5c"/>
+<polygon points="74,52 80,51 82,55 79,58 74,57" fill="#efad58"/>
+<polygon points="76,54 79,54 79,57 76,57" fill="#f1d8ae"/>
+<polygon points="66,63 69,72 78,72 74,76 63,74" fill="#526c72"/>
+<polygon points="59,79 79,77 77,81 63,83" fill="#122634"/>
+<polygon points="24,28 34,14 58,7 81,12 98,26 94,39 76,44 43,36" fill="#233d52"/>
+<polygon points="31,22 40,16 58,12 78,17 89,25 74,24 48,22" fill="#3e596b"/>
+<polygon points="25,31 47,27 81,34 98,38 82,44 47,36 25,38" fill="#122634"/>
+<polyline points="29,31 48,30 80,37" fill="none" stroke="#c69c5c" stroke-width="3"/>
+<polygon points="68,14 73,10 78,14 78,21 73,25 68,21" fill="#c69c5c"/>
+<polygon points="71,14 75,14 75,20 71,20" fill="#80523e"/>
+</svg>
