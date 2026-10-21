@@ -62,8 +62,8 @@ it('the complete six-step walk wraps without entering attack poses',()=>{
 });
 
 
-it('Nell moves in idle and plays all three vector attack frames before restoring idle',()=>{
-  expect(walkingHero('nell')).toBe(false);expect(walkingHero('orrin')).toBe(true);
-  expect([0,80,160,480].map(t=>motionFrame('walk',t,'nell'))).toEqual([undefined,undefined,undefined,undefined]);
-  expect([0,139,140,219,220,299,300,380].map(t=>motionFrame('attack',t,'nell'))).toEqual([0,0,1,1,2,2,undefined,undefined]);
+it('Nell walks through six poses and plays three separate attack frames before restoring idle',()=>{
+  expect(walkingHero('nell')).toBe(true);expect(walkingHero('orrin')).toBe(true);
+  expect([0,80,160,480].map(t=>motionFrame('walk',t,'nell'))).toEqual([0,1,2,0]);
+  expect([0,139,140,219,220,299,300,380].map(t=>motionFrame('attack',t,'nell'))).toEqual([6,6,7,7,8,8,undefined,undefined]);
 });

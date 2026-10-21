@@ -95,7 +95,7 @@ export class SpriteWorkshop {
     if(this.playing)return motionFrame(this.motion,(performance.now()-this.started)%(this.motion==='walk'?WALK_CYCLE_MS:600),hero);
     return motionFrame(this.motion,this.motion==='walk'?this.frame%WALK_FRAMES*WALK_FRAME_MS:this.attackTimes[this.frame%this.attackTimes.length],hero);
   }
-  private pause(){const frame=this.currentFrame();this.frame=this.motion==='walk'?(frame??0):frame===undefined?this.attackTimes.length-1:this.entry.id==='nell'?frame:frame%2===0?0:1;this.playing=false;}
+  private pause(){const frame=this.currentFrame();this.frame=this.motion==='walk'?(frame??0):frame===undefined?this.attackTimes.length-1:this.entry.id==='nell'?frame-WALK_FRAMES:frame%2===0?0:1;this.playing=false;}
   private playLoop(){
     if(!this.host||!this.playing)return;
     this.raf=requestAnimationFrame(()=>{
@@ -137,7 +137,7 @@ export class SpriteWorkshop {
     for(const ctx of [a,b,c])this.backdrop(ctx);
     const entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
     const frame=this.currentFrame();this.displayedFrame=frame;this.paintedFrame=frame??-1;
-    this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':entry.id==='nell'?['Wind-up','Contact','Follow-through'][frame]:frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:frame%2===0?'Wind-up':'Contact';
+    this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:entry.id==='nell'?['Wind-up','Contact','Follow-through'][frame-WALK_FRAMES]:frame%2===0?'Wind-up':'Contact';
     this.host.dataset.frame=String(frame??'idle');
     const asset=frame!==undefined&&animatedHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
     this.host.querySelector('.sprite-file')!.innerHTML=`${artPath(asset)}${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+artPath(entry.portrait):''}`;

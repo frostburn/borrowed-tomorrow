@@ -142,11 +142,12 @@ def legs(d, direction, hero, walk=None):
             phase=(walk/6+i*.5)%1
             support=phase<.5
             progress=phase*2 if support else (phase-.5)*2
-            # One 28px cycle: the planted foot counters actor translation.
-            travel=14-28*progress if support else -14+28*progress
+            # Nell has a 24px stride: support covers half the travel,
+            # with x coordinates halved for the actor SVG's 2:1 viewBox.
+            travel=(6-12*progress if support else -6+12*progress) if hero=='nell' else (14-28*progress if support else -14+28*progress)
             lift=0 if support else math.sin(progress*math.pi)*4
             if side:x+=travel/2*(-1 if direction=='left' else 1)
-            else:y+=travel*(-1 if direction=='back' else 1)/2
+            else:y+=travel*(-1 if direction=='back' else 1)/(1 if hero=='nell' else 2)
             y-=lift
         knee_x=(hip+x)/2
         knee_y=(43+y-8)/2
@@ -156,7 +157,7 @@ def legs(d, direction, hero, walk=None):
     if not side:d.line([(20,43),(20,49)],'blue' if direction=='front' else 'ink')
 
 
-def nell(direction, attack=None):
+def nell(direction, walk=None, attack=None):
     d = Drawing()
     side = direction in ('left','right')
     hands = {'front':(11,39),'left':(17,39),'right':(26,39),'back':(28,39)}
@@ -166,12 +167,17 @@ def nell(direction, attack=None):
                  dict(front=(19,19),left=(7,26),right=(33,26),back=(25,9)),
                  dict(front=(16,25),left=(10,32),right=(30,32),back=(28,20))][attack]
         elbow = dict(front=(13,25),left=(15,26),right=(27,25),back=(28,24))
+    if walk is not None:
+        swing=math.sin(walk*math.pi/3)
+        hx,hy=hands[direction];ex,ey=elbow[direction]
+        hands[direction]=(hx+(swing if side else 0),hy+swing)
+        elbow[direction]=(ex+(swing*.5 if side else 0),ey+swing*.5)
     hand=hands[direction]
     far_weapon = direction=='left' or (direction=='back' and attack is not None)
     if far_weapon:
         sleeve(d,(18,24),elbow[direction],hand,'red')
         lantern(d,hand)
-    legs(d,direction,'nell')
+    legs(d,direction,'nell',walk)
     # A flared work jacket over a continuous navy bib and trousers.
     if not side:
         d.poly([(16,22),(24,22),(26,30),(26,40),(23,43),(20,40),(17,43),(14,40),(15,29)], 'red')
@@ -183,14 +189,14 @@ def nell(direction, attack=None):
         else:
             d.line([(16,37),(24,37)],'brown')
             braid(d,16,19);braid(d,24,19)
-        sleeve(d,(25,24),(27,31),(28,40),'red') if direction=='front' else sleeve(d,(15,24),(13,32),(12,40),'red')
+        sleeve(d,(25,24),(27,31),(28,40-(swing if walk is not None else 0)),'red') if direction=='front' else sleeve(d,(15,24),(13,32),(12,40-(swing if walk is not None else 0)),'red')
     else:
         front = 17 if direction=='left' else 23
         d.poly([(18,22),(22,22),(24,30),(24,40),(22,43),(17,41),(16,36),(17,28)],'red')
         d.line([(front,26),(front,38)],'navy')
         braid(d,23 if direction=='left' else 17,19)
         # Near left arm in the left profile is empty.
-        if direction=='left':sleeve(d,(21,24),(23,32),(22,41),'red')
+        if direction=='left':sleeve(d,(21,24),(23,32),(22-(swing if walk is not None else 0),41),'red')
     # A small head and visible neck keep adventure-game rather than chibi proportions.
     d.rect((19,19,21,24),'skin')
     if direction=='front':braid(d,16,18,12);braid(d,24,18,12)
@@ -292,7 +298,7 @@ def export(root, heroes=('nell','orrin')):
             drawing=model(direction)
             suffix='' if direction=='front' else '-'+direction
             (art/f'{hero}{suffix}.svg').write_text(drawing.svg())
-            frames=([nell(direction,attack=i) for i in range(3)] if hero=='nell' else
+            frames=([nell(direction,walk=i) for i in range(6)]+[nell(direction,attack=i) for i in range(3)] if hero=='nell' else
                     [orrin(direction,walk=i) for i in range(6)]+[orrin(direction,attack=i) for i in range(2)])
             height=((len(frames)+1)//2)*80
             page='<svg xmlns="http://www.w3.org/2000/svg" width="160" height="'+str(height)+'" viewBox="0 0 160 '+str(height)+'">\n'
@@ -302,9 +308,9 @@ def export(root, heroes=('nell','orrin')):
             (art/f'animation/{hero}-{direction}.svg').write_text(page+'</svg>\n')
             rendered=[frame.render() for frame in frames]
             stance=drawing.render().crop((0,56,80,80)).tobytes()
-            for frame in rendered if hero=='nell' else rendered[6:]:
+            for frame in rendered[6:]:
                 assert frame.crop((0,56,80,80)).tobytes()==stance, 'Attack changed the planted stance'
-            if hero=='orrin':assert len({frame.tobytes() for frame in rendered[:6]})==6
+            assert len({frame.tobytes() for frame in rendered[:6]})==6
             for image in [drawing.render(),*rendered]:
                 assert all(p[3] in (0,255) and (p[3]==0 or p[:3] in allowed) for _,p in image.getcolors(image.width*image.height))
     print('Exported vector actors:', ', '.join(heroes))

@@ -23,12 +23,12 @@ The SVG viewBox expands 40 x 80 logical actor coordinates into 80 x 80 frames; t
 
 ## Identity and motion
 
-World actors use sole anchor `(40,68)`. Nell retains her red work jacket, two braids and anatomical right-hand lantern. She translates her four directional idle poses during movement. Each 160 x 160 attack page has wind-up, contact and follow-through in frames 0–2 at 0/140/220ms, restoring idle at 300ms. Orrin keeps his cap, goggles, beard, cream sleeves and right-hand steam lance. Each 160 x 320 page holds six walk poses and two attack poses. His planted foot counters the 28px distance-based stride. Left/right constructions are independent, with the far right arm/tool occluded in left profile.
+World actors use sole anchor `(40,68)`. Nell retains her red work jacket, two braids and anatomical right-hand lantern. Her six-pose directional walk uses a 24px distance-based stride. Each 160 x 400 motion page has walk frames 0–5, then wind-up, contact and follow-through in frames 6–8 at 0/140/220ms, restoring idle at 300ms. Orrin keeps his cap, goggles, beard, cream sleeves and right-hand steam lance. Each 160 x 320 page holds six walk poses and two attack poses. His planted foot counters the 28px distance-based stride. Left/right constructions are independent, with the far right arm/tool occluded in left profile.
 
 The supporting cast keeps its established costume identities. Elspeth remains seated with her complete wheelchair, wheels, casters and footplate. Alban remains human and distinct from the mechanical Inspector. Shared people/enemy IDs use the same vector appearance when they recur in later chapters; Kit, Celia, Petra and later-only supporting actors retain their existing art.
 
 ## Review
 
-Open `?dev=sprites` for native and enlarged comparisons, independent facing views and motion playback. Nell's Walk remains disabled. Check NPCs and Enemies as well as Party. `?dev=maps&map=station` reviews the matching environments; see [the scenery guide](../../vector/README.md). Workshop review never changes campaign saves.
+Open `?dev=sprites` for native and enlarged comparisons, independent facing views and motion playback. Nell's Walk previews all six poses; attacks retain their three separate frames. Check NPCs and Enemies as well as Party. `?dev=maps&map=station` reviews the matching environments; see [the scenery guide](../../vector/README.md). Workshop review never changes campaign saves.
 
 The old lead rigs, PNG runtime replacements and duplicate inspection-only SVGs are retired. The Animation tab retains its mannequin and Kit/Petra tools. No gameplay, save format, equipment, dialogue, combat timing or progression changes accompany this art pass.
