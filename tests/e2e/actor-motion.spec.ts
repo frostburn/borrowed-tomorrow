@@ -11,23 +11,26 @@ const record=(page:Page,ms=750)=>page.evaluate(ms=>new Promise<{busy:boolean;act
   const tick=()=>{const s=window.borrowedTomorrow.inspect();samples.push({busy:s.busy,actors:s.actors});if(performance.now()-start>=ms)resolve(samples);else requestAnimationFrame(tick);};tick();
 }),ms);
 
-test('Nell, Orrin and Kit walk in four directions, stop in idle and survive a skipped moving cutscene',async({page})=>{
+test('Nell slides in curated idle while Orrin and Kit walk in four directions; skipped moving cutscenes stay safe',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
   const state=coastCheckpoint('kitJoined');state.location={map:'coast',x:32,y:27};await importSave(page,state);
   for(const [x,y,direction] of [[37,27,'right'],[37,24,'back'],[32,24,'left'],[32,27,'front']] as const){
     const samples=record(page);await clickWorld(page,x,y);const observed=await samples;
-    for(const hero of ['nell','orrin','kit']){
+    for(const hero of ['orrin','kit']){
       const frames=observed.flatMap(s=>s.actors.filter(a=>a.hero===hero&&a.texture===`${hero}-motion-${direction}`).map(a=>a.frame));
       expect(new Set(frames).size,`${hero} ${direction} gait`).toBeGreaterThanOrEqual(3);
       expect(frames.every(frame=>Number(frame)>=0&&Number(frame)<WALK_FRAMES)).toBe(true);
     }
+    const nell=observed.flatMap(s=>s.actors.filter(a=>a.hero==='nell'));
+    expect(nell.some(a=>a.texture===(direction==='front'?'nell':`nell-${direction}`))).toBe(true);
+    expect(nell.every(a=>a.motion==='idle'&&!a.texture.startsWith('nell-motion-'))).toBe(true);
     await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.actors.every(a=>a.motion==='idle');}).toBe(true);
     expect((await inspect(page)).state.location).toEqual({map:'coast',x,y});
   }
   const pass=checkpoint('passSeen');pass.location={map:'tunnel',x:30,y:14};await importSave(page,pass);await approach(page,'captain');
   for(let line=0;line<3;line++)await page.locator('.dialogue-actions button').click();
   const moving=record(page,550);await page.locator('.dialogue-actions button').click();
-  await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.hero==='nell'&&a.motion==='walk')).toBe(true);
+  await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.hero==='nell'&&a.motion==='idle')).toBe(true);
   expect((await inspect(page)).actors.filter(a=>a.hero==='nell')).toHaveLength(1);
   await capture(page,'nell-cutscene-walk');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await moving;
   await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
@@ -37,8 +40,13 @@ test('Nell, Orrin and Kit walk in four directions, stop in idle and survive a sk
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`sprite workshop plays, pauses and steps native motion frames on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/?dev=sprites');
+    await expect(page).toHaveURL(/dev=sprites/);await expect(page).toHaveTitle(/Borrowed Tomorrow/);
+    await expect(page.locator('vite-error-overlay')).toHaveCount(0);
+    page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
     const review=page.getByRole('region',{name:'Sprite review',exact:true}),controls=review.getByRole('group',{name:'Animation preview',exact:true});await expect(review).toBeVisible();
     const stored=await page.evaluate(()=>JSON.stringify(localStorage));
+    await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeDisabled();
+    await review.getByRole('button',{name:'Inspect Orrin',exact:true}).click();
     await controls.getByRole('button',{name:'Walk',exact:true}).click();
     const frames=await review.evaluate((element,count)=>new Promise<string[]>(resolve=>{const seen=new Set<string>(),start=performance.now();const tick=()=>{seen.add((element.parentElement as HTMLElement).dataset.frame??'');if(seen.size>=count||performance.now()-start>1500)resolve([...seen]);else requestAnimationFrame(tick);};tick();}),WALK_FRAMES);
     expect(new Set(frames)).toEqual(new Set(['0','1','2','3','4','5']));
@@ -47,12 +55,13 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     for(const hero of ['nell','orrin','kit','petra']){
       await review.getByRole('button',{name:`Inspect ${hero[0].toUpperCase()+hero.slice(1)}`,exact:true}).click();
       await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
-      for(const motion of ['Walk','Attack',...(hero==='petra'?['Bash']:[])]){
+      if(hero==='nell')await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeDisabled();
+      for(const motion of [...(hero==='nell'?[]:['Walk']),'Attack',...(hero==='petra'?['Bash']:[])]){
       await controls.getByRole('button',{name:motion,exact:true}).click();await controls.getByRole('button',{name:'Pause',exact:true}).click();
       const stopped=await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame);
       await page.waitForTimeout(120);expect(await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame)).toBe(stopped);
       const seen=new Set<string>();
-      for(let i=0;i<(motion==='Walk'?WALK_FRAMES:3);i++){
+      for(let i=0;i<(motion==='Walk'?WALK_FRAMES:hero==='nell'?4:3);i++){
         await controls.getByRole('button',{name:'Next frame',exact:true}).click();
         seen.add((await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame))!);
         const detail=review.locator('.sprite-detail');await detail.scrollIntoViewIfNeeded();
@@ -66,7 +75,8 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
           return actual.reduce((n,v,i)=>n+Number(v!==expected[i]),0);
         },hero)).toBe(0);
       }
-      expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set(motion==='Bash'?['8','9','idle']:[String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
+      expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set(hero==='nell'?['0','1','2','idle']:motion==='Bash'?['8','9','idle']:[String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
+      if(hero==='nell')await capture(page,`nell-curated-native-${device}`);
       if(motion==='Walk'){
         await controls.getByRole('button',{name:'Play',exact:true}).click();await page.waitForTimeout(WALK_CYCLE_MS+100);
         await controls.getByRole('button',{name:'Pause',exact:true}).click();
@@ -90,9 +100,9 @@ async function aimAfterMoving(page:Page,ability:AbilityId){
   if(choice!.path.length){
     await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,choice!.position);
     const sampling=record(page,choice!.path.length*95+180);await page.getByRole('button',{name:/^Confirm move/}).click();const samples=await sampling;
-    const actors=samples.flatMap(s=>s.actors.filter(a=>a.hero===u.kind&&a.motion==='walk'));
+    const actors=samples.flatMap(s=>s.actors.filter(a=>a.hero===u.kind&&a.motion===(u.kind==='nell'?'idle':'walk')));
     expect(actors.length).toBeGreaterThan(0);
-    if(choice!.path.length>=2)expect(new Set(actors.map(a=>a.frame))).toEqual(new Set(['0','1','2','3','4','5']));
+    if(u.kind!=='nell'&&choice!.path.length>=2)expect(new Set(actors.map(a=>a.frame))).toEqual(new Set(['0','1','2','3','4','5']));
     for(const hex of choice!.path.slice(0,-1)){const p=toPixel(hex);expect(actors.some(a=>Math.hypot(a.x-p.x,a.y-p.y-9)<20)).toBe(true);}
     await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
   }
@@ -112,7 +122,8 @@ test('walked battle paths and both attack poses finish before the next action; d
     const choice=await aimAfterMoving(page,ability);const u=active(await combatSnapshot(page))!;
     await page.locator('.actions').getByRole('button',{name:new RegExp(`^\\d\\s+${ABILITIES[ability].name}$`)}).click();await clickHex(page,choice.aim);
     const samples=record(page,550);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();const frames=(await samples).flatMap(s=>s.actors.filter(a=>a.hero===hero&&a.motion==='attack').map(a=>a.frame));
-    expect(frames).toContain(String(ATTACK_WINDUP_FRAME));expect(frames).toContain(String(ATTACK_CONTACT_FRAME));await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
+    if(hero==='nell')for(const frame of ['0','1','2'])expect(frames).toContain(frame);
+    else{expect(frames).toContain(String(ATTACK_WINDUP_FRAME));expect(frames).toContain(String(ATTACK_CONTACT_FRAME));}await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
     expect((await inspect(page)).battle!.log.some(line=>line.startsWith(`${u.name}: ${ABILITIES[ability].name}`))).toBe(true);
     await capture(page,`${hero}-attack-finished`);
   }

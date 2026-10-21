@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { CHARACTERS } from '../content/characters';
 import type { Cinematic, Shot, StagePoint } from '../content/cinematics';
 import type { Audio } from './audio';
-import type { ActorAnimator } from './actor-motion';
+import { presentActor, type ActorAnimator } from './actor-motion';
 import { animatedHero } from '../content/actor-motion';
 import { facingAsset } from '../content/actors';
 
@@ -25,7 +25,7 @@ export class Cutscene {
     }
     this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
-      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
+      const p=pixel(actor.at),image=presentActor(scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite),CHARACTERS[actor.id].sprite).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);

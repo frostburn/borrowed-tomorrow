@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
-import { ActorAnimator } from './actor-motion';
+import { ActorAnimator, presentActor } from './actor-motion';
 import { battleEffect } from './battle-effects';
 import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
@@ -263,7 +263,7 @@ export class Adventure extends Phaser.Scene {
     }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
-      if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(this.add.image(x,y + 7,object.sprite).setOrigin(.5,.85).setData('world-actor',true));
+      if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.layer!.add(presentActor(this.add.image(x,y + 7,object.sprite),object.sprite).setData('world-actor',true));
       if (!object.doneFlag || !this.state.flags[object.doneFlag]) {
         const marker = this.label(x,y-(object.sprite?39:9),object.sign?'◇':'!','#f4c77a',3,true);
         this.layer!.add(marker.setDepth(20000));
@@ -274,10 +274,10 @@ export class Adventure extends Phaser.Scene {
     if(this.face.replace(/-(left|right|back)$/,'')!==leader)this.face=leader;
     for (const [index, id] of this.state.activeParty.filter(id => id !== leader).entries()) {
       const x = walkable(map,p.x-index-1,p.y,this.state) ? p.x-index-1 : p.x;
-      const follower = this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id).setOrigin(.5,.85).setData('hero',id).setData('world-actor',true);
+      const follower = presentActor(this.add.image((x+.5)*TILE,(p.y+.5)*TILE+7,id),id).setData('hero',id).setData('world-actor',true);
       this.followers.push(follower); this.layer!.add(follower);
     }
-    this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
+    this.player = presentActor(this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face),this.face).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
     this.sortWorld();
     const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1);
     this.ui.location(map.name);
@@ -500,7 +500,7 @@ export class Adventure extends Phaser.Scene {
     const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
     for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
       const custom=import.meta.env.DEV?this.battlePreview?.actor?.(this,u,hp):undefined;
-      const img=(custom??this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
+      const img=(custom??presentActor(this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind),u.appearance??u.kind)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
       if(!custom&&u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
       if(hp>0&&!custom){const badges=this.add.container(p.x,p.y+9);this.layer.add(badges);img.setData('badges',badges);

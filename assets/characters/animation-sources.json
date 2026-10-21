@@ -40,27 +40,51 @@
     ]
   },
   "nell": {
-    "walkRig": {
-      "module": "src/art/nell-actor.ts",
-      "exporter": "scripts/export-nell-animation.mjs",
-      "skinSource": "public/art/nell{,-left,-right,-back}.png",
-      "preparedSkin": "assets/characters/nell-skin/{front,left,right,back}.png",
-      "proportions": "src/art/rig-proportions.ts#NELL_PROPORTIONS",
-      "stridePixels": 24,
-      "legBonePixels": 9,
-      "hipHeightPixels": 18.8,
-      "footScale": 0.65
-    },
-    "attackRig": {
-      "module": "src/art/nell-actor.ts",
-      "pose": "nellAttackPose",
-      "phases": [
+    "source": "assets/characters/nell-curated.png",
+    "sourceSha256": "c8d2a91f638f774bc678f6e79526c9115bf55e70a12ac513dd2d2160ffda9a4d",
+    "exporter": "scripts/export-nell-animation.mjs",
+    "sourceRows": [
+      "front",
+      "left",
+      "right",
+      "back"
+    ],
+    "sourceColumns": [
+      "idle",
+      "windup",
+      "contact",
+      "follow-through"
+    ],
+    "sourceCellSize": 96,
+    "crop": [
+      8,
+      8,
+      88,
+      88
+    ],
+    "nativePage": {
+      "columns": 2,
+      "rows": 2,
+      "frames": [
         "windup",
-        "contact"
+        "contact",
+        "follow-through"
       ],
-      "stance": "two planted flat feet",
-      "weaponHand": "right"
-    }
+      "frameSize": 80
+    },
+    "groundAnchor": [
+      40,
+      78
+    ],
+    "standingHeight": 74,
+    "campaignStandingHeight": 63,
+    "walk": false,
+    "frameStartMs": [
+      0,
+      140,
+      220
+    ],
+    "idleAtMs": 300
   },
   "orrin": {
     "walkRig": {
