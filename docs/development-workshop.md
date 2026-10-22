@@ -105,6 +105,8 @@ Open **Music** in the workshop or go directly to `/?dev=music`. This route and a
 - Inspect every note's spelling, step class (0–30), frequency and attack beat. Triplet positions use readable fractions such as `2+1/3`. Click a pitch to stop the cue and hear that note alone through the same synth rack.
 - Click a circle-of-fifths member to hear its root and fifth. Compare C#4 and Db4 directly: these are distinct notes in 31-EDO. Each adjacent circle member advances 18 steps; the 31-member circle includes both sharp and flat spellings.
 
+Nell's Above the Railway and Celia's The Garden Walk expose **Swell/vibrato** and **Rubato** switches for comparison; both start on. They control the actual per-note performance and shared ensemble clock, including cross-bar holds. Toggling while playing restarts the selected bar. Other cues keep their normal pulse. These choices are session-only and do not alter the campaign performance.
+
 Audio starts only after a playback or audition click. The header Sound control also starts/stops review audio. Leaving Music or entering a practice battle stops the review. The campaign uses the same 31-EDO score data, mixer and instruments.
 
 

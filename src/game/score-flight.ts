@@ -1,3 +1,4 @@
+import { singing } from './expression';
 import type { Note } from './score';
 import { octave,type Pitch } from './tuning';
 type Line=[number,Pitch,number][];
@@ -50,6 +51,8 @@ const memory:Tune=[
  [[1,'E5',1.5]],[[.5,'D5',1],[2.5,'B4',.75]],[[1,'C5',2]],[],
  [[.5,'A4',2]],[[1,'G4',1.5]],[[.5,'B4',2]],[],
 ];
+// Phrase dynamics follow the melodic sentences, including their quiet returns.
+const dynamics=[0.78, 0.73, 0.8, 0.74, 0.85, 0.78, 0.8, 0.88, 0.75, 0.7, 0.78, 0.62, 0.76, 0.7, 0.9, 0.82, 0.67, 0.64, 0.74, 0.82, 1.06, 1.12, 0.9, 0.75, 0.84, 0.77, 0.84, 0.8, 1.08, 0.94, 0.78, 0.65];
 const chords={
  am:{bass:'A2',notes:['G3','B3','C4','E4']},da:{bass:'A2',notes:['F#3','B3','D4','E4']},
  fc:{bass:'C2',notes:['F3','A3','E4','G4']},gd:{bass:'D2',notes:['G3','A3','C4','D4']},
@@ -64,8 +67,11 @@ const changes:Chord[]=[
 ];
 export function flightBar(mode:'airfield'|'airship'|'observation',bar:number):Note[]{
  const i=((bar%32)+32)%32,cabin=mode==='observation',ground=mode==='airfield',{bass,notes:chord}=chords[changes[i]],out:Note[]=[];
- const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
- for(const [beat,pitch,duration]of (cabin?memory:ground?mooring:flight)[i])add(cabin?'keys':'reed',pitch,beat,duration,cabin?.15:.19,-.16);
+ const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};out.push(note);return note;};
+ for(const [n,[beat,pitch,duration]]of (cabin?memory:ground?mooring:flight)[i].entries()){
+  const voice=add(cabin?'keys':'reed',pitch,beat,duration,cabin?.15:.19,-.16);
+  if(mode==='airship')voice.expression=singing('nell',dynamics[i]*(1-n*.07),duration,[11,15,23,31].includes(i));
+ }
  if(cabin){
   if(i%2===0){const hold=changes[i]===changes[i+1]?7.5:3.5;add('round-bass',bass,0,hold,.075);for(const [n,p]of chord.entries())add('strings',p,0,hold,.012,n%2?.4:-.4);}
   if([3,11,19,27].includes(i))add('bell','E4',2.5,.9,.035,.4);

@@ -1,6 +1,7 @@
 import type { MapId } from '../rules/state';
-import { ARRANGEMENTS, scoreBar, type Instrument, type MusicMode } from './score';
+import { ARRANGEMENTS, type Instrument, type MusicMode } from './score';
 import { Synth, type Effect } from './synth';
+import { performanceBar,scoreTime,scoreBeat,type PerformanceOptions } from './score-performance';
 
 /** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
 export class Audio {
@@ -17,8 +18,9 @@ export class Audio {
   private pending:MusicMode='station';
   private generation=0;
   private instruments?:readonly Instrument[];
+  private performance:PerformanceOptions={};
   private volume=.75;
-  private history:{mode:MusicMode;bar:number;start:number;beat:number;beats:number}[]=[];
+  private history:{mode:MusicMode;bar:number;start:number;beats:number;rubato?:boolean}[]=[];
   private steps=0;
   private lastStep=-1;
   enabled=false;
@@ -39,11 +41,11 @@ export class Audio {
     if(this.enabled)this.pause();else await this.play(this.pending);
     return this.enabled;
   }
-  async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[]){
+  async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[],performance:PerformanceOptions={}){
     if(!Number.isInteger(bar)||bar<0)throw new Error('Invalid score bar.');
     const generation=++this.generation;
     if(!this.context)this.initialize();const c=this.context!;await c.resume();if(generation!==this.generation)return;
-    this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;
+    this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;this.performance={...performance};
     this.history=[];this.next=c.currentTime+.045;this.enabled=true;
     this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
@@ -59,7 +61,8 @@ export class Audio {
   }
   position(){
     const now=this.context?.currentTime??0,entry=[...this.history].reverse().find(e=>e.start<=now)??this.history[0];
-    return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(entry.beats-.001,(now-entry.start)/entry.beat)):0,playing:this.enabled};
+    const beat=entry?scoreBeat(entry.mode,scoreTime(entry.mode,entry.bar*entry.beats,entry.rubato)+Math.max(0,now-entry.start),entry.rubato)-entry.bar*entry.beats:0;
+    return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(entry.beats-.001,beat)):0,playing:this.enabled};
   }
   cinematicMix(level:number){
     this.cinematicLevel=Math.max(0,Math.min(1,level));
@@ -76,10 +79,10 @@ export class Audio {
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
       if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
-      const {bpm,beats}=ARRANGEMENTS[this.mode],beat=60/bpm;
-      this.history.push({mode:this.mode,bar:this.bar,start:this.next,beat,beats});if(this.history.length>3)this.history.shift();
-      for(const n of scoreBar(this.mode,this.bar))if(!this.instruments||this.instruments.includes(n.instrument))this.music!.note(n.instrument,n.pitch,this.next+n.beat*beat,n.duration*beat,n.velocity,n.pan);
-      this.next+=beat*beats;this.bar++;
+      const {beats}=ARRANGEMENTS[this.mode],performed=performanceBar(this.mode,this.bar,this.performance);
+      this.history.push({mode:this.mode,bar:this.bar,start:this.next,beats,rubato:this.performance.rubato});if(this.history.length>3)this.history.shift();
+      for(const n of performed.notes)if(!this.instruments||this.instruments.includes(n.instrument))this.music!.note(n.instrument,n.pitch,this.next+n.time,n.seconds,n.velocity,n.pan,n.expression);
+      this.next+=performed.duration;this.bar++;
     }
   }
   effect(kind:Effect,surface:MapId|'sluice'='station'){

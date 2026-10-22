@@ -17,15 +17,17 @@ for(const [family,modes]of [
  test.setTimeout(120000);await page.goto('/');
  const results=await page.evaluate(async(modes)=>{
   // @ts-expect-error Vite serves the actual campaign score.
-  const {scoreBar,scoreLength,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
+  const {scoreLength,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
   // @ts-expect-error Vite serves the actual campaign rack.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  // @ts-expect-error Review uses the same performed clock and note expression as live playback.
+  const {scoreTime,performanceBar}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
   const out=[],rate=22050;
   for(const mode of modes){
-   const a=ARRANGEMENTS[mode],beat=60/a.bpm,barSeconds=a.beats*beat,count=scoreLength(mode)+2,seconds=count*barSeconds,c=new OfflineAudioContext(2,Math.ceil((seconds+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-   for(let bar=-1;bar<count-1;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar+1)*barSeconds+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+   const a=ARRANGEMENTS[mode],count=scoreLength(mode)+2,base=scoreTime(mode,-a.beats),seconds=scoreTime(mode,(count-1)*a.beats)-base,c=new OfflineAudioContext(2,Math.ceil((seconds+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+   for(let bar=-1;bar<count-1;bar++)for(const n of performanceBar(mode,bar).notes)synth.note(n.instrument,n.pitch,.03+scoreTime(mode,bar*a.beats)-base+n.time,n.seconds,n.velocity,n.pan,n.expression);
    const rendered=await c.startRendering();let peak=0,sum=0,jump=0,samples=0;
-   for(let channel=0;channel<2;channel++){const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+barSeconds)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));samples++;}}
+   for(let channel=0;channel<2;channel++){const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03-base)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));samples++;}}
    out.push({mode,peak,rms:Math.sqrt(sum/samples),jump});
   }
   return out;

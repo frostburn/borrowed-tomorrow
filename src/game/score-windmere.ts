@@ -1,3 +1,4 @@
+import { singing } from './expression';
 import { octave,type Pitch } from './tuning';
 import type { Note } from './score';
 export type WindmereMode='windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine';
@@ -68,6 +69,8 @@ const reflection:Tune=[
  [[0,'C5',1.5],[2,'Db5',1]],[[0,'Eb5',2.5]],
  ...rescue.slice(24,32),
 ];
+// Phrase dynamics follow the melodic sentences, including their quiet returns.
+const dynamics=[0.76, 0.74, 0.81, 0.73, 0.84, 0.81, 0.72, 0.65, 0.62, 0.7, 0.9, 0.82, 0.76, 0.72, 0.64, 0.7, 0.58, 0.62, 0.66, 0.73, 0.65, 0.59, 0.63, 0.68, 0.9, 0.86, 0.91, 0.84, 0.77, 0.7, 0.64, 0.65];
 const chords={
  db:{bass:'Ab1',notes:['F3','Ab3','C4','Eb4']},bb:{bass:'Bb1',notes:['Db3','F3','Ab3','C4']},
  gb:{bass:'Gb2',notes:['Bb3','Db4','Eb4','Ab4']},cb:{bass:'Cb2',notes:['Gb3','Bb3','Cb4','Eb4']},
@@ -83,9 +86,12 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
  const i=((bar%32)+32)%32,boss=mode==='wind-engine',fight=boss||mode==='wind-battle',quiet=mode==='mirrorward',round=mode==='dispensary',middle=i>=16&&i<24;
  const tune=quiet?gallery:boss?reflection:fight?rescue:round?rounds:ward;
  const harmony=fight&&i<8?(['bb','bb','eb','f','gb','eb','f','bb']as Chord[])[i]:changes[i],{bass,notes:chord}=chords[harmony];
- const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
+ const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};out.push(note);return note;};
  const lead=quiet||boss&&!middle?'bell':fight?'strings':round?'keys':'reed';
- for(const [beat,pitch,duration]of tune[i])add(lead,pitch,beat,duration,quiet?.11:lead==='bell'?.13:.18,-.17);
+ for(const [n,[beat,pitch,duration]]of tune[i].entries()){
+  const voice=add(lead,pitch,beat,duration,quiet?.11:lead==='bell'?.13:.18,-.17);
+  if(mode==='windmere')voice.expression=singing('celia',dynamics[i]*(1-n*.07),duration,[9,15,23,31].includes(i));
+ }
  if(quiet){
   if(i%2===0){const hold=changes[i]===changes[i+1]?7.5:3.5;add('round-bass',bass,0,hold,.075);for(const [n,p]of chord.entries())add('strings',p,0,hold,.016,n%2?.4:-.4);}
   if(!tune[i].length)add('keys',chord[0],2,1,.04,.35);
