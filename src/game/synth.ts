@@ -56,18 +56,32 @@ export class Synth {
     source.connect(filter);filter.connect(r.gain);source.start(when,.17);source.stop(r.end);
     source.onended=()=>{source.disconnect();filter.disconnect();r.cleanup();};
   }
+  private cymbal(when:number,duration:number,volume:number,pan:number){
+    const c=this.context,source=this.track(c.createBufferSource()),filter=c.createBiquadFilter();
+    const r=this.route(when,duration,volume,pan,.003,.5,true),nodes:AudioNode[]=[source,filter];
+    source.buffer=this.noiseBuffer;filter.type='highpass';filter.frequency.value=3500;
+    source.connect(filter);filter.connect(r.gain);source.start(when,.31);source.stop(r.end);
+    // Quiet inharmonic metal over a fast-decaying wash, separate from the closed hat.
+    for(const ratio of [1,1.37,1.81,2.43]){
+      const o=this.track(c.createOscillator()),g=c.createGain();o.type='square';o.frequency.value=1780*ratio;g.gain.value=.024;
+      o.connect(g);g.connect(filter);o.start(when);o.stop(r.end);nodes.push(o,g);
+    }
+    source.onended=()=>{for(const node of nodes)node.disconnect();r.cleanup();};
+  }
   note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0){
     // A delayed scheduler must play the attack now, not start halfway through
     // an envelope whose timestamp has already passed on the audio clock.
     when=Math.max(when,this.context.currentTime);
     if(instrument==='kick'){this.tone(120,when,.13,volume,'sine',pan,43);this.noise(when,.018,volume*.15,1600,600,pan);return;}
     if(instrument==='snare'){this.noise(when,duration,volume,1700,950,pan);this.tone(185,when,.07,volume*.35,'triangle',pan,110);return;}
+    if(instrument==='cymbal'){this.cymbal(when,duration,volume,pan);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
     const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
-    const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings';
-    const r=this.route(when,duration,volume,pan,strings?.12:bell?.003:plucked?.004:.025,bell?.65:strings?.35:.16,plucked);
+    const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
+    const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,bell?.65:strings?.35:timpani?.25:brass?.22:.16,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
-    filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:2400,when);
+    filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
+    if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
     filter.connect(r.gain);nodes.push(filter);
     const voices:OscillatorNode[]=[];
@@ -79,6 +93,9 @@ export class Synth {
       const carrier=osc('sine'),mod=this.track(c.createOscillator()),index=c.createGain();
       mod.frequency.value=hz*2.76;index.gain.setValueAtTime(hz*.65,when);index.gain.exponentialRampToValueAtTime(.1,when+duration+.4);
       mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);nodes.push(mod,index);osc('sine',0,2,.1);
+    }else if(brass){osc('sawtooth',-2,1,.43);osc('sawtooth',2,1,.43);osc('triangle',0,.5,.12);}
+    else if(timpani){
+      for(const [ratio,mix]of [[1,.75],[1.48,.19],[2.15,.09],[2.9,.035]]){const o=osc('sine',0,ratio,mix);o.frequency.setValueAtTime(hz*ratio*1.025,when);o.frequency.exponentialRampToValueAtTime(hz*ratio,when+.065);}
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}

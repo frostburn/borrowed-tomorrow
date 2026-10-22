@@ -1,9 +1,10 @@
 import { Audio } from '../game/audio';
-import { ARRANGEMENTS, scoreBar, scoreLength, type Instrument, type MusicMode } from '../game/score';
+import { ARRANGEMENTS, scoreBar, scoreLength, scorePosition, scoreMeter, type Instrument, type MusicMode } from '../game/score';
 import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type Pitch } from '../game/tuning';
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'flagship',title:'Iron Above the Clouds',group:'5'},
   {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'The Sea Gate',group:'4'},
   {mode:'sanctuary',title:'Under the Hollow Sun',group:'4'}, {mode:'four-battle',title:'Hold the Line',group:'4'}, {mode:'four-warden',title:"The Emperor's Order",group:'4'},
   {mode:'station',title:'Larkspur festival',group:'1'}, {mode:'yard',title:"Orrin's workshop",group:'1'}, {mode:'tunnel',title:'After the raid / pass',group:'1'},
@@ -12,7 +13,7 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
   {mode:'northglass',title:'Capital medical siding',group:'3'}, {mode:'relayhall',title:'Control gallery',group:'3'}, {mode:'conduit',title:'Vessel chamber',group:'3'}, {mode:'switching',title:'Beneath the Palace battle',group:'3'},
   {mode:'sluice',title:'Retained sluice',group:'Library'}, {mode:'flood',title:'Retained flood battle',group:'Library'},
 ];
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Bass:['bass','round-bass'],Drums:['kick','snare','hat']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 const displayBeat=(beat:number)=>{
   const whole=Math.floor(beat),third=Math.round((beat-whole)*3);
@@ -50,7 +51,7 @@ export class MusicWorkshop {
   }
   stop(){
     const before=this.bar;
-    if(this.audio.enabled)this.bar=this.audio.position().bar%scoreLength(this.mode);
+    if(this.audio.enabled)this.bar=scorePosition(this.mode,this.audio.position().bar);
     this.audio.pause();this.endAudition();this.sound(false);if(this.bar!==before)this.notes();this.tick();
   }
   private async audition(pitches:Pitch[]){
@@ -68,8 +69,8 @@ export class MusicWorkshop {
   }
   private render(){
     const root=this.container!;
-    root.innerHTML=`<div class="music-layout"><section class="music-library" aria-label="Music library"><h2>Cues</h2><div class="music-groups" role="group" aria-label="Cue chapters">${['1','2','3','4','Library'].map(g=>`<button data-group="${g}" aria-pressed="${g===this.group}">${g==='Library'?g:`Ch ${g}`}</button>`).join('')}</div><div class="music-cues">${library.filter(c=>c.group===this.group).map(c=>`<button data-cue="${c.mode}" aria-pressed="${c.mode===this.mode}"><span>${c.title}</span><small>${c.mode} / ${ARRANGEMENTS[c.mode].bpm} BPM / ${ARRANGEMENTS[c.mode].beats}/4</small></button>`).join('')}</div></section>
-    <section class="music-review" aria-label="Music review"><h2>${library.find(c=>c.mode===this.mode)!.title}</h2><p class="music-description">31-EDO / A4 = 440 Hz / ${ARRANGEMENTS[this.mode].bpm} BPM / ${ARRANGEMENTS[this.mode].beats}/4 / ${scoreLength(this.mode)} bars</p><div class="music-transport"><button id="music-play">Play</button><button id="music-stop">Stop</button><button id="music-restart">Restart cue</button><span id="music-position" role="status"></span></div><div class="music-bar"><button id="music-previous" aria-label="Previous bar">Previous</button><label for="music-bar">Bar</label><input id="music-bar" type="number" min="1" max="${scoreLength(this.mode)}" value="${this.bar+1}"/><button id="music-next" aria-label="Next bar">Next</button></div><div class="music-parts" role="group" aria-label="Instrument audition">${Object.keys(parts).map(p=>`<button data-part="${p}" aria-pressed="${p===this.part}">${p}</button>`).join('')}</div><div class="music-volume"><button id="music-quieter" aria-label="Lower music volume">-</button><span id="music-volume">Volume ${this.volume}%</span><button id="music-louder" aria-label="Raise music volume">+</button></div><h3 id="music-notes-title"></h3><p class="music-description">Click a pitch to hear it alone. Drum pitches are unpitched.</p><div id="music-notes"></div></section>
+    root.innerHTML=`<div class="music-layout"><section class="music-library" aria-label="Music library"><h2>Cues</h2><div class="music-groups" role="group" aria-label="Cue chapters">${['1','2','3','4','5','Library'].map(g=>`<button data-group="${g}" aria-pressed="${g===this.group}">${g==='Library'?g:`Ch ${g}`}</button>`).join('')}</div><div class="music-cues">${library.filter(c=>c.group===this.group).map(c=>`<button data-cue="${c.mode}" aria-pressed="${c.mode===this.mode}"><span>${c.title}</span><small>${c.mode} / ${ARRANGEMENTS[c.mode].bpm} BPM / ${scoreMeter(c.mode)}</small></button>`).join('')}</div></section>
+    <section class="music-review" aria-label="Music review"><h2>${library.find(c=>c.mode===this.mode)!.title}</h2><p class="music-description">31-EDO / A4 = 440 Hz / ${ARRANGEMENTS[this.mode].bpm} BPM / ${scoreMeter(this.mode)} / ${scoreLength(this.mode)} bars${ARRANGEMENTS[this.mode].introBars?` / ${ARRANGEMENTS[this.mode].introBars}-bar intro, then ${scoreLength(this.mode)-ARRANGEMENTS[this.mode].introBars!}-bar loop / 2+2+3+3`:''}</p><div class="music-transport"><button id="music-play">Play</button><button id="music-stop">Stop</button><button id="music-restart">Restart cue</button><span id="music-position" role="status"></span></div><div class="music-bar"><button id="music-previous" aria-label="Previous bar">Previous</button><label for="music-bar">Bar</label><input id="music-bar" type="number" min="1" max="${scoreLength(this.mode)}" value="${this.bar+1}"/><button id="music-next" aria-label="Next bar">Next</button></div><div class="music-parts" role="group" aria-label="Instrument audition">${Object.keys(parts).map(p=>`<button data-part="${p}" aria-pressed="${p===this.part}">${p}</button>`).join('')}</div><div class="music-volume"><button id="music-quieter" aria-label="Lower music volume">-</button><span id="music-volume">Volume ${this.volume}%</span><button id="music-louder" aria-label="Raise music volume">+</button></div><h3 id="music-notes-title"></h3><p class="music-description">Click a pitch to hear it alone. Timpani is tuned; other drum pitches are unpitched.</p><div id="music-notes"></div></section>
     <section class="music-tuning" aria-label="31-EDO tuning"><h2>Circle of fifths</h2><p>Every fifth advances 18 of 31 steps. Sharps raise two steps; flats lower two. The circle closes after 31 fifths.</p><div class="music-circle">${fifthsCircle().map((p,i)=>`<button data-fifth="${i}" aria-label="Hear fifth ${p}">${p.replace(/4$/,'')}<small>${pc(p)}</small></button>`).join('')}</div><p>C# and Db are one step apart. Compare their sound:</p><div class="music-comparisons"><button id="music-sharp">Hear C#4</button><button id="music-flat">Hear Db4</button><button id="music-compare">Compare C#4 / Db4</button></div></section></div>`;
     for(const b of root.querySelectorAll<HTMLButtonElement>('[data-group]'))b.onclick=()=>{this.group=b.dataset.group!;this.render();};
     for(const b of root.querySelectorAll<HTMLButtonElement>('[data-cue]'))b.onclick=()=>{const playing=this.audio.enabled;this.stop();this.mode=b.dataset.cue as MusicMode;this.bar=0;this.render();if(playing)void this.play();};
@@ -88,15 +89,15 @@ export class MusicWorkshop {
   }
   private notes(){
     if(!this.container)return;
-    this.container.querySelector('#music-notes-title')!.textContent=`Bar ${this.bar+1} / ${scoreLength(this.mode)}`;
+    this.container.querySelector('#music-notes-title')!.textContent=`Bar ${this.bar+1} / ${scoreLength(this.mode)}${ARRANGEMENTS[this.mode].introBars?(this.bar<ARRANGEMENTS[this.mode].introBars!?' / Intro':' / Loop'):''}`;
     const notes=scoreBar(this.mode,this.bar).filter(n=>!parts[this.part]||parts[this.part]!.includes(n.instrument)).sort((a,b)=>a.beat-b.beat);
-    this.container.querySelector('#music-notes')!.innerHTML=`<table><thead><tr><th>Voice</th><th>Pitch</th><th>Step</th><th>Hz</th><th>Beat</th></tr></thead><tbody>${notes.map(n=>`<tr><td>${n.instrument}</td><td>${isPercussion(n.instrument)?'-':`<button data-pitch="${n.pitch}" aria-label="Hear ${n.pitch}">${n.pitch}</button>`}</td><td>${isPercussion(n.instrument)?'-':pc(n.pitch)}</td><td>${isPercussion(n.instrument)?'-':pitchFrequency(n.pitch).toFixed(2)}</td><td>${displayBeat(n.beat)}</td></tr>`).join('')}</tbody></table>${notes.length?'':'<p>No notes in this part of the bar.</p>'}`;
+    this.container.querySelector('#music-notes')!.innerHTML=`<table><thead><tr><th>Voice</th><th>Pitch</th><th>Step</th><th>Hz</th><th>${ARRANGEMENTS[this.mode].meter?.[1]===8?'Eighth':'Beat'}</th></tr></thead><tbody>${notes.map(n=>`<tr><td>${n.instrument}</td><td>${isPercussion(n.instrument)?'-':`<button data-pitch="${n.pitch}" aria-label="Hear ${n.pitch}">${n.pitch}</button>`}</td><td>${isPercussion(n.instrument)?'-':pc(n.pitch)}</td><td>${isPercussion(n.instrument)?'-':pitchFrequency(n.pitch).toFixed(2)}</td><td>${displayBeat(n.beat*(ARRANGEMENTS[this.mode].meter?.[1]??4)/4)}</td></tr>`).join('')}</tbody></table>${notes.length?'':'<p>No notes in this part of the bar.</p>'}`;
     for(const b of this.container.querySelectorAll<HTMLButtonElement>('[data-pitch]'))b.onclick=()=>void this.audition([b.dataset.pitch as Pitch]);
   }
   private tick(){
     if(!this.container)return;
-    const p=this.audio.position();if(p.playing&&p.mode===this.mode){const bar=p.bar%scoreLength(this.mode);if(bar!==this.bar){this.bar=bar;this.notes();}}
+    const p=this.audio.position();if(p.playing&&p.mode===this.mode){const bar=scorePosition(this.mode,p.bar);if(bar!==this.bar){this.bar=bar;this.notes();}}
     const input=this.container.querySelector<HTMLInputElement>('#music-bar')!;if(document.activeElement!==input&&input.value!==String(this.bar+1))input.value=String(this.bar+1);
-    const label=`${p.playing?'Playing':'Stopped'} / bar ${this.bar+1}${p.playing?` / beat ${Math.floor(p.beat)+1}`:''}`,status=this.container.querySelector('#music-position')!;if(status.textContent!==label)status.textContent=label;
+    const label=`${p.playing?'Playing':'Stopped'} / bar ${this.bar+1}${p.playing?` / beat ${Math.floor(p.beat*(ARRANGEMENTS[this.mode].meter?.[1]??4)/4)+1}`:''}`,status=this.container.querySelector('#music-position')!;if(status.textContent!==label)status.textContent=label;
   }
 }

@@ -47,12 +47,21 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  });
 }
 
-test('flagship propellers animate without input, respect reduced motion, and recoil cancels on restart',async({page})=>{
+test('the whole flagship sways without moving hexes, respects reduced motion, and cancels recoil on restart',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto(route);await page.getByRole('button',{name:'Start Chapter Five preset',exact:true}).click();await page.mouse.move(0,0);
  const sample=()=>page.evaluate(()=>{const c=document.querySelector<HTMLCanvasElement>('.pixel-output')!,p=c.getContext('2d')!.getImageData(0,0,c.width,c.height).data;let h=2166136261;for(let i=0;i<p.length;i+=4)h=Math.imul(h^p[i],16777619);return h>>>0;});
- const frames=new Set<number>();for(let i=0;i<8;i++){await page.waitForTimeout(130);frames.add(await sample());}expect(frames.size).toBeGreaterThan(2);
- await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(200);const still=await sample();await page.waitForTimeout(400);expect(await sample()).toBe(still);
+ const original=(await inspect(page)).battle!.units.map(u=>({...u.hex})),frames=new Set<number>(),positions:{x:number;y:number}[]=[];
+ for(let i=0;i<9;i++){
+  await page.waitForTimeout(1000);frames.add(await sample());const s=await inspect(page);
+  const parts=['flagship-port','flagship-starboard','flagship-bridge'].map(texture=>s.actors.find(a=>a.texture===texture)!);
+  const shift=parts.map((a,j)=>({x:a.x-[281,645,493][j],y:a.y-[286,286,233][j]}));positions.push(shift[0]);
+  for(const d of shift){expect(d.x).toBeCloseTo(shift[0].x,6);expect(d.y).toBeCloseTo(shift[0].y,6);expect(Math.abs(d.x)).toBeLessThanOrEqual(2);expect(Math.abs(d.y)).toBeLessThanOrEqual(3);}
+  expect(s.battle!.units.map(u=>u.hex)).toEqual(original);
+ }
+ expect(frames.size).toBeGreaterThan(2);expect(Math.max(...positions.map(p=>p.y))-Math.min(...positions.map(p=>p.y))).toBeGreaterThan(4);
+
+ await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(200);const still=await sample();await page.waitForTimeout(400);expect(await sample()).toBe(still);const settled=(await inspect(page)).actors;expect(settled.find(a=>a.texture==='flagship-port')).toMatchObject({x:281,y:286});expect(settled.find(a=>a.texture==='flagship-bridge')).toMatchObject({x:493,y:233});
  await page.emulateMedia({reducedMotion:'no-preference'});
  for(let i=0;i<3;i++){await ready(page);await page.getByRole('button',{name:/^F\s+Defend$/}).click();}
  await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.texture==='flagship-port-fire'),{timeout:15000,intervals:[50]}).toBe(true);await capture(page,'flagship-cannon-recoil');

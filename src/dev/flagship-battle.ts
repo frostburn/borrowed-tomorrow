@@ -10,7 +10,7 @@ export type FlagshipPart=typeof FLAGSHIP_PARTS[number];
 export const isFlagshipPart=(u:Unit)=>FLAGSHIP_PARTS.some(id=>id===u.id);
 export const FLAGSHIP_FOOTPRINT:Hex[]=[{q:0,r:0},{q:-1,r:1},{q:0,r:1}];
 export const FLAGSHIP_ENCOUNTER:Encounter={
-  id:'dev-flagship',name:'Alban’s flagship · boss preview',music:'four-warden',flag:'devFlagship',xp:0,coins:0,rocks:[],
+  id:'dev-flagship',name:'Alban’s flagship · boss preview',music:'flagship',flag:'devFlagship',xp:0,coins:0,rocks:[],
   enemies:[
     {kind:'guardian',col:2,row:2,hp:100,bonus:0,name:'Port battery'},
     {kind:'guardian',col:8,row:2,hp:100,bonus:0,name:'Starboard battery'},

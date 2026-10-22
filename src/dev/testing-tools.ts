@@ -5,7 +5,7 @@ import type { UI } from '../game/ui';
 interface BattleToolsHost {
   current: () => Battle | undefined;
   initial: () => Battle | undefined;
-  apply: (battle: Battle) => void;
+  apply: (battle: Battle, restart?:boolean) => void;
 }
 
 /** Mutate a replacement battle so pending callbacks from the old one are discarded. */
@@ -39,7 +39,7 @@ export function renderTestingTools(ui: UI, target: HTMLElement, host: BattleTool
     }) },
     { label: 'Restart battle', disabled: disabled || !host.initial(), action: () => {
       if (host.current()?.result !== null) return;
-      const initial = host.initial(); if (initial) host.apply(structuredClone(initial));
+      const initial = host.initial(); if (initial) host.apply(structuredClone(initial),true);
     } },
   ]);
   target.prepend(group);

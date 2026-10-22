@@ -24,6 +24,13 @@ export const FLAGSHIP_ASSETS=[
   {key:'flagship-bridge',url:bridge},{key:'flagship-bridge-fire',url:bridgeFire},{key:'flagship-marine',url:marine},
 ];
 const masks=new Map<string,Uint8Array>();
+let shipOffset={x:0,y:0};
+const sway=(scene:Phaser.Scene)=>shipOffset=bossMotionEnabled()?{x:2*Math.sin(scene.time.now*2*Math.PI/11000),y:3*Math.sin(scene.time.now*2*Math.PI/8000)}:{x:0,y:0};
+/** The same clock displacement holds every rigid ship part together across redraws. */
+function aboard(scene:Phaser.Scene,object:Phaser.GameObjects.Image|Phaser.GameObjects.Graphics,x:number,y:number){
+  const paint=()=>{if(object.active){const d=sway(scene);object.setPosition(x+d.x,y+d.y);}};
+  scene.events.on(Phaser.Scenes.Events.UPDATE,paint);object.once('destroy',()=>scene.events.off(Phaser.Scenes.Events.UPDATE,paint));paint();
+}
 const dimensions=(id:string)=>id==='flagship-bridge'?{width:224,height:232}:{width:192,height:184};
 
 /** Propellers turn on scene time; the ship's hull and gun bases remain rigid. */
@@ -31,6 +38,7 @@ function propeller(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:numbe
   const rim=scene.add.graphics().setPosition(x,y);world.add(rim);
   rim.fillStyle(0x142731).fillCircle(0,0,23);rim.lineStyle(3,0xb6a473).strokeCircle(0,0,23);
   const rotor=scene.add.graphics().setPosition(x,y);world.add(rotor);
+  aboard(scene,rim,x,y);aboard(scene,rotor,x,y);
   rotor.fillStyle(0x8a9e94);
   for(const sign of [-1,1])rotor.fillPoints([[-3,0],[-7,sign*16],[2,sign*20],[4,sign*4]].map(([x,y])=>new Phaser.Math.Vector2(x,y)),true);
   rotor.fillStyle(0xc3b078).fillCircle(0,0,5);
@@ -47,7 +55,7 @@ export const FLAGSHIP_PRESENTATION:BattlePresentation={
   background(scene,world){
     for(const key of ['flagship-deck','flagship-hull','flagship-marine'])nativeTexture(scene,key);
     world.add(scene.add.image(0,0,'flagship-deck').setOrigin(0));
-    world.add(scene.add.image(28,20,'flagship-hull').setOrigin(0));
+    const hull=scene.add.image(28,20,'flagship-hull').setOrigin(0);world.add(hull);aboard(scene,hull,28,20);
     propeller(scene,world,132,142);propeller(scene,world,888,142);
   },
   actor(scene,u,hp){
@@ -61,7 +69,8 @@ export const FLAGSHIP_PRESENTATION:BattlePresentation={
     let started:number|undefined;
     const paint=()=>{
       if(!image.active)return;
-      const elapsed=started===undefined?Infinity:scene.time.now-started,attacking=hp>0&&elapsed<BOSS_ATTACK_DURATION;
+      const d=sway(scene);image.setPosition(at.x+d.x,at.y+d.y);
+      const elapsed=started===undefined?Infinity:scene.time.now-started,attacking=hp>0&&bossMotionEnabled()&&elapsed<BOSS_ATTACK_DURATION;
       const key=attacking&&elapsed>=220&&elapsed<660?fire:idle;
       if(image.texture.key!==key)image.setTexture(key);
       image.setData('actor-motion',attacking?'attack':'idle');
@@ -101,9 +110,9 @@ export const FLAGSHIP_PRESENTATION:BattlePresentation={
       g.fillStyle(u.sealed?0x82b3b4:0xb79d68).fillRect(x-60,65,Math.round(120*u.hp/u.maxHp),4);
     }
     const bridge=flagshipPart(b,'flagship-bridge');
-    if(bridge.hp>0&&bridge.sealed){const p=bossPlacement(bridge);g.lineStyle(2,0x9bc5c0,.5).strokeEllipse(p.x,p.y-82,120,132);}
+    if(bridge.hp>0&&bridge.sealed){const p=bossPlacement(bridge),shield=scene.add.graphics();world.add(shield);shield.lineStyle(2,0x9bc5c0,.5).strokeEllipse(p.x,p.y-82,120,132);aboard(scene,shield,0,0);}
   },
   pick(b,action,x,y){
-    for(const id of FLAGSHIP_PARTS){const size=dimensions(id),h=pickBossBody(b,action,x,y,flagshipPart(b,id),size.width,size.height,masks.get(id));if(h)return h;}
+    for(const id of FLAGSHIP_PARTS){const size=dimensions(id),h=pickBossBody(b,action,x,y,flagshipPart(b,id),size.width,size.height,masks.get(id),shipOffset);if(h)return h;}
   },
 };

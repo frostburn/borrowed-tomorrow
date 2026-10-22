@@ -1,15 +1,17 @@
 import { octave, transpose, type Pitch } from './tuning';
+import { flagshipBar } from './score-flagship';
 import { conduitBar } from './score-conduit';
 import { returnBar } from './score-four';
 import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
-export type Instrument = 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
+export type MusicMode = 'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type Instrument = 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number }
-interface Arrangement { beats:3|4; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
+interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  flagship:{beats:5,meter:[10,8],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
   sanctuary:{beats:4,bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},
@@ -46,6 +48,7 @@ const PHRASES:[number,Pitch,number][][]=[
 const ROOTS:Pitch[]=['D3','Bb2','F3','C3','D3','Bb2','G2','A2','F3','C3','Bb2','A2','D3','Bb2','A2','D3'];
 /** Dispatch complete scores; retained home arrangements use a sixteen-bar form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='flagship')return flagshipBar(scorePosition(mode,bar));
   if(mode==='refuge'||mode==='breakwater'||mode==='sanctuary'||mode==='four-battle'||mode==='four-warden')return returnBar(mode,bar);
   if(mode==='conduit')return conduitBar(bar);
   if(mode==='coast'||mode==='coast-battle')return coastBar(bar,mode==='coast-battle');
@@ -86,5 +89,15 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 }
 
 export function scoreLength(mode:MusicMode):number {
+  if(mode==='flagship')return 34;
   return ['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
+}
+
+/** Absolute playback bars wrap after the one-shot intro, never back into it. */
+export function scorePosition(mode:MusicMode,bar:number):number {
+  const intro=ARRANGEMENTS[mode].introBars??0,length=scoreLength(mode)-intro;
+  return bar>=0&&bar<intro?bar:intro+((bar-intro)%length+length)%length;
+}
+export function scoreMeter(mode:MusicMode):string {
+  const a=ARRANGEMENTS[mode];return a.meter?a.meter.join('/'):`${a.beats}/4`;
 }

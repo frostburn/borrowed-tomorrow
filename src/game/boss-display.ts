@@ -24,10 +24,10 @@ export function bossPlacement(unit:Unit){
 }
 
 /** Projected art is a shortcut to a legal occupied cell, never to a nearby ally. */
-export function pickBossBody(b:Battle,action:AbilityId|'move',x:number,y:number,boss:Unit,width:number,height:number,mask?:Uint8Array){
+export function pickBossBody(b:Battle,action:AbilityId|'move',x:number,y:number,boss:Unit,width:number,height:number,mask?:Uint8Array,visualOffset={x:0,y:0}){
   if(action==='move'||ABILITIES[action].heal||['guard','focus','taunt'].includes(ABILITIES[action].effect??''))return;
   const u=active(b);if(!u||u.side!=='party'||boss.hp<=0)return;
-  const p=bossPlacement(boss),px=Math.floor(x-p.x+width/2),py=Math.floor(y-p.y+height);
+  const p=bossPlacement(boss),px=Math.floor(x-p.x-visualOffset.x+width/2),py=Math.floor(y-p.y-visualOffset.y+height);
   if(px<0||px>=width||py<0||py>=height)return;
   const clicked=fromPixel(x,y),direct=unitAt(b,clicked);
   if(direct&&direct.id!==boss.id)return;
