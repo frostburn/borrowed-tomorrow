@@ -22,7 +22,7 @@ export function arrival(map:MapId,name:string){
   return {map,...gridPoint(point)};
 }
 export function stage(map:MapId,id:string):Cinematic['actors']{
-  return mapPoints(MAPS[map].tiles!,`Scene:${id}`).map(p=>({id:p.name as CharacterId,at:gridPoint(p),hidden:properties(p).hidden===true}));
+  return mapPoints(MAPS[map].tiles!,`Scene:${id}`).map(p=>({id:p.name as CharacterId,at:gridPoint(p),hidden:properties(p).hidden===true,projection:properties(p).projection===true}));
 }
 export function visibleObjects(map: MapData, s: GameState): MapObject[] { return map.objects.filter(o => (!o.hiddenFlag || !s.flags[o.hiddenFlag]) && (!o.requiredFlag || s.flags[o.requiredFlag])); }
 export function visiblePeople(map:MapData,s:Pick<GameState,'flags'>):MapPerson[]{ return (map.people??[]).filter(p=>(!p.hiddenFlag||!s.flags[p.hiddenFlag])&&(!p.requiredFlag||s.flags[p.requiredFlag])); }

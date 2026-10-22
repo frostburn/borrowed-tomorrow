@@ -9,7 +9,7 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 11,
+  "nextlayerid": 12,
   "nextobjectid": 37,
   "properties": [
     {
@@ -556,11 +556,30 @@
           "name": "requiredFlag",
           "type": "string",
           "value": "fleetSighted"
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "emperorOfferTold"
         }
       ]
     },
     {
       "id": 5,
+      "name": "ship-cordon",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "emperorOfferTold"
+        }
+      ]
+    },
+    {
+      "id": 6,
       "name": "Interactions",
       "type": "objectgroup",
       "visible": true,
@@ -732,7 +751,7 @@
       "properties": []
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "Arrivals",
       "type": "objectgroup",
       "visible": true,
@@ -781,7 +800,7 @@
       "properties": []
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "People",
       "type": "objectgroup",
       "visible": true,
@@ -875,7 +894,7 @@
       "properties": []
     },
     {
-      "id": 8,
+      "id": 9,
       "name": "Scene:five-first-flight",
       "type": "objectgroup",
       "visible": true,
@@ -932,7 +951,7 @@
       "properties": []
     },
     {
-      "id": 9,
+      "id": 10,
       "name": "Scene:five-emperor-told",
       "type": "objectgroup",
       "visible": true,
@@ -989,7 +1008,7 @@
       "properties": []
     },
     {
-      "id": 10,
+      "id": 11,
       "name": "Scene:five-fleet",
       "type": "objectgroup",
       "visible": true,

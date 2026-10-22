@@ -123,6 +123,16 @@
       "layerId": 4
     },
     {
+      "key": "scene-five-ship-cordon",
+      "url": "art/vector/chapter-five/ship-cordon.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 400,
+      "depth": -998,
+      "layerId": 5
+    },
+    {
       "key": "scene-five-ship-bow",
       "url": "art/vector/chapter-five/ship-bow.svg",
       "x": 0,

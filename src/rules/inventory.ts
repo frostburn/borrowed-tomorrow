@@ -5,6 +5,8 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'shield-brace':{name:'Dawnwatch shield brace',slot:'fitting',heroes:['petra'],description:'A firm shield grip and reinforced saber strap from the town watch.',bonuses:{attack:4,armor:3,speed:0}},
+  'field-coat':{name:'Officers’ field coat',slot:'coat',heroes:COMPANION_IDS,description:'A light lined coat from Dawnwatch’s field locker. Keeps its wearer quick on their feet.',bonuses:{attack:0,armor:3,speed:1}},
   'forge-valve':{name:'Balanced expansion valve',slot:'fitting',heroes:['orrin'],description:'A foundry valve with a smooth return stroke. Salvaged from the furnace carrier.',bonuses:{attack:6,armor:1,speed:1}},
   'heat-coat':{name:'Foundry safety coat',slot:'coat',heroes:COMPANION_IDS,description:'Layered heat shielding from Hammerplain’s safety store.',bonuses:{attack:0,armor:4,speed:0}},
   'return-valve': {name:'Counterweighted return valve',slot:'fitting',heroes:['orrin'],description:'A salvage fitting from the works. A powerful jet with a guarded return stroke.',bonuses:{attack:5,armor:1,speed:0}},

@@ -12,3 +12,11 @@ export function anchorCheckpoint(flag:typeof anchorOrder[number]){
  restoreParty(s);return s;
 }
 export function anchorDeparture(){const s=chapterFiveStart();s.chapter='chapter-four';s.boundary=FIFTH_CHAPTER;s.location=arrival('refuge','departure');return s;}
+export const dawnwatchOrder=['dawnwatchSeen','shelterOpened','watchGunsSeen','mortarConfronted','mortarWon','repeaterConfronted','repeaterWon','aurelSeen','aurelConfronted','aurelWon','dawnwatchFreed','dawnwatchComplete']as const;
+export function dawnwatchCheckpoint(flag:typeof dawnwatchOrder[number],hammerplain=false){
+ const s=anchorCheckpoint(hammerplain?'fleetSighted':'firstFlightSeen');
+ for(const f of dawnwatchOrder.slice(0,dawnwatchOrder.indexOf(flag)+1))s.flags[f]=true;
+ for(const id of ['dawn-mortar-first','dawn-repeater-last','dawn-commander']){const e=ENCOUNTERS[id];if(s.flags[e.flag]){s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}}
+ s.location=s.flags.aurelSeen?arrival('signalwall','stand'):s.flags.watchGunsSeen?arrival('watchbarracks','junction'):arrival('dawnwatch','gate');
+ restoreParty(s);return s;
+}

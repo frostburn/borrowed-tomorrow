@@ -27,7 +27,7 @@ for(const flooded of [false,true])it(`frees Hammerplain by the ${flooded?'race w
  resumeChapterFive(j.h);expect(j.read().scene!.id).toBe('five-airfield');expect(s.flags.airfieldSeen).toBeUndefined();j.finish();
  interactChapterFive(j.h,'airfield-seizure');j.choice(0);j.win();interactChapterFive(j.h,'airfield-board');expect(j.read().scene!.id).toBe('five-launch');
  expect(s.flags.airshipOwned).toBeUndefined();expect(decodeSave(JSON.stringify(s))).toEqual(s);j.finish();expect(j.read().scene!.id).toBe('five-first-flight');j.finish();
- interactChapterFive(j.h,'ship-chart');expect(j.read().choices!.filter(c=>c.disabled)).toHaveLength(2);j.choice(0);expect(j.read().scene!.id).toBe('five-hammer');j.finish();
+ interactChapterFive(j.h,'ship-chart');expect(j.read().choices!.filter(c=>c.disabled)).toHaveLength(1);j.choice(0);expect(j.read().scene!.id).toBe('five-hammer');j.finish();
  interactChapterFive(j.h,'hammer-cooling');j.finish();interactChapterFive(j.h,'cooling-route');j.choice(flooded?1:0);expect(j.encounter()).toBe(flooded?'hammer-race':'hammer-lift');j.win();
  interactChapterFive(j.h,'cooling-wheel');j.finish();interactChapterFive(j.h,'cooling-forge');j.finish();
  interactChapterFive(j.h,'forge-carrier');j.choice(0);expect(j.encounter()).toBe('hammer-carrier');j.win();const xp=s.xp;j.win();expect(s.xp).toBe(xp);

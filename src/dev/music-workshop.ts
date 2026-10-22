@@ -7,6 +7,8 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
   {mode:'airship',title:'Above the Railway',group:'5'}, {mode:'airfield',title:'The Western Mooring',group:'5'},
   {mode:'hammerplain',title:'The Next Shift',group:'5'}, {mode:'coolingworks',title:'The Cooling Race',group:'5'}, {mode:'anchorforge',title:'Under the Gantry',group:'5'},
   {mode:'five-battle',title:'Hammerplain · Hold the Floor',group:'5'}, {mode:'five-furnace',title:'The Pouring Lane',group:'5'},
+  {mode:'dawnwatch',title:'Dawnwatch · The Open Gate',group:'5'}, {mode:'watchbarracks',title:'The Gun Terraces',group:'5'}, {mode:'signalwall',title:'The Town Wheel',group:'5'},
+  {mode:'dawn-battle',title:'Dawnwatch · Across the Terraces',group:'5'}, {mode:'dawn-commander',title:'Orders Worth Refusing',group:'5'}, {mode:'observation',title:'The Empty Cabin',group:'5'},
   {mode:'flagship',title:'Iron Above the Clouds',group:'5'},
   {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'The Sea Gate',group:'4'},
   {mode:'sanctuary',title:'Under the Hollow Sun',group:'4'}, {mode:'four-battle',title:'Hold the Line',group:'4'}, {mode:'four-warden',title:"The Emperor's Order",group:'4'},

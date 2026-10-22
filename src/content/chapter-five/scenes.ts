@@ -112,14 +112,14 @@ export const workers=()=>scene('hammerplain','five-workers','The next shift',[
  line('Orrin','I’d like to see that engine once it’s settled.'),
  line('Hester','Next time you’re here. I’ll let somebody else start it.'),
 ]);
-export const fleet=()=>scene('airship','five-fleet','Beyond the cloudbank',[
- line('Alda','Hammerplain’s fitters have the spare drive aboard. They’ve already found the rattle I couldn’t.',{focus:{x:32,y:22},cut:true}),
- line('Orrin','You’ll want to keep them.'),
+export const fleet=(dawnwatch=false)=>scene('airship','five-fleet','Beyond the cloudbank',[
+ line('Alda',dawnwatch?'The Dawnwatch launches are holding off our port side. Their pilots know this cloudbank.':'Hammerplain’s fitters have the spare drive aboard. They’ve already found the rattle I couldn’t.',{focus:{x:32,y:22},cut:true}),
+ line('Orrin',dawnwatch?'I’ll put the recognition chart beside the helm.':'You’ll want to keep them.'),
  line('Kit','Petra. Those lights above the cloud.'),
  line('The northern sky','Three long hulls emerge beyond the cloudbank. The largest carries an imperial standard.',{focus:{x:32,y:13},cut:true,effect:'fleet-sighting'}),
  line('Petra','Alban’s formation. He’s brought the fleet out of the capital.',{focus:{x:32,y:21}}),
  line('Nell','Are they coming here?'),
  line('Alda','Holding over the inland line. We can keep clear of them.'),
  line('Petra','He’ll want the remaining anchors guarded. We’ve still got people to reach.'),
- line('Nell','And Hammerplain can look after its own street now. Let’s mark the chart.'),
+ line('Nell',dawnwatch?'The shelter’s open, and the watch is staying. Let’s mark the chart.':'And Hammerplain can look after its own street now. Let’s mark the chart.'),
 ]);

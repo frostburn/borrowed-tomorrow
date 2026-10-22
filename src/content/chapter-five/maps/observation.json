@@ -639,7 +639,13 @@
           "point": true,
           "x": 972,
           "y": 444,
-          "properties": [],
+          "properties": [
+            {
+              "name": "projection",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "id": 5
         },
         {
@@ -647,7 +653,13 @@
           "point": true,
           "x": 684,
           "y": 420,
-          "properties": [],
+          "properties": [
+            {
+              "name": "projection",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "id": 6
         },
         {
@@ -655,7 +667,13 @@
           "point": true,
           "x": 828,
           "y": 420,
-          "properties": [],
+          "properties": [
+            {
+              "name": "projection",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "id": 7
         }
       ],

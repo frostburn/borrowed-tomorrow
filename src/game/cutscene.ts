@@ -1,3 +1,4 @@
+import { ShelterCinematic } from './shelter-cinematic';
 import { AirshipCinematic } from './airship-cinematic';
 import Phaser from 'phaser';
 import { CHARACTERS } from '../content/characters';
@@ -21,24 +22,26 @@ export class Cutscene {
   private closed=false;
   private effects?:ConduitCinematic;
   private launch?:AirshipCinematic;
+  private shelter?:ShelterCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
-      if(sprites.has(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
+      if(sprites.has(name)||script.hideCompanions&&['orrin','kit','petra','celia'].includes(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
     }
     this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
-      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setData('world-actor',true).setDepth(p.y);
+      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setAlpha(actor.projection?.72:1).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
+    if(script.id==='five-shelter')this.shelter=new ShelterCinematic(scene,world);
     if(script.id==='five-launch')this.launch=new AirshipCinematic(scene,world,this.actors,this.motion);
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
     const duration=this.duration?(shot.duration??this.duration):0;
@@ -70,7 +73,7 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
-    if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting')this.layer.add(this.scene.add.image(0,0,'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting')this.layer.add(this.scene.add.image(0,0,'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){
@@ -98,7 +101,7 @@ export class Cutscene {
   }
   reframe(){const p=this.tracked?.active?this.tracked:this.focus?pixel(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.scene.cameras.main.stopFollow();
+    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

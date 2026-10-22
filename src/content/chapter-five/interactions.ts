@@ -1,3 +1,5 @@
+import { completedAnchors,resumeDawnwatch,interactDawnwatch } from './dawnwatch';
+import { emperorTold } from './dawnwatch-scenes';
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import { restoreParty } from '../../rules/state';
@@ -10,22 +12,24 @@ export function resumeChapterFive(h:StoryHost){
  if(map==='airfield'&&!f.airfieldSeen)return h.talk({...scenes.airfield(),done:()=>h.commit('airfieldSeen','airfieldSeen')});
  if(map==='airship'){
   if(!f.firstFlightSeen)return h.talk({...scenes.firstFlight(),done:()=>h.commit('firstFlightSeen','firstFlightSeen')});
-  if(f.hammerplainComplete&&!f.fleetSighted)return h.talk({...scenes.fleet(),done:()=>h.commit('fleetSighted','fleetSighted')});
+  if(completedAnchors(s)&&!f.fleetSighted)return h.talk({...scenes.fleet(!!f.dawnwatchComplete&&!f.hammerplainComplete),done:()=>h.commit('fleetSighted','fleetSighted')});
+  if(f.emperorOfferSeen&&!f.emperorOfferTold)return h.talk({...emperorTold(),done:()=>h.commit('emperorOfferTold','emperorOfferTold')});
  }
  if(map==='hammerplain'){
   if(!f.hammerplainSeen)return h.talk({...scenes.hammerplain(),done:()=>{s.location=arrival('hammerplain','crew');h.commit('hammerplainSeen','hammerplainSeen');}});
   if(f.hammerplainFreed&&!f.hammerplainComplete)return h.talk({...scenes.workers(),done:()=>{s.location=arrival('hammerplain','engine');h.commit('hammerplainComplete','hammerplainComplete');}});
  }
  if(map==='coolingworks'&&!f.coolingSeen)return h.talk({...scenes.cooling(),done:()=>{s.location=arrival('coolingworks','junction');h.commit('coolingSeen','coolingSeen');}});
+ resumeDawnwatch(h);
  if(map==='anchorforge'&&!f.forgeGantrySeen)return h.talk({...scenes.gantry(),done:()=>{s.location=arrival('anchorforge','stand');h.commit('forgeGantrySeen','forgeGantrySeen');}});
 }
 export function interactChapterFive(h:StoryHost,id:string){
  const {state:s}=h,f=s.flags;
  const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
- const go=(map:'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge',name:string)=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
+ const go=(map:'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'dawnwatch',name:string)=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
  const board=()=>f.airshipOwned?go('airship','airfield'):h.talk({...scenes.launch(),done:()=>{h.commit('airshipOwned');go('airship','airfield');}});
  switch(id){
-  case 'airfield-supply':case 'ship-supply':case 'hammer-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
+  case 'airfield-supply':case 'ship-supply':case 'hammer-supply':case 'dawn-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Leave',action:()=>{}},
@@ -35,17 +39,17 @@ export function interactChapterFive(h:StoryHost,id:string){
    if(!f.airfieldSeen)return;
    return h.talk({lines:[SAY('Petra','An officer, a hound and a crow. There’s room to spread out between those crates.')],choices:[{label:'Clear the gangway',action:()=>h.battle('airfield-guard')},{label:'Check our equipment first',action:()=>{}}]});
   case 'airfield-alda':case 'airfield-board':return f.airfieldGuardWon?board():say('Alda','They’ve padlocked the brake. We need the guards off the gangway.');
-  case 'ship-chart':return h.talk({lines:[SAY('Alda',f.hammerplainComplete?'Hammerplain’s marked clear. Where are we landing?':'Where are we landing?')],choices:[
+  case 'ship-chart':return h.talk({lines:[SAY('Alda',completedAnchors(s)>=2&&!f.emperorOfferSeen?'There’s a light in the observation cabin. I didn’t leave one burning. You can reach it from the aft hatch.':completedAnchors(s)?'I’ve marked our cleared anchors. Where are we landing?':'Where are we landing?')],choices:[
    {label:f.hammerplainComplete?'Revisit Hammerplain · anchor disconnected':'Hammerplain · casting works',action:()=>go('hammerplain','start')},
-   {label:'Dawnwatch · Act II coming next',disabled:true,action:()=>{}},
+   {label:f.dawnwatchComplete?'Revisit Dawnwatch · anchor disconnected':'Dawnwatch · the lower town',action:()=>go('dawnwatch','start')},
    {label:'Windmere · Act III coming later',disabled:true,action:()=>{}},
    {label:'Western airfield · supplies',action:()=>go('airfield','ship')},
    {label:'Stay aboard',action:()=>{}},
   ]});
-  case 'ship-alda':return say('Alda',f.fleetSighted?'The fleet’s holding inland. Our landings are clear. Hammerplain’s fitters are checking the drive.':'Bram’s stores are delivered. We can make the anchor landings from here.');
+  case 'ship-alda':if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return say('Alda','There’s a light in the observation cabin. Take the aft hatch and have a look.');return say('Alda',f.dawnwatchComplete?'Dawnwatch’s pilots have the signals aboard. Their launches can escort us through the inland cloud.':f.fleetSighted?'The fleet’s holding inland. Our landings are clear. Hammerplain’s fitters are checking the drive.':'Bram’s stores are delivered. We can make the anchor landings from here.');
   case 'ship-orrin':return say('Orrin',f.hammerplainComplete?'I nearly told her how to set her own choke. There’s a good chance I’ll hear about that for years.':'Hammerplain stamped its name on half the engines I used to repair. I’d like to see what they’re making now.');
-  case 'ship-kit':return say('Kit',f.hammerplainComplete?'Hester sent a packing list. Every washer counted. I like her.':'Alda wants the delivery sacks tied on the left. I’ve checked which left this time.');
-  case 'ship-petra':return say('Petra',f.fleetSighted?'Alban keeps his guns close to the bridge. If we have to board that ship, we’ll need a way past them.':'Dawnwatch has families inside the garrison walls. I won’t ask its soldiers to abandon them.');
+  case 'ship-kit':return say('Kit',f.dawnwatchComplete?'The pilots are in the same book as the railway crews now. If a signal fails, they know where to send a runner.':f.hammerplainComplete?'Hester sent a packing list. Every washer counted. I like her.':'Alda wants the delivery sacks tied on the left. I’ve checked which left this time.');
+  case 'ship-petra':return say('Petra',f.dawnwatchComplete?'Enna’s staying with the town. She didn’t ask whether she had my permission. I’m glad.':f.fleetSighted?'Alban keeps his guns close to the bridge. If we have to board that ship, we’ll need a way past them.':'Dawnwatch has families inside the garrison walls. I won’t ask its soldiers to abandon them.');
   case 'ship-celia':return say('Celia',f.hammerplainComplete?'That boy in the street wouldn’t let go of his mother’s sleeve. I left them both sitting down with some water.':'Dena’s last message says Tomas has commandeered a second writing desk. The ward is managing.');
   case 'hammer-hester':case 'hammer-hester-after':return say('Hester',f.hammerplainComplete?'Both engines are holding. The street’s put the kettle on for the night shift.':f.hammerplainFreed?'Come over to the starters. I want you to hear this.':f.coolingOpened?'The upper gantry is through the cooling works. My crew’s bringing the starters behind you.':'The cooling race is east of here. Keep clear of the crane load.');
   case 'hammer-cooling':return go('coolingworks','start');
@@ -77,5 +81,6 @@ export function interactChapterFive(h:StoryHost,id:string){
    return h.talk({...scenes.release(),done:()=>{s.location=arrival('anchorforge','breaker');h.commit('hammerplainFreed','hammerplainFreed');}});
   case 'forge-cooling':return go('coolingworks','forge');
   case 'forge-hester':return say('Hester',f.hammerplainFreed?'The starters are running. Come back down to the casting floor.':'Water’s holding. The crew is under cover until you stop the carrier.');
+  default:return interactDawnwatch(h,id);
  }
 }

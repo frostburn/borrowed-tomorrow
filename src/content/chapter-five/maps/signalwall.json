@@ -657,12 +657,12 @@
             {
               "name": "label",
               "type": "string",
-              "value": "The signal watch"
+              "value": "Enna \u00b7 the signal watch"
             },
             {
               "name": "sprite",
               "type": "string",
-              "value": "dawn-soldier"
+              "value": "enna"
             }
           ],
           "id": 4

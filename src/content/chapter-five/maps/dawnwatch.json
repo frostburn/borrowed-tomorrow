@@ -680,12 +680,12 @@
             {
               "name": "label",
               "type": "string",
-              "value": "A watch soldier"
+              "value": "Enna \u00b7 the shelter watch"
             },
             {
               "name": "sprite",
               "type": "string",
-              "value": "dawn-soldier"
+              "value": "enna"
             },
             {
               "name": "hiddenFlag",
@@ -704,12 +704,12 @@
             {
               "name": "label",
               "type": "string",
-              "value": "A watch soldier \u00b7 town watch"
+              "value": "Enna \u00b7 the town watch"
             },
             {
               "name": "sprite",
               "type": "string",
-              "value": "dawn-soldier"
+              "value": "enna"
             },
             {
               "name": "requiredFlag",
