@@ -624,9 +624,10 @@ export class Adventure extends Phaser.Scene {
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-panel')!,{
       current:()=>this.mode==='battle'&&!this.ui.modalOpen&&!this.ui.panelOpen?this.battle:undefined,
       initial:()=>this.testingBattle,
-      apply:battle=>{
+      apply:(battle,restart)=>{
         this.tweens.killAll();this.enemyAttack=undefined;this.battle=battle;this.busy=false;this.plan=undefined;this.hover=undefined;this.selected='move';
         this.battleCursor={...active(battle)!.hex};
+        if(restart)this.audio.setMode(this.battleDefinition.music);
         this.drawBattle();this.renderBattleControls();
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },

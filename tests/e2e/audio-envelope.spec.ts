@@ -8,7 +8,7 @@ test('cancelled queued instruments remain silent, while a new arrangement still 
   // @ts-expect-error Vite serves the actual campaign/workshop synth.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   const results=[];
-  for(const instrument of ['keys','strings','reed','bell','bass','round-bass','kick','snare','hat'] as const){
+  for(const instrument of ['keys','strings','reed','bell','bass','round-bass','kick','snare','hat','brass','timpani','cymbal'] as const){
    const rate=48000,c=new OfflineAudioContext(2,rate*2,rate),synth=new Synth(c,c.destination);
    // Mimic seeking/stopping just before any of several queued note starts,
    // including starts inside the old 60ms release and its 10ms stop margin.

@@ -67,3 +67,12 @@ The capital and control gallery use the retained 32-bar Evangelion-inspired orig
 | Sanctuary Warden — The Emperor's Order | 120 BPM | The sanctuary motif becomes a forceful D-minor lead with a lifted answer. The F-minor middle uses half-time drums, then returns to the opening. Only the warden encounter uses this cue. |
 
 The shared keys instrument has a struck attack and a two-stage decay, with quieter upper partials; sustained notes should no longer resemble an organ. Accompaniment and percussion change with musical sections and phrase endings. Verify all five full loops through the actual Web Audio rack, including transitions and live Sound controls. Keep these compositions procedural; rendered QA recordings are not runtime assets.
+
+
+## Chapter Five flagship — Iron Above the Clouds
+
+`score-flagship.ts` writes a short two-bar fanfare followed by a 32-bar battle loop at **quarter = 132, 10/8**. The pulse is **2+2+3+3 eighths**: two crisp marching steps open the bar, then two longer groups let the ship float. Bass attacks at quarter positions 0, 1, 2 and 3.5; kick at 0/2 and snare at 1/3.5 keep the same grouping. Reserve short sixteenth-note rolls for the eight-bar cadences.
+
+A D-minor brass call opens into an answering eight bars, a broader string-led middle through F major, Db major and Eb, and a varied brass return. A7 keeps its C# spelling; the Db/Ab middle retains its flats. The last A7 pickup returns to D minor. Sustained inner voices and rests support the line without constant arpeggios. Newly synthesized brass uses paired saws, a quiet lower triangle and an opening/closing filter. Tuned timpani combines decaying membrane partials with a short settling attack; cymbals use a decaying high-passed wash and quiet inharmonic metal. None requires sampled audio or new dependencies.
+
+The intro plays once per explicit cue/battle start, never when the loop wraps. `ARRANGEMENTS.flagship` declares five quarter-note beats, the displayed 10/8 signature and two intro bars. `scorePosition` maps absolute playback after bar 34 back to bar 3. Music → Ch 5 exposes the complete form, loop markers and separate Brass/Timpani audition. Other chapter cues retain their existing transitions and 31-EDO tuning. Validate the full score through the actual Web Audio rack, including the intro/loop seam, release of queued new instruments and desktop/phone transport. Rendered QA audio remains outside runtime assets.

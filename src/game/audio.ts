@@ -65,7 +65,12 @@ export class Audio {
     this.cinematicLevel=Math.max(0,Math.min(1,level));
     if(this.context&&this.musicGain)this.musicGain.gain.setTargetAtTime(.52*this.cinematicLevel,this.context.currentTime,.06);
   }
-  setMode(mode:MusicMode){this.pending=mode;if(!this.enabled)this.mode=mode;}
+  setMode(mode:MusicMode){
+    // An explicit selection starts a fanfare immediately, including battle restarts.
+    // Ordinary location/arrangement changes retain their bar-aligned transition.
+    this.pending=mode;if(!this.enabled)this.mode=mode;
+    else if(ARRANGEMENTS[mode].introBars)void this.play(mode);
+  }
   private schedule(){
     const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
     if(this.next<c.currentTime)this.next=c.currentTime+.03;

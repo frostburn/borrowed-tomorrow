@@ -26,16 +26,18 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    const comparisonButton=page.getByRole('button',{name:'Compare C#4 / Db4',exact:true});
    await comparisonButton.scrollIntoViewIfNeeded();
    // Check the visible native raster: DOM text already contained # when the
-   // missing bitmap glyph incorrectly painted question marks.
+   // missing bitmap glyph incorrectly painted question marks. Check the
+   // current 3x5 compact glyph at the shared 2px raster, including every pixel.
    await expect.poll(()=>comparisonButton.evaluate(button=>{
     const text=button.firstChild!,range=document.createRange(),at=text.textContent!.indexOf('#');range.setStart(text,at);range.setEnd(text,at+1);
     const box=range.getBoundingClientRect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),info=window.borrowedTomorrowPixels.inspect();
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,data=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
-    const left=info.physicalLeft+Math.round((box.left-source.left)/info.cssScale)*info.physicalScale;
-    const top=info.physicalTop+(Math.round((box.top-source.top)/info.cssScale)+1)*info.physicalScale;
-    const color=getComputedStyle(button).color.match(/\d+/g)!.slice(0,3).map(Number),mask=['01010','01010','11111','01010','11111','01010','01010'];let wrong=0;
-    for(let y=0;y<7;y++)for(let x=0;x<5;x++){
-     const i=((top+y*info.physicalScale)*canvas.width+left+x*info.physicalScale)*4;
+    const unit=info.rasterUnit,snap=(v:number)=>Math.round(v/unit)*unit;
+    const left=info.physicalLeft+snap(Math.round((box.left-source.left)/info.cssScale))*info.physicalScale;
+    const top=info.physicalTop+snap(Math.round((box.top-source.top)/info.cssScale)+1)*info.physicalScale;
+    const color=getComputedStyle(button).color.match(/\d+/g)!.slice(0,3).map(Number),mask=['101','111','101','111','101'];let wrong=0;
+    for(let y=0;y<5;y++)for(let x=0;x<3;x++)for(let py=0;py<unit*info.physicalScale;py++)for(let px=0;px<unit*info.physicalScale;px++){
+     const i=((top+y*unit*info.physicalScale+py)*canvas.width+left+x*unit*info.physicalScale+px)*4;
      const ink=color.every((c,n)=>data[i+n]===c);if(ink!==(mask[y][x]==='1'))wrong++;
     }
     return wrong;
