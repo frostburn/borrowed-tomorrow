@@ -25,7 +25,7 @@ export const launch=()=>scene('airfield','five-launch','Above the railway',[
  line('Nell','Which one?'),
  line('Kit','Yours. If you— I mean, I’m already carrying the others.'),
  line('Nell','Thanks. I’ll get the door.'),
- line('The gangway','The last bag goes aboard. Alda folds the gangway and releases the mooring.',{duration:1000,track:'nell',actors:{nell:{to:{x:32,y:20}},orrin:{to:{x:30,y:20}},kit:{to:{x:33,y:21}},petra:{to:{x:34,y:20}},celia:{to:{x:31,y:21}},alda:{to:{x:32,y:19}}}}),
+ line('The gangway','The last bag goes aboard. Alda folds the gangway and releases the mooring.',{effect:'survey-board',duration:1400,focus:{x:32,y:21}} ),
  line('Alda','Hold a rail. She lifts a little nose-first.',{effect:'survey-launch',duration:1800,cue:'steam',focus:{x:32,y:18}}),
 ]);
 export const firstFlight=()=>scene('airship','five-first-flight','The flight chart',[
@@ -40,8 +40,8 @@ export const firstFlight=()=>scene('airship','five-first-flight','The flight cha
  line('Alda','Put a finger on the flight chart when you’re ready. There’s water and a bunk aft.'),
 ]);
 export const hammerplain=()=>scene('hammerplain','five-hammer','The stopped shift',[
- line('Hammerplain','A casting crane swings over the works. Beyond the fence, a woman stands motionless with a loaf halfway into her shopping bag.',{focus:{x:14,y:26},cut:true}),
- line('Nell','Her boy’s still holding the bag open.'),
+ line('Hammerplain','A casting crane swings over the works. Beyond the fence, a woman stands motionless with a loaf halfway into her shopping bag.',{focus:{x:32,y:18},cut:true}),
+ line('Nell','Her boy’s still holding the bag open.',{focus:{x:14,y:26}}),
  line('Hester','They were buying their supper when it happened. My sister’s in that street.',{focus:{x:25,y:26}}),
  line('Superintendent Durn','Finish the anchor quota and I can apply for its release.'),
  line('Hester','You said that last shift. And you’ve taken the engines we built to run the houses.'),
@@ -49,8 +49,8 @@ export const hammerplain=()=>scene('hammerplain','five-hammer','The stopped shif
  line('Orrin','You’re melting them? Those don’t even use crystals.'),
  line('Hester','They don’t. That’s why we made them.'),
  line('Petra','Step away from her.'),
- line('Superintendent Durn','Keep them out of my works.',{duration:750,actors:{durn:{to:{x:54,y:26}}},track:'durn'}),
- line('Nell','We came to disconnect the anchor. Can you help?',{focus:{x:25,y:26}}),
+ line('Superintendent Durn','Keep them out of my works.',{duration:750,actors:{durn:{to:{x:44,y:29}}},track:'durn'}),
+ line('Nell','We came to disconnect the anchor. Can you help?',{focus:{x:25,y:26},actors:{durn:{to:{x:55,y:29}}}}),
  line('Hester','Hester. Casting forewoman. I can switch the works over, if you open the cooling race.'),
  line('Orrin','We can cut the return at the gantry, then?'),
  line('Hester','Once there’s water under those jackets. Cut it dry and we lose the engines with it.'),
@@ -75,8 +75,8 @@ export const water=()=>scene('coolingworks','five-water','Water under the jacket
  line('Hester','They know the changeover. Take the upper gantry. I’m coming with you.'),
 ]);
 export const gantry=()=>scene('anchorforge','five-gantry','The furnace carrier',[
- line('The anchor gantry','Two finished engines hang beneath the crane. A tracked furnace rolls along the casting rails toward them.',{focus:{x:34,y:19},cut:true}),
- line('Hester','Stop that carrier! There are people under the load!'),
+ line('The anchor gantry','The finished engines stand beneath the crane. A tracked furnace rolls along the casting rails toward them.',{focus:{x:34,y:19},cut:true}),
+ line('Hester','Stop that carrier! There are people under the load!',{focus:{x:27,y:25}}),
  line('Superintendent Durn','Clear the floor. Feed the engines into it.'),
  line('Petra','You’ll bury your own workers.'),
  line('Superintendent Durn','I have an output order. I won’t answer for a failed anchor.'),
@@ -99,8 +99,8 @@ export const release=()=>scene('anchorforge','five-release','The anchor breaker'
 export const workers=()=>scene('hammerplain','five-workers','The next shift',[
  line('Hammerplain','A door bangs in the street. The woman catches the loaf as it slips from her hand. Her boy laughs, then starts to cry.',{focus:{x:18,y:31},cut:true,cue:'win'}),
  line('Celia','I’ll check on them.'),
- line('Orrin','Hester, that starter likes the choke half—',{focus:{x:31,y:26}}),
- line('The engine','Hester sets the lever and turns the crank. The flywheel takes up a steady beat.'),
+ line('Orrin','Hester, that starter likes the choke half—',{focus:{x:35,y:26},actors:{orrin:{to:{x:33,y:26}}}}),
+ line('The engine','Hester sets the lever and turns the crank. The flywheel takes up a steady beat.',{focus:{x:37,y:25},duration:600,actors:{hester:{to:{x:37,y:25}}},cue:'steam'}),
  line('Orrin','You’ve got it.'),
  line('Hester','We did build it.'),
  line('Orrin','I know. Sorry. I’m used to doing the whole thing myself.'),

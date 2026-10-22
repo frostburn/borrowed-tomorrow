@@ -15,10 +15,10 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
 };
 export function objective(s:GameState):string{
  const f=s.flags;
- if(!f.airfieldGuardWon)return 'Clear the confiscation detail at the survey ship’s gangway.';
+ if(!f.airfieldGuardWon)return 'Clear the guards at the survey gangway.';
  if(!f.airshipOwned)return 'Meet Alda at the gangway and board the survey ship.';
  if(!f.firstFlightSeen)return 'Join Alda at the flight chart.';
- if(!f.hammerplainSeen)return 'Choose Hammerplain on the ship’s flight chart.';
+ if(!f.hammerplainSeen)return 'Choose Hammerplain at the forward flight chart.';
  if(!f.coolingSeen)return 'Follow the eastern walkway to Hammerplain’s cooling race.';
  if(!f.forgeApproachWon)return 'Choose the freight lift or the shallow race walk at the cooling junction.';
  if(!f.coolingOpened)return 'Turn the red cooling wheel on the eastern walkway.';
@@ -26,5 +26,5 @@ export function objective(s:GameState):string{
  if(!f.hammerplainFreed)return 'Pull the anchor breaker above the gantry.';
  if(!f.hammerplainComplete)return 'Return to the casting floor and check the replacement engines.';
  if(!f.fleetSighted)return 'Return to the survey ship at the western landing.';
- return 'Act I complete · Hammerplain is free. Review equipment or revisit the foundry from the flight chart.';
+ return 'Act I complete · Hammerplain is free. Rest aboard or revisit.';
 }

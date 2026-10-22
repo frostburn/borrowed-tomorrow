@@ -73,6 +73,8 @@ def portrait(name):
 def export():
  for name,model in [('alda',alda),('hester',hester),('durn',durn)]:
   (ROOT/f'public/art/vector/{name}.svg').write_text(model().svg())
-  (ROOT/f'public/art/vector/portrait-{name}.svg').write_text(portrait(name))
- print('Exported Alda, Hester and Durn with independent native SVG actors and portraits.')
+  # Portraits become editable originals after their initial seed.
+  path=ROOT/f'public/art/vector/portrait-{name}.svg'
+  if not path.exists():path.write_text(portrait(name))
+ print('Exported Alda, Hester and Durn with native SVG actors; retained editable portrait originals.')
 if __name__=='__main__':export()

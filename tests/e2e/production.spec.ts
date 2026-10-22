@@ -199,3 +199,11 @@ test('production missing regulator SVG keeps the capital departure intact for re
  await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
  await page.unroute('**/art/vector/bosses/conduit-regulator-motion.svg');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
+
+test('production Chapter Five continues the coast departure and supports deep Act I saves without dev tools',async({page})=>{
+ const {anchorDeparture,anchorCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');const before=anchorDeparture();before.activeParty=['nell','petra','celia'];before.party[0].hp=61;before.party[1].focus=2;await importSave(page,before);
+ await page.getByRole('button',{name:'Begin Chapter Five',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-airfield');await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+ expect((await inspect(page)).state).toMatchObject({chapter:'chapter-five',boundary:null,party:before.party,activeParty:before.activeParty,inventory:before.inventory});
+ const saved=anchorCheckpoint('furnaceWon');saved.location={map:'anchorforge',x:32,y:23};await importSave(page,saved);await approach(page,'forge-anchor');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.hammerplainFreed).toBe(true);
+ await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.hammerplainFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Begin Chapter Five (canonical)',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+});

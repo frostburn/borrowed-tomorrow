@@ -31,8 +31,8 @@ export function pickBossBody(b:Battle,action:AbilityId|'move',x:number,y:number,
   if(px<0||px>=width||py<0||py>=height)return;
   const clicked=fromPixel(x,y),direct=unitAt(b,clicked);
   if(direct&&direct.id!==boss.id)return;
-  if(direct?.id===boss.id&&legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
+  if(legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
   if(!mask||mask[py*width+px]===0)return;
   const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
-  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??parts[0];
+  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id));
 }

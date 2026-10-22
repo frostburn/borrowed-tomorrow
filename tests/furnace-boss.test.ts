@@ -37,6 +37,6 @@ it('area attacks hit the carrier once through overlapping contacts, while Dazzle
  boss.dazzledAttacks=3;b.queue=[boss.id,nell.id];boss.intent!.cells=[nell.hex];const reduced=damage(boss,nell,'judgment');boss.dazzledAttacks=0;expect(reduced).toBeLessThan(damage(boss,nell,'judgment'));boss.dazzledAttacks=3;enemyTurn(b);expect(boss.dazzledAttacks).toBe(2);
 });
 it('hot metal damages ground units once per round and flying crows ignore it',()=>{
- const {b,boss}=setup(),nell=b.units[0],crow=b.units.find(u=>u.kind==='crow')!;b.furnaceHeat=[{hex:nell.hex,untilRound:2},{hex:crow.hex,untilRound:2}];prepareFurnace(b);b.queue=[nell.id];const nhp=nell.hp,chp=crow.hp;
- defend(b);expect(nell.hp).toBe(nhp-6);expect(crow.hp).toBe(chp);expect(b.round).toBe(2);expect(boss.intent!.round).toBe(2);
+ const {b,boss}=setup(),nell=b.units[0],crow=b.units.find(u=>u.kind==='crow')!;b.furnaceHeat=[{hex:nell.hex,untilRound:2},{hex:crow.hex,untilRound:2},{hex:boss.hex,untilRound:2}];prepareFurnace(b);b.queue=[nell.id];const nhp=nell.hp,chp=crow.hp,bhp=boss.hp;
+ defend(b);expect(nell.hp).toBe(nhp-6);expect(crow.hp).toBe(chp);expect(boss.hp).toBe(bhp);expect(b.round).toBe(2);expect(boss.intent!.round).toBe(2);
 });

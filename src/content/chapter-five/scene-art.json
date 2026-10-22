@@ -93,6 +93,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-five-deck-rail",
+      "url": "art/vector/chapter-five/deck-rail.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
       "key": "scene-five-ship-chart-table",
       "url": "art/vector/chapter-five/ship-chart-table.svg",
       "x": 720,
@@ -155,13 +165,33 @@
       "layerId": 2
     },
     {
+      "key": "scene-five-foundry-street",
+      "url": "art/vector/chapter-five/foundry-street.svg",
+      "x": 0,
+      "y": 342,
+      "width": 256,
+      "height": 236,
+      "depth": 578,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-street-lights",
+      "url": "art/vector/chapter-five/street-lights.svg",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 578,
+      "depth": 579,
+      "layerId": 4
+    },
+    {
       "key": "scene-five-casting-hall",
       "url": "art/vector/chapter-five/casting-hall.svg",
       "x": 260,
-      "y": 230,
+      "y": 330,
       "width": 600,
       "height": 270,
-      "depth": 500,
+      "depth": 600,
       "layerId": 3
     },
     {
@@ -177,11 +207,11 @@
     {
       "key": "scene-five-replacement-engine",
       "url": "art/vector/chapter-five/replacement-engine.svg",
-      "x": 720,
-      "y": 445,
+      "x": 900,
+      "y": 460,
       "width": 200,
       "height": 140,
-      "depth": 585,
+      "depth": 600,
       "layerId": 3
     },
     {
@@ -296,6 +326,16 @@
       "width": 200,
       "height": 140,
       "depth": 590,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-second-engine",
+      "url": "art/vector/chapter-five/gantry-second-engine.svg",
+      "x": 1010,
+      "y": 440,
+      "width": 200,
+      "height": 140,
+      "depth": 580,
       "layerId": 3
     },
     {

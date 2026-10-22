@@ -13,11 +13,11 @@ export function resumeChapterFive(h:StoryHost){
   if(f.hammerplainComplete&&!f.fleetSighted)return h.talk({...scenes.fleet(),done:()=>h.commit('fleetSighted','fleetSighted')});
  }
  if(map==='hammerplain'){
-  if(!f.hammerplainSeen)return h.talk({...scenes.hammerplain(),done:()=>h.commit('hammerplainSeen','hammerplainSeen')});
-  if(f.hammerplainFreed&&!f.hammerplainComplete)return h.talk({...scenes.workers(),done:()=>h.commit('hammerplainComplete','hammerplainComplete')});
+  if(!f.hammerplainSeen)return h.talk({...scenes.hammerplain(),done:()=>{s.location=arrival('hammerplain','crew');h.commit('hammerplainSeen','hammerplainSeen');}});
+  if(f.hammerplainFreed&&!f.hammerplainComplete)return h.talk({...scenes.workers(),done:()=>{s.location=arrival('hammerplain','engine');h.commit('hammerplainComplete','hammerplainComplete');}});
  }
- if(map==='coolingworks'&&!f.coolingSeen)return h.talk({...scenes.cooling(),done:()=>h.commit('coolingSeen','coolingSeen')});
- if(map==='anchorforge'&&!f.forgeGantrySeen)return h.talk({...scenes.gantry(),done:()=>h.commit('forgeGantrySeen','forgeGantrySeen')});
+ if(map==='coolingworks'&&!f.coolingSeen)return h.talk({...scenes.cooling(),done:()=>{s.location=arrival('coolingworks','junction');h.commit('coolingSeen','coolingSeen');}});
+ if(map==='anchorforge'&&!f.forgeGantrySeen)return h.talk({...scenes.gantry(),done:()=>{s.location=arrival('anchorforge','stand');h.commit('forgeGantrySeen','forgeGantrySeen');}});
 }
 export function interactChapterFive(h:StoryHost,id:string){
  const {state:s}=h,f=s.flags;
@@ -47,7 +47,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'ship-kit':return say('Kit',f.hammerplainComplete?'Hester sent a packing list. Every washer counted. I like her.':'Alda wants the delivery sacks tied on the left. I’ve checked which left this time.');
   case 'ship-petra':return say('Petra',f.fleetSighted?'Alban keeps his guns close to the bridge. If we have to board that ship, we’ll need a way past them.':'Dawnwatch has families inside the garrison walls. I won’t ask its soldiers to abandon them.');
   case 'ship-celia':return say('Celia',f.hammerplainComplete?'That boy in the street wouldn’t let go of his mother’s sleeve. I left them both sitting down with some water.':'Dena’s last message says Tomas has commandeered a second writing desk. The ward is managing.');
-  case 'hammer-hester':return say('Hester',f.hammerplainComplete?'Both engines are holding. The street’s put the kettle on for the night shift.':f.hammerplainFreed?'Come over to the starters. I want you to hear this.':f.coolingOpened?'The upper gantry is through the cooling works. My crew’s bringing the starters behind you.':'The cooling race is east of here. Keep clear of the crane load.');
+  case 'hammer-hester':case 'hammer-hester-after':return say('Hester',f.hammerplainComplete?'Both engines are holding. The street’s put the kettle on for the night shift.':f.hammerplainFreed?'Come over to the starters. I want you to hear this.':f.coolingOpened?'The upper gantry is through the cooling works. My crew’s bringing the starters behind you.':'The cooling race is east of here. Keep clear of the crane load.');
   case 'hammer-cooling':return go('coolingworks','start');
   case 'hammer-ship':return go('airship','hammerplain');
   case 'hammer-coat':

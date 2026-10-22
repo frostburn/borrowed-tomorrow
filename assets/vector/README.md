@@ -31,3 +31,6 @@ The seven Chapter Two layouts now compile with the same scene system; see [the C
 ## Chapter Three
 
 All eight Chapter Three layouts now use whole SVG scene pieces. Seven new editable originals preserve the pressure hall, factory wings, medical pavilion, instrument bank, vessel, window bay and stairs. Registered vector pipes and steel/masonry fields keep the existing story geometry; [Chapter Three guide](chapter-three.md). `node scripts/export-chapter-three-art.mjs` rebuilds computed maps and the three supporting actors without overwriting any original scenery or portrait.
+
+
+[Chapter Five Act I](chapter-five.md) continues the native direction across the western airfield, survey deck, Hammerplain, cooling race, anchor gantry and five arenas. `node scripts/export-chapter-five-art.mjs` reproduces the Tiled layouts and SVG planes/props, including the carrier’s world/battle geometry. Story flags control the street, water, crew and horizon. No bitmap input or new production dependency is needed.

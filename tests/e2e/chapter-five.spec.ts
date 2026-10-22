@@ -47,3 +47,23 @@ test('the painted cooling wheel and anchor breaker are clickable, with interrupt
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');const water=anchorCheckpoint('forgeApproachWon');water.location={map:'coolingworks',x:45,y:25};await importSave(page,water);await clickWorld(page,46,20);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-water');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.coolingOpened).toBe(true);
  const breaker=anchorCheckpoint('furnaceWon');breaker.location={map:'anchorforge',x:32,y:23};await importSave(page,breaker);await clickWorld(page,32,17);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-release');expect((await inspect(page)).state.flags.hammerplainFreed).toBeUndefined();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('anchorforge');expect((await inspect(page)).state.flags.hammerplainFreed).toBeUndefined();await approach(page,'forge-anchor');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.hammerplainFreed).toBe(true);expect(errors).toEqual([]);
 });
+
+test('a legal edge blast keeps its grid aim when the carrier artwork overlaps an out-of-range contact',async({page})=>{
+ await page.goto('/');
+ const result=await page.evaluate(async()=>{
+  // @ts-expect-error Vite serves the shared rules used by the visible battle.
+  const {createBattle,legalAim,targets}:typeof import('../../src/rules/combat')=await import('/src/rules/combat.ts');
+  // @ts-expect-error Vite-only authored fixture, never a campaign mutation.
+  const {chapterFiveStart}:typeof import('../../src/dev/canonical-saves')=await import('/src/dev/canonical-saves.ts');
+  // @ts-expect-error Vite serves the actual projected-body picker.
+  const {pickBossBody}:typeof import('../../src/game/boss-display')=await import('/src/game/boss-display.ts');
+  // @ts-expect-error Vite serves the shared grid geometry.
+  const {offset,toPixel}:typeof import('../../src/rules/hex')=await import('/src/rules/hex.ts');
+  const b=createBattle('hammer-carrier',chapterFiveStart()),nell=b.units[0],boss=b.units.find(u=>u.id==='furnace-carrier')!;
+  b.queue=[nell.id,boss.id];nell.hex=offset(9,6);boss.hex=offset(4,1);const aim=offset(6,2),p=toPixel(aim);
+  const img=new Image();img.src='/art/vector/chapter-five/furnace-carrier-battle.svg';await img.decode();const c=document.createElement('canvas');c.width=224;c.height=168;c.getContext('2d')!.drawImage(img,0,0);const rgba=c.getContext('2d')!.getImageData(0,0,224,168).data,mask=Uint8Array.from({length:224*168},(_,p)=>rgba[p*4+3]);
+  const picked=pickBossBody(b,'burst',p.x,p.y,boss,224,168,mask);
+  return {aim,picked,valid:legalAim(b,nell,'burst',aim),hitsBoss:targets(b,nell,'burst',aim).includes(boss),contactsInRange:boss.footprint!.filter(h=>legalAim(b,nell,'burst',{q:boss.hex.q+h.q,r:boss.hex.r+h.r})).length};
+ });
+ expect(result.valid).toBe(true);expect(result.hitsBoss).toBe(true);expect(result.contactsInRange).toBe(0);expect(result.picked).toEqual(result.aim);
+});

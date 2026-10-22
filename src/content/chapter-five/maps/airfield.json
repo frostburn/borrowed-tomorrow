@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 9,
-  "nextobjectid": 24,
+  "nextobjectid": 25,
   "properties": [
     {
       "name": "name",
@@ -672,6 +672,14 @@
           "y": 612,
           "properties": [],
           "id": 6
+        },
+        {
+          "name": "cabin",
+          "point": true,
+          "x": 780,
+          "y": 468,
+          "properties": [],
+          "id": 7
         }
       ],
       "properties": []
@@ -694,7 +702,7 @@
               "value": "civilian-dockhand"
             }
           ],
-          "id": 7
+          "id": 8
         },
         {
           "name": "loading-hand",
@@ -708,7 +716,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 8
+          "id": 9
         },
         {
           "name": "crew-passenger",
@@ -722,7 +730,7 @@
               "value": "civilian-traveler-blue"
             }
           ],
-          "id": 9
+          "id": 10
         }
       ],
       "properties": []
@@ -739,7 +747,7 @@
           "x": 588,
           "y": 708,
           "properties": [],
-          "id": 10
+          "id": 11
         },
         {
           "name": "orrin",
@@ -747,7 +755,7 @@
           "x": 540,
           "y": 732,
           "properties": [],
-          "id": 11
+          "id": 12
         },
         {
           "name": "kit",
@@ -755,7 +763,7 @@
           "x": 588,
           "y": 756,
           "properties": [],
-          "id": 12
+          "id": 13
         },
         {
           "name": "petra",
@@ -763,7 +771,7 @@
           "x": 636,
           "y": 732,
           "properties": [],
-          "id": 13
+          "id": 14
         },
         {
           "name": "celia",
@@ -771,7 +779,7 @@
           "x": 540,
           "y": 756,
           "properties": [],
-          "id": 14
+          "id": 15
         },
         {
           "name": "alda",
@@ -779,7 +787,7 @@
           "x": 732,
           "y": 612,
           "properties": [],
-          "id": 15
+          "id": 16
         },
         {
           "name": "durn",
@@ -787,7 +795,7 @@
           "x": 924,
           "y": 636,
           "properties": [],
-          "id": 16
+          "id": 17
         }
       ],
       "properties": []
@@ -804,7 +812,7 @@
           "x": 588,
           "y": 708,
           "properties": [],
-          "id": 17
+          "id": 18
         },
         {
           "name": "orrin",
@@ -812,7 +820,7 @@
           "x": 540,
           "y": 732,
           "properties": [],
-          "id": 18
+          "id": 19
         },
         {
           "name": "kit",
@@ -820,7 +828,7 @@
           "x": 588,
           "y": 756,
           "properties": [],
-          "id": 19
+          "id": 20
         },
         {
           "name": "petra",
@@ -828,7 +836,7 @@
           "x": 636,
           "y": 732,
           "properties": [],
-          "id": 20
+          "id": 21
         },
         {
           "name": "celia",
@@ -836,7 +844,7 @@
           "x": 540,
           "y": 756,
           "properties": [],
-          "id": 21
+          "id": 22
         },
         {
           "name": "alda",
@@ -844,7 +852,7 @@
           "x": 756,
           "y": 540,
           "properties": [],
-          "id": 22
+          "id": 23
         },
         {
           "name": "durn",
@@ -852,7 +860,7 @@
           "x": 1332,
           "y": 708,
           "properties": [],
-          "id": 23
+          "id": 24
         }
       ],
       "properties": []
