@@ -1,6 +1,6 @@
 # Next: Chapter Five — Taking the World Back
 
-Chapters One–Four are playable canon. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap.
+Chapters One–Four are playable canon. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap. [chapter-five-plan.md](chapter-five-plan.md) is the approved author plan: three freely ordered regional acts followed by Alban's flagship. It does not change this saved departure or make those later events playable canon.
 
 ## Exact save
 

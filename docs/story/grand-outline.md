@@ -80,11 +80,13 @@ Nell and Tomas take their promised walk to the sea. Her original pursuit has suc
 
 **Goal:** sever the anchors and assemble an assault. **Payoff:** liberated regions and an alliance the player helped create.
 
-Acquire an airship. Let the player choose the order of three major adventures, each tied to a companion's unresolved conflict and a different regional danger. Their purposes, bosses and outcomes must differ; avoid three interchangeable temples with differently colored keys.
+Acquire the survey airship at the western airfield in a shared opening. Four acts follow: **Hammerplain, Dawnwatch and Windmere in any order**, then **Alban's flagship** after all three. Use a compact landing chart and a traveling home aboard the ship. Each region stops further collection and supplies something the capital assault needs.
 
-Orrin's industrial region supplies the alliance and proves transport can survive without divine crystal power. The knight confronts a former commander and persuades imperial troops to protect their own people. The healer exposes the concealed bargain and helps communities surrender the patron's protection without surrendering each other.
+At Hammerplain, Orrin and the foundry workers save independent engines from a mobile furnace carrier. At Dawnwatch, Petra protects the lower town, defeats her former commander and earns the help of soldiers who refuse to fire on their neighbors. At Windmere, Celia and the hospital staff replace the ward's dependence on an anchor before defeating its mirrored ward engine. The healing was real; hiding its price was the betrayal. The three acts have distinct routes, bosses, rewards and changed return visits. None restores days already taken.
 
-Earlier rescues provide crews, intelligence, shelter and allies. Alban's campaign against the party ends decisively here; choose his final fate when his later scenes are authored. The emperor's projections become less human. His offer of Nell's old life arrives after the player has enough experience of the wider world to understand its cost.
+Earlier rescues supply crews, medicine and intelligence. Kit's courier contacts connect the alliance. After two regional victories, the Emperor offers Nell a preserved Larkspur morning with Ansel alive; she is tempted without anyone being resurrected. Alban's cordon becomes the fourth-act obstacle. Fight upward from the survey ship against his enormous flagship: destroy its two batteries separately, survive the boarding troops, then expose the bridge. When Alban orders fire through his own men, they refuse. Petra takes him prisoner in front of them. His authority and pursuit end here.
+
+The alliance opens the approach to the floating capital. The Emperor's defeat remains Chapter Six; the god's own domain remains Chapter Seven. See [chapter-five-plan.md](chapter-five-plan.md) for the four-act design and the boundary between the dev preview and future campaign work.
 
 ## Chapter Six — The Emperor's Last Day
 
