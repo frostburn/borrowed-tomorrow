@@ -349,6 +349,294 @@
       "layerId": 4
     }
   ],
+  "dawnwatch": [
+    {
+      "key": "scene-five-dawnwatch-back",
+      "url": "art/vector/chapter-five/dawnwatch-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-dawnwatch-floor",
+      "url": "art/vector/chapter-five/dawnwatch-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-watch-citadel",
+      "url": "art/vector/chapter-five/watch-citadel.svg",
+      "x": 450,
+      "y": 80,
+      "width": 800,
+      "height": 300,
+      "depth": 380,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-lower-houses",
+      "url": "art/vector/chapter-five/lower-houses.svg",
+      "x": 20,
+      "y": 335,
+      "width": 410,
+      "height": 260,
+      "depth": 595,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-watch-barracks-wing",
+      "url": "art/vector/chapter-five/watch-barracks-wing.svg",
+      "x": 1010,
+      "y": 265,
+      "width": 600,
+      "height": 270,
+      "depth": 535,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-shelter-front",
+      "url": "art/vector/chapter-five/shelter-front.svg",
+      "x": 702,
+      "y": 311,
+      "width": 252,
+      "height": 192,
+      "depth": 503,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-shelter-bar",
+      "url": "art/vector/chapter-five/shelter-bar.svg",
+      "x": 772,
+      "y": 380,
+      "width": 114,
+      "height": 120,
+      "depth": 500,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-shelter-lamps",
+      "url": "art/vector/chapter-five/shelter-lamps.svg",
+      "x": 0,
+      "y": 0,
+      "width": 960,
+      "height": 450,
+      "depth": 504,
+      "layerId": 5
+    }
+  ],
+  "watchbarracks": [
+    {
+      "key": "scene-five-watchbarracks-back",
+      "url": "art/vector/chapter-five/watchbarracks-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-watchbarracks-floor",
+      "url": "art/vector/chapter-five/watchbarracks-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-west-gun",
+      "url": "art/vector/chapter-five/west-gun.svg",
+      "x": 225,
+      "y": 397,
+      "width": 204,
+      "height": 140,
+      "depth": 537,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-east-gun",
+      "url": "art/vector/chapter-five/east-gun.svg",
+      "x": 1060,
+      "y": 397,
+      "width": 204,
+      "height": 140,
+      "depth": 537,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-west-silent-gun",
+      "url": "art/vector/chapter-five/west-silent-gun.svg",
+      "x": 246,
+      "y": 518,
+      "width": 180,
+      "height": 60,
+      "depth": 542,
+      "layerId": 6
+    },
+    {
+      "key": "scene-five-east-silent-gun",
+      "url": "art/vector/chapter-five/east-silent-gun.svg",
+      "x": 1081,
+      "y": 518,
+      "width": 180,
+      "height": 60,
+      "depth": 542,
+      "layerId": 7
+    },
+    {
+      "key": "scene-five-signal-stair",
+      "url": "art/vector/chapter-five/signal-stair.svg",
+      "x": 647,
+      "y": 340,
+      "width": 240,
+      "height": 104,
+      "depth": 444,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-field-locker",
+      "url": "art/vector/chapter-five/field-locker.svg",
+      "x": 1169,
+      "y": 643,
+      "width": 128,
+      "height": 58,
+      "depth": 701,
+      "layerId": 3
+    }
+  ],
+  "signalwall": [
+    {
+      "key": "scene-five-signalwall-back",
+      "url": "art/vector/chapter-five/signalwall-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-signalwall-floor",
+      "url": "art/vector/chapter-five/signalwall-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-watch-anchor",
+      "url": "art/vector/chapter-five/watch-anchor.svg",
+      "x": 620,
+      "y": 135,
+      "width": 320,
+      "height": 286,
+      "depth": 421,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-wall-parapet",
+      "url": "art/vector/chapter-five/wall-parapet.svg",
+      "x": 0,
+      "y": 500,
+      "width": 1536,
+      "height": 90,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-watch-return-line",
+      "url": "art/vector/chapter-five/watch-return-line.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1000,
+      "height": 540,
+      "depth": -996,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-signal-desk",
+      "url": "art/vector/chapter-five/signal-desk.svg",
+      "x": 1094,
+      "y": 579,
+      "width": 130,
+      "height": 70,
+      "depth": 649,
+      "layerId": 3
+    }
+  ],
+  "observation": [
+    {
+      "key": "scene-five-observation-back",
+      "url": "art/vector/chapter-five/observation-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-observation-floor",
+      "url": "art/vector/chapter-five/observation-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-cabin-window-memory",
+      "url": "art/vector/chapter-five/cabin-window-memory.svg",
+      "x": 433,
+      "y": 183,
+      "width": 664,
+      "height": 244,
+      "depth": -998,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-cabin-glazing",
+      "url": "art/vector/chapter-five/cabin-glazing.svg",
+      "x": 420,
+      "y": 170,
+      "width": 690,
+      "height": 274,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-cabin-benches",
+      "url": "art/vector/chapter-five/cabin-benches.svg",
+      "x": 260,
+      "y": 498,
+      "width": 180,
+      "height": 70,
+      "depth": 568,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-cabin-chart-case",
+      "url": "art/vector/chapter-five/cabin-chart-case.svg",
+      "x": 1100,
+      "y": 503,
+      "width": 140,
+      "height": 60,
+      "depth": 563,
+      "layerId": 3
+    }
+  ],
   "battle-airfield-guard": [
     {
       "key": "scene-five-battle-airfield-guard-1",
@@ -451,6 +739,116 @@
     {
       "key": "scene-five-battle-hammer-carrier-2",
       "url": "art/vector/chapter-five/battle-hammer-carrier-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-mortar-first": [
+    {
+      "key": "scene-five-battle-dawn-mortar-first-1",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-first-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-mortar-first-2",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-first-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-repeater-first": [
+    {
+      "key": "scene-five-battle-dawn-repeater-first-1",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-first-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-repeater-first-2",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-first-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-mortar-last": [
+    {
+      "key": "scene-five-battle-dawn-mortar-last-1",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-last-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-mortar-last-2",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-last-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-repeater-last": [
+    {
+      "key": "scene-five-battle-dawn-repeater-last-1",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-last-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-repeater-last-2",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-last-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-commander": [
+    {
+      "key": "scene-five-battle-dawn-commander-1",
+      "url": "art/vector/chapter-five/battle-dawn-commander-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-commander-2",
+      "url": "art/vector/chapter-five/battle-dawn-commander-floor.svg",
       "x": 0,
       "y": 0,
       "width": 1008,

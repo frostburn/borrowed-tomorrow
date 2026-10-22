@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 10,
-  "nextobjectid": 27,
+  "nextlayerid": 11,
+  "nextobjectid": 37,
   "properties": [
     {
       "name": "name",
@@ -596,6 +596,25 @@
           "id": 1
         },
         {
+          "name": "ship-cabin",
+          "point": true,
+          "x": 1164,
+          "y": 756,
+          "properties": [
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Observation cabin \u00b7 the inland sky"
+            },
+            {
+              "name": "sign",
+              "type": "bool",
+              "value": true
+            }
+          ],
+          "id": 2
+        },
+        {
           "name": "ship-supply",
           "point": true,
           "x": 444,
@@ -612,7 +631,7 @@
               "value": true
             }
           ],
-          "id": 2
+          "id": 3
         },
         {
           "name": "ship-orrin",
@@ -631,7 +650,7 @@
               "value": "orrin"
             }
           ],
-          "id": 3
+          "id": 4
         },
         {
           "name": "ship-kit",
@@ -650,7 +669,7 @@
               "value": "kit"
             }
           ],
-          "id": 4
+          "id": 5
         },
         {
           "name": "ship-celia",
@@ -669,7 +688,7 @@
               "value": "celia"
             }
           ],
-          "id": 5
+          "id": 6
         },
         {
           "name": "ship-petra",
@@ -688,7 +707,7 @@
               "value": "petra"
             }
           ],
-          "id": 6
+          "id": 7
         },
         {
           "name": "ship-alda",
@@ -707,7 +726,7 @@
               "value": "alda"
             }
           ],
-          "id": 7
+          "id": 8
         }
       ],
       "properties": []
@@ -724,7 +743,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 8
+          "id": 9
         },
         {
           "name": "airfield",
@@ -732,7 +751,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 9
+          "id": 10
         },
         {
           "name": "hammerplain",
@@ -740,7 +759,23 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 10
+          "id": 11
+        },
+        {
+          "name": "dawnwatch",
+          "point": true,
+          "x": 780,
+          "y": 636,
+          "properties": [],
+          "id": 12
+        },
+        {
+          "name": "cabin",
+          "point": true,
+          "x": 780,
+          "y": 636,
+          "properties": [],
+          "id": 13
         }
       ],
       "properties": []
@@ -763,7 +798,7 @@
               "value": "civilian-traveler"
             }
           ],
-          "id": 11
+          "id": 14
         },
         {
           "name": "deck-hand",
@@ -777,7 +812,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 12
+          "id": 15
         },
         {
           "name": "foundry-fitter",
@@ -796,7 +831,7 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 13
+          "id": 16
         },
         {
           "name": "drive-fitter",
@@ -815,7 +850,26 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 14
+          "id": 17
+        },
+        {
+          "name": "watch-pilot",
+          "point": true,
+          "x": 1092,
+          "y": 564,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "dawn-gunner"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "dawnwatchComplete"
+            }
+          ],
+          "id": 18
         }
       ],
       "properties": []
@@ -832,7 +886,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 15
+          "id": 19
         },
         {
           "name": "orrin",
@@ -840,7 +894,7 @@
           "x": 684,
           "y": 588,
           "properties": [],
-          "id": 16
+          "id": 20
         },
         {
           "name": "kit",
@@ -848,7 +902,7 @@
           "x": 852,
           "y": 588,
           "properties": [],
-          "id": 17
+          "id": 21
         },
         {
           "name": "petra",
@@ -856,7 +910,7 @@
           "x": 924,
           "y": 660,
           "properties": [],
-          "id": 18
+          "id": 22
         },
         {
           "name": "celia",
@@ -864,7 +918,7 @@
           "x": 684,
           "y": 684,
           "properties": [],
-          "id": 19
+          "id": 23
         },
         {
           "name": "alda",
@@ -872,13 +926,70 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 20
+          "id": 24
         }
       ],
       "properties": []
     },
     {
       "id": 9,
+      "name": "Scene:five-emperor-told",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 516,
+          "properties": [],
+          "id": 25
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 26
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 876,
+          "y": 588,
+          "properties": [],
+          "id": 27
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 28
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 636,
+          "properties": [],
+          "id": 29
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 30
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 10,
       "name": "Scene:five-fleet",
       "type": "objectgroup",
       "visible": true,
@@ -889,7 +1000,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 21
+          "id": 31
         },
         {
           "name": "orrin",
@@ -897,7 +1008,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 22
+          "id": 32
         },
         {
           "name": "kit",
@@ -905,7 +1016,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 23
+          "id": 33
         },
         {
           "name": "petra",
@@ -913,7 +1024,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 24
+          "id": 34
         },
         {
           "name": "celia",
@@ -921,7 +1032,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 25
+          "id": 35
         },
         {
           "name": "alda",
@@ -929,7 +1040,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 26
+          "id": 36
         }
       ],
       "properties": []

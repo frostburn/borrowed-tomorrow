@@ -53,6 +53,53 @@ def durn():
  d.line([(14,18),(18,17)],'ink');d.line([(22,17),(26,18)],'ink');d.line([(17,25),(23,25)],'hair')
  return d
 
+def aurel():
+ d=Drawing()
+ for x in (14,26):
+  d.poly([(x-4,43),(x+4,43),(x+2,62),(x-2,64)],'navy');boots(d,x,top=61,bottom=68)
+ d.poly([(9,27),(30,27),(34,39),(31,58),(23,56),(20,49),(16,56),(6,57),(7,39)],'plum')
+ d.poly([(9,28),(17,32),(14,53),(7,56),(7,38)],'red');d.poly([(25,29),(30,29),(32,51),(27,55)],'navy')
+ d.poly([(8,27),(14,26),(17,33),(6,33)],'gold');d.poly([(25,26),(31,27),(34,33),(25,32)],'gold')
+ sleeve(d,(8,33),(4,40),(7,47),'plum');sleeve(d,(31,33),(35,40),(32,46),'plum')
+ d.line([(7,47),(6,30)],'steel',2);d.line([(2,45),(11,45)],'gold',2)
+ d.poly([(12,27),(20,35),(27,27),(24,24),(19,30)],'cream');d.line([(10,44),(30,44)],'hair',2);d.rect((18,42,23,46),'gold')
+ d.poly([(11,13),(16,7),(26,9),(30,17),(27,28),(20,32),(12,25),(9,18)],'skin')
+ d.poly([(10,14),(13,7),(24,6),(30,13),(28,18),(25,12),(14,13),(12,20)],'silver')
+ d.poly([(24,17),(29,18),(27,28),(20,32),(20,27),(25,25)],'shade')
+ d.line([(12,18),(17,17)],'ink');d.line([(22,17),(27,18)],'ink');d.line([(15,25),(23,25)],'hair')
+ d.poly([(12,22),(14,23),(15,27),(13,26)],'cream')
+ return d
+
+def watch_soldier(gunner=False,enna=False):
+ d=Drawing()
+ for x in (14,26):
+  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=68)
+ d.poly([(11,28),(28,28),(31,40),(28,55),(13,55),(8,41)],'teal' if enna else 'slate')
+ d.poly([(11,29),(17,31),(16,53),(10,52),(8,40)],'green' if enna else 'blue')
+ sleeve(d,(10,31),(6,39),(9,47),'teal' if enna else 'slate');sleeve(d,(29,31),(33,39),(30,47),'teal' if enna else 'slate')
+ d.line([(12,45),(28,45)],'hair',2);d.rect((18,44,23,47),'gold')
+ if gunner:
+  d.rect((5,42,29,46),'brown');d.line([(13,43),(13,35),(24,35),(24,44)],'steel',2);d.line([(28,40),(35,39)],'steel',2)
+ else:
+  d.poly([(2,34),(11,32),(15,38),(14,54),(8,59),(1,51)],'steel');d.poly([(3,36),(9,35),(10,53),(7,55),(3,49)],'navy')
+  d.line([(31,47),(33,28)],'steel',2);d.line([(28,43),(36,43)],'gold',2)
+ d.poly([(12,13),(18,8),(26,11),(29,19),(25,28),(17,28),(11,20)],'skin')
+ if enna:
+  d.poly([(10,18),(11,11),(18,6),(26,8),(30,16),(25,15),(19,11),(15,18),(15,29),(10,26)],'hair');d.poly([(25,18),(28,17),(28,27),(25,29)],'hair')
+  d.poly([(12,28),(19,31),(26,27),(27,32),(20,36),(11,32)],'leaf')
+ else:
+  d.poly([(9,17),(12,8),(21,5),(29,11),(31,19),(22,17),(14,19)],'navy' if gunner else 'steel');d.line([(12,17),(28,17)],'gold',2)
+ d.line([(14,20),(17,20)],'ink');d.line([(23,20),(26,20)],'ink');d.line([(17,25),(22,25)],'rose')
+ return d
+
+def dawn_portrait(name):
+ # Aurel's square, greying male construction; Enna has rounded female planes.
+ if name=='aurel':
+  body='<path d="M0 128V106L27 91L47 84H83L107 95L128 115V128Z" fill="#825875"/><path d="M0 107L31 91L39 102L7 116Z M90 93L118 105L125 117L95 108Z" fill="#d9ae62"/><path d="M40 84L61 105L88 84L91 101L66 123L34 103Z" fill="#d8c59b"/><path d="M30 34L40 13L64 6L89 18L100 42L94 72L77 94L55 96L35 78L26 54Z" fill="#d09a74"/><path d="M75 29L99 43L94 72L77 94L64 96L66 83L81 69Z" fill="#927b6a"/><path d="M27 44L30 27L41 10L65 4L90 17L101 36L95 46L84 28L59 19L39 30L35 52Z" fill="#b7c1b8"/><path d="M34 47L53 43L55 48L37 51Z M72 43L91 48L88 52L71 48Z" fill="#263e53"/><path d="M42 47H49V53H42Z M77 47H84V53H77Z" fill="#263e53"/><path d="M61 47L56 65L65 69L68 63Z" fill="#b87e5a"/><path d="M47 77L62 75L79 77L73 82L53 82Z" fill="#593e35"/><path d="M36 61L40 65L44 79L40 76Z" fill="#e2c5a0"/>'
+ else:
+  body='<path d="M0 128V110L23 91L47 82H80L106 94L128 118V128Z" fill="#638487"/><path d="M43 79L44 100L63 111L83 96L79 79Z" fill="#a96f50"/><path d="M26 35L36 14L59 5L87 13L101 36L96 88L82 95L29 85L21 62Z" fill="#453a37"/><path d="M38 30L60 19L82 30L92 54L85 77L66 91L46 80L33 57Z" fill="#ce9471"/><path d="M80 34L92 54L85 77L66 91L66 82L78 69Z" fill="#a56e55"/><path d="M26 43L35 15L59 5L87 13L101 36L89 44L70 24L48 30L39 47L34 84L25 77L21 60Z" fill="#453a37"/><path d="M40 49L53 46L55 50L42 53Z M73 47L86 50L85 54L72 51Z" fill="#233543"/><path d="M48 49H53V54H48Z M74 50H79V55H74Z" fill="#263e53"/><path d="M62 50L57 67L65 70L67 65Z" fill="#b37b5a"/><path d="M53 76L64 78L75 75L69 81L59 81Z" fill="#9e6157"/><path d="M23 94L46 86L64 107L82 87L107 99L72 121L48 115Z" fill="#8ca66d"/>'
+ return '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>'+name+' portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/>'+body+'</svg>\n'
+
 def portrait(name):
  # Broad female face planes for Alda/Hester; Durn has a narrower angular construction.
  female=name!='durn';hair='#707b88' if name=='alda' else '#8e5239' if name=='hester' else '#403934'
@@ -71,10 +118,10 @@ def portrait(name):
  return f'<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>{name} portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/>{body}</svg>\n'
 
 def export():
- for name,model in [('alda',alda),('hester',hester),('durn',durn)]:
+ for name,model in [('alda',alda),('hester',hester),('durn',durn),('aurel',aurel),('enna',lambda:watch_soldier(enna=True)),('dawn-soldier',watch_soldier),('dawn-gunner',lambda:watch_soldier(gunner=True))]:
   (ROOT/f'public/art/vector/{name}.svg').write_text(model().svg())
   # Portraits become editable originals after their initial seed.
   path=ROOT/f'public/art/vector/portrait-{name}.svg'
-  if not path.exists():path.write_text(portrait(name))
- print('Exported Alda, Hester and Durn with native SVG actors; retained editable portrait originals.')
+  if name in ('alda','hester','durn','aurel','enna') and not path.exists():path.write_text(dawn_portrait(name) if name in ('aurel','enna') else portrait(name))
+ print('Exported Chapter Five cast and Dawnwatch troops with native SVG actors; retained editable portrait originals.')
 if __name__=='__main__':export()
