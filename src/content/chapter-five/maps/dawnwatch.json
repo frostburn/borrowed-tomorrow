@@ -786,7 +786,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family-rust"
+              "value": "civilian-family-plum"
             },
             {
               "name": "hiddenFlag",
@@ -805,7 +805,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "civilian-family-rust"
+              "value": "civilian-family-plum"
             },
             {
               "name": "requiredFlag",

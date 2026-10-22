@@ -124,4 +124,7 @@ def export():
   path=ROOT/f'public/art/vector/portrait-{name}.svg'
   if name in ('alda','hester','durn','aurel','enna') and not path.exists():path.write_text(dawn_portrait(name) if name in ('aurel','enna') else portrait(name))
  print('Exported Chapter Five cast and Dawnwatch troops with native SVG actors; retained editable portrait originals.')
-if __name__=='__main__':export()
+if __name__=='__main__':
+ export()
+ from windmere import export as export_windmere
+ export_windmere()

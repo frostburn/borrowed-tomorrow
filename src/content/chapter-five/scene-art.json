@@ -133,6 +133,26 @@
       "layerId": 5
     },
     {
+      "key": "scene-five-ship-blockade",
+      "url": "art/vector/chapter-five/ship-blockade.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 400,
+      "depth": -998,
+      "layerId": 6
+    },
+    {
+      "key": "scene-five-ship-medical-kit",
+      "url": "art/vector/chapter-five/ship-medical-kit.svg",
+      "x": 440,
+      "y": 572,
+      "width": 104,
+      "height": 60,
+      "depth": 632,
+      "layerId": 7
+    },
+    {
       "key": "scene-five-ship-bow",
       "url": "art/vector/chapter-five/ship-bow.svg",
       "x": 0,
@@ -655,6 +675,298 @@
       "height": 60,
       "depth": 563,
       "layerId": 3
+    }
+  ],
+  "windmere": [
+    {
+      "key": "scene-five-windmere-back",
+      "url": "art/vector/chapter-five/windmere-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-windmere-floor",
+      "url": "art/vector/chapter-five/windmere-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-windmere-pavilion",
+      "url": "art/vector/chapter-five/windmere-pavilion.svg",
+      "x": 560,
+      "y": 238,
+      "width": 656,
+      "height": 240,
+      "depth": 478,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-ordinary-ward",
+      "url": "art/vector/chapter-five/windmere-ordinary-ward.svg",
+      "x": 350,
+      "y": 405,
+      "width": 230,
+      "height": 145,
+      "depth": 550,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-canopy",
+      "url": "art/vector/chapter-five/windmere-canopy.svg",
+      "x": 604,
+      "y": 303,
+      "width": 530,
+      "height": 210,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-valve",
+      "url": "art/vector/chapter-five/windmere-valve.svg",
+      "x": 812,
+      "y": 442,
+      "width": 90,
+      "height": 100,
+      "depth": 542,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-night-lamps",
+      "url": "art/vector/chapter-five/windmere-night-lamps.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 550,
+      "depth": 551,
+      "layerId": 4
+    }
+  ],
+  "dispensary": [
+    {
+      "key": "scene-five-dispensary-back",
+      "url": "art/vector/chapter-five/dispensary-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-dispensary-floor",
+      "url": "art/vector/chapter-five/dispensary-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-dispensary-shelves",
+      "url": "art/vector/chapter-five/dispensary-shelves.svg",
+      "x": 220,
+      "y": 400,
+      "width": 254,
+      "height": 100,
+      "depth": 500,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-dispensary-shaft",
+      "url": "art/vector/chapter-five/dispensary-shaft.svg",
+      "x": 744,
+      "y": 300,
+      "width": 150,
+      "height": 240,
+      "depth": 540,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-water-platform",
+      "url": "art/vector/chapter-five/water-platform.svg",
+      "x": 738,
+      "y": 537,
+      "width": 164,
+      "height": 100,
+      "depth": 637,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-water-platform-raised",
+      "url": "art/vector/chapter-five/water-platform-raised.svg",
+      "x": 738,
+      "y": 441,
+      "width": 164,
+      "height": 100,
+      "depth": 541,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-windmere-lift-wheel",
+      "url": "art/vector/chapter-five/windmere-lift-wheel.svg",
+      "x": 1020,
+      "y": 458,
+      "width": 90,
+      "height": 100,
+      "depth": 558,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-dispensary-ward-kit",
+      "url": "art/vector/chapter-five/dispensary-ward-kit.svg",
+      "x": 1148,
+      "y": 580,
+      "width": 122,
+      "height": 75,
+      "depth": 655,
+      "layerId": 3
+    }
+  ],
+  "mirrorward": [
+    {
+      "key": "scene-five-mirrorward-back",
+      "url": "art/vector/chapter-five/mirrorward-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-mirrorward-floor",
+      "url": "art/vector/chapter-five/mirrorward-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-windmere-engine",
+      "url": "art/vector/chapter-five/windmere-engine.svg",
+      "x": 684,
+      "y": 198,
+      "width": 256,
+      "height": 240,
+      "depth": 438,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-left-mirror",
+      "url": "art/vector/chapter-five/gallery-left-mirror.svg",
+      "x": 351,
+      "y": 451,
+      "width": 80,
+      "height": 80,
+      "depth": 531,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-right-mirror",
+      "url": "art/vector/chapter-five/gallery-right-mirror.svg",
+      "x": 1120,
+      "y": 451,
+      "width": 80,
+      "height": 80,
+      "depth": 531,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-light",
+      "url": "art/vector/chapter-five/gallery-light.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 540,
+      "depth": -997,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-ward-ledger",
+      "url": "art/vector/chapter-five/ward-ledger.svg",
+      "x": 1042,
+      "y": 542,
+      "width": 132,
+      "height": 64,
+      "depth": 606,
+      "layerId": 3
+    }
+  ],
+  "battle-wind-lift": [
+    {
+      "key": "scene-five-battle-wind-lift-1",
+      "url": "art/vector/chapter-five/battle-wind-lift-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-lift-2",
+      "url": "art/vector/chapter-five/battle-wind-lift-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-wind-gallery": [
+    {
+      "key": "scene-five-battle-wind-gallery-1",
+      "url": "art/vector/chapter-five/battle-wind-gallery-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-gallery-2",
+      "url": "art/vector/chapter-five/battle-wind-gallery-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-wind-engine": [
+    {
+      "key": "scene-five-battle-wind-engine-1",
+      "url": "art/vector/chapter-five/battle-wind-engine-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-engine-2",
+      "url": "art/vector/chapter-five/battle-wind-engine-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
     }
   ],
   "battle-airfield-guard": [

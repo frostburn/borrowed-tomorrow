@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 12,
-  "nextobjectid": 37,
+  "nextlayerid": 15,
+  "nextobjectid": 45,
   "properties": [
     {
       "name": "name",
@@ -575,11 +575,44 @@
           "name": "requiredFlag",
           "type": "string",
           "value": "emperorOfferTold"
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "allAnchorsSeen"
         }
       ]
     },
     {
       "id": 6,
+      "name": "ship-blockade",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "allAnchorsSeen"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "ship-medical-kit",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "windmereComplete"
+        }
+      ]
+    },
+    {
+      "id": 8,
       "name": "Interactions",
       "type": "objectgroup",
       "visible": true,
@@ -751,7 +784,7 @@
       "properties": []
     },
     {
-      "id": 7,
+      "id": 9,
       "name": "Arrivals",
       "type": "objectgroup",
       "visible": true,
@@ -789,22 +822,49 @@
           "id": 12
         },
         {
-          "name": "cabin",
+          "name": "windmere",
           "point": true,
           "x": 780,
           "y": 636,
           "properties": [],
           "id": 13
+        },
+        {
+          "name": "cabin",
+          "point": true,
+          "x": 780,
+          "y": 636,
+          "properties": [],
+          "id": 14
         }
       ],
       "properties": []
     },
     {
-      "id": 8,
+      "id": 10,
       "name": "People",
       "type": "objectgroup",
       "visible": true,
       "objects": [
+        {
+          "name": "medical-crew",
+          "point": true,
+          "x": 492,
+          "y": 636,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler-blue"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "windmereComplete"
+            }
+          ],
+          "id": 15
+        },
         {
           "name": "navigator",
           "point": true,
@@ -817,7 +877,7 @@
               "value": "civilian-traveler"
             }
           ],
-          "id": 14
+          "id": 16
         },
         {
           "name": "deck-hand",
@@ -831,7 +891,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 15
+          "id": 17
         },
         {
           "name": "foundry-fitter",
@@ -850,7 +910,7 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 16
+          "id": 18
         },
         {
           "name": "drive-fitter",
@@ -869,7 +929,7 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 17
+          "id": 19
         },
         {
           "name": "watch-pilot",
@@ -888,13 +948,70 @@
               "value": "dawnwatchComplete"
             }
           ],
-          "id": 18
+          "id": 20
         }
       ],
       "properties": []
     },
     {
-      "id": 9,
+      "id": 11,
+      "name": "Scene:five-alliance",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 516,
+          "properties": [],
+          "id": 21
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 22
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 876,
+          "y": 588,
+          "properties": [],
+          "id": 23
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 24
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 636,
+          "properties": [],
+          "id": 25
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 26
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 12,
       "name": "Scene:five-first-flight",
       "type": "objectgroup",
       "visible": true,
@@ -905,7 +1022,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 19
+          "id": 27
         },
         {
           "name": "orrin",
@@ -913,7 +1030,7 @@
           "x": 684,
           "y": 588,
           "properties": [],
-          "id": 20
+          "id": 28
         },
         {
           "name": "kit",
@@ -921,7 +1038,7 @@
           "x": 852,
           "y": 588,
           "properties": [],
-          "id": 21
+          "id": 29
         },
         {
           "name": "petra",
@@ -929,7 +1046,7 @@
           "x": 924,
           "y": 660,
           "properties": [],
-          "id": 22
+          "id": 30
         },
         {
           "name": "celia",
@@ -937,7 +1054,7 @@
           "x": 684,
           "y": 684,
           "properties": [],
-          "id": 23
+          "id": 31
         },
         {
           "name": "alda",
@@ -945,13 +1062,13 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 24
+          "id": 32
         }
       ],
       "properties": []
     },
     {
-      "id": 10,
+      "id": 13,
       "name": "Scene:five-emperor-told",
       "type": "objectgroup",
       "visible": true,
@@ -962,7 +1079,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 25
+          "id": 33
         },
         {
           "name": "orrin",
@@ -970,7 +1087,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 26
+          "id": 34
         },
         {
           "name": "kit",
@@ -978,7 +1095,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 27
+          "id": 35
         },
         {
           "name": "petra",
@@ -986,7 +1103,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 28
+          "id": 36
         },
         {
           "name": "celia",
@@ -994,7 +1111,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 29
+          "id": 37
         },
         {
           "name": "alda",
@@ -1002,13 +1119,13 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 30
+          "id": 38
         }
       ],
       "properties": []
     },
     {
-      "id": 11,
+      "id": 14,
       "name": "Scene:five-fleet",
       "type": "objectgroup",
       "visible": true,
@@ -1019,7 +1136,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 31
+          "id": 39
         },
         {
           "name": "orrin",
@@ -1027,7 +1144,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 32
+          "id": 40
         },
         {
           "name": "kit",
@@ -1035,7 +1152,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 33
+          "id": 41
         },
         {
           "name": "petra",
@@ -1043,7 +1160,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 34
+          "id": 42
         },
         {
           "name": "celia",
@@ -1051,7 +1168,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 35
+          "id": 43
         },
         {
           "name": "alda",
@@ -1059,7 +1176,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 36
+          "id": 44
         }
       ],
       "properties": []
