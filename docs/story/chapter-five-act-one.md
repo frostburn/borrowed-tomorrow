@@ -1,0 +1,11 @@
+# Chapter Five — Act I implementation
+
+This slice implements the shared airfield opening and Hammerplain. Dawnwatch and Windmere remain independent future regional acts; neither is completed or awarded by finishing Hammerplain. The flagship remains a separate dev preview.
+
+The version-10 `chapter-five:anchors` departure leads to the western airfield without changing the recruited roster, chosen formation, HP/focus, resources or gear. Captain Alda's survey crew is loading supplies when Superintendent Durn orders their seizure. Clear the guards, board the working ship, and choose the Hammerplain landing from its flight chart. The ship provides supplies, Equipment access and short conversations throughout the act.
+
+At Hammerplain, casting forewoman Hester is trying to reopen the cooling race while the foundry powers an anchor holding the workers' streets. Choose the freight lift (ranged crows) or the shallow race walk (hounds), then physically open the eastern cooling wheel. A guarded safety store offers an optional heat-resistant coat. At the anchor gantry, Durn sends a mobile furnace carrier to burn the independent engines. Announced furnace lanes and temporary hot-metal trails make its movement matter. It cannot be pushed through other units or leave the grid.
+
+After the carrier falls, release the anchor with the workers. Hester starts an ordinary engine herself; the streets resume and the foundry contributes engines, propulsion fittings and repair crews. Orrin's new lance fitting enters the bag for manual fitting. On returning to the ship, Alban's distant fleet appears on the horizon. No countdown starts. Hammerplain stays open for supplies, optional loot and changed return dialogue. The other two anchor marks remain intact, and Chapter Five is not declared complete.
+
+All five exploration maps and five arenas use editable Tiled layouts with whole native SVG scenery. Named cast: Alda, Hester, Durn and the Furnace carrier, each with its own actor and portrait. The accepted vector party and flagship art are preserved. Add a canonical Chapter Five start only behind Vite development, using a fresh authored Chapter Four completion. Update exact continuation notes from the completed playable ending; keep the Benefactor silent and Tomas safe.

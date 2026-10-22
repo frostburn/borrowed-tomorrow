@@ -1,0 +1,392 @@
+{
+  "airfield": [
+    {
+      "key": "scene-five-airfield-back",
+      "url": "art/vector/chapter-five/airfield-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-airfield-floor",
+      "url": "art/vector/chapter-five/airfield-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-survey-ship",
+      "url": "art/vector/chapter-five/survey-ship.svg",
+      "x": 400,
+      "y": 126,
+      "width": 744,
+      "height": 384,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-hangar",
+      "url": "art/vector/chapter-five/hangar.svg",
+      "x": 56,
+      "y": 292,
+      "width": 600,
+      "height": 270,
+      "depth": 540,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-mooring-crane",
+      "url": "art/vector/chapter-five/mooring-crane.svg",
+      "x": 1090,
+      "y": 330,
+      "width": 312,
+      "height": 330,
+      "depth": 660,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-airfield-cargo",
+      "url": "art/vector/chapter-five/airfield-cargo.svg",
+      "x": 1140,
+      "y": 636,
+      "width": 200,
+      "height": 140,
+      "depth": 776,
+      "layerId": 3
+    }
+  ],
+  "airship": [
+    {
+      "key": "scene-five-airship-back",
+      "url": "art/vector/chapter-five/airship-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-airship-floor",
+      "url": "art/vector/chapter-five/airship-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-ship-bow",
+      "url": "art/vector/chapter-five/ship-bow.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1060,
+      "height": 350,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-ship-store",
+      "url": "art/vector/chapter-five/ship-store.svg",
+      "x": 1060,
+      "y": 590,
+      "width": 200,
+      "height": 140,
+      "depth": 720,
+      "layerId": 3
+    }
+  ],
+  "hammerplain": [
+    {
+      "key": "scene-five-hammerplain-back",
+      "url": "art/vector/chapter-five/hammerplain-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-hammerplain-floor",
+      "url": "art/vector/chapter-five/hammerplain-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-casting-hall",
+      "url": "art/vector/chapter-five/casting-hall.svg",
+      "x": 260,
+      "y": 230,
+      "width": 600,
+      "height": 270,
+      "depth": 500,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-freight-crane",
+      "url": "art/vector/chapter-five/freight-crane.svg",
+      "x": 1080,
+      "y": 240,
+      "width": 312,
+      "height": 330,
+      "depth": 570,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-replacement-engine",
+      "url": "art/vector/chapter-five/replacement-engine.svg",
+      "x": 638,
+      "y": 514,
+      "width": 200,
+      "height": 140,
+      "depth": 652,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-stores-engine",
+      "url": "art/vector/chapter-five/stores-engine.svg",
+      "x": 1120,
+      "y": 530,
+      "width": 200,
+      "height": 140,
+      "depth": 670,
+      "layerId": 3
+    }
+  ],
+  "coolingworks": [
+    {
+      "key": "scene-five-coolingworks-back",
+      "url": "art/vector/chapter-five/coolingworks-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-coolingworks-floor",
+      "url": "art/vector/chapter-five/coolingworks-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-cooling-wheel",
+      "url": "art/vector/chapter-five/cooling-wheel.svg",
+      "x": 1072,
+      "y": 460,
+      "width": 90,
+      "height": 100,
+      "depth": 560,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-freight-lift",
+      "url": "art/vector/chapter-five/freight-lift.svg",
+      "x": 192,
+      "y": 226,
+      "width": 312,
+      "height": 330,
+      "depth": 556,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-moving-water",
+      "url": "art/vector/chapter-five/moving-water.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 490,
+      "depth": -998,
+      "layerId": 4
+    }
+  ],
+  "anchorforge": [
+    {
+      "key": "scene-five-anchorforge-back",
+      "url": "art/vector/chapter-five/anchorforge-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-anchorforge-floor",
+      "url": "art/vector/chapter-five/anchorforge-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-forge-anchor",
+      "url": "art/vector/chapter-five/forge-anchor.svg",
+      "x": 620,
+      "y": 122,
+      "width": 320,
+      "height": 286,
+      "depth": 408,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-crane",
+      "url": "art/vector/chapter-five/gantry-crane.svg",
+      "x": 1060,
+      "y": 160,
+      "width": 312,
+      "height": 330,
+      "depth": 490,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-engine",
+      "url": "art/vector/chapter-five/gantry-engine.svg",
+      "x": 456,
+      "y": 450,
+      "width": 200,
+      "height": 140,
+      "depth": 590,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-signal",
+      "url": "art/vector/chapter-five/gantry-signal.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1000,
+      "height": 600,
+      "depth": -997,
+      "layerId": 4
+    }
+  ],
+  "battle-airfield-guard": [
+    {
+      "key": "scene-five-battle-airfield-guard-1",
+      "url": "art/vector/chapter-five/battle-airfield-guard-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-airfield-guard-2",
+      "url": "art/vector/chapter-five/battle-airfield-guard-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-lift": [
+    {
+      "key": "scene-five-battle-hammer-lift-1",
+      "url": "art/vector/chapter-five/battle-hammer-lift-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-lift-2",
+      "url": "art/vector/chapter-five/battle-hammer-lift-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-race": [
+    {
+      "key": "scene-five-battle-hammer-race-1",
+      "url": "art/vector/chapter-five/battle-hammer-race-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-race-2",
+      "url": "art/vector/chapter-five/battle-hammer-race-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-stores": [
+    {
+      "key": "scene-five-battle-hammer-stores-1",
+      "url": "art/vector/chapter-five/battle-hammer-stores-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-stores-2",
+      "url": "art/vector/chapter-five/battle-hammer-stores-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-carrier": [
+    {
+      "key": "scene-five-battle-hammer-carrier-1",
+      "url": "art/vector/chapter-five/battle-hammer-carrier-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-carrier-2",
+      "url": "art/vector/chapter-five/battle-hammer-carrier-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ]
+}
