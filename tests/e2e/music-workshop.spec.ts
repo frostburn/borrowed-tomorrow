@@ -80,7 +80,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await expect(page.locator('.music-review .music-description').first()).toContainText('4/4');
    }
    await page.getByRole('group',{name:'Instrument audition'}).getByRole('button',{name:'Strings',exact:true}).click();
-   await bar.fill('12');await bar.press('Tab');
+   await bar.fill('3');await bar.press('Tab');
    await expect(page.locator('#music-notes tbody')).toContainText('2+1/3');await expect(page.locator('#music-notes tbody')).toContainText('3+2/3');
    await capture(page,`chapter-two-battle-music-${device}`);
    await page.getByRole('button',{name:'Play',exact:true}).click();await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Character',exact:true}).click();
