@@ -15,6 +15,7 @@ import type { MusicMode } from '../game/score';
 import { occupiedHexes, bodyDistance } from './footprint';
 import { configureConduit, prepareConduit } from './conduit';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
+import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
 export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
@@ -57,7 +58,7 @@ export interface Battle {
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'conduit'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -87,9 +88,11 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
       moved: false, defending: false, retaliated: false, waited: false };
   });
   e.enemies.forEach((enemy, i) => {
-    const stats = ENEMY_STATS[enemy.kind];
+    const variant=enemy.variant?ENEMY_VARIANTS[enemy.variant]:undefined;
+    if(variant&&variant.kind!==enemy.kind)throw new Error('Enemy variant must match its combat role.');
+    const stats = {...ENEMY_STATS[enemy.kind],...(variant?{name:variant.name,hp:variant.hp,bonus:variant.bonus,armor:variant.armor,speed:variant.speed,movement:variant.movement}:{})};
     units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      appearance:enemy.appearance,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
+      appearance:enemy.appearance??enemy.variant,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
   });
   const battle: Battle = { encounter:e.id, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
@@ -311,15 +314,18 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
       if(id==='taunt'||id==='bash')continue; // Knight support actions are handled before damage scoring.
       for (const aim of cells()) {
         if (!legalAim(b, u, id, aim)) continue;
-        let score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0)+(b.evacuation?.route.some(h=>equal(h,u.hex))?10:0);
+        let hitsEnemy=false,score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0)+(b.evacuation?.route.some(h=>equal(h,u.hex))?10:0);
         for (const v of targets(b, u, id, aim)) {
+          if(v.side!==u.side)hitsEnemy=true;
           score += (v.side !== u.side ? 1 : -2.5) * (Math.min(v.hp, damage(u, v, id)) + (v.hp <= damage(u, v, id) ? 8 : 0));
         }
         if (id === 'strike') {
           const victim = unitAt(b, aim);
           if (victim && !victim.retaliated && victim.hp > damage(u, victim, id)) score -= damage(victim, u, 'strike') * 0.6;
         }
-        if ((forced || score > 0) && (!best || score > best.score)) best = { pos: reach.hex, aim, ability: id, score };
+        // Risk chooses between attacks; it must not make a reachable target
+        // lose to Defend, or make an empty blast count as an attack.
+        if (hitsEnemy && (!best || score > best.score)) best = { pos: reach.hex, aim, ability: id, score };
       }
     }
   }

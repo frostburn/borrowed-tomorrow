@@ -8,3 +8,5 @@ for(const file of ['../assets/characters/vector/supporting.py','../assets/vector
   if(result.error)throw result.error;
   if(result.status!==0)throw new Error(`SVG export failed: ${file}`);
 }
+
+await import('./export-enemy-variants.mjs');

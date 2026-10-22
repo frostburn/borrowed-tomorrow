@@ -2325,7 +2325,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "guardian"
+              "value": "guardian-iron"
             },
             {
               "name": "hiddenFlag",

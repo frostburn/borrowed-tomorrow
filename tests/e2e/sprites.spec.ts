@@ -88,12 +88,18 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
     expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([2016,2016]);
     await capture(page,`sprite-npcs-${device}`);
-    await collections.getByRole('button',{name:'Enemies (4)',exact:true}).click();
+    await collections.getByRole('button',{name:`Enemies (${SPRITE_CATALOG.filter(e=>e.group==='Enemies').length})`,exact:true}).click();
     await review.getByRole('button',{name:'Inspect Hound',exact:true}).click();
     const hound=review.getByRole('img',{name:'Hound actor',exact:true});
     expect(await hound.evaluate(async element=>{const i=element as HTMLImageElement;await i.decode();const scale=window.borrowedTomorrowPixels.inspect().cssScale,r=i.getBoundingClientRect();return [i.naturalWidth,i.naturalHeight,Math.round(r.width/scale),Math.round(r.height/scale)];})).toEqual([80,80,80,80]);
     await expect(review.locator('.sprite-reference')).toContainText('Portrait: not available');
     expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
+    for(const entry of SPRITE_CATALOG.filter(e=>e.group==='Enemies'&&e.id.includes('-'))){
+      await review.getByRole('button',{name:`Inspect ${entry.name}`,exact:true}).click();
+      await expect(review.locator('.sprite-file')).toContainText(artPath(entry.sprite));
+      const image=review.getByRole('img',{name:`${entry.name} actor`,exact:true});
+      expect(await image.evaluate(async node=>{const i=node as HTMLImageElement;await i.decode();return [i.naturalWidth,i.naturalHeight];})).toEqual([80,80]);
+    }
     await capture(page,`sprite-enemies-${device}`);
     expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });

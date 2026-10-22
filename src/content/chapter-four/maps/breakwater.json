@@ -664,7 +664,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "guardian"
+              "value": "guardian-dusk"
             },
             {
               "name": "hiddenFlag",
