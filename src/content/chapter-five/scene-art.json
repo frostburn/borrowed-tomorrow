@@ -138,7 +138,7 @@
       "x": 0,
       "y": 0,
       "width": 1536,
-      "height": 400,
+      "height": 300,
       "depth": -998,
       "layerId": 6
     },
@@ -722,10 +722,10 @@
       "key": "scene-five-windmere-canopy",
       "url": "art/vector/chapter-five/windmere-canopy.svg",
       "x": 604,
-      "y": 303,
+      "y": 395,
       "width": 530,
-      "height": 210,
-      "depth": -997,
+      "height": 212,
+      "depth": 607,
       "layerId": 3
     },
     {

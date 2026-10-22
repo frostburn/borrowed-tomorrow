@@ -19,7 +19,7 @@ export function prepareWard(b:Battle){
  if(core.hp<=0){for(const u of mirrors)u.hp=0;return;}
  let intent=core.intent as Intent|undefined;
  if(intent?.round!==b.round){
-  const living=mirrors.filter(u=>u.hp>0),source=living[(b.round-1)%living.length];
+  const living=mirrors.filter(u=>u.hp>0),source=living.length?living[(b.round-1)%living.length]:undefined;
   const left=source&&column(source.hex)<5;
   const warning=source?cells().filter(h=>h.r>=4&&Math.abs(column(h)-(left?2:8))<=h.r-3):cells().filter(h=>h.r===4);
   const name=source?`${left?'West':'East'} mirror · reflected fan`:'Unshielded lens · crossbeam';

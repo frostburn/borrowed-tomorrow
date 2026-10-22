@@ -1,12 +1,12 @@
-# Chapter Five after Acts I–II — Windmere and the fleet
+# Chapter Five after Acts I–III — the capital crossing
 
-The shared airfield, survey ship, Hammerplain and Dawnwatch are playable. Hammerplain and Dawnwatch can be completed in either order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. Windmere and the flagship campaign finale remain author plans in [chapter-five-plan.md](chapter-five-plan.md). The dev flagship battle is still isolated; its outcome is never campaign history.
+The shared airfield, survey ship, Hammerplain, Dawnwatch and Windmere are playable. The three regions can be completed in any order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. The flagship campaign finale remains an author plan in [chapter-five-plan.md](chapter-five-plan.md). The dev flagship battle is still isolated; its outcome is never campaign history.
 
 ## Current ending and supported saves
 
-Version **10**, campaign `imperial-debt`, chapter `chapter-five`, boundary **null**. There is no Chapter Five completion flag or departure. Old version-10 Act I saves restore their actual state unchanged; no migration or default Dawnwatch completion is added.
+Version **10**, campaign `imperial-debt`, chapter `chapter-five`, boundary **null**. There is no Chapter Five completion flag or departure. Existing version-10 Acts I–II saves restore their actual state unchanged; no migration or default regional completion is added.
 
-The chart marks each completed anchor independently. `fleetSighted` follows the first completed region on returning aboard, using its contribution in the dialogue. With both current regional completions, the objective and Alda point to the aft observation cabin. The player enters `observation`, completes `five-emperor-offer`, returns to `airship` `(32,26)`, and tells the full roster in `five-emperor-told`. The ending remains a revisitable ship with Windmere explicitly unavailable. All active formations, individual HP/focus, bag/loadouts, bandages, marks, XP, playtime and earlier flags persist.
+The chart marks each completed anchor independently. `fleetSighted` follows the first completed region on returning aboard, using its contribution in the dialogue. With any two regional completions, the objective and Alda point to the aft observation cabin. The player enters `observation`, completes `five-emperor-offer`, returns to `airship` `(32,26)`, and tells the full roster in `five-emperor-told`. After all three, `five-alliance` stages Alban’s capital blockade and the three crews’ contributions. The ship and regional landings remain revisitable; the chart’s flagship-finale option is disabled pending Act IV. All active formations, individual HP/focus, bag/loadouts, bandages, marks, XP, playtime and earlier flags persist.
 
 ## Shared opening and Hammerplain checkpoints
 
@@ -24,15 +24,21 @@ Preserve boolean `forgeFlooded`: false is the dry freight lift with crows; true 
 
 `aurelSeen`, `aurelConfronted`, `aurelWon`, `dawnwatchFreed`, `dawnwatchComplete` finish the confrontation, physical wheel release and return to the shelter. `watchCoatTaken` is the optional side locker; it requires both gun wins and cannot be farmed. Dawnwatch completion does not imply any Hammerplain progress.
 
-Scene callbacks commit on completion or skip. Reload during the shelter release, anchor wheel or offer replays without granting the uncompleted flag. Travel/deep restore loads all nine exploration maps and their local arenas before replacing the prior checkpoint. Failure permits retry with state intact.
+Scene callbacks commit on completion or skip. Reload during the shelter release, anchor wheel or offer replays without granting the uncompleted flag. Travel/deep restore loads all twelve exploration maps and their local arenas before replacing the prior checkpoint. Failure permits retry with state intact.
+
+## Windmere checkpoints
+
+`windmereSeen` → `dispensarySeen` → `windLiftConfronted` → `windLiftWon` → `waterLiftOpened` → `patientsTransferred` → `mirrorWardSeen` → `windGalleryWon` → `wardEngineConfronted` → `wardEngineWon` → `windmereFreed` → `windmereComplete`.
+
+The brake and gallery wins do not open the lift or disconnect the anchor themselves. Physical wheel, bypass-valve and support-release scenes commit separately. `windReflectorTaken` is an optional once-only lamp cabinet after the lift opens. Every interrupted scene remains replayable; skip completes its normal callback. Partial progress and all real resources persist across ship visits. The hospital, dispensary and gallery are `windmere`, `dispensary` and `mirrorward`; ship return is `(32,26)`.
 
 ## Shared milestones
 
 - `fleetSighted` requires at least one completed region. Its old ID is preserved, but it no longer requires Hammerplain specifically.
-- `emperorOfferSeen` requires the fleet sighting and both currently playable regional completions. The observation cabin is accessible then, not after one victory. Completion returns to the ship. A reload between these callbacks preserves the offer and resumes the deck conversation.
+- `emperorOfferSeen` requires the fleet sighting and any two of Hammerplain, Dawnwatch and Windmere. The observation cabin is accessible then, not after one victory. Completion returns to the ship. A reload between these callbacks preserves the offer and resumes the deck conversation.
 - `emperorOfferTold` follows the completed offer. Its closer fleet layer replaces the distant hulls. It does not start a countdown, close regional landings or unlock the campaign flagship. The cabin is empty on revisiting.
 
-When Windmere is implemented, extend the existing regional count and offer validation to **any two of all three**. Preserve existing completed offers. All three will eventually unlock the flagship, independent of order. Do not mark it ready after only Hammerplain and Dawnwatch.
+`allAnchorsSeen` requires all three regional completions and records the ship’s alliance/blockade scene. The campaign flagship encounter remains unavailable even then. Previously completed offers never replay. The offer can still be visited after the third anchor if the player deferred it.
 
 ## Rewards
 
@@ -46,8 +52,12 @@ When Windmere is implemented, extend the existing regional count and offer valid
 | Second Dawnwatch gun position | 125 | 75 | — |
 | Commander Aurel | 225 | 145 | Dawnwatch shield brace, Petra |
 | Dawnwatch field locker | — | — | Officers' field coat, anyone |
+| Windmere lift brake | 140 | 80 | — |
+| Windmere gallery bridge | 135 | 75 | — |
+| Mirrored ward engine | 230 | 150 | Windmere medical focus, Celia |
+| Old lamp cabinet | — | — | Opal lantern reflector, Nell |
 
-All items require manual fitting. No encounters scale by regional order. The dev start begins at 1225 XP; the shared airfield adds 90, Hammerplain adds 415 and Dawnwatch adds 505. Both main routes total **2235 XP** before the optional Hammerplain store. Level ten begins at 1490 XP and remains the cap. Dawnwatch's field coat trades one armor against Hammerplain's coat for one speed.
+All items require manual fitting. No encounters scale by regional order. The dev start begins at 1225 XP; the shared airfield adds 90, Hammerplain adds 415, Dawnwatch adds 505 and Windmere adds 505. All three main routes total **2740 XP** before the optional Hammerplain store. Level ten begins at 1490 XP and remains the cap. Dawnwatch's field coat trades one armor against Hammerplain's coat for one speed.
 
 ## Facts and knowledge to preserve
 
@@ -55,12 +65,14 @@ Alda's working survey ship is a home for supplies, rest, Equipment, conversation
 
 Aurel is Petra's former commander. He orders Dawnwatch's lower town abandoned, defends the anchor with shield troops and orders fire through the occupied shelter. Enna remembers the medical coaches and has a sister in that shelter. Petra admits her own enforcement of similar orders, opens the gate with Enna and fights Aurel. Soldiers who saw the evacuation refuse his renewed firing order; others disarm and remain. Aurel receives the shelter's protection in custody, not pardon or execution. Enna releases the anchor under town control. Three pilots volunteer with two escort launches, approach charts and recognition signals. The remaining watch stays with the residents. Petra gains no restored commission.
 
+Windmere’s hospital really healed Teren’s leg. Director Iven knowingly concealed the return clause and its village losses. Sera and the railway volunteers reopen the water lift, bring up existing equipment and establish ordinary support before shutdown. Iven releases the mirrored engine; after it falls, staff isolate treatment before opening the upward contact. He opens the full ledger under supervision. The villages stop losing days locally, but past losses are not repaid. Celia stays for the first ordinary night shift; Sera contributes medical crews and a tested support-release order. Some patients still require continuing care. The hospital records confirm the hospice diagram without opening a route to the source.
+
 After the second anchor the Emperor projects a repeating Larkspur morning into the cabin glass. Ansel turns the chipped rim of his cup toward himself; Tomas stands beside the platform. Nell recognizes the habit and almost asks how to reach that day. She asks whether Ansel can leave, then walks out and tells the others. Kit reads Tomas's ordinary railway message. This is **a projection, not resurrection or demonstrated death reversal**. Ansel remains dead. Tomas remains safe with Dena and Bram at the refuge, never a combatant or a new captive.
 
 Alban remains free and alive with the inland fleet. The Emperor has made the offer but has not been defeated. The Benefactor never speaks; Nell's lantern only hums and remains unexplained. Kit's single airfield fluster is the chapter's brief unresolved joke. The active-three cap remains mechanical, without a story explanation.
 
 ## Next implementation
 
-Implement Windmere as an independent flight-chart landing, preserving both completed and partial Acts I–II. Celia and the staff replace the hospital's dependence on its anchor before the mirrored ward engine fight. Add its useful regional loot and ship contribution. Extend the shared first/second-victory scenes by actual completion count; do not replay an offer already recorded.
+Implement Act IV from the staged capital crossing, preserving all three regions and the actual saved resources. `allAnchorsSeen` is setup, not a chapter completion or unlocked battle. Do not replay an already recorded Emperor offer.
 
 Only after all three completions adapt Alban's dev flagship to actual campaign resources, retaining the accepted native vectors, whole-ship oscillation and dedicated 10/8 intro/loop. Its surrender resolves Alban's pursuit. The Emperor's defeat stays Chapter Six and the god-domain journey Chapter Seven.

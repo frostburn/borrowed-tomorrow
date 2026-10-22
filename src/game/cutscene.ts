@@ -68,6 +68,7 @@ export class Cutscene {
       if(direction.at){const p=pixel(direction.at);actor.setPosition(p.x,p.y);}
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
+        if(!duration){actor.setPosition(p.x,p.y).setData('destination',undefined);continue;}
         if(walkingHero(hero))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
         const emperor=hero==='emperor'&&this.scene.textures.exists(EMPEROR_WALK[0]),start={x:actor.x,y:actor.y};
         if(emperor)actor.setData('cinematic-idle','emperor-left');
@@ -76,7 +77,7 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
-    if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting')this.layer.add(this.scene.add.image(0,0,'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){

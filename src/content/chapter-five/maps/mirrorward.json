@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 10,
-  "nextobjectid": 25,
+  "nextobjectid": 24,
   "properties": [
     {
       "name": "name",
@@ -596,9 +596,10 @@
         },
         {
           "name": "wind-engine",
-          "point": true,
-          "x": 804,
-          "y": 564,
+          "x": 648,
+          "y": 192,
+          "width": 312,
+          "height": 264,
           "properties": [
             {
               "name": "label",
@@ -606,17 +607,22 @@
               "value": "Mirrored ward engine \u00b7 release the patients"
             },
             {
-              "name": "sprite",
-              "type": "string",
-              "value": "ward-engine"
+              "name": "approachX",
+              "type": "int",
+              "value": 33
             },
             {
-              "name": "doneFlag",
-              "type": "string",
-              "value": "wardEngineWon"
+              "name": "approachY",
+              "type": "int",
+              "value": 23
             },
             {
-              "name": "spriteHiddenFlag",
+              "name": "sign",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "hiddenFlag",
               "type": "string",
               "value": "wardEngineWon"
             }
@@ -816,14 +822,6 @@
           "y": 660,
           "properties": [],
           "id": 16
-        },
-        {
-          "name": "wardEngine",
-          "point": true,
-          "x": 804,
-          "y": 540,
-          "properties": [],
-          "id": 17
         }
       ],
       "properties": []
@@ -840,7 +838,7 @@
           "x": 732,
           "y": 588,
           "properties": [],
-          "id": 18
+          "id": 17
         },
         {
           "name": "celia",
@@ -848,7 +846,7 @@
           "x": 804,
           "y": 516,
           "properties": [],
-          "id": 19
+          "id": 18
         },
         {
           "name": "orrin",
@@ -856,7 +854,7 @@
           "x": 708,
           "y": 540,
           "properties": [],
-          "id": 20
+          "id": 19
         },
         {
           "name": "kit",
@@ -864,7 +862,7 @@
           "x": 660,
           "y": 636,
           "properties": [],
-          "id": 21
+          "id": 20
         },
         {
           "name": "petra",
@@ -872,7 +870,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 22
+          "id": 21
         },
         {
           "name": "iven",
@@ -880,7 +878,7 @@
           "x": 972,
           "y": 588,
           "properties": [],
-          "id": 23
+          "id": 22
         },
         {
           "name": "sera",
@@ -888,7 +886,7 @@
           "x": 852,
           "y": 540,
           "properties": [],
-          "id": 24
+          "id": 23
         }
       ],
       "properties": []

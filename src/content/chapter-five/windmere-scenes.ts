@@ -39,7 +39,7 @@ export const lift=()=>scene('dispensary','five-wind-lift','Up from the dispensar
 export const transfer=()=>scene('windmere','five-wind-transfer','Beds beside the window',[
  line('Sera','The bellows are working. This valve separates the ward line from the anchor.',{focus:{x:35,y:24},cut:true}),
  line('Celia','Move one bed at a time. Keep the light on until each patient’s breathing is steady.'),
- line('The ordinary ward','The first bed rolls through. Volunteers settle a patient beside the window while Sera works the bellows.',{effect:'ward-transfer',duration:1800}),
+ line('The ordinary ward','The first bed rolls through. Volunteers settle a patient beside the window while Sera works the bellows.',{effect:'ward-transfer',duration:1800,focus:{x:25,y:24},actors:{celia:{to:{x:22,y:25}},sera:{to:{x:21,y:24}}}}),
  line('Director Iven','That child has never slept without the mirrors.'),
  line('Celia','Then stay by the bed and tell us what to watch for.'),
  line('Director Iven','You expect me to help dismantle my own ward?'),
@@ -97,8 +97,8 @@ export const alliance=()=>scene('airship','five-alliance','The capital approach'
  line('Petra','Dawnwatch’s pilots know the recognition signals. We can get close before they challenge us.'),
  line('Celia','Windmere’s crews have the support-release order. We can disconnect the next line without taking its patients with it.'),
  line('Kit','And the railway has their supply lists. They can keep working while we’re gone.'),
- line('The inland sky','A long horn sounds across the cloud. The flagship turns broadside above the capital approach.'),
- line('Alda','Alban. He’s closed the crossing, not the landings. We can still go back for supplies.'),
+ line('The inland sky','A long horn sounds across the cloud. The flagship turns broadside above the capital approach.',{focus:{x:32,y:10},cut:true,effect:'capital-blockade'}),
+ line('Alda','Alban. He’s closed the crossing, not the landings. We can still go back for supplies.',{focus:{x:32,y:21}}),
  line('Nell','Then we get ready here. All those crews got us this far. We’ll need them to get through.'),
  line('Petra','When we board, I’m coming for his command rod. He can answer to the people below his guns.'),
 ]);

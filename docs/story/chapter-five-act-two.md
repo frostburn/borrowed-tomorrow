@@ -1,6 +1,6 @@
 # Chapter Five Act II — Dawnwatch: orders worth refusing
 
-Playable alongside Hammerplain, in either order. The flight chart also preserves each unfinished region. Windmere and Alban's campaign finale remain later work.
+Playable alongside Hammerplain and Windmere, in any order. The flight chart preserves each unfinished region. Alban's campaign finale remains Act IV.
 
 ## Route
 
@@ -16,7 +16,7 @@ After defeat he orders reserve fire into the lower gate. The signal watch refuse
 
 `fleetSighted` follows whichever first region completes. Its dialogue uses that region's contribution. Existing Hammerplain saves keep the same flags and resources.
 
-After both currently playable anchors, the objective and Alda point to light in the aft observation cabin. The player enters it. An imperial projection shows a Larkspur morning: Ansel turns the chipped side of his cup toward himself, then repeats the gesture. The Emperor offers Nell a place in the day in exchange for the fragment. She lingers, asks whether Ansel can leave, then walks out. This is a repeating projection, not a resurrection or proof that death can be undone. Ansel remains dead and Tomas remains at the refuge.
+After any two of the three regional anchors, the objective and Alda point to light in the aft observation cabin. The player enters it. An imperial projection shows a Larkspur morning: Ansel turns the chipped side of his cup toward himself, then repeats the gesture. The Emperor offers Nell a place in the day in exchange for the fragment. She lingers, asks whether Ansel can leave, then walks out. This is a repeating projection, not a resurrection or proof that death can be undone. Ansel remains dead and Tomas remains at the refuge.
 
 Nell tells the others on deck that she almost asked how to get there. Kit reads Tomas's ordinary railway message. The fleet closes its inland formation visually after this scene, without a countdown or closed regional landing. The observation cabin is empty on return. This develops Chapter Six; it does not defeat the Emperor or start the god's domain.
 

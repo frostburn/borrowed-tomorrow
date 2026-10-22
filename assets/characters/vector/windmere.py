@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[3]
 def model(name):
  d=Drawing();keeper=name=='iven';nurse=name=='sera';coat='cream' if keeper else 'teal' if nurse else 'brown'
  for x in (15,25):
-  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,64)],'navy');boots(d,x,top=62,bottom=68)
+  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,64)],'navy');boots(d,x,top=62,bottom=67)
  d.poly([(12,28),(27,28),(31,40),(29,57),(22,56),(20,51),(17,57),(10,56),(8,41)],coat)
  d.poly([(12,29),(17,32),(16,54),(11,55),(9,41)],'silver' if keeper else 'green' if nurse else 'copper')
  sleeve(d,(11,31),(7,39),(9,47),coat);sleeve(d,(28,31),(33,39),(30,47),coat)
@@ -20,6 +20,7 @@ def model(name):
   d.poly([(11,18),(12,11),(18,6),(26,10),(30,18),(26,17),(23,12),(16,13),(14,20)],'silver');d.poly([(14,24),(20,26),(26,23),(25,28),(20,32),(15,28)],'silver');d.line([(13,18),(18,18)],'gold',1);d.line([(22,18),(27,18)],'gold',1)
  else:d.poly([(11,17),(12,11),(19,6),(27,10),(30,17),(24,14),(18,12),(14,19)],'hair')
  d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink');d.line([(17,25),(23,25)],'rose')
+ d.transform(0,.72,1,20,0,0)
  return d
 
 def portrait(name):

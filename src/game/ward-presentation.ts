@@ -33,11 +33,11 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
   attackEffect(scene,world,image,u,id,affected){
    if(u.id!==WARD_ID||id!=='refraction')return false;
    if(!affected.length)return true;
-   const core=bossPlacement(u),origin=source?toPixel(source):{x:core.x,y:core.y-120};
+   const core=bossPlacement(u),mirror=source?toPixel(source):undefined,origin=mirror?{x:mirror.x,y:mirror.y-25}:{x:core.x,y:core.y-120};
    const g=scene.add.graphics();world.add(g);
    scene.tweens.addCounter({from:0,to:1,duration:330,onUpdate:t=>{if(!g.active)return;const p=t.getValue()??0;g.clear().setAlpha(1-p);
-    if(source)g.lineStyle(7,0xe3d7a7,.8).lineBetween(image.x,image.y-120,origin.x,origin.y-25);
-    for(const h of affected){const at=toPixel(h);g.lineStyle(5,0xaacbb5,.7).lineBetween(origin.x,origin.y-25,at.x,at.y);g.lineStyle(2,0xffedb9).lineBetween(origin.x,origin.y-25,at.x,at.y);g.fillStyle(0xe1e1af,.6).fillEllipse(at.x,at.y,32+p*15,16+p*8);}
+    if(source)g.lineStyle(7,0xe3d7a7,.8).lineBetween(image.x,image.y-120,origin.x,origin.y);
+    for(const h of affected){const at=toPixel(h);g.lineStyle(5,0xaacbb5,.7).lineBetween(origin.x,origin.y,at.x,at.y);g.lineStyle(2,0xffedb9).lineBetween(origin.x,origin.y,at.x,at.y);g.fillStyle(0xe1e1af,.6).fillEllipse(at.x,at.y,32+p*15,16+p*8);}
    },onComplete:()=>{if(g.active)g.destroy();}});return true;
   },
   overlay(scene,world,b){

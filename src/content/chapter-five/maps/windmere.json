@@ -810,8 +810,8 @@
         {
           "name": "ward-patient",
           "point": true,
-          "x": 828,
-          "y": 540,
+          "x": 492,
+          "y": 588,
           "properties": [
             {
               "name": "sprite",
@@ -848,8 +848,8 @@
         {
           "name": "ward-family",
           "point": true,
-          "x": 900,
-          "y": 540,
+          "x": 564,
+          "y": 588,
           "properties": [
             {
               "name": "sprite",

@@ -18,7 +18,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const feet=await page.evaluate(async(paths)=>{
       const all=[];
       const party=['nell','orrin','kit','celia','petra'];
-      const supporting=['master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
+      const supporting=['iven','sera','teren','master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
         const image=new Image();image.src=paths[hero+suffix];await image.decode();
         const canvas=document.createElement('canvas'),w=image.naturalWidth,h=image.naturalHeight;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);
@@ -79,14 +79,14 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Sprites',exact:true}).click();
     await expect(page.getByRole('button',{name:'Inspect Celia',exact:true})).toHaveAttribute('aria-pressed','true');
     const collections=page.getByRole('group',{name:'Sprite collection',exact:true});
-    await collections.getByRole('button',{name:'NPCs (21)',exact:true}).click();
-    await expect(review.locator('[data-sprite-hero]')).toHaveCount(21);
+    await collections.getByRole('button',{name:`NPCs (${SPRITE_CATALOG.filter(e=>e.group==='NPCs').length})`,exact:true}).click();
+    await expect(review.locator('[data-sprite-hero]')).toHaveCount(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length);
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
     await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.svg$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
     await expect(review.locator('.sprite-file')).toContainText(artPath('master'));
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
-    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([2016,2016]);
+    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual(Array(2).fill(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length*96));
     await capture(page,`sprite-npcs-${device}`);
     await collections.getByRole('button',{name:`Enemies (${SPRITE_CATALOG.filter(e=>e.group==='Enemies').length})`,exact:true}).click();
     await review.getByRole('button',{name:'Inspect Hound',exact:true}).click();

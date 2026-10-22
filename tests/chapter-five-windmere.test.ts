@@ -83,3 +83,6 @@ it('areas hit a whole core once, Taunt redirects the announced beam, Dazzle and 
  core.tauntedBy=hero.id;core.dazzledAttacks=3;hero.guard=10;b.round++;prepareWard(b);expect(shape(b,core,'refraction',core.hex)).toEqual([hero.hex]);const before=hero.hp;b.queue=[core.id,hero.id];expect(enemyTurn(b)).toBe('refraction');expect(core.dazzledAttacks).toBe(2);expect(before-hero.hp).toBeLessThan(14);
  const c=battle(),boss=wardUnit(c)!,attacker=c.units[0];boss.hp=0;c.queue=[attacker.id,boss.id];defend(c);expect(c.result).toBe('victory');expect(wardMirrors(c).every(m=>m.hp===0)).toBe(true);
 });
+it('a deferred Emperor offer remains available after all three anchors without repeating the alliance scene',()=>{
+ const s=windmereCheckpoint('windmereComplete','both');s.location=arrival('airship','start');const v=visit(s);resumeChapterFive(v.h);v.flush();expect(s.flags.allAnchorsSeen).toBe(true);expect(s.flags.emperorOfferSeen).toBeUndefined();v.go('ship-cabin');expect(s.flags.emperorOfferSeen).toBe(true);expect(s.flags.emperorOfferTold).toBe(true);expect(s.journal.filter(j=>j==='allAnchorsSeen')).toHaveLength(1);expect(decodeSave(JSON.stringify(s))).toEqual(s);
+});
