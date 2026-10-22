@@ -10,22 +10,26 @@ test('Act I foundry and carrier cues route to the live player and review in Musi
  });const music=()=>page.evaluate(()=>(window as unknown as {actMusic:()=>{mode:string;enabled:boolean}}).actMusic());await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,anchorCheckpoint('furnaceConfronted'));await page.getByRole('button',{name:'Sound off',exact:true}).click();await approach(page,'forge-carrier');await page.getByRole('button',{name:'Hold off the furnace carrier',exact:true}).click();
  await expect.poll(async()=>(await music()).mode,{timeout:6000}).toBe('five-furnace');await page.getByRole('button',{name:'Restart battle',exact:true}).click();await expect.poll(async()=>(await music()).mode,{timeout:6000}).toBe('five-furnace');await page.getByRole('button',{name:'Sound on',exact:true}).click();expect((await music()).enabled).toBe(false);
 });
-test('Act I complete themes render their opening, middle, return and loop seam without clipping',async({page})=>{
+for(const [family,modes]of [
+ ['flight',['airship','airfield','hammerplain','coolingworks']],
+ ['foundry and crossing',['anchorforge','five-battle','five-furnace','petra-battle']],
+]as const)test(`Rewritten ${family} complete loops and seams render without clipping or sample snaps`,async({page},testInfo)=>{
  test.setTimeout(120000);await page.goto('/');
- const sections=await page.evaluate(async()=>{
+ const results=await page.evaluate(async(modes)=>{
   // @ts-expect-error Vite serves the actual campaign score.
-  const {scoreBar,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
+  const {scoreBar,scoreLength,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
   // @ts-expect-error Vite serves the actual campaign rack.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   const out=[],rate=22050;
-  for(const mode of ['airship','hammerplain','anchorforge','five-battle','five-furnace']as const)for(const start of [0,16,28]){
-   const beat=60/ARRANGEMENTS[mode].bpm,count=start===28?6:4,seconds=(count+1)*4*beat,c=new OfflineAudioContext(2,Math.ceil((seconds+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-   for(let bar=start-1;bar<start+count;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar-start+1)*4*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
-   const rendered=await c.startRendering();let peak=0,sum=0,samples=0;
-   for(let channel=0;channel<2;channel++){const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+4*beat)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;samples++;}}
-   out.push({mode,start,peak,rms:Math.sqrt(sum/samples)});
+  for(const mode of modes){
+   const a=ARRANGEMENTS[mode],beat=60/a.bpm,barSeconds=a.beats*beat,count=scoreLength(mode)+2,seconds=count*barSeconds,c=new OfflineAudioContext(2,Math.ceil((seconds+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+   for(let bar=-1;bar<count-1;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+(bar+1)*barSeconds+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+   const rendered=await c.startRendering();let peak=0,sum=0,jump=0,samples=0;
+   for(let channel=0;channel<2;channel++){const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+barSeconds)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));samples++;}}
+   out.push({mode,peak,rms:Math.sqrt(sum/samples),jump});
   }
   return out;
- });
- for(const s of sections){expect(s.peak,JSON.stringify(s)).toBeLessThan(.9);expect(s.rms,JSON.stringify(s)).toBeGreaterThan(.005);}
+ },modes);
+ await testInfo.attach('full-loop-levels',{body:JSON.stringify(results,null,2),contentType:'application/json'});
+ for(const r of results){expect(r.peak,JSON.stringify(r)).toBeLessThan(.9);expect(r.rms,JSON.stringify(r)).toBeGreaterThan(.005);expect(r.jump,JSON.stringify(r)).toBeLessThan(.25);}
 });

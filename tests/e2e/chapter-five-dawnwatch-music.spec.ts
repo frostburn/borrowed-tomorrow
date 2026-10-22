@@ -10,7 +10,7 @@ test('Dawnwatch Music cues and live commander entry use the new regional family'
   const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');const original=Audio.prototype.setMode;Audio.prototype.setMode=function(mode){(window as unknown as {dawnMusic:()=>{mode:string;enabled:boolean}}).dawnMusic=()=>({...this.position(),enabled:this.enabled});original.call(this,mode);};
  });const music=()=>page.evaluate(()=>(window as unknown as {dawnMusic:()=>{mode:string;enabled:boolean}}).dawnMusic());await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,dawnwatchCheckpoint('aurelSeen'));await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect.poll(async()=>(await music()).mode,{timeout:6000}).toBe('signalwall');await approach(page,'wall-commander');await page.getByRole('button',{name:'Face Commander Aurel',exact:true}).click();await expect.poll(async()=>(await music()).mode,{timeout:6000}).toBe('dawn-commander');await page.getByRole('button',{name:'Restart battle',exact:true}).click();await expect.poll(async()=>(await music()).mode,{timeout:6000}).toBe('dawn-commander');await page.getByRole('button',{name:'Sound on',exact:true}).click();expect((await music()).enabled).toBe(false);expect(errors).toEqual([]);
 });
-test('Dawnwatch complete loops and the cabin render through the real rack without clipping or sample snaps',async({page})=>{
+test('Dawnwatch complete loops and the cabin render through the real rack without clipping or sample snaps',async({page},testInfo)=>{
  test.setTimeout(120000);await page.goto('/');const results=await page.evaluate(async()=>{
   // @ts-expect-error Vite serves the actual procedural score.
   const {scoreBar,ARRANGEMENTS}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
@@ -23,5 +23,5 @@ test('Dawnwatch complete loops and the cabin render through the real rack withou
    for(let ch=0;ch<2;ch++){const data=rendered.getChannelData(ch);for(let i=Math.ceil((.03+4*beat)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Invalid audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));samples++;}}
    results.push({mode,peak,rms:Math.sqrt(sum/samples),jump});
   }return results;
- });for(const r of results){expect(r.peak,JSON.stringify(r)).toBeLessThan(.9);expect(r.rms,JSON.stringify(r)).toBeGreaterThan(.005);expect(r.jump,JSON.stringify(r)).toBeLessThan(.25);}
+ });await testInfo.attach('full-loop-levels',{body:JSON.stringify(results,null,2),contentType:'application/json'});for(const r of results){expect(r.peak,JSON.stringify(r)).toBeLessThan(.9);expect(r.rms,JSON.stringify(r)).toBeGreaterThan(.005);expect(r.jump,JSON.stringify(r)).toBeLessThan(.25);}
 });

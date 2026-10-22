@@ -20,7 +20,18 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    for(const [group,count]of [['Ch 1',7],['Ch 2',6],['Ch 3',4],['Ch 4',5],['Library',2]] as const){
     await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:group,exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(count);
    }
-   await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 4',exact:true}).click();
+   // Four quick comparisons use the real campaign cues, without a chapter playthrough.
+   await page.getByRole('button',{name:'Themes',exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(4);
+   for(const [cue,character]of [['airship','Nell'],['hammerplain','Orrin'],['dawnwatch','Petra'],['windmere','Celia']]){
+    await expect(page.locator(`[data-cue="${cue}"] span`)).toHaveText(character);await page.locator(`[data-cue="${cue}"]`).click();await expect(page.locator('.music-theme')).toContainText(character);
+    await expect(page.locator('.music-review .music-description').first()).toContainText(cue==='windmere'?'3/4':'4/4');
+   }
+   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('#music-position')).toContainText('Playing');
+   await page.getByRole('button',{name:'Next bar',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Bar',exact:true})).toHaveValue('2');await expect(page.locator('#music-notes-title')).toHaveText('Bar 2 / 32');
+   await page.getByRole('button',{name:'Restart cue',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Bar',exact:true})).toHaveValue('1');await expect(page.locator('#music-notes-title')).toHaveText('Bar 1 / 32');await expect(page.locator('#music-notes')).toContainText('Ab5');
+   await page.getByRole('button',{name:'Stop',exact:true}).click();await capture(page,`new-character-themes-${device}`);await clear();
+   await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:'Ch 4',exact:true}).click();await page.locator('[data-cue="refuge"]').click();
+
    const bar=page.getByRole('spinbutton',{name:'Bar',exact:true});await bar.fill('21');await bar.press('Tab');
    await expect(page.locator('#music-notes')).toContainText('Ab5');await capture(page,`31edo-workshop-${device}`);
    const comparisonButton=page.getByRole('button',{name:'Compare C#4 / Db4',exact:true});
