@@ -6,7 +6,7 @@ type Intent=NonNullable<Unit['intent']>&{baseCells:Unit['hex'][];baseName:string
 export function configureDawnwatch(b:Battle,e:Encounter){
  if(e.gunSupport){
   const spotter=b.units.find(u=>u.appearance==='dawn-gunner')!;
-  Object.assign(spotter,{id:SPOTTER_ID,kind:`${e.gunSupport}-spotter`,role:`${e.gunSupport==='mortar'?'Mortar blast':'Repeater lane'} support · defeat the spotter to stop it`,abilities:['judgment'],movement:0,armor:1});
+  Object.assign(spotter,{id:SPOTTER_ID,kind:`${e.gunSupport}-spotter`,role:`${e.gunSupport==='mortar'?'Mortar blast':'Repeater lane'} support · defeat the spotter to stop it`,abilities:['barrage'],movement:0,armor:1});
  }
  if(e.boss==='dawnwatch'){
   const commander=b.units.find(u=>u.appearance==='aurel')!;
@@ -26,9 +26,9 @@ export function prepareDawnwatch(b:Battle){
  }
  const forced=tauntTarget(b,spotter);intent.cells=forced?occupiedHexes(forced):intent.baseCells;intent.name=forced?`Support fire on ${forced.name}`:intent.baseName;
 }
-export function spotterTurn(b:Battle,onRetaliation?:(id:string)=>void,onAction?:(id:'judgment',aim:Unit['hex'])=>void){
+export function spotterTurn(b:Battle,onRetaliation?:(id:string)=>void,onAction?:(id:'barrage',aim:Unit['hex'])=>void){
  const u=active(b);if(u?.id!==SPOTTER_ID)return;
- prepareDawnwatch(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment' as const;}
+ prepareDawnwatch(b);const aim={...u.hex};if(cast(b,u,'barrage',aim,onRetaliation)){onAction?.('barrage',aim);return 'barrage' as const;}
 }
 /** A legal one-hex shield advance. Each order happens before the commander's main attack.
  * Taunting him consumes his attention instead; dead or blocked troops never teleport. */

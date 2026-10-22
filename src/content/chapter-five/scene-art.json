@@ -151,6 +151,16 @@
       "height": 140,
       "depth": 720,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-observation-hatch",
+      "url": "art/vector/chapter-five/observation-hatch.svg",
+      "x": 1110,
+      "y": 727,
+      "width": 112,
+      "height": 48,
+      "depth": -997,
+      "layerId": 3
     }
   ],
   "hammerplain": [

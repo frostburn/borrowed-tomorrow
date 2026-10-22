@@ -192,3 +192,12 @@ The dev title’s **Begin Chapter Five (canonical)** starts the airfield at 1225
 Maps → Ch 5 reviews airfield, airship, Hammerplain, cooling works, anchor gantry and five local arenas, including story flags and all scene casts. Sprites includes Alda, Hester, Durn, the furnace carrier and three forge recolors. Music → Ch 5 includes Above the Railway, The Western Mooring, The Next Shift, The Cooling Race, Under the Gantry, Hold the Floor and The Pouring Lane, alongside the unchanged flagship 10/8 cue. Campaign level ten starts at 1490 XP.
 
 The campaign furnace carrier is mobile with a three-hex base, fixed-round pour warnings and hot tracks lasting through the following round. Hot ground deals six damage at round end; flying crows ignore it. Taunt redirects the pour, Dazzle lasts three attacks, and overlapping area contacts hit once. Dev outcome/restart tools use the existing normal campaign reward and retry paths. The flagship encounter remains dev-only.
+
+
+## Chapter Five Act II
+
+Choose **Dawnwatch · the lower town** on the survey ship’s chart, before or after Hammerplain. The existing Chapter Five canonical start and Act I saves both work. Clear either gun position first, then the other; defeat its opposing spotter to stop the first battle’s fixed-round support warning. The northern signal-wall stair stays closed until both positions are clear. Aurel orders shield soldiers one legal hex forward and braces them for six guard before his attack; Taunt stops his order. All rewards use normal bag/manual fitting. No preset party or resource reset is used in the campaign.
+
+Maps → Chapter 5 adds Dawnwatch, gun terraces, signal wall, observation cabin and five regional arena variants. Sprites adds Aurel, Enna, shield soldier and gunner; named portraits are editable originals. Music → Ch 5 adds The Open Gate, The Gun Terraces, The Town Wheel, Across the Terraces, Orders Worth Refusing and The Empty Cabin. Regional/boss themes are 32-bar 4/4 in 31-EDO; the existing flagship 10/8 cue is unchanged.
+
+Complete both currently playable anchors to open the observation-cabin projection through the aft hatch. Its completion returns to the shared deck scene. Reload during the uncommitted projection replays it; skip commits normally. Windmere and the flagship campaign finale remain unavailable. Detailed journey, motion, music and production checks stay outside default CI.

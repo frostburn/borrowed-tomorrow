@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 12,
-  "nextobjectid": 37,
+  "nextobjectid": 38,
   "properties": [
     {
       "name": "name",
@@ -759,6 +759,14 @@
           "y": 612,
           "properties": [],
           "id": 10
+        },
+        {
+          "name": "queue",
+          "point": true,
+          "x": 708,
+          "y": 708,
+          "properties": [],
+          "id": 11
         }
       ],
       "properties": []
@@ -786,13 +794,13 @@
               "value": "shelterOpened"
             }
           ],
-          "id": 11
+          "id": 12
         },
         {
           "name": "shelter-family",
           "point": true,
-          "x": 948,
-          "y": 636,
+          "x": 852,
+          "y": 516,
           "properties": [
             {
               "name": "sprite",
@@ -805,7 +813,7 @@
               "value": "shelterOpened"
             }
           ],
-          "id": 12
+          "id": 13
         },
         {
           "name": "lower-resident",
@@ -824,13 +832,13 @@
               "value": "shelterOpened"
             }
           ],
-          "id": 13
+          "id": 14
         },
         {
           "name": "shelter-resident",
           "point": true,
-          "x": 972,
-          "y": 684,
+          "x": 900,
+          "y": 540,
           "properties": [
             {
               "name": "sprite",
@@ -843,7 +851,7 @@
               "value": "shelterOpened"
             }
           ],
-          "id": 14
+          "id": 15
         },
         {
           "name": "gate-watch",
@@ -857,7 +865,7 @@
               "value": "dawn-soldier"
             }
           ],
-          "id": 15
+          "id": 16
         },
         {
           "name": "infirmary-hand",
@@ -871,7 +879,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 16
+          "id": 17
         }
       ],
       "properties": []
@@ -888,7 +896,7 @@
           "x": 684,
           "y": 684,
           "properties": [],
-          "id": 17
+          "id": 18
         },
         {
           "name": "petra",
@@ -896,7 +904,7 @@
           "x": 732,
           "y": 636,
           "properties": [],
-          "id": 18
+          "id": 19
         },
         {
           "name": "orrin",
@@ -904,7 +912,7 @@
           "x": 636,
           "y": 660,
           "properties": [],
-          "id": 19
+          "id": 20
         },
         {
           "name": "kit",
@@ -912,7 +920,7 @@
           "x": 612,
           "y": 708,
           "properties": [],
-          "id": 20
+          "id": 21
         },
         {
           "name": "celia",
@@ -920,7 +928,7 @@
           "x": 660,
           "y": 732,
           "properties": [],
-          "id": 21
+          "id": 22
         },
         {
           "name": "aurel",
@@ -928,7 +936,7 @@
           "x": 876,
           "y": 540,
           "properties": [],
-          "id": 22
+          "id": 23
         },
         {
           "name": "enna",
@@ -936,7 +944,7 @@
           "x": 780,
           "y": 612,
           "properties": [],
-          "id": 23
+          "id": 24
         }
       ],
       "properties": []
@@ -953,7 +961,7 @@
           "x": 828,
           "y": 636,
           "properties": [],
-          "id": 24
+          "id": 25
         },
         {
           "name": "petra",
@@ -961,7 +969,7 @@
           "x": 852,
           "y": 564,
           "properties": [],
-          "id": 25
+          "id": 26
         },
         {
           "name": "orrin",
@@ -969,7 +977,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 26
+          "id": 27
         },
         {
           "name": "kit",
@@ -977,7 +985,7 @@
           "x": 732,
           "y": 684,
           "properties": [],
-          "id": 27
+          "id": 28
         },
         {
           "name": "celia",
@@ -985,7 +993,7 @@
           "x": 780,
           "y": 708,
           "properties": [],
-          "id": 28
+          "id": 29
         },
         {
           "name": "enna",
@@ -993,7 +1001,7 @@
           "x": 900,
           "y": 612,
           "properties": [],
-          "id": 29
+          "id": 30
         }
       ],
       "properties": []
@@ -1010,7 +1018,7 @@
           "x": 828,
           "y": 660,
           "properties": [],
-          "id": 30
+          "id": 31
         },
         {
           "name": "petra",
@@ -1018,7 +1026,7 @@
           "x": 876,
           "y": 612,
           "properties": [],
-          "id": 31
+          "id": 32
         },
         {
           "name": "orrin",
@@ -1026,7 +1034,7 @@
           "x": 756,
           "y": 636,
           "properties": [],
-          "id": 32
+          "id": 33
         },
         {
           "name": "kit",
@@ -1034,7 +1042,7 @@
           "x": 780,
           "y": 708,
           "properties": [],
-          "id": 33
+          "id": 34
         },
         {
           "name": "celia",
@@ -1042,7 +1050,7 @@
           "x": 732,
           "y": 684,
           "properties": [],
-          "id": 34
+          "id": 35
         },
         {
           "name": "aurel",
@@ -1050,7 +1058,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 35
+          "id": 36
         },
         {
           "name": "enna",
@@ -1058,7 +1066,7 @@
           "x": 828,
           "y": 588,
           "properties": [],
-          "id": 36
+          "id": 37
         }
       ],
       "properties": []

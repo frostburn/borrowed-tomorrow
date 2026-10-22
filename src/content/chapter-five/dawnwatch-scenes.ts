@@ -81,7 +81,7 @@ export const town=()=>scene('dawnwatch','five-dawn-freed','The watch stays',[
  line('Enna','You always waited till it broke. There’s a new brace in your kit. Fit it before you fly.'),
 ]);
 export const emperorOffer=():Dialogue=>{const d=scene('observation','five-emperor-offer','A morning in the glass',[
- line('The observation cabin','Festival bunting crosses the glass. Behind it stands Larkspur station, warm in the morning light.',{focus:{x:32,y:19},cut:true,silence:true}),
+ line('The observation cabin','Festival bunting crosses the glass. Behind it stands Larkspur station, warm in the morning light.',{focus:{x:32,y:20},cut:true,silence:true}),
  line('Nell','Ansel?'),
  line('The glass','He sets a cup on the counter and turns the chipped rim toward himself. Tomas waits beside the platform door.'),
  line('Nell','He always did that. He wouldn’t give anyone the chipped side.'),
@@ -93,10 +93,10 @@ export const emperorOffer=():Dialogue=>{const d=scene('observation','five-empero
  line('The Emperor','A day I can preserve. Bring the fragment to the capital. You can stay here with them.'),
  line('Nell','Would he know what happened?'),
  line('The Emperor','Nothing would have to happen to him.'),
- line('The cabin','Nell rests her hand on the cold glass. The cup turns once more.'),
+ line('The cabin','Nell rests her hand on the cold glass. The cup turns once more.',{duration:800,focus:{x:32,y:19},actors:{nell:{to:{x:32,y:19}}}}),
  line('Nell','Can he leave the station?'),
  line('The Emperor','He is safe there.'),
- line('Nell','I need to go outside.',{duration:900,actors:{nell:{to:{x:32,y:30}}},track:'nell'}),
+ line('Nell','I need to go outside.',{duration:1500,actors:{nell:{to:{x:32,y:30}}},track:'nell'}),
 ]);d.scene!.hideCompanions=true;return d;};
 export const emperorTold=()=>scene('airship','five-emperor-told','Back on deck',[
  line('Orrin','Nell? You’ve been in there a while.',{focus:{x:32,y:23},cut:true}),

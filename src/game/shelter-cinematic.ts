@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { arrival,MAPS } from '../content/maps';
+const pixel=(p:{x:number;y:number})=>({x:(p.x+.5)*24,y:(p.y+.5)*24+7});
 /** The shelter opens on scene time. Writes remain in the story completion callback. */
 export class ShelterCinematic {
  private targets:{image:Phaser.GameObjects.Image;x:number;y:number;alpha:number}[]=[];
@@ -15,17 +17,18 @@ export class ShelterCinematic {
   const residents=images.filter(o=>['lower-family','lower-resident'].includes(o.getData('person')));
   this.targets=[...(bar?[bar]:[]),...residents].map(image=>({image,x:image.x,y:image.y,alpha:image.alpha}));
   this.moving=true;this.remaining=residents.length;
-  if(bar)this.scene.tweens.add({targets:bar,y:bar.y-80,alpha:0,duration:this.reduced?0:500});
+  if(bar){if(this.reduced)bar.setY(bar.y-80).setAlpha(0);else this.scene.tweens.add({targets:bar,y:bar.y-80,alpha:0,duration:500});}
   for(const [i,image]of residents.entries()){
-   const goal=image.getData('person')==='lower-family'?{x:39,y:26}:{x:40,y:28};
-   const points=[{x:29,y:29},{x:35,y:26},goal].map(p=>({x:(p.x+.5)*24,y:(p.y+.5)*24+7}));
+   const goal=MAPS.dawnwatch.people!.find(p=>p.id===(image.getData('person')==='lower-family'?'shelter-family':'shelter-resident'))!;
+   if(this.reduced){const p=pixel(goal);image.setPosition(p.x,p.y);continue;}
+   const points=[arrival('dawnwatch','queue'),arrival('dawnwatch','gate'),goal].map(pixel);
    const advance=(step:number)=>{
     if(this.closed||!image.active)return;
     if(step===points.length){if(--this.remaining===0)this.moving=false;return;}
-    this.scene.tweens.add({targets:image,...points[step],duration:this.reduced?0:650,delay:step===0&&!this.reduced?i*200:0,ease:'Linear',onComplete:()=>advance(step+1)});
+    this.scene.tweens.add({targets:image,...points[step],duration:650,delay:step===0?i*200:0,ease:'Linear',onComplete:()=>advance(step+1)});
    };advance(0);
   }
-  if(!residents.length)this.moving=false;
+  if(!residents.length||this.reduced)this.moving=false;
  }
  close(){
   this.closed=true;this.moving=false;

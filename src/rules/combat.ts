@@ -21,9 +21,10 @@ import { configureConduit, prepareConduit } from './conduit';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
+export type AbilityId = 'barrage' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
+  barrage:{id:'barrage',name:'Artillery barrage',description:'Support fire hits the announced hexes. Defeat its spotter to stop it.',range:0,power:14,cost:0,shape:'pattern',sound:'steam'},
   judgment: {id:'judgment',name:'Judgment',description:'Strike the announced hexes. The warning remains visible before the attack.',range:0,power:24,cost:0,shape:'pattern',sound:'flare'},
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },

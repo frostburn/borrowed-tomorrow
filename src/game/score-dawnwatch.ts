@@ -38,7 +38,7 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  if(quiet)return out;
  const drums=fight?.105:mode==='watchbarracks'?.04:.023;
  // Straight marching foundation; the melodic answers supply the variation.
- for(const beat of end?[0,2]:[0,2])add('kick','C2',beat,.16,drums);
+ for(const beat of [0,2])add('kick','C2',beat,.16,drums);
  for(const beat of end?[1]:[1,3])add('snare','D2',beat,.12,drums*.7,-.2);
  for(const beat of fight?[0,.5,1,1.5,2,2.5,3,3.5]:[.5,1.5,2.5,3.5])if(!(end&&beat>2))add('hat','F#2',beat,.07,drums*.17,.4);
  if(fight&&end)for(const beat of [2.5,3,3.5])add('snare','D2',beat,.1,drums*.35,-.2);

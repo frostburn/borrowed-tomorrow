@@ -1,4 +1,4 @@
-"""Native Act I cast. Each person has an independent silhouette and portrait."""
+"""Native Chapter Five cast. Each person has an independent silhouette and portrait."""
 from pathlib import Path
 from draw import Drawing, boots, sleeve
 ROOT=Path(__file__).resolve().parents[3]

@@ -631,7 +631,7 @@
           "x": 216,
           "y": 432,
           "width": 264,
-          "height": 144,
+          "height": 120,
           "properties": [
             {
               "name": "label",
@@ -666,7 +666,7 @@
           "x": 1032,
           "y": 432,
           "width": 264,
-          "height": 144,
+          "height": 120,
           "properties": [
             {
               "name": "label",

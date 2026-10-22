@@ -110,3 +110,18 @@ test('enemy retaliation marks the attacker’s hex and shows its own impact',asy
  expect((await inspect(page)).battle!.log.some(t=>t.includes('Track hound retaliates'))).toBe(true);await resume(page);
  await expect.poll(()=>page.evaluate(()=>(window as unknown as {attackScene:{enemyAttack?:Attack}}).attackScene.enemyAttack??null)).toBeNull();
 });
+
+for(const support of ['mortar','repeater']as const)test(`Dawnwatch ${support} support uses ground impacts and preserves the fired warning across round rollover`,async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.goto('/?dev=workshop');await observeScene(page);await page.getByRole('button',{name:'Test battle',exact:true}).click();
+ const fired=await page.evaluate(async support=>{
+  // @ts-expect-error Vite serves the real campaign factory.
+  const {createBattle}:typeof import('../../src/rules/combat')=await import('/src/rules/combat.ts');
+  // @ts-expect-error Use the authored dev fixture, separate from campaign saves.
+  const {chapterFiveStart}:typeof import('../../src/dev/canonical-saves')=await import('/src/dev/canonical-saves.ts');
+  // @ts-expect-error Vite serves the isolated practice host.
+  const {Adventure}:typeof import('../../src/game/adventure')=await import('/src/game/adventure.ts');
+  const b=createBattle(support==='mortar'?'dawn-repeater-first':'dawn-mortar-first',chapterFiveStart()),spotter=b.units.find(u=>u.id==='dawn-spotter')!;b.queue=[spotter.id];const cells=structuredClone(spotter.intent!.cells);
+  (window as unknown as {attackScene:InstanceType<typeof Adventure>}).attackScene.previewBattle(b,()=>{});return cells;
+ },support);
+ const windup=await hold(page,false);expect(windup).toEqual({actorId:'dawn-spotter',ability:'barrage',cells:fired,impact:false});await expect(page.locator('#status')).toContainText('Artillery barrage');await resume(page);const impact=await hold(page,true);expect(impact.cells).toEqual(fired);expect((await inspect(page)).battle!.round).toBe(2);await capture(page,`dawnwatch-${support}-impact`);await resume(page);await expect.poll(()=>page.evaluate(()=>(window as unknown as {attackScene:{enemyAttack?:Attack}}).attackScene.enemyAttack??null)).toBeNull();expect(errors).toEqual([]);
+});

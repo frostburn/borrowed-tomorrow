@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One–Four and Chapter Five’s shared airfield opening and Hammerplain act are playable with bundled vector artwork; the remaining Chapter Five acts and Chapters Six–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One–Four and Chapter Five’s shared airfield opening, Hammerplain and Dawnwatch acts are playable with bundled vector artwork; the remaining Chapter Five acts and Chapters Six–Seven are a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 
