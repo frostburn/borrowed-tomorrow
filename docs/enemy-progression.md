@@ -9,8 +9,9 @@ Common machines have fixed chapter variants. Their colors and profiles are autho
 | Two | Steel: 40 HP, 11 strike, 0 armor, 5 speed, 3 move | Copper: 32 HP, 9 peck, 0 armor, 6 speed, 3 move | Iron: 98 HP, 14 steam, 2 armor, 3 speed, 2 move |
 | Three | Gilded: 58 HP, 15 strike, 1 armor, 6 speed, 4 move | Gilded: 46 HP, 12 peck, 0 armor, 7 speed, 3 move | Gilded: 132 HP, 18 steam, 3 armor, 3 speed, 2 move |
 | Four | Dusk: 72 HP, 19 strike, 1 armor, 6 speed, 4 move | Dusk: 60 HP, 15 peck, 1 armor, 8 speed, 3 move | Dusk: 162 HP, 23 steam, 4 armor, 4 speed, 2 move |
+| Five | Furnace: 82 HP, 21 strike, 2 armor, 6 speed, 4 move | Slag: 68 HP, 17 peck, 1 armor, 8 speed, 3 move | Forge: 184 HP, 25 steam, 4 armor, 4 speed, 2 move |
 
-Damage columns show power before target armor, Guard, Defend or Dazzle. Later hounds close faster, crows pressure the turn order and guardians gain staying power. Encounter IDs, flags, rewards, formations and manual equipment remain intact. Common map actors and the battle identity card use the same local recolor. Review all nine variants in the Sprites workshop's Enemies collection.
+Damage columns show power before target armor, Guard, Defend or Dazzle. Later hounds close faster, crows pressure the turn order and guardians gain staying power. Encounter IDs, flags, rewards, formations and manual equipment remain intact. Common map actors and the battle identity card use the same local recolor. Review all twelve variants in the Sprites workshop's Enemies collection.
 
 ## Reproduce the art
 

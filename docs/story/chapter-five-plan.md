@@ -1,6 +1,6 @@
 # Chapter Five — Taking the World Back
 
-**Author plan, not playable canon.** Entry is the unchanged Chapter Four boundary, `chapter-five:anchors`. The airship, regional victories and Alban's surrender below have not happened in campaign saves. The dev flagship battle is a combat and art preview, not a Chapter Five start.
+**Approved full-chapter plan.** The shared airfield opening, survey ship and Hammerplain are now playable; see [chapter-five-act-one.md](chapter-five-act-one.md) and [chapter-five-continuation.md](chapter-five-continuation.md). Dawnwatch, Windmere and the flagship campaign finale below remain author plans. Entry is the unchanged `chapter-five:anchors` coast departure. The dev flagship preview stays isolated; a separate Vite-only canonical start opens Act I at the airfield.
 
 ## Shape and purpose
 

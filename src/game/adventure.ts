@@ -1,10 +1,11 @@
+import { FURNACE_ASSETS,furnacePresentation } from './furnace-presentation';
 import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
 import { battleEffect } from './battle-effects';
-import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../content/chapters';
+import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE,CHAPTER_FIVE_AVAILABLE } from '../content/chapters';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import { CIVILIAN_SPRITES } from '../content/civilians';
 import { ENEMY_VARIANT_ACTORS } from '../content/enemy-variants';
@@ -14,7 +15,7 @@ import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { beginChapterTwo, beginChapterThree, beginChapterFour, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
 import { vectorAsset } from '../content/art-assets';
@@ -200,6 +201,10 @@ export class Adventure extends Phaser.Scene {
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Four save?','<p>This replaces the autosave with the rescued passengers and four travelers at the railway refuge. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
           else start();
         }},
+        {label:'Begin Chapter Five (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveStart})=>this.loadState(chapterFiveStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Chapter Five save?','<p>This replaces the autosave with the five travelers at the western airfield. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }},
         {label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}},
       ] : []),
     ]);
@@ -224,8 +229,8 @@ export class Adventure extends Phaser.Scene {
     if(MAPS[map].tiles){
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
-      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&!e.boss&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
+      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
       if(missing.length||svg.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
@@ -260,13 +265,13 @@ export class Adventure extends Phaser.Scene {
     await this.regionLoad;
   }
   private async beginNextChapter() {
-    const third=this.state.chapter==='chapter-two',fourth=this.state.chapter==='chapter-three';
-    if(this.busy || (fourth?!CHAPTER_FOUR_AVAILABLE:third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two','chapter-three'].includes(this.state.chapter) || !this.state.boundary)return;
-    this.busy=true;this.ui.toast(fourth?'Loading the railway refuge…':third?'Loading the capital…':'Loading the Iron Coast…');
+    const third=this.state.chapter==='chapter-two',fourth=this.state.chapter==='chapter-three',fifth=this.state.chapter==='chapter-four';
+    if(this.busy || (fifth?!CHAPTER_FIVE_AVAILABLE:fourth?!CHAPTER_FOUR_AVAILABLE:third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two','chapter-three','chapter-four'].includes(this.state.chapter) || !this.state.boundary)return;
+    this.busy=true;this.ui.toast(fifth?'Loading the western airfield…':fourth?'Loading the railway refuge…':third?'Loading the capital…':'Loading the Iron Coast…');
     try{
-      const maps=fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
+      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
       for(const map of maps)await this.ensureRegion(map);
-      if(!(fourth?beginChapterFour(this.state):third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
+      if(!(fifth?beginChapterFive(this.state):fourth?beginChapterFour(this.state):third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
       this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());
     }catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to load the chapter. Your departure is intact.');}
     finally{this.busy=false;}
@@ -275,13 +280,15 @@ export class Adventure extends Phaser.Scene {
     if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
+      if(candidate.chapter==='chapter-five'&&!CHAPTER_FIVE_AVAILABLE)throw new Error('Chapter Five artwork is not installed. Your saved journey is intact.');
       if (candidate.chapter === 'chapter-four' && !CHAPTER_FOUR_AVAILABLE) throw new Error('Chapter Four artwork is not installed. Your saved journey is intact.');
       if (candidate.chapter === 'chapter-three' && !CHAPTER_THREE_AVAILABLE) throw new Error('Chapter Three artwork is not installed. Your saved journey is intact.');
       if (candidate.chapter === 'chapter-two' && !CHAPTER_TWO_AVAILABLE) throw new Error('Chapter Two artwork is not installed in this build. Your saved journey is intact.');
       const floor=restorePoint(MAPS[candidate.location.map],candidate.location,candidate);
       if(!floor)throw new Error('This save is inside an obstacle.');
       candidate.location={map:candidate.location.map,...floor};
-      if(candidate.chapter==='chapter-four')for(const map of ['refuge','breakwater','sanctuary'] as const)await this.ensureRegion(map);
+      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge'] as const)await this.ensureRegion(map);
+      else if(candidate.chapter==='chapter-four')for(const map of ['refuge','breakwater','sanctuary'] as const)await this.ensureRegion(map);
       else if(candidate.chapter==='chapter-three')for(const map of ['northglass','relayhall','conduit'] as const)await this.ensureRegion(map);
       else await this.ensureRegion(candidate.location.map);
       this.state = candidate;
@@ -385,7 +392,8 @@ export class Adventure extends Phaser.Scene {
     }
   }
   private syncWorldFollowers() {
-    const ids=this.state.activeParty.filter(id=>id!==partyLeader(this.state));
+    const stationed=this.state.location.map==='airship'?new Set(visibleObjects(MAPS.airship,this.state).map(o=>o.sprite)):new Set<string>();
+    const ids=this.state.activeParty.filter(id=>id!==partyLeader(this.state)&&!stationed.has(id));
     if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
     for(const follower of this.followers){
       this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
@@ -484,7 +492,8 @@ export class Adventure extends Phaser.Scene {
   }
   private boundaryPanel() {
     if(this.state.chapter==='chapter-four'){
-      this.ui.panel('Chapter Four complete','<div class="chapter-name">Next: Chapter Five · Taking the World Back</div><p>The harbor is open. The coast is moving again, and the three anchors are marked.</p><p>Tomas is safe at the railway refuge, organizing messages between the freed communities. Nell has chosen to lead the counterattack.</p><p>The western airfield is your next destination. Chapter Five is not yet playable; your party, equipment and departure are saved.</p>',[
+      this.ui.panel('Chapter Four complete','<div class="chapter-name">Next: Chapter Five · Taking the World Back</div><p>The harbor is open. The coast is moving again, and the three anchors are marked.</p><p>Tomas is safe at the railway refuge, organizing messages between the freed communities. Nell has chosen to lead the counterattack.</p><p>A survey ship is waiting at the western airfield.</p>',[
+        ...(CHAPTER_FIVE_AVAILABLE?[{label:'Begin Chapter Five',action:()=>{void this.beginNextChapter();}}]:[]),
         {label:'Return to the refuge',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
         {label:'Export departure save',action:()=>exportSave(this.state)},
       ]);return;
@@ -513,7 +522,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }
@@ -555,7 +564,7 @@ export class Adventure extends Phaser.Scene {
     for(const rock of this.battleDefinition.rocks){const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
     const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
     for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
-      const custom=this.battlePresentation?.actor?.(this,u,hp);
+      const custom=this.battlePresentation?.actor?.(this,u,hp,old?.hex??u.hex);
       const img=(custom??this.add.image(p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind);
       if(!custom&&u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
       this.layer.add(img);this.actorImages.set(u.id,img);
@@ -720,9 +729,9 @@ export class Adventure extends Phaser.Scene {
         this.audio.effect('move',this.state.location.map);
         const advance=(index:number)=>{
           if(!valid()||!image.active||index>=path.length)return;
-          const p=toPixel(path[index]),walkFace=hero&&walkingHero(hero)?facingAsset(hero,p.x-image.x,p.y+9-image.y):undefined;
+          const p=preview?.position?.(actor,path[index])??{...toPixel(path[index]),y:toPixel(path[index]).y+9},walkFace=hero&&walkingHero(hero)?facingAsset(hero,p.x-image.x,p.y-image.y):undefined;
           if(walkFace){this.battleFaces.set(actor.id,walkFace);this.motion.walk(image,walkFace,stepMs);}
-          this.tweens.add({targets:[image,image.getData('badges')].filter(Boolean),x:p.x,y:p.y+9,duration:stepMs,ease:'Linear',onComplete:()=>advance(index+1)});
+          this.tweens.add({targets:[image,image.getData('badges')].filter(Boolean),x:p.x,y:p.y,duration:stepMs,ease:'Linear',onComplete:()=>advance(index+1)});
         };advance(0);
       }
     }
@@ -746,9 +755,9 @@ export class Adventure extends Phaser.Scene {
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
         if(!equal(old.hex,u.hex)&&!(path&&u.id===actor?.id)){
-          const start=toPixel(old.hex),end=toPixel(u.hex);image.setPosition(start.x,start.y+9);
-          const badges=image.getData('badges') as Phaser.GameObjects.Container|undefined;badges?.setPosition(start.x,start.y+9);
-          this.tweens.add({targets:[image,badges].filter(Boolean),x:end.x,y:end.y+9,duration:reduced?0:140,ease:'Sine.easeOut'});
+          const start=preview?.position?.(u,old.hex)??{...toPixel(old.hex),y:toPixel(old.hex).y+9},end=preview?.position?.(u,u.hex)??{...toPixel(u.hex),y:toPixel(u.hex).y+9};image.setPosition(start.x,start.y);
+          const badges=image.getData('badges') as Phaser.GameObjects.Container|undefined;badges?.setPosition(start.x,start.y);
+          this.tweens.add({targets:[image,badges].filter(Boolean),x:end.x,y:end.y,duration:reduced?0:140,ease:'Sine.easeOut'});
         }
         if(old.hp!==u.hp){const p=toPixel(u.hex),amount=u.hp-old.hp;
           const text=this.label(p.x,p.y-50,`${amount>0?'+':''}${amount}`,amount>0?'#9bab6c':'#f4c77a').setDepth(10);this.layer!.add(text);

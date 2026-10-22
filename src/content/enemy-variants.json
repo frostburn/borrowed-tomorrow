@@ -143,5 +143,54 @@
       "#263e53": "#253a51",
       "#b7c1b8": "#c5dce0"
     }
+  },
+  "hound-forge": {
+    "kind": "hound",
+    "name": "Furnace hound",
+    "chapter": 5,
+    "hp": 82,
+    "bonus": 10,
+    "armor": 2,
+    "speed": 6,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#4c3938",
+      "#b7784e": "#b5704b",
+      "#d9ae62": "#f1bc6a"
+    }
+  },
+  "crow-forge": {
+    "kind": "crow",
+    "name": "Slag crow",
+    "chapter": 5,
+    "hp": 68,
+    "bonus": 10,
+    "armor": 1,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#4c3938",
+      "#626d7f": "#b5704b",
+      "#b7784e": "#f1bc6a",
+      "#d9ae62": "#344448",
+      "#142536": "#b9beb0"
+    }
+  },
+  "guardian-forge": {
+    "kind": "guardian",
+    "name": "Forge guardian",
+    "chapter": 5,
+    "hp": 184,
+    "bonus": 9,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#4c3938",
+      "#b7784e": "#b5704b",
+      "#d9ae62": "#f1bc6a",
+      "#263e53": "#344448",
+      "#b7c1b8": "#b9beb0"
+    }
   }
 }

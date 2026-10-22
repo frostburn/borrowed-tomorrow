@@ -17,6 +17,10 @@ def svg(path,w,h,body):
 def prop(**kw):return [{'name':k,'type':'bool' if isinstance(v,bool) else 'int' if isinstance(v,int) else 'string','value':v}for k,v in kw.items()]
 def point(name,x,y,**kw):return {'name':name,'point':True,'x':x*24+12,'y':y*24+12,'properties':prop(**kw)}
 def obj(name,x,y,label,**kw):return point(name,x,y,label=label,**kw)
+def control(name,x,y,area,label,**kw):
+ xx,yy,w,h=area
+ return {'name':name,'x':xx*24,'y':yy*24,'width':w*24,'height':h*24,'properties':prop(label=label,approachX=x,approachY=y,**kw)}
+
 def group(i,name,objects=None,**kw):return {'id':i,'name':name,'type':'objectgroup','visible':True,'objects':objects or [],'properties':prop(**kw)}
 def cells(rects,w,h,gid=3):
  data=[0]*(w*h)
@@ -105,19 +109,19 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
 
 air_cast={'nell':(24,29),'orrin':(22,30),'kit':(24,31),'petra':(26,30),'celia':(22,31),'alda':(30,25),'durn':(38,26)}
 world('airfield','Western airfield','The survey crew is loading beside the northern mooring. The supplies are west of the hangar.',[(5,23,54,13),(28,19,9,5)],[(48,28,4,3)], [
- obj('airfield-supply',10,27,'Crew supplies · rest and bandages',sign=True),obj('airfield-seizure',35,26,'The mooring · imperial seizure party',sprite='inspector',spriteHiddenFlag='airfieldGuardWon',doneFlag='airfieldGuardWon'),obj('airfield-board',32,23,'Survey ship · boarding gangway',sign=True),obj('airfield-alda',29,26,'Alda · survey captain',sprite='alda')],
+ obj('airfield-supply',10,27,'Crew supplies · rest and bandages',sign=True),obj('airfield-seizure',35,26,'The mooring · imperial seizure party',sprite='inspector',spriteHiddenFlag='airfieldGuardWon',doneFlag='airfieldGuardWon'),control('airfield-board',32,23,(25,16,15,8),'Survey ship · boarding gangway',sign=True),obj('airfield-alda',29,26,'Alda · survey captain',sprite='alda')],
  {'start':(24,30),'ship':(31,25)}, {'five-airfield':air_cast,'five-launch':{**air_cast,'alda':(31,22),'durn':(55,29)}},
  [point('rigging-hand',42,25,sprite='civilian-dockhand'),point('loading-hand',16,26,sprite='civilian-dockhand-rust'),point('crew-passenger',19,30,sprite='civilian-traveler-blue')],
- [('survey-ship',ship(),744,384,400,126,-997,{}),('hangar',factory(),600,270,56,292,540,{}),('mooring-crane',crane(),312,330,1090,330,660,{}),('airfield-cargo',engine(),200,140,1140,636,776,{})])
+ [('airfield-stores',[poly([(0,18),(30,0),(73,0),(96,18),(96,75),(0,75)],'#a78d62'),poly([(0,18),(96,18),(96,75),(0,75)],'#776b53'),rect(9,27,78,6,'#c5ad7a'),rect(9,58,78,6,'#c5ad7a'),rect(44,19,8,56,'#c5ad7a')],100,80,210,590,670,{}),('survey-ship',ship(),744,384,400,126,-997,{}),('hangar',factory(),600,270,56,292,540,{}),('mooring-crane',crane(),312,330,1090,330,660,{}),('airfield-cargo',engine(),200,140,1140,636,776,{})])
 
 shipback=sky(1536,1008)+[poly([(0,630),(450,570),(950,620),(1536,550),(1536,1008),(0,1008)],'#759495'),poly([(0,725),(360,662),(720,730),(1120,655),(1536,700),(1536,795),(1100,752),(690,824),(290,748),(0,809)],'#b6c5b2')]
 shipfloor=[(13,18,38,16),(21,14,22,5)]
 world('airship','Survey ship · the flight deck','The flight chart is on the forward table. Crew supplies are by the aft hatch.',shipfloor,[(45,26,3,4)], [
- obj('ship-chart',32,18,'Flight chart · the three anchors',sign=True),obj('ship-supply',18,28,'Aft stores · rest and bandages',sign=True),obj('ship-orrin',25,24,'Orrin · the engine watch',sprite='orrin'),obj('ship-kit',39,25,'Kit · the courier routes',sprite='kit'),obj('ship-celia',42,30,'Celia · field notes',sprite='celia'),obj('ship-petra',23,30,'Petra · the horizon',sprite='petra'),obj('ship-alda',35,19,'Alda · the survey log',sprite='alda')],
+ control('ship-chart',32,19,(30,16,5,4),'Flight chart · the three anchors',sign=True),obj('ship-supply',18,28,'Aft stores · rest and bandages',sign=True),obj('ship-orrin',25,24,'Orrin · the engine watch',sprite='orrin'),obj('ship-kit',39,25,'Kit · the courier routes',sprite='kit'),obj('ship-celia',42,30,'Celia · field notes',sprite='celia'),obj('ship-petra',23,30,'Petra · the horizon',sprite='petra'),obj('ship-alda',35,19,'Alda · the survey log',sprite='alda')],
  {'start':(32,26),'airfield':(32,26),'hammerplain':(32,26)},
  {'five-first-flight':{'nell':(32,21),'orrin':(28,24),'kit':(35,24),'petra':(38,27),'celia':(28,28),'alda':(34,19)},'five-fleet':{'nell':(32,21),'orrin':(29,23),'kit':(36,24),'petra':(38,25),'celia':(29,26),'alda':(34,19)}},
- [point('navigator',40,21,sprite='civilian-traveler'),point('deck-hand',16,24,sprite='civilian-dockhand-rust')],
- [('ship-bow',[poly([(468,333),(516,282),(996,282),(1032,333)],'#253e49'),line([(480,330),(516,293),(996,293),(1020,330)],'#d1b67b',7)],1060,350,0,0,-997,{}),('ship-store',engine(),200,140,1060,590,720,{})],shipback,wood=True)
+ [point('navigator',40,21,sprite='civilian-traveler'),point('deck-hand',16,24,sprite='civilian-dockhand-rust'),point('foundry-fitter',16,29,sprite='civilian-dockhand',requiredFlag='hammerplainComplete'),point('drive-fitter',42,27,sprite='civilian-dockhand-rust',requiredFlag='hammerplainComplete')],
+ [('ship-chart-table',[poly([(0,22),(68,0),(122,22),(51,47)],'#c8b185'),poly([(0,22),(51,47),(51,65),(0,40)],'#655d4a'),poly([(51,47),(122,22),(122,40),(51,65)],'#374d51'),poly([(17,23),(68,7),(101,22),(51,39)],'#526f73'),line([(34,24),(65,20),(83,23)],'#d6c385',2),ellipse(34,24,3,3,'#ead49d'),ellipse(65,20,3,3,'#ead49d'),ellipse(83,23,3,3,'#ead49d')],124,68,720,397,465,{}),('ship-fleet',[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51'),poly([(94,40),(119,40),(115,52),(94,52)],'#a47d54')])+'</g>'for x,y,s in [(590,203,.75),(750,165,1.1),(1000,211,.65)]],1536,400,0,0,-998,{'requiredFlag':'fleetSighted'}),('ship-bow',[poly([(468,333),(516,282),(996,282),(1032,333)],'#253e49'),line([(480,330),(516,293),(996,293),(1020,330)],'#d1b67b',7)],1060,350,0,0,-997,{}),('ship-store',engine(),200,140,1060,590,720,{})],shipback,wood=True)
 
 foundfloor=[(5,24,55,13),(10,19,40,6),(30,17,8,3)]
 forgeback=ground(1536,1008)
@@ -127,12 +131,12 @@ world('hammerplain','Hammerplain · the casting floor','The cooling works are no
  {'start':(8,30),'cooling':(42,25),'freed':(30,27)},
  {'five-hammer':{'nell':(24,27),'orrin':(23,26),'kit':(21,28),'petra':(25,29),'celia':(22,30),'hester':(26,25),'durn':(39,24)},'five-workers':{'nell':(28,27),'orrin':(29,26),'hester':(32,25),'kit':(25,29),'petra':(27,30),'celia':(24,30)}},
  [point('casting-hand',35,24,sprite='civilian-dockhand-rust'),point('stopped-family',14,26,sprite='civilian-family-blue',hiddenFlag='hammerplainFreed'),point('home-family',18,31,sprite='civilian-family-blue',requiredFlag='hammerplainFreed'),point('shift-hand',37,30,sprite='civilian-dockhand')],
- [('casting-hall',factory(),600,270,260,230,500,{}),('freight-crane',crane(),312,330,1080,240,570,{}),('replacement-engine',engine(),200,140,638,514,652,{}),('stores-engine',engine(),200,140,1120,530,670,{})],forgeback)
+ [('casting-hall',factory(),600,270,260,230,500,{}),('freight-crane',crane(),312,330,1080,240,570,{}),('replacement-engine',engine(),200,140,720,445,585,{}),('stores-engine',engine(),200,140,1120,530,670,{})],forgeback)
 
 coolfloor=[(6,26,50,10),(7,19,48,8),(28,14,15,6)]
 coolback=ground(1536,1008)+[poly([(0,435),(1536,435),(1536,515),(0,515)],'#233e4b'),rect(0,458,1536,21,'#78968c')]
 world('coolingworks','Hammerplain · the cooling race','A freight lift crosses the upper walk. The manual wheel is on the far eastern pier.',coolfloor,[(10,19,10,3),(49,29,4,3)], [
- obj('cooling-route',29,26,'Crossing · choose the freight lift or race walk',sign=True),obj('cooling-wheel',46,23,'Manual cooling wheel',sign=True),obj('cooling-forge',42,16,'Northern gantry · the anchor furnace',sign=True,accessFlag='coolingOpened'),obj('cooling-return',8,30,'Return to the casting floor',sign=True)],
+ obj('cooling-route',29,26,'Crossing · choose the freight lift or race walk',sign=True),control('cooling-wheel',46,23,(44,19,4,5),'Manual cooling wheel',sign=True),obj('cooling-forge',42,16,'Northern gantry · the anchor furnace',sign=True,accessFlag='coolingOpened'),obj('cooling-return',8,30,'Return to the casting floor',sign=True)],
  {'start':(10,30),'forge':(39,18),'wheel':(44,24)},
  {'five-cooling':{'nell':(25,27),'orrin':(27,25),'kit':(24,29),'petra':(29,28),'celia':(24,30),'hester':(30,24)},'five-water':{'nell':(44,26),'orrin':(45,23),'hester':(43,24),'kit':(42,28),'petra':(40,26),'celia':(41,29)}},
  [point('race-hand',33,25,sprite='civilian-dockhand'),point('wheel-hand',47,24,sprite='civilian-dockhand-rust',requiredFlag='coolingOpened')],
@@ -142,7 +146,7 @@ forgefloor=[(5,25,54,12),(10,18,45,8),(27,14,14,5)]
 forgebackground=[rect(0,0,1536,1008,'#253b47'),poly([(0,80),(560,20),(1040,110),(1536,20),(1536,150),(1050,240),(530,126),(0,200)],'#445e61'),rect(0,245,1536,230,'#334d52')]
 for x in range(100,1536,220):forgebackground += [rect(x,220,35,360,'#1c3340'),rect(x+7,227,9,352,'#8b866a'),rect(x+51,282,109,99,'#1b303b'),rect(x+62,292,88,75,'#bb784a')]
 world('anchorforge','Hammerplain · the anchor gantry','The replacement engines stand below the anchor. Keep the carrier off them.',forgefloor,[(26,14,14,3),(47,20,6,3)], [
- obj('forge-carrier',33,23,'Furnace carrier · defend the engines',sprite='furnace-carrier',doneFlag='furnaceWon',spriteHiddenFlag='furnaceWon'),obj('forge-anchor',32,18,'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester')],
+ obj('forge-carrier',33,23,'Furnace carrier · defend the engines',sprite='furnace-carrier',doneFlag='furnaceWon',spriteHiddenFlag='furnaceWon'),control('forge-anchor',32,18,(26,5,14,14),'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester')],
  {'start':(13,30),'breaker':(32,22)},
  {'five-gantry':{'nell':(27,26),'orrin':(25,25),'kit':(24,28),'petra':(28,28),'celia':(23,29),'hester':(22,26),'durn':(39,23),'furnaceCarrier':(35,22)},'five-release':{'nell':(31,21),'orrin':(30,20),'hester':(34,20),'kit':(28,23),'petra':(35,23),'celia':(27,24),'durn':(44,24)}},
  [point('gantry-hand',20,26,sprite='civilian-dockhand'),point('gantry-helper',41,27,sprite='civilian-dockhand-rust')],
@@ -155,7 +159,10 @@ for id,mapid in [('airfield-guard','airfield'),('hammer-lift','coolingworks'),('
  if id=='hammer-race':back += [rect(0,0,1008,63,'#2e515b'),line([(0,36),(1008,36)],'#b5c3a5',5)]
  if id=='hammer-carrier':
   for y in (195,248):back += [rect(0,y,1008,7,'#1b3440'),rect(0,y,1008,2,'#b8a67c')]
- svg(ART/f'{key}-back.svg',1008,624,back);svg(ART/f'{key}-floor.svg',1008,624,floors(f,1008,624,mapid!='airfield'))
+ floorart=floors(f,1008,624,mapid!='airfield')
+ if id=='hammer-carrier':
+  for y in (195,248):floorart += [rect(24,y,960,7,'#1b3440'),rect(24,y,960,2,'#b8a67c')]
+ svg(ART/f'{key}-back.svg',1008,624,back);svg(ART/f'{key}-floor.svg',1008,624,floorart)
  manifest[key]=[{'key':f'scene-five-{key}-{i}','url':f'art/vector/chapter-five/{key}-{part}.svg','x':0,'y':0,'width':1008,'height':624,'depth':-1001+i,'layerId':i}for i,part in [(1,'back'),(2,'floor')]]
 
 # The carrier's world actor and combat body share one geometry, scaled in SVG.

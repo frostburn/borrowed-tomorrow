@@ -1,3 +1,4 @@
+import { CHAPTER_FIVE_MAPS } from './chapter-five/maps';
 import { CHAPTER_THREE_MAPS } from './chapter-three/maps';
 import { CHAPTER_FOUR_MAPS } from './chapter-four/maps';
 import { CHAPTER_TWO_MAPS } from './chapter-two/maps';
@@ -12,7 +13,7 @@ export interface MapObject { id: string; x: number; y: number; label: string; sp
 export interface MapPerson { id:string; x:number; y:number; sprite:CivilianSprite; hiddenFlag?:string; requiredFlag?:string }
 export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; art?:string; tiles?:TileMap; objects: MapObject[]; people?:MapPerson[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export const MAPS: Record<MapId, MapData> = {
-  ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
+  ...CHAPTER_FIVE_MAPS, ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
 };
 /** Named story endpoints live alongside the routes they use in the Tiled map. */
 export function arrival(map:MapId,name:string){

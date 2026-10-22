@@ -1,8 +1,11 @@
+import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
+import { configureFurnace,prepareFurnace,furnaceTurn } from './furnace';
+import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS as THREE_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
 import { ENCOUNTERS as ONE } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as TWO } from '../content/chapter-two/encounters';
-export const ENCOUNTERS = { ...ONE, ...TWO, ...THREE_ENCOUNTERS, ...FOUR_ENCOUNTERS };
+export const ENCOUNTERS = { ...ONE, ...TWO, ...THREE_ENCOUNTERS, ...FOUR_ENCOUNTERS, ...FIVE_ENCOUNTERS };
 import { BASE_STATS, learnedAbilities } from './progression';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
@@ -51,14 +54,15 @@ export interface Unit {
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
   footprint?:Hex[]; anchored?:boolean;
-  intent?:{round:number;name:string;cells:Hex[];power:number;phase:string};
+  intent?:{round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex};
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
+  furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'conduit'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'|'furnace'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -101,6 +105,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
     evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   if(e.boss==='conduit')configureConduit(battle);
+  if(e.boss==='furnace')configureFurnace(battle);
   nextRound(battle);
   return battle;
 }
@@ -184,7 +189,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);
+  prepareConduit(b);prepareFurnace(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -222,7 +227,7 @@ function finishTurn(b: Battle) {
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
-    for(const u of alive(b))if(u.kind!=='crow'&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of alive(b))if(u.kind!=='crow'&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
@@ -289,6 +294,7 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(u.id===FURNACE_ID)return furnaceTurn(b,onRetaliation,onAction);
   if(u.id===REGULATOR_ID){
     prepareConduit(b);const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}

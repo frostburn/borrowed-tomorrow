@@ -82,7 +82,7 @@ export class UI {
         this.sceneLayer.insertBefore(paper,this.sceneLayer.querySelector('.dialogue'));
       }
     }
-    if (last && d.choices) this.actionRow(buttons, d.choices.map((c: Choice) => ({ label: c.label, action: () => { this.clearPanel(); c.action(); } })));
+    if (last && d.choices) this.actionRow(buttons, d.choices.map((c: Choice) => ({ label: c.label, disabled:c.disabled, action: () => { this.clearPanel(); c.action(); } })));
     else buttons.append(this.button({ label: last ? 'Continue' : 'Next', key: '↵', action: () => this.advanceDialogue() }));
   }
   advanceDialogue() {

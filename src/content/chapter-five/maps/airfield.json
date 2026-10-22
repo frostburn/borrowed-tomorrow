@@ -601,14 +601,25 @@
         },
         {
           "name": "airfield-board",
-          "point": true,
-          "x": 780,
-          "y": 564,
+          "x": 600,
+          "y": 384,
+          "width": 360,
+          "height": 192,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Survey ship \u00b7 boarding gangway"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 32
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 23
             },
             {
               "name": "sign",

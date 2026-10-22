@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { Shot } from '../content/cinematics';
 
-type Effect=NonNullable<Shot['effect']>;
+type Effect=Exclude<NonNullable<Shot['effect']>,'survey-launch'|'fleet-sighting'>;
 const clamp=(n:number)=>Phaser.Math.Clamp(n,0,1);
 const smooth=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
 

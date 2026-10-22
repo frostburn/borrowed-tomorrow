@@ -1,3 +1,4 @@
+import { anchorBar } from './score-five';
 import { octave, transpose, type Pitch } from './tuning';
 import { flagshipBar } from './score-flagship';
 import { conduitBar } from './score-conduit';
@@ -6,11 +7,18 @@ import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number }
 interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  airfield:{beats:4,bpm:96,lead:'reed',leadGain:.19,keys:.028,strings:.018,bass:.11,percussion:0},
+  airship:{beats:4,bpm:86,lead:'reed',leadGain:.19,keys:.028,strings:.018,bass:.11,percussion:0},
+  hammerplain:{beats:4,bpm:102,lead:'keys',leadGain:.21,keys:.035,strings:.02,bass:.11,percussion:.034},
+  coolingworks:{beats:4,bpm:102,lead:'keys',leadGain:.21,keys:.035,strings:.02,bass:.11,percussion:.034},
+  anchorforge:{beats:4,bpm:84,lead:'keys',leadGain:.12,keys:.022,strings:.02,bass:.08,percussion:0},
+  'five-battle':{beats:4,bpm:132,lead:'keys',leadGain:.21,keys:.035,strings:.02,bass:.15,percussion:.11},
+  'five-furnace':{beats:4,bpm:120,lead:'brass',leadGain:.15,keys:.035,strings:.02,bass:.15,percussion:.11},
   flagship:{beats:5,meter:[10,8],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
@@ -48,6 +56,7 @@ const PHRASES:[number,Pitch,number][][]=[
 const ROOTS:Pitch[]=['D3','Bb2','F3','C3','D3','Bb2','G2','A2','F3','C3','Bb2','A2','D3','Bb2','A2','D3'];
 /** Dispatch complete scores; retained home arrangements use a sixteen-bar form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='airfield'||mode==='airship'||mode==='hammerplain'||mode==='coolingworks'||mode==='anchorforge'||mode==='five-battle'||mode==='five-furnace')return anchorBar(mode,bar);
   if(mode==='flagship')return flagshipBar(scorePosition(mode,bar));
   if(mode==='refuge'||mode==='breakwater'||mode==='sanctuary'||mode==='four-battle'||mode==='four-warden')return returnBar(mode,bar);
   if(mode==='conduit')return conduitBar(bar);
@@ -90,7 +99,7 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 
 export function scoreLength(mode:MusicMode):number {
   if(mode==='flagship')return 34;
-  return ['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
+  return ['airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
 }
 
 /** Absolute playback bars wrap after the one-shot intro, never back into it. */

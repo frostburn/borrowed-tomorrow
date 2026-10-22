@@ -586,14 +586,25 @@
         },
         {
           "name": "cooling-wheel",
-          "point": true,
-          "x": 1116,
-          "y": 564,
+          "x": 1056,
+          "y": 456,
+          "width": 96,
+          "height": 120,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Manual cooling wheel"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 46
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 23
             },
             {
               "name": "sign",

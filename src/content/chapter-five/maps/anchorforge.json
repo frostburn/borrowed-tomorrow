@@ -596,14 +596,25 @@
         },
         {
           "name": "forge-anchor",
-          "point": true,
-          "x": 780,
-          "y": 444,
+          "x": 624,
+          "y": 120,
+          "width": 336,
+          "height": 336,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Anchor release \u00b7 the manual breaker"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 32
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 18
             },
             {
               "name": "sign",

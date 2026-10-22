@@ -44,7 +44,7 @@ it('variants remain fixed to their encounter and keep their base combat roles an
 it('each later chapter uses tougher common enemies, visibly tied to a distinct palette',()=>{
  for(const kind of ['hound','crow','guardian']as const){
   const tiers=Object.entries(ENEMY_VARIANTS).filter(([,v])=>v.kind===kind).sort(([,a],[,z])=>a.chapter-z.chapter);
-  expect(tiers.map(([,v])=>v.chapter)).toEqual([2,3,4]);
+  expect(tiers.map(([,v])=>v.chapter)).toEqual([2,3,4,5]);
   for(let i=1;i<tiers.length;i++){expect(tiers[i][1].hp).toBeGreaterThan(tiers[i-1][1].hp);expect(tiers[i][1].bonus).toBeGreaterThan(tiers[i-1][1].bonus);expect(tiers[i][1].colors).not.toEqual(tiers[i-1][1].colors);}
  }
  for(const e of Object.values(ENCOUNTERS))for(const enemy of e.enemies){

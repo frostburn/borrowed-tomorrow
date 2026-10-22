@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 9,
-  "nextobjectid": 25,
+  "nextlayerid": 10,
+  "nextobjectid": 27,
   "properties": [
     {
       "name": "name",
@@ -547,20 +547,45 @@
     },
     {
       "id": 4,
+      "name": "ship-fleet",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "fleetSighted"
+        }
+      ]
+    },
+    {
+      "id": 5,
       "name": "Interactions",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "ship-chart",
-          "point": true,
-          "x": 780,
-          "y": 444,
+          "x": 720,
+          "y": 384,
+          "width": 120,
+          "height": 96,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Flight chart \u00b7 the three anchors"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 32
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 19
             },
             {
               "name": "sign",
@@ -688,7 +713,7 @@
       "properties": []
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "Arrivals",
       "type": "objectgroup",
       "visible": true,
@@ -721,7 +746,7 @@
       "properties": []
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "People",
       "type": "objectgroup",
       "visible": true,
@@ -753,12 +778,50 @@
             }
           ],
           "id": 12
+        },
+        {
+          "name": "foundry-fitter",
+          "point": true,
+          "x": 396,
+          "y": 708,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "hammerplainComplete"
+            }
+          ],
+          "id": 13
+        },
+        {
+          "name": "drive-fitter",
+          "point": true,
+          "x": 1020,
+          "y": 660,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-dockhand-rust"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "hammerplainComplete"
+            }
+          ],
+          "id": 14
         }
       ],
       "properties": []
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "Scene:five-first-flight",
       "type": "objectgroup",
       "visible": true,
@@ -769,7 +832,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 13
+          "id": 15
         },
         {
           "name": "orrin",
@@ -777,7 +840,7 @@
           "x": 684,
           "y": 588,
           "properties": [],
-          "id": 14
+          "id": 16
         },
         {
           "name": "kit",
@@ -785,7 +848,7 @@
           "x": 852,
           "y": 588,
           "properties": [],
-          "id": 15
+          "id": 17
         },
         {
           "name": "petra",
@@ -793,7 +856,7 @@
           "x": 924,
           "y": 660,
           "properties": [],
-          "id": 16
+          "id": 18
         },
         {
           "name": "celia",
@@ -801,7 +864,7 @@
           "x": 684,
           "y": 684,
           "properties": [],
-          "id": 17
+          "id": 19
         },
         {
           "name": "alda",
@@ -809,13 +872,13 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 18
+          "id": 20
         }
       ],
       "properties": []
     },
     {
-      "id": 8,
+      "id": 9,
       "name": "Scene:five-fleet",
       "type": "objectgroup",
       "visible": true,
@@ -826,7 +889,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 19
+          "id": 21
         },
         {
           "name": "orrin",
@@ -834,7 +897,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 20
+          "id": 22
         },
         {
           "name": "kit",
@@ -842,7 +905,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 21
+          "id": 23
         },
         {
           "name": "petra",
@@ -850,7 +913,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 22
+          "id": 24
         },
         {
           "name": "celia",
@@ -858,7 +921,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 23
+          "id": 25
         },
         {
           "name": "alda",
@@ -866,7 +929,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 24
+          "id": 26
         }
       ],
       "properties": []

@@ -1,0 +1,14 @@
+import airfield from './maps/airfield.json' with { type: 'json' };
+import airship from './maps/airship.json' with { type: 'json' };
+import hammerplain from './maps/hammerplain.json' with { type: 'json' };
+import coolingworks from './maps/coolingworks.json' with { type: 'json' };
+import anchorforge from './maps/anchorforge.json' with { type: 'json' };
+import guard from './maps/battle-airfield-guard.json' with { type: 'json' };
+import lift from './maps/battle-hammer-lift.json' with { type: 'json' };
+import race from './maps/battle-hammer-race.json' with { type: 'json' };
+import stores from './maps/battle-hammer-stores.json' with { type: 'json' };
+import carrier from './maps/battle-hammer-carrier.json' with { type: 'json' };
+import { tiledWorld } from '../tiled-world';
+import type { TileMap } from '../tilemaps';
+export const CHAPTER_FIVE_MAPS={airfield:tiledWorld('airfield',airfield),airship:tiledWorld('airship',airship),hammerplain:tiledWorld('hammerplain',hammerplain),coolingworks:tiledWorld('coolingworks',coolingworks),anchorforge:tiledWorld('anchorforge',anchorforge)};
+export const CHAPTER_FIVE_BATTLES:Record<string,TileMap>={'airfield-guard':guard,'hammer-lift':lift,'hammer-race':race,'hammer-stores':stores,'hammer-carrier':carrier};
