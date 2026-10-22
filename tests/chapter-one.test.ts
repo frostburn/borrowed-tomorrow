@@ -70,7 +70,7 @@ describe('chapter progression', () => {
 });
 
 it('all map interactions have a connected, walkable approach', () => {
-  const starts = { dawnwatch:{x:9,y:32},watchbarracks:{x:12,y:31},signalwall:{x:14,y:32},observation:{x:32,y:29}, airfield:{x:24,y:30},airship:{x:32,y:26},hammerplain:{x:8,y:30},coolingworks:{x:10,y:30},anchorforge:{x:13,y:30},refuge:{x:31,y:22},breakwater:{x:31,y:27},sanctuary:{x:32,y:32},northglass:{x:32,y:31},relayhall:{x:31,y:32},conduit:{x:25,y:30},coast: { x: 24, y: 26 }, infirmary: { x: 31, y: 24 }, cinderbank: { x: 27, y: 22 }, station: { x: 21, y: 16 }, yard: { x: 35, y: 18 }, rillbridge: { x: 12, y: 18 }, tunnel: { x: 3, y: 13 } };
+  const starts = { windmere:{x:9,y:32},dispensary:{x:12,y:32},mirrorward:{x:13,y:32},dawnwatch:{x:9,y:32},watchbarracks:{x:12,y:31},signalwall:{x:14,y:32},observation:{x:32,y:29}, airfield:{x:24,y:30},airship:{x:32,y:26},hammerplain:{x:8,y:30},coolingworks:{x:10,y:30},anchorforge:{x:13,y:30},refuge:{x:31,y:22},breakwater:{x:31,y:27},sanctuary:{x:32,y:32},northglass:{x:32,y:31},relayhall:{x:31,y:32},conduit:{x:25,y:30},coast: { x: 24, y: 26 }, infirmary: { x: 31, y: 24 }, cinderbank: { x: 27, y: 22 }, station: { x: 21, y: 16 }, yard: { x: 35, y: 18 }, rillbridge: { x: 12, y: 18 }, tunnel: { x: 3, y: 13 } };
   for (const map of Object.values(MAPS)) for (const object of map.objects) {
     const approaches = [{ x: object.x, y: object.y }, { x: object.x - 1, y: object.y }, { x: object.x + 1, y: object.y }, { x: object.x, y: object.y - 1 }, { x: object.x, y: object.y + 1 }];
     expect(approaches.some(p => walkable(map, p.x, p.y) && (p.x === starts[map.id].x && p.y === starts[map.id].y || worldPath(map, starts[map.id], p).length > 0)), `${map.id}: ${object.id}`).toBe(true);

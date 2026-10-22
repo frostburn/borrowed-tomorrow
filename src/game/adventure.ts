@@ -1,3 +1,4 @@
+import { WARD_ASSETS,wardPresentation } from './ward-presentation';
 import { FURNACE_ASSETS,furnacePresentation } from './furnace-presentation';
 import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
@@ -230,7 +231,7 @@ export class Adventure extends Phaser.Scene {
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
       const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
       if(missing.length||svg.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
@@ -269,7 +270,7 @@ export class Adventure extends Phaser.Scene {
     if(this.busy || (fifth?!CHAPTER_FIVE_AVAILABLE:fourth?!CHAPTER_FOUR_AVAILABLE:third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two','chapter-three','chapter-four'].includes(this.state.chapter) || !this.state.boundary)return;
     this.busy=true;this.ui.toast(fifth?'Loading the western airfield…':fourth?'Loading the railway refuge…':third?'Loading the capital…':'Loading the Iron Coast…');
     try{
-      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
+      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
       for(const map of maps)await this.ensureRegion(map);
       if(!(fifth?beginChapterFive(this.state):fourth?beginChapterFour(this.state):third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
       this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());
@@ -287,7 +288,7 @@ export class Adventure extends Phaser.Scene {
       const floor=restorePoint(MAPS[candidate.location.map],candidate.location,candidate);
       if(!floor)throw new Error('This save is inside an obstacle.');
       candidate.location={map:candidate.location.map,...floor};
-      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'] as const)await this.ensureRegion(map);
+      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'] as const)await this.ensureRegion(map);
       else if(candidate.chapter==='chapter-four')for(const map of ['refuge','breakwater','sanctuary'] as const)await this.ensureRegion(map);
       else if(candidate.chapter==='chapter-three')for(const map of ['northglass','relayhall','conduit'] as const)await this.ensureRegion(map);
       else await this.ensureRegion(candidate.location.map);
@@ -522,7 +523,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }

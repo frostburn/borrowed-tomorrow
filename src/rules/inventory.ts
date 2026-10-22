@@ -5,6 +5,8 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'ward-focus':{name:'Windmere medical focus',slot:'fitting',heroes:['celia'],description:'Sera’s spare treatment lens, steadied for field use.',bonuses:{attack:5,armor:2,speed:1}},
+  'opal-reflector':{name:'Opal lantern reflector',slot:'fitting',heroes:['nell'],description:'An old examination-lamp reflector. A brighter beam and a lighter hand.',bonuses:{attack:6,armor:1,speed:1}},
   'shield-brace':{name:'Dawnwatch shield brace',slot:'fitting',heroes:['petra'],description:'A firm shield grip and reinforced saber strap from the town watch.',bonuses:{attack:4,armor:3,speed:0}},
   'field-coat':{name:'Officers’ field coat',slot:'coat',heroes:COMPANION_IDS,description:'A light lined coat from Dawnwatch’s field locker. Keeps its wearer quick on their feet.',bonuses:{attack:0,armor:3,speed:1}},
   'forge-valve':{name:'Balanced expansion valve',slot:'fitting',heroes:['orrin'],description:'A foundry valve with a smooth return stroke. Salvaged from the furnace carrier.',bonuses:{attack:6,armor:1,speed:1}},

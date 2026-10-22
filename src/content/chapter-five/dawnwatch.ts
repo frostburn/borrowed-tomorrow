@@ -2,9 +2,9 @@ import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import type { StoryHost } from '../chapter-one/interactions';
 import { receiveItem } from '../../rules/inventory';
-import type { GameState,MapId } from '../../rules/state';
+import type { MapId } from '../../rules/state';
 import * as scenes from './dawnwatch-scenes';
-export const completedAnchors=(s:Pick<GameState,'flags'>)=>['hammerplainComplete','dawnwatchComplete'].filter(f=>s.flags[f]).length;
+import { completedAnchors } from './progress';
 export function resumeDawnwatch(h:StoryHost){
  const {state:s}=h,f=s.flags,map=s.location.map;
  if(map==='dawnwatch'){

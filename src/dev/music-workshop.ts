@@ -4,6 +4,8 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'windmere',title:'Windmere · The Garden Walk',group:'5'}, {mode:'dispensary',title:'Beds beside the Water Lift',group:'5'}, {mode:'mirrorward',title:'The Mirrored Ward',group:'5'},
+  {mode:'wind-battle',title:'Windmere · Keep the Ward Open',group:'5'}, {mode:'wind-engine',title:'The Light We Keep',group:'5'},
   {mode:'airship',title:'Above the Railway',group:'5'}, {mode:'airfield',title:'The Western Mooring',group:'5'},
   {mode:'hammerplain',title:'The Next Shift',group:'5'}, {mode:'coolingworks',title:'The Cooling Race',group:'5'}, {mode:'anchorforge',title:'Under the Gantry',group:'5'},
   {mode:'five-battle',title:'Hammerplain · Hold the Floor',group:'5'}, {mode:'five-furnace',title:'The Pouring Lane',group:'5'},

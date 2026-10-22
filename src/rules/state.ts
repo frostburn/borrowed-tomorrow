@@ -1,3 +1,4 @@
+import { completedAnchors } from '../content/chapter-five/progress';
 import { decodeInventory, newInventory, type Inventory } from './inventory';
 import { BASE_STATS } from './progression';
 import { validParty } from './party';
@@ -10,7 +11,7 @@ export const THIRD_CHAPTER = 'chapter-three:capital';
 export const FOURTH_CHAPTER = 'chapter-four:broken-world';
 export const FIFTH_CHAPTER = 'chapter-five:anchors';
 export type HeroId = 'nell' | 'orrin' | 'kit' | 'celia' | 'petra';
-export type MapId = 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation';
+export type MapId = 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;
@@ -87,8 +88,8 @@ export function decodeSave(text: string): GameState {
   if (s.format !== SAVE_FORMAT || s.version !== SAVE_VERSION || s.campaign !== CAMPAIGN) throw new Error('Unsupported save format or campaign.');
   const number = (x: unknown, max: number): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
   const loc = s.location as GameState['location'] | undefined;
-  if (!loc || !['station', 'yard', 'rillbridge', 'tunnel', 'coast', 'infirmary', 'cinderbank', 'northglass', 'relayhall', 'conduit', 'refuge', 'breakwater', 'sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
-    !number(loc.x, loc.map==='rillbridge' ? 65 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'].includes(loc.map) ? 63 : 41) || !number(loc.y, loc.map==='rillbridge' ? 40 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
+  if (!loc || !['station', 'yard', 'rillbridge', 'tunnel', 'coast', 'infirmary', 'cinderbank', 'northglass', 'relayhall', 'conduit', 'refuge', 'breakwater', 'sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
+    !number(loc.x, loc.map==='rillbridge' ? 65 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'].includes(loc.map) ? 63 : 41) || !number(loc.y, loc.map==='rillbridge' ? 40 : ['coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
   if (!number(s.xp, 1e7) || !number(s.coins, 1e7) || !number(s.bandages, 999) || !number(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
   if (!['chapter-one','chapter-two','chapter-three','chapter-four','chapter-five'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER && s.boundary !== FOURTH_CHAPTER && s.boundary !== FIFTH_CHAPTER)) throw new Error('This chapter is not available in this build.');
   if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > (['chapter-four','chapter-five'].includes(s.chapter as string) ? 5 : s.chapter === 'chapter-three' ? 4 : 3) || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
@@ -127,6 +128,7 @@ export function decodeSave(text: string): GameState {
     hammerplainSeen:'firstFlightSeen',coolingSeen:'hammerplainSeen',forgeRouteSet:'coolingSeen',forgeApproachWon:'forgeRouteSet',
     coolingOpened:'forgeApproachWon',forgeGantrySeen:'coolingOpened',furnaceConfronted:'forgeGantrySeen',furnaceWon:'furnaceConfronted',
     hammerplainFreed:'furnaceWon',hammerplainComplete:'hammerplainFreed',forgeStoresWon:'hammerplainSeen',
+    windmereSeen:'firstFlightSeen',dispensarySeen:'windmereSeen',windLiftConfronted:'dispensarySeen',windLiftWon:'windLiftConfronted',waterLiftOpened:'windLiftWon',patientsTransferred:'waterLiftOpened',mirrorWardSeen:'patientsTransferred',windGalleryWon:'mirrorWardSeen',wardEngineConfronted:'windGalleryWon',wardEngineWon:'wardEngineConfronted',windmereFreed:'wardEngineWon',windmereComplete:'windmereFreed',windReflectorTaken:'waterLiftOpened',
     dawnwatchSeen:'firstFlightSeen',shelterOpened:'dawnwatchSeen',watchGunsSeen:'shelterOpened',mortarConfronted:'watchGunsSeen',repeaterConfronted:'watchGunsSeen',mortarWon:'mortarConfronted',repeaterWon:'repeaterConfronted',aurelSeen:'watchGunsSeen',aurelConfronted:'aurelSeen',aurelWon:'aurelConfronted',dawnwatchFreed:'aurelWon',dawnwatchComplete:'dawnwatchFreed',watchCoatTaken:'watchGunsSeen',emperorOfferSeen:'fleetSighted',emperorOfferTold:'emperorOfferSeen',
   };
   for (const [flag, required] of Object.entries(prerequisites)) if (flags[flag] && !flags[required]) throw new Error('The story checkpoint is incomplete.');
@@ -152,17 +154,19 @@ export function decodeSave(text: string): GameState {
     if((loc.map==='breakwater'&&!flags.refugeSeen)||(loc.map==='sanctuary'&&!flags.harborOpened))throw new Error('This route has not opened yet.');
   }else if(s.chapter!=='chapter-five'&&(flags.refugeSeen||flags.worksArrival||flags.chapterFourComplete))throw new Error('The chapter departure is incomplete.');
   if(s.chapter==='chapter-five'){
-    if(!flags.chapterFourComplete||s.boundary!==null||!['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'].includes(loc.map))throw new Error('The chapter departure is incomplete.');
+    if(!flags.chapterFourComplete||s.boundary!==null||!['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'].includes(loc.map))throw new Error('The chapter departure is incomplete.');
     if(!flags.celiaJoined||typeof flags.worksFlooded!=='boolean')throw new Error('The harbor checkpoint is incomplete.');
     if(loc.map!=='airfield'&&!flags.airshipOwned)throw new Error('The survey ship has not been acquired.');
-    if(['hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation'].includes(loc.map)&&!flags.firstFlightSeen)throw new Error('The first flight is incomplete.');
+    if(['hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'].includes(loc.map)&&!flags.firstFlightSeen)throw new Error('The first flight is incomplete.');
     if(loc.map==='coolingworks'&&!flags.hammerplainSeen||loc.map==='anchorforge'&&!flags.coolingOpened)throw new Error('This route has not opened yet.');
     if((flags.aurelSeen||flags.watchCoatTaken)&&(!flags.mortarWon||!flags.repeaterWon))throw new Error('Both gun positions must be clear.');
-    if(flags.fleetSighted&&!flags.hammerplainComplete&&!flags.dawnwatchComplete)throw new Error('No anchor has been freed.');
-    if((flags.emperorOfferSeen||loc.map==='observation')&&(!flags.hammerplainComplete||!flags.dawnwatchComplete))throw new Error('The second anchor is incomplete.');
+    if(flags.fleetSighted&&completedAnchors({flags})<1)throw new Error('No anchor has been freed.');
+    if((flags.emperorOfferSeen||loc.map==='observation')&&completedAnchors({flags})<2)throw new Error('The second anchor is incomplete.');
     if(loc.map==='watchbarracks'&&!flags.shelterOpened||loc.map==='signalwall'&&(!flags.mortarWon||!flags.repeaterWon))throw new Error('This route has not opened yet.');
+    if((loc.map==='dispensary'&&!flags.windmereSeen)||(loc.map==='mirrorward'&&!flags.patientsTransferred))throw new Error('This route has not opened yet.');
+    if(flags.allAnchorsSeen&&completedAnchors({flags})!==3)throw new Error('All three anchors must be disconnected.');
     if(flags.forgeRouteSet&&typeof flags.forgeFlooded!=='boolean')throw new Error('The cooling route is missing.');
-  }else if(flags.airfieldSeen||flags.airshipOwned||flags.hammerplainSeen||flags.dawnwatchSeen||flags.fleetSighted||flags.emperorOfferSeen)throw new Error('The chapter departure is incomplete.');
+  }else if(flags.airfieldSeen||flags.airshipOwned||flags.hammerplainSeen||flags.dawnwatchSeen||flags.windmereSeen||flags.allAnchorsSeen||flags.fleetSighted||flags.emperorOfferSeen)throw new Error('The chapter departure is incomplete.');
   if (flags.raidPlanned && typeof flags.raidDiversion !== 'boolean') throw new Error('The raid route is missing.');
   const strings = (a: unknown, limit: number): a is string[] => Array.isArray(a) && a.length <= limit && a.every(v => typeof v === 'string' && /^[a-zA-Z0-9:_-]{1,80}$/.test(v));
   if (!strings(s.journal, 300)) throw new Error('Invalid journal.');

@@ -1,6 +1,8 @@
-import { completedAnchors } from './dawnwatch';
+import { WINDMERE_JOURNAL } from './windmere-journal';
+import { completedAnchors } from './progress';
 import type { GameState } from '../../rules/state';
 export const JOURNAL:Record<string,{title:string;text:string}>={
+ ...WINDMERE_JOURNAL,
  airfieldSeen:{title:'The survey ship',text:'Superintendent Durn has seized Alda’s survey ship for Hammerplain. Bram’s ferry stores are being unloaded. Clear the confiscation detail at the gangway.'},
  airfieldClear:{title:'A flight out',text:'The airfield guards have withdrawn. Meet Alda at the gangway to board the survey ship.'},
  firstFlightSeen:{title:'Three landings',text:'Alda will fly us between the anchor stations. Hammerplain powers its anchor from a foundry; Petra knows Dawnwatch’s garrison, and Celia knows Windmere’s medicine works. Choose a landing on the flight chart. Tomas keeps our railway messages at the refuge.'},
@@ -22,7 +24,7 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
  dawnwatchComplete:{title:'Dawnwatch · an open shelter',text:'The watch stays with the town. Enna sends three volunteer pilots, two escort launches, approach charts and fleet recognition signals to Alda. Petra has earned their help without regaining her commission. The anchor wheel stays by the shelter.'},
  watchCoatTaken:{title:'A coat from the field locker',text:'An officers’ field coat goes into the shared bag. It offers protection and a little extra speed; anyone can fit it from Equipment.'},
  emperorOfferSeen:{title:'The morning in the glass',text:'The Emperor projected Larkspur before the raid into the observation glass. Ansel kept turning the same chipped cup. He offered Nell a place in that day if she brought the fragment to the capital. She left the cabin. It was a projection; Tomas remains safe at the refuge, and Ansel has not returned.'},
- emperorOfferTold:{title:'Back on deck',text:'Nell told the others about the offer and asked Kit to read Tomas’s ordinary railway message. Alda keeps the anchor landings open while the fleet tightens its inland cordon. Windmere remains to be reached.'},
+ emperorOfferTold:{title:'Back on deck',text:'Nell told the others about the offer and asked Kit to read Tomas’s ordinary railway message. Alda keeps the anchor landings open while the fleet tightens its inland cordon. The remaining regional landings stay open.'},
  fleetSighted:{title:'The imperial fleet',text:'Alban’s fleet has appeared above the inland line. Alda can fly clear of it. The freed region’s anchor stays disconnected. The remaining landings are open; our new crews are aboard.'},
 };
 export function objective(s:GameState):string{
@@ -31,6 +33,19 @@ export function objective(s:GameState):string{
  if(!f.airshipOwned)return 'Meet Alda at the gangway and board the survey ship.';
  if(!f.firstFlightSeen)return 'Join Alda at the flight chart.';
  const map=s.location.map;
+ if(map==='windmere'||map==='dispensary'||map==='mirrorward'){
+  if(!f.dispensarySeen)return 'Take the eastern walkway to Windmere’s lower dispensary.';
+  if(!f.windLiftWon)return 'Clear the machines at the water-lift brake.';
+  if(!f.waterLiftOpened)return 'Turn the water-lift wheel on the eastern walk.';
+  if(!f.patientsTransferred)return 'Return to the ordinary ward and work its bypass valve.';
+  if(!f.mirrorWardSeen)return 'Follow Iven up the hospital’s eastern treatment-gallery stair.';
+  if(!f.windGalleryWon)return 'Clear the gallery bridge before approaching the mirrored engine.';
+  if(!f.wardEngineWon)return 'Break the lit projections and stop the mirrored ward engine.';
+  if(!f.windmereFreed)return 'Use the support-release controls above the engine’s lens.';
+  if(!f.windmereComplete)return 'Return to the ordinary ward for the first night shift.';
+  return 'Windmere is free · return to the survey ship or visit the morning clinic.';
+ }
+
  if(map==='dawnwatch'||map==='watchbarracks'||map==='signalwall'){
   if(!f.shelterOpened)return 'Open the shelter gate above Dawnwatch’s lower street.';
   if(!f.watchGunsSeen)return 'Take the eastern barracks stair to the gun terraces.';
@@ -51,7 +66,7 @@ export function objective(s:GameState):string{
  }
  if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return 'Look into the light in the observation cabin · aft hatch.';
  if(f.emperorOfferSeen&&!f.emperorOfferTold)return 'Return to the flight deck and tell the others.';
- if(f.emperorOfferTold)return 'Acts I–II complete · Windmere is the next landing. Rest or revisit.';
- if(completedAnchors(s)===1)return f.hammerplainComplete?'Act I complete · choose Dawnwatch at the flight chart.':'Act II complete · choose Hammerplain at the flight chart.';
- return 'Choose Hammerplain or Dawnwatch at the forward flight chart.';
+ if(completedAnchors(s)===3)return 'Acts I–III complete · prepare aboard for the flagship finale, or revisit the regions.';
+ const remaining=[!f.hammerplainComplete&&'Hammerplain',!f.dawnwatchComplete&&'Dawnwatch',!f.windmereComplete&&'Windmere'].filter(Boolean).join(' or ');
+ return `Choose ${remaining} at the forward flight chart.`;
 }

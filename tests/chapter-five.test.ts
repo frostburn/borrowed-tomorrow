@@ -27,14 +27,14 @@ for(const flooded of [false,true])it(`frees Hammerplain by the ${flooded?'race w
  resumeChapterFive(j.h);expect(j.read().scene!.id).toBe('five-airfield');expect(s.flags.airfieldSeen).toBeUndefined();j.finish();
  interactChapterFive(j.h,'airfield-seizure');j.choice(0);j.win();interactChapterFive(j.h,'airfield-board');expect(j.read().scene!.id).toBe('five-launch');
  expect(s.flags.airshipOwned).toBeUndefined();expect(decodeSave(JSON.stringify(s))).toEqual(s);j.finish();expect(j.read().scene!.id).toBe('five-first-flight');j.finish();
- interactChapterFive(j.h,'ship-chart');expect(j.read().choices!.filter(c=>c.disabled)).toHaveLength(1);j.choice(0);expect(j.read().scene!.id).toBe('five-hammer');j.finish();
+ interactChapterFive(j.h,'ship-chart');expect(j.read().choices!.filter(c=>c.disabled)).toHaveLength(0);j.choice(0);expect(j.read().scene!.id).toBe('five-hammer');j.finish();
  interactChapterFive(j.h,'hammer-cooling');j.finish();interactChapterFive(j.h,'cooling-route');j.choice(flooded?1:0);expect(j.encounter()).toBe(flooded?'hammer-race':'hammer-lift');j.win();
  interactChapterFive(j.h,'cooling-wheel');j.finish();interactChapterFive(j.h,'cooling-forge');j.finish();
  interactChapterFive(j.h,'forge-carrier');j.choice(0);expect(j.encounter()).toBe('hammer-carrier');j.win();const xp=s.xp;j.win();expect(s.xp).toBe(xp);
  expect(ownedCopies(s.inventory,'forge-valve')).toBe(1);expect(s.inventory.characters.orrin.fitting).toBe('return-valve');expect(equipItem(s.inventory,'orrin','forge-valve')).toBe(true);expect(s.flags.hammerplainFreed).toBeUndefined();
  interactChapterFive(j.h,'forge-anchor');j.finish();interactChapterFive(j.h,'forge-cooling');interactChapterFive(j.h,'cooling-return');expect(j.read().scene!.id).toBe('five-workers');j.finish();
  interactChapterFive(j.h,'hammer-ship');expect(j.read().scene!.id).toBe('five-fleet');j.finish();
- expect(s.flags).toMatchObject({hammerplainComplete:true,hammerplainFreed:true,fleetSighted:true,forgeFlooded:flooded,tomasRescued:true});expect(s.flags.chapterFiveComplete).toBeUndefined();expect(s.flags.dawnwatchComplete).toBeUndefined();expect(s.flags.windmereComplete).toBeUndefined();expect(s.boundary).toBeNull();expect(s.activeParty).toEqual(formation);expect(objective(s)).toContain('Act I complete');expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ expect(s.flags).toMatchObject({hammerplainComplete:true,hammerplainFreed:true,fleetSighted:true,forgeFlooded:flooded,tomasRescued:true});expect(s.flags.chapterFiveComplete).toBeUndefined();expect(s.flags.dawnwatchComplete).toBeUndefined();expect(s.flags.windmereComplete).toBeUndefined();expect(s.boundary).toBeNull();expect(s.activeParty).toEqual(formation);expect(objective(s)).toContain('Dawnwatch or Windmere');expect(decodeSave(JSON.stringify(s))).toEqual(s);
  interactChapterFive(j.h,'ship-chart');j.choice(0);expect(s.location.map).toBe('hammerplain');expect(s.flags.hammerplainFreed).toBe(true);
  interactChapterFive(j.h,'hammer-coat');j.choice(0);j.win();j.win();expect(ownedCopies(s.inventory,'heat-coat')).toBe(1);expect(s.inventory.characters.celia.coat).toBeNull();expect(equipItem(s.inventory,'celia','heat-coat')).toBe(true);
  expect(visiblePeople(MAPS.hammerplain,s).some(p=>p.id==='home-family')).toBe(true);expect(visiblePeople(MAPS.hammerplain,s).some(p=>p.id==='stopped-family')).toBe(false);

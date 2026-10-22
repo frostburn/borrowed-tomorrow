@@ -20,3 +20,12 @@ export function dawnwatchCheckpoint(flag:typeof dawnwatchOrder[number],hammerpla
  s.location=s.flags.aurelSeen?arrival('signalwall','stand'):s.flags.watchGunsSeen?arrival('watchbarracks','junction'):arrival('dawnwatch','gate');
  restoreParty(s);return s;
 }
+
+export const windmereOrder=['windmereSeen','dispensarySeen','windLiftConfronted','windLiftWon','waterLiftOpened','patientsTransferred','mirrorWardSeen','windGalleryWon','wardEngineConfronted','wardEngineWon','windmereFreed','windmereComplete']as const;
+export function windmereCheckpoint(flag:typeof windmereOrder[number],previous:'none'|'hammerplain'|'dawnwatch'|'both'='none'){
+ const s=previous==='dawnwatch'||previous==='both'?dawnwatchCheckpoint('dawnwatchComplete',previous==='both'):anchorCheckpoint(previous==='hammerplain'?'fleetSighted':'firstFlightSeen');
+ if(previous!=='none')s.flags.fleetSighted=true;
+ for(const f of windmereOrder.slice(0,windmereOrder.indexOf(flag)+1))s.flags[f]=true;
+ for(const id of ['wind-lift','wind-gallery','wind-engine']){const e=ENCOUNTERS[id];if(s.flags[e.flag]){s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}}
+ s.location=s.flags.mirrorWardSeen?arrival('mirrorward','stand'):s.flags.dispensarySeen?arrival('dispensary','junction'):arrival('windmere','ward');restoreParty(s);return s;
+}
