@@ -6,7 +6,7 @@ Open `src/content/chapter-one/maps/*.json` , `src/content/chapter-two/maps/*.jso
 
 Keep existing tile IDs stable when extending the tile set: append new definitions so the maps' references keep their meaning.
 
-Chapters One–Three share the tile pages: ten exploration maps and thirteen tactical arenas. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapter Three appends palace gates, instrument banks and the restrained vessel. Its former whole paintings and encoded parts are removed. Chapter Four retains native scenery, including the `infirmary` painting used by the Chapter Four refuge.
+All four playable chapters share the collision tile vocabulary. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapter Three appends palace gates, instrument banks and the restrained vessel. Its former whole paintings and encoded parts are removed. Chapter Four adds three story maps and five arenas with directly authored native SVG scenery; see [Chapter Four sources](../assets/vector/chapter-four.md). Its Tiled maps own floors, scenery footprints, arrivals, casts and civilian placements.
 
 | Map | Grid | Story route |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ Only SVG scene sources used by the destination and its battlefields are required
 
 ## Image publication budget
 
-Whole-map SVG scenes are allowed for Chapters One–Three; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
+Whole-map SVG scenes are allowed for Chapters One–Four; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
 
 After staging, run `npm run check:art-upload`. It checks the exact staged blobs for every added or modified raster image and refuses Chapter One pages over 128 KB (128 KB for other raster files). Upload each approved file independently. The content tests separately check native dimensions, page sizes, contiguous IDs and map references. The supplied previews have been recovered as 24 scenery modules and six terrain fields, exported into bounded native pages.
 

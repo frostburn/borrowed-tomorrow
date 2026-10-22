@@ -6,7 +6,7 @@ The **Maps** tab opens directly at `?dev=maps`. It reviews all thirteen explorat
 
 Drag with the mouse or scroll to pan; touch scrolling also works. Review at 1x or 2x integer zoom. Click a cell, use the X/Y fields, or move the selection with arrow keys. Arrival centers the map's first named arrival. The inspector lists the cell's tile layers, GIDs, art names, native page files and frame numbers. Hidden tiles remain listed so a bad seam can still be identified after isolating a layer.
 
-Layer buttons toggle individual tile layers; Only isolates one and Reset layers restores the full stack. Story flags compare authored scenery phases. Scene cast previews the map-owned initial actor placements. Actors, Grid, Collision and Markers are separate overlays; collision follows both the selected story flags and visible tile layers. Painted Chapter Four maps retain their native dimensions and offer people/collision review, with a retry message when their optional art is unavailable.
+Layer buttons toggle individual tile layers; Only isolates one and Reset layers restores the full stack. Story flags compare authored scenery phases. Scene cast previews the map-owned initial actor placements. Actors, Grid, Collision and Markers are separate overlays; collision follows both the selected story flags and visible tile layers. Chapter Four uses the same SVG layer, cast, collision and story-flag review as the earlier chapters, with retry when a scene source cannot load.
 
 **Copy reference** copies the map ID, selected cell/pixel coordinates, scene, flags, tile sources and a review link. The address bar also retains map, selection, pan, integer zoom, overlays and layer visibility, so a copied link reopens that view. **Download view PNG** exports the visible map crop for attaching to feedback. No campaign saves, inventory, character builds or repository map files are written. All of this code remains Vite-only.
 
@@ -22,6 +22,10 @@ On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creat
 ## Canonical Chapter Three start
 
 On the Vite dev title, **Begin Chapter Three (canonical)** starts a fresh level-5 save (420 XP) with Nell, Orrin and Kit at the capital medical siding. It records the loading-gate raid, all rescued passengers and the victory over Petra at the crossing; she has refused Alban but has not joined. Nell carries her brass reflector, Kit his courier sight, and Orrin the reinforced work coat. The remaining earned marks and five bandages are available, everyone has full HP/focus, and the capital arrival replays normally. It uses no workshop settings and follows the same autosave confirmation/manual-slot rules as the Chapter Two start. The factory and button are absent from production.
+
+## Canonical Chapter Four start
+
+In Vite dev mode, **Begin Chapter Four (canonical)** starts A Light on the Water at the railway refuge. Tomas and every medical passenger are rescued; Nell, Orrin, Kit and Petra are recruited, with Nell/Orrin/Kit active and Celia unintroduced. The party has 740 XP (level seven), the main Chapter Three rewards and manually fitted equipment. The opening replays, manual slots remain untouched and the control/factory are absent from production. Use Maps to inspect `refuge`, `breakwater`, `sanctuary` and their five battle arenas.
 
 ## Future companions
 

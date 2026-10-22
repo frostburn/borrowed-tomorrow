@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { chapterTwoStart,chapterThreeStart } from '../src/dev/canonical-saves';
+import { chapterTwoStart,chapterThreeStart,chapterFourStart } from '../src/dev/canonical-saves';
 import { decodeSave, level } from '../src/rules/state';
 import { resumeChapterTwo } from '../src/content/chapter-two/interactions';
 import { resumeChapterThree } from '../src/content/chapter-three/interactions';
@@ -30,4 +30,11 @@ it('starts Chapter Three with the rescued passengers, earned equipment and unrec
   let scene:string|undefined;resumeChapterThree({state,talk:d=>{scene=d.scene?.id;}} as StoryHost);expect(scene).toBe('three-capital');
   state.flags.capitalSeen=true;state.inventory.bag['ratchet-sight']=4;
   expect(chapterThreeStart().flags.capitalSeen).toBeUndefined();expect(chapterThreeStart().inventory.bag['ratchet-sight']).toBeUndefined();
+});
+
+it('starts the rewritten Chapter Four with a safe Tomas, four recruits and no forced separation',()=>{
+ const s=chapterFourStart();expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ expect(s.xp).toBe(740);expect(s.party.map(h=>h.id)).toEqual(['nell','orrin','kit','petra']);expect(s.activeParty).toEqual(['nell','orrin','kit']);
+ expect(s.flags.tomasRescued).toBe(true);expect(s.flags.celiaJoined).toBeUndefined();expect(s.flags.refugeSeen).toBeUndefined();expect(s.location).toEqual({map:'refuge',x:31,y:28});
+ expect(s.inventory.characters.petra.fitting).toBe('saber-hilt');expect(s.inventory.characters.nell.fitting).toBe('silver-reflector');
 });

@@ -1,4 +1,4 @@
-import { beginChapterTwo, beginChapterThree, beginChapterFour, separatedGroup, recruit, THIRD_CHAPTER, newGame, recruitOrrin, NEXT_CHAPTER, type GameState } from '../../src/rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, recruit, THIRD_CHAPTER, newGame, recruitOrrin, NEXT_CHAPTER, type GameState } from '../../src/rules/state';
 
 import { receiveItem } from '../../src/rules/inventory';
 
@@ -45,19 +45,17 @@ export function palaceCheckpoint(last:typeof palaceOrder[number]):GameState{
   return s;
 }
 
-const brokenOrder=['brokenMorning','worksStarted','worksArrival','worksRouteSet','worksGateWon','worksEvacuated','roadSeen','celiaJoined','roadGuardWon','sealLead','sealSeen','partyReunited','sanctuaryEntered','sanctuaryWardenWon','anchorsKnown','chapterFourComplete'] as const;
+export const brokenOrder=['refugeSeen','worksArrival','worksRouteSet','worksGateWon','harborOpened','sanctuaryEntered','roadGuardWon','signalCut','sanctuaryWardenWon','anchorsKnown','seaWalkSeen','chapterFourComplete'] as const;
 export function brokenCheckpoint(last:typeof brokenOrder[number]):GameState{
  const s=palaceCheckpoint('chapterThreeComplete');beginChapterFour(s);
  for(const flag of brokenOrder.slice(0,brokenOrder.indexOf(last)+1))s.flags[flag]=true;
  if(s.flags.worksRouteSet)s.flags.worksFlooded=false;
  if(s.flags.worksGateWon){s.xp+=130;s.coins+=68;receiveItem(s.inventory,'return-valve');}
- if(s.flags.roadSeen)recruit(s,'celia');
+ if(s.flags.worksArrival)recruit(s,'celia');
  if(s.flags.roadGuardWon){s.xp+=145;s.coins+=72;receiveItem(s.inventory,'rescue-coat');}
  if(s.flags.sanctuaryWardenWon){s.xp+=210;s.coins+=108;receiveItem(s.inventory,'sun-prism');}
- if(s.flags.partyReunited){s.activeParty=[...s.reunionParty!];s.reunionParty=null;}
- else s.activeParty=separatedGroup(s.flags);
- s.location=s.flags.partyReunited?{map:'refuge',x:31,y:24}:s.flags.sealSeen?{map:'refuge',x:34,y:26}:s.flags.worksEvacuated?{map:'sanctuary',x:27,y:30}:s.flags.worksStarted?{map:'breakwater',x:31,y:27}:{map:'refuge',x:31,y:22};
- if(s.flags.sanctuaryEntered&&!s.flags.anchorsKnown)s.location={map:'sanctuary',x:32,y:30};
- if(s.flags.chapterFourComplete)s.boundary='chapter-five:anchors';
+ s.location=s.flags.sanctuaryEntered?{map:'sanctuary',x:32,y:32}:s.flags.worksArrival?{map:'breakwater',x:25,y:29}:{map:'refuge',x:31,y:28};
+ if(s.flags.anchorsKnown)s.location={map:'refuge',x:31,y:28};
+ if(s.flags.chapterFourComplete){s.boundary='chapter-five:anchors';s.location={map:'refuge',x:12,y:28};}
  return s;
 }

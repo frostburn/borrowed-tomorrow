@@ -23,7 +23,7 @@ The semantic DOM is invisible; its hit areas, focus and file input remain access
 
 Chapter One uses original native 24 × 24 pixel tiles and real Tiled layers. Shared terrain, architectural parts, rails and props replace its former wholesale images. Tile properties define collision; map object layers own interactions, arrivals and initial scene casts. [Tile-map authoring](tile-maps.md) describes the files and story-state layers. All interaction points and staged actor positions have connected, walkable approaches. Do not place characters on scenery whose visible floor is at a different height.
 
-Restored scenery and character assets not assigned to the playable chapters remain an art library for future chapters. Their old narrative roles do not survive the reboot. `scripts/restore-map-art.mjs` reconstructs larger lossless files from verified source chunks and checks byte lengths and SHA-256 without changing dimensions or colors.
+Restored scenery and character assets not assigned to the playable chapters remain an art library for future chapters. Their old narrative roles do not survive the reboot. The retired encoded painting packs and their restoration script have been removed; all playable chapters load native SVG scenes.
 
 ## Characters
 
@@ -72,14 +72,9 @@ The Engine Warden exclusively uses the previously unused `relay-keeper` actor/po
 
 ## Chapter Four scenery and cast
 
-`refuge` is the same railway ward and loads the existing native 1536 × 1024 `infirmary.webp`. `breakwater` assigns the unused 1591 × 988 `sluice.webp` to its first reboot location; no scaling or recoloring occurs. The alias is explicit in map data, so exploration, combat backdrops and deep save restores use the same art. Collision keeps actors on the cobbled floor below the flood wheels.
+The rewritten chapter is illustrated directly in SVG: a coastal ward apron, working harbor gate and old hospice/signal terrace, with five clear tactical floors. The native 1536 × 1008 exploration scenes use broad sea, stone, green-iron and bronze planes; floor contours come from the connected Tiled cells. No old paintings are restored or sliced. Whole props sort at their ground anchors, and gate/ferry/supplies/cable/suspended-water layers visibly follow story progress.
 
-The new `sanctuary.webp` is native 1536 × 1024, generated with built-in Image Gen. Production brief: a roofless mountain guardian hall, a hollow sun and three linked rings carved into its rear door, broad continuous stone floor, shallow rear stair, bench at the left arch, chest at the right arch, and an open lower exit; warm brass lamps, cool mountain shadows, no people, words or interface. The generated source was losslessly encoded to WebP with identical RGB pixels. Thirteen verified source parts restore it before development/build. Characters stop on the flat floor below the raised stairs; interaction areas cover the painted door, bench and chest and lead to accessible floor points.
-
-Bram, Dena and the Sanctuary Warden use previously unused matching native actor/portrait pairs. The warden owns `sluice-keeper`; neither its identity nor its art is shared with the two defeated palace machines. Temporary viewpoints use the actual Orrin, Petra and Celia world sprites. Native gold world markers retain the contrasting outline added after Chapter Three.
-
-The refuge’s garden fence and stone pillars are blocked. Reunion stages Celia on the central plaza and commits Nell to her own plaza position afterward; returning from the sanctuary also lands on the open paving.
-
+Bram has a brass work helmet, gray beard, blue sleeves, leather apron and mallet. The Sanctuary Warden has a hollow bronze ring, metal mask, green hospice mantle and articulated signal staff. Both use distinct 80px SVG actors and editable 128px SVG portraits. Existing party and civilian vectors keep their accepted shapes. Read [Chapter Four vector source](../assets/vector/chapter-four.md); `node scripts/export-chapter-four-art.mjs` reproduces maps, manifest and computed artwork. Review all maps/casts in Maps, and the new cast in Sprites. The shared final 2px raster applies to art and text.
 
 ## Playable-character redraw
 

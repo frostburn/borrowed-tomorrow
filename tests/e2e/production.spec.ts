@@ -1,10 +1,10 @@
-import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE } from '../../src/content/chapters';
+import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE } from '../../src/content/chapters';
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, palaceCheckpoint, brokenCheckpoint, checkpoint } from '../support/progress';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
 import { importSave, approach } from './navigation';
-import { capture, inspect, dialogue, clickWorld } from './controls';
+import { capture, inspect, dialogue, clickWorld, battle } from './controls';
 import { travel } from './navigation';
 import {sampleRegulator} from './conduit-controls';
 
@@ -17,6 +17,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
     await expect(page.getByRole('button', { name: 'Workshop', exact: true })).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true})).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'Begin Chapter Four (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Character workshop' })).toHaveCount(0);
     await expect(page.getByRole('group', { name: 'Development battle tools' })).toHaveCount(0);
   }
@@ -30,6 +31,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);
   expect(built).not.toContain('Begin Chapter Two (canonical)');
   expect(built).not.toContain('Begin Chapter Three (canonical)');
+  expect(built).not.toContain('Begin Chapter Four (canonical)');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
@@ -130,33 +132,21 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 }
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
- test(`production Chapter Four preserves viewpoints, reunion and the anchor departure on ${device}`,async({page})=>{
-  test.skip(!CHAPTER_FOUR_AVAILABLE,'Chapter Four art pack is not installed.');
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+ test(`production Chapter Four preserves the roster and completes the new anchor departure on ${device}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;equipItem(old.inventory,'nell','silver-reflector');
   await importSave(page,old);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);
-  expect((await inspect(page)).state).toMatchObject({inventory:old.inventory,party:old.party,activeParty:['nell'],reunionParty:old.activeParty});await capture(page,`chapter-four-production-arrival-${device}`);
-  await approach(page,'refuge-tomas');await page.getByRole('button',{name:'Read Orrin’s signal',exact:true}).click();await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(['orrin','kit']);
-  await page.getByRole('button',{name:'Equipment',exact:true}).click();await expect(page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.getByRole('button',{name:'Set active',exact:true})).toHaveCount(0);await page.getByRole('button',{name:'Close',exact:true}).click();
-  const search=brokenCheckpoint('roadGuardWon');search.reunionParty=old.activeParty;await importSave(page,search);await expect.poll(async()=>(await inspect(page)).state.activeParty).toEqual(['celia','petra']);
-  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.locator('.ci-items').getByRole('button',{name:/^Braced rescue coat/}).click();await page.getByRole('button',{name:'Equip on Celia',exact:true}).click();await capture(page,`celia-local-equipment-production-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.activeParty[0]).toBe('celia');expect((await inspect(page)).state.inventory.characters.celia.coat).toBe('rescue-coat');
-  await approach(page,'sanctuary-seal');await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(old.activeParty);expect((await inspect(page)).state.reunionParty).toBeNull();expect((await inspect(page)).state.party).toHaveLength(5);
-  const deep=brokenCheckpoint('sanctuaryWardenWon');deep.activeParty=old.activeParty;equipItem(deep.inventory,'celia','rescue-coat');equipItem(deep.inventory,'nell','sun-prism');await importSave(page,deep);
+  expect((await inspect(page)).state).toMatchObject({inventory:old.inventory,party:old.party,activeParty:old.activeParty});await capture(page,`chapter-four-production-arrival-${device}`);
+  await travel(page,'refuge-works','breakwater');await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(old.activeParty);expect((await inspect(page)).state.party).toHaveLength(5);
+  const deep=brokenCheckpoint('signalCut');deep.activeParty=['nell','petra','celia'];deep.bandages=15;equipItem(deep.inventory,'celia','rescue-coat');equipItem(deep.inventory,'nell','silver-reflector');equipItem(deep.inventory,'petra','saber-hilt');await importSave(page,deep);
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('sanctuary');
+  await approach(page,'sanctuary-bench');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();await approach(page,'sanctuary-warden');await battle(page,`production-sanctuary-warden-${device}`);expect((await inspect(page)).state.inventory.bag['sun-prism']).toBe(1);
   await approach(page,'sanctuary-record');await dialogue(page);await travel(page,'sanctuary-refuge','refuge');await approach(page,'refuge-tomas');await dialogue(page);
   await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();await capture(page,`chapter-four-production-complete-${device}`);const saved=(await inspect(page)).state;
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.boundary).toBe('chapter-five:anchors');expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
   await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  });
 }
-
-test('a source checkpoint without sanctuary art keeps the Broken World departure exportable',async({page})=>{
- test.skip(CHAPTER_FOUR_AVAILABLE,'The complete sanctuary art pack is installed.');
- await page.goto('/');await importSave(page,palaceCheckpoint('chapterThreeComplete'));
- await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Begin Chapter Four',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Export departure save',exact:true})).toBeVisible();expect((await inspect(page)).state.boundary).toBe('chapter-four:broken-world');
-});
 
 for(const [route,viewport,dpr] of [['feeds',{width:1280,height:800},1],['pressure',{width:390,height:844},1.25]] as const){
  test(`production three-hex conduit guardian resolves ${route} and preserves the escape handoff`,async({browser})=>{

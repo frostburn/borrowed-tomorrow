@@ -4,7 +4,7 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
-  {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'Nineteen Out',group:'4'},
+  {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'The Sea Gate',group:'4'},
   {mode:'sanctuary',title:'Under the Hollow Sun',group:'4'}, {mode:'four-battle',title:'Hold the Line',group:'4'}, {mode:'four-warden',title:"The Emperor's Order",group:'4'},
   {mode:'station',title:'Larkspur festival',group:'1'}, {mode:'yard',title:"Orrin's workshop",group:'1'}, {mode:'tunnel',title:'After the raid / pass',group:'1'},
   {mode:'rillbridge',title:'Rillbridge freed',group:'1'}, {mode:'battle',title:'Leaving Home battle',group:'1'}, {mode:'inspector',title:'Captain Alban',group:'1'}, {mode:'ending',title:'Departure',group:'1'},

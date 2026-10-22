@@ -81,7 +81,7 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
         original.call(this, mode);
       };
     });
-    await importSave(page, brokenCheckpoint('sanctuaryEntered'));
+    await importSave(page, brokenCheckpoint('signalCut'));
     expect((await music(page)).enabled).toBe(false);
     await page.locator('#sound-button').click();
     await expect.poll(() => music(page)).toMatchObject({ mode: 'sanctuary', enabled: true, running: true });

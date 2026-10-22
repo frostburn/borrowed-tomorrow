@@ -1,7 +1,8 @@
 import { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as COAST_ENCOUNTERS } from '../content/chapter-two/encounters';
+import { ENCOUNTERS as CAPITAL_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { equipItem, receiveItem } from '../rules/inventory';
-import { beginChapterTwo, beginChapterThree, decodeSave, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, FOURTH_CHAPTER, decodeSave, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
 
 /** Authored Chapter One completion, independent of workshop builds or saves. */
 export function chapterTwoStart(){
@@ -28,5 +29,19 @@ export function chapterThreeStart(){
   equipItem(state.inventory,'kit','courier-sight');equipItem(state.inventory,'orrin','work-coat');
   state.journal.push('coast','kit','trainRaid','prisoners','ward','settlement','coastCollector','evacuation','recapture','capitalDeparture');
   state.boundary=THIRD_CHAPTER;beginChapterThree(state);restoreParty(state);
+  return decodeSave(JSON.stringify(state));
+}
+
+/** Tomas and all passengers rescued; the chosen three arrive with Petra in reserve. */
+export function chapterFourStart(){
+  const state=chapterThreeStart();
+  for(const flag of ['capitalSeen','capitalConfronted','capitalGateWon','petraJoined','worksSeen','worksWardenWon','tomasRescued','intakePlanned','conduitSeen','conduitGuardWon','extractionStopped','emperorMerged','chapterThreeComplete'])state.flags[flag]=true;
+  state.flags.pressureRoute=false;recruit(state,'petra');receiveItem(state.inventory,'saber-hilt');
+  for(const id of ['capital-arrest','works-warden','heart-feeds']){
+    const e=CAPITAL_ENCOUNTERS[id];state.xp+=e.xp;state.coins+=e.coins;if(e.item)receiveItem(state.inventory,e.item);
+  }
+  equipItem(state.inventory,'nell','silver-reflector');equipItem(state.inventory,'petra','saber-hilt');equipItem(state.inventory,'orrin','insulated-coat');
+  state.journal.push('capital','refusal','petra','works','warden','tomas','intake','conduit','heart','extraction','brokenDeparture');
+  state.boundary=FOURTH_CHAPTER;beginChapterFour(state);restoreParty(state);
   return decodeSave(JSON.stringify(state));
 }

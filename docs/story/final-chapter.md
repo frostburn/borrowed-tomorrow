@@ -4,7 +4,7 @@ This is the end of the seven-chapter outline, not currently playable content. It
 
 ## Why there is still a final journey
 
-The palace engine contains a conduit into the Benefactor's domain. The emperor's merger gives him control over the mortal side but never destroys or absorbs the whole god. When his vessel breaks, the Benefactor can collect directly. The party has already learned this distinction in Chapter Four and prepared the path while albang anchors in Chapter Five.
+The palace engine contains a conduit into the Benefactor's domain. The emperor's merger gives him control over the mortal side but never destroys or absorbs the whole god. When his vessel breaks, the Benefactor can collect directly. The party has already learned this distinction in Chapter Four and prepared the path while severing anchors in Chapter Five.
 
 The title is literal: the empire borrowed miraculous prosperity from future days, and the god demands repayment in human lives and futures. The god's claim persists beyond the dynasty. This is a power to break at its source, not an accounting puzzle solved with another document or a technicality.
 
@@ -19,7 +19,7 @@ The title is literal: the empire borrowed miraculous prosperity from future days
 7. **The source of collection:** the party severs the bonds that join mortal days to the god's body. The anchor adventures taught them how. Nell returns the fragment, opening the heart and surrendering her supernatural advantage.
 8. **The final battle:** confront the Benefactor itself. A recognizable divine figure becomes the hollow sun, then exposes the vulnerable heart the party has worked to reach. Terrain and encounter forms should embody the known rules of the domain; decide their tactical details when implementation reaches this chapter. There is no new antagonist behind it.
 9. **Return the days:** stolen futures and surviving captives are released. The god's capacity to collect is destroyed, and the path back opens. No remnant, replacement emperor or hidden contract restarts the threat.
-10. **An ordinary departure:** the world rebuilds without effortless imperial miracles. Ansel remains dead. Tomas is home. Nell takes an ordinary steam train with her companions to see the sea.
+10. **An ordinary departure:** the world rebuilds without effortless imperial miracles. Ansel remains dead. Tomas is home. Nell takes an ordinary steam train with her brother and companions for a holiday by the sea.
 
 ## What the ending must deliver
 

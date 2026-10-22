@@ -22,7 +22,7 @@ Petra defended Alban as Chapter Two’s boss and was disarmed at the crossing. W
 
 Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature, the emperor’s private motive or the Benefactor’s domain. The lantern has only offered sensory clues. No divine voice or boss cutaway has appeared. Establish later discoveries through actions and evidence. The emperor’s order prioritized the capital’s engines over a promised evacuation; his first direct appearance belongs here.
 
-Celia’s introduction and faith conflict begin on the Chapter Four sanctuary road. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
+Celia’s introduction and faith conflict begin at the Chapter Four harbor. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
 The implemented chapter rescues Tomas, disables extraction and makes the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
 
