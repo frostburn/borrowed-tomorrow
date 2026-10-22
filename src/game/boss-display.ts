@@ -14,7 +14,7 @@ export function nativeTexture(scene:Phaser.Scene,key:string){
   texture.setFilter(Phaser.Textures.FilterMode.NEAREST);return texture;
 }
 export function bossLabel(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
-  const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=9*scale;
+  const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=scale===1?12:9*scale;
   bitmapText(canvas.getContext('2d')!,value,0,scale,color,scale);
   const key=`boss-label-${labelId++}`;scene.textures.addCanvas(key,canvas);
   world.add(scene.add.image(Math.round(x),Math.round(y),key).setOrigin(.5).once('destroy',()=>scene.textures.remove(key)));

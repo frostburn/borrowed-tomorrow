@@ -1,3 +1,5 @@
+import { FLAGSHIP_ASSETS, FLAGSHIP_PRESENTATION, FLAGSHIP_PORTRAIT } from './flagship-preview';
+import { createFlagshipBattle } from './flagship-battle';
 import { BOSS_ASSETS, BOSS_PRESENTATION, BOSS_PORTRAIT } from './boss-preview';
 import { createBossBattle } from './boss-battle';
 import { CONDUIT_ASSETS, CONDUIT_PORTRAIT, conduitPresentation } from '../game/conduit-presentation';
@@ -38,7 +40,7 @@ class Workshop {
   private maps = new MapWorkshop(message=>this.ui.toast(message));
   private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private hero: CompanionId = 'nell';
-  private boss: 'benefactor'|'conduit'=new URLSearchParams(location.search).get('boss')==='conduit'?'conduit':'benefactor';
+  private boss: 'benefactor'|'conduit'|'flagship'=new URLSearchParams(location.search).get('boss')==='flagship'?'flagship':new URLSearchParams(location.search).get('boss')==='conduit'?'conduit':'benefactor';
   private conduitRoute:ConduitRoute=new URLSearchParams(location.search).get('route')==='pressure'?'pressure':'feeds';
   private selected: ItemId = 'brass-reflector';
   private message = 'Choose a character to adjust their build.';
@@ -200,15 +202,15 @@ class Workshop {
     this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
     this.ui.initiative.textContent='Epic boss battle preview';
-    const conduit=this.boss==='conduit',shortParty=conduit&&this.conduitRoute==='feeds'&&this.settings.party.length<2;
-    const details=conduit?`<h2>Heart regulator</h2><p>Face the conduit guardian from below. Its three supporting hexes form a compact triangle; attack any contact or its body. Area attacks hit it once. Its feet are anchored.</p><div class="boss-route" role="group" aria-label="Intake route"><button data-route="feeds" aria-pressed="${this.conduitRoute==='feeds'}">Sealed intake</button><button data-route="pressure" aria-pressed="${this.conduitRoute==='pressure'}">Pressure walk</button></div><p>${this.conduitRoute==='feeds'?'Occupy both blue earth plates together to drop the shield permanently. A feed hound guards the right flank.':'The seal is already down. Two pressure crows and hot floor vents guard the approach.'} Red X hexes warn of the regulator’s next pressure discharge.</p><p>The Chapter Three preset uses level-7 Nell, Orrin and Kit with six bandages.</p>`:`<h2>The Benefactor</h2><p>A towering enemy occupies nineteen hexes above the party. Every occupied hex targets the same enemy; area attacks damage it once.</p><p>Red X hexes show its next attack. Move clear before its turn, or protect the threatened heroes. Taunt draws judgment onto its user. The god is anchored and cannot be pushed.</p><p>The hollow heart opens at half health, widening its attacks. The finale preset uses level-10 Nell, Petra and Celia with twelve bandages.</p>`;
-    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<nav class="boss-library" aria-label="Boss encounter"><button data-boss="conduit" aria-pressed="${conduit}">Heart regulator</button><button data-boss="benefactor" aria-pressed="${!conduit}">The Benefactor</button></nav><section class="boss-preview" aria-label="Boss battle preview"><img src="${conduit?CONDUIT_PORTRAIT:BOSS_PORTRAIT}" width="128" height="128" alt="${conduit?'Heart regulator':'The hollow sun'}"/><div>${details}<div id="boss-start"></div><p class="inv-note">Workshop party: ${this.settings.party.map(id=>`${names[id]} Lv ${this.settings.characters[id].level}`).join(' · ')}. ${shortParty?'Sealed intake requires at least two companions for the earth plates. ':''}This preview earns no campaign progress.</p></div></section></section>`;
+    const conduit=this.boss==='conduit',flagship=this.boss==='flagship',shortParty=conduit&&this.conduitRoute==='feeds'&&this.settings.party.length<2;
+    const details=flagship?`<h2>Alban’s flagship</h2><p>Fight upward from the survey ship’s deck. Port battery, starboard battery and bridge each occupy three hexes. Target a component’s body or any of its contacts; area attacks hit each component once.</p><p>Destroy both batteries to drop the bridge shield. Each destroyed gun stops firing. Red X hexes warn of the next cannon attack; boarding marines contest the deck. Destroying the exposed bridge ends the boarding.</p><p>The Chapter Five preset uses level-10 Nell, Orrin and Petra with twelve bandages. Final campaign scenes, rewards and music are still to come.</p>`:conduit?`<h2>Heart regulator</h2><p>Face the conduit guardian from below. Its three supporting hexes form a compact triangle; attack any contact or its body. Area attacks hit it once. Its feet are anchored.</p><div class="boss-route" role="group" aria-label="Intake route"><button data-route="feeds" aria-pressed="${this.conduitRoute==='feeds'}">Sealed intake</button><button data-route="pressure" aria-pressed="${this.conduitRoute==='pressure'}">Pressure walk</button></div><p>${this.conduitRoute==='feeds'?'Occupy both blue earth plates together to drop the shield permanently. A feed hound guards the right flank.':'The seal is already down. Two pressure crows and hot floor vents guard the approach.'} Red X hexes warn of the regulator’s next pressure discharge.</p><p>The Chapter Three preset uses level-7 Nell, Orrin and Kit with six bandages.</p>`:`<h2>The Benefactor</h2><p>A towering enemy occupies nineteen hexes above the party. Every occupied hex targets the same enemy; area attacks damage it once.</p><p>Red X hexes show its next attack. Move clear before its turn, or protect the threatened heroes. Taunt draws judgment onto its user. The god is anchored and cannot be pushed.</p><p>The hollow heart opens at half health, widening its attacks. The finale preset uses level-10 Nell, Petra and Celia with twelve bandages.</p>`;
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<nav class="boss-library" aria-label="Boss encounter"><button data-boss="conduit" aria-pressed="${conduit}">Heart regulator</button><button data-boss="flagship" aria-pressed="${flagship}">Alban’s flagship</button><button data-boss="benefactor" aria-pressed="${this.boss==='benefactor'}">The Benefactor</button></nav><section class="boss-preview" aria-label="Boss battle preview"><img src="${flagship?FLAGSHIP_PORTRAIT:conduit?CONDUIT_PORTRAIT:BOSS_PORTRAIT}" width="128" height="128" alt="${flagship?'Alban’s flagship':conduit?'Heart regulator':'The hollow sun'}"/><div>${details}<div id="boss-start"></div><p class="inv-note">Workshop party: ${this.settings.party.map(id=>`${names[id]} Lv ${this.settings.characters[id].level}`).join(' · ')}. ${shortParty?'Sealed intake requires at least two companions for the earth plates. ':''}This preview earns no campaign progress.</p></div></section></section>`;
     const address=()=>{const url=new URL(location.href);url.searchParams.set('dev','boss');url.searchParams.set('boss',this.boss);if(this.boss==='conduit')url.searchParams.set('route',this.conduitRoute);else url.searchParams.delete('route');history.replaceState(null,'',url);};
     for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-boss]'))button.onclick=()=>{this.boss=button.dataset.boss as typeof this.boss;address();this.show();};
     for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-route]'))button.onclick=()=>{this.conduitRoute=button.dataset.route as ConduitRoute;address();this.show();};
     this.bindTabs();this.ui.actionRow(this.ui.sceneLayer.querySelector('#boss-start')!,[
-      {label:conduit?'Start Chapter Three preset':'Start finale preset',action:()=>this.bossBattle(false)},
-      ...conduit?[]:[{label:'Start phase two',action:()=>this.bossBattle(false,true)}],
+      {label:flagship?'Start Chapter Five preset':conduit?'Start Chapter Three preset':'Start finale preset',action:()=>this.bossBattle(false)},
+      ...conduit?[]:[{label:flagship?'Start exposed bridge':'Start phase two',action:()=>this.bossBattle(false,true)}],
       {label:'Use workshop party',disabled:shortParty,action:()=>this.bossBattle(true)},
     ]);this.ui.status.textContent='Vite development / Boss battle preview';
   }
@@ -219,8 +221,8 @@ class Workshop {
     (document.getElementById('save-button') as HTMLButtonElement).disabled=true;
     this.scene.state=practiceState();
     const profiles=workshop?characterProfiles(this.settings):undefined,equipment=workshop?equipmentBonuses(this.inventory):undefined,party=workshop?this.settings.party:undefined;
-    const battle=this.boss==='conduit'?createConduitBattle(this.conduitRoute,profiles,equipment,party):createBossBattle(profiles,equipment,party,phaseTwo);
-    this.scene.previewBattle(battle,()=>this.show(),this.boss==='conduit'?conduitPresentation(CONDUIT_ENCOUNTERS[this.conduitRoute]):BOSS_PRESENTATION);
+    const battle=this.boss==='flagship'?createFlagshipBattle(profiles,equipment,party,phaseTwo):this.boss==='conduit'?createConduitBattle(this.conduitRoute,profiles,equipment,party):createBossBattle(profiles,equipment,party,phaseTwo);
+    this.scene.previewBattle(battle,()=>this.show(),this.boss==='flagship'?FLAGSHIP_PRESENTATION:this.boss==='conduit'?conduitPresentation(CONDUIT_ENCOUNTERS[this.conduitRoute]):BOSS_PRESENTATION);
   }
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
@@ -242,6 +244,6 @@ class Workshop {
 }
 export function startWorkshop(root: HTMLElement) {
   let workshop: Workshop | undefined;
-  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite), [...BOSS_ASSETS,...CONDUIT_ASSETS.map(a=>({...a,url:`${import.meta.env.BASE_URL}${a.url}`}))]);
+  const scene = new Adventure((scene, ui) => { workshop = new Workshop(scene, ui); }, COMPANION_IDS.filter(id=>id!=='nell'&&id!=='orrin').map(id=>CHARACTERS[id].sprite), [...BOSS_ASSETS,...FLAGSHIP_ASSETS,...CONDUIT_ASSETS.map(a=>({...a,url:`${import.meta.env.BASE_URL}${a.url}`}))]);
   mountGame(root, scene, { journal: () => workshop?.show(), saves: () => workshop?.battle(), sound: () => workshop?.toggleSound(), help: () => workshop?.help() });
 }
