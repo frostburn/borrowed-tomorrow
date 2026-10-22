@@ -1,0 +1,147 @@
+{
+  "hound-steel": {
+    "kind": "hound",
+    "name": "Steel hound",
+    "chapter": 2,
+    "hp": 40,
+    "bonus": 0,
+    "armor": 0,
+    "speed": 5,
+    "movement": 3,
+    "colors": {
+      "#80553d": "#445c65",
+      "#b7784e": "#7e9a9b",
+      "#d9ae62": "#d7ca86"
+    }
+  },
+  "crow-copper": {
+    "kind": "crow",
+    "name": "Copper crow",
+    "chapter": 2,
+    "hp": 32,
+    "bonus": 2,
+    "armor": 0,
+    "speed": 6,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#694940",
+      "#626d7f": "#b47850",
+      "#b7784e": "#f0ca87",
+      "#d9ae62": "#d7b683"
+    }
+  },
+  "guardian-iron": {
+    "kind": "guardian",
+    "name": "Iron guardian",
+    "chapter": 2,
+    "hp": 98,
+    "bonus": -2,
+    "armor": 2,
+    "speed": 3,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#314b49",
+      "#b7784e": "#688f7a",
+      "#d9ae62": "#c8be83",
+      "#263e53": "#1d3542"
+    }
+  },
+  "hound-gilded": {
+    "kind": "hound",
+    "name": "Gilded hound",
+    "chapter": 3,
+    "hp": 58,
+    "bonus": 4,
+    "armor": 1,
+    "speed": 6,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#8d6b3d",
+      "#b7784e": "#d9bd80",
+      "#d9ae62": "#b9e2dd"
+    }
+  },
+  "crow-gilded": {
+    "kind": "crow",
+    "name": "Gilded crow",
+    "chapter": 3,
+    "hp": 46,
+    "bonus": 5,
+    "armor": 0,
+    "speed": 7,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#9c8152",
+      "#626d7f": "#e4cc97",
+      "#b7784e": "#b6e3df",
+      "#d9ae62": "#f4e3b8",
+      "#142536": "#293b49"
+    }
+  },
+  "guardian-gilded": {
+    "kind": "guardian",
+    "name": "Gilded guardian",
+    "chapter": 3,
+    "hp": 132,
+    "bonus": 2,
+    "armor": 3,
+    "speed": 3,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#8b7049",
+      "#b7784e": "#cdbb8b",
+      "#d9ae62": "#ece1b0",
+      "#263e53": "#425f73",
+      "#b7c1b8": "#c4e0dc"
+    }
+  },
+  "hound-dusk": {
+    "kind": "hound",
+    "name": "Dusk hound",
+    "chapter": 4,
+    "hp": 72,
+    "bonus": 8,
+    "armor": 1,
+    "speed": 6,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#423a5e",
+      "#b7784e": "#917eac",
+      "#d9ae62": "#a9e0d8"
+    }
+  },
+  "crow-dusk": {
+    "kind": "crow",
+    "name": "Dusk crow",
+    "chapter": 4,
+    "hp": 60,
+    "bonus": 8,
+    "armor": 1,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#514261",
+      "#626d7f": "#a18fb9",
+      "#b7784e": "#d4ede1",
+      "#d9ae62": "#93c9c5",
+      "#142536": "#232739"
+    }
+  },
+  "guardian-dusk": {
+    "kind": "guardian",
+    "name": "Dusk guardian",
+    "chapter": 4,
+    "hp": 162,
+    "bonus": 7,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#393853",
+      "#b7784e": "#736c99",
+      "#d9ae62": "#bcd2cd",
+      "#263e53": "#253a51",
+      "#b7c1b8": "#c5dce0"
+    }
+  }
+}

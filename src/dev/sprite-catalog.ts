@@ -2,6 +2,7 @@ import { CHARACTERS } from '../content/characters';
 import { CIVILIANS } from '../content/civilians';
 import { ACTOR_DIRECTIONS, actorAsset, type ActorDirection } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
+import { ENEMY_VARIANTS } from '../content/enemy-variants';
 
 export const SPRITE_GROUPS = ['Party', 'NPCs', 'Enemies'] as const;
 export type SpriteGroup = typeof SPRITE_GROUPS[number];
@@ -18,5 +19,6 @@ export const SPRITE_CATALOG: SpriteEntry[] = [
     {id:'hound',name:'Hound'}, {id:'crow',name:'Crow'},
     {id:'inspector',name:'Inspector',portrait:'portrait-inspector'}, {id:'guardian',name:'Guardian'},
   ].map(entry=>({...entry,sprite:entry.id,group:'Enemies' as const,directions:['front'] as const})),
+  ...Object.entries(ENEMY_VARIANTS).map(([id,variant])=>({id,name:variant.name,sprite:id,group:'Enemies' as const,directions:['front'] as const})),
 ];
 export const spriteAsset = (entry: SpriteEntry, direction: ActorDirection) => entry.hero ? actorAsset(entry.hero,direction) : entry.sprite;
