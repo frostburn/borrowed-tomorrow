@@ -2,7 +2,7 @@ import type Phaser from 'phaser';
 import { ABILITIES, type AbilityId } from '../rules/combat';
 import { toPixel, type Hex } from '../rules/hex';
 
-/** Short native-world effects, anchored to the tool rather than the actor's feet. */
+/** Short native-world effects from a tool, or from above for celestial attacks. */
 export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string){
   const g=scene.add.graphics();world.add(g);
   const steam=ability==='steam'||ability==='repulse',healing=ABILITIES[ability].heal||ability==='guard';
@@ -14,6 +14,15 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
     if(ABILITIES[ability].shape==='pattern'){
       for(const hex of affected){const at=toPixel(hex);g.fillStyle(0xf9dbad,.17).fillRect(Math.round(at.x-16),0,32,Math.round(at.y));g.lineStyle(3,0xf8dfb5,.85).lineBetween(at.x,0,at.x,at.y);g.strokeEllipse(at.x,at.y,38+p*12,16+p*10);}
+    }else if(ability==='celestialbolt'){
+      const y=target.y-24,tip=reduced?y:Math.round(y*Math.min(1,p/.55));
+      g.fillStyle(0xf8dfb5,.18);g.fillRect(target.x-6,0,12,tip);
+      g.lineStyle(3,0xfff0ce,.95);g.lineBetween(target.x,Math.max(0,tip-96),target.x,tip);
+      if(reduced||p>=.55){
+        const r=reduced?16:6+(p-.55)*40;
+        g.lineStyle(2,color,.85);g.strokeEllipse(target.x,y,r*2,r);
+        g.fillStyle(0xfff0ce,1);g.fillRect(target.x-2,y-12,4,24);g.fillRect(target.x-10,y-2,20,4);
+      }
     }else if(ability==='strike'){
       g.lineStyle(3,color,1);g.lineBetween(target.x-12,target.y-39,target.x+12,target.y-17);
       g.lineBetween(target.x-8,target.y-15,target.x+8,target.y-41);

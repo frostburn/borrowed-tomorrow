@@ -138,7 +138,7 @@ def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,bac
  def add(n,parts,ww=1536,hh=1008,x=0,y=0,depth=-1000,layer=1):
   entries.append({'key':f'scene-four-{n}','url':svg(n,ww,hh,parts),'x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':layer})
  add(id+'-coast',back if back is not None else seascape(1536,1008,id=='sanctuary'))
- add(id+'-floor',floor_shapes(floors,1536,1008,id=='breakwater'),depth=-999,layer=2)
+ add(id+'-floor',floor_shapes(floors,1536,1008,id=='breakwater'),depth=-998,layer=2)
  # Each prop has explicit unchanging ground sorting, separate from floor decks.
  for n,parts,ww,hh,x,y,depth,extra in decor:
   lid=3
@@ -150,8 +150,9 @@ def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,bac
  wave=[poly([(82,388),(137,340),(156,288),(188,253),(223,264),(201,306),(172,337),(170,385),(208,411)],'#8aaca8'),poly([(156,288),(188,253),(223,264),(204,274),(180,273),(168,294)],'#d1d2b4'),line([(175,290),(173,321),(152,353)],'#bed0ba',4)]
  if id!='sanctuary':
   wave.extend([poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(168,402),(200,398)],'#9b895d',3)])
-  shift=1000 if id=='refuge' else 550
-  add(id+'-wave',[f'<g transform="translate({shift} 0)">',*wave,'</g>'],depth=-998,layer=lid)
+  # Keep the stranded skiff in open water, with the quay occluding sea scenery.
+  shift,y_shift=(1000,0) if id=='refuge' else (480,-40)
+  add(id+'-wave',[f'<g transform="translate({shift} {y_shift})">',*wave,'</g>'],depth=-999,layer=lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v) for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v) for k,v in cast.items()]))
  write_map(id,name,subtitle,w,h,layers,next(iter(arrivals)))
