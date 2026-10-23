@@ -13,25 +13,22 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/six-music-${device}.png`});
  }finally{await context.close();}
 });
-test('all seven desert cues, loop seams and the lute render without clipping or sample snaps',async({page},testInfo)=>{
+for(const mode of ['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent']as const)test(`desert cue ${mode}: full form and loop seam render without clipping or sample snaps`,async({page},testInfo)=>{
  test.setTimeout(120000);await page.goto('/');
- const levels=await page.evaluate(async()=>{
+ const result=await page.evaluate(async mode=>{
   // @ts-expect-error Vite exposes the actual score for offline review.
   const {ARRANGEMENTS,scoreLength}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
   // @ts-expect-error Use the production synth rather than a test rack.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   // @ts-expect-error Live and offline playback share this clock and expression.
   const {scoreTime,performanceBar}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
-  const modes=['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent']as const,out=[],rate=22050;
-  for(const mode of modes){
-   const a=ARRANGEMENTS[mode],bars=scoreLength(mode)+2,base=scoreTime(mode,-a.beats),end=scoreTime(mode,(bars-1)*a.beats)-base,c=new OfflineAudioContext(2,Math.ceil((end+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-   for(let bar=-1;bar<bars-1;bar++)for(const n of performanceBar(mode,bar).notes)synth.note(n.instrument,n.pitch,.03+scoreTime(mode,bar*a.beats)-base+n.time,n.seconds,n.velocity,n.pan,n.expression);
-   const audio=await c.startRendering();let peak=0,sum=0,jump=0,count=0;
-   for(let channel=0;channel<2;channel++){const data=audio.getChannelData(channel);for(let i=Math.ceil((.03-base)*rate);i<Math.floor(end*rate);i++){const v=data[i];if(!Number.isFinite(v))throw new Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));count++;}}
-   out.push({mode,peak,rms:Math.sqrt(sum/count),jump});
-  }
-  return out;
- });
- await testInfo.attach('desert-loop-levels',{body:JSON.stringify(levels,null,2),contentType:'application/json'});
- for(const result of levels){expect(result.peak,JSON.stringify(result)).toBeLessThan(.9);expect(result.rms,JSON.stringify(result)).toBeGreaterThan(.005);expect(result.jump,JSON.stringify(result)).toBeLessThan(.25);}
+  const rate=22050,a=ARRANGEMENTS[mode],bars=scoreLength(mode)+2,base=scoreTime(mode,-a.beats),end=scoreTime(mode,(bars-1)*a.beats)-base;
+  const c=new OfflineAudioContext(2,Math.ceil((end+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+  for(let bar=-1;bar<bars-1;bar++)for(const n of performanceBar(mode,bar).notes)synth.note(n.instrument,n.pitch,.03+scoreTime(mode,bar*a.beats)-base+n.time,n.seconds,n.velocity,n.pan,n.expression);
+  const audio=await c.startRendering();let peak=0,sum=0,jump=0,count=0;
+  for(let channel=0;channel<2;channel++){const data=audio.getChannelData(channel);for(let i=Math.ceil((.03-base)*rate);i<Math.floor(end*rate);i++){const v=data[i];if(!Number.isFinite(v))throw new Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));count++;}}
+  return {mode,peak,rms:Math.sqrt(sum/count),jump};
+ },mode);
+ await testInfo.attach(`desert-loop-${mode}`,{body:JSON.stringify(result,null,2),contentType:'application/json'});
+ expect(result.peak,JSON.stringify(result)).toBeLessThan(.9);expect(result.rms,JSON.stringify(result)).toBeGreaterThan(.005);expect(result.jump,JSON.stringify(result)).toBeLessThan(.25);
 });
