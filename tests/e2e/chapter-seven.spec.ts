@@ -44,3 +44,15 @@ test('a missing domain scene preserves the capital departure and retries cleanly
  const s=chapterSevenDeparture();await page.goto('/');await importSave(page,s);await page.route('**/art/vector/chapter-seven/takenwater-back.svg',r=>r.abort());await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.chapter).toBe('chapter-six');expect((await inspect(page)).state.inventory).toEqual(s.inventory);
  await page.unroute('**/art/vector/chapter-seven/takenwater-back.svg');await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.chapter).toBe('chapter-seven');
 });
+
+test('the mantle break and fragment return animate independently, frame the cast and clean up on skip',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const s=chapterSevenRefugeStart();s.flags.lastRefugeSeen=true;s.flags.benefactorSeen=true;s.flags.benefactorBodyConfronted=true;s.flags.benefactorBodyWon=true;s.location=arrival('sunthrone','start');
+ await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');await importSave(page,s);await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:30000}).toBe('seven-sun');
+ await page.mouse.move(0,0);await page.waitForTimeout(700);await capture(page,'seven-mantle-break');
+ await page.locator('.dialogue-actions button').first().click();await page.waitForTimeout(1100);
+ const framed=await page.evaluate(()=>{const s=window.borrowedTomorrow.inspect(),nell=s.actors.find(a=>a.hero==='nell')!,canvas=document.querySelector('#canvas canvas')!.getBoundingClientRect(),dialog=document.querySelector('.dialogue')!.getBoundingClientRect();return {foot:canvas.top+(nell.y-s.view.scrollY)*canvas.height/s.view.height,dialog:dialog.top};});expect(framed.foot).toBeLessThan(framed.dialog);await capture(page,'seven-cast-framed');
+ await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.hollowSunSeen).toBe(true);
+ const next=(await inspect(page)).state;next.flags.benefactorSunConfronted=true;next.flags.benefactorSunWon=true;await importSave(page,next);await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:30000}).toBe('seven-heart');
+ for(let i=0;i<5;i++)await page.locator('.dialogue-actions button').first().click();await page.waitForTimeout(650);await capture(page,'seven-fragment-return');expect((await inspect(page)).state.flags.fragmentReturned).toBeUndefined();
+ await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.fragmentReturned).toBe(true);await page.waitForTimeout(1200);expect((await inspect(page)).cinematic).toBeNull();expect(errors).toEqual([]);
+});

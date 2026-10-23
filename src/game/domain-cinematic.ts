@@ -21,7 +21,7 @@ export class DomainCinematic{
    if(!g.active)return;g.clear();
    if(kind==='domain-fragment'){
     const x=from.x+(to.x-from.x)*p,y=from.y+(to.y-from.y)*p-Math.sin(p*Math.PI)*45;
-    g.fillStyle(0xe8e6bf,1).fillPoints([{x,y:y-7},{x:x+5,y},{x,y:y+7},{x:x-5,y}],true);
+    g.fillStyle(0xe8e6bf,1).fillTriangle(x,y-7,x+5,y,x,y+7).fillTriangle(x,y-7,x,y+7,x-5,y);
     g.lineStyle(2,0x91ccc4,.7).strokeCircle(to.x,to.y,10+p*22);
    }else{
     const r=34+p*125,alpha=1-p*.85;g.lineStyle(3,0xd6c79a,alpha).strokeCircle(center.x,center.y,r);

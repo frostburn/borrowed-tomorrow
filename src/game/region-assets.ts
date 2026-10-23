@@ -37,7 +37,7 @@ export class RegionAssets {
     if(MAPS[map].tiles){
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
-      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
+      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
       const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...Object.values(ENCOUNTERS).filter(e=>e.backdrop?.map===map).flatMap(e=>e.boss==='benefactor'?BENEFACTOR_ASSETS:e.boss==='emperor'||e.boss==='lightbearer'?IMPERIAL_ASSETS:e.boss==='dragon'?DRAGON_ASSETS:e.boss==='serpent'?SERPENT_ASSETS:e.boss==='conduit'?CONDUIT_ASSETS:e.boss==='furnace'?FURNACE_ASSETS:e.boss==='ward'?WARD_ASSETS:e.boss==='flagship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.scene.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.scene.textures.exists(page.name));
       if(missing.length||svg.length){

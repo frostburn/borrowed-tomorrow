@@ -59,9 +59,9 @@ const forms:Record<SevenMode,Form>={
  'domain-battle':{lead:'brass',inverted:true,beats:4,rhythm:[0,1,2.5,4,7,9,12,14],roots:[0,3,5,1,6,2,4,0],lines:platform,gain:.21,battle:true},
  'harvest-battle':{lead:'brass',beats:4,rhythm:[0,1.5,3,4,6.5,9,11,14],roots:[0,4,1,5,3,6,2,0],lines:harvest,gain:.21,battle:true},
  'hospice-battle':{lead:'organ',inverted:true,beats:3,rhythm:[0,2,3,5,7,10,12,14],roots:[0,4,2,6,3,1,5,0],lines:ward,gain:.18,battle:true},
- 'seasons-battle':{lead:'tritaver',inverted:true,beats:5,rhythm:[0,1,3,5,8,10,12,14],roots:[0,2,5,1,6,3,4,0],lines:seasons,gain:.19,battle:true},
+ 'seasons-battle':{lead:'tritaver',inverted:true,beats:5,rhythm:[0,2,3,5,8,11,14,17],roots:[0,2,5,1,6,3,4,0],lines:seasons,gain:.19,battle:true},
  benefactor:{lead:'organ',beats:4,rhythm:[0,1,3,6,8,10,12,14],roots:[0,6,3,5,1,4,2,0],lines:god,gain:.19,battle:true,intro:true},
- 'hollow-sun':{lead:'brass',inverted:true,beats:5,rhythm:[0,1.5,3,5,8,9.5,12,14],roots:[0,3,6,2,5,1,4,0],lines:sun,gain:.21,battle:true,intro:true},
+ 'hollow-sun':{lead:'brass',inverted:true,beats:5,rhythm:[0,1.5,3,5,8,10,13.5,17],roots:[0,3,6,2,5,1,4,0],lines:sun,gain:.21,battle:true,intro:true},
  unborrowed:{lead:'strings',beats:4,rhythm:[0,1,3,4.5,8,9,11,14],roots:[0,4,2,5,3,6,1,0],lines:heart,gain:.19,battle:true,intro:true},
 };
 export function sevenBar(mode:SevenMode,bar:number):Note[]{
@@ -74,7 +74,7 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
   add('timpani',pitch(0,-2),0,1.4,.11);if(bar===1){add('brass',pitch(2),beats-1,.75,.19);add('cymbal','C3',0,2,.04);}return notes;
  }
  const i=((bar-(a.intro?2:0))%32+32)%32,phrase=Math.floor(i/4),within=i%4,root=a.roots[phrase];
- const strength=[.78,.88,.94,.82,1.04,1.12,.98,.78][phrase]*(within===3?.89:1),t=a.rhythm.map(n=>n*beats/4),melody=a.lines[phrase];
+ const strength=[.78,.88,.94,.82,1.04,1.12,.98,.78][phrase]*(within===3?.89:1),t=beats===5?a.rhythm:a.rhythm.map(n=>n*beats/4),melody=a.lines[phrase];
  for(let j=0;j<melody.length;j++){
   const at=t[j],local=at-within*beats;if(local<0||local>=beats)continue;
   const next=t[j+1]??beats*4,hold=Math.max(.22,(next-at)*(a.battle?.7:.94));

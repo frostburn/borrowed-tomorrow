@@ -1,4 +1,4 @@
-import {DomainCinematic,type DomainEffect} from './domain-cinematic';
+import {DomainCinematic} from './domain-cinematic';
 import { ImperialCinematic,type ImperialEffect } from './imperial-cinematic';
 import { RiverCinematic } from './river-cinematic';
 import { PactCinematic } from './pact-cinematic';
@@ -96,8 +96,8 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
-    if(shot.effect?.startsWith('domain-'))this.domain?.play(shot.effect as DomainEffect,shot.focus??this.focus);
-    if(shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    if(shot.effect==='domain-break'||shot.effect==='domain-fragment'||shot.effect==='domain-release')this.domain?.play(shot.effect,shot.focus??this.focus);
+    else if(shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){

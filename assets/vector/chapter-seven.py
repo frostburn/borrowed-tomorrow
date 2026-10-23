@@ -151,8 +151,11 @@ for id,mapid in [('domain-hounds','takenwater'),('domain-collector','takenwater'
  body=[rect(0,0,1024,480,INK),poly([(0,75),(512,24),(1024,75),(1024,480),(0,480)],BLUE),poly([(0,330),(512,260),(1024,330),(1024,480),(0,480)],'#587586')]
  for y in range(80,480,64):body.append(line([(0,y),(1024,y)],'#829697',2))
  for x in range(80,1024,128):body.append(line([(512,24),(x,480)],'#829697',2))
- svg(ART/('battle-'+id+'.svg'),1024,480,body)
  lid=next(l['id']for l in source['layers']if l['type']=='tilelayer')
- manifest['battle-'+id]=[{'key':'scene-seven-battle-'+id,'url':'art/vector/chapter-seven/battle-'+id+'.svg','x':0,'y':0,'width':1024,'height':480,'depth':-1000,'layerId':lid}]
+ if id.startswith('benefactor-'):
+  manifest['battle-'+id]=[{'key':'benefactor-domain','url':'art/vector/benefactor/benefactor-domain.svg','x':0,'y':0,'width':1024,'height':480,'depth':-1000,'layerId':lid}]
+ else:
+  svg(ART/('battle-'+id+'.svg'),1024,480,body)
+  manifest['battle-'+id]=[{'key':'scene-seven-battle-'+id,'url':'art/vector/chapter-seven/battle-'+id+'.svg','x':0,'y':0,'width':1024,'height':480,'depth':-1000,'layerId':lid}]
 (ROOT/'src/content/chapter-seven/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('Chapter Seven:',len(manifest),'native scene manifests')

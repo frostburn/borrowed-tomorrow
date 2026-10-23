@@ -268,3 +268,23 @@ Northern exploration uses a pure sine oscillator in place of reed (including the
 | `laststation` · The Empty Seat | 4/4, 60 | A lower, sparse piano recollection of Nell’s phrase, soft strings, long bass and ensemble breaths; no percussion or triumphant cadence. |
 
 All held melodic voices receive dynamics/controlled vibrato; bell tails release softly. Battle clocks stay steady. Full forms and loop seams render through the same Synth/performance clock as live playback, with finite-level and click checks outside the default CI gate. The Lightbearer reveal starts its own cue; the mantle’s fall gives way to The Empty Seat.
+
+## Chapter Seven — the stolen days and three final forms
+
+`score-seven.ts` supplies sixteen complete 32-bar arrangements. The three final battle cues each have a two-bar one-shot introduction. Pitched domain parts remain on the approved radiant octatonic `C D E Ft G Ad A# B` = `0 5 10 14 18 22 25 28`, or its exact reflection `C Db Dt Ed F Gd Ab A#t` = `0 3 6 9 13 17 21 26`. In particular, `Ad` is degree 22; `At` would be 24, and a single `Db`, not `Dbb`, supplies degree 3. All notes use the shared spelled pitch parser and 31-EDO rack.
+
+| Cues | Musical direction |
+| --- | --- |
+| `hollowsill`, `sunthrone` | Slow harmonic organ, sustained radiant inner voices and a long descending call. The approach develops the final figure's contour. |
+| `takenwater` | Reflected bell calls, repeated notes caught in a different answer, long low pedal and soft bell tails. |
+| `firstfield` | Radiant lute in 3/4; wide opening turns and a contrasting upper-register middle over wood taps. |
+| `quietward` | Reflected sine melody in 3/4, a long descending breath and sustained organ harmony. Ensemble rubato. |
+| `seasonstreet` | Reflected pitched wood, displaced replies and a mobile four-beat phrase, distinct from the earlier regional pentatonics. |
+| `lastrefuge` | Human D-minor piano sentences over held strings and a round bass. Phrase dynamics and ensemble rubato leave space between answers. |
+| `domain-battle`, `harvest-battle`, `hospice-battle`, `seasons-battle` | Independent battle variations of the local domain themes; brass, organ and tritaver leads, moving bass, straight driving percussion, 4/4, 3/4 or 5/4 as authored. Familiar bosses retain their tactical identities while their music belongs to the revealed source. |
+| `benefactor` | Radiant harmonic organ and brass answers; 4/4, quarter=120. Its descending opening expands through eight authored four-bar sentences. |
+| `hollow-sun` | Reflected brass in 5/4, quarter=128, falling exchanges across registers and a bass that changes its role at phrase turns. |
+| `unborrowed` | Radiant strings, answering brass and a clear 4/4 at quarter=148. The shorter exposed-heart fight gets the most forward theme. |
+| `homecoming`, `seaholiday` | Human D-minor material, a warmer reed return and a three-beat lute holiday; no alien harmony at the real coast. |
+
+Every form has an opening, answers, a lifted contrasting middle and a changed return. Held bass/pads cross quiet bars without repeated attacks; controlled vibrato and swells belong to sustained voices, while plucked voices retain their attacks. The procedural organ uses exact harmonic sine partials at 1/2/3/4 times the shared tuned fundamental, with normal smooth envelopes and cancellation. No samples or production dependencies. Music → Ch 7 exposes every cue and an Organ solo part. Full-form/loop renders and device review stay outside normal CI.

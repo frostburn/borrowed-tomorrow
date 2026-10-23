@@ -631,8 +631,8 @@
   ],
   "battle-benefactor-body": [
     {
-      "key": "scene-seven-battle-benefactor-body",
-      "url": "art/vector/chapter-seven/battle-benefactor-body.svg",
+      "key": "benefactor-domain",
+      "url": "art/vector/benefactor/benefactor-domain.svg",
       "x": 0,
       "y": 0,
       "width": 1024,
@@ -643,8 +643,8 @@
   ],
   "battle-benefactor-sun": [
     {
-      "key": "scene-seven-battle-benefactor-sun",
-      "url": "art/vector/chapter-seven/battle-benefactor-sun.svg",
+      "key": "benefactor-domain",
+      "url": "art/vector/benefactor/benefactor-domain.svg",
       "x": 0,
       "y": 0,
       "width": 1024,
@@ -655,8 +655,8 @@
   ],
   "battle-benefactor-heart": [
     {
-      "key": "scene-seven-battle-benefactor-heart",
-      "url": "art/vector/chapter-seven/battle-benefactor-heart.svg",
+      "key": "benefactor-domain",
+      "url": "art/vector/benefactor/benefactor-domain.svg",
       "x": 0,
       "y": 0,
       "width": 1024,
