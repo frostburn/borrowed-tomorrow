@@ -7,7 +7,7 @@ export const JOURNAL={
  palaceCoup:{title:'The divided court',text:'Samira recognized her own grain orders in the ledger and chose to withdraw Namar’s seal. Sahir ordered the guardian awakened and the queen held in her court. Reach the western postal stair with her.'},
  palaceEscapeWon:{title:'The cordon falls back',text:'The palace cordon is broken. A sunmesh travel coat goes into the bag. Reach the western postal stair and leave with Samira.'},
  palaceEscaped:{title:'The postal stair',text:'Amal opened the stair above the palace. Follow the water jars across the roofs to the observatory. The postal shelter has supplies.'},
- desertAscentSeen:{title:'Wings over the observatory',text:'The Benefactor’s glasswings are attacking the bronze apparatus. Clear the upper terrace to reach the observatory. Amal is keeping the lower stair open.'},
+ desertAscentSeen:{title:'Wings over the observatory',text:'The Benefactor’s glasswings hold the release walk and have driven off Sahir’s guards. Clear the upper terrace to reach the observatory. Amal is keeping the lower stair open.'},
  desertAscentWon:{title:'The upper terrace',text:'The upper stair is clear. A fine expansion ring goes into the bag for Orrin. Rest before entering the royal observatory.'},
  sunSerpentSeen:{title:'The sun serpent',text:'The awakened serpent holds the bronze release. Its coils alternately loosen; broken coils weaken its armor and stop reflected lanes. Glass from one breath can reflect the next. The marked attack includes those reflections.'},
  sunSerpentFallen:{title:'The guardian falls',text:'The serpent has released the bronze apparatus. A solar saber guard goes into the bag for Petra. Samira can now lift the pact band from its release.'},

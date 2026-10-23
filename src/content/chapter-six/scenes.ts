@@ -58,9 +58,9 @@ export const court=()=>scene('sunpalace','six-court','The queen’s half of the 
  line('Celia','The ward records are on the next page. The patients lost days while the palace took delivery.'),
  line('Queen Samira','Those are my orders beside the shipments.'),
  line('Minister Sahir','We bought grain, Your Majesty. No collector has touched this city.'),
- line('Petra','Alban promised Cinderbank protection too. Then he ordered my guns turned on the patients.'),
- line('Queen Samira','And his men?'),
- line('Kit','The light took the whole ship. We barely reached our gangway.'),
+ line('Petra','I defended Alban at Cinderbank. He ordered our guns turned on the patients.'),
+ line('Queen Samira','What happened to Alban?'),
+ line('Kit','The Benefactor’s light took him and the whole ship. We barely reached our gangway.'),
  line('Minister Sahir','Then this is when we need the pact most. What protects us if that light comes here?'),
  line('Queen Samira','You asked the Emperor to open his gate to our ward crews. Has he answered?'),
  line('Minister Sahir','He’s holding the capital together. We have to give him time.'),
@@ -86,10 +86,10 @@ export const escaped=()=>scene('sunpalace','six-escape','The postal stair',[
  line('Petra','Then take the inside of the railing.'),
 ]);
 export const roofs=()=>scene('skywalk','six-roofs','Above the awnings',[
- line('The upper terraces','The market awnings lie below. Pale wings strike at the observatory’s rotating brass rings.',{focus:{x:47,y:17},cut:true}),
+ line('The upper terraces','The market awnings lie below. Pale wings settle on the observatory’s release walk.',{focus:{x:47,y:17},cut:true}),
  line('Amal','Those aren’t our machines.'),
  line('Celia','We saw them at Nell’s hatch. The Benefactor’s creatures.'),
- line('Queen Samira','They’re striking the release walk. Sahir’s guards are running from them too.'),
+ line('Queen Samira','Sahir’s guards are running. Those things have cut off the release walk.'),
  line('Kit','I can get a clear shot from the next terrace. Keep away from their straight lines.'),
  line('Amal','I’ll keep the stair open. There’s drinking water under the canopy.'),
 ]);
@@ -99,7 +99,7 @@ export const serpent=()=>scene('observatory','six-serpent','The sun serpent',[
  line('Minister Sahir','It’s supposed to recognize the keeper’s token. It struck the walk when I held it out.'),
  line('Petra','Get down from that walk. It’s pointing at you too.'),
  line('Orrin','One coil loosens while the other closes. We can strike the loose one.'),
- line('Kit','The glass catches its breath and throws it sideways. Watch the reflected lanes.'),
+ line('Kit','Its breath comes back off the glass. Don’t let it pin us against the edge.'),
  line('Queen Samira','Grandmother showed me the bronze latch. Keep it off that ring and I can lift the seal.'),
 ]);
 export const release=()=>scene('observatory','six-release','The bronze release',[

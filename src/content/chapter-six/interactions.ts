@@ -83,7 +83,7 @@ export function interactChapterSix(h:StoryHost,id:string){
    return h.talk({lines:[SAY('Celia','A sunstone lens. They used it to examine eyes under this bright sky. It will fit my field focus.')],done:()=>{receiveItem(s.inventory,'sunstone-focus');h.commit('desertFocusTaken','desertFocusTaken');}});
   case 'sun-serpent':
    if(!f.sunSerpentSeen||f.sunSerpentWon)return;
-   return h.talk({lines:[SAY('Orrin','The head is always within reach of a shot. Breaking the loose coils will strip its armor and stop the glass reflecting on that side.'),SAY('Petra','The attack marks include the reflections. We can move out of them before it breathes.')],choices:[{label:'Face the sun serpent',action:()=>{h.commit('sunSerpentConfronted');h.battle('sun-serpent');}},{label:'Rest and fit our equipment first',action:()=>{}}]});
+   return h.talk({lines:[SAY('Orrin','The head’s exposed. Break a loose coil and we can get through its armor. That side won’t throw the breath back at us.'),SAY('Petra','Give each other room. When it turns its head, move clear of its breath.')],choices:[{label:'Face the sun serpent',action:()=>{h.commit('sunSerpentConfronted');h.battle('sun-serpent');}},{label:'Rest and fit our equipment first',action:()=>{}}]});
   case 'desert-release':
    if(!f.sunSerpentWon)return h.toast('Stop the sun serpent before reaching for the bronze release.');
    if(f.desertSealBroken)return say('Queen Samira','The western return is open. The pact can’t draw our seal back.');
