@@ -26,7 +26,7 @@ The dev workshop retains its own local storage and cannot grant campaign items o
 | Ratchet sight | Kit | Optional sealed-stores patrol |
 | Insulated work coat | Any companion | Either heart-regulator route |
 
-Each reward enters the shared bag once. Compare and equip it manually in Equipment, including from the victory panel. Chapter Three recruits Petra into the roster; the active formation remains Nell plus at most two companions. Existing equipment remains on its wearer during formation changes.
+Each reward enters the shared bag once. Compare and equip it manually in Equipment, including from the victory panel. Chapter Three recruits Petra into the roster; the active formation is Nell plus at most two companions until her Chapter Five Act IV illness. While she is ill, choose one to three of the other companions; Nell keeps her equipment and can be inspected/refitted, but cannot be set active. Rest and victory do not cure her. The optional Chapter Six recovery quest is planned. Existing equipment remains on its wearer during formation changes.
 
 
 ## Chapter Four equipment and formation

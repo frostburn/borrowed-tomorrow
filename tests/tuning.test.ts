@@ -38,3 +38,40 @@ it('spells raised leading tones and borrowed minor chords according to their har
  for(const mode of Object.keys(ARRANGEMENTS) as Parameters<typeof scoreBar>[0][])for(let bar=0;bar<32;bar++)for(const n of scoreBar(mode,bar))pitchesUsed.add(n.pitch);
  for(const pitch of pitchesUsed){expect(Number.isInteger(pitchSteps(pitch))).toBe(true);expect(pitchFrequency(pitch)).toBeGreaterThan(0);}
 });
+
+
+it('parses half accidentals and preserves their spelling and exact 31-EDO pitch through octave shifts',()=>{
+ for(const base of ['C4','D4','E4','F4','G4','A4','B4']as Pitch[]){
+  const up=base.replace('4','t4')as Pitch,down=base.replace('4','d4')as Pitch;
+  expect(pitchSteps(up)-pitchSteps(base)).toBe(1);expect(pitchSteps(down)-pitchSteps(base)).toBe(-1);
+  expect(pitchFrequency(up)/pitchFrequency(base)).toBeCloseTo(2**(1/31),12);
+  expect(pitchFrequency(down)/pitchFrequency(base)).toBeCloseTo(2**(-1/31),12);
+  expect(octave(up,1)).toBe(up.replace('4','5'));expect(octave(down,-1)).toBe(down.replace('4','3'));
+ }
+ expect(pitchSteps('Ed4')-pitchSteps('C4')).toBe(9);expect(pitchSteps('Ed4')-pitchSteps('Eb4')).toBe(1);
+ expect(pitchSteps('C#t4')-pitchSteps('C4')).toBe(3);expect(pitchSteps('Bbd4')-pitchSteps('B4')).toBe(-3);
+ expect(octave('C#t-1',2)).toBe('C#t1');expect(octave('Bbd4',-2)).toBe('Bbd2');
+ expect(semitones('Ct4')).toBe(60.5);expect(semitones('Cd4')).toBe(59.5);
+ for(const malformed of ['Ctt4','Ctd4','C#d4','Cbt4','Ddx4','Ed','Et4.5','FtInfinity'])expect(()=>pitchSteps(malformed as Pitch)).toThrow('Invalid spelled pitch');
+});
+it('transposes half accidentals through flat and sharp keys without drifting off their fifths circles',()=>{
+ expect(transpose('Ed4','P5')).toBe('Bd4');expect(transpose('Bt4','P5')).toBe('F#t5');
+ expect(transpose('Bt4','M3')).toBe('D#t5');expect(transpose('Cd4','-P5')).toBe('Fd3');
+ for(const sign of ['t','d']as const){
+  const shifted=Array.from({length:31},(_,i)=>{
+   const fifth=i<=15?i:i-31;let pitch:Pitch=`C${sign}4`;
+   for(let n=0;n<Math.abs(fifth);n++)pitch=transpose(pitch,fifth<0?'-P5':'P5');
+   return pitch;
+  });
+  const classes=shifted.map(p=>(pitchSteps(p)%31+31)%31);
+  expect(new Set(classes).size).toBe(31);
+  for(let i=0;i<31;i++){
+   expect((classes[(i+1)%31]-classes[i]+31)%31).toBe(18);
+   for(const interval of ['P5','M3','m3']as const){
+    const up=transpose(shifted[i],interval);
+    expect(pitchSteps(up)-pitchSteps(shifted[i])).toBe(interval==='P5'?18:interval==='M3'?10:8);
+    expect(transpose(up,`-${interval}`)).toBe(shifted[i]);
+   }
+  }
+ }
+});
