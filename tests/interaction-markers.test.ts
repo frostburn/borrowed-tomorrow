@@ -30,3 +30,13 @@ it('keeps the ward supplies marked after its arrival scene and rest becomes repe
  const s=newGame(),supplies=MAPS.infirmary.objects.find(o=>o.id==='ward-rest')!;
  s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('optional');expect(interactionMarker(supplies,s)).toBeDefined();
 });
+
+it('shows one cue for Petra and Alban, and stages the mirrored engine cue after the gallery fight',()=>{
+ const s=newGame();s.flags.evacuationReady=true;
+ const alban=MAPS.cinderbank.objects.find(o=>o.id==='siding-captain')!,petra=MAPS.cinderbank.objects.find(o=>o.id==='siding-alban')!;
+ expect(interactionMarker(alban,s)).toBeUndefined();expect(alban.sprite).toBe('alban');
+ expect(interactionMarker(petra,s)?.glyph).toBe('!');
+ const engine=MAPS.mirrorward.objects.find(o=>o.id==='wind-engine')!,guard=MAPS.mirrorward.objects.find(o=>o.id==='wind-gallery-guard')!;
+ expect(interactionMarker(engine,s)).toBeUndefined();expect(interactionMarker(guard,s)?.glyph).toBe('!');
+ s.flags.windGalleryWon=true;expect(interactionMarker(engine,s)?.glyph).toBe('!');expect(interactionMarker(guard,s)).toBeUndefined();
+});

@@ -13,6 +13,7 @@ export function interactionKind(object:MapObject,state:Pick<GameState,'flags'>):
  return object.kind==='story'&&((object.storyUntil&&state.flags[object.storyUntil])||(object.doneFlag&&state.flags[object.doneFlag]))?'talk':object.kind;
 }
 export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>){
+ if(object.marker===false)return;
  if(object.kind==='story'&&object.accessFlag&&!state.flags[object.accessFlag])return;
  if(object.doneFlag&&state.flags[object.doneFlag])return;
  // The boss owns this arena's story cue; its follow-up starts automatically.

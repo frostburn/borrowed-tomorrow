@@ -3,7 +3,7 @@ import json
 
 def retain_interaction_roles(path, layers):
  if not path.exists():return
- authored={o['name']:[p for p in o.get('properties',[]) if p['name'] in ('kind','storyUntil')]
+ authored={o['name']:[p for p in o.get('properties',[]) if p['name'] in ('kind','storyUntil','marker')]
   for l in json.loads(path.read_text())['layers'] if l['name']=='Interactions' for o in l.get('objects',[])}
  for layer in layers:
   if layer['name']!='Interactions':continue

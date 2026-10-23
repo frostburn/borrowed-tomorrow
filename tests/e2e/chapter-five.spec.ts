@@ -26,7 +26,7 @@ for(const [route,device,viewport]of [['lift','desktop',{width:1280,height:800}],
   await approach(page,'forge-carrier');await page.getByRole('button',{name:'Hold off the furnace carrier',exact:true}).click();await capture(page,`furnace-boss-${device}`);
   if(route==='lift')await battle(page,`furnace-carrier-playthrough-${device}`);else await fastBattle(page);
   expect((await inspect(page)).state.inventory.characters.orrin.fitting).toBe('return-valve');await dialogue(page);await equip(page,'Orrin','Balanced expansion valve');
-  await dialogue(page);expect((await inspect(page)).state.flags.hammerplainFreed).toBe(true);await capture(page,`anchor-disconnected-${device}`);
+  expect((await inspect(page)).state.flags.hammerplainFreed).toBe(true);await capture(page,`anchor-disconnected-${device}`);
   await travel(page,'forge-cooling','coolingworks');await travel(page,'cooling-return','hammerplain');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-workers');await dialogue(page);await capture(page,`workers-engine-${device}`);
   await travel(page,'hammer-ship','airship');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-fleet');await dialogue(page);await capture(page,`hammerplain-complete-${device}`);
   const saved=(await inspect(page)).state;expect(saved.flags).toMatchObject({hammerplainComplete:true,hammerplainFreed:true,fleetSighted:true,tomasRescued:true,forgeFlooded:route==='race'});expect(saved.flags.chapterFiveComplete).toBeUndefined();expect(saved.boundary).toBeNull();expect(saved.activeParty).toEqual(departure.activeParty);expect(saved.inventory.characters.orrin.fitting).toBe('forge-valve');

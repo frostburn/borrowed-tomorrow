@@ -1,6 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 import {palaceCheckpoint} from '../support/progress';
-import {importSave,approach} from './navigation';
+import {importSave} from './navigation';
 import {capture,inspect} from './controls';
 
 async function begin(page:Page){

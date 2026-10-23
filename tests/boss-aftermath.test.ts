@@ -14,20 +14,20 @@ for(const scene of BOSS_AFTERMATHS)it(`resumes ${scene.map}'s blocked scene afte
  state.location={map:scene.map,x:20,y:20};
  const object=MAPS[scene.map].objects.find(o=>o.id===scene.interaction)!;
  expect(object).toBeDefined();expect(interactionMarker(object,state)).toBeUndefined();
- let dialogue:Dialogue|undefined;
+ let dialogue:Dialogue|undefined;const read=():Dialogue|undefined=>dialogue;
  const host:StoryHost={state,talk:d=>{dialogue=d;},commit:flag=>{state.flags[flag]=true;},refresh(){},save(){},async checkpoint(){return true;},travel:(map,x,y)=>{state.location={map,x,y};},battle(){throw new Error('The defeated boss must not restart');},shop(){},boundary(){},toast(){},endingMusic(){}};
  state.flags[scene.won]=true;
  const gear=structuredClone(state.inventory),formation=[...state.activeParty],money=state.coins;
  // The same entry point runs after the victory panel and on save restoration.
- resumeChapter(host);expect(dialogue?.done).toBeTypeOf('function');
+ resumeChapter(host);expect(read()?.done).toBeTypeOf('function');
  expect(state.flags[scene.done]).toBeUndefined();
  expect(interactionMarker(object,state)).toBeUndefined();
  // Interrupting before completion replays the scene without committing it.
- dialogue=undefined;resumeChapter(host);expect(dialogue?.done).toBeTypeOf('function');
- const completed=dialogue;dialogue!.done!();expect(state.flags[scene.done]).toBe(true);
+ dialogue=undefined;resumeChapter(host);expect(read()?.done).toBeTypeOf('function');
+ const completed=read()!;read()!.done!();expect(state.flags[scene.done]).toBe(true);
  expect(state.inventory).toEqual(gear);expect(state.activeParty).toEqual(formation);expect(state.coins).toBe(money);
  dialogue=undefined;resumeChapter(host);
  // Other arrival scenes may still run in this deliberately minimal fixture,
  // but the completed aftermath must never run again.
- expect(state.flags[scene.done]).toBe(true);expect(dialogue?.scene).not.toBe(completed!.scene);
+ expect(state.flags[scene.done]).toBe(true);expect(read()?.lines).not.toEqual(completed.lines);
 });
