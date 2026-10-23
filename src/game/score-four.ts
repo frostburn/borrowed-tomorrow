@@ -173,7 +173,8 @@ export function returnBar(mode: ReturnMode, bar: number): Note[] {
     if(sacred){
       voice.expression={release:1.9};
       if(beat===rollBeat)for(const [n,p]of chord.entries()){
-        const onset=beat-.5+n/8;
+        if(tunes[mode][i].some(([,melody])=>pitchSteps(melody)===pitchSteps(p)))continue;
+        const onset=beat-.375+n/8;
         add('bell',p,onset,3.5-onset,.045+n*.005,.16+n*.08).expression={release:1.9};
       }
     }
