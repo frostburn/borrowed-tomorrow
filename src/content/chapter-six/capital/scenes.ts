@@ -47,7 +47,7 @@ export const hallOpened=(s:GameState)=>scene(s,'lastpalace','six-palace-open','T
  line('Petra','You can hold a stretcher. Take that end.'),
  line('The gallery','The attendants lift the bar. The commandant takes the lower handles and follows them toward the quay.',{effect:'capital-street',duration:1000}),
  line('Kit','The eastern passage still has hunters. There’s another way down for the staff now.'),
- line('Celia','I’m going back to Nell before we climb higher. Rest here while I check her.'),
+ line('Celia',s.flags.nellRecovered?'I’m going down to the boats. The attendants need help with the patients. Rest here until I’m back.':'I’m going back to Nell before we climb higher. Rest here while I check her.'),
 ]);
 export const audience=(s:GameState)=>scene(s,'lastpalace','six-emperor-audience','A room kept ready',[
  line('The Emperor','You came back. I kept the morning you saw.',{focus:{x:32,y:18},cut:true}),

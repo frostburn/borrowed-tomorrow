@@ -298,7 +298,7 @@ export class Adventure extends Phaser.Scene {
       }
     }
     const p = this.state.location;
-    const leader=this.state.location.map==='lastmorning'?'nell':partyLeader(this.state);
+    const leader=this.worldLeader();
     if(this.face.replace(/-(left|right|back)$/,'')!==leader)this.face=leader;
     this.syncWorldFollowers();
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
@@ -371,9 +371,16 @@ export class Adventure extends Phaser.Scene {
       if (near?.id !== this.near?.id) { this.near = near; this.renderWorldControls(); }
     }
   }
+  private worldLeader():HeroId {
+    if(this.state.location.map==='lastmorning')return 'nell';
+    // Kit waits with Tomas during the aftermath, without changing the saved formation.
+    if(this.state.location.map==='laststation')return this.state.activeParty.find(id=>id!=='kit')??'orrin';
+    return partyLeader(this.state);
+  }
   private syncWorldFollowers() {
-    const stationed=this.state.location.map==='airship'?new Set(visibleObjects(MAPS.airship,this.state).map(o=>o.sprite)):new Set<string>();
-    const ids=this.state.location.map==='lastmorning'?[]:this.state.activeParty.filter(id=>id!==partyLeader(this.state)&&!stationed.has(id));
+    const mapId=this.state.location.map;
+    const stationed=mapId==='airship'||mapId==='laststation'?new Set(visibleObjects(MAPS[mapId],this.state).map(o=>o.sprite)):new Set<string>();
+    const ids=mapId==='lastmorning'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
     if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
     for(const follower of this.followers){
       this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
@@ -391,7 +398,7 @@ export class Adventure extends Phaser.Scene {
     if (!walkable(MAPS[p.map], x, y,this.state) || this.moving || this.blocked) return;
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
-    const leader=this.state.location.map==='lastmorning'?'nell':partyLeader(this.state);
+    const leader=this.worldLeader();
     this.face = facingAsset(leader,dx,dy);
     this.motion.walk(this.player!,this.face,130); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
