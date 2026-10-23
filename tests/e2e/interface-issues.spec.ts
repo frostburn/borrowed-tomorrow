@@ -62,9 +62,9 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
    const bad=cells().filter(h=>toPixel(h).y>300&&!legalAim(b,u,'burst',h)).sort((a,z)=>distance(u.hex,z)-distance(u.hex,a))[0];
    const good=cells().find(h=>toPixel(h).y>300&&legalAim(b,u,'burst',h))!;
    const toast=await page.locator('#toast').textContent();await clickHex(page,bad);
-   await expect(page.locator('#confirmation .invalid-target')).toHaveText('Out of range or blocked.');expect(await page.locator('#toast').textContent()).toBe(toast);await capture(page,`inline-range-${device}`);
+   await expect(page.locator('#confirmation .invalid-target')).toHaveText('Out of range or blocked.');await expect(page.locator('#confirmation .invalid-target')).toBeInViewport();expect(await page.locator('#toast').textContent()).toBe(toast);await capture(page,`inline-range-${device}`);
    expect((await inspect(page)).battle!.units).toEqual(raw.units);
-   await clickHex(page,good);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();await expect(page.locator('.invalid-target')).toHaveCount(0);
+   await clickHex(page,good);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await expect(page.locator('.invalid-target')).toHaveCount(0);
    await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });
  });
