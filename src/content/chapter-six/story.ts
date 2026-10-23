@@ -1,5 +1,6 @@
+import { JOURNAL as JUNGLE_JOURNAL,objective as jungleObjective } from './jungle/story';
 import type { GameState } from '../../rules/state';
-export const JOURNAL={
+export const JOURNAL={...JUNGLE_JOURNAL,
  capitalSealed:{title:'The sealed capital',text:'The Emperor has closed a barrier under an old defense pact. Two foreign seals hold it: Namar’s royal observatory and the northern sanctuary. People are still living inside the capital.'},
  sixRoutesKnown:{title:'The two pact seals',text:'Alda has charts for both foreign capitals. Each seal must be released where its kingdom signed the pact. The ship remains a safe berth; Nell stays under care.'},
  jungleLeadKnown:{title:'Sera’s river referral',text:'Sera has found river healers who treated crystal workers before the imperial wards. Her notes may help them interrupt Nell’s connection to the shard. This is a separate journey from the two seals.'},
@@ -14,14 +15,15 @@ export const JOURNAL={
  desertReleaseReady:{title:'The bronze band',text:'Samira has freed Namar’s pact band. She will break it in the evening exchange, in front of the people whose defense it pledged. Sahir must answer to the city watch.'},
  desertSealBroken:{title:'The western seal',text:'Samira broke the pact band publicly. Namar is sending navigators, supplies and evacuation barges. The western return is dark; the northern seal still holds the capital shut.'},
  desertFocusTaken:{title:'The observatory lens',text:'A spare sunstone examination lens was stored on the postal terrace. It is in the bag for Celia to fit by hand.'},
- desertMailSent:{title:'Letters still travel',text:'Amal sent the medical report and Kit’s letter to Tomas through the evening exchange. She supplied a light courier harness for whoever needs to move quickly.'},
- desertReported:{title:'News for Nell',text:'The crew brought Namar’s news back to Nell. She remains under care. Alda is preparing the northern expedition; Sera’s river referral remains a separate lead.'},
+ desertMailSent:{title:'Letters still travel',text:'Amal sent the medical report and Nell’s letter to Tomas through the evening exchange. She supplied a light courier harness for whoever needs to move quickly.'},
+ desertReported:{title:'News from Namar',text:'The crew reviewed Namar’s support at the flight chart. The western return is open; the northern seal still holds. Namar’s navigators and barges will help the next approach.'},
 };
 export function objective(s:GameState):string{
+ const regional=jungleObjective(s);if(regional)return regional;
  const f=s.flags,m=s.location.map;
  if(!f.capitalSealed)return 'Reach the capital’s outer mooring.';
  if(!f.sixRoutesKnown)return 'Read the two return lines at Alda’s flight chart.';
- if(m==='outermooring')return f.desertSealBroken?f.desertReported?'Prepare at the outer mooring. The northern pact seal still holds.':'Bring Namar’s news to Nell and Alda.':'Choose the Namar landing at the flight chart.';
+ if(m==='outermooring')return f.desertSealBroken?f.desertReported?'Prepare at the outer mooring. The northern pact seal still holds.':(f.nellRecovered?'Review Namar’s route with Alda.':'Bring Namar’s news to Nell and Alda.'):'Choose a landing at Alda’s flight chart.';
  if(m==='namar')return f.desertReleaseReady&&!f.desertSealBroken?'Join Samira at the evening exchange.':f.desertSealBroken?'The western seal is broken. Return to Alda at the survey landing.':'Meet Queen Samira at the eastern palace.';
  if(m==='sunpalace')return !f.palaceCoup?'Ask Samira to withdraw the imperial seal.':!f.palaceEscapeWon?'Choose an escape at the postal stair west of the fountain.':!f.palaceEscaped?'Meet Amal at the western postal stair.':'Take the western stair to the observatory terraces.';
  if(m==='skywalk')return !f.desertAscentWon?'Clear the glasswings from the upper terrace.':'Rest at the postal shelter, then take the eastern observatory stair.';

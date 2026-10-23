@@ -33,7 +33,7 @@ export function transpose(pitch:Pitch,interval:Interval):Pitch{
   return `${letters[index]}${accidental}${oct}` as Pitch;
 }
 export const isBass=(instrument:string)=>instrument==='bass'||instrument==='round-bass';
-export const isPercussion=(instrument:string)=>instrument==='kick'||instrument==='snare'||instrument==='hat'||instrument==='cymbal';
+export const isPercussion=(instrument:string)=>instrument==='hand-drum'||instrument==='shaker'||instrument==='kick'||instrument==='snare'||instrument==='hat'||instrument==='cymbal';
 
 /** A balanced spelling of all 31 fifth-related classes; never merge # with b. */
 export function fifthsCircle():Pitch[]{

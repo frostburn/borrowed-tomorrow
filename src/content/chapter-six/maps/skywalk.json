@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 8,
-  "nextobjectid": 16,
+  "nextobjectid": 17,
   "properties": [
     {
       "name": "name",
@@ -803,6 +803,14 @@
           "y": 708,
           "properties": [],
           "id": 15
+        },
+        {
+          "name": "nell",
+          "point": true,
+          "x": 588,
+          "y": 756,
+          "properties": [],
+          "id": 16
         }
       ],
       "properties": []

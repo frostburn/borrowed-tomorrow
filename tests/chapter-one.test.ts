@@ -72,8 +72,9 @@ describe('chapter progression', () => {
   });
 });
 
-it('all map interactions have a connected, walkable approach', () => {
-  for (const map of Object.values(MAPS)) for (const object of map.objects) {
+// Keep the same campaign-wide coverage without one timeout growing with every chapter.
+for (const map of Object.values(MAPS)) it(`${map.id}: every interaction has a connected, walkable approach`, () => {
+  for (const object of map.objects) {
     const start=arrival(map.id,String(properties(map.tiles!).safeArrival));
     const approaches = [{ x: object.x, y: object.y }, { x: object.x - 1, y: object.y }, { x: object.x + 1, y: object.y }, { x: object.x, y: object.y - 1 }, { x: object.x, y: object.y + 1 }];
     expect(approaches.some(p => walkable(map, p.x, p.y) && (p.x === start.x && p.y === start.y || worldPath(map, start, p).length > 0)), `${map.id}: ${object.id}`).toBe(true);

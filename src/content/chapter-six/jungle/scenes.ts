@@ -1,0 +1,86 @@
+import { SAY,type Dialogue } from '../../dialogue';
+import { stage } from '../../maps';
+import type { Shot } from '../../cinematics';
+import type { GameState,MapId } from '../../../rules/state';
+const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
+const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='nell'&&id==='six-river-treatment'?{...a,face:'nell-ill'}:a)},lines});
+export const arrival=()=>scene('riverhaven','six-river-arrival','Iria · the next launch',[
+ line('The river landing','A launch noses between the piles. Two passengers pass a basket of folded cloth up to the quay.',{focus:{x:31,y:28},cut:true}),
+ line('Tavi','Keep the blue basket dry. Ines, your examination lamp is under the seat.'),
+ line('Ines','Leave room beside it. Sera said you were bringing a patient.'),
+ line('Celia','Nell’s aboard the survey ship. Her pulse follows a crystal fragment, even when we move it away.'),
+ line('Ines','I read your notes. The quarry workers used to come to us with that. Is she awake?'),
+ line('Kit','She was correcting my letter when we landed.'),
+ line('Ines','Good. I’ll need her to tell me what she feels. We have the equipment at the rain house.'),
+ line('Tavi','The old patrol has closed the boat chain. My other patients are waiting here too.'),
+ line('Orrin','We’ll open the passage. Keep Nell on the ship until we’ve seen the landing.'),
+ line('Celia','I’ll compare the treatment notes with you before she comes across.'),
+ line('Ines','Take the eastern path. Tavi knows where the chain catches. We’ll pack the boat while you clear it.'),
+]);
+export const crossing=()=>scene('canopy','six-river-crossing','The closed waterway',[
+ line('The canopy passage','Vines have grown through the old signal post. Beneath it, patrol machines stand across the bridge.',{focus:{x:35,y:28},cut:true}),
+ line('Tavi','They shut it when the white creatures came upriver. We’ve been using the lower quay ever since.'),
+ line('Petra','That post is still giving them orders. We’ll have to get past them.'),
+ line('Orrin','The boat chain runs through this capstan. Once the walk is clear, I can lift it.'),
+ line('Kit','I’ll take the outer rail. Keep the patients at the lower landing until we signal.'),
+]);
+export const chain=()=>scene('canopy','six-river-chain','The treatment boat',[
+ line('Orrin','The chain’s free of the teeth. Tavi, take the handle while I lift it.',{focus:{x:34,y:28},cut:true,cue:'defend',effect:'river-launch',duration:1300}),
+ line('Tavi','Easy. There—keep it over that peg.'),
+ line('The river','The chain rises out of the channel. The treatment boat passes below the bridge, its lamp wrapped against the spray.'),
+ line('Celia','Ines has the notes and equipment. We still need to check the upper landing before Nell comes across.'),
+ line('Tavi','I’ll bring the boat to the rain house. The path climbs above the eastern bank.',{actors:{tavi:{to:{x:38,y:28}}},track:'tavi',duration:1000}),
+]);
+export const rainhouse=()=>scene('rainhouse','six-rainhouse','The rain house',[
+ line('The rain house','Open shutters face the river. Pale wings cover the treatment deck; a tall figure stands over the landing bell.',{focus:{x:33,y:26},cut:true}),
+ line('Celia','They’ve taken the upper landing. Ines’s boat is still below the bend.'),
+ line('Tavi','I won’t bring anyone to this rail while those things are here.'),
+ line('Kit','The same wings came for Nell’s hatch. I’ll keep them off the boat.'),
+ line('Petra','We clear the deck first. Spread out where that tall one can’t line us up.'),
+ line('Orrin','The west awning is clear. We can use the shelter before we go in.'),
+]);
+export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pulse',[
+ line('The upper landing','Tavi brings the launch alongside. Kit takes Nell’s bag while Celia and Ines help her onto the covered deck.',{focus:{x:42,y:30},cut:true,effect:'river-launch',duration:1300}),
+ line('Nell','I can manage the last step.'),
+ line('Kit','I’ve got the bag. Take your time.'),
+ line('Ines','This way. Tell me if the pull changes.',{focus:{x:32,y:26},actors:{nell:{to:{x:32,y:26}},kit:{to:{x:30,y:28}},celia:{to:{x:31,y:26}}},duration:1200}),
+ line('Celia','Moving the lantern didn’t break the rhythm. Even in the next room, her pulse followed it.'),
+ line('Ines','The binding is on her now. Set the lantern beside the basin; I’ll follow it back.'),
+ line('Nell','Do I have to hold it?'),
+ line('Ines','Just two fingers on the handle. Tell me when it feels cold.'),
+ line('The treatment','Ines turns the split collar around the fragment. Celia watches Nell’s wrist as the light in the basin grows still.',{focus:{x:33,y:26},effect:'river-treatment',cue:'resonance',silence:true,duration:1800}),
+ line('Nell','Now. It’s cold.'),
+ line('Celia','Her pulse has stopped following it.'),
+ line('Ines','Let go. The shard stays in the lamp; the binding can settle without pulling on her.'),
+ line('The rain house','Rain passes over the roof. When Nell wakes again, the lantern is humming softly on the table.'),
+ line('Nell','It did that before it hurt. It doesn’t hurt now.'),
+ line('Celia','I’ve checked it twice. You can get up when you’ve eaten something.'),
+ line('Nell','Then someone had better find my shoes.'),
+]);
+export const rest=()=>scene('rainhouse','six-river-rest','A seat by the river',[
+ line('Nell','Why are you still standing?',{focus:{x:31,y:28},cut:true,actors:{nell:{to:{x:29,y:28}}},duration:800}),
+ line('Kit','I put your water here. And there’s a towel if the rail’s wet. I can move the chair—'),
+ line('Nell','Sit down, Kit.'),
+ line('Kit','Oh. Yes.',{actors:{kit:{to:{x:31,y:29}}},duration:500}),
+ line('Nell','When’s the next boat?'),
+ line('Kit','Tavi said he’d take us whenever you’re ready.'),
+ line('Nell','I’d like a walk first. Just as far as the rail.'),
+ line('Celia','I’ll leave the boots here. Call me if you get tired.'),
+]);
+export const thanks=()=>scene('riverhaven','six-river-thanks','The open passage',[
+ line('Tavi','The morning patients are back. We can use the upper landing again.',{focus:{x:28,y:30},cut:true}),
+ line('Nell','Ines, I don’t know what to say.'),
+ line('Ines','Tell Sera what happened. She’ll have other patients to use it for.'),
+ line('Celia','I’ve copied every step. I’d like your corrections before we send it.'),
+ line('Ines','Leave it at the table. You can use the launch whenever you need us.'),
+ line('Nell','I want to keep going. There are people outside that capital gate.'),
+ line('Kit','Your bag’s on the survey launch. The shoes are in it this time.'),
+]);
+export const home=(s:GameState)=>scene('outermooring','six-river-home','Back at the flight chart',[
+ line('Alda','There you are. Come round this side of the table, Nell.',{focus:{x:32,y:26},cut:true}),
+ line('Nell','I’d like to see the route for myself.'),
+ line('Celia','Ines is keeping a copy of the treatment. Sera will get ours with the next launch.'),
+ line('Alda',s.flags.desertSealBroken?'Namar’s return is dark. Their navigators are helping with the northern approach.':'Namar and the northern kingdom still hold the pact seals. We have room to land at either.'),
+ line('Nell',s.flags.desertSealBroken?'Then show me where the northern seal joins the wall.':'Let’s start with the people who can open that wall.'),
+ line('Kit','I’ll bring the other chart. The clean one.'),
+]);

@@ -241,5 +241,54 @@
       "#263e53": "#344e59",
       "#b7c1b8": "#e5c68f"
     }
+  },
+  "hound-fern": {
+    "kind": "hound",
+    "name": "Fernbound hound",
+    "chapter": 6,
+    "hp": 88,
+    "bonus": 12,
+    "armor": 2,
+    "speed": 7,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#4b6550",
+      "#b7784e": "#8fa276",
+      "#d9ae62": "#c1b77e"
+    }
+  },
+  "crow-fern": {
+    "kind": "crow",
+    "name": "Fernbound crow",
+    "chapter": 6,
+    "hp": 76,
+    "bonus": 12,
+    "armor": 2,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#4b6550",
+      "#626d7f": "#8fa276",
+      "#b7784e": "#c1b77e",
+      "#d9ae62": "#354f46",
+      "#142536": "#c8c599"
+    }
+  },
+  "guardian-fern": {
+    "kind": "guardian",
+    "name": "Fernbound guardian",
+    "chapter": 6,
+    "hp": 188,
+    "bonus": 12,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#4b6550",
+      "#b7784e": "#8fa276",
+      "#d9ae62": "#c1b77e",
+      "#263e53": "#354f46",
+      "#b7c1b8": "#c8c599"
+    }
   }
 }

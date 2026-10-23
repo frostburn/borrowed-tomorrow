@@ -28,7 +28,7 @@ for(const [name,knots]of Object.entries(breaths)){
  clock[length]=length;clocks[mode]=clock;
 }
 export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
-const expressive:readonly MusicMode[]=['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
+const expressive:readonly MusicMode[]=['riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
 export const hasExpression=(mode:MusicMode)=>expressive.includes(mode);
 
 /** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */

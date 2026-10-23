@@ -98,4 +98,13 @@ Sahir is the minister: a broad-faced, bearded man with a pale wrapped cap, plum 
 
 Amal runs the evening post: a young adult woman with a cream headscarf, dark side braid, blue coat and leather postal bag. She maintains the railway correspondence, forwards Kit’s letters and opens the postal stair after the palace seizure. She has routes, colleagues and a city to care for beyond the party’s quest. All three have independent native vector actors and portrait originals; the women use the female face construction.
 
-The companions have seen the capital barrier, learned where the two pact seals are held, and heard Sera’s river referral. After Namar only the western seal is open. Nell receives the news aboard, still ill, and Kit’s concern remains practical and unresolved. The northern expedition and river treatment are upcoming gameplay, not completed offscreen events.
+The companions have seen the capital barrier, learned where the two pact seals are held, and heard Sera’s river referral. After Namar only the western seal is open. Nell receives the news aboard if still ill; a recovered Nell travels through the desert and reviews the route at the flight chart. Kit’s concern remains practical and unresolved. The northern expedition is upcoming gameplay. Iria’s optional treatment is playable in either order relative to Namar.
+
+
+## Chapter Six — Iria
+
+**Ines** is an older river healer with a gray braid, copper-brown complexion, cream tunic and green outer robe. She treats the community’s crystal workers and other patients, reads Celia’s notes before arrival and keeps the treatment records. She asks Nell directly what she feels. Her split-collar procedure interrupts the shard’s binding; it does not destroy the shard or explain its final function. She and Celia send a corrected record to Sera.
+
+**Tavi** is an adult medical-launch pilot with dark hair, a broad jaw/brow, rust tunic, cream neck cloth and a pole in his right hand. He knows the old chain’s catch and will not bring patients to an unsafe landing. He carries the equipment first, then Nell, and resumes the regular route once the rain house is clear. Both have their own native actors and editable portraits; neither becomes a combatant.
+
+**Nell and Kit after treatment:** Kit has arranged water, a towel and a chair. Nell asks him to sit and chooses a short walk by the river. His care remains practical and occasionally flustered; no confession or mutual romance follows. Nell decides to continue, keeps her equipment and may join any legal active formation. Her recovery is permanent and can precede Namar; she discusses the Emperor’s earlier offer with Samira and takes part in the release journey.

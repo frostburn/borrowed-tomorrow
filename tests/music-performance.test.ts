@@ -52,11 +52,10 @@ it('a single performed clock keeps melody, support and cross-bar holds together 
  expect(hold.seconds).not.toBeCloseTo(hold.duration*60/ARRANGEMENTS.windmere.bpm,2);
 });
 
-it('only authored expressive cues expose a comparison, and disabling it removes all controls',()=>{
- for(const mode of Object.keys(ARRANGEMENTS)as MusicMode[]){
+for(const mode of Object.keys(ARRANGEMENTS)as MusicMode[])it(`${mode}: only authored expression exposes a comparison, and disabling it removes all controls`,()=>{
   const notes=Array.from({length:scoreLength(mode)},(_,bar)=>scoreBar(mode,bar)).flat();
   expect(hasExpression(mode),mode).toBe(notes.some(n=>n.expression!==undefined));
-  if(!hasExpression(mode))continue;
+  if(!hasExpression(mode))return;
   for(let bar=0;bar<scoreLength(mode);bar++){
    const original=performanceBar(mode,bar),plain=performanceBar(mode,bar,{expression:false});
    expect(plain.notes.map(n=>[n.pitch,n.time,n.seconds])).toEqual(original.notes.map(n=>[n.pitch,n.time,n.seconds]));
@@ -70,7 +69,6 @@ it('only authored expressive cues expose a comparison, and disabling it removes 
     if(e.bend){expect(e.bend.at(-1)![1]).toBe(0);expect(Math.max(...e.bend.map(p=>Math.abs(p[1])))).toBeLessThanOrEqual((mode==='mirrorward'||mode==='signalwall'?18:8)*1200/31);}
    }
   }
- }
 });
 
 it('broad fretless shifts arrive before vibrato, then finish straight; cabin parts take turns bending',()=>{

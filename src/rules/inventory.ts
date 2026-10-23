@@ -5,6 +5,10 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'reedweave-coat':{name:'Reedweave travel coat',slot:'coat',heroes:COMPANION_IDS,description:'A light layered river coat. Protective lining without a heavy hem.',bonuses:{attack:0,armor:4,speed:1}},
+  'rainhouse-focus':{name:'Rainhouse field focus',slot:'fitting',heroes:['celia'],description:'A treatment lens with a firm folding guard, adapted for Celia’s field work.',bonuses:{attack:6,armor:3,speed:1}},
+  'riverglass-reflector':{name:'Riverglass lantern reflector',slot:'fitting',heroes:['nell'],description:'Ines’s spare examination-lamp reflector. A bright beam and a balanced grip.',bonuses:{attack:7,armor:2,speed:2}},
+  'river-sight':{name:'River range sight',slot:'fitting',heroes:['kit'],description:'A weatherproof survey sight with a fast folding rest for Kit’s crossbow.',bonuses:{attack:7,armor:1,speed:2}},
   'sunmesh-coat':{name:'Sunmesh travel coat',slot:'coat',heroes:COMPANION_IDS,description:'A light metal weave beneath desert cloth. Protection against the observatory’s heat.',bonuses:{attack:0,armor:5,speed:0}},
   'fine-expansion-ring':{name:'Fine expansion ring',slot:'fitting',heroes:['orrin'],description:'A precisely cut observatory fitting for Orrin’s steam lance.',bonuses:{attack:8,armor:1,speed:1}},
   'sunstone-focus':{name:'Sunstone examination lens',slot:'fitting',heroes:['celia'],description:'A desert physician’s lens, fitted to Celia’s field focus.',bonuses:{attack:7,armor:2,speed:1}},

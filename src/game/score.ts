@@ -1,3 +1,4 @@
+import { jungleBar } from './score-jungle';
 import { desertBar } from './score-desert';
 import { claimBar } from './score-claim';
 import { windmereBar } from './score-windmere';
@@ -12,11 +13,17 @@ import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
-export type MusicMode = 'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
-export type Instrument = 'lute' | 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
+export type MusicMode = 'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type Instrument = 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  riverhaven:{beats:4,bpm:104,lead:'reed',leadGain:.18,keys:0,strings:0,bass:.17,percussion:.13},
+  canopy:{beats:4,bpm:108,lead:'reed',leadGain:.18,keys:0,strings:0,bass:.17,percussion:.13},
+  rainhouse:{beats:4,bpm:78,lead:'reed',leadGain:.16,keys:0,strings:.023,bass:.13,percussion:.073},
+  'rainhouse-rest':{beats:4,bpm:80,lead:'reed',leadGain:.16,keys:0,strings:.023,bass:.13,percussion:.073},
+  'river-battle':{beats:4,bpm:132,lead:'wood',leadGain:.22,keys:0,strings:0,bass:.17,percussion:.17},
+  'rain-warden':{beats:4,bpm:122,lead:'brass',leadGain:.22,keys:0,strings:0,bass:.17,percussion:.17},
   outermooring:{beats:4,bpm:72,lead:'reed',leadGain:.12,keys:0,strings:.017,bass:.1,percussion:0},
   namar:{beats:4,bpm:96,lead:'reed',leadGain:.19,keys:0,strings:.02,bass:.12,percussion:.033},
   sunpalace:{beats:3,bpm:76,lead:'reed',leadGain:.19,keys:0,strings:.017,bass:.1,percussion:0},
@@ -108,6 +115,7 @@ const ALBAN:[number,Pitch,number][][]=[[
 const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
 /** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='riverhaven'||mode==='canopy'||mode==='rainhouse'||mode==='rainhouse-rest'||mode==='river-battle'||mode==='rain-warden')return jungleBar(mode,bar);
   if(mode==='outermooring'||mode==='namar'||mode==='sunpalace'||mode==='skywalk'||mode==='observatory'||mode==='desert-battle'||mode==='sun-serpent')return desertBar(mode,scorePosition(mode,bar));
   if(mode==='claim')return claimBar(bar);
   if(mode==='windmere'||mode==='dispensary'||mode==='mirrorward'||mode==='wind-battle'||mode==='wind-engine')return windmereBar(mode,bar);
@@ -159,7 +167,7 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 export function scoreLength(mode:MusicMode):number {
   if(mode==='flagship'||mode==='sun-serpent')return 34;
   if(mode==='inspector')return 24;
-  return ['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','windmere','dispensary','mirrorward','wind-battle','wind-engine','dawnwatch','watchbarracks','signalwall','observation','dawn-battle','dawn-commander','airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
+  return ['riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','windmere','dispensary','mirrorward','wind-battle','wind-engine','dawnwatch','watchbarracks','signalwall','observation','dawn-battle','dawn-commander','airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
 }
 
 /** Absolute playback bars wrap after the one-shot intro, never back into it. */

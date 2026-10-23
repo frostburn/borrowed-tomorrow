@@ -45,8 +45,13 @@ it('variants remain fixed to their encounter and keep their base combat roles an
 it('each later chapter uses tougher common enemies, visibly tied to a distinct palette',()=>{
  for(const kind of ['hound','crow','guardian']as const){
   const tiers=Object.entries(ENEMY_VARIANTS).filter(([,v])=>v.kind===kind).sort(([,a],[,z])=>a.chapter-z.chapter);
-  expect(tiers.map(([,v])=>v.chapter)).toEqual([2,3,4,5,6]);
-  for(let i=1;i<tiers.length;i++){expect(tiers[i][1].hp).toBeGreaterThan(tiers[i-1][1].hp);expect(tiers[i][1].bonus).toBeGreaterThan(tiers[i-1][1].bonus);expect(tiers[i][1].colors).not.toEqual(tiers[i-1][1].colors);}
+  expect([...new Set(tiers.map(([,v])=>v.chapter))]).toEqual([2,3,4,5,6]);
+  for(let i=1;i<tiers.length;i++){
+   // Parallel regions in one chapter may share a tier; later chapters still
+   // exceed every prior region, independently of registry order.
+   const [id,v]=tiers[i];for(const [,prior]of tiers.filter(([,p])=>p.chapter<v.chapter)){expect(v.hp,id).toBeGreaterThan(prior.hp);expect(v.bonus,id).toBeGreaterThan(prior.bonus);}
+   expect(v.colors).not.toEqual(tiers[i-1][1].colors);
+  }
  }
  for(const e of Object.values(ENCOUNTERS))for(const enemy of e.enemies){
   if(enemy.variant){expect(ENEMY_VARIANTS[enemy.variant].kind).toBe(enemy.kind);expect(enemy.hp).toBeUndefined();expect(enemy.bonus).toBeUndefined();}

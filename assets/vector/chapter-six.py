@@ -57,16 +57,17 @@ def astrolabe(cx,cy,rx=150):
   t=math.radians(a);out.append(line([(cx+math.cos(t)*rx*.76,cy-7+math.sin(t)*rx*.31),(cx+math.cos(t)*rx*.96,cy-7+math.sin(t)*rx*.4)],LIGHT,3))
  out.extend([poly([(cx-15,cy+3),(cx+7,cy-104),(cx+25,cy-108),(cx+15,cy+3)],GOLD),ellipse(cx+17,cy-102,20,20,LIGHT),ellipse(cx+17,cy-102,12,12,INK)])
  return out
-def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,w=64,h=42,wood=False):
+def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,w=64,h=42,wood=False,ground=None,gated=None):
  layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),layer(2,'Walking surfaces',floor,w,h,3),layer(3,'Scenery footprints',blocks,w,h,6)];entries=[]
  def add(n,body,ww=w*24,hh=h*24,x=0,y=0,depth=-1000,lid=1):
   svg(ART/f'{n}.svg',ww,hh,body);entries.append({'key':f'scene-six-{n}','url':f'art/vector/chapter-six/{n}.svg','x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':lid})
- add(id+'-back',back if back is not None else dunes(w*24,h*24));add(id+'-floor',plane(floor,w*24,h*24,'#917a55'if wood else STONE,wood),depth=-999,lid=2)
+ add(id+'-back',back if back is not None else dunes(w*24,h*24));add(id+'-floor',ground if ground is not None else plane(floor,w*24,h*24,'#917a55'if wood else STONE,wood),depth=-999,lid=2)
  for n,body,ww,hh,x,y,depth,flags in decor:
   lid=3
   if flags:
    lid=len(layers)+1
-   item=layer(lid,n,[(27,33,9,1)],w,h,6)if n=='palace-bar'else group(lid,n)
+   gate=(gated or {}).get(n,[(27,33,9,1)]if n=='palace-bar'else None)
+   item=layer(lid,n,gate,w,h,6)if gate else group(lid,n)
    item['properties']=props(**flags);layers.append(item)
   add(n,body,ww,hh,x,y,depth,lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
@@ -78,8 +79,8 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
  text=json.dumps(d,indent=2);text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+w])for i in range(0,w*h,w))+'\n    ]',text)
  (MAP/f'{id}.json').write_text(text+'\n');manifest[id]=entries
 
-crew={'kit':(32,28),'orrin':(29,29),'petra':(35,29),'celia':(30,31),'alda':(34,25)}
-capital=[rect(0,0,1536,1008,NIGHT),poly([(0,90),(320,170),(720,100),(1140,153),(1536,80),(1536,350),(0,350)],'#7e9698'),poly([(0,320),(270,233),(610,333),(1010,232),(1536,305),(1536,1008),(0,1008)],'#526d6c'),poly([(0,630),(340,540),(700,647),(1110,535),(1536,590),(1536,760),(1120,704),(710,790),(320,714),(0,770)],'#b3bfa8'),poly([(120,350),(380,308),(740,358),(1100,304),(1430,350),(1360,427),(920,460),(420,439),(170,405)],'#3e575b')]
+crew={'kit':(32,28),'orrin':(29,29),'petra':(35,29),'celia':(30,31),'alda':(34,25),'nell':(27,28)}
+capital=[rect(0,0,1536,1008,NIGHT),poly([(0,90),(320,170),(720,100),(1140,153),(1536,80),(1536,350),(0,350)],'#7e9698'),poly([(0,320),(270,233),(610,333),(1010,232),(1536,305),(1536,1008),(0,1008)],'#526d6c'),poly([(0,630),(340,540),(700,647),(1110,535),(1536,590),(1536,760),(1120,704),(710,790),(320,714),(0,770)],'#b3bfa8'),poly([(120,350),(380,308),(740,358),(1100,304),(1430,350),(1360,427),(920,460),(420,439),(170,405)],'#aebec7'),poly([(120,350),(380,308),(740,358),(1100,304),(1430,350),(1390,372),(1100,331),(740,385),(380,337),(155,375)],'#e3e6dc')]
 def imperial(n,x,y,scale):
  original=(ROOT/f'public/art/vector/scenery/{n}.svg').read_text().split('>',1)[1].rsplit('</svg>',1)[0]
  return [f'<g transform="translate({x} {y}) scale({scale})">',original,'</g>']
@@ -90,8 +91,8 @@ barrier=[poly([(100,357),(380,296),(742,346),(1100,290),(1450,353),(1391,463),(9
 for x in range(180,1450,94):barrier.append(line([(x,340),(x+20,451)],'#bac5a4',3))
 deck=[(12,22,40,14),(29,18,7,5)]
 world('outermooring','The capital · outer mooring','The landing bridge points toward the sealed capital. Alda keeps the flight chart by the bow.',deck,[(13,23,4,3)], [
- obj('six-chart',33,23,'Flight chart · the two pact seals',sign=True),obj('six-nell',18,28,'Nell · the shaded berth',kind='talk',sprite='nell-ill',sign=True),obj('six-alda',36,26,'Alda · the outer mooring',kind='talk',sprite='alda'),obj('six-supplies',45,30,'Crew stores · rest and bandages',kind='optional',sign=True),obj('six-report',24,30,'Signal desk · Sera’s reply',storyUntil='jungleLeadKnown',sign=True),obj('six-capital',32,19,'Landing bridge · sealed capital',kind='talk',sign=True)],
- {'start':(32,29),'namar':(32,29),'briefing':(32,28)}, {'six-sealed':{**crew,'emperor':(32,19)},'six-briefing':crew,'six-letter':{**crew,'nell':(19,28)},'six-home':{**crew,'nell':(19,28)}},
+ obj('six-chart',33,23,'Flight chart · the two pact seals',sign=True),obj('six-nell',18,28,'Nell · the shaded berth',kind='talk',sprite='nell-ill',hiddenFlag='nellRecovered',sign=True),obj('six-nell-ready',28,26,'Crew table · Nell',kind='talk',requiredFlag='nellRecovered',sign=True),obj('six-alda',36,26,'Alda · the outer mooring',kind='talk',sprite='alda'),obj('six-supplies',45,30,'Crew stores · rest and bandages',kind='optional',sign=True),obj('six-report',24,30,'Signal desk · Sera’s reply',storyUntil='jungleLeadKnown',sign=True),obj('six-capital',32,19,'Landing bridge · sealed capital',kind='talk',sign=True)],
+ {'start':(32,29),'namar':(32,29),'briefing':(32,28)}, {'six-sealed':{**crew,'emperor':(32,19)},'six-briefing':crew,'six-letter':{**crew,'nell':(19,28)},'six-home':{**crew,'nell':(19,28)},'six-river-home':crew},
  [point('lookout',42,25,sprite='civilian-traveler-blue'),point('fitter',25,25,sprite='civilian-dockhand')],
  [('mooring-city-life',far_cart,80,64,802,365,-998.5,{}),('mooring-rail',[line([(290,540),(290,856),(1245,856),(1245,540)],GOLD,5)],1536,1008,0,0,-997,{}),('mooring-barrier',['<g opacity=".65">',*barrier,'</g>'],1536,540,0,0,-998,{'requiredFlag':'capitalSealed'}),('mooring-chart',chest(),60,48,785,515,563,{}),('mooring-berth',bench(),168,86,324,565,651,{}),('mooring-stores',chest(),60,48,1100,680,728,{})],capital,wood=True)
 
@@ -102,14 +103,14 @@ market=[]
 for x,c in [(0,'#a65949'),(166,'#4f7777')]:market.extend([rect(x+12,37,136,51,DARK),poly([(x,33),(23,0),(137,0),(158,33)],c),rect(x+9,33,5,75,GOLD),rect(x+144,33,5,75,GOLD),line([(x+21,57),(x+131,57)],LIGHT,3)])
 world('namar','Namar · the evening exchange','The palace is beyond the eastern bridge. The post exchange and drinking water are on the western quay.',[(4,22,27,15),(34,19,26,18),(29,26,7,4),(20,17,29,6)],[(6,22,12,3),(43,19,9,2)], [
  obj('namar-amal',23,27,'Amal · the evening post',sprite='amal',kind='talk'),obj('namar-post',19,28,'Post exchange · letters to the railway',kind='optional',sign=True),obj('namar-supply',12,30,'Canal fountain · rest and supplies',kind='optional',sign=True),control('namar-palace',47,22,(44,17,9,5),'Royal palace · Queen Samira',kind='exit',sign=True),obj('namar-ship',9,34,'Survey landing · return aboard',kind='exit',sign=True),obj('namar-clock',38,27,'The water clock',kind='talk',sign=True),obj('namar-celebrate',36,31,'Samira · the western seal',requiredFlag='desertSealBroken',sprite='samira',kind='talk')],
- {'start':(13,32),'palace':(43,23),'return':(33,28),'home':(34,31)}, {'six-namar':{'kit':(20,28),'orrin':(18,29),'petra':(22,30),'celia':(20,31),'amal':(23,27)},'six-public':{'kit':(32,28),'orrin':(29,31),'petra':(35,31),'celia':(34,33),'samira':(36,29),'sahir':(42,30),'amal':(38,32)}},
+ {'start':(13,32),'palace':(43,23),'return':(33,28),'home':(34,31)}, {'six-namar':{'kit':(20,28),'orrin':(18,29),'petra':(22,30),'celia':(20,31),'amal':(23,27),'nell':(17,31)},'six-public':{'kit':(32,28),'orrin':(29,31),'petra':(35,31),'celia':(34,33),'samira':(36,29),'sahir':(42,30),'amal':(38,32),'nell':(28,34)}},
  [point('market-buyer',17,26,sprite='civilian-traveler',hiddenFlag='palaceCoup'),point('boat-family',26,33,sprite='civilian-family-blue',hiddenFlag='palaceCoup'),point('clock-keeper',40,29,sprite='civilian-dockhand-rust'),point('returning-family',26,33,sprite='civilian-family-blue',requiredFlag='desertSealBroken'),point('western-watch',41,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken'),point('eastern-watch',43,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken')],
  [('namar-market',market,328,110,146,493,600,{}),('namar-palms',palm(0,0)+palm(181,19,.8),285,181,943,513,675,{}),('namar-clock',astrolabe(50,58,48)+[rect(38,52,24,85,TEAL),ellipse(50,133,55,17,DARK)],112,154,914,495,649,{}),('namar-fountain',bench(),168,86,230,650,736,{}),('namar-bridge-rail',[line([(696,628),(862,628)],GOLD,4),line([(696,716),(862,716)],GOLD,4)],880,730,0,0,-997,{}),('namar-shelters',[rect(0,8,143,6,DARK),poly([(0,8),(24,0),(124,0),(143,8),(143,91),(0,91)],TEAL)],148,96,155,490,586,{'requiredFlag':'palaceCoup','hiddenFlag':'desertSealBroken'})],cityback)
 
 courtback=[rect(0,0,1536,1008,'#4b5554'),rect(240,120,1056,650,'#856b55'),rect(270,154,996,590,LIGHT),rect(355,182,826,280,INK),poly([(355,462),(520,290),(800,400),(1181,258),(1181,462)],'#78665c')]
 for x in range(285,1280,120):courtback.extend([rect(x,120,24,395,STONE),rect(x-10,119,44,21,GOLD),rect(x-8,495,40,18,GOLD)])
 courtback.extend([rect(700,465,175,10,GOLD),rect(709,458,157,8,LIGHT)])
-courtcrew={'kit':(31,28),'orrin':(28,29),'petra':(34,29),'celia':(30,31),'samira':(32,23),'sahir':(39,25),'amal':(22,29)}
+courtcrew={'kit':(31,28),'orrin':(28,29),'petra':(34,29),'celia':(30,31),'samira':(32,23),'sahir':(39,25),'amal':(22,29),'nell':(32,29)}
 world('sunpalace','Namar · the open court','The queen receives visitors beneath the northern colonnade. The postal stair is west of the fountain.',[(10,22,45,11),(27,33,9,3),(20,18,24,5),(8,27,5,6)],[(22,24,3,3),(41,24,3,3)], [
  obj('palace-audience',32,24,'Queen Samira · revoke the pact',sprite='samira',storyUntil='palaceCoup',hiddenFlag='palaceEscaped'),obj('palace-route',22,29,'Postal stair · escape the palace',requiredFlag='palaceCoup',doneFlag='palaceEscaped',sign=True),obj('palace-supply',15,31,'Shaded fountain · rest and supplies',kind='optional',sign=True),obj('palace-city',31,34,'Evening exchange · palace gate',kind='exit',sign=True),obj('palace-roofs',10,29,'Postal stair · the observatory terraces',requiredFlag='palaceEscapeWon',kind='exit',sign=True)],
  {'start':(31,31),'audience':(31,28),'escape':(20,29),'roofs':(13,29)}, {'six-court':courtcrew,'six-coup':courtcrew,'six-escape':courtcrew},
@@ -122,7 +123,7 @@ roofback.extend(building(930,105,310,274,True))
 rooffloor=[(8,28,23,7),(27,24,9,8),(32,20,22,7),(46,15,9,9)]
 world('skywalk','Namar · above the roofs','The observatory stair rises eastward. Postal water jars mark the sheltered landing.',rooffloor,[(33,20,3,2),(48,15,4,2)], [
  obj('roof-guard',32,26,'Upper terrace · glasswings',doneFlag='desertAscentWon',sprite='glasswing',spriteHiddenFlag='desertAscentWon'),obj('roof-observatory',50,18,'Royal observatory · the bronze seal',kind='exit',accessFlag='desertAscentWon',sign=True),obj('roof-palace',10,31,'Postal stair · return to the palace',kind='exit',sign=True),obj('roof-rest',23,30,'Postal shelter · rest and supplies',kind='optional',sign=True),obj('roof-chest',39,24,'Instrument case · medical lens',kind='optional',doneFlag='desertFocusTaken',sign=True)],
- {'start':(15,31),'terrace':(28,29),'observatory':(48,20)}, {'six-roofs':{'kit':(25,29),'orrin':(23,30),'petra':(28,30),'celia':(26,31),'samira':(27,28),'amal':(22,29)}},
+ {'start':(15,31),'terrace':(28,29),'observatory':(48,20)}, {'six-roofs':{'kit':(25,29),'orrin':(23,30),'petra':(28,30),'celia':(26,31),'samira':(27,28),'amal':(22,29),'nell':(24,31)}},
  [point('sheltered-courier',18,30,sprite='civilian-traveler-blue')],
  [('roof-rest',bench(),168,86,448,641,727,{}),('roof-chest',chest(),60,48,931,510,558,{}),('roof-railing',[line([(194,674),(650,674),(650,578),(770,578)],GOLD,4),line([(866,482),(1120,482)],GOLD,4)],1160,710,0,0,-997,{})],roofback)
 
@@ -130,7 +131,7 @@ obsback=dunes()+[poly([(160,780),(160,320),(350,100),(1180,100),(1376,320),(1376
 obsback.extend(astrolabe(768,360,253))
 world('observatory','Namar · the royal observatory','The sun serpent holds the bronze release. Supplies wait under the southern arch.',[(12,23,40,13),(22,18,20,6)],[(27,18,11,4)], [
  obj('sun-serpent',32,24,'The sun serpent · defend the bronze release',doneFlag='sunSerpentWon',sign=True),control('desert-release',32,22,(27,14,11,8),'Bronze release · break the western seal',doneFlag='desertSealBroken',sign=True),obj('observatory-rest',19,31,'Southern arch · rest and bandages',kind='optional',sign=True),obj('observatory-roofs',15,33,'Terrace stair · return to the city',kind='exit',sign=True),obj('observatory-sahir',46,27,'Minister Sahir',kind='talk',sprite='sahir',hiddenFlag='desertReleaseReady')],
- {'start':(32,31),'stand':(32,27),'release':(32,24)}, {'six-serpent':{'kit':(31,27),'orrin':(28,29),'petra':(35,29),'celia':(30,30),'samira':(29,26),'sahir':(44,26)},'six-release':{'kit':(32,27),'orrin':(29,28),'petra':(35,28),'celia':(30,30),'samira':(32,23),'sahir':(44,26)}},
+ {'start':(32,31),'stand':(32,27),'release':(32,24)}, {'six-serpent':{'kit':(31,27),'orrin':(28,29),'petra':(35,29),'celia':(30,30),'samira':(29,26),'sahir':(44,26),'nell':(33,30)},'six-release':{'kit':(32,27),'orrin':(29,28),'petra':(35,28),'celia':(30,30),'samira':(32,23),'sahir':(44,26),'nell':(33,30)}},
  [],[('observatory-bench',bench(),168,86,366,687,773,{}),('observatory-serpent',[poly([(23,190),(12,142),(49,93),(83,138),(66,203),(148,236),(235,183),(262,116),(302,50),(342,37),(364,59),(352,87),(312,92),(294,140),(283,213),(222,264),(126,279),(52,247)],GOLD),poly([(64,202),(148,236),(235,183),(262,116),(280,136),(263,215),(209,247),(126,261)],LIGHT),poly([(326,52),(353,52),(350,60),(327,60)],INK)],390,292,573,275,550,{'hiddenFlag':'sunSerpentWon'}),('observatory-released',[line([(663,424),(768,360),(872,424)],'#e1d9ab',7)],1000,470,0,0,-997,{'requiredFlag':'desertSealBroken'})],obsback)
 
 for id,title in [('palace-gallery','Palace gallery cordon'),('palace-channel','Palace service channel'),('desert-ascent','Above the postal roofs'),('sun-serpent','The royal observatory')]:

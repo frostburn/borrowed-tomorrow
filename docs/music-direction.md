@@ -152,7 +152,7 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 
 ## Approved future regions — all in 31-EDO
 
-These collections guide Chapters Six–Seven. Namar’s desert scores are implemented below; northern, jungle and domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+These collections guide Chapters Six–Seven. Namar’s desert scores are implemented below; northern and domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
 
 ### Desert — neutral intervals and score spelling
 
@@ -214,4 +214,22 @@ The mooring, court and observatory hold bass and inner voices across two bars wi
 
 Review in Music → Ch 6. Useful comparisons: city bars 1/17/25, court bars 1/9/17, observatory bars 9/17/25, and serpent bars 1/3/11/19/27 (the latter includes its two opening bars). Solo Bass to hear the harmonic movement; solo Bell in the observatory's middle to hear the hunters' call. The normal CI set remains small; detailed review renders all seven forms and their loop seams through the real synth. Each cue has its own browser test and audio context, so the complete sweep does not share one cumulative timeout or retain all seven voice graphs. The signal thresholds and full forms are unchanged.
 
-The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. Northern, jungle and domain collections above remain approved composition plans.
+The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. Northern and domain collections above remain approved composition plans; Iria’s Slendric implementation follows below.
+
+
+## Iria — Slendric and the treatment boat
+
+`score-jungle.ts` contains six distinct 32-bar 4/4 forms with phrase dynamics and reed/brass vibrato; the percussion keeps a steady clock. All pitched voices, bass and wood stay exactly on C-rooted Slendric: C / Dt / Fd / G / At = `0 6 12 18 24`. Canopy, waiting and battle cues add Cd = `30`, a diesis below the next tonic. `t`/`d` retain the ordinary 31-EDO parser’s spelling and octave behavior. No imported major/minor triads or MIDI rounding.
+
+| Cue | Quarter BPM | Function |
+| --- | --- | --- |
+| `riverhaven` · Iria / The Next Launch | 104 | Falling reed calls over moving bass; five-note warmth and wood replies. |
+| `canopy` · Under the Green Signal | 108 | Sixth-tone tension; longer forest calls and a contrasting upper register. |
+| `rainhouse` · The Waiting Basin | 78 | Held bass and reed across real rests, with a restrained but audible drum pulse. |
+| `rainhouse-rest` · A Seat by the River | 80 | Five-note answer to the waiting tune after recovery; its own second half and long final landing. |
+| `river-battle` · Iria / Open the Waterway | 132 | Develops the river contour in pitched wood over stronger drums and mobile bass. |
+| `rain-warden` · Wings on the Landing | 122 | Sixth-tone brass calls, a sustained middle reed answer and a developed final phrase. |
+
+Hand drums alternate low open strokes with dry upper rim strokes. A shaker holds eighths; the pitched wood interlocks in 3+3+2 divisions without changing the four-beat meter. Cadences thin the accompaniment and the middle sections change the bass/wood texture. The melody is written in four-bar sentences, not repeated rising triads. The clinic holds bass/strings across empty bars. Recovery switches to the five-note cue after the completed treatment, without making the music an in-story cure mechanism.
+
+The rack adds procedural `wood` (an exact harmonic struck sine body), `hand-drum` (short membrane/body and skin noise) and `shaker` (dry filtered noise). Shared smooth envelopes, tails and cancellation apply. Hand drum/shaker are unpitched; wood and timpani are tuned. Solo each new instrument, or the full Drums group, in Music → Ch 6. No samples, dependencies or alternate tuning system are added.

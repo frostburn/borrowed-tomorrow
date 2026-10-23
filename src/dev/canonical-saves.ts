@@ -9,6 +9,8 @@ import { ENCOUNTERS as CAPITAL_ENCOUNTERS } from '../content/chapter-three/encou
 import { equipItem, receiveItem } from '../rules/inventory';
 import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, FIFTH_CHAPTER, FOURTH_CHAPTER, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
 import { decodeSave } from '../rules/save';
+import { ENCOUNTERS as JUNGLE_ENCOUNTERS } from '../content/chapter-six/jungle/encounters';
+import { completeRiverTreatment } from '../content/chapter-six/jungle/recovery';
 
 /** Authored Chapter One completion, independent of workshop builds or saves. */
 export function chapterTwoStart(){
@@ -94,5 +96,25 @@ export function chapterSixStart(){
  sickenNell(s);equipItem(s.inventory,'kit','fleet-sight');
  s.journal.push('flagshipApproachSeen','flagshipFallen','benefactorClaimSeen','retaliationSeen','retaliationFallen','fiveDeparture');
  s.boundary=SIXTH_CHAPTER;beginChapterSix(s);restoreParty(s);
+ return decodeSave(JSON.stringify(s));
+}
+
+/** Shared briefing complete, no desert progress: replay Iria's river arrival. */
+export function chapterSixJungleStart(){
+ const s=chapterSixStart();
+ for(const flag of ['capitalSealed','sixRoutesKnown','jungleLeadKnown']){s.flags[flag]=true;s.journal.push(flag);}
+ s.location=arrival('riverhaven','start');return decodeSave(JSON.stringify(s));
+}
+
+/** Authored jungle completion before the first desert visit; no live data. */
+export function chapterSixRecoveredStart(){
+ const s=chapterSixJungleStart();
+ for(const flag of ['riverSeen','riverCrossingSeen','riverPatrolConfronted','riverPatrolWon','riverChainOpen','rainhouseSeen','rainhouseConfronted','rainhouseWon'])s.flags[flag]=true;
+ for(const id of ['river-patrol','rainhouse-guard']){const e=JUNGLE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ s.journal.push('riverSeen','riverCrossingSeen','riverPatrolWon','riverChainOpen','rainhouseSeen','rainhouseWon');
+ completeRiverTreatment(s);
+ for(const flag of ['riverRestSeen','riverThanksSeen','riverReported']){s.flags[flag]=true;s.journal.push(flag);}
+ // An authored review formation, selected after the cure, independent of saves.
+ s.activeParty=['nell','kit','celia'];s.location=arrival('outermooring','namar');restoreParty(s);
  return decodeSave(JSON.stringify(s));
 }

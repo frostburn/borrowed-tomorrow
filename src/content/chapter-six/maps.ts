@@ -1,3 +1,9 @@
+import haven from './maps/riverhaven.json' with { type: 'json' };
+import canopy from './maps/canopy.json' with { type: 'json' };
+import rainhouse from './maps/rainhouse.json' with { type: 'json' };
+import riverpatrol from './maps/battle-river-patrol.json' with { type: 'json' };
+import rivercache from './maps/battle-river-cache.json' with { type: 'json' };
+import rainwarden from './maps/battle-rainhouse-guard.json' with { type: 'json' };
 import mooring from './maps/outermooring.json' with { type: 'json' };
 import namar from './maps/namar.json' with { type: 'json' };
 import palace from './maps/sunpalace.json' with { type: 'json' };
@@ -9,5 +15,5 @@ import ascent from './maps/battle-desert-ascent.json' with { type: 'json' };
 import serpent from './maps/battle-sun-serpent.json' with { type: 'json' };
 import { tiledWorld } from '../tiled-world';
 import type { TileMap } from '../tilemaps';
-export const CHAPTER_SIX_MAPS={outermooring:tiledWorld('outermooring',mooring),namar:tiledWorld('namar',namar),sunpalace:tiledWorld('sunpalace',palace),skywalk:tiledWorld('skywalk',roofs),observatory:tiledWorld('observatory',observatory)};
-export const CHAPTER_SIX_BATTLES:Record<string,TileMap>={'palace-gallery':gallery,'palace-channel':channel,'desert-ascent':ascent,'sun-serpent':serpent};
+export const CHAPTER_SIX_MAPS={riverhaven:tiledWorld('riverhaven',haven),canopy:tiledWorld('canopy',canopy),rainhouse:tiledWorld('rainhouse',rainhouse),outermooring:tiledWorld('outermooring',mooring),namar:tiledWorld('namar',namar),sunpalace:tiledWorld('sunpalace',palace),skywalk:tiledWorld('skywalk',roofs),observatory:tiledWorld('observatory',observatory)};
+export const CHAPTER_SIX_BATTLES:Record<string,TileMap>={'river-patrol':riverpatrol,'river-cache':rivercache,'rainhouse-guard':rainwarden,'palace-gallery':gallery,'palace-channel':channel,'desert-ascent':ascent,'sun-serpent':serpent};
