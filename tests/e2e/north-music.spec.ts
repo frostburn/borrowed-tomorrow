@@ -39,7 +39,8 @@ test('sine and tritaver preserve written pitch, sparse partials and clean cancel
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   // @ts-expect-error Check a half-accidental pitch as well as A=440.
   const {pitchFrequency}:typeof import('../../src/game/tuning')=await import('/src/game/tuning.ts');
-  const out=[];const rate=22050;
+  // Keep the 27th partial clear of Nyquist while inspecting the sparse spectrum.
+  const out=[];const rate=48000;
   for(const instrument of ['sine','tritaver']as const)for(const pitch of ['A3','Et4']as const){
    const c=new OfflineAudioContext(1,rate*3,rate),synth=new Synth(c,c.destination);synth.note(instrument,pitch,.03,5,.2);synth.release(1.5);
    const data=(await c.startRendering()).getChannelData(0),hz=pitchFrequency(pitch),start=Math.round(.2*rate),length=rate;
