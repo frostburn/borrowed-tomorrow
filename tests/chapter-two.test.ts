@@ -13,7 +13,7 @@ import { equipItem, ownedCopies, receiveItem } from '../src/rules/inventory';
 function journey() {
   const state=checkpoint('chapterOneComplete'); beginChapterTwo(state);
   let dialogue: Dialogue | undefined, battle: string | undefined, boundaries=0;
-  const host:StoryHost={state,talk:d=>{dialogue=d;},commit:(flag,entry)=>{state.flags[flag]=true;if(entry)remember(state,entry);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};},battle:id=>{battle=id;},shop(){},boundary(){boundaries++;},toast(){},endingMusic(){}};
+  const host:StoryHost={state,talk:d=>{dialogue=d;},commit:(flag,entry)=>{state.flags[flag]=true;if(entry)remember(state,entry);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};},battle:id=>{battle=id;},shop(){},boundary(){boundaries++;},toast(){},async checkpoint(){return true;},endingMusic(){}};
   const finish=()=>{dialogue!.done!();};
   const win=()=>{const b=createBattle(battle!,state);b.result='victory';awardVictory(b,state);if(battle)remember(state,battle);};
   return {host,state,finish,read:()=>dialogue!,battle:()=>battle,win,boundaries:()=>boundaries};

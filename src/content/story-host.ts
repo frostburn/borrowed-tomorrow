@@ -8,6 +8,7 @@ export interface StoryHost {
   commit(flag: string, entry?: string): void;
   refresh(): void;
   save(): void;
+  checkpoint(slot:string):Promise<boolean>;
   travel(map: MapId, x: number, y: number): void;
   battle(id: string): void;
   shop(): void;

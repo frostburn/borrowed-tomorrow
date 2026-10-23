@@ -22,7 +22,7 @@ import { desertCheckpoint } from './support/desert';
 function visit(s=chapterSixStart()){
  let read:Dialogue|undefined,battle='';
  const validate=()=>expect(decodeSave(JSON.stringify(s))).toEqual(s);
- const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);validate();},refresh(){},save:validate,travel:(map,x,y)=>{s.location={map,x,y};validate();resumeChapterSix(h);},battle:id=>{battle=id;},shop(){restoreParty(s);},boundary(){throw new Error('Namar is not the chapter ending');},toast(){},endingMusic(){}};
+ const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);validate();},refresh(){},save:validate,travel:(map,x,y)=>{s.location={map,x,y};validate();resumeChapterSix(h);},battle:id=>{battle=id;},shop(){restoreParty(s);},boundary(){throw new Error('Namar is not the chapter ending');},toast(){},async checkpoint(){return true;},endingMusic(){}};
  const flush=()=>{for(let i=0;read?.done&&i<8;i++){const d=read;read=undefined;d.done!();}};
  const act=(id:string)=>{read=undefined;interactChapterSix(h,id);flush();};
  const choose=(i:number)=>{const d=read;read=undefined;d!.choices![i].action();flush();};

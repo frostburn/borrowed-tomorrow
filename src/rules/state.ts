@@ -10,8 +10,9 @@ export const THIRD_CHAPTER = 'chapter-three:capital';
 export const FOURTH_CHAPTER = 'chapter-four:broken-world';
 export const FIFTH_CHAPTER = 'chapter-five:anchors';
 export const SIXTH_CHAPTER = 'chapter-six:capital-approach';
+export const SEVENTH_CHAPTER='chapter-seven:hollow-sun';
 export type HeroId = 'nell' | 'orrin' | 'kit' | 'celia' | 'petra';
-export type MapId = 'bellharbor' | 'frostwatch' | 'glacier' | 'wintershrine' | 'capitalquay' | 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
+export type MapId = 'stillcity'|'lastpalace'|'lastmorning'|'crown'|'laststation'|'bellharbor' | 'frostwatch' | 'glacier' | 'wintershrine' | 'capitalquay' | 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;
@@ -27,7 +28,7 @@ export interface GameState {
   xp: number;
   inventory: Inventory;
   journal: string[];
-  boundary: typeof NEXT_CHAPTER | typeof THIRD_CHAPTER | typeof FOURTH_CHAPTER | typeof FIFTH_CHAPTER | typeof SIXTH_CHAPTER | null;
+  boundary: typeof NEXT_CHAPTER | typeof THIRD_CHAPTER | typeof FOURTH_CHAPTER | typeof FIFTH_CHAPTER | typeof SIXTH_CHAPTER | typeof SEVENTH_CHAPTER | null;
   playSeconds: number;
 }
 export function newGame(): GameState {

@@ -1,3 +1,4 @@
+import { resumeCapital,interactCapital } from './capital/interactions';
 import { resumeNorth,interactNorth } from './north/interactions';
 import { resumeJungle,interactJungle } from './jungle/interactions';
 import type { StoryHost } from '../story-host';
@@ -10,6 +11,7 @@ import { buySupply } from '../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
 export function resumeChapterSix(h:StoryHost){
+ if(resumeCapital(h))return;
  if(resumeJungle(h,()=>resumeChapterSix(h)))return;
  const s=h.state,f=s.flags,m=s.location.map;
  const show=(d:Dialogue,flag:string,after?:()=>void)=>h.talk({...d,done:()=>{h.commit(flag,flag);after?.();}});
@@ -30,7 +32,7 @@ export function resumeChapterSix(h:StoryHost){
  if(m==='observatory'&&!f.sunSerpentSeen)return show(scenes.serpent(s),'sunSerpentSeen');
 }
 export function interactChapterSix(h:StoryHost,id:string){
- if(interactNorth(h,id)||interactJungle(h,id))return;
+ if(interactCapital(h,id)||interactNorth(h,id)||interactJungle(h,id))return;
  const s=h.state,f=s.flags;
  const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
  const fight=(text:string,label:string,encounter:string)=>h.talk({lines:[SAY('Petra',text)],choices:[{label,action:()=>h.battle(encounter)},{label:'Prepare first',action:()=>{}}]});

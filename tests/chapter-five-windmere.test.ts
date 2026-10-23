@@ -16,7 +16,7 @@ import { offset } from '../src/rules/hex';
 import { occupiedHexes } from '../src/rules/footprint';
 function visit(s:GameState){
  let read:Dialogue|undefined,encounter='',toast='';
- const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);},refresh(){},save(){},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast:t=>{toast=t;},endingMusic(){}};
+ const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);},refresh(){},save(){},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast:t=>{toast=t;},async checkpoint(){return true;},endingMusic(){}};
  const finish=()=>{const d=read;read=undefined;d?.done?.();};
  const flush=()=>{for(let i=0;read?.done&&i<6;i++)finish();};
  const interact=(id:string)=>interactChapterFive(h,id);

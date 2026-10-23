@@ -1,3 +1,4 @@
+import { capitalBar } from './score-capital';
 import { northBar } from './score-north';
 import { jungleBar } from './score-jungle';
 import { desertBar } from './score-desert';
@@ -14,11 +15,20 @@ import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
-export type MusicMode = 'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'stillcity'|'lastpalace'|'lastmorning'|'crown'|'laststation'|'capital-battle'|'emperor'|'lightbearer'|'capital-return'|'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  stillcity:{beats:4,bpm:88,lead:'keys',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
+  lastpalace:{beats:3,bpm:86,lead:'strings',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
+  lastmorning:{beats:4,bpm:106,lead:'bell',leadGain:.24,keys:.12,strings:.05,bass:.2,percussion:.07},
+  crown:{beats:3,bpm:86,lead:'strings',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
+  laststation:{beats:4,bpm:60,lead:'keys',leadGain:.12,keys:0,strings:.018,bass:.095,percussion:0},
+  'capital-return':{beats:4,bpm:82,lead:'reed',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
+  'capital-battle':{beats:4,bpm:140,lead:'brass',leadGain:.2,keys:0,strings:.028,bass:.14,percussion:.1},
+  emperor:{beats:3,introBars:2,bpm:122,lead:'brass',leadGain:.2,keys:0,strings:.028,bass:.14,percussion:.1},
+  lightbearer:{beats:4,introBars:2,bpm:112,lead:'bell',leadGain:.16,keys:0,strings:.028,bass:.14,percussion:.1},
   bellharbor:{beats:4,bpm:78,lead:'sine',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:0},
   frostwatch:{beats:4,bpm:94,lead:'sine',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:.045},
   glacier:{beats:4,bpm:68,lead:'bell',leadGain:.12,keys:0,strings:.025,bass:.13,percussion:0},
@@ -122,6 +132,8 @@ const ALBAN:[number,Pitch,number][][]=[[
 const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
 /** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='lastmorning')return scoreBar('station',bar);
+  if(mode==='stillcity'||mode==='lastpalace'||mode==='crown'||mode==='laststation'||mode==='capital-return'||mode==='capital-battle'||mode==='emperor'||mode==='lightbearer')return capitalBar(mode,scorePosition(mode,bar));
   if(mode==='bellharbor'||mode==='frostwatch'||mode==='glacier'||mode==='wintershrine'||mode==='north-battle'||mode==='winter-dragon')return northBar(mode,scorePosition(mode,bar));
   if(mode==='riverhaven'||mode==='canopy'||mode==='rainhouse'||mode==='rainhouse-rest'||mode==='river-battle'||mode==='rain-warden')return jungleBar(mode,bar);
   if(mode==='outermooring'||mode==='namar'||mode==='sunpalace'||mode==='skywalk'||mode==='observatory'||mode==='desert-battle'||mode==='sun-serpent')return desertBar(mode,scorePosition(mode,bar));
@@ -173,6 +185,9 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 }
 
 export function scoreLength(mode:MusicMode):number {
+  if(mode==='emperor'||mode==='lightbearer')return 34;
+  if(mode==='stillcity'||mode==='lastpalace'||mode==='crown'||mode==='laststation'||mode==='capital-return'||mode==='capital-battle')return 32;
+  if(mode==='lastmorning')return scoreLength('station');
   if(mode==='flagship'||mode==='sun-serpent'||mode==='winter-dragon')return 34;
   if(mode==='inspector')return 24;
   return ['bellharbor','frostwatch','glacier','wintershrine','north-battle','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','windmere','dispensary','mirrorward','wind-battle','wind-engine','dawnwatch','watchbarracks','signalwall','observation','dawn-battle','dawn-commander','airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;

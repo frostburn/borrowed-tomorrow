@@ -5,7 +5,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   await expect(page.getByRole('heading',{name:'Canonical saves',exact:true})).toBeVisible({timeout:20000});
   const group=page.getByRole('region',{name:'Canonical saves',exact:true}),workshop=page.getByRole('button',{name:'Workshop',exact:true});
-  await expect(group.getByRole('button')).toHaveCount(10);
+  await expect(group.getByRole('button')).toHaveCount(12);
   const stage=(await page.locator('.stage-wrap').boundingBox())!;
   // Test actual transformed hit-target positions, not just DOM presence.
   for(const button of [workshop,...await group.getByRole('button').all()]){

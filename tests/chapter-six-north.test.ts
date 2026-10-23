@@ -28,7 +28,7 @@ import { hasExpression,hasRubato,performanceBar } from '../src/game/score-perfor
 function journey(s:GameState=chapterSixNorthStart()){
  let d:Dialogue|undefined,encounter='';
  const valid=()=>expect(decodeSave(JSON.stringify(s))).toEqual(s);
- const h:StoryHost={state:s,talk:read=>{d=read;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);valid();},refresh(){},save:valid,travel:(map,x,y)=>{s.location={map,x,y};valid();resumeChapterSix(h);},battle:id=>{encounter=id;},shop(){},boundary(){throw new Error('The inner capital remains ahead');},toast(){},endingMusic(){}};
+ const h:StoryHost={state:s,talk:read=>{d=read;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);valid();},refresh(){},save:valid,travel:(map,x,y)=>{s.location={map,x,y};valid();resumeChapterSix(h);},battle:id=>{encounter=id;},shop(){},boundary(){throw new Error('The inner capital remains ahead');},toast(){},async checkpoint(){return true;},endingMusic(){}};
  const flush=()=>{for(let i=0;d?.done&&i<10;i++){const read=d;d=undefined;read.done!();}};
  const act=(id:string)=>{d=undefined;interactChapterSix(h,id);flush();};
  const choose=(i:number)=>{const read=d;d=undefined;read!.choices![i].action();flush();};
@@ -51,7 +51,7 @@ for(const well of [false,true])for(const desertFirst of [false,true])it(`complet
 it('north-first then desert opens the bridge and reaches a real safe allied landing, with all foreign return routes',()=>{
  const s=desertCheckpoint('desertReleaseReady'),north=northCheckpoint('northReported');s.flags={...north.flags,...s.flags};s.location=arrival('namar','return');
  const j=journey(s);resumeChapterSix(j.h);j.flush();j.act('namar-ship');expect(s.flags.capitalOpened).toBe(true);j.act('six-capital-open');expect(s.location.map).toBe('capitalquay');expect(s.flags.capitalQuaySeen).toBe(true);
- j.act('capital-inner');expect(j.read().choices![0].disabled).toBe(true);j.choose(1);j.act('capital-return');j.act('six-chart');expect(j.read().choices!.filter(c=>!c.disabled)).toHaveLength(5);j.valid();
+ j.act('capital-inner');expect(s.location.map).toBe('stillcity');expect(s.flags.capitalStreetSeen).toBe(true);j.act('city-quay');j.act('capital-return');j.act('six-chart');expect(j.read().choices!.filter(c=>!c.disabled)).toHaveLength(5);j.valid();
 });
 it('a mid-expedition river cure preserves every northern checkpoint and changes only subsequent scenes and availability',()=>{
  const j=journey(northCheckpoint('northLogRead')),s=j.s,previous=structuredClone(s);Object.assign(s.flags,jungleCheckpoint('rainhouseWon').flags);s.location=arrival('rainhouse','stand');
