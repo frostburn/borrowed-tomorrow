@@ -211,7 +211,7 @@ it('Dawnwatch supports complete 31-EDO phrases, clear endings and a related regi
  for(const mode of ['dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander']as const){
   const line:Note[]=[];
   for(let bar=0;bar<32;bar++)for(const note of scoreBar(mode,bar)){
-   expect(Number.isFinite(semitones(note.pitch))).toBe(true);expect(note.beat).toBeGreaterThanOrEqual(0);expect(note.beat+note.duration).toBeLessThanOrEqual(4);expect(note.velocity).toBeLessThan(.3);
+   expect(Number.isFinite(semitones(note.pitch))).toBe(true);expect(note.beat).toBeGreaterThanOrEqual(0);expect(note.beat+note.duration).toBeLessThanOrEqual(mode==='signalwall'&&isBass(note.instrument)?8:4);expect(note.velocity).toBeLessThan(.3);
    if(['strings','brass','bell'].includes(note.instrument)&&note.velocity>=.1)line.push({...note,beat:note.beat+bar*4});
   }
   for(let n=1;n<line.length;n++)expect(line[n-1].beat+line[n-1].duration).toBeLessThanOrEqual(line[n].beat);

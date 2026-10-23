@@ -165,13 +165,17 @@ export function returnBar(mode: ReturnMode, bar: number): Note[] {
   const add = (instrument: Note['instrument'], pitch: Pitch, beat: number, duration: number, velocity: number, pan = 0) => {const note:Note={instrument,pitch,beat,duration,velocity,pan};if(home)note.expression=phrasing(homeDynamics[i],instrument==='strings');out.push(note);return note;};
   const lead = sacred ? 'bell' : works ? 'keys' : 'reed';
   const gain = sacred ? .12 : works ? .23 : combat ? .24 : .2;
+  // One held roll per four-bar sentence, before its first delayed bell.
+  const rollBeat=sacred&&i%4===0?tunes[mode][i].find(([beat])=>beat>=.5)?.[0]:undefined;
   for (const [n, [beat, pitch, duration]] of tunes[mode][i].entries()) {
     const voice=add(lead, pitch, beat, duration, gain * (middle ? 1.04 : end ? .85 : 1) * (n === 0 ? 1 : .91), -.12);
     if(home)voice.expression=singing('warm',homeDynamics[i]*(1-n*.06),duration,end);
     if(sacred){
       voice.expression={release:1.9};
-      // Only delayed bells get an anticipation: downbeats retain their silence.
-      if(beat>=.5)for(const [n,p]of chord.entries())add('bell',p,beat-.5+n/8,.22,.045+n*.005,.16+n*.08).expression={release:.95};
+      if(beat===rollBeat)for(const [n,p]of chord.entries()){
+        const onset=beat-.5+n/8;
+        add('bell',p,onset,3.5-onset,.045+n*.005,.16+n*.08).expression={release:1.9};
+      }
     }
   }
   if (sacred) {

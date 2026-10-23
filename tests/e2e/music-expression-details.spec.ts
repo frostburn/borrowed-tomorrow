@@ -33,7 +33,7 @@ test('fretless bass approaches its 31-EDO centre, bell tails soften, and both ca
   return {bass:{pitch:bass.pitch,approach:pitch(bent,start+.1,start+.25),gliding:pitch(bent,start+.6,start+.9),singing:pitch(bent,start+bass.seconds*.45,start+bass.seconds*.65),finish:pitch(bent,start+bass.seconds*.9,start+bass.seconds*.98),plain:pitch(plain,start+.1,start+.25),level:rms(bent,start+bass.seconds*.45,start+bass.seconds*.65),
    silence:rms(stopped,.62,.75),incoming:rms(stopped,.83,.95),cancelled:rms(stopped,1.4,2)},
    bell:{softTail:rms(soft,end+.7,end+1),shortTail:rms(short,end+.7,end+1),after:rms(soft,end+1.85,end+2.1),jump:jumps(soft)},
-   piano:{start:pitch(bentPiano,start+.1,start+.2,pianoHz),moving:pitch(bentPiano,start+.4,start+.6,pianoHz),settled:pitch(bentPiano,start+1.1,start+1.3,pianoHz)}};
+   piano:{start:pitch(bentPiano,start+.06,start+.14,pianoHz),moving:pitch(bentPiano,start+.25,start+.4,pianoHz),settled:pitch(bentPiano,start+.75,start+1,pianoHz)}};
  });
  await testInfo.attach('bend-centre-and-bell-release',{body:JSON.stringify(result,null,2),contentType:'application/json'});
  expect(result.bass.approach.mean).toBeLessThan(-500);expect(result.bass.gliding.mean).toBeLessThan(-30);
@@ -53,18 +53,38 @@ test('anticipating bell rolls remain audible before the main call in both chambe
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   const out=[],rate=22050;
   for(const mode of ['conduit','sanctuary']as const){
-   const notes=performanceBar(mode,0).notes,lead=notes.find(n=>n.instrument==='bell'&&n.velocity>=.09)!,roll=notes.filter(n=>n.instrument==='bell'&&n.time<lead.time);
+   const performed=performanceBar(mode,0),notes=performed.notes,lead=notes.find(n=>n.instrument==='bell'&&n.velocity>=.09)!,roll=notes.filter(n=>n.instrument==='bell'&&n.time<lead.time);
    const rms=async(part:typeof notes,from:number,to:number)=>{
-    const c=new OfflineAudioContext(1,rate*2,rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+    const c=new OfflineAudioContext(1,rate*8,rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
     for(const n of part)synth.note(n.instrument,n.pitch,.03+n.time,n.seconds,n.velocity,n.pan,n.expression);
     const data=(await c.startRendering()).getChannelData(0);let sum=0,count=0;
     for(let i=Math.ceil(from*rate);i<Math.floor(to*rate);i++){sum+=data[i]**2;count++;}return Math.sqrt(sum/count);
    };
-   out.push({mode,roll:await rms(roll,.08,lead.time),call:await rms([lead],lead.time+.06,lead.time+.3)});
+   out.push({mode,roll:await rms(roll,.08,lead.time),held:await rms(roll,performed.duration*.5,performed.duration*.8),call:await rms([lead],lead.time+.06,lead.time+.3)});
   }return out;
  });
  await testInfo.attach('anticipation-levels',{body:JSON.stringify(levels,null,2),contentType:'application/json'});
- for(const level of levels){expect(level.roll,JSON.stringify(level)).toBeGreaterThan(.003);expect(level.roll).toBeGreaterThan(level.call*.2);}
+ for(const level of levels){expect(level.roll,JSON.stringify(level)).toBeGreaterThan(.003);expect(level.held,JSON.stringify(level)).toBeGreaterThan(.003);expect(level.roll).toBeGreaterThan(level.call*.2);}
+});
+
+test('held ward bells and town-wheel bass remain audible late in the quiet bar',async({page},testInfo)=>{
+ await page.goto('/');const levels=await page.evaluate(async()=>{
+  // @ts-expect-error The real performed clock includes cross-bar holds and rubato.
+  const {performanceBar,scoreTime}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
+  // @ts-expect-error Render the actual held campaign voices.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const out=[],rate=22050;
+  for(const [mode,bar,part]of [['mirrorward',0,'bell'],['signalwall',2,'round-bass']]as const){
+   const n=performanceBar(mode,bar).notes.find(n=>n.instrument===part)!,base=scoreTime(mode,bar*4),from=scoreTime(mode,bar*4+6)-base,to=scoreTime(mode,bar*4+7)-base;
+   const c=new OfflineAudioContext(1,Math.ceil((to+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+   synth.note(n.instrument,n.pitch,.03+n.time,n.seconds,n.velocity,n.pan,n.expression);
+   const data=(await c.startRendering()).getChannelData(0);let sum=0,count=0;
+   for(let i=Math.ceil((.03+from)*rate);i<Math.floor((.03+to)*rate);i++){sum+=data[i]**2;count++;}
+   out.push({mode,part,rms:Math.sqrt(sum/count)});
+  }return out;
+ });
+ await testInfo.attach('quiet-bar-sustains',{body:JSON.stringify(levels,null,2),contentType:'application/json'});
+ for(const level of levels)expect(level.rms,JSON.stringify(level)).toBeGreaterThan(.003);
 });
 
 for(const [family,modes]of [

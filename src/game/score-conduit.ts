@@ -9,8 +9,8 @@ export function conduitBar(bar:number):Note[]{
   add('bass',root,0,3.4,.11);
   for(const [n,pitch] of chord.entries())add('strings',pitch,0,3.5,.018,n%2?.25:-.25);
   if(i%2===0){
-    // A clearly audible bell roll gathers into the main call.
-    for(const [n,pitch]of chord.entries())add('bell',pitch,n/8,.22,.045+n*.005,.15+n*.08).expression={release:.95};
+    // The rolled chord stays held under the call; its notes release together.
+    for(const [n,pitch]of chord.entries())add('bell',pitch,n/8,3.5-n/8,.045+n*.005,.15+n*.08).expression={release:1.8};
     add('bell',octave(calls[Math.floor(i/2)%4],i>=8?-1:0),.5,2.25,.11,-.2).expression={release:1.8};
   }
   else {add('keys',chord[1],1,1.3,.045,.3);add('keys',chord[2],3,.6,.03,.3);}

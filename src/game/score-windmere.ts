@@ -89,7 +89,8 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
  const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};out.push(note);return note;};
  const lead=quiet||boss&&!middle?'bell':fight?'strings':round?'keys':'reed';
  for(const [n,[beat,pitch,duration]]of tune[i].entries()){
-  const voice=add(lead,pitch,beat,duration,quiet?.11:lead==='bell'?.13:.18,-.17);
+  const hold=quiet&&tune[(i+1)%32].length===0?7.5-beat:duration;
+  const voice=add(lead,pitch,beat,hold,quiet?.11:lead==='bell'?.13:.18,-.17);
   if(mode==='windmere')voice.expression=singing('warm',dynamics[i]*(1-n*.07),duration,[9,15,23,31].includes(i));
  }
  if(quiet){

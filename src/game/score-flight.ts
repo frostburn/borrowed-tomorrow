@@ -55,6 +55,9 @@ const memory:Tune=[
 const dynamics=[0.78, 0.73, 0.8, 0.74, 0.85, 0.78, 0.8, 0.88, 0.75, 0.7, 0.78, 0.62, 0.76, 0.7, 0.9, 0.82, 0.67, 0.64, 0.74, 0.82, 1.06, 1.12, 0.9, 0.75, 0.84, 0.77, 0.84, 0.8, 1.08, 0.94, 0.78, 0.65];
 const mooringDynamics=[.8,.74,.86,.68,.83,.78,.85,.73,.9,.82,.94,.76,.81,.74,.96,.8,.69,.63,.67,.6,1.04,.98,.88,.72,.86,.79,.92,.74,1.02,.89,.8,.64];
 const cabinDynamics=[.64,.59,.52,.48,.7,.63,.55,.45,.76,.67,.58,.48,.62,.5,.57,.45,.59,.54,.48,.43,.56,.61,.65,.48,.67,.6,.53,.45,.57,.52,.58,.43];
+// Review bar numbers are one-based. Phrase arrivals need a narrower approach;
+// the two unbent notes keep the line from becoming a continuous portamento.
+const cabinSlideSteps:Readonly<Partial<Record<number,number>>>={3:-3,11:-3,15:0,17:-3,19:-3,21:0,23:-3,27:-3};
 const chords={
  am:{bass:'A2',notes:['G3','B3','C4','E4']},da:{bass:'A2',notes:['F#3','B3','D4','E4']},
  fc:{bass:'C2',notes:['F3','A3','E4','G4']},gd:{bass:'D2',notes:['G3','A3','C4','D4']},
@@ -75,10 +78,9 @@ export function flightBar(mode:'airfield'|'airship'|'observation',bar:number):No
   if(mode==='airship')voice.expression=singing('clear',dynamics[i]*(1-n*.07),duration,[11,15,23,31].includes(i));
   if(ground)voice.expression=singing('clear',mooringDynamics[i]*(1-n*.06),duration,i%4===3);
   if(cabin&&n===0){
-   // The low voice has already settled. These broad piano gestures answer it,
-   // taking most of a beat to reach the written pitch rather than a tiny scoop.
-   const cents=(i%4===2?-8:i%2?5:-5)*1200/31,arrival=Math.min(.68,.85/duration);
-   voice.expression!.bend=[[0,cents],[arrival*.3,cents*.85],[arrival,0],[1,0]];
+   // The low voice has settled; reach the melodic centre earlier in the note.
+   const steps=cabinSlideSteps[i+1]??(i%4===2?-8:i%2?5:-5),arrival=Math.min(.55,.6/duration);
+   if(steps){const cents=steps*1200/31;voice.expression!.bend=[[0,cents],[arrival*.3,cents*.85],[arrival,0],[1,0]];}
   }
  }
  if(cabin){

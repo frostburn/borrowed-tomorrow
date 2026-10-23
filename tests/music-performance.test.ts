@@ -89,26 +89,58 @@ it('broad fretless shifts arrive before vibrato, then finish straight; cabin par
   const start=scoreTime('observation',bar*4)+n.time;
   for(let i=1;i<curve.length;i++)if(curve[i][1]!==curve[i-1][1])motions.push({bass:n.instrument==='round-bass',from:start+curve[i-1][0]*n.seconds,to:start+curve[i][0]*n.seconds});
   if(n.instrument==='keys'){
-   expect(Math.abs(curve[0][1])).toBeGreaterThanOrEqual(5*1200/31);
-   const arrival=curve.find(([at,cents])=>at>0&&cents===0)![0];expect(arrival*n.seconds).toBeGreaterThan(.6);
+   expect(Math.abs(curve[0][1])).toBeGreaterThanOrEqual(3*1200/31);
+   const arrival=curve.find(([at,cents])=>at>0&&cents===0)![0];expect(arrival*n.duration).toBeGreaterThanOrEqual(.5);expect(arrival*n.duration).toBeLessThanOrEqual(.6+1e-9);
   }
  }
  for(const lead of motions.filter(n=>!n.bass))expect(motions.filter(n=>n.bass).every(b=>b.to<=lead.from||b.from>=lead.to)).toBe(true);
 });
 
-it('bell anticipations roll quietly into delayed hits and retain long soft releases',()=>{
+it('bell anticipations stay held together, with fewer rolls in the sanctuary',()=>{
+ const counts={conduit:0,sanctuary:0};
  for(const mode of ['conduit','sanctuary']as const)for(let bar=0;bar<scoreLength(mode);bar++){
   const notes=scoreBar(mode,bar);
+  const rolls=notes.filter(n=>n.instrument==='bell'&&n.velocity<.09);
+  if(rolls.length){
+   counts[mode]++;expect(rolls).toHaveLength(4);
+   for(const n of rolls){expect(n.beat+n.duration).toBe(3.5);expect(n.expression!.release).toBeGreaterThan(1.5);}
+   expect(rolls[0].duration).toBeGreaterThanOrEqual(1.5);
+   if(mode==='sanctuary')expect(bar%4).toBe(0);
+  }
   for(const bell of notes.filter(n=>n.instrument==='bell'&&n.velocity>=.09)){
    expect(bell.expression!.release).toBeGreaterThan(1.5);
    if(bell.beat<.5)continue;
    const roll=notes.filter(n=>n.instrument==='bell'&&n.beat>=bell.beat-.5&&n.beat<bell.beat&&n.velocity<.09);
+   if(!roll.length){expect(mode).toBe('sanctuary');continue;}
    expect(roll).toHaveLength(4);expect(roll.map(n=>n.beat)).toEqual([-.5,-.375,-.25,-.125].map(b=>bell.beat+b));
    expect(Math.min(...roll.map(n=>n.velocity))).toBeGreaterThanOrEqual(.045);
    expect(Math.max(...roll.map(n=>n.velocity))).toBeLessThan(bell.velocity*.6);
    for(let n=1;n<roll.length;n++)expect(pitchSteps(roll[n].pitch)).toBeGreaterThan(pitchSteps(roll[n-1].pitch));
   }
  }
+ expect(counts).toEqual({conduit:8,sanctuary:8});
+});
+
+it('the ward carries bells and the wheel carries bass across every empty melodic bar',()=>{
+ for(const mode of ['mirrorward','signalwall']as const){
+  const bars=Array.from({length:32},(_,bar)=>scoreBar(mode,bar));let quiet=0;
+  for(let bar=0;bar<32;bar++){
+   if(bars[bar].some(n=>n.instrument==='bell'&&n.velocity>=.09))continue;
+   quiet++;
+   const held=bars[(bar+31)%32].filter(n=>n.instrument===(mode==='mirrorward'?'bell':'round-bass'));
+   expect(held.some(n=>n.beat+n.duration>=7.5),`${mode} bar ${bar+1}`).toBe(true);
+   expect(bars[bar].some(n=>n.instrument==='round-bass'||n.instrument==='bell')).toBe(false);
+  }
+  expect(quiet).toBeGreaterThan(4);
+ }
+});
+
+it('cabin phrase arrivals use the requested narrower or straight approaches',()=>{
+ for(const bar of [3,11,17,19,23,27]){
+  const note=scoreBar('observation',bar-1).find(n=>n.instrument==='keys'&&n.velocity>=.09)!;
+  expect(note.expression!.bend![0][1]).toBe(-3*1200/31);
+ }
+ for(const bar of [15,21])expect(scoreBar('observation',bar-1).filter(n=>n.instrument==='keys').every(n=>!n.expression?.bend)).toBe(true);
 });
 
 it('the requested cues phrase their dynamics and retain fretless pitch centres',()=>{

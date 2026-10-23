@@ -87,9 +87,9 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  for(const [beat,pitch,duration]of tune[i])add(lead,pitch,beat,duration,quiet?.1:lead==='brass'?.15:.17,-.15);
  if(quiet){
   if(i%2===0){
-   const from=chords[changes[(i+30)%32]].bass;
-   const voice=add('round-bass',bass,0,3.5,.16);
-   voice.expression={...voice.expression,...fretless(from,bass,3.5)};
+   const from=chords[changes[(i+30)%32]].bass,hold=tune[(i+1)%32].length===0?7.5:3.5;
+   const voice=add('round-bass',bass,0,hold,.16);
+   voice.expression={...voice.expression,...fretless(from,bass,hold)};
    for(const [n,p]of chord.entries())add('strings',p,0,3.5,.017,n%2?.4:-.4);
   }
   if(!tune[i].length)add('keys',chord[1],1.5,1.2,.04,.3);

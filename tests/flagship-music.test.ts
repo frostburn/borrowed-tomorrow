@@ -42,6 +42,11 @@ it('establishes 2+2+3+3, then lets bass and brass cross the grouping while drums
  }
  expect(bassRhythms.size).toBeGreaterThanOrEqual(5);
  const breakaway=scoreBar('flagship',11).filter(n=>n.instrument==='brass'&&n.velocity>.1),answer=scoreBar('flagship',12).filter(n=>n.instrument==='brass'&&n.velocity>.1);
+ expect(breakaway[0]).toMatchObject({pitch:'E5',beat:0});
  expect(breakaway.at(-1)!.pitch).toBe('B5');expect(breakaway.at(-1)!.beat+breakaway.at(-1)!.duration).toBeGreaterThan(5);
  expect(answer[0]).toMatchObject({pitch:'Bb5',beat:.5});
+ expect(answer).toHaveLength(3);expect(answer[0].duration).toBeGreaterThan(1.8);
+ const returnBar=scoreBar('flagship',29);
+ expect(returnBar.filter(n=>n.instrument==='brass'&&n.velocity>.1).map(n=>[n.beat,n.pitch])).toEqual([[0,'E5'],[1,'G5'],[2,'A5'],[3.5,'G5']]);
+ expect(returnBar.filter(n=>n.instrument==='round-bass').map(n=>n.beat)).toEqual([0,1,2,3.5]);
 });
