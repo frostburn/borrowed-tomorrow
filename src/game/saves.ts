@@ -1,4 +1,5 @@
-import { decodeSave, type GameState } from '../rules/state';
+import { type GameState } from '../rules/state';
+import { decodeSave } from '../rules/save';
 export interface SaveRecord { slot: string; savedAt: string; state: GameState }
 let connection: Promise<IDBDatabase> | undefined;
 function db(): Promise<IDBDatabase> {

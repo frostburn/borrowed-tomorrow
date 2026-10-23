@@ -1,6 +1,7 @@
 import { test,expect,type Page } from '@playwright/test';
 import { chapterFiveFinaleStart } from '../../src/dev/canonical-saves';
-import { decodeSave,SIXTH_CHAPTER } from '../../src/rules/state';
+import { SIXTH_CHAPTER } from '../../src/rules/state';
+import { decodeSave } from '../../src/rules/save';
 import { arrival } from '../../src/content/maps';
 import { inspect,capture,dialogue,battle } from './controls';
 import { approach,importSave } from './navigation';

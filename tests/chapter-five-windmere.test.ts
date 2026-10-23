@@ -1,14 +1,15 @@
 import { expect,it } from 'vitest';
 import { anchorCheckpoint,windmereCheckpoint,windmereOrder } from './support/anchors';
 import { active,awardVictory,cast,createBattle,damage,defend,enemyTurn,shape,targets } from '../src/rules/combat';
-import { decodeSave,remember,type GameState } from '../src/rules/state';
+import { remember, type GameState } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { equipItem,ownedCopies } from '../src/rules/inventory';
 import { arrival,MAPS,visiblePeople,walkable,worldPath } from '../src/content/maps';
 import { interactChapterFive,resumeChapterFive } from '../src/content/chapter-five/interactions';
 import { objective } from '../src/content/chapter-five/story';
 import { completedAnchors } from '../src/content/chapter-five/progress';
 import type { Dialogue } from '../src/content/dialogue';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import * as scenes from '../src/content/chapter-five/windmere-scenes';
 import { prepareWard,wardMirrors,wardUnit } from '../src/rules/ward';
 import { offset } from '../src/rules/hex';

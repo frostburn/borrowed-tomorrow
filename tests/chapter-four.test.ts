@@ -1,11 +1,12 @@
 import { expect,it } from 'vitest';
-import { beginChapterFour,decodeSave,setActive,remember,type GameState } from '../src/rules/state';
+import { beginChapterFour, setActive, remember, type GameState } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { equipItem,ownedCopies,receiveItem } from '../src/rules/inventory';
 import { awardVictory,createBattle } from '../src/rules/combat';
 import { interactChapterFour,resumeChapterFour } from '../src/content/chapter-four/interactions';
 import { MAPS,walkable,worldPath,arrival,visiblePeople } from '../src/content/maps';
 import type { Dialogue } from '../src/content/dialogue';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import { brokenCheckpoint,brokenOrder,palaceCheckpoint } from './support/progress';
 import * as scenes from '../src/content/chapter-four/scenes';
 function host(state:GameState){

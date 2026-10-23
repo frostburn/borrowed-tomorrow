@@ -1,6 +1,6 @@
 import { buySupply } from '../../rules/supplies';
 import { SAY } from '../dialogue';
-import type { StoryHost } from '../chapter-one/interactions';
+import type { StoryHost } from '../story-host';
 import { THIRD_CHAPTER, recruit, remember, restoreParty } from '../../rules/state';
 import * as scenes from './scenes';
 import { arrival } from '../maps';

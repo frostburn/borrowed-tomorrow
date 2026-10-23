@@ -1,6 +1,6 @@
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
-import type { StoryHost } from '../chapter-one/interactions';
+import type { StoryHost } from '../story-host';
 import { receiveItem } from '../../rules/inventory';
 import type { MapId } from '../../rules/state';
 import * as scenes from './dawnwatch-scenes';

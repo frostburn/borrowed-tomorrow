@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { decodeSave, newGame, NEXT_CHAPTER } from '../src/rules/state';
+import { newGame, NEXT_CHAPTER } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { MAPS, walkable, worldPath } from '../src/content/maps';
-import { interactChapterOne, resumeChapter, type StoryHost } from '../src/content/chapter-one/interactions';
+import { interactChapterOne, resumeChapter } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import { objective } from '../src/content/chapter-one/story';
 import type { Dialogue } from '../src/content/dialogue';
 import * as scenes from '../src/content/scenes';

@@ -5,7 +5,8 @@ import { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as COAST_ENCOUNTERS } from '../content/chapter-two/encounters';
 import { ENCOUNTERS as CAPITAL_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { equipItem, receiveItem } from '../rules/inventory';
-import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, FIFTH_CHAPTER, FOURTH_CHAPTER, decodeSave, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, FIFTH_CHAPTER, FOURTH_CHAPTER, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
+import { decodeSave } from '../rules/save';
 
 /** Authored Chapter One completion, independent of workshop builds or saves. */
 export function chapterTwoStart(){

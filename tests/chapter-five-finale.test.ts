@@ -1,6 +1,7 @@
 import { expect,it } from 'vitest';
 import { chapterFiveFinaleStart } from '../src/dev/canonical-saves';
-import { decodeSave,maxHp,remember,SIXTH_CHAPTER,restoreParty,setActive,partyLeader } from '../src/rules/state';
+import { maxHp, remember, SIXTH_CHAPTER, restoreParty, setActive, partyLeader } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { active,awardVictory,cast,createBattle,damage,defend,enemyTurn,targets } from '../src/rules/combat';
 import { equipmentBonuses,ownedCopies } from '../src/rules/inventory';
 import { offset } from '../src/rules/hex';
@@ -11,7 +12,7 @@ import { heroAvailable,sickenNell } from '../src/rules/availability';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { interactChapterFive,resumeChapterFive } from '../src/content/chapter-five/interactions';
 import { objective } from '../src/content/chapter-five/story';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
 import * as scenes from '../src/content/chapter-five/finale-scenes';
 

@@ -25,7 +25,9 @@ test('ward engine retains the fired mirror and beam across round rollover, then 
  });await page.getByRole('button',{name:'Test battle',exact:true}).click();
  const fired=await page.evaluate(async()=>{
   // @ts-expect-error Use real campaign rules and native presentation in this isolated fixture.
-  const {createBattle,ENCOUNTERS}:typeof import('../../src/rules/combat')=await import('/src/rules/combat.ts');
+  const {createBattle}:typeof import('../../src/rules/combat')=await import('/src/rules/combat.ts');
+  // @ts-expect-error Vite serves the authored encounter registry.
+  const {ENCOUNTERS}:typeof import('../../src/content/encounters')=await import('/src/content/encounters.ts');
   // @ts-expect-error Vite serves the authored dev fixture.
   const {chapterFiveStart}:typeof import('../../src/dev/canonical-saves')=await import('/src/dev/canonical-saves.ts');
   // @ts-expect-error Vite serves the production optical boss presentation.

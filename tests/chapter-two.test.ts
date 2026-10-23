@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
-import { beginChapterTwo, decodeSave, recruit, remember, setActive, THIRD_CHAPTER } from '../src/rules/state';
+import { beginChapterTwo, recruit, remember, setActive, THIRD_CHAPTER } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { interactChapterTwo, resumeChapterTwo } from '../src/content/chapter-two/interactions';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
 import { awardVictory, createBattle } from '../src/rules/combat';
 import { MAPS, walkable } from '../src/content/maps';

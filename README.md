@@ -55,14 +55,16 @@ The Vite-only workshop includes Character, Equipment, Music, Sprites, Maps and B
 
 The whole visible game uses a 1024 × 768 native framebuffer and integer physical-pixel scaling, including text and menus. Scenery renders at 1:1 through a scrolling viewport; 80 × 80 actors and 128 × 128 portraits retain their native size. Phones crop and pan the same scene. New brother Tomas and Captain Alban have distinct matching actor/portrait pairs.
 
-- `src/rules/`: framework-independent combat, hex geometry and save validation.
-- `src/content/chapter-*/`: objectives, journals, interactions, encounters, native scenery manifests and map layouts.
+- `src/rules/`: framework-independent combat and state changes; `state.ts` owns the model, `save.ts` validates current-format JSON.
+- `src/content/chapter-*/`: objectives, journals, interactions, encounters, native scenery manifests and map layouts. `content/chapters.ts` wires their entries, map groups, story hooks and completion panels; `content/encounters.ts` collects campaign battles.
 - `src/content/scenes.ts`: dialogue and staging; `src/content/dialogue.ts`: shared dialogue types.
 - `src/content/maps.ts`: map data and pathfinding; the playable chapters use [real tile maps and layers](docs/tile-maps.md) with collision defined by the tiles.
-- `src/game/`: Phaser scene, cutscene director, native bitmap UI, procedural music and save storage.
+- `src/game/`: Phaser scene, cutscene director, native bitmap UI, procedural music and save storage. `region-assets.ts` owns scene loading and vector preparation.
 - `public/art/`: production artwork. All playable scenery is loaded from native SVGs; no painting restoration step runs before dev/build. Retained unused art and scores are available for future chapters.
 - `docs/story/`: full outline, playable canon, character knowledge and exact next-chapter handoff.
 - `.agents/skills/write-game-prose/`: repository writing guidance adapted from Stephen D. Turner's MIT-licensed [deslop](https://github.com/stephenturner/skill-deslop).
+
+See [Working on Borrowed Tomorrow](docs/development.md) for a source map, local commands and the chapter-extension checklist. `npm run typecheck`, `npm run test:watch` and `npm run art:one` through `art:five` are available independently.
 
 ## Verification
 

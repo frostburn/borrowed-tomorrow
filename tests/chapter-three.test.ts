@@ -1,9 +1,10 @@
 import { expect,it } from 'vitest';
-import { beginChapterThree,decodeSave,recruit,remember,setActive,type GameState } from '../src/rules/state';
+import { beginChapterThree, recruit, remember, setActive, type GameState } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { awardVictory,createBattle } from '../src/rules/combat';
 import { equipItem,equipmentBonuses,ownedCopies } from '../src/rules/inventory';
 import { interactChapterThree,resumeChapterThree } from '../src/content/chapter-three/interactions';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
 import { MAPS,walkable } from '../src/content/maps';
 import { coastCheckpoint,palaceCheckpoint } from './support/progress';

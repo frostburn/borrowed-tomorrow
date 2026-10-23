@@ -1,32 +1,31 @@
-import { FLAGSHIP_ASSETS,flagshipPresentation } from './flagship-presentation';
-import { WARD_ASSETS,wardPresentation } from './ward-presentation';
-import { FURNACE_ASSETS,furnacePresentation } from './furnace-presentation';
+import { RegionAssets } from './region-assets';
+import { flagshipPresentation } from './flagship-presentation';
+import { wardPresentation } from './ward-presentation';
+import { furnacePresentation } from './furnace-presentation';
 import Phaser from 'phaser';
 import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
 import { battleEffect } from './battle-effects';
-import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE,CHAPTER_FOUR_AVAILABLE,CHAPTER_FIVE_AVAILABLE } from '../content/chapters';
+import { CHAPTERS,nextChapter,mapsForRestore } from '../content/chapters';
 import { INTERACTION_MARKERS,interactionKind,interactionMarker } from '../content/interaction-markers';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
 import { CIVILIAN_SPRITES } from '../content/civilians';
 import { ENEMY_VARIANT_ACTORS } from '../content/enemy-variants';
-import type { StoryHost } from '../content/chapter-one/interactions';
+import type { StoryHost } from '../content/story-host';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
-import { ABILITIES, ENCOUNTERS, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
+import { ABILITIES, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
+import { ENCOUNTERS } from '../content/encounters';
 import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
-import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, partyLeader, decodeSave, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
+import { partyLeader, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
+import { decodeSave } from '../rules/save';
 import { Audio } from './audio';
 import { Cutscene } from './cutscene';
-import { vectorAsset } from '../content/art-assets';
-import { vectorSurface } from './vector-image';
 import { drawTileMap } from './tilemap';
-import { TILESET, tilePages } from '../content/tilemaps';
-import { CHAPTER_ONE_SCENE_ASSETS, sceneAssets } from '../content/scene-art';
-import { cinematicAssets } from '../content/cinematic-art';
+import { CHAPTER_ONE_SCENE_ASSETS } from '../content/scene-art';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
@@ -38,7 +37,7 @@ import { PixelLabel } from './pixel-label';
 import { worldView, narrowScreen } from './resolution';
 import { occupiedHexes } from '../rules/footprint';
 import type { BattlePresentation } from './battle-presentation';
-import { CONDUIT_ASSETS, conduitPresentation } from './conduit-presentation';
+import { conduitPresentation } from './conduit-presentation';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
@@ -79,7 +78,7 @@ export class Adventure extends Phaser.Scene {
   private latestSave?: GameState;
   private labelId=0;
   private shownTurn?:string;
-  private regionLoad?:Promise<void>;
+  private regionAssets=new RegionAssets(this);
   private serialSave: Promise<void> = Promise.resolve();
   private practiceReturn?: () => void;
   private testingTools?: typeof import('../dev/testing-tools').renderTestingTools;
@@ -97,7 +96,7 @@ export class Adventure extends Phaser.Scene {
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
-    this.prepareVectors([...textures,...MOTION_PAGES.map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
+    this.regionAssets.prepareVectors([...textures,...MOTION_PAGES.map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));
@@ -194,7 +193,7 @@ export class Adventure extends Phaser.Scene {
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Two save?','<p>This replaces the autosave with Nell and Orrin at the Iron Coast. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
           else start();
         }},
-        {label:'Begin Chapter Three (canonical)',disabled:!CHAPTER_THREE_AVAILABLE,action:()=>{
+        {label:'Begin Chapter Three (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterThreeStart})=>this.loadState(chapterThreeStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Three save?','<p>This replaces the autosave with Nell, Orrin and Kit at the capital medical siding. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
           else start();
@@ -220,65 +219,13 @@ export class Adventure extends Phaser.Scene {
     this.state = newGame(); this.state.location=arrival('station','start'); this.ui.clearPanel(); this.showWorld();
     this.autosave();resumeChapter(this.storyHost());
   }
-  private prepareVectors(keys:Iterable<string>){
-    for(const key of keys){
-      if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
-        const texture=this.textures.get(key);
-        for(const source of texture.source)if(source.image instanceof HTMLImageElement){
-          const canvas=vectorSurface(source.image);
-          source.source=source.image=canvas;source.isCanvas=true;source.update();
-        }
-        texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-      }
-    }
-  }
-  private async ensureRegion(map: MapId) {
-    if(MAPS[map].tiles){
-      // Later chapters load their scenery and local battle pages together.
-      // Chapter one already has its complete SVG kit at the title screen.
-      const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:map==='airship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
-      const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
-      if(missing.length||svg.length){
-        if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
-          this.load.once('complete',()=>{
-            if(missing.every(page=>this.textures.exists(page.name))&&svg.every(a=>this.textures.exists(a.key))){this.prepareVectors(svg.map(a=>a.key));resolve();}
-            else reject(new Error(`${MAPS[map].name} scenery could not load. Your checkpoint is intact; try again.`));
-          });
-          for(const page of missing)this.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
-          for(const asset of svg)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
-          this.load.start();
-        }).finally(()=>{this.regionLoad=undefined;});
-        await this.regionLoad;
-      }
-      return;
-    }
-    const texture = `map-${map}`;
-    if (this.textures.exists(texture)) return;
-    if (!this.regionLoad) {
-      this.regionLoad = new Promise<void>((resolve, reject) => {
-        this.load.once('complete', () => {
-          if (this.textures.exists(texture)) {
-            const source = this.textures.get(texture).getSourceImage(), size = mapSize(MAPS[map]);
-            if (source.width === size.width && source.height === size.height) { resolve(); return; }
-            this.textures.remove(texture);
-          }
-          reject(new Error(`${MAPS[map].name} could not load. Your checkpoint is intact; try again.`));
-        });
-        this.load.image(texture, `${import.meta.env.BASE_URL}art/${MAPS[map].art??map}.webp`);
-        this.load.start();
-      }).finally(() => { this.regionLoad = undefined; });
-    }
-    await this.regionLoad;
-  }
   private async beginNextChapter() {
-    const third=this.state.chapter==='chapter-two',fourth=this.state.chapter==='chapter-three',fifth=this.state.chapter==='chapter-four';
-    if(this.busy || (fifth?!CHAPTER_FIVE_AVAILABLE:fourth?!CHAPTER_FOUR_AVAILABLE:third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two','chapter-three','chapter-four'].includes(this.state.chapter) || !this.state.boundary)return;
-    this.busy=true;this.ui.toast(fifth?'Loading the western airfield…':fourth?'Loading the railway refuge…':third?'Loading the capital…':'Loading the Iron Coast…');
+    const destination=nextChapter(this.state);
+    if(this.busy||!destination?.entry)return;
+    this.busy=true;this.ui.toast(destination.entry.loading);
     try{
-      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
-      for(const map of maps)await this.ensureRegion(map);
-      if(!(fifth?beginChapterFive(this.state):fourth?beginChapterFour(this.state):third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
+      for(const map of destination.maps)await this.regionAssets.ensure(map);
+      if(!destination.entry.begin(this.state))return;
       this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());
     }catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to load the chapter. Your departure is intact.');}
     finally{this.busy=false;}
@@ -287,17 +234,10 @@ export class Adventure extends Phaser.Scene {
     if(this.busy)return;this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
-      if(candidate.chapter==='chapter-five'&&!CHAPTER_FIVE_AVAILABLE)throw new Error('Chapter Five artwork is not installed. Your saved journey is intact.');
-      if (candidate.chapter === 'chapter-four' && !CHAPTER_FOUR_AVAILABLE) throw new Error('Chapter Four artwork is not installed. Your saved journey is intact.');
-      if (candidate.chapter === 'chapter-three' && !CHAPTER_THREE_AVAILABLE) throw new Error('Chapter Three artwork is not installed. Your saved journey is intact.');
-      if (candidate.chapter === 'chapter-two' && !CHAPTER_TWO_AVAILABLE) throw new Error('Chapter Two artwork is not installed in this build. Your saved journey is intact.');
       const floor=restorePoint(MAPS[candidate.location.map],candidate.location,candidate);
       if(!floor)throw new Error('This save is inside an obstacle.');
       candidate.location={map:candidate.location.map,...floor};
-      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'] as const)await this.ensureRegion(map);
-      else if(candidate.chapter==='chapter-four')for(const map of ['refuge','breakwater','sanctuary'] as const)await this.ensureRegion(map);
-      else if(candidate.chapter==='chapter-three')for(const map of ['northglass','relayhall','conduit'] as const)await this.ensureRegion(map);
-      else await this.ensureRegion(candidate.location.map);
+      for(const map of mapsForRestore(candidate))await this.regionAssets.ensure(map);
       this.state = candidate;
       this.battle = undefined; this.ui.closeModal(); this.ui.clearPanel(); this.showWorld(); this.autosave();
       if(this.state.boundary)this.boundaryPanel();
@@ -362,7 +302,7 @@ export class Adventure extends Phaser.Scene {
   }
   private async changeMap(map: MapId, x: number, y: number) {
     if(this.busy)return;this.busy=true;
-    try{await this.ensureRegion(map);this.state.location={map,x,y};this.showWorld();this.autosave();resumeChapter(this.storyHost());this.ui.canvas.focus();}
+    try{await this.regionAssets.ensure(map);this.state.location={map,x,y};this.showWorld();this.autosave();resumeChapter(this.storyHost());this.ui.canvas.focus();}
     catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to load this area.');}
     finally{this.busy=false;}
   }
@@ -499,37 +439,11 @@ export class Adventure extends Phaser.Scene {
     };
   }
   private boundaryPanel() {
-    if(this.state.chapter==='chapter-five'){
-      this.ui.panel('Chapter Five complete','<div class="chapter-name">Next: Chapter Six · The Emperor’s Last Day</div><p>The three anchors are disconnected. The Benefactor has destroyed Alban and his fleet. Its hunters have been driven off the survey ship. Nell is resting aboard, too ill to fight.</p><p>Kit and the others are holding for the capital’s outer mooring. The Emperor still controls the conduit.</p>',[
-        {label:'Return to the flight deck',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
-        {label:'Export capital departure save',action:()=>exportSave(this.state)},
-      ]);return;
-    }
-    if(this.state.chapter==='chapter-four'){
-      this.ui.panel('Chapter Four complete','<div class="chapter-name">Next: Chapter Five · Taking the World Back</div><p>The harbor is open. The coast is moving again, and the three anchors are marked.</p><p>Tomas is safe at the railway refuge, organizing messages between the freed communities. Nell has chosen to lead the counterattack.</p><p>A survey ship is waiting at the western airfield.</p>',[
-        ...(CHAPTER_FIVE_AVAILABLE?[{label:'Begin Chapter Five',action:()=>{void this.beginNextChapter();}}]:[]),
-        {label:'Return to the refuge',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
-        {label:'Export departure save',action:()=>exportSave(this.state)},
-      ]);return;
-    }
-    if(this.state.chapter==='chapter-three'){
-      this.ui.panel('Chapter Three complete','<div class="chapter-name">Next: Chapter Four · A Light on the Water</div><p>Tomas is safe aboard the medical train. The rescued passengers escaped with you. The extraction feeds are shut.</p><p>The emperor has entered the vessel. The capital hangs above the valley, and time is failing beyond it.</p>'+(!CHAPTER_FOUR_AVAILABLE?'<p>Chapter Four artwork is not installed. Your departure is saved.</p>':''),[
-        ...(CHAPTER_FOUR_AVAILABLE?[{label:'Begin Chapter Four',action:()=>{void this.beginNextChapter();}}]:[]),
-        {label:'Return to the platform',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
-        {label:'Export departure save',action:()=>exportSave(this.state)},
-      ]);return;
-    }
-    if (this.state.chapter === 'chapter-two') {
-      this.ui.panel('Chapter Two complete', '<div class="chapter-name">Next: Chapter Three · Beneath the Palace</div><p>The rescued prisoners and Cinderbank families are traveling with Nell, Orrin and Kit.</p><p>Tomas is alive at the palace engine works. Your medical-train clearance opens a route to him.</p>'+(!CHAPTER_THREE_AVAILABLE?'<p>Chapter Three artwork is not installed. Your capital departure is saved.</p>':''), [
-        ...(CHAPTER_THREE_AVAILABLE?[{label:'Begin Chapter Three',action:()=>{void this.beginNextChapter();}}]:[]),
-        { label: 'Return to the siding', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
-        { label: 'Export departure save', action: () => exportSave(this.state) },
-      ]); return;
-    }
-    this.ui.panel('Chapter One complete', '<div class="chapter-name">Next: Chapter Two · Prison Trains</div><p>Rillbridge is awake. Alban has lost the crossing. Tomas is at the prison-train exchange on the Iron Coast.</p><p>Nell and Orrin have their own engine and a way east.</p>'+(!CHAPTER_TWO_AVAILABLE?'<p>Chapter Two artwork is not installed in this build. Your departure is saved.</p>':''), [
-      ...(CHAPTER_TWO_AVAILABLE ? [{ label: 'Begin Chapter Two', action: () => { void this.beginNextChapter(); } }] : []),
-      { label: 'Return to the pass', action: () => { this.ui.clearPanel(); this.renderWorldControls(); } },
-      { label: 'Export departure save', action: () => exportSave(this.state) },
+    const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
+    this.ui.panel(`${chapter.title} complete`,chapter.ending.html,[
+      ...(destination?[{label:`Begin ${destination.title}`,action:()=>{void this.beginNextChapter();}}]:[]),
+      {label:chapter.ending.returnLabel,action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
+      {label:chapter.ending.exportLabel??'Export departure save',action:()=>exportSave(this.state)},
     ]);
   }
 
