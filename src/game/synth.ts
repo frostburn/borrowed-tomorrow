@@ -76,12 +76,19 @@ export class Synth {
     // Unpitched strikes take their phrase accent at the attack. Their short
     // material envelopes supply the decay rather than a sustained-note swell.
     if(isPercussion(instrument))volume*=expression?.dynamics?.[0][1]??1;
+    if(instrument==='hand-drum'){
+      const rim=pitch.startsWith('G'),hz=rim?186:98;
+      this.tone(hz*1.16,when,rim?.095:.2,volume,'sine',pan,hz);
+      this.tone(hz*1.59,when,rim?.055:.13,volume*.23,'sine',pan,hz*1.5);
+      this.noise(when,.035,volume*(rim?.55:.23),rim?2300:1100,650,pan);return;
+    }
+    if(instrument==='shaker'){this.noise(when,duration,volume,6200,4300,pan,'highpass');return;}
     if(instrument==='kick'){this.tone(120,when,.13,volume,'sine',pan,43);this.noise(when,.018,volume*.15,1600,600,pan);return;}
     if(instrument==='snare'){this.noise(when,duration,volume,1700,950,pan);this.tone(185,when,.07,volume*.35,'triangle',pan,110);return;}
     if(instrument==='cymbal'){this.cymbal(when,duration,volume,pan);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
     const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
-    const bell=instrument==='bell',plucked=instrument==='keys'||instrument==='lute',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
+    const bell=instrument==='bell',plucked=instrument==='keys'||instrument==='lute'||instrument==='wood',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
     const release=expression?.release??(bell?.65:strings?.35:timpani?.25:brass?.22:.16);
     const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
@@ -113,6 +120,7 @@ export class Synth {
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
+    else if(instrument==='wood'){osc('sine',0,1,.84);osc('sine',0,2,.12);osc('sine',0,4,.035);}
     else if(instrument==='lute'){osc('triangle',0,1,.68);osc('sine',0,2,.2);osc('sine',0,3,.08);osc('sine',0,4,.035);}
     else if(plucked){osc('triangle',0,1,.76);osc('sine',0,2,.17);osc('sine',0,3.005,.055);}
     else {

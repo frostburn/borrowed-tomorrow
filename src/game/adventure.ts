@@ -212,6 +212,14 @@ export class Adventure extends Phaser.Scene {
           const start=()=>{void import('../dev/canonical-saves').then(({chapterSixStart})=>this.loadState(chapterSixStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Six save?','<p>This replaces the autosave with the flagship and hunters defeated. Nell is ill; Kit, Orrin and Petra approach the capital. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
         }},
+        {label:'Begin Iria (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterSixJungleStart})=>this.loadState(chapterSixJungleStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Iria save?','<p>This replaces the autosave at Iria’s river landing. Nell is ill; Namar is unvisited. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }},
+        {label:'Begin Namar · Nell recovered (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterSixRecoveredStart})=>this.loadState(chapterSixRecoveredStart()));};
+          if(this.latestSave)this.ui.showModal('Start with Nell recovered?','<p>This replaces the autosave after Iria’s treatment, before Namar. Nell, Kit and Celia are active. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }},
         {label:'Begin Chapter Five · Act IV (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveFinaleStart})=>this.loadState(chapterFiveFinaleStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Act IV save?','<p>This replaces the autosave with Acts I–III complete, the Emperor’s offer recorded and all five travelers rested aboard. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
@@ -257,7 +265,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll?'observation':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }

@@ -5,6 +5,9 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'riverhaven',title:'Iria · The Next Launch',group:'6'}, {mode:'canopy',title:'Under the Green Signal',group:'6'},
+  {mode:'rainhouse',title:'The Waiting Basin',group:'6'}, {mode:'rainhouse-rest',title:'A Seat by the River',group:'6'},
+  {mode:'river-battle',title:'Iria · Open the Waterway',group:'6'}, {mode:'rain-warden',title:'Wings on the Landing',group:'6'},
   {mode:'outermooring',title:'Two Seals at the Gate',group:'6'}, {mode:'namar',title:'Namar · Letters on the Water',group:'6'},
   {mode:'sunpalace',title:'The Queen’s Half of the Pact',group:'6'}, {mode:'skywalk',title:'Above the Awnings',group:'6'},
   {mode:'observatory',title:'The Bronze Sky',group:'6'}, {mode:'desert-battle',title:'Namar · The Postal Stair',group:'6'},
@@ -35,7 +38,7 @@ const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
  flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Lute:['lute'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['kick','snare','hat','cymbal','timpani']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 const displayBeat=(beat:number)=>{
   const whole=Math.floor(beat),third=Math.round((beat-whole)*3);

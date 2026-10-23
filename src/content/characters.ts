@@ -1,5 +1,7 @@
 /** One identity per named character; reused art keeps its original identity. */
 export const CHARACTERS = {
+  ines:{name:'Ines',sprite:'ines',portrait:'portrait-ines'},
+  tavi:{name:'Tavi',sprite:'tavi',portrait:'portrait-tavi'},
   samira:{name:'Queen Samira',sprite:'samira',portrait:'portrait-samira'},
   sahir:{name:'Minister Sahir',sprite:'sahir',portrait:'portrait-sahir'},
   amal:{name:'Amal',sprite:'amal',portrait:'portrait-amal'},
@@ -42,4 +44,4 @@ export function portraitAsset(id: string): string {
   const aliases: Record<string, CharacterId> = { master: 'ansel', clerk: 'iona' };
   return CHARACTERS[(aliases[id] ?? id) as CharacterId]?.portrait ?? id;
 }
-export const NPC_SPRITES = ['namar-watch','samira','sahir','amal','iven','sera','teren','ward-engine','ward-reflector','aurel','enna','dawn-soldier','dawn-gunner','alda','hester','durn','furnace-carrier','bram','dena','sluice-keeper','emperor','relay-keeper','boiler-keeper','tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;
+export const NPC_SPRITES = ['ines','tavi','namar-watch','samira','sahir','amal','iven','sera','teren','ward-engine','ward-reflector','aurel','enna','dawn-soldier','dawn-gunner','alda','hester','durn','furnace-carrier','bram','dena','sluice-keeper','emperor','relay-keeper','boiler-keeper','tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;

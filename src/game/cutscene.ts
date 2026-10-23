@@ -1,3 +1,4 @@
+import { RiverCinematic } from './river-cinematic';
 import { PactCinematic } from './pact-cinematic';
 import { ClaimCinematic } from './claim-cinematic';
 import { FlagshipCinematic } from './flagship-cinematic';
@@ -31,6 +32,7 @@ export class Cutscene {
   private flagship?:FlagshipCinematic;
   private claim?:ClaimCinematic;
   private pact?:PactCinematic;
+  private river?:RiverCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
@@ -44,6 +46,7 @@ export class Cutscene {
       const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setAlpha(actor.projection?.72:1).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
+    if(script.id==='six-river-chain'||script.id==='six-river-treatment')this.river=new RiverCinematic(scene,world);
     if(script.id==='six-sealed'||script.id==='six-public')this.pact=new PactCinematic(scene,world);
     if(script.id==='five-benefactor-claim')this.claim=new ClaimCinematic(scene,world);
     if(script.id==='five-flagship-approach')this.flagship=new FlagshipCinematic(scene,world);
@@ -53,7 +56,7 @@ export class Cutscene {
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.river?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
     const duration=this.duration?(shot.duration??this.duration):0;
@@ -86,7 +89,7 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
-    if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){
@@ -114,7 +117,7 @@ export class Cutscene {
   }
   reframe(){const p=this.tracked?.active?this.tracked:this.focus?pixel(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.scene.cameras.main.stopFollow();
+    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

@@ -406,5 +406,287 @@
       "depth": -999,
       "layerId": 2
     }
+  ],
+  "riverhaven": [
+    {
+      "key": "scene-six-riverhaven-back",
+      "url": "art/vector/chapter-six/riverhaven-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-riverhaven-floor",
+      "url": "art/vector/chapter-six/riverhaven-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-iria-launch",
+      "url": "art/vector/chapter-six/iria-launch.svg",
+      "x": 767,
+      "y": 626,
+      "width": 224,
+      "height": 100,
+      "depth": 726,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-iria-racks",
+      "url": "art/vector/chapter-six/iria-racks.svg",
+      "x": 558,
+      "y": 542,
+      "width": 125,
+      "height": 84,
+      "depth": 626,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-iria-stores",
+      "url": "art/vector/chapter-six/iria-stores.svg",
+      "x": 340,
+      "y": 680,
+      "width": 168,
+      "height": 86,
+      "depth": 766,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-iria-bank",
+      "url": "art/vector/chapter-six/iria-bank.svg",
+      "x": 104,
+      "y": 752,
+      "width": 225,
+      "height": 76,
+      "depth": 828,
+      "layerId": 3
+    }
+  ],
+  "canopy": [
+    {
+      "key": "scene-six-canopy-back",
+      "url": "art/vector/chapter-six/canopy-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-canopy-floor",
+      "url": "art/vector/chapter-six/canopy-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-canopy-launch",
+      "url": "art/vector/chapter-six/canopy-launch.svg",
+      "x": 756,
+      "y": 742,
+      "width": 224,
+      "height": 100,
+      "depth": -999.5,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-river-chain",
+      "url": "art/vector/chapter-six/river-chain.svg",
+      "x": 850,
+      "y": 639,
+      "width": 50,
+      "height": 105,
+      "depth": 744,
+      "layerId": 4
+    },
+    {
+      "key": "scene-six-river-capstan",
+      "url": "art/vector/chapter-six/river-capstan.svg",
+      "x": 790,
+      "y": 631,
+      "width": 55,
+      "height": 58,
+      "depth": 689,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-forest-cache",
+      "url": "art/vector/chapter-six/forest-cache.svg",
+      "x": 443,
+      "y": 489,
+      "width": 60,
+      "height": 48,
+      "depth": 537,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-forest-shelter",
+      "url": "art/vector/chapter-six/forest-shelter.svg",
+      "x": 419,
+      "y": 683,
+      "width": 168,
+      "height": 86,
+      "depth": 769,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-forest-near-fern",
+      "url": "art/vector/chapter-six/forest-near-fern.svg",
+      "x": 1042,
+      "y": 738,
+      "width": 235,
+      "height": 71,
+      "depth": 809,
+      "layerId": 3
+    }
+  ],
+  "rainhouse": [
+    {
+      "key": "scene-six-rainhouse-back",
+      "url": "art/vector/chapter-six/rainhouse-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-rainhouse-floor",
+      "url": "art/vector/chapter-six/rainhouse-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-rainhouse-cot",
+      "url": "art/vector/chapter-six/rainhouse-cot.svg",
+      "x": 713,
+      "y": 561,
+      "width": 116,
+      "height": 63,
+      "depth": 624,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-rainhouse-basin",
+      "url": "art/vector/chapter-six/rainhouse-basin.svg",
+      "x": 845,
+      "y": 552,
+      "width": 65,
+      "height": 81,
+      "depth": 633,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-rainhouse-stores",
+      "url": "art/vector/chapter-six/rainhouse-stores.svg",
+      "x": 367,
+      "y": 684,
+      "width": 168,
+      "height": 86,
+      "depth": 770,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-rainhouse-launch",
+      "url": "art/vector/chapter-six/rainhouse-launch.svg",
+      "x": 1045,
+      "y": 694,
+      "width": 224,
+      "height": 100,
+      "depth": 794,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-rainhouse-ferns",
+      "url": "art/vector/chapter-six/rainhouse-ferns.svg",
+      "x": 333,
+      "y": 760,
+      "width": 245,
+      "height": 93,
+      "depth": 853,
+      "layerId": 3
+    }
+  ],
+  "battle-river-patrol": [
+    {
+      "key": "scene-six-battle-river-patrol-back",
+      "url": "art/vector/chapter-six/battle-river-patrol-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-river-patrol-floor",
+      "url": "art/vector/chapter-six/battle-river-patrol-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-river-cache": [
+    {
+      "key": "scene-six-battle-river-cache-back",
+      "url": "art/vector/chapter-six/battle-river-cache-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-river-cache-floor",
+      "url": "art/vector/chapter-six/battle-river-cache-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-rainhouse-guard": [
+    {
+      "key": "scene-six-battle-rainhouse-guard-back",
+      "url": "art/vector/chapter-six/battle-rainhouse-guard-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-rainhouse-guard-floor",
+      "url": "art/vector/chapter-six/battle-rainhouse-guard-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
   ]
 }

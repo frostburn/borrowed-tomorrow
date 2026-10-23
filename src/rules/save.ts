@@ -50,7 +50,7 @@ export function decodeSave(text: string): GameState {
     worksGateWon:'worksRouteSet',worksStoresWon:'worksArrival',harborOpened:'worksGateWon',
     sanctuaryEntered:'harborOpened',roadGuardWon:'sanctuaryEntered',signalCut:'roadGuardWon',
     sanctuaryWardenWon:'signalCut',sanctuaryCache:'sanctuaryEntered',anchorsKnown:'sanctuaryWardenWon',seaWalkSeen:'anchorsKnown',chapterFourComplete:'seaWalkSeen',
-    flagshipApproachSeen:'allAnchorsSeen',flagshipConfronted:'flagshipApproachSeen',flagshipWon:'flagshipConfronted',benefactorClaimSeen:'flagshipWon',flagshipDestroyed:'benefactorClaimSeen',albanDestroyed:'flagshipDestroyed',nellIll:'flagshipDestroyed',nellRecovered:'nellIll',retaliationSeen:'nellIll',retaliationWon:'retaliationSeen',chapterFiveComplete:'retaliationWon',
+    flagshipApproachSeen:'allAnchorsSeen',flagshipConfronted:'flagshipApproachSeen',flagshipWon:'flagshipConfronted',benefactorClaimSeen:'flagshipWon',flagshipDestroyed:'benefactorClaimSeen',albanDestroyed:'flagshipDestroyed',nellIll:'flagshipDestroyed',retaliationSeen:'nellIll',retaliationWon:'retaliationSeen',chapterFiveComplete:'retaliationWon',
     airfieldSeen:'chapterFourComplete',airfieldGuardWon:'airfieldSeen',airshipOwned:'airfieldGuardWon',firstFlightSeen:'airshipOwned',
     hammerplainSeen:'firstFlightSeen',coolingSeen:'hammerplainSeen',forgeRouteSet:'coolingSeen',forgeApproachWon:'forgeRouteSet',
     coolingOpened:'forgeApproachWon',forgeGantrySeen:'coolingOpened',furnaceConfronted:'forgeGantrySeen',furnaceWon:'furnaceConfronted',

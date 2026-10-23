@@ -1,0 +1,10 @@
+import { maxHp,remember,type GameState } from '../../../rules/state';
+import { receiveItem } from '../../../rules/inventory';
+/** One completed treatment. Ordinary rests and encounter victories never call this. */
+export function completeRiverTreatment(s:GameState):boolean{
+ if(s.chapter!=='chapter-six'||!s.flags.rainhouseWon||!s.flags.nellIll||s.flags.nellRecovered)return false;
+ s.flags.riverCareArrived=true;s.flags.nellRecovered=true;
+ s.xp+=120;receiveItem(s.inventory,'riverglass-reflector');
+ const nell=s.party.find(h=>h.id==='nell')!;nell.hp=maxHp('nell',s);nell.focus=6;
+ remember(s,'nellRecovered');return true;
+}

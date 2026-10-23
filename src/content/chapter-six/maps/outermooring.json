@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 12,
-  "nextobjectid": 35,
+  "nextlayerid": 13,
+  "nextobjectid": 44,
   "properties": [
     {
       "name": "name",
@@ -611,12 +611,46 @@
               "value": "nell-ill"
             },
             {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "nellRecovered"
+            },
+            {
               "name": "sign",
               "type": "bool",
               "value": true
             }
           ],
           "id": 2
+        },
+        {
+          "name": "six-nell-ready",
+          "point": true,
+          "x": 684,
+          "y": 636,
+          "properties": [
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Crew table \u00b7 Nell"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "nellRecovered"
+            },
+            {
+              "name": "sign",
+              "type": "bool",
+              "value": true
+            }
+          ],
+          "id": 3
         },
         {
           "name": "six-alda",
@@ -640,7 +674,7 @@
               "value": "alda"
             }
           ],
-          "id": 3
+          "id": 4
         },
         {
           "name": "six-supplies",
@@ -664,7 +698,7 @@
               "value": true
             }
           ],
-          "id": 4
+          "id": 5
         },
         {
           "name": "six-report",
@@ -693,7 +727,7 @@
               "value": true
             }
           ],
-          "id": 5
+          "id": 6
         },
         {
           "name": "six-capital",
@@ -717,7 +751,7 @@
               "value": true
             }
           ],
-          "id": 6
+          "id": 7
         }
       ],
       "properties": []
@@ -734,7 +768,7 @@
           "x": 780,
           "y": 708,
           "properties": [],
-          "id": 7
+          "id": 8
         },
         {
           "name": "namar",
@@ -742,7 +776,7 @@
           "x": 780,
           "y": 708,
           "properties": [],
-          "id": 8
+          "id": 9
         },
         {
           "name": "briefing",
@@ -750,7 +784,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 9
+          "id": 10
         }
       ],
       "properties": []
@@ -773,7 +807,7 @@
               "value": "civilian-traveler-blue"
             }
           ],
-          "id": 10
+          "id": 11
         },
         {
           "name": "fitter",
@@ -787,7 +821,7 @@
               "value": "civilian-dockhand"
             }
           ],
-          "id": 11
+          "id": 12
         }
       ],
       "properties": []
@@ -804,7 +838,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 12
+          "id": 13
         },
         {
           "name": "orrin",
@@ -812,7 +846,7 @@
           "x": 708,
           "y": 708,
           "properties": [],
-          "id": 13
+          "id": 14
         },
         {
           "name": "petra",
@@ -820,7 +854,7 @@
           "x": 852,
           "y": 708,
           "properties": [],
-          "id": 14
+          "id": 15
         },
         {
           "name": "celia",
@@ -828,7 +862,7 @@
           "x": 732,
           "y": 756,
           "properties": [],
-          "id": 15
+          "id": 16
         },
         {
           "name": "alda",
@@ -836,7 +870,15 @@
           "x": 828,
           "y": 612,
           "properties": [],
-          "id": 16
+          "id": 17
+        },
+        {
+          "name": "nell",
+          "point": true,
+          "x": 660,
+          "y": 684,
+          "properties": [],
+          "id": 18
         },
         {
           "name": "emperor",
@@ -850,7 +892,7 @@
               "value": true
             }
           ],
-          "id": 17
+          "id": 19
         }
       ],
       "properties": []
@@ -867,7 +909,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 18
+          "id": 20
         },
         {
           "name": "orrin",
@@ -875,7 +917,7 @@
           "x": 708,
           "y": 708,
           "properties": [],
-          "id": 19
+          "id": 21
         },
         {
           "name": "petra",
@@ -883,7 +925,7 @@
           "x": 852,
           "y": 708,
           "properties": [],
-          "id": 20
+          "id": 22
         },
         {
           "name": "celia",
@@ -891,7 +933,7 @@
           "x": 732,
           "y": 756,
           "properties": [],
-          "id": 21
+          "id": 23
         },
         {
           "name": "alda",
@@ -899,7 +941,15 @@
           "x": 828,
           "y": 612,
           "properties": [],
-          "id": 22
+          "id": 24
+        },
+        {
+          "name": "nell",
+          "point": true,
+          "x": 660,
+          "y": 684,
+          "properties": [],
+          "id": 25
         }
       ],
       "properties": []
@@ -916,7 +966,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 23
+          "id": 26
         },
         {
           "name": "orrin",
@@ -924,7 +974,7 @@
           "x": 708,
           "y": 708,
           "properties": [],
-          "id": 24
+          "id": 27
         },
         {
           "name": "petra",
@@ -932,7 +982,7 @@
           "x": 852,
           "y": 708,
           "properties": [],
-          "id": 25
+          "id": 28
         },
         {
           "name": "celia",
@@ -940,7 +990,7 @@
           "x": 732,
           "y": 756,
           "properties": [],
-          "id": 26
+          "id": 29
         },
         {
           "name": "alda",
@@ -948,7 +998,7 @@
           "x": 828,
           "y": 612,
           "properties": [],
-          "id": 27
+          "id": 30
         },
         {
           "name": "nell",
@@ -956,7 +1006,7 @@
           "x": 468,
           "y": 684,
           "properties": [],
-          "id": 28
+          "id": 31
         }
       ],
       "properties": []
@@ -973,7 +1023,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 29
+          "id": 32
         },
         {
           "name": "orrin",
@@ -981,7 +1031,7 @@
           "x": 708,
           "y": 708,
           "properties": [],
-          "id": 30
+          "id": 33
         },
         {
           "name": "petra",
@@ -989,7 +1039,7 @@
           "x": 852,
           "y": 708,
           "properties": [],
-          "id": 31
+          "id": 34
         },
         {
           "name": "celia",
@@ -997,7 +1047,7 @@
           "x": 732,
           "y": 756,
           "properties": [],
-          "id": 32
+          "id": 35
         },
         {
           "name": "alda",
@@ -1005,7 +1055,7 @@
           "x": 828,
           "y": 612,
           "properties": [],
-          "id": 33
+          "id": 36
         },
         {
           "name": "nell",
@@ -1013,7 +1063,64 @@
           "x": 468,
           "y": 684,
           "properties": [],
-          "id": 34
+          "id": 37
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 12,
+      "name": "Scene:six-river-home",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "kit",
+          "point": true,
+          "x": 780,
+          "y": 684,
+          "properties": [],
+          "id": 38
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 708,
+          "properties": [],
+          "id": 39
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 852,
+          "y": 708,
+          "properties": [],
+          "id": 40
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 732,
+          "y": 756,
+          "properties": [],
+          "id": 41
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 612,
+          "properties": [],
+          "id": 42
+        },
+        {
+          "name": "nell",
+          "point": true,
+          "x": 660,
+          "y": 684,
+          "properties": [],
+          "id": 43
         }
       ],
       "properties": []
