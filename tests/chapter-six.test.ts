@@ -18,6 +18,7 @@ import { offset,cells,key,toPixel } from '../src/rules/hex';
 import { ARRANGEMENTS,scoreBar,scoreLength,scorePosition,scoreMeter,type MusicMode } from '../src/game/score';
 import { pitchSteps } from '../src/game/tuning';
 import { hasExpression,hasRubato,performanceBar } from '../src/game/score-performance';
+import { desertCheckpoint } from './support/desert';
 function visit(s=chapterSixStart()){
  let read:Dialogue|undefined,battle='';
  const validate=()=>expect(decodeSave(JSON.stringify(s))).toEqual(s);
@@ -41,6 +42,21 @@ it('records the foreign routes and medical referral together before saving the c
 it('the palace bar blocks its actual doorway during the seizure and reopens after the postal escape',()=>{
  const map=MAPS.sunpalace;
  expect(walkable(map,31,33)).toBe(true);expect(walkable(map,31,33,{flags:{palaceCoup:true}})).toBe(false);expect(walkable(map,31,33,{flags:{palaceCoup:true,palaceEscaped:true}})).toBe(true);
+});
+it('only reports the optional letter as dispatched after the player actually posts it, including on reload',()=>{
+ for(const posted of [false,true]){
+  const v=visit(desertCheckpoint('desertReleaseReady'));
+  if(posted)v.act('namar-post');
+  const restored=visit(decodeSave(JSON.stringify(v.s)));resumeChapterSix(restored.h);
+  const exchange=restored.read().lines.map(l=>l.text).join(' ');
+  expect(exchange.includes('Nell’s letter is on its way')).toBe(posted);
+  expect(exchange.includes('Bring Nell’s letter before you sail')).toBe(!posted);
+  restored.flush();restored.s.location=arrival('outermooring','namar');resumeChapterSix(restored.h);
+  expect(restored.read().lines.some(l=>l.text.includes('Your letter’s on its way'))).toBe(posted);
+  restored.flush();restored.act('six-nell');
+  expect(restored.read().lines[0].text.includes('sorting table')).toBe(!posted);
+  expect(restored.s.flags.desertMailSent).toBe(posted?true:undefined);
+ }
 });
 for(const water of [false,true])it(`completes the ${water?'service channel':'gallery'} route, public western seal and return without healing Nell or granting Chapter Six completion`,()=>{
  const v=climb(water),s=v.s,gear=structuredClone(s.inventory.characters),formation=[...s.activeParty];

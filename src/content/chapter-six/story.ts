@@ -4,7 +4,7 @@ export const JOURNAL={
  sixRoutesKnown:{title:'The two pact seals',text:'Alda has charts for both foreign capitals. Each seal must be released where its kingdom signed the pact. The ship remains a safe berth; Nell stays under care.'},
  jungleLeadKnown:{title:'Sera’s river referral',text:'Sera has found river healers who treated crystal workers before the imperial wards. Her notes may help them interrupt Nell’s connection to the shard. This is a separate journey from the two seals.'},
  desertSeen:{title:'Namar at dusk',text:'Amal’s evening post still connects the city to the railway. Queen Samira has been reading reports from the freed regions and will hear us at the eastern palace.'},
- palaceCoup:{title:'The divided court',text:'Samira agreed to revoke the imperial pact. Sahir seized the royal observatory, woke its guardian and barred the palace. The postal stair offers a way out; Samira is coming with us.'},
+ palaceCoup:{title:'The divided court',text:'Samira recognized her own grain orders in the ledger and chose to withdraw Namar’s seal. Sahir ordered the guardian awakened and the queen held in her court. Reach the western postal stair with her.'},
  palaceEscapeWon:{title:'The cordon falls back',text:'The palace cordon is broken. A sunmesh travel coat goes into the bag. Reach the western postal stair and leave with Samira.'},
  palaceEscaped:{title:'The postal stair',text:'Amal opened the stair above the palace. Follow the water jars across the roofs to the observatory. The postal shelter has supplies.'},
  desertAscentSeen:{title:'Wings over the observatory',text:'The Benefactor’s glasswings are attacking the bronze apparatus. Clear the upper terrace to reach the observatory. Amal is keeping the lower stair open.'},

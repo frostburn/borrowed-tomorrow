@@ -15,10 +15,10 @@ export function resumeChapterSix(h:StoryHost){
   if(!f.sixRoutesKnown)return h.talk({...scenes.briefing(),done:()=>{
    f.sixRoutesKnown=true;f.jungleLeadKnown=true;remember(s,'sixRoutesKnown');remember(s,'jungleLeadKnown');h.commit('sixRoutesKnown');
   }});
-  if(f.desertSealBroken&&!f.desertReported)return show(scenes.home(),'desertReported');
+  if(f.desertSealBroken&&!f.desertReported)return show(scenes.home(!!f.desertMailSent),'desertReported');
  }
  if(m==='namar'){
-  if(f.desertReleaseReady&&!f.desertSealBroken)return show(scenes.publicBreak(),'desertSealBroken');
+  if(f.desertReleaseReady&&!f.desertSealBroken)return show(scenes.publicBreak(!!f.desertMailSent),'desertSealBroken');
   if(!f.desertSeen)return show(scenes.city(),'desertSeen');
  }
  if(m==='sunpalace'&&f.palaceEscapeWon&&!f.palaceEscaped)return show(scenes.escaped(),'palaceEscaped',()=>{s.location=arrival('sunpalace','escape');h.refresh();h.save();});
@@ -47,14 +47,14 @@ export function interactChapterSix(h:StoryHost,id:string){
     {label:'Stay at the outer mooring',action:()=>{}},
    ]});
   case 'six-nell':case 'six-report':
-   if(f.desertReported)return id==='six-report'?say('Celia','Sera’s notes are packed for the river healers. The launches are bringing the ward’s regular supplies.'):say('Nell','Orrin left the water-clock diagram by my cup. Make sure Tomas gets a copy with the next letter.');
+   if(f.desertReported)return id==='six-report'?say('Celia','Sera’s notes are packed for the river healers. The launches are bringing the ward’s regular supplies.'):say('Nell',f.desertMailSent?'Orrin left the water-clock diagram by my cup. Send Tomas a copy when he answers.':'My letter’s with Kit. Remind him to leave it at Amal’s sorting table.');
    return h.talk({...scenes.letter(),done:()=>{f.jungleLeadKnown=true;h.commit('jungleLeadKnown','jungleLeadKnown');}});
   case 'six-alda':return say('Alda',f.desertSealBroken?'The launches will carry Namar’s crews. We still need the northern release.':'There’s room for the people outside the gate. The launches are bringing them around to us.');
   case 'six-capital':return say('Petra',f.desertSealBroken?'The western return is dark. The northern seal still holds the landing bridge.':'The northern and western seals meet inside that wall. We have to release them at their own capitals.');
   case 'namar-amal':return say('Amal',f.desertSealBroken?'The barges are signed over. The post still leaves at the bell.':f.palaceCoup?'The families are under the covered quay. I’m keeping the post boats on the western bank.':'The eastern palace door. Cross the bridge and turn toward the dome.');
   case 'namar-post':
    if(f.desertMailSent)return say('Amal','Your report has gone to Dena. Tomas’s letter is in the same sack.');
-   return h.talk({lines:[SAY('Kit','The report goes to the ward. This one is for Nell’s brother. Could you keep it dry?'),SAY('Amal','It’s a postal boat, not a swimming lesson. Take this spare harness; your bag’s pulling you sideways.')],done:()=>{receiveItem(s.inventory,'courier-harness');h.commit('desertMailSent','desertMailSent');}});
+   return h.talk({lines:[SAY('Kit','The report goes to Dena. This one’s for Tomas. Our next landing’s on the last page.'),SAY('Amal','Report in the blue tray. Letter in the railway sack. Take this spare harness; your bag’s pulling you sideways.')],done:()=>{receiveItem(s.inventory,'courier-harness');h.commit('desertMailSent','desertMailSent');}});
   case 'namar-clock':return say('Orrin','Canal water fills the upper bowl. When it tips, that tooth advances the dial. I’m going to need another page.');
   case 'namar-celebrate':return say('Queen Samira','The captains have the evacuation route. The ward crews are reading the ledger with their patients.');
   case 'namar-palace':return go(h,'sunpalace');

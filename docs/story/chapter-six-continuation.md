@@ -30,6 +30,8 @@ Entry changes only chapter, boundary and location: Chapter Six, null boundary, `
 | `desertSealBroken` | Complete `six-public`; Samira breaks the band before the city. Namar commits navigators and evacuation barges. Interrupted public scenes replay with the lifted band intact. |
 | `desertReported` | Return to the mooring and complete `six-home`; Nell receives the news. |
 
+The public exchange and berth report read `desertMailSent` without changing it. Skipping the optional post leaves the letter with Kit; those scenes ask him to take it to the sorting table rather than claiming dispatch. Posting remains available on return. Nell's later berth conversation uses the same saved distinction. The optional earlier berth visit lets her add her own words; no extra flag or delivery gate is required.
+
 `desertSealBroken` is the western seal. There is no `chapterSixComplete`, northern-seal victory, Emperor victory, Nell recovery or Chapter Seven boundary in this implementation. Do not infer them from the regional payoff. The city, palace, terraces, observatory and safe ship remain revisitable. The post harness, optional focus and encounter items are once-only bag rewards, never auto-equipped.
 
 ## Boss and save rules
