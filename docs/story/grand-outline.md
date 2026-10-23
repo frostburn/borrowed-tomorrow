@@ -92,9 +92,11 @@ Divine hunters retaliate at the survey ship’s medical hatch. Nell is too ill t
 
 **Goal:** stop the emperor and release the mortal world. **Payoff:** the human antagonist's complete defeat.
 
-Nell remains aboard under medical care. The remaining companions lead the capital assault. Kit’s delivery of Celia’s notes opens an optional recovery quest through Sera and Windmere’s existing isolated treatment room. Restore Nell without destroying the fragment or forcing her into the active formation. The capital remains playable if the quest is deferred or skipped; its personal scenes deepen Kit’s care without resolving a romance. See [chapter-six-plan.md](chapter-six-plan.md).
+Nell remains aboard under medical care. The remaining companions lead the capital assault. Kit’s delivery of Celia’s notes brings Sera’s lead to a jungle river settlement experienced in crystal-exposure treatment. The optional expedition brings its healers together with Celia to restore Nell. Restore Nell without destroying the fragment or forcing her into the active formation. The capital remains playable if the quest is deferred or skipped; its personal scenes deepen Kit’s care without resolving a romance. See [chapter-six-plan.md](chapter-six-plan.md).
 
-Allied forces open the route to the floating capital. Familiar places have become fragments of the emperor's remembered paradise. His dead loved ones repeat conversations while the living inhabitants lose their ability to choose or act. Allow the player to recognize individual people in that process.
+The first approach fails when the Emperor seals the capital. Two seals belong to a defensive pact with allied kingdoms in the desert and icy north. Open both destinations in either order, alongside the optional jungle recovery route. In the desert, a divided court leads to a palace escape, occupied observatory and sun-serpent guardian before the ruler publicly breaks the seal. In the north, join a local expedition through glacier wrecks to a sanctuary occupied by a winter dragon; the kingdom contributes ships and navigators. Both seals must fall before the landing bridge reaches the imperial city. The Emperor has used the intervening time to complete his preserved capital.
+
+Allied forces support the approach and evacuation. Familiar places have become fragments of the emperor's remembered paradise. His dead loved ones repeat conversations while the living inhabitants lose their ability to choose or act. Allow the player to recognize individual people in that process.
 
 The emperor becomes a monstrous divine vessel. The party uses the knowledge and allies earned across the journey to sever its supports and expose its heart. Defeat him in a full climax with his human motive still recognizable. The fragment is retained: its final use belongs to Chapter Seven. Nell can answer the Emperor from the ship if still ill.
 
@@ -110,11 +112,13 @@ Nell’s fragment opens the path through the hollow sun. If the recovery quest r
 
 Meet people from earlier collected settlements. The party helps them act and move again, making the promised recovery visible before the final battle. In person or through the crossing’s signal, the god offers Nell her old life once more, now with the power to make the offer real. It treats people as payment, and sees their rescue as theft.
 
-The original anchors taught the party how the god joins mortal days to its body. In the domain, the companions sever those bonds at their source. Nell or her companions return the fragment to expose the divine heart and loses her borrowed power. Fight the Benefactor itself in multiple forms; the final transformation draws on the damaged sun motif introduced in Chapter One and developed in later chapters. Victory destroys its capacity to claim people's lives. It cannot return through another emperor or renew the bargain.
+The original anchors taught the party how the god joins mortal days to its body. In the domain, the companions sever those bonds at their source. Nell or her companions return the fragment to expose the divine heart; its borrowed power ends. Fight the Benefactor itself in multiple forms; the final transformation draws on the damaged sun motif introduced in Chapter One and developed in later chapters. Victory destroys its capacity to claim people's lives. It cannot return through another emperor or renew the bargain.
 
 Release the stolen days and surviving captives. Do not use a reset to erase the adventure: Ansel and people killed by violence remain dead, decisions and relationships remain, and towns still need rebuilding. Divine engines and effortless miracles cease. Ordinary skill, cooperation and the alternatives developed by Orrin's region make a livable future possible.
 
 End at Larkspur station. Tomas is home. Nell boards an ordinary steam train with her brother and friends for a holiday by the sea. The first morning after their return has no imperial blessing and needs none.
+
+The desert uses neutral-interval 31-EDO, the north Orwell[9] with optional Myna[7] for glacier ruins, and the jungle Slendric[5]/[6]. The domain uses an overtone-derived octatonic and its inversion, also in 31-EDO. See [music-direction.md](../music-direction.md) for exact degrees, notation and composition intent.
 
 ## Why a young protagonist can win
 
