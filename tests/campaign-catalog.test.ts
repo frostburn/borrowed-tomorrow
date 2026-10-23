@@ -22,7 +22,8 @@ it('wires each completed departure to its own destination without changing resou
   expect(decodeSave(JSON.stringify(state))).toEqual(state);
  }
  expect(nextChapter(newGame())).toBeUndefined();
- expect(nextChapter({chapter:'chapter-five',boundary:SIXTH_CHAPTER})).toBeUndefined();
+ expect(nextChapter({chapter:'chapter-five',boundary:SIXTH_CHAPTER})?.title).toBe('Chapter Six');
+ expect(nextChapter({chapter:'chapter-six',boundary:null})).toBeUndefined();
  expect(nextChapter({chapter:'chapter-one',boundary:SIXTH_CHAPTER})).toBeUndefined();
 });
 it('restores early maps locally and later chapters with their complete scene groups',()=>{

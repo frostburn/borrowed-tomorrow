@@ -23,6 +23,7 @@
     "art:three": "node scripts/export-chapter-three-art.mjs",
     "art:four": "node scripts/export-chapter-four-art.mjs",
     "art:five": "node scripts/export-chapter-five-art.mjs",
+    "art:six": "node scripts/export-chapter-six-art.mjs",
     "check:art-upload": "node scripts/check-art-upload.mjs"
   },
   "dependencies": {

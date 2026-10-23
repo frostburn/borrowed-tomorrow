@@ -1,6 +1,6 @@
 # Working on Borrowed Tomorrow
 
-Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Plans under `docs/story/` describe Chapters Six–Seven, which are not yet playable.
+Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening and Namar route are playable; its northern/jungle routes, Emperor climax and Chapter Seven remain plans under `docs/story/`.
 
 ## Find the right place
 
@@ -33,7 +33,7 @@ npm ci
 npm run dev
 ```
 
-Use `npm run dev:workshop` instead to open the existing Vite-only tools directly. Direct review URLs include `/?dev=maps`, `/?dev=music`, `/?dev=sprites`, `/?dev=animation` and `/?dev=boss`. The dev title also has canonical starts through Chapter Five Act IV. These tools use their own fixtures/storage; preserve their production exclusion.
+Use `npm run dev:workshop` instead to open the existing Vite-only tools directly. Direct review URLs include `/?dev=maps`, `/?dev=music`, `/?dev=sprites`, `/?dev=animation` and `/?dev=boss`. The dev title also has canonical starts through Chapter Six. These tools use their own fixtures/storage; preserve their production exclusion.
 
 For a focused change:
 
@@ -45,7 +45,7 @@ npm test -- tests/chapter-five-finale.test.ts
 
 Before publishing, run `npm run check` for rule/content tests, TypeScript and the production build. Use existing Playwright regressions for changed rendered behavior, especially scene loading and save restoration. The normal browser gates remain `npm run test:e2e:ci` and `npm run test:e2e:ci:production` (the latter uses the built app). New detailed regressions do not need an `@ci` tag. Full journeys and long audio renders stay in the manually dispatched full run. Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` when using an existing browser installation.
 
-Art exports have matching commands: `npm run art:one` through `npm run art:five`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
+Art exports have matching commands: `npm run art:one` through `npm run art:six`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
 
 ## Adding the next chapter
 

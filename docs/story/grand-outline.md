@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One–Five are playable with bundled vector artwork, including all three freely ordered anchors and Alban’s flagship finale. Chapters Six–Seven remain a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the agreed direction for the story reboot. Chapters One–Five are playable with bundled vector artwork, including all three freely ordered anchors and Alban’s flagship finale. Chapter Six’s sealed-capital opening and Namar desert expedition are also playable. Its northern/jungle routes, Emperor climax and Chapter Seven remain a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
 
 ## The promise
 

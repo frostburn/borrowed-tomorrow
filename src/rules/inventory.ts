@@ -5,6 +5,11 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'sunmesh-coat':{name:'Sunmesh travel coat',slot:'coat',heroes:COMPANION_IDS,description:'A light metal weave beneath desert cloth. Protection against the observatory’s heat.',bonuses:{attack:0,armor:5,speed:0}},
+  'fine-expansion-ring':{name:'Fine expansion ring',slot:'fitting',heroes:['orrin'],description:'A precisely cut observatory fitting for Orrin’s steam lance.',bonuses:{attack:8,armor:1,speed:1}},
+  'sunstone-focus':{name:'Sunstone examination lens',slot:'fitting',heroes:['celia'],description:'A desert physician’s lens, fitted to Celia’s field focus.',bonuses:{attack:7,armor:2,speed:1}},
+  'solar-guard':{name:'Solar saber guard',slot:'fitting',heroes:['petra'],description:'A bronze guard from the released apparatus. Protects Petra’s grip without weighing down her blade.',bonuses:{attack:6,armor:4,speed:1}},
+  'courier-harness':{name:'Canal courier harness',slot:'coat',heroes:COMPANION_IDS,description:'Amal’s spare cross-body harness. Holds equipment close while climbing or running.',bonuses:{attack:0,armor:3,speed:2}},
   'fleet-sight':{name:'Fleet range sight',slot:'fitting',heroes:['kit'],description:'A brass ranging mechanism from the disabled bridge, fitted to Kit’s crossbow.',bonuses:{attack:7,armor:0,speed:1}},
   'ward-focus':{name:'Windmere medical focus',slot:'fitting',heroes:['celia'],description:'Sera’s spare treatment lens, steadied for field use.',bonuses:{attack:5,armor:2,speed:1}},
   'opal-reflector':{name:'Opal lantern reflector',slot:'fitting',heroes:['nell'],description:'An old examination-lamp reflector. A brighter beam and a lighter hand.',bonuses:{attack:6,armor:1,speed:1}},

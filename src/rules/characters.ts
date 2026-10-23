@@ -1,6 +1,6 @@
 import { CHARACTERS } from '../content/characters';
 import type { AbilityId } from './combat';
-import { LEARNING } from './progression';
+import { LEARNING,MAX_LEVEL } from './progression';
 export { LEARNING } from './progression';
 import { COMPANION_IDS, MAX_PARTY_SIZE, validParty, type CompanionId } from './party';
 export { COMPANION_IDS, type CompanionId } from './party';
@@ -18,7 +18,7 @@ export interface CharacterBuild extends Record<CharacterStat, number> { level: n
 export interface CharacterProfile extends CharacterBuild { name: string; role: string; abilities: AbilityId[] }
 export interface CharacterSettings { version: 2; characters: Record<CompanionId, CharacterBuild>; party: CompanionId[] }
 export function defaultBuild(hero: CompanionId, level = 1): CharacterBuild {
-  if (!Number.isInteger(level) || level < 1 || level > 10) throw new Error('Level must be 1–10.');
+  if (!Number.isInteger(level) || level < 1 || level > MAX_LEVEL) throw new Error(`Level must be 1–${MAX_LEVEL}.`);
   const c = COMPANIONS[hero];
   return { level, maxHp: c.maxHp + (level - 1) * 6, attack: c.attack + (level - 1) * 2, armor: c.armor, speed: c.speed, movement: c.movement, focus: 6 };
 }
@@ -42,7 +42,7 @@ export function decodeCharacterSettings(text: string): CharacterSettings {
   if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid character roster.');
   for (const hero of COMPANION_IDS) {
     const build = raw.characters[hero];
-    if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > 10) throw new Error('Invalid character level.');
+    if (!build || !Number.isInteger(build.level) || build.level < 1 || build.level > MAX_LEVEL) throw new Error('Invalid character level.');
     for (const stat of Object.keys(STAT_LIMITS) as CharacterStat[]) {
       if (!validStat(stat, build[stat])) throw new Error(`Invalid ${stat}.`);
       settings.characters[hero][stat] = build[stat];

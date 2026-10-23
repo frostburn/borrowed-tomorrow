@@ -1,0 +1,13 @@
+import mooring from './maps/outermooring.json' with { type: 'json' };
+import namar from './maps/namar.json' with { type: 'json' };
+import palace from './maps/sunpalace.json' with { type: 'json' };
+import roofs from './maps/skywalk.json' with { type: 'json' };
+import observatory from './maps/observatory.json' with { type: 'json' };
+import gallery from './maps/battle-palace-gallery.json' with { type: 'json' };
+import channel from './maps/battle-palace-channel.json' with { type: 'json' };
+import ascent from './maps/battle-desert-ascent.json' with { type: 'json' };
+import serpent from './maps/battle-sun-serpent.json' with { type: 'json' };
+import { tiledWorld } from '../tiled-world';
+import type { TileMap } from '../tilemaps';
+export const CHAPTER_SIX_MAPS={outermooring:tiledWorld('outermooring',mooring),namar:tiledWorld('namar',namar),sunpalace:tiledWorld('sunpalace',palace),skywalk:tiledWorld('skywalk',roofs),observatory:tiledWorld('observatory',observatory)};
+export const CHAPTER_SIX_BATTLES:Record<string,TileMap>={'palace-gallery':gallery,'palace-channel':channel,'desert-ascent':ascent,'sun-serpent':serpent};

@@ -1,3 +1,5 @@
+import { sickenNell } from '../rules/availability';
+import { beginChapterSix,SIXTH_CHAPTER } from '../rules/state';
 import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
 import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
 import { arrival } from '../content/maps';
@@ -81,5 +83,16 @@ export function chapterFiveFinaleStart(){
  // Seven ordinary purchases at the existing eight-mark price, then a free rest.
  s.coins-=56;s.bandages=12;s.activeParty=['nell','orrin','petra'];
  s.location=arrival('airship','start');restoreParty(s);
+ return decodeSave(JSON.stringify(s));
+}
+
+/** Chapter Five's actual completion, including the hunters and Nell's illness. */
+export function chapterSixStart(){
+ const s=chapterFiveFinaleStart();
+ for(const flag of ['flagshipApproachSeen','flagshipConfronted','flagshipWon','benefactorClaimSeen','flagshipDestroyed','albanDestroyed','retaliationSeen','retaliationWon','chapterFiveComplete'])s.flags[flag]=true;
+ for(const id of ['alban-flagship','benefactor-retaliation']){const e=FIVE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ sickenNell(s);equipItem(s.inventory,'kit','fleet-sight');
+ s.journal.push('flagshipApproachSeen','flagshipFallen','benefactorClaimSeen','retaliationSeen','retaliationFallen','fiveDeparture');
+ s.boundary=SIXTH_CHAPTER;beginChapterSix(s);restoreParty(s);
  return decodeSave(JSON.stringify(s));
 }

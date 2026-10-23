@@ -82,3 +82,6 @@ Normal CI runs Node 24 rule/content checks, the production build, and seven crit
 Report bugs and feature requests at [GitHub Issues](https://github.com/frostburn/borrowed-tomorrow/issues).
 
 MIT licensed. The original license is preserved.
+
+
+Chapter Six now opens at the sealed imperial capital and continues through Namar’s complete desert expedition: evening canals, the divided court, two palace escape approaches, rooftop ascent and the sun-serpent boss. Namar breaks the western pact seal publicly. Nell remains ill; the northern expedition, optional river treatment and Emperor finale are forthcoming. The Vite title includes a canonical Chapter Six start, `/?dev=boss&boss=serpent` previews the boss, and Maps/Music have Chapter 6 collections. Run `npm run art:six` to reproduce its vectors and Tiled layouts. See [the exact continuation](docs/story/chapter-six-continuation.md).

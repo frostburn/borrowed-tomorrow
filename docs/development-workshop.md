@@ -41,7 +41,7 @@ Celestial bolt is available at level 1: a weak attack on any enemy, 1 focus, ign
 
 ## Levels and base stats
 
-Levels range from 1 to 10. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
+Levels range from 1 to 12. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
 
 Edit Max HP (1–999), Attack (1–199), Armor (0–99), Speed (1–30), Movement (1–10), or Starting focus (0–6), then choose **Apply base stats**. Plus and minus buttons edit the same fields. Only whole numbers in the shown ranges are accepted; an invalid field prevents the entire build from being applied. **Level defaults** restores the selected character's base stats without changing their level or equipment.
 
@@ -215,3 +215,10 @@ From the flight chart choose **Capital approach · Alban’s flagship**, then **
 
 
 Chapter Five Act IV’s canonical start still precedes the flagship fight. In the campaign’s revised ending, the unseen Benefactor destroys Alban and his crew; Nell becomes unavailable and a separate minion encounter follows. Campaign Equipment shows her illness, retains her gear and allows formation changes among the other four. Rest cannot cure her. The workshop remains an off-story sandbox with its ordinary full roster; it does not set or clear campaign illness. Sprites includes Sun herald and Glasswing; Music → Ch 5 includes The Sky Answers. Chapter Six’s optional recovery is currently an author plan only.
+
+
+## Chapter Six review
+
+The dev title includes **Begin Chapter Six (canonical)**: 3270 XP, actual Chapter Five completion, twelve bandages, Nell ill and equipped, and Kit/Orrin/Petra active. It replays the sealed-capital opening and preserves manual slots. Namar’s maps are in Maps → Chapter 6 and its seven cues in Music → Ch 6; the lute can be soloed. The new scores use neutral 31-EDO thirds and retain ASCII half accidentals.
+
+`/?dev=boss&boss=serpent` reviews the real sun-serpent rules and vectors. The preset uses level-12 Kit/Orrin/Petra and twelve bandages, without campaign progress. The three-contact head remains attackable while the coils alternate vulnerability. Coil destruction weakens head armor and removes reflections; actual breath glass lasts for the next announcement only. Red warnings include every affected lane. Reduced motion settles the scene-clock breath poses. Restart and exit use the shared battle lifecycle.

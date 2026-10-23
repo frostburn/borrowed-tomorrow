@@ -1,4 +1,4 @@
-import { beginChapterTwo,beginChapterThree,beginChapterFour,beginChapterFive,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,type GameState,type MapId } from '../rules/state';
+import { beginChapterTwo,beginChapterThree,beginChapterFour,beginChapterFive,beginChapterSix,SIXTH_CHAPTER,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,type GameState,type MapId } from '../rules/state';
 import { CHAPTER_ONE_MAPS } from './chapter-one/maps';
 import { CHAPTER_TWO_MAPS } from './chapter-two/maps';
 import { CHAPTER_THREE_MAPS } from './chapter-three/maps';
@@ -14,6 +14,9 @@ import * as one from './chapter-one/story';
 import * as two from './chapter-two/story';
 import * as three from './chapter-three/story';
 import * as four from './chapter-four/story';
+import { CHAPTER_SIX_MAPS } from './chapter-six/maps';
+import { interactChapterSix,resumeChapterSix } from './chapter-six/interactions';
+import * as six from './chapter-six/story';
 import * as five from './chapter-five/story';
 
 interface ChapterDefinition {
@@ -81,6 +84,12 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
       html:'<div class="chapter-name">Next: Chapter Six · The Emperor’s Last Day</div><p>The three anchors are disconnected. The Benefactor has destroyed Alban and his fleet. Its hunters have been driven off the survey ship. Nell is resting aboard, too ill to fight.</p><p>Kit and the others are holding for the capital’s outer mooring. The Emperor still controls the conduit.</p>',
       returnLabel:'Return to the flight deck',exportLabel:'Export capital departure save',
     },
+  },
+  'chapter-six':{
+    title:'Chapter Six',maps:mapIds(CHAPTER_SIX_MAPS),restoreAllMaps:true,
+    entry:{from:'chapter-five',boundary:SIXTH_CHAPTER,loading:'Loading the outer mooring…',begin:beginChapterSix},
+    story:{journal:six.JOURNAL,objective:six.objective,resume:resumeChapterSix,interact:interactChapterSix},
+    ending:{html:'<p>The western seal is broken. The northern expedition lies ahead.</p>',returnLabel:'Return to the outer mooring'},
   },
 };
 

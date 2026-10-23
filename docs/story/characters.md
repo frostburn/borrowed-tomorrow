@@ -88,3 +88,14 @@ The Benefactor spoke as an unseen presence through a seam of light. It called th
 Nell's connection to the shard makes her ill even away from the lantern. She is awake at the berth but unavailable for combat. Her roster entry, level and equipment persist. Kit pulled her across the gangway, stays beside her and takes Celia's notes for Sera. Care and competent courier work deepen his attachment without a confession or a resolved romance. Kit usually leads the field party while she recovers; the selected companions remain the player's choice.
 
 Nell has told the others about the Emperor's projection and can still decide to refuse it. Her temptation remains for Chapter Six, alongside the optional recovery route described in [its plan](chapter-six-plan.md). Tomas keeps the railway messages at the refuge. The medical passengers stay safe and Ansel stays dead. The god-domain journey is still separate; its final form remains unseen.
+
+
+## Chapter Six — Namar
+
+Samira is Namar’s queen: a middle-aged woman with dark hair, warm brown skin, a low bronze diadem and a teal robe. She reads the freed regions’ ledger, chooses to revoke the pact, escapes her own barred palace with the party and operates the original observatory release herself. She acknowledges her palace’s role in buying imperial grain and commits the city’s navigation and barges publicly. She is a supporting actor, not a recruit.
+
+Sahir is the minister: a broad-faced, bearded man with a pale wrapped cap, plum coat and bronze keeper’s token. He fears the Benefactor and believes the Emperor is their only protection. He bars the queen’s court and wakes the observatory guardian; it does not obey him. He survives to answer before Namar’s watch. Fear does not absolve him or grant a pardon.
+
+Amal runs the evening post: a young adult woman with a cream headscarf, dark side braid, blue coat and leather postal bag. She maintains the railway correspondence, forwards Kit’s letters and opens the postal stair after the palace seizure. She has routes, colleagues and a city to care for beyond the party’s quest. All three have independent native vector actors and portrait originals; the women use the female face construction.
+
+The companions have seen the capital barrier, learned where the two pact seals are held, and heard Sera’s river referral. After Namar only the western seal is open. Nell receives the news aboard, still ill, and Kit’s concern remains practical and unresolved. The northern expedition and river treatment are upcoming gameplay, not completed offscreen events.

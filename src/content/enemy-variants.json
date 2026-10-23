@@ -192,5 +192,54 @@
       "#263e53": "#344448",
       "#b7c1b8": "#b9beb0"
     }
+  },
+  "hound-sun": {
+    "kind": "hound",
+    "name": "Sunmesh hound",
+    "chapter": 6,
+    "hp": 92,
+    "bonus": 13,
+    "armor": 2,
+    "speed": 7,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#63534b",
+      "#b7784e": "#c49a63",
+      "#d9ae62": "#a5d4bf"
+    }
+  },
+  "crow-sun": {
+    "kind": "crow",
+    "name": "Sunmesh crow",
+    "chapter": 6,
+    "hp": 76,
+    "bonus": 13,
+    "armor": 2,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#63534b",
+      "#626d7f": "#c49a63",
+      "#b7784e": "#a5d4bf",
+      "#d9ae62": "#344e59",
+      "#142536": "#e5c68f"
+    }
+  },
+  "guardian-sun": {
+    "kind": "guardian",
+    "name": "Sunmesh guardian",
+    "chapter": 6,
+    "hp": 198,
+    "bonus": 12,
+    "armor": 5,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#63534b",
+      "#b7784e": "#c49a63",
+      "#d9ae62": "#a5d4bf",
+      "#263e53": "#344e59",
+      "#b7c1b8": "#e5c68f"
+    }
   }
 }

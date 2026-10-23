@@ -142,7 +142,7 @@ test('@ci invalid stat edits are atomic and damaged character storage keeps equi
   await page.getByRole('button', { name: 'Apply base stats', exact: true }).click();
   await page.getByRole('button', { name: 'Level defaults', exact: true }).click();
   await expect(page.getByRole('spinbutton', { name: 'Nell Attack', exact: true })).toHaveValue('15');
-  await page.getByRole('spinbutton', { name: 'Nell level', exact: true }).fill('11'); await page.keyboard.press('Tab');
+  await page.getByRole('spinbutton', { name: 'Nell level', exact: true }).fill('13'); await page.keyboard.press('Tab');
   await expect(page.getByRole('spinbutton', { name: 'Nell level', exact: true })).toHaveValue('3');
   await page.evaluate(key => localStorage.setItem(key, '{"version":1,"characters":null}'), characterStorage);
   await page.goto('/?dev=workshop');

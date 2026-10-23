@@ -192,3 +192,20 @@ The overtone-derived collection contains near-harmonic `[0,10,18,25]` and extens
 ### References and reproducibility
 
 [31edo Scales](https://www.31edo.com/scales) describes the six-, seven- and eight-step generator families, Orwell[9]'s harmony and Slendric's pentatonic structure. The specific degree sets above were calculated from their generator chains modulo 31 and checked against their cyclic step patterns. The overtone collection is calculated as `round(31 * log2(h / 8))` for h=8…15; reflect each degree modulo 31 for its inversion. This keeps all frequencies on the game's tuning grid. No external tuning files or new dependencies are needed.
+
+
+## Chapter Six — Namar scores now implemented
+
+`score-desert.ts` supplies the shared opening and complete desert expedition. All frequencies remain in 31-EDO, A4=440. C–Ed–G and G–Bd–D use nine-step neutral thirds as stable harmony; the contrasting F–Ad–C voicing uses the same neutral third above F. Half accidentals remain visible in Music and survive octave shifts. The regional modes do not retune earlier material.
+
+| Cue | Title | Form and character |
+| --- | --- | --- |
+| `outermooring` | Two Seals at the Gate | 32 bars, 4/4 at 72; low descending reed, held inner voices and ensemble rubato |
+| `namar` | Letters on the Water | 32 bars, 4/4 at 96; falling/turning reed sentences above postal-boat lute exchanges |
+| `sunpalace` | The Queen’s Half of the Pact | 32 bars, 3/4 at 76; spacious court variant with phrase swells, controlled vibrato and ensemble rubato |
+| `skywalk` | Above the Awnings | 32 bars, 4/4 at 104; plucked lead and separated reed replies |
+| `observatory` | The Bronze Sky | 32 bars, 4/4 at 70; low held breaths, neutral pedals and softly released bell accents |
+| `desert-battle` | The Postal Stair | 32 bars, 4/4 at 136; the city contour over a driving regional battle accompaniment |
+| `sun-serpent` | Coils around the Sun | Two-bar one-shot opening, then 32 bars in 6/8 at quarter=120; descending brass, reed replies, compound pulse and moving bass |
+
+The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. Northern, jungle and domain collections above remain approved composition plans.
