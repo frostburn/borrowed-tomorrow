@@ -284,7 +284,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
@@ -372,7 +372,7 @@ export class Adventure extends Phaser.Scene {
     }
   }
   private worldLeader():HeroId {
-    if(this.state.location.map==='lastmorning')return 'nell';
+    if((this.state.location.map==='lastmorning'||this.state.location.map==='lastshore'))return 'nell';
     // Kit waits with Tomas during the aftermath, without changing the saved formation.
     if(this.state.location.map==='laststation')return this.state.activeParty.find(id=>id!=='kit')??'orrin';
     return partyLeader(this.state);
@@ -380,7 +380,7 @@ export class Adventure extends Phaser.Scene {
   private syncWorldFollowers() {
     const mapId=this.state.location.map;
     const stationed=mapId==='airship'||mapId==='laststation'?new Set(visibleObjects(MAPS[mapId],this.state).map(o=>o.sprite)):new Set<string>();
-    const ids=mapId==='lastmorning'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
+    const ids=mapId==='lastmorning'||mapId==='lastshore'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
     if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
     for(const follower of this.followers){
       this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
@@ -795,7 +795,7 @@ export class Adventure extends Phaser.Scene {
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
-    this.audio.setMode(this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
+    this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
     this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
   }
 

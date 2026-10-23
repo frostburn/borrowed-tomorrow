@@ -8,15 +8,15 @@ export const JOURNAL={
  capitalHallOpened:{title:'The attendants leave',text:'The commandant helped carry the patients down. Celia made her last checks at the boats while the companions rested at the service shelter.'},
  capitalHuntersWon:{title:'The eastern cloister',text:'The divine hunters have been driven from the eastern passage. A cloister range sight is in the bag for Kit.'},
  capitalFocusTaken:{title:'A lens left behind',text:'Celia found a palace treatment lens in the service locker. It is in the bag for manual fitting.'},
- capitalAudienceSeen:{title:'A room kept ready',text:'The Emperor opened a doorway onto the Larkspur morning Nell saw before. Recovered Nell chose to look through it.'},
- capitalMorningSeen:{title:'Before the first train',text:'Ansel turned his chipped cup toward himself. Tomas waited by the clock. The second hand paused at the top.'},
- capitalMorningQuestion:{title:'An unanswered question',text:'Nell asked Ansel what he wanted to do when he stopped working. The remembered Ansel answered with instructions for trimming the lantern.'},
- capitalMorningLeft:{title:'Leaving the morning',text:'Nell left the remembered station and returned to her companions. Ansel remains dead; the Emperor kept a morning that cannot answer a new question.'},
+ capitalAudienceSeen:{title:'A room kept ready',text:'A familiar train whistle turned Nell’s head. The palace gallery gave way to the Larkspur morning before she could step back.'},
+ capitalMorningSeen:{title:'Before the sea train',text:'Ansel kept the chipped side of his cup for himself. Tomas had two window seats for the sea train and a picnic packed.'},
+ capitalMorningQuestion:{title:'The days outside',text:'Nell and Tomas reached a quiet beach. She wanted to stay, but remembered the people still losing their days to collection. She forced herself awake.'},
+ capitalMorningLeft:{title:'Refusing the morning',text:'Nell woke in the palace and refused the Emperor’s offer. The remembered coast could not give the people outside their days back. Ansel remains dead, and the real Tomas remains safe at the refuge.'},
  capitalWarningSeen:{title:'Before the crown stair',text:'The last stair closes during the assault. Celia examined Nell before the climb. If her binding is untreated, breaking the vessel may let its current reach her. Iria is still reachable before climbing.'},
  capitalAssaultCommitted:{title:'The crown stair',text:'The companions climbed the crown stair. The vessel closed it behind them; its supports stand ahead.'},
  emperorSeen:{title:'The imperial vessel',text:'The Emperor sits inside the crowned vessel. Its two supports shield the core. Broken mountings may rebuild during a later coronation; watch the announced pattern.'},
  emperorWon:{title:'The Emperor falls',text:'The vessel is defeated. An unbroken crown guard is in the bag for Petra. The evacuation crews are lowering the capital onto its old foundations.'},
- emperorFallen:{title:'The broken crown',text:'The Emperor reached for an armrest as the crown split. His remembered rooms went dark. The conduit opened above the city.'},
+ emperorFallen:{title:'The broken crown',text:'The Emperor lay dead inside the broken vessel. Its sun went dark, his remembered rooms faded and the conduit opened above the city.'},
  capitalReleased:{title:'The capital lands',text:'The capital has returned to its foundations. Nell’s treated binding did not take the broken conduit’s current. The fragment remains intact.'},
  capitalLandingSeen:{title:'Beyond the empire',text:'The last patients reached the boats. Collection has begun beyond the imperial roads. The broken vessel and hospice diagram mark a route through the hollow sun; Alda will keep the ship while the companions prepare.'},
  sixDeparture:{title:'The final crossing',text:'The companions have chosen to prepare the journey through the hollow sun. The capital, supplies and foreign landings remain available before Chapter Seven.'},
@@ -29,7 +29,8 @@ export const JOURNAL={
 export function objective(s:GameState):string|undefined{
  const f=s.flags,m=s.location.map;
  if(m==='laststation')return 'Visit Tomas and Kit, then go to the waiting train.';
- if(m==='lastmorning')return !f.capitalMorningQuestion?'Speak to Ansel by the platform.':'Leave the remembered morning beneath the eastern lamp.';
+ if(m==='lastmorning')return 'Join Tomas at the clock, or take the sea train beneath the eastern lamp.';
+ if(m==='lastshore')return 'Walk beside Tomas at the water’s edge.';
  if(m==='crown')return !f.emperorWon?'Break the crown supports and defeat the Emperor.':f.capitalRiskAccepted&&!f.lightbearerWon?'Face the Lightbearer above the broken crown.':'Descend to the allied landing.';
  if(m==='stillcity')return !f.capitalProcessionWon?'Clear the procession machines from the avenue.':!f.capitalStreetFreed?'Open the bronze street return beneath the arch.':'Take the northern palace stair, or return to the allied quay.';
  if(m==='lastpalace')return !f.capitalCommandWon?'Confront the commandant at the patient stair.':'Rest and fit equipment, then review final preparations at the crown stair. Iria remains reachable.';

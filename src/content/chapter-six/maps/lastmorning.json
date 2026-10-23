@@ -938,7 +938,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Tomas \u00b7 the station clock"
+              "value": "Tomas \u00b7 the sea train"
             },
             {
               "name": "kind",
@@ -962,7 +962,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Eastern lamp \u00b7 leave the remembered morning"
+              "value": "Eastern lamp \u00b7 take the sea train with Tomas"
             },
             {
               "name": "kind",
@@ -1061,43 +1061,10 @@
         }
       ],
       "properties": []
-    },
-    {
-      "id": 49,
-      "name": "Scene:six-morning-question",
-      "type": "objectgroup",
-      "visible": true,
-      "objects": [
-        {
-          "name": "nell",
-          "point": true,
-          "x": 516,
-          "y": 324,
-          "properties": [],
-          "id": 9
-        },
-        {
-          "name": "ansel",
-          "point": true,
-          "x": 492,
-          "y": 300,
-          "properties": [],
-          "id": 10
-        },
-        {
-          "name": "tomas",
-          "point": true,
-          "x": 612,
-          "y": 324,
-          "properties": [],
-          "id": 11
-        }
-      ],
-      "properties": []
     }
   ],
-  "nextlayerid": 50,
-  "nextobjectid": 12,
+  "nextlayerid": 49,
+  "nextobjectid": 9,
   "orientation": "orthogonal",
   "properties": [
     {
@@ -1108,7 +1075,7 @@
     {
       "name": "subtitle",
       "type": "string",
-      "value": "Ansel waits by the familiar platform. Tomas is beneath the clock; the eastern lamp marks the way back."
+      "value": "Ansel waits by the familiar platform. Tomas has the sea-train tickets; the eastern lamp marks their carriage."
     },
     {
       "name": "sceneArt",

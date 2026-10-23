@@ -123,7 +123,7 @@ The winter dragon is a jagged ice-winged organic guardian, not a machine or the 
 
 ## At the end of the capital assault
 
-The Emperor remains recognizably human inside the crowned vessel. He has kept a private household of remembered conversations while living patients lose their water. Recovered Nell’s unanswered question at Larkspur exposes the memory’s limits. On the ill route he makes no repeated offer; Nell stays aboard, never participating through a remote link. He falls decisively at the crown platform and does not return.
+The Emperor remains recognizably human inside the crowned vessel. He has kept a private household of remembered conversations while living patients lose their water. Recovered Nell is pulled into the remembered morning before she can step back. She and Tomas go to the sea together, but remembering ongoing collection makes her force herself awake and refuse the offer. On the ill route he makes no repeated offer; Nell stays aboard, never participating through a remote link. He is dead when the vessel falls at the crown platform; he has no further dialogue or deliberate gesture.
 
 The unnamed palace commandant is an ordinary remaining officer, not Alban resurrected. He initially bars the patient stair under orders; after defeat Petra makes him help carry a stretcher. He survives with the evacuees. Tomas and the earlier medical passengers remain safe throughout.
 

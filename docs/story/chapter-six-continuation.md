@@ -96,7 +96,7 @@ Continue from the open allied landing into the Emperor’s preserved capital. Bo
 
 ## Capital finale — implemented checkpoints
 
-`capitalquay` → `stillcity` → `lastpalace` → (`lastmorning` only if recovered) → `crown`. The uncured outcome ends at `laststation`; the recovered outcome returns to `capitalquay`.
+`capitalquay` → `stillcity` → `lastpalace` → (`lastmorning` → `lastshore` → palace awakening, only if recovered) → `crown`. The uncured outcome ends at `laststation`; the recovered outcome returns to `capitalquay`.
 
 | Checkpoint | Completion and continuation |
 | --- | --- |
@@ -108,11 +108,11 @@ Continue from the open allied landing into the Emperor’s preserved capital. Bo
 | `capitalHallOpened` | Attendants lift the cordon and the commandant carries a stretcher. |
 | `capitalHuntersWon` / `capitalFocusTaken` | Independent optional cloister sight / service-locker medical focus; bag rewards, never auto-equipped. |
 | `capitalAudienceSeen` | Recovered-only doorway scene. Ill Nell receives no offer, scene or remote dialogue. |
-| `capitalMorningSeen` / `capitalMorningQuestion` / `capitalMorningLeft` | Walk the station, ask Ansel, then leave. `lastmorning` visually leads with Nell while preserving the selected formation. |
+| `capitalMorningSeen` / `capitalMorningQuestion` / `capitalMorningLeft` | Drawn into the station, travel to the coast with Tomas, remember collection, then wake and refuse in the palace. The stable `capitalMorningQuestion` checkpoint now records completing the coast; `capitalMorningLeft` records the palace refusal. An interrupted coast or awakening replays its own scene. Both vision maps visually lead with Nell while preserving formation. |
 | `capitalWarningSeen` | Celia’s report precedes the final choice. The uncured route offers Iria directly. Rest and ordinary visits never cure Nell. |
 | `capitalAssaultCommitted` + `capitalRiskAccepted` | Successfully save slot `capital-return`, then atomically record the commitment and whether Nell is untreated. Failure leaves the stair uncommitted. The slot holds the exact earlier resources, loadouts, formation and progress. |
 | `emperorSeen` / `emperorConfronted` / `emperorWon` | Crown arrival, battle commitment, actual victory and once-only guard reward. |
-| `emperorFallen` | Crown-break scene. Interrupted scenes replay; completion/skip shares one callback. |
+| `emperorFallen` | Crown-break scene with a dead, motionless Emperor and the unlit sun insignia. No Emperor dialogue. Interrupted scenes replay; completion/skip shares one callback. |
 | `capitalReleased` / `capitalLandingSeen` | Recovered branch only; descend to the allied landing and show the wider collection. |
 | `chapterSixComplete` | Explicit final-crossing choice at Alda; boundary `chapter-seven:hollow-sun`, still Chapter Six. No Chapter Seven entry exists yet. Allies/supplies remain revisitable. |
 | `lightbearerSeen` / `lightbearerConfronted` / `lightbearerWon` | Untreated branch only; manifestation, second battle and victory. Nell does not speak and the Benefactor’s true body is unseen. |

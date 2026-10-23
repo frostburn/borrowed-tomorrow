@@ -16,7 +16,7 @@ export class ImperialCinematic {
     if(reduced)o.setAlpha(.25);else this.tweens.push(this.scene.tweens.add({targets:o,x:o.x+(o.texture.key.includes('cart')?42:0),y:o.y+(o.texture.key.includes('cart')?12:22),alpha:o.texture.key.includes('cart')?1:0,duration:1000,ease:'Sine.easeInOut'}));
    }
   }else if(kind==='capital-fall'||kind==='lightbearer-rise'||kind==='lightbearer-fall'){
-   const light=kind!=='capital-fall',image=this.scene.add.image(780,light&&kind==='lightbearer-rise'&&!reduced?920:504,light?'lightbearer-idle':'imperial-idle').setOrigin(.5,1).setDepth(28000);this.world.add(image);this.objects.push(image);
+   const light=kind!=='capital-fall',image=this.scene.add.image(780,light&&kind==='lightbearer-rise'&&!reduced?920:504,light?'lightbearer-idle':'imperial-fallen').setOrigin(.5,1).setDepth(28000);this.world.add(image);this.objects.push(image);
    if(reduced)image.setAlpha(kind==='lightbearer-rise'?1:.35);
    else this.tweens.push(this.scene.tweens.add({targets:image,y:kind==='lightbearer-rise'?504:559,alpha:kind==='lightbearer-rise'?1:0,duration:1500,ease:'Cubic.easeInOut'}));
   }else{

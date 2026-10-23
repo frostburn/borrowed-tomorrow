@@ -1433,6 +1433,38 @@
       "height": 72
     }
   ],
+  "lastshore": [
+    {
+      "key": "scene-six-lastshore-back",
+      "url": "art/vector/chapter-six/lastshore-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-lastshore-floor",
+      "url": "art/vector/chapter-six/lastshore-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-shore-bags",
+      "url": "art/vector/chapter-six/shore-bags.svg",
+      "x": 552,
+      "y": 676,
+      "width": 67,
+      "height": 62,
+      "depth": 738,
+      "layerId": 3
+    }
+  ],
   "crown": [
     {
       "key": "scene-six-crown-back",

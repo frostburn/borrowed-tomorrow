@@ -31,7 +31,7 @@ world('stillcity','The capital · Stillwater Avenue','The procession returns to 
 f=[(9,25,46,12),(20,18,25,8),(26,13,13,6)]
 world('lastpalace','Palace of the Last Day','A service shelter faces the lower gallery. The private apartments and crown stair lie beyond the remaining palace cordon.',f,[(11,26,4,2),(48,26,4,2)],[
  obj('palace-command',32,28,'Palace commandant · the remaining cordon',hiddenFlag='capitalCommandWon',doneFlag='capitalCommandWon',sprite='inspector'),obj('palace-preparations',32,16,'Crown stair · final preparations',kind='story',sign=True,accessFlag='capitalHallOpened'),obj('palace-city',13,34,'Stillwater Avenue · return to the boats',kind='exit',sign=True),obj('palace-rest',18,31,'Service shelter · rest and supplies',kind='optional',sign=True),obj('palace-locker',46,31,'Service locker · medical focus',kind='optional',sign=True,hiddenFlag='capitalFocusTaken',doneFlag='capitalFocusTaken'),obj('palace-hunters',43,23,'Eastern cloister · divine hunters',accessFlag='capitalHallOpened',kind='optional',sign=True,hiddenFlag='capitalHuntersWon',doneFlag='capitalHuntersWon'),obj('palace-household',25,21,'The household · a repeated conversation',accessFlag='capitalHallOpened',kind='talk',sign=True)],
- {'start':(32,34),'memory':(32,22)}, {'six-palace-arrival':party,'six-palace-command':{**party,'petra':(34,27)},'six-palace-open':party,'six-capital-warning':party,'six-emperor-audience':{**party,'emperor':(32,17)}},
+ {'start':(32,34),'memory':(32,22)}, {'six-palace-arrival':party,'six-palace-command':{**party,'petra':(34,27)},'six-palace-open':party,'six-capital-warning':party,'six-emperor-audience':{**party,'emperor':(32,17)},'six-memory-wake':{**party,'nell':(32,23),'celia':(34,24),'kit':(30,24),'emperor':(32,17)}},
  [point('palace-servant',23,23,sprite='civilian-dockhand-rust'),point('palace-memory',38,21,sprite='civilian-traveler',projection=True)],
  [('palace-cordon',[rect(0,0,600,18,GOLD),line([(0,2),(0,34),(600,34),(600,2)],WHITE,4)],600,40,480,574,614,{'hiddenFlag':'capitalHallOpened'}),('palace-safe-bench',bench(),168,86,350,692,778,{}),('palace-service-locker',chest(),60,48,1074,693,741,{})],interior(),ground=floor(f),gated={'palace-cordon':[(20,24,25,1)]})
 # Reuse the real Larkspur station geometry instead of inventing a palace-like home.
@@ -41,10 +41,10 @@ def home_map(id,remembered):
  if remembered:
   for layer in d['layers']:layer['properties']=[p for p in layer.get('properties',[])if p['name'] not in ('requiredFlag','hiddenFlag')]
  title='Larkspur · the remembered morning'if remembered else 'Larkspur · the empty seat'
- subtitle='Ansel waits by the familiar platform. Tomas is beneath the clock; the eastern lamp marks the way back.'if remembered else 'An ordinary train waits beside the platform. Nell’s place beside the window is empty.'
+ subtitle='Ansel waits by the familiar platform. Tomas has the sea-train tickets; the eastern lamp marks their carriage.'if remembered else 'An ordinary train waits beside the platform. Nell’s place beside the window is empty.'
  d['properties']=b['b']['base']['props'](name=title,subtitle=subtitle,sceneArt=id,artStyle='rotoscope',safeArrival='start')
- objects=[obj('morning-ansel',20,12,'Ansel · the platform',kind='talk',sprite='master'),obj('morning-tomas',25,13,'Tomas · the station clock',kind='talk',sprite='tomas'),obj('morning-leave',28,19,'Eastern lamp · leave the remembered morning',kind='exit',sign=True),obj('morning-cup',17,14,'Ansel’s chipped cup',kind='talk',sign=True)]if remembered else[obj('last-tomas',22,14,'Tomas · the platform bench',kind='talk',sprite='tomas'),obj('last-kit',26,16,'Kit · the folded coat',kind='talk',sprite='kit'),obj('last-ending',32,12,'The waiting train · an unfinished tomorrow',kind='story',sign=True)]
- casts={'six-last-morning':{'nell':(21,16),'ansel':(20,12),'tomas':(25,13)},'six-morning-question':{'nell':(21,13),'ansel':(20,12),'tomas':(25,13)}}if remembered else{'six-empty-seat':{'tomas':(22,14),'kit':(25,16),'orrin':(20,17),'petra':(27,17),'celia':(23,18)}}
+ objects=[obj('morning-ansel',20,12,'Ansel · the platform',kind='talk',sprite='master'),obj('morning-tomas',25,13,'Tomas · the sea train',kind='talk',sprite='tomas'),obj('morning-leave',28,19,'Eastern lamp · take the sea train with Tomas',kind='exit',sign=True),obj('morning-cup',17,14,'Ansel’s chipped cup',kind='talk',sign=True)]if remembered else[obj('last-tomas',22,14,'Tomas · the platform bench',kind='talk',sprite='tomas'),obj('last-kit',26,16,'Kit · the folded coat',kind='talk',sprite='kit'),obj('last-ending',32,12,'The waiting train · an unfinished tomorrow',kind='story',sign=True)]
+ casts={'six-last-morning':{'nell':(21,16),'ansel':(20,12),'tomas':(25,13)}}if remembered else{'six-empty-seat':{'tomas':(22,14),'kit':(25,16),'orrin':(20,17),'petra':(27,17),'celia':(23,18)}}
  group=b['b']['base']['group'];lid=max(l['id']for l in d['layers'])+1
  d['layers'] += [group(lid,'Interactions',objects),group(lid+1,'Arrivals',[point('start',21,18)]),group(lid+2,'People',[])]
  for sid,actors in casts.items():d['layers'].append(group(lid+3+len(d['layers']),'Scene:'+sid,[point(k,*v)for k,v in actors.items()]))
@@ -62,6 +62,12 @@ def home_map(id,remembered):
   (ART/'memory-grass.svg').write_text(source);piece['key']='scene-six-memory-grass';piece['url']='art/vector/chapter-six/memory-grass.svg'
  manifest[id]=pieces
 home_map('lastmorning',True)
+# A real coast stage for the Emperor's remembered holiday. No remote voices or signals.
+shore_back=[rect(0,0,1536,1008,'#9fb8bc'),poly([(0,223),(350,212),(720,228),(1150,207),(1536,220),(1536,1008),(0,1008)],'#5b8e9a'),poly([(0,251),(354,242),(694,258),(1130,239),(1536,250),(1536,312),(0,302)],'#aac5c0'),poly([(0,263),(95,213),(178,235),(226,213),(306,252),(419,269)],'#617e87'),poly([(1202,263),(1288,219),(1387,207),(1452,234),(1536,201),(1536,271)],'#768d91')]
+for x,y,w in [(120,327,340),(780,309,290),(415,374,465),(920,417,490),(56,463,380),(531,486,497)]:shore_back += [poly([(x,y),(x+w,y-4),(x+w-42,y+5),(x+30,y+8)],'#c9d8cb')]
+shore_ground=[poly([(0,657),(276,579),(432,510),(699,529),(877,546),(1082,510),(1299,539),(1536,582),(1536,1008),(0,1008)],'#a59b76'),poly([(0,689),(280,612),(448,547),(695,563),(883,582),(1105,548),(1305,578),(1536,619),(1536,1008),(0,1008)],'#c6b88d'),poly([(0,787),(380,689),(626,672),(994,705),(1255,672),(1536,712),(1536,1008),(0,1008)],'#748568'),poly([(0,825),(350,742),(667,720),(945,762),(1231,721),(1536,753),(1536,1008),(0,1008)],'#536e5e'),poly([(194,640),(367,588),(462,577),(405,616),(221,669)],'#e6d7a7'),poly([(1116,556),(1253,558),(1433,597),(1361,611),(1213,581)],'#e6d7a7')]
+for x,y in [(297,748),(1090,753),(1305,844),(165,882)]:shore_ground += [poly([(x,y),(x+33,y-28),(x+65,y-19),(x+81,y+18),(x+24,y+25)],'#516c69'),poly([(x+33,y-28),(x+65,y-19),(x+51,y),(x+7,y+7)],'#84958a')]
+world('lastshore','The remembered coast','Tomas has left their bags beside the path. The sea is moving; the next train is hours away.',[(10,25,42,8),(18,22,24,4)],[],[obj('shore-wake',31,27,'The water’s edge · wake up',kind='story',sign=True)],{'start':(24,28)},{'six-memory-sea':{'nell':(24,28),'tomas':(26,28)}},[],[('shore-bags',[poly([(0,15),(24,5),(53,14),(51,43),(4,45)],'#755c48'),line([(14,12),(16,2),(36,0),(39,11)],INK,4),poly([(4,45),(51,43),(66,55),(20,61)],'#354d52')],67,62,552,676,738,{})],shore_back,ground=shore_ground)
 # The crown is the route's sole commitment point; no exits lead back after the warning.
 f=[(12,24,40,12),(24,18,17,7)]
 back=[rect(0,0,1536,1008,'#314958'),poly([(0,294),(289,211),(633,302),(1020,181),(1536,261),(1536,1008),(0,1008)],BLUE),poly([(0,481),(424,387),(789,446),(1144,362),(1536,475),(1536,614),(0,614)],'#b3bfae')]
@@ -87,7 +93,7 @@ for layer in d['layers']:
     if v['name']=='kind':v['value']='exit'
 text=json.dumps(d,indent=2);text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+64])for i in range(0,64*42,64))+'\n    ]',text)
 p.write_text(text+'\n')
-for id in ['capitalquay','stillcity','lastpalace','crown']:
+for id in ['capitalquay','stillcity','lastpalace','crown','lastshore']:
  path=ROOT/f'src/content/chapter-six/maps/{id}.json';data=json.loads(path.read_text());data['properties']=[p for p in data['properties']if p['name']!='cameraLeadY']+[{'name':'cameraLeadY','type':'int','value':144}];out=json.dumps(data,indent=2);out=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+64])for i in range(0,64*42,64))+'\n    ]',out);path.write_text(out+'\n')
 for obsolete in ['lastmorning-back','lastmorning-floor','laststation-back','laststation-floor','morning-bench','last-empty-bench']:(ART/f'{obsolete}.svg').unlink(missing_ok=True)
 (ROOT/'src/content/chapter-six/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')

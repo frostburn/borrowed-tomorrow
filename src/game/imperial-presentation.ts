@@ -10,7 +10,7 @@ import { EMPEROR_ID,LIGHTBEARER_ID,imperialCore,imperialSupports,prepareImperial
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { drawTileMap } from './tilemap';
 import { newGame } from '../rules/state';
-export const IMPERIAL_ASSETS=['imperial-idle','imperial-charge','imperial-cast','imperial-support','imperial-support-broken','lightbearer-idle','lightbearer-rise','lightbearer-cast','lightbearer-resist'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
+export const IMPERIAL_ASSETS=['imperial-idle','imperial-charge','imperial-cast','imperial-fallen','imperial-support','imperial-support-broken','lightbearer-idle','lightbearer-rise','lightbearer-cast','lightbearer-resist'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
 export const imperialPortrait=(light=false)=>`${import.meta.env.BASE_URL}art/vector/chapter-six/${light?'lightbearer':'imperial'}-portrait.svg`;
 const masks=new Map<string,Uint8Array>();
 export function imperialPresentation(encounter:Encounter):BattlePresentation{
@@ -33,7 +33,7 @@ export function imperialPresentation(encounter:Encounter):BattlePresentation{
    const paint=()=>{
     if(!image.active)return;const elapsed=started===undefined?Infinity:scene.time.now-started,moving=hp>0&&bossMotionEnabled(),attack=moving&&elapsed<900;
     const resisting=light&&(u.intent?.name.startsWith('The lantern closes')??false);
-    texture=resisting?'lightbearer-resist':attack?(elapsed<260?light?'lightbearer-rise':'imperial-charge':elapsed<700?light?'lightbearer-cast':'imperial-cast':base):moving&&scene.time.now%4000>3000?light?'lightbearer-rise':'imperial-charge':base;
+    texture=!light&&hp<=0?'imperial-fallen':resisting?'lightbearer-resist':attack?(elapsed<260?light?'lightbearer-rise':'imperial-charge':elapsed<700?light?'lightbearer-cast':'imperial-cast':base):moving&&scene.time.now%4000>3000?light?'lightbearer-rise':'imperial-charge':base;
     if(image.texture.key!==texture)image.setTexture(texture);
     image.setData('actor-motion',attack?'attack':resisting?'resist':moving?light?'hover':'mechanical':'idle');
    };

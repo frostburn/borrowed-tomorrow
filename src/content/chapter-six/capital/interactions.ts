@@ -14,11 +14,16 @@ export function resumeCapital(h:StoryHost):boolean{
   if(!f.capitalPalaceSeen)return show(h,scenes.palace(s),'capitalPalaceSeen');
   if(f.capitalCommandWon&&!f.capitalHallOpened)return show(h,scenes.hallOpened(s),'capitalHallOpened',()=>h.refresh());
   if(f.capitalHallOpened&&f.nellRecovered&&!f.capitalMorningLeft){
+   if(f.capitalMorningQuestion)return show(h,scenes.awake(s),'capitalMorningLeft');
    if(!f.capitalAudienceSeen)return show(h,scenes.audience(s),'capitalAudienceSeen',()=>go(h,'lastmorning'));
    go(h,'lastmorning');return true;
   }
  }
  if(m==='lastmorning'&&!f.capitalMorningSeen)return show(h,scenes.morning(s),'capitalMorningSeen');
+ if(m==='lastshore'){
+  if(!f.capitalMorningQuestion)return show(h,scenes.shore(s),'capitalMorningQuestion',()=>go(h,'lastpalace','memory'));
+  go(h,'lastpalace','memory');return true;
+ }
  if(m==='crown'){
   if(!f.emperorSeen)return show(h,scenes.vessel(s),'emperorSeen');
   if(f.emperorWon&&!f.emperorFallen)return show(h,scenes.fallen(s),'emperorFallen',()=>resumeCapital(h));
@@ -61,12 +66,11 @@ export function interactCapital(h:StoryHost,id:string):boolean{
   case 'palace-household':say('Celia','The servant asks whether the table needs another place. The woman answers a question about the weather.');break;
   case 'palace-hunters':if(!f.capitalHuntersWon)battle('capital-hunters','capitalHuntersConfronted','Clear the eastern cloister');break;
   case 'palace-locker':if(!f.capitalFocusTaken)h.talk({lines:[SAY('Celia','They left the treatment lenses here when the private rooms took the water. This one will fit my focus.')],done:()=>{receiveItem(s.inventory,'palace-focus');h.commit('capitalFocusTaken','capitalFocusTaken');}});break;
-  case 'morning-ansel':if(!f.capitalMorningQuestion)show(h,scenes.question(s),'capitalMorningQuestion');else say('Ansel','Lantern trimmed? Your brother’s been waiting.');break;
-  case 'morning-tomas':say('Tomas','We’ll miss the early train if you keep talking.');break;
+  case 'morning-ansel':say('Ansel','Lantern trimmed? Take your brother before he eats the whole picnic on the platform.');break;
+  case 'morning-tomas':
+  case 'morning-leave':if(f.capitalMorningSeen)go(h,'lastshore');break;
   case 'morning-cup':say('Nell','He always kept the chipped side for himself. I should have brought him another cup.');break;
-  case 'morning-leave':
-   if(!f.capitalMorningQuestion){say('Nell','There’s something I want to ask him before I go.');break;}
-   h.talk({lines:[SAY('Nell','I’m going back now. The others are waiting.')],done:()=>{h.commit('capitalMorningLeft','capitalMorningLeft');go(h,'lastpalace','memory');}});break;
+  case 'shore-wake':resumeCapital(h);break;
   case 'palace-preparations':{
    if(!f.capitalHallOpened)break;
    if(f.capitalReleased){say('Orrin','The crown supports are down. Alda has the crossing chart at the allied landing.');break;}

@@ -25,7 +25,7 @@ for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},
   await approach(page,'palace-preparations');await drain(page);
   if(recovered){
    await waitMap(page,'lastmorning');expect((await inspect(page)).actors.map(a=>a.hero)).toEqual(['nell']);expect((await inspect(page)).state.activeParty).toEqual(initial.activeParty);await capture(page,'capital-morning-desktop');
-   await approach(page,'morning-ansel');await drain(page);await approach(page,'morning-leave');await dialogue(page);await waitMap(page,'lastpalace');await approach(page,'palace-preparations');await drain(page);
+   await approach(page,'morning-ansel');await dialogue(page);await approach(page,'morning-leave');await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('lastshore');await capture(page,'capital-memory-coast');await drain(page);await waitMap(page,'lastpalace');expect((await inspect(page)).state.flags.capitalMorningLeft).toBe(true);await approach(page,'palace-preparations');await drain(page);
   }else{await expect(page.getByRole('button',{name:'Return to Iria · seek treatment for Nell',exact:true})).toBeVisible();await capture(page,'capital-ill-warning-phone');}
   await page.getByRole('button',{name:recovered?'Climb the crown stair':'Proceed with Nell still bound',exact:true}).click();await waitMap(page,'crown');
   expect((await inspect(page)).state.flags.capitalRiskAccepted).toBe(!recovered);await approach(page,'capital-emperor');await page.getByRole('button',{name:'Face the Emperor',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await capture(page,`capital-emperor-${device}`);await win(page);

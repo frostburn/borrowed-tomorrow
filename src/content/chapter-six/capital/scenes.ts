@@ -51,25 +51,42 @@ export const hallOpened=(s:GameState)=>scene(s,'lastpalace','six-palace-open','T
 ]);
 export const audience=(s:GameState)=>scene(s,'lastpalace','six-emperor-audience','A room kept ready',[
  line('The Emperor','You came back. I kept the morning you saw.',{focus:{x:32,y:18},cut:true}),
- line('Nell','The station?'),
- line('The Emperor','Through that door. Your brother is waiting.'),
- line('The doorway','Warm air carries the smell of lamp oil. Beyond the frame, festival flags move above Larkspur’s platform.'),
- line('Nell','I’ll look.'),
+ line('Nell','Stay where you are.'),
+ line('The Emperor','Your brother is waiting. There’s still time to catch the train.'),
+ line('The doorway','A guard’s whistle makes Nell turn. Warm wind lifts her sleeve; the gallery is gone before she can step back.',{duration:1300}),
 ]);
 export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Before the first train',[
  line('Larkspur','Ansel turns the chipped side of his cup toward himself. Tomas leans against the station clock.',{focus:{x:21,y:13},cut:true}),
  line('Ansel','Lantern trimmed? Your brother’s been waiting. Don’t leave him standing there all morning.'),
  line('Nell','I remember this cup.'),
- line('Tomas','We’ll miss the early train if you keep talking.'),
+ line('Tomas','We’ll miss the sea train if you keep talking.'),
  line('Nell','You always said that before you’d bought the tickets.'),
- line('Larkspur','The clock’s second hand reaches the top and pauses. Ansel turns the cup again.'),
+ line('Tomas','This time I got there early. Two seats by the window.'),
+ line('Ansel','Bring my flask back. I don’t want to drink the station tea.'),
 ]);
-export const question=(s:GameState)=>scene(s,'lastmorning','six-morning-question','An unanswered question',[
- line('Nell','What were you going to do when you stopped working here?',{focus:{x:20,y:12},cut:true}),
- line('Ansel','Keep the oil below the line. Too much and it’ll smoke.'),
- line('Nell','I never asked. I thought there’d be time.'),
- line('Ansel','Lantern trimmed? Your brother’s been waiting.'),
- line('Nell','It is. I’ve kept it trimmed.'),
+export const shore=(s:GameState)=>scene(s,'lastshore','six-memory-sea','The sea, at last',[
+ line('The coast','The carriage door opens onto salt air. Tomas takes their bags, and Nell walks beside him down to the water.',{focus:{x:31,y:21},cut:true,duration:1800,actors:{nell:{to:{x:31,y:26}},tomas:{to:{x:33,y:26}}}}),
+ line('Tomas','A beach. No ferry leaning against a gate. This is more like it.'),
+ line('Nell','You’ve brought enough bread for a week.'),
+ line('Tomas','I was hungry when I bought it. Sit down before the gulls notice.'),
+ line('The sea','Nell leans against her brother. The wind is warm, and the next train is hours away.',{duration:1200}),
+ line('Nell','There was a woman at the quay. She kept dropping the same cloth.'),
+ line('Tomas','Tell me on the train. We’ve got time.'),
+ line('Nell','She couldn’t leave. Neither could the baker. His hands were burned.'),
+ line('The sea','Nell looks at the bread in her lap. She remembers the blackened loaf, and Celia carrying a patient past the palace table.'),
+ line('Nell','They’re still taking people’s days. How many more have they taken while we’ve been here?'),
+ line('Tomas','We can stay until the next train.'),
+ line('Nell','I want to. I want to stay so much.'),
+ line('Nell','But I can’t leave them there.'),
+ line('The shore','Nell closes her eyes and digs her nails into her palm. She holds on to the sting as the sound of the waves fades.',{duration:1200}),
+ line('Nell','Wake up.'),
+]);
+export const awake=(s:GameState)=>scene(s,'lastpalace','six-memory-wake','The days outside',[
+ line('Celia','Nell. Here. Look at me.',{focus:{x:32,y:22},cut:true,actors:{celia:{to:{x:33,y:23}}}}),
+ line('The gallery','Cold marble presses against Nell’s knees. She pulls herself upright and faces the Emperor.'),
+ line('Nell','No. I won’t take it. Let their days go.'),
+ line('The gallery','Her hand is still trembling. Kit draws a chair away from the wall.'),
+ line('Kit','Sit with us for a minute.'),
 ]);
 export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','Before the crown stair',s.flags.nellRecovered?[
  line('Celia','The attendants are at the boats. Everyone who could be moved is out of the private ward.',{focus:{x:32,y:23},cut:true}),
@@ -90,12 +107,11 @@ export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Em
  line('Celia','The lower ward was left without water. We carried your patients out.'),
  line('The Emperor','I can restore the rooms. I need the supports kept in place.'),
  line('Orrin','He’s drawing them back together already. Break both, then go for the vessel.'),
- ...(s.flags.nellRecovered?[line('Nell','You kept his cup. He can’t answer me.'),line('The Emperor','There are mornings I can still put right.'),line('Nell','Let this one happen.')]:[line('Petra','The people are at the boats. You’re letting them leave.')]),
+ ...(s.flags.nellRecovered?[line('Nell','There are people on those boats. Let them have tomorrow.')]:[line('Petra','The people are at the boats. You’re letting them leave.')]),
 ]);
 export const fallen=(s:GameState)=>scene(s,'crown','six-imperial-fall','The crown breaks',[
- line('The vessel','The crown splits above the Emperor’s face. He reaches for an armrest that has fallen away.',{focus:{x:32,y:20},cut:true,effect:'capital-fall',cue:'burst',duration:1800}),
- line('The Emperor','The room. Put the chair back by the window.'),
- line('The crown platform','The light behind his eyes fades. Below, the palace terraces settle past the outer walls.',{duration:1100}),
+ line('The vessel','The crown splits around the Emperor’s motionless body. Its sun falls dark.',{focus:{x:32,y:20},cut:true,effect:'capital-fall',cue:'burst',duration:1800}),
+ line('The crown platform','The broken armrests fall away. Below, the palace terraces settle past the outer walls.',{duration:1100}),
  line('Orrin','The crews have the lowering gear. Take the inside of the stair.'),
  ...(s.flags.nellRecovered?[
  line('The lantern','A pale thread catches against Nell’s wrist, then slips loose and breaks.',{effect:'capital-thread',duration:1000,cue:'resonance'}),
