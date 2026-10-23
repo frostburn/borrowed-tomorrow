@@ -1,6 +1,6 @@
 import type { Instrument } from './score';
 export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
-import { isBass, pitchFrequency, type Pitch } from './tuning';
+import { isBass, isPercussion, pitchFrequency, type Pitch } from './tuning';
 import type { ControlCurve,NoteExpression } from './expression';
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
@@ -73,13 +73,17 @@ export class Synth {
     // A delayed scheduler must play the attack now, not start halfway through
     // an envelope whose timestamp has already passed on the audio clock.
     when=Math.max(when,this.context.currentTime);
+    // Unpitched strikes take their phrase accent at the attack. Their short
+    // material envelopes supply the decay rather than a sustained-note swell.
+    if(isPercussion(instrument))volume*=expression?.dynamics?.[0][1]??1;
     if(instrument==='kick'){this.tone(120,when,.13,volume,'sine',pan,43);this.noise(when,.018,volume*.15,1600,600,pan);return;}
     if(instrument==='snare'){this.noise(when,duration,volume,1700,950,pan);this.tone(185,when,.07,volume*.35,'triangle',pan,110);return;}
     if(instrument==='cymbal'){this.cymbal(when,duration,volume,pan);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
     const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
     const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
-    const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,bell?.65:strings?.35:timpani?.25:brass?.22:.16,plucked||timpani);
+    const release=expression?.release??(bell?.65:strings?.35:timpani?.25:brass?.22:.16);
+    const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
     filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
     if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
@@ -102,7 +106,7 @@ export class Synth {
     if(bell){
       const carrier=osc('sine'),mod=this.track(c.createOscillator()),index=c.createGain();
       mod.frequency.value=hz*2.76;index.gain.setValueAtTime(hz*.65,when);index.gain.exponentialRampToValueAtTime(.1,when+duration+.4);
-      mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);nodes.push(mod,index);osc('sine',0,2,.1);
+      mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);voices.push(mod);nodes.push(mod,index);osc('sine',0,2,.1);
     }else if(brass){osc('sawtooth',-2,1,.43);osc('sawtooth',2,1,.43);osc('triangle',0,.5,.12);}
     else if(timpani){
       for(const [ratio,mix]of [[1,.75],[1.48,.19],[2.15,.09],[2.9,.035]]){const o=osc('sine',0,ratio,mix);o.frequency.setValueAtTime(hz*ratio*1.025,when);o.frequency.exponentialRampToValueAtTime(hz*ratio,when+.065);}
@@ -117,6 +121,13 @@ export class Synth {
         depth.gain.setValueAtTime(0,when);depth.gain.linearRampToValueAtTime(hz*.004,when+.2);
         vibrato.connect(depth);depth.connect(reed.frequency);vibrato.start(when);vibrato.stop(r.end);nodes.push(vibrato,depth);
       }
+    }
+    if(expression?.bend){
+      // An additive cents bus preserves the rack's small unison detunes. It
+      // bends fundamentals, upper partials and the bell's FM modulator together.
+      const bend=this.track(c.createConstantSource());automate(bend.offset,expression.bend);
+      for(const voice of voices)bend.connect(voice.detune);
+      bend.start(when);bend.stop(r.end);nodes.push(bend);
     }
     if(expression?.vibrato){
       const vibrato=this.track(c.createOscillator()),depth=c.createGain();vibrato.frequency.value=expression.vibrato.rate;

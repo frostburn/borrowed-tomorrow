@@ -1,4 +1,4 @@
-import { singing } from './expression';
+import { fretless,singing } from './expression';
 import { octave,type Pitch } from './tuning';
 import type { Note } from './score';
 export type WindmereMode='windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine';
@@ -89,11 +89,16 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
  const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};out.push(note);return note;};
  const lead=quiet||boss&&!middle?'bell':fight?'strings':round?'keys':'reed';
  for(const [n,[beat,pitch,duration]]of tune[i].entries()){
-  const voice=add(lead,pitch,beat,duration,quiet?.11:lead==='bell'?.13:.18,-.17);
-  if(mode==='windmere')voice.expression=singing('celia',dynamics[i]*(1-n*.07),duration,[9,15,23,31].includes(i));
+  const hold=quiet&&tune[(i+1)%32].length===0?7.5-beat:duration;
+  const voice=add(lead,pitch,beat,hold,quiet?.11:lead==='bell'?.13:.18,-.17);
+  if(mode==='windmere')voice.expression=singing('warm',dynamics[i]*(1-n*.07),duration,[9,15,23,31].includes(i));
  }
  if(quiet){
-  if(i%2===0){const hold=changes[i]===changes[i+1]?7.5:3.5;add('round-bass',bass,0,hold,.075);for(const [n,p]of chord.entries())add('strings',p,0,hold,.016,n%2?.4:-.4);}
+  if(i%2===0){
+   const hold=changes[i]===changes[i+1]?7.5:3.5,from=chords[changes[(i+30)%32]].bass;
+   add('round-bass',bass,0,hold,.14).expression=fretless(from,bass,hold);
+   for(const [n,p]of chord.entries())add('strings',p,0,hold,.016,n%2?.4:-.4);
+  }
   if(!tune[i].length)add('keys',chord[0],2,1,.04,.35);
   return out;
  }

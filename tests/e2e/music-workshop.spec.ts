@@ -20,11 +20,16 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    for(const [group,count]of [['Ch 1',7],['Ch 2',6],['Ch 3',4],['Ch 4',5],['Library',2]] as const){
     await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:group,exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(count);
    }
-   // Four quick comparisons use the real campaign cues, without a chapter playthrough.
-   await page.getByRole('button',{name:'Themes',exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(4);
-   for(const [cue,character]of [['airship','Nell'],['hammerplain','Orrin'],['dawnwatch','Petra'],['windmere','Celia']]){
+   await page.getByRole('button',{name:'Ch 1',exact:true}).click();await page.locator('[data-cue="inspector"]').click();
+   const albanBar=page.getByRole('spinbutton',{name:'Bar',exact:true});await expect(albanBar).toHaveAttribute('max','24');
+   await albanBar.fill('17');await albanBar.press('Tab');await expect(page.locator('#music-notes-title')).toHaveText('Bar 17 / 24');
+   await expect(page.locator('#music-notes')).toContainText('A4');
+   await albanBar.fill('24');await albanBar.press('Tab');await page.getByRole('button',{name:'Next bar',exact:true}).click();await expect(albanBar).toHaveValue('1');
+   // Six character references use real campaign cues, without a chapter playthrough.
+   await page.getByRole('button',{name:'Themes',exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(6);
+   for(const [cue,character]of [['station','Nell'],['hammerplain','Orrin'],['coast','Kit'],['dawnwatch','Petra'],['flagship','Alban'],['windmere','Celia']]){
     await expect(page.locator(`[data-cue="${cue}"] span`)).toHaveText(character);await page.locator(`[data-cue="${cue}"]`).click();await expect(page.locator('.music-theme')).toContainText(character);
-    await expect(page.locator('.music-review .music-description').first()).toContainText(cue==='windmere'?'3/4':'4/4');
+    await expect(page.locator('.music-review .music-description').first()).toContainText(cue==='windmere'?'3/4':cue==='flagship'?'10/8':'4/4');
    }
    await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('#music-position')).toContainText('Playing');
    await page.getByRole('button',{name:'Next bar',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Bar',exact:true})).toHaveValue('2');await expect(page.locator('#music-notes-title')).toHaveText('Bar 2 / 32');
@@ -91,8 +96,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await expect(page.locator('.music-review .music-description').first()).toContainText('4/4');
    }
    await page.getByRole('group',{name:'Instrument audition'}).getByRole('button',{name:'Strings',exact:true}).click();
-   await bar.fill('3');await bar.press('Tab');
-   await expect(page.locator('#music-notes tbody')).toContainText('2+1/3');await expect(page.locator('#music-notes tbody')).toContainText('3+2/3');
+   await bar.fill('5');await bar.press('Tab');
+   await expect(page.locator('#music-notes tbody')).toContainText('4+2/3');
    await capture(page,`chapter-two-battle-music-${device}`);
    await page.getByRole('button',{name:'Play',exact:true}).click();await page.getByRole('navigation',{name:'Workshop panels'}).getByRole('button',{name:'Character',exact:true}).click();
    await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();await expect(page.getByRole('spinbutton',{name:'Nell level',exact:true})).toHaveValue('1');

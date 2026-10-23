@@ -17,12 +17,12 @@ interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   windmere:{beats:3,bpm:76,lead:'reed',leadGain:.18,keys:.023,strings:.016,bass:.095,percussion:0},
   dispensary:{beats:3,bpm:88,lead:'keys',leadGain:.18,keys:.025,strings:0,bass:.095,percussion:0},
-  mirrorward:{beats:4,bpm:66,lead:'bell',leadGain:.11,keys:.04,strings:.016,bass:.075,percussion:0},
+  mirrorward:{beats:4,bpm:66,lead:'bell',leadGain:.11,keys:.04,strings:.016,bass:.14,percussion:0},
   'wind-battle':{beats:4,bpm:128,lead:'strings',leadGain:.18,keys:.028,strings:.016,bass:.125,percussion:.1},
   'wind-engine':{beats:4,bpm:118,lead:'bell',leadGain:.13,keys:.028,strings:.016,bass:.135,percussion:.1},
   dawnwatch:{beats:4,bpm:92,lead:'strings',leadGain:.17,keys:.023,strings:.016,bass:.095,percussion:.022},
   watchbarracks:{beats:4,bpm:106,lead:'brass',leadGain:.15,keys:.023,strings:0,bass:.095,percussion:.043},
-  signalwall:{beats:4,bpm:80,lead:'bell',leadGain:.1,keys:.04,strings:.017,bass:.085,percussion:0},
+  signalwall:{beats:4,bpm:80,lead:'bell',leadGain:.1,keys:.04,strings:.017,bass:.16,percussion:0},
   observation:{beats:4,bpm:60,lead:'keys',leadGain:.15,keys:.035,strings:.012,bass:.075,percussion:0},
   'dawn-battle':{beats:4,bpm:132,lead:'strings',leadGain:.17,keys:.03,strings:.016,bass:.135,percussion:.105},
   'dawn-commander':{beats:4,bpm:124,lead:'brass',leadGain:.15,keys:.03,strings:.016,bass:.135,percussion:.105},
@@ -68,7 +68,35 @@ const PHRASES:[number,Pitch,number][][]=[
   [[0,'D5',1.5],[2,'F5',.75],[3,'E5',.75],[4,'D5',2],[7,'C5',.75],[8,'A4',1.5],[10,'C5',.75],[11,'E5',.75],[12,'D5',3]],
 ];
 const ROOTS:Pitch[]=['D3','Bb2','F3','C3','D3','Bb2','G2','A2','F3','C3','Bb2','A2','D3','Bb2','A2','D3'];
-/** Dispatch complete scores; retained home arrangements use a sixteen-bar form. */
+// Orrin works; Nell answers. His G-minor hammer cell is transposed into the
+// workshop's D minor, then traded for the festival sentence, four bars at a time.
+const WORKSHOP:[number,Pitch,number][][]=[
+  [[0,'A4',.35],[.5,'A4',.35],[1.5,'Bb4',.35],[2,'A4',.65],[3,'E4',.65],
+   [4,'F4',1.25],[6,'D4',.75],[7,'A4',.6],
+   [8,'C5',.35],[8.5,'C5',.35],[9.5,'C5',.35],[10,'C5',.65],[11,'G4',.65],
+   [12,'E5',.75],[13,'D5',.75],[14,'Bb4',1]],
+  PHRASES[0],
+  [[0,'C5',.35],[.5,'C5',.35],[1.5,'C5',.35],[2,'C5',.65],[3,'G4',.65],
+   [4,'G4',.35],[4.5,'G4',.35],[5.5,'G4',.35],[6,'G4',.65],[7,'D4',.65],
+   [8,'F4',1],[9.5,'A4',.5],[10.5,'F4',1],
+   [12,'E4',.75],[13,'G4',.5],[14,'C#5',1]],
+  PHRASES[3],
+];
+// The original sixteen bars precede these two new sentences. The flagship's
+// contour enters only in the extension, recast in plain 4/4.
+const ALBAN:[number,Pitch,number][][]=[[
+  [0,'D5',.65],[1,'A4',.65],[2,'D5',.65],[3,'F5',.75],
+  [4,'F5',.75],[5,'D5',.5],[6,'Bb4',.65],[7,'C5',.35],[7.5,'D5',.35],
+  [8,'D5',.5],[8.5,'G5',.35],[9,'F5',.75],[10,'D5',1],[11.5,'Bb4',.35],
+  [12,'C#5',.75],[13,'E5',.5],[14,'G5',.75],[15,'E5',.65],
+],[
+  [0,'D5',.65],[1,'A4',.65],[2,'F5',.65],[3,'A5',.75],
+  [4,'G5',.75],[5,'F5',.5],[6,'D5',.75],[7,'Bb4',.65],
+  [8,'E5',.75],[9,'C#5',.75],[10,'A4',1],[11.5,'C#5',.35],
+  [12,'D5',2],[14.5,'A4',.5],[15.25,'D5',.5],
+]];
+const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
+/** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
   if(mode==='windmere'||mode==='dispensary'||mode==='mirrorward'||mode==='wind-battle'||mode==='wind-engine')return windmereBar(mode,bar);
   if(mode==='dawnwatch'||mode==='watchbarracks'||mode==='signalwall'||mode==='dawn-battle'||mode==='dawn-commander')return dawnwatchBar(mode,bar);
@@ -82,27 +110,28 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
   if(mode==='northglass'||mode==='relayhall'||mode==='switching')return scoreD(mode,bar);
   if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting')return scoreC(mode,bar);
   if(mode==='rillbridge'||mode==='sluice'||mode==='flood')return scoreB(mode,bar);
-  const a=ARRANGEMENTS[mode],index=((bar%16)+16)%16,phrase=Math.floor(index/4),within=index%4;
-  const tense=mode==='battle'||mode==='inspector',root=ROOTS[index];
+  const a=ARRANGEMENTS[mode],length=scoreLength(mode),index=((bar%length)+length)%length,phrase=Math.floor(index/4),within=index%4;
+  const tense=mode==='battle'||mode==='inspector',root=index>=16?ALBAN_ROOTS[index-16]:ROOTS[index];
   const third=root==='D3'||root==='G2'||(root==='A2'&&index===7)?'m3':'M3';
   const chord=[root,transpose(root,third),transpose(root,'P5')];
   const result:Note[]=[];
   const add=(instrument:Instrument,pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{if(velocity>0)result.push({instrument,pitch,beat,duration,velocity,pan});};
-  for(const [beat,pitch,duration] of PHRASES[phrase])if(beat>=within*4&&beat<within*4+4){
+  const sentence=mode==='yard'?WORKSHOP[phrase]:index>=16?ALBAN[phrase-4]:PHRASES[phrase];
+  for(const [beat,pitch,duration] of sentence)if(beat>=within*4&&beat<within*4+4){
     const resolved=index===14&&pitch==='C5'?'C#5':pitch;
     const melody=octave(resolved,(mode==='ending'&&phrase===3?1:0)-(mode==='tunnel'?1:0));
     add(a.lead,melody,beat-within*4,duration,a.leadGain*(within===3?.85:1),-.18);
     if(tense&&duration>=1.5)add('bell',octave(melody,1),beat-within*4+.5,.45,.065,.4);
   }
   // The bridge answers the main line rather than playing every note in unison.
-  if(phrase===2&&within%2===1)add(mode==='tunnel'?'reed':'bell',transpose(root,'P12'),1.5,1.75,a.leadGain*.35,.5);
+  if(phrase===2&&within%2===1&&mode!=='yard')add(mode==='tunnel'?'reed':'bell',transpose(root,'P12'),1.5,1.75,a.leadGain*.35,.5);
   chord.forEach((pitch,i)=>add('strings',octave(pitch,mode==='ending'?1:0),0,3.9,a.strings/Math.sqrt(3),i===0?-.45:.45));
   if(tense){
     for(let beat=0;beat<4;beat+=.5)add('keys',octave(chord[[0,2,1,2][Math.round(beat*2)%4]],1),beat,.28,a.keys*(beat%1?.65:1),.3);
     for(let beat=0;beat<4;beat++)add('bass',octave(transpose(root,beat===2?'P5':'P1'),-1),beat,.72,a.bass);
   }else{
     const pattern=mode==='yard'?[0,2,1,2]:[0,1,2,1];
-    for(let beat=0;beat<4;beat++)if(!(within===3&&beat===3))add('keys',octave(chord[pattern[beat]],1),beat+(beat%2&&mode==='yard'?.12:0),1.25,a.keys,.35);
+    for(let beat=0;beat<4;beat++)if(!(within===3&&beat===3))add('keys',octave(chord[pattern[beat]],1),beat+(beat%2&&mode==='yard'?.12:0),mode==='yard'?.7:1.25,a.keys*(mode==='yard'?.55:1),.35);
     add('bass',octave(root,-1),0,2.8,a.bass,-.12);if(mode!=='tunnel')add('bass',transpose(root,'-P4'),3,.8,a.bass*.65,-.12);
     if(mode==='station'&&within===3)add('bell',octave(root,2),2.5,1.5,.08,.55);
   }
@@ -117,6 +146,7 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 
 export function scoreLength(mode:MusicMode):number {
   if(mode==='flagship')return 34;
+  if(mode==='inspector')return 24;
   return ['windmere','dispensary','mirrorward','wind-battle','wind-engine','dawnwatch','watchbarracks','signalwall','observation','dawn-battle','dawn-commander','airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
 }
 
