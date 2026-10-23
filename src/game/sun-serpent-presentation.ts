@@ -20,7 +20,7 @@ export function serpentPresentation(encounter:Encounter):BattlePresentation{
   portrait:u=>u.id===SUN_SERPENT_ID||u.kind==='serpent-coil'?SERPENT_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===SUN_SERPENT_ID||u.kind==='serpent-coil'?bossPlacement({...u,hex}):undefined,
-  hint:b=>`${serpentHead(b)?.intent?.phase}. Break loose coils to weaken head armor and stop reflections. Glass only reflects the next marked breath.`,
+  hint:b=>`${serpentHead(b)?.intent?.phase}. Broken coils weaken armor and stop reflections.`,
   background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['sun-serpent'],newGame());},
   actor(scene,u,hp,hex){
    if(u.id!==SUN_SERPENT_ID&&u.kind!=='serpent-coil')return;
