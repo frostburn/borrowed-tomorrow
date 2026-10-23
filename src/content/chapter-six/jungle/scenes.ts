@@ -43,7 +43,7 @@ export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pu
  line('The upper landing','Tavi brings the launch alongside. Kit takes Nell’s bag while Celia and Ines help her onto the covered deck.',{focus:{x:42,y:30},cut:true,effect:'river-launch',duration:1300}),
  line('Nell','I can manage the last step.'),
  line('Kit','I’ve got the bag. Take your time.'),
- line('Ines','This way. Tell me if the pull changes.',{focus:{x:32,y:26},actors:{nell:{to:{x:32,y:26}},kit:{to:{x:30,y:28}}},duration:1200}),
+ line('Ines','This way. Tell me if the pull changes.',{focus:{x:32,y:26},actors:{nell:{to:{x:32,y:26}},kit:{to:{x:30,y:28}},celia:{to:{x:31,y:26}}},duration:1200}),
  line('Celia','Moving the lantern didn’t break the rhythm. Even in the next room, her pulse followed it.'),
  line('Ines','The binding is on her now. Set the lantern beside the basin; I’ll follow it back.'),
  line('Nell','Do I have to hold it?'),

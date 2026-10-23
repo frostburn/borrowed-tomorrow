@@ -1,6 +1,6 @@
 # Chapter Six — The Emperor's Last Day
 
-The shared opening and Namar desert expedition are playable. The northern capital, optional jungle treatment and Emperor climax below remain author plans. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
+The shared opening, Namar desert expedition and optional Iria treatment journey are playable. The northern capital and Emperor climax below remain author plans. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
 
 ## Approved chapter structure
 
@@ -8,7 +8,7 @@ The party tries to reach the Emperor, but he seals the capital before they can e
 
 The two seals belong to an old defensive pact. The foreign rulers once entrusted the Emperor with protecting their capitals; he has invoked the pact to close his own. Reach each seal's original seat of authority and win the local support needed to break it. These are foreign courts with their own interests and responsibility for supporting the empire. Their people continue their ordinary lives; the journeys expose the wider consequences of the alliance.
 
-Keep the seven-chapter outline: the two kingdoms, optional jungle and Emperor climax belong to Chapter Six. The deliberate departure into the god's domain remains Chapter Seven. The remaining routes are an approved author plan. Implemented Namar scenes, map IDs and checkpoints are documented separately in the continuation.
+Keep the seven-chapter outline: the two kingdoms, optional jungle and Emperor climax belong to Chapter Six. The deliberate departure into the god's domain remains Chapter Seven. The remaining routes are an approved author plan. Implemented Namar/Iria scenes, map IDs and checkpoints are documented separately in the continuation.
 
 ## Shared opening — the sealed capital
 
@@ -40,7 +40,7 @@ Establish the ship as a safe berth and open the two foreign destinations togethe
 
 **Purpose:** restore Nell to combat and deepen Kit's care through practical work, trust and a small personal scene. This replaces the earlier plan to cure her entirely through Windmere's isolated room. Sera and Celia remain the medical link to the new region.
 
-Sera identifies a river settlement experienced in treating people harmed by prolonged crystal exposure. Celia recognizes a possible treatment in its records. Follow a river route to a treatment sanctuary threatened by the Benefactor's creatures. Kit helps bring the right people together and get them safely aboard. Give the settlement its own work and concerns; do not turn the route into a rare-herb shopping list or a bargain demanding Kit's sacrifice. The precise encounters and local names remain for implementation.
+Sera identifies a river settlement experienced in treating people harmed by prolonged crystal exposure. Celia recognizes a possible treatment in its records. Follow a river route to a treatment sanctuary threatened by the Benefactor's creatures. Kit helps bring the right people together and get them safely aboard. Give the settlement its own work and concerns; do not turn the route into a rare-herb shopping list or a bargain demanding Kit's sacrifice. This is now Iria: healer Ines and launch pilot Tavi help the party open a chained medical waterway, clear the rain house of divine hunters and bring Nell for treatment. See [the implemented route](chapter-six-jungle.md).
 
 Nell stays under care while the others travel. The local healers and Celia interrupt the harmful connection without destroying the shard needed for the final crossing. Her recovery is earned through this optional expedition, not by ordinary rest. The region uses Slendric[5] for the river, village and sanctuary, expanding to Slendric[6] for deeper forest and combat.
 

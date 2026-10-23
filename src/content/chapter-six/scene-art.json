@@ -429,13 +429,33 @@
       "layerId": 2
     },
     {
+      "key": "scene-six-haven-near-tree",
+      "url": "art/vector/chapter-six/haven-near-tree.svg",
+      "x": -105,
+      "y": 523,
+      "width": 280,
+      "height": 300,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-haven-far-tree",
+      "url": "art/vector/chapter-six/haven-far-tree.svg",
+      "x": 1385,
+      "y": 438,
+      "width": 240,
+      "height": 260,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
       "key": "scene-six-iria-launch",
       "url": "art/vector/chapter-six/iria-launch.svg",
-      "x": 767,
-      "y": 626,
+      "x": 780,
+      "y": 770,
       "width": 224,
       "height": 100,
-      "depth": 726,
+      "depth": 870,
       "layerId": 3
     },
     {
@@ -489,6 +509,36 @@
       "height": 1008,
       "depth": -999,
       "layerId": 2
+    },
+    {
+      "key": "scene-six-canopy-west-tree",
+      "url": "art/vector/chapter-six/canopy-west-tree.svg",
+      "x": -40,
+      "y": 526,
+      "width": 240,
+      "height": 260,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-canopy-east-tree",
+      "url": "art/vector/chapter-six/canopy-east-tree.svg",
+      "x": 1352,
+      "y": 362,
+      "width": 270,
+      "height": 290,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-canopy-fallen-bank",
+      "url": "art/vector/chapter-six/canopy-fallen-bank.svg",
+      "x": 963,
+      "y": 810,
+      "width": 244,
+      "height": 180,
+      "depth": -998,
+      "layerId": 3
     },
     {
       "key": "scene-six-canopy-launch",
@@ -573,6 +623,26 @@
       "layerId": 2
     },
     {
+      "key": "scene-six-rainhouse-near-tree",
+      "url": "art/vector/chapter-six/rainhouse-near-tree.svg",
+      "x": 4,
+      "y": 562,
+      "width": 260,
+      "height": 280,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-rainhouse-east-tree",
+      "url": "art/vector/chapter-six/rainhouse-east-tree.svg",
+      "x": 1387,
+      "y": 495,
+      "width": 220,
+      "height": 240,
+      "depth": -998,
+      "layerId": 3
+    },
+    {
       "key": "scene-six-rainhouse-cot",
       "url": "art/vector/chapter-six/rainhouse-cot.svg",
       "x": 713,
@@ -605,11 +675,11 @@
     {
       "key": "scene-six-rainhouse-launch",
       "url": "art/vector/chapter-six/rainhouse-launch.svg",
-      "x": 1045,
-      "y": 694,
+      "x": 1066,
+      "y": 866,
       "width": 224,
       "height": 100,
-      "depth": 794,
+      "depth": 966,
       "layerId": 3
     },
     {

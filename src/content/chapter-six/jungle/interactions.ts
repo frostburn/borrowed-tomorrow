@@ -9,7 +9,7 @@ const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.trav
 export function resumeJungle(h:StoryHost):boolean{
  const s=h.state,f=s.flags,m=s.location.map;
  const show=(d:Dialogue,flag:string)=>{h.talk({...d,done:()=>h.commit(flag,flag)});return true;};
- if(m==='outermooring'&&f.nellRecovered&&!f.riverReported){
+ if(m==='outermooring'&&f.riverThanksSeen&&!f.riverReported){
   h.talk({...scenes.home(s),done:()=>{
    if(f.desertSealBroken&&!f.desertReported){f.desertReported=true;remember(s,'desertReported');}
    h.commit('riverReported','riverReported');
