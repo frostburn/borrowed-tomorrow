@@ -580,6 +580,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 1
@@ -599,6 +604,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 2
@@ -618,6 +628,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -648,6 +663,16 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "patientsTransferred"
             }
           ],
           "id": 4
@@ -667,6 +692,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 5
@@ -686,6 +716,11 @@
               "name": "sprite",
               "type": "string",
               "value": "sera"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 6
@@ -710,6 +745,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "windmereFreed"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 7

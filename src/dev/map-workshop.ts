@@ -1,6 +1,7 @@
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
 import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
+import { interactionMarker } from '../content/interaction-markers';
 import { walkable } from '../content/maps';
 import { bitmapText } from '../game/pixel-font';
 import { art } from '../game/ui';
@@ -150,7 +151,7 @@ export class MapWorkshop {
       }
     }
     if(this.overlays.has('grid')){ctx.fillStyle='#f4e5be55';for(let x=0;x<e.width;x+=24)ctx.fillRect(x,0,1,e.height);for(let y=0;y<e.height;y+=24)ctx.fillRect(0,y,e.width,1);}
-    if(this.overlays.has('markers'))for(const l of e.tiles?.layers.filter(l=>l.type==='objectgroup'&&!l.name.startsWith('Scene:'))??[]){for(const o of l.objects??[]){const p=properties(o);if(p.hiddenFlag&&this.flags[String(p.hiddenFlag)]||p.requiredFlag&&!this.flags[String(p.requiredFlag)])continue;ctx.strokeStyle='#73d5de';ctx.lineWidth=1;ctx.strokeRect(Math.floor(o.x)+.5,Math.floor(o.y)+.5,o.width||6,o.height||6);bitmapText(ctx,o.name,Math.floor(o.x)+8,Math.floor(o.y),'#73d5de',1);}}
+    if(this.overlays.has('markers'))for(const l of e.tiles?.layers.filter(l=>l.type==='objectgroup'&&!l.name.startsWith('Scene:'))??[]){for(const o of l.objects??[]){const p=properties(o);if(p.hiddenFlag&&this.flags[String(p.hiddenFlag)]||p.requiredFlag&&!this.flags[String(p.requiredFlag)])continue;const interaction=l.name==='Interactions'?e.world?.objects.find(item=>item.id===o.name):undefined,marker=interaction?interactionMarker(interaction,{flags:this.flags}):undefined;if(interaction&&!marker)continue;const color=marker?.color??'#73d5de';ctx.strokeStyle=color;ctx.lineWidth=1;ctx.strokeRect(Math.floor(o.x)+.5,Math.floor(o.y)+.5,o.width||6,o.height||6);bitmapText(ctx,marker?`${marker.glyph} ${o.name}`:o.name,Math.floor(o.x)+8,Math.floor(o.y),color,1);}}
     ctx.strokeStyle='#f4c77a';ctx.lineWidth=2;ctx.strokeRect(this.selected.x*24+1,this.selected.y*24+1,22,22);
     this.inspector();
     const urls=pieces?pieces.map(p=>`${import.meta.env.BASE_URL}${p.url}`):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}${e.image??`art/${e.world!.art??e.id}.webp`}`];

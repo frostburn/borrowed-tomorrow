@@ -1760,6 +1760,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "petraJoined"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1784,6 +1789,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -1813,6 +1823,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "capitalCache"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -1852,6 +1867,11 @@
               "name": "approachY",
               "type": "int",
               "value": 13
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         },
@@ -1881,6 +1901,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "tomasRescued"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -1910,6 +1935,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "emperorMerged"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }
@@ -2375,8 +2405,16 @@
   "nextobjectid": 34,
   "orientation": "orthogonal",
   "properties": [
-    {"name": "sceneArt", "type": "string", "value": "northglass"},
-    {"name": "artStyle", "type": "string", "value": "rotoscope"},
+    {
+      "name": "sceneArt",
+      "type": "string",
+      "value": "northglass"
+    },
+    {
+      "name": "artStyle",
+      "type": "string",
+      "value": "rotoscope"
+    },
     {
       "name": "name",
       "type": "string",

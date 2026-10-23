@@ -1750,14 +1750,14 @@
               "value": "Dena · ward supplies and rest"
             },
             {
-              "name": "doneFlag",
-              "type": "string",
-              "value": "wardSeen"
-            },
-            {
               "name": "sprite",
               "type": "string",
               "value": "dena"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "x": 756,
@@ -1782,6 +1782,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "x": 852,
@@ -1806,6 +1811,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "x": 684,
@@ -1830,6 +1840,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "x": 492,
@@ -1854,6 +1869,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "x": 1044,

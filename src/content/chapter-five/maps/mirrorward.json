@@ -590,6 +590,11 @@
               "name": "spriteHiddenFlag",
               "type": "string",
               "value": "windGalleryWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 1
@@ -625,6 +630,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "wardEngineWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 2
@@ -660,6 +670,16 @@
               "name": "accessFlag",
               "type": "string",
               "value": "wardEngineWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "windmereFreed"
             }
           ],
           "id": 3
@@ -679,6 +699,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 4
@@ -698,6 +723,11 @@
               "name": "sprite",
               "type": "string",
               "value": "iven"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 5

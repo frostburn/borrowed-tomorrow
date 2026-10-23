@@ -604,6 +604,11 @@
               "name": "spriteHiddenFlag",
               "type": "string",
               "value": "windLiftWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 1
@@ -634,6 +639,16 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "waterLiftOpened"
             }
           ],
           "id": 2
@@ -653,6 +668,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -683,6 +703,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 4
@@ -702,6 +727,11 @@
               "name": "sprite",
               "type": "string",
               "value": "sera"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 5

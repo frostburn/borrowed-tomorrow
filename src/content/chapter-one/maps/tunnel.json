@@ -599,6 +599,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "captainDefeated"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -628,6 +633,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "muralRead"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -652,6 +662,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -676,6 +691,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         },
@@ -700,6 +720,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }

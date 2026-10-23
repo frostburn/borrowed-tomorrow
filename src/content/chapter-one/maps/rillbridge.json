@@ -1164,6 +1164,11 @@
               "name": "sprite",
               "type": "string",
               "value": "tilda"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -1188,6 +1193,11 @@
               "name": "sprite",
               "type": "string",
               "value": "elspeth"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -1217,6 +1227,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "waterSeen"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -1246,6 +1261,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "collectorDefeated"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1280,6 +1300,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "villageFreed"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1304,6 +1329,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         },
@@ -1328,6 +1358,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }

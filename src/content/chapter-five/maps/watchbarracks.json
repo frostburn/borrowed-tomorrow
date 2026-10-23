@@ -622,6 +622,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 1
@@ -657,6 +662,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "mortarWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 2
@@ -692,6 +702,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "repeaterWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 3
@@ -711,6 +726,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 4
@@ -730,6 +750,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 5
@@ -760,6 +785,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 6

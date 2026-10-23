@@ -23,7 +23,7 @@ for(const [i,group] of battles.entries())for(const [id,tiles] of Object.entries(
 /** Only flags that actually change this map's art, people, gates or markers. */
 export function reviewFlags(entry:MapReview){
   const names=new Set<string>();
-  const add=(p:Record<string,unknown>)=>{for(const key of ['requiredFlag','hiddenFlag','spriteHiddenFlag','doneFlag','openFlag'])if(p[key])names.add(String(p[key]));};
+  const add=(p:Record<string,unknown>)=>{for(const key of ['requiredFlag','hiddenFlag','spriteHiddenFlag','doneFlag','openFlag','storyUntil'])if(p[key])names.add(String(p[key]));};
   for(const l of entry.tiles?.layers??[]){add(properties(l));for(const o of l.objects??[])add(properties(o));}
   for(const o of [...entry.world?.objects??[],...entry.world?.people??[],...entry.world?.gates??[]])add(o as unknown as Record<string,unknown>);
   return [...names].sort();

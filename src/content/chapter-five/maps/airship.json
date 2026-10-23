@@ -643,6 +643,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 1
@@ -662,6 +667,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 2
@@ -681,6 +691,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 3
@@ -700,6 +715,11 @@
               "name": "sprite",
               "type": "string",
               "value": "orrin"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 4
@@ -719,6 +739,11 @@
               "name": "sprite",
               "type": "string",
               "value": "kit"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 5
@@ -738,6 +763,11 @@
               "name": "sprite",
               "type": "string",
               "value": "celia"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 6
@@ -757,6 +787,11 @@
               "name": "sprite",
               "type": "string",
               "value": "petra"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 7
@@ -776,6 +811,11 @@
               "name": "sprite",
               "type": "string",
               "value": "alda"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 8

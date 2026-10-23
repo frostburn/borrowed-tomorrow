@@ -51,10 +51,14 @@ Cinderbank’s capital engine anchors at (57, 25), leaving Petra at (47, 23) and
 
 The map owns four kinds of point-object layer:
 
-- **Interactions:** object names are stable interaction IDs. Properties hold `label`, optional `sprite`, `sign`, and the existing visibility/completion flags. Moving a point moves its marker and interaction destination together. Place it on a floor or immediately beside a reachable approach.
+- **Interactions:** object names are stable interaction IDs. Properties hold `label`, `kind`, optional `sprite`, and the existing visibility/completion flags. `kind` is explicitly authored as `story`, `optional`, `talk` or `exit`; it does not depend on names or whether an object has a sprite. `storyUntil` optionally changes a story action into a conversation after that flag is true. Moving a point moves its marker and interaction destination together. Place it on a floor or immediately beside a reachable approach.
 - **Arrivals:** named travel and scene-completion positions, resolved by `arrival(map, name)`. Preserve the names when changing a layout.
 - **Scene:scene-id:** initial character casts. Object names are registered character IDs; the optional boolean `hidden` property stages an initially absent actor. `stage(map, sceneId)` supplies the cast to the dialogue director. Staged moves and camera shots remain beside their dialogue in `scenes.ts`.
 - **People:** silent background civilians. Object names identify placements; `sprite` selects a role from `src/content/civilians.ts`. Optional `requiredFlag` and `hiddenFlag` follow campaign progress. These actors use the same native scale and ground sorting as the cast, remain visible during cutscenes, and have no dialogue, marker, label or interaction target. Keep them away from doors, arrivals and staged actors. They do not change tile collision.
+
+Interaction markers use a gold **!** for story actions, a green **◇** for optional activities, loot and supplies, a grey **…** for conversation/observation, and a blue **→** for travel. Shapes distinguish them without relying on colour. Locked exits retain a dim arrow. Completed one-time actions lose their marker; reusable supplies remain marked. The nearby panel names the interaction's purpose, and Help explains the legend. Game and Maps share `content/interaction-markers.ts` and use the same completion flags.
+
+The Tiled interaction properties are the source for these roles. Chapter Four/Five's scenery exporters retain `kind` and `storyUntil` from the existing map through `assets/vector/map_metadata.py`; assign both deliberately in Tiled when adding an interaction. Do not infer purpose from an ID prefix or restore old generic gold markers.
 
 Point objects snap to cell centers. A rectangular interaction object can cover a painted door: `approachX` and `approachY` select its reachable grid destination while the rectangle owns its clickable area. The prison-coach door uses this form. Preserve campaign map IDs, story flags and interaction IDs. Check staged destinations as well as initial casts when changing routes. The pass's row-14 floor ends at column 38; 39–41 remain blocked rock beyond the boarding quay.
 

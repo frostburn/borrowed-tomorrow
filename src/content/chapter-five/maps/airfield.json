@@ -566,6 +566,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 1
@@ -595,6 +600,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "airfieldGuardWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 2
@@ -625,6 +635,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -644,6 +659,11 @@
               "name": "sprite",
               "type": "string",
               "value": "alda"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 4

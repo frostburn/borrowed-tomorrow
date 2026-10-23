@@ -29,3 +29,8 @@
 img[src*="/art/vector/"]{image-rendering:pixelated}
 
 .boss-battle .battle-pan{top:50px;right:4px}
+
+/* Keep quest text clear of party vitals, and navigation anchored across lines. */
+.world-party{flex-shrink:0}.world-hero small{white-space:nowrap;margin-top:4px}.world-objective h3.nearby{font-size:10px;font-family:SwitchyardCompact,monospace;line-height:12px}
+.dialogue-linear{height:184px}.dialogue-linear .dialogue-copy p{flex:1}.dialogue-linear .dialogue-actions{justify-content:flex-end;margin-top:8px}.dialogue-linear .dialogue-actions button{width:144px;min-height:36px}.dialogue-linear .dialogue-page{left:174px;right:auto;bottom:20px}.invalid-target{color:#c6aaa0}
+@media(max-width:1023px){.world-party[data-size="3"]{height:80px}.world-actions{width:112px}.dialogue-linear{height:232px}.dialogue-linear .dialogue-actions button{width:104px;min-height:28px}.dialogue-linear .dialogue-page{left:12px;bottom:12px}}

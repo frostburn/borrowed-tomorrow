@@ -1873,6 +1873,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "worksWardenWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1907,6 +1912,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "tomasRescued"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1936,6 +1946,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "palaceStoresWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -1965,6 +1980,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "tomasRescued"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -2004,6 +2024,16 @@
               "name": "approachY",
               "type": "int",
               "value": 23
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "intakePlanned"
             }
           ]
         },
@@ -2043,6 +2073,11 @@
               "name": "approachY",
               "type": "int",
               "value": 12
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         },
@@ -2067,6 +2102,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }
@@ -2347,8 +2387,16 @@
   "nextobjectid": 24,
   "orientation": "orthogonal",
   "properties": [
-    {"name": "sceneArt", "type": "string", "value": "relayhall"},
-    {"name": "artStyle", "type": "string", "value": "rotoscope"},
+    {
+      "name": "sceneArt",
+      "type": "string",
+      "value": "relayhall"
+    },
+    {
+      "name": "artStyle",
+      "type": "string",
+      "value": "rotoscope"
+    },
     {
       "name": "name",
       "type": "string",

@@ -670,6 +670,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "worksGateWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 1
@@ -705,6 +710,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "harborOpened"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 2
@@ -740,6 +750,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "worksStoresWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 3
@@ -764,6 +779,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "harborOpened"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 4
@@ -783,6 +803,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 5
@@ -802,6 +827,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 6
@@ -826,6 +856,11 @@
               "name": "accessFlag",
               "type": "string",
               "value": "harborOpened"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 7

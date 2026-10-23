@@ -6,6 +6,7 @@ Run: python3 assets/vector/chapter-four.py
 """
 import json, math
 from pathlib import Path
+from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-four'
@@ -160,6 +161,7 @@ def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,bac
 
 def write_map(id,name,subtitle,w,h,layers,safe=None):
  d={'type':'map','version':'1.10','tiledversion':'1.11.2','orientation':'orthogonal','renderorder':'right-down','infinite':False,'width':w,'height':h,'tilewidth':24,'tileheight':24,'nextlayerid':len(layers)+1,'nextobjectid':1,'properties':props(name=name,subtitle=subtitle,artStyle='rotoscope',sceneArt=id,**({'safeArrival':safe} if safe else {})),'tilesets':[{'firstgid':p['firstgid'],'source':'../../../../assets/tiles/pages/'+p['name']+'.json'} for p in json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text())['pages']],'layers':layers}
+ retain_interaction_roles(MAP/f'{id}.json', layers)
  for layer in layers:
   for o in layer.get('objects',[]):o['id']=d['nextobjectid'];d['nextobjectid']+=1
  # Rows remain readable/editable in Tiled without thousands of one-line numbers.

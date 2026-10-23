@@ -632,6 +632,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "roadGuardWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 1
@@ -667,6 +672,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "signalCut"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 2
@@ -691,6 +701,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "sanctuaryWardenWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 3
@@ -731,6 +746,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "anchorsKnown"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 4
@@ -766,6 +786,11 @@
               "name": "doneFlag",
               "type": "string",
               "value": "sanctuaryCache"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 5
@@ -785,6 +810,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 6
@@ -804,6 +834,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 7
@@ -823,6 +858,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 8
