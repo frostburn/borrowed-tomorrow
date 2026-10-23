@@ -30,13 +30,12 @@ const call:Line[]=[
   [[0,'E5',2],[2,'C#5',2],[4,'A4',3],[8,'C#5',1]],
 ];
 const answer:Line[]=[
-  // The high B overruns bar 12; Bb answers after the next downbeat.
-  call[0],[[0,'E5',2.4],[4,'G5',1.4],[6,'B5',4.8]],
-  [[1,'Bb5',4],[5,'F5',3],[8,'D5',1.5]],
+  call[0],[[0,'E5',2],[2,'G5',1],[4,'B5',2],[7,'G5',2]],
+  [[0,'F5',2],[2,'D5',1],[4,'Bb4',3],[8,'D5',1]],
   [[0,'E5',2],[2,'C#5',1],[4,'G5',2],[7,'A5',2]],
   [[0,'Bb5',2],[2,'A5',1],[4,'G5',2],[7,'F5',2]],
-  [[1,'F5',3],[5,'D5',1.5],[8,'Bb4',2.8]],
-  [[1,'C#5',2],[4,'E5',1],[6,'G5',2],[9,'C#5',.75]],
+  [[0,'F5',3],[4,'D5',2],[7,'Bb4',2]],
+  [[0,'C#5',2],[2,'E5',1],[4,'G5',2],[7,'C#5',2]],
   [[0,'D5',4],[7,'A4',2]],
 ];
 const lift:Line[]=[
@@ -51,7 +50,7 @@ const lift:Line[]=[
 ];
 const reprise:Line[]=[
   call[0],call[1],call[2],[[0,'E5',2],[2,'G5',1],[4,'A5',2],[7,'G5',2]],
-  [[1,'A5',1.5],[4,'F5',2.5],[7,'D5',1],[9,'F5',.75]],
+  [[0,'A5',2],[2,'F5',1],[4,'D5',2],[7,'F5',2]],
   [[0,'G5',2],[2,'F5',1],[4,'D5',3],[8,'Bb4',1]],
   [[0,'C#5',2],[2,'E5',1],[4,'G5',3],[8,'E5',1]],
   [[0,'C#5',1],[2,'E5',1],[4,'G5',2],[7,'E5',1],[8,'C#5',1],[9,'A4',.5]],
@@ -85,15 +84,9 @@ export function flagshipBar(bar:number):Note[]{
   const lead:Instrument=middle?'strings':'brass';
   for(const [eighth,pitch,length]of melody[b])add(lead,pitch,eighth/2,Math.max(.12,length/2-(middle?.06:.1)),middle?.17:.21,-.14);
   for(const [i,pitch]of chord.entries())add('strings',pitch,0,4.6,(middle?.034:.022)/Math.sqrt(chord.length),i%2?.44:-.42);
-  // The march is home ground. Walking replies, delayed entries and long tones
-  // occasionally pull the bass away while the drums keep the ship's footing.
+  // The bass shares 2+2+3+3 instead of forcing an extra 4/4 backbeat into the bar.
   const fifth=transpose(root,'P5');
-  let bassLine:[number,Pitch,number][]=[[0,root,.8],[1,fifth,.65],[2,root,1.2],[3.5,b%4===3?transpose(root,'m7'):fifth,last?.8:1.1]];
-  if([3,11,30].includes(b))bassLine=[[0,root,.65],[1.5,octave(chord[0],-1),.45],[2.5,fifth,.8],[3.75,transpose(root,'M3'),.45],[4.5,fifth,.35]];
-  else if(b===9)bassLine=[[0,root,.55],[.75,transpose(root,'M3'),.6],[1.75,fifth,.55],[2.75,octave(chord[2],-1),.6],[3.75,fifth,.45],[4.5,octave(chord[3],-2),.35]];
-  else if([6,10,25].includes(b))bassLine=[[.5,root,1.1],[2,fifth,.4],[2.75,octave(chord[1],-1),1],[4.25,root,.55]];
-  else if([18,21,28].includes(b))bassLine=[[.5,root,2.4],[3.25,fifth,1.4]];
-  for(const [beat,pitch,length]of bassLine)add('round-bass',pitch,beat,length,middle?.12:.16,-.05);
+  for(const [beat,pitch,length]of [[0,root,.8],[1,fifth,.65],[2,root,1.2],[3.5,b%4===3?transpose(root,'m7'):fifth,last?.8:1.1]] as [number,Pitch,number][])add('round-bass',pitch,beat,length,middle?.12:.16,-.05);
   for(const beat of middle?[0,3.5]:last?[0,1]:[0,1,3.5])for(const [i,pitch]of chord.entries())add('keys',octave(pitch,0),beat,beat>=2?.8:.3,.025/Math.sqrt(chord.length),i%2?.32:-.3);
   if(middle&&b%2===1){add('brass',octave(root,1),2,.7,.065,-.3);add('brass',octave(fifth,1),3.5,.7,.055,.2);}
   for(const beat of [0,2])add('kick','C2',beat,.15,middle?.065:.1);
