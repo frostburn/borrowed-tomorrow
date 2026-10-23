@@ -36,3 +36,14 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 @media(max-width:1023px){.world-party[data-size="3"]{height:80px}.world-actions{width:112px}.dialogue-linear{height:232px}.dialogue-linear .dialogue-actions button{width:104px;min-height:28px}.dialogue-linear .dialogue-page{left:12px;bottom:12px}}
 
 .command-panel{display:flex;flex-direction:column;overflow:hidden;min-height:0;height:100%}.command-list{flex:1;min-height:0;overflow:auto}.confirmation{flex-shrink:0;min-height:36px;max-height:84px;overflow:auto;align-content:flex-start}
+
+/* Keep the dev title inside the stage; primary actions precede compact presets. */
+.title-panel{padding:12px;max-height:calc(100% - 16px);overflow:auto}
+.title-panel h2{margin-bottom:8px}
+.title-panel .chapter-name{font:10px/12px SwitchyardCompact,monospace;margin-bottom:8px}
+.title-panel .panel-actions{margin-top:12px;gap:4px}
+.title-panel button{font:10px/12px SwitchyardCompact,monospace;min-height:32px;padding:4px 8px;white-space:normal}
+.canonical-saves{margin-top:12px;border-top:1px solid #625842;padding-top:8px}
+.canonical-saves h3{font:10px/12px SwitchyardCompact,monospace;margin-bottom:8px}
+.canonical-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+@media(max-width:1023px){.title-panel .panel-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.canonical-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}

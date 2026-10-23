@@ -79,12 +79,12 @@ export function northBar(mode:NorthMode,bar:number):Note[]{
  const add=(instrument:Instrument,pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};out.push(note);return note;};
  if(boss&&bar<2){
   add('timpani','C2',0,1.8,.16);add('bass',bar?'D#2':'C2',0,4.8,.15);
-  for(const [j,p]of (bar?['Ab3','Ft3','D#3']:['C3','D#3','Ft3','Ab3']).entries())add('brass',p as Pitch,j,2.2,.11,-.22+j*.13).expression=singing('clear',.85,2.2);
+  for(const [j,p]of (bar?['Ab3','Ft3','D#3']:['C3','D#3','Ft3','Ab3']).entries())add('tritaver',p as Pitch,j,2.2,.11,-.22+j*.13).expression=singing('clear',.85,2.2);
   add('bell',bar?'D#5':'C5',4,2.5,.1,.32).expression={...phrasing(.8),release:1.1};
   return out;
  }
- const i=((bar-(boss?2:0))%32+32)%32,phrase=Math.floor(i/4),within=i%4,strength=gains[i],section=Math.floor(i/8);
- const lead=boss?(section===2?'strings':'brass'):mode==='north-battle'?'strings':mode==='glacier'?'bell':'reed';
+ const i=((bar-(boss?2:0))%32+32)%32,phrase=Math.floor(i/4),within=i%4,strength=gains[i];
+ const lead=battle?'tritaver':mode==='glacier'?'bell':'sine';
  for(const [at,p,hold]of forms[mode][phrase])if(at>=within*beats&&at<(within+1)*beats){
   const n=add(lead,p,at-within*beats,hold,mode==='glacier'?.12:battle?.19:.17,-.15);
   n.expression=lead==='bell'?{...phrasing(strength),release:1.2}:singing(quiet||mode==='bellharbor'?'warm':'clear',strength,hold,within===3);
@@ -113,7 +113,7 @@ export function northBar(mode:NorthMode,bar:number):Note[]{
    for(const at of [0,2])add('timpani','C2',at,.35,.045*strength,-.2);
    add('wood',octave(root,1),3,.6,.045,.4);
   }
-  if(mode==='bellharbor'&&within===1)add('reed',tones[(phrase+4)%9],2,1.5,.065,.4).expression=singing('warm',strength,1.5);
+  if(mode==='bellharbor'&&within===1)add('sine',tones[(phrase+4)%9],2,1.5,.065,.4).expression=singing('warm',strength,1.5);
  }
  return out;
 }

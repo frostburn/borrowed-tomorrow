@@ -6,6 +6,7 @@ import type { ControlCurve,NoteExpression } from './expression';
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
 export class Synth {
   private noiseBuffer:AudioBuffer;
+  private tritaverWave?:PeriodicWave;
   private random=0x6d2b79f5;
   private sources=new Set<AudioScheduledSourceNode>();
   private envelopes=new Set<GainNode>();
@@ -69,6 +70,16 @@ export class Synth {
     }
     source.onended=()=>{for(const node of nodes)node.disconnect();r.cleanup();};
   }
+  private tritaver():PeriodicWave{
+    if(!this.tritaverWave){
+      // Keep the written fundamental; above it, only every third harmonic
+      // sounds (3, 6, 9, ...). No unison detune or extra octave oscillator.
+      const real=new Float32Array(19),imag=new Float32Array(19);imag[1]=1;
+      for(let harmonic=3;harmonic<imag.length;harmonic+=3)imag[harmonic]=1.2/harmonic;
+      this.tritaverWave=this.context.createPeriodicWave(real,imag);
+    }
+    return this.tritaverWave;
+  }
   note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0,expression?:NoteExpression){
     // A delayed scheduler must play the attack now, not start halfway through
     // an envelope whose timestamp has already passed on the audio clock.
@@ -92,7 +103,7 @@ export class Synth {
     const release=expression?.release??(bell?.65:strings?.35:timpani?.25:brass?.22:.16);
     const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
-    filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
+    filter.frequency.setValueAtTime(isBass(instrument)?650:instrument==='tritaver'?7000:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
     if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
     nodes.push(filter);
@@ -107,7 +118,7 @@ export class Synth {
     }else filter.connect(r.gain);
     const voices:OscillatorNode[]=[];
     const osc=(type:OscillatorType,detune=0,relative=1,mix=1)=>{
-      const o=this.track(c.createOscillator()),g=c.createGain();o.type=type;o.frequency.value=hz*relative;o.detune.value=detune;g.gain.value=mix;
+      const o=this.track(c.createOscillator()),g=c.createGain();if(type==='custom')o.setPeriodicWave(this.tritaver());else o.type=type;o.frequency.value=hz*relative;o.detune.value=detune;g.gain.value=mix;
       o.connect(g);g.connect(filter);o.start(when);o.stop(r.end);voices.push(o);nodes.push(o,g);return o;
     };
     if(bell){
@@ -118,6 +129,8 @@ export class Synth {
     else if(timpani){
       for(const [ratio,mix]of [[1,.75],[1.48,.19],[2.15,.09],[2.9,.035]]){const o=osc('sine',0,ratio,mix);o.frequency.setValueAtTime(hz*ratio*1.025,when);o.frequency.exponentialRampToValueAtTime(hz*ratio,when+.065);}
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
+    else if(instrument==='sine'){osc('sine');}
+    else if(instrument==='tritaver'){osc('custom');}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
     else if(instrument==='wood'){osc('sine',0,1,.84);osc('sine',0,2,.12);osc('sine',0,4,.035);}

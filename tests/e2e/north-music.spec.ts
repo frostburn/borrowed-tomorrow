@@ -7,7 +7,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   for(const [mode,title]of cues){await page.locator(`[data-cue="${mode}"]`).click();await expect(page.getByRole('heading',{name:title,exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Expression',exact:true})).toBeVisible();}
   await expect(page.locator('.music-description').first()).toContainText('5/4');await expect(page.locator('.music-description').first()).toContainText('2-bar intro');
   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('#music-position')).toContainText('Playing');await page.getByRole('button',{name:'Stop',exact:true}).click();
-  await page.locator('[data-cue="bellharbor"]').click();await expect(page.getByRole('button',{name:'Rubato',exact:true})).toBeVisible();await expect(page.locator('#music-notes')).toContainText('D#');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/skeld-music-${device}.png`});
+  await page.getByRole('button',{name:'Tritaver',exact:true}).click();await expect(page.locator('#music-notes')).toContainText('tritaver');
+  await page.locator('[data-cue="bellharbor"]').click();await page.getByRole('button',{name:'Sine',exact:true}).click();await expect(page.locator('#music-notes')).toContainText('sine');await expect(page.getByRole('button',{name:'Rubato',exact:true})).toBeVisible();await page.getByRole('button',{name:'All',exact:true}).click();await expect(page.locator('#music-notes')).toContainText('D#');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);if(process.env.BT_QA_SCREENSHOTS)await page.screenshot({path:`${process.env.BT_QA_SCREENSHOTS}/skeld-music-${device}.png`});
  }finally{await context.close();}
 });
 for(const [mode]of cues)test(`north cue ${mode}: complete form and loop have audible finite audio without sample snaps`,async({page},testInfo)=>{
@@ -29,4 +30,26 @@ for(const [mode]of cues)test(`north cue ${mode}: complete form and loop have aud
   return {mode,peak,rms:Math.sqrt(sum/count),jump,bars};
  },mode);
  await testInfo.attach(`north-loop-${mode}`,{body:JSON.stringify(result,null,2),contentType:'application/json'});expect(result.peak,JSON.stringify(result)).toBeLessThan(.9);expect(result.rms,JSON.stringify(result)).toBeGreaterThan(.0035);expect(result.jump,JSON.stringify(result)).toBeLessThan(.25);
+});
+
+test('sine and tritaver preserve written pitch, sparse partials and clean cancellation in the actual rack',async({page},testInfo)=>{
+ await page.route('**/offline-voice-review',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><title>Offline voice review</title>'}));await page.goto('/offline-voice-review');
+ const spectra=await page.evaluate(async()=>{
+  // @ts-expect-error Vite serves the live procedural rack.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  // @ts-expect-error Check a half-accidental pitch as well as A=440.
+  const {pitchFrequency}:typeof import('../../src/game/tuning')=await import('/src/game/tuning.ts');
+  const out=[];const rate=22050;
+  for(const instrument of ['sine','tritaver']as const)for(const pitch of ['A3','Et4']as const){
+   const c=new OfflineAudioContext(1,rate*3,rate),synth=new Synth(c,c.destination);synth.note(instrument,pitch,.03,5,.2);synth.release(1.5);
+   const data=(await c.startRendering()).getChannelData(0),hz=pitchFrequency(pitch),start=Math.round(.2*rate),length=rate;
+   const amplitude=(f:number)=>{let re=0,im=0;for(let n=0;n<length;n++){const w=.5-.5*Math.cos(2*Math.PI*n/(length-1)),a=2*Math.PI*f*n/rate;re+=data[start+n]*w*Math.cos(a);im+=data[start+n]*w*Math.sin(a);}return Math.hypot(re,im)/length;};
+   const fundamental=amplitude(hz);out.push({instrument,pitch,fundamental,partials:Array.from({length:12},(_,i)=>amplitude(hz*(i+1))/fundamental),offPitch:Math.max(amplitude(hz/2),amplitude(hz/3),amplitude(hz*2**(1/31)))/fundamental,tail:Math.max(...data.slice(2*rate).map(Math.abs)),finite:data.every(Number.isFinite)});
+  }
+  return out;
+ });
+ await testInfo.attach('northern-voice-spectra',{body:JSON.stringify(spectra,null,2),contentType:'application/json'});
+ for(const s of spectra){expect(s.finite).toBe(true);expect(s.fundamental).toBeGreaterThan(.01);expect(s.offPitch).toBeLessThan(.01);expect(s.tail).toBeLessThan(.00001);
+  for(let harmonic=2;harmonic<=12;harmonic++){if(s.instrument==='tritaver'&&harmonic%3===0)expect(s.partials[harmonic-1]).toBeGreaterThan(.025);else expect(s.partials[harmonic-1]).toBeLessThan(.001);}
+ }
 });

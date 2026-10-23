@@ -175,7 +175,7 @@ Degrees are integer steps above a chosen tonic, reduced modulo 31. Zero is the t
 
 ### Northern kingdom — Orwell and Myna
 
-Orwell[9] supplies a spacious, bittersweet identity, with broad melodic phrases and relatively similar adjacent steps. The chosen mode contains subminor `[0,7,18]` and supermajor `[0,11,18]` triads sharing one fifth. Make their contrasting thirds an important gesture in the capital's hymn. Bowed strings and restrained winds establish human warmth; bright struck tones and wide registers evoke the frozen surroundings. The battle variation can foreground the Orwell tetrad `[0,7,14,21]`.
+Orwell[9] supplies a spacious, bittersweet identity, with broad melodic phrases and relatively similar adjacent steps. The chosen mode contains subminor `[0,7,18]` and supermajor `[0,11,18]` triads sharing one fifth. Make their contrasting thirds an important gesture in the capital's hymn. Bowed strings and expressive sine lines establish human warmth; bright struck tones and wide registers evoke the frozen surroundings. The battle variation can foreground the Orwell tetrad `[0,7,14,21]`.
 
 Reserve Myna[7]'s wide gaps and tiny paired dieses for the glacier's exposed ice, creaking structures and dangerous discoveries. The scale choice alone does not produce a cold atmosphere; melody, voicing, timbre and pacing must carry it.
 
@@ -241,11 +241,13 @@ The rack adds procedural `wood` (an exact harmonic struck sine body), `hand-drum
 
 | Cue / workshop title | Meter / BPM | Form and sound |
 | --- | --- | --- |
-| `bellharbor` · Skeld / Answering Bells | 4/4 · 78 | Warm descending reed hymn, held strings, answering bell and occasional second wind; modest ensemble rubato. |
-| `frostwatch` · The Covered Road | 4/4 · 94 | A walking answer to the hymn with restrained timpani and wood. |
+| `bellharbor` · Skeld / Answering Bells | 4/4 · 78 | Descending sine hymn, held strings, answering bell and occasional second sine voice; modest ensemble rubato. |
+| `frostwatch` · The Covered Road | 4/4 · 94 | A sine-voiced walking answer to the hymn with restrained timpani and wood. |
 | `glacier` · The Fleet beneath the Ice | 4/4 · 68 | Myna struck bells, wide registers, paired dieses, held bass and quiet string planes. |
-| `wintershrine` · A Bell for the Outer Marker | 4/4 · 72 | Sparse Orwell hymn; long string/bass holds fill quiet bars, controlled reed vibrato and small cadence breaths. |
-| `north-battle` · Skeld / Open the Mountain | 4/4 · 128 | Regional melody developed in strings over firm kick/snare/timpani and mobile bass. |
-| `winter-dragon` · Wings over the Winter Bell | 5/4 · 116 | Two-bar one-shot brass/timpani introduction, then 32-bar loop. Three-beat weight and two-beat lift; Orwell tetrad `0 7 14 21`, contrasted brass and string sections. |
+| `wintershrine` · A Bell for the Outer Marker | 4/4 · 72 | Sparse Orwell hymn; long string/bass holds fill quiet bars, controlled sine vibrato and small cadence breaths. |
+| `north-battle` · Skeld / Open the Mountain | 4/4 · 128 | Regional melody developed in the sparse tritaver voice over firm kick/snare/timpani, string beds and mobile bass. |
+| `winter-dragon` · Wings over the Winter Bell | 5/4 · 116 | Two-bar one-shot tritaver/timpani introduction, then 32-bar loop. Three-beat weight and two-beat lift; Orwell tetrad `0 7 14 21`, expressive tritaver lead over quiet strings. |
 
 All cues have phrase dynamics, controlled long-note vibrato and softer bell releases. Full melody phrases are authored across four bars, with independent second-half development rather than an endlessly rising triad. Battle timing stays steady. Music → Ch 6 reviews the exact notes, meter, parts, expression and harbor/shrine rubato; no recordings or production dependencies are added. `north-music.spec.ts` renders every bar and the loop transition through the actual synthesis rack, in bounded windows with earlier held notes and exact performed timing.
+
+Northern exploration uses a pure sine oscillator in place of reed (including the harbor answer); the glacier retains its struck-bell lead. Both battle melodies, including the dragon introduction, use a cached Web Audio PeriodicWave called **tritaver**. Its written-pitch fundamental anchors a sparse spectrum: only harmonics 3, 6, 9, 12, 15 and 18 are added, with amplitudes `1.2 / harmonic`. All other upper coefficients and DC are zero. No sub-oscillator, unison detune or pitch division is added. A 7 kHz low-pass preserves the upper color; the normal smooth envelope, phrase dynamics, bends, controlled vibrato and cancellation apply to both new voices. Music’s Sine and Tritaver part filters isolate them. Offline spectral checks verify the audible pitch, present/absent partials and release silence through the real rack.

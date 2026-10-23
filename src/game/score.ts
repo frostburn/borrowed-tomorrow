@@ -15,16 +15,16 @@ import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
 export type MusicMode = 'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
-export type Instrument = 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
+export type Instrument = 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
-  bellharbor:{beats:4,bpm:78,lead:'reed',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:0},
-  frostwatch:{beats:4,bpm:94,lead:'reed',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:.045},
+  bellharbor:{beats:4,bpm:78,lead:'sine',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:0},
+  frostwatch:{beats:4,bpm:94,lead:'sine',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:.045},
   glacier:{beats:4,bpm:68,lead:'bell',leadGain:.12,keys:0,strings:.025,bass:.13,percussion:0},
-  wintershrine:{beats:4,bpm:72,lead:'reed',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:0},
-  'north-battle':{beats:4,bpm:128,lead:'strings',leadGain:.19,keys:0,strings:.025,bass:.145,percussion:.11},
-  'winter-dragon':{beats:5,meter:[5,4],pulses:[3,2],introBars:2,bpm:116,lead:'brass',leadGain:.19,keys:0,strings:.025,bass:.145,percussion:.11},
+  wintershrine:{beats:4,bpm:72,lead:'sine',leadGain:.17,keys:0,strings:.025,bass:.13,percussion:0},
+  'north-battle':{beats:4,bpm:128,lead:'tritaver',leadGain:.19,keys:0,strings:.025,bass:.145,percussion:.11},
+  'winter-dragon':{beats:5,meter:[5,4],pulses:[3,2],introBars:2,bpm:116,lead:'tritaver',leadGain:.19,keys:0,strings:.025,bass:.145,percussion:.11},
   riverhaven:{beats:4,bpm:104,lead:'reed',leadGain:.18,keys:0,strings:0,bass:.17,percussion:.13},
   canopy:{beats:4,bpm:108,lead:'reed',leadGain:.18,keys:0,strings:0,bass:.17,percussion:.13},
   rainhouse:{beats:4,bpm:78,lead:'reed',leadGain:.16,keys:0,strings:.023,bass:.13,percussion:.073},
