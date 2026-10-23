@@ -1,8 +1,9 @@
 import {test,expect,type Page} from '@playwright/test';
-import {chapterSevenDeparture,chapterSevenRefugeStart} from '../../src/dev/canonical-saves';
-import {inspect,capture,dialogue,battle} from './controls';
+import {chapterSevenDeparture,chapterSevenStart,chapterSevenRefugeStart} from '../../src/dev/canonical-saves';
+import {inspect,capture,dialogue,battle,nativeScene} from './controls';
 import {importSave,approach} from './navigation';
 import {arrival} from '../../src/content/maps';
+import {createBattle,awardVictory} from '../../src/rules/combat';
 async function drain(page:Page){for(let i=0;i<12;i++){await expect.poll(async()=>(await inspect(page)).busy,{timeout:30000}).toBe(false);if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Chapter Seven scene chain did not finish');}
 async function at(page:Page,map:string){await expect.poll(async()=>(await inspect(page)).state.location.map,{timeout:30000}).toBe(map);await drain(page);}
 async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await drain(page);}
@@ -43,6 +44,14 @@ for(const [id,flag]of [['benefactor-body','benefactorBodyWon'],['benefactor-sun'
 test('a missing domain scene preserves the capital departure and retries cleanly',async({page})=>{
  const s=chapterSevenDeparture();await page.goto('/');await importSave(page,s);await page.route('**/art/vector/chapter-seven/takenwater-back.svg',r=>r.abort());await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.chapter).toBe('chapter-six');expect((await inspect(page)).state.inventory).toEqual(s.inventory);
  await page.unroute('**/art/vector/chapter-seven/takenwater-back.svg');await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.chapter).toBe('chapter-seven');
+});
+
+test('@journey the first collector loads its own floor and falls without the palace earth plates',async({page})=>{
+ test.setTimeout(420000);const s=chapterSevenStart();for(const f of ['domainEntered','domainWaterSeen','domainHoundsConfronted'])s.flags[f]=true;
+ const hounds=createBattle('domain-hounds',s);hounds.result='victory';awardVictory(hounds,s);s.location=arrival('takenwater','start');
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,s);await fight(page,'water-collector','Break the first collector');
+ expect((await inspect(page)).battle!.grounding).toBeUndefined();await nativeScene(page,'takenwater');await capture(page,'seven-collector-loaded');
+ await battle(page);await drain(page);expect((await inspect(page)).state.flags.takenPeopleFreed).toBe(true);
 });
 
 test('the mantle break and fragment return animate independently, frame the cast and clean up on skip',async({page})=>{

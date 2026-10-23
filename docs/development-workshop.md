@@ -41,7 +41,7 @@ Celestial bolt is available at level 1: a weak attack on any enemy, 1 focus, ign
 
 ## Levels and base stats
 
-Levels range from 1 to 12. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
+Levels range from 1 to 15. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
 
 Edit Max HP (1–999), Attack (1–199), Armor (0–99), Speed (1–30), Movement (1–10), or Starting focus (0–6), then choose **Apply base stats**. Plus and minus buttons edit the same fields. Only whole numbers in the shown ranges are accepted; an invalid field prevents the entire build from being applied. **Level defaults** restores the selected character's base stats without changing their level or equipment.
 
@@ -99,7 +99,7 @@ Character inventory, equipment loot, shops and current-format saves are integrat
 
 Open **Music** in the workshop or go directly to `/?dev=music`. This route and all review UI are excluded from production. Music review does not write campaign saves, inventory or character builds.
 
-- Choose **Themes** for a short comparison of Nell (Larkspur festival), Orrin (The Next Shift), Kit (Iron Coast), Petra (The Open Gate), Celia (The Garden Walk) and Alban (Iron Above the Clouds), with intent notes beneath each cue. Browse Chapters 1–5 or the retained Library for every arrangement. The selected cue shows its tempo, meter and 16-, 24- or 32-bar form, or the flagship’s 2-bar introduction plus 32-bar loop. Chapter Two groups Iron Coast, Cinderbank, the 3/4 Railway Ward and all three battle variations together.
+- Choose **Themes** for a short comparison of Nell (Larkspur festival), Orrin (The Next Shift), Kit (Iron Coast), Petra (The Open Gate), Celia (The Garden Walk) and Alban (Iron Above the Clouds), with intent notes beneath each cue. Browse Chapters 1–7 or the retained Library for every arrangement. The selected cue shows its tempo, meter and 16-, 24- or 32-bar form, or the flagship’s 2-bar introduction plus 32-bar loop. Chapter Two groups Iron Coast, Cinderbank, the 3/4 Railway Ward and all three battle variations together.
 - Play from the selected bar, Stop, or Restart cue. Previous/Next bar wrap around the loop; entering a bar number seeks directly. Playback follows the current bar in the inspector. Play after Stop begins at that bar's downbeat.
 - Isolate reed, piano, bell, strings, brass, timpani, bass or drums, or return to All. Piano includes both its melodic and accompanying notes. Changing the instrument filter restarts the current bar. Volume changes the cue mix.
 - Inspect every note's spelling, step class (0–30), frequency and attack beat. Triplet positions use readable fractions such as `2+1/3`. Click a pitch to stop the cue and hear that note alone through the same synth rack.

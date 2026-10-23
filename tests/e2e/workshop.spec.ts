@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { capture, clickHex, inspect } from './controls';
 import { blast, HEX_SIZE, offset, toPixel } from '../../src/rules/hex';
+import { MAX_LEVEL } from '../../src/rules/progression';
 
 const characterStorage = 'borrowed-tomorrow:character-workshop:v1';
 async function setLevel(page: Page, hero: string, level: number) {
@@ -142,7 +143,7 @@ test('@ci invalid stat edits are atomic and damaged character storage keeps equi
   await page.getByRole('button', { name: 'Apply base stats', exact: true }).click();
   await page.getByRole('button', { name: 'Level defaults', exact: true }).click();
   await expect(page.getByRole('spinbutton', { name: 'Nell Attack', exact: true })).toHaveValue('15');
-  await page.getByRole('spinbutton', { name: 'Nell level', exact: true }).fill('13'); await page.keyboard.press('Tab');
+  await page.getByRole('spinbutton', { name: 'Nell level', exact: true }).fill(String(MAX_LEVEL+1)); await page.keyboard.press('Tab');
   await expect(page.getByRole('spinbutton', { name: 'Nell level', exact: true })).toHaveValue('3');
   await page.evaluate(key => localStorage.setItem(key, '{"version":1,"characters":null}'), characterStorage);
   await page.goto('/?dev=workshop');
