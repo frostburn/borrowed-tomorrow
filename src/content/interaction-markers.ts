@@ -1,3 +1,4 @@
+import { BOSS_AFTERMATHS } from './boss-aftermath';
 import type { MapObject } from './maps';
 import type { GameState } from '../rules/state';
 
@@ -12,7 +13,11 @@ export function interactionKind(object:MapObject,state:Pick<GameState,'flags'>):
  return object.kind==='story'&&((object.storyUntil&&state.flags[object.storyUntil])||(object.doneFlag&&state.flags[object.doneFlag]))?'talk':object.kind;
 }
 export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>){
+ if(object.marker===false)return;
+ if(object.kind==='story'&&object.accessFlag&&!state.flags[object.accessFlag])return;
  if(object.doneFlag&&state.flags[object.doneFlag])return;
+ // The boss owns this arena's story cue; its follow-up starts automatically.
+ if(BOSS_AFTERMATHS.some(scene=>scene.interaction===object.id&&!state.flags[scene.done]))return;
  const marker=INTERACTION_MARKERS[interactionKind(object,state)];
  return {...marker,color:object.accessFlag&&!state.flags[object.accessFlag]?'#7c8990':marker.color};
 }

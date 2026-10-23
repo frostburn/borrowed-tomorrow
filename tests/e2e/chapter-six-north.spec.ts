@@ -6,7 +6,7 @@ import { arrival } from '../../src/content/maps';
 import { inspect,capture,dialogue,battle } from './controls';
 import { approach,importSave } from './navigation';
 async function skip(page:Page){for(let i=0;i<10;i++){if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Scene chain did not end');}
-async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await skip(page);}
+async function win(page:Page,finishScenes=true){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();if(finishScenes)await skip(page);}
 async function ready(page:Page){await expect.poll(async()=>(await inspect(page)).busy).toBe(false);}
 /** Only the visible left wing: excludes UI, warning labels and party actors. */
 async function dragonPixels(page:Page){return page.evaluate(()=>{
@@ -37,10 +37,10 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   await approach(page,'north-hunters');await page.getByRole('button',{name:'Clear the upper ice shelf',exact:true}).click();await win(page);
   await approach(page,'glacier-shrine');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-north-shrine');expect((await inspect(page)).actors.some(a=>a.hero==='nell')).toBe(device==='phone');await capture(page,`skeld-sanctuary-${device}`);await dialogue(page);
   await approach(page,'shrine-rest');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();if(device==='desktop')expect((await inspect(page)).state.party[0].hp).toBe(1);
-  await approach(page,'north-dragon');await page.getByRole('button',{name:'Face the winter dragon',exact:true}).click();await capture(page,`skeld-dragon-${device}`);await win(page);
-  await approach(page,'north-release');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-north-release');expect((await inspect(page)).state.flags.northSealBroken).toBeUndefined();await capture(page,`skeld-release-${device}`);
-  // Interrupt the physical release, then perform the same action after reload.
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode,{timeout:20000}).toBe('world');expect((await inspect(page)).state.flags.northSealBroken).toBeUndefined();await approach(page,'north-release');await dialogue(page);
+  await approach(page,'north-dragon');await page.getByRole('button',{name:'Face the winter dragon',exact:true}).click();await capture(page,`skeld-dragon-${device}`);await win(page,false);
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-north-release');expect((await inspect(page)).state.flags.northSealBroken).toBeUndefined();await capture(page,`skeld-release-${device}`);
+  // Interrupt the release; restoring the victory checkpoint resumes it automatically.
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode,{timeout:20000}).toBe('world');expect((await inspect(page)).state.flags.northSealBroken).toBeUndefined();await dialogue(page);
   await approach(page,'shrine-home');await dialogue(page);await capture(page,`skeld-records-${device}`);await approach(page,'harbor-ship');await skip(page);
   const end=(await inspect(page)).state;expect(end.flags.northSealBroken).toBe(true);expect(end.flags.northReturned).toBe(true);expect(end.flags.northReported).toBe(true);expect(end.flags.nellRecovered).toBe(initial.flags.nellRecovered);expect(end.activeParty).toEqual(initial.activeParty);expect(end.inventory.characters).toEqual(initial.inventory.characters);expect(end.boundary).toBeNull();expect(end.inventory.bag['pact-guard']).toBe(1);expect(end.inventory.bag['winter-sight']).toBe(1);await capture(page,`skeld-home-${device}`);
   if(device==='phone'){

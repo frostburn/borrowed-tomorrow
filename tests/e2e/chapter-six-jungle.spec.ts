@@ -9,8 +9,8 @@ async function skip(page:Page){
  for(let i=0;i<8;i++){if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}
  throw new Error('Scene chain did not end');
 }
-async function win(page:Page){
- await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await skip(page);
+async function win(page:Page,finishScenes=true){
+ await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();if(finishScenes)await skip(page);
 }
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Iria ${device}: launch, hunters, interrupted treatment and permanent recovery ${device==='phone'?'after':'before'} Namar`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
@@ -44,7 +44,7 @@ test('Namar with recovered Nell stages her in the court, serpent and public brea
  await approach(page,'namar-palace');await approach(page,'palace-audience');await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:20000}).toBe('six-court');expect((await inspect(page)).actors.some(a=>a.hero==='nell'&&a.texture!=='nell-ill')).toBe(true);await capture(page,'iria-cured-court');await skip(page);
  await approach(page,'palace-route');await page.getByRole('button',{name:'Break the gallery cordon · dry floor',exact:true}).click();await win(page);await approach(page,'palace-roofs');await skip(page);await approach(page,'roof-guard');await page.getByRole('button',{name:'Clear the upper terrace',exact:true}).click();await win(page);
  await approach(page,'roof-observatory');await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:20000}).toBe('six-serpent');expect((await inspect(page)).actors.some(a=>a.hero==='nell')).toBe(true);await capture(page,'iria-cured-serpent-scene');await skip(page);
- await approach(page,'sun-serpent');await page.locator('.dialogue-actions button').first().click();await page.getByRole('button',{name:'Face the sun serpent',exact:true}).click();await win(page);await approach(page,'desert-release');await skip(page);await approach(page,'namar-ship');await skip(page);
+ await approach(page,'sun-serpent');await page.locator('.dialogue-actions button').first().click();await page.getByRole('button',{name:'Face the sun serpent',exact:true}).click();await win(page,false);await skip(page);await approach(page,'namar-ship');await skip(page);
  const s=(await inspect(page)).state;expect(s.flags.desertReported).toBe(true);expect(s.flags.nellRecovered).toBe(true);expect(s.activeParty).toEqual(['nell','kit','celia']);expect((await inspect(page)).actors.some(a=>a.texture==='nell-ill')).toBe(false);await capture(page,'iria-cured-desert-return');
 });
 test('the jungle climax can be won through ordinary movement and attacks with the existing companions',async({page})=>{

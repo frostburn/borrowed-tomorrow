@@ -2545,6 +2545,11 @@
               "name": "kind",
               "type": "string",
               "value": "story"
+            },
+            {
+              "name": "marker",
+              "type": "bool",
+              "value": false
             }
           ]
         }

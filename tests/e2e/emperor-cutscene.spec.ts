@@ -1,10 +1,10 @@
 import {test,expect,type Page} from '@playwright/test';
 import {palaceCheckpoint} from '../support/progress';
-import {importSave,approach} from './navigation';
+import {importSave} from './navigation';
 import {capture,inspect} from './controls';
 
 async function begin(page:Page){
- await page.goto('/');const saved=palaceCheckpoint('conduitGuardWon');saved.location={map:'conduit',x:50,y:20};await importSave(page,saved);await approach(page,'heart-release');
+ await page.goto('/');const saved=palaceCheckpoint('conduitGuardWon');saved.location={map:'conduit',x:50,y:20};await importSave(page,saved);
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-rupture');return saved;
 }
 async function line(page:Page,text:string){
@@ -73,7 +73,7 @@ test('reload during absorption replays the checkpoint; fast advance and skip dur
  await page.getByRole('button',{name:'Continue',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('conduit');
  expect((await inspect(page)).state.flags.emperorMerged).toBeUndefined();expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
- await approach(page,'heart-release');await line(page,'The stairs!');
+ await line(page,'The stairs!');
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('northglass');
  await page.waitForTimeout(2700);const after=await inspect(page);
  expect(after.cinematic).toBeNull();expect(after.state.flags).toMatchObject({extractionStopped:true,emperorMerged:true,tomasRescued:true});expect(after.state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);

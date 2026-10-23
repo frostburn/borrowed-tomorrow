@@ -635,6 +635,11 @@
               "name": "kind",
               "type": "string",
               "value": "story"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "windGalleryWon"
             }
           ],
           "id": 2

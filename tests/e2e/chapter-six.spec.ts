@@ -12,8 +12,8 @@ async function skip(page:Page){
  }
  throw new Error('Scene chain did not end');
 }
-async function win(page:Page){
- await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await skip(page);
+async function win(page:Page,finishScenes=true){
+ await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();if(finishScenes)await skip(page);
 }
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
  test(`Namar ${device}: sealed capital, palace escape, serpent, public seal and saved return`,async({browser})=>{
@@ -32,8 +32,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    await approach(page,'palace-roofs');await skip(page);await capture(page,`six-roofs-${device}`);await approach(page,'roof-guard');await page.getByRole('button',{name:'Clear the upper terrace',exact:true}).click();await win(page);
    await approach(page,'roof-chest');await dialogue(page);await approach(page,'roof-rest');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();expect((await inspect(page)).state.party[0].hp).toBe(1);
    await approach(page,'roof-observatory');await skip(page);await approach(page,'sun-serpent');await page.locator('.dialogue-actions button').first().click();await page.getByRole('button',{name:'Face the sun serpent',exact:true}).click();await capture(page,`six-serpent-${device}`);
-   const boss=(await inspect(page)).battle!;expect(boss.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(initial.activeParty);expect(boss.units.find(u=>u.id==='sun-serpent')!.footprint).toHaveLength(3);await win(page);
-   await approach(page,'desert-release');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-release');await skip(page);
+   const boss=(await inspect(page)).battle!;expect(boss.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(initial.activeParty);expect(boss.units.find(u=>u.id==='sun-serpent')!.footprint).toHaveLength(3);await win(page,false);
+   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-release');await skip(page);
    await expect.poll(async()=>(await inspect(page)).state.flags.desertSealBroken).toBe(true);await capture(page,`six-western-seal-${device}`);
    await approach(page,'namar-ship');await skip(page);const end=(await inspect(page)).state;expect(end.flags.desertReported).toBe(true);expect(end.boundary).toBeNull();expect(end.chapter).toBe('chapter-six');expect(end.party[0]).toMatchObject({id:'nell',hp:1,focus:0});expect(end.activeParty).toEqual(initial.activeParty);expect(end.inventory.bag['solar-guard']).toBe(1);expect(end.inventory.bag['sunstone-focus']).toBe(1);expect(end.inventory.characters).toEqual(initial.inventory.characters);
    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.desertReported).toBe(true);expect((await inspect(page)).state.inventory).toEqual(end.inventory);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);await capture(page,`six-return-${device}`);

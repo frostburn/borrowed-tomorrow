@@ -100,17 +100,18 @@ it('bell anticipations stay held together, with fewer rolls in the sanctuary',()
   const notes=scoreBar(mode,bar);
   const rolls=notes.filter(n=>n.instrument==='bell'&&n.velocity<.09);
   if(rolls.length){
-   counts[mode]++;expect(rolls).toHaveLength(4);
+   counts[mode]++;expect(rolls.length).toBeGreaterThanOrEqual(1);expect(rolls.length).toBeLessThanOrEqual(4);
    for(const n of rolls){expect(n.beat+n.duration).toBe(3.5);expect(n.expression!.release).toBeGreaterThan(1.5);}
-   expect(rolls[0].duration).toBeGreaterThanOrEqual(1.5);
+   expect(rolls[0].duration).toBeGreaterThanOrEqual(1.25);
    if(mode==='sanctuary')expect(bar%4).toBe(0);
   }
   for(const bell of notes.filter(n=>n.instrument==='bell'&&n.velocity>=.09)){
    expect(bell.expression!.release).toBeGreaterThan(1.5);
    if(bell.beat<.5)continue;
-   const roll=notes.filter(n=>n.instrument==='bell'&&n.beat>=bell.beat-.5&&n.beat<bell.beat&&n.velocity<.09);
+   const roll=notes.filter(n=>n.instrument==='bell'&&n.beat>=bell.beat-.375&&n.beat<=bell.beat&&n.velocity<.09);
    if(!roll.length){expect(mode).toBe('sanctuary');continue;}
-   expect(roll).toHaveLength(4);expect(roll.map(n=>n.beat)).toEqual([-.5,-.375,-.25,-.125].map(b=>bell.beat+b));
+   expect(roll.every(n=>[-.375,-.25,-.125,0].includes(n.beat-bell.beat))).toBe(true);
+   expect(roll.every(n=>pitchSteps(n.pitch)!==pitchSteps(bell.pitch))).toBe(true);
    expect(Math.min(...roll.map(n=>n.velocity))).toBeGreaterThanOrEqual(.045);
    expect(Math.max(...roll.map(n=>n.velocity))).toBeLessThan(bell.velocity*.6);
    for(let n=1;n<roll.length;n++)expect(pitchSteps(roll[n].pitch)).toBeGreaterThan(pitchSteps(roll[n-1].pitch));
@@ -182,4 +183,16 @@ it('sung notes have bounded, delayed vibrato and varied breath dynamics, with a 
   expect(plain.notes.map(n=>n.pitch)).toEqual(expressive.notes.map(n=>n.pitch));
   expect(plain.notes.every(n=>!n.expression?.dynamics&&!n.expression?.vibrato)).toBe(true);
  }
+});
+
+it('reserves melody pitches for the bell calls instead of doubling them in held rolls',()=>{
+ for(const mode of ['conduit','sanctuary']as const)for(let bar=0;bar<scoreLength(mode);bar++){
+  const notes=scoreBar(mode,bar),calls=notes.filter(n=>n.instrument==='bell'&&n.velocity>=.09);
+  for(const roll of notes.filter(n=>n.instrument==='bell'&&n.velocity<.09)){
+   expect(calls.some(call=>pitchSteps(call.pitch)===pitchSteps(roll.pitch))).toBe(false);
+  }
+ }
+ const bar15=scoreBar('conduit',14).filter(n=>n.instrument==='bell');
+ expect(bar15.filter(n=>n.pitch==='G4')).toHaveLength(1);
+ expect(bar15.filter(n=>n.velocity<.09).map(n=>n.beat)).toEqual([.125,.25,.375]);
 });
