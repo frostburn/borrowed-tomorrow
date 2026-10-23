@@ -1,3 +1,4 @@
+import { resumeNorth,interactNorth } from './north/interactions';
 import { resumeJungle,interactJungle } from './jungle/interactions';
 import type { StoryHost } from '../story-host';
 import { arrival } from '../maps';
@@ -9,7 +10,7 @@ import { buySupply } from '../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
 export function resumeChapterSix(h:StoryHost){
- if(resumeJungle(h))return;
+ if(resumeJungle(h,()=>resumeChapterSix(h)))return;
  const s=h.state,f=s.flags,m=s.location.map;
  const show=(d:Dialogue,flag:string,after?:()=>void)=>h.talk({...d,done:()=>{h.commit(flag,flag);after?.();}});
  if(m==='outermooring'){
@@ -17,8 +18,9 @@ export function resumeChapterSix(h:StoryHost){
   if(!f.sixRoutesKnown)return h.talk({...scenes.briefing(s),done:()=>{
    f.sixRoutesKnown=true;f.jungleLeadKnown=true;remember(s,'sixRoutesKnown');remember(s,'jungleLeadKnown');h.commit('sixRoutesKnown');
   }});
-  if(f.desertSealBroken&&!f.desertReported)return show(scenes.home(s),'desertReported');
+  if(f.desertSealBroken&&!f.desertReported)return show(scenes.home(s),'desertReported',()=>resumeChapterSix(h));
  }
+ if(resumeNorth(h,()=>resumeChapterSix(h)))return;
  if(m==='namar'){
   if(f.desertReleaseReady&&!f.desertSealBroken)return show(scenes.publicBreak(s),'desertSealBroken');
   if(!f.desertSeen)return show(scenes.city(s),'desertSeen');
@@ -28,7 +30,7 @@ export function resumeChapterSix(h:StoryHost){
  if(m==='observatory'&&!f.sunSerpentSeen)return show(scenes.serpent(s),'sunSerpentSeen');
 }
 export function interactChapterSix(h:StoryHost,id:string){
- if(interactJungle(h,id))return;
+ if(interactNorth(h,id)||interactJungle(h,id))return;
  const s=h.state,f=s.flags;
  const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
  const fight=(text:string,label:string,encounter:string)=>h.talk({lines:[SAY('Petra',text)],choices:[{label,action:()=>h.battle(encounter)},{label:'Prepare first',action:()=>{}}]});
@@ -43,17 +45,19 @@ export function interactChapterSix(h:StoryHost,id:string){
  switch(id){
   case 'six-chart':
    if(!f.sixRoutesKnown)return resumeChapterSix(h);
-   return h.talk({lines:[SAY('Alda',f.desertSealBroken?'Namar’s navigators have the western approach. The northern seal still holds the wall.':f.nellRecovered?'Namar’s evening landing is clear. Iria’s launch is available if we need to return.':'Namar’s evening landing is clear. We can leave a full medical watch aboard.')],choices:[
+   return h.talk({lines:[SAY('Alda',f.capitalOpened?'The allied landing is open. We can still return to any of these harbors.':f.northSealBroken&&f.desertSealBroken?'Both returns are released. We can bring the bridge level.':f.desertSealBroken?'Namar’s return is dark. Skeld still holds the northern seal.':f.northSealBroken?'Skeld’s return is dark. Namar still holds the western seal.':'Namar and Skeld have clear landings. Iria’s launch is available too.')],choices:[
     {label:f.desertSealBroken?'Namar · revisit the evening exchange':'Namar · the western pact seal',action:()=>go(h,'namar')},
-    {label:'Northern capital · not yet playable',disabled:true,action:()=>{}},
+    {label:f.northSealBroken?'Skeld · revisit the bell harbor':'Skeld · the northern pact seal',action:()=>go(h,'bellharbor')},
     {label:f.nellRecovered?'Iria · revisit the river healers':'Iria · Sera’s river healers',action:()=>go(h,'riverhaven')},
     {label:'Stay at the outer mooring',action:()=>{}},
+    ...(f.capitalOpened?[{label:'Capital · allied landing',action:()=>go(h,'capitalquay')}]:[]),
    ]});
   case 'six-nell':case 'six-nell-ready':case 'six-report':
+   if(f.northReported&&!f.desertReported)return id==='six-report'?say('Celia','Skeld’s medics left their watch notes here. I’ll send Sera the copy with our next report.'):say('Nell',f.nellRecovered?'I’ll put Egil’s bell signals beside the route for Tomas. He’ll want to try them at the station.':'Two short bells for an open berth. Kit wrote the others down; I’ll learn them before Egil takes the next launch.');
    if(f.desertReported)return id==='six-report'?say('Celia',f.nellRecovered?'Ines’s treatment record is going to Sera. The launches have the ward’s supply lists.':'Sera’s notes are packed for the river healers. The launches are bringing the ward’s regular supplies.'):say('Nell',f.nellRecovered?f.desertMailSent?'I kept a copy of the clock drawing. We can take it to Larkspur when this is over.':'I’ll leave the letter at Amal’s sorting table before our next flight.':f.desertMailSent?'Orrin left the water-clock diagram by my cup. Send Tomas a copy when he answers.':'My letter’s with Kit. Remind him to leave it at Amal’s sorting table.');
    return h.talk({...scenes.letter(s)});
-  case 'six-alda':return say('Alda',f.desertSealBroken?'The launches will carry Namar’s crews. We still need the northern release.':'There’s room for the people outside the gate. The launches are bringing them around to us.');
-  case 'six-capital':return say('Petra',f.desertSealBroken?'The western return is dark. The northern seal still holds the landing bridge.':'The northern and western seals meet inside that wall. We have to release them at their own capitals.');
+  case 'six-alda':return say('Alda',f.capitalOpened?'Both fleets are alongside. The landing bridge is open.':f.northSealBroken?f.desertSealBroken?'The returns are dark. Bring the ship alongside.':'Skeld’s pilots are aboard. We still need Namar’s release.':f.desertSealBroken?'The launches will carry Namar’s crews. We still need the northern release.':'There’s room for the people outside the gate. The launches are bringing them around to us.');
+  case 'six-capital':return say('Petra',f.capitalOpened?'The bridge is level. We can cross to the allied landing.':f.northSealBroken&&f.desertSealBroken?'Both returns are out. Bring the ship alongside.':f.northSealBroken?'The northern return is dark. Namar still holds the western seal.':f.desertSealBroken?'The western return is dark. The northern seal still holds the landing bridge.':'The northern and western seals meet inside that wall. We have to release them at their own capitals.');
   case 'namar-amal':return say('Amal',f.desertSealBroken?'The barges are signed over. The post still leaves at the bell.':f.palaceCoup?'The families are under the covered quay. I’m keeping the post boats on the western bank.':'The eastern palace door. Cross the bridge and turn toward the dome.');
   case 'namar-post':
    if(f.desertMailSent)return say('Amal','Your report has gone to Dena. Tomas’s letter is in the same sack.');

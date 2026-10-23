@@ -290,5 +290,54 @@
       "#263e53": "#354f46",
       "#b7c1b8": "#c8c599"
     }
+  },
+  "hound-frost": {
+    "kind": "hound",
+    "name": "Frost hound",
+    "chapter": 6,
+    "hp": 88,
+    "bonus": 12,
+    "armor": 2,
+    "speed": 7,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#355576",
+      "#b7784e": "#82abc1",
+      "#d9ae62": "#c6dbe0"
+    }
+  },
+  "crow-frost": {
+    "kind": "crow",
+    "name": "Frost crow",
+    "chapter": 6,
+    "hp": 76,
+    "bonus": 12,
+    "armor": 2,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#355576",
+      "#626d7f": "#82abc1",
+      "#b7784e": "#c6dbe0",
+      "#d9ae62": "#54768d",
+      "#142536": "#a1becb"
+    }
+  },
+  "guardian-frost": {
+    "kind": "guardian",
+    "name": "Winter patrol guardian",
+    "chapter": 6,
+    "hp": 188,
+    "bonus": 12,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#355576",
+      "#b7784e": "#82abc1",
+      "#d9ae62": "#c6dbe0",
+      "#263e53": "#54768d",
+      "#b7c1b8": "#a1becb"
+    }
   }
 }

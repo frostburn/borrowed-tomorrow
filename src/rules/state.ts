@@ -11,7 +11,7 @@ export const FOURTH_CHAPTER = 'chapter-four:broken-world';
 export const FIFTH_CHAPTER = 'chapter-five:anchors';
 export const SIXTH_CHAPTER = 'chapter-six:capital-approach';
 export type HeroId = 'nell' | 'orrin' | 'kit' | 'celia' | 'petra';
-export type MapId = 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
+export type MapId = 'bellharbor' | 'frostwatch' | 'glacier' | 'wintershrine' | 'capitalquay' | 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;

@@ -1,6 +1,6 @@
 # Chapter Six — The Emperor's Last Day
 
-The shared opening, Namar desert expedition and optional Iria treatment journey are playable. The northern capital and Emperor climax below remain author plans. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
+The shared opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay are playable. The inner capital and Emperor climax below remain author plans. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
 
 ## Approved chapter structure
 
@@ -8,7 +8,7 @@ The party tries to reach the Emperor, but he seals the capital before they can e
 
 The two seals belong to an old defensive pact. The foreign rulers once entrusted the Emperor with protecting their capitals; he has invoked the pact to close his own. Reach each seal's original seat of authority and win the local support needed to break it. These are foreign courts with their own interests and responsibility for supporting the empire. Their people continue their ordinary lives; the journeys expose the wider consequences of the alliance.
 
-Keep the seven-chapter outline: the two kingdoms, optional jungle and Emperor climax belong to Chapter Six. The deliberate departure into the god's domain remains Chapter Seven. The remaining routes are an approved author plan. Implemented Namar/Iria scenes, map IDs and checkpoints are documented separately in the continuation.
+Keep the seven-chapter outline: the two kingdoms, optional jungle and Emperor climax belong to Chapter Six. The deliberate departure into the god's domain remains Chapter Seven. The remaining Emperor route is an approved author plan. Implemented Namar/Iria/Skeld scenes, map IDs and checkpoints are documented separately in the continuation.
 
 ## Shared opening — the sealed capital
 

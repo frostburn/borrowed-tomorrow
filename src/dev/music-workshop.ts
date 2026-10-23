@@ -5,6 +5,9 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'bellharbor',title:'Skeld · Answering Bells',group:'6'}, {mode:'frostwatch',title:'The Covered Road',group:'6'},
+  {mode:'glacier',title:'The Fleet beneath the Ice',group:'6'}, {mode:'wintershrine',title:'A Bell for the Outer Marker',group:'6'},
+  {mode:'north-battle',title:'Skeld · Open the Mountain',group:'6'}, {mode:'winter-dragon',title:'Wings over the Winter Bell',group:'6'},
   {mode:'riverhaven',title:'Iria · The Next Launch',group:'6'}, {mode:'canopy',title:'Under the Green Signal',group:'6'},
   {mode:'rainhouse',title:'The Waiting Basin',group:'6'}, {mode:'rainhouse-rest',title:'A Seat by the River',group:'6'},
   {mode:'river-battle',title:'Iria · Open the Waterway',group:'6'}, {mode:'rain-warden',title:'Wings on the Landing',group:'6'},
@@ -38,7 +41,7 @@ const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
  flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Sine:['sine'],Tritaver:['tritaver'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 const displayBeat=(beat:number)=>{
   const whole=Math.floor(beat),third=Math.round((beat-whole)*3);

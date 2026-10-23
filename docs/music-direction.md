@@ -152,7 +152,7 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 
 ## Approved future regions — all in 31-EDO
 
-These collections guide Chapters Six–Seven. Namar’s desert scores are implemented below; northern and domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+These collections guide Chapters Six–Seven. Namar, Iria and Skeld scores are implemented below; domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
 
 ### Desert — neutral intervals and score spelling
 
@@ -175,7 +175,7 @@ Degrees are integer steps above a chosen tonic, reduced modulo 31. Zero is the t
 
 ### Northern kingdom — Orwell and Myna
 
-Orwell[9] supplies a spacious, bittersweet identity, with broad melodic phrases and relatively similar adjacent steps. The chosen mode contains subminor `[0,7,18]` and supermajor `[0,11,18]` triads sharing one fifth. Make their contrasting thirds an important gesture in the capital's hymn. Bowed strings and restrained winds establish human warmth; bright struck tones and wide registers evoke the frozen surroundings. The battle variation can foreground the Orwell tetrad `[0,7,14,21]`.
+Orwell[9] supplies a spacious, bittersweet identity, with broad melodic phrases and relatively similar adjacent steps. The chosen mode contains subminor `[0,7,18]` and supermajor `[0,11,18]` triads sharing one fifth. Make their contrasting thirds an important gesture in the capital's hymn. Bowed strings and expressive sine lines establish human warmth; bright struck tones and wide registers evoke the frozen surroundings. The battle variation can foreground the Orwell tetrad `[0,7,14,21]`.
 
 Reserve Myna[7]'s wide gaps and tiny paired dieses for the glacier's exposed ice, creaking structures and dangerous discoveries. The scale choice alone does not produce a cold atmosphere; melody, voicing, timbre and pacing must carry it.
 
@@ -214,7 +214,7 @@ The mooring, court and observatory hold bass and inner voices across two bars wi
 
 Review in Music → Ch 6. Useful comparisons: city bars 1/17/25, court bars 1/9/17, observatory bars 9/17/25, and serpent bars 1/3/11/19/27 (the latter includes its two opening bars). Solo Bass to hear the harmonic movement; solo Bell in the observatory's middle to hear the hunters' call. The normal CI set remains small; detailed review renders all seven forms and their loop seams through the real synth. Each cue has its own browser test and audio context, so the complete sweep does not share one cumulative timeout or retain all seven voice graphs. The signal thresholds and full forms are unchanged.
 
-The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. Northern and domain collections above remain approved composition plans; Iria’s Slendric implementation follows below.
+The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. The domain collection above remains an approved composition plan; Iria and Skeld implementations follow below.
 
 
 ## Iria — Slendric and the treatment boat
@@ -233,3 +233,21 @@ The procedural lute uses a plucked triangle fundamental with exact harmonic uppe
 Hand drums alternate low open strokes with dry upper rim strokes. A shaker holds eighths; the pitched wood interlocks in 3+3+2 divisions without changing the four-beat meter. Cadences thin the accompaniment and the middle sections change the bass/wood texture. The melody is written in four-bar sentences, not repeated rising triads. The clinic holds bass/strings across empty bars. Recovery switches to the five-note cue after the completed treatment, without making the music an in-story cure mechanism.
 
 The rack adds procedural `wood` (an exact harmonic struck sine body), `hand-drum` (short membrane/body and skin noise) and `shaker` (dry filtered noise). Shared smooth envelopes, tails and cancellation apply. Hand drum/shaker are unpitched; wood and timpani are tuned. Solo each new instrument, or the full Drums group, in Music → Ch 6. No samples, dependencies or alternate tuning system are added.
+
+
+## Skeld — Orwell hymn, Myna wrecks and winter wings
+
+`score-north.ts` authors six separate 32-bar forms in 31-EDO, A4 = 440 Hz. C-rooted Orwell[9] is spelled `C Dd D# Et Ft G Ab A# B` (steps `0 4 7 11 14 18 21 25 28`); its `C–D#–G` subminor and `C–Et–G` supermajor thirds answer one another in the harbor hymn. C-rooted Myna[7] is `C D# Eb F# F#t A At` (steps `0 7 8 15 16 23 24`). Neighboring dieses answer across wide registers at the wrecks rather than sounding as a continuously loud cluster. The existing ASCII accidental parser and circle of fifths are unchanged.
+
+| Cue / workshop title | Meter / BPM | Form and sound |
+| --- | --- | --- |
+| `bellharbor` · Skeld / Answering Bells | 4/4 · 78 | Descending sine hymn, held strings, answering bell and occasional second sine voice; modest ensemble rubato. |
+| `frostwatch` · The Covered Road | 4/4 · 94 | A sine-voiced walking answer to the hymn with restrained timpani and wood. |
+| `glacier` · The Fleet beneath the Ice | 4/4 · 68 | Myna struck bells, wide registers, paired dieses, held bass and quiet string planes. |
+| `wintershrine` · A Bell for the Outer Marker | 4/4 · 72 | Sparse Orwell hymn; long string/bass holds fill quiet bars, controlled sine vibrato and small cadence breaths. |
+| `north-battle` · Skeld / Open the Mountain | 4/4 · 128 | Regional melody developed in the sparse tritaver voice over firm kick/snare/timpani, string beds and mobile bass. |
+| `winter-dragon` · Wings over the Winter Bell | 5/4 · 116 | Two-bar one-shot tritaver/timpani introduction, then 32-bar loop. Three-beat weight and two-beat lift; Orwell tetrad `0 7 14 21`, expressive tritaver lead over quiet strings. |
+
+All cues have phrase dynamics, controlled long-note vibrato and softer bell releases. Full melody phrases are authored across four bars, with independent second-half development rather than an endlessly rising triad. Battle timing stays steady. Music → Ch 6 reviews the exact notes, meter, parts, expression and harbor/shrine rubato; no recordings or production dependencies are added. `north-music.spec.ts` renders every bar and the loop transition through the actual synthesis rack, in bounded windows with earlier held notes and exact performed timing.
+
+Northern exploration uses a pure sine oscillator in place of reed (including the harbor answer); the glacier retains its struck-bell lead. Both battle melodies, including the dragon introduction, use a cached Web Audio PeriodicWave called **tritaver**. Its six partials are the powers of three: harmonics 1, 3, 9, 27, 81 and 243, with amplitudes `1 / (i*i + 1)` for `i = 0…5` in 244-element real/imaginary coefficient arrays. All other upper coefficients and DC are zero. No sub-oscillator, unison detune or pitch division is added. A 7 kHz low-pass preserves the upper color; the normal smooth envelope, phrase dynamics, bends, controlled vibrato and cancellation apply to both new voices. Music’s Sine and Tritaver part filters isolate them. Offline spectral checks verify the audible pitch, present/absent partials and release silence through the real rack.

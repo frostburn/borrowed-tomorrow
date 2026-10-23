@@ -6,13 +6,13 @@ import { buySupply } from '../../../rules/supplies';
 import { completeRiverTreatment } from './recovery';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
-export function resumeJungle(h:StoryHost):boolean{
+export function resumeJungle(h:StoryHost,afterHome?:()=>void):boolean{
  const s=h.state,f=s.flags,m=s.location.map;
  const show=(d:Dialogue,flag:string)=>{h.talk({...d,done:()=>h.commit(flag,flag)});return true;};
  if(m==='outermooring'&&f.riverThanksSeen&&!f.riverReported){
   h.talk({...scenes.home(s),done:()=>{
    if(f.desertSealBroken&&!f.desertReported){f.desertReported=true;remember(s,'desertReported');}
-   h.commit('riverReported','riverReported');
+   h.commit('riverReported','riverReported');afterHome?.();
   }});return true;
  }
  if(m==='riverhaven'){

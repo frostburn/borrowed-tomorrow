@@ -69,7 +69,7 @@ for(const water of [false,true])it(`completes the ${water?'service channel':'gal
  expect(s.flags.nellIll).toBe(true);expect(s.flags.nellRecovered).toBeUndefined();expect(s.party[0]).toEqual({id:'nell',hp:1,focus:0});expect(s.activeParty).toEqual(formation);expect(s.inventory.characters.nell).toEqual(gear.nell);
  expect(s.flags.tomasRescued).toBe(true);expect(s.flags.albanDestroyed).toBe(true);expect(level(s)).toBe(12);
  expect(ownedCopies(s.inventory,'solar-guard')).toBe(1);expect(ownedCopies(s.inventory,'fine-expansion-ring')).toBe(1);
- v.act('six-chart');expect(v.read().choices![1].disabled).toBe(true);expect(v.read().choices![2].disabled).toBeFalsy();v.choose(0);expect(s.location.map).toBe('namar');
+ v.act('six-chart');expect(v.read().choices![1].disabled).toBeFalsy();expect(v.read().choices![2].disabled).toBeFalsy();v.choose(0);expect(s.location.map).toBe('namar');
 });
 it('enters only the real Chapter Five departure and preserves every resource, formation and loadout',()=>{
  const s=chapterSixStart();expect(s.xp).toBe(3270);expect(s.activeParty).toEqual(['kit','orrin','petra']);

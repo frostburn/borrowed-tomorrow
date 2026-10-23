@@ -5,6 +5,10 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'stormlining-coat':{name:'Storm-lined expedition coat',slot:'coat',heroes:COMPANION_IDS,description:'Skeld’s windproof layered coat. A short hem leaves the knees free.',bonuses:{attack:0,armor:4,speed:2}},
+  'ice-valve':{name:'Cold-weather expansion valve',slot:'fitting',heroes:['orrin'],description:'A glacier salvage valve with a guarded return and quick pressure recovery.',bonuses:{attack:7,armor:3,speed:1}},
+  'winter-sight':{name:'Winter range sight',slot:'fitting',heroes:['kit'],description:'A hooded expedition sight, clear even against a field of snow.',bonuses:{attack:8,armor:2,speed:1}},
+  'pact-guard':{name:'Sanctuary saber guard',slot:'fitting',heroes:['petra'],description:'Signe’s spare ice-climbing guard, adapted to protect Petra’s sword hand.',bonuses:{attack:7,armor:3,speed:2}},
   'reedweave-coat':{name:'Reedweave travel coat',slot:'coat',heroes:COMPANION_IDS,description:'A light layered river coat. Protective lining without a heavy hem.',bonuses:{attack:0,armor:4,speed:1}},
   'rainhouse-focus':{name:'Rainhouse field focus',slot:'fitting',heroes:['celia'],description:'A treatment lens with a firm folding guard, adapted for Celia’s field work.',bonuses:{attack:6,armor:3,speed:1}},
   'riverglass-reflector':{name:'Riverglass lantern reflector',slot:'fitting',heroes:['nell'],description:'Ines’s spare examination-lamp reflector. A bright beam and a balanced grip.',bonuses:{attack:7,armor:2,speed:2}},

@@ -5,6 +5,8 @@ type TempoKnot=readonly [bar:number,stretch:number];
 // Local beat lengths, interpolated through the phrases. A breath at a cadence
 // belongs to the whole ensemble, including a pedal begun in an earlier bar.
 const breaths:Partial<Record<MusicMode,readonly TempoKnot[]>>={
+ bellharbor:[[0,.98],[4,.96],[7.5,1.1],[8,.98],[12,.96],[15.5,1.12],[16,.98],[20,.97],[23.5,1.1],[24,.96],[28,.98],[31.5,1.13],[32,.98]],
+ wintershrine:[[0,.98],[4,.96],[7.5,1.09],[8,.98],[12,.96],[15.5,1.11],[16,.98],[20,.97],[23.5,1.09],[24,.96],[28,.98],[31.5,1.12],[32,.98]],
  sunpalace:[[0,.98],[4,.96],[7.5,1.12],[8,.98],[12,.96],[15.5,1.15],[16,.98],[20,.97],[23.5,1.13],[24,.96],[28,.98],[31.5,1.16],[32,.98]],
  outermooring:[[0,.98],[4,.96],[7.5,1.12],[8,.98],[12,.96],[15.5,1.15],[16,.98],[20,.97],[23.5,1.13],[24,.96],[28,.98],[31.5,1.16],[32,.98]],
  airship:[[0,.96],[2,1.02],[4,.95],[7,1.09],[8,.98],[10.5,1.1],[11.5,1.18],[12,.96],[15,1.07],[16,.99],[19,1.1],[20,.92],[21.5,.96],[23.5,1.15],[24,.97],[27,1.07],[28,.94],[30,1.06],[31.5,1.17],[32,.96]],
@@ -28,7 +30,7 @@ for(const [name,knots]of Object.entries(breaths)){
  clock[length]=length;clocks[mode]=clock;
 }
 export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
-const expressive:readonly MusicMode[]=['riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
+const expressive:readonly MusicMode[]=['bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
 export const hasExpression=(mode:MusicMode)=>expressive.includes(mode);
 
 /** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */
