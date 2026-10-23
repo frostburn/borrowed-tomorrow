@@ -1,6 +1,6 @@
 # Chapter Five — Taking the World Back
 
-**Approved full-chapter plan.** The shared airfield opening, survey ship, Hammerplain and Dawnwatch are playable; see [Act I](chapter-five-act-one.md), [Act II](chapter-five-act-two.md) and [the continuation](chapter-five-continuation.md). The first-victory fleet sighting and second-victory Emperor offer are implemented. Windmere and the flagship campaign finale below remain author plans. Entry is the unchanged `chapter-five:anchors` coast departure. The dev flagship preview stays isolated; a separate Vite-only canonical start opens Act I at the airfield.
+**Approved full-chapter plan, now playable.** The shared airfield, survey ship, three freely ordered regions, Emperor offer and flagship finale are implemented; see [Act I](chapter-five-act-one.md), [Act II](chapter-five-act-two.md), [Act III](chapter-five-act-three.md), [Act IV](chapter-five-act-four.md) and [the continuation](chapter-five-continuation.md). Entry is the unchanged `chapter-five:anchors` coast departure. The dev flagship preview stays isolated; Vite-only canonical starts open the airfield or Act IV aboard the ship.
 
 ## Shape and purpose
 

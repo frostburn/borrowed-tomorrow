@@ -13,6 +13,6 @@ export function createFlagshipBattle(profiles?:Record<CompanionId,CharacterProfi
   if(!profiles){const settings=newCharacterSettings();for(const id of COMPANION_IDS)settings.characters[id]=defaultBuild(id,10);profiles=characterProfiles(settings);}
   const state=newGame();state.bandages=12;
   const b=createBattle(FLAGSHIP_ENCOUNTER,state,equipment,profiles,party??['nell','orrin','petra']);
-  if(exposed){for(const id of FLAGSHIP_PARTS.slice(0,2))flagshipPart(b,id).hp=0;b.queue=b.queue.filter(id=>b.units.find(u=>u.id===id)!.hp>0);}
+  if(exposed){delete flagshipPart(b,'flagship-bridge').intent;for(const id of FLAGSHIP_PARTS.slice(0,2))flagshipPart(b,id).hp=0;b.queue=b.queue.filter(id=>b.units.find(u=>u.id===id)!.hp>0);}
   prepareFlagship(b);return b;
 }

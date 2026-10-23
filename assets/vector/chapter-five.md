@@ -1,4 +1,4 @@
-# Chapter Five Acts I–III — vector source
+# Chapter Five Acts I–IV — vector source
 
 ```sh
 node scripts/export-chapter-five-art.mjs

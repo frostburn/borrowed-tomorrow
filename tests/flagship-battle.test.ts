@@ -58,7 +58,7 @@ describe('dev flagship components',()=>{
   });
   it('ends the boarding when the bridge falls, while preserving defeat and clone independence',()=>{
     const b=createFlagshipBattle(undefined,undefined,undefined,true),clone=structuredClone(b);
-    expect(flagshipPart(b,'flagship-bridge').sealed).toBe(false);expect(flagshipPart(b,'flagship-port').hp).toBe(0);
+    expect(flagshipPart(b,'flagship-bridge').sealed).toBe(false);expect(flagshipPart(b,'flagship-bridge').intent?.name).toBe('Emergency broadside');expect(flagshipPart(b,'flagship-port').hp).toBe(0);
     flagshipPart(b,'flagship-bridge').hp=0;prepareFlagship(b);expect(b.result).toBe('victory');expect(enemies(b).every(u=>u.hp===0)).toBe(true);
     expect(clone.result).toBeNull();expect(flagshipPart(clone,'flagship-bridge').hp).toBe(240);
     clone.result='defeat';flagshipPart(clone,'flagship-bridge').hp=0;prepareFlagship(clone);expect(clone.result).toBe('defeat');
