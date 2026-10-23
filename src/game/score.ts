@@ -1,3 +1,4 @@
+import { claimBar } from './score-claim';
 import { windmereBar } from './score-windmere';
 import { dawnwatchBar,petraCrossingBar } from './score-dawnwatch';
 import { anchorBar } from './score-five';
@@ -10,11 +11,12 @@ import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
-export type MusicMode = 'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type MusicMode = 'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  claim:{beats:4,bpm:124,lead:'bell',leadGain:.12,keys:0,strings:.025,bass:.14,percussion:.095},
   windmere:{beats:3,bpm:76,lead:'reed',leadGain:.18,keys:.023,strings:.016,bass:.095,percussion:0},
   dispensary:{beats:3,bpm:88,lead:'keys',leadGain:.18,keys:.025,strings:0,bass:.095,percussion:0},
   mirrorward:{beats:4,bpm:66,lead:'bell',leadGain:.11,keys:.04,strings:.016,bass:.14,percussion:0},
@@ -98,6 +100,7 @@ const ALBAN:[number,Pitch,number][][]=[[
 const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
 /** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='claim')return claimBar(bar);
   if(mode==='windmere'||mode==='dispensary'||mode==='mirrorward'||mode==='wind-battle'||mode==='wind-engine')return windmereBar(mode,bar);
   if(mode==='dawnwatch'||mode==='watchbarracks'||mode==='signalwall'||mode==='dawn-battle'||mode==='dawn-commander')return dawnwatchBar(mode,bar);
   if(mode==='observation')return anchorBar(mode,bar);

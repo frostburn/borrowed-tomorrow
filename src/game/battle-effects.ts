@@ -7,7 +7,7 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   const g=scene.add.graphics();world.add(g);
   const steam=ability==='steam'||ability==='repulse',healing=ABILITIES[ability].heal||ability==='guard';
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
-  const target=toPixel(ability==='steam'&&affected.length?affected[affected.length-1]:aim);
+  const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
   const hand={x:source.x+(face.endsWith('-left')?-26:face.endsWith('-right')?26:face.endsWith('-back')?18:-18),y:source.y-30};
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:240,onUpdate:tween=>{
@@ -20,6 +20,8 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
       }
     }else if(ABILITIES[ability].shape==='pattern'){
       for(const hex of affected){const at=toPixel(hex);g.fillStyle(0xf9dbad,.17).fillRect(Math.round(at.x-16),0,32,Math.round(at.y));g.lineStyle(3,0xf8dfb5,.85).lineBetween(at.x,0,at.x,at.y);g.strokeEllipse(at.x,at.y,38+p*12,16+p*10);}
+    }else if(ability==='sunbeam'){
+      for(const hex of affected){const at=toPixel(hex);g.lineStyle(5,0xf4dc9e,.8).lineBetween(hand.x,hand.y,at.x,at.y-14);g.lineStyle(2,0xe5f5e0,1).lineBetween(hand.x,hand.y,at.x,at.y-14);}
     }else if(ability==='celestialbolt'){
       const y=target.y-24,tip=reduced?y:Math.round(y*Math.min(1,p/.55));
       g.fillStyle(0xf8dfb5,.18);g.fillRect(target.x-6,0,12,tip);

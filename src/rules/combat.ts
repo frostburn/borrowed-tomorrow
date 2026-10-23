@@ -1,3 +1,5 @@
+import { heroAvailable } from './availability';
+import { configureFlagship,prepareFlagship,isFlagshipPart } from './flagship';
 import { configureWard,prepareWard,WARD_ID } from './ward';
 import { configureDawnwatch,prepareDawnwatch,orderShields,spotterTurn,SPOTTER_ID } from './dawnwatch';
 import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
@@ -22,9 +24,11 @@ import { configureConduit, prepareConduit } from './conduit';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
-export type AbilityId = 'refraction' | 'barrage' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
+export type AbilityId = 'sunbeam' | 'splinter' | 'refraction' | 'barrage' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
+  sunbeam:{id:'sunbeam',name:'Severing light',description:'Four hexes along a straight axis. Pierces units, including allies; rocks stop the beam. 2 focus.',range:4,power:15,cost:2,shape:'line',sound:'flare'},
+  splinter:{id:'splinter',name:'Glass splinter',description:'One target within 5 hexes. Rocks block the shard.',range:5,power:9,cost:0,shape:'single',sound:'peck'},
   refraction:{id:'refraction',name:'Reflected light',description:'The lit projection directs the announced beam. Break it to interrupt the beam and expose the core.',range:0,power:21,cost:0,shape:'pattern',sound:'flare'},
   barrage:{id:'barrage',name:'Artillery barrage',description:'Support fire hits the announced hexes. Defeat its spotter to stop it.',range:0,power:14,cost:0,shape:'pattern',sound:'steam'},
   judgment: {id:'judgment',name:'Judgment',description:'Strike the announced hexes. The warning remains visible before the attack.',range:0,power:24,cost:0,shape:'pattern',sound:'flare'},
@@ -57,7 +61,7 @@ export interface Unit {
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
-  footprint?:Hex[]; anchored?:boolean; passive?:boolean;
+  footprint?:Hex[]; anchored?:boolean; passive?:boolean; flying?:boolean;
   intent?:{round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex;via?:string};
 }
 export interface Battle {
@@ -66,8 +70,10 @@ export interface Battle {
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'conduit'|'furnace'|'dawnwatch'|'ward'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
+  herald:{name:'Sun herald',hp:138,speed:4,movement:3,armor:2,abilities:['sunbeam','strike']as AbilityId[],bonus:7},
+  glasswing:{name:'Glass wing',hp:66,speed:8,movement:4,armor:1,flying:true,abilities:['splinter','strike']as AbilityId[],bonus:5},
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
   guardian: { name: 'Rail guardian', hp: 68, speed: 2, movement: 2, armor: 2, abilities: ['steam', 'strike'] as AbilityId[], bonus: -6 },
@@ -75,26 +81,29 @@ const ENEMY_STATS = {
   knight: { name: 'Imperial knight', hp: 142, speed: 5, movement: 3, armor: 3, abilities: ['strike','bash','taunt','sweep'] as AbilityId[], bonus: 2 },
 };
 
+/** Build a character for combat or inventory inspection without starting a turn. */
+export function createPartyUnit(state:GameState,id:CompanionId,index=0,count=1,equipment=equipmentBonuses(state.inventory),profile?:CharacterProfile):Unit{
+    const legacy=state.party.find(h=>h.id===id);
+    if(!profile&&!legacy)throw new Error('A companion needs a character profile.');
+    const row = count === 3 ? [1, 3, 5][index] : 2 + index * 2;
+    return { id, name: profile?.name ?? CHARACTERS[id].name, kind: id, role: profile?.role, side: 'party',
+      hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
+      speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
+      armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
+      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
+      abilities: profile ? [...profile.abilities] : [...new Set([...(id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] as const : []), ...learnedAbilities(id, level(state))])], level: profile?.level,
+      moved: false, defending: false, retaliated: false, waited: false };
+}
+
 export function createBattle(encounter: string | Encounter, state: GameState, equipment?: Record<CompanionId, EquipmentBonuses>, characters?: Record<CompanionId, CharacterProfile>, party?: readonly CompanionId[]): Battle {
   equipment ??= equipmentBonuses(state.inventory);
   const e = typeof encounter==='string'?ENCOUNTERS[encounter]:encounter;
   if (!e) throw new Error(`Unknown encounter: ${encounter}`);
   const ids = party ?? state.activeParty;
-  const available = characters ? Object.keys(characters) as CompanionId[] : state.party.map(h => h.id);
+  const available = characters ? Object.keys(characters) as CompanionId[] : state.party.filter(h=>heroAvailable(state,h.id)).map(h => h.id);
   if (!validParty(ids, available)) throw new Error('Choose one to three distinct companions.');
   if(e.boss==='conduit'&&e.grounding&&ids.length<2)throw new Error('The sealed intake needs at least two companions for its earth plates.');
-  const units: Unit[] = ids.map((id, index) => {
-    const profile = characters?.[id], legacy = state.party.find(h => h.id === id);
-    if (!profile && !legacy) throw new Error('A companion needs a character profile.');
-    const row = ids.length === 3 ? [1, 3, 5][index] : 2 + index * 2;
-    return { id, name: profile?.name ?? CHARACTERS[id].name, kind: id, role: profile?.role, side: 'party',
-      hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
-      speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment?.[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
-      armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
-      bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
-      abilities: profile ? [...profile.abilities] : [...new Set([...(id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] as const : []), ...learnedAbilities(id, level(state))])], level: profile?.level,
-      moved: false, defending: false, retaliated: false, waited: false };
-  });
+  const units:Unit[]=ids.map((id,index)=>createPartyUnit(state,id,index,ids.length,equipment,characters?.[id]));
   e.enemies.forEach((enemy, i) => {
     const variant=enemy.variant?ENEMY_VARIANTS[enemy.variant]:undefined;
     if(variant&&variant.kind!==enemy.kind)throw new Error('Enemy variant must match its combat role.');
@@ -112,6 +121,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.boss==='furnace')configureFurnace(battle);
   configureDawnwatch(battle,e);
   if(e.boss==='ward')configureWard(battle);
+  if(e.boss==='flagship')configureFlagship(battle);
   nextRound(battle);
   return battle;
 }
@@ -121,7 +131,7 @@ export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(
 export function movement(b: Battle, u: Unit) {
   const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).flatMap(v => occupiedHexes(v).map(key))]);
   const anchors=u.footprint?.length?new Set(cells().filter(h=>occupiedHexes(u,h).some(part=>!inside(part)||blocked.has(key(part)))).map(key)):blocked;
-  return reachable(u.hex, u.moved||u.anchored ? 0 : u.movement, anchors, h=>u.kind!=='crow'&&occupiedHexes(u,h).some(part=>b.water.has(key(part)))?2:1);
+  return reachable(u.hex, u.moved||u.anchored ? 0 : u.movement, anchors, h=>!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(part=>b.water.has(key(part)))?2:1);
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
@@ -195,7 +205,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);
+  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -204,7 +214,8 @@ function nextRound(b: Battle) {
   beginTurn(b);
 }
 function ended(b:Battle){
-  prepareWard(b);
+  prepareWard(b);prepareFlagship(b);
+  if(b.result)return true;
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
   if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return true; }
@@ -234,7 +245,7 @@ function finishTurn(b: Battle) {
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
-    for(const u of alive(b))if(u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of alive(b))if(!u.flying&&u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
@@ -301,6 +312,10 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(isFlagshipPart(u)){
+    prepareFlagship(b);if(b.result)return;const aim={...u.hex};
+    if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+  }
   if(u.id===WARD_ID){
     prepareWard(b);const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;
   }
@@ -314,11 +329,11 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   }
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   if(u.kind==='knight'){
-    if(!u.bonusUsed){
+    if(u.abilities.includes('bash')&&!u.bonusUsed){
       const victim=enemies.find(v=>legalAim(b,u,'bash',v.hex)&&pushDestination(b,u,v));
       if(victim){const aim={...victim.hex};cast(b,u,'bash',aim);onAction?.('bash',aim);return 'bash';}
     }
-    if(!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
+    if(u.abilities.includes('taunt')&&!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
       const visits=[...movement(b,u).values()].sort((a,z)=>Math.min(...enemies.map(v=>distance(a.hex,v.hex)))-Math.min(...enemies.map(v=>distance(z.hex,v.hex)))||a.cost-z.cost);
       if(visits[0]&&!equal(visits[0].hex,u.hex))move(b,u,visits[0].hex);
       if(cast(b,u,'taunt',u.hex)){onAction?.('taunt',{...u.hex});return 'taunt';}
@@ -332,7 +347,7 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
       if(id==='taunt'||id==='bash')continue; // Knight support actions are handled before damage scoring.
       for (const aim of cells()) {
         if (!legalAim(b, u, id, aim)) continue;
-        let hitsEnemy=false,score = -reach.cost * 0.12-(u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0)+(b.evacuation?.route.some(h=>equal(h,u.hex))?10:0);
+        let hitsEnemy=false,score = -reach.cost * 0.12-(!u.flying&&u.kind!=='crow'&&b.vents.has(key(u.hex))?7:0)+(b.evacuation?.route.some(h=>equal(h,u.hex))?10:0);
         for (const v of targets(b, u, id, aim)) {
           if(v.side!==u.side)hitsEnemy=true;
           score += (v.side !== u.side ? 1 : -2.5) * (Math.min(v.hp, damage(u, v, id)) + (v.hp <= damage(u, v, id) ? 8 : 0));
@@ -355,8 +370,8 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
-    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>!u.flying&&u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
+    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(!u.flying&&u.kind!=='crow'&&b.vents.has(key(h))?4:0);
     visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
     defend(b);
@@ -371,6 +386,7 @@ export function awardVictory(b: Battle, s: GameState) {
   const oldLevel = level(s);
   s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
   for (const hero of s.party) {
+    if(!heroAvailable(s,hero.id))continue;
     const unit = b.units.find(u => u.id === hero.id as HeroId);
     hero.hp = Math.min(maxHp(hero.id, s), Math.max(1, unit?.hp ?? hero.hp) + 8 + (level(s) - oldLevel) * 6);
     hero.focus = 6;

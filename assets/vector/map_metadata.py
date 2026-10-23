@@ -8,4 +8,5 @@ def retain_interaction_roles(path, layers):
  for layer in layers:
   if layer['name']!='Interactions':continue
   for obj in layer.get('objects',[]):
-   obj['properties'].extend(authored.get(obj['name'],[]))
+   names={p['name'] for p in obj['properties']}
+   obj['properties'].extend(p for p in authored.get(obj['name'],[]) if p['name'] not in names)

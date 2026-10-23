@@ -3,6 +3,12 @@ import { completedAnchors } from './progress';
 import type { GameState } from '../../rules/state';
 export const JOURNAL:Record<string,{title:string;text:string}>={
  ...WINDMERE_JOURNAL,
+ flagshipApproachSeen:{title:'Under the flagship',text:'Dawnwatch’s signals brought us through the cordon. Hammerplain’s spare drive holds the survey ship steady. Alban’s marines have boarded. Disable both batteries, then the bridge.'},
+ flagshipFallen:{title:'The guns fall silent',text:'Both batteries and the command bridge are disabled. The marines have returned to their own ship. Board the command deck from the flight chart. A fleet range sight goes into the bag for Kit.'},
+ benefactorClaimSeen:{title:'The Benefactor answers',text:'The Benefactor spoke from a seam of light above the flagship. It named the broken anchors and destroyed Alban, his ship and every man aboard. Kit and Celia brought Nell across the gangway before the hull vanished. The shard’s pulse made her collapse; she is too ill to fight and is resting aboard. Her companions must hold the forward rail.'},
+ retaliationSeen:{title:'Hunters on the rail',text:'Glass-winged creatures and a pale herald came out of the same light and landed aboard. They are heading for the hatch where Nell is resting. Prepare the remaining companions in Equipment, then meet them at the forward rail.'},
+ retaliationFallen:{title:'Beside the berth',text:'The Benefactor’s hunters have been driven off. Nell’s illness persists; ordinary rest cannot break her connection to the shard. Join Kit and Celia at her berth.'},
+ fiveDeparture:{title:'The outer mooring',text:'Alban and his men are dead. The Benefactor is attacking directly after the anchors were disconnected. Nell remains too ill to fight. Kit will take Celia’s notes to Sera, while the others prepare to reach the Emperor. The survey ship is holding for the capital’s outer mooring.'},
  airfieldSeen:{title:'The survey ship',text:'Superintendent Durn has seized Alda’s survey ship for Hammerplain. Bram’s ferry stores are being unloaded. Clear the confiscation detail at the gangway.'},
  airfieldClear:{title:'A flight out',text:'The airfield guards have withdrawn. Meet Alda at the gangway to board the survey ship.'},
  firstFlightSeen:{title:'Three landings',text:'Alda will fly us between the anchor stations. Hammerplain powers its anchor from a foundry; Petra knows Dawnwatch’s garrison, and Celia knows Windmere’s medicine works. Choose a landing on the flight chart. Tomas keeps our railway messages at the refuge.'},
@@ -29,6 +35,11 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
 };
 export function objective(s:GameState):string{
  const f=s.flags;
+ if(f.chapterFiveComplete)return 'Chapter Five complete · Nell is resting aboard. The next course is at the flight chart.';
+ if(f.nellIll&&!f.retaliationWon)return 'Prepare the remaining companions, then defend the forward rail.';
+ if(s.location.map==='flagship')return 'Join Petra on the command deck.';
+ if(f.retaliationWon)return 'Join Kit and Celia at Nell’s berth.';
+ if(f.flagshipWon)return 'Board the flagship’s command deck from the flight chart.';
  if(!f.airfieldGuardWon)return 'Clear the guards at the survey gangway.';
  if(!f.airshipOwned)return 'Meet Alda at the gangway and board the survey ship.';
  if(!f.firstFlightSeen)return 'Join Alda at the flight chart.';
@@ -66,7 +77,7 @@ export function objective(s:GameState):string{
  }
  if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return 'Look into the light in the observation cabin · aft hatch.';
  if(f.emperorOfferSeen&&!f.emperorOfferTold)return 'Return to the flight deck and tell the others.';
- if(completedAnchors(s)===3)return 'Acts I–III complete · prepare aboard for the flagship finale, or revisit the regions.';
+ if(completedAnchors(s)===3)return 'Choose the capital approach at the flight chart when you’re ready. Rest and Equipment are available aboard.';
  const remaining=[!f.hammerplainComplete&&'Hammerplain',!f.dawnwatchComplete&&'Dawnwatch',!f.windmereComplete&&'Windmere'].filter(Boolean).join(' or ');
  return `Choose ${remaining} at the forward flight chart.`;
 }

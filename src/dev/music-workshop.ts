@@ -12,7 +12,7 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
   {mode:'five-battle',title:'Hammerplain · Hold the Floor',group:'5'}, {mode:'five-furnace',title:'The Pouring Lane',group:'5'},
   {mode:'dawnwatch',title:'Dawnwatch · The Open Gate',group:'5'}, {mode:'watchbarracks',title:'The Gun Terraces',group:'5'}, {mode:'signalwall',title:'The Town Wheel',group:'5'},
   {mode:'dawn-battle',title:'Dawnwatch · Across the Terraces',group:'5'}, {mode:'dawn-commander',title:'Orders Worth Refusing',group:'5'}, {mode:'observation',title:'The Empty Cabin',group:'5'},
-  {mode:'flagship',title:'Iron Above the Clouds',group:'5'},
+  {mode:'flagship',title:'Iron Above the Clouds',group:'5'}, {mode:'claim',title:'The Sky Answers',group:'5'},
   {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'The Sea Gate',group:'4'},
   {mode:'sanctuary',title:'Under the Hollow Sun',group:'4'}, {mode:'four-battle',title:'Hold the Line',group:'4'}, {mode:'four-warden',title:"The Emperor's Order",group:'4'},
   {mode:'station',title:'Larkspur festival',group:'1'}, {mode:'yard',title:"Orrin's workshop",group:'1'}, {mode:'tunnel',title:'After the raid / pass',group:'1'},

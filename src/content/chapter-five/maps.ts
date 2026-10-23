@@ -1,3 +1,5 @@
+import retaliation from './maps/battle-benefactor-retaliation.json' with { type: 'json' };
+import flagship from './maps/flagship.json' with { type: 'json' };
 import windmere from './maps/windmere.json' with { type: 'json' };
 import dispensary from './maps/dispensary.json' with { type: 'json' };
 import mirrorward from './maps/mirrorward.json' with { type: 'json' };
@@ -25,5 +27,5 @@ import stores from './maps/battle-hammer-stores.json' with { type: 'json' };
 import carrier from './maps/battle-hammer-carrier.json' with { type: 'json' };
 import { tiledWorld } from '../tiled-world';
 import type { TileMap } from '../tilemaps';
-export const CHAPTER_FIVE_MAPS={windmere:tiledWorld('windmere',windmere),dispensary:tiledWorld('dispensary',dispensary),mirrorward:tiledWorld('mirrorward',mirrorward),dawnwatch:tiledWorld('dawnwatch',dawnwatch),watchbarracks:tiledWorld('watchbarracks',watchbarracks),signalwall:tiledWorld('signalwall',signalwall),observation:tiledWorld('observation',observation),airfield:tiledWorld('airfield',airfield),airship:tiledWorld('airship',airship),hammerplain:tiledWorld('hammerplain',hammerplain),coolingworks:tiledWorld('coolingworks',coolingworks),anchorforge:tiledWorld('anchorforge',anchorforge)};
-export const CHAPTER_FIVE_BATTLES:Record<string,TileMap>={'wind-lift':battlewindlift,'wind-gallery':battlewindgallery,'wind-engine':battlewindengine,'dawn-mortar-first':mortarFirst,'dawn-mortar-last':mortarLast,'dawn-repeater-first':repeaterFirst,'dawn-repeater-last':repeaterLast,'dawn-commander':commander,'airfield-guard':guard,'hammer-lift':lift,'hammer-race':race,'hammer-stores':stores,'hammer-carrier':carrier};
+export const CHAPTER_FIVE_MAPS={flagship:tiledWorld('flagship',flagship),windmere:tiledWorld('windmere',windmere),dispensary:tiledWorld('dispensary',dispensary),mirrorward:tiledWorld('mirrorward',mirrorward),dawnwatch:tiledWorld('dawnwatch',dawnwatch),watchbarracks:tiledWorld('watchbarracks',watchbarracks),signalwall:tiledWorld('signalwall',signalwall),observation:tiledWorld('observation',observation),airfield:tiledWorld('airfield',airfield),airship:tiledWorld('airship',airship),hammerplain:tiledWorld('hammerplain',hammerplain),coolingworks:tiledWorld('coolingworks',coolingworks),anchorforge:tiledWorld('anchorforge',anchorforge)};
+export const CHAPTER_FIVE_BATTLES:Record<string,TileMap>={'benefactor-retaliation':retaliation,'wind-lift':battlewindlift,'wind-gallery':battlewindgallery,'wind-engine':battlewindengine,'dawn-mortar-first':mortarFirst,'dawn-mortar-last':mortarLast,'dawn-repeater-first':repeaterFirst,'dawn-repeater-last':repeaterLast,'dawn-commander':commander,'airfield-guard':guard,'hammer-lift':lift,'hammer-race':race,'hammer-stores':stores,'hammer-carrier':carrier};

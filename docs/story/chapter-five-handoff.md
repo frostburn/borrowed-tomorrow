@@ -1,6 +1,6 @@
 # Chapter Five entry — Taking the World Back
 
-Chapters One–Four and Chapter Five’s airfield/Hammerplain/Dawnwatch acts are playable canon. This document preserves the incoming coast departure; see [chapter-five-continuation.md](chapter-five-continuation.md) for the implemented Acts I–II checkpoints. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap. [chapter-five-plan.md](chapter-five-plan.md) is the approved author plan: three freely ordered regional acts followed by Alban's flagship. Windmere and the flagship finale are still plans. This implementation does not change the incoming saved departure.
+Chapters One–Four and all four Chapter Five acts are playable canon. This document preserves the incoming coast departure; see [chapter-five-continuation.md](chapter-five-continuation.md) for the implemented checkpoints. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap. [chapter-five-plan.md](chapter-five-plan.md) is the approved author plan: three freely ordered regional acts followed by Alban's flagship. Windmere and the flagship finale are now playable; the outgoing capital handoff is in [chapter-five-act-four.md](chapter-five-act-four.md). This implementation does not change the incoming saved departure.
 
 ## Exact save
 
@@ -18,7 +18,7 @@ The party climbed to Celia's old sanctuary hospice, cleared the return-line brid
 
 Under an imperial plate, the party found the complete founding pledge: descendants' days for harvests, healing and light. Celia had taught a shortened hospice oath without those terms. The healing had worked; it never authorized this price. The chart identifies **Hammerplain, Dawnwatch and Windmere** as anchor stations stabilizing the palace conduit. All three distant anchors remain intact. An older diagram shows a passage through the hollow sun from the conduit toward a source. The party has copied that evidence, not traveled the passage or established how to open it. The Benefactor remains silent. Defeating the Emperor remains Chapter Six, and entering the god's own domain remains Chapter Seven.
 
-Back at the refuge, Nell and Tomas took their promised walk to the sea. Nell chose to pursue the anchors; Tomas stays with the refuge to keep the railway communities in contact. Bram marked the western airfield and its sheltered survey ship. Celia left a complete copy of the pledge with Dena. Petra thinks former comrades at Dawnwatch may help. Alban survives offstage; his planned Chapter Five capture has not happened in playable canon. Ansel stays dead. Tomas is alive, never a combatant and never another kidnapping objective.
+Back at the refuge, Nell and Tomas took their promised walk to the sea. Nell chose to pursue the anchors; Tomas stays with the refuge to keep the railway communities in contact. Bram marked the western airfield and its sheltered survey ship. Celia left a complete copy of the pledge with Dena. Petra thinks former comrades at Dawnwatch may help. Alban survives offstage at this boundary; his death in Chapter Five Act IV lies ahead. Ansel stays dead. Tomas is alive, never a combatant and never another kidnapping objective.
 
 ## Gear and continuation
 

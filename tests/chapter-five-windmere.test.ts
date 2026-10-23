@@ -41,9 +41,9 @@ for(const order of [['windmere','hammerplain','dawnwatch'],['windmere','dawnwatc
   if(i===1){expect(objective(s)).toContain('observation cabin');v.go('ship-cabin');expect(s.flags.emperorOfferTold).toBe(true);}
  }
  expect(s.journal.filter(j=>j==='fleetSighted')).toHaveLength(1);expect(s.journal.filter(j=>j==='emperorOfferSeen')).toHaveLength(1);expect(s.journal.filter(j=>j==='allAnchorsSeen')).toHaveLength(1);
- expect(s.flags).toMatchObject({windmereFreed:true,windmereComplete:true,allAnchorsSeen:true,tomasRescued:true});expect(s.flags.chapterFiveComplete).toBeUndefined();expect(s.boundary).toBeNull();expect(s.activeParty).toEqual(formation);expect(objective(s)).toContain('Acts I–III complete');
+ expect(s.flags).toMatchObject({windmereFreed:true,windmereComplete:true,allAnchorsSeen:true,tomasRescued:true});expect(s.flags.chapterFiveComplete).toBeUndefined();expect(s.boundary).toBeNull();expect(s.activeParty).toEqual(formation);expect(objective(s)).toContain('capital approach');
  expect(ownedCopies(s.inventory,'ward-focus')).toBe(1);expect(s.inventory.characters.celia.fitting).toBeNull();expect(equipItem(s.inventory,'celia','ward-focus')).toBe(true);
- v.interact('ship-chart');expect(v.read().choices![3].disabled).toBe(true);v.read().choices![2].action();expect(s.location.map).toBe('windmere');expect(v.read().scene?.id).not.toBe('five-wind-arrival');
+ v.interact('ship-chart');expect(v.read().choices![3].disabled).toBe(false);v.read().choices![2].action();expect(s.location.map).toBe('windmere');expect(v.read().scene?.id).not.toBe('five-wind-arrival');
 });
 it('preserves partial hospital progress, true resources, optional lamp and every atomic save checkpoint',()=>{
  for(const f of windmereOrder)expect(decodeSave(JSON.stringify(windmereCheckpoint(f)))).toEqual(windmereCheckpoint(f));

@@ -1,4 +1,4 @@
-# Chapter Five Acts I–III — vector source
+# Chapter Five Acts I–IV — vector source
 
 ```sh
 node scripts/export-chapter-five-art.mjs
@@ -14,7 +14,7 @@ Hammerplain's western landing uses the same survey hull as the airfield, with mo
 
 The boarding scene sends the five companions and Alda into the cabin in a staggered procession, then hides them inside. The takeoff moves the whole survey ship and its boarded cast together on scene time. It reports passive animation to the shared framebuffer; reduced motion settles immediately. Skip/close removes the update listener and restores temporary transforms. All campaign writes stay in scene completion. The carrier uses legal whole-footprint movement, temporary hot tracks and actual fixed-round attack patterns; custom actor placement follows the path and whole-body alpha picking follows its current base. It has mechanical recoil, not breathing.
 
-Runtime SVGs load with all twelve regions and local arenas before departure/deep restore. Missing assets retain the prior checkpoint and allow retry. Every SVG is self-contained and below 128 KiB; the common final 2px raster keeps art and text consistent. Maps, Sprites and Music review actual campaign assets. The flagship remains dev-only.
+Runtime SVGs load with all thirteen regions and local arenas before departure/deep restore. Missing assets retain the prior checkpoint and allow retry. Every SVG is self-contained and below 128 KiB; the common final 2px raster keeps art and text consistent. Maps, Sprites and Music review actual campaign assets. The flagship now shares its native battle presentation with Act IV; only the preset factory remains dev-only.
 
 Run `npm run check`, `tests/e2e/chapter-five.spec.ts` and the focused Chapter Five production checks. Detailed journeys/device/audio checks remain outside the default CI gate. Stage explicit owned files and run `npm run check:art-upload` before publication. Screenshots/traces belong outside the repository.
 
@@ -31,3 +31,12 @@ Windmere is authored in `assets/vector/windmere.py`, called by the same exporter
 The all-three blockade paints a complete 300px horizon before its hulls. It replaces the old distant fleet even when the player deferred the Emperor offer; deck floor and cast remain outside that horizon.
 
 The Chapter Five men have separate facial constructions rather than variants of the female seed: Aurel has a broad, flat jaw, heavy brow, deep-set eyes, cropped grey temples and a thick neck; Durn has a longer, lean jaw, short side-parted hair, a sharper nose and tight mouth; Iven has a square silver beard, pronounced nose and framed eyes; Teren has a broader adult jaw and short dark hair with a quieter expression. The four 80px actors echo these jaw, brow and hair shapes without changing their costumes, frame sizes or sole anchors. Their 128px portrait SVGs are editable originals; do not replace them with a shared template. Review both native portraits and the common 2px game raster before publishing.
+
+Act IV’s `assets/vector/flagship.py` adds a continuous steel command deck, angular bridge windows and console, western evacuation gangway, survey launch and an open-capital horizon selected by `flagshipWon`. Tiled owns the crew, prisoners, interactions, two surrender/evacuation casts and checkpoint arrivals. The approach and final deck casts live on the survey map. Alban’s command-rod and unarmed poses derive from his existing body through `supporting.py`; they preserve his identity and native dimensions. The shared boss exporter now writes to public vectors, including an unarmed crew variant after surrender. `flagship-cinematic.ts` animates the whole approach on scene time with cleanup and reduced-motion support. Re-exporting preserves explicit interaction roles without duplicating their Tiled properties.
+
+
+## Revised Act IV intervention
+
+The command deck now stages `five-benefactor-claim`, followed aboard by `five-retaliation` and the berth departure. `src/game/claim-cinematic.ts` draws a seam and destructive light and fades the hull/imperial crew; it never loads the Benefactor’s dev-only body. Reduced motion settles immediately. The western gangway and surveyed launch support the escaping party.
+
+`assets/characters/vector/retaliation.py` exports the 80px herald/glasswing and 128px portraits, plus Nell’s `nell-faint` and `nell-ill` poses from her exact current SVG body. The captive-Alban asset is retired. The survey map owns the illness-gated berth, hunter interaction and dedicated minion battle floor. Reproduce everything with `node scripts/export-chapter-five-art.mjs`; no raster processing or production dependency is required.

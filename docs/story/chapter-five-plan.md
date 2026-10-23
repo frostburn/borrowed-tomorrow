@@ -1,6 +1,6 @@
 # Chapter Five — Taking the World Back
 
-**Approved full-chapter plan.** The shared airfield opening, survey ship, Hammerplain and Dawnwatch are playable; see [Act I](chapter-five-act-one.md), [Act II](chapter-five-act-two.md) and [the continuation](chapter-five-continuation.md). The first-victory fleet sighting and second-victory Emperor offer are implemented. Windmere and the flagship campaign finale below remain author plans. Entry is the unchanged `chapter-five:anchors` coast departure. The dev flagship preview stays isolated; a separate Vite-only canonical start opens Act I at the airfield.
+**Approved full-chapter plan, now playable.** The shared airfield, survey ship, three freely ordered regions, Emperor offer and flagship finale are implemented; see [Act I](chapter-five-act-one.md), [Act II](chapter-five-act-two.md), [Act III](chapter-five-act-three.md), [Act IV](chapter-five-act-four.md) and [the continuation](chapter-five-continuation.md). Entry is the unchanged `chapter-five:anchors` coast departure. The dev flagship preview stays isolated; Vite-only canonical starts open the airfield or Act IV aboard the ship.
 
 ## Shape and purpose
 
@@ -66,25 +66,25 @@ Alban's fleet appears on the horizon after the first victory and closes its cord
 
 ## Act IV — Alban's flagship
 
-**Goal:** break the fleet cordon. **Payoff:** Alban is captured and the alliance opens the capital approach.
+**Goal:** break the fleet cordon. **Payoff:** the party breaks Alban’s command, faces the Benefactor’s retaliation and protects Nell after she falls ill.
 
 The regional contributions bring the survey ship within reach: Hammerplain's propulsion holds it steady, Dawnwatch's signals bring the escort through, and Windmere's crews protect those injured in the approach. Kit coordinates the rendezvous. Put familiar supporting people at their jobs; do not turn the earlier rescue into another threat to Tomas.
 
 Fight from the survey ship's deck, looking upward at an enormous armored flagship. Port and starboard batteries each occupy a three-hex base and have separate health. Their announced lanes force movement. Destroying a battery permanently removes its attacks, making the order a useful choice. Boarding marines contest the deck and push heroes toward danger. The armored bridge opens after both batteries fall, then uses an emergency central barrage. Area attacks hit each component once. The machine is anchored, with mechanical motion rather than breathing.
 
-The dev preview prototypes those three targets, boarding troops, warning shapes, component destruction and the exposed bridge. Balance, final music, approach scenes and campaign rewards remain future work. Winning it never writes campaign flags or gives loot.
+The campaign and dev preview share those three targets, boarding troops, warning shapes, component destruction, native vectors and the dedicated 10/8 theme. The campaign uses the saved formation and resources; the isolated workshop supplies its own presets and earns no progress or loot.
 
-In the campaign, destroying the bridge ends the fight. Alban orders his surviving soldiers to fire through their own boarding party. They refuse. Petra boards with the surrendering marines, disarms him and takes him prisoner in front of them. Nell names Ansel without accepting an apology or staging an execution. Alban loses his ship and authority; he does not flee again or become a party member. Surviving crew are taken off the wreck safely.
+Destroying the bridge ends the battle. Petra confronts Alban on the command deck, where the boarding marines have returned. Before an arrest, a seam of light opens and the unseen Benefactor accuses the party of breaking its anchors. It destroys Alban, his men and the hull. Kit and Celia get Nell across the gangway as her connection to the shard makes her collapse. Do not show the god's body.
 
-End aboard the survey ship with the three regional crews preparing a joint approach. Nell chooses to head for the capital, keeping the Emperor's offer in mind. The chapter pays off its own antagonist and its three local victories before handing over to **Chapter Six — The Emperor's Last Day**.
+Divine hunters attack the survey ship's medical hatch. Nell cannot fight; the player selects and equips the remaining companions for the defense. Afterwards Kit stays beside her and takes Celia's notes for Sera. The ship holds for the capital's outer mooring. Chapter Six offers an optional cure without making Nell's recovery a condition of the main story. See [chapter-six-plan.md](chapter-six-plan.md).
 
 ## Campaign implementation contract
 
-- Preserve the version-10 Chapter Four departure, resources, gear, individual builds and chosen formation. This plan creates no new save version, campaign start or canonical fixture.
+- Preserve the version-10 Chapter Four departure, resources, gear and individual builds. The illness replaces Nell while retaining the chosen formation’s size and other members. Act IV adds no save version or campaign reset. A Vite-only canonical fixture completes Acts I–III aboard the survey ship for review.
 - Eventually record each regional completion independently and atomically with its once-only reward and changed return scenes. Finale readiness requires all three completions, independent of visit order. No partial ending can award a region twice.
 - Chapters One–Four remain playable canon until the new scenes ship. Update the exact Chapter Six handoff from the implemented ending, not from speculative flag names here.
 - Use editable whole SVG scenes and actors in the accepted polygonal style. Keep tactical cells legible, facing upward in the flagship fight, with the same chunky framebuffer as the rest of the game.
 - Compose a Chapter Five travel theme, distinct regional arrangements and related battle variations when the campaign is built. The preview has its own flagship cue, Iron Above the Clouds: a two-bar intro followed by a 32-bar 10/8 battle loop. The travel and all three regional families now ship with Acts I–III. Windmere uses a three-beat ward/lift call, an austere gallery arrangement and related four-beat battles.
-- Keep the Benefactor silent. The Emperor's offer, defeat and the later god-domain departure remain separate events. Ansel stays dead, Tomas stays safe, stolen days remain unrecovered until Chapter Seven, and the active-three limit remains purely mechanical.
+- Keep the Benefactor bodiless in Act IV; its direct retaliation now establishes the final enemy. The Emperor's offer, defeat and the later god-domain departure remain separate events. Ansel stays dead, Tomas stays safe, stolen days remain unrecovered until Chapter Seven, and the active-three limit remains purely mechanical.
 
-Implementation status: Acts I–III, the any-two Emperor offer, and the all-three capital-blockade setup are playable. Act IV’s flagship boarding and Alban’s surrender remain planned. See [chapter-five-act-three.md](chapter-five-act-three.md).
+Implementation status: all four acts are playable, including the any-two Emperor offer, all-three blockade, campaign flagship, the Benefactor’s intervention, Nell’s illness, the hunters’ battle and the saved Chapter Six departure. See [chapter-five-act-four.md](chapter-five-act-four.md).

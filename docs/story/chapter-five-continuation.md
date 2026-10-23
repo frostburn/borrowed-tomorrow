@@ -1,12 +1,12 @@
 # Chapter Five after Acts I–III — the capital crossing
 
-The shared airfield, survey ship, Hammerplain, Dawnwatch and Windmere are playable. The three regions can be completed in any order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. The flagship campaign finale remains an author plan in [chapter-five-plan.md](chapter-five-plan.md). The dev flagship battle is still isolated; its outcome is never campaign history.
+The shared airfield, survey ship, Hammerplain, Dawnwatch and Windmere are playable. The three regions can be completed in any order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. Act IV now opens the capital crossing through the campaign flagship, divine intervention and hunters’ defense. The dev battle remains an isolated harness and never writes campaign history. See [chapter-five-act-four.md](chapter-five-act-four.md).
 
 ## Current ending and supported saves
 
-Version **10**, campaign `imperial-debt`, chapter `chapter-five`, boundary **null**. There is no Chapter Five completion flag or departure. Existing version-10 Acts I–II saves restore their actual state unchanged; no migration or default regional completion is added.
+Version **10**, campaign `imperial-debt`, chapter `chapter-five`. Acts I–III and partial Act IV have boundary **null**; completing the final deck scene records `chapterFiveComplete` and boundary **`chapter-six:capital-approach`** together. Existing version-10 Acts I–II saves restore their actual state unchanged; no migration or default regional completion is added.
 
-The chart marks each completed anchor independently. `fleetSighted` follows the first completed region on returning aboard, using its contribution in the dialogue. With any two regional completions, the objective and Alda point to the aft observation cabin. The player enters `observation`, completes `five-emperor-offer`, returns to `airship` `(32,26)`, and tells the full roster in `five-emperor-told`. After all three, `five-alliance` stages Alban’s capital blockade and the three crews’ contributions. The ship and regional landings remain revisitable; the chart’s flagship-finale option is disabled pending Act IV. All active formations, individual HP/focus, bag/loadouts, bandages, marks, XP, playtime and earlier flags persist.
+The chart marks each completed anchor independently. `fleetSighted` follows the first completed region on returning aboard, using its contribution in the dialogue. With any two regional completions, the objective and Alda point to the aft observation cabin. The player enters `observation`, completes `five-emperor-offer`, returns to `airship` `(32,26)`, and tells the full roster in `five-emperor-told`. After all three, `five-alliance` stages Alban’s capital blockade and the three crews’ contributions. The ship and regional landings remain revisitable; the chart’s capital approach opens after the alliance and completed Emperor-offer callbacks. All active formations, individual HP/focus, bag/loadouts, bandages, marks, XP, playtime and earlier flags persist.
 
 ## Shared opening and Hammerplain checkpoints
 
@@ -38,9 +38,9 @@ The brake and gallery wins do not open the lift or disconnect the anchor themsel
 
 - `fleetSighted` requires at least one completed region. Its old ID is preserved, but it no longer requires Hammerplain specifically.
 - `emperorOfferSeen` requires the fleet sighting and any two of Hammerplain, Dawnwatch and Windmere. The observation cabin is accessible then, not after one victory. Completion returns to the ship. A reload between these callbacks preserves the offer and resumes the deck conversation.
-- `emperorOfferTold` follows the completed offer. Its closer fleet layer replaces the distant hulls. It does not start a countdown, close regional landings or unlock the campaign flagship. The cabin is empty on revisiting.
+- `emperorOfferTold` follows the completed offer. Its closer fleet layer replaces the distant hulls. It does not start a countdown, close regional landings or bypass the third anchor and alliance setup. The cabin is empty on revisiting.
 
-`allAnchorsSeen` requires all three regional completions and records the ship’s alliance/blockade scene. The campaign flagship encounter remains unavailable even then. Previously completed offers never replay. The offer can still be visited after the third anchor if the player deferred it.
+`allAnchorsSeen` requires all three regional completions and records the ship’s alliance/blockade scene. The campaign flagship requires this setup and `emperorOfferTold`. Previously completed offers never replay. The offer can still be visited after the third anchor if the player deferred it.
 
 ## Rewards
 
@@ -71,10 +71,10 @@ Windmere’s hospital really healed Teren’s leg. Director Iven knowingly conce
 
 After the second anchor the Emperor projects a repeating Larkspur morning into the cabin glass. Ansel turns the chipped rim of his cup toward himself; Tomas stands beside the platform. Nell recognizes the habit and almost asks how to reach that day. She asks whether Ansel can leave, then walks out and tells the others. Kit reads Tomas's ordinary railway message. This is **a projection, not resurrection or demonstrated death reversal**. Ansel remains dead. Tomas remains safe with Dena and Bram at the refuge, never a combatant or a new captive.
 
-Alban remains free and alive with the inland fleet. The Emperor has made the offer but has not been defeated. The Benefactor never speaks; Nell's lantern only hums and remains unexplained. Kit's single airfield fluster is the chapter's brief unresolved joke. The active-three cap remains mechanical, without a story explanation.
+Before Act IV, Alban remains free with the inland fleet. The party defeats his flagship, then the Benefactor destroys Alban, his men and the hull during the command-deck confrontation. The god speaks through light with no visible body. Nell collapses and remains too ill to fight; Kit and Celia get her aboard. Divine minions attack the medical hatch in retaliation for the disconnected anchors. The remaining companions defeat them before the final berth conversation. Tomas stays safe and Ansel remains dead. The cap of three remains mechanical.
 
-## Next implementation
+## Act IV and the next implementation
 
-Implement Act IV from the staged capital crossing, preserving all three regions and the actual saved resources. `allAnchorsSeen` is setup, not a chapter completion or unlocked battle. Do not replay an already recorded Emperor offer.
+`flagshipApproachSeen` → `flagshipConfronted` → `flagshipWon` → the atomic intervention (`benefactorClaimSeen`, `flagshipDestroyed`, `albanDestroyed`, `nellIll`) → `retaliationSeen` → `retaliationWon` → `chapterFiveComplete`. See [Act IV](chapter-five-act-four.md) for exact locations, callbacks, rewards and canonical start. No prior save is granted these flags automatically.
 
-Only after all three completions adapt Alban's dev flagship to actual campaign resources, retaining the accepted native vectors, whole-ship oscillation and dedicated 10/8 intro/loop. Its surrender resolves Alban's pursuit. The Emperor's defeat stays Chapter Six and the god-domain journey Chapter Seven.
+The handoff keeps the actual equipment/resources and all five roster entries, with Nell unavailable and her place filled without exceeding three. Rest and victory cannot remove her illness. Kit takes Celia's notes for Sera. Implement Chapter Six from this outer-mooring departure with an optional recovery quest and an independent capital route; see [chapter-six-plan.md](chapter-six-plan.md). The Emperor's defeat stays Chapter Six, the separate god-domain journey stays Chapter Seven. Neither main path requires curing Nell. The final god form has not appeared in the campaign.

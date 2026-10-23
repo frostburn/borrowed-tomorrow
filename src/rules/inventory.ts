@@ -5,6 +5,7 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'fleet-sight':{name:'Fleet range sight',slot:'fitting',heroes:['kit'],description:'A brass ranging mechanism from the disabled bridge, fitted to Kit’s crossbow.',bonuses:{attack:7,armor:0,speed:1}},
   'ward-focus':{name:'Windmere medical focus',slot:'fitting',heroes:['celia'],description:'Sera’s spare treatment lens, steadied for field use.',bonuses:{attack:5,armor:2,speed:1}},
   'opal-reflector':{name:'Opal lantern reflector',slot:'fitting',heroes:['nell'],description:'An old examination-lamp reflector. A brighter beam and a lighter hand.',bonuses:{attack:6,armor:1,speed:1}},
   'shield-brace':{name:'Dawnwatch shield brace',slot:'fitting',heroes:['petra'],description:'A firm shield grip and reinforced saber strap from the town watch.',bonuses:{attack:4,armor:3,speed:0}},
