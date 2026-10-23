@@ -91,6 +91,11 @@ it('native jungle scenes, approaches and actor movements share connected floor, 
  expect(worldPath(map,from,to,{flags:{riverCrossingSeen:true}})).toHaveLength(0);
  expect(worldPath(map,from,to,{flags:{riverCrossingSeen:true,riverChainOpen:true}}).length).toBeGreaterThan(0);
 });
+it('completed jungle controls leave no empty enemy or treatment interaction under the party',()=>{
+ const s=chapterSixRecoveredStart();s.flags.riverCacheWon=true;
+ for(const id of ['river-patrol','river-chain','river-cache'])expect(visibleObjects(MAPS.canopy,s).map(o=>o.id)).not.toContain(id);
+ const floor=visibleObjects(MAPS.rainhouse,s).map(o=>o.id);expect(floor).not.toContain('rainhouse-guard');expect(floor).not.toContain('river-treatment');expect(floor).toEqual(expect.arrayContaining(['rainhouse-ines','rainhouse-tavi','rainhouse-rest']));
+});
 it('all jungle pitches and pitched percussion stay on their exact Slendric collection; drums form a substantial independent part',()=>{
  expect(SLENDRIC_FIVE.map(p=>pitchSteps(p)%31)).toEqual([0,6,12,18,24]);expect(SLENDRIC_SIX.map(p=>pitchSteps(p)%31)).toEqual([0,6,12,18,24,30]);
  const forms=[];

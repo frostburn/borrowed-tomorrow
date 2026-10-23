@@ -573,6 +573,11 @@
               "value": "rainhouseWon"
             },
             {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "rainhouseWon"
+            },
+            {
               "name": "sprite",
               "type": "string",
               "value": "herald"
@@ -603,6 +608,11 @@
             },
             {
               "name": "doneFlag",
+              "type": "string",
+              "value": "nellRecovered"
+            },
+            {
+              "name": "hiddenFlag",
               "type": "string",
               "value": "nellRecovered"
             },

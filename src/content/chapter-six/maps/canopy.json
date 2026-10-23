@@ -637,6 +637,11 @@
               "value": "riverPatrolWon"
             },
             {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "riverPatrolWon"
+            },
+            {
               "name": "sprite",
               "type": "string",
               "value": "hound-fern"
@@ -667,6 +672,11 @@
             },
             {
               "name": "doneFlag",
+              "type": "string",
+              "value": "riverChainOpen"
+            },
+            {
+              "name": "hiddenFlag",
               "type": "string",
               "value": "riverChainOpen"
             },
@@ -773,6 +783,11 @@
             },
             {
               "name": "doneFlag",
+              "type": "string",
+              "value": "riverCacheWon"
+            },
+            {
+              "name": "hiddenFlag",
               "type": "string",
               "value": "riverCacheWon"
             },

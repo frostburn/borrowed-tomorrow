@@ -14,7 +14,11 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
 });
 // Full forms deliberately stay outside the small default CI browser set.
 for(const mode of ['riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden']as const)test(`jungle cue ${mode}: full loop, percussion stem and clean sample transitions`,async({page},testInfo)=>{
- test.setTimeout(120000);await page.goto('/');
+ test.setTimeout(120000);
+ // Render the real rack in an empty same-origin document. Running the full
+ // game's canvas/DOM rasterizer alongside an offline mix wastes review time.
+ await page.route('**/offline-score-review',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><title>Offline score review</title>'}));
+ await page.goto('/offline-score-review');
  const result=await page.evaluate(async mode=>{
   // @ts-expect-error Vite exposes the campaign score for offline review.
   const {ARRANGEMENTS,scoreLength}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
@@ -22,18 +26,29 @@ for(const mode of ['riverhaven','canopy','rainhouse','rainhouse-rest','river-bat
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   // @ts-expect-error Live and offline scheduling share expression and timing.
   const {performanceBar}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
-  const rate=22050,a=ARRANGEMENTS[mode],barSeconds=4*60/a.bpm,bars=scoreLength(mode)+2,end=bars*barSeconds;
-  const c=new OfflineAudioContext(4,Math.ceil((end+2)*rate),rate),merge=c.createChannelMerger(4),mix=c.createGain(),drums=c.createGain();
-  mix.gain.value=.52;drums.gain.value=.52;mix.connect(merge,0,0);drums.connect(merge,0,2);merge.connect(c.destination);
-  const synth=new Synth(c,mix),stem=new Synth(c,drums);
-  for(let bar=-1;bar<bars-1;bar++)for(const n of performanceBar(mode,bar).notes){
-   const when=.03+(bar+1)*barSeconds+n.time;synth.note(n.instrument,n.pitch,when,n.seconds,n.velocity,n.pan,n.expression);
-   if(n.instrument==='hand-drum'||n.instrument==='shaker')stem.note(n.instrument,n.pitch,when,n.seconds,n.velocity,n.pan,n.expression);
-  }
-  const audio=await c.startRendering();let peak=0,sum=0,jump=0,drumSum=0,count=0;
-  const all=audio.getChannelData(0),percussion=audio.getChannelData(2);
-  for(let i=Math.ceil((.03+barSeconds)*rate);i<Math.floor(end*rate);i++){const v=all[i];if(!Number.isFinite(v)||!Number.isFinite(percussion[i]))throw new Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;drumSum+=percussion[i]**2;jump=Math.max(jump,Math.abs(v-all[i-1]));count++;}
-  return {mode,peak,rms:Math.sqrt(sum/count),drumRms:Math.sqrt(drumSum/count),drumShare:Math.sqrt(drumSum/sum),jump};
+  const rate=22050,a=ARRANGEMENTS[mode],barSeconds=4*60/a.bpm,bars=scoreLength(mode)+2;
+  // Cover the entire form and its wrap in four-bar windows. Three previous
+  // bars preserve every held note/tail; a future bar keeps the exit seamless.
+  // This bounds Chromium's offline graph instead of scheduling thousands of
+  // future nodes into one context, while measuring every audible score beat.
+  const render=async(stem:boolean)=>{
+   let peak=0,sum=0,jump=0,count=0;
+   for(let start=0;start<bars;start+=4){
+    const take=Math.min(4,bars-start),end=(3+take+1)*barSeconds;
+    const c=new OfflineAudioContext(2,Math.ceil((end+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+    for(let bar=start-3;bar<start+take+1;bar++)for(const n of performanceBar(mode,bar).notes){
+     if(stem&&n.instrument!=='hand-drum'&&n.instrument!=='shaker')continue;
+     synth.note(n.instrument,n.pitch,.03+(bar-start+3)*barSeconds+n.time,n.seconds,n.velocity,n.pan,n.expression);
+    }
+    const audio=await c.startRendering();
+    for(let channel=0;channel<2;channel++){const data=audio.getChannelData(channel);for(let i=Math.ceil((.03+3*barSeconds)*rate);i<Math.floor((.03+(3+take)*barSeconds)*rate);i++){
+     const v=data[i];if(!Number.isFinite(v))throw new Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;jump=Math.max(jump,Math.abs(v-data[i-1]));count++;
+    }}
+   }
+   return {peak,rms:Math.sqrt(sum/count),jump};
+  };
+  const mix=await render(false),stem=await render(true);
+  return {mode,...mix,drumRms:stem.rms,drumShare:stem.rms/mix.rms};
  },mode);
  await testInfo.attach(`jungle-loop-${mode}`,{body:JSON.stringify(result,null,2),contentType:'application/json'});
  expect(result.peak,JSON.stringify(result)).toBeLessThan(.9);expect(result.rms,JSON.stringify(result)).toBeGreaterThan(.005);expect(result.drumRms,JSON.stringify(result)).toBeGreaterThan(.002);expect(result.drumShare,JSON.stringify(result)).toBeGreaterThan(.15);expect(result.jump,JSON.stringify(result)).toBeLessThan(.25);

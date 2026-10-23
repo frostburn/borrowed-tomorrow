@@ -19,6 +19,7 @@ def ines():
  d.line([(13,19),(17,18)],'cream');d.line([(22,18),(26,19)],'cream')
  d.line([(14,21),(17,21)],'ink');d.line([(23,21),(25,21)],'ink');d.line([(17,26),(22,26)],'rose')
  d.line([(14,24),(16,24)],'brown');d.line([(24,24),(26,24)],'brown')
+ d.transform(0,.7,.9,20,68,68)
  return d
 def tavi():
  d=Drawing()
@@ -34,8 +35,9 @@ def tavi():
  d.poly([(9,18),(10,11),(15,6),(23,8),(28,7),(31,14),(30,19),(25,16),(22,13),(17,15),(13,19)],'hair')
  d.line([(12,20),(17,19)],'hair',2);d.line([(23,19),(28,20)],'hair',2)
  d.line([(13,22),(17,22)],'ink');d.line([(24,22),(27,22)],'ink');d.poly([(19,21),(18,26),(21,26)],'brown');d.line([(16,29),(23,29)],'hair',2)
- # A coiled painter and a short pole, both anchored to the right grip.
+ # A short pole in his right grip; a coiled painter at the opposite hip.
  d.line([(11,51),(4,36),(2,25)],'leather',3);d.oval((29,45,35,55),'gold');d.oval((30,47,34,53),'leather',None)
+ d.transform(0,.7,.9,20,68,68)
  return d
 portraits={
  'ines':'''<path d="M0 128V109L27 91L48 82H82L110 98L128 115V128Z" fill="#385d4a"/><path d="M46 73L44 94L63 109L82 93L77 72Z" fill="#995f49"/><path d="M20 37L30 15L55 5L83 13L101 37L97 75L83 94L26 87L17 61Z" fill="#b7c1b8"/><path d="M34 36L54 23L79 29L91 51L85 73L67 91L48 84L34 66L30 49Z" fill="#b7784e"/><path d="M77 31L91 51L85 73L67 91L63 83L78 65Z" fill="#895644"/><path d="M20 40L30 18L56 5L82 14L100 35L96 48L80 33L57 23L40 35L29 57Z" fill="#d6d5bf"/><path d="M23 61L32 68L28 82L34 94L28 108L16 96L22 83L17 70Z" fill="#879b95"/><path d="M38 48L53 45L56 49L40 52Z M71 46L85 50L84 54L70 50Z" fill="#d3cda9"/><path d="M44 53H50V57H44Z M75 54H81V58H75Z" fill="#233d3c"/><path d="M61 52L55 69L64 73L68 68Z" fill="#9a6148"/><path d="M43 63L50 65 M76 65L83 63" fill="none" stroke="#8f5b48" stroke-width="2"/><path d="M51 78L63 80L74 77L68 84L59 84Z" fill="#784e45"/><path d="M25 99L44 86L63 111L82 86L110 102L76 128H49Z" fill="#d8c59b"/><path d="M15 113L29 106L49 128H35Z" fill="#9a7151"/>''',

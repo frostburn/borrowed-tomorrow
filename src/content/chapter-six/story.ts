@@ -15,8 +15,8 @@ export const JOURNAL={...JUNGLE_JOURNAL,
  desertReleaseReady:{title:'The bronze band',text:'Samira has freed Namar’s pact band. She will break it in the evening exchange, in front of the people whose defense it pledged. Sahir must answer to the city watch.'},
  desertSealBroken:{title:'The western seal',text:'Samira broke the pact band publicly. Namar is sending navigators, supplies and evacuation barges. The western return is dark; the northern seal still holds the capital shut.'},
  desertFocusTaken:{title:'The observatory lens',text:'A spare sunstone examination lens was stored on the postal terrace. It is in the bag for Celia to fit by hand.'},
- desertMailSent:{title:'Letters still travel',text:'Amal sent the medical report and Kit’s letter to Tomas through the evening exchange. She supplied a light courier harness for whoever needs to move quickly.'},
- desertReported:{title:'News for Nell',text:'The crew reviewed Namar’s support at the flight chart. The western return is open; the northern seal still holds. Namar’s navigators and barges will help the next approach.'},
+ desertMailSent:{title:'Letters still travel',text:'Amal sent the medical report and Nell’s letter to Tomas through the evening exchange. She supplied a light courier harness for whoever needs to move quickly.'},
+ desertReported:{title:'News from Namar',text:'The crew reviewed Namar’s support at the flight chart. The western return is open; the northern seal still holds. Namar’s navigators and barges will help the next approach.'},
 };
 export function objective(s:GameState):string{
  const regional=jungleObjective(s);if(regional)return regional;
