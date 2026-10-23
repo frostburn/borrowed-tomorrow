@@ -53,6 +53,7 @@ export function imperialPresentation(encounter:Encounter):BattlePresentation{
   overlay(scene,world,b){
    const core=imperialCore(b)!,g=scene.add.graphics();world.add(g);g.fillStyle(0x243943,.96).fillRect(270,0,400,27);bossLabel(scene,world,470,14,`${light?'Lightbearer':'The Emperor'}  ${core.hp}/${core.maxHp}`,2);
    g.fillStyle(0x243943,.96).fillRect(315,28,310,11).fillStyle(light?0xf2d8a1:0xa8d3cf).fillRect(320,32,Math.round(300*core.hp/core.maxHp),4);
+   g.fillStyle(0x243943,.94).fillRect(320,43,300,19);bossLabel(scene,world,470,53,core.intent?.name??'',1);
    if(!light)for(const [i,p]of imperialSupports(b).entries())bossLabel(scene,world,190+i*560,53,`${i?'East':'West'} ${p.hp}/${p.maxHp}`,1);
   },
   pick(b,action,x,y){

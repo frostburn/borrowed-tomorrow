@@ -36,6 +36,11 @@
       "name": "safeArrival",
       "type": "string",
       "value": "start"
+    },
+    {
+      "name": "cameraLeadY",
+      "type": "int",
+      "value": 144
     }
   ],
   "tilesets": [

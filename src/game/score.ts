@@ -22,7 +22,7 @@ interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly 
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   stillcity:{beats:4,bpm:88,lead:'keys',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
   lastpalace:{beats:3,bpm:86,lead:'strings',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
-  lastmorning:{beats:4,bpm:106,lead:'bell',leadGain:.24,keys:.12,strings:.05,bass:.2,percussion:.07},
+  lastmorning:{beats:4,bpm:82,lead:'reed',leadGain:.29,keys:.14,strings:.08,bass:.2,percussion:0},
   crown:{beats:3,bpm:86,lead:'strings',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
   laststation:{beats:4,bpm:60,lead:'keys',leadGain:.12,keys:0,strings:.018,bass:.095,percussion:0},
   'capital-return':{beats:4,bpm:82,lead:'reed',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},

@@ -62,6 +62,7 @@ export class Cutscene {
   get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.river?.animating||!!this.imperial?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
+    if(shot.music)this.audio.setMode(shot.music);
     const duration=this.duration?(shot.duration??this.duration):0;
     const camera=this.scene.cameras.main;camera.stopFollow();camera.panEffect.reset();
     if(this.tracked?.active)camera.centerOn(this.tracked.x,this.tracked.y);

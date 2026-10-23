@@ -69,6 +69,8 @@ export function interactCapital(h:StoryHost,id:string):boolean{
    h.talk({lines:[SAY('Nell','I’m going back now. The others are waiting.')],done:()=>{h.commit('capitalMorningLeft','capitalMorningLeft');go(h,'lastpalace','memory');}});break;
   case 'palace-preparations':{
    if(!f.capitalHallOpened)break;
+   if(f.capitalReleased){say('Orrin','The crown supports are down. Alda has the crossing chart at the allied landing.');break;}
+   if(f.capitalAssaultCommitted){go(h,'crown');break;}
    if(f.nellRecovered&&!f.capitalMorningLeft){resumeCapital(h);break;}
    const choose=()=>h.talk({lines:[SAY('Petra',f.nellRecovered?'We’ve checked the way out. Once we climb, the vessel will close this stair behind us.':'The river launch can take us back to Iria. If we go up now, Nell will still be bound when the vessel breaks.')],choices:[
     ...(!f.nellRecovered?[{label:'Return to Iria · seek treatment for Nell',action:()=>go(h,'riverhaven')}]:[]),

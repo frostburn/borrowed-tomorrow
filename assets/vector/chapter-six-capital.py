@@ -1,5 +1,5 @@
 """Capital finale: continuous native SVG scenes over real Tiled routes/layers/casts."""
-import runpy,json,re
+import runpy,json,re,copy
 from pathlib import Path
 b=runpy.run_path(str(Path(__file__).with_name('chapter-six-north.py')))
 ROOT=b['ROOT'];world=b['world'];manifest=b['manifest'];rect=b['rect'];poly=b['poly'];line=b['line'];ellipse=b['ellipse'];obj=b['obj'];point=b['point'];control=b['control'];bench=b['bench'];chest=b['chest'];ART=ROOT/'public/art/vector/chapter-six'
@@ -34,18 +34,34 @@ world('lastpalace','Palace of the Last Day','A service shelter faces the lower g
  {'start':(32,34),'memory':(32,22)}, {'six-palace-arrival':party,'six-palace-command':{**party,'petra':(34,27)},'six-palace-open':party,'six-capital-warning':party,'six-emperor-audience':{**party,'emperor':(32,17)}},
  [point('palace-servant',23,23,sprite='civilian-dockhand-rust'),point('palace-memory',38,21,sprite='civilian-traveler',projection=True)],
  [('palace-cordon',[rect(0,0,600,18,GOLD),line([(0,2),(0,34),(600,34),(600,2)],WHITE,4)],600,40,480,574,614,{'hiddenFlag':'capitalHallOpened'}),('palace-safe-bench',bench(),168,86,350,692,778,{}),('palace-service-locker',chest(),60,48,1074,693,741,{})],interior(),ground=floor(f),gated={'palace-cordon':[(20,24,25,1)]})
-# A remembered station and the later real aftermath share geometry but have separate identity/ownership.
-def station(real=False):
- out=[rect(0,0,1536,1008,'#6d8e95'if real else '#a4b7a0'),poly([(0,332),(260,189),(520,304),(832,176),(1150,283),(1536,191),(1536,1008),(0,1008)],'#4d7163'),rect(279,304,956,235,'#d4c0a0'),poly([(239,307),(481,205),(1046,209),(1271,307)],'#344b59'),poly([(239,307),(481,205),(1046,209),(1018,230),(488,230),(286,315)],'#69838c')]
- for x in range(320,1200,110):out+=[rect(x,359,57,92,INK),rect(x+5,364,23,75,'#bca575'),rect(x+30,364,21,75,'#758e88'),rect(x-5,451,66,8,'#ab9678')]
- for y in [748,786]:out+=[rect(0,y,1536,6,SHADOW),rect(0,y+6,1536,3,WHITE)]
- for x in range(0,1536,48):out+=[rect(x,751,12,40,'#8d7963')]
- if not real:
-  for x in range(310,1210,75):out+=[line([(x,288),(x+75,288)],INK,2),poly([(x+10,288),(x+32,288),(x+20,312)],GOLD if x%2 else RUST)]
- return out
-RUST='#a35c42';f=[(9,23,46,14),(26,19,13,5)]
-world('lastmorning','Larkspur · the remembered morning','Festival preparations fill the station square. Ansel waits by the platform; the way back is beneath the eastern lamp.',f,[(12,24,4,2)],[obj('morning-ansel',28,26,'Ansel · the platform',kind='talk',sprite='master'),obj('morning-tomas',39,27,'Tomas · the station clock',kind='talk',sprite='tomas'),obj('morning-leave',48,33,'Eastern lamp · leave the remembered morning',kind='exit',sign=True),obj('morning-cup',25,25,'Ansel’s chipped cup',kind='talk',sign=True)],
- {'start':(32,33)}, {'six-last-morning':{'nell':(32,29),'ansel':(28,26),'tomas':(39,27)},'six-morning-question':{'nell':(29,28),'ansel':(28,26),'tomas':(39,27)}},[],[('morning-bench',bench(),168,86,418,678,764,{})],station(),ground=floor(f))
+# Reuse the real Larkspur station geometry instead of inventing a palace-like home.
+def home_map(id,remembered):
+ d=json.loads((ROOT/'src/content/chapter-one/maps/station.json').read_text())
+ d['layers']=[l for l in d['layers'] if l['type']=='tilelayer' and (not remembered or l['id'] not in (6,22))]
+ if remembered:
+  for layer in d['layers']:layer['properties']=[p for p in layer.get('properties',[])if p['name'] not in ('requiredFlag','hiddenFlag')]
+ title='Larkspur · the remembered morning'if remembered else 'Larkspur · the empty seat'
+ subtitle='Ansel waits by the familiar platform. Tomas is beneath the clock; the eastern lamp marks the way back.'if remembered else 'An ordinary train waits beside the platform. Nell’s place beside the window is empty.'
+ d['properties']=b['b']['base']['props'](name=title,subtitle=subtitle,sceneArt=id,artStyle='rotoscope',safeArrival='start')
+ objects=[obj('morning-ansel',20,12,'Ansel · the platform',kind='talk',sprite='master'),obj('morning-tomas',25,13,'Tomas · the station clock',kind='talk',sprite='tomas'),obj('morning-leave',28,19,'Eastern lamp · leave the remembered morning',kind='exit',sign=True),obj('morning-cup',17,14,'Ansel’s chipped cup',kind='talk',sign=True)]if remembered else[obj('last-tomas',22,14,'Tomas · the platform bench',kind='talk',sprite='tomas'),obj('last-kit',26,16,'Kit · the folded coat',kind='talk',sprite='kit'),obj('last-ending',32,12,'The waiting train · an unfinished tomorrow',kind='story',sign=True)]
+ casts={'six-last-morning':{'nell':(21,16),'ansel':(20,12),'tomas':(25,13)},'six-morning-question':{'nell':(21,13),'ansel':(20,12),'tomas':(25,13)}}if remembered else{'six-empty-seat':{'tomas':(22,14),'kit':(25,16),'orrin':(20,17),'petra':(27,17),'celia':(23,18)}}
+ group=b['b']['base']['group'];lid=max(l['id']for l in d['layers'])+1
+ d['layers'] += [group(lid,'Interactions',objects),group(lid+1,'Arrivals',[point('start',21,18)]),group(lid+2,'People',[])]
+ for sid,actors in casts.items():d['layers'].append(group(lid+3+len(d['layers']),'Scene:'+sid,[point(k,*v)for k,v in actors.items()]))
+ d['nextobjectid']=1;d['nextlayerid']=max(l['id']for l in d['layers'])+1
+ for layer in d['layers']:
+  for o in layer.get('objects',[]):o['id']=d['nextobjectid'];d['nextobjectid']+=1
+ text=json.dumps(d,indent=2);w=d['width'];h=d['height']
+ text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+w])for i in range(0,w*h,w))+'\n    ]',text)
+ (ROOT/f'src/content/chapter-six/maps/{id}.json').write_text(text+'\n')
+ ids={l['id']for l in d['layers']if l['type']=='tilelayer'};pieces=copy.deepcopy(json.loads((ROOT/'src/content/chapter-one/scene-art.json').read_text())['station']);pieces=[p for p in pieces if p['layerId']in ids]
+ if remembered:
+  palette={'#1e3c36':'#617956','#233e36':'#80916c','#29483e':'#91a27c','#315044':'#a6b18a','#385546':'#bfbd90'}
+  piece=next(p for p in pieces if p['layerId']==1);source=(ROOT/'public'/piece['url']).read_text()
+  for old,new in palette.items():source=source.replace(old,new)
+  (ART/'memory-grass.svg').write_text(source);piece['key']='scene-six-memory-grass';piece['url']='art/vector/chapter-six/memory-grass.svg'
+ manifest[id]=pieces
+home_map('lastmorning',True)
 # The crown is the route's sole commitment point; no exits lead back after the warning.
 f=[(12,24,40,12),(24,18,17,7)]
 back=[rect(0,0,1536,1008,'#314958'),poly([(0,294),(289,211),(633,302),(1020,181),(1536,261),(1536,1008),(0,1008)],BLUE),poly([(0,481),(424,387),(789,446),(1144,362),(1536,475),(1536,614),(0,614)],'#b3bfae')]
@@ -53,8 +69,7 @@ world('crown','The capital · crown platform','The imperial vessel stands above 
  obj('capital-emperor',32,26,'The Emperor · imperial vessel',hiddenFlag='emperorWon',doneFlag='emperorWon',sign=True),obj('capital-lightbearer',32,26,'The Lightbearer · Nell’s lantern',requiredFlag='lightbearerSeen',hiddenFlag='lightbearerWon',doneFlag='lightbearerWon',sign=True),obj('crown-landing',46,32,'The allied landing · descend with the crews',requiredFlag='capitalReleased',kind='exit',sign=True),obj('crown-rest',19,32,'Broken stair shelter · rest and supplies',kind='optional',requiredFlag='emperorWon',sign=True)],
  {'start':(32,32)}, {'six-imperial-vessel':party,'six-imperial-fall':party,'six-lightbearer-rise':party,'six-lightbearer-fall':party},[],
  [('crown-vessel',[inline('imperial-idle')],528,280,516,224,504,{'hiddenFlag':'emperorWon'}),('crown-west-support',[inline('imperial-support')],96,160,502,349,509,{'hiddenFlag':'emperorWon'}),('crown-east-support',[inline('imperial-support')],96,160,978,349,509,{'hiddenFlag':'emperorWon'}),('crown-lightbearer',[inline('lightbearer-idle')],528,280,516,224,504,{'requiredFlag':'lightbearerSeen','hiddenFlag':'lightbearerWon'}),('crown-broken-marble',[poly([(0,22),(60,0),(122,31),(74,66),(30,59)],WHITE),poly([(122,31),(74,66),(70,90),(116,58)],BLUE)],124,92,422,759,851,{'requiredFlag':'emperorWon'})],back,ground=floor(f))
-world('laststation','Larkspur · the empty seat','The station is open. A train waits at the platform; Nell’s place beside the window is empty.',f,[],[obj('last-tomas',32,28,'Tomas · the platform bench',kind='talk',sprite='tomas'),obj('last-kit',39,29,'Kit · the folded coat',kind='talk',sprite='kit'),obj('last-ending',46,32,'The waiting train · an unfinished tomorrow',kind='story',sign=True)],
- {'start':(32,33)}, {'six-empty-seat':{'tomas':(32,27),'kit':(35,29),'orrin':(29,31),'petra':(38,31),'celia':(27,30)}},[],[('last-empty-bench',bench(),168,86,713,620,706,{})],station(True),ground=floor(f))
+home_map('laststation',False)
 for id,title in [('capital-procession','The repeating procession'),('palace-command','The palace cordon'),('capital-hunters','The eastern cloister'),('imperial-vessel','The Emperor’s vessel'),('lightbearer','The Lightbearer')]:
  f=[(3,3,34,16)];back=[rect(0,0,1008,480,'#394f61'),poly([(0,90),(200,7),(447,87),(736,0),(1008,75),(1008,480),(0,480)],BLUE)]
  if id not in ('imperial-vessel','lightbearer'):
@@ -72,5 +87,8 @@ for layer in d['layers']:
     if v['name']=='kind':v['value']='exit'
 text=json.dumps(d,indent=2);text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+64])for i in range(0,64*42,64))+'\n    ]',text)
 p.write_text(text+'\n')
+for id in ['capitalquay','stillcity','lastpalace','crown']:
+ path=ROOT/f'src/content/chapter-six/maps/{id}.json';data=json.loads(path.read_text());data['properties']=[p for p in data['properties']if p['name']!='cameraLeadY']+[{'name':'cameraLeadY','type':'int','value':144}];out=json.dumps(data,indent=2);out=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+64])for i in range(0,64*42,64))+'\n    ]',out);path.write_text(out+'\n')
+for obsolete in ['lastmorning-back','lastmorning-floor','laststation-back','laststation-floor','morning-bench','last-empty-bench']:(ART/f'{obsolete}.svg').unlink(missing_ok=True)
 (ROOT/'src/content/chapter-six/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('Exported capital avenue, palace, remembered morning, crown, aftermath and five tactical floors.')

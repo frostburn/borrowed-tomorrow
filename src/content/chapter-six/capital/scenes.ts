@@ -57,7 +57,7 @@ export const audience=(s:GameState)=>scene(s,'lastpalace','six-emperor-audience'
  line('Nell','I’ll look.'),
 ]);
 export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Before the first train',[
- line('Larkspur','Ansel turns the chipped side of his cup toward himself. Tomas leans against the station clock.',{focus:{x:30,y:26},cut:true}),
+ line('Larkspur','Ansel turns the chipped side of his cup toward himself. Tomas leans against the station clock.',{focus:{x:21,y:13},cut:true}),
  line('Ansel','Lantern trimmed? Your brother’s been waiting. Don’t leave him standing there all morning.'),
  line('Nell','I remember this cup.'),
  line('Tomas','We’ll miss the early train if you keep talking.'),
@@ -65,7 +65,7 @@ export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Be
  line('Larkspur','The clock’s second hand reaches the top and pauses. Ansel turns the cup again.'),
 ]);
 export const question=(s:GameState)=>scene(s,'lastmorning','six-morning-question','An unanswered question',[
- line('Nell','What were you going to do when you stopped working here?',{focus:{x:28,y:26},cut:true}),
+ line('Nell','What were you going to do when you stopped working here?',{focus:{x:20,y:12},cut:true}),
  line('Ansel','Keep the oil below the line. Too much and it’ll smoke.'),
  line('Nell','I never asked. I thought there’d be time.'),
  line('Ansel','Lantern trimmed? Your brother’s been waiting.'),
@@ -108,7 +108,7 @@ export const fallen=(s:GameState)=>scene(s,'crown','six-imperial-fall','The crow
  ]),
 ]);
 export const manifestation=(s:GameState)=>scene(s,'crown','six-lightbearer-rise','The Lightbearer',[
- line('The broken crown','The thread tightens. Above the ship, a small figure rises into the light. Orange cloth shows through the unfolding white plates.',{focus:{x:32,y:20},cut:true,effect:'lightbearer-rise',duration:1700,cue:'resonance'}),
+ line('The broken crown','The thread tightens. Above the ship, a small figure rises into the light. Orange cloth shows through the unfolding white plates.',{focus:{x:32,y:20},cut:true,music:'lightbearer',effect:'lightbearer-rise',duration:1700,cue:'resonance'}),
  line('Kit','Nell!'),
  line('The Lightbearer','Her lantern hangs in her right hand. Its shutter opens, and a white line cuts through the empty crown.'),
  line('Orrin','Behind the broken wall. Now.'),
@@ -118,7 +118,7 @@ export const manifestation=(s:GameState)=>scene(s,'crown','six-lightbearer-rise'
  line('Petra','Keep clear when that shutter lifts. Watch what she’s trying to stop.'),
 ]);
 export const lost=(s:GameState)=>scene(s,'crown','six-lightbearer-fall','The last light',[
- line('The mantle','The white plates fall apart. Kit catches Nell beneath the broken mounting.',{focus:{x:32,y:27},cut:true,effect:'lightbearer-fall',duration:1500,actors:{kit:{to:{x:32,y:28}},nell:{at:{x:32,y:27},fallen:true}}}),
+ line('The mantle','The white plates fall apart. Kit catches Nell beneath the broken mounting.',{focus:{x:32,y:27},cut:true,music:'laststation',effect:'lightbearer-fall',duration:1500,actors:{kit:{to:{x:32,y:28}},nell:{at:{x:32,y:27},fallen:true}}}),
  line('Celia','Lay her here. Orrin, give me your coat.'),
  line('The lantern','The fragment crumbles against the glass. Kit holds the shutter shut while Celia kneels beside him.',{silence:true,duration:1100}),
  line('Kit','She kept it closed. I saw her.'),
@@ -138,7 +138,7 @@ export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',t
  line('Alda','Take the time you need. The foreign landings stay open; I’ll keep the ship here.'),
 ]});
 export const emptySeat=(s:GameState)=>scene(s,'laststation','six-empty-seat','The empty seat',[
- line('Larkspur','A coal train waits beside the platform. Tomas has put his bag on the bench, leaving the place beside the window clear.',{focus:{x:32,y:27},cut:true}),
+ line('Larkspur','A coal train waits beside the platform. Tomas has put his bag on the bench, leaving the place beside the window clear.',{focus:{x:22,y:15},cut:true}),
  line('Tomas','I booked the sea train. Before your letter came.'),
  line('Kit','I brought her coat. The lantern’s wrapped inside.'),
  line('Tomas','Leave it here. Please.'),

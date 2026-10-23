@@ -1,6 +1,6 @@
 # Chapter Six — exact playable continuation
 
-Implemented: the sealed-capital opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay. The two foreign routes work in either order, with Nell ill or recovered. The inner capital and Emperor climax remain upcoming content.
+Implemented: the sealed-capital opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay. The two foreign routes work in either order, with Nell ill or recovered. The capital finale, Emperor and optional Lightbearer bad ending are now playable; Chapter Seven remains upcoming.
 
 ## Entry and resources
 
@@ -32,7 +32,7 @@ Entry changes only chapter, boundary and location: Chapter Six, null boundary, `
 
 The public exchange and berth report read `desertMailSent` without changing it. Skipping the optional post leaves the letter with Kit; those scenes ask him to take it to the sorting table rather than claiming dispatch. Posting remains available on return. Nell's later berth conversation uses the same saved distinction. The optional earlier berth visit lets her add her own words; no extra flag or delivery gate is required.
 
-`desertSealBroken` is the western seal. There is no `chapterSixComplete`, Emperor victory or Chapter Seven boundary in this implementation. Do not infer them from the regional payoff. The city, palace, terraces, observatory and safe ship remain revisitable. The post harness, optional focus and encounter items are once-only bag rewards, never auto-equipped.
+`desertSealBroken` is the western seal. A western seal alone grants no `chapterSixComplete`, Emperor victory or Chapter Seven boundary. Those now belong to the capital finale below. Do not infer them from the regional payoff. The city, palace, terraces, observatory and safe ship remain revisitable. The post harness, optional focus and encounter items are once-only bag rewards, never auto-equipped.
 
 ## Iria checkpoints and recovery order
 
@@ -81,7 +81,7 @@ Current-format saves accept the new maps only in Chapter Six and reject prematur
 | `northReturned` | Return to `bellharbor`; complete `six-north-return`, opening both original log and surviving orders publicly. |
 | `northReported` | Return to `outermooring`; complete `six-north-home` with the appropriate Nell state. |
 | `capitalOpened` | With both `desertSealBroken` and `northSealBroken`, finish/skip `six-capital-open` at the mooring. Barrier art disappears and the landing interaction becomes an exit. |
-| `capitalQuaySeen` | Cross to `capitalquay`; finish/skip `six-capital-quay`. The inner city remains the next adventure. |
+| `capitalQuaySeen` | Cross to `capitalquay`; finish/skip `six-capital-quay`. The inner city continues through `capital-inner` once this arrival finishes. |
 
 The winter dragon occupies eleven valid contacts as one anchored/flying unit. It inhales/pulls one legal hex, shatters west, breathes centrally and shatters east. Announcements are fixed by round. Taunt changes the actual fired shape and ice left behind. Loose ice is a separate passable terrain list, costing two movement and six cold HP at round end for grounded units; it clears on victory. No falling/stranding rule exists. The shared presentation preserves native alpha targeting, scene-clock breathing, distinct attack poses and reduced motion. Ordinary solo/two/three-companion entries are legal.
 
@@ -92,3 +92,33 @@ The first region leaves the other seal available. Reports and objectives read bo
 ## Next work
 
 Continue from the open allied landing into the Emperor’s preserved capital. Both pact seals are already released; do not invent another barrier or repeat the northern/desert journeys. People repeat ordinary work while the allied crews hold the quay. The Emperor remains undefeated, Chapter Six has no completion flag/boundary, the shard is intact and the god-domain departure stays Chapter Seven. Nell can be ill or permanently recovered; Iria must remain optional and accessible.
+
+
+## Capital finale — implemented checkpoints
+
+`capitalquay` → `stillcity` → `lastpalace` → (`lastmorning` only if recovered) → `crown`. The uncured outcome ends at `laststation`; the recovered outcome returns to `capitalquay`.
+
+| Checkpoint | Completion and continuation |
+| --- | --- |
+| `capitalStreetSeen` | Avenue arrival; no fight/release granted. |
+| `capitalProcessionConfronted` / `capitalProcessionWon` | Required patrol and once-only ceremonial coat reward. |
+| `capitalStreetFreed` | Physical bronze return after victory; scenery/collision gate opens and residents leave. |
+| `capitalPalaceSeen` | Living service ward contrasted with the remembered private household. |
+| `capitalCommandConfronted` / `capitalCommandWon` | Palace commandant battle; pressure-crown nozzle reward. |
+| `capitalHallOpened` | Attendants lift the cordon and the commandant carries a stretcher. |
+| `capitalHuntersWon` / `capitalFocusTaken` | Independent optional cloister sight / service-locker medical focus; bag rewards, never auto-equipped. |
+| `capitalAudienceSeen` | Recovered-only doorway scene. Ill Nell receives no offer, scene or remote dialogue. |
+| `capitalMorningSeen` / `capitalMorningQuestion` / `capitalMorningLeft` | Walk the station, ask Ansel, then leave. `lastmorning` visually leads with Nell while preserving the selected formation. |
+| `capitalWarningSeen` | Celia’s report precedes the final choice. The uncured route offers Iria directly. Rest and ordinary visits never cure Nell. |
+| `capitalAssaultCommitted` + `capitalRiskAccepted` | Successfully save slot `capital-return`, then atomically record the commitment and whether Nell is untreated. Failure leaves the stair uncommitted. The slot holds the exact earlier resources, loadouts, formation and progress. |
+| `emperorSeen` / `emperorConfronted` / `emperorWon` | Crown arrival, battle commitment, actual victory and once-only guard reward. |
+| `emperorFallen` | Crown-break scene. Interrupted scenes replay; completion/skip shares one callback. |
+| `capitalReleased` / `capitalLandingSeen` | Recovered branch only; descend to the allied landing and show the wider collection. |
+| `chapterSixComplete` | Explicit final-crossing choice at Alda; boundary `chapter-seven:hollow-sun`, still Chapter Six. No Chapter Seven entry exists yet. Allies/supplies remain revisitable. |
+| `lightbearerSeen` / `lightbearerConfronted` / `lightbearerWon` | Untreated branch only; manifestation, second battle and victory. Nell does not speak and the Benefactor’s true body is unseen. |
+| `nellLost` | Mantle-fall completion sets Nell’s HP to zero and the historical loss together, then travels to Larkspur’s aftermath. No rest or treatment can undo the committed route. |
+| `emptySeatSeen` / `lightbearerEnding` | Playable aftermath and final train interaction. Terminal Chapter Six save, null boundary, no hopeful completion. Reload reopens the ending; its return button loads `capital-return`. |
+
+The two final bosses share campaign/workshop rules and native assets. The Emperor has a seven-contact core and two passive three-contact supports. Both broken supports expose it; a later fourth-round coronation rebuilds vacant supports at half strength after at least two exposed rounds. A hero on a mounting prevents its revival. Core death ends the supports. The fourth attack is a pause. The Lightbearer’s fourth round instead shows Nell closing the shutter, zero attack and zero armor; the pause does not spend a Dazzle charge. Warnings are fixed per round except exact Taunt redirection. Areas hit each component once.
+
+Vite starts **Capital** and **Final preparations** offer ill/recovered Nell. The former replays the quay before either city battle; the latter has the avenue/commandant cleared and the remembered morning authored complete only on its recovered variant. Neither grants Emperor rewards or final commitment. Both regional seals are already broken. Boss previews use `?dev=boss&boss=emperor` / `lightbearer` and never write campaign saves.

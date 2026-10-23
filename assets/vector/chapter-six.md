@@ -27,3 +27,12 @@ The three imperial exterior SVGs under `scenery/palace-*` are editable originals
 `assets/bosses/export-winter-dragon.py` exports four 528 × 280 native poses and a deliberate 128 × 128 portrait crop from the same geometry. The sanctuary embeds the same dragon vector. Campaign and workshop decode the native poses, retain alpha for body picking and use the common display raster. Pose changes never resize the body or move its contact base. No bitmap sheets, resampling or image generation are involved.
 
 Reproduce everything with `npm run art:six`, inspect the diff, stage only the intended files, then run `npm run check:art-upload`. Maps → Ch 6 exposes all world/arena layers and casts; Sprites exposes the cast and fixed frost recolors; Bosses → Winter dragon exposes the real battle. Detailed screenshots/traces belong outside the repository.
+
+
+## Capital finale
+
+`chapter-six-capital.py` extends the shared exporter with Stillwater Avenue, the last palace, remembered Larkspur morning, crown platform, real Larkspur aftermath and five tactical floors. White/cool marble and antique gold frame warm working residents. Tiled owns the two actual story gates, their collision and visibility, every interaction approach, arrivals and scene casts. The remembered morning and aftermath reuse Chapter One’s actual station geometry and SVG layers, with the prison coach hidden and the memory’s festival restored. The capital maps use a Tiled `cameraLeadY` property to keep upper architecture in view. The shared 2px renderer handles all SVGs with the same pixel weight as text. No raster sources or new tile fragmentation.
+
+`assets/bosses/export-imperial.py` authors the 528×280 Emperor and Lightbearer poses, 96×160 crown supports and editable 128px portraits. Nell’s copper braids, orange jacket and anatomical right-hand lantern stay visible inside the mantle. The Emperor is a human in architectural machinery, with mechanical passive motion; the Lightbearer’s hover and shutter resistance are separate poses. Never draw the god’s true body in this kit.
+
+Run `npm run art:six`; new portrait originals seed once and remain editable. The exporter is deterministic. Stage only changed outputs, run `npm run check:art-upload`, and keep QA screenshots outside the repository.

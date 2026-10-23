@@ -1,6 +1,6 @@
-# Playable canon — Chapters One–Five and Chapter Six’s foreign expeditions
+# Playable canon — Chapters One–Five and Chapter Six
 
-The old Disks A–D story has been replaced. Its rescues, time-travel railway, registry, receipts and missing-father plot are not part of this campaign. The full planned story, including the separate final chapter in the god's domain, is in [grand-outline.md](grand-outline.md). Chapter Six’s inner capital, Emperor climax and Chapter Seven remain author plans, not facts the party already knows.
+The old Disks A–D story has been replaced. Its rescues, time-travel railway, registry, receipts and missing-father plot are not part of this campaign. The full planned story, including the separate final chapter in the god's domain, is in [grand-outline.md](grand-outline.md). Chapter Six’s capital finale is playable; Chapter Seven remains an author plan.
 
 - Nell is seventeen, a railway apprentice at Larkspur. Her older brother Tomas, twenty-four, has returned from the capital. They have promised to see the sea together. Nell carries Ansel's oil lantern.
 - Larkspur is holding a festival. The empire credits the Benefactor with crystal lighting, plentiful harvests, healing and its engines. The optional festival-lantern interaction records Nell learning the patron's name and emblem (`blessingRead`). The public festival blessing is not proof of the bargain's terms.
@@ -157,3 +157,16 @@ The imperial exterior is white marble with cool shadow planes and gold fittings;
 - Both foreign releases allow allied crews to level the bridge and dissipate the barrier (`capitalOpened`). A real royal-white-marble quay is accessible (`capitalQuaySeen`); the party sees a woman repeat the same handcart journey. Supplies, the survey launch, Iria and both foreign capitals remain available. The inner city is clearly marked as the next adventure, with no invented third seal. Chapter Six is not complete and the Emperor remains undefeated.
 
 Skeld’s six native 31-EDO scores use Orwell[9], with Myna[7] at the glacier. Its 5/4 dragon cue has a two-bar introduction and 32-bar loop. **Begin Skeld (canonical)** and **Begin winter dragon (canonical)** offer authored ill/recovered starts; the campaign and `?dev=boss&boss=dragon` share actual boss rules and vectors. The full Benefactor body stays dev-only.
+
+
+## Chapter Six — The Emperor’s Last Day
+
+The capital finale is implemented as documented in `chapter-six-continuation.md` and `chapter-six-capital-plan.md`. Stillwater Avenue’s repeating work ends when the procession machines fall and the bronze return opens. The palace commandant obstructs evacuation, then helps carry a patient after defeat. Living residents and patients survive; the remembered household cannot answer new questions.
+
+Only recovered Nell receives the playable Larkspur morning. She speaks to remembered Tomas and Ansel, asks a question Ansel cannot answer, then leaves. Ansel is not resurrected. Nell is the memory’s visual viewpoint even in reserve, with no change to saved formation or equipment. Ill Nell stays aboard without any signal connection or answer; her route skips the offer and memory entirely.
+
+Celia examines Nell aboard before the final assault. The uncured choice explicitly offers treatment in Iria and warns that the binding may take the vessel’s current. A separate return save is required before commitment. The Emperor is defeated in both routes.
+
+Recovered Nell survives the conduit’s break. The capital lands, collection widens beyond imperial territory, and the party retains the fragment for Chapter Seven. Choosing the final crossing saves `chapter-seven:hollow-sun` without implementing that next chapter.
+
+Proceeding deliberately uncured forms the Lightbearer around Nell. Her right hand sometimes closes the lantern, interrupting attacks. She never speaks. Kit recognizes her resistance but cannot cure her by affection. The companions destroy the mantle; Nell is lost and the fragment crumbles. Tomas, Kit and the other companions return to Larkspur, where her sea-train seat remains empty. The capital survives and the Benefactor continues collecting. This terminal bad ending grants no Chapter Seven boundary and offers the pre-assault save. It supersedes the earlier author plan promising survival without the optional treatment.

@@ -42,6 +42,9 @@ for(const recovered of [false,true])it(`capital route with ${recovered?'recovere
 it('the pre-assault save must succeed before committing the irreversible route',async()=>{
  const p=story(chapterSixFinaleStart(false));p.failCheckpoint();p.touch('palace-preparations');expect(p.dialog?.lines.some(l=>l.text.includes('still be bound'))).toBe(true);await p.choose('Proceed with Nell');expect(p.s.flags.capitalAssaultCommitted).toBeFalsy();expect(p.s.location.map).toBe('lastpalace');expect(p.returns).toBeUndefined();
 });
+it('retrying a committed stair never overwrites the pre-assault return checkpoint',async()=>{
+ const p=story(chapterSixFinaleStart(false));p.touch('palace-preparations');await p.choose('Proceed with Nell');p.finish();const before=structuredClone(p.returns);p.s.location=arrival('lastpalace','memory');p.touch('palace-preparations');expect(p.s.location.map).toBe('crown');expect(p.returns).toEqual(before);expect(p.returns!.flags.capitalAssaultCommitted).toBeFalsy();
+});
 it('choosing Iria at the warning preserves the capital and permits the recovered memory route',async()=>{
  const p=story(chapterSixFinaleStart(false)),before=structuredClone(p.s);p.touch('palace-preparations');await p.choose('Return to Iria');expect(p.s.location.map).toBe('riverhaven');expect(p.s.flags.capitalAssaultCommitted).toBeFalsy();
  // Finish the existing treatment checkpoint chain, with the normal mutation.

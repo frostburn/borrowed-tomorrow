@@ -251,3 +251,20 @@ The rack adds procedural `wood` (an exact harmonic struck sine body), `hand-drum
 All cues have phrase dynamics, controlled long-note vibrato and softer bell releases. Full melody phrases are authored across four bars, with independent second-half development rather than an endlessly rising triad. Battle timing stays steady. Music → Ch 6 reviews the exact notes, meter, parts, expression and harbor/shrine rubato; no recordings or production dependencies are added. `north-music.spec.ts` renders every bar and the loop transition through the actual synthesis rack, in bounded windows with earlier held notes and exact performed timing.
 
 Northern exploration uses a pure sine oscillator in place of reed (including the harbor answer); the glacier retains its struck-bell lead. Both battle melodies, including the dragon introduction, use a cached Web Audio PeriodicWave called **tritaver**. Its six partials are the powers of three: harmonics 1, 3, 9, 27, 81 and 243, with amplitudes `1 / (i*i + 1)` for `i = 0…5` in 244-element real/imaginary coefficient arrays. All other upper coefficients and DC are zero. No sub-oscillator, unison detune or pitch division is added. A 7 kHz low-pass preserves the upper color; the normal smooth envelope, phrase dynamics, bends, controlled vibrato and cancellation apply to both new voices. Music’s Sine and Tritaver part filters isolate them. Offline spectral checks verify the audible pitch, present/absent partials and release silence through the real rack.
+
+
+## The capital and its two outcomes
+
+`score-capital.ts` authors 32-bar forms in exact 31-EDO, keeping diatonic spelling and all existing sine/tritaver definitions. The remembered morning uses the actual Larkspur festival score, available only to recovered Nell. No recordings or new dependencies.
+
+| Cue | Meter / tempo | Form and instrumentation |
+| --- | --- | --- |
+| `stillcity` · The Procession Never Ends | 4/4, 88 | A descending piano sentence catches on repeated E, opens into higher replies, then returns without its final tonic. Held bass/strings and occasional lute replies leave real gaps. |
+| `lastpalace` / `crown` · A Place at the Table | 3/4, 86 | A falling fifth and an unsettled return in F minor, with Db/Ab rooms and a C/E dominant. Expressive strings span four-bar sentences. |
+| `capital-battle` · Open the Patient Stair | 4/4, 140 | Develops the avenue’s cell in brass with string answers, mobile bass, straight drums and phrase-ending timpani. |
+| `emperor` · The Emperor’s Last Day | 3/4, 122 | Two-bar one-shot brass/timpani opening into a 32-bar battle waltz. The palace tune grows upward, moves to a string middle and returns lower; firm three-beat pulse. |
+| `lightbearer` · The Hand on the Shutter | 4/4, 112 | Two-bar opening, then 32 bars. Nell’s literal D–F–E–D festival phrase remains recognizable in bells, with a string answer and widening registers against overtone-colored bass/inner harmony. Quiet tritaver replies use the exact powers-of-three rack. The full god theme remains for Chapter Seven. |
+| `capital-return` · The City Comes Down | 4/4, 82 | Warm descending reed answers, held strings/bass, modest ensemble rubato and a quieter unfinished return toward the next journey. |
+| `laststation` · The Empty Seat | 4/4, 60 | A lower, sparse piano recollection of Nell’s phrase, soft strings, long bass and ensemble breaths; no percussion or triumphant cadence. |
+
+All held melodic voices receive dynamics/controlled vibrato; bell tails release softly. Battle clocks stay steady. Full forms and loop seams render through the same Synth/performance clock as live playback, with finite-level and click checks outside the default CI gate. The Lightbearer reveal starts its own cue; the mantle’s fall gives way to The Empty Seat.

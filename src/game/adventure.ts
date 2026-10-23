@@ -303,7 +303,7 @@ export class Adventure extends Phaser.Scene {
     this.syncWorldFollowers();
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
     this.sortWorld();
-    const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1);
+    const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
     this.ui.location(map.name);
     this.ui.initiative.textContent = this.state.chapter==='chapter-four'? (this.state.flags.chapterFourComplete?'The western airfield is marked. Tomas keeps the railway talking.':map.id==='sanctuary'&&this.state.flags.sanctuaryWardenWon?'The tide is moving again. The covered chart is open.':map.id==='breakwater'&&this.state.flags.harborOpened?'The ferry is home. The eastern service stair is clear.':map.id==='refuge'&&this.state.flags.harborOpened?'Bram’s ferry is supplying the ward. Tomas keeps the messages moving.':map.subtitle)
       : this.state.chapter==='chapter-three'&&this.state.flags.chapterThreeComplete?'Tomas is aboard. The medical train has escaped.'
@@ -323,7 +323,7 @@ export class Adventure extends Phaser.Scene {
     this.cinematic=director;let finished=false;
     const finish=(action?:()=>void)=>{
       if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
-      if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1);
+      if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
       action?.();if(this.mode==='world'){this.renderWorldControls();this.autosave();}
     };
     this.ui.showDialogue({...dialogue,choices:dialogue.choices?.map(c=>({...c,action:()=>finish(c.action)})),done:()=>finish(dialogue.done)},index=>director?.shot(dialogue.lines[index].shot));
