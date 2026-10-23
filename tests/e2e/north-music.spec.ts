@@ -44,12 +44,12 @@ test('sine and tritaver preserve written pitch, sparse partials and clean cancel
    const c=new OfflineAudioContext(1,rate*3,rate),synth=new Synth(c,c.destination);synth.note(instrument,pitch,.03,5,.2);synth.release(1.5);
    const data=(await c.startRendering()).getChannelData(0),hz=pitchFrequency(pitch),start=Math.round(.2*rate),length=rate;
    const amplitude=(f:number)=>{let re=0,im=0;for(let n=0;n<length;n++){const w=.5-.5*Math.cos(2*Math.PI*n/(length-1)),a=2*Math.PI*f*n/rate;re+=data[start+n]*w*Math.cos(a);im+=data[start+n]*w*Math.sin(a);}return Math.hypot(re,im)/length;};
-   const fundamental=amplitude(hz);out.push({instrument,pitch,fundamental,partials:Array.from({length:12},(_,i)=>amplitude(hz*(i+1))/fundamental),offPitch:Math.max(amplitude(hz/2),amplitude(hz/3),amplitude(hz*2**(1/31)))/fundamental,tail:Math.max(...data.slice(2*rate).map(Math.abs)),finite:data.every(Number.isFinite)});
+   const fundamental=amplitude(hz);out.push({instrument,pitch,fundamental,partials:Array.from({length:27},(_,i)=>amplitude(hz*(i+1))/fundamental),offPitch:Math.max(amplitude(hz/2),amplitude(hz/3),amplitude(hz*2**(1/31)))/fundamental,tail:Math.max(...data.slice(2*rate).map(Math.abs)),finite:data.every(Number.isFinite)});
   }
   return out;
  });
  await testInfo.attach('northern-voice-spectra',{body:JSON.stringify(spectra,null,2),contentType:'application/json'});
  for(const s of spectra){expect(s.finite).toBe(true);expect(s.fundamental).toBeGreaterThan(.01);expect(s.offPitch).toBeLessThan(.01);expect(s.tail).toBeLessThan(.00001);
-  for(let harmonic=2;harmonic<=12;harmonic++){if(s.instrument==='tritaver'&&harmonic%3===0)expect(s.partials[harmonic-1]).toBeGreaterThan(.025);else expect(s.partials[harmonic-1]).toBeLessThan(.001);}
+  for(let harmonic=2;harmonic<=27;harmonic++){if(s.instrument==='tritaver'&&[3,9,27].includes(harmonic))expect(s.partials[harmonic-1]).toBeGreaterThan(.01);else expect(s.partials[harmonic-1]).toBeLessThan(.001);}
  }
 });

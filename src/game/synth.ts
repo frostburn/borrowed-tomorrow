@@ -72,10 +72,9 @@ export class Synth {
   }
   private tritaver():PeriodicWave{
     if(!this.tritaverWave){
-      // Keep the written fundamental; above it, only every third harmonic
-      // sounds (3, 6, 9, ...). No unison detune or extra octave oscillator.
-      const real=new Float32Array(19),imag=new Float32Array(19);imag[1]=1;
-      for(let harmonic=3;harmonic<imag.length;harmonic+=3)imag[harmonic]=1.2/harmonic;
+      // Six tritave-spaced partials retain the written fundamental.
+      const real=new Float32Array(244),imag=new Float32Array(244);
+      for(let i=0;i<6;++i)imag[3 ** i]=1/(i*i+1);
       this.tritaverWave=this.context.createPeriodicWave(real,imag);
     }
     return this.tritaverWave;
