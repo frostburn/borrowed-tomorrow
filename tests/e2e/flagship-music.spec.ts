@@ -50,7 +50,7 @@ test('the full fanfare and loop render through the new rack without clipping or 
   for(let start=0;start<36;start+=8){
    const count=Math.min(8,36-start),leadIn=Math.min(2,start),seconds=(leadIn+count)*5*beat;
    const c=new OfflineAudioContext(2,Math.ceil((seconds+2)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
-   for(let b=start-leadIn;b<start+count;b++)for(const n of scoreBar('flagship',b))synth.note(n.instrument,n.pitch,.03+(b-start+leadIn)*5*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan);
+   for(let b=start-leadIn;b<start+count;b++)for(const n of scoreBar('flagship',b))synth.note(n.instrument,n.pitch,.03+(b-start+leadIn)*5*beat+n.beat*beat,n.duration*beat,n.velocity,n.pan,n.expression);
    const rendered=await c.startRendering();let peak=0,sum=0,samples=0;
    for(let channel=0;channel<2;channel++){const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+leadIn*5*beat)*rate);i<Math.floor(seconds*rate);i++){const v=data[i];if(!Number.isFinite(v))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(v));sum+=v*v;samples++;}}
    out.push({start,peak,rms:Math.sqrt(sum/samples)});

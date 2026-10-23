@@ -1,5 +1,6 @@
 import type { Note, Instrument } from './score';
 import { octave, transpose, type Pitch } from './tuning';
+import { phrasing } from './expression';
 
 type Line=[eighth:number,pitch:Pitch,length:number][];
 const harmony={
@@ -55,11 +56,19 @@ const reprise:Line[]=[
   [[0,'C#5',1],[2,'E5',1],[4,'G5',2],[7,'E5',1],[8,'C#5',1],[9,'A4',.5]],
 ];
 const melody=[...call,...answer,...lift,...reprise];
+// Four distinct arcs: assert the command, press harder, float back into the
+// string-led middle, then rebuild the march towards the last dominant pickup.
+const dynamics=[.76,.81,.86,.74,.84,.91,.8,.65,.82,.9,.95,.78,.98,.86,.76,.62,.64,.68,.72,.66,.81,.87,.78,.7,.85,.89,.94,.82,1.04,.96,.88,.78];
 
 /** Canonical bars 0–1 are a one-shot fanfare; 2–33 form the repeating battle. */
 export function flagshipBar(bar:number):Note[]{
   const notes:Note[]=[];
-  const add=(instrument:Instrument,pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>notes.push({instrument,pitch,beat,duration,velocity,pan});
+  const strength=bar<2?(bar===0?.8:.94):dynamics[bar-2];
+  const add=(instrument:Instrument,pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{
+    const note:Note={instrument,pitch,beat,duration,velocity,pan};
+    note.expression=phrasing(strength*(beat===0?1:beat>=3.5?.9:.96),instrument==='strings'||instrument==='brass'&&duration>=.7);
+    notes.push(note);
+  };
   if(bar<2){
     const root:Pitch=bar===0?'D2':'A1',chord:Pitch[]=bar===0?['D3','A3','D4']:['G3','C#4','E4'];
     for(const pitch of chord)add('brass',pitch,0,bar===0?1.4:2.2,.09,-.16);

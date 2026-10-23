@@ -1,5 +1,6 @@
 import { octave, transpose, pitchSteps, type Pitch } from './tuning';
 import type { Note } from './score';
+import { phrasing,singing } from './expression';
 
 export type ReturnMode = 'refuge' | 'breakwater' | 'sanctuary' | 'four-battle' | 'four-warden';
 type Line = [beat: number, pitch: Pitch, duration: number][];
@@ -151,6 +152,9 @@ const tunes: Record<ReturnMode, Tune> = {
   'four-warden': [...wardenA, ...wardenAnswer, ...wardenBridge, ...wardenA],
 };
 const harmonies = { refuge: homeHarmony, breakwater: worksHarmony, sanctuary: templeHarmony, 'four-battle': fightHarmony, 'four-warden': wardenHarmony };
+// The first return is tentative; the high answer opens up, the borrowed-minor
+// middle subsides, and the last sentence comes home more quietly.
+const homeDynamics=[.72,.8,.75,.64,.78,.83,.73,.61,.84,.99,.9,.74,.93,.85,.78,.65,.98,1.04,.93,.8,.86,.76,.69,.62,.76,.82,.74,.63,.79,.73,.68,.56];
 
 /** Thirty-two bars, with an opening, answer, contrasting middle and return. */
 export function returnBar(mode: ReturnMode, bar: number): Note[] {
@@ -158,11 +162,17 @@ export function returnBar(mode: ReturnMode, bar: number): Note[] {
   const { root, notes: chord } = chords[harmonies[mode][i]], out: Note[] = [];
   const home = mode === 'refuge', works = mode === 'breakwater', sacred = mode === 'sanctuary';
   const boss = mode === 'four-warden', combat = mode === 'four-battle' || boss, middle = phrase === 2;
-  const add = (instrument: Note['instrument'], pitch: Pitch, beat: number, duration: number, velocity: number, pan = 0) => out.push({ instrument, pitch, beat, duration, velocity, pan });
+  const add = (instrument: Note['instrument'], pitch: Pitch, beat: number, duration: number, velocity: number, pan = 0) => {const note:Note={instrument,pitch,beat,duration,velocity,pan};if(home)note.expression=phrasing(homeDynamics[i],instrument==='strings');out.push(note);return note;};
   const lead = sacred ? 'bell' : works ? 'keys' : 'reed';
   const gain = sacred ? .12 : works ? .23 : combat ? .24 : .2;
   for (const [n, [beat, pitch, duration]] of tunes[mode][i].entries()) {
-    add(lead, pitch, beat, duration, gain * (middle ? 1.04 : end ? .85 : 1) * (n === 0 ? 1 : .91), -.12);
+    const voice=add(lead, pitch, beat, duration, gain * (middle ? 1.04 : end ? .85 : 1) * (n === 0 ? 1 : .91), -.12);
+    if(home)voice.expression=singing('warm',homeDynamics[i]*(1-n*.06),duration,end);
+    if(sacred){
+      voice.expression={release:1.9};
+      // Only delayed bells get an anticipation: downbeats retain their silence.
+      if(beat>=.5)for(const [n,p]of chord.entries())add('keys',p,beat-.5+n/8,.85,.012+n*.002,.16+n*.08);
+    }
   }
   if (sacred) {
     // Pedal changes last two bars; no re-struck pad on the intervening bar.

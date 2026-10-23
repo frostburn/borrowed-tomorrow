@@ -1,8 +1,10 @@
 import type { Note } from './score';
 import { octave,type Pitch } from './tuning';
+import { bassSlide,phrasing } from './expression';
 export type DawnwatchMode='dawnwatch'|'watchbarracks'|'signalwall'|'dawn-battle'|'dawn-commander';
 type Line=[number,Pitch,number][];
 type Tune=Line[];
+const wheelDynamics=[.68,.77,.62,.49,.67,.72,.8,.66,.63,.48,.69,.74,.6,.47,.58,.65,.56,.44,.61,.46,.66,.71,.64,.48,.73,.82,.66,.5,.71,.65,.59,.52];
 // Petra's refusal: C–Db–C, then G. The narrow resistance opens into a song.
 // Three-bar statements answer in three, with two bars left for the decision.
 const town:Tune=[
@@ -79,12 +81,16 @@ const changes:Chord[]=[
 export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  const i=((bar%32)+32)%32,quiet=mode==='signalwall',boss=mode==='dawn-commander',fight=boss||mode==='dawn-battle',guns=mode==='watchbarracks',middle=i>=16&&i<24;
  const harmony=boss&&i<8?(['c','db','c','db','fm','bb','c','cs']as Chord[])[i]:changes[i],{bass,notes:chord}=chords[harmony];
- const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
+ const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};if(quiet)note.expression=phrasing(wheelDynamics[i],instrument==='strings');out.push(note);return note;};
  const tune=quiet?wall:boss?command:guns?terrace:fight?battle:town;
  const lead=quiet?'bell':boss&&!middle||guns?'brass':'strings';
  for(const [beat,pitch,duration]of tune[i])add(lead,pitch,beat,duration,quiet?.1:lead==='brass'?.15:.17,-.15);
  if(quiet){
-  if(i%2===0){add('round-bass',bass,0,3.5,.085);for(const [n,p]of chord.entries())add('strings',p,0,3.5,.017,n%2?.4:-.4);}
+  if(i%2===0){
+   const from=chords[changes[(i+30)%32]].bass;
+   add('round-bass',bass,0,3.5,.085).expression!.bend=bassSlide(from,bass,3.5);
+   for(const [n,p]of chord.entries())add('strings',p,0,3.5,.017,n%2?.4:-.4);
+  }
   if(!tune[i].length)add('keys',chord[1],1.5,1.2,.04,.3);
   return out;
  }
