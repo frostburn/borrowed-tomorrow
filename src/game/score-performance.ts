@@ -5,6 +5,8 @@ type TempoKnot=readonly [bar:number,stretch:number];
 // Local beat lengths, interpolated through the phrases. A breath at a cadence
 // belongs to the whole ensemble, including a pedal begun in an earlier bar.
 const breaths:Partial<Record<MusicMode,readonly TempoKnot[]>>={
+ 'capital-return':[[0,.98],[7.5,1.12],[8,.98],[15.5,1.15],[16,.98],[23.5,1.12],[24,.98],[31.5,1.14],[32,.98]],
+ laststation:[[0,.97],[7.5,1.16],[8,.98],[15.5,1.2],[16,.96],[23.5,1.17],[24,.98],[31.5,1.2],[32,.97]],
  bellharbor:[[0,.98],[4,.96],[7.5,1.1],[8,.98],[12,.96],[15.5,1.12],[16,.98],[20,.97],[23.5,1.1],[24,.96],[28,.98],[31.5,1.13],[32,.98]],
  wintershrine:[[0,.98],[4,.96],[7.5,1.09],[8,.98],[12,.96],[15.5,1.11],[16,.98],[20,.97],[23.5,1.09],[24,.96],[28,.98],[31.5,1.12],[32,.98]],
  sunpalace:[[0,.98],[4,.96],[7.5,1.12],[8,.98],[12,.96],[15.5,1.15],[16,.98],[20,.97],[23.5,1.13],[24,.96],[28,.98],[31.5,1.16],[32,.98]],
@@ -30,7 +32,7 @@ for(const [name,knots]of Object.entries(breaths)){
  clock[length]=length;clocks[mode]=clock;
 }
 export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
-const expressive:readonly MusicMode[]=['bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
+const expressive:readonly MusicMode[]=['stillcity','lastpalace','crown','laststation','capital-return','capital-battle','emperor','lightbearer','bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
 export const hasExpression=(mode:MusicMode)=>expressive.includes(mode);
 
 /** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */

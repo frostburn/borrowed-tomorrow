@@ -1,6 +1,6 @@
 # Working on Borrowed Tomorrow
 
-Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the inner capital, Emperor climax and Chapter Seven remain plans under `docs/story/`.
+Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the capital assault, Emperor and Lightbearer outcomes are playable; Chapter Seven remains planned under `docs/story/`.
 
 ## Find the right place
 
@@ -59,3 +59,6 @@ The catalogue tests check that every exploration map has one owner and that depa
 
 
 Chapter Six keeps its smaller expedition modules under `content/chapter-six/jungle/` and `north/`. The shared interactions coordinate ship reports and opening the landing after both independent seals; neither a cure nor a region alone grants a chapter boundary. `rules/winter-dragon.ts` owns pulls and separate `winterIce`, with movement/cold damage resolved by the ordinary combat rules. The matching presentation is shared with the Vite boss preview. Northern music is authored in `score-north.ts`.
+
+
+The Chapter Six capital finale is playable: free Stillwater Avenue, clear the palace, face the Emperor and reach either the recovered departure or the explicitly committed uncured Lightbearer ending. Recovered Nell alone receives the playable Larkspur morning. Dev canonical Capital/Final preparations starts and both boss previews are available. The separate Chapter Seven remains forthcoming. See `docs/story/chapter-six-continuation.md` (from the repository root) for checkpoints.

@@ -1,6 +1,6 @@
 # Chapter Six — The Emperor's Last Day
 
-The shared opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay are playable. The inner capital and Emperor climax below remain author plans. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
+The shared opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay are playable. The capital finale below is implemented; Chapter Seven remains planned. The exact capital route is in chapter-six-capital-plan.md. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
 
 ## Approved chapter structure
 
@@ -46,20 +46,26 @@ Nell stays under care while the others travel. The local healers and Celia inter
 
 After treatment, Kit has carefully prepared everything Nell might need, but becomes flustered when she simply asks him to sit with her. Let affection appear through the care itself. No confession, kiss, mutual romance or couple ending follows. Nell chooses when she is ready to travel again.
 
-Completion sets `nellRecovered`, restores her HP/focus and makes her available in Equipment. It leaves `nellIll` as a historical flag, preserves all gear/resources and does not displace an active companion automatically. Nell shares earned experience and rejoins at the party's current level. Stage later scenes for either recovery state without branching the whole campaign. Leave this quest available after the Emperor until the clearly marked final departure.
+Completion sets `nellRecovered`, restores her HP/focus and makes her available in Equipment. It leaves `nellIll` as a historical flag, preserves all gear/resources and does not displace an active companion automatically. Nell shares earned experience and rejoins at the party's current level. Stage later scenes for either recovery state without branching the whole campaign. Leave this quest available through capital exploration until the explicit final-assault commitment.
 
 ## Return to the capital and the Emperor
 
-1. **Both seals broken.** The landing bridge finally reaches the capital. The foreign allies contribute the approach, evacuation and medical support. The Emperor has used the party's absence to complete his preserved city; show whom his promised paradise excludes.
-2. **The remembered city.** Familiar places have become fragments of his memories while living inhabitants repeat work they cannot finish. Rescue identifiable residents and establish an ordinary evacuation route. Orrin, Kit, Celia and Petra can lead scenes in any legal formation. Divine hunters appear alongside imperial defenses, making their competing aims visible.
-3. **The last offer.** The Emperor repeats his promise of the Larkspur morning. Nell may answer from the ship's signal link if still ill, or in person if recovered. She refuses the enclosed, repeating day; neither version resurrects Ansel. The party has practical reasons and allies for dismantling the vessel beyond saving Nell.
-4. **The imperial vessel.** A full upward-facing Emperor boss with a readable sequence of support removal. Every legal formation can finish without Nell. The mortal conduit breaks and the regional crews help bring the capital down safely. The Emperor is decisively defeated; his victims are not blamed for trusting real healing. Retain the fragment for Chapter Seven.
-5. **The final departure.** The Benefactor widens collection beyond imperial territory, escalating its established threat. The broken vessel and earlier diagrams reveal the route through the hollow sun. Revisit allies, finish optional business and deliberately depart for Chapter Seven. Its domain uses the overtone-derived 31-EDO scale and its inversion documented in `docs/music-direction.md`.
+The capital finale is playable. See [its approved plan](chapter-six-capital-plan.md) and [checkpoint handoff](chapter-six-continuation.md).
 
-## If the player leaves it unfinished
+Both released pact seals open the allied quay. Free Stillwater Avenue’s repeating procession, then clear the palace commandant’s patient stair. Namar’s crews and Skeld’s pilots carry the living residents and patients out. The Emperor’s remembered household cannot answer new questions. Five pieces of manually fitted equipment are available across the required battles, optional cloister and service locker.
 
-Nell stays under medical care aboard the ship; the other four remain available in formations of up to three. Her voice and decisions still matter. The recovery quest remains accessible after the Emperor until the clearly marked final departure. Do not remove Kit or make his loyalty depend on accepting it.
+Only recovered Nell is drawn into the remembered station before she can step back. She and Tomas take the sea train and sit by the water. Nell remembers the people still losing days, forces herself awake, and refuses the offer back in the palace. The real Tomas stays at the refuge and Ansel remains dead. Both vision maps use Nell’s visual viewpoint without changing her saved formation. Ill Nell remains aboard and receives no offer, vision or remote dialogue.
 
-In Chapter Seven, the allies keep Nell safe at the crossing while her companions carry the fragment and open the route. If recovered, she can travel and fight normally. A signal connection lets her refuse the offered morning in either version; no confrontation requires her combat unit. The companions can return the fragment and expose the heart. Permanently defeating the Benefactor ends the harmful pulse for an unrecovered Nell too. She survives in both paths; the reward for doing the quest is her earlier recovery, return to play and the personal scenes, not permission to obtain a hopeful ending.
+Before the crown stair, Celia reports her examination aboard. An untreated binding follows the palace pulse. The player may return to Iria, rest or explicitly proceed with Nell still bound. The game must successfully write a separate pre-assault return save before committing either route. Manual slots remain untouched. No timer or required party configuration is introduced.
 
-The god's complete body and final transformations are first revealed in its own domain. There is no antagonist behind it. Ansel and Alban are not resurrected, Tomas is not kidnapped again, and the party-size cap remains a game rule.
+The Emperor’s upward-facing, seven-contact core is shielded by two three-contact supports. Break both, use the exposed interval, and watch later coronations rebuild vacant supports at half strength. Occupied mountings cannot rebuild. Round-fixed lanes and a quiet fourth round are visible; Taunt, Dazzle, guard and one-hit areas remain ordinary. The Emperor falls decisively in both outcomes.
+
+## The two outcomes
+
+Recovered Nell’s binding does not accept the broken conduit’s current. The capital lands, the patients reach the boats, and collection widens beyond the empire. The intact fragment and hospice diagram mark a route through the hollow sun. Alda keeps supplies, foreign landings and the final-departure choice available. Chapter Seven itself remains unimplemented.
+
+On the deliberately committed uncured route, the Benefactor draws Nell from her berth into a Lightbearer mantle above the ruined crown. Her body and right-hand lantern remain recognizable; the god’s true body stays unseen. She does not speak. Closing the shutter interrupts its attacks and exposes the mantle. Kit recognizes the opening and the companions act; affection does not cure her.
+
+Lightbearer victory ends the manifestation but Nell is lost and the fragment crumbles. Play the short real Larkspur aftermath with Tomas, Kit and the empty sea-train seat. The Emperor’s rule ends and the capital survives; collection continues elsewhere. No Chapter Seven boundary is granted. The ending can restore the separate pre-assault checkpoint.
+
+Ansel and Alban stay dead. Tomas is never kidnapped again. The party cap remains a game rule.

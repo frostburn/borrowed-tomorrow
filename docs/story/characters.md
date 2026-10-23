@@ -119,3 +119,12 @@ The companions have seen the capital barrier, learned where the two pact seals a
 **Egil** is an older harbor pilot and bell-keeper with a heavy pale beard, blue cap, plum coat and sounding stick. He recognizes his father’s White Finch in the glacier. The official rescue account is wrong; he takes the nameplate and stays at the open records to meet the families before piloting the allied approach. His practical bell lessons give Kit something ordinary to bring back to Nell, ill or well. Neither Egil’s father nor the fleet’s passengers are restored.
 
 The winter dragon is a jagged ice-winged organic guardian, not a machine or the Benefactor’s body. It occupies the sanctuary’s pact bell; no dialogue explains its origin beyond the imagery the locals remember. Its passive breathing and attack motion use scene time. Its defeat changes the footing and opens a physical release, without ending the chapter.
+
+
+## At the end of the capital assault
+
+The Emperor remains recognizably human inside the crowned vessel. He has kept a private household of remembered conversations while living patients lose their water. Recovered Nell is pulled into the remembered morning before she can step back. She and Tomas go to the sea together, but remembering ongoing collection makes her force herself awake and refuse the offer. On the ill route he makes no repeated offer; Nell stays aboard, never participating through a remote link. He is dead when the vessel falls at the crown platform; he has no further dialogue or deliberate gesture.
+
+The unnamed palace commandant is an ordinary remaining officer, not Alban resurrected. He initially bars the patient stair under orders; after defeat Petra makes him help carry a stretcher. He survives with the evacuees. Tomas and the earlier medical passengers remain safe throughout.
+
+On the hopeful route Nell has recovered before final commitment and can travel to the god’s domain. On the knowingly untreated route she becomes the Lightbearer, a mortal manifestation around her own body and lantern. She does not speak. Her hand briefly interrupts its attack; Kit notices and the companions act. Nell’s loss ends that route, with Tomas’s empty train seat and Kit returning her coat. No confession, kiss, mutual romance or romantic cure is introduced. The Benefactor’s true body remains reserved for Chapter Seven.

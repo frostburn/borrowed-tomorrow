@@ -23,7 +23,7 @@ import { isPercussion,pitchSteps } from '../src/game/tuning';
 function journey(s:GameState=chapterSixJungleStart()){
  let d:Dialogue|undefined,encounter='';
  const valid=()=>expect(decodeSave(JSON.stringify(s))).toEqual(s);
- const h:StoryHost={state:s,talk:read=>{d=read;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);valid();},refresh(){},save:valid,travel:(map,x,y)=>{s.location={map,x,y};valid();resumeChapterSix(h);},battle:id=>{encounter=id;},shop(){restoreParty(s);},boundary(){throw new Error('The jungle grants no chapter ending');},toast(){},endingMusic(){}};
+ const h:StoryHost={state:s,talk:read=>{d=read;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);valid();},refresh(){},save:valid,travel:(map,x,y)=>{s.location={map,x,y};valid();resumeChapterSix(h);},battle:id=>{encounter=id;},shop(){restoreParty(s);},boundary(){throw new Error('The jungle grants no chapter ending');},toast(){},async checkpoint(){return true;},endingMusic(){}};
  const flush=()=>{for(let i=0;d?.done&&i<10;i++){const read=d;d=undefined;read.done!();}};
  const act=(id:string)=>{d=undefined;interactChapterSix(h,id);flush();};
  const choose=(i:number)=>{const read=d;d=undefined;read!.choices![i].action();flush();};

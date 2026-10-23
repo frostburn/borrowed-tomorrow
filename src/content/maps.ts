@@ -14,7 +14,7 @@ import type { MapId, GameState } from '../rules/state';
 export const TILE = 24, WIDTH = 1008, HEIGHT = 624;
 export interface MapObject { kind:InteractionKind; storyUntil?:string; id: string; x: number; y: number; label: string; sprite?: string; spriteHiddenFlag?: string; doneFlag?: string; hiddenFlag?: string; requiredFlag?: string; accessFlag?: string; sign?: boolean; hitArea?: {x:number;y:number;width:number;height:number} }
 export interface MapPerson { id:string; x:number; y:number; sprite:CivilianSprite; hiddenFlag?:string; requiredFlag?:string }
-export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; art?:string; tiles?:TileMap; objects: MapObject[]; people?:MapPerson[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
+export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; cameraLeadY?:number; art?:string; tiles?:TileMap; objects: MapObject[]; people?:MapPerson[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export const MAPS: Record<MapId, MapData> = {
   ...CHAPTER_SIX_MAPS, ...CHAPTER_FIVE_MAPS, ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
 };

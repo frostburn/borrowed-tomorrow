@@ -1,3 +1,4 @@
+import { imperialPresentation } from './imperial-presentation';
 import { winterDragonPresentation } from './winter-dragon-presentation';
 import { serpentPresentation } from './sun-serpent-presentation';
 import { RegionAssets } from './region-assets';
@@ -221,10 +222,10 @@ export class Adventure extends Phaser.Scene {
           const start=()=>{void import('../dev/canonical-saves').then(({chapterSixStart})=>this.loadState(chapterSixStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Six save?','<p>This replaces the autosave with the flagship and hunters defeated. Nell is ill; Kit, Orrin and Petra approach the capital. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
         }},
-        ...(['Skeld','winter dragon'] as const).map(destination=>({label:`Begin ${destination} (canonical)`,action:()=>{
-          this.ui.showModal(`Begin ${destination}?`,'<p>Choose Nell’s authored condition. This replaces the autosave; manual slots remain available. Namar has not been visited.</p>',[
-            {label:'Nell ill · Kit, Orrin and Petra',action:()=>{void import('../dev/canonical-saves').then(({chapterSixNorthStart,chapterSixDragonStart})=>this.loadState(destination==='Skeld'?chapterSixNorthStart(false):chapterSixDragonStart(false)));}},
-            {label:'Nell recovered · Nell, Kit and Celia',action:()=>{void import('../dev/canonical-saves').then(({chapterSixNorthStart,chapterSixDragonStart})=>this.loadState(destination==='Skeld'?chapterSixNorthStart(true):chapterSixDragonStart(true)));}},
+        ...(['Skeld','winter dragon','capital','final preparations'] as const).map(destination=>({label:`Begin ${destination} (canonical)`,action:()=>{
+          this.ui.showModal(`Begin ${destination}?`,`<p>Choose Nell’s authored condition. This replaces the autosave; manual slots remain available. ${destination==='capital'||destination==='final preparations'?'Both pact seals have been released.':'Namar has not been visited.'}</p>`,[
+            {label:'Nell ill · Kit, Orrin and Petra',action:()=>{void import('../dev/canonical-saves').then(saves=>this.loadState(({'Skeld':saves.chapterSixNorthStart,'winter dragon':saves.chapterSixDragonStart,'capital':saves.chapterSixCapitalStart,'final preparations':saves.chapterSixFinaleStart}[destination])(false)));}},
+            {label:'Nell recovered · Nell, Kit and Celia',action:()=>{void import('../dev/canonical-saves').then(saves=>this.loadState(({'Skeld':saves.chapterSixNorthStart,'winter dragon':saves.chapterSixDragonStart,'capital':saves.chapterSixCapitalStart,'final preparations':saves.chapterSixFinaleStart}[destination])(true)));}},
           ]);
         }})),
         {label:'Begin Iria (canonical)',action:()=>{
@@ -283,7 +284,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='capitalquay'?'outermooring':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
@@ -297,12 +298,12 @@ export class Adventure extends Phaser.Scene {
       }
     }
     const p = this.state.location;
-    const leader=partyLeader(this.state);
+    const leader=this.worldLeader();
     if(this.face.replace(/-(left|right|back)$/,'')!==leader)this.face=leader;
     this.syncWorldFollowers();
     this.player = this.add.image((p.x+.5)*TILE,(p.y+.5)*TILE+7,this.face).setOrigin(.5,.85).setData('hero',leader).setData('world-actor',true); this.layer!.add(this.player);
     this.sortWorld();
-    const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1);
+    const size=mapSize(map);this.cameras.main.setBounds(0,0,size.width,size.height);this.cameras.main.centerOn(this.player.x,this.player.y);this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
     this.ui.location(map.name);
     this.ui.initiative.textContent = this.state.chapter==='chapter-four'? (this.state.flags.chapterFourComplete?'The western airfield is marked. Tomas keeps the railway talking.':map.id==='sanctuary'&&this.state.flags.sanctuaryWardenWon?'The tide is moving again. The covered chart is open.':map.id==='breakwater'&&this.state.flags.harborOpened?'The ferry is home. The eastern service stair is clear.':map.id==='refuge'&&this.state.flags.harborOpened?'Bram’s ferry is supplying the ward. Tomas keeps the messages moving.':map.subtitle)
       : this.state.chapter==='chapter-three'&&this.state.flags.chapterThreeComplete?'Tomas is aboard. The medical train has escaped.'
@@ -322,7 +323,7 @@ export class Adventure extends Phaser.Scene {
     this.cinematic=director;let finished=false;
     const finish=(action?:()=>void)=>{
       if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
-      if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1);
+      if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
       action?.();if(this.mode==='world'){this.renderWorldControls();this.autosave();}
     };
     this.ui.showDialogue({...dialogue,choices:dialogue.choices?.map(c=>({...c,action:()=>finish(c.action)})),done:()=>finish(dialogue.done)},index=>director?.shot(dialogue.lines[index].shot));
@@ -370,9 +371,16 @@ export class Adventure extends Phaser.Scene {
       if (near?.id !== this.near?.id) { this.near = near; this.renderWorldControls(); }
     }
   }
+  private worldLeader():HeroId {
+    if((this.state.location.map==='lastmorning'||this.state.location.map==='lastshore'))return 'nell';
+    // Kit waits with Tomas during the aftermath, without changing the saved formation.
+    if(this.state.location.map==='laststation')return this.state.activeParty.find(id=>id!=='kit')??'orrin';
+    return partyLeader(this.state);
+  }
   private syncWorldFollowers() {
-    const stationed=this.state.location.map==='airship'?new Set(visibleObjects(MAPS.airship,this.state).map(o=>o.sprite)):new Set<string>();
-    const ids=this.state.activeParty.filter(id=>id!==partyLeader(this.state)&&!stationed.has(id));
+    const mapId=this.state.location.map;
+    const stationed=mapId==='airship'||mapId==='laststation'?new Set(visibleObjects(MAPS[mapId],this.state).map(o=>o.sprite)):new Set<string>();
+    const ids=mapId==='lastmorning'||mapId==='lastshore'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
     if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
     for(const follower of this.followers){
       this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
@@ -390,7 +398,7 @@ export class Adventure extends Phaser.Scene {
     if (!walkable(MAPS[p.map], x, y,this.state) || this.moving || this.blocked) return;
     this.moving = true;
     const previous = { x: this.player!.x, y: this.player!.y };
-    const leader=partyLeader(this.state);
+    const leader=this.worldLeader();
     this.face = facingAsset(leader,dx,dy);
     this.motion.walk(this.player!,this.face,130); p.x=x; p.y=y;this.audio.effect('move',p.map);
     this.tweens.add({ targets:this.player, x:(x+.5)*TILE, y:(y+.5)*TILE+7, duration:130, ease:'Linear', onComplete:()=>{ this.moving=false; } });
@@ -464,12 +472,24 @@ export class Adventure extends Phaser.Scene {
     return {
       state: this.state, talk: d => this.talk(d), commit: (flag, entry) => this.finishStory(flag, entry),
       refresh: () => this.showWorld(), save: () => this.autosave(),
+      checkpoint:async slot=>{
+        if(this.busy)return false;this.busy=true;
+        try{await this.serialSave;await save(slot,structuredClone(this.state));return true;}
+        catch{this.ui.toast('The return checkpoint could not be saved. Free browser storage and try the stair again.');return false;}
+        finally{this.busy=false;}
+      },
       travel: (map, x, y) => { void this.changeMap(map, x, y); }, battle: id => this.startBattle(id),
       shop: () => this.shop(), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
       endingMusic: () => this.audio.setMode('ending'),
     };
   }
   private boundaryPanel() {
+    if(this.state.flags.lightbearerEnding){
+      this.ui.panel('An unfinished tomorrow','<p>The Emperor’s rule has ended. The capital has landed, but the Benefactor still takes days from the world.</p><p>Nell’s place on the sea train is empty.</p>',[
+        {label:'Return before the final assault',action:()=>{void listSaves().then(records=>{const prior=records.find(r=>r.slot==='capital-return');if(prior)void this.loadState(prior.state);else this.ui.toast('The return checkpoint is unavailable in this browser. Import your earlier save from Save files.');}).catch(()=>this.ui.toast('Browser saves are unavailable. Your exported saves can still be imported.'));}},
+        {label:'Export ending save',action:()=>exportSave(this.state)},
+      ]);return;
+    }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
     this.ui.panel(`${chapter.title} complete`,chapter.ending.html,[
       ...(destination?[{label:`Begin ${destination.title}`,action:()=>{void this.beginNextChapter();}}]:[]),
@@ -481,7 +501,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='emperor'||definition.boss==='lightbearer'?imperialPresentation(definition):definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }
@@ -775,7 +795,7 @@ export class Adventure extends Phaser.Scene {
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
-    this.audio.setMode(this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
+    this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
     this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
   }
 

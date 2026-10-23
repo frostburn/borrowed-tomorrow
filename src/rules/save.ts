@@ -3,7 +3,7 @@ import { heroAvailable } from './availability';
 import { completedAnchors } from '../content/chapter-five/progress';
 import { decodeInventory } from './inventory';
 import { validParty } from './party';
-import { SAVE_FORMAT,SAVE_VERSION,CAMPAIGN,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,SIXTH_CHAPTER,maxHp,type GameState,type HeroState } from './state';
+import { SAVE_FORMAT,SAVE_VERSION,CAMPAIGN,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,SIXTH_CHAPTER,SEVENTH_CHAPTER,maxHp,type GameState,type HeroState } from './state';
 
 /** Validate the current save format; older formats are not migrated. */
 export function decodeSave(text: string): GameState {
@@ -16,7 +16,7 @@ export function decodeSave(text: string): GameState {
   if (!loc || ![...SIX_MAP_IDS,'station', 'yard', 'rillbridge', 'tunnel', 'coast', 'infirmary', 'cinderbank', 'northglass', 'relayhall', 'conduit', 'refuge', 'breakwater', 'sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'].includes(loc.map) || !Number.isInteger(loc.x) || !Number.isInteger(loc.y) ||
     !number(loc.x, loc.map==='rillbridge' ? 65 : [...SIX_MAP_IDS,'coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'].includes(loc.map) ? 63 : 41) || !number(loc.y, loc.map==='rillbridge' ? 40 : [...SIX_MAP_IDS,'coast','infirmary','cinderbank','northglass','relayhall','conduit','refuge','breakwater','sanctuary','airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'].includes(loc.map) ? 41 : 25)) throw new Error('The save location is invalid.');
   if (!number(s.xp, 1e7) || !number(s.coins, 1e7) || !number(s.bandages, 999) || !number(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
-  if (!['chapter-one','chapter-two','chapter-three','chapter-four','chapter-five','chapter-six'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER && s.boundary !== FOURTH_CHAPTER && s.boundary !== FIFTH_CHAPTER && s.boundary !== SIXTH_CHAPTER)) throw new Error('This chapter is not available in this build.');
+  if (!['chapter-one','chapter-two','chapter-three','chapter-four','chapter-five','chapter-six'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER && s.boundary !== FOURTH_CHAPTER && s.boundary !== FIFTH_CHAPTER && s.boundary !== SIXTH_CHAPTER && s.boundary !== SEVENTH_CHAPTER)) throw new Error('This chapter is not available in this build.');
   if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > (['chapter-four','chapter-five','chapter-six'].includes(s.chapter as string) ? 5 : s.chapter === 'chapter-three' ? 4 : 3) || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
   const party: HeroState[] = [];
   for (const h of s.party) {

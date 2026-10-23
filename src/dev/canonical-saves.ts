@@ -1,3 +1,5 @@
+import { ENCOUNTERS as SIX_ENCOUNTERS } from '../content/chapter-six/encounters';
+import { ENCOUNTERS as FINALE_ENCOUNTERS } from '../content/chapter-six/capital/encounters';
 import { ENCOUNTERS as NORTH_ENCOUNTERS } from '../content/chapter-six/north/encounters';
 import { sickenNell } from '../rules/availability';
 import { beginChapterSix,SIXTH_CHAPTER } from '../rules/state';
@@ -131,4 +133,22 @@ export function chapterSixDragonStart(recovered=false){
  for(const flag of ['northSeen','northWatchSeen','northWatchConfronted','northWatchWon','northPassOpened','northLogRead','northHuntersConfronted','northHuntersWon']){s.flags[flag]=true;s.journal.push(flag);}
  for(const id of ['north-watch','north-hunters']){const e=NORTH_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
  s.location=arrival('wintershrine','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+}
+
+/** Both foreign seals released; the allied quay arrival still plays. */
+export function chapterSixCapitalStart(recovered=false){
+ const s=chapterSixNorthStart(recovered);
+ for(const flag of ['northSeen','northWatchSeen','northWatchConfronted','northWatchWon','northPassOpened','northLogRead','northHuntersConfronted','northHuntersWon','winterShrineSeen','winterDragonConfronted','winterDragonWon','northSealBroken','northReturned','northReported','desertSeen','palaceCoup','palaceRouteChosen','palaceEscapeWon','palaceEscaped','desertAscentSeen','desertAscentWon','sunSerpentSeen','sunSerpentConfronted','sunSerpentWon','desertReleaseReady','desertSealBroken','desertReported','capitalOpened']){s.flags[flag]=true;s.journal.push(flag);}
+ s.flags.palaceWaterRoute=false;
+ for(const id of ['north-watch','north-hunters','winter-dragon','palace-gallery','desert-ascent','sun-serpent']){const e=SIX_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ for(const [hero,item]of [['kit','winter-sight'],['orrin','ice-valve'],['petra','pact-guard'],['petra','stormlining-coat']]as const)equipItem(s.inventory,hero,item);
+ s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+}
+/** Capital street and palace cleared; morning completed only on the recovered route. */
+export function chapterSixFinaleStart(recovered=false){
+ const s=chapterSixCapitalStart(recovered);
+ for(const flag of ['capitalQuaySeen','capitalStreetSeen','capitalProcessionConfronted','capitalProcessionWon','capitalStreetFreed','capitalPalaceSeen','capitalCommandConfronted','capitalCommandWon','capitalHallOpened']){s.flags[flag]=true;s.journal.push(flag);}
+ for(const id of ['capital-procession','palace-command']){const e=FINALE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ if(recovered)for(const flag of ['capitalAudienceSeen','capitalMorningSeen','capitalMorningQuestion','capitalMorningLeft']){s.flags[flag]=true;s.journal.push(flag);}
+ s.location=arrival('lastpalace','memory');restoreParty(s);return decodeSave(JSON.stringify(s));
 }

@@ -20,7 +20,7 @@
     {
       "name": "subtitle",
       "type": "string",
-      "value": "The landing bridge is open. Namar\u2019s barges and Skeld\u2019s launches can reach the white quay; the inner capital continues in the next adventure."
+      "value": "Namar\u2019s barges and Skeld\u2019s launches serve the white quay. Stillwater Avenue lies through the northern arch."
     },
     {
       "name": "sceneArt",
@@ -36,6 +36,11 @@
       "name": "safeArrival",
       "type": "string",
       "value": "start"
+    },
+    {
+      "name": "cameraLeadY",
+      "type": "int",
+      "value": 144
     }
   ],
   "tilesets": [
@@ -608,12 +613,12 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Inner capital \u00b7 next adventure"
+              "value": "Stillwater Avenue \u00b7 enter the capital"
             },
             {
               "name": "kind",
               "type": "string",
-              "value": "talk"
+              "value": "exit"
             },
             {
               "name": "sign",

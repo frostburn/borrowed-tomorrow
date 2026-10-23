@@ -11,7 +11,7 @@ import { coastCheckpoint,palaceCheckpoint } from './support/progress';
 import * as scenes from '../src/content/chapter-three/scenes';
 function host(state:GameState){
  let dialogue:Dialogue|undefined,encounter='';
- const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},endingMusic(){}};
+ const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},async checkpoint(){return true;},endingMusic(){}};
  return {h,finish:()=>dialogue!.done!(),read:()=>dialogue!,win:()=>{const b=createBattle(encounter,state);b.result='victory';awardVictory(b,state);},encounter:()=>encounter};
 }
 it('continues the current capital departure without changing gear, health or the raid choice',()=>{

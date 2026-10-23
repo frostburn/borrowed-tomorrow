@@ -5,6 +5,10 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'stillcity',title:'The Procession Never Ends',group:'6'},{mode:'lastpalace',title:'A Place at the Table',group:'6'},
+  {mode:'capital-battle',title:'Open the Patient Stair',group:'6'},{mode:'emperor',title:'The Emperor’s Last Day',group:'6'},
+  {mode:'lightbearer',title:'The Hand on the Shutter',group:'6'},{mode:'capital-return',title:'The City Comes Down',group:'6'},
+  {mode:'laststation',title:'The Empty Seat',group:'6'},
   {mode:'bellharbor',title:'Skeld · Answering Bells',group:'6'}, {mode:'frostwatch',title:'The Covered Road',group:'6'},
   {mode:'glacier',title:'The Fleet beneath the Ice',group:'6'}, {mode:'wintershrine',title:'A Bell for the Outer Marker',group:'6'},
   {mode:'north-battle',title:'Skeld · Open the Mountain',group:'6'}, {mode:'winter-dragon',title:'Wings over the Winter Bell',group:'6'},

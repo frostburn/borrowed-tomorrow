@@ -18,7 +18,7 @@ import * as scenes from '../src/content/chapter-five/finale-scenes';
 
 function visit(s=chapterFiveFinaleStart()){
  let dialogue:Dialogue|undefined,encounter='',departures=0;
- const h:StoryHost={state:s,talk:d=>{dialogue=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);expect(decodeSave(JSON.stringify(s))).toEqual(s);},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},boundary:()=>{departures++;},refresh(){},save(){},shop(){},toast(){},endingMusic(){}};
+ const h:StoryHost={state:s,talk:d=>{dialogue=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);expect(decodeSave(JSON.stringify(s))).toEqual(s);},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},boundary:()=>{departures++;},refresh(){},save(){},shop(){},toast(){},async checkpoint(){return true;},endingMusic(){}};
  const finish=()=>{const d=dialogue;dialogue=undefined;d?.done?.();};
  const interact=(id:string)=>interactChapterFive(h,id);
  const launch=()=>{interact('ship-chart');dialogue!.choices![3].action();dialogue!.choices![0].action();};

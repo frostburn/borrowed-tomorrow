@@ -1,7 +1,8 @@
+import { JOURNAL as CAPITAL_JOURNAL,objective as capitalObjective } from './capital/story';
 import { JOURNAL as NORTH_JOURNAL,objective as northObjective } from './north/story';
 import { JOURNAL as JUNGLE_JOURNAL,objective as jungleObjective } from './jungle/story';
 import type { GameState } from '../../rules/state';
-export const JOURNAL={...JUNGLE_JOURNAL,...NORTH_JOURNAL,
+export const JOURNAL={...CAPITAL_JOURNAL,...JUNGLE_JOURNAL,...NORTH_JOURNAL,
  capitalSealed:{title:'The sealed capital',text:'The Emperor has closed a barrier under an old defense pact. Two foreign seals hold it: Namar’s royal observatory and the northern sanctuary. People are still living inside the capital.'},
  sixRoutesKnown:{title:'The two pact seals',text:'Alda has charts for both foreign capitals. Each seal must be released where its kingdom signed the pact. The ship remains a safe berth; Nell stays under care.'},
  jungleLeadKnown:{title:'Sera’s river referral',text:'Sera has found river healers who treated crystal workers before the imperial wards. Her notes may help them interrupt Nell’s connection to the shard. This is a separate journey from the two seals.'},
@@ -20,7 +21,7 @@ export const JOURNAL={...JUNGLE_JOURNAL,...NORTH_JOURNAL,
  desertReported:{title:'News from Namar',text:'The crew reviewed Namar’s support at the flight chart. The western return is open. The flight chart records the remaining return, if any. Namar’s navigators and barges will help the next approach.'},
 };
 export function objective(s:GameState):string{
- const regional=northObjective(s)??jungleObjective(s);if(regional)return regional;
+ const regional=capitalObjective(s)??northObjective(s)??jungleObjective(s);if(regional)return regional;
  const f=s.flags,m=s.location.map;
  if(!f.capitalSealed)return 'Reach the capital’s outer mooring.';
  if(!f.sixRoutesKnown)return 'Read the two return lines at Alda’s flight chart.';

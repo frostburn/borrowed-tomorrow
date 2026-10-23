@@ -61,7 +61,6 @@ export function interactNorth(h:StoryHost,id:string):boolean{
   case 'shrine-home':if(f.northSealBroken)go(h,'bellharbor','return');break;
   case 'six-capital-open':go(h,'capitalquay');break;
   case 'capital-return':go(h,'outermooring','namar');break;
-  case 'capital-inner':h.talk({lines:[SAY('Alda','The landing’s clear. The next journey will take us through that arch.')],choices:[{label:'Inner capital · not yet playable',disabled:true,action:()=>{}},{label:'Stay on the allied quay',action:()=>{}}]});break;
   case 'capital-crew':say('Alda','Namar’s barges take the lower berths. Skeld’s pilots have the launches. Your ship and all three foreign landings are still available.');break;
   default:return false;
  }

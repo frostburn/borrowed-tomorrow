@@ -86,3 +86,6 @@ Normal CI runs Node 24 rule/content checks, the production build, and seven crit
 Report bugs and feature requests at [GitHub Issues](https://github.com/frostburn/borrowed-tomorrow/issues).
 
 MIT licensed. The original license is preserved.
+
+
+The Chapter Six capital finale is playable: free Stillwater Avenue, clear the palace, face the Emperor and reach either the recovered departure or the explicitly committed uncured Lightbearer ending. Recovered Nell alone receives the playable Larkspur morning. Dev canonical Capital/Final preparations starts and both boss previews are available. The separate Chapter Seven remains forthcoming. See `docs/story/chapter-six-continuation.md` (from the repository root) for checkpoints.

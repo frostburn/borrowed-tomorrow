@@ -5,6 +5,11 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'procession-coat':{name:'Lined ceremonial coat',slot:'coat',heroes:COMPANION_IDS,description:'A palace coat with its stiff train removed. Protective lining and room to move.',bonuses:{attack:0,armor:5,speed:1}},
+  'crown-nozzle':{name:'Pressure-crown nozzle',slot:'fitting',heroes:['orrin'],description:'A guarded regulator from the palace service engine, fitted to the steam lance.',bonuses:{attack:9,armor:2,speed:0}},
+  'cloister-sight':{name:'Cloister range sight',slot:'fitting',heroes:['kit'],description:'A compact survey sight from the palace roof walk. Fast to raise, with a narrow field.',bonuses:{attack:8,armor:0,speed:3}},
+  'palace-focus':{name:'Palace medical focus',slot:'fitting',heroes:['celia'],description:'A treatment lens left in the service locker for the ward crews.',bonuses:{attack:8,armor:3,speed:0}},
+  'unbroken-guard':{name:'Unbroken crown guard',slot:'fitting',heroes:['petra'],description:'A sound hand guard recovered beneath the fallen crown. Heavy, but strong.',bonuses:{attack:9,armor:4,speed:0}},
   'stormlining-coat':{name:'Storm-lined expedition coat',slot:'coat',heroes:COMPANION_IDS,description:'Skeld’s windproof layered coat. A short hem leaves the knees free.',bonuses:{attack:0,armor:4,speed:2}},
   'ice-valve':{name:'Cold-weather expansion valve',slot:'fitting',heroes:['orrin'],description:'A glacier salvage valve with a guarded return and quick pressure recovery.',bonuses:{attack:7,armor:3,speed:1}},
   'winter-sight':{name:'Winter range sight',slot:'fitting',heroes:['kit'],description:'A hooded expedition sight, clear even against a field of snow.',bonuses:{attack:8,armor:2,speed:1}},

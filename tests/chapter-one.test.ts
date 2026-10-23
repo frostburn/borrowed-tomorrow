@@ -16,7 +16,7 @@ function visit(state = newGame()) {
   const host: StoryHost = {
     state, talk: d => { dialogue = d; }, commit: (flag, entry) => { state.flags[flag] = true; if (entry) state.journal.push(entry); },
     refresh() {}, save() {}, travel: (map, x, y) => { state.location = { map, x, y }; traveled = true; },
-    battle: id => { battle = id; }, shop() {}, boundary() {}, toast() {}, endingMusic() {},
+    battle: id => { battle = id; }, shop() {}, boundary() {}, toast() {}, async checkpoint(){return true;},endingMusic(){},
   };
   return { host, state, read: () => dialogue!, battle: () => battle, traveled: () => traveled };
 }

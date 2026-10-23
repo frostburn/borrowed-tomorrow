@@ -339,5 +339,54 @@
       "#263e53": "#54768d",
       "#b7c1b8": "#a1becb"
     }
+  },
+  "hound-crown": {
+    "kind": "hound",
+    "name": "Crown hound",
+    "chapter": 6,
+    "hp": 104,
+    "bonus": 13,
+    "armor": 2,
+    "speed": 7,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#57697a",
+      "#b7784e": "#e6dfcb",
+      "#d9ae62": "#bd8e4d"
+    }
+  },
+  "crow-crown": {
+    "kind": "crow",
+    "name": "Crown crow",
+    "chapter": 6,
+    "hp": 90,
+    "bonus": 13,
+    "armor": 2,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#57697a",
+      "#626d7f": "#e6dfcb",
+      "#b7784e": "#bd8e4d",
+      "#d9ae62": "#93766b",
+      "#142536": "#bcc9cc"
+    }
+  },
+  "guardian-crown": {
+    "kind": "guardian",
+    "name": "Palace procession guardian",
+    "chapter": 6,
+    "hp": 210,
+    "bonus": 13,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#57697a",
+      "#b7784e": "#e6dfcb",
+      "#d9ae62": "#bd8e4d",
+      "#263e53": "#93766b",
+      "#b7c1b8": "#bcc9cc"
+    }
   }
 }

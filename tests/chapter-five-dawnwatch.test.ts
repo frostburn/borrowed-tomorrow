@@ -14,7 +14,7 @@ import { orderShields,prepareDawnwatch,COMMANDER_ID,SPOTTER_ID } from '../src/ru
 import { distance,key,offset } from '../src/rules/hex';
 function host(s:GameState){
  let read:Dialogue|undefined,encounter='',toast='';
- const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);},refresh(){},save(){},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast:t=>{toast=t;},endingMusic(){}};
+ const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);},refresh(){},save(){},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast:t=>{toast=t;},async checkpoint(){return true;},endingMusic(){}};
  return {h,read:()=>read!,finish:()=>read!.done!(),choose:(i:number)=>read!.choices![i].action(),win:()=>{const b=createBattle(encounter,s);b.result='victory';awardVictory(b,s);},encounter:()=>encounter,toast:()=>toast};
 }
 for(const first of ['mortar','repeater'])for(const hammerplain of [false,true])it(`Dawnwatch ${first} first, ${hammerplain?'after':'before'} Hammerplain: local actions, changed town and manual loot`,()=>{

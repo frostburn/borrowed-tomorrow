@@ -11,7 +11,7 @@ import { brokenCheckpoint,brokenOrder,palaceCheckpoint } from './support/progres
 import * as scenes from '../src/content/chapter-four/scenes';
 function host(state:GameState){
  let dialogue:Dialogue|undefined,encounter='';
- const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};resumeChapterFour(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},endingMusic(){}};
+ const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};resumeChapterFour(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},async checkpoint(){return true;},endingMusic(){}};
  return {h,read:()=>dialogue!,finish:()=>dialogue!.done!(),choice:(i:number)=>dialogue!.choices![i].action(),win:()=>{const b=createBattle(encounter,state);b.result='victory';awardVictory(b,state);},encounter:()=>encounter};
 }
 it('starts with the actual Chapter Three roster, formation, health and equipment intact',()=>{
