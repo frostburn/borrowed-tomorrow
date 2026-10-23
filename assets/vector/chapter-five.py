@@ -3,6 +3,7 @@ No bitmap inputs or resampling. Navigation, markers and scene casts share 24px c
 """
 import json, math, re
 from pathlib import Path
+from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-five'; MAP=ROOT/'src/content/chapter-five/maps'
@@ -101,6 +102,7 @@ def carrier(w=224,h=168):
 
 def write_map(id,name,subtitle,layers,w=64,h=42,safe='start'):
  d={'type':'map','version':'1.10','tiledversion':'1.11.2','orientation':'orthogonal','renderorder':'right-down','infinite':False,'width':w,'height':h,'tilewidth':24,'tileheight':24,'nextlayerid':len(layers)+1,'nextobjectid':1,'properties':prop(name=name,subtitle=subtitle,artStyle='rotoscope',sceneArt=id,safeArrival=safe),'tilesets':[{'firstgid':p['firstgid'],'source':'../../../../assets/tiles/pages/'+p['name']+'.json'}for p in json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text())['pages']],'layers':layers}
+ retain_interaction_roles(MAP/f'{id}.json', layers)
  for layer_ in layers:
   for o in layer_.get('objects',[]):o['id']=d['nextobjectid'];d['nextobjectid']+=1
  text=json.dumps(d,indent=2)

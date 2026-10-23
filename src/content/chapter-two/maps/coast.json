@@ -2010,6 +2010,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "kitJoined"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 684,
@@ -2039,6 +2044,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "trainRaidWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 564,
@@ -2068,6 +2078,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "trainRaidWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 1164,
@@ -2107,6 +2122,11 @@
               "name": "approachY",
               "type": "int",
               "value": 14
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 576,
@@ -2130,6 +2150,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "x": 348,
@@ -2154,6 +2179,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "x": 324,

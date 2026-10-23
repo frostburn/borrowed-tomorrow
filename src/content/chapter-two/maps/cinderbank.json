@@ -2331,6 +2331,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "coastCollectorWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 996,
@@ -2365,6 +2370,11 @@
               "name": "sprite",
               "type": "string",
               "value": "dena"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 876.0,
@@ -2399,6 +2409,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "evacuationReady"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "x": 1140.0,
@@ -2423,6 +2438,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "x": 684,
@@ -2447,6 +2467,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "x": 1236,
@@ -2471,6 +2496,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "x": 588,
@@ -2510,6 +2540,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "evacuationReady"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         }

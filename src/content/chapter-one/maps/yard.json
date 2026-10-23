@@ -709,6 +709,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "orrinJoined"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -738,6 +743,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "orrinJoined"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ]
         },
@@ -767,6 +777,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "workshopWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ]
         },
@@ -791,6 +806,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         },
@@ -815,6 +835,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }

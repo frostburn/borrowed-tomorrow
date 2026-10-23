@@ -1071,6 +1071,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "conduitGuardWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1115,6 +1120,11 @@
               "name": "approachY",
               "type": "int",
               "value": 20
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ]
         },
@@ -1139,6 +1149,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ]
         }
@@ -1331,8 +1346,16 @@
   "nextobjectid": 15,
   "orientation": "orthogonal",
   "properties": [
-    {"name": "sceneArt", "type": "string", "value": "conduit"},
-    {"name": "artStyle", "type": "string", "value": "rotoscope"},
+    {
+      "name": "sceneArt",
+      "type": "string",
+      "value": "conduit"
+    },
+    {
+      "name": "artStyle",
+      "type": "string",
+      "value": "rotoscope"
+    },
     {
       "name": "name",
       "type": "string",

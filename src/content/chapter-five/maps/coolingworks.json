@@ -580,6 +580,16 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "forgeApproachWon"
             }
           ],
           "id": 1
@@ -610,6 +620,16 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "coolingOpened"
             }
           ],
           "id": 2
@@ -634,6 +654,11 @@
               "name": "accessFlag",
               "type": "string",
               "value": "coolingOpened"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -653,6 +678,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 4

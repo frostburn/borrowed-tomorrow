@@ -590,6 +590,11 @@
               "name": "spriteHiddenFlag",
               "type": "string",
               "value": "aurelWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
             }
           ],
           "id": 1
@@ -625,6 +630,16 @@
               "name": "accessFlag",
               "type": "string",
               "value": "aurelWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "dawnwatchFreed"
             }
           ],
           "id": 2
@@ -644,6 +659,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -663,6 +683,11 @@
               "name": "sprite",
               "type": "string",
               "value": "enna"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 4

@@ -627,6 +627,16 @@
               "name": "sprite",
               "type": "string",
               "value": "tomas"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "story"
+            },
+            {
+              "name": "storyUntil",
+              "type": "string",
+              "value": "chapterFourComplete"
             }
           ],
           "id": 1
@@ -646,6 +656,11 @@
               "name": "sprite",
               "type": "string",
               "value": "dena"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 2
@@ -670,6 +685,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "harborOpened"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 3
@@ -689,6 +709,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 4

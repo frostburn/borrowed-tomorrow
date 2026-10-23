@@ -585,6 +585,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "hammerplainComplete"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 1
@@ -609,6 +614,11 @@
               "name": "requiredFlag",
               "type": "string",
               "value": "hammerplainComplete"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
             }
           ],
           "id": 2
@@ -628,6 +638,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 3
@@ -647,6 +662,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 4
@@ -677,6 +697,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "exit"
             }
           ],
           "id": 5
@@ -706,6 +731,11 @@
               "name": "spriteHiddenFlag",
               "type": "string",
               "value": "forgeStoresWon"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
             }
           ],
           "id": 6
