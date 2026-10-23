@@ -1,5 +1,5 @@
 import {expect,it} from 'vitest';
-import {MAPS} from '../src/content/maps';
+import {MAPS,visibleObjects} from '../src/content/maps';
 import {INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
 import {newGame} from '../src/rules/state';
 
@@ -39,4 +39,12 @@ it('shows one cue for Petra and Alban, and stages the mirrored engine cue after 
  const engine=MAPS.mirrorward.objects.find(o=>o.id==='wind-engine')!,guard=MAPS.mirrorward.objects.find(o=>o.id==='wind-gallery-guard')!;
  expect(interactionMarker(engine,s)).toBeUndefined();expect(interactionMarker(guard,s)?.glyph).toBe('!');
  s.flags.windGalleryWon=true;expect(interactionMarker(engine,s)?.glyph).toBe('!');expect(interactionMarker(guard,s)).toBeUndefined();
+});
+
+it('shows just the procession marker on Stillwater Avenue, with no stacked release cue',()=>{
+ const s=newGame();s.location={map:'stillcity',x:32,y:31};
+ const storyCues=()=>visibleObjects(MAPS.stillcity,s).filter(o=>interactionMarker(o,s)?.glyph==='!').map(o=>o.id);
+ expect(storyCues()).toEqual(['city-procession']);
+ s.flags.capitalProcessionWon=true;expect(storyCues()).toEqual([]);
+ s.flags.capitalStreetFreed=true;expect(storyCues()).toEqual([]);
 });

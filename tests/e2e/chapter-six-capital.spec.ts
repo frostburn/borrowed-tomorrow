@@ -19,7 +19,7 @@ for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},
   const initial=chapterSixCapitalStart(recovered);if(recovered)initial.activeParty=['kit','orrin','petra'];await page.goto('/');await importSave(page,initial);await drain(page);await capture(page,`capital-quay-${device}`);
   await approach(page,'capital-inner');await waitMap(page,'stillcity');await capture(page,`capital-street-${device}`);
   await approach(page,'city-procession');await page.getByRole('button',{name:'Clear the procession machines',exact:true}).click();await win(page);
-  await approach(page,'city-release');await drain(page);expect((await inspect(page)).state.flags.capitalStreetFreed).toBe(true);
+  await drain(page);expect((await inspect(page)).state.flags.capitalStreetFreed).toBe(true);
   await approach(page,'city-palace');await waitMap(page,'lastpalace');await capture(page,`capital-palace-${device}`);
   await approach(page,'palace-command');await drain(page);await page.getByRole('button',{name:'Break the palace cordon',exact:true}).click();await win(page);
   await approach(page,'palace-locker');await dialogue(page);expect((await inspect(page)).state.inventory.bag['palace-focus']).toBe(1);

@@ -10,6 +10,7 @@ export const BOSS_AFTERMATHS:readonly {map:MapId;won:string;done:string;interact
  {map:'signalwall',won:'aurelWon',done:'dawnwatchFreed',interaction:'wall-anchor'},
  {map:'mirrorward',won:'wardEngineWon',done:'windmereFreed',interaction:'wind-anchor'},
  {map:'observatory',won:'sunSerpentWon',done:'desertReleaseReady',interaction:'desert-release'},
+ {map:'stillcity',won:'capitalProcessionWon',done:'capitalStreetFreed',interaction:'city-release'},
  {map:'wintershrine',won:'winterDragonWon',done:'northSealBroken',interaction:'north-release'},
 ];
 export function pendingBossAftermath(state:Pick<GameState,'location'|'flags'>){
