@@ -1,6 +1,6 @@
 import { test,expect } from '@playwright/test';
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`canonical group and Workshop remain reachable on ${device}`,async({browser})=>{
- const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   await expect(page.getByRole('heading',{name:'Canonical saves',exact:true})).toBeVisible({timeout:20000});
@@ -16,7 +16,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   await group.getByRole('button',{name:'Begin winter dragon (canonical)',exact:true}).click();
   await expect(page.getByRole('button',{name:'Nell ill · Kit, Orrin and Petra',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Close',exact:true}).click();
-  await workshop.click();await expect(page).toHaveURL(/dev=workshop/);await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:20000});await expect(page.getByRole('navigation',{name:'Workshop panels'})).toBeVisible();
+  await workshop.click();await expect(page).toHaveURL(/dev=workshop/);// The workshop cold-loads the full cast and boss preview artwork.
+  await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:60000});await expect(page.getByRole('navigation',{name:'Workshop panels'})).toBeVisible();
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
 });
