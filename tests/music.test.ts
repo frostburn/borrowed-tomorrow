@@ -1,7 +1,7 @@
 import { isBass, semitones } from '../src/game/tuning';
 import { expect, it } from 'vitest';
 import { ARRANGEMENTS, scoreBar,type Note } from '../src/game/score';
-import { ENCOUNTERS } from '../src/rules/combat';
+import { ENCOUNTERS } from '../src/content/encounters';
 import { SIDING_HARMONY, WARD_HARMONY } from '../src/game/score-c';
 import { NORTHGLASS_CHORDS, NORTHGLASS_HARMONY } from '../src/game/score-d';
 

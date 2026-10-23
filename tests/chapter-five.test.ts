@@ -1,11 +1,12 @@
 import { expect,it } from 'vitest';
 import { chapterFiveStart } from '../src/dev/canonical-saves';
-import { beginChapterFive,decodeSave,FIFTH_CHAPTER,maxHp,remember,type GameState } from '../src/rules/state';
+import { beginChapterFive, FIFTH_CHAPTER, maxHp, remember, type GameState } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { awardVictory,createBattle } from '../src/rules/combat';
 import { equipItem,ownedCopies } from '../src/rules/inventory';
 import { interactChapterFive,resumeChapterFive } from '../src/content/chapter-five/interactions';
 import type { Dialogue } from '../src/content/dialogue';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 import { arrival,MAPS,restorePoint,visiblePeople,walkable,worldPath } from '../src/content/maps';
 import { objective } from '../src/content/chapter-five/story';
 import { anchorCheckpoint } from './support/anchors';

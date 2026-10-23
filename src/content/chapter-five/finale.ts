@@ -1,5 +1,5 @@
 import { sickenNell } from '../../rules/availability';
-import type { StoryHost } from '../chapter-one/interactions';
+import type { StoryHost } from '../story-host';
 import { arrival } from '../maps';
 import { SAY } from '../dialogue';
 import { SIXTH_CHAPTER } from '../../rules/state';

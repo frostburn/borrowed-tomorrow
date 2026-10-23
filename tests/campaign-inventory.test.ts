@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import { awardVictory, createBattle } from '../src/rules/combat';
-import { decodeSave, newGame, recruitOrrin } from '../src/rules/state';
+import { newGame, recruitOrrin } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { equipItem, ownedCopies, receiveItem } from '../src/rules/inventory';
 import { buySupply } from '../src/rules/supplies';
 import { checkpoint } from './support/progress';

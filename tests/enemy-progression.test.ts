@@ -1,5 +1,6 @@
 import {expect,it} from 'vitest';
-import {createBattle,enemyTurn,damage,ENCOUNTERS,type Encounter} from '../src/rules/combat';
+import { createBattle, enemyTurn, damage, type Encounter } from '../src/rules/combat';
+import { ENCOUNTERS } from '../src/content/encounters';
 import {newGame,recruitOrrin} from '../src/rules/state';
 import {ENEMY_VARIANTS} from '../src/content/enemy-variants';
 import {offset,key,distance} from '../src/rules/hex';

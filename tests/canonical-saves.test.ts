@@ -1,10 +1,11 @@
 import { expect, it } from 'vitest';
 import { chapterTwoStart,chapterThreeStart,chapterFourStart } from '../src/dev/canonical-saves';
-import { decodeSave, level } from '../src/rules/state';
+import { level } from '../src/rules/state';
+import { decodeSave } from '../src/rules/save';
 import { resumeChapterTwo } from '../src/content/chapter-two/interactions';
 import { resumeChapterThree } from '../src/content/chapter-three/interactions';
 import { ownedCopies } from '../src/rules/inventory';
-import type { StoryHost } from '../src/content/chapter-one/interactions';
+import type { StoryHost } from '../src/content/story-host';
 
 it('starts Chapter Two from a fresh, valid Chapter One completion and replays Kit’s introduction',()=>{
   const state=chapterTwoStart();

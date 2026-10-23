@@ -3,7 +3,7 @@ import { arrival } from '../maps';
 import { FIFTH_CHAPTER, recruit, remember, restoreParty } from '../../rules/state';
 import { buySupply } from '../../rules/supplies';
 import { receiveItem } from '../../rules/inventory';
-import type { StoryHost } from '../chapter-one/interactions';
+import type { StoryHost } from '../story-host';
 import * as scenes from './scenes';
 
 export function resumeChapterFour(h:StoryHost){

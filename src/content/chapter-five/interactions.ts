@@ -8,7 +8,7 @@ import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import { restoreParty } from '../../rules/state';
 import { buySupply } from '../../rules/supplies';
-import type { StoryHost } from '../chapter-one/interactions';
+import type { StoryHost } from '../story-host';
 import * as scenes from './scenes';
 
 export function resumeChapterFive(h:StoryHost){

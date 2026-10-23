@@ -1,4 +1,3 @@
-import { CHAPTER_TWO_AVAILABLE,CHAPTER_THREE_AVAILABLE } from '../../src/content/chapters';
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, palaceCheckpoint, brokenCheckpoint, checkpoint } from '../support/progress';
@@ -64,7 +63,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`production Chapter Two recruits only Kit and preserves equipment and formation on ${device}`,async({page})=>{
-    test.skip(!CHAPTER_TWO_AVAILABLE,'Chapter Two art pack is not installed.');
+
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');await importSave(page,checkpoint('chapterOneComplete'));
     await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();await dialogue(page);await approach(page,'kit-contact');await dialogue(page);
     expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
@@ -81,7 +80,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production Chapter Three keeps Tomas safe and equipment through the departure on ${device}`,async({page})=>{
-  test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
+
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   await importSave(page,coastCheckpoint('chapterTwoComplete'));await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await dialogue(page);
   await importSave(page,palaceCheckpoint('worksWardenWon'));await approach(page,'works-tomas');await dialogue(page);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
@@ -100,7 +99,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
  test(`production extraction console from the saved east side on ${device}`,async({page})=>{
-  test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
+
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.setViewportSize(viewport);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   const saved=palaceCheckpoint('conduitGuardWon');saved.location={map:'conduit',x:52,y:22};
@@ -225,7 +224,7 @@ test('production Windmere restores partial support and accepts any two regions f
 });
 
 test('production flagship uses the campaign party and saves the unseen god’s retaliation and Nell’s illness',async({page})=>{
- const {chapterFiveFinaleStart}=await import('../../src/dev/canonical-saves');const {SIXTH_CHAPTER,decodeSave}=await import('../../src/rules/state');
+ const {chapterFiveFinaleStart}=await import('../../src/dev/canonical-saves');const {SIXTH_CHAPTER}=await import('../../src/rules/state');const {decodeSave}=await import('../../src/rules/save');
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
  const s=chapterFiveFinaleStart();await importSave(page,s);await approach(page,'ship-chart');await page.getByRole('button',{name:'Capital approach · Alban’s flagship',exact:true}).click();await page.getByRole('button',{name:'Enter the capital crossing',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
  const initial=(await inspect(page)).battle!;expect(initial.encounter).toBe('alban-flagship');expect(initial.bandages).toBe(s.bandages);expect(initial.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(s.activeParty);await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);

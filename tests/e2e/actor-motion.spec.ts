@@ -3,7 +3,6 @@ import { expect, test, type Page } from '@playwright/test';
 import { active, ABILITIES, legalAim, movement, targets, type AbilityId, type Battle } from '../../src/rules/combat';
 import { toPixel, type Hex } from '../../src/rules/hex';
 import { checkpoint, coastCheckpoint, brokenCheckpoint } from '../support/progress';
-import { CHAPTER_FOUR_AVAILABLE } from '../../src/content/chapters';
 import { approach, importSave } from './navigation';
 import { capture, clickHex, clickWorld, inspect } from './controls';
 import { ATTACK_CONTACT_FRAME, ATTACK_WINDUP_FRAME, WALK_CYCLE_MS, WALK_FRAMES } from '../../src/content/actor-motion';
@@ -37,7 +36,7 @@ test('Nell, Orrin and Kit walk in four directions; skipped moving cutscenes stay
 });
 
 test('Celia follows the party with six-pose directional walks and restores her idle book pose',async({page})=>{
-  test.skip(!CHAPTER_FOUR_AVAILABLE,'Chapter Four art pack is not installed.');
+
   await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
   const state=brokenCheckpoint('signalCut');state.activeParty=['nell','celia'];state.location={map:'sanctuary',x:27,y:30};await importSave(page,state);
   for(const [x,y,direction]of [[31,30,'right'],[31,28,'back'],[27,28,'left'],[27,30,'front']]as const){

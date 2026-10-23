@@ -1,13 +1,12 @@
 import { test,expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { CHAPTER_THREE_AVAILABLE } from '../../src/content/chapters';
 import { CHAPTER_THREE_MAPS } from '../../src/content/chapter-three/maps';
 import { sceneAssets } from '../../src/content/scene-art';
 import { MAPS,arrival,walkable,worldPath } from '../../src/content/maps';
 import { coastCheckpoint,palaceCheckpoint } from '../support/progress';
 import { approach,importSave,travel,visit } from './navigation';
 import { battle,capture,clickWorld,dialogue,inspect,nativeScene } from './controls';
-test.skip(!CHAPTER_THREE_AVAILABLE,'Chapter Three art pack is not installed.');
+
 async function equip(page:import('@playwright/test').Page,hero:string,item:string){
  await page.getByRole('button',{name:'Equipment',exact:true}).click();
  await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:hero,exact:true}).click();

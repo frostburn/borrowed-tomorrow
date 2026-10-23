@@ -1,21 +1,9 @@
-import { SAY, type Dialogue } from '../dialogue';
+import type { StoryHost } from '../story-host';
+import { SAY } from '../dialogue';
 import * as scenes from '../scenes';
 import { arrival, stage } from '../maps';
-import { NEXT_CHAPTER, recruitOrrin, remember, restoreParty, type GameState, type MapId } from '../../rules/state';
+import { NEXT_CHAPTER, recruitOrrin, remember, restoreParty, type MapId } from '../../rules/state';
 
-export interface StoryHost {
-  state: GameState;
-  talk(dialogue: Dialogue): void;
-  commit(flag: string, entry?: string): void;
-  refresh(): void;
-  save(): void;
-  travel(map: MapId, x: number, y: number): void;
-  battle(id: string): void;
-  shop(): void;
-  boundary(): void;
-  toast(message: string): void;
-  endingMusic(): void;
-}
 
 /** An unfinished arrival replays from its checkpoint, including after a reload. */
 export function resumeChapter(host: StoryHost) {
