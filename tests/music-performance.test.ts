@@ -67,10 +67,33 @@ it('only authored expressive cues expose a comparison, and disabling it removes 
      expect(curve[0][0]).toBe(0);expect(curve.at(-1)![0]).toBe(1);
      for(let i=0;i<curve.length;i++){expect(Number.isFinite(curve[i][1])).toBe(true);if(i)expect(curve[i][0]).toBeGreaterThan(curve[i-1][0]);}
     }
-    if(e.bend){expect(e.bend.at(-1)![1]).toBe(0);expect(Math.max(...e.bend.map(p=>Math.abs(p[1])))).toBeLessThanOrEqual(8*1200/31);}
+    if(e.bend){expect(e.bend.at(-1)![1]).toBe(0);expect(Math.max(...e.bend.map(p=>Math.abs(p[1])))).toBeLessThanOrEqual((mode==='mirrorward'||mode==='signalwall'?18:8)*1200/31);}
    }
   }
  }
+});
+
+it('broad fretless shifts arrive before vibrato, then finish straight; cabin parts take turns bending',()=>{
+ for(const mode of ['mirrorward','signalwall']as const)for(let bar=0;bar<32;bar++)for(const n of scoreBar(mode,bar).filter(n=>n.instrument==='round-bass')){
+  const {bend,vibrato}=n.expression!,arrival=bend!.find(([at,cents])=>at>0&&cents===0)![0];
+  expect(Math.abs(bend![0][1])).toBeGreaterThanOrEqual(5*1200/31);
+  expect(arrival*n.duration).toBeGreaterThanOrEqual(1.2);
+  expect(vibrato!.depth.filter(([at])=>at<=arrival).every(([,depth])=>depth===0)).toBe(true);
+  expect(Math.max(...vibrato!.depth.map(p=>p[1]))).toBeGreaterThan(15);
+  expect(vibrato!.depth.slice(-2).every(([,depth])=>depth===0)).toBe(true);
+  expect(n.velocity).toBeGreaterThanOrEqual(.14);
+ }
+ const motions:{bass:boolean;from:number;to:number}[]=[];
+ for(let bar=0;bar<64;bar++)for(const n of performanceBar('observation',bar).notes){
+  const curve=n.expression?.bend;if(!curve)continue;
+  const start=scoreTime('observation',bar*4)+n.time;
+  for(let i=1;i<curve.length;i++)if(curve[i][1]!==curve[i-1][1])motions.push({bass:n.instrument==='round-bass',from:start+curve[i-1][0]*n.seconds,to:start+curve[i][0]*n.seconds});
+  if(n.instrument==='keys'){
+   expect(Math.abs(curve[0][1])).toBeGreaterThanOrEqual(5*1200/31);
+   const arrival=curve.find(([at,cents])=>at>0&&cents===0)![0];expect(arrival*n.seconds).toBeGreaterThan(.6);
+  }
+ }
+ for(const lead of motions.filter(n=>!n.bass))expect(motions.filter(n=>n.bass).every(b=>b.to<=lead.from||b.from>=lead.to)).toBe(true);
 });
 
 it('bell anticipations roll quietly into delayed hits and retain long soft releases',()=>{
@@ -102,7 +125,7 @@ it('the requested cues phrase their dynamics and retain fretless pitch centres',
   const bass=Array.from({length:32},(_,bar)=>scoreBar(mode,bar)).flat().filter(n=>n.instrument==='bass'||n.instrument==='round-bass');
   expect(bass.every(n=>n.expression?.bend),mode).toBe(true);
   expect(bass.some(n=>Math.abs(n.expression!.bend![0][1])>=1200/31),mode).toBe(true);
-  expect(bass.every(n=>n.expression!.bend!.some(([at,cents])=>at>.1&&at<.9&&cents===0)),mode).toBe(true);
+  expect(bass.every(n=>n.expression!.bend!.some(([at,cents])=>at>0&&at<.5&&cents===0)),mode).toBe(true);
  }
 });
 

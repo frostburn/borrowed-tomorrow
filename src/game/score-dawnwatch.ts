@@ -1,6 +1,6 @@
 import type { Note } from './score';
 import { octave,type Pitch } from './tuning';
-import { bassSlide,phrasing } from './expression';
+import { fretless,phrasing } from './expression';
 export type DawnwatchMode='dawnwatch'|'watchbarracks'|'signalwall'|'dawn-battle'|'dawn-commander';
 type Line=[number,Pitch,number][];
 type Tune=Line[];
@@ -88,7 +88,8 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  if(quiet){
   if(i%2===0){
    const from=chords[changes[(i+30)%32]].bass;
-   add('round-bass',bass,0,3.5,.085).expression!.bend=bassSlide(from,bass,3.5);
+   const voice=add('round-bass',bass,0,3.5,.16);
+   voice.expression={...voice.expression,...fretless(from,bass,3.5)};
    for(const [n,p]of chord.entries())add('strings',p,0,3.5,.017,n%2?.4:-.4);
   }
   if(!tune[i].length)add('keys',chord[1],1.5,1.2,.04,.3);

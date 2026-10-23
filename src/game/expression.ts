@@ -29,8 +29,20 @@ export function phrasing(strength:number,held=false):NoteExpression {
 /** A short fretless approach, followed by a long exact-pitch centre and a sigh.
  * Wide register changes slide only their last eight steps, never an octave.
  * Duration is in score beats so the ensemble's rubato also shapes the slide. */
-export function bassSlide(from:Pitch,to:Pitch,duration:number):ControlCurve {
+export function bassSlide(from:Pitch,to:Pitch,duration:number,sigh=true):ControlCurve {
  const steps=Math.max(-8,Math.min(8,pitchSteps(from)-pitchSteps(to))),cents=steps*1200/31;
  const arrival=Math.min(.22,.3/duration);
- return [[0,cents||-24],[arrival*.35,cents?cents*.8:-18],[arrival,0],[.82,0],[.94,-9],[1,0]];
+ return [[0,cents||-24],[arrival*.35,cents?cents*.8:-18],[arrival,0],...(sigh?[[.82,0],[.94,-9]]as const:[]),[1,0]];
+}
+
+/** Broad fretless gestures for the Ward and Wheel: take time over the shift,
+ * let the reached note sing, then stop all modulation before the release. */
+export function fretless(from:Pitch,to:Pitch,duration:number):NoteExpression {
+ const shift=pitchSteps(from)-pitchSteps(to);
+ const steps=shift?Math.sign(shift)*Math.max(5,Math.min(18,Math.abs(shift))):-6,cents=steps*1200/31;
+ const arrival=Math.min(.4,1.25/duration);
+ return {
+  bend:[[0,cents],[arrival*.32,cents*.88],[arrival,0],[1,0]],
+  vibrato:{rate:4.4,depth:[[0,0],[arrival+.035,0],[arrival+.15,20],[.7,18],[.86,0],[1,0]]},
+ };
 }

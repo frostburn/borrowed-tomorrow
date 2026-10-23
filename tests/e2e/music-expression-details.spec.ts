@@ -19,28 +19,61 @@ test('fretless bass approaches its 31-EDO centre, bell tails soften, and both ca
    return (await c.startRendering()).getChannelData(0);
   };
   const bent=await render(bass),plain=await render(bass,{}),hz=pitchFrequency(bass.pitch);
-  const pitch=(data:Float32Array,from:number,to:number)=>{
+  const pitch=(data:Float32Array,from:number,to:number,centre=hz)=>{
    const crossings:number[]=[];
    for(let i=Math.ceil(from*rate);i<Math.floor(to*rate);i++)if(data[i-1]<0&&data[i]>=0)crossings.push(i-1-data[i-1]/(data[i]-data[i-1]));
-   return 1200*Math.log2(rate*(crossings.length-1)/(crossings.at(-1)!-crossings[0])/hz);
+   const cents=crossings.slice(1).map((at,i)=>1200*Math.log2(rate/(at-crossings[i])/centre)),mean=cents.reduce((a,b)=>a+b,0)/cents.length;
+   return {mean,spread:Math.sqrt(cents.reduce((sum,p)=>sum+(p-mean)**2,0)/cents.length)};
   };
   const bell=performanceBar('conduit',0).notes.find(n=>n.instrument==='bell'&&n.velocity>=.09)!;
   const soft=await render(bell),short=await render(bell,{}),stopped=await render(bass,bass.expression,true);
+  const piano=performanceBar('observation',0).notes.find(n=>n.instrument==='keys'&&n.velocity>=.09)!,bentPiano=await render(piano),pianoHz=pitchFrequency(piano.pitch);
   const end=start+bell.seconds;
   const jumps=(data:Float32Array)=>{let max=0;for(let i=Math.ceil((end+1.6)*rate);i<Math.min(data.length,Math.ceil((end+1.9)*rate));i++)max=Math.max(max,Math.abs(data[i]-data[i-1]));return max;};
-  return {bass:{pitch:bass.pitch,approach:pitch(bent,start+.07,start+.15),settled:pitch(bent,start+.6,start+1),plain:pitch(plain,start+.07,start+.15),
+  return {bass:{pitch:bass.pitch,approach:pitch(bent,start+.1,start+.25),gliding:pitch(bent,start+.6,start+.9),singing:pitch(bent,start+bass.seconds*.45,start+bass.seconds*.65),finish:pitch(bent,start+bass.seconds*.9,start+bass.seconds*.98),plain:pitch(plain,start+.1,start+.25),level:rms(bent,start+bass.seconds*.45,start+bass.seconds*.65),
    silence:rms(stopped,.62,.75),incoming:rms(stopped,.83,.95),cancelled:rms(stopped,1.4,2)},
-   bell:{softTail:rms(soft,end+.7,end+1),shortTail:rms(short,end+.7,end+1),after:rms(soft,end+1.85,end+2.1),jump:jumps(soft)}};
+   bell:{softTail:rms(soft,end+.7,end+1),shortTail:rms(short,end+.7,end+1),after:rms(soft,end+1.85,end+2.1),jump:jumps(soft)},
+   piano:{start:pitch(bentPiano,start+.1,start+.2,pianoHz),moving:pitch(bentPiano,start+.4,start+.6,pianoHz),settled:pitch(bentPiano,start+1.1,start+1.3,pianoHz)}};
  });
  await testInfo.attach('bend-centre-and-bell-release',{body:JSON.stringify(result,null,2),contentType:'application/json'});
- expect(result.bass.approach).toBeLessThan(-100);expect(Math.abs(result.bass.settled)).toBeLessThan(2);expect(Math.abs(result.bass.plain)).toBeLessThan(2);
+ expect(result.bass.approach.mean).toBeLessThan(-500);expect(result.bass.gliding.mean).toBeLessThan(-30);
+ expect(Math.abs(result.bass.singing.mean)).toBeLessThan(4);expect(result.bass.singing.spread).toBeGreaterThan(8);expect(result.bass.singing.spread).toBeLessThan(20);
+ expect(Math.abs(result.bass.finish.mean)).toBeLessThan(2);expect(result.bass.finish.spread).toBeLessThan(1);
+ expect(Math.abs(result.bass.plain.mean)).toBeLessThan(2);expect(result.bass.level).toBeGreaterThan(.025);
  expect(result.bass.silence).toBeLessThan(.000001);expect(result.bass.incoming).toBeGreaterThan(.001);expect(result.bass.cancelled).toBeLessThan(.000001);
  expect(result.bell.softTail).toBeGreaterThan(.0001);expect(result.bell.shortTail).toBeLessThan(.000001);expect(result.bell.after).toBeLessThan(.000001);expect(result.bell.jump).toBeLessThan(.001);
+ expect(result.piano.start.mean).toBeLessThan(-150);expect(result.piano.moving.mean).toBeLessThan(-40);expect(Math.abs(result.piano.settled.mean)).toBeLessThan(3);
 });
 
-test('the twelve revised cues render complete forms and loop seams with finite, unclipped audio',async({page},testInfo)=>{
+test('anticipating bell rolls remain audible before the main call in both chambers',async({page},testInfo)=>{
+ await page.goto('/');const levels=await page.evaluate(async()=>{
+  // @ts-expect-error Render the authored Bell part through the actual instrument rack.
+  const {performanceBar}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
+  // @ts-expect-error Render the authored Bell part through the actual instrument rack.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const out=[],rate=22050;
+  for(const mode of ['conduit','sanctuary']as const){
+   const notes=performanceBar(mode,0).notes,lead=notes.find(n=>n.instrument==='bell'&&n.velocity>=.09)!,roll=notes.filter(n=>n.instrument==='bell'&&n.time<lead.time);
+   const rms=async(part:typeof notes,from:number,to:number)=>{
+    const c=new OfflineAudioContext(1,rate*2,rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
+    for(const n of part)synth.note(n.instrument,n.pitch,.03+n.time,n.seconds,n.velocity,n.pan,n.expression);
+    const data=(await c.startRendering()).getChannelData(0);let sum=0,count=0;
+    for(let i=Math.ceil(from*rate);i<Math.floor(to*rate);i++){sum+=data[i]**2;count++;}return Math.sqrt(sum/count);
+   };
+   out.push({mode,roll:await rms(roll,.08,lead.time),call:await rms([lead],lead.time+.06,lead.time+.3)});
+  }return out;
+ });
+ await testInfo.attach('anticipation-levels',{body:JSON.stringify(levels,null,2),contentType:'application/json'});
+ for(const level of levels){expect(level.roll,JSON.stringify(level)).toBeGreaterThan(.003);expect(level.roll).toBeGreaterThan(level.call*.2);}
+});
+
+for(const [family,modes]of [
+ ['home and bells',['yard','inspector','conduit','sanctuary']],
+ ['singing locations',['refuge','airfield','mirrorward','signalwall']],
+ ['cabin and battles',['anchorforge','observation','petra-battle','flagship']],
+]as const)test(`revised ${family} render complete forms and loop seams with finite, unclipped audio`,async({page},testInfo)=>{
  test.setTimeout(120000);await page.goto('/');
- const results=await page.evaluate(async()=>{
+ const results=await page.evaluate(async(modes)=>{
   // @ts-expect-error Render real campaign performance, including rubato and expression.
   const {performanceBar,scoreTime}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
   // @ts-expect-error Render real campaign performance, including rubato and expression.
@@ -48,7 +81,7 @@ test('the twelve revised cues render complete forms and loop seams with finite, 
   // @ts-expect-error Render real campaign performance, including rubato and expression.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   const result=[],rate=22050;
-  for(const mode of ['yard','inspector','petra-battle','conduit','refuge','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship']as const){
+  for(const mode of modes){
    const a=ARRANGEMENTS[mode],bars=scoreLength(mode)+2,seconds=scoreTime(mode,bars*a.beats),c=new OfflineAudioContext(2,Math.ceil((seconds+3)*rate),rate),gain=c.createGain();gain.gain.value=.52;gain.connect(c.destination);const synth=new Synth(c,gain);
    for(let bar=0;bar<bars;bar++)for(const n of performanceBar(mode,bar).notes)synth.note(n.instrument,n.pitch,.03+scoreTime(mode,bar*a.beats)+n.time,n.seconds,n.velocity,n.pan,n.expression);
    const buffer=await c.startRendering();let peak=0,sum=0,jump=0,count=0;
@@ -59,7 +92,7 @@ test('the twelve revised cues render complete forms and loop seams with finite, 
    result.push({mode,peak,rms:Math.sqrt(sum/count),jump});
   }
   return result;
- });
+ },modes);
  await testInfo.attach('revised-full-loop-levels',{body:JSON.stringify(results,null,2),contentType:'application/json'});
  for(const r of results){expect(r.peak,JSON.stringify(r)).toBeLessThan(.9);expect(r.rms,JSON.stringify(r)).toBeGreaterThan(.002);expect(r.jump,JSON.stringify(r)).toBeLessThan(.25);}
 });

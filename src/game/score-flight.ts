@@ -74,12 +74,18 @@ export function flightBar(mode:'airfield'|'airship'|'observation',bar:number):No
   const voice=add(cabin?'keys':'reed',pitch,beat,duration,cabin?.15:.19,-.16);
   if(mode==='airship')voice.expression=singing('clear',dynamics[i]*(1-n*.07),duration,[11,15,23,31].includes(i));
   if(ground)voice.expression=singing('clear',mooringDynamics[i]*(1-n*.06),duration,i%4===3);
-  if(cabin&&i%4===2)voice.expression!.bend=[[0,-28],[.12,0],[.8,0],[1,0]];
+  if(cabin&&n===0){
+   // The low voice has already settled. These broad piano gestures answer it,
+   // taking most of a beat to reach the written pitch rather than a tiny scoop.
+   const cents=(i%4===2?-8:i%2?5:-5)*1200/31,arrival=Math.min(.68,.85/duration);
+   voice.expression!.bend=[[0,cents],[arrival*.3,cents*.85],[arrival,0],[1,0]];
+  }
  }
  if(cabin){
   if(i%2===0){
    const hold=changes[i]===changes[i+1]?7.5:3.5,from=chords[changes[(i+30)%32]].bass;
-   add('round-bass',bass,0,hold,.075).expression!.bend=bassSlide(from,bass,hold);
+   // Omit late bass scoops: once the melody enters, only its pitch can move.
+   add('round-bass',bass,0,hold,.075).expression!.bend=bassSlide(from,bass,hold,false);
    for(const [n,p]of chord.entries())add('strings',p,0,hold,.012,n%2?.4:-.4);
   }
   if([3,11,19,27].includes(i))add('bell','E4',2.5,.9,.035,.4);

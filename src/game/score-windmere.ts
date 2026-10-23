@@ -1,4 +1,4 @@
-import { bassSlide,singing } from './expression';
+import { fretless,singing } from './expression';
 import { octave,type Pitch } from './tuning';
 import type { Note } from './score';
 export type WindmereMode='windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine';
@@ -95,7 +95,7 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
  if(quiet){
   if(i%2===0){
    const hold=changes[i]===changes[i+1]?7.5:3.5,from=chords[changes[(i+30)%32]].bass;
-   add('round-bass',bass,0,hold,.075).expression={bend:bassSlide(from,bass,hold)};
+   add('round-bass',bass,0,hold,.14).expression=fretless(from,bass,hold);
    for(const [n,p]of chord.entries())add('strings',p,0,hold,.016,n%2?.4:-.4);
   }
   if(!tune[i].length)add('keys',chord[0],2,1,.04,.35);

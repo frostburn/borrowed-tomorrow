@@ -20,6 +20,11 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    for(const [group,count]of [['Ch 1',7],['Ch 2',6],['Ch 3',4],['Ch 4',5],['Library',2]] as const){
     await page.getByRole('group',{name:'Cue chapters'}).getByRole('button',{name:group,exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(count);
    }
+   await page.getByRole('button',{name:'Ch 1',exact:true}).click();await page.locator('[data-cue="inspector"]').click();
+   const albanBar=page.getByRole('spinbutton',{name:'Bar',exact:true});await expect(albanBar).toHaveAttribute('max','24');
+   await albanBar.fill('17');await albanBar.press('Tab');await expect(page.locator('#music-notes-title')).toHaveText('Bar 17 / 24');
+   await expect(page.locator('#music-notes')).toContainText('A4');
+   await albanBar.fill('24');await albanBar.press('Tab');await page.getByRole('button',{name:'Next bar',exact:true}).click();await expect(albanBar).toHaveValue('1');
    // Six character references use real campaign cues, without a chapter playthrough.
    await page.getByRole('button',{name:'Themes',exact:true}).click();await expect(page.locator('[data-cue]')).toHaveCount(6);
    for(const [cue,character]of [['station','Nell'],['hammerplain','Orrin'],['coast','Kit'],['dawnwatch','Petra'],['flagship','Alban'],['windmere','Celia']]){
