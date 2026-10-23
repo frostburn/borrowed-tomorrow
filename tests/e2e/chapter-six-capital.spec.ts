@@ -5,6 +5,13 @@ import { approach,importSave } from './navigation';
 async function drain(page:Page){for(let i=0;i<16;i++){await expect.poll(async()=>(await inspect(page)).busy,{timeout:30000}).toBe(false);if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Capital scene chain did not finish');}
 async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await drain(page);}
 async function waitMap(page:Page,map:string){await expect.poll(async()=>(await inspect(page)).state.location.map,{timeout:30000}).toBe(map);await drain(page);}
+async function nellEquipment(page:Page,lost:boolean){
+ await page.getByRole('button',{name:'Equipment',exact:true}).click();const inventory=page.getByRole('dialog',{name:'Character inventory'});
+ await inventory.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Nell',exact:true}).click();
+ await expect(inventory.getByText(lost?'Deceased':'Too ill to fight · resting aboard',{exact:true})).toBeVisible();
+ await expect(inventory).not.toContainText(lost?'resting aboard':'Deceased');await expect(inventory.getByRole('button',{name:'Set active',exact:true})).toBeDisabled();
+ if(lost){await expect(inventory).toContainText('HP 0 /');await capture(page,'capital-nell-deceased-equipment');}await page.getByRole('button',{name:'Close',exact:true}).click();
+}
 for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},1,true],['phone',{width:390,height:844},1.25,false]]as const)test(`@journey capital ${device}: ${recovered?'recovered Nell reaches the hopeful departure':'uncured Nell becomes the Lightbearer and the return checkpoint works'}`,async({browser})=>{
  test.setTimeout(420000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
@@ -29,8 +36,9 @@ for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},
    const after=(await inspect(page)).state;expect(after.flags.lightbearerSeen).toBe(true);expect(after.flags.capitalAudienceSeen).toBeUndefined();await capture(page,'capital-lightbearer-rise-phone');
    await approach(page,'crown-rest');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();expect((await inspect(page)).state.flags.nellRecovered).toBeUndefined();
    await approach(page,'capital-lightbearer');await page.getByRole('button',{name:'Face the Lightbearer',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await capture(page,'capital-lightbearer-phone');await win(page);await waitMap(page,'laststation');expect((await inspect(page)).actors.some(a=>a.hero==='kit')).toBe(false);expect((await inspect(page)).state.activeParty).toEqual(initial.activeParty);await capture(page,'capital-empty-seat-phone');
-   await approach(page,'last-tomas');await dialogue(page);await approach(page,'last-kit');await dialogue(page);await approach(page,'last-ending');await expect(page.getByRole('heading',{name:'An unfinished tomorrow',exact:true})).toBeVisible();const end=(await inspect(page)).state;expect(end.flags.nellLost).toBe(true);expect(end.flags.chapterSixComplete).toBeUndefined();expect(end.boundary).toBeNull();
+   await nellEquipment(page,true);await approach(page,'last-tomas');await dialogue(page);await approach(page,'last-kit');await dialogue(page);await approach(page,'last-ending');await expect(page.getByRole('heading',{name:'An unfinished tomorrow',exact:true})).toBeVisible();const end=(await inspect(page)).state;expect(end.flags.nellLost).toBe(true);expect(end.flags.chapterSixComplete).toBeUndefined();expect(end.boundary).toBeNull();
    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('heading',{name:'An unfinished tomorrow',exact:true})).toBeVisible({timeout:30000});await page.getByRole('button',{name:'Return before the final assault',exact:true}).click();await waitMap(page,'lastpalace');const returned=(await inspect(page)).state;expect(returned.flags.nellLost).toBeUndefined();expect(returned.flags.capitalAssaultCommitted).toBeUndefined();expect(returned.flags.capitalHallOpened).toBe(true);expect(returned.inventory.characters).toEqual(initial.inventory.characters);expect(returned.activeParty).toEqual(initial.activeParty);
+   await nellEquipment(page,false);
   }
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
