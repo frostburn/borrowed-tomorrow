@@ -15,8 +15,8 @@ import { active,awardVictory,cast,createBattle,damage,defend,enemyTurn,pushDesti
 import { prepareSerpent,serpentHead,serpentCoils,leaveSunGlass } from '../src/rules/sun-serpent';
 import { occupiedHexes } from '../src/rules/footprint';
 import { offset,cells,key,toPixel } from '../src/rules/hex';
-import { ARRANGEMENTS,scoreBar,scoreLength,scorePosition,scoreMeter,type MusicMode } from '../src/game/score';
-import { pitchSteps } from '../src/game/tuning';
+import { ARRANGEMENTS,scoreBar,scoreLength,scorePosition,scoreMeter,type MusicMode,type Note } from '../src/game/score';
+import { pitchSteps,isBass,isPercussion } from '../src/game/tuning';
 import { hasExpression,hasRubato,performanceBar } from '../src/game/score-performance';
 import { desertCheckpoint } from './support/desert';
 function visit(s=chapterSixStart()){
@@ -139,4 +139,37 @@ it('desert scores keep exact neutral thirds, distinct regional cues, expression 
  }
  expect(hasRubato('sunpalace')).toBe(true);expect(scoreMeter('sun-serpent')).toBe('6/8');expect(scoreLength('sun-serpent')).toBe(34);expect(scorePosition('sun-serpent',34)).toBe(2);expect(scoreBar('sun-serpent',34)).toEqual(scoreBar('sun-serpent',2));
  expect(scoreBar('namar',0)).not.toEqual(scoreBar('desert-battle',0));expect(scoreBar('skywalk',0).some(n=>n.instrument==='lute')).toBe(true);expect(performanceBar('sunpalace',7).notes.some(n=>!!n.expression?.vibrato)).toBe(true);
+});
+it('the desert tunes have complete individual forms with breathing space and no overlapping main melody',()=>{
+ const forms=[];
+ for(const mode of ['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent']as const){
+  const intro=ARRANGEMENTS[mode].introBars??0,beats=ARRANGEMENTS[mode].beats,line:Note[]=[];
+  for(let bar=0;bar<32;bar++){
+   const notes=scoreBar(mode,bar+intro);
+   line.push(...notes.filter(n=>!isBass(n.instrument)&&!isPercussion(n.instrument)&&n.instrument!=='timpani'&&n.velocity>=.13).map(n=>({...n,beat:n.beat+bar*beats})));
+  }
+  line.sort((a,b)=>a.beat-b.beat);
+  for(let k=1;k<line.length;k++)expect(line[k-1].beat+line[k-1].duration,`${mode}: ${line[k-1].pitch} -> ${line[k].pitch}`).toBeLessThanOrEqual(line[k].beat);
+  expect(line.some((n,k)=>k>0&&n.beat>line[k-1].beat+line[k-1].duration+.25),mode).toBe(true);
+  // Compare pitch, rhythm and duration independently of orchestration.
+  const first=line.filter(n=>n.beat<16*beats).map(n=>[n.beat,pitchSteps(n.pitch),n.duration]);
+  const second=line.filter(n=>n.beat>=16*beats).map(n=>[n.beat-16*beats,pitchSteps(n.pitch),n.duration]);
+  expect(second,mode).not.toEqual(first);forms.push(JSON.stringify([...first,...second]));
+ }
+ expect(new Set(forms).size).toBe(7);
+});
+it('quiet desert harmonies hold through their rests, while both battle rhythms keep their downbeats through the middle',()=>{
+ for(const mode of ['sunpalace','outermooring','observatory']as const){
+  const beats=ARRANGEMENTS[mode].beats;
+  for(let bar=0;bar<32;bar+=2){
+   const bass=scoreBar(mode,bar).filter(n=>isBass(n.instrument));
+   expect(bass).toHaveLength(1);expect(bass[0].duration).toBeGreaterThan(beats);
+   expect(scoreBar(mode,bar+1).some(n=>isBass(n.instrument))).toBe(false);
+  }
+ }
+ for(const mode of ['desert-battle','sun-serpent']as const){
+  const intro=ARRANGEMENTS[mode].introBars??0;
+  for(let bar=0;bar<32;bar++)expect(scoreBar(mode,bar+intro).filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual(mode==='sun-serpent'?[0,1.5]:[0,2]);
+ }
+ expect(['Ft4','Ct4'].every(pitch=>Array.from({length:32},(_,bar)=>scoreBar('sunpalace',bar)).flat().some(n=>n.pitch===pitch))).toBe(true);
 });
