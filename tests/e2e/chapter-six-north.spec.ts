@@ -8,6 +8,16 @@ import { approach,importSave } from './navigation';
 async function skip(page:Page){for(let i=0;i<10;i++){if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Scene chain did not end');}
 async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await skip(page);}
 async function ready(page:Page){await expect.poll(async()=>(await inspect(page)).busy).toBe(false);}
+/** Only the visible left wing: excludes UI, warning labels and party actors. */
+async function dragonPixels(page:Page){return page.evaluate(()=>{
+ const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
+ const info=window.borrowedTomorrowPixels.inspect(),view=window.borrowedTomorrow.inspect().view;
+ const x=Math.round(info.physicalLeft+(Math.round((world.left-source.left)/info.cssScale)+245-view.scrollX)*info.physicalScale);
+ const y=Math.round(info.physicalTop+(Math.round((world.top-source.top)/info.cssScale)+65-view.scrollY)*info.physicalScale);
+ const pixels=output.getContext('2d')!.getImageData(x,y,230*info.physicalScale,135*info.physicalScale).data;
+ let hash=2166136261;for(let i=0;i<pixels.length;i+=4)for(let c=0;c<3;c++)hash=Math.imul(hash^pixels[i+c],16777619);return hash>>>0;
+});}
+
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`@journey Skeld ${device}: full expedition with Nell ${device==='phone'?'well, after Namar':'ill, before Namar'}`,async({browser})=>{
  test.setTimeout(300000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
@@ -54,10 +64,9 @@ for(const reduced of [false,true])test(`dragon workshop ${reduced?'reduced':'mov
   const context=await browser.newContext({reducedMotion:reduced?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   try{
    await page.goto('/');await importSave(page,chapterSixNorthStart());await skip(page);const original=(await inspect(page)).state;
-   await page.goto('/?dev=boss&boss=dragon');await expect(page.getByRole('heading',{name:'The winter dragon',exact:true})).toBeVisible({timeout:20000});await page.getByRole('button',{name:'Start Chapter Six preset',exact:true}).click();await ready(page);await page.mouse.move(0,0);
-   const texture=() => page.evaluate(()=>window.borrowedTomorrow.inspect().actors.find(a=>a.hero==='winter-dragon')?.texture);
-   if(reduced){const at=await texture();await page.waitForTimeout(1300);expect(await texture()).toBe(at);}
-   else{const seen=new Set<string|undefined>();for(let i=0;i<18;i++){seen.add(await texture());await page.waitForTimeout(250);}expect(seen.size).toBeGreaterThan(1);}
+   await page.goto('/?dev=boss&boss=dragon');await expect(page.getByRole('heading',{name:'The winter dragon',exact:true})).toBeVisible({timeout:20000});await page.getByRole('button',{name:'Start Chapter Six preset',exact:true}).click();await ready(page);await page.mouse.move(0,0);await page.waitForTimeout(150);
+   if(reduced){const at=await dragonPixels(page);await page.waitForTimeout(1300);expect(await dragonPixels(page)).toBe(at);}
+   else{const seen=new Set<number>();for(let i=0;i<18;i++){seen.add(await dragonPixels(page));await page.waitForTimeout(250);}expect(seen.size).toBeGreaterThan(1);}
    await capture(page,`skeld-preview-${reduced?'reduced':'moving'}`);
    const before=(await inspect(page)).battle!,boss=before.units.find(u=>u.id==='winter-dragon')!;
    await page.getByRole('button',{name:/^3\s+Quick shot$/}).click();

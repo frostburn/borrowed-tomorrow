@@ -25,3 +25,6 @@ Author native planar SVG/Tiled maps and actors in the existing Another World-ins
 All music remains in 31-EDO, A4 = 440 Hz. Skeld and its expedition use Orwell[9] `0 4 7 11 14 18 21 25 28`, with the contrasting subminor/supermajor thirds over a common fifth. Strings and restrained winds supply human warmth, with clear phrase dynamics and controlled vibrato. Glacier wrecks use Myna[7] `0 7 8 15 16 23 24`, wide registers and carefully placed paired dieses. Write related regional battle variations and a developed dragon theme; do not reuse Chapter One music or a repeated rising-triad template. Review the actual cues in Music and the art in Maps/Sprites/Bosses.
 
 Validate both regional orders, both Nell states, mid-route recovery, one-time rewards, interrupted releases and reloads, failed-art retry, normal boss play, desktop/phone presentation and full musical forms. Keep detailed journeys and audio checks outside normal CI.
+
+
+Implemented loot remains useful in either visit order: the northern coat trades armor for initiative against Namar’s weave; Orrin’s cold valve favors protection over the observatory ring’s attack; Petra’s climbing guard favors attack/initiative over the solar guard’s armor; Kit’s winter sight favors attack/protection over the river sight’s initiative. These are single bag copies for manual fitting, never automatic replacements.

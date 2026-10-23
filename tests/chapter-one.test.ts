@@ -76,8 +76,10 @@ describe('chapter progression', () => {
 for (const map of Object.values(MAPS)) it(`${map.id}: every interaction has a connected, walkable approach`, () => {
   for (const object of map.objects) {
     const start=arrival(map.id,String(properties(map.tiles!).safeArrival));
+    // A gated exit is reachable in the state that actually opens its passage.
+    const state={flags:object.accessFlag?{[object.accessFlag]:true}:{}};
     const approaches = [{ x: object.x, y: object.y }, { x: object.x - 1, y: object.y }, { x: object.x + 1, y: object.y }, { x: object.x, y: object.y - 1 }, { x: object.x, y: object.y + 1 }];
-    expect(approaches.some(p => walkable(map, p.x, p.y) && (p.x === start.x && p.y === start.y || worldPath(map, start, p).length > 0)), `${map.id}: ${object.id}`).toBe(true);
+    expect(approaches.some(p => walkable(map, p.x, p.y,state) && (p.x === start.x && p.y === start.y || worldPath(map, start, p,state).length > 0)), `${map.id}: ${object.id}`).toBe(true);
   }
 });
 

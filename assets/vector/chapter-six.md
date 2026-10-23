@@ -20,7 +20,7 @@ The three imperial exterior SVGs under `scenery/palace-*` are editable originals
 
 ## Northern kit
 
-`assets/vector/chapter-six-north.py` runs the desert and jungle sources, adds Skeld’s four 64 × 42 world maps and a fifth capital landing, four 42 × 20 clear battlefields, then writes the combined manifest. Snow roof planes, blue glacier facets, broken relief hulls, covered passage gate and ice arch are native vectors. Floor clips share the Tiled walking rectangles. The windlass’s real gate layer uses `northWatchSeen` / `northPassOpened`; its art and collision disappear together. The launch remains outside the harbor floor. Cool-white capital paving shares the imperial marble sources; never recolor it with desert sandstone.
+`assets/vector/chapter-six-north.py` runs the desert and jungle sources, adds Skeld’s four 64 × 42 world maps and a fifth capital landing, four 42 × 20 clear battlefields, then writes the combined manifest. Snow roof planes, blue glacier facets, broken relief hulls, covered passage gate and ice arch are native vectors. Floor clips share the Tiled walking rectangles. The windlass’s real gate layer is closed from the first arrival and hides on `northPassOpened`; its art and collision disappear together. The launch remains outside the harbor floor. Cool-white capital paving shares the imperial marble sources; never recolor it with desert sandstone.
 
 `assets/characters/vector/north.py` exports Edric, Signe and Egil using the compact 80 × 80 actors and (40,68) sole anchor. Their portraits are seeded once and remain editable SVG originals. Signe uses a separate female face/braid; Edric/Egil have individual broad brows, jaws and beards.
 

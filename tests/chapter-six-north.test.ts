@@ -10,7 +10,7 @@ import { arrival,MAPS,walkable,worldPath,visibleObjects } from '../src/content/m
 import { sceneAssets } from '../src/content/scene-art';
 import { decodeSave } from '../src/rules/save';
 import { maxHp,remember,type GameState } from '../src/rules/state';
-import { equipItem,ownedCopies } from '../src/rules/inventory';
+import { ITEMS,equipItem,ownedCopies } from '../src/rules/inventory';
 import { heroAvailable } from '../src/rules/availability';
 import { active,awardVictory,cast,createBattle,defend,enemyTurn,move,movement,pushDestination,shape,targets } from '../src/rules/combat';
 import { prepareWinterDragon,winterDragon,winterDragonAfterAttack,brokenIce } from '../src/rules/winter-dragon';
@@ -104,7 +104,7 @@ it('all northern scenes, interactions and arrivals have connected floor and boun
  }
  expect(worldPath(MAPS.frostwatch,arrival('frostwatch','start'),{x:51,y:21},{flags:{northWatchSeen:true}})).toEqual([]);
  expect(worldPath(MAPS.frostwatch,arrival('frostwatch','start'),{x:51,y:21},{flags:{northWatchSeen:true,northPassOpened:true}}).length).toBeGreaterThan(0);
- expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true}})).toBe(false);expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true,northPassOpened:true}})).toBe(true);
+ expect(walkable(MAPS.frostwatch,49,22,{flags:{}})).toBe(false);expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true}})).toBe(false);expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true,northPassOpened:true}})).toBe(true);
  expect(visibleObjects(MAPS.outermooring,{...s,flags:{...s.flags,capitalOpened:true}}).some(o=>o.id==='six-capital')).toBe(false);
 });
 function dragon(){const b=createBattle('winter-dragon',chapterSixDragonStart()),u=winterDragon(b)!;return {b,u};}
@@ -148,4 +148,11 @@ for(const mode of modes)it(`${mode} has a complete developed form, finite notes,
 });
 it('the dragon intro is one-shot and northern rubato stays out of battle pulses',()=>{
  expect(scoreMeter('winter-dragon')).toBe('5/4');expect(scorePosition('winter-dragon',34)).toBe(2);expect(scoreBar('winter-dragon',34)).toEqual(scoreBar('winter-dragon',2));expect(scoreBar('winter-dragon',0)).not.toEqual(scoreBar('winter-dragon',34));expect(hasRubato('bellharbor')).toBe(true);expect(hasRubato('wintershrine')).toBe(true);expect(hasRubato('winter-dragon')).toBe(false);
+});
+
+it('northern equipment offers trade-offs against the other open expeditions regardless of visit order',()=>{
+ for(const [north,other]of [['stormlining-coat','sunmesh-coat'],['ice-valve','fine-expansion-ring'],['pact-guard','solar-guard'],['winter-sight','river-sight']]as const){
+  const a=ITEMS[north].bonuses,b=ITEMS[other].bonuses,stats=['attack','armor','speed']as const;
+  expect(stats.some(k=>a[k]>b[k]),north).toBe(true);expect(stats.some(k=>a[k]<b[k]),north).toBe(true);
+ }
 });
