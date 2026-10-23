@@ -1,3 +1,4 @@
+import { heroAvailable } from './availability';
 import { completedAnchors } from '../content/chapter-five/progress';
 import { decodeInventory, newInventory, type Inventory } from './inventory';
 import { BASE_STATS } from './progression';
@@ -40,7 +41,7 @@ export function newGame(): GameState {
 }
 export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
 export const maxHp = (id: HeroId, s: Pick<GameState, 'xp'>) => BASE_STATS[id].maxHp + (level(s) - 1) * 6;
-export function restoreParty(s: GameState) { for (const hero of s.party) { hero.hp = maxHp(hero.id, s); hero.focus = 6; } }
+export function restoreParty(s: GameState) { for (const hero of s.party) { if(!heroAvailable(s,hero.id))continue;hero.hp = maxHp(hero.id, s); hero.focus = 6; } }
 export function recruitOrrin(s: GameState) {
   if (!s.party.some(h => h.id === 'orrin')) s.party.push({ id: 'orrin', hp: maxHp('orrin', s), focus: 6 });
   if (!s.activeParty.includes('orrin') && s.activeParty.length < 3) s.activeParty.push('orrin');
@@ -54,7 +55,7 @@ export function recruit(s: GameState, id: 'kit' | 'celia' | 'petra') {
   s.flags[`${id}Joined`] = true;
 }
 export function setActive(s: GameState, id: HeroId, included: boolean): boolean {
-  if (id === 'nell' || !s.party.some(h => h.id === id) || s.activeParty.includes(id) === included) return false;
+  if (!heroAvailable(s,id) || id==='nell'&&!s.flags.nellIll || !included&&s.activeParty.length<=1 || !s.party.some(h => h.id === id) || s.activeParty.includes(id) === included) return false;
   if (included && s.activeParty.length >= 3) return false;
   s.activeParty = included ? [...s.activeParty, id] : s.activeParty.filter(h => h !== id);
   return true;
@@ -78,7 +79,7 @@ export function beginChapterFive(s:GameState):boolean {
   if(s.chapter!=='chapter-four'||s.boundary!==FIFTH_CHAPTER||!s.flags.chapterFourComplete)return false;
   s.chapter='chapter-five';s.boundary=null;s.location={map:'airfield',x:24,y:30};return true;
 }
-export const partyLeader=(_s:GameState):HeroId=>'nell';
+export const partyLeader=(s:GameState):HeroId=>s.activeParty.includes('nell')?'nell':s.activeParty[0];
 export function remember(s: GameState, entry: string) { if (!s.journal.includes(entry)) s.journal.push(entry); }
 
 /** Validate the current save format; older formats are not migrated. */
@@ -107,7 +108,7 @@ export function decodeSave(text: string): GameState {
   }
   for (const id of ['orrin','kit','celia','petra'] as const) if (Boolean(flags[`${id}Joined`]) !== party.some(h => h.id === id)) throw new Error('The party does not match the story progress.');
   const activeParty = s.activeParty;
-  if (!validParty(activeParty, party.map(h => h.id)) || !activeParty.includes('nell')) throw new Error('The active party is invalid.');
+  if (!validParty(activeParty, party.filter(h=>heroAvailable({flags},h.id)).map(h => h.id)) || !flags.nellIll&&!activeParty.includes('nell')) throw new Error('The active party is invalid.');
   const prerequisites: Record<string, string> = {
     raidSeen: 'festivalSeen', escapeWon: 'raidSeen', orrinJoined: 'escapeWon', workshopWon: 'orrinJoined',
     villageSeen: 'orrinJoined', collectorConfronted: 'villageSeen', collectorDefeated: 'collectorConfronted',
@@ -125,7 +126,7 @@ export function decodeSave(text: string): GameState {
     worksGateWon:'worksRouteSet',worksStoresWon:'worksArrival',harborOpened:'worksGateWon',
     sanctuaryEntered:'harborOpened',roadGuardWon:'sanctuaryEntered',signalCut:'roadGuardWon',
     sanctuaryWardenWon:'signalCut',sanctuaryCache:'sanctuaryEntered',anchorsKnown:'sanctuaryWardenWon',seaWalkSeen:'anchorsKnown',chapterFourComplete:'seaWalkSeen',
-    flagshipApproachSeen:'allAnchorsSeen',flagshipConfronted:'flagshipApproachSeen',flagshipWon:'flagshipConfronted',albanCaptured:'flagshipWon',flagshipEvacuated:'albanCaptured',chapterFiveComplete:'flagshipEvacuated',
+    flagshipApproachSeen:'allAnchorsSeen',flagshipConfronted:'flagshipApproachSeen',flagshipWon:'flagshipConfronted',benefactorClaimSeen:'flagshipWon',flagshipDestroyed:'benefactorClaimSeen',albanDestroyed:'flagshipDestroyed',nellIll:'flagshipDestroyed',nellRecovered:'nellIll',retaliationSeen:'nellIll',retaliationWon:'retaliationSeen',chapterFiveComplete:'retaliationWon',
     airfieldSeen:'chapterFourComplete',airfieldGuardWon:'airfieldSeen',airshipOwned:'airfieldGuardWon',firstFlightSeen:'airshipOwned',
     hammerplainSeen:'firstFlightSeen',coolingSeen:'hammerplainSeen',forgeRouteSet:'coolingSeen',forgeApproachWon:'forgeRouteSet',
     coolingOpened:'forgeApproachWon',forgeGantrySeen:'coolingOpened',furnaceConfronted:'forgeGantrySeen',furnaceWon:'furnaceConfronted',
@@ -168,6 +169,7 @@ export function decodeSave(text: string): GameState {
     if((loc.map==='dispensary'&&!flags.windmereSeen)||(loc.map==='mirrorward'&&!flags.patientsTransferred))throw new Error('This route has not opened yet.');
     if(flags.allAnchorsSeen&&completedAnchors({flags})!==3)throw new Error('All three anchors must be disconnected.');
     if((flags.flagshipApproachSeen||loc.map==='flagship')&&(!flags.allAnchorsSeen||!flags.emperorOfferTold))throw new Error('The capital approach is not ready.');
+    if(flags.benefactorClaimSeen&&(!flags.flagshipDestroyed||!flags.albanDestroyed||!flags.nellIll))throw new Error('The Benefactor checkpoint is incomplete.');
     if(loc.map==='flagship'&&!flags.flagshipWon)throw new Error('The flagship is still defended.');
     if(flags.forgeRouteSet&&typeof flags.forgeFlooded!=='boolean')throw new Error('The cooling route is missing.');
   }else if(flags.airfieldSeen||flags.airshipOwned||flags.hammerplainSeen||flags.dawnwatchSeen||flags.windmereSeen||flags.allAnchorsSeen||flags.fleetSighted||flags.emperorOfferSeen)throw new Error('The chapter departure is incomplete.');

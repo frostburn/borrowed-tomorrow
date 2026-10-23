@@ -7,7 +7,7 @@ export interface DocumentInsert { heading:string;lines:string[];stamp?:string;si
 export interface Shot {
   duration?:number;
   track?:CharacterId;
-  effect?:'flagship-approach'|'capital-blockade'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'|'fleet-sighting'|'survey-launch'|'feeds-close'|'vessel-entry'|'chamber-rupture';
+  effect?:'claim-omen'|'claim-strike'|'flagship-approach'|'capital-blockade'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'|'fleet-sighting'|'survey-launch'|'feeds-close'|'vessel-entry'|'chamber-rupture';
   focus?:StagePoint;cut?:boolean;cue?:Effect;silence?:boolean;document?:DocumentInsert;
   omen?:'shard'|'sun'|'none';
   actors?:Partial<Record<CharacterId,{to?:StagePoint;at?:StagePoint;face?:string;visible?:boolean;fallen?:boolean}>>;

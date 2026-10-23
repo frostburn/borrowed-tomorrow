@@ -191,6 +191,16 @@
       "height": 350,
       "depth": -998,
       "layerId": 15
+    },
+    {
+      "key": "scene-five-ship-berth",
+      "url": "art/vector/chapter-five/ship-berth.svg",
+      "x": 680,
+      "y": 628,
+      "width": 108,
+      "height": 52,
+      "depth": 650,
+      "layerId": 19
     }
   ],
   "hammerplain": [
@@ -1013,6 +1023,28 @@
       "height": 90,
       "depth": -996,
       "layerId": 3
+    }
+  ],
+  "battle-benefactor-retaliation": [
+    {
+      "key": "scene-five-battle-benefactor-retaliation-1",
+      "url": "art/vector/chapter-five/battle-benefactor-retaliation-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-benefactor-retaliation-2",
+      "url": "art/vector/chapter-five/battle-benefactor-retaliation-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
     }
   ],
   "battle-wind-lift": [

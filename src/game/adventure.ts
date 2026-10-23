@@ -44,8 +44,8 @@ type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
 type BattleSnapshot = Map<string,{hex:Hex;hp:number}>;
 interface BattleMotion { actorId:string;aim:Hex;ability?:AbilityId;path?:Hex[];affected?:Hex[];retaliations?:string[] }
-const textures = [...PLAYABLE_ACTORS,'master','clerk','hound','crow','inspector','guardian','rock',...NPC_SPRITES,...CIVILIAN_SPRITES,...ENEMY_VARIANT_ACTORS];
-const roles: Record<string, string> = { nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE', knight:'Shield bash · Taunt · Saber sweep' };
+const textures = [...PLAYABLE_ACTORS,'master','clerk','herald','glasswing','hound','crow','inspector','guardian','rock',...NPC_SPRITES,...CIVILIAN_SPRITES,...ENEMY_VARIANT_ACTORS];
+const roles: Record<string, string> = {herald:'Severing light · straight beam',glasswing:'Flying · glass splinters', nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE', knight:'Shield bash · Taunt · Saber sweep' };
 
 export class Adventure extends Phaser.Scene {
   state: GameState = newGame();
@@ -312,7 +312,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll?'observation':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
@@ -500,7 +500,7 @@ export class Adventure extends Phaser.Scene {
   }
   private boundaryPanel() {
     if(this.state.chapter==='chapter-five'){
-      this.ui.panel('Chapter Five complete','<div class="chapter-name">Next: Chapter Six · The Emperor’s Last Day</div><p>The three anchors are disconnected. Alban is in custody, every surviving crew member is off his flagship, and the capital crossing is open.</p><p>The alliance is ready. Nell has chosen to face the Emperor.</p>',[
+      this.ui.panel('Chapter Five complete','<div class="chapter-name">Next: Chapter Six · The Emperor’s Last Day</div><p>The three anchors are disconnected. The Benefactor has destroyed Alban and his fleet. Its hunters have been driven off the survey ship. Nell is resting aboard, too ill to fight.</p><p>Kit and the others are holding for the capital’s outer mooring. The Emperor still controls the conduit.</p>',[
         {label:'Return to the flight deck',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
         {label:'Export capital departure save',action:()=>exportSave(this.state)},
       ]);return;
@@ -641,7 +641,7 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     if(b.evacuation){const objective=document.createElement('p');objective.className='hint';objective.setAttribute('aria-label','Boarding objective');objective.textContent=`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Keep machines off the gold loading walk. One family boards after each clear round; clearing all machines brings everyone aboard.`;actions.before(objective);}
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-list')!,{
@@ -839,7 +839,7 @@ export class Adventure extends Phaser.Scene {
     this.path=[];this.pendingObject=undefined;
     openInventory(this.ui,this.state,()=>{
       this.autosave();
-      if(this.mode==='world'){this.syncWorldFollowers();this.sortWorld();this.renderWorldControls();}
+      if(this.mode==='world'){this.showWorld();}
     });
   }
 

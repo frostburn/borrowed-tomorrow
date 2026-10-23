@@ -1,6 +1,6 @@
 # Chapter Five after Acts I–III — the capital crossing
 
-The shared airfield, survey ship, Hammerplain, Dawnwatch and Windmere are playable. The three regions can be completed in any order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. Act IV now opens the capital crossing through the campaign flagship and Alban’s surrender. The dev battle remains an isolated harness and never writes campaign history. See [chapter-five-act-four.md](chapter-five-act-four.md).
+The shared airfield, survey ship, Hammerplain, Dawnwatch and Windmere are playable. The three regions can be completed in any order, left unfinished and revisited. The first-victory fleet sighting and second-victory Emperor offer are implemented. Act IV now opens the capital crossing through the campaign flagship, divine intervention and hunters’ defense. The dev battle remains an isolated harness and never writes campaign history. See [chapter-five-act-four.md](chapter-five-act-four.md).
 
 ## Current ending and supported saves
 
@@ -71,10 +71,10 @@ Windmere’s hospital really healed Teren’s leg. Director Iven knowingly conce
 
 After the second anchor the Emperor projects a repeating Larkspur morning into the cabin glass. Ansel turns the chipped rim of his cup toward himself; Tomas stands beside the platform. Nell recognizes the habit and almost asks how to reach that day. She asks whether Ansel can leave, then walks out and tells the others. Kit reads Tomas's ordinary railway message. This is **a projection, not resurrection or demonstrated death reversal**. Ansel remains dead. Tomas remains safe with Dena and Bram at the refuge, never a combatant or a new captive.
 
-Before Act IV, Alban remains free with the inland fleet. After its surrender he is in custody aboard the survey ship. The Emperor has made the offer but has not been defeated. The Benefactor never speaks; Nell's lantern only hums and remains unexplained. Kit's single airfield fluster is the chapter's brief unresolved joke. The active-three cap remains mechanical, without a story explanation.
+Before Act IV, Alban remains free with the inland fleet. The party defeats his flagship, then the Benefactor destroys Alban, his men and the hull during the command-deck confrontation. The god speaks through light with no visible body. Nell collapses and remains too ill to fight; Kit and Celia get her aboard. Divine minions attack the medical hatch in retaliation for the disconnected anchors. The remaining companions defeat them before the final berth conversation. Tomas stays safe and Ansel remains dead. The cap of three remains mechanical.
 
 ## Act IV and the next implementation
 
-`flagshipApproachSeen` → `flagshipConfronted` → `flagshipWon` → `albanCaptured` → `flagshipEvacuated` → `chapterFiveComplete`. See [Act IV](chapter-five-act-four.md) for exact locations, atomic callbacks, rewards and the canonical start. No old save is granted these flags automatically.
+`flagshipApproachSeen` → `flagshipConfronted` → `flagshipWon` → the atomic intervention (`benefactorClaimSeen`, `flagshipDestroyed`, `albanDestroyed`, `nellIll`) → `retaliationSeen` → `retaliationWon` → `chapterFiveComplete`. See [Act IV](chapter-five-act-four.md) for exact locations, callbacks, rewards and canonical start. No prior save is granted these flags automatically.
 
-Implement Chapter Six from the saved capital approach. Alban’s pursuit is permanently resolved, every flagship survivor has been evacuated, all three regional victories remain and the actual formation/resources are preserved. Do not replay the Emperor offer or threaten Tomas again. The Emperor’s defeat stays Chapter Six; the separate god-domain journey stays Chapter Seven.
+The handoff keeps the actual equipment/resources and all five roster entries, with Nell unavailable and her place filled without exceeding three. Rest and victory cannot remove her illness. Kit takes Celia's notes for Sera. Implement Chapter Six from this outer-mooring departure with an optional recovery quest and an independent capital route; see [chapter-six-plan.md](chapter-six-plan.md). The Emperor's defeat stays Chapter Six, the separate god-domain journey stays Chapter Seven. Neither main path requires curing Nell. The final god form has not appeared in the campaign.

@@ -1,3 +1,4 @@
+import { partyLeader } from '../rules/state';
 import type { InteractionKind } from './interaction-markers';
 import { CHAPTER_FIVE_MAPS } from './chapter-five/maps';
 import { CHAPTER_THREE_MAPS } from './chapter-three/maps';
@@ -25,7 +26,7 @@ export function arrival(map:MapId,name:string){
 export function stage(map:MapId,id:string):Cinematic['actors']{
   return mapPoints(MAPS[map].tiles!,`Scene:${id}`).map(p=>({id:p.name as CharacterId,at:gridPoint(p),hidden:properties(p).hidden===true,projection:properties(p).projection===true}));
 }
-export function visibleObjects(map: MapData, s: GameState): MapObject[] { return map.objects.filter(o => (!o.hiddenFlag || !s.flags[o.hiddenFlag]) && (!o.requiredFlag || s.flags[o.requiredFlag])); }
+export function visibleObjects(map: MapData, s: GameState): MapObject[] { return map.objects.filter(o => (map.id!=='airship'||o.sprite!==partyLeader(s))&&(!o.hiddenFlag || !s.flags[o.hiddenFlag]) && (!o.requiredFlag || s.flags[o.requiredFlag])); }
 export function visiblePeople(map:MapData,s:Pick<GameState,'flags'>):MapPerson[]{ return (map.people??[]).filter(p=>(!p.hiddenFlag||!s.flags[p.hiddenFlag])&&(!p.requiredFlag||s.flags[p.requiredFlag])); }
 export const mapSize = (map:MapData) => ({width:map.width??WIDTH,height:map.height??HEIGHT});
 export function walkable(map: MapData, x: number, y: number, state?:Pick<GameState,'flags'>): boolean {

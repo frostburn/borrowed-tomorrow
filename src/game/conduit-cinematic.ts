@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { Shot } from '../content/cinematics';
 
-type Effect=Exclude<NonNullable<Shot['effect']>,'flagship-approach'|'capital-blockade'|'survey-launch'|'fleet-sighting'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'>;
+type Effect=Exclude<NonNullable<Shot['effect']>,'claim-omen'|'claim-strike'|'flagship-approach'|'capital-blockade'|'survey-launch'|'fleet-sighting'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'>;
 const clamp=(n:number)=>Phaser.Math.Clamp(n,0,1);
 const smooth=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
 

@@ -2,7 +2,7 @@ import { SAY,type Dialogue } from '../dialogue';
 import { stage } from '../maps';
 import type { Shot } from '../cinematics';
 const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
-const scene=(map:'airship'|'flagship',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='alban'?{...a,face:id==='five-alban-surrender'?'alban-command':'alban-captive'}:a)},lines});
+const scene=(map:'airship'|'flagship',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='alban'?{...a,face:'alban-command'}:a.id==='nell'&&id!=='five-benefactor-claim'&&id!=='five-flagship-approach'?{...a,face:'nell-ill'}:a)},lines});
 
 export const approach=()=>scene('airship','five-flagship-approach','Through the cordon',[
  line('Kit','Dawnwatch’s launches are at the cloud bank. Three short flashes, then we follow them.',{focus:{x:35,y:22},cut:true,actors:{kit:{to:{x:37,y:21}}}}),
@@ -18,49 +18,51 @@ export const approach=()=>scene('airship','five-flagship-approach','Through the 
  line('Petra','Both batteries protect the bridge. Stop them first; watch where their barrels turn.'),
 ]);
 
-export const surrender=()=>scene('flagship','five-alban-surrender','The command deck',[
- line('The flagship','Smoke drifts through the bridge windows. Below them, the boarding marines help their wounded back over the rail.',{focus:{x:33,y:23},cut:true}),
- line('Captain Alban','Aft gun, fire. Break their mooring.'),
- line('Petra','Your men are still crossing.'),
- line('Captain Alban','Then they had better move.'),
- line('The aft gun','The crew leaves the firing handles. One marine sets his saber on the deck. The others follow.'),
- line('Captain Alban','I gave you an order.'),
- line('Petra','They heard you.',{duration:1100,track:'petra',actors:{petra:{to:{x:33,y:23},face:'petra-back'}}}),
+export const claim=()=>scene('flagship','five-benefactor-claim','The light above the bridge',[
+ line('The flagship','The boarding marines have crossed back to their ship. They stand below the bridge with their weapons on the deck.',{focus:{x:33,y:23},cut:true}),
+ line('Petra','It’s finished, Alban. Put the rod down.'),
  line('Captain Alban','You have no commission here.'),
- line('Petra','Put the rod down.'),
- line('The command rail','Alban raises it. Petra catches his wrist against the rail and takes the rod from his hand.',{duration:700,cue:'strike',actors:{alban:{to:{x:35,y:22},face:'alban-captive'},petra:{to:{x:34,y:23},face:'petra-right'}}}),
- line('Nell','Ansel stood in front of you at Larkspur.',{duration:700,actors:{nell:{to:{x:31,y:24},face:'nell-back'}}}),
- line('Captain Alban','He interfered with an arrest.'),
- line('Nell','His name was Ansel. You’re going to answer for killing him.'),
- line('Petra','And for the coaches at Cinderbank. You’re coming aboard with us.'),
- line('Celia','We can hold him in the chart room. The medical crew needs this deck clear.'),
- line('Orrin','The auxiliary lift will hold the hull. We’ve time to get everyone off.'),
- line('Kit','The launches are coming alongside. I’ll check the lower berths.'),
- line('Petra','Nell, take the evacuation gangway when you’re ready. I’ll bring him over.'),
+ line('Nell','Ansel didn’t have one either.',{actors:{nell:{to:{x:31,y:24},face:'nell-back'}}}),
+ line('The lantern','Its handle jerks in Nell’s grip. A bright seam opens above the bridge windows.',{effect:'claim-omen',focus:{x:32,y:14},cut:true,cue:'flare',silence:true}),
+ line('The Benefactor','You have broken my anchors.'),
+ line('Captain Alban','This ship serves the Emperor.'),
+ line('The Benefactor','The ships were my gift. I take them back.'),
+ line('Orrin','The stern’s coming apart. Alda! Hold the gangway!'),
+ line('The command deck','The companions run for the western rail. Nell reaches it and folds over the lantern.',{duration:1300,focus:{x:18,y:29},track:'kit',actors:{nell:{to:{x:17,y:30},face:'nell-faint'},kit:{to:{x:16,y:30}},orrin:{to:{x:13,y:29}},celia:{to:{x:15,y:31}},petra:{to:{x:19,y:30}}}}),
+ line('Kit','Nell. Give me your wrist.'),
+ line('Nell','I can’t get my hand open.'),
+ line('The gangway','Kit braces himself against the rail and pulls her across. Celia takes her weight on the other side.',{duration:1100,actors:{nell:{to:{x:12,y:30}},kit:{to:{x:11,y:30}},celia:{to:{x:13,y:31}},orrin:{to:{x:9,y:29}},petra:{to:{x:14,y:31}}}}),
+ line('Captain Alban','Hold your positions!'),
+ line('The flagship','Light closes through the bridge. Alban and the men below him vanish with the hull. Nothing remains to launch a boat from.',{effect:'claim-strike',duration:1700,focus:{x:33,y:22},cut:true,cue:'flare',silence:true,actors:{alban:{visible:false}}}),
+ line('Petra','There were men on every deck.'),
+ line('The Benefactor','The fragment will return.'),
+ line('Alda','The rope’s cut. Get below. All of you.'),
 ]);
 
-export const evacuation=()=>scene('flagship','five-flagship-evacuation','The last launch',[
- line('Kit','Lower berths clear. The engineer checked the stern with me.',{focus:{x:18,y:29},cut:true}),
- line('Celia','The last stretcher’s aboard. Keep a hand under that splint.'),
- line('The gangway','Windmere’s medics pass the stretcher into a Dawnwatch launch. The foundry fitters secure the flagship’s lift controls behind them.',{duration:1400,actors:{celia:{to:{x:12,y:30}},kit:{to:{x:13,y:31}},orrin:{to:{x:16,y:29}}}}),
- line('Alda','Every berth accounted for. The survey ship’s ready.'),
- line('Captain Alban','Without this fleet, the capital has no defense.'),
- line('Petra','Step across.',{duration:1200,actors:{alban:{to:{x:14,y:30}},petra:{to:{x:15,y:31},face:'petra-left'}}}),
- line('Nell','Alda, take us back to the others.'),
+export const hunters=()=>scene('airship','five-retaliation','Something in the rigging',[
+ line('Celia','Nell, look at me. Can you hear what I’m saying?',{focus:{x:30,y:27},cut:true}),
+ line('Nell','The light keeps hitting. Even with my eyes shut.'),
+ line('Kit','I’ve put the lantern by the stern. Is that better?'),
+ line('Celia','Her pulse hasn’t changed. Alda, have the medics stay with her.'),
+ line('The rigging','Something strikes the forward stay. Glass wings unfold above the deck; a tall pale figure steps onto the bow.',{focus:{x:35,y:21},cut:true,cue:'flare'}),
+ line('Petra','No fleet markings. Those came out of the light.'),
+ line('Orrin','They’re heading for the hatch.'),
+ line('Kit','Keep them away from her. We’ll take the forward rail.'),
+ line('Celia','Nell can’t fight. Check who’s ready before we go up there.'),
 ]);
 
-export const departure=()=>scene('airship','five-capital-departure','The open crossing',[
- line('Alda','The escort has opened a lane. Alban’s surviving crew are aboard the launches.',{focus:{x:32,y:21},cut:true}),
- line('Petra','He’s locked in the chart room. Two of his own marines asked to stand watch.'),
- line('Orrin','Our drive’s holding. The fitters are staying for the capital run.'),
- line('Celia','Windmere’s release order is on the table. We know how to take people off a support before we disconnect it.'),
- line('Kit','Tomas has the news. His reply’s mostly about keeping a spare engine at the siding.'),
- line('Nell','That sounds like him.'),
- line('Kit','There’s a line for you at the bottom. “Come back by the ordinary route. I’ll meet the train.”'),
- line('The flight deck','Nell rests the lantern against the rail. Beyond the open crossing, the capital’s windows catch the light.',{focus:{x:32,y:9},cut:true}),
- line('Nell','I keep thinking about that cup. Ansel turning the chip toward himself.'),
- line('Celia','You can tell us when you need to stop.'),
- line('Nell','I know. But I want to see what the Emperor is doing up there.'),
- line('Alda','Set the capital course?'),
- line('Nell','Yes. Let’s go.',{focus:{x:32,y:9},cue:'win'}),
+export const departure=()=>scene('airship','five-capital-departure','Beside the berth',[
+ line('The survey ship','Kit folds a blanket over Nell’s hands. She is awake, watching the lantern from her berth.',{focus:{x:30,y:27},cut:true}),
+ line('Petra','The launches searched the cloud below the flagship. Alban’s men are gone.'),
+ line('Orrin','Three anchors disconnected, and it reached straight through the fleet.'),
+ line('Celia','It reached Nell too. Her heartbeat is following the shard’s pulse. Moving the lantern didn’t break the connection.'),
+ line('Kit','Sera kept the old treatment records. I can take her a copy of your notes.'),
+ line('Celia','Ask about patients exposed to an open return. Tell her exactly what happened here.'),
+ line('Nell','Kit. You don’t have to sit there all night.'),
+ line('Kit','I’ve a delivery for the morning. I can sit here until then.'),
+ line('Alda','The capital’s lights are answering the same pulse. I can hold us at the outer mooring.'),
+ line('Petra','We still have to reach the Emperor. But we know who’s reaching back through his conduit now.'),
+ line('Nell','Don’t let it take another town.'),
+ line('Kit','We’ll keep the routes open. Yours too.'),
+ line('Alda','Outer mooring, then. We’ll decide our next run there.'),
 ]);

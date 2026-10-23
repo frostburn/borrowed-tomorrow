@@ -150,7 +150,6 @@ def export(root):
     for name in CAST:
         (out/f'{name}.svg').write_text(person(name).svg())
     (out/'alban-command.svg').write_text(person('alban','rod').svg())
-    (out/'alban-captive.svg').write_text(person('alban','none').svg())
     for name in ('hound','crow','guardian','rock'):(out/f'{name}.svg').write_text(enemy(name).svg())
     print('Exported chapter-one supporting cast and enemies as SVG')
 
