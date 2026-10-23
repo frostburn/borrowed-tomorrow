@@ -33,7 +33,7 @@ export function interactChapterFive(h:StoryHost,id:string){
  const go=(map:'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'dawnwatch'|'windmere',name:string)=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
  const board=()=>f.airshipOwned?go('airship','airfield'):h.talk({...scenes.launch(),done:()=>{h.commit('airshipOwned');go('airship','airfield');}});
  switch(id){
-  case 'airfield-supply':case 'ship-supply':case 'hammer-supply':case 'dawn-supply':case 'wind-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
+  case 'airfield-supply':case 'ship-supply':case 'hammer-supply':case 'forge-supply':case 'dawn-supply':case 'wind-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Leave',action:()=>{}},
@@ -79,7 +79,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'forge-carrier':
    if(f.furnaceWon)return h.toast('The carrier has stopped. Pull the anchor breaker above the gantry.');
    if(!f.forgeGantrySeen)return;
-   return h.talk({lines:[SAY('Orrin','The red X hexes show where it will pour this round. Its tracks leave hot metal: six damage at round end. It shifts lanes before pouring.')],choices:[{label:'Hold off the furnace carrier',action:()=>{h.commit('furnaceConfronted');h.battle('hammer-carrier');}},{label:'Prepare our equipment first',action:()=>{}}]});
+   return h.talk({lines:[SAY('Orrin','Watch where it points that ladle. The metal behind its tracks will burn straight through your boots.')],choices:[{label:'Hold off the furnace carrier',action:()=>{h.commit('furnaceConfronted');h.battle('hammer-carrier');}},{label:'Prepare our equipment first',action:()=>{}}]});
   case 'forge-anchor':
    if(!f.furnaceWon)return say('Hester','We can’t reach the breaker with the carrier firing.');
    if(f.hammerplainFreed)return say('Orrin','The contacts are open. The anchor can’t draw from Hammerplain.');

@@ -41,7 +41,7 @@ export const firstFlight=()=>scene('airship','five-first-flight','The flight cha
 ]);
 export const hammerplain=()=>scene('hammerplain','five-hammer','The stopped shift',[
  line('Hammerplain','A casting crane swings over the works. Beyond the fence, a woman stands motionless with a loaf halfway into her shopping bag.',{focus:{x:32,y:18},cut:true}),
- line('Nell','Her boy’s still holding the bag open.',{focus:{x:14,y:26}}),
+ line('Nell','Her boy’s still holding the bag open.',{focus:{x:16,y:25}}),
  line('Hester','They were buying their supper when it happened. My sister’s in that street.',{focus:{x:25,y:26}}),
  line('Superintendent Durn','Finish the anchor quota and I can apply for its release.'),
  line('Hester','You said that last shift. And you’ve taken the engines we built to run the houses.'),
@@ -97,7 +97,7 @@ export const release=()=>scene('anchorforge','five-release','The anchor breaker'
  line('Nell','Let’s go and see them.'),
 ]);
 export const workers=()=>scene('hammerplain','five-workers','The next shift',[
- line('Hammerplain','A door bangs in the street. The woman catches the loaf as it slips from her hand. Her boy laughs, then starts to cry.',{focus:{x:18,y:31},cut:true,cue:'win'}),
+ line('Hammerplain','A door bangs in the street. The woman catches the loaf as it slips from her hand. Her boy laughs, then starts to cry.',{focus:{x:20,y:32},cut:true,cue:'win'}),
  line('Celia','I’ll check on them.'),
  line('Orrin','Hester, that starter likes the choke half—',{focus:{x:35,y:26},actors:{orrin:{to:{x:33,y:26}}}}),
  line('The engine','Hester sets the lever and turns the crank. The flywheel takes up a steady beat.',{focus:{x:37,y:25},duration:600,actors:{hester:{to:{x:37,y:25}}},cue:'steam'}),

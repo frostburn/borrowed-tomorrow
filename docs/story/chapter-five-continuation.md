@@ -14,6 +14,8 @@ Opening: `airfieldSeen`, `airfieldGuardWon`, `airshipOwned`, `firstFlightSeen`.
 
 Hammerplain: `hammerplainSeen`, `coolingSeen`, `forgeRouteSet`, `forgeApproachWon`, `coolingOpened`, `forgeGantrySeen`, `furnaceConfronted`, `furnaceWon`, `hammerplainFreed`, `hammerplainComplete`.
 
+The survey ship is visibly moored at Hammerplain’s western boarding gangway. The lower anchor gantry’s `forge-supply` bench offers free HP/focus restoration for all five recruits, including reserves, and the ordinary eight-mark bandages. Rest saves normally and writes no progress flags.
+
 Preserve boolean `forgeFlooded`: false is the dry freight lift with crows; true is the shallow race with hounds. Either battle awards the same `forgeApproachWon` once. `forgeStoresWon` remains optional, including on return visits. Prior `worksFlooded`, `pressureRoute` and train choices are unchanged. Hammerplain completion does not imply any Dawnwatch progress.
 
 ## Dawnwatch checkpoints

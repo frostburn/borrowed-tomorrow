@@ -57,6 +57,20 @@ def ship():
  for x in (112,588):out += [ellipse(x,275,30,18,'#1b3441'),ellipse(x,273,22,11,'#a9a88b'),line([(x-27,275),(x+27,275)],'#d9bc7d',5)]
  return out
 
+def docked_ship():
+ # Same survey hull as the airfield, moored beside the western landing.
+ return ['<g transform="translate(6 4) scale(.45)">',*ship(),'</g>',line([(78,158),(90,198)],'#bca574',3),line([(272,150),(302,197)],'#bca574',3),rect(79,198,23,7,'#253f4b'),rect(291,197,24,7,'#253f4b'),line([(81,198),(101,198)],'#d1b884',3),line([(293,197),(313,197)],'#d1b884',3)]
+def dock_gangway():
+ out=[poly([(0,38),(18,26),(160,88),(142,102)],'#b59b6c'),poly([(0,38),(142,102),(142,108),(0,44)],'#3a555c')]
+ for i in range(1,8):
+  t=i/8;out.append(line([(142*t,38+64*t),(18+142*t,26+62*t)],'#675f4d',2))
+ for x,y,xx,yy in [(0,38,142,102),(18,26,160,88)]:
+  out.append(line([(x,y-22),(xx,yy-22)],'#d0b982',3))
+  for t in (0,.5,1):out.append(line([(x+(xx-x)*t,y+(yy-y)*t-22),(x+(xx-x)*t,y+(yy-y)*t)],'#526b6b',3))
+ return out
+def rest_bench():
+ return [rect(0,0,157,59,'#324c55'),rect(5,5,147,7,'#81958a'),rect(15,24,101,26,'#947c57'),rect(11,48,113,11,'#bc9d6d'),poly([(11,59),(124,59),(124,65),(11,65)],'#5f5948'),rect(20,59,7,20,'#304a53'),rect(108,59,7,20,'#304a53'),rect(119,42,42,28,'#617c75'),rect(125,47,28,5,'#d5c8a1'),rect(136,41,6,20,'#d5c8a1'),ellipse(142,27,12,8,'#aec4b2'),rect(130,17,24,12,'#789b93'),ellipse(142,17,12,6,'#bdd0ba'),rect(137,8,10,6,'#3b5961')]
+
 def factory():
  out=[rect(12,110,564,152,'#4c6464'),poly([(0,112),(146,24),(294,108),(437,27),(595,112),(578,129),(440,71),(294,151),(147,69),(14,132)],'#243e4b'),poly([(0,112),(146,24),(148,44),(14,132)],'#a5aaa0')]
  for x in (43,333):out += [rect(x,143,212,113,'#223b46'),rect(x+10,154,192,102,'#384f52')]
@@ -70,8 +84,8 @@ def crane():
 
 def engine():
  return [ellipse(54,114,24,21,'#142a36'),ellipse(133,114,24,21,'#142a36'),ellipse(54,114,13,11,'#9d9e86'),ellipse(133,114,13,11,'#9d9e86'),rect(30,62,120,45,'#476568'),ellipse(31,85,19,25,'#9ca792'),poly([(30,62),(51,49),(154,49),(150,62)],'#a8b39c'),rect(123,19,61,73,'#304b55'),poly([(115,20),(150,3),(194,20),(186,31),(127,31)],'#ae9c70'),rect(136,31,26,30,'#b8c3a6'),rect(48,20,21,39,'#263d48'),rect(43,15,31,9,'#aa976d'),line([(35,113),(144,113)],'#c1a774',5)]
-def wheel():
- return [rect(34,40,17,44,'#273f49'),poly([(9,84),(72,84),(86,97),(0,97)],'#2d4852'),ellipse(43,35,31,30,'#c2a169'),ellipse(43,35,22,21,'#3b5b60'),line([(16,35),(69,35)],'#c2a169',5),line([(43,10),(43,60)],'#c2a169',5)]
+def wheel(rim='#c2a169'):
+ return [rect(34,40,17,44,'#273f49'),poly([(9,84),(72,84),(86,97),(0,97)],'#2d4852'),ellipse(43,35,31,30,rim),ellipse(43,35,22,21,'#3b5b60'),line([(16,35),(69,35)],rim,5),line([(43,10),(43,60)],rim,5)]
 def conduit():
  out=[poly([(20,249),(78,203),(254,203),(309,249),(294,279),(39,279)],'#203c48'),rect(115,45,96,179,'#526e6c'),poly([(90,61),(162,0),(235,61),(211,80),(162,35),(114,80)],'#b19563'),ellipse(162,108,58,66,'#192f3e'),ellipse(162,108,39,48,'#b3d0bc'),poly([(143,67),(171,57),(187,120),(164,152),(141,113)],'#d6dfba'),rect(80,208,166,20,'#b59c68')]
  for x in (47,252):out += [rect(x,120,20,131,'#9c885f'),rect(x-9,119,38,11,'#d4b580')]
@@ -126,12 +140,12 @@ world('airship','Survey ship · the flight deck','The flight chart is on the for
 foundfloor=[(5,24,55,13),(10,19,40,6),(30,17,8,3)]
 forgeback=ground(1536,1008)
 for x in (170,420,1100,1310):forgeback += [rect(x,74,64,312,'#304a51'),poly([(x-9,74),(x+32,55),(x+78,74),(x+67,91),(x-4,91)],'#8f9278'),poly([(x+10,69),(x-5,22),(x+32,0),(x+68,9),(x+58,47)],'#657b80')]
-world('hammerplain','Hammerplain · the casting floor','The cooling works are northeast. The survey landing is west of the foundry.',foundfloor,[(11,20,24,5),(38,23,7,2),(47,25,6,3)], [
- obj('hammer-hester',25,25,'Hester · casting forewoman',sprite='hester',hiddenFlag='hammerplainComplete'),obj('hammer-hester-after',37,25,'Hester · the running engines',sprite='hester',requiredFlag='hammerplainComplete'),obj('hammer-cooling',45,23,'Cooling works · freight lift or race walk',sign=True),obj('hammer-supply',11,28,'Foundry bench · rest and supplies',sign=True),obj('hammer-ship',6,30,'Western landing · survey ship',sign=True),obj('hammer-coat',50,29,'Safety stores · heat-resistant coat',sprite='guardian-forge',doneFlag='forgeStoresWon',spriteHiddenFlag='forgeStoresWon')],
- {'start':(8,30),'cooling':(42,25),'freed':(30,27),'crew':(24,27),'engine':(28,27)},
+world('hammerplain','Hammerplain · the casting floor','The cooling works are northeast. The survey landing is west of the foundry.',foundfloor,[(11,20,24,5),(38,23,7,2),(47,25,6,3),(0,24,15,5),(2,29,10,2)], [
+ obj('hammer-hester',25,25,'Hester · casting forewoman',sprite='hester',hiddenFlag='hammerplainComplete'),obj('hammer-hester-after',37,25,'Hester · the running engines',sprite='hester',requiredFlag='hammerplainComplete'),obj('hammer-cooling',45,23,'Cooling works · freight lift or race walk',sign=True),obj('hammer-supply',18,28,'Foundry bench · rest and supplies',sign=True),control('hammer-ship',17,32,(11,29,7,5),'Survey ship · boarding gangway',sign=True),obj('hammer-coat',50,29,'Safety stores · heat-resistant coat',sprite='guardian-forge',doneFlag='forgeStoresWon',spriteHiddenFlag='forgeStoresWon')],
+ {'start':(18,32),'cooling':(42,25),'freed':(30,27),'crew':(24,27),'engine':(28,27)},
  {'five-hammer':{'nell':(24,27),'orrin':(23,26),'kit':(21,28),'petra':(25,29),'celia':(22,30),'hester':(26,25),'durn':(30,26)},'five-workers':{'nell':(28,27),'orrin':(29,26),'hester':(32,25),'kit':(25,29),'petra':(27,30),'celia':(24,30)}},
- [point('casting-hand',35,24,sprite='civilian-dockhand-rust'),point('stopped-family',14,26,sprite='civilian-family-blue',hiddenFlag='hammerplainFreed'),point('home-family',18,31,sprite='civilian-family-blue',requiredFlag='hammerplainFreed'),point('shift-hand',37,30,sprite='civilian-dockhand')],
- [('foundry-street',[rect(3,80,111,155,'#929681'),poly([(0,80),(55,32),(120,80)],'#394e56'),poly([(0,80),(55,32),(55,48),(17,91)],'#c3b78d'),rect(126,49,124,186,'#687d75'),poly([(115,49),(184,0),(256,49)],'#344d56'),poly([(115,49),(184,0),(184,17),(132,61)],'#c2b68b'),rect(12,140,26,48,'#304850'),rect(71,140,26,48,'#304850'),rect(142,105,28,50,'#304850'),rect(204,105,28,50,'#304850'),rect(47,186,31,49,'#304850'),rect(181,178,34,57,'#304850'),line([(3,229),(250,229)],'#c4b78b',5)],256,236,0,342,578,{}),('street-lights',[rect(16,482,18,33,'#dec591'),rect(75,482,18,33,'#dec591'),rect(146,447,20,35,'#dec591'),rect(208,447,20,35,'#dec591')],256,578,0,0,579,{'requiredFlag':'hammerplainFreed'}),('casting-hall',factory(),600,270,260,330,600,{}),('freight-crane',crane(),312,330,1080,240,570,{}),('replacement-engine',engine(),200,140,900,460,600,{}),('stores-engine',engine(),200,140,1120,530,670,{})],forgeback)
+ [point('casting-hand',35,24,sprite='civilian-dockhand-rust'),point('stopped-family',16,25,sprite='civilian-family-blue',hiddenFlag='hammerplainFreed'),point('home-family',20,32,sprite='civilian-family-blue',requiredFlag='hammerplainFreed'),point('shift-hand',37,30,sprite='civilian-dockhand')],
+ [('hammer-docked-ship',docked_ship(),342,208,0,574,-997,{}),('hammer-gangway',dock_gangway(),164,110,270,678,-996,{}),('foundry-street',[rect(3,80,111,155,'#929681'),poly([(0,80),(55,32),(120,80)],'#394e56'),poly([(0,80),(55,32),(55,48),(17,91)],'#c3b78d'),rect(126,49,124,186,'#687d75'),poly([(115,49),(184,0),(256,49)],'#344d56'),poly([(115,49),(184,0),(184,17),(132,61)],'#c2b68b'),rect(12,140,26,48,'#304850'),rect(71,140,26,48,'#304850'),rect(142,105,28,50,'#304850'),rect(204,105,28,50,'#304850'),rect(47,186,31,49,'#304850'),rect(181,178,34,57,'#304850'),line([(3,229),(250,229)],'#c4b78b',5)],256,236,0,342,578,{}),('street-lights',[rect(16,482,18,33,'#dec591'),rect(75,482,18,33,'#dec591'),rect(146,447,20,35,'#dec591'),rect(208,447,20,35,'#dec591')],256,578,0,0,579,{'requiredFlag':'hammerplainFreed'}),('casting-hall',factory(),600,270,260,330,600,{}),('freight-crane',crane(),312,330,1080,240,570,{}),('replacement-engine',engine(),200,140,900,460,600,{}),('stores-engine',engine(),200,140,1120,530,670,{})],forgeback)
 
 coolfloor=[(6,26,50,10),(7,19,48,8),(28,14,15,6)]
 coolback=ground(1536,1008)+[poly([(0,705),(480,678),(1000,733),(1536,690),(1536,1008),(0,1008)],'#284e5b'),poly([(0,885),(430,905),(1030,866),(1536,906),(1536,925),(1030,889),(430,928),(0,908)],'#648e8f'),poly([(0,435),(1536,435),(1536,515),(0,515)],'#233e4b'),rect(0,458,1536,21,'#78968c')]
@@ -140,17 +154,17 @@ world('coolingworks','Hammerplain · the cooling race','A freight lift crosses t
  {'start':(10,30),'forge':(39,18),'wheel':(44,24),'junction':(25,27)},
  {'five-cooling':{'nell':(25,27),'orrin':(27,25),'kit':(24,29),'petra':(29,28),'celia':(24,30),'hester':(30,24)},'five-water':{'nell':(44,26),'orrin':(45,23),'hester':(43,24),'kit':(42,28),'petra':(40,26),'celia':(41,29)}},
  [point('race-hand',33,25,sprite='civilian-dockhand'),point('wheel-hand',47,24,sprite='civilian-dockhand-rust',requiredFlag='coolingOpened')],
- [('cooling-wheel',wheel(),90,100,1072,460,560,{}),('freight-lift',crane(),312,330,192,226,556,{}),('moving-water',[poly([(0,457),(1536,457),(1536,480),(0,480)],'#9abcb0'),line([(0,465),(1536,465)],'#d0d9b7',3)],1536,490,0,0,-998,{'requiredFlag':'coolingOpened'})],coolback,steel=True)
+ [('cooling-wheel',wheel('#c95746')+[ellipse(43,35,7,7,'#783b37'),ellipse(41,33,4,4,'#e3956d')],90,100,1072,460,560,{}),('freight-lift',crane(),312,330,192,226,556,{}),('moving-water',[poly([(0,457),(1536,457),(1536,480),(0,480)],'#9abcb0'),line([(0,465),(1536,465)],'#d0d9b7',3)],1536,490,0,0,-998,{'requiredFlag':'coolingOpened'})],coolback,steel=True)
 
 forgefloor=[(5,25,54,12),(10,18,45,8),(27,14,14,5)]
 forgebackground=[rect(0,0,1536,1008,'#253b47'),poly([(0,80),(560,20),(1040,110),(1536,20),(1536,150),(1050,240),(530,126),(0,200)],'#445e61'),rect(0,245,1536,230,'#334d52')]
 for x in range(100,1536,220):forgebackground += [rect(x,220,35,360,'#1c3340'),rect(x+7,227,9,352,'#8b866a'),rect(x+51,282,109,99,'#1b303b'),rect(x+62,292,88,75,'#bb784a')]
-world('anchorforge','Hammerplain · the anchor gantry','The replacement engines stand below the anchor. Keep the carrier off them.',forgefloor,[(26,14,14,3),(47,20,6,3),(20,22,7,3),(43,23,7,2)], [
- obj('forge-carrier',33,23,'Furnace carrier · defend the engines',sprite='furnace-carrier',doneFlag='furnaceWon',spriteHiddenFlag='furnaceWon'),control('forge-anchor',32,18,(26,5,14,14),'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester')],
+world('anchorforge','Hammerplain · the anchor gantry','The replacement engines stand below the anchor. Keep the carrier off them.',forgefloor,[(26,14,14,3),(47,20,6,3),(20,22,7,3),(43,23,7,2),(14,27,6,3)], [
+ obj('forge-carrier',33,23,'Furnace carrier · defend the engines',sprite='furnace-carrier',doneFlag='furnaceWon',spriteHiddenFlag='furnaceWon'),control('forge-anchor',32,18,(26,5,14,14),'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester'),control('forge-supply',16,30,(13,26,8,4),'Crew rest bench · rest and bandages',sign=True)],
  {'start':(13,30),'breaker':(32,22),'stand':(27,26)},
  {'five-gantry':{'nell':(27,26),'orrin':(25,25),'kit':(24,28),'petra':(28,28),'celia':(23,29),'hester':(22,26),'durn':(39,23),'furnaceCarrier':(35,22)},'five-release':{'nell':(31,21),'orrin':(30,20),'hester':(34,20),'kit':(28,23),'petra':(35,23),'celia':(27,24),'durn':(53,24)}},
  [point('gantry-hand',20,26,sprite='civilian-dockhand'),point('gantry-helper',41,27,sprite='civilian-dockhand-rust')],
- [('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'})],forgebackground,steel=True)
+ [('gantry-rest-bench',rest_bench(),168,80,324,636,716,{}),('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'})],forgebackground,steel=True)
 
 # Dawnwatch: warm lived-in terraces below a cold military signal wall.
 def gun():

@@ -22,11 +22,7 @@ for(const [route,device,viewport]of [['lift','desktop',{width:1280,height:800}],
   await travel(page,'hammer-cooling','coolingworks');await dialogue(page);if(device==='desktop')await nativeScene(page,'coolingworks');await capture(page,`cooling-race-${device}`);
   await approach(page,'cooling-route');await page.getByRole('button',{name:route==='lift'?'Take the freight lift · ranged crows':'Take the race walk · shallow water',exact:true}).click();await fastBattle(page);
   await approach(page,'cooling-wheel');await dialogue(page);await capture(page,`manual-cooling-${device}`);await travel(page,'cooling-forge','anchorforge');await dialogue(page);if(device==='desktop')await nativeScene(page,'anchorforge');await capture(page,`anchor-gantry-${device}`);
-  // Rest before the actual boss playthrough, using the ship's ordinary supply point.
-  if(route==='lift'){
-   await travel(page,'forge-cooling','coolingworks');await travel(page,'cooling-return','hammerplain');await travel(page,'hammer-ship','airship');await approach(page,'ship-supply');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();
-   await approach(page,'ship-chart');await page.getByRole('button',{name:'Hammerplain · casting works',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('hammerplain');await travel(page,'hammer-cooling','coolingworks');await travel(page,'cooling-forge','anchorforge');
-  }
+  await approach(page,'forge-supply');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();
   await approach(page,'forge-carrier');await page.getByRole('button',{name:'Hold off the furnace carrier',exact:true}).click();await capture(page,`furnace-boss-${device}`);
   if(route==='lift')await battle(page,`furnace-carrier-playthrough-${device}`);else await fastBattle(page);
   expect((await inspect(page)).state.inventory.characters.orrin.fitting).toBe('return-valve');await equip(page,'Orrin','Balanced expansion valve');

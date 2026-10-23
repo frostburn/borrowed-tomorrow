@@ -205,6 +205,26 @@
       "layerId": 2
     },
     {
+      "key": "scene-five-hammer-docked-ship",
+      "url": "art/vector/chapter-five/hammer-docked-ship.svg",
+      "x": 0,
+      "y": 574,
+      "width": 342,
+      "height": 208,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-hammer-gangway",
+      "url": "art/vector/chapter-five/hammer-gangway.svg",
+      "x": 270,
+      "y": 678,
+      "width": 164,
+      "height": 110,
+      "depth": -996,
+      "layerId": 3
+    },
+    {
       "key": "scene-five-foundry-street",
       "url": "art/vector/chapter-five/foundry-street.svg",
       "x": 0,
@@ -337,6 +357,16 @@
       "height": 1008,
       "depth": -999,
       "layerId": 2
+    },
+    {
+      "key": "scene-five-gantry-rest-bench",
+      "url": "art/vector/chapter-five/gantry-rest-bench.svg",
+      "x": 324,
+      "y": 636,
+      "width": 168,
+      "height": 80,
+      "depth": 716,
+      "layerId": 3
     },
     {
       "key": "scene-five-forge-anchor",

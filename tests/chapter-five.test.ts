@@ -1,13 +1,14 @@
 import { expect,it } from 'vitest';
 import { chapterFiveStart } from '../src/dev/canonical-saves';
-import { beginChapterFive,decodeSave,FIFTH_CHAPTER,remember,type GameState } from '../src/rules/state';
+import { beginChapterFive,decodeSave,FIFTH_CHAPTER,maxHp,remember,type GameState } from '../src/rules/state';
 import { awardVictory,createBattle } from '../src/rules/combat';
 import { equipItem,ownedCopies } from '../src/rules/inventory';
 import { interactChapterFive,resumeChapterFive } from '../src/content/chapter-five/interactions';
 import type { Dialogue } from '../src/content/dialogue';
 import type { StoryHost } from '../src/content/chapter-one/interactions';
-import { arrival,MAPS,visiblePeople,walkable,worldPath } from '../src/content/maps';
+import { arrival,MAPS,restorePoint,visiblePeople,walkable,worldPath } from '../src/content/maps';
 import { objective } from '../src/content/chapter-five/story';
+import { anchorCheckpoint } from './support/anchors';
 import * as scenes from '../src/content/chapter-five/scenes';
 function host(state:GameState){
  let dialogue:Dialogue|undefined,encounter='';
@@ -57,4 +58,25 @@ it('stages all five companions and every movement on connected authored floor, w
   for(const p of points){expect(walkable(map,p!.x,p!.y),`${d.scene!.id} ${p!.x},${p!.y}`).toBe(true);expect(p!.x===start.x&&p!.y===start.y||worldPath(map,start,p!).length>0,`${d.scene!.id} path`).toBe(true);}
   expect(d.lines.some(l=>l.who==='The Benefactor')).toBe(false);
  }
+});
+
+it('offers a reachable gantry rest that saves all five companions without spending or advancing anything',()=>{
+ const s=anchorCheckpoint('forgeGantrySeen');s.activeParty=['nell','petra','celia'];
+ for(const p of s.party){p.hp=1;p.focus=0;}
+ const before=structuredClone(s),j=host(s);let saved='';j.h.save=()=>{saved=JSON.stringify(s);};
+ const bench=MAPS.anchorforge.objects.find(o=>o.id==='forge-supply')!;
+ expect(worldPath(MAPS.anchorforge,arrival('anchorforge','stand'),bench,s).length).toBeGreaterThan(0);
+ interactChapterFive(j.h,'forge-supply');j.choice(0);
+ expect(s.party.map(p=>[p.hp,p.focus])).toEqual(s.party.map(p=>[maxHp(p.id,s),6]));
+ expect({...s,party:before.party}).toEqual(before);
+ expect(decodeSave(saved)).toEqual(s);
+});
+it('keeps the boarding gangway reachable when the docked hull covers an older Hammerplain save',()=>{
+ const s=anchorCheckpoint('hammerplainSeen'),map=MAPS.hammerplain,old={x:8,y:30};
+ expect(walkable(map,old.x,old.y,s)).toBe(false);
+ const safe=restorePoint(map,old,s)!;
+ expect(walkable(map,safe.x,safe.y,s)).toBe(true);
+ const gangway=map.objects.find(o=>o.id==='hammer-ship')!;
+ expect(worldPath(map,safe,gangway,s).length).toBeGreaterThan(0);
+ expect(worldPath(map,arrival('hammerplain','start'),gangway,s).length).toBeGreaterThan(0);
 });
