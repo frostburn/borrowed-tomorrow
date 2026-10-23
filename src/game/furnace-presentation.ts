@@ -39,7 +39,7 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
    },onComplete:()=>{if(g.active)g.destroy();}});return true;
   },
   overlay(scene,world,b){
-   const u=furnaceUnit(b)!;bossLabel(scene,world,512,16,`Furnace carrier  ${u.hp}/${u.maxHp}`,2);
+   const u=furnaceUnit(b)!;bossLabel(scene,world,512,16,`${u.name}  ${u.hp}/${u.maxHp}`,2);
    const g=scene.add.graphics();world.add(g);g.fillStyle(0x18252b,.97).fillRect(359,29,306,10).fillStyle(0xc87a49).fillRect(362,32,Math.floor(300*u.hp/u.maxHp),4);
    bossLabel(scene,world,512,49,u.hp>0?'Mobile · three contacts · hot tracks':'Carrier stopped',1);
   },

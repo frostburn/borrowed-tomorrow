@@ -200,8 +200,10 @@ export class Adventure extends Phaser.Scene {
       this.ui.sceneLayer.querySelector('.scene-panel')!.append(group);
       const target=group.querySelector<HTMLElement>('.canonical-actions')!;
       this.ui.actionRow(target,[
-        {label:'Begin Chapter Seven (canonical)',action:()=>{void import('../dev/canonical-saves').then(({chapterSevenStart})=>this.loadState(chapterSevenStart()));}},
-        {label:'Begin final refuge (canonical)',action:()=>{void import('../dev/canonical-saves').then(({chapterSevenRefugeStart})=>this.loadState(chapterSevenRefugeStart()));}},
+        ...(['Chapter Seven','final refuge'] as const).map(destination=>({label:`Begin ${destination} (canonical)`,action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(saves=>this.loadState(destination==='Chapter Seven'?saves.chapterSevenStart():saves.chapterSevenRefugeStart()));};
+          if(this.latestSave)this.ui.showModal(`Start the canonical ${destination} save?`,'<p>This replaces the autosave with the recovered party in the Benefactor’s domain. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }})),
         {label:'Begin Chapter Two (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterTwoStart})=>this.loadState(chapterTwoStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Two save?','<p>This replaces the autosave with Nell and Orrin at the Iron Coast. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);

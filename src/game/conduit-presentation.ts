@@ -61,10 +61,10 @@ nativeTexture(scene,chamberKey);world.add(scene.add.image(0,0,chamberKey).setOri
     },
     overlay(scene,world,b){
       const u=regulatorUnit(b),p=bossPlacement(u),g=scene.add.graphics();world.add(g);
-      bossLabel(scene,world,p.x,12,`Heart regulator  ${u.hp}/${u.maxHp}`,2);
+      bossLabel(scene,world,p.x,12,`${u.name}  ${u.hp}/${u.maxHp}`,2);
       g.fillStyle(0x101d28,.97).fillRect(p.x-153,23,306,10);g.lineStyle(1,0x9c895e).strokeRect(p.x-153,23,306,10);
       g.fillStyle(u.sealed?0x86b7bf:0xb99b63).fillRect(p.x-150,26,Math.floor(300*u.hp/u.maxHp),4);
-      bossLabel(scene,world,p.x,42,u.hp<=0?'Regulator stopped':u.sealed?'Shielded · earth both plates':'Seal released',1,'#b7c5c1');
+      bossLabel(scene,world,p.x,42,u.hp<=0?'Collector stopped':u.sealed?'Shielded · earth both plates':b.grounding?'Seal released':u.intent?.name??'Pressure cycle',1,'#b7c5c1');
       if(u.hp>0&&u.sealed){
         g.lineStyle(2,0x96cfc9,.65).strokeEllipse(p.x,p.y-113,148,180);
         g.lineStyle(2,0x96cfc9,.4).strokeEllipse(p.x,p.y-113,170,194);

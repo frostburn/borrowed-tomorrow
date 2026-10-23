@@ -4,10 +4,19 @@ import {inspect,capture,dialogue,battle,nativeScene} from './controls';
 import {importSave,approach} from './navigation';
 import {arrival} from '../../src/content/maps';
 import {createBattle,awardVictory} from '../../src/rules/combat';
+import {newGame} from '../../src/rules/state';
 async function drain(page:Page){for(let i=0;i<12;i++){await expect.poll(async()=>(await inspect(page)).busy,{timeout:30000}).toBe(false);if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Chapter Seven scene chain did not finish');}
 async function at(page:Page,map:string){await expect.poll(async()=>(await inspect(page)).state.location.map,{timeout:30000}).toBe(map);await drain(page);}
 async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await drain(page);}
 async function fight(page:Page,id:string,label:string){await approach(page,id);await page.getByRole('button',{name:label,exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');}
+for(const [label,map]of [['Begin Chapter Seven (canonical)','hollowsill'],['Begin final refuge (canonical)','lastrefuge']]as const)test(`${label} confirms autosave replacement and preserves a manual return`,async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');const original=newGame();original.coins=37;await importSave(page,original);await drain(page);
+ await page.getByRole('button',{name:'Save',exact:true}).first().click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true})).toBeEnabled();
+ await page.reload();await page.getByRole('button',{name:label,exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Manual save slots remain available');await page.getByRole('button',{name:'Close',exact:true}).click();
+ await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.coins).toBe(37);
+ await page.reload();await page.getByRole('button',{name:label,exact:true}).click();await page.getByRole('button',{name:'Start canonical save',exact:true}).click();await at(page,map);expect((await inspect(page)).state.chapter).toBe('chapter-seven');
+ await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.coins).toBe(37);expect((await inspect(page)).state).toMatchObject({chapter:'chapter-one',inventory:original.inventory});
+});
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`@journey Chapter Seven ${device}: stolen days, guardian sequence, three forms and the real sea`,async({browser})=>{
  test.setTimeout(540000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{

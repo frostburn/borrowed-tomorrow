@@ -102,7 +102,7 @@ export const refuge=()=>scene('lastrefuge','seven-refuge','The unwritten hour',[
  l('Petra','We can rest. Then we finish this.'),
 ]);
 export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
- l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:21},cut:true,music:'benefactor'}),
+ l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:18},cut:true,music:'benefactor'}),
  l('The Benefactor','You carry my light into my own house. Where are the lives you took from it?'),
  l('Nell','On their way home.'),
  l('The Benefactor','I held the winter back. I closed their wounds. What have you brought to replace me?'),
@@ -114,25 +114,25 @@ export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
  l('The sun throne','The god’s hands close over the stair. Its broken shoulder streams reach for the empty channels.'),
 ]);
 export const sun=()=>scene('sunthrone','seven-sun','The mantle falls',[
- l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:21},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'hollow-sun'}),
+ l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'hollow-sun'}),
  l('Orrin','The channels are empty. It can’t build another body.'),
  l('The Benefactor','I was here before your stations. Before your names.'),
  l('The sun throne','The ring lifts from the wreckage. Its rays unfold across the floor.'),
  l('Petra','It can still reach us. Watch where the light falls.'),
 ]);
 export const heart=()=>scene('sunthrone','seven-heart','The fragment goes home',[
- l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{focus:{x:32,y:21},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'unborrowed'}),
+ l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'unborrowed'}),
  l('Nell','This came out of you.'),
  l('Celia','The collar Ines fitted is still holding. You can let it go.'),
  l('Nell','Orrin, the glass.'),
  l('The lantern','Orrin lifts the catch. Nell tips the fleck into her palm and lets it fall into the broken ring.'),
- l('The sun throne','The heart closes around it, then opens along the fracture. The cold leaves the lantern’s handle.',{focus:{x:32,y:26},effect:'domain-fragment',duration:1800}),
+ l('The sun throne','The heart closes around it, then opens along the fracture. The cold leaves the lantern’s handle.',{focus:{x:32,y:24},effect:'domain-fragment',duration:1800}),
  l('Kit','Nell?'),
  l('Nell','I’m here. The flame’s still lit.'),
  l('Petra','The heart’s exposed. Together.'),
 ]);
 export const released=()=>scene('sunthrone','seven-release','The days return',[
- l('The sun throne','The heart breaks. The ring opens into separate rays, then falls apart.',{focus:{x:32,y:21},cut:true,cue:'mend',effect:'domain-release',duration:2100,music:'homecoming'}),
+ l('The sun throne','The heart breaks. The ring opens into separate rays, then falls apart.',{focus:{x:32,y:18},cut:true,cue:'mend',effect:'domain-release',duration:2100,music:'homecoming'}),
  l('The sea','Water drops toward a real horizon. Across the broken terraces, people turn toward voices from the crossing.'),
  l('Celia','The patient’s pulse is steady. The binding’s gone.'),
  l('Orrin','The return channels are empty. There’s nothing left to collect them.'),
