@@ -23,6 +23,18 @@ def house(x,y,w=200,h=170):
 def bell():return [rect(4,0,9,108,WOOD),rect(81,0,9,108,WOOD),poly([(0,0),(47,-24),(95,0)],SNOW),rect(13,5,68,8,GOLD),poly([(35,22),(60,22),(64,56),(74,65),(24,65),(33,53)],GOLD),ellipse(49,66,25,7,DARK),line([(49,13),(49,99)],LIGHT,3)]
 def ship(x,y,s=1):
  return [f'<g transform="translate({x} {y}) scale({s})">',poly([(0,49),(47,69),(242,58),(302,21),(274,93),(216,120),(76,125),(24,99)],'#384c5b'),poly([(4,48),(47,63),(240,53),(297,22),(258,50),(220,78),(63,85)],SNOW),poly([(56,61),(102,46),(224,36),(247,48),(215,68),(78,79)],WOOD),rect(109,11,78,42,MID),poly([(97,11),(146,-10),(199,9)],SNOW),line([(230,42),(219,-48)],GOLD,5),'</g>']
+
+def wreckship(x,y,s=1):
+ return [f'<g transform="translate({x} {y}) scale({s})">',
+ poly([(0,49),(47,69),(168,60),(177,77),(199,49),(242,58),(302,21),(274,93),(216,120),(76,125),(24,99)],'#384c5b'),
+ poly([(4,48),(47,63),(164,55),(177,77),(199,49),(240,53),(297,22),(258,50),(220,78),(63,85)],SNOW),
+ poly([(56,61),(102,46),(164,38),(177,77),(148,72),(78,79)],WOOD),rect(109,11,64,42,MID),
+ poly([(97,11),(146,-10),(177,8),(167,16),(142,6),(113,21)],SNOW),rect(135,-36,18,44,DARK),rect(131,-39,25,7,GOLD),
+ line([(230,42),(243,2),(258,-28)],WOOD,5),line([(36,94),(25,136),(15,140)],GOLD,4),line([(60,104),(56,149),(62,154)],GOLD,4),
+ poly([(33,109),(106,97),(141,111),(170,96),(184,119),(227,101),(279,97),(260,143),(153,157),(67,144)],BLUE),
+ poly([(33,109),(106,97),(141,111),(170,96),(184,119),(149,127),(87,118)],LIGHT),
+ poly([(227,101),(279,97),(260,143),(248,126),(200,138)],SNOW),'</g>']
+
 def caveback():return mountains()+[poly([(178,690),(110,286),(300,94),(598,148),(768,73),(1128,100),(1410,322),(1352,690)],MID),poly([(329,636),(356,277),(552,189),(791,232),(1017,178),(1204,297),(1241,636)],DARK),poly([(110,286),(300,94),(598,148),(530,212),(328,188),(216,358)],LIGHT),poly([(1128,100),(1410,322),(1352,690),(1266,504),(1223,281)],BLUE)]
 party={'kit':(30,29),'orrin':(27,30),'petra':(34,30),'celia':(30,32),'nell':(29,32),'signe':(33,27),'egil':(37,29)}
 harborfloor=[(6,24,48,13),(25,19,28,6),(46,16,10,6)]
@@ -32,7 +44,7 @@ world('bellharbor','Skeld · the bell harbor','The king meets the expedition at 
  {'start':(14,33),'watch':(50,23),'return':(32,29)}, {'six-north-arrival':{**party,'edric':(34,24)},'six-north-return':{**party,'edric':(34,24)}},
  [point('harbor-fisher',12,29,sprite='civilian-dockhand-rust'),point('harbor-family',43,32,sprite='civilian-family-blue'),point('harbor-patient',20,34,sprite='civilian-patient-green'),point('harbor-loader',49,25,sprite='civilian-traveler-blue')],
  [('harbor-bell',bell(),98,114,758,452,566,{}),('harbor-launch',ship(0,0,.8),250,110,142,863,973,{}),('harbor-shelter',bench(),168,86,325,673,759,{}),('harbor-rail',[line([(129,576),(1110,576)],LIGHT,4)],1200,600,0,0,-997,{})],harbor,ground=floor(harborfloor,True))
-watchfloor=[(7,28,25,8),(28,24,16,8),(40,18,16,8)]
+watchfloor=[(7,28,25,8),(28,24,16,8),(40,23,16,3),(47,18,9,5)]
 watch=mountains()+house(610,285,325,214)+[poly([(1093,220),(1189,201),(1412,373),(1392,535),(1310,533),(1326,383)],MID),poly([(1130,258),(1191,242),(1355,381),(1337,532),(1220,532),(1246,372)],DARK)]
 world('frostwatch','Skeld · Frostwatch passage','The imperial signal post holds the covered passage. The windlass lifts its gate; the western shelter is out of the wind.',watchfloor,[(28,24,6,2)],[
  obj('north-watch',35,28,'Signal post · imperial winter patrol',hiddenFlag='northWatchWon',doneFlag='northWatchWon',sprite='guardian-frost'),obj('north-windlass',43,24,'Gate windlass · reopen the expedition route',hiddenFlag='northPassOpened',doneFlag='northPassOpened',sign=True),obj('watch-glacier',51,21,'Covered passage · the glacier wrecks',kind='exit',accessFlag='northPassOpened',sign=True),obj('watch-harbor',10,32,'Harbor road · return to Skeld',kind='exit',sign=True),obj('watch-rest',21,31,'Signal shelter · rest and supplies',kind='optional',sign=True)],
@@ -40,11 +52,12 @@ world('frostwatch','Skeld · Frostwatch passage','The imperial signal post holds
  [point('expedition-porter',23,33,sprite='civilian-traveler-blue')],
  [('watch-windlass',[rect(15,25,45,19,WOOD),ellipse(39,24,25,12,GOLD),line([(6,13),(72,31)],LIGHT,5),rect(16,37,7,25,DARK),rect(55,37,7,25,DARK)],80,66,1020,520,586,{}),('north-pass-gate',[rect(0,0,240,55,DARK),line([(0,15),(240,15)],LIGHT,5),line([(0,40),(240,40)],GOLD,5)],240,60,1128,524,584,{'requiredFlag':'northWatchSeen','hiddenFlag':'northPassOpened'}),('watch-bench',bench(),168,86,433,665,751,{})],watch,ground=floor(watchfloor),gated={'north-pass-gate':[(47,22,9,1)]})
 glacierfloor=[(6,28,23,8),(26,25,18,8),(40,18,16,10),(18,21,10,9)]
-ices=mountains()+[poly([(0,620),(294,390),(644,460),(877,243),(1197,416),(1536,248),(1536,1008),(0,1008)],BLUE),poly([(0,620),(294,390),(644,460),(491,534),(224,481)],SNOW),poly([(877,243),(1197,416),(1077,503),(909,330),(734,460)],LIGHT),poly([(1090,676),(1290,560),(1536,610),(1536,1008),(1189,930)],DARK)]+ship(205,435,1.13)+ship(890,293,.9)
+ices=mountains()+[poly([(0,620),(294,390),(644,460),(877,243),(1197,416),(1536,248),(1536,1008),(0,1008)],BLUE),poly([(0,620),(294,390),(644,460),(491,534),(224,481)],SNOW),poly([(877,243),(1197,416),(1077,503),(909,330),(734,460)],LIGHT),poly([(1090,676),(1290,560),(1536,610),(1536,1008),(1189,930)],DARK)]+wreckship(205,405,1.13)+wreckship(890,263,.9)
+ices += [poly([(5,722),(58,741),(160,717),(139,767),(55,787),(13,757)],DARK),poly([(8,722),(58,735),(160,717),(117,745),(54,755)],SNOW),poly([(21,812),(67,827),(145,806),(128,849),(62,867),(28,846)],DARK),poly([(25,812),(67,821),(145,806),(116,833),(60,841)],LIGHT),rect(58,733,25,12,WOOD),rect(60,824,22,10,WOOD)]
 world('glacier','Skeld · the relief fleet','The wreck’s dispatch cabin is beside the lower ice walk. The sanctuary path climbs above the eastern shelf.',glacierfloor,[(19,21,6,2),(42,18,7,2)],[
- obj('north-log',24,25,'Dispatch cabin · the frozen relief fleet',doneFlag='northLogRead',hiddenFlag='northLogRead',sign=True),obj('north-hunters',43,25,'Upper shelf · divine hunters',doneFlag='northHuntersWon',hiddenFlag='northHuntersWon',sprite='herald'),obj('glacier-shrine',52,21,'Winter sanctuary · the upper path',kind='exit',accessFlag='northHuntersWon',sign=True),obj('glacier-watch',9,32,'Covered passage · return to Frostwatch',kind='exit',sign=True),obj('glacier-cache',20,23,'Relief stores · perched patrol',kind='optional',hiddenFlag='northCacheWon',doneFlag='northCacheWon',sign=True),obj('glacier-rest',32,30,'Wreck shelter · rest and supplies',kind='optional',sign=True)],
- {'start':(14,32),'wreck':(27,28),'shrine':(49,24)}, {'six-north-wrecks':{**party,'egil':(24,25),'signe':(27,25)}},
- [],[('glacier-bench',bench(),168,86,696,673,759,{}),('glacier-cache',chest(),60,48,445,492,540,{}),('glacier-ice-face',[poly([(0,0),(87,31),(130,144),(72,174),(22,124)],LIGHT),poly([(0,0),(32,77),(22,124),(72,174),(17,160),(-13,56)],SNOW)],150,180,1304,641,-998,{})],ices,ground=floor(glacierfloor))
+ control('north-log',24,25,(22,22,4,3),'Dispatch cabin · the frozen relief fleet',doneFlag='northLogRead',hiddenFlag='northLogRead',sign=True),obj('north-hunters',43,25,'Upper shelf · divine hunters',doneFlag='northHuntersWon',hiddenFlag='northHuntersWon',sprite='herald'),obj('glacier-shrine',52,21,'Winter sanctuary · the upper path',kind='exit',accessFlag='northHuntersWon',sign=True),obj('glacier-watch',9,32,'Covered passage · return to Frostwatch',kind='exit',sign=True),obj('glacier-cache',20,23,'Relief stores · perched patrol',kind='optional',hiddenFlag='northCacheWon',doneFlag='northCacheWon',sign=True),obj('glacier-rest',32,30,'Wreck shelter · rest and supplies',kind='optional',sign=True)],
+ {'start':(14,32),'wreck':(27,28),'shrine':(49,24)}, {'six-north-wrecks':{**party,'egil':(23,26),'signe':(27,25)}},
+ [],[('glacier-dispatch',[rect(0,17,71,42,DARK),poly([(0,17),(13,0),(58,0),(71,17)],MID),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD),rect(27,30,17,12,LIGHT),line([(34,27),(34,44)],GOLD,3)],74,63,548,538,601,{'hiddenFlag':'northLogRead'}),('glacier-dispatch-open',[rect(0,20,71,39,DARK),poly([(0,20),(2,0),(70,0),(71,20)],MID),rect(8,27,55,23,WOOD),poly([(18,28),(47,24),(53,44),(22,48)],SNOW),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD)],74,63,548,538,601,{'requiredFlag':'northLogRead'}),('glacier-bench',bench(),168,86,696,673,759,{}),('glacier-cache',chest(),60,48,445,492,540,{}),('glacier-ice-face',[poly([(0,0),(87,31),(130,144),(72,174),(22,124)],LIGHT),poly([(0,0),(32,77),(22,124),(72,174),(17,160),(-13,56)],SNOW)],150,180,1304,641,-998,{})],ices,ground=floor(glacierfloor))
 shrines=[(12,25,40,11),(23,19,18,7)]
 shrine=caveback()+[poly([(612,340),(768,245),(931,340),(921,454),(612,454)],'#45667e'),line([(649,352),(768,284),(890,352)],LIGHT,8)]
 drag=runpy.run_path(str(ROOT/'assets/bosses/export-winter-dragon.py'))['dragon']
@@ -60,7 +73,7 @@ world('capitalquay','The capital · allied landing','The landing bridge is open.
  obj('capital-stores',20,31,'Allied shelter · rest and supplies',kind='optional',sign=True),obj('capital-return',13,33,'Survey launch · return to the flight chart',kind='exit',sign=True),obj('capital-inner',32,19,'Inner capital · next adventure',kind='talk',sign=True),obj('capital-crew',40,28,'Alda · the allied landing',kind='talk',sprite='alda')],
  {'start':(32,31)}, {'six-capital-open':{**party,'alda':(34,25)},'six-capital-quay':{**party,'alda':(34,25)}},
  [point('capital-cart',44,31,sprite='civilian-dockhand'),point('capital-woman',27,27,sprite='civilian-traveler-blue'),point('western-boat-hand',18,28,sprite='civilian-dockhand-rust'),point('northern-navigator',46,29,sprite='civilian-traveler')],
- [('capital-bench',bench(),168,86,402,674,760,{})],royal,ground=b['base']['plane'](quay,1536,1008,'#d5d9d0'))
+ [('capital-bench',bench(),168,86,402,674,760,{})],royal,ground=[part.replace('#c59d70','#e2e6df').replace('#a17e60','#aebfc5').replace('#745b50','#819aa8')for part in b['base']['plane'](quay,1536,1008,'#d5d9d0')])
 for id,title in [('north-watch','Frostwatch patrol'),('north-hunters','The glacier hunters'),('north-cache','Relief stores'),('winter-dragon','The winter sanctuary')]:
  f=[(3,3,34,16)];back=[rect(0,0,1008,480,DARK),poly([(0,70),(200,5),(440,76),(705,0),(1008,60),(1008,480),(0,480)],MID)]
  if id=='winter-dragon':back+=[poly([(0,85),(100,0),(275,35),(190,126),(61,142),(0,227)],LIGHT),poly([(1008,65),(911,0),(740,27),(814,129),(962,143),(1008,237)],BLUE)]

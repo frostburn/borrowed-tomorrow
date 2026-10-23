@@ -7,7 +7,7 @@ const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines'
 export const arrival=(s:GameState)=>scene(s,'bellharbor','six-north-arrival','Skeld · the winter expedition',[
  line('The bell harbor','A bell sounds across the snow roofs. A pilot answers from a launch beyond the covered quay.',{focus:{x:32,y:22},cut:true}),
  line('Egil','Two short bells for an open berth. In fog you follow the next boat’s answer.'),
- line('King Edric','You brought the people from the western wards. We have beds ready under the fish market roof.'),
+ line('King Edric','We’ve had word from the western wards. There are beds under the fish market roof.'),
  line('Petra','We need the northern pact withdrawn. The Emperor has called your seal around his capital.'),
  line('King Edric','I sent that order three days ago. The imperial post closed our mountain passage and sent my expedition back.'),
  line('Signe','They left the king’s letter nailed to the gate. There are machines across the walk now.'),
@@ -33,6 +33,7 @@ export const gate=(s:GameState)=>scene(s,'frostwatch','six-north-gate','The expe
  line('Egil','Follow my tracks past the first turn. The old relief ships are below the eastern shelf.'),
  line('Kit','Ships? This high up?'),
  line('Egil','The bay came this far once. The winter that took them never left.'),
+ ...(s.flags.nellRecovered?[line('Nell','I’ll follow the last porter. Pass the rope back when everyone’s through.')]:[]),
 ]);
 export const wrecks=(s:GameState)=>scene(s,'glacier','six-north-wrecks','The fleet under the ice',[
  line('The glacier','A ship’s bow projects from blue ice. Below its broken rail, severed towropes hang beside a row of smaller boats.',{focus:{x:24,y:23},cut:true}),

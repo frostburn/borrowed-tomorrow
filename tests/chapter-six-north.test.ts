@@ -65,7 +65,7 @@ it('never stages an ill Nell in the expedition; recovered reserve Nell participa
   const s=chapterSixNorthStart(well);s.activeParty=['kit'];
   for(const d of [scenes.arrival(s),scenes.watch(s),scenes.gate(s),scenes.wrecks(s),scenes.shrine(s),scenes.release(s),scenes.returned(s),scenes.quay(s)]){
    expect(d.scene!.actors.some(a=>a.id==='nell')).toBe(well);
-   if(well&&d.scene!.id!=='six-north-gate')expect(d.lines.some(l=>l.who==='Nell'),d.scene!.id).toBe(true);
+   if(well)expect(d.lines.some(l=>l.who==='Nell'),d.scene!.id).toBe(true);
   }
   expect(scenes.home(s).scene!.actors.find(a=>a.id==='nell')?.face==='nell-ill').toBe(!well);
  }
@@ -102,6 +102,8 @@ it('all northern scenes, interactions and arrivals have connected floor and boun
   for(const o of map.objects){const approaches=[o,{x:o.x-1,y:o.y},{x:o.x+1,y:o.y},{x:o.x,y:o.y-1},{x:o.x,y:o.y+1}];expect(approaches.some(p=>walkable(map,p.x,p.y,{flags})&&(worldPath(map,start,p,{flags}).length>0||p.x===start.x&&p.y===start.y)),`${id} ${o.id}`).toBe(true);}
   for(const a of sceneAssets(map.tiles!)){expect(statSync('public/'+a.url).size).toBeLessThan(128*1024);expect(readFileSync('public/'+a.url,'utf8')).not.toContain('<image');}
  }
+ expect(worldPath(MAPS.frostwatch,arrival('frostwatch','start'),{x:51,y:21},{flags:{northWatchSeen:true}})).toEqual([]);
+ expect(worldPath(MAPS.frostwatch,arrival('frostwatch','start'),{x:51,y:21},{flags:{northWatchSeen:true,northPassOpened:true}}).length).toBeGreaterThan(0);
  expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true}})).toBe(false);expect(walkable(MAPS.frostwatch,49,22,{flags:{northWatchSeen:true,northPassOpened:true}})).toBe(true);
  expect(visibleObjects(MAPS.outermooring,{...s,flags:{...s.flags,capitalOpened:true}}).some(o=>o.id==='six-capital')).toBe(false);
 });

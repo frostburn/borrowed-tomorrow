@@ -1,6 +1,6 @@
 # Working on Borrowed Tomorrow
 
-Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening and Namar route are playable; its northern/jungle routes, Emperor climax and Chapter Seven remain plans under `docs/story/`.
+Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the inner capital, Emperor climax and Chapter Seven remain plans under `docs/story/`.
 
 ## Find the right place
 
@@ -56,3 +56,6 @@ Art exports have matching commands: `npm run art:one` through `npm run art:six`.
 5. Add a Vite-only canonical fixture when the chapter is playable, update the exact story handoff and author guide, and run the relevant rule/browser paths. A chapter plan alone must not enable a campaign entry button.
 
 The catalogue tests check that every exploration map has one owner and that departures use the intended transition without losing resources. Existing chapter tests exercise their story checkpoints; browser tests cover real loading, missing-asset retries, menus and saved departures.
+
+
+Chapter Six keeps its smaller expedition modules under `content/chapter-six/jungle/` and `north/`. The shared interactions coordinate ship reports and opening the landing after both independent seals; neither a cure nor a region alone grants a chapter boundary. `rules/winter-dragon.ts` owns pulls and separate `winterIce`, with movement/cold damage resolved by the ordinary combat rules. The matching presentation is shared with the Vite boss preview. Northern music is authored in `score-north.ts`.

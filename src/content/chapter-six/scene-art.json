@@ -895,6 +895,26 @@
       "layerId": 2
     },
     {
+      "key": "scene-six-glacier-dispatch",
+      "url": "art/vector/chapter-six/glacier-dispatch.svg",
+      "x": 548,
+      "y": 538,
+      "width": 74,
+      "height": 63,
+      "depth": 601,
+      "layerId": 4
+    },
+    {
+      "key": "scene-six-glacier-dispatch-open",
+      "url": "art/vector/chapter-six/glacier-dispatch-open.svg",
+      "x": 548,
+      "y": 538,
+      "width": 74,
+      "height": 63,
+      "depth": 601,
+      "layerId": 5
+    },
+    {
       "key": "scene-six-glacier-bench",
       "url": "art/vector/chapter-six/glacier-bench.svg",
       "x": 696,

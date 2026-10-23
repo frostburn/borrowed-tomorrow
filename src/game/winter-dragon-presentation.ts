@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
-import type { Encounter } from '../rules/combat';
+import { enemyTurn,type Encounter } from '../rules/combat';
 import { nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
 import { bossMotionEnabled } from './boss-motion';
 import { actorAsset } from '../content/actors';
@@ -14,9 +14,9 @@ export const DRAGON_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/chapter-six/
 export const DRAGON_ASSETS=['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
 const masks=new Map<string,Uint8Array>();
 export function winterDragonPresentation(encounter:Encounter):BattlePresentation{
- let texture='winter-dragon';
+ let texture='winter-dragon',attackPose='dragon-inhale';
  return {
-  encounter,prepare:prepareWinterDragon,focus:offset(5,3),animating:b=>!b.result&&bossMotionEnabled(),
+  encounter,enemyTurn(b,onRetaliation,onAction){attackPose=winterDragon(b)?.intent?.name.toLowerCase().includes('shatter')?'dragon-shatter':winterDragon(b)?.intent?.name.toLowerCase().includes('drawn')?'dragon-inhale':'dragon-breath';return enemyTurn(b,onRetaliation,onAction);},prepare:prepareWinterDragon,focus:offset(5,3),animating:b=>!b.result&&bossMotionEnabled(),
   portrait:u=>u.id===WINTER_DRAGON_ID?DRAGON_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WINTER_DRAGON_ID?bossPlacement({...u,hex}):undefined,
@@ -31,7 +31,7 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
    const p=bossPlacement({...u,hex}),image=scene.add.image(p.x,p.y,'winter-dragon').setOrigin(.5,1);
    if(hp<=0)image.setTint(0x61717e).setAlpha(.42);
    let started:number|undefined;
-   const pattern=()=>u.intent?.name.toLowerCase().includes('shatter')?'dragon-shatter':u.intent?.name.toLowerCase().includes('drawn')?'dragon-inhale':'dragon-breath';
+   const pattern=()=>attackPose;
    const paint=()=>{
     if(!image.active)return;
     const elapsed=started===undefined?Infinity:scene.time.now-started,moving=hp>0&&bossMotionEnabled(),attacking=moving&&elapsed<950;
@@ -48,7 +48,7 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
   attackSound:u=>u.id===WINTER_DRAGON_ID?'steam':undefined,
   attackEffect(scene,world,image,u,id,affected){
    if(u.id!==WINTER_DRAGON_ID||id!=='judgment')return false;
-   const g=scene.add.graphics();world.add(g);const inhale=u.intent?.name.toLowerCase().includes('drawn');
+   const g=scene.add.graphics();world.add(g);const inhale=attackPose==='dragon-inhale';
    scene.tweens.addCounter({from:0,to:1,duration:bossMotionEnabled()?470:100,onUpdate:t=>{
     if(!g.active)return;const p=t.getValue()??0;g.clear().setAlpha(1-p);
     for(const h of affected){const at=toPixel(h),mouth={x:image.x,y:image.y-126};

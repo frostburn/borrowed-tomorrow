@@ -9,7 +9,7 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 8,
+  "nextlayerid": 10,
   "nextobjectid": 17,
   "properties": [
     {
@@ -547,20 +547,59 @@
     },
     {
       "id": 4,
+      "name": "glacier-dispatch",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "northLogRead"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "glacier-dispatch-open",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "northLogRead"
+        }
+      ]
+    },
+    {
+      "id": 6,
       "name": "Interactions",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "north-log",
-          "point": true,
-          "x": 588,
-          "y": 612,
+          "x": 528,
+          "y": 528,
+          "width": 96,
+          "height": 72,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "Dispatch cabin \u00b7 the frozen relief fleet"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 24
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 25
             },
             {
               "name": "kind",
@@ -734,7 +773,7 @@
       "properties": []
     },
     {
-      "id": 5,
+      "id": 7,
       "name": "Arrivals",
       "type": "objectgroup",
       "visible": true,
@@ -767,7 +806,7 @@
       "properties": []
     },
     {
-      "id": 6,
+      "id": 8,
       "name": "People",
       "type": "objectgroup",
       "visible": true,
@@ -775,7 +814,7 @@
       "properties": []
     },
     {
-      "id": 7,
+      "id": 9,
       "name": "Scene:six-north-wrecks",
       "type": "objectgroup",
       "visible": true,
@@ -831,8 +870,8 @@
         {
           "name": "egil",
           "point": true,
-          "x": 588,
-          "y": 612,
+          "x": 564,
+          "y": 636,
           "properties": [],
           "id": 16
         }

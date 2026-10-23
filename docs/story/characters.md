@@ -98,7 +98,7 @@ Sahir is the minister: a broad-faced, bearded man with a pale wrapped cap, plum 
 
 Amal runs the evening post: a young adult woman with a cream headscarf, dark side braid, blue coat and leather postal bag. She maintains the railway correspondence, forwards Kit’s letters and opens the postal stair after the palace seizure. She has routes, colleagues and a city to care for beyond the party’s quest. All three have independent native vector actors and portrait originals; the women use the female face construction.
 
-The companions have seen the capital barrier, learned where the two pact seals are held, and heard Sera’s river referral. After Namar only the western seal is open. Nell receives the news aboard if still ill; a recovered Nell travels through the desert and reviews the route at the flight chart. Kit’s concern remains practical and unresolved. The northern expedition is upcoming gameplay. Iria’s optional treatment is playable in either order relative to Namar.
+The companions have seen the capital barrier, learned where the two pact seals are held, and heard Sera’s river referral. Namar releases the western seal; Skeld independently releases the northern one. Nell receives the news aboard if still ill; a recovered Nell travels through the desert and reviews the route at the flight chart. Kit’s concern remains practical and unresolved. The northern expedition and Iria’s optional treatment are playable in either order relative to Namar.
 
 
 ## Chapter Six — Iria
@@ -108,3 +108,14 @@ The companions have seen the capital barrier, learned where the two pact seals a
 **Tavi** is an adult medical-launch pilot with dark hair, a broad jaw/brow, rust tunic, cream neck cloth and a pole in his right hand. He knows the old chain’s catch and will not bring patients to an unsafe landing. He carries the equipment first, then Nell, and resumes the regular route once the rain house is clear. Both have their own native actors and editable portraits; neither becomes a combatant.
 
 **Nell and Kit after treatment:** Kit has arranged water, a towel and a chair. Nell asks him to sit and chooses a short walk by the river. His care remains practical and occasionally flustered; no confession or mutual romance follows. Nell decides to continue, keeps her equipment and may join any legal active formation. Her recovery is permanent and can precede Namar; she discusses the Emperor’s earlier offer with Samira and takes part in the release journey.
+
+
+## Chapter Six — Skeld
+
+**King Edric** is a middle-aged ruler with a broad jaw, gray beard/hair, a low gold crown, dark blue coat and pale fur collar. He has already decided to leave the imperial pact before the party arrives. His expedition was turned back at Frostwatch. He authorizes Signe to release the seal, then publicly opens the fleet’s true orders beside Skeld’s false rescue log. He promises launches and stores without treating the discovery as a favor that must be repaid.
+
+**Signe** is an adult expedition leader with a side braid, blue winter coat, silver collar and climbing blade. Her female face construction differs from Edric/Egil’s broad brow and beard. She prepares porters, helps open the passage, carries the fleet’s orders home and operates the pact bell under the king’s commission. She remains a supporting actor.
+
+**Egil** is an older harbor pilot and bell-keeper with a heavy pale beard, blue cap, plum coat and sounding stick. He recognizes his father’s White Finch in the glacier. The official rescue account is wrong; he takes the nameplate and stays at the open records to meet the families before piloting the allied approach. His practical bell lessons give Kit something ordinary to bring back to Nell, ill or well. Neither Egil’s father nor the fleet’s passengers are restored.
+
+The winter dragon is a jagged ice-winged organic guardian, not a machine or the Benefactor’s body. It occupies the sanctuary’s pact bell; no dialogue explains its origin beyond the imagery the locals remember. Its passive breathing and attack motion use scene time. Its defeat changes the footing and opens a physical release, without ending the chapter.
