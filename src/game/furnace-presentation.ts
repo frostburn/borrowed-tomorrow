@@ -21,7 +21,7 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===FURNACE_ID?placement(u,hex):undefined,
   hint:b=>`${furnaceUnit(b)?.intent?.name??'Casting cycle'} · red X: next pour. Orange tracks: 6 damage at round end; cool after the following round.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['hammer-carrier'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['hammer-carrier'],newGame());},
   actor(scene,u,_hp,hex){
    if(u.id!==FURNACE_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;

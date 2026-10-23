@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 from copy import deepcopy
 
 root=Path(__file__).resolve().parents[2]
-art=root/'src/dev/art'
+art=root/'public/art/vector/benefactor'
 source=(art/'benefactor.svg').read_text()
 svg=ET.fromstring(source)
 assert (svg.attrib['width'],svg.attrib['height'])==('360','288')
@@ -55,3 +55,9 @@ ET.indent(page,space=' ')
 target=art/'benefactor-motion.svg';target.write_text(ET.tostring(page,encoding='unicode')+'\n')
 assert target.stat().st_size<=131072
 print(f'{target.relative_to(root)}: {target.stat().st_size} bytes; 12 native vector poses, shared part definitions')
+
+# Compact registered world actor and editable portrait are seeded only once.
+actor=root/'public/art/vector/benefactor.svg'
+actor.write_text(source.replace('width="360" height="288"','width="80" height="80"',1))
+registered=root/'public/art/vector/portrait-benefactor.svg'
+if not registered.exists():registered.write_text(portrait)

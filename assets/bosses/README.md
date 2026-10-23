@@ -1,11 +1,11 @@
 # The Benefactor: vector preview
 
-The Bosses workshop (`?dev=boss`) uses whole SVG artwork in the same broad polygonal direction as the party and Chapters One–Two. Its ivory porcelain, antique gold, indigo recesses and turquoise heart interpret the approved design at `8b21977:src/dev/art/benefactor-{0..2}-{0..1}.webp`. The heavy connected hands, serrated mantle, protruding ivory shoulder spikes, short solar rays, broken halo and completely empty face aperture define its silhouette. Fine painted ornament is deliberately replaced with broad lighting planes.
+The Bosses workshop (`?dev=boss`) uses whole SVG artwork in the same broad polygonal direction as the party and Chapters One–Two. Its ivory porcelain, antique gold, indigo recesses and turquoise heart interpret the approved design at `8b21977:public/art/vector/benefactor/benefactor-{0..2}-{0..1}.webp`. The heavy connected hands, serrated mantle, protruding ivory shoulder spikes, short solar rays, broken halo and completely empty face aperture define its silhouette. Fine painted ornament is deliberately replaced with broad lighting planes.
 
 Edit these originals directly:
 
-- `src/dev/art/benefactor.svg`: transparent 360 × 288 actor, at the original placement and scale.
-- `src/dev/art/benefactor-domain.svg`: 1024 × 480 domain, retaining the accepted platform coordinates and framing.
+- `public/art/vector/benefactor/benefactor.svg`: transparent 360 × 288 actor, at the original placement and scale.
+- `public/art/vector/benefactor/benefactor-domain.svg`: 1024 × 480 domain, retaining the accepted platform coordinates and framing.
 
 Both Benefactor files are self-contained vectors. There are no embedded bitmaps, external resources, panel seams, raster replacements or production dependencies. The native SVG decode is cached once for Phaser's canvas renderer; the final shared 2px raster treats boss, party, portraits and text alike. The same decoded motion atlas supplies an alpha hit mask for each pose. Its nineteen-hex footprint, phases, warnings, targeting, defensive effects and rewards are unchanged.
 
@@ -43,7 +43,7 @@ The developer preview offers sealed-intake and pressure-walk presets using the c
 
 ## Alban's flagship — dev only
 
-`python3 assets/bosses/export-flagship.py` reproduces ten small, self-contained SVGs under `src/dev/art/`. It draws the entire imperial green-iron hull, separate port/starboard cannon houses, armored bridge, survey deck, anonymous boarding marine and portrait from polygon geometry. Idle/fire pairs retract only the barrels and light the command ports; the casings retain identical anchors and dimensions. Propellers are separate runtime vector graphics driven by the scene clock. The whole flagship shares one slow translation: ±2px horizontally over 11 seconds and ±3px vertically over 8 seconds. Its parts retain their relative anchors; alpha picking follows the same shift. Deck, combat footprints, health panels and heroes stay fixed. Reduced motion restores the base pose. There are no embedded images or raster authoring dependencies.
+`python3 assets/bosses/export-flagship.py` reproduces ten small, self-contained SVGs under `public/art/vector/benefactor/`. It draws the entire imperial green-iron hull, separate port/starboard cannon houses, armored bridge, survey deck, anonymous boarding marine and portrait from polygon geometry. Idle/fire pairs retract only the barrels and light the command ports; the casings retain identical anchors and dimensions. Propellers are separate runtime vector graphics driven by the scene clock. The whole flagship shares one slow translation: ±2px horizontally over 11 seconds and ±3px vertically over 8 seconds. Its parts retain their relative anchors; alpha picking follows the same shift. Deck, combat footprints, health panels and heroes stay fixed. Reduced motion restores the base pose. There are no embedded images or raster authoring dependencies.
 
 The native files are deck 1008 × 480, hull 952 × 256, two battery pairs 192 × 184, bridge pair 224 × 232, marine 80 × 80 and portrait 128 × 128. The three component actors anchor at their occupied bases, with native alpha masks for projected-body targeting. The portrait is a vector viewBox of the hull. All assets share the final chunky 2px framebuffer with text and existing cast.
 

@@ -19,7 +19,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WARD_ID?bossPlacement({...u,hex}):undefined,
   hint:b=>`${wardUnit(b)?.intent?.name??'Optical circuit'} · break the lit projection to interrupt this beam and open the core. Both gone: core stays open.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['wind-engine'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['wind-engine'],newGame());},
   actor(scene,u,_hp,hex){
    if(u.id!==WARD_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;

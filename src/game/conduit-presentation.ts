@@ -1,3 +1,6 @@
+import {BATTLE_MAPS} from '../content/battle-maps';
+import {drawTileMap} from './tilemap';
+import {newGame} from '../rules/state';
 import type Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
 import { actorAsset } from '../content/actors';
@@ -35,7 +38,9 @@ export function conduitPresentation(encounter:Encounter):BattlePresentation{
     portrait:u=>u.id===REGULATOR_ID?CONDUIT_PORTRAIT:undefined,
     facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
     hint:b=>`${regulatorUnit(b).intent?.name??'Pressure cycle'}: move clear of the red X hexes before the regulator fires.`,
-    background(scene,world){nativeTexture(scene,chamberKey);world.add(scene.add.image(0,0,chamberKey).setOrigin(0));},
+    background(scene,world){
+      if(encounter.id==='domain-collector'){drawTileMap(scene,world,BATTLE_MAPS[encounter.id],newGame());return;}
+nativeTexture(scene,chamberKey);world.add(scene.add.image(0,0,chamberKey).setOrigin(0));},
     actor(scene,u,hp){
       if(u.id!==REGULATOR_ID)return;
       const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;

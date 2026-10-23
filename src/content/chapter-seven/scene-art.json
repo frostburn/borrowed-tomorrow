@@ -1,0 +1,668 @@
+{
+  "hollowsill": [
+    {
+      "key": "scene-seven-hollowsill-back",
+      "url": "art/vector/chapter-seven/hollowsill-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-hollowsill-ground",
+      "url": "art/vector/chapter-seven/hollowsill-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-hollowsill-distant-god",
+      "url": "art/vector/chapter-seven/hollowsill-distant-god.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.5,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-hollowsill-lamp",
+      "url": "art/vector/chapter-seven/hollowsill-lamp.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": 744,
+      "layerId": 5
+    },
+    {
+      "key": "scene-seven-hollowsill-crossing-shelter",
+      "url": "art/vector/chapter-seven/hollowsill-crossing-shelter.svg",
+      "x": 923,
+      "y": 665,
+      "width": 288,
+      "height": 120,
+      "depth": 785,
+      "layerId": 6
+    }
+  ],
+  "takenwater": [
+    {
+      "key": "scene-seven-takenwater-back",
+      "url": "art/vector/chapter-seven/takenwater-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-takenwater-ground",
+      "url": "art/vector/chapter-seven/takenwater-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-takenwater-station-house",
+      "url": "art/vector/chapter-seven/takenwater-station-house.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.2,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-takenwater-lamp",
+      "url": "art/vector/chapter-seven/takenwater-lamp.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": 744,
+      "layerId": 5
+    }
+  ],
+  "firstfield": [
+    {
+      "key": "scene-seven-firstfield-back",
+      "url": "art/vector/chapter-seven/firstfield-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-firstfield-ground",
+      "url": "art/vector/chapter-seven/firstfield-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-firstfield-chest",
+      "url": "art/vector/chapter-seven/firstfield-chest.svg",
+      "x": 1080,
+      "y": 726,
+      "width": 60,
+      "height": 48,
+      "depth": 774,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-firstfield-market-stall",
+      "url": "art/vector/chapter-seven/firstfield-market-stall.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": 684,
+      "layerId": 5
+    }
+  ],
+  "quietward": [
+    {
+      "key": "scene-seven-quietward-back",
+      "url": "art/vector/chapter-seven/quietward-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-quietward-ground",
+      "url": "art/vector/chapter-seven/quietward-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-quietward-western-bed",
+      "url": "art/vector/chapter-seven/quietward-western-bed.svg",
+      "x": 380,
+      "y": 600,
+      "width": 132,
+      "height": 94,
+      "depth": 694,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-quietward-eastern-bed",
+      "url": "art/vector/chapter-seven/quietward-eastern-bed.svg",
+      "x": 1075,
+      "y": 600,
+      "width": 132,
+      "height": 94,
+      "depth": 694,
+      "layerId": 5
+    },
+    {
+      "key": "scene-seven-quietward-lamp",
+      "url": "art/vector/chapter-seven/quietward-lamp.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": 744,
+      "layerId": 6
+    }
+  ],
+  "seasonstreet": [
+    {
+      "key": "scene-seven-seasonstreet-back",
+      "url": "art/vector/chapter-seven/seasonstreet-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-seasonstreet-ground",
+      "url": "art/vector/chapter-seven/seasonstreet-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-seasonstreet-river-wall",
+      "url": "art/vector/chapter-seven/seasonstreet-river-wall.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.2,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-seasonstreet-lamp",
+      "url": "art/vector/chapter-seven/seasonstreet-lamp.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": 730,
+      "layerId": 5
+    }
+  ],
+  "lastrefuge": [
+    {
+      "key": "scene-seven-lastrefuge-back",
+      "url": "art/vector/chapter-seven/lastrefuge-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-lastrefuge-ground",
+      "url": "art/vector/chapter-seven/lastrefuge-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-lastrefuge-chest",
+      "url": "art/vector/chapter-seven/lastrefuge-chest.svg",
+      "x": 480,
+      "y": 730,
+      "width": 60,
+      "height": 48,
+      "depth": 778,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-lastrefuge-returning-shelter",
+      "url": "art/vector/chapter-seven/lastrefuge-returning-shelter.svg",
+      "x": 375,
+      "y": 575,
+      "width": 288,
+      "height": 120,
+      "depth": 695,
+      "layerId": 5
+    },
+    {
+      "key": "scene-seven-lastrefuge-resting-bed",
+      "url": "art/vector/chapter-seven/lastrefuge-resting-bed.svg",
+      "x": 1063,
+      "y": 657,
+      "width": 132,
+      "height": 94,
+      "depth": 751,
+      "layerId": 6
+    }
+  ],
+  "sunthrone": [
+    {
+      "key": "scene-seven-sunthrone-back",
+      "url": "art/vector/chapter-seven/sunthrone-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-seven-sunthrone-ground",
+      "url": "art/vector/chapter-seven/sunthrone-ground.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-seven-sunthrone-monument",
+      "url": "art/vector/chapter-seven/sunthrone-monument.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.5,
+      "layerId": 4
+    },
+    {
+      "key": "scene-seven-sunthrone-revealed-sun",
+      "url": "art/vector/chapter-seven/sunthrone-revealed-sun.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.5,
+      "layerId": 5
+    },
+    {
+      "key": "scene-seven-sunthrone-revealed-heart",
+      "url": "art/vector/chapter-seven/sunthrone-revealed-heart.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.5,
+      "layerId": 6
+    }
+  ],
+  "homecoming": [
+    {
+      "key": "scene-station-1",
+      "url": "art/vector/scenes/station/layer-1.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -1000,
+      "layerId": 1,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-station-2",
+      "url": "art/vector/scenes/station/layer-2.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -999,
+      "layerId": 2,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-station-3",
+      "url": "art/vector/scenes/station/layer-3.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -998,
+      "layerId": 3,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scenery-station-house",
+      "url": "art/vector/scenery/station-house.svg",
+      "x": 120,
+      "y": 48,
+      "depth": 259,
+      "layerId": 4,
+      "width": 264,
+      "height": 216
+    },
+    {
+      "key": "scenery-coach",
+      "url": "art/vector/scenery/coach.svg",
+      "x": 360,
+      "y": 48,
+      "depth": 211,
+      "layerId": 5,
+      "width": 288,
+      "height": 168
+    },
+    {
+      "key": "scenery-river-wall",
+      "url": "art/vector/scenery/river-wall.svg",
+      "x": 432,
+      "y": 168,
+      "depth": 259,
+      "layerId": 7,
+      "width": 192,
+      "height": 96
+    },
+    {
+      "key": "scenery-river-wall",
+      "url": "art/vector/scenery/river-wall.svg",
+      "x": 624,
+      "y": 168,
+      "depth": 259,
+      "layerId": 8,
+      "width": 192,
+      "height": 96
+    },
+    {
+      "key": "scenery-river-wall",
+      "url": "art/vector/scenery/river-wall.svg",
+      "x": 816,
+      "y": 168,
+      "depth": 259,
+      "layerId": 9,
+      "width": 192,
+      "height": 96
+    },
+    {
+      "key": "scenery-stone-steps",
+      "url": "art/vector/scenery/stone-steps.svg",
+      "x": 672,
+      "y": 192,
+      "depth": -991,
+      "layerId": 10,
+      "width": 144,
+      "height": 96
+    },
+    {
+      "key": "scenery-market-stall",
+      "url": "art/vector/scenery/market-stall.svg",
+      "x": 648,
+      "y": 312,
+      "depth": 451,
+      "layerId": 11,
+      "width": 192,
+      "height": 168
+    },
+    {
+      "key": "scenery-canopy",
+      "url": "art/vector/scenery/canopy.svg",
+      "x": -72,
+      "y": 336,
+      "depth": 571,
+      "layerId": 12,
+      "width": 216,
+      "height": 240
+    },
+    {
+      "key": "scenery-canopy",
+      "url": "art/vector/scenery/canopy.svg",
+      "x": 864,
+      "y": 384,
+      "depth": 619,
+      "layerId": 13,
+      "width": 216,
+      "height": 240
+    },
+    {
+      "key": "scenery-canopy",
+      "url": "art/vector/scenery/canopy.svg",
+      "x": -24,
+      "y": -72,
+      "depth": 163,
+      "layerId": 14,
+      "width": 216,
+      "height": 240
+    },
+    {
+      "key": "scenery-fir",
+      "url": "art/vector/scenery/fir.svg",
+      "x": 888,
+      "y": -24,
+      "depth": 235,
+      "layerId": 15,
+      "width": 168,
+      "height": 264
+    },
+    {
+      "key": "scenery-lamp",
+      "url": "art/vector/scenery/lamp.svg",
+      "x": 384,
+      "y": 144,
+      "depth": 283,
+      "layerId": 16,
+      "width": 48,
+      "height": 144
+    },
+    {
+      "key": "scenery-lamp",
+      "url": "art/vector/scenery/lamp.svg",
+      "x": 576,
+      "y": 408,
+      "depth": 547,
+      "layerId": 17,
+      "width": 48,
+      "height": 144
+    },
+    {
+      "key": "scenery-lamp",
+      "url": "art/vector/scenery/lamp.svg",
+      "x": 864,
+      "y": 288,
+      "depth": 427,
+      "layerId": 18,
+      "width": 48,
+      "height": 144
+    },
+    {
+      "key": "scenery-planter",
+      "url": "art/vector/scenery/planter.svg",
+      "x": 144,
+      "y": 384,
+      "depth": 451,
+      "layerId": 20,
+      "width": 144,
+      "height": 72
+    },
+    {
+      "key": "scenery-planter",
+      "url": "art/vector/scenery/planter.svg",
+      "x": 840,
+      "y": 504,
+      "depth": 571,
+      "layerId": 21,
+      "width": 144,
+      "height": 72
+    }
+  ],
+  "seaholiday": [
+    {
+      "key": "scene-six-lastshore-back",
+      "url": "art/vector/chapter-six/lastshore-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-lastshore-floor",
+      "url": "art/vector/chapter-six/lastshore-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-shore-bags",
+      "url": "art/vector/chapter-six/shore-bags.svg",
+      "x": 464,
+      "y": 486,
+      "width": 67,
+      "height": 62,
+      "depth": 548,
+      "layerId": 3
+    }
+  ],
+  "battle-domain-hounds": [
+    {
+      "key": "scene-seven-battle-domain-hounds",
+      "url": "art/vector/chapter-seven/battle-domain-hounds.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-domain-collector": [
+    {
+      "key": "scene-seven-battle-domain-collector",
+      "url": "art/vector/chapter-seven/battle-domain-collector.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-domain-furnace": [
+    {
+      "key": "scene-seven-battle-domain-furnace",
+      "url": "art/vector/chapter-seven/battle-domain-furnace.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-domain-ward": [
+    {
+      "key": "scene-seven-battle-domain-ward",
+      "url": "art/vector/chapter-seven/battle-domain-ward.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-domain-dragon": [
+    {
+      "key": "scene-seven-battle-domain-dragon",
+      "url": "art/vector/chapter-seven/battle-domain-dragon.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-domain-patrol": [
+    {
+      "key": "scene-seven-battle-domain-patrol",
+      "url": "art/vector/chapter-seven/battle-domain-patrol.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-benefactor-body": [
+    {
+      "key": "scene-seven-battle-benefactor-body",
+      "url": "art/vector/chapter-seven/battle-benefactor-body.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-benefactor-sun": [
+    {
+      "key": "scene-seven-battle-benefactor-sun",
+      "url": "art/vector/chapter-seven/battle-benefactor-sun.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ],
+  "battle-benefactor-heart": [
+    {
+      "key": "scene-seven-battle-benefactor-heart",
+      "url": "art/vector/chapter-seven/battle-benefactor-heart.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1024,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    }
+  ]
+}

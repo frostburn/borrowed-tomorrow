@@ -12,13 +12,14 @@ export const SIX_PREREQUISITES:Record<string,string>={
 };
 /** The expedition is part of Chapter Six; a western seal alone grants no departure. */
 export function validateSix(chapter:unknown,boundary:unknown,loc:GameState['location'],flags:Record<string,boolean>){
- if(chapter!=='chapter-six'){
+ const domain=chapter==='chapter-seven';
+ if(chapter!=='chapter-six'&&!domain){
   if(Object.keys(SIX_PREREQUISITES).some(id=>flags[id]))throw new Error('The Chapter Six route has not opened yet.');
   return;
  }
- if(!flags.chapterFiveComplete||!flags.nellIll||!flags.allAnchorsSeen||!flags.emperorOfferTold||(boundary!==null&&boundary!==SEVENTH_CHAPTER)||!SIX_MAP_IDS.includes(loc.map))throw new Error('The capital approach checkpoint is incomplete.');
+ if(!flags.chapterFiveComplete||!flags.nellIll||!flags.allAnchorsSeen||!flags.emperorOfferTold||(!domain&&((boundary!==null&&boundary!==SEVENTH_CHAPTER)||!SIX_MAP_IDS.includes(loc.map))))throw new Error('The capital approach checkpoint is incomplete.');
  if(flags.capitalOpened&&(!flags.northSealBroken||!flags.desertSealBroken))throw new Error('Both foreign seals must be released before the capital opens.');
- if(Boolean(flags.chapterSixComplete)!==(boundary===SEVENTH_CHAPTER))throw new Error('The hollow-sun departure is incomplete.');
+ if(!domain&&Boolean(flags.chapterSixComplete)!==(boundary===SEVENTH_CHAPTER))throw new Error('The hollow-sun departure is incomplete.');
  if(flags.capitalAssaultCommitted&&(typeof flags.capitalRiskAccepted!=='boolean'||flags.capitalRiskAccepted===Boolean(flags.nellRecovered)))throw new Error('The final preparation choice is inconsistent.');
  if((flags.capitalAudienceSeen||loc.map==='lastmorning'||loc.map==='lastshore')&&!flags.nellRecovered)throw new Error('The remembered morning requires Nell’s recovery.');
  if(flags.capitalAssaultCommitted&&flags.nellRecovered&&!flags.capitalMorningLeft)throw new Error('Nell has not left the remembered morning.');

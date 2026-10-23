@@ -1,3 +1,4 @@
+import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
 import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
 import { configureSerpent,prepareSerpent,leaveSunGlass,SUN_SERPENT_ID } from './sun-serpent';
@@ -66,12 +67,13 @@ export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
   imperial?:{openedRound?:number};
+  benefactor?:{form:0|1|2};
   sunGlass?:{round:number;cells:Hex[]};
   winterIce?:Hex[];
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'emperor'|'lightbearer'|'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { benefactorForm?:0|1|2; boss?:'benefactor'|'emperor'|'lightbearer'|'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   herald:{name:'Sun herald',hp:138,speed:4,movement:3,armor:2,abilities:['sunbeam','strike']as AbilityId[],bonus:7},
   glasswing:{name:'Glass wing',hp:66,speed:8,movement:4,armor:1,flying:true,abilities:['splinter','strike']as AbilityId[],bonus:5},
@@ -118,6 +120,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
     evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
+  if(e.boss==='benefactor')configureBenefactor(battle,e.benefactorForm??0);
   if(e.boss==='conduit')configureConduit(battle);
   if(e.boss==='furnace')configureFurnace(battle);
   configureDawnwatch(battle,e);
@@ -210,7 +213,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);
+  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -219,7 +222,7 @@ function nextRound(b: Battle) {
   beginTurn(b);
 }
 function ended(b:Battle){
-  prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);
+  prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);
   if(b.result)return true;
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
@@ -328,10 +331,14 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     prepareImperial(b);if(u.intent?.power===0){log(b,u.id===LIGHTBEARER_ID?'Nell holds the lantern shut.':'The crown pauses over the unwritten hour.');finishTurn(b);return;}const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===WINTER_DRAGON_ID){
-    prepareWinterDragon(b);prepareImperial(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+    prepareWinterDragon(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===SUN_SERPENT_ID){
     prepareSerpent(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+  }
+  if(u.id===BENEFACTOR_ID&&b.benefactor){
+    prepareBenefactor(b);if(u.intent?.power===0){log(b,'The broken source draws no more light.');finishTurn(b);return;}
+    const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===WARD_ID){
     prepareWard(b);const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;

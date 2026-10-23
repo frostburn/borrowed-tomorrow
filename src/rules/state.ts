@@ -12,13 +12,13 @@ export const FIFTH_CHAPTER = 'chapter-five:anchors';
 export const SIXTH_CHAPTER = 'chapter-six:capital-approach';
 export const SEVENTH_CHAPTER='chapter-seven:hollow-sun';
 export type HeroId = 'nell' | 'orrin' | 'kit' | 'celia' | 'petra';
-export type MapId = 'stillcity'|'lastpalace'|'lastmorning'|'lastshore'|'crown'|'laststation'|'bellharbor' | 'frostwatch' | 'glacier' | 'wintershrine' | 'capitalquay' | 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
+export type MapId = 'hollowsill'|'takenwater'|'firstfield'|'quietward'|'seasonstreet'|'lastrefuge'|'sunthrone'|'homecoming'|'seaholiday'|'stillcity'|'lastpalace'|'lastmorning'|'lastshore'|'crown'|'laststation'|'bellharbor' | 'frostwatch' | 'glacier' | 'wintershrine' | 'capitalquay' | 'riverhaven' | 'canopy' | 'rainhouse' | 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;
   version: typeof SAVE_VERSION;
   campaign: typeof CAMPAIGN;
-  chapter: 'chapter-one' | 'chapter-two' | 'chapter-three' | 'chapter-four' | 'chapter-five' | 'chapter-six';
+  chapter: 'chapter-one' | 'chapter-two' | 'chapter-three' | 'chapter-four' | 'chapter-five' | 'chapter-six' | 'chapter-seven';
   location: { map: MapId; x: number; y: number };
   party: HeroState[];
   activeParty: HeroId[];
@@ -38,7 +38,7 @@ export function newGame(): GameState {
     flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), journal: ['home'], boundary: null, playSeconds: 0,
   };
 }
-export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 4000 ? 12 : s.xp >= 3500 ? 11 : s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
+export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 8200 ? 15 : s.xp >= 6600 ? 14 : s.xp >= 5200 ? 13 : s.xp >= 4000 ? 12 : s.xp >= 3500 ? 11 : s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
 export const maxHp = (id: HeroId, s: Pick<GameState, 'xp'>) => BASE_STATS[id].maxHp + (level(s) - 1) * 6;
 export function restoreParty(s: GameState) { for (const hero of s.party) { if(!heroAvailable(s,hero.id))continue;hero.hp = maxHp(hero.id, s); hero.focus = 6; } }
 export function recruitOrrin(s: GameState) {
@@ -84,3 +84,9 @@ export function beginChapterSix(s:GameState):boolean {
 }
 export const partyLeader=(s:GameState):HeroId=>s.activeParty.includes('nell')?'nell':s.activeParty[0];
 export function remember(s: GameState, entry: string) { if (!s.journal.includes(entry)) s.journal.push(entry); }
+
+/** The fragment survives only the recovered capital outcome. Load the domain first. */
+export function beginChapterSeven(s:GameState):boolean {
+ if(s.chapter!=='chapter-six'||s.boundary!==SEVENTH_CHAPTER||!s.flags.chapterSixComplete||!s.flags.nellRecovered||s.flags.nellLost)return false;
+ s.chapter='chapter-seven';s.boundary=null;s.location={map:'hollowsill',x:32,y:34};return true;
+}

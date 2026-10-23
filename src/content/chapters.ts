@@ -1,4 +1,7 @@
-import { beginChapterTwo,beginChapterThree,beginChapterFour,beginChapterFive,beginChapterSix,SIXTH_CHAPTER,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,type GameState,type MapId } from '../rules/state';
+import {CHAPTER_SEVEN_MAPS} from './chapter-seven/maps';
+import {resumeChapterSeven,interactChapterSeven} from './chapter-seven/interactions';
+import * as seven from './chapter-seven/story';
+import { beginChapterTwo,beginChapterThree,beginChapterFour,beginChapterFive,beginChapterSix,beginChapterSeven,SEVENTH_CHAPTER,SIXTH_CHAPTER,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,type GameState,type MapId } from '../rules/state';
 import { CHAPTER_ONE_MAPS } from './chapter-one/maps';
 import { CHAPTER_TWO_MAPS } from './chapter-two/maps';
 import { CHAPTER_THREE_MAPS } from './chapter-three/maps';
@@ -91,6 +94,12 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
     story:{journal:six.JOURNAL,objective:six.objective,resume:resumeChapterSix,interact:interactChapterSix},
     ending:{html:'<div class="chapter-name">Next: Chapter Seven · The God Who Lent Tomorrow</div><p>The Emperor is defeated and the capital has landed. Nell and the fragment are safe. The hollow sun opens onto the Benefactor’s domain.</p><p>The ship, supplies and foreign landings remain available while you prepare the final crossing.</p>',returnLabel:'Return to the allied landing',exportLabel:'Export hollow-sun departure save'},
   },
+ 'chapter-seven':{
+  title:'Chapter Seven',maps:mapIds(CHAPTER_SEVEN_MAPS),restoreAllMaps:true,
+  entry:{from:'chapter-six',boundary:SEVENTH_CHAPTER,loading:'Loading the hollow sun…',begin:beginChapterSeven},
+  story:{journal:seven.JOURNAL,objective:seven.objective,resume:resumeChapterSeven,interact:interactChapterSeven},
+  ending:{html:'<div class="chapter-name">Borrowed Tomorrow</div><p>The Benefactor is gone. The stolen days and living captives have returned. Its claim can never be renewed.</p><p>There is rebuilding to do, and people to remember. Today, Nell and her friends are beside the sea.</p><p>Thank you for playing.</p>',returnLabel:'Return to the picnic',exportLabel:'Export completed adventure'},
+ },
 };
 
 export function nextChapter(state:Pick<GameState,'chapter'|'boundary'>){

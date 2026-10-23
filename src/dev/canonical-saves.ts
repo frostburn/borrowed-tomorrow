@@ -1,3 +1,4 @@
+import {ENCOUNTERS as SEVEN_ENCOUNTERS} from '../content/chapter-seven/encounters';
 import { ENCOUNTERS as SIX_ENCOUNTERS } from '../content/chapter-six/encounters';
 import { ENCOUNTERS as FINALE_ENCOUNTERS } from '../content/chapter-six/capital/encounters';
 import { ENCOUNTERS as NORTH_ENCOUNTERS } from '../content/chapter-six/north/encounters';
@@ -151,4 +152,22 @@ export function chapterSixFinaleStart(recovered=false){
  for(const id of ['capital-procession','palace-command']){const e=FINALE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
  if(recovered)for(const flag of ['capitalAudienceSeen','capitalMorningSeen','capitalMorningQuestion','capitalMorningLeft']){s.flags[flag]=true;s.journal.push(flag);}
  s.location=arrival('lastpalace','memory');restoreParty(s);return decodeSave(JSON.stringify(s));
+}
+
+/** A fresh authored completion of the recovered capital, never a live save. */
+export function chapterSevenDeparture(){
+ const s=chapterSixFinaleStart(true);
+ for(const flag of ['capitalWarningSeen','capitalAssaultCommitted','emperorSeen','emperorConfronted','emperorWon','emperorFallen','capitalReleased','capitalLandingSeen','chapterSixComplete']){s.flags[flag]=true;s.journal.push(flag);}
+ s.flags.capitalRiskAccepted=false;
+ const e=FINALE_ENCOUNTERS['imperial-vessel'];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);
+ s.boundary='chapter-seven:hollow-sun';s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+}
+export function chapterSevenStart(){
+ const s=chapterSevenDeparture();s.chapter='chapter-seven';s.boundary=null;s.location=arrival('hollowsill','start');return decodeSave(JSON.stringify(s));
+}
+export function chapterSevenRefugeStart(){
+ const s=chapterSevenStart();
+ for(const flag of ['domainEntered','domainWaterSeen','domainHoundsConfronted','domainHoundsWon','domainCollectorConfronted','domainCollectorWon','takenPeopleFreed','firstHarvestSeen','domainFurnaceConfronted','domainFurnaceWon','harvestFreed','firstHospiceSeen','domainWardConfronted','domainWardWon','wardPeopleFreed','seasonStreetSeen','domainDragonConfronted','domainDragonWon','seasonsFreed']){s.flags[flag]=true;s.journal.push(flag);}
+ for(const id of ['domain-hounds','domain-collector','domain-furnace','domain-ward','domain-dragon']){const e=SEVEN_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ s.bandages=12;s.location=arrival('lastrefuge','start');restoreParty(s);return decodeSave(JSON.stringify(s));
 }

@@ -21,7 +21,7 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WINTER_DRAGON_ID?bossPlacement({...u,hex}):undefined,
   hint:b=>`${winterDragon(b)?.intent?.phase}. Loose ice costs 2 movement and deals 6 cold damage at round end.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['winter-dragon'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['winter-dragon'],newGame());},
   actor(scene,u,hp,hex){
    if(u.id!==WINTER_DRAGON_ID)return;
    for(const {key}of DRAGON_ASSETS){
