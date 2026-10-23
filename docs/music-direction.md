@@ -152,7 +152,7 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 
 ## Approved future regions — all in 31-EDO
 
-These are composition plans for Chapters Six–Seven. The regional scores are not implemented yet; the shared pitch parser already supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+These collections guide Chapters Six–Seven. Namar’s desert scores are implemented below; northern, jungle and domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
 
 ### Desert — neutral intervals and score spelling
 

@@ -31,6 +31,17 @@ function visit(s=chapterSixStart()){
 function climb(water=false){
  const v=visit();resumeChapterSix(v.h);v.flush();v.act('six-chart');v.choose(0);v.act('namar-palace');v.act('palace-audience');v.act('palace-route');v.choose(water?1:0);v.win();v.act('palace-roofs');return v;
 }
+it('records the foreign routes and medical referral together before saving the completed briefing',()=>{
+ const v=visit(),snapshots:ReturnType<typeof chapterSixStart>[]=[],commit=v.h.commit;
+ v.h.commit=(flag,entry)=>{commit(flag,entry);snapshots.push(structuredClone(v.s));};
+ resumeChapterSix(v.h);v.flush();
+ expect(snapshots.filter(s=>s.flags.sixRoutesKnown)).toHaveLength(1);
+ for(const s of snapshots.filter(s=>s.flags.sixRoutesKnown)){expect(s.flags.jungleLeadKnown).toBe(true);expect(s.journal).toEqual(expect.arrayContaining(['sixRoutesKnown','jungleLeadKnown']));}
+});
+it('the palace bar blocks its actual doorway during the seizure and reopens after the postal escape',()=>{
+ const map=MAPS.sunpalace;
+ expect(walkable(map,31,33)).toBe(true);expect(walkable(map,31,33,{flags:{palaceCoup:true}})).toBe(false);expect(walkable(map,31,33,{flags:{palaceCoup:true,palaceEscaped:true}})).toBe(true);
+});
 for(const water of [false,true])it(`completes the ${water?'service channel':'gallery'} route, public western seal and return without healing Nell or granting Chapter Six completion`,()=>{
  const v=climb(water),s=v.s,gear=structuredClone(s.inventory.characters),formation=[...s.activeParty];
  expect(s.flags.palaceWaterRoute).toBe(water);expect(ownedCopies(s.inventory,'sunmesh-coat')).toBe(1);

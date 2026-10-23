@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 10,
-  "nextobjectid": 28,
+  "nextobjectid": 30,
   "properties": [
     {
       "name": "name",
@@ -874,6 +874,54 @@
             }
           ],
           "id": 15
+        },
+        {
+          "name": "western-watch",
+          "point": true,
+          "x": 996,
+          "y": 732,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "namar-watch"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "desertReleaseReady"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "desertSealBroken"
+            }
+          ],
+          "id": 16
+        },
+        {
+          "name": "eastern-watch",
+          "point": true,
+          "x": 1044,
+          "y": 732,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "namar-watch"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "desertReleaseReady"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "desertSealBroken"
+            }
+          ],
+          "id": 17
         }
       ],
       "properties": []
@@ -890,7 +938,7 @@
           "x": 492,
           "y": 684,
           "properties": [],
-          "id": 16
+          "id": 18
         },
         {
           "name": "orrin",
@@ -898,7 +946,7 @@
           "x": 444,
           "y": 708,
           "properties": [],
-          "id": 17
+          "id": 19
         },
         {
           "name": "petra",
@@ -906,7 +954,7 @@
           "x": 540,
           "y": 732,
           "properties": [],
-          "id": 18
+          "id": 20
         },
         {
           "name": "celia",
@@ -914,7 +962,7 @@
           "x": 492,
           "y": 756,
           "properties": [],
-          "id": 19
+          "id": 21
         },
         {
           "name": "amal",
@@ -922,7 +970,7 @@
           "x": 564,
           "y": 660,
           "properties": [],
-          "id": 20
+          "id": 22
         }
       ],
       "properties": []
@@ -939,7 +987,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 21
+          "id": 23
         },
         {
           "name": "orrin",
@@ -947,7 +995,7 @@
           "x": 708,
           "y": 756,
           "properties": [],
-          "id": 22
+          "id": 24
         },
         {
           "name": "petra",
@@ -955,7 +1003,7 @@
           "x": 852,
           "y": 756,
           "properties": [],
-          "id": 23
+          "id": 25
         },
         {
           "name": "celia",
@@ -963,7 +1011,7 @@
           "x": 828,
           "y": 804,
           "properties": [],
-          "id": 24
+          "id": 26
         },
         {
           "name": "samira",
@@ -971,7 +1019,7 @@
           "x": 876,
           "y": 708,
           "properties": [],
-          "id": 25
+          "id": 27
         },
         {
           "name": "sahir",
@@ -979,7 +1027,7 @@
           "x": 1020,
           "y": 732,
           "properties": [],
-          "id": 26
+          "id": 28
         },
         {
           "name": "amal",
@@ -987,7 +1035,7 @@
           "x": 924,
           "y": 780,
           "properties": [],
-          "id": 27
+          "id": 29
         }
       ],
       "properties": []

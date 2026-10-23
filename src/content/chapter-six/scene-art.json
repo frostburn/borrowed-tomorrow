@@ -21,6 +21,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-six-mooring-city-life",
+      "url": "art/vector/chapter-six/mooring-city-life.svg",
+      "x": 802,
+      "y": 365,
+      "width": 80,
+      "height": 64,
+      "depth": -998.5,
+      "layerId": 3
+    },
+    {
       "key": "scene-six-mooring-rail",
       "url": "art/vector/chapter-six/mooring-rail.svg",
       "x": 0,

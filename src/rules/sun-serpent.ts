@@ -34,6 +34,7 @@ export function prepareSerpent(b:Battle){
   intent={round:b.round,name,baseName:name,phase:loose?.appearance==='serpent-west'?'Western coil loose':loose?'Eastern coil loose':'Both coils broken',cells:primary,primary,glass:b.sunGlass?.round===b.round-1?b.sunGlass.cells.map(h=>({...h})):[],power:living.length?24:19};
   head.intent=intent;
  }
+ intent.phase=loose?.appearance==='serpent-west'?'Western coil loose':loose?'Eastern coil loose':'Both coils broken';
  const reflections:Hex[]=[];
  for(const side of ['serpent-west','serpent-east']){
   if(!coils.some(u=>u.id===side&&u.hp>0))continue;

@@ -716,6 +716,11 @@
               "name": "sprite",
               "type": "string",
               "value": "sahir"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "desertReleaseReady"
             }
           ],
           "id": 5

@@ -1,3 +1,4 @@
+import { PactCinematic } from './pact-cinematic';
 import { ClaimCinematic } from './claim-cinematic';
 import { FlagshipCinematic } from './flagship-cinematic';
 import { WardCinematic } from './ward-cinematic';
@@ -29,6 +30,7 @@ export class Cutscene {
   private ward?:WardCinematic;
   private flagship?:FlagshipCinematic;
   private claim?:ClaimCinematic;
+  private pact?:PactCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
@@ -42,6 +44,7 @@ export class Cutscene {
       const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setAlpha(actor.projection?.72:1).setData('world-actor',true).setDepth(p.y);
       image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
     }
+    if(script.id==='six-sealed'||script.id==='six-public')this.pact=new PactCinematic(scene,world);
     if(script.id==='five-benefactor-claim')this.claim=new ClaimCinematic(scene,world);
     if(script.id==='five-flagship-approach')this.flagship=new FlagshipCinematic(scene,world);
     if(script.id==='five-wind-lift'||script.id==='five-wind-transfer')this.ward=new WardCinematic(scene,world);
@@ -83,7 +86,7 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1);}
-    if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){
@@ -111,7 +114,7 @@ export class Cutscene {
   }
   reframe(){const p=this.tracked?.active?this.tracked:this.focus?pixel(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.scene.cameras.main.stopFollow();
+    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

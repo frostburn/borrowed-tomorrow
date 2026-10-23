@@ -63,3 +63,9 @@ for name,model in [('samira',samira),('sahir',sahir),('amal',amal)]:
  path=ART/f'portrait-{name}.svg'
  if not path.exists():path.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>{name} portrait</title><path d="M0 0H128V128H0Z" fill="#33434f"/>{portraits[name]}</svg>\n')
 print('Exported Samira, Sahir and Amal. Retained editable portrait originals.')
+
+# The city watch retains its own uniform while sharing the established human outline.
+source=(ART/'dawn-soldier.svg').read_text()
+colours={'#8b9b9b':'#b6a079','#263e53':'#385e61','#626d7f':'#608c80','#d9ae62':'#e3bf78'}
+import re
+(ART/'namar-watch.svg').write_text(re.sub(r'#[0-9a-f]{6}',lambda m:colours.get(m[0],m[0]),source))

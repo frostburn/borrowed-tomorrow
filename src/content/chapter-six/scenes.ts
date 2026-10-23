@@ -7,7 +7,7 @@ const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=
 export const sealed=()=>scene('outermooring','six-sealed','Chapter Six · The Emperor’s Last Day',[
  line('The outer mooring','The landing bridge unfolds. Across the gap, a woman pulls a handcart through the capital gate.',{focus:{x:32,y:13},cut:true}),
  line('Alda','Hold for the bridge latch. Kit, pass me that line.',{focus:{x:32,y:25}}),
- line('The bridge','A pale wall descends across its far end. The bridge strikes it and buckles. Behind the wall, the handcart keeps moving.',{cue:'resonance',focus:{x:32,y:19}}),
+ line('The bridge','A pale wall descends across its far end. The bridge strikes it and buckles. Behind the wall, the handcart keeps moving.',{cue:'resonance',effect:'pact-seal',cut:true,duration:1450,focus:{x:32,y:19}}),
  line('The Emperor','Withdraw your ship. The capital is under the protection of the old pact.'),
  line('Petra','There are people outside your gate.'),
  line('The Emperor','I have room for those already here. I will not lose them too.'),
@@ -115,7 +115,7 @@ export const publicBreak=()=>scene('namar','six-public','The western seal',[
  line('Minister Sahir','And when the Benefactor comes for us?'),
  line('Queen Samira','We’ll keep our people here and ask our neighbors to stand with us. We won’t pay for safety with theirs.'),
  line('Amal','The postal boats are ready. The ward crews have already sent their lists.'),
- line('The bronze band','Samira lays the band across the canal bollard and strikes it with the release lever. The lettering goes dark.',{cue:'resonance',duration:800,actors:{samira:{to:{x:35,y:29}}}}),
+ line('The bronze band','Samira lays the band across the canal bollard and strikes it with the release lever. The lettering goes dark.',{cue:'resonance',effect:'pact-break',cut:true,duration:1100,focus:{x:35,y:29},actors:{samira:{to:{x:35,y:29}}}}),
  line('Orrin','The western return is open.'),
  line('Queen Samira','Take our navigators aboard. The canal barges can carry families out of the capital when the gate opens.'),
  line('Petra','The northern seal is still holding. We’ll need those barges ready.'),

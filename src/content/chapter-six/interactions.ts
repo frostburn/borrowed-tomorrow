@@ -3,7 +3,7 @@ import { arrival } from '../maps';
 import { SAY,type Dialogue } from '../dialogue';
 import { receiveItem } from '../../rules/inventory';
 import type { MapId } from '../../rules/state';
-import { restoreParty } from '../../rules/state';
+import { remember,restoreParty } from '../../rules/state';
 import { buySupply } from '../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
@@ -12,7 +12,9 @@ export function resumeChapterSix(h:StoryHost){
  const show=(d:Dialogue,flag:string,after?:()=>void)=>h.talk({...d,done:()=>{h.commit(flag,flag);after?.();}});
  if(m==='outermooring'){
   if(!f.capitalSealed)return show(scenes.sealed(),'capitalSealed',()=>resumeChapterSix(h));
-  if(!f.sixRoutesKnown)return show(scenes.briefing(),'sixRoutesKnown',()=>{f.jungleLeadKnown=true;h.commit('jungleLeadKnown','jungleLeadKnown');});
+  if(!f.sixRoutesKnown)return h.talk({...scenes.briefing(),done:()=>{
+   f.sixRoutesKnown=true;f.jungleLeadKnown=true;remember(s,'sixRoutesKnown');remember(s,'jungleLeadKnown');h.commit('sixRoutesKnown');
+  }});
   if(f.desertSealBroken&&!f.desertReported)return show(scenes.home(),'desertReported');
  }
  if(m==='namar'){
@@ -45,9 +47,10 @@ export function interactChapterSix(h:StoryHost,id:string){
     {label:'Stay at the outer mooring',action:()=>{}},
    ]});
   case 'six-nell':case 'six-report':
+   if(f.desertReported)return id==='six-report'?say('Celia','Sera’s notes are packed for the river healers. The launches are bringing the ward’s regular supplies.'):say('Nell','Orrin left the water-clock diagram by my cup. Make sure Tomas gets a copy with the next letter.');
    return h.talk({...scenes.letter(),done:()=>{f.jungleLeadKnown=true;h.commit('jungleLeadKnown','jungleLeadKnown');}});
   case 'six-alda':return say('Alda',f.desertSealBroken?'The launches will carry Namar’s crews. We still need the northern release.':'There’s room for the people outside the gate. The launches are bringing them around to us.');
-  case 'six-capital':return say('Petra','The northern and western seals meet inside that wall. We have to release them at their own capitals.');
+  case 'six-capital':return say('Petra',f.desertSealBroken?'The western return is dark. The northern seal still holds the landing bridge.':'The northern and western seals meet inside that wall. We have to release them at their own capitals.');
   case 'namar-amal':return say('Amal',f.desertSealBroken?'The barges are signed over. The post still leaves at the bell.':f.palaceCoup?'The families are under the covered quay. I’m keeping the post boats on the western bank.':'The eastern palace door. Cross the bridge and turn toward the dome.');
   case 'namar-post':
    if(f.desertMailSent)return say('Amal','Your report has gone to Dena. Tomas’s letter is in the same sack.');

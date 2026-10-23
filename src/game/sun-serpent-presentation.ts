@@ -30,6 +30,7 @@ export function serpentPresentation(encounter:Encounter):BattlePresentation{
     if(!masks.has(key)){const c=texture.getSourceImage() as HTMLCanvasElement,rgba=c.getContext('2d')!.getImageData(0,0,size.w,size.h).data;masks.set(key,Uint8Array.from({length:size.w*size.h},(_,i)=>rgba[i*4+3]));}
    }
    const p=bossPlacement({...u,hex}),image=scene.add.image(p.x,p.y,head?'serpent-head':u.id).setOrigin(.5,1);
+   if(!head&&hp>0)image.setTint(u.sealed?0x9b9f8a:0xffffff);
    if(hp<=0)image.setTint(0x675f54).setAlpha(.42);
    if(head){
     let started:number|undefined;
@@ -58,6 +59,7 @@ export function serpentPresentation(encounter:Encounter):BattlePresentation{
   },
   overlay(scene,world,b){
    const head=serpentHead(b)!,g=scene.add.graphics();world.add(g);
+   g.fillStyle(0x243943,.96).fillRect(300,0,340,27);
    bossLabel(scene,world,470,14,`Sun serpent  ${head.hp}/${head.maxHp}`,2);
    g.fillStyle(0x243943,.95).fillRect(315,28,310,11).fillStyle(0xd6ae6b).fillRect(320,32,Math.round(300*head.hp/head.maxHp),4);
    for(const coil of serpentCoils(b)){const p=bossPlacement(coil);bossLabel(scene,world,p.x,p.y-123,coil.hp<=0?'Coil broken':coil.sealed?'Tight coil':'LOOSE COIL',1,coil.sealed?'#a6a78c':'#f1d19a');if(coil.hp>0)bossLabel(scene,world,p.x,p.y-109,`${coil.hp}/${coil.maxHp}`,1);}

@@ -42,4 +42,4 @@ export function portraitAsset(id: string): string {
   const aliases: Record<string, CharacterId> = { master: 'ansel', clerk: 'iona' };
   return CHARACTERS[(aliases[id] ?? id) as CharacterId]?.portrait ?? id;
 }
-export const NPC_SPRITES = ['samira','sahir','amal','iven','sera','teren','ward-engine','ward-reflector','aurel','enna','dawn-soldier','dawn-gunner','alda','hester','durn','furnace-carrier','bram','dena','sluice-keeper','emperor','relay-keeper','boiler-keeper','tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;
+export const NPC_SPRITES = ['namar-watch','samira','sahir','amal','iven','sera','teren','ward-engine','ward-reflector','aurel','enna','dawn-soldier','dawn-gunner','alda','hester','durn','furnace-carrier','bram','dena','sluice-keeper','emperor','relay-keeper','boiler-keeper','tomas', 'alban', 'tilda', 'elspeth', 'kit', 'celia', 'petra'] as const;

@@ -15,7 +15,7 @@ import type { NoteExpression } from './expression';
 export type MusicMode = 'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'lute' | 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
-interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
+interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   outermooring:{beats:4,bpm:72,lead:'reed',leadGain:.12,keys:0,strings:.017,bass:.1,percussion:0},
   namar:{beats:4,bpm:96,lead:'reed',leadGain:.19,keys:0,strings:.02,bass:.12,percussion:.033},
@@ -23,7 +23,7 @@ export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   skywalk:{beats:4,bpm:104,lead:'lute',leadGain:.19,keys:0,strings:.02,bass:.12,percussion:.033},
   observatory:{beats:4,bpm:70,lead:'reed',leadGain:.12,keys:0,strings:.017,bass:.1,percussion:0},
   'desert-battle':{beats:4,bpm:136,lead:'reed',leadGain:.19,keys:0,strings:.02,bass:.16,percussion:.1},
-  'sun-serpent':{beats:3,meter:[6,8],introBars:2,bpm:120,lead:'brass',leadGain:.19,keys:0,strings:.02,bass:.16,percussion:.1},
+  'sun-serpent':{beats:3,meter:[6,8],pulses:[3,3],introBars:2,bpm:120,lead:'brass',leadGain:.19,keys:0,strings:.02,bass:.16,percussion:.1},
   claim:{beats:4,bpm:124,lead:'bell',leadGain:.12,keys:0,strings:.025,bass:.14,percussion:.095},
   windmere:{beats:3,bpm:76,lead:'reed',leadGain:.18,keys:.023,strings:.016,bass:.095,percussion:0},
   dispensary:{beats:3,bpm:88,lead:'keys',leadGain:.18,keys:.025,strings:0,bass:.095,percussion:0},
@@ -43,7 +43,7 @@ export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   anchorforge:{beats:4,bpm:84,lead:'keys',leadGain:.12,keys:.035,strings:.015,bass:.08,percussion:0},
   'five-battle':{beats:4,bpm:132,lead:'keys',leadGain:.21,keys:.032,strings:.017,bass:.145,percussion:.1},
   'five-furnace':{beats:4,bpm:120,lead:'brass',leadGain:.15,keys:.032,strings:.017,bass:.145,percussion:.1},
-  flagship:{beats:5,meter:[10,8],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
+  flagship:{beats:5,meter:[10,8],pulses:[2,2,3,3],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
   sanctuary:{beats:4,bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},
