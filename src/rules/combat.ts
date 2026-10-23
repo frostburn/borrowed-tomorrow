@@ -1,3 +1,4 @@
+import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
 import { configureSerpent,prepareSerpent,leaveSunGlass,SUN_SERPENT_ID } from './sun-serpent';
 import { heroAvailable } from './availability';
 import { configureFlagship,prepareFlagship,isFlagshipPart } from './flagship';
@@ -64,10 +65,11 @@ export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
   sunGlass?:{round:number;cells:Hex[]};
+  winterIce?:Hex[];
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   herald:{name:'Sun herald',hp:138,speed:4,movement:3,armor:2,abilities:['sunbeam','strike']as AbilityId[],bonus:7},
   glasswing:{name:'Glass wing',hp:66,speed:8,movement:4,armor:1,flying:true,abilities:['splinter','strike']as AbilityId[],bonus:5},
@@ -120,16 +122,18 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.boss==='ward')configureWard(battle);
   if(e.boss==='flagship')configureFlagship(battle);
   if(e.boss==='serpent')configureSerpent(battle);
+  if(e.boss==='dragon')configureWinterDragon(battle);
   nextRound(battle);
   return battle;
 }
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
+const terrainCost=(b:Battle,u:Unit,h:Hex)=>!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(p=>b.water.has(key(p))||brokenIce(b,p))?2:1;
 export function movement(b: Battle, u: Unit) {
   const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).flatMap(v => occupiedHexes(v).map(key))]);
   const anchors=u.footprint?.length?new Set(cells().filter(h=>occupiedHexes(u,h).some(part=>!inside(part)||blocked.has(key(part)))).map(key)):blocked;
-  return reachable(u.hex, u.moved||u.anchored ? 0 : u.movement, anchors, h=>!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(part=>b.water.has(key(part)))?2:1);
+  return reachable(u.hex, u.moved||u.anchored ? 0 : u.movement, anchors, h=>terrainCost(b,u,h));
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
@@ -203,7 +207,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);
+  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -212,7 +216,7 @@ function nextRound(b: Battle) {
   beginTurn(b);
 }
 function ended(b:Battle){
-  prepareWard(b);prepareFlagship(b);prepareSerpent(b);
+  prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);
   if(b.result)return true;
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
@@ -244,6 +248,7 @@ function finishTurn(b: Battle) {
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
     for(const u of alive(b))if(!u.flying&&u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of alive(b))if(!u.flying&&u.kind!=='crow'&&occupiedHexes(u).some(h=>brokenIce(b,h))){u.hp=Math.max(0,u.hp-6);log(b,`Loose ice chills ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
@@ -288,6 +293,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   }
   if((!a.heal&&!a.effect)||a.effect==='push')consumeDazzle(u);
   if(u.id===SUN_SERPENT_ID&&id==='judgment')leaveSunGlass(b,shape(b,u,id,aim));
+  if(u.id===WINTER_DRAGON_ID&&id==='judgment')for(const message of winterDragonAfterAttack(b,shape(b,u,id,aim)))log(b,message);
   if (a.bonus) {
     u.bonusUsed = true;
     checkGrounding(b);
@@ -314,6 +320,9 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   if(isFlagshipPart(u)){
     prepareFlagship(b);if(b.result)return;const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+  }
+  if(u.id===WINTER_DRAGON_ID){
+    prepareWinterDragon(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===SUN_SERPENT_ID){
     prepareSerpent(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
@@ -372,7 +381,7 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     return best.ability;
   } else {
     const visits = [...movement(b, u).values()];
-    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>!u.flying&&u.kind!=='crow'&&b.water.has(key(h))?2:1):undefined;
+    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>terrainCost(b,u,h)):undefined;
     const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(!u.flying&&u.kind!=='crow'&&b.vents.has(key(h))?4:0);
     visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
     if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);

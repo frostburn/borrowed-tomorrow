@@ -89,7 +89,7 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
     title:'Chapter Six',maps:mapIds(CHAPTER_SIX_MAPS),restoreAllMaps:true,
     entry:{from:'chapter-five',boundary:SIXTH_CHAPTER,loading:'Loading the outer mooring…',begin:beginChapterSix},
     story:{journal:six.JOURNAL,objective:six.objective,resume:resumeChapterSix,interact:interactChapterSix},
-    ending:{html:'<p>The western seal is broken. The northern expedition lies ahead.</p>',returnLabel:'Return to the outer mooring'},
+    ending:{html:'<p>The allied landing is open. The inner capital lies ahead.</p>',returnLabel:'Return to the outer mooring'},
   },
 };
 

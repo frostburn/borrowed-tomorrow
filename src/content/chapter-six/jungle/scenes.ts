@@ -80,7 +80,7 @@ export const home=(s:GameState)=>scene('outermooring','six-river-home','Back at 
  line('Alda','There you are. Come round this side of the table, Nell.',{focus:{x:32,y:26},cut:true}),
  line('Nell','I’d like to see the route for myself.'),
  line('Celia','Ines is keeping a copy of the treatment. Sera will get ours with the next launch.'),
- line('Alda',s.flags.desertSealBroken?'Namar’s return is dark. Their navigators are helping with the northern approach.':'Namar and the northern kingdom still hold the pact seals. We have room to land at either.'),
- line('Nell',s.flags.desertSealBroken?'Then show me where the northern seal joins the wall.':'Let’s start with the people who can open that wall.'),
+ line('Alda',s.flags.desertSealBroken&&s.flags.northSealBroken?'Both returns are dark. The two fleets are ready at the landing.':s.flags.northSealBroken?'Skeld’s return is dark. We can take their pilots with us to Namar.':s.flags.desertSealBroken?'Namar’s return is dark. Their navigators are helping with the northern approach.':'Namar and Skeld still hold the pact seals. We have room to land at either.'),
+ line('Nell',s.flags.desertSealBroken&&s.flags.northSealBroken?'Then let’s bring the bridge level.':s.flags.northSealBroken?'Then show me Namar’s landing.':s.flags.desertSealBroken?'Then show me where the northern seal joins the wall.':'Let’s start with the people who can open that wall.'),
  line('Kit','I’ll bring the other chart. The clean one.'),
 ]);

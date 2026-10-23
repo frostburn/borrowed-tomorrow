@@ -1,6 +1,7 @@
+import { JOURNAL as NORTH_JOURNAL,objective as northObjective } from './north/story';
 import { JOURNAL as JUNGLE_JOURNAL,objective as jungleObjective } from './jungle/story';
 import type { GameState } from '../../rules/state';
-export const JOURNAL={...JUNGLE_JOURNAL,
+export const JOURNAL={...JUNGLE_JOURNAL,...NORTH_JOURNAL,
  capitalSealed:{title:'The sealed capital',text:'The Emperor has closed a barrier under an old defense pact. Two foreign seals hold it: Namar’s royal observatory and the northern sanctuary. People are still living inside the capital.'},
  sixRoutesKnown:{title:'The two pact seals',text:'Alda has charts for both foreign capitals. Each seal must be released where its kingdom signed the pact. The ship remains a safe berth; Nell stays under care.'},
  jungleLeadKnown:{title:'Sera’s river referral',text:'Sera has found river healers who treated crystal workers before the imperial wards. Her notes may help them interrupt Nell’s connection to the shard. This is a separate journey from the two seals.'},
@@ -13,17 +14,24 @@ export const JOURNAL={...JUNGLE_JOURNAL,
  sunSerpentSeen:{title:'The sun serpent',text:'The awakened serpent holds the bronze release. Its coils alternately loosen; broken coils weaken its armor and stop reflected lanes. Glass from one breath can reflect the next. The marked attack includes those reflections.'},
  sunSerpentFallen:{title:'The guardian falls',text:'The serpent has released the bronze apparatus. A solar saber guard goes into the bag for Petra. Samira can now lift the pact band from its release.'},
  desertReleaseReady:{title:'The bronze band',text:'Samira has freed Namar’s pact band. She will break it in the evening exchange, in front of the people whose defense it pledged. Sahir must answer to the city watch.'},
- desertSealBroken:{title:'The western seal',text:'Samira broke the pact band publicly. Namar is sending navigators, supplies and evacuation barges. The western return is dark; the northern seal still holds the capital shut.'},
+ desertSealBroken:{title:'The western seal',text:'Samira broke the pact band publicly. Namar is sending navigators, supplies and evacuation barges. The western return is dark. Both foreign returns must be released to open the capital landing.'},
  desertFocusTaken:{title:'The observatory lens',text:'A spare sunstone examination lens was stored on the postal terrace. It is in the bag for Celia to fit by hand.'},
  desertMailSent:{title:'Letters still travel',text:'Amal sent the medical report and Nell’s letter to Tomas through the evening exchange. She supplied a light courier harness for whoever needs to move quickly.'},
- desertReported:{title:'News from Namar',text:'The crew reviewed Namar’s support at the flight chart. The western return is open; the northern seal still holds. Namar’s navigators and barges will help the next approach.'},
+ desertReported:{title:'News from Namar',text:'The crew reviewed Namar’s support at the flight chart. The western return is open. The flight chart records the remaining return, if any. Namar’s navigators and barges will help the next approach.'},
 };
 export function objective(s:GameState):string{
- const regional=jungleObjective(s);if(regional)return regional;
+ const regional=northObjective(s)??jungleObjective(s);if(regional)return regional;
  const f=s.flags,m=s.location.map;
  if(!f.capitalSealed)return 'Reach the capital’s outer mooring.';
  if(!f.sixRoutesKnown)return 'Read the two return lines at Alda’s flight chart.';
- if(m==='outermooring')return f.desertSealBroken?f.desertReported?'Prepare at the outer mooring. The northern pact seal still holds.':(f.nellRecovered?'Review Namar’s route with Alda.':'Bring Namar’s news to Nell and Alda.'):'Choose a landing at Alda’s flight chart.';
+ if(m==='outermooring'){
+  if(f.riverThanksSeen&&!f.riverReported)return 'Review Iria’s treatment record at the flight chart.';
+  if(f.northReturned&&!f.northReported)return f.nellRecovered?'Review Skeld’s route with Alda.':'Bring Skeld’s news to Nell and Alda.';
+  if(f.desertSealBroken&&!f.desertReported)return f.nellRecovered?'Review Namar’s route with Alda.':'Bring Namar’s news to Nell and Alda.';
+  if(f.capitalOpened)return 'Cross the open landing bridge, or revisit the foreign landings at Alda’s chart.';
+  if(f.northSealBroken&&f.desertSealBroken)return 'Bring the ship alongside the landing bridge.';
+  return f.northSealBroken?'Take Namar’s course at the flight chart. The western seal still holds.':f.desertSealBroken?'Take Skeld’s course at the flight chart. The northern seal still holds.':'Choose a landing at Alda’s flight chart.';
+ }
  if(m==='namar')return f.desertReleaseReady&&!f.desertSealBroken?'Join Samira at the evening exchange.':f.desertSealBroken?'The western seal is broken. Return to Alda at the survey landing.':'Meet Queen Samira at the eastern palace.';
  if(m==='sunpalace')return !f.palaceCoup?'Ask Samira to withdraw the imperial seal.':!f.palaceEscapeWon?'Choose an escape at the postal stair west of the fountain.':!f.palaceEscaped?'Meet Amal at the western postal stair.':'Take the western stair to the observatory terraces.';
  if(m==='skywalk')return !f.desertAscentWon?'Clear the glasswings from the upper terrace.':'Rest at the postal shelter, then take the eastern observatory stair.';

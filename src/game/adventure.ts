@@ -1,3 +1,4 @@
+import { winterDragonPresentation } from './winter-dragon-presentation';
 import { serpentPresentation } from './sun-serpent-presentation';
 import { RegionAssets } from './region-assets';
 import { flagshipPresentation } from './flagship-presentation';
@@ -212,6 +213,12 @@ export class Adventure extends Phaser.Scene {
           const start=()=>{void import('../dev/canonical-saves').then(({chapterSixStart})=>this.loadState(chapterSixStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Six save?','<p>This replaces the autosave with the flagship and hunters defeated. Nell is ill; Kit, Orrin and Petra approach the capital. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
         }},
+        ...(['Skeld','winter dragon'] as const).map(destination=>({label:`Begin ${destination} (canonical)`,action:()=>{
+          this.ui.showModal(`Begin ${destination}?`,'<p>Choose Nell’s authored condition. This replaces the autosave; manual slots remain available. Namar has not been visited.</p>',[
+            {label:'Nell ill · Kit, Orrin and Petra',action:()=>{void import('../dev/canonical-saves').then(({chapterSixNorthStart,chapterSixDragonStart})=>this.loadState(destination==='Skeld'?chapterSixNorthStart(false):chapterSixDragonStart(false)));}},
+            {label:'Nell recovered · Nell, Kit and Celia',action:()=>{void import('../dev/canonical-saves').then(({chapterSixNorthStart,chapterSixDragonStart})=>this.loadState(destination==='Skeld'?chapterSixNorthStart(true):chapterSixDragonStart(true)));}},
+          ]);
+        }})),
         {label:'Begin Iria (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterSixJungleStart})=>this.loadState(chapterSixJungleStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Iria save?','<p>This replaces the autosave at Iria’s river landing. Nell is ill; Namar is unvisited. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
@@ -265,7 +272,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='capitalquay'?'outermooring':map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
@@ -463,7 +470,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }
@@ -757,7 +764,7 @@ export class Adventure extends Phaser.Scene {
     const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
-    this.audio.setMode(this.state.location.map);this.audio.effect('win');
+    this.audio.setMode(this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
     this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
   }
 

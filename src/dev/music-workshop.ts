@@ -5,6 +5,9 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+  {mode:'bellharbor',title:'Skeld · Answering Bells',group:'6'}, {mode:'frostwatch',title:'The Covered Road',group:'6'},
+  {mode:'glacier',title:'The Fleet beneath the Ice',group:'6'}, {mode:'wintershrine',title:'A Bell for the Outer Marker',group:'6'},
+  {mode:'north-battle',title:'Skeld · Open the Mountain',group:'6'}, {mode:'winter-dragon',title:'Wings over the Winter Bell',group:'6'},
   {mode:'riverhaven',title:'Iria · The Next Launch',group:'6'}, {mode:'canopy',title:'Under the Green Signal',group:'6'},
   {mode:'rainhouse',title:'The Waiting Basin',group:'6'}, {mode:'rainhouse-rest',title:'A Seat by the River',group:'6'},
   {mode:'river-battle',title:'Iria · Open the Waterway',group:'6'}, {mode:'rain-warden',title:'Wings on the Landing',group:'6'},

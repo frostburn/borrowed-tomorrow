@@ -758,5 +758,343 @@
       "depth": -999,
       "layerId": 2
     }
+  ],
+  "bellharbor": [
+    {
+      "key": "scene-six-bellharbor-back",
+      "url": "art/vector/chapter-six/bellharbor-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-bellharbor-floor",
+      "url": "art/vector/chapter-six/bellharbor-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-harbor-bell",
+      "url": "art/vector/chapter-six/harbor-bell.svg",
+      "x": 758,
+      "y": 452,
+      "width": 98,
+      "height": 114,
+      "depth": 566,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-harbor-launch",
+      "url": "art/vector/chapter-six/harbor-launch.svg",
+      "x": 142,
+      "y": 863,
+      "width": 250,
+      "height": 110,
+      "depth": 973,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-harbor-shelter",
+      "url": "art/vector/chapter-six/harbor-shelter.svg",
+      "x": 325,
+      "y": 673,
+      "width": 168,
+      "height": 86,
+      "depth": 759,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-harbor-rail",
+      "url": "art/vector/chapter-six/harbor-rail.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 600,
+      "depth": -997,
+      "layerId": 3
+    }
+  ],
+  "frostwatch": [
+    {
+      "key": "scene-six-frostwatch-back",
+      "url": "art/vector/chapter-six/frostwatch-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-frostwatch-floor",
+      "url": "art/vector/chapter-six/frostwatch-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-watch-windlass",
+      "url": "art/vector/chapter-six/watch-windlass.svg",
+      "x": 1020,
+      "y": 520,
+      "width": 80,
+      "height": 66,
+      "depth": 586,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-north-pass-gate",
+      "url": "art/vector/chapter-six/north-pass-gate.svg",
+      "x": 1128,
+      "y": 524,
+      "width": 240,
+      "height": 60,
+      "depth": 584,
+      "layerId": 4
+    },
+    {
+      "key": "scene-six-watch-bench",
+      "url": "art/vector/chapter-six/watch-bench.svg",
+      "x": 433,
+      "y": 665,
+      "width": 168,
+      "height": 86,
+      "depth": 751,
+      "layerId": 3
+    }
+  ],
+  "glacier": [
+    {
+      "key": "scene-six-glacier-back",
+      "url": "art/vector/chapter-six/glacier-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-glacier-floor",
+      "url": "art/vector/chapter-six/glacier-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-glacier-bench",
+      "url": "art/vector/chapter-six/glacier-bench.svg",
+      "x": 696,
+      "y": 673,
+      "width": 168,
+      "height": 86,
+      "depth": 759,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-glacier-cache",
+      "url": "art/vector/chapter-six/glacier-cache.svg",
+      "x": 445,
+      "y": 492,
+      "width": 60,
+      "height": 48,
+      "depth": 540,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-glacier-ice-face",
+      "url": "art/vector/chapter-six/glacier-ice-face.svg",
+      "x": 1304,
+      "y": 641,
+      "width": 150,
+      "height": 180,
+      "depth": -998,
+      "layerId": 3
+    }
+  ],
+  "wintershrine": [
+    {
+      "key": "scene-six-wintershrine-back",
+      "url": "art/vector/chapter-six/wintershrine-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-wintershrine-floor",
+      "url": "art/vector/chapter-six/wintershrine-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-shrine-dragon",
+      "url": "art/vector/chapter-six/shrine-dragon.svg",
+      "x": 504,
+      "y": 262,
+      "width": 528,
+      "height": 280,
+      "depth": 542,
+      "layerId": 4
+    },
+    {
+      "key": "scene-six-shrine-bell",
+      "url": "art/vector/chapter-six/shrine-bell.svg",
+      "x": 718,
+      "y": 383,
+      "width": 98,
+      "height": 114,
+      "depth": 497,
+      "layerId": 3
+    },
+    {
+      "key": "scene-six-shrine-camp",
+      "url": "art/vector/chapter-six/shrine-camp.svg",
+      "x": 369,
+      "y": 689,
+      "width": 168,
+      "height": 86,
+      "depth": 775,
+      "layerId": 3
+    }
+  ],
+  "capitalquay": [
+    {
+      "key": "scene-six-capitalquay-back",
+      "url": "art/vector/chapter-six/capitalquay-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-capitalquay-floor",
+      "url": "art/vector/chapter-six/capitalquay-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-six-capital-bench",
+      "url": "art/vector/chapter-six/capital-bench.svg",
+      "x": 402,
+      "y": 674,
+      "width": 168,
+      "height": 86,
+      "depth": 760,
+      "layerId": 3
+    }
+  ],
+  "battle-north-watch": [
+    {
+      "key": "scene-six-battle-north-watch-back",
+      "url": "art/vector/chapter-six/battle-north-watch-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-north-watch-floor",
+      "url": "art/vector/chapter-six/battle-north-watch-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-north-hunters": [
+    {
+      "key": "scene-six-battle-north-hunters-back",
+      "url": "art/vector/chapter-six/battle-north-hunters-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-north-hunters-floor",
+      "url": "art/vector/chapter-six/battle-north-hunters-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-north-cache": [
+    {
+      "key": "scene-six-battle-north-cache-back",
+      "url": "art/vector/chapter-six/battle-north-cache-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-north-cache-floor",
+      "url": "art/vector/chapter-six/battle-north-cache-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-winter-dragon": [
+    {
+      "key": "scene-six-battle-winter-dragon-back",
+      "url": "art/vector/chapter-six/battle-winter-dragon-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-six-battle-winter-dragon-floor",
+      "url": "art/vector/chapter-six/battle-winter-dragon-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 480,
+      "depth": -999,
+      "layerId": 2
+    }
   ]
 }

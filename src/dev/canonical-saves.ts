@@ -1,3 +1,4 @@
+import { ENCOUNTERS as NORTH_ENCOUNTERS } from '../content/chapter-six/north/encounters';
 import { sickenNell } from '../rules/availability';
 import { beginChapterSix,SIXTH_CHAPTER } from '../rules/state';
 import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
@@ -117,4 +118,17 @@ export function chapterSixRecoveredStart(){
  // An authored review formation, selected after the cure, independent of saves.
  s.activeParty=['nell','kit','celia'];s.location=arrival('outermooring','namar');restoreParty(s);
  return decodeSave(JSON.stringify(s));
+}
+
+/** Fresh northern landing, independently reviewable in either Nell state. */
+export function chapterSixNorthStart(recovered=false){
+ const s=recovered?chapterSixRecoveredStart():chapterSixJungleStart();
+ s.location=arrival('bellharbor','start');return decodeSave(JSON.stringify(s));
+}
+/** Authored expedition approach, before dragon rewards or either pact release. */
+export function chapterSixDragonStart(recovered=false){
+ const s=chapterSixNorthStart(recovered);
+ for(const flag of ['northSeen','northWatchSeen','northWatchConfronted','northWatchWon','northPassOpened','northLogRead','northHuntersConfronted','northHuntersWon']){s.flags[flag]=true;s.journal.push(flag);}
+ for(const id of ['north-watch','north-hunters']){const e=NORTH_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
+ s.location=arrival('wintershrine','start');restoreParty(s);return decodeSave(JSON.stringify(s));
 }
