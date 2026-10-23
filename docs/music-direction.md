@@ -147,3 +147,47 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 ## The Sky Answers — divine hunters
 
 `claim` / `score-claim.ts`: 16 bars, 4/4 at quarter = 124, used by the campaign’s post-flagship minion encounter. Exposed bell E–Eb calls fall into A, with string answers in the second half. Dm9, Ebmaj7#11 and suspended Bb harmony deny the military cadence. Leave gaps after the calls, thin bass/percussion every fourth bar and use phrase dynamics/string vibrato. This cue keeps a steady clock and offers the Expression comparison. It uses existing procedural bell, strings, round bass and percussion; no new samples or instruments. Alban’s accepted 10/8 march remains unchanged. The intervention itself silences music under the bodiless voice; the berth uses The Empty Cabin.
+
+
+## Approved future regions — all in 31-EDO
+
+These are composition plans for Chapters Six–Seven. They do not add runtime scores or parser support yet. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+
+### Desert — neutral intervals and score spelling
+
+Use neutral thirds and other neutral intervals as structural melodic and harmonic material throughout the desert, with expressive reeds, plucked strings, melodic bass and flexible percussion. The upcoming supplied score determines its concrete modes. Preserve phrase dynamics, controlled vibrato, expressive timing and related battle variations.
+
+Parse ASCII `t` as half-sharp (+1 step), `d` as half-flat (−1 step), `#` as sharp (+2 steps) and `b` as flat (−2 steps). Thus `Ct4` is one step above C4; `Cd4` one below; `Ed4` lies between Eb4 and E4. C–Ed is nine steps, approximately 348.39 cents. Preserve written letters and accidentals through octave shifts and transposition; retain the existing 18-step fifth and coherent circle of fifths. This is future parser work: the current runtime accepts conventional sharps/flats only. Do not round the new notes to semitones or retune existing cues.
+
+### Scale collections
+
+Degrees are integer steps above a chosen tonic, reduced modulo 31. Zero is the tonic and 31 the octave; the octave is omitted from the degree lists. L and s describe adjacent large and small steps, including the closing step to the octave. These are specific modes; other modes/transpositions can serve related cues.
+
+| Location | Scale | Degrees | Step sequence | Construction |
+| --- | --- | --- | --- | --- |
+| Northern capital and expedition | Orwell[9] | `0 4 7 11 14 18 21 25 28` | `4 3 4 3 4 3 4 3 3` | 4L5s MOS; L=4, s=3; generator 7, nine notes |
+| Glacier ruins, optional contrasting palette | Myna[7] | `0 7 8 15 16 23 24` | `7 1 7 1 7 1 7` | 4L3s MOS; L=7, s=1; generator 8, chain −3…3 |
+| Jungle river, village and sanctuary | Slendric[5] | `0 6 12 18 24` | `6 6 6 6 7` | 1L4s MOS; L=7, s=6; generator 6, five notes |
+| Deeper forest and jungle combat | Slendric[6] | `0 6 12 18 24 30` | `6 6 6 6 6 1` | 5L1s MOS; L=6, s=1; adds degree 30 |
+| Benefactor's domain | Overtone-derived octatonic | `0 5 10 14 18 22 25 28` | `5 5 4 4 4 3 3 3` | Nearest 31-EDO steps to harmonics 8–15, relative to harmonic 8 |
+| Domain's reflected collection | Inversion of the overtone-derived scale | `0 3 6 9 13 17 21 26` | `3 3 3 4 4 4 5 5` | Exact pitch-class inversion: x → −x modulo 31 |
+
+### Northern kingdom — Orwell and Myna
+
+Orwell[9] supplies a spacious, bittersweet identity, with broad melodic phrases and relatively similar adjacent steps. The chosen mode contains subminor `[0,7,18]` and supermajor `[0,11,18]` triads sharing one fifth. Make their contrasting thirds an important gesture in the capital's hymn. Bowed strings and restrained winds establish human warmth; bright struck tones and wide registers evoke the frozen surroundings. The battle variation can foreground the Orwell tetrad `[0,7,14,21]`.
+
+Reserve Myna[7]'s wide gaps and tiny paired dieses for the glacier's exposed ice, creaking structures and dangerous discoveries. The scale choice alone does not produce a cold atmosphere; melody, voicing, timbre and pacing must carry it.
+
+### Jungle — Slendric
+
+Slendric[5]'s nearly even pentatonic spacing supports a buoyant river journey. Use interlocking plucked or wooden sounds, a substantial melodic bass and a sustained reed voice across the percussion's exchanges. Five pitches do not prescribe a five-beat meter. Write harmonic movement for this collection rather than importing familiar chord progressions unchanged.
+
+Expanding to Slendric[6] adds degree 30, a diesis below the tonic, and a clearer point of tension for deeper forest and combat. During Nell's treatment, the music can settle from this six-note material into the five-note sanctuary collection as her pulse steadies. Keep regional arrangements and battle variations distinct compositions, with shared material that can be heard.
+
+### Benefactor — radiance and reflection
+
+The overtone-derived collection contains near-harmonic `[0,10,18,25]` and extensions at 14 and 22. Begin with radiant sustained harmony: the player should hear why people once trusted this being. For places where stolen days accumulate, use the inverted collection. Build corresponding phrases and harmonies in the two collections so the same architecture can suggest generosity or oppression through its treatment. The Benefactor's established descending call threads through both and develops into its final battle theme. Its full visual form remains reserved for the domain.
+
+### References and reproducibility
+
+[31edo Scales](https://www.31edo.com/scales) describes the six-, seven- and eight-step generator families, Orwell[9]'s harmony and Slendric's pentatonic structure. The specific degree sets above were calculated from their generator chains modulo 31 and checked against their cyclic step patterns. The overtone collection is calculated as `round(31 * log2(h / 8))` for h=8…15; reflect each degree modulo 31 for its inversion. This keeps all frequencies on the game's tuning grid. No external tuning files or new dependencies are needed.

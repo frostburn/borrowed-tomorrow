@@ -24,3 +24,8 @@ The title is literal: the empire borrowed miraculous prosperity from future days
 ## What the ending must deliver
 
 The god's defeat restores lasting peace. Allow a hopeful ending without pretending every building, death and hardship has been undone. Freed communities keep their relationships and remember the rescue. Steam engineering, ordinary healing and cooperation give the world practical alternatives. Nell survives whether or not the optional recovery quest was completed. If still ill, the end of the god’s harmful pulse restores her; she can live an ordinary life; her borrowed power ends with the bargain.
+
+
+## Approved domain music
+
+Remain in 31-EDO. Use the overtone-derived octatonic `0 5 10 14 18 22 25 28` for radiant sustained harmony, then its exact inversion `0 3 6 9 13 17 21 26` where stolen days accumulate. The Benefactor's established descending call develops across both collections into the final battle theme. See [music-direction.md](../music-direction.md) for construction and intent. These are future score plans; no domain music or campaign encounter is implemented here.
