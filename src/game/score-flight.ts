@@ -3,7 +3,7 @@ import type { Note } from './score';
 import { octave,type Pitch } from './tuning';
 type Line=[number,Pitch,number][];
 type Tune=Line[];
-// Nell: E–D–B–C–A. A falling question, a caught breath, then another attempt.
+// Airship travel: E–D–B–C–A. A falling question, a breath, then another attempt.
 // The first sentence takes twelve bars; the turn comes before the high point.
 const flight:Tune=[
  [[.5,'E5',.75],[1.5,'D5',.5],[2.5,'B4',.75]],[[0,'C5',1],[1.5,'A4',2]],

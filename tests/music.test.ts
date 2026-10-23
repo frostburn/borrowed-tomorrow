@@ -165,17 +165,13 @@ it('the train raid develops paired calls and answers, opens its middle, and retu
   }
 });
 
-it('Petra’s triplet melody rides over straight percussion with an unbroken battle backbeat',()=>{
+it('Petra’s melody lands on the pulse, with a brief triplet pickup over the straight battle backbeat',()=>{
   expect(ARRANGEMENTS['petra-battle'].beats).toBe(4);
   const melody:Note[]=[];
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('petra-battle',bar);
     for(const n of notes){
       if(['kick','snare','hat'].includes(n.instrument))expect(n.beat*4).toBe(Math.round(n.beat*4));
-      else{
-        expect(n.beat*3).toBeCloseTo(Math.round(n.beat*3),10);
-        expect(n.duration*6).toBeCloseTo(Math.round(n.duration*6),10);
-      }
       expect(n.beat+n.duration).toBeLessThanOrEqual(4+1e-9);
       if(n.instrument==='strings'&&n.velocity>=.2)melody.push(n);
     }
@@ -183,7 +179,8 @@ it('Petra’s triplet melody rides over straight percussion with an unbroken bat
     expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.07).map(n=>n.beat)).toEqual([1,3]);
     expect(notes.filter(n=>n.instrument==='hat').map(n=>n.beat)).toEqual([0,.5,1,1.5,2,2.5,3,3.5]);
   }
-  expect(melody.some(n=>Math.abs(n.beat%1-1/3)<1e-9)).toBe(true);
+  expect(melody.filter(n=>Number.isInteger(n.beat)).length/melody.length).toBeGreaterThan(.9);
+  for(let bar=0;bar<16;bar++)expect(scoreBar('petra-battle',bar).some(n=>n.instrument==='strings'&&n.velocity>=.2&&n.beat===0)).toBe(true);
   expect(melody.some(n=>Math.abs(n.beat%1-2/3)<1e-9)).toBe(true);
 });
 

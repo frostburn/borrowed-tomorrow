@@ -58,7 +58,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   });
   const notes=()=>page.evaluate(()=>(window as unknown as {expressionNotes:{instrument:string;pitch:string;when:number;seconds:number;expression?:import('../../src/game/expression').NoteExpression}[]}).expressionNotes);
   const clear=()=>page.evaluate(()=>{(window as unknown as {expressionNotes:unknown[]}).expressionNotes=[];});
-  await page.getByRole('button',{name:'Themes',exact:true}).click();await page.locator('[data-cue="airship"]').click();
+  await page.getByRole('button',{name:'Ch 5',exact:true}).click();await page.locator('[data-cue="airship"]').click();
+  await expect(page.locator('.music-theme')).toHaveCount(0);
   const swell=page.getByRole('button',{name:'Swell/vibrato',exact:true}),rubato=page.getByRole('button',{name:'Rubato',exact:true}),bar=page.getByRole('spinbutton',{name:'Bar',exact:true});
   await expect(swell).toHaveAttribute('aria-pressed','true');await expect(rubato).toHaveAttribute('aria-pressed','true');
   await bar.fill('2');await bar.press('Tab');await page.getByRole('button',{name:'Play',exact:true}).click();

@@ -103,22 +103,22 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  if(boss&&[0,8,24].includes(i))add('timpani',bass,0,1,.065);
  return out;
 }
-// Chapter Two is the same person before her refusal: the cell is constrained
-// to triplet ticks, over the original straight military kick/snare foundation.
+// Chapter Two is the same person before her refusal. Strong-beat landings give
+// the cell its footing; the occasional triplet pickup always returns to a beat.
 const crossing:Line[]=[
- [[0,'C5',2],[3,'Db5',1],[4,'C5',3],[8,'G4',2]],[[0,'Ab4',4],[6,'G4',2],[9,'F4',2]],
- [[0,'C5',2],[4,'Eb5',3],[8,'Db5',2]],[[0,'C5',5],[8,'Ab4',3]],
- [[0,'Db5',2],[3,'C5',2],[6,'Bb4',3],[10,'Ab4',1]],[[0,'G4',3],[4,'F4',2],[8,'E4',3]],
- [[0,'E5',4],[6,'Db5',2],[9,'C5',2]],[[0,'F5',9]],
- [[0,'Ab5',5],[7,'G5',3]],[[0,'Eb5',4],[6,'C5',4]],
- [[0,'Db5',3],[4,'Bb4',5]],[[0,'G4',2],[3,'Ab4',2],[6,'E4',4]],
- [[0,'C5',2],[3,'Db5',1],[4,'C5',3],[8,'G4',2]],[[0,'Ab4',4],[6,'G4',4]],
- [[0,'E5',4],[6,'Db5',2],[9,'C5',2]],[[0,'F5',10]],
+ [[0,'C5',.75],[1,'Db5',.5],[2,'C5',.75],[3,'G4',.75]],[[0,'Ab4',1.5],[2,'G4',.5],[3,'F4',.75]],
+ [[0,'C5',.75],[1.5,'Eb5',.4],[2,'Db5',1.5]],[[0,'C5',1.75],[2,'Ab4',1.5]],
+ [[0,'Db5',.75],[1,'C5',.75],[2,'Bb4',.75],[3+2/3,'Ab4',1/3]],[[0,'G4',1.25],[2,'F4',.5],[3,'E4',.75]],
+ [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',3]],
+ [[0,'Ab5',1.75],[2,'G5',1.5]],[[0,'Eb5',1.75],[2,'C5',1.5]],
+ [[0,'Db5',1.25],[2,'Bb4',1.5]],[[0,'G4',.75],[1,'Ab4',.75],[2,'E4',1.5]],
+ [[0,'C5',.75],[1,'Db5',.5],[2,'C5',.75],[3,'G4',.75]],[[0,'Ab4',1.5],[2,'G4',1.5]],
+ [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',3.5]],
 ];
 export function petraCrossingBar(bar:number):Note[]{
  const i=((bar%16)+16)%16,{bass,notes:chord}=chords[changes[i]],out:Note[]=[];
  const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
- for(const [tick,pitch,length]of crossing[i])add('strings',pitch,tick/3,length/3,.22,-.15);
+ for(const [beat,pitch,duration]of crossing[i])add('strings',pitch,beat,duration,.22,-.15);
  for(const beat of i%4===3?[0]:[0,2]){add('round-bass',bass,beat,4/3,beat===0?.16:.11,-.1);for(const p of chord)add('keys',p,beat,2/3,beat===0?.04:.027,.25);}
  if(i>=8&&i<12)for(const p of chord)add('strings',p,0,10/3,.016,.3);
  for(const beat of [0,2])add('kick','C2',beat,.18,.1);

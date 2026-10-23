@@ -23,10 +23,12 @@ const library: {mode:MusicMode;title:string;group:string}[] = [
 ];
 // A short review path through the new character identities; these are campaign cues.
 const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
- airship:{name:'Nell',description:'A falling question, a pause, then another attempt. A Dorian with a twelve-bar opening.'},
+ station:{name:'Nell',description:'The festival song from Larkspur. D minor; a home melody that also answers Orrin in the workshop.'},
  hammerplain:{name:'Orrin',description:'Repeated hammer taps and a downward release. G minor with a working bass riff.'},
+ coast:{name:'Kit',description:'Iron Coast: a courier keeps moving. The open coastal phrase and its determined train-raid answer.'},
  dawnwatch:{name:'Petra',description:'C, Db, C, then G: resistance before the decision. F minor; three-bar calls over a straight march.'},
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
+ flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };
 const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
