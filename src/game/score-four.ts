@@ -171,7 +171,7 @@ export function returnBar(mode: ReturnMode, bar: number): Note[] {
     if(sacred){
       voice.expression={release:1.9};
       // Only delayed bells get an anticipation: downbeats retain their silence.
-      if(beat>=.5)for(const [n,p]of chord.entries())add('keys',p,beat-.5+n/8,.85,.012+n*.002,.16+n*.08);
+      if(beat>=.5)for(const [n,p]of chord.entries())add('bell',p,beat-.5+n/8,.22,.045+n*.005,.16+n*.08).expression={release:.95};
     }
   }
   if (sacred) {

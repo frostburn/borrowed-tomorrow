@@ -51,7 +51,7 @@ Each encounter declares its music cue in content. Future chapters must choose th
 
 ## Beneath the Palace
 
-The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Pianissimo piano rolls anticipate the even-bar bells by half a beat; their four ascending notes end before the bell attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
+The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Audible bell rolls anticipate the even-bar bells by half a beat; their four ascending notes end before the bell attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
 
 
 ## A Light on the Water
@@ -89,7 +89,7 @@ The chapter's former rising calls, triadic answers and repeated root–fifth bac
 | Kit · Iron Coast (`coast`, 88) | The coastal E–G call and its moving answers | The accepted sixteen-bar courier journey: steady half-note support, a broader middle and the Bm7b5/D inversion in bar 2. The train-raid variation develops the same identity. No new melody replaces the accepted Iron Coast. |
 | Petra · The Open Gate (`dawnwatch`, 92) | C–Db–C–G: resistance before a decision | F minor, Db-major inversions, Bbm and a Gb turn; C7 uses E natural. Three-bar calls answer in three, with two bars for resolution. Firm strings and a quiet straight march yield to a low middle without drums. Her Chapter Two crossing establishes this identity with firm beat landings over the retained straight backbeat. |
 | Celia · The Garden Walk (`windmere`, 76, 3/4) | Ab–Gb–F–Eb, then Db–C–Ab–Bb: a long exhale | Db major with Bbm9, Gb6, borrowed Cbmaj7 and Ab7sus/Ab7. A ten-bar opening sustains across two bar lines; its six-bar answer precedes a low eight-bar middle and compressed return. The reed sings above held bass and inner strings rather than three identical piano hits every bar. |
-| Alban · Iron Above the Clouds (`flagship`, 132, 10/8) | D–A–D–F: a plunging fourth, a return and a rising third | The brass command expands into four eight-bar arcs. Captain Alban (`inspector`, 136, 4/4) preserves its opening, then foreshadows the flagship’s contour in bars 9–12 without importing its meter. |
+| Alban · Iron Above the Clouds (`flagship`, 132, 10/8) | D–A–D–F: a plunging fourth, a return and a rising third | The brass command expands into four eight-bar arcs. Captain Alban (`inspector`, 136, 4/4) preserves its opening, then adds an eight-bar flagship-contour extension after the original sixteen bars without importing its meter. |
 
 The motifs describe people: Nell’s remembered home, Orrin’s patient work, Kit’s determination to keep moving, Petra’s stubborn refusal, Celia’s care continuing after the miracle, and Alban’s command. They are compositional anchors, not literal notes to force into every scene. Prefer new answers, register changes, silence, different phrase lengths and bass movement to another rising triad followed by a higher copy. Preserve independent counter-lines and the distinction between tension and a falsely triumphant cadence.
 
@@ -124,9 +124,9 @@ Unit checks cover single foreground voices across bar lines, finite 31-EDO pitch
 
 | Cue | Authored performance | Useful review point (bars start at 1) |
 | --- | --- | --- |
-| Vessel chamber (`conduit`) | pp rising piano rolls half a beat before each bell; 1.8-second bell release | Bar 1, Piano then Bell; compare Expression on/off |
+| Vessel chamber (`conduit`) | ascending bell rolls half a beat before each main call; 1.8-second bell release | Bar 1, Bell; compare Expression on/off |
 | A Place to Return (`refuge`) | Phrase dynamics throughout the ensemble, warm delayed reed vibrato, rubato and a quieter final return | Bars 1, 10, 18 and 32; Reed or All |
-| Under the Hollow Sun (`sanctuary`) | pp ascending rolls before delayed bells, including late-bar hits; 1.9-second release | Bars 1, 10 and 19; downbeat bells keep their unprepared silence |
+| Under the Hollow Sun (`sanctuary`) | audible ascending bell rolls before delayed calls, including late-bar hits; 1.9-second release | Bars 1, 10 and 19; downbeat bells keep their unprepared silence |
 | The Mirrored Ward (`mirrorward`) | Fretless bass approaches and a small late sigh, with long exact-pitch centres | Bar 5, Bass; compare Expression on/off |
 | The Western Mooring (`airfield`) | Reed swells and delayed, controlled vibrato; phrase dynamics in bass and piano | Bars 8 and 21, Reed; steady 4/4 remains |
 | Under the Gantry (`anchorforge`) | Quiet phrase arcs, bass approaches, small scoops into longer piano fragments and ensemble rubato | Bars 5, 13 and 17; Piano/Bass/All |

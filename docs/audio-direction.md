@@ -13,7 +13,7 @@ Keep music procedural and asset-light. Original melodies need recognizable phras
 | Rillbridge freed | `rillbridge` | Full original village melody returns |
 | Mountain pass | `tunnel` | Tension before the crossing |
 | Ordinary battles | `battle` | Faster home motif with active bass and percussion |
-| Captain Alban | `inspector` | The familiar opening; bars 9–12 foreshadow Alban’s flagship contour in 4/4 |
+| Captain Alban | `inspector` | The familiar opening; the original sixteen bars lead to eight added bars foreshadowing Alban’s flagship contour in 4/4 |
 | Saved departure | `ending` | Bell-led resolution |
 
 Chapter Two uses its own regional variations: `coast-battle` for both prison-train approaches, `shunting` for the Cinderbank boarding defense, and `petra-battle` for the crossing. Railway Ward (`infirmary`) is a three-beat piano waltz. Chapter Three uses `switching`; Chapter Four uses `four-battle` and `four-warden`. Encounter content declares the cue, including workshop practice. Retained unused arrangements stay in the review Library; their prior plots have been discarded.

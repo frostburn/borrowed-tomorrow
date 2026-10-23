@@ -76,12 +76,13 @@ it('only authored expressive cues expose a comparison, and disabling it removes 
 it('bell anticipations roll quietly into delayed hits and retain long soft releases',()=>{
  for(const mode of ['conduit','sanctuary']as const)for(let bar=0;bar<scoreLength(mode);bar++){
   const notes=scoreBar(mode,bar);
-  for(const bell of notes.filter(n=>n.instrument==='bell')){
+  for(const bell of notes.filter(n=>n.instrument==='bell'&&n.velocity>=.09)){
    expect(bell.expression!.release).toBeGreaterThan(1.5);
    if(bell.beat<.5)continue;
-   const roll=notes.filter(n=>n.instrument==='keys'&&n.beat>=bell.beat-.5&&n.beat<bell.beat&&n.velocity<.025);
+   const roll=notes.filter(n=>n.instrument==='bell'&&n.beat>=bell.beat-.5&&n.beat<bell.beat&&n.velocity<.09);
    expect(roll).toHaveLength(4);expect(roll.map(n=>n.beat)).toEqual([-.5,-.375,-.25,-.125].map(b=>bell.beat+b));
-   expect(Math.max(...roll.map(n=>n.velocity))).toBeLessThan(bell.velocity/5);
+   expect(Math.min(...roll.map(n=>n.velocity))).toBeGreaterThanOrEqual(.045);
+   expect(Math.max(...roll.map(n=>n.velocity))).toBeLessThan(bell.velocity*.6);
    for(let n=1;n<roll.length;n++)expect(pitchSteps(roll[n].pitch)).toBeGreaterThan(pitchSteps(roll[n-1].pitch));
   }
  }

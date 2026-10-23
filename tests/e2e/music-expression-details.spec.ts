@@ -24,7 +24,7 @@ test('fretless bass approaches its 31-EDO centre, bell tails soften, and both ca
    for(let i=Math.ceil(from*rate);i<Math.floor(to*rate);i++)if(data[i-1]<0&&data[i]>=0)crossings.push(i-1-data[i-1]/(data[i]-data[i-1]));
    return 1200*Math.log2(rate*(crossings.length-1)/(crossings.at(-1)!-crossings[0])/hz);
   };
-  const bell=performanceBar('conduit',0).notes.find(n=>n.instrument==='bell')!;
+  const bell=performanceBar('conduit',0).notes.find(n=>n.instrument==='bell'&&n.velocity>=.09)!;
   const soft=await render(bell),short=await render(bell,{}),stopped=await render(bass,bass.expression,true);
   const end=start+bell.seconds;
   const jumps=(data:Float32Array)=>{let max=0;for(let i=Math.ceil((end+1.6)*rate);i<Math.min(data.length,Math.ceil((end+1.9)*rate));i++)max=Math.max(max,Math.abs(data[i]-data[i-1]));return max;};
