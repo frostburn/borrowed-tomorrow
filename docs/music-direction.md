@@ -152,7 +152,7 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 
 ## Approved future regions — all in 31-EDO
 
-These are composition plans for Chapters Six–Seven. The regional scores are not implemented yet; the shared pitch parser already supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+These collections guide Chapters Six–Seven. Namar’s desert scores are implemented below; northern, jungle and domain scores remain plans. The shared parser supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
 
 ### Desert — neutral intervals and score spelling
 
@@ -192,3 +192,26 @@ The overtone-derived collection contains near-harmonic `[0,10,18,25]` and extens
 ### References and reproducibility
 
 [31edo Scales](https://www.31edo.com/scales) describes the six-, seven- and eight-step generator families, Orwell[9]'s harmony and Slendric's pentatonic structure. The specific degree sets above were calculated from their generator chains modulo 31 and checked against their cyclic step patterns. The overtone collection is calculated as `round(31 * log2(h / 8))` for h=8…15; reflect each degree modulo 31 for its inversion. This keeps all frequencies on the game's tuning grid. No external tuning files or new dependencies are needed.
+
+
+## Chapter Six — Namar scores now implemented
+
+`score-desert.ts` supplies the shared opening and complete desert expedition. All frequencies remain in 31-EDO, A4=440. C–Ed–G, G–Bd–D and F–Ad–C use nine-step neutral thirds as stable harmony. D–Ft–A, A–Ct–E and Bd–D–Ft extend that treatment to the contrasting phrases. Open inversions let the neutral third register clearly. Half accidentals remain visible in Music and survive octave shifts. The regional modes do not retune earlier material.
+
+| Cue | Title | Form and character |
+| --- | --- | --- |
+| `outermooring` | Two Seals at the Gate | 32 bars, 4/4 at 72; a low reed waits across whole-bar rests, opens into strings in 17–24, then returns below; two-bar pedals and ensemble rubato |
+| `namar` | Letters on the Water | 32 bars, 4/4 at 96; retained opening G–Ed–D / C, a high canal-side answer, a quieter lute passage in 17–24 and a varied reed return |
+| `sunpalace` | The Queen’s Half of the Pact | 32 bars, 3/4 at 76; its own lower melody written in three beats, a lute answer in 9–16, a higher reed appeal and a restrained return; swells, delayed vibrato and rubato |
+| `skywalk` | Above the Awnings | 32 bars, 4/4 at 104; plucked G–Ed–D fragments become an independent roof-running tune, with long reed phrases in 17–24 and a shortened plucked cadence |
+| `observatory` | The Bronze Sky | 32 bars, 4/4 at 70; low D-neutral reed, an exposed bell passage in 9–16, a string middle with the hunters’ E–Eb–A call, then low reed; soft bell releases and held bass |
+| `desert-battle` | The Postal Stair | 32 bars, 4/4 at 136; a newly articulated city call, high answer, longer string middle and pushing reed return; moving bass, firm backbeat and limited cadence fills |
+| `sun-serpent` | Coils around the Sun | Two-bar one-shot opening, then 32 bars in 6/8 at quarter=120; low brass call, broad reed answer, string middle recalling E–Eb–A, and brass return; bass and drums retain both compound downbeats |
+
+Each cue has its own complete 32-bar melody and harmonic route. The second half is composed, rather than replaying the first sixteen measures with new chords. The city, postal stair and serpent share selected falling/turning gestures; the court is no longer the city melody squeezed into three beats, and the mooring and observatory no longer share one lowered tune. The E–Eb–A quotation comes from `claim` / The Sky Answers, already heard when the divine hunters attacked the ship. It connects the established threat without introducing the god's final-domain music.
+
+The mooring, court and observatory hold bass and inner voices across two bars without a new bass attack in the quiet measure. Replies are written into selected rests; other pauses stay open. The court's occasional lute rolls unfold on half-beat positions rather than a repeated rapid strum in every measure. Warm reed lines and held strings swell and develop vibrato; plucked leads retain clear, straight attacks. A few long reed notes approach from one 31-EDO step below and settle in the first tenth of the hold. These gestures do not replace the structural neutral thirds with continuous sliding. The common expression/cancellation paths and two rubato clocks remain unchanged.
+
+Review in Music → Ch 6. Useful comparisons: city bars 1/17/25, court bars 1/9/17, observatory bars 9/17/25, and serpent bars 1/3/11/19/27 (the latter includes its two opening bars). Solo Bass to hear the harmonic movement; solo Bell in the observatory's middle to hear the hunters' call. The normal CI set remains small; detailed review renders all seven forms and their loop seams through the real synth. Each cue has its own browser test and audio context, so the complete sweep does not share one cumulative timeout or retain all seven voice graphs. The signal thresholds and full forms are unchanged.
+
+The procedural lute uses a plucked triangle fundamental with exact harmonic upper partials and the shared smooth attack/release, expression and cancellation paths. No recordings or extra production dependencies are added. Review or solo it in Music → Ch 6. Northern, jungle and domain collections above remain approved composition plans.

@@ -1,3 +1,4 @@
+import { SERPENT_ASSETS } from './sun-serpent-presentation';
 import Phaser from 'phaser';
 import type { MapId } from '../rules/state';
 import { MAPS,mapSize } from '../content/maps';
@@ -34,7 +35,7 @@ export class RegionAssets {
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
       const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:map==='airship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.scene.textures.exists(a.key));
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='observatory'?SERPENT_ASSETS:map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:map==='airship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.scene.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.scene.textures.exists(page.name));
       if(missing.length||svg.length){
         if(!this.pending)this.pending=new Promise<void>((resolve,reject)=>{

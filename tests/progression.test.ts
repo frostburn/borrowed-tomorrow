@@ -35,7 +35,7 @@ it('derives independent ability unlocks from level, and removes them again when 
 it('round-trips only validated character settings and rejects invalid levels or stat values', () => {
   const settings = newCharacterSettings(); settings.characters.nell = defaultBuild('nell', 10);
   expect(decodeCharacterSettings(JSON.stringify(settings))).toEqual(settings);
-  for (const patch of [{ level: 0 }, { level: 11 }, { level: 2.5 }, { attack: -1 }, { armor: null }, { speed: 0 }, { movement: 11 }, { focus: 7 }, { maxHp: 1000 }, { attack: '12' }]) {
+  for (const patch of [{ level: 0 }, { level: 13 }, { level: 2.5 }, { attack: -1 }, { armor: null }, { speed: 0 }, { movement: 11 }, { focus: 7 }, { maxHp: 1000 }, { attack: '12' }]) {
     const invalid = structuredClone(settings); Object.assign(invalid.characters.nell, patch);
     expect(() => decodeCharacterSettings(JSON.stringify(invalid))).toThrow();
   }

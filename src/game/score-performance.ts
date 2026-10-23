@@ -5,6 +5,8 @@ type TempoKnot=readonly [bar:number,stretch:number];
 // Local beat lengths, interpolated through the phrases. A breath at a cadence
 // belongs to the whole ensemble, including a pedal begun in an earlier bar.
 const breaths:Partial<Record<MusicMode,readonly TempoKnot[]>>={
+ sunpalace:[[0,.98],[4,.96],[7.5,1.12],[8,.98],[12,.96],[15.5,1.15],[16,.98],[20,.97],[23.5,1.13],[24,.96],[28,.98],[31.5,1.16],[32,.98]],
+ outermooring:[[0,.98],[4,.96],[7.5,1.12],[8,.98],[12,.96],[15.5,1.15],[16,.98],[20,.97],[23.5,1.13],[24,.96],[28,.98],[31.5,1.16],[32,.98]],
  airship:[[0,.96],[2,1.02],[4,.95],[7,1.09],[8,.98],[10.5,1.1],[11.5,1.18],[12,.96],[15,1.07],[16,.99],[19,1.1],[20,.92],[21.5,.96],[23.5,1.15],[24,.97],[27,1.07],[28,.94],[30,1.06],[31.5,1.17],[32,.96]],
  windmere:[[0,1.03],[1.5,.98],[4,1.04],[6,.97],[9,1.13],[10,.96],[12,.99],[15.5,1.16],[16,.98],[19,1.05],[21,.97],[23.5,1.13],[24,.96],[26,.99],[29,1.05],[31.5,1.18],[32,1.03]],
  refuge:[[0,.98],[2,.94],[3.5,1.07],[4,.97],[6,.99],[7.5,1.15],[8,.97],[10,.95],[11.5,1.1],[12,.99],[15.5,1.14],[16,.95],[18,.98],[19.5,1.07],[20,1.08],[23.5,1.16],[24,.98],[27.5,1.08],[28,.97],[30,1.04],[31.5,1.18],[32,.98]],
@@ -26,7 +28,7 @@ for(const [name,knots]of Object.entries(breaths)){
  clock[length]=length;clocks[mode]=clock;
 }
 export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
-const expressive:readonly MusicMode[]=['airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
+const expressive:readonly MusicMode[]=['outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
 export const hasExpression=(mode:MusicMode)=>expressive.includes(mode);
 
 /** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */

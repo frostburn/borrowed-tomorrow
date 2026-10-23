@@ -81,7 +81,7 @@ export class Synth {
     if(instrument==='cymbal'){this.cymbal(when,duration,volume,pan);return;}
     if(instrument==='hat'){this.noise(when,duration,volume,8000,5200,pan,'highpass');return;}
     const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
-    const bell=instrument==='bell',plucked=instrument==='keys',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
+    const bell=instrument==='bell',plucked=instrument==='keys'||instrument==='lute',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
     const release=expression?.release??(bell?.65:strings?.35:timpani?.25:brass?.22:.16);
     const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
@@ -113,6 +113,7 @@ export class Synth {
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
+    else if(instrument==='lute'){osc('triangle',0,1,.68);osc('sine',0,2,.2);osc('sine',0,3,.08);osc('sine',0,4,.035);}
     else if(plucked){osc('triangle',0,1,.76);osc('sine',0,2,.17);osc('sine',0,3.005,.055);}
     else {
       const reed=osc('triangle',0,1,.85);osc('sine',0,2,.15);

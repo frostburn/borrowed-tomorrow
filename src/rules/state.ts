@@ -11,13 +11,13 @@ export const FOURTH_CHAPTER = 'chapter-four:broken-world';
 export const FIFTH_CHAPTER = 'chapter-five:anchors';
 export const SIXTH_CHAPTER = 'chapter-six:capital-approach';
 export type HeroId = 'nell' | 'orrin' | 'kit' | 'celia' | 'petra';
-export type MapId = 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
+export type MapId = 'outermooring' | 'namar' | 'sunpalace' | 'skywalk' | 'observatory' | 'station' | 'yard' | 'rillbridge' | 'tunnel' | 'coast' | 'infirmary' | 'cinderbank' | 'northglass' | 'relayhall' | 'conduit' | 'refuge' | 'breakwater' | 'sanctuary' | 'airfield' | 'airship' | 'hammerplain' | 'coolingworks' | 'anchorforge' | 'dawnwatch' | 'watchbarracks' | 'signalwall' | 'observation' | 'windmere' | 'dispensary' | 'mirrorward' | 'flagship';
 export interface HeroState { id: HeroId; hp: number; focus: number }
 export interface GameState {
   format: typeof SAVE_FORMAT;
   version: typeof SAVE_VERSION;
   campaign: typeof CAMPAIGN;
-  chapter: 'chapter-one' | 'chapter-two' | 'chapter-three' | 'chapter-four' | 'chapter-five';
+  chapter: 'chapter-one' | 'chapter-two' | 'chapter-three' | 'chapter-four' | 'chapter-five' | 'chapter-six';
   location: { map: MapId; x: number; y: number };
   party: HeroState[];
   activeParty: HeroId[];
@@ -37,7 +37,7 @@ export function newGame(): GameState {
     flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), journal: ['home'], boundary: null, playSeconds: 0,
   };
 }
-export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
+export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 4000 ? 12 : s.xp >= 3500 ? 11 : s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
 export const maxHp = (id: HeroId, s: Pick<GameState, 'xp'>) => BASE_STATS[id].maxHp + (level(s) - 1) * 6;
 export function restoreParty(s: GameState) { for (const hero of s.party) { if(!heroAvailable(s,hero.id))continue;hero.hp = maxHp(hero.id, s); hero.focus = 6; } }
 export function recruitOrrin(s: GameState) {
@@ -76,6 +76,10 @@ export function beginChapterFour(s:GameState):boolean {
 export function beginChapterFive(s:GameState):boolean {
   if(s.chapter!=='chapter-four'||s.boundary!==FIFTH_CHAPTER||!s.flags.chapterFourComplete)return false;
   s.chapter='chapter-five';s.boundary=null;s.location={map:'airfield',x:24,y:30};return true;
+}
+export function beginChapterSix(s:GameState):boolean {
+  if(s.chapter!=='chapter-five'||s.boundary!==SIXTH_CHAPTER||!s.flags.chapterFiveComplete)return false;
+  s.chapter='chapter-six';s.boundary=null;s.location={map:'outermooring',x:32,y:29};return true;
 }
 export const partyLeader=(s:GameState):HeroId=>s.activeParty.includes('nell')?'nell':s.activeParty[0];
 export function remember(s: GameState, entry: string) { if (!s.journal.includes(entry)) s.journal.push(entry); }

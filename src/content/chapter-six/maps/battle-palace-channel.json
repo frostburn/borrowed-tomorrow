@@ -1,0 +1,516 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "infinite": false,
+  "width": 42,
+  "height": 20,
+  "tilewidth": 24,
+  "tileheight": 24,
+  "nextlayerid": 7,
+  "nextobjectid": 2,
+  "properties": [
+    {
+      "name": "name",
+      "type": "string",
+      "value": "Palace service channel"
+    },
+    {
+      "name": "subtitle",
+      "type": "string",
+      "value": ""
+    },
+    {
+      "name": "sceneArt",
+      "type": "string",
+      "value": "battle-palace-channel"
+    },
+    {
+      "name": "artStyle",
+      "type": "string",
+      "value": "rotoscope"
+    },
+    {
+      "name": "safeArrival",
+      "type": "string",
+      "value": "start"
+    }
+  ],
+  "tilesets": [
+    {
+      "firstgid": 1,
+      "source": "../../../../assets/tiles/pages/tiles-000.json"
+    },
+    {
+      "firstgid": 65,
+      "source": "../../../../assets/tiles/pages/tiles-001.json"
+    },
+    {
+      "firstgid": 129,
+      "source": "../../../../assets/tiles/pages/tiles-002.json"
+    },
+    {
+      "firstgid": 193,
+      "source": "../../../../assets/tiles/pages/tiles-003.json"
+    },
+    {
+      "firstgid": 257,
+      "source": "../../../../assets/tiles/pages/tiles-004.json"
+    },
+    {
+      "firstgid": 321,
+      "source": "../../../../assets/tiles/pages/tiles-005.json"
+    },
+    {
+      "firstgid": 385,
+      "source": "../../../../assets/tiles/pages/tiles-006.json"
+    },
+    {
+      "firstgid": 449,
+      "source": "../../../../assets/tiles/pages/tiles-007.json"
+    },
+    {
+      "firstgid": 513,
+      "source": "../../../../assets/tiles/pages/tiles-008.json"
+    },
+    {
+      "firstgid": 577,
+      "source": "../../../../assets/tiles/pages/tiles-009.json"
+    },
+    {
+      "firstgid": 641,
+      "source": "../../../../assets/tiles/pages/tiles-010.json"
+    },
+    {
+      "firstgid": 705,
+      "source": "../../../../assets/tiles/pages/tiles-011.json"
+    },
+    {
+      "firstgid": 769,
+      "source": "../../../../assets/tiles/pages/tiles-012.json"
+    },
+    {
+      "firstgid": 833,
+      "source": "../../../../assets/tiles/pages/tiles-013.json"
+    },
+    {
+      "firstgid": 897,
+      "source": "../../../../assets/tiles/pages/tiles-014.json"
+    },
+    {
+      "firstgid": 961,
+      "source": "../../../../assets/tiles/pages/tiles-015.json"
+    },
+    {
+      "firstgid": 1025,
+      "source": "../../../../assets/tiles/pages/tiles-016.json"
+    },
+    {
+      "firstgid": 1089,
+      "source": "../../../../assets/tiles/pages/tiles-017.json"
+    },
+    {
+      "firstgid": 1153,
+      "source": "../../../../assets/tiles/pages/tiles-018.json"
+    },
+    {
+      "firstgid": 1217,
+      "source": "../../../../assets/tiles/pages/tiles-019.json"
+    },
+    {
+      "firstgid": 1281,
+      "source": "../../../../assets/tiles/pages/tiles-020.json"
+    },
+    {
+      "firstgid": 1345,
+      "source": "../../../../assets/tiles/pages/tiles-021.json"
+    },
+    {
+      "firstgid": 1409,
+      "source": "../../../../assets/tiles/pages/tiles-022.json"
+    },
+    {
+      "firstgid": 1473,
+      "source": "../../../../assets/tiles/pages/tiles-023.json"
+    },
+    {
+      "firstgid": 1537,
+      "source": "../../../../assets/tiles/pages/tiles-024.json"
+    },
+    {
+      "firstgid": 1601,
+      "source": "../../../../assets/tiles/pages/tiles-025.json"
+    },
+    {
+      "firstgid": 1665,
+      "source": "../../../../assets/tiles/pages/tiles-026-0.json"
+    },
+    {
+      "firstgid": 1681,
+      "source": "../../../../assets/tiles/pages/tiles-026-1.json"
+    },
+    {
+      "firstgid": 1697,
+      "source": "../../../../assets/tiles/pages/tiles-026-2.json"
+    },
+    {
+      "firstgid": 1713,
+      "source": "../../../../assets/tiles/pages/tiles-026-3.json"
+    },
+    {
+      "firstgid": 1729,
+      "source": "../../../../assets/tiles/pages/tiles-027.json"
+    },
+    {
+      "firstgid": 1793,
+      "source": "../../../../assets/tiles/pages/tiles-028.json"
+    },
+    {
+      "firstgid": 1857,
+      "source": "../../../../assets/tiles/pages/tiles-029.json"
+    },
+    {
+      "firstgid": 1921,
+      "source": "../../../../assets/tiles/pages/tiles-030-0.json"
+    },
+    {
+      "firstgid": 1937,
+      "source": "../../../../assets/tiles/pages/tiles-030-1.json"
+    },
+    {
+      "firstgid": 1953,
+      "source": "../../../../assets/tiles/pages/tiles-030-2.json"
+    },
+    {
+      "firstgid": 1969,
+      "source": "../../../../assets/tiles/pages/tiles-030-3.json"
+    },
+    {
+      "firstgid": 1985,
+      "source": "../../../../assets/tiles/pages/tiles-031-0.json"
+    },
+    {
+      "firstgid": 2001,
+      "source": "../../../../assets/tiles/pages/tiles-031-1.json"
+    },
+    {
+      "firstgid": 2017,
+      "source": "../../../../assets/tiles/pages/tiles-031-2.json"
+    },
+    {
+      "firstgid": 2033,
+      "source": "../../../../assets/tiles/pages/tiles-031-3.json"
+    },
+    {
+      "firstgid": 2049,
+      "source": "../../../../assets/tiles/pages/tiles-032-0.json"
+    },
+    {
+      "firstgid": 2065,
+      "source": "../../../../assets/tiles/pages/tiles-032-1.json"
+    },
+    {
+      "firstgid": 2081,
+      "source": "../../../../assets/tiles/pages/tiles-032-2.json"
+    },
+    {
+      "firstgid": 2097,
+      "source": "../../../../assets/tiles/pages/tiles-032-3.json"
+    },
+    {
+      "firstgid": 2113,
+      "source": "../../../../assets/tiles/pages/tiles-033-0.json"
+    },
+    {
+      "firstgid": 2129,
+      "source": "../../../../assets/tiles/pages/tiles-033-1.json"
+    },
+    {
+      "firstgid": 2145,
+      "source": "../../../../assets/tiles/pages/tiles-033-2.json"
+    },
+    {
+      "firstgid": 2161,
+      "source": "../../../../assets/tiles/pages/tiles-033-3.json"
+    },
+    {
+      "firstgid": 2177,
+      "source": "../../../../assets/tiles/pages/tiles-034-0.json"
+    },
+    {
+      "firstgid": 2193,
+      "source": "../../../../assets/tiles/pages/tiles-034-1.json"
+    },
+    {
+      "firstgid": 2209,
+      "source": "../../../../assets/tiles/pages/tiles-034-2.json"
+    },
+    {
+      "firstgid": 2225,
+      "source": "../../../../assets/tiles/pages/tiles-034-3.json"
+    },
+    {
+      "firstgid": 2241,
+      "source": "../../../../assets/tiles/pages/tiles-035-0.json"
+    },
+    {
+      "firstgid": 2257,
+      "source": "../../../../assets/tiles/pages/tiles-035-1.json"
+    },
+    {
+      "firstgid": 2264,
+      "source": "../../../../assets/tiles/pages/tiles-055.json"
+    },
+    {
+      "firstgid": 2304,
+      "source": "../../../../assets/tiles/pages/tiles-056.json"
+    },
+    {
+      "firstgid": 2368,
+      "source": "../../../../assets/tiles/pages/tiles-057.json"
+    },
+    {
+      "firstgid": 2432,
+      "source": "../../../../assets/tiles/pages/tiles-058.json"
+    },
+    {
+      "firstgid": 2496,
+      "source": "../../../../assets/tiles/pages/tiles-059.json"
+    },
+    {
+      "firstgid": 2544,
+      "source": "../../../../assets/tiles/pages/tiles-060.json"
+    },
+    {
+      "firstgid": 2608,
+      "source": "../../../../assets/tiles/pages/tiles-061.json"
+    },
+    {
+      "firstgid": 2672,
+      "source": "../../../../assets/tiles/pages/tiles-062.json"
+    },
+    {
+      "firstgid": 2736,
+      "source": "../../../../assets/tiles/pages/tiles-063.json"
+    },
+    {
+      "firstgid": 2797,
+      "source": "../../../../assets/tiles/pages/tiles-064.json"
+    },
+    {
+      "firstgid": 2861,
+      "source": "../../../../assets/tiles/pages/tiles-065.json"
+    },
+    {
+      "firstgid": 2925,
+      "source": "../../../../assets/tiles/pages/tiles-066.json"
+    },
+    {
+      "firstgid": 2936,
+      "source": "../../../../assets/tiles/pages/tiles-067.json"
+    },
+    {
+      "firstgid": 3000,
+      "source": "../../../../assets/tiles/pages/tiles-068.json"
+    },
+    {
+      "firstgid": 3064,
+      "source": "../../../../assets/tiles/pages/tiles-069.json"
+    },
+    {
+      "firstgid": 3128,
+      "source": "../../../../assets/tiles/pages/tiles-070.json"
+    },
+    {
+      "firstgid": 3192,
+      "source": "../../../../assets/tiles/pages/tiles-071.json"
+    },
+    {
+      "firstgid": 3203,
+      "source": "../../../../assets/tiles/pages/tiles-072.json"
+    },
+    {
+      "firstgid": 3267,
+      "source": "../../../../assets/tiles/pages/tiles-073.json"
+    },
+    {
+      "firstgid": 3313,
+      "source": "../../../../assets/tiles/pages/tiles-074.json"
+    },
+    {
+      "firstgid": 3377,
+      "source": "../../../../assets/tiles/pages/tiles-075.json"
+    },
+    {
+      "firstgid": 3441,
+      "source": "../../../../assets/tiles/pages/tiles-076.json"
+    },
+    {
+      "firstgid": 3505,
+      "source": "../../../../assets/tiles/pages/tiles-077.json"
+    },
+    {
+      "firstgid": 3569,
+      "source": "../../../../assets/tiles/pages/tiles-078.json"
+    },
+    {
+      "firstgid": 3633,
+      "source": "../../../../assets/tiles/pages/tiles-079.json"
+    },
+    {
+      "firstgid": 3697,
+      "source": "../../../../assets/tiles/pages/tiles-080.json"
+    },
+    {
+      "firstgid": 3725,
+      "source": "../../../../assets/tiles/pages/tiles-081.json"
+    },
+    {
+      "firstgid": 3746,
+      "source": "../../../../assets/tiles/pages/tiles-082.json"
+    },
+    {
+      "firstgid": 3810,
+      "source": "../../../../assets/tiles/pages/tiles-083.json"
+    },
+    {
+      "firstgid": 3842,
+      "source": "../../../../assets/tiles/pages/tiles-084.json"
+    },
+    {
+      "firstgid": 3906,
+      "source": "../../../../assets/tiles/pages/tiles-085.json"
+    },
+    {
+      "firstgid": 3970,
+      "source": "../../../../assets/tiles/pages/tiles-086.json"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Surroundings",
+      "type": "tilelayer",
+      "visible": true,
+      "width": 42,
+      "height": 20,
+      "data": [
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+      5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
+    ]
+    },
+    {
+      "id": 2,
+      "name": "Walking surfaces",
+      "type": "tilelayer",
+      "visible": true,
+      "width": 42,
+      "height": 20,
+      "data": [
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    ]
+    },
+    {
+      "id": 3,
+      "name": "Scenery footprints",
+      "type": "tilelayer",
+      "visible": true,
+      "width": 42,
+      "height": 20,
+      "data": [
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    ]
+    },
+    {
+      "id": 4,
+      "name": "Interactions",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": []
+    },
+    {
+      "id": 5,
+      "name": "Arrivals",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "start",
+          "point": true,
+          "x": 492,
+          "y": 420,
+          "properties": [],
+          "id": 1
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 6,
+      "name": "People",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": []
+    }
+  ]
+}

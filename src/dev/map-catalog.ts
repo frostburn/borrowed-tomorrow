@@ -11,8 +11,9 @@ export interface MapReview {
   id:string; chapter:number; kind:'World'|'Battle'; name:string;
   width:number; height:number; tiles?:TileMap; world?:MapData; image?:string;
 }
-const worlds=[CHAPTER_ONE_MAPS,CHAPTER_TWO_MAPS,CHAPTER_THREE_MAPS,CHAPTER_FOUR_MAPS,CHAPTER_FIVE_MAPS];
-const battles=[CHAPTER_ONE_BATTLES,CHAPTER_TWO_BATTLES,CHAPTER_THREE_BATTLES,CHAPTER_FOUR_BATTLES,CHAPTER_FIVE_BATTLES];
+import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../content/chapter-six/maps';
+const worlds=[CHAPTER_ONE_MAPS,CHAPTER_TWO_MAPS,CHAPTER_THREE_MAPS,CHAPTER_FOUR_MAPS,CHAPTER_FIVE_MAPS,CHAPTER_SIX_MAPS];
+const battles=[CHAPTER_ONE_BATTLES,CHAPTER_TWO_BATTLES,CHAPTER_THREE_BATTLES,CHAPTER_FOUR_BATTLES,CHAPTER_FIVE_BATTLES,CHAPTER_SIX_BATTLES];
 export const MAP_REVIEWS:MapReview[]=worlds.flatMap((group,i)=>Object.keys(group).map(id=>{
   const world=MAPS[id as keyof typeof MAPS];
   return {id,chapter:i+1,kind:'World',name:world.name,...mapSize(world),tiles:world.tiles,world};

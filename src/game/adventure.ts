@@ -1,3 +1,4 @@
+import { serpentPresentation } from './sun-serpent-presentation';
 import { RegionAssets } from './region-assets';
 import { flagshipPresentation } from './flagship-presentation';
 import { wardPresentation } from './ward-presentation';
@@ -206,6 +207,10 @@ export class Adventure extends Phaser.Scene {
         {label:'Begin Chapter Five (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveStart})=>this.loadState(chapterFiveStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Five save?','<p>This replaces the autosave with the five travelers at the western airfield. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }},
+        {label:'Begin Chapter Six (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterSixStart})=>this.loadState(chapterSixStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Chapter Six save?','<p>This replaces the autosave with the flagship and hunters defeated. Nell is ill; Kit, Orrin and Petra approach the capital. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
         }},
         {label:'Begin Chapter Five · Act IV (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveFinaleStart})=>this.loadState(chapterFiveFinaleStart()));};
@@ -450,7 +455,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }
