@@ -1,4 +1,6 @@
 import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
+import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
+import { arrival } from '../content/maps';
 import { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as COAST_ENCOUNTERS } from '../content/chapter-two/encounters';
 import { ENCOUNTERS as CAPITAL_ENCOUNTERS } from '../content/chapter-three/encounters';
@@ -56,4 +58,27 @@ export function chapterFiveStart(){
  equipItem(state.inventory,'nell','sun-prism');equipItem(state.inventory,'orrin','return-valve');equipItem(state.inventory,'petra','rescue-coat');
  state.journal.push('refugeSeen','worksArrival','worksClear','harborOpened','sanctuaryEntered','roadClear','signalCut','wardenFallen','anchorsKnown','anchorsDeparture');
  state.boundary=FIFTH_CHAPTER;beginChapterFive(state);restoreParty(state);return decodeSave(JSON.stringify(state));
+}
+
+/** Authored Acts I–III completion. No live saves or workshop settings are read. */
+export function chapterFiveFinaleStart(){
+ const s=chapterFiveStart();
+ for(const flag of [
+  'airfieldSeen','airfieldGuardWon','airshipOwned','firstFlightSeen',
+  'hammerplainSeen','coolingSeen','forgeRouteSet','forgeApproachWon','coolingOpened','forgeGantrySeen','furnaceConfronted','furnaceWon','hammerplainFreed','hammerplainComplete','fleetSighted',
+  'dawnwatchSeen','shelterOpened','watchGunsSeen','mortarConfronted','mortarWon','repeaterConfronted','repeaterWon','aurelSeen','aurelConfronted','aurelWon','dawnwatchFreed','dawnwatchComplete',
+  'emperorOfferSeen','emperorOfferTold','windmereSeen','dispensarySeen','windLiftConfronted','windLiftWon','waterLiftOpened','patientsTransferred','mirrorWardSeen','windGalleryWon','wardEngineConfronted','wardEngineWon','windmereFreed','windmereComplete','allAnchorsSeen',
+ ])s.flags[flag]=true;
+ s.flags.forgeFlooded=false;
+ for(const id of ['airfield-guard','hammer-lift','hammer-carrier','dawn-mortar-first','dawn-repeater-last','dawn-commander','wind-lift','wind-gallery','wind-engine']){
+  const e=FIVE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);
+ }
+ s.flags.watchCoatTaken=true;s.flags.windReflectorTaken=true;
+ receiveItem(s.inventory,'field-coat');receiveItem(s.inventory,'opal-reflector');
+ for(const [hero,item]of [['nell','opal-reflector'],['orrin','forge-valve'],['petra','shield-brace'],['petra','field-coat'],['celia','ward-focus'],['celia','rescue-coat']]as const)equipItem(s.inventory,hero,item);
+ s.journal.push('airfieldSeen','airfieldClear','firstFlightSeen','hammerplainSeen','coolingSeen','coolingClear','coolingOpened','forgeGantrySeen','furnaceFallen','hammerplainFreed','hammerplainComplete','fleetSighted','dawnwatchSeen','shelterOpened','watchGunsSeen','watchGunClear','aurelSeen','aurelFallen','dawnwatchFreed','dawnwatchComplete','watchCoatTaken','emperorOfferSeen','emperorOfferTold','windmereSeen','dispensarySeen','windLiftClear','waterLiftOpened','windReflectorTaken','patientsTransferred','mirrorWardSeen','windGalleryClear','wardEngineFallen','windmereFreed','windmereComplete','allAnchorsSeen');
+ // Seven ordinary purchases at the existing eight-mark price, then a free rest.
+ s.coins-=56;s.bandages=12;s.activeParty=['nell','orrin','petra'];
+ s.location=arrival('airship','start');restoreParty(s);
+ return decodeSave(JSON.stringify(s));
 }

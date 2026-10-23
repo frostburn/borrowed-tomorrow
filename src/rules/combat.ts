@@ -1,3 +1,4 @@
+import { configureFlagship,prepareFlagship,isFlagshipPart } from './flagship';
 import { configureWard,prepareWard,WARD_ID } from './ward';
 import { configureDawnwatch,prepareDawnwatch,orderShields,spotterTurn,SPOTTER_ID } from './dawnwatch';
 import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
@@ -66,7 +67,7 @@ export interface Battle {
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'conduit'|'furnace'|'dawnwatch'|'ward'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -112,6 +113,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.boss==='furnace')configureFurnace(battle);
   configureDawnwatch(battle,e);
   if(e.boss==='ward')configureWard(battle);
+  if(e.boss==='flagship')configureFlagship(battle);
   nextRound(battle);
   return battle;
 }
@@ -195,7 +197,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);
+  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);
 }
 function nextRound(b: Battle) {
   b.round++;
@@ -204,7 +206,8 @@ function nextRound(b: Battle) {
   beginTurn(b);
 }
 function ended(b:Battle){
-  prepareWard(b);
+  prepareWard(b);prepareFlagship(b);
+  if(b.result)return true;
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
   if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return true; }
@@ -301,6 +304,10 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(isFlagshipPart(u)){
+    prepareFlagship(b);if(b.result)return;const aim={...u.hex};
+    if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+  }
   if(u.id===WARD_ID){
     prepareWard(b);const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;
   }
@@ -314,11 +321,11 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   }
   const forced = tauntTarget(b, u), enemies = forced ? [forced] : alive(b).filter(v => v.side !== u.side);
   if(u.kind==='knight'){
-    if(!u.bonusUsed){
+    if(u.abilities.includes('bash')&&!u.bonusUsed){
       const victim=enemies.find(v=>legalAim(b,u,'bash',v.hex)&&pushDestination(b,u,v));
       if(victim){const aim={...victim.hex};cast(b,u,'bash',aim);onAction?.('bash',aim);return 'bash';}
     }
-    if(!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
+    if(u.abilities.includes('taunt')&&!forced&&b.round%2===1&&u.focus>=ABILITIES.taunt.cost){
       const visits=[...movement(b,u).values()].sort((a,z)=>Math.min(...enemies.map(v=>distance(a.hex,v.hex)))-Math.min(...enemies.map(v=>distance(z.hex,v.hex)))||a.cost-z.cost);
       if(visits[0]&&!equal(visits[0].hex,u.hex))move(b,u,visits[0].hex);
       if(cast(b,u,'taunt',u.hex)){onAction?.('taunt',{...u.hex});return 'taunt';}

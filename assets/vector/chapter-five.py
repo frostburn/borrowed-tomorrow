@@ -1,4 +1,4 @@
-"""Reproduce Chapter Five Acts I–III's native SVG scenery, cast and Tiled layouts.
+"""Reproduce Chapter Five Acts I–IV's native SVG scenery, cast and Tiled layouts.
 No bitmap inputs or resampling. Navigation, markers and scene casts share 24px cells.
 """
 import json, math, re
@@ -217,6 +217,8 @@ world('observation','Survey ship · observation cabin','The observation glass fa
 
 from windmere import export as export_windmere
 export_windmere(globals())
+from flagship import export as export_flagship
+export_flagship(globals())
 
 for id,mapid in [('wind-lift','dispensary'),('wind-gallery','mirrorward'),('wind-engine','mirrorward'),('airfield-guard','airfield'),('hammer-lift','coolingworks'),('hammer-race','coolingworks'),('hammer-stores','hammerplain'),('hammer-carrier','anchorforge'),('dawn-mortar-first','watchbarracks'),('dawn-repeater-first','watchbarracks'),('dawn-mortar-last','watchbarracks'),('dawn-repeater-last','watchbarracks'),('dawn-commander','signalwall')]:
  w,h=42,26;key='battle-'+id;f=[(1,3,40,20)];layers=[layer(1,'Arena surroundings',[(0,0,w,h)],w,h,5),layer(2,'Clear tactical floor',f,w,h)]
@@ -238,4 +240,4 @@ svg(ART/'furnace-carrier-battle.svg',224,168,carrier())
 svg(ROOT/'public/art/vector/furnace-carrier.svg',80,80,['<g transform="translate(3 14) scale(.33)">',*carrier(),'</g>'])
 svg(ROOT/'public/art/vector/portrait-furnace-carrier.svg',128,128,['<g transform="translate(-8 5) scale(.64)">',*carrier(),'</g>'])
 (ROOT/'src/content/chapter-five/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
-print('Exported Chapter Five Acts I–III: 12 story maps, 13 arenas and native SVG scenery.')
+print('Exported Chapter Five Acts I–IV: 13 story maps, 13 arenas and native SVG scenery.')

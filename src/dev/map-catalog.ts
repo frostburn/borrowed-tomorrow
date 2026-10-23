@@ -28,3 +28,5 @@ export function reviewFlags(entry:MapReview){
   for(const o of [...entry.world?.objects??[],...entry.world?.people??[],...entry.world?.gates??[]])add(o as unknown as Record<string,unknown>);
   return [...names].sort();
 }
+
+MAP_REVIEWS.push({id:'battle-alban-flagship',chapter:5,kind:'Battle',name:'Alban’s flagship · survey deck',width:1008,height:480,image:'art/vector/bosses/flagship-deck.svg'});

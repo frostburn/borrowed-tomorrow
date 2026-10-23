@@ -36,7 +36,7 @@ def head(d,name):
         d.poly([(26,10),(29,11),(27,16),(25,14)],'cream')
 
 
-def person(name):
+def person(name,weapon='saber'):
     d=Drawing()
     jacket={'master':'navy','clerk':'slate','tomas':'navy','alban':'navy','tilda':'green','elspeth':'plum'}[name]
     if name=='elspeth':
@@ -98,7 +98,8 @@ def person(name):
             sleeve(d,(26,30),(28,38),(28,46),jacket,name!='alban')
             if name=='alban':
                 d.oval((11,44,13,48),'white');d.oval((27,44,29,48),'white')
-                d.line([(12,47),(8,64)],'silver',2);d.line([(9,48),(15,49)],'gold',2)
+                if weapon=='saber':d.line([(12,47),(8,64)],'silver',2);d.line([(9,48),(15,49)],'gold',2)
+                elif weapon=='rod':d.line([(12,45),(12,58)],'gold',2);d.oval((10,42,14,46),'gold')
     head(d,name)
     return d
 
@@ -148,6 +149,8 @@ def export(root):
     out=root/'public/art/vector';out.mkdir(parents=True,exist_ok=True)
     for name in CAST:
         (out/f'{name}.svg').write_text(person(name).svg())
+    (out/'alban-command.svg').write_text(person('alban','rod').svg())
+    (out/'alban-captive.svg').write_text(person('alban','none').svg())
     for name in ('hound','crow','guardian','rock'):(out/f'{name}.svg').write_text(enemy(name).svg())
     print('Exported chapter-one supporting cast and enemies as SVG')
 

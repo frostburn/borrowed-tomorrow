@@ -181,6 +181,16 @@
       "height": 48,
       "depth": -997,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-ship-open-crossing",
+      "url": "art/vector/chapter-five/ship-open-crossing.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 350,
+      "depth": -998,
+      "layerId": 15
     }
   ],
   "hammerplain": [
@@ -930,6 +940,78 @@
       "width": 132,
       "height": 64,
       "depth": 606,
+      "layerId": 3
+    }
+  ],
+  "flagship": [
+    {
+      "key": "scene-five-flagship-back",
+      "url": "art/vector/chapter-five/flagship-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-flagship-floor",
+      "url": "art/vector/chapter-five/flagship-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-flagship-console",
+      "url": "art/vector/chapter-five/flagship-console.svg",
+      "x": 604,
+      "y": 374,
+      "width": 344,
+      "height": 112,
+      "depth": 486,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-rail",
+      "url": "art/vector/chapter-five/flagship-rail.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-launch",
+      "url": "art/vector/chapter-five/flagship-launch.svg",
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 800,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-gangway",
+      "url": "art/vector/chapter-five/flagship-gangway.svg",
+      "x": 123,
+      "y": 737,
+      "width": 232,
+      "height": 90,
+      "depth": -996,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-sparks",
+      "url": "art/vector/chapter-five/flagship-sparks.svg",
+      "x": 1120,
+      "y": 360,
+      "width": 90,
+      "height": 90,
+      "depth": -996,
       "layerId": 3
     }
   ],

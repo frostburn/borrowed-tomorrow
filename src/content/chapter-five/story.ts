@@ -3,6 +3,11 @@ import { completedAnchors } from './progress';
 import type { GameState } from '../../rules/state';
 export const JOURNAL:Record<string,{title:string;text:string}>={
  ...WINDMERE_JOURNAL,
+ flagshipApproachSeen:{title:'Under the flagship',text:'Dawnwatch’s signals brought us through the cordon. Hammerplain’s spare drive holds the survey ship steady, and Windmere’s crew is tending the wounded. Alban’s marines have boarded. Disable both batteries, then the bridge.'},
+ flagshipFallen:{title:'The guns fall silent',text:'Both batteries and the command bridge are disabled. The marines have lowered their weapons. Board the command deck from the flight chart. A fleet range sight goes into the bag for Kit to fit manually.'},
+ albanCaptured:{title:'Alban in custody',text:'The gun crews refused Alban’s order to fire through their own boarding party. Petra disarmed him. Nell named Ansel and demanded that Alban answer for killing him. The auxiliary lift holds the flagship while everyone evacuates. Take the western gangway back to the survey ship.'},
+ flagshipEvacuated:{title:'The last launch',text:'Kit checked the lower berths with the engineer. The regional crews brought every survivor off the flagship, including Alban under guard. Dawnwatch’s launches have opened the capital crossing.'},
+ fiveDeparture:{title:'The open crossing',text:'Alban is a prisoner; his pursuit has ended. The alliance has opened a lane to the floating capital. Nell chose the capital course after Tomas’s message from the refuge. The Emperor’s offer remains unanswered. Ansel is still gone.'},
  airfieldSeen:{title:'The survey ship',text:'Superintendent Durn has seized Alda’s survey ship for Hammerplain. Bram’s ferry stores are being unloaded. Clear the confiscation detail at the gangway.'},
  airfieldClear:{title:'A flight out',text:'The airfield guards have withdrawn. Meet Alda at the gangway to board the survey ship.'},
  firstFlightSeen:{title:'Three landings',text:'Alda will fly us between the anchor stations. Hammerplain powers its anchor from a foundry; Petra knows Dawnwatch’s garrison, and Celia knows Windmere’s medicine works. Choose a landing on the flight chart. Tomas keeps our railway messages at the refuge.'},
@@ -29,6 +34,10 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
 };
 export function objective(s:GameState):string{
  const f=s.flags;
+ if(f.chapterFiveComplete)return 'Chapter Five complete · the capital course is on the flight chart.';
+ if(s.location.map==='flagship')return f.albanCaptured?'Take the western evacuation gangway back to the survey ship.':'Join Petra on the command deck.';
+ if(f.flagshipEvacuated)return 'Join the crew at the flight chart for the capital course.';
+ if(f.flagshipWon)return 'Board the flagship’s command deck from the flight chart.';
  if(!f.airfieldGuardWon)return 'Clear the guards at the survey gangway.';
  if(!f.airshipOwned)return 'Meet Alda at the gangway and board the survey ship.';
  if(!f.firstFlightSeen)return 'Join Alda at the flight chart.';
@@ -66,7 +75,7 @@ export function objective(s:GameState):string{
  }
  if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return 'Look into the light in the observation cabin · aft hatch.';
  if(f.emperorOfferSeen&&!f.emperorOfferTold)return 'Return to the flight deck and tell the others.';
- if(completedAnchors(s)===3)return 'Acts I–III complete · prepare aboard for the flagship finale, or revisit the regions.';
+ if(completedAnchors(s)===3)return 'Choose the capital approach at the flight chart when you’re ready. Rest and Equipment are available aboard.';
  const remaining=[!f.hammerplainComplete&&'Hammerplain',!f.dawnwatchComplete&&'Dawnwatch',!f.windmereComplete&&'Windmere'].filter(Boolean).join(' or ');
  return `Choose ${remaining} at the forward flight chart.`;
 }

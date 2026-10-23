@@ -1,3 +1,4 @@
+import { FLAGSHIP_ASSETS,flagshipPresentation } from './flagship-presentation';
 import { WARD_ASSETS,wardPresentation } from './ward-presentation';
 import { FURNACE_ASSETS,furnacePresentation } from './furnace-presentation';
 import Phaser from 'phaser';
@@ -207,6 +208,10 @@ export class Adventure extends Phaser.Scene {
           const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveStart})=>this.loadState(chapterFiveStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Five save?','<p>This replaces the autosave with the five travelers at the western airfield. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
         }},
+        {label:'Begin Chapter Five · Act IV (canonical)',action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(({chapterFiveFinaleStart})=>this.loadState(chapterFiveFinaleStart()));};
+          if(this.latestSave)this.ui.showModal('Start the canonical Act IV save?','<p>This replaces the autosave with Acts I–III complete, the Emperor’s offer recorded and all five travelers rested aboard. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }},
         {label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}},
       ] : []),
     ]);
@@ -232,7 +237,7 @@ export class Adventure extends Phaser.Scene {
       // Later chapters load their scenery and local battle pages together.
       // Chapter one already has its complete SVG kit at the title screen.
       const maps=[MAPS[map].tiles,...Object.entries(ENCOUNTERS).flatMap(([id,e])=>e.backdrop?.map===map&&e.boss!=='conduit'&&id in BATTLE_MAPS?[BATTLE_MAPS[id as keyof typeof BATTLE_MAPS]]:[])];
-      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
+      const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...(map==='conduit'?CONDUIT_ASSETS:map==='anchorforge'?FURNACE_ASSETS:map==='mirrorward'?WARD_ASSETS:map==='airship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.textures.exists(page.name));
       if(missing.length||svg.length){
         if(!this.regionLoad)this.regionLoad=new Promise<void>((resolve,reject)=>{
@@ -271,7 +276,7 @@ export class Adventure extends Phaser.Scene {
     if(this.busy || (fifth?!CHAPTER_FIVE_AVAILABLE:fourth?!CHAPTER_FOUR_AVAILABLE:third?!CHAPTER_THREE_AVAILABLE:!CHAPTER_TWO_AVAILABLE) || !['chapter-one','chapter-two','chapter-three','chapter-four'].includes(this.state.chapter) || !this.state.boundary)return;
     this.busy=true;this.ui.toast(fifth?'Loading the western airfield…':fourth?'Loading the railway refuge…':third?'Loading the capital…':'Loading the Iron Coast…');
     try{
-      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
+      const maps=fifth?['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'] as const:fourth?['refuge','breakwater','sanctuary'] as const:third?['northglass','relayhall','conduit'] as const:['coast','infirmary','cinderbank'] as const;
       for(const map of maps)await this.ensureRegion(map);
       if(!(fifth?beginChapterFive(this.state):fourth?beginChapterFour(this.state):third?beginChapterThree(this.state):beginChapterTwo(this.state)))return;
       this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());
@@ -289,7 +294,7 @@ export class Adventure extends Phaser.Scene {
       const floor=restorePoint(MAPS[candidate.location.map],candidate.location,candidate);
       if(!floor)throw new Error('This save is inside an obstacle.');
       candidate.location={map:candidate.location.map,...floor};
-      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward'] as const)await this.ensureRegion(map);
+      if(candidate.chapter==='chapter-five')for(const map of ['airfield','airship','hammerplain','coolingworks','anchorforge','dawnwatch','watchbarracks','signalwall','observation','windmere','dispensary','mirrorward','flagship'] as const)await this.ensureRegion(map);
       else if(candidate.chapter==='chapter-four')for(const map of ['refuge','breakwater','sanctuary'] as const)await this.ensureRegion(map);
       else if(candidate.chapter==='chapter-three')for(const map of ['northglass','relayhall','conduit'] as const)await this.ensureRegion(map);
       else await this.ensureRegion(candidate.location.map);
@@ -307,7 +312,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='flagship'?'signalwall':map.id);
     for(const person of visiblePeople(map,this.state)){
       this.layer!.add(this.add.image((person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id));
     }
@@ -494,6 +499,12 @@ export class Adventure extends Phaser.Scene {
     };
   }
   private boundaryPanel() {
+    if(this.state.chapter==='chapter-five'){
+      this.ui.panel('Chapter Five complete','<div class="chapter-name">Next: Chapter Six · The Emperor’s Last Day</div><p>The three anchors are disconnected. Alban is in custody, every surviving crew member is off his flagship, and the capital crossing is open.</p><p>The alliance is ready. Nell has chosen to face the Emperor.</p>',[
+        {label:'Return to the flight deck',action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
+        {label:'Export capital departure save',action:()=>exportSave(this.state)},
+      ]);return;
+    }
     if(this.state.chapter==='chapter-four'){
       this.ui.panel('Chapter Four complete','<div class="chapter-name">Next: Chapter Five · Taking the World Back</div><p>The harbor is open. The coast is moving again, and the three anchors are marked.</p><p>Tomas is safe at the railway refuge, organizing messages between the freed communities. Nell has chosen to lead the counterattack.</p><p>A survey ship is waiting at the western airfield.</p>',[
         ...(CHAPTER_FIVE_AVAILABLE?[{label:'Begin Chapter Five',action:()=>{void this.beginNextChapter();}}]:[]),
@@ -525,7 +536,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }

@@ -1,5 +1,7 @@
 /** Silent background roles, deliberately separate from named scene characters. */
 export const CIVILIANS = {
+  'flagship-crew': { name:'Disarmed flagship crew',role:'marine' },
+  'flagship-marine': { name:'Boarding marine',role:'marine' },
   'civilian-dockhand': { name: 'Dock worker', role:'dockhand' },
   'civilian-traveler': { name: 'Traveler', role:'traveler' },
   'civilian-family': { name: 'Parent and child', role:'family' },

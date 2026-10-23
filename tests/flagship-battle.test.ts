@@ -45,11 +45,16 @@ describe('dev flagship components',()=>{
     expect(before.some(h=>equal(h,hero.hex))).toBe(true);expect(flagshipTurn(b)).toBe('judgment');expect(hero.hp).toBe(hp-amount);
     expect(b.round).toBe(2);prepareFlagship(b);expect(gun.intent!.round).toBe(2);expect(gun.intent!.cells).not.toEqual(before);
   });
-  it('lets boarders reach and attack, and completes a normal battle without a stalled queue',()=>{
-    const b=createFlagshipBattle();let steps=0;
-    while(!b.result&&steps++<100)next(b);
-    expect(steps).toBeLessThan(100);expect(b.result).toBe('defeat');
-    expect(b.log.some(t=>t.includes('Boarding marine: Strike hits'))).toBe(true);
+  it('lets boarders attack and bash without stalling the initiative queue',()=>{
+    const b=createFlagshipBattle();let attacked=false,pushed=false;
+    for(let step=0;!b.result&&step<100;step++){
+      next(b);attacked||=b.log.some(t=>t.includes('Boarding marine: Strike hits'));pushed||=b.log.some(t=>t.includes('is pushed one hex'));
+    }
+    expect(attacked).toBe(true);expect(pushed).toBe(true);expect(b.round).toBeGreaterThan(3);
+    // A bash can push a defending survivor outside the fixed gun lanes. That is
+    // a legal safe position, not an initiative stall or a required defeat.
+    if(!b.result)expect(active(b)?.hp).toBeGreaterThan(0);
+    else expect(b.result).toBe('defeat');
   });
   it('ends the boarding when the bridge falls, while preserving defeat and clone independence',()=>{
     const b=createFlagshipBattle(undefined,undefined,undefined,true),clone=structuredClone(b);

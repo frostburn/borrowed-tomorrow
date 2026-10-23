@@ -72,7 +72,7 @@ The regional contributions bring the survey ship within reach: Hammerplain's pro
 
 Fight from the survey ship's deck, looking upward at an enormous armored flagship. Port and starboard batteries each occupy a three-hex base and have separate health. Their announced lanes force movement. Destroying a battery permanently removes its attacks, making the order a useful choice. Boarding marines contest the deck and push heroes toward danger. The armored bridge opens after both batteries fall, then uses an emergency central barrage. Area attacks hit each component once. The machine is anchored, with mechanical motion rather than breathing.
 
-The dev preview prototypes those three targets, boarding troops, warning shapes, component destruction and the exposed bridge. Balance, final music, approach scenes and campaign rewards remain future work. Winning it never writes campaign flags or gives loot.
+The campaign and dev preview share those three targets, boarding troops, warning shapes, component destruction, native vectors and the dedicated 10/8 theme. The campaign uses the saved formation and resources; the isolated workshop supplies its own presets and earns no progress or loot.
 
 In the campaign, destroying the bridge ends the fight. Alban orders his surviving soldiers to fire through their own boarding party. They refuse. Petra boards with the surrendering marines, disarms him and takes him prisoner in front of them. Nell names Ansel without accepting an apology or staging an execution. Alban loses his ship and authority; he does not flee again or become a party member. Surviving crew are taken off the wreck safely.
 
@@ -80,11 +80,11 @@ End aboard the survey ship with the three regional crews preparing a joint appro
 
 ## Campaign implementation contract
 
-- Preserve the version-10 Chapter Four departure, resources, gear, individual builds and chosen formation. This plan creates no new save version, campaign start or canonical fixture.
+- Preserve the version-10 Chapter Four departure, resources, gear, individual builds and chosen formation. Act IV adds no save version or campaign reset. A Vite-only canonical fixture completes Acts I–III aboard the survey ship for review.
 - Eventually record each regional completion independently and atomically with its once-only reward and changed return scenes. Finale readiness requires all three completions, independent of visit order. No partial ending can award a region twice.
 - Chapters One–Four remain playable canon until the new scenes ship. Update the exact Chapter Six handoff from the implemented ending, not from speculative flag names here.
 - Use editable whole SVG scenes and actors in the accepted polygonal style. Keep tactical cells legible, facing upward in the flagship fight, with the same chunky framebuffer as the rest of the game.
 - Compose a Chapter Five travel theme, distinct regional arrangements and related battle variations when the campaign is built. The preview has its own flagship cue, Iron Above the Clouds: a two-bar intro followed by a 32-bar 10/8 battle loop. The travel and all three regional families now ship with Acts I–III. Windmere uses a three-beat ward/lift call, an austere gallery arrangement and related four-beat battles.
 - Keep the Benefactor silent. The Emperor's offer, defeat and the later god-domain departure remain separate events. Ansel stays dead, Tomas stays safe, stolen days remain unrecovered until Chapter Seven, and the active-three limit remains purely mechanical.
 
-Implementation status: Acts I–III, the any-two Emperor offer, and the all-three capital-blockade setup are playable. Act IV’s flagship boarding and Alban’s surrender remain planned. See [chapter-five-act-three.md](chapter-five-act-three.md).
+Implementation status: all four acts are playable, including the any-two Emperor offer, all-three blockade, campaign flagship, Alban’s capture and the saved Chapter Six departure. See [chapter-five-act-four.md](chapter-five-act-four.md).

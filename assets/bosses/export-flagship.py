@@ -1,8 +1,9 @@
-"""Rebuild the dev-only flagship's native SVG originals; no raster source or resampling."""
+"""Rebuild the flagship's native SVG originals; no raster source or resampling."""
 from pathlib import Path
 from math import sin, cos, pi
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'src/dev/art'
+OUT = ROOT / 'public/art/vector/bosses'
+OUT.mkdir(parents=True, exist_ok=True)
 
 def svg(w,h,body,view=None):
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="{view or f"0 0 {w} {h}"}"><title>Imperial flagship — editable polygonal vector artwork</title>{body}</svg>\n'
@@ -103,8 +104,10 @@ marine+=poly('48 30 55 31 59 45 53 49 48 40','#304b56')
 marine+=poly('32 14 46 12 51 20 48 29 38 31 30 25','#baa082')
 marine+=poly('29 14 35 9 47 10 52 16 51 21 29 21','#657c7b')+rect(29,19,23,4,'#1e333e')
 marine+=poly('39 23 48 22 47 27 41 28','#283d44')
+unarmed=marine
 marine+=poly('56 36 59 36 64 61 61 63 57 52','#b8bba6')+rect(53,47,11,3,'#b79b68')
 marine+=rect(29,45,23,4,'#72563e')+rect(38,45,6,4,'#c4ab70')
-OUT.joinpath('flagship-marine.svg').write_text(svg(80,80,marine))
+(ROOT/'public/art/vector/flagship-marine.svg').write_text(svg(80,80,marine))
+(ROOT/'public/art/vector/flagship-crew.svg').write_text(svg(80,80,unarmed+rect(29,45,23,4,'#72563e')+rect(38,45,6,4,'#c4ab70')))
 OUT.joinpath('flagship-portrait.svg').write_text(svg(128,128,hull,'276 20 400 240'))
-print('Exported 10 dev-only flagship SVGs (native vectors).')
+print('Exported 11 shared flagship SVGs (native vectors).')

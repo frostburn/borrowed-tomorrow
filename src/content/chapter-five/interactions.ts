@@ -1,3 +1,4 @@
+import { beginFlagship,interactFinale,resumeFinale,flagshipReady } from './finale';
 import { completedAnchors } from './progress';
 import { resumeDawnwatch,interactDawnwatch } from './dawnwatch';
 import { resumeWindmere,interactWindmere } from './windmere';
@@ -12,6 +13,7 @@ import * as scenes from './scenes';
 
 export function resumeChapterFive(h:StoryHost){
  const {state:s}=h,f=s.flags,map=s.location.map;
+ if(resumeFinale(h))return;
  if(map==='airfield'&&!f.airfieldSeen)return h.talk({...scenes.airfield(),done:()=>h.commit('airfieldSeen','airfieldSeen')});
  if(map==='airship'){
   if(!f.firstFlightSeen)return h.talk({...scenes.firstFlight(),done:()=>h.commit('firstFlightSeen','firstFlightSeen')});
@@ -47,11 +49,11 @@ export function interactChapterFive(h:StoryHost,id:string){
    {label:f.hammerplainComplete?'Revisit Hammerplain · anchor disconnected':'Hammerplain · casting works',action:()=>go('hammerplain','start')},
    {label:f.dawnwatchComplete?'Revisit Dawnwatch · anchor disconnected':'Dawnwatch · the lower town',action:()=>go('dawnwatch','start')},
    {label:f.windmereComplete?'Revisit Windmere · anchor disconnected':'Windmere · the lakeside hospital',action:()=>go('windmere','start')},
-   ...(completedAnchors(s)===3?[{label:'Capital approach · flagship finale coming next',disabled:true,action:()=>{}}]:[]),
+   ...(completedAnchors(s)===3?[{label:f.chapterFiveComplete?'Capital course · Chapter Six departure':f.flagshipWon?'Board the flagship · command deck':'Capital approach · Alban’s flagship',disabled:!flagshipReady(h),action:()=>beginFlagship(h)}]:[]),
    {label:'Western airfield · supplies',action:()=>go('airfield','ship')},
    {label:'Stay aboard',action:()=>{}},
   ]});
-  case 'ship-alda':if(completedAnchors(s)===3&&f.emperorOfferTold)return say('Alda','The capital approach is blocked. We have all three crews aboard; the regional landings are still open for supplies.');if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return say('Alda','There’s a light in the observation cabin. Take the aft hatch and have a look.');return say('Alda',f.dawnwatchComplete?'Dawnwatch’s pilots have the signals aboard. Their launches can escort us through the inland cloud.':f.windmereComplete?'Windmere’s medical crew is aboard. The fleet is holding inland; our regional landings are clear.':f.fleetSighted?'The fleet’s holding inland. Our landings are clear. Hammerplain’s fitters are checking the drive.':'Bram’s stores are delivered. We can make the anchor landings from here.');
+  case 'ship-alda':if(f.chapterFiveComplete)return say('Alda','The crossing’s open. The capital course is on the flight chart.');if(f.flagshipWon)return say('Alda','The marines have lowered their weapons. We can board the command deck.');if(completedAnchors(s)===3&&f.emperorOfferTold)return say('Alda','The capital approach is blocked. We have all three crews aboard; the regional landings are still open for supplies.');if(completedAnchors(s)>=2&&!f.emperorOfferSeen)return say('Alda','There’s a light in the observation cabin. Take the aft hatch and have a look.');return say('Alda',f.dawnwatchComplete?'Dawnwatch’s pilots have the signals aboard. Their launches can escort us through the inland cloud.':f.windmereComplete?'Windmere’s medical crew is aboard. The fleet is holding inland; our regional landings are clear.':f.fleetSighted?'The fleet’s holding inland. Our landings are clear. Hammerplain’s fitters are checking the drive.':'Bram’s stores are delivered. We can make the anchor landings from here.');
   case 'ship-orrin':return say('Orrin',f.hammerplainComplete?'I nearly told her how to set her own choke. There’s a good chance I’ll hear about that for years.':'Hammerplain stamped its name on half the engines I used to repair. I’d like to see what they’re making now.');
   case 'ship-kit':return say('Kit',f.dawnwatchComplete?'The pilots are in the same book as the railway crews now. If a signal fails, they know where to send a runner.':f.hammerplainComplete?'Hester sent a packing list. Every washer counted. I like her.':'Alda wants the delivery sacks tied on the left. I’ve checked which left this time.');
   case 'ship-petra':return say('Petra',f.dawnwatchComplete?'Enna’s staying with the town. She didn’t ask whether she had my permission. I’m glad.':f.fleetSighted?'Alban keeps his guns close to the bridge. If we have to board that ship, we’ll need a way past them.':'Dawnwatch has families inside the garrison walls. I won’t ask its soldiers to abandon them.');
@@ -86,6 +88,7 @@ export function interactChapterFive(h:StoryHost,id:string){
    return h.talk({...scenes.release(),done:()=>{s.location=arrival('anchorforge','breaker');h.commit('hammerplainFreed','hammerplainFreed');}});
   case 'forge-cooling':return go('coolingworks','forge');
   case 'forge-hester':return say('Hester',f.hammerplainFreed?'The starters are running. Come back down to the casting floor.':'Water’s holding. The crew is under cover until you stop the carrier.');
-  default:return id.startsWith('wind-')?interactWindmere(h,id):interactDawnwatch(h,id);
+  case 'ship-alban':case 'ship-capital':return interactFinale(h,id);
+  default:if(id.startsWith('flagship-'))return interactFinale(h,id);return id.startsWith('wind-')?interactWindmere(h,id):interactDawnwatch(h,id);
  }
 }

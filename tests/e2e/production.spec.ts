@@ -25,8 +25,8 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
   for (const devOnly of ['Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
-  for(const devOnly of ['dev-benefactor','Epic boss battle preview','benefactor-motion','dev-conduit-feeds','dev-conduit-pressure','dev-flagship','devFlagship','flagship-port','Start Chapter Five preset'])expect(built).not.toContain(devOnly);
-  expect(files.some(f=>f.startsWith('benefactor')||f.startsWith('flagship'))).toBe(false);
+  for(const devOnly of ['dev-benefactor','Epic boss battle preview','benefactor-motion','dev-conduit-feeds','dev-conduit-pressure','dev-flagship','devFlagship','Start Chapter Five preset'])expect(built).not.toContain(devOnly);
+  expect(files.some(f=>f.startsWith('benefactor'))).toBe(false);
   expect(errors).toEqual([]);
   for (const devOnly of ['Win battle', 'Lose battle', 'Refill party', 'Restart battle', '.dev-battle-tools', 'Development tools:']) expect(built).not.toContain(devOnly);
   expect(files.some(f=>f.includes('testing-tools')||f.includes('canonical-saves'))).toBe(false);
@@ -34,6 +34,9 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   expect(built).not.toContain('Begin Chapter Three (canonical)');
   expect(built).not.toContain('Begin Chapter Four (canonical)');
   expect(built).not.toContain('Begin Chapter Five (canonical)');
+  expect(built).not.toContain('Begin Chapter Five · Act IV (canonical)');
+  expect(built).toContain('alban-flagship');
+  expect(built).toContain('flagship-port');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);

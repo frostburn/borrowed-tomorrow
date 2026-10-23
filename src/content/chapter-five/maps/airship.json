@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 15,
-  "nextobjectid": 45,
+  "nextlayerid": 18,
+  "nextobjectid": 59,
   "properties": [
     {
       "name": "name",
@@ -20,7 +20,7 @@
     {
       "name": "subtitle",
       "type": "string",
-      "value": "The flight chart is on the forward table. Crew supplies are by the aft hatch."
+      "value": "The flight chart is forward. The stores and rest bench are by the aft hatch."
     },
     {
       "name": "artStyle",
@@ -594,6 +594,11 @@
           "name": "requiredFlag",
           "type": "string",
           "value": "allAnchorsSeen"
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "flagshipWon"
         }
       ]
     },
@@ -819,6 +824,35 @@
             }
           ],
           "id": 8
+        },
+        {
+          "name": "ship-alban",
+          "point": true,
+          "x": 540,
+          "y": 636,
+          "properties": [
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Alban \u00b7 guarded chart room"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
+            },
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "alban-captive"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "albanCaptured"
+            }
+          ],
+          "id": 9
         }
       ],
       "properties": []
@@ -835,7 +869,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 9
+          "id": 10
         },
         {
           "name": "airfield",
@@ -843,7 +877,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 10
+          "id": 11
         },
         {
           "name": "hammerplain",
@@ -851,7 +885,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 11
+          "id": 12
         },
         {
           "name": "dawnwatch",
@@ -859,7 +893,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 12
+          "id": 13
         },
         {
           "name": "windmere",
@@ -867,7 +901,7 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 13
+          "id": 14
         },
         {
           "name": "cabin",
@@ -875,7 +909,15 @@
           "x": 780,
           "y": 636,
           "properties": [],
-          "id": 14
+          "id": 15
+        },
+        {
+          "name": "flagship",
+          "point": true,
+          "x": 780,
+          "y": 636,
+          "properties": [],
+          "id": 16
         }
       ],
       "properties": []
@@ -903,7 +945,7 @@
               "value": "windmereComplete"
             }
           ],
-          "id": 15
+          "id": 17
         },
         {
           "name": "navigator",
@@ -917,7 +959,7 @@
               "value": "civilian-traveler"
             }
           ],
-          "id": 16
+          "id": 18
         },
         {
           "name": "deck-hand",
@@ -931,7 +973,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 17
+          "id": 19
         },
         {
           "name": "foundry-fitter",
@@ -950,7 +992,7 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 18
+          "id": 20
         },
         {
           "name": "drive-fitter",
@@ -969,7 +1011,7 @@
               "value": "hammerplainComplete"
             }
           ],
-          "id": 19
+          "id": 21
         },
         {
           "name": "watch-pilot",
@@ -988,7 +1030,7 @@
               "value": "dawnwatchComplete"
             }
           ],
-          "id": 20
+          "id": 22
         }
       ],
       "properties": []
@@ -1005,7 +1047,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 21
+          "id": 23
         },
         {
           "name": "orrin",
@@ -1013,7 +1055,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 22
+          "id": 24
         },
         {
           "name": "kit",
@@ -1021,7 +1063,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 23
+          "id": 25
         },
         {
           "name": "petra",
@@ -1029,7 +1071,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 24
+          "id": 26
         },
         {
           "name": "celia",
@@ -1037,7 +1079,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 25
+          "id": 27
         },
         {
           "name": "alda",
@@ -1045,7 +1087,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 26
+          "id": 28
         }
       ],
       "properties": []
@@ -1062,7 +1104,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 27
+          "id": 29
         },
         {
           "name": "orrin",
@@ -1070,7 +1112,7 @@
           "x": 684,
           "y": 588,
           "properties": [],
-          "id": 28
+          "id": 30
         },
         {
           "name": "kit",
@@ -1078,7 +1120,7 @@
           "x": 852,
           "y": 588,
           "properties": [],
-          "id": 29
+          "id": 31
         },
         {
           "name": "petra",
@@ -1086,7 +1128,7 @@
           "x": 924,
           "y": 660,
           "properties": [],
-          "id": 30
+          "id": 32
         },
         {
           "name": "celia",
@@ -1094,7 +1136,7 @@
           "x": 684,
           "y": 684,
           "properties": [],
-          "id": 31
+          "id": 33
         },
         {
           "name": "alda",
@@ -1102,7 +1144,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 32
+          "id": 34
         }
       ],
       "properties": []
@@ -1119,7 +1161,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 33
+          "id": 35
         },
         {
           "name": "orrin",
@@ -1127,7 +1169,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 34
+          "id": 36
         },
         {
           "name": "kit",
@@ -1135,7 +1177,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 35
+          "id": 37
         },
         {
           "name": "petra",
@@ -1143,7 +1185,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 36
+          "id": 38
         },
         {
           "name": "celia",
@@ -1151,7 +1193,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 37
+          "id": 39
         },
         {
           "name": "alda",
@@ -1159,7 +1201,7 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 38
+          "id": 40
         }
       ],
       "properties": []
@@ -1176,7 +1218,7 @@
           "x": 780,
           "y": 516,
           "properties": [],
-          "id": 39
+          "id": 41
         },
         {
           "name": "orrin",
@@ -1184,7 +1226,7 @@
           "x": 708,
           "y": 564,
           "properties": [],
-          "id": 40
+          "id": 42
         },
         {
           "name": "kit",
@@ -1192,7 +1234,7 @@
           "x": 876,
           "y": 588,
           "properties": [],
-          "id": 41
+          "id": 43
         },
         {
           "name": "petra",
@@ -1200,7 +1242,7 @@
           "x": 924,
           "y": 612,
           "properties": [],
-          "id": 42
+          "id": 44
         },
         {
           "name": "celia",
@@ -1208,7 +1250,7 @@
           "x": 708,
           "y": 636,
           "properties": [],
-          "id": 43
+          "id": 45
         },
         {
           "name": "alda",
@@ -1216,7 +1258,135 @@
           "x": 828,
           "y": 468,
           "properties": [],
-          "id": 44
+          "id": 46
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 15,
+      "name": "The open crossing",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "flagshipWon"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Scene:five-flagship-approach",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 516,
+          "properties": [],
+          "id": 47
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 48
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 876,
+          "y": 588,
+          "properties": [],
+          "id": 49
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 50
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 636,
+          "properties": [],
+          "id": 51
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 52
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 17,
+      "name": "Scene:five-capital-departure",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 516,
+          "properties": [],
+          "id": 53
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 54
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 876,
+          "y": 588,
+          "properties": [],
+          "id": 55
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 56
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 636,
+          "properties": [],
+          "id": 57
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 58
         }
       ],
       "properties": []
