@@ -27,11 +27,12 @@ function clearCheckpoint(state:GameState){
   try{const pending=pendingCheckpoint();if(pending&&JSON.stringify(pending.state)===JSON.stringify(state))localStorage.removeItem(pendingKey);}catch{/* Retain the pending checkpoint if storage cannot be accessed. */}
 }
 export async function save(slot: string, state: GameState): Promise<void> {
+  // Capture the action now: opening the database yields to later game changes.
+  const snapshot = decodeSave(JSON.stringify(state)),savedAt=new Date().toISOString();
   const database = await db();
-  const snapshot = decodeSave(JSON.stringify(state));
   return new Promise((resolve, reject) => {
     const tx = database.transaction('saves', 'readwrite');
-    tx.objectStore('saves').put({ slot, state: snapshot, savedAt: new Date().toISOString() });
+    tx.objectStore('saves').put({ slot, state: snapshot, savedAt });
     tx.oncomplete = () => {if(slot==='autosave')clearCheckpoint(snapshot);resolve();}; tx.onerror = () => reject(tx.error); tx.onabort = () => reject(tx.error);
   });
 }

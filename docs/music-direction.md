@@ -4,12 +4,13 @@ Compose original melodies with deliberate phrases and Japanese game/anime influe
 
 ## Tuning and spelling
 
-All scores and pitched healing/victory cues use **31-EDO**, anchored to **A4 = 440 Hz**. Scores store explicit pitches such as `Bb4`, `F#4`, `D#5` and `Ab5`. `src/game/tuning.ts` calculates frequencies directly from spelling and constructs diatonic intervals. The semitone-coordinate helper exists only to verify the transcription; it never determines sound.
+All scores and pitched healing/victory cues use **31-EDO**, anchored to **A4 = 440 Hz**. Scores store explicit pitches such as `Bb4`, `F#4`, `Ed4` and `At5`. ASCII `t`/`d` raise/lower a natural by one 31-EDO step; `#`/`b` raise/lower by two. Compound alterations such as `C#t4` (+3) and `Bbd4` (−3) keep their spelling through octave shifts and transposition. `src/game/tuning.ts` calculates frequencies directly from spelling and constructs diatonic intervals. The semitone-coordinate helper exists only to verify the transcription; it never determines sound.
 
 | Pitch or interval | 31-EDO steps |
 | --- | --- |
 | C D E F G A B | 0 5 10 13 18 23 28 |
 | Sharp / flat | +2 / -2 |
+| Half-sharp `t` / half-flat `d` | +1 / -1 |
 | Diatonic semitone | 3 |
 | Minor / major third | 8 / 10 |
 | Perfect fifth / octave | 18 / 31 |
@@ -151,13 +152,13 @@ The workshop exposes **Expression** for every expressive cue, including bends-on
 
 ## Approved future regions — all in 31-EDO
 
-These are composition plans for Chapters Six–Seven. They do not add runtime scores or parser support yet. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
+These are composition plans for Chapters Six–Seven. The regional scores are not implemented yet; the shared pitch parser already supports their half accidentals. The desert, northern kingdom, jungle and Benefactor's domain all retain 31 equal divisions of the octave and A4 = 440 Hz. Each scale below is a collection inside that tuning; modal transposition adds an integer number of 31-EDO steps. Use the exact grid for melody, harmony, bass and pitched percussion.
 
 ### Desert — neutral intervals and score spelling
 
 Use neutral thirds and other neutral intervals as structural melodic and harmonic material throughout the desert, with expressive reeds, plucked strings, melodic bass and flexible percussion. The upcoming supplied score determines its concrete modes. Preserve phrase dynamics, controlled vibrato, expressive timing and related battle variations.
 
-Parse ASCII `t` as half-sharp (+1 step), `d` as half-flat (−1 step), `#` as sharp (+2 steps) and `b` as flat (−2 steps). Thus `Ct4` is one step above C4; `Cd4` one below; `Ed4` lies between Eb4 and E4. C–Ed is nine steps, approximately 348.39 cents. Preserve written letters and accidentals through octave shifts and transposition; retain the existing 18-step fifth and coherent circle of fifths. This is future parser work: the current runtime accepts conventional sharps/flats only. Do not round the new notes to semitones or retune existing cues.
+Parse ASCII `t` as half-sharp (+1 step), `d` as half-flat (−1 step), `#` as sharp (+2 steps) and `b` as flat (−2 steps). Thus `Ct4` is one step above C4; `Cd4` one below; `Ed4` lies between Eb4 and E4. C–Ed is nine steps, approximately 348.39 cents. Preserve written letters and accidentals through octave shifts and transposition; retain the existing 18-step fifth and coherent circle of fifths. The shared runtime parser and pitch type support these spellings, including `#t` and `bd` compounds; malformed or mixed-direction accidentals are rejected. Do not round the new notes to semitones or retune existing cues.
 
 ### Scale collections
 
