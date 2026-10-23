@@ -47,10 +47,12 @@ def durn():
  sleeve(d,(11,29),(7,37),(9,45),'green');sleeve(d,(28,29),(32,36),(30,44),'green')
  d.poly([(15,25),(20,33),(26,25),(22,24),(19,28)],'gold');d.line([(13,43),(28,43)],'hair',2)
  d.rect((27,42,33,49),'gold');d.rect((28,43,32,46),'white')
- d.poly([(13,11),(24,10),(28,17),(26,27),(20,31),(14,25),(11,18)],'skin')
+ d.poly([(13,11),(24,10),(28,17),(27,25),(23,30),(18,30),(13,25),(11,18)],'skin')
  d.poly([(12,12),(17,6),(25,8),(29,15),(26,17),(23,11),(15,13),(13,19)],'hair')
  d.poly([(23,17),(27,18),(25,26),(20,29),(21,25)],'brown')
- d.line([(14,18),(18,17)],'ink');d.line([(22,17),(26,18)],'ink');d.line([(17,25),(23,25)],'hair')
+ d.line([(14,16),(18,16)],'hair',2);d.line([(22,16),(26,17)],'hair',2)
+ d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink')
+ d.poly([(20,18),(18,23),(22,23)],'copper');d.line([(17,26),(23,26)],'hair')
  return d
 
 def aurel():
@@ -63,10 +65,12 @@ def aurel():
  sleeve(d,(8,33),(4,40),(7,47),'plum');sleeve(d,(31,33),(35,40),(32,46),'plum')
  d.line([(7,47),(6,30)],'steel',2);d.line([(2,45),(11,45)],'gold',2)
  d.poly([(12,27),(20,35),(27,27),(24,24),(19,30)],'cream');d.line([(10,44),(30,44)],'hair',2);d.rect((18,42,23,46),'gold')
- d.poly([(11,13),(16,7),(26,9),(30,17),(27,28),(20,32),(12,25),(9,18)],'skin')
- d.poly([(10,14),(13,7),(24,6),(30,13),(28,18),(25,12),(14,13),(12,20)],'silver')
- d.poly([(24,17),(29,18),(27,28),(20,32),(20,27),(25,25)],'shade')
- d.line([(12,18),(17,17)],'ink');d.line([(22,17),(27,18)],'ink');d.line([(15,25),(23,25)],'hair')
+ d.poly([(11,13),(16,7),(26,9),(30,17),(28,26),(24,31),(16,31),(11,26),(9,18)],'skin')
+ d.poly([(10,14),(13,7),(24,6),(29,11),(30,16),(27,18),(25,12),(15,12),(12,17),(12,20),(10,19)],'silver')
+ d.poly([(24,17),(29,18),(28,26),(24,31),(20,31),(20,28),(25,25)],'copper')
+ d.line([(12,16),(17,16)],'shade',2);d.line([(22,16),(27,16)],'shade',2)
+ d.line([(13,19),(17,19)],'ink');d.line([(23,19),(27,19)],'ink')
+ d.poly([(20,18),(18,23),(23,23),(21,21)],'copper');d.line([(15,26),(24,26)],'hair')
  d.poly([(12,22),(14,23),(15,27),(13,26)],'cream')
  return d
 
@@ -93,26 +97,22 @@ def watch_soldier(gunner=False,enna=False):
  return d
 
 def dawn_portrait(name):
- # Aurel's square, greying male construction; Enna has rounded female planes.
- if name=='aurel':
-  body='<path d="M0 128V106L27 91L47 84H83L107 95L128 115V128Z" fill="#825875"/><path d="M0 107L31 91L39 102L7 116Z M90 93L118 105L125 117L95 108Z" fill="#d9ae62"/><path d="M40 84L61 105L88 84L91 101L66 123L34 103Z" fill="#d8c59b"/><path d="M30 34L40 13L64 6L89 18L100 42L94 72L77 94L55 96L35 78L26 54Z" fill="#d09a74"/><path d="M75 29L99 43L94 72L77 94L64 96L66 83L81 69Z" fill="#927b6a"/><path d="M27 44L30 27L41 10L65 4L90 17L101 36L95 46L84 28L59 19L39 30L35 52Z" fill="#b7c1b8"/><path d="M34 47L53 43L55 48L37 51Z M72 43L91 48L88 52L71 48Z" fill="#263e53"/><path d="M42 47H49V53H42Z M77 47H84V53H77Z" fill="#263e53"/><path d="M61 47L56 65L65 69L68 63Z" fill="#b87e5a"/><path d="M47 77L62 75L79 77L73 82L53 82Z" fill="#593e35"/><path d="M36 61L40 65L44 79L40 76Z" fill="#e2c5a0"/>'
- else:
-  body='<path d="M0 128V110L23 91L47 82H80L106 94L128 118V128Z" fill="#638487"/><path d="M43 79L44 100L63 111L83 96L79 79Z" fill="#a96f50"/><path d="M26 35L36 14L59 5L87 13L101 36L96 88L82 95L29 85L21 62Z" fill="#453a37"/><path d="M38 30L60 19L82 30L92 54L85 77L66 91L46 80L33 57Z" fill="#ce9471"/><path d="M80 34L92 54L85 77L66 91L66 82L78 69Z" fill="#a56e55"/><path d="M26 43L35 15L59 5L87 13L101 36L89 44L70 24L48 30L39 47L34 84L25 77L21 60Z" fill="#453a37"/><path d="M40 49L53 46L55 50L42 53Z M73 47L86 50L85 54L72 51Z" fill="#233543"/><path d="M48 49H53V54H48Z M74 50H79V55H74Z" fill="#263e53"/><path d="M62 50L57 67L65 70L67 65Z" fill="#b37b5a"/><path d="M53 76L64 78L75 75L69 81L59 81Z" fill="#9e6157"/><path d="M23 94L46 86L64 107L82 87L107 99L72 121L48 115Z" fill="#8ca66d"/>'
+ # Initial Enna seed only; Aurel's portrait is a hand-authored SVG original.
+ body='<path d="M0 128V110L23 91L47 82H80L106 94L128 118V128Z" fill="#638487"/><path d="M43 79L44 100L63 111L83 96L79 79Z" fill="#a96f50"/><path d="M26 35L36 14L59 5L87 13L101 36L96 88L82 95L29 85L21 62Z" fill="#453a37"/><path d="M38 30L60 19L82 30L92 54L85 77L66 91L46 80L33 57Z" fill="#ce9471"/><path d="M80 34L92 54L85 77L66 91L66 82L78 69Z" fill="#a56e55"/><path d="M26 43L35 15L59 5L87 13L101 36L89 44L70 24L48 30L39 47L34 84L25 77L21 60Z" fill="#453a37"/><path d="M40 49L53 46L55 50L42 53Z M73 47L86 50L85 54L72 51Z" fill="#233543"/><path d="M48 49H53V54H48Z M74 50H79V55H74Z" fill="#263e53"/><path d="M62 50L57 67L65 70L67 65Z" fill="#b37b5a"/><path d="M53 76L64 78L75 75L69 81L59 81Z" fill="#9e6157"/><path d="M23 94L46 86L64 107L82 87L107 99L72 121L48 115Z" fill="#8ca66d"/>'
  return '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>'+name+' portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/>'+body+'</svg>\n'
 
 def portrait(name):
- # Broad female face planes for Alda/Hester; Durn has a narrower angular construction.
- female=name!='durn';hair='#707b88' if name=='alda' else '#8e5239' if name=='hester' else '#403934'
- coat='#4e738a' if name=='alda' else '#7e573e' if name=='hester' else '#365c50'
+ # Initial female seeds only; the published portrait SVGs remain editable originals.
+ hair='#707b88' if name=='alda' else '#8e5239'
+ coat='#4e738a' if name=='alda' else '#7e573e'
  body=f'<path d="M0 128V109L24 88L49 80H79L104 91L128 116V128Z" fill="{coat}"/>'
  body+='<path d="M47 78L47 98L64 111L82 96L79 77Z" fill="#b77b59"/>'
  body+=f'<path d="M27 36L33 14L57 5L85 13L100 34L98 80L85 93L30 84L22 61Z" fill="{hair}"/>'
- body+='<path d="M37 31L60 18L83 31L92 55L86 77L68 92L48 81L34 59Z" fill="#d6a27d"/>' if female else '<path d="M39 30L66 20L89 37L91 61L79 85L62 94L44 76L35 52Z" fill="#c9956d"/>'
+ body+='<path d="M37 31L60 18L83 31L92 55L86 77L68 92L48 81L34 59Z" fill="#d6a27d"/>'
  body+='<path d="M79 34L92 54L86 77L68 92L65 84L78 71Z" fill="#ae775c"/>'
  body+=f'<path d="M28 40L35 15L57 5L85 13L98 32L85 39L69 24L48 30L39 45Z" fill="{hair}"/>'
  if name=='alda':body+='<path d="M28 29L39 9L63 3L88 16L97 35L67 23L34 37Z" fill="#263e53"/><path d="M54 15H73V23H54Z" fill="#d9ae62"/><path d="M29 40L39 44L34 67L39 84L29 77L23 59Z" fill="#b7c1b8"/><path d="M20 91L47 87L64 110L80 87L107 97L72 121L51 114Z" fill="#d8c59b"/>'
  if name=='hester':body+='<path d="M28 25L43 14L87 23L96 37L48 28L30 36Z" fill="#ac5c48"/><path d="M17 48L31 39L33 67L24 82L14 70Z" fill="#593e35"/><path d="M35 98L46 87L53 117L84 128H39Z" fill="#b7784e"/><path d="M35 64L43 65L45 73L37 71Z" fill="#77766c"/>'
- if name=='durn':body+='<path d="M30 36L40 13L68 7L88 19L97 38L83 35L69 22L43 31L36 52Z" fill="#403934"/><path d="M45 92L63 106L81 90L91 97L65 121L38 102Z" fill="#d9ae62"/>'
  body+='<path d="M41 48L53 46L55 50L42 52Z M72 47L86 49L85 53L72 51Z" fill="#233543"/><path d="M48 49H53V53H48Z M74 50H79V54H74Z" fill="#243c4c"/>'
  body+='<path d="M61 49L57 67L65 69L67 65Z" fill="#bc825f"/><path d="M52 76L64 78L75 75L68 81L59 81Z" fill="#9e6157"/>'
  return f'<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>{name} portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/>{body}</svg>\n'
@@ -122,7 +122,7 @@ def export():
   (ROOT/f'public/art/vector/{name}.svg').write_text(model().svg())
   # Portraits become editable originals after their initial seed.
   path=ROOT/f'public/art/vector/portrait-{name}.svg'
-  if name in ('alda','hester','durn','aurel','enna') and not path.exists():path.write_text(dawn_portrait(name) if name in ('aurel','enna') else portrait(name))
+  if name in ('alda','hester','enna') and not path.exists():path.write_text(dawn_portrait(name) if name=='enna' else portrait(name))
  print('Exported Chapter Five cast and Dawnwatch troops with native SVG actors; retained editable portrait originals.')
 if __name__=='__main__':
  export()
