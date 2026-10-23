@@ -65,7 +65,7 @@ export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Be
  line('Ansel','Bring my flask back. I don’t want to drink the station tea.'),
 ]);
 export const shore=(s:GameState)=>scene(s,'lastshore','six-memory-sea','The sea, at last',[
- line('The coast','The carriage door opens onto salt air. Tomas takes their bags, and Nell walks beside him down to the water.',{focus:{x:31,y:21},cut:true,duration:1800,actors:{nell:{to:{x:31,y:26}},tomas:{to:{x:33,y:26}}}}),
+ line('The coast','The carriage door opens onto salt air. Tomas takes their bags, and Nell walks beside him down to the water.',{focus:{x:31,y:21},cut:true,duration:1800,actors:{nell:{to:{x:31,y:22}},tomas:{to:{x:33,y:22}}}}),
  line('Tomas','A beach. No ferry leaning against a gate. This is more like it.'),
  line('Nell','You’ve brought enough bread for a week.'),
  line('Tomas','I was hungry when I bought it. Sit down before the gulls notice.'),

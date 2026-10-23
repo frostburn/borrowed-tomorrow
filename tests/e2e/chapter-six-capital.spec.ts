@@ -2,6 +2,7 @@ import { test,expect,type Page } from '@playwright/test';
 import { chapterSixCapitalStart,chapterSixFinaleStart } from '../../src/dev/canonical-saves';
 import { inspect,capture,dialogue,battle } from './controls';
 import { approach,importSave } from './navigation';
+import { arrival } from '../../src/content/maps';
 async function drain(page:Page){for(let i=0;i<16;i++){await expect.poll(async()=>(await inspect(page)).busy,{timeout:30000}).toBe(false);if(!(await inspect(page)).cinematic)return;await page.getByRole('button',{name:'Skip scene',exact:true}).click();}throw new Error('Capital scene chain did not finish');}
 async function win(page:Page){await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await drain(page);}
 async function waitMap(page:Page,map:string){await expect.poll(async()=>(await inspect(page)).state.location.map,{timeout:30000}).toBe(map);await drain(page);}
@@ -25,7 +26,7 @@ for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},
   await approach(page,'palace-preparations');await drain(page);
   if(recovered){
    await waitMap(page,'lastmorning');expect((await inspect(page)).actors.map(a=>a.hero)).toEqual(['nell']);expect((await inspect(page)).state.activeParty).toEqual(initial.activeParty);await capture(page,'capital-morning-desktop');
-   await approach(page,'morning-ansel');await dialogue(page);await approach(page,'morning-leave');await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('lastshore');await capture(page,'capital-memory-coast');await drain(page);await waitMap(page,'lastpalace');expect((await inspect(page)).state.flags.capitalMorningLeft).toBe(true);await approach(page,'palace-preparations');await drain(page);
+   await approach(page,'morning-ansel');await dialogue(page);await approach(page,'morning-leave');await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('lastshore');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-memory-sea');await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await capture(page,'capital-memory-coast');await drain(page);await waitMap(page,'lastpalace');expect((await inspect(page)).state.flags.capitalMorningLeft).toBe(true);await approach(page,'palace-preparations');await drain(page);
   }else{await expect(page.getByRole('button',{name:'Return to Iria · seek treatment for Nell',exact:true})).toBeVisible();await capture(page,'capital-ill-warning-phone');}
   await page.getByRole('button',{name:recovered?'Climb the crown stair':'Proceed with Nell still bound',exact:true}).click();await waitMap(page,'crown');
   expect((await inspect(page)).state.flags.capitalRiskAccepted).toBe(!recovered);await approach(page,'capital-emperor');await page.getByRole('button',{name:'Face the Emperor',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await capture(page,`capital-emperor-${device}`);await win(page);
@@ -61,4 +62,10 @@ for(const boss of ['emperor','lightbearer']as const)test(`@journey ${boss} can b
  test.setTimeout(420000);const s=chapterSixFinaleStart(boss==='emperor');await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,s);await approach(page,'palace-preparations');await drain(page);await page.getByRole('button',{name:boss==='emperor'?'Climb the crown stair':'Proceed with Nell still bound',exact:true}).click();await waitMap(page,'crown');await approach(page,'capital-emperor');await page.getByRole('button',{name:'Face the Emperor',exact:true}).click();
  if(boss==='emperor')await battle(page,'capital-played-emperor');else{await win(page);await approach(page,'crown-rest');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();await approach(page,'capital-lightbearer');await page.getByRole('button',{name:'Face the Lightbearer',exact:true}).click();await battle(page,'capital-played-lightbearer');}
  await drain(page);expect((await inspect(page)).state.flags[boss==='emperor'?'emperorWon':'lightbearerWon']).toBe(true);
+});
+
+// A restore may catch the checkpoint between the loss scene and its map transition.
+test('a restored Nell-loss checkpoint reaches Larkspur instead of stranding the party on the crown',async({page})=>{
+ const s=chapterSixFinaleStart(false);for(const f of ['capitalWarningSeen','capitalAssaultCommitted','capitalRiskAccepted','emperorSeen','emperorConfronted','emperorWon','emperorFallen','lightbearerSeen','lightbearerConfronted','lightbearerWon','nellLost'])s.flags[f]=true;s.party.find(h=>h.id==='nell')!.hp=0;s.location=arrival('crown','start');
+ await page.goto('/');await importSave(page,s);await waitMap(page,'laststation');expect((await inspect(page)).state.flags.emptySeatSeen).toBe(true);await nellEquipment(page,true);
 });

@@ -593,7 +593,7 @@
           "name": "start",
           "point": true,
           "x": 588,
-          "y": 684,
+          "y": 540,
           "properties": [],
           "id": 2
         }
@@ -618,7 +618,7 @@
           "name": "nell",
           "point": true,
           "x": 588,
-          "y": 684,
+          "y": 540,
           "properties": [],
           "id": 3
         },
@@ -626,7 +626,7 @@
           "name": "tomas",
           "point": true,
           "x": 636,
-          "y": 684,
+          "y": 540,
           "properties": [],
           "id": 4
         }
