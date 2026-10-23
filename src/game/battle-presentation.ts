@@ -10,7 +10,8 @@ export interface BattlePresentation {
   animating?:(battle:Battle)=>boolean;
   prepare?:(battle:Battle)=>void;
   background:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
-  actor?:(scene:Phaser.Scene,unit:Unit,hp:number)=>Phaser.GameObjects.Image|undefined;
+  actor?:(scene:Phaser.Scene,unit:Unit,hp:number,hex:Hex)=>Phaser.GameObjects.Image|undefined;
+  position?:(unit:Unit,hex:Hex)=>{x:number;y:number}|undefined;
   attackTiming?:(unit:Unit)=>{contact:number;duration:number}|undefined;
   attack?:(scene:Phaser.Scene,image:Phaser.GameObjects.Image,unit:Unit,elapsed:number)=>void;
   attackSound?:(unit:Unit,ability:AbilityId)=>Effect|undefined;

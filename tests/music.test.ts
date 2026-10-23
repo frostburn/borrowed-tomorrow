@@ -188,7 +188,7 @@ it('Petra’s triplet melody rides over straight percussion with an unbroken bat
 });
 
 it('Chapter Two battle variations keep their regional harmony and motifs with their own phrasing and rhythm sections',()=>{
-  for(const [source,variation,lead] of [['coast','coast-battle','reed'],['cinderbank','shunting','reed'],['cinderbank','petra-battle','strings']] as const){
+  for(const [source,variation,lead] of [['coast','coast-battle','reed'],['cinderbank','shunting','reed']] as const){
     const line:Note[]=[];
     for(let bar=0;bar<16;bar++){
       const notes=scoreBar(variation,bar),original=scoreBar(source,bar);
@@ -208,4 +208,28 @@ it('each chapter declares its battle music instead of falling through to the hom
   expect(['coast-signals','coast-loading','coast-collector','coast-recapture'].map(id=>ENCOUNTERS[id].music)).toEqual(['coast-battle','coast-battle','shunting','petra-battle']);
   expect(ENCOUNTERS.captain.music).toBe('inspector');expect(ENCOUNTERS['capital-arrest'].music).toBe('switching');expect(ENCOUNTERS['sanctuary-warden'].music).toBe('four-warden');
   for(const encounter of Object.values(ENCOUNTERS))expect(ARRANGEMENTS[encounter.music]).toBeDefined();
+});
+
+it('Dawnwatch supports complete 31-EDO phrases, clear endings and a related regional battle family',()=>{
+ for(const mode of ['dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander']as const){
+  const line:Note[]=[];
+  for(let bar=0;bar<32;bar++)for(const note of scoreBar(mode,bar)){
+   expect(Number.isFinite(semitones(note.pitch))).toBe(true);expect(note.beat).toBeGreaterThanOrEqual(0);expect(note.beat+note.duration).toBeLessThanOrEqual(4);expect(note.velocity).toBeLessThan(.3);
+   if(['strings','brass','bell'].includes(note.instrument)&&note.velocity>=.1)line.push({...note,beat:note.beat+bar*4});
+  }
+  for(let n=1;n<line.length;n++)expect(line[n-1].beat+line[n-1].duration).toBeLessThanOrEqual(line[n].beat);
+  expect(line.some((n,i)=>i>0&&line[i-1].beat+line[i-1].duration<n.beat)).toBe(true);expect(semitones(line.at(-1)!.pitch)%12).toBe(5);expect(scoreBar(mode,32)).toEqual(scoreBar(mode,0));expect(scoreBar(mode,-1)).toEqual(scoreBar(mode,31));
+ }
+ const dominant=scoreBar('dawnwatch',6);expect(dominant.some(n=>n.pitch==='E4')).toBe(true);expect(dominant.some(n=>n.pitch==='Db5')).toBe(true);
+ expect(scoreBar('dawn-battle',0)).not.toEqual(scoreBar('five-battle',0));expect(scoreBar('dawn-commander',0)).not.toEqual(scoreBar('petra-battle',0));
+});
+
+
+it('Petra carries her own refusal motif from the crossing to Dawnwatch, beyond the siding theme',()=>{
+ const melody=(mode:'petra-battle'|'dawnwatch')=>scoreBar(mode,0).filter(n=>n.instrument==='strings'&&n.velocity>=.1);
+ expect(melody('petra-battle').map(n=>n.pitch)).toEqual(melody('dawnwatch').map(n=>n.pitch));
+ expect(melody('petra-battle').map(n=>n.beat)).not.toEqual(melody('dawnwatch').map(n=>n.beat));
+ expect(melody('petra-battle').map(n=>n.pitch)).not.toEqual(scoreBar('cinderbank',0).filter(n=>n.instrument==='reed').map(n=>n.pitch));
+ for(let bar=0;bar<16;bar++)expect(scoreBar('petra-battle',bar).find(n=>isBass(n.instrument))!.pitch).toBe(scoreBar('dawnwatch',bar).find(n=>isBass(n.instrument))!.pitch);
+ expect(scoreBar('petra-battle',16)).toEqual(scoreBar('petra-battle',0));expect(scoreBar('petra-battle',-1)).toEqual(scoreBar('petra-battle',15));
 });

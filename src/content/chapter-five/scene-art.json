@@ -1,0 +1,1222 @@
+{
+  "airfield": [
+    {
+      "key": "scene-five-airfield-back",
+      "url": "art/vector/chapter-five/airfield-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-airfield-floor",
+      "url": "art/vector/chapter-five/airfield-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-airfield-stores",
+      "url": "art/vector/chapter-five/airfield-stores.svg",
+      "x": 210,
+      "y": 590,
+      "width": 100,
+      "height": 80,
+      "depth": 670,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-survey-ship",
+      "url": "art/vector/chapter-five/survey-ship.svg",
+      "x": 400,
+      "y": 126,
+      "width": 744,
+      "height": 384,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-hangar",
+      "url": "art/vector/chapter-five/hangar.svg",
+      "x": 56,
+      "y": 292,
+      "width": 600,
+      "height": 270,
+      "depth": 540,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-mooring-crane",
+      "url": "art/vector/chapter-five/mooring-crane.svg",
+      "x": 1090,
+      "y": 330,
+      "width": 312,
+      "height": 330,
+      "depth": 660,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-airfield-cargo",
+      "url": "art/vector/chapter-five/airfield-cargo.svg",
+      "x": 1140,
+      "y": 636,
+      "width": 200,
+      "height": 140,
+      "depth": 776,
+      "layerId": 3
+    }
+  ],
+  "airship": [
+    {
+      "key": "scene-five-airship-back",
+      "url": "art/vector/chapter-five/airship-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-airship-floor",
+      "url": "art/vector/chapter-five/airship-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-deck-rail",
+      "url": "art/vector/chapter-five/deck-rail.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-ship-chart-table",
+      "url": "art/vector/chapter-five/ship-chart-table.svg",
+      "x": 720,
+      "y": 397,
+      "width": 124,
+      "height": 68,
+      "depth": 465,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-ship-fleet",
+      "url": "art/vector/chapter-five/ship-fleet.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 400,
+      "depth": -998,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-ship-cordon",
+      "url": "art/vector/chapter-five/ship-cordon.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 400,
+      "depth": -998,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-ship-blockade",
+      "url": "art/vector/chapter-five/ship-blockade.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 300,
+      "depth": -998,
+      "layerId": 6
+    },
+    {
+      "key": "scene-five-ship-medical-kit",
+      "url": "art/vector/chapter-five/ship-medical-kit.svg",
+      "x": 440,
+      "y": 572,
+      "width": 104,
+      "height": 60,
+      "depth": 632,
+      "layerId": 7
+    },
+    {
+      "key": "scene-five-ship-bow",
+      "url": "art/vector/chapter-five/ship-bow.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1060,
+      "height": 350,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-ship-store",
+      "url": "art/vector/chapter-five/ship-store.svg",
+      "x": 1060,
+      "y": 590,
+      "width": 200,
+      "height": 140,
+      "depth": 720,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-observation-hatch",
+      "url": "art/vector/chapter-five/observation-hatch.svg",
+      "x": 1110,
+      "y": 727,
+      "width": 112,
+      "height": 48,
+      "depth": -997,
+      "layerId": 3
+    }
+  ],
+  "hammerplain": [
+    {
+      "key": "scene-five-hammerplain-back",
+      "url": "art/vector/chapter-five/hammerplain-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-hammerplain-floor",
+      "url": "art/vector/chapter-five/hammerplain-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-hammer-docked-ship",
+      "url": "art/vector/chapter-five/hammer-docked-ship.svg",
+      "x": 0,
+      "y": 574,
+      "width": 342,
+      "height": 208,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-hammer-gangway",
+      "url": "art/vector/chapter-five/hammer-gangway.svg",
+      "x": 270,
+      "y": 678,
+      "width": 164,
+      "height": 110,
+      "depth": -996,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-foundry-street",
+      "url": "art/vector/chapter-five/foundry-street.svg",
+      "x": 0,
+      "y": 342,
+      "width": 256,
+      "height": 236,
+      "depth": 578,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-street-lights",
+      "url": "art/vector/chapter-five/street-lights.svg",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 578,
+      "depth": 579,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-casting-hall",
+      "url": "art/vector/chapter-five/casting-hall.svg",
+      "x": 260,
+      "y": 330,
+      "width": 600,
+      "height": 270,
+      "depth": 600,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-freight-crane",
+      "url": "art/vector/chapter-five/freight-crane.svg",
+      "x": 1080,
+      "y": 240,
+      "width": 312,
+      "height": 330,
+      "depth": 570,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-replacement-engine",
+      "url": "art/vector/chapter-five/replacement-engine.svg",
+      "x": 900,
+      "y": 460,
+      "width": 200,
+      "height": 140,
+      "depth": 600,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-stores-engine",
+      "url": "art/vector/chapter-five/stores-engine.svg",
+      "x": 1120,
+      "y": 530,
+      "width": 200,
+      "height": 140,
+      "depth": 670,
+      "layerId": 3
+    }
+  ],
+  "coolingworks": [
+    {
+      "key": "scene-five-coolingworks-back",
+      "url": "art/vector/chapter-five/coolingworks-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-coolingworks-floor",
+      "url": "art/vector/chapter-five/coolingworks-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-cooling-wheel",
+      "url": "art/vector/chapter-five/cooling-wheel.svg",
+      "x": 1072,
+      "y": 460,
+      "width": 90,
+      "height": 100,
+      "depth": 560,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-freight-lift",
+      "url": "art/vector/chapter-five/freight-lift.svg",
+      "x": 192,
+      "y": 226,
+      "width": 312,
+      "height": 330,
+      "depth": 556,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-moving-water",
+      "url": "art/vector/chapter-five/moving-water.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 490,
+      "depth": -998,
+      "layerId": 4
+    }
+  ],
+  "anchorforge": [
+    {
+      "key": "scene-five-anchorforge-back",
+      "url": "art/vector/chapter-five/anchorforge-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-anchorforge-floor",
+      "url": "art/vector/chapter-five/anchorforge-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-gantry-rest-bench",
+      "url": "art/vector/chapter-five/gantry-rest-bench.svg",
+      "x": 324,
+      "y": 636,
+      "width": 168,
+      "height": 80,
+      "depth": 716,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-forge-anchor",
+      "url": "art/vector/chapter-five/forge-anchor.svg",
+      "x": 620,
+      "y": 122,
+      "width": 320,
+      "height": 286,
+      "depth": 408,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-crane",
+      "url": "art/vector/chapter-five/gantry-crane.svg",
+      "x": 1060,
+      "y": 160,
+      "width": 312,
+      "height": 330,
+      "depth": 490,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-engine",
+      "url": "art/vector/chapter-five/gantry-engine.svg",
+      "x": 456,
+      "y": 450,
+      "width": 200,
+      "height": 140,
+      "depth": 590,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-second-engine",
+      "url": "art/vector/chapter-five/gantry-second-engine.svg",
+      "x": 1010,
+      "y": 440,
+      "width": 200,
+      "height": 140,
+      "depth": 580,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gantry-signal",
+      "url": "art/vector/chapter-five/gantry-signal.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1000,
+      "height": 600,
+      "depth": -997,
+      "layerId": 4
+    }
+  ],
+  "dawnwatch": [
+    {
+      "key": "scene-five-dawnwatch-back",
+      "url": "art/vector/chapter-five/dawnwatch-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-dawnwatch-floor",
+      "url": "art/vector/chapter-five/dawnwatch-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-watch-citadel",
+      "url": "art/vector/chapter-five/watch-citadel.svg",
+      "x": 450,
+      "y": 80,
+      "width": 800,
+      "height": 300,
+      "depth": 380,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-lower-houses",
+      "url": "art/vector/chapter-five/lower-houses.svg",
+      "x": 20,
+      "y": 335,
+      "width": 410,
+      "height": 260,
+      "depth": 595,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-watch-barracks-wing",
+      "url": "art/vector/chapter-five/watch-barracks-wing.svg",
+      "x": 1010,
+      "y": 265,
+      "width": 600,
+      "height": 270,
+      "depth": 535,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-shelter-front",
+      "url": "art/vector/chapter-five/shelter-front.svg",
+      "x": 702,
+      "y": 311,
+      "width": 252,
+      "height": 192,
+      "depth": 503,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-shelter-bar",
+      "url": "art/vector/chapter-five/shelter-bar.svg",
+      "x": 772,
+      "y": 380,
+      "width": 114,
+      "height": 120,
+      "depth": 500,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-shelter-lamps",
+      "url": "art/vector/chapter-five/shelter-lamps.svg",
+      "x": 0,
+      "y": 0,
+      "width": 960,
+      "height": 450,
+      "depth": 504,
+      "layerId": 5
+    }
+  ],
+  "watchbarracks": [
+    {
+      "key": "scene-five-watchbarracks-back",
+      "url": "art/vector/chapter-five/watchbarracks-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-watchbarracks-floor",
+      "url": "art/vector/chapter-five/watchbarracks-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-west-gun",
+      "url": "art/vector/chapter-five/west-gun.svg",
+      "x": 225,
+      "y": 397,
+      "width": 204,
+      "height": 140,
+      "depth": 537,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-east-gun",
+      "url": "art/vector/chapter-five/east-gun.svg",
+      "x": 1060,
+      "y": 397,
+      "width": 204,
+      "height": 140,
+      "depth": 537,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-west-silent-gun",
+      "url": "art/vector/chapter-five/west-silent-gun.svg",
+      "x": 246,
+      "y": 518,
+      "width": 180,
+      "height": 60,
+      "depth": 542,
+      "layerId": 6
+    },
+    {
+      "key": "scene-five-east-silent-gun",
+      "url": "art/vector/chapter-five/east-silent-gun.svg",
+      "x": 1081,
+      "y": 518,
+      "width": 180,
+      "height": 60,
+      "depth": 542,
+      "layerId": 7
+    },
+    {
+      "key": "scene-five-signal-stair",
+      "url": "art/vector/chapter-five/signal-stair.svg",
+      "x": 647,
+      "y": 340,
+      "width": 240,
+      "height": 104,
+      "depth": 444,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-field-locker",
+      "url": "art/vector/chapter-five/field-locker.svg",
+      "x": 1169,
+      "y": 643,
+      "width": 128,
+      "height": 58,
+      "depth": 701,
+      "layerId": 3
+    }
+  ],
+  "signalwall": [
+    {
+      "key": "scene-five-signalwall-back",
+      "url": "art/vector/chapter-five/signalwall-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-signalwall-floor",
+      "url": "art/vector/chapter-five/signalwall-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-watch-anchor",
+      "url": "art/vector/chapter-five/watch-anchor.svg",
+      "x": 620,
+      "y": 135,
+      "width": 320,
+      "height": 286,
+      "depth": 421,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-wall-parapet",
+      "url": "art/vector/chapter-five/wall-parapet.svg",
+      "x": 0,
+      "y": 500,
+      "width": 1536,
+      "height": 90,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-watch-return-line",
+      "url": "art/vector/chapter-five/watch-return-line.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1000,
+      "height": 540,
+      "depth": -996,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-signal-desk",
+      "url": "art/vector/chapter-five/signal-desk.svg",
+      "x": 1094,
+      "y": 579,
+      "width": 130,
+      "height": 70,
+      "depth": 649,
+      "layerId": 3
+    }
+  ],
+  "observation": [
+    {
+      "key": "scene-five-observation-back",
+      "url": "art/vector/chapter-five/observation-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-observation-floor",
+      "url": "art/vector/chapter-five/observation-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-cabin-window-memory",
+      "url": "art/vector/chapter-five/cabin-window-memory.svg",
+      "x": 433,
+      "y": 183,
+      "width": 664,
+      "height": 244,
+      "depth": -998,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-cabin-glazing",
+      "url": "art/vector/chapter-five/cabin-glazing.svg",
+      "x": 420,
+      "y": 170,
+      "width": 690,
+      "height": 274,
+      "depth": -997,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-cabin-benches",
+      "url": "art/vector/chapter-five/cabin-benches.svg",
+      "x": 260,
+      "y": 498,
+      "width": 180,
+      "height": 70,
+      "depth": 568,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-cabin-chart-case",
+      "url": "art/vector/chapter-five/cabin-chart-case.svg",
+      "x": 1100,
+      "y": 503,
+      "width": 140,
+      "height": 60,
+      "depth": 563,
+      "layerId": 3
+    }
+  ],
+  "windmere": [
+    {
+      "key": "scene-five-windmere-back",
+      "url": "art/vector/chapter-five/windmere-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-windmere-floor",
+      "url": "art/vector/chapter-five/windmere-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-windmere-pavilion",
+      "url": "art/vector/chapter-five/windmere-pavilion.svg",
+      "x": 560,
+      "y": 238,
+      "width": 656,
+      "height": 240,
+      "depth": 478,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-ordinary-ward",
+      "url": "art/vector/chapter-five/windmere-ordinary-ward.svg",
+      "x": 350,
+      "y": 405,
+      "width": 230,
+      "height": 145,
+      "depth": 550,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-canopy",
+      "url": "art/vector/chapter-five/windmere-canopy.svg",
+      "x": 604,
+      "y": 395,
+      "width": 530,
+      "height": 212,
+      "depth": 607,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-valve",
+      "url": "art/vector/chapter-five/windmere-valve.svg",
+      "x": 812,
+      "y": 442,
+      "width": 90,
+      "height": 100,
+      "depth": 542,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-windmere-night-lamps",
+      "url": "art/vector/chapter-five/windmere-night-lamps.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 550,
+      "depth": 551,
+      "layerId": 4
+    }
+  ],
+  "dispensary": [
+    {
+      "key": "scene-five-dispensary-back",
+      "url": "art/vector/chapter-five/dispensary-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-dispensary-floor",
+      "url": "art/vector/chapter-five/dispensary-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-dispensary-shelves",
+      "url": "art/vector/chapter-five/dispensary-shelves.svg",
+      "x": 220,
+      "y": 400,
+      "width": 254,
+      "height": 100,
+      "depth": 500,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-dispensary-shaft",
+      "url": "art/vector/chapter-five/dispensary-shaft.svg",
+      "x": 744,
+      "y": 300,
+      "width": 150,
+      "height": 240,
+      "depth": 540,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-water-platform",
+      "url": "art/vector/chapter-five/water-platform.svg",
+      "x": 738,
+      "y": 537,
+      "width": 164,
+      "height": 100,
+      "depth": 637,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-water-platform-raised",
+      "url": "art/vector/chapter-five/water-platform-raised.svg",
+      "x": 738,
+      "y": 441,
+      "width": 164,
+      "height": 100,
+      "depth": 541,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-windmere-lift-wheel",
+      "url": "art/vector/chapter-five/windmere-lift-wheel.svg",
+      "x": 1020,
+      "y": 458,
+      "width": 90,
+      "height": 100,
+      "depth": 558,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-dispensary-ward-kit",
+      "url": "art/vector/chapter-five/dispensary-ward-kit.svg",
+      "x": 1148,
+      "y": 580,
+      "width": 122,
+      "height": 75,
+      "depth": 655,
+      "layerId": 3
+    }
+  ],
+  "mirrorward": [
+    {
+      "key": "scene-five-mirrorward-back",
+      "url": "art/vector/chapter-five/mirrorward-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-mirrorward-floor",
+      "url": "art/vector/chapter-five/mirrorward-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-windmere-engine",
+      "url": "art/vector/chapter-five/windmere-engine.svg",
+      "x": 684,
+      "y": 198,
+      "width": 256,
+      "height": 240,
+      "depth": 438,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-left-mirror",
+      "url": "art/vector/chapter-five/gallery-left-mirror.svg",
+      "x": 351,
+      "y": 451,
+      "width": 80,
+      "height": 80,
+      "depth": 531,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-right-mirror",
+      "url": "art/vector/chapter-five/gallery-right-mirror.svg",
+      "x": 1120,
+      "y": 451,
+      "width": 80,
+      "height": 80,
+      "depth": 531,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-gallery-light",
+      "url": "art/vector/chapter-five/gallery-light.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 540,
+      "depth": -997,
+      "layerId": 4
+    },
+    {
+      "key": "scene-five-ward-ledger",
+      "url": "art/vector/chapter-five/ward-ledger.svg",
+      "x": 1042,
+      "y": 542,
+      "width": 132,
+      "height": 64,
+      "depth": 606,
+      "layerId": 3
+    }
+  ],
+  "battle-wind-lift": [
+    {
+      "key": "scene-five-battle-wind-lift-1",
+      "url": "art/vector/chapter-five/battle-wind-lift-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-lift-2",
+      "url": "art/vector/chapter-five/battle-wind-lift-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-wind-gallery": [
+    {
+      "key": "scene-five-battle-wind-gallery-1",
+      "url": "art/vector/chapter-five/battle-wind-gallery-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-gallery-2",
+      "url": "art/vector/chapter-five/battle-wind-gallery-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-wind-engine": [
+    {
+      "key": "scene-five-battle-wind-engine-1",
+      "url": "art/vector/chapter-five/battle-wind-engine-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-wind-engine-2",
+      "url": "art/vector/chapter-five/battle-wind-engine-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-airfield-guard": [
+    {
+      "key": "scene-five-battle-airfield-guard-1",
+      "url": "art/vector/chapter-five/battle-airfield-guard-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-airfield-guard-2",
+      "url": "art/vector/chapter-five/battle-airfield-guard-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-lift": [
+    {
+      "key": "scene-five-battle-hammer-lift-1",
+      "url": "art/vector/chapter-five/battle-hammer-lift-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-lift-2",
+      "url": "art/vector/chapter-five/battle-hammer-lift-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-race": [
+    {
+      "key": "scene-five-battle-hammer-race-1",
+      "url": "art/vector/chapter-five/battle-hammer-race-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-race-2",
+      "url": "art/vector/chapter-five/battle-hammer-race-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-stores": [
+    {
+      "key": "scene-five-battle-hammer-stores-1",
+      "url": "art/vector/chapter-five/battle-hammer-stores-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-stores-2",
+      "url": "art/vector/chapter-five/battle-hammer-stores-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-hammer-carrier": [
+    {
+      "key": "scene-five-battle-hammer-carrier-1",
+      "url": "art/vector/chapter-five/battle-hammer-carrier-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-hammer-carrier-2",
+      "url": "art/vector/chapter-five/battle-hammer-carrier-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-mortar-first": [
+    {
+      "key": "scene-five-battle-dawn-mortar-first-1",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-first-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-mortar-first-2",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-first-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-repeater-first": [
+    {
+      "key": "scene-five-battle-dawn-repeater-first-1",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-first-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-repeater-first-2",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-first-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-mortar-last": [
+    {
+      "key": "scene-five-battle-dawn-mortar-last-1",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-last-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-mortar-last-2",
+      "url": "art/vector/chapter-five/battle-dawn-mortar-last-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-repeater-last": [
+    {
+      "key": "scene-five-battle-dawn-repeater-last-1",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-last-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-repeater-last-2",
+      "url": "art/vector/chapter-five/battle-dawn-repeater-last-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ],
+  "battle-dawn-commander": [
+    {
+      "key": "scene-five-battle-dawn-commander-1",
+      "url": "art/vector/chapter-five/battle-dawn-commander-back.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -1000,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-battle-dawn-commander-2",
+      "url": "art/vector/chapter-five/battle-dawn-commander-floor.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1008,
+      "height": 624,
+      "depth": -999,
+      "layerId": 2
+    }
+  ]
+}

@@ -1,8 +1,9 @@
+import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
 import { ENCOUNTERS } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as COAST_ENCOUNTERS } from '../content/chapter-two/encounters';
 import { ENCOUNTERS as CAPITAL_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { equipItem, receiveItem } from '../rules/inventory';
-import { beginChapterTwo, beginChapterThree, beginChapterFour, FOURTH_CHAPTER, decodeSave, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
+import { beginChapterTwo, beginChapterThree, beginChapterFour, beginChapterFive, FIFTH_CHAPTER, FOURTH_CHAPTER, decodeSave, newGame, NEXT_CHAPTER, THIRD_CHAPTER, recruit, recruitOrrin, restoreParty } from '../rules/state';
 
 /** Authored Chapter One completion, independent of workshop builds or saves. */
 export function chapterTwoStart(){
@@ -44,4 +45,15 @@ export function chapterFourStart(){
   state.journal.push('capital','refusal','petra','works','warden','tomas','intake','conduit','heart','extraction','brokenDeparture');
   state.boundary=FOURTH_CHAPTER;beginChapterFour(state);restoreParty(state);
   return decodeSave(JSON.stringify(state));
+}
+
+/** Open coast, intact anchors; the working survey ship has not been acquired. */
+export function chapterFiveStart(){
+ const state=chapterFourStart();
+ for(const flag of ['refugeSeen','worksArrival','worksRouteSet','worksGateWon','harborOpened','sanctuaryEntered','roadGuardWon','signalCut','sanctuaryWardenWon','anchorsKnown','seaWalkSeen','chapterFourComplete'])state.flags[flag]=true;
+ state.flags.worksFlooded=false;const formation=[...state.activeParty];recruit(state,'celia');state.activeParty=formation;
+ for(const id of ['works-dry','sanctuary-road','sanctuary-warden']){const e=FOUR_ENCOUNTERS[id];state.xp+=e.xp;state.coins+=e.coins;if(e.item)receiveItem(state.inventory,e.item);}
+ equipItem(state.inventory,'nell','sun-prism');equipItem(state.inventory,'orrin','return-valve');equipItem(state.inventory,'petra','rescue-coat');
+ state.journal.push('refugeSeen','worksArrival','worksClear','harborOpened','sanctuaryEntered','roadClear','signalCut','wardenFallen','anchorsKnown','anchorsDeparture');
+ state.boundary=FIFTH_CHAPTER;beginChapterFive(state);restoreParty(state);return decodeSave(JSON.stringify(state));
 }

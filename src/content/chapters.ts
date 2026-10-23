@@ -2,3 +2,5 @@
 export const CHAPTER_TWO_AVAILABLE = true;
 export const CHAPTER_THREE_AVAILABLE = true;
 export const CHAPTER_FOUR_AVAILABLE = true;
+
+export const CHAPTER_FIVE_AVAILABLE=true;

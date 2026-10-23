@@ -12,7 +12,13 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:240,onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
-    if(ABILITIES[ability].shape==='pattern'){
+    if(ability==='barrage'){
+      for(const hex of affected){
+        const at=toPixel(hex),hit=reduced?1:Math.min(1,p*2),tip={x:Math.round(at.x-40*(1-hit)),y:Math.round(at.y-100*(1-hit))};
+        if(!reduced&&p<.5){g.lineStyle(3,0xd9bb7f,.9);g.lineBetween(tip.x-10,tip.y-25,tip.x,tip.y);}
+        if(reduced||p>=.4){const r=8+p*20;g.fillStyle(0xd4ae76,.25).fillEllipse(at.x,at.y,r*2,r);g.lineStyle(3,0xf2c47c,.9).strokeEllipse(at.x,at.y,r*2,r);for(const dx of [-12,0,12])g.lineBetween(at.x,at.y,at.x+dx*p,at.y-8-p*16);}
+      }
+    }else if(ABILITIES[ability].shape==='pattern'){
       for(const hex of affected){const at=toPixel(hex);g.fillStyle(0xf9dbad,.17).fillRect(Math.round(at.x-16),0,32,Math.round(at.y));g.lineStyle(3,0xf8dfb5,.85).lineBetween(at.x,0,at.x,at.y);g.strokeEllipse(at.x,at.y,38+p*12,16+p*10);}
     }else if(ability==='celestialbolt'){
       const y=target.y-24,tip=reduced?y:Math.round(y*Math.min(1,p/.55));

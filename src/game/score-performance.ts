@@ -1,0 +1,52 @@
+import { ARRANGEMENTS,scoreBar,scoreLength,type MusicMode } from './score';
+
+export interface PerformanceOptions {rubato?:boolean;expression?:boolean}
+type TempoKnot=readonly [bar:number,stretch:number];
+// Local beat lengths, interpolated through the phrases. A breath at a cadence
+// belongs to the whole ensemble, including a pedal begun in an earlier bar.
+const breaths:Partial<Record<MusicMode,readonly TempoKnot[]>>={
+ airship:[[0,.96],[2,1.02],[4,.95],[7,1.09],[8,.98],[10.5,1.1],[11.5,1.18],[12,.96],[15,1.07],[16,.99],[19,1.1],[20,.92],[21.5,.96],[23.5,1.15],[24,.97],[27,1.07],[28,.94],[30,1.06],[31.5,1.17],[32,.96]],
+ windmere:[[0,1.03],[1.5,.98],[4,1.04],[6,.97],[9,1.13],[10,.96],[12,.99],[15.5,1.16],[16,.98],[19,1.05],[21,.97],[23.5,1.13],[24,.96],[26,.99],[29,1.05],[31.5,1.18],[32,1.03]],
+};
+const clocks:Partial<Record<MusicMode,number[]>>={};
+for(const [name,knots]of Object.entries(breaths)){
+ const mode=name as MusicMode,beats=ARRANGEMENTS[mode].beats,length=scoreLength(mode)*beats,weights:number[]=[];
+ let k=0;
+ for(let beat=0;beat<length;beat++){
+  const bar=(beat+.5)/beats;while(k<knots!.length-2&&bar>knots![k+1][0])k++;
+  const [from,a]=knots![k],[to,b]=knots![k+1];weights.push(a+(b-a)*(bar-from)/(to-from));
+ }
+ // Give time back between breaths: the complete loop keeps its nominal length.
+ const scale=length/weights.reduce((a,b)=>a+b,0),clock=[0];
+ for(const weight of weights)clock.push(clock.at(-1)!+weight*scale);
+ clock[length]=length;clocks[mode]=clock;
+}
+export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
+
+/** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */
+export function scoreTime(mode:MusicMode,beat:number,rubato=true):number {
+ const unit=60/ARRANGEMENTS[mode].bpm,clock=rubato?clocks[mode]:undefined;
+ if(!clock)return beat*unit;
+ const length=clock.length-1,loop=Math.floor(beat/length),within=beat-loop*length,i=Math.min(length-1,Math.floor(within));
+ return (loop*length+clock[i]+(within-i)*(clock[i+1]-clock[i]))*unit;
+}
+/** Inverse clock for the live bar/beat display, including seeks and loop wraps. */
+export function scoreBeat(mode:MusicMode,seconds:number,rubato=true):number {
+ const time=seconds*ARRANGEMENTS[mode].bpm/60,clock=rubato?clocks[mode]:undefined;
+ if(!clock)return time;
+ const length=clock.length-1,loop=Math.floor(time/length),within=time-loop*length;
+ let low=0,high=length;
+ while(low+1<high){const middle=(low+high)>>1;if(clock[middle]<=within)low=middle;else high=middle;}
+ return loop*length+low+(within-clock[low])/(clock[low+1]-clock[low]);
+}
+/** Shared by live playback and offline review; long holds cross tempo changes. */
+export function performanceBar(mode:MusicMode,bar:number,options:PerformanceOptions={}) {
+ const beat=bar*ARRANGEMENTS[mode].beats,start=scoreTime(mode,beat,options.rubato);
+ return {duration:scoreTime(mode,beat+ARRANGEMENTS[mode].beats,options.rubato)-start,
+  notes:scoreBar(mode,bar).map(n=>({...n,
+   time:scoreTime(mode,beat+n.beat,options.rubato)-start,
+   seconds:scoreTime(mode,beat+n.beat+n.duration,options.rubato)-scoreTime(mode,beat+n.beat,options.rubato),
+   expression:options.expression===false&&n.expression?{}:n.expression,
+  })),
+ };
+}

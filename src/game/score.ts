@@ -1,3 +1,6 @@
+import { windmereBar } from './score-windmere';
+import { dawnwatchBar,petraCrossingBar } from './score-dawnwatch';
+import { anchorBar } from './score-five';
 import { octave, transpose, type Pitch } from './tuning';
 import { flagshipBar } from './score-flagship';
 import { conduitBar } from './score-conduit';
@@ -6,11 +9,30 @@ import { coastBar } from './score-coast';
 import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
-export type MusicMode = 'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+import type { NoteExpression } from './expression';
+export type MusicMode = 'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
 export type Instrument = 'brass' | 'timpani' | 'cymbal' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
-export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number }
+export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+  windmere:{beats:3,bpm:76,lead:'reed',leadGain:.18,keys:.023,strings:.016,bass:.095,percussion:0},
+  dispensary:{beats:3,bpm:88,lead:'keys',leadGain:.18,keys:.025,strings:0,bass:.095,percussion:0},
+  mirrorward:{beats:4,bpm:66,lead:'bell',leadGain:.11,keys:.04,strings:.016,bass:.075,percussion:0},
+  'wind-battle':{beats:4,bpm:128,lead:'strings',leadGain:.18,keys:.028,strings:.016,bass:.125,percussion:.1},
+  'wind-engine':{beats:4,bpm:118,lead:'bell',leadGain:.13,keys:.028,strings:.016,bass:.135,percussion:.1},
+  dawnwatch:{beats:4,bpm:92,lead:'strings',leadGain:.17,keys:.023,strings:.016,bass:.095,percussion:.022},
+  watchbarracks:{beats:4,bpm:106,lead:'brass',leadGain:.15,keys:.023,strings:0,bass:.095,percussion:.043},
+  signalwall:{beats:4,bpm:80,lead:'bell',leadGain:.1,keys:.04,strings:.017,bass:.085,percussion:0},
+  observation:{beats:4,bpm:60,lead:'keys',leadGain:.15,keys:.035,strings:.012,bass:.075,percussion:0},
+  'dawn-battle':{beats:4,bpm:132,lead:'strings',leadGain:.17,keys:.03,strings:.016,bass:.135,percussion:.105},
+  'dawn-commander':{beats:4,bpm:124,lead:'brass',leadGain:.15,keys:.03,strings:.016,bass:.135,percussion:.105},
+  airfield:{beats:4,bpm:96,lead:'reed',leadGain:.19,keys:.03,strings:0,bass:.105,percussion:0},
+  airship:{beats:4,bpm:86,lead:'reed',leadGain:.19,keys:.025,strings:.016,bass:.105,percussion:0},
+  hammerplain:{beats:4,bpm:102,lead:'keys',leadGain:.21,keys:.025,strings:.017,bass:.105,percussion:.033},
+  coolingworks:{beats:4,bpm:102,lead:'keys',leadGain:.21,keys:.025,strings:.017,bass:.105,percussion:.033},
+  anchorforge:{beats:4,bpm:84,lead:'keys',leadGain:.12,keys:.035,strings:.015,bass:.08,percussion:0},
+  'five-battle':{beats:4,bpm:132,lead:'keys',leadGain:.21,keys:.032,strings:.017,bass:.145,percussion:.1},
+  'five-furnace':{beats:4,bpm:120,lead:'brass',leadGain:.15,keys:.032,strings:.017,bass:.145,percussion:.1},
   flagship:{beats:5,meter:[10,8],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
@@ -48,12 +70,17 @@ const PHRASES:[number,Pitch,number][][]=[
 const ROOTS:Pitch[]=['D3','Bb2','F3','C3','D3','Bb2','G2','A2','F3','C3','Bb2','A2','D3','Bb2','A2','D3'];
 /** Dispatch complete scores; retained home arrangements use a sixteen-bar form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(mode==='windmere'||mode==='dispensary'||mode==='mirrorward'||mode==='wind-battle'||mode==='wind-engine')return windmereBar(mode,bar);
+  if(mode==='dawnwatch'||mode==='watchbarracks'||mode==='signalwall'||mode==='dawn-battle'||mode==='dawn-commander')return dawnwatchBar(mode,bar);
+  if(mode==='observation')return anchorBar(mode,bar);
+  if(mode==='petra-battle')return petraCrossingBar(bar);
+  if(mode==='airfield'||mode==='airship'||mode==='hammerplain'||mode==='coolingworks'||mode==='anchorforge'||mode==='five-battle'||mode==='five-furnace')return anchorBar(mode,bar);
   if(mode==='flagship')return flagshipBar(scorePosition(mode,bar));
   if(mode==='refuge'||mode==='breakwater'||mode==='sanctuary'||mode==='four-battle'||mode==='four-warden')return returnBar(mode,bar);
   if(mode==='conduit')return conduitBar(bar);
   if(mode==='coast'||mode==='coast-battle')return coastBar(bar,mode==='coast-battle');
   if(mode==='northglass'||mode==='relayhall'||mode==='switching')return scoreD(mode,bar);
-  if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting'||mode==='petra-battle')return scoreC(mode,bar);
+  if(mode==='cinderbank'||mode==='infirmary'||mode==='shunting')return scoreC(mode,bar);
   if(mode==='rillbridge'||mode==='sluice'||mode==='flood')return scoreB(mode,bar);
   const a=ARRANGEMENTS[mode],index=((bar%16)+16)%16,phrase=Math.floor(index/4),within=index%4;
   const tense=mode==='battle'||mode==='inspector',root=ROOTS[index];
@@ -90,7 +117,7 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 
 export function scoreLength(mode:MusicMode):number {
   if(mode==='flagship')return 34;
-  return ['refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
+  return ['windmere','dispensary','mirrorward','wind-battle','wind-engine','dawnwatch','watchbarracks','signalwall','observation','dawn-battle','dawn-commander','airfield','airship','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','refuge','breakwater','sanctuary','four-battle','four-warden','northglass','relayhall','switching'].includes(mode)?32:16;
 }
 
 /** Absolute playback bars wrap after the one-shot intro, never back into it. */

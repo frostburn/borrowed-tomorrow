@@ -1,8 +1,13 @@
+import { configureWard,prepareWard,WARD_ID } from './ward';
+import { configureDawnwatch,prepareDawnwatch,orderShields,spotterTurn,SPOTTER_ID } from './dawnwatch';
+import { ENCOUNTERS as FIVE_ENCOUNTERS } from '../content/chapter-five/encounters';
+import { configureFurnace,prepareFurnace,furnaceTurn } from './furnace';
+import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS as THREE_ENCOUNTERS } from '../content/chapter-three/encounters';
 import { ENCOUNTERS as FOUR_ENCOUNTERS } from '../content/chapter-four/encounters';
 import { ENCOUNTERS as ONE } from '../content/chapter-one/encounters';
 import { ENCOUNTERS as TWO } from '../content/chapter-two/encounters';
-export const ENCOUNTERS = { ...ONE, ...TWO, ...THREE_ENCOUNTERS, ...FOUR_ENCOUNTERS };
+export const ENCOUNTERS = { ...ONE, ...TWO, ...THREE_ENCOUNTERS, ...FOUR_ENCOUNTERS, ...FIVE_ENCOUNTERS };
 import { BASE_STATS, learnedAbilities } from './progression';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
@@ -17,9 +22,11 @@ import { configureConduit, prepareConduit } from './conduit';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
-export type AbilityId = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
+export type AbilityId = 'refraction' | 'barrage' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'dazzle' | 'beacon' | 'rivet' | 'guard' | 'repulse' | 'quickshot' | 'bolt' | 'feint' | 'volley' | 'celestialbolt' | 'rally' | 'sanctuary' | 'bash' | 'taunt' | 'sweep' | 'crush' | 'judgment';
 export interface Ability { id: AbilityId; name: string; description: string; range: number; power: number; cost: number; shape: 'single' | 'blast' | 'line' | 'pattern'; heal?: boolean; bonus?: boolean; unrestricted?: boolean; effect?: 'weaken' | 'guard' | 'push' | 'shove' | 'focus' | 'taunt'; pierce?: number; sound?: Effect }
 export const ABILITIES: Record<AbilityId, Ability> = {
+  refraction:{id:'refraction',name:'Reflected light',description:'The lit projection directs the announced beam. Break it to interrupt the beam and expose the core.',range:0,power:21,cost:0,shape:'pattern',sound:'flare'},
+  barrage:{id:'barrage',name:'Artillery barrage',description:'Support fire hits the announced hexes. Defeat its spotter to stop it.',range:0,power:14,cost:0,shape:'pattern',sound:'steam'},
   judgment: {id:'judgment',name:'Judgment',description:'Strike the announced hexes. The warning remains visible before the attack.',range:0,power:24,cost:0,shape:'pattern',sound:'flare'},
   strike: { id: 'strike', name: 'Strike', description: 'Adjacent enemy. The first strike each round provokes retaliation.', range: 1, power: 11, cost: 0, shape: 'single' },
   burst: { id: 'burst', name: 'Lantern burst', description: 'Seven-hex blast. Hits allies too. 2 focus. Range 5; rocks block the aim.', range: 5, power: 12, cost: 2, shape: 'blast' },
@@ -50,15 +57,16 @@ export interface Unit {
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
-  footprint?:Hex[]; anchored?:boolean;
-  intent?:{round:number;name:string;cells:Hex[];power:number;phase:string};
+  footprint?:Hex[]; anchored?:boolean; passive?:boolean;
+  intent?:{round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex;via?:string};
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
+  furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { boss?:'conduit'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { boss?:'conduit'|'furnace'|'dawnwatch'|'ward'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
   crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
@@ -101,6 +109,9 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
     evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
     queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
   if(e.boss==='conduit')configureConduit(battle);
+  if(e.boss==='furnace')configureFurnace(battle);
+  configureDawnwatch(battle,e);
+  if(e.boss==='ward')configureWard(battle);
   nextRound(battle);
   return battle;
 }
@@ -135,7 +146,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage' && b.bandages <= 0) return false;
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
-  if (forced && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
+  if (forced && (a.shape!=='pattern'||!!u.intent?.cells.length) && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
   if(a.shape==='pattern')return equal(aim,u.hex)&&!!u.intent;
   if (a.shape === 'line') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
   if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
@@ -184,15 +195,16 @@ function beginTurn(b: Battle) {
   const u = active(b);
   for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
   if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
-  prepareConduit(b);
+  prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);
 }
 function nextRound(b: Battle) {
   b.round++;
   for (const u of alive(b)) { u.retaliated = false; u.waited = false; }
-  b.queue = alive(b).sort((a, z) => z.speed - a.speed || a.id.localeCompare(z.id)).map(u => u.id);
+  b.queue = alive(b).filter(u=>!u.passive).sort((a, z) => z.speed - a.speed || a.id.localeCompare(z.id)).map(u => u.id);
   beginTurn(b);
 }
 function ended(b:Battle){
+  prepareWard(b);
   const sides = new Set(alive(b).map(u => u.side));
   // If a discharge downs both sides, the party must retry rather than win unconscious.
   if (!sides.has('party')) { b.result = 'defeat'; log(b, 'The journey is not over. Try a different formation.'); return true; }
@@ -222,7 +234,7 @@ function finishTurn(b: Battle) {
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
-    for(const u of alive(b))if(u.kind!=='crow'&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`Steam vent hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of alive(b))if(u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);
 }
@@ -258,7 +270,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   if (!hit.length) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
-    if (defender && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {
+    if (defender && !defender.passive && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {
       defender.retaliated = true;
       const {amount} = hurt(defender, u, 'strike');consumeDazzle(defender);
       log(b, `${defender.name} retaliates for ${amount}.`);
@@ -289,6 +301,12 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(u.id===WARD_ID){
+    prepareWard(b);const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;
+  }
+  if(u.id===FURNACE_ID)return furnaceTurn(b,onRetaliation,onAction);
+  if(u.id===SPOTTER_ID)return spotterTurn(b,onRetaliation,onAction);
+  orderShields(b,u);
   if(u.id===REGULATOR_ID){
     prepareConduit(b);const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}

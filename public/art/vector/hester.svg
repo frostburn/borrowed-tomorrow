@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 40 80" preserveAspectRatio="none" shape-rendering="crispEdges">
+<polygon points="11,43 19,43 18,62 13,63" fill="#263e53"/>
+<polygon points="14,61 16,61 16,66 17,67 17,68 13,68 13,65" fill="#80553d"/>
+<polyline points="13,68 17,68" fill="none" stroke="#142536" stroke-width="1"/>
+<polygon points="21,43 29,43 28,62 23,63" fill="#263e53"/>
+<polygon points="24,61 26,61 26,66 27,67 27,68 23,68 23,65" fill="#80553d"/>
+<polyline points="23,68 27,68" fill="none" stroke="#142536" stroke-width="1"/>
+<polygon points="10,27 28,27 32,40 28,53 12,53 8,40" fill="#d8c59b"/>
+<polygon points="14,26 26,26 28,55 22,61 12,56" fill="#80553d"/>
+<polygon points="15,28 19,30 17,51 13,55" fill="#b7784e"/>
+<polyline points="10,30 6,38 9,46" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="10,30 6,38 9,46" fill="none" stroke="#d8c59b" stroke-width="2"/>
+<polyline points="8,44 10,44" fill="none" stroke="#f5dca4" stroke-width="1"/>
+<ellipse cx="9.0" cy="46.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<polyline points="29,30 34,37 31,45" fill="none" stroke="#142536" stroke-width="4"/>
+<polyline points="29,30 34,37 31,45" fill="none" stroke="#d8c59b" stroke-width="2"/>
+<polyline points="30,43 32,43" fill="none" stroke="#f5dca4" stroke-width="1"/>
+<ellipse cx="31.0" cy="45.5" rx="1.0" ry="1.5" fill="#d49c70"/>
+<polyline points="15,45 28,46" fill="none" stroke="#593e35" stroke-width="2"/>
+<rect x="17" y="39" width="8" height="7" fill="#9a7151"/>
+<polyline points="31,44 34,24" fill="none" stroke="#8b9b9b" stroke-width="2"/>
+<polygon points="32,22 37,21 38,27 34,29" fill="#d9ae62"/>
+<polygon points="12,12 18,7 26,10 29,18 26,28 17,29 12,22" fill="#593e35"/>
+<polygon points="15,13 24,13 27,19 24,26 18,27 14,21" fill="#d49c70"/>
+<polygon points="12,13 17,6 26,8 29,15 22,13 18,16" fill="#b7784e"/>
+<polygon points="13,12 16,9 27,12 28,15 15,14" fill="#a95243"/>
+<ellipse cx="11.0" cy="19.5" rx="3.0" ry="3.5" fill="#593e35"/>
+<polyline points="15,18 18,18" fill="none" stroke="#142536" stroke-width="1"/>
+<polyline points="23,18 26,18" fill="none" stroke="#142536" stroke-width="1"/>
+<polyline points="18,24 23,24" fill="none" stroke="#c58077" stroke-width="1"/>
+<polygon points="13,22 16,23 16,25 13,24" fill="#687478"/>
+</svg>

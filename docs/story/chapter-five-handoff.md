@@ -1,6 +1,6 @@
-# Next: Chapter Five — Taking the World Back
+# Chapter Five entry — Taking the World Back
 
-Chapters One–Four are playable canon. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap. [chapter-five-plan.md](chapter-five-plan.md) is the approved author plan: three freely ordered regional acts followed by Alban's flagship. It does not change this saved departure or make those later events playable canon.
+Chapters One–Four and Chapter Five’s airfield/Hammerplain/Dawnwatch acts are playable canon. This document preserves the incoming coast departure; see [chapter-five-continuation.md](chapter-five-continuation.md) for the implemented Acts I–II checkpoints. Continue the voluntary counterattack from the newly liberated coast. Do not repeat Tomas's rescue or impose a story reason for the active-party cap. [chapter-five-plan.md](chapter-five-plan.md) is the approved author plan: three freely ordered regional acts followed by Alban's flagship. Windmere and the flagship finale are still plans. This implementation does not change the incoming saved departure.
 
 ## Exact save
 

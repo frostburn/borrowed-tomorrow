@@ -18,6 +18,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
     await expect(page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Three (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('button',{name:'Begin Chapter Four (canonical)',exact:true})).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'Begin Chapter Five (canonical)',exact:true})).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Character workshop' })).toHaveCount(0);
     await expect(page.getByRole('group', { name: 'Development battle tools' })).toHaveCount(0);
   }
@@ -32,6 +33,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   expect(built).not.toContain('Begin Chapter Two (canonical)');
   expect(built).not.toContain('Begin Chapter Three (canonical)');
   expect(built).not.toContain('Begin Chapter Four (canonical)');
+  expect(built).not.toContain('Begin Chapter Five (canonical)');
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
@@ -196,4 +198,25 @@ test('production missing regulator SVG keeps the capital departure intact for re
  await page.route('**/art/vector/bosses/conduit-regulator-motion.svg',r=>r.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
  await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
  await page.unroute('**/art/vector/bosses/conduit-regulator-motion.svg');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+});
+
+test('production Chapter Five continues the coast departure and supports deep Act I saves without dev tools',async({page})=>{
+ const {anchorDeparture,anchorCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');const before=anchorDeparture();before.activeParty=['nell','petra','celia'];before.party[0].hp=61;before.party[1].focus=2;await importSave(page,before);
+ await page.getByRole('button',{name:'Begin Chapter Five',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-airfield');await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+ expect((await inspect(page)).state).toMatchObject({chapter:'chapter-five',boundary:null,party:before.party,activeParty:before.activeParty,inventory:before.inventory});
+ const saved=anchorCheckpoint('furnaceWon');saved.location={map:'anchorforge',x:32,y:23};await importSave(page,saved);await approach(page,'forge-anchor');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.hammerplainFreed).toBe(true);
+ await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.hammerplainFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Begin Chapter Five (canonical)',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+});
+
+test('production Dawnwatch restores independent progress and the completed offer with no development controls',async({page})=>{
+ const {dawnwatchCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ const saved=dawnwatchCheckpoint('aurelWon');saved.location={map:'signalwall',x:32,y:23};saved.activeParty=['nell','petra','celia'];await importSave(page,saved);await approach(page,'wall-anchor');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.dawnwatchFreed).toBe(true);expect((await inspect(page)).state.flags.hammerplainComplete).toBeUndefined();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.dawnwatchFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
+ const both=dawnwatchCheckpoint('dawnwatchComplete',true);both.flags.fleetSighted=true;both.location={map:'airship',x:47,y:31};await importSave(page,both);await approach(page,'ship-cabin');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-told');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.emperorOfferTold).toBe(true);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect((await inspect(page)).state.boundary).toBeNull();expect(errors).toEqual([]);
+});
+
+test('production Windmere restores partial support and accepts any two regions for the Emperor offer',async({page})=>{
+ const {windmereCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ const saved=windmereCheckpoint('wardEngineWon','dawnwatch');saved.location={map:'mirrorward',x:32,y:23};saved.activeParty=['nell','celia','petra'];await importSave(page,saved);await approach(page,'wind-anchor');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.windmereFreed).toBe(true);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.windmereFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
+ const two=windmereCheckpoint('windmereComplete','dawnwatch');two.flags.fleetSighted=true;two.location={map:'airship',x:47,y:31};await importSave(page,two);await approach(page,'ship-cabin');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-offer');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-told');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.emperorOfferTold).toBe(true);expect((await inspect(page)).state.flags.hammerplainComplete).toBeUndefined();await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);
+ const three=windmereCheckpoint('windmereComplete','both');three.flags.emperorOfferSeen=true;three.flags.emperorOfferTold=true;three.location={map:'airship',x:32,y:26};await importSave(page,three);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-alliance');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.allAnchorsSeen).toBe(true);expect((await inspect(page)).state.flags.chapterFiveComplete).toBeUndefined();expect((await inspect(page)).state.boundary).toBeNull();expect(errors).toEqual([]);
 });

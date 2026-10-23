@@ -1,6 +1,7 @@
 import type { Instrument } from './score';
 export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
 import { isBass, pitchFrequency, type Pitch } from './tuning';
+import type { ControlCurve,NoteExpression } from './expression';
 
 /** Shared instrument rack, usable by live and offline Web Audio contexts. */
 export class Synth {
@@ -68,7 +69,7 @@ export class Synth {
     }
     source.onended=()=>{for(const node of nodes)node.disconnect();r.cleanup();};
   }
-  note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0){
+  note(instrument:Instrument,pitch:Pitch,when:number,duration:number,volume:number,pan=0,expression?:NoteExpression){
     // A delayed scheduler must play the attack now, not start halfway through
     // an envelope whose timestamp has already passed on the audio clock.
     when=Math.max(when,this.context.currentTime);
@@ -83,7 +84,16 @@ export class Synth {
     filter.frequency.setValueAtTime(isBass(instrument)?650:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
     if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
-    filter.connect(r.gain);nodes.push(filter);
+    nodes.push(filter);
+    const automate=(param:AudioParam,curve:ControlCurve)=>{
+      param.setValueAtTime(curve[0][1],when);
+      for(const [position,value]of curve.slice(1))param.linearRampToValueAtTime(value,when+position*duration);
+    };
+    if(expression?.dynamics){
+      // The outer attack/release still silences every future swell on cancel.
+      const swell=c.createGain();automate(swell.gain,expression.dynamics);
+      filter.connect(swell);swell.connect(r.gain);nodes.push(swell);
+    }else filter.connect(r.gain);
     const voices:OscillatorNode[]=[];
     const osc=(type:OscillatorType,detune=0,relative=1,mix=1)=>{
       const o=this.track(c.createOscillator()),g=c.createGain();o.type=type;o.frequency.value=hz*relative;o.detune.value=detune;g.gain.value=mix;
@@ -102,9 +112,18 @@ export class Synth {
     else if(plucked){osc('triangle',0,1,.76);osc('sine',0,2,.17);osc('sine',0,3.005,.055);}
     else {
       const reed=osc('triangle',0,1,.85);osc('sine',0,2,.15);
-      const vibrato=this.track(c.createOscillator()),depth=c.createGain();vibrato.frequency.value=4.6;
-      depth.gain.setValueAtTime(0,when);depth.gain.linearRampToValueAtTime(hz*.004,when+.2);
-      vibrato.connect(depth);depth.connect(reed.frequency);vibrato.start(when);vibrato.stop(r.end);nodes.push(vibrato,depth);
+      if(!expression){
+        const vibrato=this.track(c.createOscillator()),depth=c.createGain();vibrato.frequency.value=4.6;
+        depth.gain.setValueAtTime(0,when);depth.gain.linearRampToValueAtTime(hz*.004,when+.2);
+        vibrato.connect(depth);depth.connect(reed.frequency);vibrato.start(when);vibrato.stop(r.end);nodes.push(vibrato,depth);
+      }
+    }
+    if(expression?.vibrato){
+      const vibrato=this.track(c.createOscillator()),depth=c.createGain();vibrato.frequency.value=expression.vibrato.rate;
+      automate(depth.gain,expression.vibrato.depth);vibrato.connect(depth);
+      // Modulate every harmonic equally in cents, centred on the spelled pitch.
+      for(const voice of voices)depth.connect(voice.detune);
+      vibrato.start(when);vibrato.stop(r.end);nodes.push(vibrato,depth);
     }
     voices[0].onended=()=>{for(const node of nodes)node.disconnect();r.cleanup();};
   }

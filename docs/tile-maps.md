@@ -6,7 +6,7 @@ Open `src/content/chapter-one/maps/*.json` , `src/content/chapter-two/maps/*.jso
 
 Keep existing tile IDs stable when extending the tile set: append new definitions so the maps' references keep their meaning.
 
-All four playable chapters share the collision tile vocabulary. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapter Three appends palace gates, instrument banks and the restrained vessel. Its former whole paintings and encoded parts are removed. Chapter Four adds three story maps and five arenas with directly authored native SVG scenery; see [Chapter Four sources](../assets/vector/chapter-four.md). Its Tiled maps own floors, scenery footprints, arrivals, casts and civilian placements.
+The playable chapters share the collision tile vocabulary. Their map JSON files are the editable layout source. Chapter Two appends harbor and ward props without changing earlier tile IDs or image bytes. The obsolete coast and Cinderbank paintings and encoded fragments have been removed. Chapter Three appends palace gates, instrument banks and the restrained vessel. Its former whole paintings and encoded parts are removed. Chapter Four adds three story maps and five arenas with directly authored native SVG scenery; see [Chapter Four sources](../assets/vector/chapter-four.md). Its Tiled maps own floors, scenery footprints, arrivals, casts and civilian placements.
 
 | Map | Grid | Story route |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ Only SVG scene sources used by the destination and its battlefields are required
 
 ## Image publication budget
 
-Whole-map SVG scenes are allowed for Chapters One–Four; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
+Whole-map SVG scenes are allowed for the playable chapters; the former 192px dimension limit applies only to native raster tile pages. Large raster authoring sheets stay outside the repository. Export reusable terrain tiles and scenery modules into small native image pages before staging anything. This also applies to authoring source imagery: do not commit a large source sheet alongside the small runtime pages, and do not disguise sheets as encoded text fragments. Preserve the pixels and alpha of exported tiles; use additional pages rather than lowering image quality to fit the limit.
 
 After staging, run `npm run check:art-upload`. It checks the exact staged blobs for every added or modified raster image and refuses Chapter One pages over 128 KB (128 KB for other raster files). Upload each approved file independently. The content tests separately check native dimensions, page sizes, contiguous IDs and map references. The supplied previews have been recovered as 24 scenery modules and six terrain fields, exported into bounded native pages.
 
@@ -88,3 +88,10 @@ The intake manifold descends into the gallery's control table. In the chamber, t
 Interactions, named arrivals and initial casts live in the three Tiled maps. The engine works door and feed console have clickable rectangles over their actual artwork and reachable approaches below it. Staged moves remain in the dialogue; do not leave actors hidden behind props when changing those endpoints. Current-format saves covered by a console or the vessel restore through the same connected-floor rules as earlier chapters.
 
 Patients and families remain beside the medical coaches until the escape; the gallery fitters leave after Tomas is freed. Feed-light layers disappear after extraction stops. Dena helps unload the patients and protects them during the renewed arrest. These supporting people add no errands. The chapter still saves Tomas permanently, offers both intake routes and all five equipment rewards, and preserves the Chapter Four departure.
+
+
+## Chapter Five Act I
+
+The airfield, survey deck, Hammerplain casting floor, cooling works and anchor gantry use 64 × 42 Tiled layouts and continuous native SVG scenery, plus five clear tactical arenas. `assets/vector/chapter-five.py` owns floors, collisions, painted control hit rectangles, safe arrivals, casts and civilians alongside the native prop geometry. Run `node scripts/export-chapter-five-art.mjs`; see [the source notes](../assets/vector/chapter-five.md). Maps now derives chapter selectors from its actual catalog and exposes Chapter 5 directly.
+
+The manual wheel, chart, gangway and anchor breaker have painted hit areas and connected approaches. Cutscene completions resume at authored crew/junction/stand/engine arrivals rather than returning Nell to an entrance. Residential windows and families change when the anchor is released; Hester moves to the running engine, fitters appear aboard and the imperial fleet appears after its scene. The full SVG kit and local arenas load before entry/deep restore can replace the previous checkpoint.

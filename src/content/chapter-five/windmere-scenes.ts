@@ -1,0 +1,104 @@
+import { SAY,type Dialogue } from '../dialogue';
+import { stage,arrival } from '../maps';
+import type { MapId } from '../../rules/state';
+import type { Shot } from '../cinematics';
+const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
+const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
+export const hospital=()=>scene('windmere','five-wind-arrival','The garden walk',[
+ line('Windmere','A man lets go of the ward rail. His sister reaches for his elbow; he shakes his head and takes another step.',{focus:{x:37,y:25},cut:true}),
+ line('Teren','Wait. Let me get to the bench myself.',{duration:1400,actors:{teren:{to:arrival('windmere','patient-step')}}}),
+ line('Celia','He couldn’t stand when his referral came through.'),
+ line('Sera','That was six weeks ago. He’s been arguing about the stairs all morning.'),
+ line('Director Iven','Celia. You still carry our book.',{focus:{x:34,y:26}}),
+ line('Celia','And I still use it. We came from the coastal hospice. I need to see your pledge records.'),
+ line('Director Iven','The return clause? I know what it says.'),
+ line('Nell','Then you know what it takes from the villages.'),
+ line('Director Iven','And you’ve just seen what it gives us. Twelve patients upstairs depend on that light.'),
+ line('Celia','Their families signed for treatment. Did you tell them whose days would pay for it?'),
+ line('Director Iven','I couldn’t send them home to die.'),
+ line('Sera','You could have told the staff. We’ve been signing those referrals too.'),
+ line('Celia','Who can move to the ordinary ward?'),
+ line('Sera','Everyone, with the stored equipment. The water lift used to bring it up from the lower dispensary.'),
+ line('Director Iven','The old ward won’t do what the anchor does.'),
+ line('Celia','I know. Sera, show me what you have.'),
+]);
+export const dispensary=()=>scene('dispensary','five-wind-dispensary','The stored ward',[
+ line('Sera','Pressure beds, breathing bellows, clean linen. All put away when the mirrored ward opened.',{focus:{x:33,y:24},cut:true}),
+ line('Orrin','The water wheel still turns. Those machines have the brake locked.'),
+ line('Kit','Dena’s volunteers are at the landing with Bram’s medicine crates. I gave them the ward entrance.'),
+ line('Celia','Good. We’ll need hands as much as medicine.'),
+ line('Sera','Clear the brake, then turn the wheel on the eastern walk. We can lift the whole store together.'),
+]);
+export const lift=()=>scene('dispensary','five-wind-lift','Up from the dispensary',[
+ line('Orrin','Sera, hold the latch. I’ll ease the wheel back.',{focus:{x:42,y:24},cut:true}),
+ line('Sera','Ready below? Keep your hands inside the rail.'),
+ line('The water lift','Water fills the lower chamber. The platform rises with its load of beds and bellows.',{duration:1600,effect:'water-lift',cue:'steam',focus:{x:35,y:23}}),
+ line('Kit','The volunteers have the handles. Next load can come up.'),
+ line('Celia','I’ll take the first beds through. Nell, meet us at the ordinary ward’s bypass valve.'),
+]);
+export const transfer=()=>scene('windmere','five-wind-transfer','Beds beside the window',[
+ line('Sera','The bellows are working. This valve separates the ward line from the anchor.',{focus:{x:35,y:24},cut:true}),
+ line('Celia','Move one bed at a time. Keep the light on until each patient’s breathing is steady.'),
+ line('The ordinary ward','The first bed rolls through. Volunteers settle a patient beside the window while Sera works the bellows.',{effect:'ward-transfer',duration:1800,focus:{x:25,y:24},actors:{celia:{to:{x:22,y:25}},sera:{to:{x:21,y:24}}}}),
+ line('Director Iven','That child has never slept without the mirrors.'),
+ line('Celia','Then stay by the bed and tell us what to watch for.'),
+ line('Director Iven','You expect me to help dismantle my own ward?'),
+ line('Celia','I expect you to help your patients.'),
+ line('The bypass valve','Orrin closes the ward return a little at a time. Sera checks each bed before he turns it further.',{cue:'steam'}),
+ line('Sera','They’re settled. Keep the bellows running. We can take the anchor off the remaining line now.'),
+ line('Director Iven','No. You haven’t seen what happens when it fails.',{actors:{iven:{to:{x:44,y:23}}},duration:700,track:'iven'}),
+ line('Celia','Iven. Come back.'),
+ line('Nell','He’s gone up to the treatment gallery. Let’s follow him.'),
+]);
+export const mirrors=()=>scene('mirrorward','five-wind-mirror','The light in the ward',[
+ line('Director Iven','I treated fever here before the anchor. Some nights we ran out of sheets to cover them.',{focus:{x:35,y:24},cut:true}),
+ line('Celia','I was there for some of those nights.'),
+ line('Director Iven','Then how can you turn it off?'),
+ line('Celia','Because the village wards are filling while we empty ours. Give Sera the ledger.'),
+ line('Director Iven','Those are my patients too.'),
+ line('Sera','Their names aren’t in your treatment book. Only the days you took.'),
+ line('Director Iven','The engine can hold the line. It has its own reserve.'),
+ line('The treatment gallery','Iven lowers a shutter. The engine turns its lens toward the bridge; the side mirrors fill with light.',{cue:'flare',focus:{x:33,y:20}}),
+ line('Orrin','That reserve is tied to the same return. It’ll keep drawing until we stop it.'),
+ line('Nell','Sera, stay with the beds. We’ll clear the bridge and shut it down.'),
+ line('Celia','Watch which mirror lights up. Break that projection and the core will open.'),
+]);
+export const release=()=>scene('mirrorward','five-wind-release','Care without the light',[
+ line('Sera','The last bed is on the bellows. All ward returns are isolated.',{focus:{x:33,y:22},cut:true}),
+ line('Celia','Close the treatment supply first. Then open the upward contact. Orrin, slowly.'),
+ line('The anchor','The shutters close. A pale line shrinks inside the lens and goes dark. Nell feels a brief chill through the lantern handle.',{cue:'steam'}),
+ line('Director Iven','If one of them worsens tonight—'),
+ line('Celia','We’ll treat them. We’ll need the records you kept back.'),
+ line('Sera','And the villages need copies. No more sealed pages.'),
+ line('Director Iven','The full ledger is under the desk. Take the key.'),
+ line('Kit','This diagram’s the same as the hospice chart. The palace line goes one way; this return points beyond the hollow sun.'),
+ line('Orrin','No route marked through it. But these three stations fed the same source.'),
+ line('Nell','Make a copy for Alda. I’d like to go back to the ward.'),
+]);
+export const night=()=>scene('windmere','five-wind-night','The first night shift',[
+ line('Windmere','A kettle whistles under the canopy. Inside the ordinary ward, Sera counts a patient’s breaths beside the bellows.',{focus:{x:34,y:24},cut:true,cue:'win'}),
+ line('Teren','My sister wants to carry me upstairs now.'),
+ line('Celia','Let her carry your bag. The rail’s there for you.'),
+ line('Teren','Will I lose what the treatment did?'),
+ line('Celia','Your leg’s healed. It still needs work. Come to the morning clinic and we’ll look at it together.'),
+ line('Sera','Iven’s showing the village representatives his ledger. Two attendants are staying with him.'),
+ line('Nell','What about everyone in here?'),
+ line('Celia','Some will need care for a long time. I’m staying for tonight’s shift.'),
+ line('Sera','I’ll take the window beds. You can start at the door.'),
+ line('The ordinary ward','Celia rolls up her sleeves. By morning the crew has carried two empty medicine cases back to the ship.'),
+ line('Celia','Sera’s sending a medical crew and copies of the release sequence. We’ve tested it with people still on support.'),
+ line('Kit','I’ll send Dena their supply list. Tomas can keep the railway copies at his desk.'),
+ line('Sera','Take my spare focus, Celia. You’ll need a steady lens up there. It’s in your bag.'),
+ line('Celia','Keep the clinic open. Send for me if you need me.'),
+]);
+export const alliance=()=>scene('airship','five-alliance','The capital approach',[
+ line('Alda','Three dark return lines. We’ve got everyone’s charts on the table.',{focus:{x:32,y:21},cut:true}),
+ line('Orrin','Hammerplain’s fitters can keep us aloft if the main drive takes a hit.'),
+ line('Petra','Dawnwatch’s pilots know the recognition signals. We can get close before they challenge us.'),
+ line('Celia','Windmere’s crews have the support-release order. We can disconnect the next line without taking its patients with it.'),
+ line('Kit','And the railway has their supply lists. They can keep working while we’re gone.'),
+ line('The inland sky','A long horn sounds across the cloud. The flagship turns broadside above the capital approach.',{focus:{x:32,y:10},cut:true,effect:'capital-blockade'}),
+ line('Alda','Alban. He’s closed the crossing, not the landings. We can still go back for supplies.',{focus:{x:32,y:21}}),
+ line('Nell','Then we get ready here. All those crews got us this far. We’ll need them to get through.'),
+ line('Petra','When we board, I’m coming for his command rod. He can answer to the people below his guns.'),
+]);

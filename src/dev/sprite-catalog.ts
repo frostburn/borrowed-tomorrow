@@ -16,7 +16,7 @@ export const SPRITE_CATALOG: SpriteEntry[] = [
   ...Object.entries(CHARACTERS).filter(([id])=>!isHero(id)).map(([id,character])=>({id,...character,group:'NPCs' as const,directions:['front'] as const})),
   ...Object.entries(CIVILIANS).map(([sprite,role])=>({id:sprite,sprite,...role,group:'NPCs' as const,directions:['front'] as const})),
   ...[
-    {id:'hound',name:'Hound'}, {id:'crow',name:'Crow'},
+    {id:'ward-reflector',name:'Ward projection'}, {id:'hound',name:'Hound'}, {id:'crow',name:'Crow'},
     {id:'inspector',name:'Inspector',portrait:'portrait-inspector'}, {id:'guardian',name:'Guardian'},
   ].map(entry=>({...entry,sprite:entry.id,group:'Enemies' as const,directions:['front'] as const})),
   ...Object.entries(ENEMY_VARIANTS).map(([id,variant])=>({id,name:variant.name,sprite:id,group:'Enemies' as const,directions:['front'] as const})),

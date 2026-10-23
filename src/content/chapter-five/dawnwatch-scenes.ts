@@ -1,0 +1,113 @@
+import { SAY,type Dialogue } from '../dialogue';
+import { stage } from '../maps';
+import type { MapId } from '../../rules/state';
+import type { Shot } from '../cinematics';
+const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
+const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
+export const arrivalScene=()=>scene('dawnwatch','five-dawn-arrival','The lower gate',[
+ line('Dawnwatch','A cart of bedding blocks the lower street. Above it, soldiers carry ammunition up the shelter steps.',{focus:{x:31,y:24},cut:true}),
+ line('Petra','Enna. Why are they taking the blankets out?'),
+ line('Enna','The shelter’s being cleared for shells. Lower town’s to be abandoned.'),
+ line('Commander Aurel','Petra. Put down your sword and come up here.',{focus:{x:35,y:23}}),
+ line('Petra','Open the gate. There are families below the wall.'),
+ line('Commander Aurel','The anchor keeps this garrison standing. My orders are to hold it.'),
+ line('Petra','You can hold it with those people inside.'),
+ line('Commander Aurel','And feed them from which stores? You left Cinderbank’s railway to rebels. Now you ask me to do the same.'),
+ line('Enna','I was on that railway. Those coaches had patients in them.'),
+ line('Commander Aurel','They also carried a stolen imperial crystal. Seal the shelter. Gun crews, to your posts.',{duration:700,actors:{aurel:{to:{x:49,y:25}}},track:'aurel'}),
+ line('Enna','Half the watch only heard you deserted. They weren’t at the coaches.',{focus:{x:31,y:26},actors:{aurel:{visible:false}}}),
+ line('Petra','Then they can watch what I do here. Nell, cover the street. I’m opening that gate.'),
+ line('Nell','We’ll get them inside.'),
+]);
+export const shelter=()=>scene('dawnwatch','five-shelter','Room behind the wall',[
+ line('Petra','Enna, the locking lever. Give me a hand.',{focus:{x:35,y:23},cut:true,actors:{petra:{to:{x:35,y:22}},enna:{to:{x:37,y:23}}}}),
+ line('Enna','He’ll have us both in irons.'),
+ line('Petra','He may. Lift on three.'),
+ line('The shelter gate','The bar scrapes clear. Orrin props the doors while Kit carries the bedding back up the steps.',{effect:'shelter-open',duration:1500,cue:'steam'}),
+ line('Celia','Bring that chair through first. There’s space by the lamp.'),
+ line('Enna','I’ve got the door. You two, take water inside. Leave your rifles here.'),
+ line('Nell','Are the guns going to fire down here?'),
+ line('Enna','The mortar can reach the whole street. The repeater covers the wall approach. Their crews take orders from the signal platform.'),
+ line('Petra','We’ll clear both positions before we go up. Keep the shelter open.'),
+]);
+export const guns=()=>scene('watchbarracks','five-watch-guns','Two gun positions',[
+ line('Kit','Mortar on the west terrace. Repeater on the east.',{focus:{x:31,y:23},cut:true}),
+ line('Orrin','Those sights are linked. The other position can spot for the one we’re attacking.'),
+ line('Petra','Clear its spotter to stop the support fire. Until then, keep out of the marked hexes.'),
+ line('Nell','Which position first?'),
+ line('Petra','Leave the mortar up and it’ll mark a wide blast. Leave the repeater and it’ll rake a straight lane. We need both silent to reach the platform.'),
+]);
+export const commander=()=>scene('signalwall','five-aurel','The command platform',[
+ line('Commander Aurel','You have opened my shelter and silenced my guns. Is this what you call protecting Dawnwatch?',{focus:{x:34,y:25},cut:true}),
+ line('Petra','The people you sent out are behind its walls.'),
+ line('Commander Aurel','My walls. The ones you swore to defend. You enforced these orders for years.'),
+ line('Petra','I did. I sealed doors because somebody above me signed a paper.'),
+ line('Commander Aurel','And those people lived under imperial protection.'),
+ line('Petra','Some of them didn’t live. I didn’t go back to count.'),
+ line('Enna','The shelter is full. Your orders, sir?'),
+ line('Commander Aurel','Clear the lower gate. By force if necessary.'),
+ line('Enna','My sister’s inside. I’m not shooting through her.'),
+ line('Commander Aurel','Then stand aside. Shields, on me.'),
+ line('Petra','You want my sword, come and take it. Leave the gate alone.'),
+]);
+export const release=()=>scene('signalwall','five-watch-release','The town wheel',[
+ line('Commander Aurel','You’ve won the platform. You haven’t relieved me of command.',{focus:{x:35,y:24},cut:true}),
+ line('Commander Aurel','Signal the reserve. Fire across the lower gate.'),
+ line('Enna','No, sir.'),
+ line('The signal wall','The soldier at the desk lays down his signal key. Two others unbuckle their swords.'),
+ line('Petra','Give me your saber, Commander. Enna will take you to the shelter.'),
+ line('Commander Aurel','You expect them to protect me?'),
+ line('Petra','You’ll have water and a bed. The same as everyone else.'),
+ line('Enna','My watch can work the wheel. We used it before the capital put a lock on the return.'),
+ line('Orrin','The town line’s separate. Open the copper contacts and you can keep the signal lamps.'),
+ line('Petra','Then it’s yours to turn.',{duration:700,actors:{petra:{to:{x:34,y:23}},enna:{to:{x:32,y:20}}}}),
+ line('The anchor','Enna hauls the release wheel around. The upward cable darkens. The lantern handle hums against Nell’s palm.',{cue:'steam'}),
+ line('Nell','That’s it. Let’s tell the shelter.'),
+]);
+export const town=()=>scene('dawnwatch','five-dawn-freed','The watch stays',[
+ line('Dawnwatch','A soldier carries a pot of soup through the open shelter. On the steps, Aurel sits beside a man still clutching his house key.',{focus:{x:36,y:24},cut:true,cue:'win'}),
+ line('Enna','He’s been asking which house it opens. Nobody’s answering him.'),
+ line('Petra','Keep someone with him. I’ll answer for the fighting here.'),
+ line('Enna','You don’t get your commission back from me.'),
+ line('Petra','I wasn’t asking.'),
+ line('Enna','Good. I do need to know where to send these approach charts.'),
+ line('Kit','Alda’s survey ship. I can put your crews in the same book as the railway.'),
+ line('Enna','Three pilots volunteered. We have two escort launches and the fleet’s recognition signals. The rest of us are staying with the town.'),
+ line('Nell','We’ll need those signals to get past Alban.'),
+ line('Enna','Then use them. The anchor wheel stays here.'),
+ line('Petra','With whoever’s on watch at the shelter. Nobody seals it for a quota again.'),
+ line('Enna','Your shield strap’s split.'),
+ line('Petra','I’d noticed.'),
+ line('Enna','You always waited till it broke. There’s a new brace in your kit. Fit it before you fly.'),
+]);
+export const emperorOffer=():Dialogue=>{const d=scene('observation','five-emperor-offer','A morning in the glass',[
+ line('The observation cabin','Festival bunting crosses the glass. Behind it stands Larkspur station, warm in the morning light.',{focus:{x:32,y:20},cut:true,silence:true}),
+ line('Nell','Ansel?'),
+ line('The glass','He sets a cup on the counter and turns the chipped rim toward himself. Tomas waits beside the platform door.'),
+ line('Nell','He always did that. He wouldn’t give anyone the chipped side.'),
+ line('The Emperor','Your brother is home. The stationmaster has made tea.'),
+ line('Nell','Tomas is at the refuge.'),
+ line('The Emperor','Here he has never left.'),
+ line('The glass','Ansel lifts the cup. The bunting stirs. He puts it down and turns the chipped rim toward himself again.'),
+ line('Nell','Is this a recording?'),
+ line('The Emperor','A day I can preserve. Bring the fragment to the capital. You can stay here with them.'),
+ line('Nell','Would he know what happened?'),
+ line('The Emperor','Nothing would have to happen to him.'),
+ line('The cabin','Nell rests her hand on the cold glass. The cup turns once more.',{duration:800,focus:{x:32,y:19},actors:{nell:{to:{x:32,y:19}}}}),
+ line('Nell','Can he leave the station?'),
+ line('The Emperor','He is safe there.'),
+ line('Nell','I need to go outside.',{duration:1500,actors:{nell:{to:{x:32,y:30}}},track:'nell'}),
+]);d.scene!.hideCompanions=true;return d;};
+export const emperorTold=()=>scene('airship','five-emperor-told','Back on deck',[
+ line('Orrin','Nell? You’ve been in there a while.',{focus:{x:32,y:23},cut:true}),
+ line('Nell','The Emperor was in the glass. He showed me the station before the raid.'),
+ line('Nell','Ansel was making tea. He had the right cup. I wanted him to look up.'),
+ line('Celia','Did he?'),
+ line('Nell','He kept doing the same thing. The Emperor said I could stay if I brought him the fragment.'),
+ line('Petra','We can turn the ship around.'),
+ line('Nell','No. I wanted you to know. I nearly asked him how to get there.'),
+ line('Orrin','Sit here a minute. I’ll get you something warm.'),
+ line('Kit','I’ve got Tomas’s last message. It’s mostly about a broken desk drawer. Do you want it?'),
+ line('Nell','Yes. Read it to me.'),
+ line('Alda','We’ll hold our course. The fleet’s moved closer to the inland crossings; the anchor landings are still open.'),
+]);
