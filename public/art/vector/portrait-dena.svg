@@ -1,43 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<title>dena portrait</title>
-<metadata>{"reference": "babe8ca:public/art/portrait-dena.png", "construction": "Fuller cheek, gentle smile, one braid, cream apron and nurse cap. Independently revised facial planes; no shared face template.", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
-<path d="M0 0H128V128H0Z" fill="#182e3b" />
-<path d="M0 0H128V22L45 10L0 62Z" fill="#294550" />
-<polygon points="3,128 12,102 35,88 53,80 80,83 106,100 122,128" fill="#35584d" />
-<polygon points="9,111 32,95 43,128 3,128" fill="#5d7660" />
-<polygon points="87,91 108,104 121,128 93,128" fill="#263e39" />
-<polygon points="40,94 51,86 66,96 82,88 94,98 91,128 40,128" fill="#baa989" />
-<polygon points="47,95 53,91 65,103 81,92 86,99 86,128 45,128" fill="#f1d8ae" />
-<polygon points="53,77 55,89 66,98 79,86 75,75" fill="#d49c70" />
-<polygon points="27,36 39,19 63,16 86,28 97,49 93,73 78,86 46,83 31,69" fill="#372a25" />
-<polygon points="25,69 32,66 36,73 33,81 26,79 24,73" fill="#623d29" />
-<polygon points="27,69 31,68 33,73 29,77 26,74" fill="#9b5d32" />
-<polygon points="27,80 34,77 38,84 35,92 28,90 26,84" fill="#623d29" />
-<polygon points="29,80 33,79 35,84 31,88 28,85" fill="#9b5d32" />
-<polygon points="25,91 32,88 36,95 33,103 26,101 24,95" fill="#623d29" />
-<polygon points="27,91 31,90 33,95 29,99 26,96" fill="#9b5d32" />
-<polygon points="27,102 34,99 38,106 35,114 28,112 26,106" fill="#623d29" />
-<polygon points="29,102 33,101 35,106 31,110 28,107" fill="#9b5d32" />
-<polygon points="42,34 53,27 71,29 83,41 85,55 88,63 84,70 79,79 70,86 60,84 48,77 41,65 38,48" fill="#d49c70" />
-<polygon points="79,36 83,41 85,55 88,63 84,70 79,79 70,86 60,84 61,81 73,76 79,65 80,52" fill="#ad795b" />
-<polygon points="45,37 54,31 69,32 78,41 77,51 65,57 47,51" fill="#e6bc91" />
-<polygon points="52,52 58,49 64,50 66,53 62,56 54,55" fill="#b17b5c" />
-<polygon points="54,53 63,51 64,54 56,54" fill="#e8cfaa" />
-<polygon points="59,51 63,51 63,55 59,55" fill="#263e4b" />
-<polygon points="73,51 79,49 84,51 85,54 81,56 74,55" fill="#b17b5c" />
-<polygon points="75,52 82,51 83,54 76,54" fill="#e8cfaa" />
-<polygon points="79,51 82,51 82,55 79,55" fill="#263e4b" />
-<polyline points="52,47 59,45 65,47" fill="none" stroke="#623d29" stroke-width="2" />
-<polyline points="74,46 80,45 84,48" fill="none" stroke="#623d29" stroke-width="2" />
-<polygon points="74,56 74,64 78,67 82,65 79,62 78,56" fill="#b17b5c" />
-<polygon points="77,57 79,63 80,64 77,64" fill="#e6bc91" />
-<polygon points="61,74 67,72 73,74 79,71 77,76 69,79 63,77" fill="#975f51" />
-<polygon points="65,75 70,76 75,74 73,77 68,78" fill="#e8cfaa" />
-<polygon points="29,40 39,28 59,23 80,27 91,39 85,46 78,36 70,40 62,32 51,43 45,38 40,52 39,64 32,67 28,55" fill="#623d29" />
-<polygon points="34,39 43,30 56,27 51,34 44,44 38,47" fill="#9b5d32" />
-<polygon points="86,37 95,46 96,62 89,75 81,70 87,61 90,52" fill="#623d29" />
-<polygon points="28,31 30,19 49,8 70,9 85,19 65,18 47,23 36,34" fill="#baa989" />
-<polygon points="32,24 49,12 68,12 76,16 57,17 42,26" fill="#f1d8ae" />
-<polygon points="87,103 91,98 98,100 99,128 88,128" fill="#baa989" />
-<polygon points="90,114 92,108 101,106 107,110 105,117 101,128 91,128" fill="#d49c70" />
+<title>Dena, railway nurse</title>
+<metadata>{"reference": "babe8ca:public/art/portrait-dena.png", "construction": "Full cheeks, a gently lifted mouth and a steady leftward gaze. Brown side braid, cream nurse cap and apron over green work clothes; broad face and simple connected hair planes.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M2 128L11 109 33 97 50 89H80L105 101 123 128Z" fill="#35584d"/>
+<path d="M6 123L19 108 37 100 44 128Z" fill="#5d7660"/>
+<path d="M87 98L108 109 123 128H89Z" fill="#263e39"/>
+<path d="M38 96L50 90 65 103 81 91 94 102 92 128H39Z" fill="#baa989"/>
+<path d="M43 97L51 94 64 108 80 94 86 100 86 128H45Z" fill="#d8c59b"/>
+<path d="M48 76L46 96 63 108 81 95 77 74Z" fill="#b58261"/>
+<path d="M60 85L77 79 81 95 65 105 53 95Z" fill="#96674f"/>
+<path d="M28 35L35 21 54 14 75 19 90 34 95 55 89 78 76 92 42 88 28 71 25 51Z" fill="#49362c"/>
+<path d="M39 33L55 25 72 30 82 44 84 61 78 77 66 88 56 88 44 80 36 65 32 49 32 42Z" fill="#c99571"/>
+<path d="M40 35L54 29 68 34 74 44 67 52 47 55 34 47Z" fill="#e1b68c"/>
+<path d="M76 36L82 44 84 61 78 77 66 88H56L57 83 70 76 74 61Z" fill="#a7745a"/>
+<path d="M34 57L44 56 51 63 46 70 38 66Z" fill="#ce9872"/>
+<path d="M38 50L48 47 55 50 53 56 40 55Z M64 49L74 50 80 54 76 57 65 55Z" fill="#b58261"/>
+<path d="M38 45L47 42 54 45 54 48 47 46 39 49Z M64 44L72 44 79 48 80 51 72 49 66 48Z" fill="#623d29"/>
+<path d="M41 52L51 51V54H42Z M67 52H76V55H67Z" fill="#e8cfaa"/>
+<path d="M45 51H49V55H45Z M70 51H74V56H70Z" fill="#263e4b"/>
+<path d="M57 51L54 62 50 67 55 71 63 69 65 66 59 63Z" fill="#b17b5c"/>
+<path d="M57 54L57 64 61 66 58 69 53 67Z" fill="#e1b68c"/>
+<path d="M52 70L58 71 61 69 62 72 57 74Z" fill="#895d49"/>
+<path d="M48 78L55 76 62 78 70 75 69 80 60 84 51 81Z" fill="#975f51"/>
+<path d="M53 79L59 80 65 78 63 81H56Z" fill="#e1b68c"/>
+<path d="M57 86L63 85 66 83 65 86 61 88Z" fill="#c99571"/>
+<path d="M27 41L33 28 44 21 56 20 72 26 85 39 82 48 71 38 62 31 52 38 44 33 38 47 34 63 36 78 30 77 25 64 23 51Z" fill="#623d29"/>
+<path d="M32 36L39 28 46 25 56 25 44 30 38 40 32 54 28 60Z" fill="#9b5d32"/>
+<path d="M83 34L91 44 94 62 88 77 80 84 80 75 85 59Z" fill="#49362c"/>
+<path d="M28 70L35 77 31 86 36 93 32 102 37 110 30 119 23 112 27 103 22 95 27 87 23 79Z" fill="#623d29"/>
+<path d="M27 79L31 81 28 88 25 88Z M28 95L32 97 29 104 26 102Z M28 109L32 112 29 116 26 114Z" fill="#9b5d32"/>
+<path d="M26 105L34 108 33 112 25 109Z" fill="#baa989"/>
+<path d="M29 27L35 15 49 8 67 10 82 20 86 28 69 25 54 22 39 30 30 37Z" fill="#baa989"/>
+<path d="M34 23L41 16 51 12 65 14 75 20 59 18 46 22 35 29Z" fill="#d8c59b"/>
+<path d="M91 101L97 102 98 128H90Z" fill="#baa989"/>
+<path d="M89 116L93 110 101 109 108 113 105 120 101 128H90Z" fill="#c99571"/>
 </svg>

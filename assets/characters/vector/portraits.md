@@ -4,12 +4,15 @@ The thirty human portraits in `public/art/vector/portrait-*.svg` are editable 12
 
 ## Shared treatment
 
+Edric and Samira are the style anchors. Match their broad face scale, modest turn, substantial features and connected material facets. The earlier small, strongly turned faces and Celia's higher, finer facial construction are retired. A common background alone does not establish the style.
+
 - Use the slate `#182e3b` background and the restrained upper-left `#294550` plane. Keep the background quieter than the person. Celia also has this opaque background; do not depend on the enclosing menu's color.
-- Frame a head and shoulders. Leave room for caps, crowns and hair near the top, place eyes around rows 48–56, and begin the shoulders around rows 90–105. Allow pose, age, build and headwear to vary within that envelope.
+- Frame a head and shoulders. Leave room for caps, crowns and hair near the top, place eyes around rows 48–56, use roughly 48–60px-wide facial silhouettes, and begin the shoulders around rows 90–105. Allow pose, age, build and headwear to vary within that envelope.
 - Light the forehead and near cheek from above-left. Use broad, connected base/light/shadow planes for skin, hair and clothing. Preserve each person's complexion and material colors; the palette is not a fixed retro limit.
 - Construct eyes from an eyelid plane, muted sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
 - Draw a bridge, tip and underside for the nose. Avoid the old single triangular nose stamp. Fit them to the head's turn and the person's face. Mouth corners, lower lip and chin should support the expression without an outlined cartoon mouth.
 - Use the same detail density, not the same anatomy. Keep differently shaped cheeks, foreheads, noses, jaws, eyelids and mouths, asymmetry, age and direction of gaze. Don't smooth every adult into a youthful face or give every man the same square jaw.
+- Group hair into a few connected clumps and facets. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
 - Large shapes are filled polygons. Sparse 2px contours can describe brows, spectacles or costume trim. No gradients, filters, embedded images or external resources. The runtime's common coarse raster supplies the pixel weight.
 
 ## Individual likenesses
