@@ -1,13 +1,14 @@
 """Author Chapter Four's SVG scenes and Tiled story layouts together.
 
 No bitmap inputs, filters, external resources or raster exports. Whole planes
-share exact 24px floor boundaries with Tiled; props sort at their sole anchors.
+preserve Tiled's 24px navigation and registered prop/actor anchors.
 Run: python3 assets/vector/chapter-four.py
 """
 import json, math
 from pathlib import Path
 from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
+from chapter_four_style import treatment, floor_paint, coastal_lamp, opal, floor_spill, drive_link, arena_lights
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-four'
 MAP=ROOT/'src/content/chapter-four/maps'
@@ -22,7 +23,8 @@ def ring(x,y,rx,ry,thick,c,n=16):
  def path(pts):return 'M'+' L'.join(f'{xx:.1f},{yy:.1f}' for xx,yy in pts)+' Z'
  return f'<path d="{path(loop(rx,ry))} {path(loop(rx-thick,ry-thick))}" fill="{c}" fill-rule="evenodd"/>'
 def svg(name,w,h,parts):
- (ART/f'{name}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{escape(name.replace("-"," "))}</title>'+''.join(parts)+'</svg>\n')
+ source=f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{escape(name.replace("-"," "))}</title>'+''.join(parts)+'</svg>'
+ (ART/f'{name}.svg').write_text(treatment(name,source,w,h))
  return f'art/vector/chapter-four/{name}.svg'
 def props(**kw):return [{'name':k,'type':'bool' if isinstance(v,bool) else 'int' if isinstance(v,int) else 'string','value':v} for k,v in kw.items()]
 def point(name,x,y,**kw):return {'name':name,'point':True,'x':x*24+12,'y':y*24+12,'properties':props(**kw)}
@@ -46,35 +48,54 @@ def capital(x,y,s=1):
  out.extend([ring(x+2*s,y-58*s,43*s,32*s,8*s,'#8a8868'),line([(x-29*s,y+43*s),(x-10*s,y+152*s)],'#7d8e87',2*s)])
  return ''.join(out)
 def seascape(w,h,temple=False):
- out=[rect(0,0,w,h,'#203a50'),rect(0,0,w,135,'#526777'),rect(0,135,w,100,'#868779'),rect(0,235,w,100,'#bd9d75'),rect(0,335,w,h-335,'#365a67')]
+ out=[rect(0,0,w,h,'#29465c'),rect(0,0,w,135,'#53677d'),rect(0,135,w,100,'#888a88'),rect(0,235,w,100,'#c3a07a'),rect(0,335,w,h-335,'#355b6d')]
  out += [poly([(0,245),(150,175),(280,224),(448,158),(560,205),(730,166),(930,236),(1090,180),(1260,215),(1410,171),(w,220),(w,335),(0,335)],'#506b73'),poly([(0,300),(250,238),(393,284),(610,236),(760,299),(985,249),(1200,286),(w,244),(w,352),(0,352)],'#304f60')]
  out.append(capital(w-250,158,.7))
- for y in range(369,h,48):
-  for x in range(20+(y%83),w,183):out.append(poly([(x,y),(x+104,y-4),(x+148,y),(x+42,y+4)],'#507780' if y%3 else '#67898b'))
+ # Sparse unequal reflections, not a repeated water-tile pattern.
+ for i,y in enumerate(range(369,h,83)):
+  for j,x in enumerate(range(17+(i*137)%263,w,287)):
+   length=64+(i*41+j*29)%109
+   out.append(poly([(x,y),(x+length*.65,y-3),(x+length,y),(x+length*.2,y+3)],'#688c96'if i%3==0 else'#527a8b'))
  if temple:
   out += [poly([(0,400),(175,310),(310,357),(397,294),(540,395),(615,512),(498,h),(0,h)],'#344e59'),poly([(0,468),(178,389),(323,423),(450,369),(509,493),(406,728),(303,h),(0,h)],'#4b6263'),poly([(w,347),(1380,306),(1238,382),(1143,555),(1181,h),(w,h)],'#243e50'),poly([(1380,306),(1319,471),(1286,666),(1350,h),(w,h),(w,466)],'#53675f')]
+  for pts,color in [([(0,400),(175,310),(310,357),(220,402),(184,508),(0,564)],'#4d6668'),
+   ([(175,310),(310,357),(397,294),(343,392),(420,475),(290,550),(184,508),(220,402)],'#627873'),
+   ([(0,564),(184,508),(290,550),(244,708),(110,792),(0,753)],'#365560'),
+   ([(290,550),(420,475),(509,493),(406,728),(334,748),(244,708)],'#3d5c62'),
+   ([(0,753),(110,792),(244,708),(303,h),(0,h)],'#4c6968'),
+   ([(1380,306),(1319,471),(1451,515),(w,466),(w,347)],'#70857a'),
+   ([(1319,471),(1286,666),(1374,710),(1451,515)],'#3f5b61'),
+   ([(1451,515),(w,466),(w,842),(1430,786),(1374,710)],'#526e6b')]:out.append(poly(pts,color))
  return out
 
-def floor_shapes(rects,w,h,steel=False):
- # Union the navigation cells before drawing. Internal rectangle seams must not
- # become fake quay edges or cutaways across a walkable bridge.
- import importlib.util
- spec=importlib.util.spec_from_file_location('contours',ROOT/'assets/vector/chapter-one.py')
- compiler=importlib.util.module_from_spec(spec);spec.loader.exec_module(compiler)
- covered={(xx,yy) for x,y,rw,rh in rects for xx in range(x,x+rw) for yy in range(y,y+rh)}
- outlines=compiler.outline(covered)
+def quay_cells(outlines,w,h):
+ # Native polygon edges and Tiled footing share one source. Sample cell centers
+ # so broad crooked quay faces do not conceal square invisible collision walls.
+ def inside(x,y):
+  result=False
+  for loop in outlines:
+   for (ax,ay),(bx,by) in zip(loop,loop[1:]+loop[:1]):
+    if (ay>y)!=(by>y) and x<(bx-ax)*(y-ay)/(by-ay)+ax:result=not result
+  return result
+ return [3 if inside(x*24+12,y*24+12)else 0 for y in range(h)for x in range(w)]
+
+def floor_path(outlines):return ' '.join('M'+' L'.join(f'{x},{y}'for x,y in pts)+' Z'for pts in outlines)
+
+def floor_shapes(outlines,w,h,steel=False,shore=False):
  path=' '.join('M'+' L'.join(f'{x},{y}' for x,y in pts)+' Z' for pts in outlines)
- out=[f'<defs><clipPath id="floor"><path d="{path}" clip-rule="evenodd"/></clipPath></defs>',f'<g clip-path="url(#floor)">',rect(0,0,w,h,'#7b8278' if not steel else '#536d70')]
- out.extend([poly([(0,440),(480,400),(980,610),(w,420),(w,572),(980,754),(480,544),(0,600)],'#899083' if not steel else '#627e7b'),poly([(0,810),(590,675),(1070,830),(w,690),(w,h),(0,h)],'#697a74' if not steel else '#405d65')])
- for yy in range(24,h,72):
-  out.append(line([(0,yy),(w,yy)],'#6b7971' if not steel else '#425e65',2))
-  for xx in range(68+yy%101,w,168):out.append(line([(xx,yy),(xx-5,yy+72)],'#6b7971' if not steel else '#425e65',2))
+ out=[f'<defs><clipPath id="floor"><path d="{path}" clip-rule="evenodd"/></clipPath></defs>',f'<g clip-path="url(#floor)">',*floor_paint(w,h,steel)]
  out.append('</g>')
  for pts in outlines:
   for i,(x,y) in enumerate(pts):
    nx,ny=pts[(i+1)%len(pts)]
-   if y==ny and nx<x:out.extend([poly([(nx,y),(x,y),(x,y+18),(nx,y+27)],'#243f4b'),rect(nx,y-4,x-nx,4,'#b6ab88')])
-   elif y==ny:out.append(line([(x,y+3),(nx,y+3)],'#a6a88c',5))
+   if nx<x:
+    out.extend([poly([(nx,ny),(x,y),(x,y+18),(nx,ny+27)],'#36515d'),poly([(nx,ny-4),(x,y-4),(x,y),(nx,ny)],'#b6ad92')])
+    if shore and x-nx>=96:
+     for ratio,length in [(.18,39),(.61,57),(.86,25)]:
+      length=min(length,(x-nx)*(1-ratio));slope=(y-ny)/(x-nx)
+      xx=nx+(x-nx)*ratio;yy=ny+(y-ny)*ratio+30
+      out.append(poly([(xx,yy),(xx+length*.68,yy+slope*length*.68-3),(xx+length,yy+slope*length),(xx+length*.19,yy+slope*length*.19+2)],'#87a8ac'))
+   elif nx>x:out.append(line([(x,y+3),(nx,ny+3)],'#a6ac99',4))
  return out
 
 def ward():
@@ -85,11 +106,14 @@ def ward():
  for x in (41,214,411,601):out.extend([rect(x,114,8,103,'#263f4a'),rect(x+2,115,3,98,'#789481')])
  # A low wall leaves people on the apron in front of the open ward visible.
  out.extend([poly([(16,216),(620,216),(642,240),(0,240)],'#49615f'),rect(31,218,58,9,'#c9be9a'),rect(512,218,76,9,'#c9be9a')])
+ out.extend([poly([(593,117),(618,116),(618,202),(593,207)],'#536f6b'),poly([(31,202),(594,202),(610,210),(31,210)],'#809886')])
+ for x in (254,376):out.extend(opal(x,162))
  return out
 
 def ferry(opened=False):
  out=[poly([(10,134),(60,112),(298,112),(351,136),(307,181),(67,181)],'#142f40'),poly([(18,139),(343,139),(307,172),(70,172)],'#5d6d6a'),line([(28,141),(333,141)],'#c4b17e',5),poly([(78,96),(278,96),(310,115),(52,115)],'#a79878'),rect(108,54,140,48,'#94a797'),poly([(93,55),(121,39),(241,39),(264,55)],'#304f59')]
- for x in (122,164,206):out.extend([rect(x,63,28,23,'#203c4b'),rect(x+3,65,22,3,'#b8c8b4')])
+ for x in (122,164,206):out.extend([rect(x,63,28,23,'#c5cead'),rect(x+15,64,12,20,'#8fa9a0'),rect(x+3,65,6,17,'#e5ddb3')])
+ out.extend([poly([(278,139),(343,139),(307,172),(278,172)],'#45636a'),poly([(108,54),(121,58),(121,99),(108,102)],'#b4c1aa')])
  out.extend([rect(137,8,16,32,'#253f4d'),rect(135,7,20,5,'#9fa98f'),line([(289,29),(289,124)],'#283f49',4),poly([(289,30),(318,36),(289,43)],'#c69c63')])
  return out
 
@@ -108,6 +132,8 @@ def pump_house():
  out=[rect(20,76,268,120,'#4c6968'),poly([(0,78),(139,8),(309,74),(289,91),(139,41),(20,92)],'#284753'),poly([(0,78),(139,8),(139,23),(20,92)],'#849688'),rect(36,108,74,66,'#244350'),rect(44,116,58,45,'#b9b99a'),rect(149,98,113,98,'#243e49'),rect(160,109,89,87,'#3a5a5e'),rect(27,193,263,8,'#b0aa8b')]
  for x in (23,277):out.extend([rect(x,142,7,111,'#2b424b'),rect(x+2,143,3,108,'#91a18a')])
  out.extend([poly([(11,141),(292,141),(311,166),(0,166)],'#a29a77'),poly([(11,141),(292,141),(266,150),(36,150)],'#c5b48a'),rect(0,165,311,9,'#3c5559'),rect(53,221,102,23,'#4b5653'),poly([(53,221),(70,207),(148,207),(155,221)],'#9a9678')])
+ out.append(poly([(265,96),(288,91),(288,141),(265,141)],'#3f6063'))
+ for x in (40,272):out.extend(opal(x,188))
  return out
 
 def sanctuary():
@@ -133,24 +159,81 @@ def clamp(cut=False):
  out.append(line([(0,40),(52,40),(72,63 if cut else 40),(143,66 if cut else 40)],'#c1b87f',5))
  return out
 
-def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,back=None):
- w,h=64,42;layers=[tile(1,'Sea and cliffs',[5]*(w*h),w,h),tile(2,'Continuous walking surfaces',cells(floors,w,h),w,h),tile(3,'Scenery footprints',cells(blocks,w,h,6),w,h,sort=True)]
+def service_bridge():
+ # A broad gate threshold recedes to a narrow landing on the far headland.
+ # Deck joints, parapets and posts all use the same two converging edges.
+ near=((970,432),(1172,406));far=((1040,174),(1090,174))
+ def edges(t):return [tuple(a+(b-a)*t for a,b in zip(n,f))for n,f in zip(near,far)]
+ out=[poly([(990,186),(1056,143),(1110,168),(1180,280),(1350,295),(1536,300),(1536,380),(1320,350),(1200,320),(1105,286),(1020,232)],'#476466'),
+  poly([(1020,232),(1105,286),(1200,320),(1320,350),(1536,380),(1536,400),(1320,373),(1200,345),(1100,310)],'#304e5b'),
+  poly([near[0],far[0],far[1],near[1]],'#8b9b8a')]
+ for side,color in [(0,'#496769'),(1,'#36565f')]:
+  n,f=near[side],far[side];out.append(poly([n,f,(f[0]+3,f[1]+7),(n[0]+8,n[1]+19)],color))
+ for t in (0,.14,.28,.41,.53,.64,.73,.81,.88,.94):
+  left,right=edges(t);out.append(line([left,right],'#637b75',max(1,4*(1-t))))
+ for side in (0,1):
+  tops=[]
+  for t in (0,.18,.36,.53,.68,.80,.90,1):
+   p=edges(t)[side];height=32*(1-t)+6*t;top=(p[0],p[1]-height);tops.append(top)
+   out.extend([line([p,top],'#4a6465',max(2,7*(1-t))),line([(p[0]-1,p[1]),(top[0]-1,top[1])],'#acaf8d',max(1,2*(1-t)))])
+  out.extend([line(tops,'#3d5b60',6),line([(x,y-3)for x,y in tops],'#b2b694',3)])
+ return out
+
+def sanctuary_launch():
+ # A small sheltered passenger launch; the starboard bow meets the gangplank.
+ out=[poly([(4,94),(28,82),(162,82),(188,98),(163,130),(42,132)],'#35535e'),
+  poly([(12,99),(179,101),(161,125),(43,127)],'#6b7e75'),
+  poly([(28,83),(156,83),(175,99),(38,109)],'#c2ac7e'),
+  line([(17,99),(178,101)],'#d2be8c',3),
+  poly([(57,42),(119,42),(127,84),(52,88)],'#708d7f'),
+  poly([(48,42),(87,27),(131,42),(124,49),(57,48)],'#3d5c63')]
+ for x in (65,96):out.extend([rect(x,54,22,23,'#36555c'),rect(x+3,57,16,16,'#dfd4a4')])
+ out.extend([rect(64,16,10,19,'#49676b'),rect(62,14,14,4,'#a8ae93'),
+  line([(151,19),(153,90)],'#61756b',4),poly([(152,20),(173,24),(152,30)],'#c29e64'),
+  poly([(151,106),(179,101),(161,125),(146,127)],'#4d6c6b')])
+ return out
+
+def world(id,name,subtitle,outlines,blocks,objects,arrivals,casts,people,decor,back=None):
+ w,h=64,42;layers=[tile(1,'Sea and cliffs',[5]*(w*h),w,h),tile(2,'Continuous walking surfaces',quay_cells(outlines,w,h),w,h),tile(3,'Scenery footprints',cells(blocks,w,h,6),w,h,sort=True)]
  entries=[]
  def add(n,parts,ww=1536,hh=1008,x=0,y=0,depth=-1000,layer=1):
   entries.append({'key':f'scene-four-{n}','url':svg(n,ww,hh,parts),'x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':layer})
  add(id+'-coast',back if back is not None else seascape(1536,1008,id=='sanctuary'))
- add(id+'-floor',floor_shapes(floors,1536,1008,id=='breakwater'),depth=-998,layer=2)
+ add(id+'-floor',floor_shapes(outlines,1536,1008,id=='breakwater',id!='refuge'),depth=-998,layer=2)
+ if id=='breakwater':
+  add('harbor-drive',drive_link(),depth=-997,layer=2)
+  add('harbor-service-stair',service_bridge(),depth=-996,layer=2)
+ if id=='sanctuary':
+  path=[poly([(660,840),(912,845),(952,1008),(642,1008)],'#839184')]
+  for y in (862,891,923,959,999):
+   t=(y-840)/168;left=660-18*t;right=912+40*t
+   path.extend([line([(left,y),(right,y+4)],'#5b7470',4),line([(left,y-3),(right,y+1)],'#acb098',2)])
+  path.extend([poly([(184,778),(231,769),(237,791),(182,799)],'#526665'),poly([(184,775),(231,766),(237,786),(182,794)],'#b19b71')])
+  for x in (190,202,214,226):path.append(line([(x,774-(x-184)*.2),(x+2,791-(x-184)*.17)],'#7a765e',2))
+  add('sanctuary-departures',path,depth=-996,layer=2)
+ lamp_positions={'refuge':[(264,576),(600,552),(912,576)],'breakwater':[(432,552),(816,576),(840,312)],'sanctuary':[(360,648),(600,600),(912,624)]}
+ decor=decor+[('coastal-lamp',coastal_lamp(),48,144,x,y,y+139,{})for x,y in lamp_positions[id]]
  # Each prop has explicit unchanging ground sorting, separate from floor decks.
  for n,parts,ww,hh,x,y,depth,extra in decor:
   lid=3
   if extra:
-   lid=len(layers)+1;layers.append(group(lid,n,sort=True,**extra))
+   lid=len(layers)+1
+   # The painted closed-gate layer also blocks its upper service stair. Its
+   # existing visibility flag opens both together, without a side-route bypass.
+   if n=='harbor-gate-closed':layers.append(tile(lid,n,cells([(40,11,9,8)],w,h,6),w,h,sort=True,**extra))
+   else:layers.append(group(lid,n,sort=True,**extra))
   add(n,parts,ww,hh,x,y,depth,lid)
+ # Ground spill inherits the emitter's exact visibility layer, including ferries.
+ for lid in sorted({e['layerId']for e in entries}):
+  emitters=[e for e in entries if e['layerId']==lid];light=floor_spill(emitters)
+  if light:
+   clipped=f'<defs><clipPath id="light-floor"><path d="'+floor_path(outlines)+'" clip-rule="evenodd"/></clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
+   add(f'light-{id}-{lid}',[clipped],depth=-950,layer=lid)
  # The unnatural raised wave disappears in all locations after the local victory.
  lid=len(layers)+1;layers.append(group(lid,'Suspended water',hiddenFlag='sanctuaryWardenWon'))
  wave=[poly([(82,388),(137,340),(156,288),(188,253),(223,264),(201,306),(172,337),(170,385),(208,411)],'#8aaca8'),poly([(156,288),(188,253),(223,264),(204,274),(180,273),(168,294)],'#d1d2b4'),line([(175,290),(173,321),(152,353)],'#bed0ba',4)]
  if id!='sanctuary':
-  wave.extend([poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(168,402),(200,398)],'#9b895d',3)])
+  wave.extend([line([(173,240),(173,412)],'#6d5845',5),line([(172,242),(172,408)],'#c6af7b',2),line([(173,245),(222,405)],'#a9a88a',1.5),poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(173,399),(217,397)],'#9b895d',3)])
   # Keep the stranded skiff in open water, with the quay occluding sea scenery.
   shift,y_shift=(1000,0) if id=='refuge' else (480,-40)
   add(id+'-wave',[f'<g transform="translate({shift} {y_shift})">',*wave,'</g>'],depth=-999,layer=lid)
@@ -170,10 +253,14 @@ def write_map(id,name,subtitle,w,h,layers,safe=None):
  text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('        '+','.join(str(x) for x in json.loads('['+m[1]+']')[i:i+w]) for i in range(0,w*h,w))+'\n      ]',text)
  (MAP/f'{id}.json').write_text(text+'\n')
 
-refuge_f=[(9,20,47,15),(2,25,10,7),(17,18,26,4),(50,23,14,6)]
+refuge_f=[[(48,612),(207,586),(226,484),(399,462),(414,428),(1029,439),(1044,468),(1332,494),(1357,552),(1536,570),(1536,708),(1326,683),(1344,800),(948,806),(676,790),(400,806),(226,792),(203,775),(55,789)]]
 refuge_decor=[('refuge-ward',ward(),652,264,384,240,504,{}),('refuge-ferry',ferry(),360,192,12,408,600,{'requiredFlag':'harborOpened'}),('refuge-supplies',crate(),84,80,1040,652,732,{'requiredFlag':'harborOpened'})]
 # The real coal engine and coach persist on continuous railway tracks.
 back=seascape(1536,1008)
+# Raised harbor paving ends before a lower, continuous railway embankment.
+# Its cutaway stops above the first ballast bed: no paving face covers a rail.
+back.extend([rect(0,811,1536,197,'#586968'),rect(0,833,1536,92,'#637370'),
+ poly([(0,928),(1536,928),(1536,1008),(0,1008)],'#415b60')])
 for yy in (846,888):
  back.extend([rect(0,yy-5,1536,36,'#334952')])
  for x in range(0,1536,17):back.append(poly([(x,yy-3),(x+8,yy-3),(x+5,yy+27),(x-3,yy+27)],'#75654e'))
@@ -190,22 +277,22 @@ for module,x in [('engine',1080),('coach',660)]:
  url=f'art/vector/scenery/{module}.svg';src=(ROOT/'public'/url).read_text();ww,hh=map(int,re.search(r'width="(\d+)" height="(\d+)"',src).groups())
  manifest['refuge'].append({'key':f'scenery-{module}','url':url,'x':x,'y':846-hh+8,'width':ww,'height':hh,'depth':854,'layerId':3})
 
-harbor_f=[(9,25,45,11),(23,21,18,5),(28,17,14,5),(39,18,19,5),(11,22,14,5),(4,29,9,5),(50,23,14,5)]
-decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1038,378,570,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,139,630,822,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
-world('breakwater','Breakwater · the sea gate','The winding wheel is on the middle pier. A service stair climbs east.',harbor_f,[(13,19,12,5),(43,17,5,2)],[
- interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian-dusk',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',54,20,'Service stair · signal sanctuary',sign=True,accessFlag='harborOpened')],
- {'refuge':(25,29),'gate':(34,25),'sanctuary':(50,21)},
+harbor_f=[[(96,704),(210,682),(238,600),(270,572),(284,530),(548,514),(566,492),(660,510),(678,420),(920,414),(970,432),(1040,174),(1090,174),(1172,406),(1390,452),(1406,550),(1536,570),(1536,682),(1312,660),(1280,858),(1024,882),(760,852),(500,876),(222,850),(206,809),(100,830)],[(990,552),(982,600),(1194,612),(1200,568)]]
+decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1170,228,420,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,36,768,960,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
+world('breakwater','Breakwater · the sea gate','The winding wheel operates the gate. Its service stair climbs to the sanctuary.',harbor_f,[(13,19,12,5),(38,17,2,2),(49,17,2,2)],[
+ interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian-dusk',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,accessFlag='worksGateWon',doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',45,13,'Through the gate · sanctuary bridge',sign=True,accessFlag='harborOpened')],
+ {'refuge':(25,29),'gate':(34,25),'sanctuary':(45,20)},
  {'four-harbor':{'nell':(28,27),'orrin':(31,28),'kit':(26,28),'petra':(33,27),'celia':(24,24),'bram':(25,25)},'four-gate':{'nell':(32,25),'orrin':(31,24),'kit':(37,25),'petra':(38,27),'celia':(30,26),'bram':(29,28)}},
  [point('ferry-injury',22,24,sprite='civilian-patient-green',hiddenFlag='harborOpened'),point('deck-worker',30,20,sprite='civilian-dockhand',hiddenFlag='harborOpened'),point('returning-worker',17,32,sprite='civilian-dockhand-rust',requiredFlag='harborOpened')],decor)
 
-sanctuary_f=[(20,18,23,17),(14,27,9,8),(38,24,15,7),(40,20,15,5),(26,14,15,5),(26,34,13,7),(8,30,10,5)]
-decor=[('sanctuary-ring',sanctuary(),648,312,456,132,444,{}),('sanctuary-clamp-live',clamp(),144,96,984,504,600,{'hiddenFlag':'signalCut'}),('sanctuary-clamp-cut',clamp(True),144,96,984,504,600,{'requiredFlag':'signalCut'}),('sanctuary-fieldchest',crate(),84,80,482,616,696,{})]
+sanctuary_f=[[(192,732),(330,712),(350,650),(462,632),(494,450),(616,438),(642,336),(802,320),(986,344),(998,430),(1044,460),(1316,492),(1336,590),(1264,616),(1288,736),(1052,758),(1018,832),(936,856),(958,1008),(640,1008),(608,850),(398,862),(204,826)]]
+decor=[('sanctuary-ring',sanctuary(),648,312,456,132,444,{}),('sanctuary-clamp-live',clamp(),144,96,984,504,600,{'hiddenFlag':'signalCut'}),('sanctuary-clamp-cut',clamp(True),144,96,984,504,600,{'requiredFlag':'signalCut'}),('sanctuary-fieldchest',crate(),84,80,482,616,696,{}),('sanctuary-ferry',sanctuary_launch(),192,144,0,688,832,{})]
 back=seascape(1536,1008,True)
 # Imperial cable rises from the mainland over the eastern bridge.
 back.extend([line([(1536,540),(1250,535),(1080,540),(1050,432),(960,410),(850,377)],'#182f41',13),line([(1536,536),(1250,531),(1080,536),(1050,428),(960,406),(850,373)],'#a08e63',5)])
 world('sanctuary','The signal sanctuary · the hollow sun','The eastern bridge carries the palace line. The bronze ring watches the coast.',sanctuary_f,[(26,14,15,4)], [
- interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian-dusk',hiddenFlag='roadGuardWon'),control('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',(41,21,6,4),sign=True,doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',hiddenFlag='sanctuaryWardenWon'),control('sanctuary-record',32,18,'Bronze ring · the covered chart',(29,15,7,3),sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),control('sanctuary-chest',22,29,'Hospice field chest · silver clasp',(20,26,4,3),sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,38,'Service stair · Breakwater harbor',sign=True),interaction('sanctuary-refuge',11,32,'Coastal path · railway refuge',sign=True)],
- {'harbor':(32,32),'cable':(40,27)},
+ interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian-dusk',hiddenFlag='roadGuardWon'),control('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',(41,21,6,4),sign=True,accessFlag='roadGuardWon',doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',accessFlag='signalCut',hiddenFlag='sanctuaryWardenWon'),control('sanctuary-record',32,18,'Bronze ring · the covered chart',(29,15,7,3),sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),control('sanctuary-chest',22,29,'Hospice field chest · silver clasp',(20,26,4,3),sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,39,'Descending stair · Breakwater harbor',sign=True),control('sanctuary-refuge',11,32,'Ferry landing · railway refuge',(0,29,13,6),sign=True)],
+ {'harbor':(32,38),'cable':(40,27)},
  {'four-terrace':{'nell':(31,30),'orrin':(34,31),'kit':(29,32),'petra':(36,30),'celia':(29,29),'sanctuaryWarden':(32,19)},'four-cable':{'nell':(40,28),'orrin':(42,28),'kit':(39,30),'petra':(43,29),'celia':(38,28),'sanctuaryWarden':(32,19)},'four-chart':{'nell':(31,21),'orrin':(35,21),'kit':(30,23),'petra':(37,23),'celia':(33,19)}},[],decor,back)
 
 # Clear, whole SVG tactical floors at the engine's normal 1008x624 viewport.
@@ -219,10 +306,8 @@ for id in ['works-dry','works-wet','works-survey','sanctuary-road','sanctuary-wa
   bg.extend([ring(785,50,84,77,13,'#b99961'),rect(763,91,45,30,'#4e6967')])
  else:
   for x in range(0,1008,144):bg.extend([rect(x,8,11,77,'#344e57'),line([(x,20),(x+110,82)],'#9c997b',4)])
- floor=[rect(0,113,1008,511,'#647a76' if temple else '#526b70'),poly([(0,113),(1008,113),(1008,253),(760,223),(512,287),(270,205),(0,260)],'#72877d' if temple else '#607b7b'),poly([(0,511),(250,466),(570,550),(1008,481),(1008,624),(0,624)],'#405c62')]
- for yy in range(140,624,76):
-  floor.append(line([(0,yy),(1008,yy)],'#526c69' if temple else '#3e5b63',2))
-  for xx in range(55+yy%77,1008,148):floor.append(line([(xx,yy),(xx-6,yy+76)],'#526c69' if temple else '#3e5b63',2))
+ bg.extend(arena_lights())
+ floor=['<defs><clipPath id="arena-floor"><path d="M0 113H1008V624H0Z"/></clipPath></defs><g clip-path="url(#arena-floor)">',*floor_paint(1008,624,not temple),'</g>']
  if id=='works-wet':
   for x in (388,484):floor.extend([poly([(x,179),(x+100,170),(x+115,440),(x-12,456)],'#547c83'),line([(x+11,251),(x+76,247)],'#9cb4aa',3),line([(x+9,389),(x+86,384)],'#9cb4aa',3)])
  url1=svg(key+'-coast',1008,624,bg);url2=svg(key+'-floor',1008,624,floor)
