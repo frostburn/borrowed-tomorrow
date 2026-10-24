@@ -5,6 +5,7 @@ import json, math, re
 from pathlib import Path
 from map_metadata import retain_interaction_roles
 from anchor_engines import carrier
+from chapter_five_style import OUTLINES,FIXTURES,cells as polygon_cells,floor_shapes,treatment,work_lamp,arena_fixtures,mechanisms,spill_layer
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-five'; MAP=ROOT/'src/content/chapter-five/maps'
@@ -15,7 +16,8 @@ def poly(pts,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}' for x,y in pt
 def line(pts,c,w=3):return '<polyline points="'+' '.join(f'{x:g},{y:g}' for x,y in pts)+f'" fill="none" stroke="{c}" stroke-width="{w}"/>'
 def ellipse(x,y,rx,ry,c):return f'<ellipse cx="{x:g}" cy="{y:g}" rx="{rx:g}" ry="{ry:g}" fill="{c}"/>'
 def svg(path,w,h,body):
- path.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{escape(path.stem.replace("-"," "))}</title>'+''.join(body)+'</svg>\n')
+ source=f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{escape(path.stem.replace("-"," "))}</title>'+''.join(body)+'</svg>\n'
+ path.write_text(treatment(path.stem,source,w,h)if path.parent==ART else source)
 def prop(**kw):return [{'name':k,'type':'bool' if isinstance(v,bool) else 'int' if isinstance(v,int) else 'string','value':v}for k,v in kw.items()]
 def point(name,x,y,**kw):return {'name':name,'point':True,'x':x*24+12,'y':y*24+12,'properties':prop(**kw)}
 def obj(name,x,y,label,**kw):return point(name,x,y,label=label,**kw)
@@ -35,22 +37,6 @@ def sky(w,h):
  return [rect(0,0,w,h,'#384f62'),poly([(0,110),(210,55),(510,114),(760,48),(1000,98),(w,33),(w,260),(1180,193),(890,230),(560,172),(200,224),(0,193)],'#788e96'),poly([(0,260),(260,210),(500,279),(800,234),(1050,288),(w,218),(w,390),(1200,360),(850,395),(500,339),(180,390),(0,360)],'#c5b89a')]
 def ground(w,h):
  return sky(w,h)+[poly([(0,440),(200,357),(430,416),(720,343),(1030,415),(1270,337),(w,400),(w,h),(0,h)],'#344b52'),poly([(0,620),(240,485),(530,572),(830,466),(1180,570),(w,457),(w,h),(0,h)],'#657165'),poly([(0,830),(500,710),(840,810),(w,676),(w,h),(0,h)],'#414f4d')]
-def floors(rectangles,w,h,steel=False,wood=False):
- # Draw one continuous union: edges inside adjoining floor rectangles disappear.
- covered={(xx,yy)for x,y,ww,hh in rectangles for xx in range(x,x+ww)for yy in range(y,y+hh)}
- path=' '.join(f'M{x*24} {y*24}h24v24h-24Z'for x,y in sorted(covered))
- base='#917a55' if wood else '#526d70' if steel else '#878a78'
- out=[f'<defs><clipPath id="floor"><path d="{path}"/></clipPath></defs><g clip-path="url(#floor)">',rect(0,0,w,h,base)]
- out.append(poly([(0,480),(420,430),(900,630),(w,500),(w,650),(950,760),(490,580),(0,610)],'#a48b63' if wood else '#647d7b' if steel else '#9a9b84'))
- for y in range(0,h,24 if wood else 72):out.append(line([(0,y),(w,y)],'#6e5f4b' if wood else '#40595f' if steel else '#737e73',2))
- if not wood:
-  for y in range(0,h,72):
-   for x in range(60+y%120,w,168):out.append(line([(x,y),(x,y+72)],'#40595f' if steel else '#758174',2))
- out.append('</g>')
- for x,y in sorted(covered):
-  if (x,y+1)not in covered:out += [poly([(x*24,(y+1)*24),((x+1)*24,(y+1)*24),((x+1)*24,(y+1)*24+18),(x*24,(y+1)*24+18)],'#243d47'),rect(x*24,(y+1)*24-3,24,3,'#baad83')]
- return out
-
 def ship():
  out=[poly([(0,164),(78,80),(208,30),(370,4),(538,27),(674,86),(738,165),(651,225),(495,256),(270,254),(92,226)],'#233e4b'),poly([(0,164),(78,80),(208,30),(370,4),(538,27),(674,86),(738,165),(568,162),(370,129),(168,158)],'#d2c5a3'),poly([(0,164),(168,158),(370,129),(568,162),(738,165),(651,225),(495,256),(270,254),(92,226)],'#a7a78d'),poly([(78,80),(208,30),(370,4),(538,27),(674,86),(546,100),(370,76),(194,103)],'#ede0b5')]
  for x,y,xx,yy in [(110,112,155,302),(251,63,265,300),(489,65,485,302),(632,119,590,302)]:out.append(line([(x,y),(xx,yy)],'#657c7a',4))
@@ -103,64 +89,86 @@ def write_map(id,name,subtitle,layers,w=64,h=42,safe='start'):
  text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('      '+','.join(str(v)for v in json.loads('['+m[1]+']')[i:i+w])for i in range(0,w*h,w))+'\n    ]',text)
  (MAP/f'{id}.json').write_text(text+'\n')
 
-def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,steel=False,wood=False):
- w,h=64,42;layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),layer(2,'Walking surfaces',floor,w,h),layer(3,'Scenery footprints',blocks,w,h,6)]
+def world(id,name,subtitle,outline,blocks,objects,arrivals,casts,people,decor,back=None):
+ w,h=64,42
+ if id in ('dawnwatch','windmere'):
+  blocks=blocks+[(0,24,14,6),(3,30,9,1)]
+  decor=decor+[(id+'-survey-mooring',docked_ship(),342,208,0,574,-997,{}),
+   (id+'-boarding-plank',[poly([(141,780),(157,791),(242,739),(224,729)],'#ae9870'),line([(149,783),(234,732)],'#d1bc89',3)]+[line([(150+i*10,775-i*6),(160+i*10,784-i*6)],'#766b54',2)for i in range(8)],250,800,0,0,-996,{})]
+  # Board from the gangway, leaving the infirmary's approach outside its hit area.
+  for o in objects:
+   if o['name']in ('dawn-ship','wind-ship'):
+    replacement=control(o['name'],8,31,(2,29,9,5),'Survey mooring · return aboard',sign=True);o.clear();o.update(replacement)
+ layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),{'id':2,'name':'Walking surfaces','type':'tilelayer','visible':True,'width':w,'height':h,'data':polygon_cells(outline,w,h)},layer(3,'Scenery footprints',blocks,w,h,6)]
+ layers[2]['properties']=prop(sort=True)
  entries=[]
  def add(n,body,ww=w*24,hh=h*24,x=0,y=0,depth=-1000,lid=1):
   url=f'art/vector/chapter-five/{n}.svg';svg(ART/f'{n}.svg',ww,hh,body);entries.append({'key':f'scene-five-{n}','url':url,'x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':lid})
- add(id+'-back',back if back is not None else ground(w*24,h*24));add(id+'-floor',floors(floor,w*24,h*24,steel,wood),depth=-999,lid=2)
+ add(id+'-back',back if back is not None else ground(w*24,h*24));add(id+'-floor',floor_shapes(outline,w*24,h*24,id),depth=-999,lid=2)
+ fixtures=[('flagship-worklight'if id=='flagship'else'opal-standard',work_lamp(),32,144,x-16,y-142,y,{})for x,y in FIXTURES[id]]
+ decor=decor+fixtures
+ link=mechanisms(id)
+ if link:add(id+'-drive-link',link,depth=-998,lid=2)
  for n,body,ww,hh,x,y,depth,flags in decor:
-  lid=3
-  if flags:lid=len(layers)+1;layers.append(group(lid,n,**flags))
+  lid=3 if depth>=0 else 2
+  if flags:lid=len(layers)+1;layers.append(group(lid,n,sort=depth>=0,**flags))
   add(n,body,ww,hh,x,y,depth,lid)
  layers += [group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)]
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v,**({'projection':True}if sid=='five-emperor-offer' and k!='nell' else {}))for k,v in cast.items()]))
+ # A takeoff image must remain individually addressable when lit scenery is
+ # cached; the command deck's individual pieces must still fade in the strike.
+ if id=='airfield':
+  lid=len(layers)+1;layers.append(group(lid,'Survey launch motion',live=True))
+  next(e for e in entries if e['key']=='scene-five-survey-ship')['layerId']=lid
+ if id=='flagship':
+  for l in layers:l.setdefault('properties',[]).extend(prop(live=True))
+ for lid in sorted({e['layerId']for e in entries}):
+  field=spill_layer([e for e in entries if e['layerId']==lid],outline)
+  if field:
+   add(f'light-{id}-{lid}',field,depth=-950,lid=lid)
+   if id=='flagship':entries[-1]['key']=f'scene-five-flagship-light-{lid}'
  write_map(id,name,subtitle,layers,safe=next(iter(arrivals)));manifest[id]=entries
 
 air_cast={'nell':(24,29),'orrin':(22,30),'kit':(24,31),'petra':(26,30),'celia':(22,31),'alda':(30,25),'durn':(38,26)}
-world('airfield','Western airfield','The survey crew is loading beside the northern mooring. The supplies are west of the hangar.',[(5,23,54,13),(28,19,9,5)],[(48,28,4,3)], [
- obj('airfield-supply',10,27,'Crew supplies · rest and bandages',sign=True),obj('airfield-seizure',35,26,'The mooring · imperial seizure party',sprite='inspector',spriteHiddenFlag='airfieldGuardWon',doneFlag='airfieldGuardWon'),control('airfield-board',32,23,(25,16,15,8),'Survey ship · boarding gangway',sign=True),obj('airfield-alda',29,26,'Alda · survey captain',sprite='alda')],
+world('airfield','Western airfield','The survey crew is loading beside the northern mooring. The supplies are west of the hangar.',OUTLINES['airfield'],[(48,28,4,3)], [
+ obj('airfield-supply',10,27,'Crew supplies · rest and bandages',sign=True),obj('airfield-seizure',35,26,'The mooring · imperial seizure party',sprite='inspector',spriteHiddenFlag='airfieldGuardWon',doneFlag='airfieldGuardWon'),control('airfield-board',32,23,(25,16,15,8),'Survey ship · boarding gangway',sign=True,markerFlags='airfieldGuardWon'),obj('airfield-alda',29,26,'Alda · survey captain',sprite='alda')],
  {'start':(24,30),'ship':(31,25),'cabin':(32,19)}, {'five-airfield':air_cast,'five-launch':{**air_cast,'alda':(31,22),'durn':(55,29)}},
  [point('rigging-hand',42,25,sprite='civilian-dockhand'),point('loading-hand',16,26,sprite='civilian-dockhand-rust'),point('crew-passenger',19,30,sprite='civilian-traveler-blue')],
  [('airfield-stores',[poly([(0,18),(30,0),(73,0),(96,18),(96,75),(0,75)],'#a78d62'),poly([(0,18),(96,18),(96,75),(0,75)],'#776b53'),rect(9,27,78,6,'#c5ad7a'),rect(9,58,78,6,'#c5ad7a'),rect(44,19,8,56,'#c5ad7a')],100,80,210,590,670,{}),('survey-ship',ship(),744,384,400,126,-997,{}),('hangar',factory(),600,270,56,292,540,{}),('mooring-crane',crane(),312,330,1090,330,660,{}),('airfield-cargo',engine(),200,140,1140,636,776,{})])
 
 shipback=sky(1536,1008)+[poly([(0,630),(450,570),(950,620),(1536,550),(1536,1008),(0,1008)],'#759495'),poly([(0,725),(360,662),(720,730),(1120,655),(1536,700),(1536,795),(1100,752),(690,824),(290,748),(0,809)],'#b6c5b2')]
-shipfloor=[(13,18,38,16),(21,14,22,5)]
-world('airship','Survey ship · the flight deck','The flight chart is on the forward table. Crew supplies are by the aft hatch.',shipfloor,[(45,26,3,4)], [
+world('airship','Survey ship · the flight deck','The flight chart is on the forward table. Crew supplies are by the aft hatch.',OUTLINES['airship'],[(45,26,3,4)], [
  control('ship-chart',32,19,(30,16,5,4),'Flight chart · the three anchors',sign=True),obj('ship-cabin',48,31,'Observation cabin · the inland sky',sign=True),obj('ship-supply',18,28,'Aft stores · rest and bandages',sign=True),obj('ship-orrin',25,24,'Orrin · the engine watch',sprite='orrin'),obj('ship-kit',39,25,'Kit · the courier routes',sprite='kit'),obj('ship-celia',42,30,'Celia · field notes',sprite='celia'),obj('ship-petra',23,30,'Petra · the horizon',sprite='petra'),obj('ship-alda',35,19,'Alda · the survey log',sprite='alda')],
  {'start':(32,26),'airfield':(32,26),'hammerplain':(32,26),'dawnwatch':(32,26),'windmere':(32,26),'cabin':(32,26)},
  {'five-alliance':{'nell':(32,21),'orrin':(29,23),'kit':(36,24),'petra':(38,25),'celia':(29,26),'alda':(34,19)},'five-first-flight':{'nell':(32,21),'orrin':(28,24),'kit':(35,24),'petra':(38,27),'celia':(28,28),'alda':(34,19)},'five-emperor-told':{'nell':(32,21),'orrin':(29,23),'kit':(36,24),'petra':(38,25),'celia':(29,26),'alda':(34,19)},'five-fleet':{'nell':(32,21),'orrin':(29,23),'kit':(36,24),'petra':(38,25),'celia':(29,26),'alda':(34,19)}},
  [point('medical-crew',20,26,sprite='civilian-traveler-blue',requiredFlag='windmereComplete'),point('navigator',40,21,sprite='civilian-traveler'),point('deck-hand',16,24,sprite='civilian-dockhand-rust'),point('foundry-fitter',16,29,sprite='civilian-dockhand',requiredFlag='hammerplainComplete'),point('drive-fitter',42,27,sprite='civilian-dockhand-rust',requiredFlag='hammerplainComplete'),point('watch-pilot',45,23,sprite='dawn-gunner',requiredFlag='dawnwatchComplete')],
- [('deck-rail',[line([(318,442),(318,805),(1218,805),(1218,442)],'#d4bc87',5)]+[line([(x,y),(x,y-34)],'#34515b',5)for x in (318,1218)for y in range(460,806,58)],1536,1008,0,0,-997,{}),('ship-chart-table',[poly([(0,22),(68,0),(122,22),(51,47)],'#c8b185'),poly([(0,22),(51,47),(51,65),(0,40)],'#655d4a'),poly([(51,47),(122,22),(122,40),(51,65)],'#374d51'),poly([(17,23),(68,7),(101,22),(51,39)],'#526f73'),line([(34,24),(65,20),(83,23)],'#d6c385',2),ellipse(34,24,3,3,'#ead49d'),ellipse(65,20,3,3,'#ead49d'),ellipse(83,23,3,3,'#ead49d')],124,68,720,397,465,{}),('ship-fleet',[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51'),poly([(94,40),(119,40),(115,52),(94,52)],'#a47d54')])+'</g>'for x,y,s in [(590,203,.75),(750,165,1.1),(1000,211,.65)]],1536,400,0,0,-998,{'requiredFlag':'fleetSighted','hiddenFlag':'emperorOfferTold'}),('ship-cordon',[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51'),poly([(94,40),(119,40),(115,52),(94,52)],'#a47d54')])+'</g>'for x,y,s in [(450,194,1.05),(713,145,1.45),(1088,195,.9)]],1536,400,0,0,-998,{'requiredFlag':'emperorOfferTold','hiddenFlag':'allAnchorsSeen'}),('ship-blockade',sky(1536,300)+[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51')])+'</g>'for x,y,s in [(250,190,1.25),(645,132,1.9),(1160,185,1.15)]],1536,300,0,0,-998,{'requiredFlag':'allAnchorsSeen'}),('ship-medical-kit',[rect(0,10,78,45,'#64897e'),poly([(0,10),(25,0),(101,0),(78,10)],'#c3c5a2'),rect(29,23,21,7,'#dfd2a8'),rect(36,16,7,21,'#dfd2a8')],104,60,440,572,632,{'requiredFlag':'windmereComplete'}),('ship-bow',[poly([(468,333),(516,282),(996,282),(1032,333)],'#253e49'),line([(480,330),(516,293),(996,293),(1020,330)],'#d1b67b',7)],1060,350,0,0,-997,{}),('ship-store',engine(),200,140,1060,590,720,{}),('observation-hatch',[poly([(0,12),(27,0),(110,0),(84,45),(0,45)],'#c4ad7e'),poly([(10,16),(31,7),(95,7),(77,35),(10,35)],'#233e4c'),line([(22,20),(76,20)],'#8a9a8e',4),line([(18,29),(68,29)],'#8a9a8e',4),rect(4,14,8,24,'#d7bd86')],112,48,1110,727,-997,{})],shipback,wood=True)
+ [('deck-rail',[line([(318,442),(318,805),(1218,805),(1218,442)],'#d4bc87',5)]+[line([(x,y),(x,y-34)],'#34515b',5)for x in (318,1218)for y in range(460,806,58)],1536,1008,0,0,-997,{}),('ship-chart-table',[poly([(0,22),(68,0),(122,22),(51,47)],'#c8b185'),poly([(0,22),(51,47),(51,65),(0,40)],'#655d4a'),poly([(51,47),(122,22),(122,40),(51,65)],'#374d51'),poly([(17,23),(68,7),(101,22),(51,39)],'#526f73'),line([(34,24),(65,20),(83,23)],'#d6c385',2),ellipse(34,24,3,3,'#ead49d'),ellipse(65,20,3,3,'#ead49d'),ellipse(83,23,3,3,'#ead49d')],124,68,720,397,465,{}),('ship-fleet',[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51'),poly([(94,40),(119,40),(115,52),(94,52)],'#a47d54')])+'</g>'for x,y,s in [(590,203,.75),(750,165,1.1),(1000,211,.65)]],1536,400,0,0,-998,{'requiredFlag':'fleetSighted','hiddenFlag':'emperorOfferTold'}),('ship-cordon',[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51'),poly([(94,40),(119,40),(115,52),(94,52)],'#a47d54')])+'</g>'for x,y,s in [(450,194,1.05),(713,145,1.45),(1088,195,.9)]],1536,400,0,0,-998,{'requiredFlag':'emperorOfferTold','hiddenFlag':'allAnchorsSeen'}),('ship-blockade',sky(1536,300)+[f'<g transform="translate({x} {y}) scale({s})">'+''.join([poly([(0,18),(43,0),(147,2),(196,24),(144,39),(43,35)],'#263f51'),poly([(41,38),(149,38),(138,52),(54,52)],'#263f51'),rect(90,38,4,26,'#263f51')])+'</g>'for x,y,s in [(250,190,1.25),(645,132,1.9),(1160,185,1.15)]],1536,300,0,0,-998,{'requiredFlag':'allAnchorsSeen'}),('ship-medical-kit',[rect(0,10,78,45,'#64897e'),poly([(0,10),(25,0),(101,0),(78,10)],'#c3c5a2'),rect(29,23,21,7,'#dfd2a8'),rect(36,16,7,21,'#dfd2a8')],104,60,440,572,632,{'requiredFlag':'windmereComplete'}),('ship-bow',[poly([(468,333),(516,282),(996,282),(1032,333)],'#253e49'),line([(480,330),(516,293),(996,293),(1020,330)],'#d1b67b',7)],1060,350,0,0,-997,{}),('ship-store',engine(),200,140,1060,590,720,{}),('observation-hatch',[poly([(0,12),(27,0),(110,0),(84,45),(0,45)],'#c4ad7e'),poly([(10,16),(31,7),(95,7),(77,35),(10,35)],'#233e4c'),line([(22,20),(76,20)],'#8a9a8e',4),line([(18,29),(68,29)],'#8a9a8e',4),rect(4,14,8,24,'#d7bd86')],112,48,1110,727,-997,{})],shipback)
 
-foundfloor=[(5,24,55,13),(10,19,40,6),(30,17,8,3)]
 forgeback=ground(1536,1008)
 for x in (170,420,1100,1310):forgeback += [rect(x,74,64,312,'#304a51'),poly([(x-9,74),(x+32,55),(x+78,74),(x+67,91),(x-4,91)],'#8f9278'),poly([(x+10,69),(x-5,22),(x+32,0),(x+68,9),(x+58,47)],'#657b80')]
-world('hammerplain','Hammerplain · the casting floor','The cooling works are northeast. The survey landing is west of the foundry.',foundfloor,[(11,20,24,5),(38,23,7,2),(47,25,6,3),(0,24,15,5),(2,29,10,2)], [
+world('hammerplain','Hammerplain · the casting floor','The cooling works are northeast. The survey landing is west of the foundry.',OUTLINES['hammerplain'],[(11,20,24,5),(38,23,7,2),(47,25,6,3),(0,24,15,5),(2,29,10,2)], [
  obj('hammer-hester',25,25,'Hester · casting forewoman',sprite='hester',hiddenFlag='hammerplainComplete'),obj('hammer-hester-after',37,25,'Hester · the running engines',sprite='hester',requiredFlag='hammerplainComplete'),obj('hammer-cooling',45,23,'Cooling works · freight lift or race walk',sign=True),obj('hammer-supply',18,28,'Foundry bench · rest and supplies',sign=True),control('hammer-ship',17,32,(11,29,7,5),'Survey ship · boarding gangway',sign=True),obj('hammer-coat',50,29,'Safety stores · heat-resistant coat',sprite='guardian-forge',doneFlag='forgeStoresWon',spriteHiddenFlag='forgeStoresWon')],
  {'start':(18,32),'cooling':(42,25),'freed':(30,27),'crew':(24,27),'engine':(28,27)},
  {'five-hammer':{'nell':(24,27),'orrin':(23,26),'kit':(21,28),'petra':(25,29),'celia':(22,30),'hester':(26,25),'durn':(30,26)},'five-workers':{'nell':(28,27),'orrin':(29,26),'hester':(32,25),'kit':(25,29),'petra':(27,30),'celia':(24,30)}},
  [point('casting-hand',35,24,sprite='civilian-dockhand-rust'),point('stopped-family',16,25,sprite='civilian-family-blue',hiddenFlag='hammerplainFreed'),point('home-family',20,32,sprite='civilian-family-blue',requiredFlag='hammerplainFreed'),point('shift-hand',37,30,sprite='civilian-dockhand')],
  [('hammer-docked-ship',docked_ship(),342,208,0,574,-997,{}),('hammer-gangway',dock_gangway(),164,110,270,678,-996,{}),('foundry-street',[rect(3,80,111,155,'#929681'),poly([(0,80),(55,32),(120,80)],'#394e56'),poly([(0,80),(55,32),(55,48),(17,91)],'#c3b78d'),rect(126,49,124,186,'#687d75'),poly([(115,49),(184,0),(256,49)],'#344d56'),poly([(115,49),(184,0),(184,17),(132,61)],'#c2b68b'),rect(12,140,26,48,'#304850'),rect(71,140,26,48,'#304850'),rect(142,105,28,50,'#304850'),rect(204,105,28,50,'#304850'),rect(47,186,31,49,'#304850'),rect(181,178,34,57,'#304850'),line([(3,229),(250,229)],'#c4b78b',5)],256,236,0,342,578,{}),('street-lights',[rect(16,482,18,33,'#dec591'),rect(75,482,18,33,'#dec591'),rect(146,447,20,35,'#dec591'),rect(208,447,20,35,'#dec591')],256,578,0,0,579,{'requiredFlag':'hammerplainFreed'}),('casting-hall',factory(),600,270,260,330,600,{}),('freight-crane',crane(),312,330,1080,240,570,{}),('replacement-engine',engine(),200,140,900,460,600,{}),('stores-engine',engine(),200,140,1120,530,670,{})],forgeback)
 
-coolfloor=[(6,26,50,10),(7,19,48,8),(28,14,15,6)]
 coolback=ground(1536,1008)+[poly([(0,705),(480,678),(1000,733),(1536,690),(1536,1008),(0,1008)],'#284e5b'),poly([(0,885),(430,905),(1030,866),(1536,906),(1536,925),(1030,889),(430,928),(0,908)],'#648e8f'),poly([(0,435),(1536,435),(1536,515),(0,515)],'#233e4b'),rect(0,458,1536,21,'#78968c')]
-world('coolingworks','Hammerplain · the cooling race','A freight lift crosses the upper walk. The manual wheel is on the far eastern pier.',coolfloor,[(10,19,10,3),(49,29,4,3)], [
- obj('cooling-route',29,26,'Crossing · choose the freight lift or race walk',sign=True),control('cooling-wheel',46,23,(44,19,4,5),'Manual cooling wheel',sign=True),obj('cooling-forge',42,16,'Northern gantry · the anchor furnace',sign=True,accessFlag='coolingOpened'),obj('cooling-return',8,30,'Return to the casting floor',sign=True)],
+world('coolingworks','Hammerplain · the cooling race','A freight lift crosses the upper walk. The manual wheel is on the far eastern pier.',OUTLINES['coolingworks'],[(10,19,10,3),(49,29,4,3)], [
+ obj('cooling-route',29,26,'Crossing · choose the freight lift or race walk',sign=True),control('cooling-wheel',46,23,(44,19,4,5),'Manual cooling wheel',sign=True,markerFlags='forgeApproachWon'),obj('cooling-forge',42,16,'Northern gantry · the anchor furnace',sign=True,accessFlag='coolingOpened'),obj('cooling-return',8,30,'Return to the casting floor',sign=True)],
  {'start':(10,30),'forge':(39,18),'wheel':(44,24),'junction':(25,27)},
  {'five-cooling':{'nell':(25,27),'orrin':(27,25),'kit':(24,29),'petra':(29,28),'celia':(24,30),'hester':(30,24)},'five-water':{'nell':(44,26),'orrin':(45,23),'hester':(43,24),'kit':(42,28),'petra':(40,26),'celia':(41,29)}},
  [point('race-hand',33,25,sprite='civilian-dockhand'),point('wheel-hand',47,24,sprite='civilian-dockhand-rust',requiredFlag='coolingOpened')],
- [('cooling-wheel',wheel('#c95746')+[ellipse(43,35,7,7,'#783b37'),ellipse(41,33,4,4,'#e3956d')],90,100,1072,460,560,{}),('freight-lift',crane(),312,330,192,226,556,{}),('moving-water',[poly([(0,457),(1536,457),(1536,480),(0,480)],'#9abcb0'),line([(0,465),(1536,465)],'#d0d9b7',3)],1536,490,0,0,-998,{'requiredFlag':'coolingOpened'})],coolback,steel=True)
+ [('cooling-wheel',wheel('#c95746')+[ellipse(43,35,7,7,'#783b37'),ellipse(41,33,4,4,'#e3956d')],90,100,1072,460,560,{}),('freight-lift',crane(),312,330,192,226,556,{}),('moving-water',[poly([(0,457),(1536,457),(1536,480),(0,480)],'#9abcb0'),line([(0,465),(1536,465)],'#d0d9b7',3)],1536,490,0,0,-998,{'requiredFlag':'coolingOpened'})],coolback)
 
-forgefloor=[(5,25,54,12),(10,18,45,8),(27,14,14,5)]
 forgebackground=[rect(0,0,1536,1008,'#253b47'),poly([(0,80),(560,20),(1040,110),(1536,20),(1536,150),(1050,240),(530,126),(0,200)],'#445e61'),rect(0,245,1536,230,'#334d52')]
 for x in range(100,1536,220):forgebackground += [rect(x,220,35,360,'#1c3340'),rect(x+7,227,9,352,'#8b866a'),rect(x+51,282,109,99,'#1b303b'),rect(x+62,292,88,75,'#bb784a')]
-world('anchorforge','Hammerplain · the anchor gantry','The replacement engines stand below the anchor. Keep the carrier off them.',forgefloor,[(26,14,14,3),(47,20,6,3),(20,22,7,3),(43,23,7,2),(14,27,6,3)], [
- obj('forge-carrier',33,23,'Furnace carrier · defend the engines',sprite='furnace-carrier',doneFlag='furnaceWon',spriteHiddenFlag='furnaceWon'),control('forge-anchor',32,18,(26,5,14,14),'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester'),control('forge-supply',16,30,(13,26,8,4),'Crew rest bench · rest and bandages',sign=True)],
+world('anchorforge','Hammerplain · the anchor gantry','The replacement engines stand below the anchor. Keep the carrier off them.',OUTLINES['anchorforge'],[(26,14,14,3),(47,20,6,3),(20,22,7,3),(43,23,7,2),(14,27,6,3)], [
+ control('forge-carrier',33,25,(27,15,14,10),'Furnace carrier · defend the engines',sign=True,doneFlag='furnaceWon'),control('forge-anchor',32,18,(26,5,14,14),'Anchor release · the manual breaker',sign=True,accessFlag='furnaceWon'),obj('forge-cooling',9,30,'Return to the cooling race',sign=True),obj('forge-hester',22,28,'Hester · the changeover',sprite='hester'),control('forge-supply',16,30,(13,26,8,4),'Crew rest bench · rest and bandages',sign=True)],
  {'start':(13,30),'breaker':(32,22),'stand':(27,26)},
- {'five-gantry':{'nell':(27,26),'orrin':(25,25),'kit':(24,28),'petra':(28,28),'celia':(23,29),'hester':(22,26),'durn':(39,23),'furnaceCarrier':(35,22)},'five-release':{'nell':(31,21),'orrin':(30,20),'hester':(34,20),'kit':(28,23),'petra':(35,23),'celia':(27,24),'durn':(53,24)}},
+ {'five-gantry':{'nell':(27,26),'orrin':(25,25),'kit':(24,28),'petra':(28,28),'celia':(23,29),'hester':(22,26),'durn':(39,23)},'five-release':{'nell':(31,21),'orrin':(30,20),'hester':(34,20),'kit':(28,23),'petra':(35,23),'celia':(27,24),'durn':(53,24)}},
  [point('gantry-hand',20,26,sprite='civilian-dockhand'),point('gantry-helper',41,27,sprite='civilian-dockhand-rust')],
- [('gantry-rest-bench',rest_bench(),168,80,324,636,716,{}),('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'})],forgebackground,steel=True)
+ [('gantry-rest-bench',rest_bench(),168,80,324,636,716,{}),('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'}),('gantry-carrier',['<g transform="scale(1.25)">',*carrier(),'</g>'],280,210,664,366,571,{'hiddenFlag':'furnaceWon'})],forgebackground)
 
 # Dawnwatch: warm lived-in terraces below a cold military signal wall.
 def gun():
@@ -178,36 +186,36 @@ def fortress():
  return out
 
 watchback=ground(1536,1008)+[poly([(0,455),(430,330),(1020,375),(1536,300),(1536,610),(0,610)],'#3b545d')]
-world('dawnwatch','Dawnwatch · the lower town','The shelter gate is above the lower street. The barracks stair rises to the east.',[(5,26,55,11),(16,20,40,7),(31,17,12,4)],[(5,24,12,3),(43,21,11,3),(31,18,9,3)], [
+world('dawnwatch','Dawnwatch · the lower town','The shelter gate is above the lower street. The barracks stair rises to the east.',OUTLINES['dawnwatch'],[(5,24,12,3),(43,21,11,3),(31,18,9,3)], [
  obj('dawn-supply',11,31,'Town infirmary · rest and bandages',sign=True),obj('dawn-ship',6,32,'Survey landing · return aboard',sign=True),control('dawn-gate',35,23,(31,17,10,7),'Shelter gate · the locking lever',sign=True),obj('dawn-barracks',51,25,'Barracks stair · the gun positions',sign=True,accessFlag='shelterOpened'),obj('dawn-soldier',29,25,'Enna · the shelter watch',sprite='enna',hiddenFlag='dawnwatchComplete'),obj('dawn-soldier-after',32,25,'Enna · the town watch',sprite='enna',requiredFlag='dawnwatchComplete')],
  {'start':(9,32),'gate':(35,24),'barracks':(49,27),'shelter':(35,25),'queue':(29,29)},
  {'five-dawn-arrival':{'nell':(28,28),'petra':(30,26),'orrin':(26,27),'kit':(25,29),'celia':(27,30),'aurel':(36,22),'enna':(32,25)},'five-shelter':{'nell':(34,26),'petra':(35,23),'orrin':(32,26),'kit':(30,28),'celia':(32,29),'enna':(37,25)},'five-dawn-freed':{'nell':(34,27),'petra':(36,25),'orrin':(31,26),'kit':(32,29),'celia':(30,28),'aurel':(38,25),'enna':(34,24)}},
  [point('lower-family',21,29,sprite='civilian-family-plum',hiddenFlag='shelterOpened'),point('shelter-family',35,21,sprite='civilian-family-plum',requiredFlag='shelterOpened'),point('lower-resident',18,32,sprite='civilian-traveler-blue',hiddenFlag='shelterOpened'),point('shelter-resident',37,22,sprite='civilian-traveler-blue',requiredFlag='shelterOpened'),point('gate-watch',42,25,sprite='dawn-soldier'),point('infirmary-hand',13,30,sprite='civilian-dockhand-rust')],
- [('watch-citadel',fortress(),800,300,450,80,380,{}),('lower-houses',dwellings(),410,260,20,335,595,{}),('watch-barracks-wing',factory(),600,270,1010,265,535,{}),('shelter-front',[rect(0,25,250,165,'#6c7f7a'),poly([(0,25),(125,0),(250,25),(250,43),(0,43)],'#b3ac87'),rect(66,68,117,122,'#203946'),rect(54,60,141,12,'#c0ac79')],252,192,702,311,503,{}),('shelter-bar',[rect(0,0,112,14,'#b49a69'),rect(8,0,7,119,'#374f58'),rect(96,0,7,119,'#374f58')],114,120,772,380,500,{'hiddenFlag':'shelterOpened'}),('shelter-lamps',[rect(713,390,15,37,'#e2c78d'),rect(925,390,15,37,'#e2c78d')],960,450,0,0,504,{'requiredFlag':'shelterOpened'})],watchback)
+ [('watch-citadel',fortress(),800,300,450,80,380,{}),('lower-houses',dwellings(),410,260,20,335,595,{}),('watch-barracks-wing',factory(),600,270,1010,265,535,{}),('shelter-front',[rect(0,25,250,165,'#6c7f7a'),poly([(0,25),(125,0),(250,25),(250,43),(0,43)],'#b3ac87'),rect(66,68,117,122,'#203946'),rect(54,60,141,12,'#c0ac79')],252,192,702,311,503,{}),('shelter-bar',[rect(0,0,112,14,'#b49a69'),rect(8,0,7,119,'#374f58'),rect(96,0,7,119,'#374f58')],114,120,772,380,506,{'hiddenFlag':'shelterOpened'}),('shelter-lamps',[rect(713,390,15,37,'#e2c78d'),rect(925,390,15,37,'#e2c78d')],960,450,0,0,504,{'requiredFlag':'shelterOpened'})],watchback)
 
 barrackback=ground(1536,1008)+[rect(0,270,1536,207,'#3b555f'),rect(0,280,1536,15,'#a49e7e')]
-world('watchbarracks','Dawnwatch · the gun terraces','The mortar is west, the repeater east. Both positions command the signal-wall stair.',[(6,25,52,12),(8,19,17,7),(38,19,17,7),(24,23,15,5),(26,15,13,10)],[(10,19,7,3),(45,19,7,3),(27,15,10,3)], [
- obj('watch-plan',31,28,'Gun terraces · choose the first position',sign=True),control('watch-mortar',19,24,(9,18,11,5),'Western mortar · clear the position',sign=True,doneFlag='mortarWon'),control('watch-repeater',43,24,(43,18,11,5),'Eastern repeater · clear the position',sign=True,doneFlag='repeaterWon'),obj('watch-wall',32,20,'Signal-wall stair · the anchor',sign=True),obj('watch-town',8,31,'Return to the lower town',sign=True),control('watch-coat',50,29,(49,27,4,3),'Field locker · officers’ coat',sign=True)],
+world('watchbarracks','Dawnwatch · the gun terraces','The mortar is west, the repeater east. Both positions command the signal-wall stair.',OUTLINES['watchbarracks'],[(10,19,7,3),(45,19,7,3),(27,15,10,3)], [
+ obj('watch-plan',31,28,'Gun terraces · choose the first position',sign=True),control('watch-mortar',19,24,(9,18,11,5),'Western mortar · clear the position',sign=True,doneFlag='mortarWon'),control('watch-repeater',43,24,(43,18,11,5),'Eastern repeater · clear the position',sign=True,doneFlag='repeaterWon'),obj('watch-wall',32,20,'Signal-wall stair · the anchor',sign=True,markerFlags='mortarWon,repeaterWon'),obj('watch-town',8,31,'Return to the lower town',sign=True),control('watch-coat',50,29,(49,27,4,3),'Field locker · officers’ coat',sign=True,markerFlags='mortarWon,repeaterWon')],
  {'start':(12,31),'mortar':(20,24),'repeater':(42,24),'wall':(32,21),'junction':(31,28)},
  {'five-watch-guns':{'nell':(31,28),'petra':(32,26),'orrin':(28,27),'kit':(30,30),'celia':(27,30)}},
  [point('west-watch',18,23,sprite='dawn-soldier',hiddenFlag='mortarWon'),point('east-watch',44,23,sprite='dawn-gunner',hiddenFlag='repeaterWon'),point('shelter-volunteer',23,31,sprite='civilian-dockhand-rust',requiredFlag='dawnwatchComplete')],
- [('west-gun',gun(),204,140,225,397,537,{'hiddenFlag':'mortarWon'}),('east-gun',gun(),204,140,1060,397,537,{'hiddenFlag':'repeaterWon'}),('west-silent-gun',[rect(0,0,140,11,'#536968'),poly([(25,-35),(98,-47),(149,-22),(124,-1),(39,0)],'#334c57')],180,60,246,518,542,{'requiredFlag':'mortarWon'}),('east-silent-gun',[rect(0,0,140,11,'#536968'),poly([(25,-35),(98,-47),(149,-22),(124,-1),(39,0)],'#334c57')],180,60,1081,518,542,{'requiredFlag':'repeaterWon'}),('signal-stair',[poly([(0,0),(230,0),(230,99),(0,99)],'#2f4955')]+[rect(0,y,230,5,'#b0aa89')for y in range(0,100,16)],240,104,647,340,444,{}),('field-locker',[rect(4,4,116,50,'#61736e'),poly([(4,4),(27,0),(125,0),(116,12),(4,12)],'#b5a77d'),rect(53,20,15,10,'#d4ba7c')],128,58,1169,643,701,{})],barrackback,steel=True)
+ [('west-gun',gun(),204,140,225,397,537,{'hiddenFlag':'mortarWon'}),('east-gun',gun(),204,140,1060,397,537,{'hiddenFlag':'repeaterWon'}),('west-silent-gun',[rect(0,0,140,11,'#536968'),poly([(25,-35),(98,-47),(149,-22),(124,-1),(39,0)],'#334c57')],180,60,246,518,542,{'requiredFlag':'mortarWon'}),('east-silent-gun',[rect(0,0,140,11,'#536968'),poly([(25,-35),(98,-47),(149,-22),(124,-1),(39,0)],'#334c57')],180,60,1081,518,542,{'requiredFlag':'repeaterWon'}),('signal-stair',[poly([(0,0),(230,0),(230,99),(0,99)],'#2f4955')]+[rect(0,y,230,5,'#b0aa89')for y in range(0,100,16)],240,104,647,340,444,{}),('field-locker',[rect(4,4,116,50,'#61736e'),poly([(4,4),(27,0),(125,0),(116,12),(4,12)],'#b5a77d'),rect(53,20,15,10,'#d4ba7c')],128,58,1169,643,701,{})],barrackback)
 
 wallback=sky(1536,1008)+[poly([(0,500),(300,430),(530,490),(800,420),(1100,493),(1536,410),(1536,1008),(0,1008)],'#71817d')]
-world('signalwall','Dawnwatch · the signal wall','The command platform stands below the anchor. Its release wheel faces the town.',[(7,25,50,12),(14,20,36,6),(26,16,13,5)],[(27,16,10,3),(9,27,4,3),(49,27,4,3)], [
+world('signalwall','Dawnwatch · the signal wall','The command platform stands below the anchor. Its release wheel faces the town.',OUTLINES['signalwall'],[(27,16,10,3),(9,27,4,3),(49,27,4,3)], [
  obj('wall-commander',33,24,'Commander Aurel · the command platform',sprite='aurel',doneFlag='aurelWon',spriteHiddenFlag='aurelWon'),control('wall-anchor',32,20,(26,6,14,14),'Dawnwatch anchor · town release wheel',sign=True,accessFlag='aurelWon'),obj('wall-barracks',10,32,'Return down the gun terraces',sign=True),obj('wall-sentry',39,27,'Enna · the signal watch',sprite='enna')],
  {'start':(14,32),'stand':(29,27),'release':(32,22)},
  {'five-aurel':{'nell':(29,27),'petra':(31,26),'orrin':(26,27),'kit':(28,29),'celia':(25,30),'aurel':(35,24),'enna':(37,26)},'five-watch-release':{'nell':(30,24),'petra':(33,22),'orrin':(28,23),'kit':(27,26),'celia':(28,28),'aurel':(37,25),'enna':(34,21)}},
  [point('wall-west-guard',23,25,sprite='dawn-soldier',hiddenFlag='aurelWon'),point('wall-east-guard',41,25,sprite='dawn-soldier',hiddenFlag='aurelWon'),point('watch-chart-runner',43,28,sprite='dawn-gunner',requiredFlag='dawnwatchFreed')],
- [('watch-anchor',conduit(),320,286,620,135,421,{}),('wall-parapet',[rect(0,0,1536,45,'#3b5661'),rect(0,0,1536,7,'#c4b48a')]+[rect(x,-27,51,36,'#82908a')for x in range(0,1536,90)],1536,90,0,500,-997,{}),('watch-return-line',[line([(783,358),(783,510)],'#afcfc0',6)],1000,540,0,0,-996,{'hiddenFlag':'dawnwatchFreed'}),('signal-desk',[poly([(0,16),(65,0),(126,21),(54,42)],'#ccb58c'),poly([(0,16),(54,42),(54,67),(0,39)],'#465e63'),poly([(54,42),(126,21),(126,49),(54,67)],'#243e4c'),rect(45,15,39,13,'#e0c99c')],130,70,1094,579,649,{})],wallback,steel=True)
+ [('watch-anchor',conduit(),320,286,620,135,421,{}),('wall-parapet',[rect(0,0,1536,45,'#3b5661'),rect(0,0,1536,7,'#c4b48a')]+[rect(x,-27,51,36,'#82908a')for x in range(0,1536,90)],1536,90,0,500,-997,{}),('watch-return-line',[line([(783,358),(783,510)],'#afcfc0',6)],1000,540,0,0,-996,{'hiddenFlag':'dawnwatchFreed'}),('signal-desk',[poly([(0,16),(65,0),(126,21),(54,42)],'#ccb58c'),poly([(0,16),(54,42),(54,67),(0,39)],'#465e63'),poly([(54,42),(126,21),(126,49),(54,67)],'#243e4c'),rect(45,15,39,13,'#e0c99c')],130,70,1094,579,649,{})],wallback)
 
 # An empty chart cabin, with an imperial projection in its glazed observation bay.
 # The memory is scenery, never a restored station or a living campaign NPC.
 cabinback=[rect(0,0,1536,1008,'#1d3443'),rect(220,255,1100,500,'#3c545b'),poly([(220,255),(420,146),(1110,146),(1320,255)],'#728581'),rect(420,170,690,274,'#1d3544'),rect(433,183,664,244,'#6d8c96'),poly([(433,322),(720,280),(1097,323),(1097,427),(433,427)],'#b4c2b2'),rect(220,478,1100,16,'#b49e71')]
-world('observation','Survey ship · observation cabin','The observation glass faces the inland sky. The deck hatch is below.',[(10,20,44,15),(18,16,28,5)],[(11,21,7,3),(46,21,6,3)], [obj('cabin-deck',32,32,'Deck hatch · return to the others',sign=True)],
+world('observation','Survey ship · observation cabin','The observation glass faces the inland sky. The deck hatch is below.',OUTLINES['observation'],[(11,21,7,3),(46,21,6,3)], [obj('cabin-deck',32,32,'Deck hatch · return to the others',sign=True)],
  {'start':(32,29),'glass':(32,25)},
  {'five-emperor-offer':{'nell':(32,22),'emperor':(40,18),'ansel':(28,17),'tomas':(34,17)}}, [],
- [('cabin-window-memory',[rect(0,0,664,244,'#d1b98d'),poly([(0,163),(264,135),(664,174),(664,244),(0,244)],'#8b8b78'),rect(28,60,192,120,'#74837b'),poly([(5,60),(127,8),(239,60)],'#35505a'),rect(52,91,35,50,'#d8bf88'),rect(149,91,37,50,'#d8bf88'),rect(280,93,264,15,'#3d5459'),rect(300,108,15,97,'#3d5459'),rect(516,108,15,97,'#3d5459'),line([(0,209),(664,209)],'#d9c493',4),line([(249,84),(575,114)],'#8a6759',3)]+[poly([(x,95),(x+22,98),(x+10,124)],'#b26755')for x in (280,324,368,412,456)],664,244,433,183,-998,{'hiddenFlag':'emperorOfferSeen'}),('cabin-glazing',[rect(0,0,690,11,'#c3b18a'),rect(0,0,11,274,'#c3b18a'),rect(679,0,11,274,'#c3b18a'),rect(0,263,690,11,'#c3b18a'),rect(211,0,8,274,'#667a7a'),rect(469,0,8,274,'#667a7a'),poly([(24,18),(195,18),(24,178)],'#b0c8bd')],690,274,420,170,-997,{}),('cabin-benches',[rect(0,0,165,41,'#8d7c59'),rect(0,39,165,15,'#334d56')],180,70,260,498,568,{}),('cabin-chart-case',[rect(0,0,132,47,'#8f815e'),rect(7,5,118,14,'#d1bd92')],140,60,1100,503,563,{})],cabinback,wood=True)
+ [('cabin-window-memory',[rect(0,0,664,244,'#d1b98d'),poly([(0,163),(264,135),(664,174),(664,244),(0,244)],'#8b8b78'),rect(28,60,192,120,'#74837b'),poly([(5,60),(127,8),(239,60)],'#35505a'),rect(52,91,35,50,'#d8bf88'),rect(149,91,37,50,'#d8bf88'),rect(280,93,264,15,'#3d5459'),rect(300,108,15,97,'#3d5459'),rect(516,108,15,97,'#3d5459'),line([(0,209),(664,209)],'#d9c493',4),line([(249,84),(575,114)],'#8a6759',3)]+[poly([(x,95),(x+22,98),(x+10,124)],'#b26755')for x in (280,324,368,412,456)],664,244,433,183,-998,{'hiddenFlag':'emperorOfferSeen'}),('cabin-glazing',[rect(0,0,690,11,'#c3b18a'),rect(0,0,11,274,'#c3b18a'),rect(679,0,11,274,'#c3b18a'),rect(0,263,690,11,'#c3b18a'),rect(211,0,8,274,'#667a7a'),rect(469,0,8,274,'#667a7a'),poly([(24,18),(195,18),(24,178)],'#b0c8bd')],690,274,420,170,-997,{}),('cabin-benches',[rect(0,0,165,41,'#8d7c59'),rect(0,39,165,15,'#334d56')],180,70,260,498,568,{}),('cabin-chart-case',[rect(0,0,132,47,'#8f815e'),rect(7,5,118,14,'#d1bd92')],140,60,1100,503,563,{})],cabinback)
 
 from windmere import export as export_windmere
 export_windmere(globals())
@@ -223,7 +231,8 @@ for id,mapid in [('benefactor-retaliation','airship'),('wind-lift','dispensary')
  if id=='hammer-race':back += [rect(0,0,1008,63,'#2e515b'),line([(0,36),(1008,36)],'#b5c3a5',5)]
  if id=='hammer-carrier':
   for y in (195,248):back += [rect(0,y,1008,7,'#1b3440'),rect(0,y,1008,2,'#b8a67c')]
- floorart=floors(f,1008,624,mapid not in ('airfield','airship'),wood=mapid=='airship')
+ back.extend(arena_fixtures())
+ floorart=floor_shapes([(24,72),(984,72),(984,552),(24,552)],1008,624,mapid,arena=True)
  if id=='hammer-carrier':
   for y in (195,248):floorart += [rect(24,y,960,7,'#1b3440'),rect(24,y,960,2,'#b8a67c')]
  svg(ART/f'{key}-back.svg',1008,624,back);svg(ART/f'{key}-floor.svg',1008,624,floorart)

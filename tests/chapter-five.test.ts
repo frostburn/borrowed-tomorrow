@@ -72,12 +72,14 @@ it('offers a reachable gantry rest that saves all five companions without spendi
  expect({...s,party:before.party}).toEqual(before);
  expect(decodeSave(saved)).toEqual(s);
 });
-it('keeps the boarding gangway reachable when the docked hull covers an older Hammerplain save',()=>{
- const s=anchorCheckpoint('hammerplainSeen'),map=MAPS.hammerplain,old={x:8,y:30};
+it('keeps the boarding gangways reachable when docked hulls cover older regional saves',()=>{
+ for(const [id,exit]of [['hammerplain','hammer-ship'],['dawnwatch','dawn-ship'],['windmere','wind-ship']]as const){
+ const s=anchorCheckpoint('hammerplainSeen'),map=MAPS[id],old={x:8,y:30};
  expect(walkable(map,old.x,old.y,s)).toBe(false);
  const safe=restorePoint(map,old,s)!;
  expect(walkable(map,safe.x,safe.y,s)).toBe(true);
- const gangway=map.objects.find(o=>o.id==='hammer-ship')!;
- expect(worldPath(map,safe,gangway,s).length).toBeGreaterThan(0);
- expect(worldPath(map,arrival('hammerplain','start'),gangway,s).length).toBeGreaterThan(0);
+ const gangway=map.objects.find(o=>o.id===exit)!;
+ expect(safe.x===gangway.x&&safe.y===gangway.y||worldPath(map,safe,gangway,s).length>0,id).toBe(true);
+ expect(worldPath(map,arrival(id,'start'),gangway,s).length).toBeGreaterThan(0);
+ }
 });

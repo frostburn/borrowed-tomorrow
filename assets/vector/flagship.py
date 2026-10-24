@@ -2,6 +2,7 @@
 def export(e):
  rect,poly,line,ellipse,sky,world,obj,point,control,ship,svg=(e[n] for n in ('rect','poly','line','ellipse','sky','world','obj','point','control','ship','svg'))
  ART=e['ART']
+ OUTLINES=e['OUTLINES']
  # A real view through the breach: the suspended capital is beyond the cordon.
  capital=[poly([(535,215),(680,156),(858,165),(1015,221),(956,276),(772,309),(600,271)],'#334b55'),poly([(535,215),(680,156),(858,165),(1015,221),(823,254),(650,243)],'#8f9f94')]
  for x,y,w,h in [(620,110,61,111),(696,72,56,148),(765,119,68,112),(848,94,66,136)]:
@@ -28,7 +29,7 @@ def export(e):
  inter=next(l for l in m['layers'] if l['name']=='Interactions')['objects']
  inter.append(obj('ship-nell',30,27,'Nell · the medical berth',kind='talk',sprite='nell-ill',requiredFlag='nellIll',hiddenFlag='nellRecovered'))
  inter.append(obj('ship-herald',35,23,'Forward rail · drive off the hunters',kind='story',sprite='herald',requiredFlag='retaliationSeen',doneFlag='retaliationWon',hiddenFlag='retaliationWon'))
- lid+=1;m['layers'].append(e['group'](lid,'Nell’s berth',requiredFlag='nellIll',hiddenFlag='nellRecovered'))
+ lid+=1;m['layers'].append(e['group'](lid,'Nell’s berth',sort=True,requiredFlag='nellIll',hiddenFlag='nellRecovered'))
  svg(ART/'ship-berth.svg',108,52,[rect(0,8,108,34,'#233c47'),rect(4,4,100,26,'#d2c8a4'),rect(19,29,6,20,'#486665'),rect(88,29,6,20,'#486665')])
  e['manifest']['airship'].append({'key':'scene-five-ship-berth','url':'art/vector/chapter-five/ship-berth.svg','x':680,'y':628,'width':108,'height':52,'depth':650,'layerId':lid})
  arrivals=next(l for l in m['layers'] if l['name']=='Arrivals')['objects']
@@ -40,9 +41,8 @@ def export(e):
  back=sky(1536,1008)+capital+[poly([(145,435),(276,252),(1210,252),(1387,435),(1387,655),(145,655)],'#1b3340'),poly([(276,252),(400,166),(1090,166),(1210,252)],'#506b6c'),poly([(321,292),(432,207),(1059,207),(1177,292),(1177,451),(321,451)],'#9cb2a6'),poly([(347,386),(533,306),(764,330),(1035,291),(1152,355),(1152,438),(347,438)],'#647e83')]
  for x in (303,545,786,1027,1193):back += [poly([(x,254),(x+17,250),(x+30,454),(x+10,454)],'#263f4a'),line([(x+5,264),(x+17,440)],'#b3a777',3)]
  back += [poly([(890,280),(1165,275),(1115,360),(936,329)],'#334c56'),poly([(930,283),(1098,283),(1025,301),(942,297)],'#c7b98c'),poly([(94,470),(1442,470),(1498,1010),(38,1010)],'#203d49')]
- floor=[(5,25,54,12),(13,20,39,6),(24,17,17,4)]
  claimcast={'nell':(28,26),'petra':(30,24),'orrin':(26,27),'kit':(25,29),'celia':(27,30),'alban':(34,22)}
- world('flagship','Flagship · the command deck','The command deck lies below the bridge. The survey ship is at the western rail.',floor,[(25,17,14,3),(46,23,4,3)],
+ world('flagship','Flagship · the command deck','The command deck lies below the bridge. The survey ship is at the western rail.',OUTLINES['flagship'],[(25,17,14,3),(46,23,4,3)],
   [control('flagship-evacuate',12,30,(5,28,8,6),'Emergency gangway · survey ship',kind='exit',sign=True),],
   {'start':(28,28),'escape':(12,30)},{'five-benefactor-claim':claimcast},
   [point('imperial-marine-west',38,26,sprite='flagship-crew'),point('imperial-marine-east',40,25,sprite='flagship-crew'),point('imperial-engineer',44,28,sprite='civilian-dockhand-rust')],
@@ -50,4 +50,4 @@ def export(e):
    ('flagship-rail',[line([(122,610),(122,885),(1412,885),(1412,610)],'#bda772',5)],1536,1008,0,0,-997,{}),
    ('flagship-launch',['<g transform="translate(-42 579) scale(.4)">',*ship(),'</g>'],400,800,0,0,-997,{}),
    ('flagship-gangway',[poly([(0,0),(26,-13),(222,41),(195,58)],'#b6a078'),poly([(0,0),(195,58),(195,68),(0,10)],'#415b60'),line([(0,-22),(195,36)],'#c9b88b',4)],232,90,123,737,-996,{}),
-   ('flagship-sparks',[poly([(0,12),(35,0),(50,13),(37,20),(59,30),(23,38)],'#5e6b68'),poly([(40,42),(63,31),(77,50),(53,65)],'#7d8780')],90,90,1120,360,-996,{})],back,steel=True)
+   ('flagship-sparks',[poly([(0,12),(35,0),(50,13),(37,20),(59,30),(23,38)],'#5e6b68'),poly([(40,42),(63,31),(77,50),(53,65)],'#7d8780')],90,90,1120,360,-996,{})],back)

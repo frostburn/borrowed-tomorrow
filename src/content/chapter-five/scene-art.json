@@ -38,7 +38,7 @@
       "width": 744,
       "height": 384,
       "depth": -997,
-      "layerId": 3
+      "layerId": 9
     },
     {
       "key": "scene-five-hangar",
@@ -68,6 +68,36 @@
       "width": 200,
       "height": 140,
       "depth": 776,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 416,
+      "y": 548,
+      "width": 32,
+      "height": 144,
+      "depth": 690,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1084,
+      "y": 632,
+      "width": 32,
+      "height": 144,
+      "depth": 774,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-airfield-3",
+      "url": "art/vector/chapter-five/light-airfield-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 3
     }
   ],
@@ -100,7 +130,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-ship-chart-table",
@@ -160,7 +190,7 @@
       "width": 1060,
       "height": 350,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-ship-store",
@@ -180,6 +210,36 @@
       "width": 112,
       "height": 48,
       "depth": -997,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 368,
+      "y": 616,
+      "width": 32,
+      "height": 144,
+      "depth": 758,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 984,
+      "y": 648,
+      "width": 32,
+      "height": 144,
+      "depth": 790,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-airship-3",
+      "url": "art/vector/chapter-five/light-airship-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 3
     },
     {
@@ -232,7 +292,7 @@
       "width": 342,
       "height": 208,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-hammer-gangway",
@@ -242,7 +302,7 @@
       "width": 164,
       "height": 110,
       "depth": -996,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-foundry-street",
@@ -303,6 +363,46 @@
       "height": 140,
       "depth": 670,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 536,
+      "y": 662,
+      "width": 32,
+      "height": 144,
+      "depth": 804,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1264,
+      "y": 656,
+      "width": 32,
+      "height": 144,
+      "depth": 798,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-hammerplain-3",
+      "url": "art/vector/chapter-five/light-hammerplain-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-hammerplain-4",
+      "url": "art/vector/chapter-five/light-hammerplain-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "coolingworks": [
@@ -324,6 +424,16 @@
       "width": 1536,
       "height": 1008,
       "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-coolingworks-drive-link",
+      "url": "art/vector/chapter-five/coolingworks-drive-link.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998,
       "layerId": 2
     },
     {
@@ -355,6 +465,36 @@
       "height": 490,
       "depth": -998,
       "layerId": 4
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 392,
+      "y": 650,
+      "width": 32,
+      "height": 144,
+      "depth": 792,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1200,
+      "y": 680,
+      "width": 32,
+      "height": 144,
+      "depth": 822,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-coolingworks-3",
+      "url": "art/vector/chapter-five/light-coolingworks-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
     }
   ],
   "anchorforge": [
@@ -437,6 +577,66 @@
       "height": 600,
       "depth": -997,
       "layerId": 4
+    },
+    {
+      "key": "scene-five-gantry-carrier",
+      "url": "art/vector/chapter-five/gantry-carrier.svg",
+      "x": 664,
+      "y": 366,
+      "width": 280,
+      "height": 210,
+      "depth": 571,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 392,
+      "y": 526,
+      "width": 32,
+      "height": 144,
+      "depth": 668,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1214,
+      "y": 570,
+      "width": 32,
+      "height": 144,
+      "depth": 712,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-anchorforge-1",
+      "url": "art/vector/chapter-five/light-anchorforge-1.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-light-anchorforge-3",
+      "url": "art/vector/chapter-five/light-anchorforge-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-anchorforge-4",
+      "url": "art/vector/chapter-five/light-anchorforge-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "dawnwatch": [
@@ -507,7 +707,7 @@
       "y": 380,
       "width": 114,
       "height": 120,
-      "depth": 500,
+      "depth": 506,
       "layerId": 4
     },
     {
@@ -518,6 +718,66 @@
       "width": 960,
       "height": 450,
       "depth": 504,
+      "layerId": 5
+    },
+    {
+      "key": "scene-five-dawnwatch-survey-mooring",
+      "url": "art/vector/chapter-five/dawnwatch-survey-mooring.svg",
+      "x": 0,
+      "y": 574,
+      "width": 342,
+      "height": 208,
+      "depth": -997,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-dawnwatch-boarding-plank",
+      "url": "art/vector/chapter-five/dawnwatch-boarding-plank.svg",
+      "x": 0,
+      "y": 0,
+      "width": 250,
+      "height": 800,
+      "depth": -996,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 494,
+      "y": 666,
+      "width": 32,
+      "height": 144,
+      "depth": 808,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1280,
+      "y": 656,
+      "width": 32,
+      "height": 144,
+      "depth": 798,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-dawnwatch-3",
+      "url": "art/vector/chapter-five/light-dawnwatch-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-dawnwatch-5",
+      "url": "art/vector/chapter-five/light-dawnwatch-5.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 5
     }
   ],
@@ -601,6 +861,36 @@
       "height": 58,
       "depth": 701,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 464,
+      "y": 646,
+      "width": 32,
+      "height": 144,
+      "depth": 788,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1144,
+      "y": 662,
+      "width": 32,
+      "height": 144,
+      "depth": 804,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-watchbarracks-3",
+      "url": "art/vector/chapter-five/light-watchbarracks-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
     }
   ],
   "signalwall": [
@@ -642,7 +932,7 @@
       "width": 1536,
       "height": 90,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-watch-return-line",
@@ -663,6 +953,46 @@
       "height": 70,
       "depth": 649,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 428,
+      "y": 668,
+      "width": 32,
+      "height": 144,
+      "depth": 810,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1160,
+      "y": 668,
+      "width": 32,
+      "height": 144,
+      "depth": 810,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-signalwall-3",
+      "url": "art/vector/chapter-five/light-signalwall-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-signalwall-4",
+      "url": "art/vector/chapter-five/light-signalwall-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "observation": [
@@ -704,7 +1034,7 @@
       "width": 690,
       "height": 274,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-cabin-benches",
@@ -725,6 +1055,56 @@
       "height": 60,
       "depth": 563,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 424,
+      "y": 498,
+      "width": 32,
+      "height": 144,
+      "depth": 640,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1096,
+      "y": 510,
+      "width": 32,
+      "height": 144,
+      "depth": 652,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-observation-2",
+      "url": "art/vector/chapter-five/light-observation-2.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-light-observation-3",
+      "url": "art/vector/chapter-five/light-observation-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-observation-4",
+      "url": "art/vector/chapter-five/light-observation-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "windmere": [
@@ -797,6 +1177,46 @@
       "height": 550,
       "depth": 551,
       "layerId": 4
+    },
+    {
+      "key": "scene-five-windmere-survey-mooring",
+      "url": "art/vector/chapter-five/windmere-survey-mooring.svg",
+      "x": 0,
+      "y": 574,
+      "width": 342,
+      "height": 208,
+      "depth": -997,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-windmere-boarding-plank",
+      "url": "art/vector/chapter-five/windmere-boarding-plank.svg",
+      "x": 0,
+      "y": 0,
+      "width": 250,
+      "height": 800,
+      "depth": -996,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-light-windmere-3",
+      "url": "art/vector/chapter-five/light-windmere-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-windmere-4",
+      "url": "art/vector/chapter-five/light-windmere-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "dispensary": [
@@ -818,6 +1238,16 @@
       "width": 1536,
       "height": 1008,
       "depth": -999,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-dispensary-drive-link",
+      "url": "art/vector/chapter-five/dispensary-drive-link.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998,
       "layerId": 2
     },
     {
@@ -878,6 +1308,46 @@
       "width": 122,
       "height": 75,
       "depth": 655,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 536,
+      "y": 564,
+      "width": 32,
+      "height": 144,
+      "depth": 706,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1244,
+      "y": 626,
+      "width": 32,
+      "height": 144,
+      "depth": 768,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-dispensary-1",
+      "url": "art/vector/chapter-five/light-dispensary-1.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-light-dispensary-3",
+      "url": "art/vector/chapter-five/light-dispensary-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 3
     }
   ],
@@ -951,6 +1421,56 @@
       "height": 64,
       "depth": 606,
       "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 488,
+      "y": 586,
+      "width": 32,
+      "height": 144,
+      "depth": 728,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-opal-standard",
+      "url": "art/vector/chapter-five/opal-standard.svg",
+      "x": 1184,
+      "y": 602,
+      "width": 32,
+      "height": 144,
+      "depth": 744,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-mirrorward-1",
+      "url": "art/vector/chapter-five/light-mirrorward-1.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 1
+    },
+    {
+      "key": "scene-five-light-mirrorward-3",
+      "url": "art/vector/chapter-five/light-mirrorward-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-light-mirrorward-4",
+      "url": "art/vector/chapter-five/light-mirrorward-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
     }
   ],
   "flagship": [
@@ -992,7 +1512,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-flagship-launch",
@@ -1002,7 +1522,7 @@
       "width": 400,
       "height": 800,
       "depth": -997,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-flagship-gangway",
@@ -1012,7 +1532,7 @@
       "width": 232,
       "height": 90,
       "depth": -996,
-      "layerId": 3
+      "layerId": 2
     },
     {
       "key": "scene-five-flagship-sparks",
@@ -1022,6 +1542,36 @@
       "width": 90,
       "height": 90,
       "depth": -996,
+      "layerId": 2
+    },
+    {
+      "key": "scene-five-flagship-worklight",
+      "url": "art/vector/chapter-five/flagship-worklight.svg",
+      "x": 416,
+      "y": 620,
+      "width": 32,
+      "height": 144,
+      "depth": 762,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-worklight",
+      "url": "art/vector/chapter-five/flagship-worklight.svg",
+      "x": 1254,
+      "y": 612,
+      "width": 32,
+      "height": 144,
+      "depth": 754,
+      "layerId": 3
+    },
+    {
+      "key": "scene-five-flagship-light-3",
+      "url": "art/vector/chapter-five/light-flagship-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 3
     }
   ],

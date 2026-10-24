@@ -4,6 +4,7 @@ import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-on
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { CHAPTER_FOUR_MAPS,CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
+import { CHAPTER_FIVE_MAPS,CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
 import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
 import { sceneAssets } from '../src/content/scene-art';
 import { CIVILIAN_SPRITES } from '../src/content/civilians';
@@ -13,7 +14,7 @@ import { newGame } from '../src/rules/state';
 import { decodeSave } from '../src/rules/save';
 import { coastCheckpoint, palaceCheckpoint, checkpoint } from './support/progress';
 
-const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS,...CHAPTER_THREE_MAPS,...CHAPTER_FOUR_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES,...CHAPTER_THREE_BATTLES,...CHAPTER_FOUR_BATTLES};
+const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS,...CHAPTER_THREE_MAPS,...CHAPTER_FOUR_MAPS,...CHAPTER_FIVE_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES,...CHAPTER_THREE_BATTLES,...CHAPTER_FOUR_BATTLES,...CHAPTER_FIVE_BATTLES};
 
 it('Chapter Three doors and consoles have reachable approaches beside their physical artwork',()=>{
   const state=palaceCheckpoint('conduitGuardWon');

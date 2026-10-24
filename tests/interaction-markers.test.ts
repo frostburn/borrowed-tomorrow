@@ -2,6 +2,7 @@ import {expect,it} from 'vitest';
 import {MAPS,visibleObjects} from '../src/content/maps';
 import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
 import {newGame} from '../src/rules/state';
+import {MAP_REVIEWS,reviewFlags} from '../src/dev/map-catalog';
 
 it('gives every authored interaction an explicit purpose with a distinct supported shape',()=>{
  for(const map of Object.values(MAPS))for(const object of map.objects){
@@ -77,4 +78,30 @@ it('dims the sealed sanctuary fight and leaves Chapter Four mechanisms to their 
   const object=MAPS[map].objects.find(o=>o.id===id)!;
   expect(interactionMarker(object,s)).toBeUndefined();
  }
+});
+
+it('greys Chapter Five routes and mechanisms until all their real prerequisites are met',()=>{
+ const s=newGame();
+ for(const [map,id,flag]of [['airfield','airfield-board','airfieldGuardWon'],['coolingworks','cooling-wheel','forgeApproachWon'],['windmere','wind-transfer','waterLiftOpened'],['windmere','wind-mirrorward','patientsTransferred'],['dispensary','wind-lift-wheel','windLiftWon'],['dispensary','wind-reflector','waterLiftOpened']]as const){
+  const s=newGame(),object=MAPS[map].objects.find(o=>o.id===id)!;
+  delete s.flags[flag];expect(interactionMarker(object,s)?.color,`${id} closed`).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;expect(interactionMarker(object,s)?.color,`${id} open`).toBe(INTERACTION_MARKERS[object.kind].color);
+ }
+ for(const mortar of [false,true])for(const repeater of [false,true]){
+  s.flags.mortarWon=mortar;s.flags.repeaterWon=repeater;
+  for(const id of ['watch-wall','watch-coat']){
+   const object=MAPS.watchbarracks.objects.find(o=>o.id===id)!;
+   expect(interactionMarker(object,s)?.color,id).toBe(mortar&&repeater?INTERACTION_MARKERS[object.kind].color:BLOCKED_MARKER_COLOR);
+  }
+ }
+ const cabin=MAPS.airship.objects.find(o=>o.id==='ship-cabin')!;
+ expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+ s.flags.hammerplainComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+ s.flags.windmereComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(INTERACTION_MARKERS.exit.color);
+});
+
+it('offers individual marker prerequisites in Maps even when no scenery layer uses them',()=>{
+ expect(reviewFlags(MAP_REVIEWS.find(m=>m.id==='windmere')!)).toContain('waterLiftOpened');
+ const flags=reviewFlags(MAP_REVIEWS.find(m=>m.id==='watchbarracks')!);
+ expect(flags).toContain('mortarWon');expect(flags).toContain('repeaterWon');expect(flags).not.toContain('mortarWon,repeaterWon');
 });
