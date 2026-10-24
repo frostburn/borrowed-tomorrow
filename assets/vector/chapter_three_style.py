@@ -44,13 +44,15 @@ def slope(x):
  return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0])
 
 def scenery(name,source,scene,ox):
+ if name=='lamp'and scene not in ('northglass','battle-capital-arrest'):
+  name='conduit-work-light';source=source.with_name(name+'.svg')
  joined=name in ('conduit-factory-wing','works-wall')
  variant=str(ox)if joined else'shared'
  folder=ROOT/'public/art/vector/chapter-three-kit'/variant;folder.mkdir(parents=True,exist_ok=True)
  svg=ET.fromstring(source.read_text());w,h=float(svg.get('width')),float(svg.get('height'))
  # Keep these visible instruments, crystal facets, rail mechanics and steps
  # exact: the cutscene overlays the five individual gauge faces by coordinate.
- rigid=name in ('conduit-controls','conduit-vessel','works-stairs','engine','coach','collector-machine','ward-stove')
+ rigid=name in ('conduit-controls','conduit-vessel','conduit-work-light','works-stairs','engine','coach','collector-machine','ward-stove')
  def point(x,y):
   f=max(0,1-y/h)
   if rigid:return x,y
@@ -120,6 +122,8 @@ def terrain(kind,base,w,h,scene):
  if kind in ('works-stone','works-deck','paving'):
   prefix=base[:base.index('<g clip-path=')];steel=kind=='works-deck'
   colors=['#486c62','#577b6c','#3a5c57']if steel else['#586f66','#6b8072','#49625b']if kind=='works-stone'else['#647b77','#758a80','#506963']
+  if scene not in ('northglass','battle-capital-arrest'):
+   colors=['#708e7a','#7b9782','#668571']if steel else['#7b8e7d','#859784','#728674']
   out=[prefix,f'<g clip-path="url(#{kind})"><rect width="{w}" height="{h}" fill="{colors[0]}"/>']
   out += [polygon([(0,h*.24),(w*.29,h*.21),(w*.57,h*.39),(w,h*.27),(w,h*.48),(w*.55,h*.51),(w*.24,h*.37),(0,h*.43)],colors[1]),
           polygon([(0,h*.73),(w*.28,h*.62),(w*.62,h*.77),(w,h*.65),(w,h),(0,h)],colors[2])]
@@ -141,4 +145,13 @@ def terrain(kind,base,w,h,scene):
   return re.sub(r'<rect x="([\d.-]+)" y="([\d.-]+)" width="([\d.-]+)" height="([\d.-]+)" fill="(#[a-f0-9]+)"/>',tilt,base)
  return base
 
-def spill(pieces):return ground_spill(pieces,LIGHTS['props'])
+def spill(pieces,scene):
+ if scene in ('northglass','battle-capital-arrest'):return ground_spill(pieces,LIGHTS['props'])
+ # Diffused work-room illumination: broad low-opacity pools, no spotlight cones
+ # or concentric bullseyes. Actor light uses the same reduced local strength.
+ out=[]
+ for name,x,y in pieces:
+  for light in LIGHTS['props'].get(name,[]):
+   cx,cy=x+light['x'],y+light['y'];color='#c4dcc3'if light.get('color')else'#f3d49c'
+   out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="160" ry="68" fill="{color}" opacity=".025"/>')
+ return ''.join(out)

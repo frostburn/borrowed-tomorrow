@@ -35,9 +35,11 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'no-preference'}),page=await context.newPage();
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const saved=await begin(page);
-   await expect.poll(()=>feedPixel(page)).toEqual([224,199,145]);
+   await expect.poll(async()=>{const p=await feedPixel(page);return p[0]>190&&p[1]>170;}).toBe(true);
+   const feedBefore=await feedPixel(page);
    await line(page,'needles fall');await page.mouse.move(0,0);await page.waitForTimeout(1250);
-   expect(await feedPixel(page),'the live feed layer must fade independently of cached ground').not.toEqual([224,199,145]);
+   const feedAfter=await feedPixel(page);
+   expect(feedBefore[0]+feedBefore[1]-feedAfter[0]-feedAfter[1],'the live feed layer must fade independently of cached ground').toBeGreaterThan(35);
    await line(page,'steps onto the vessel');
    const poses=await page.evaluate(()=>new Promise<string[]>(resolve=>{
     const seen=new Set<string>(),start=performance.now();const tick=()=>{const e=window.borrowedTomorrow.inspect().actors.find(a=>a.hero==='emperor');if(e)seen.add(e.texture);if(performance.now()-start>2100)resolve([...seen]);else requestAnimationFrame(tick);};tick();

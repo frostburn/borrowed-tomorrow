@@ -22,8 +22,19 @@ describe('world-space actor lighting',()=>{
   });
   it('registers the conduit windows, crystal and feed console at their real anchors',()=>{
     const gallery=sceneLight('relayhall',visibleSceneArt(CHAPTER_THREE_MAPS.relayhall.tiles!,{flags:{}})??[])!;
-    expect(gallery.lamps.filter(l=>l.beam)).toHaveLength(7);
-    expect(castShadows(gallery,840,323).some(s=>s.light.beam)).toBe(true);
+    expect(gallery.lamps.filter(l=>l.beam)).toHaveLength(0);
+    for(const id of ['relayhall','conduit','battle-palace-stores','battle-works-warden','conduit-regulator']){
+      const indoor=sceneLight(id,[])!;expect(Math.min(...indoor.ambient)).toBeGreaterThanOrEqual(.85);
+      expect(indoor.shadowOpacity).toBe(.035);
+    }
+    expect(castShadows(gallery,840,323).reduce((a,s)=>a+s.alpha,0)).toBeLessThanOrEqual(.035001);
+    const exterior=sceneLight('northglass',visibleSceneArt(CHAPTER_THREE_MAPS.northglass.tiles!,{flags:{}})??[])!;
+    expect(exterior.lamps.some(l=>l.beam)).toBe(true);expect(exterior.shadowOpacity).toBeUndefined();
+    for(const map of [CHAPTER_THREE_MAPS.relayhall,CHAPTER_THREE_MAPS.conduit]){
+      const pieces=visibleSceneArt(map.tiles!,{flags:{}})!;
+      expect(pieces.some(p=>p.url.endsWith('/conduit-work-light.svg'))).toBe(true);
+      expect(pieces.some(p=>p.url.endsWith('/lamp.svg'))).toBe(false);
+    }
     const chamber=sceneLight('conduit',visibleSceneArt(CHAPTER_THREE_MAPS.conduit.tiles!,{flags:{}})??[])!;
     expect(chamber.lamps.some(l=>l.x===780&&l.y===444&&l.height===170)).toBe(true);
     expect(chamber.lamps.some(l=>l.x===1128&&l.y===450&&l.height===70)).toBe(true);

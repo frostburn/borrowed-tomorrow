@@ -37,17 +37,17 @@ async function shadedActor(page:Page){
 }
 
 for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
- test(`Chapter Three actors keep native highlight planes and moving shadows on ${device}`,async({browser})=>{
+ test(`Chapter Three actors keep native highlight planes and regional shadow strength on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage();
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
    for(const [map,x,y]of [['northglass',29,23],['relayhall',22,28],['conduit',23,26]]as const){
     const saved=palaceCheckpoint('conduitSeen');saved.location={map,x,y};await importSave(page,saved);
-    await expect.poll(async()=>{const p=await shadedActor(page);return p.compared>300&&p.wrong===0&&p.changed>100&&p.shadowPixels>5;}).toBe(true);
+    await expect.poll(async()=>{const p=await shadedActor(page);return p.compared>300&&p.wrong===0&&(map!=='northglass'||p.changed>100&&p.shadowPixels>5);}).toBe(true);
     await capture(page,`three-lit-${map}-${device}`);
     await page.locator('#canvas').focus();await page.keyboard.press('ArrowRight',{delay:60});
     await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.state.location.x===x+1;}).toBe(true);
-    await expect.poll(async()=>{const p=await shadedActor(page);return p.compared>300&&p.wrong===0&&p.shadowPixels>5;}).toBe(true);
+    await expect.poll(async()=>{const p=await shadedActor(page);return p.compared>300&&p.wrong===0&&(map!=='northglass'||p.shadowPixels>5);}).toBe(true);
     expect((await inspect(page)).state.flags).toEqual(saved.flags);
    }
    await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);

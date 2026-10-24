@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="192" height="168" viewBox="0 0 192 168"><title>Green conduit · works-wall</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/works-wall.svg</metadata>
-<polygon fill="#243e45" points="0.00,5.70 192.00,11.98 192.00,168.00 0.00,168.00" />
+<ellipse cx="96" cy="78.47268907563026" rx="17" ry="19" fill="#ffdaa0" opacity=".1" /><polygon fill="#243e45" points="0.00,5.70 192.00,11.98 192.00,168.00 0.00,168.00" />
 <polygon fill="#647b75" points="8.00,12.04 184.00,17.58 184.00,154.33 8.00,153.82" />
 <polygon points="8.00,14.07 184.00,19.53 184.00,43.95 8.00,31.28" fill="#8c9a85" />
 <polygon fill="#3e6659" points="8.00,144.71 184.00,145.53 184.00,165.07 8.00,164.96" />

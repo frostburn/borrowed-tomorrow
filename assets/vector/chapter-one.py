@@ -258,7 +258,7 @@ def export(chapter='one', only=None):
             # collector's shutdown. Ground light stays below actor shadows.
             for layer in data['layers']:
                 props=[(e['url'].split('/')[-1][:-4],e['x'],e['y'])for e in entries if e['layerId']==layer['id'] and f'/chapter-{chapter}-kit/'in e['url']]
-                light=spill(props)
+                light=spill(props,file.stem)if chapter=='three'else spill(props)
                 if not light:continue
                 if chapter in ('two','three'):
                     light='<defs><clipPath id="light-floor">'+''.join(light_floor)+'</clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
