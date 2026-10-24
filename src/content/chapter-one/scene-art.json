@@ -31,8 +31,8 @@
       "height": 480
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
+      "key": "scene-one-prop-engine",
+      "url": "art/vector/chapter-one-kit/engine.svg",
       "x": 672,
       "y": -120,
       "depth": 67,
@@ -41,14 +41,24 @@
       "height": 192
     },
     {
-      "key": "scenery-sun-mural",
-      "url": "art/vector/scenery/sun-mural.svg",
+      "key": "scene-one-prop-sun-mural",
+      "url": "art/vector/chapter-one-kit/sun-mural.svg",
       "x": 0,
       "y": -72,
       "depth": 67,
       "layerId": 10,
       "width": 144,
       "height": 168
+    },
+    {
+      "key": "scene-battle-captain-light-9",
+      "url": "art/vector/scenes/battle-captain/light-9.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 9,
+      "width": 1008,
+      "height": 480
     }
   ],
   "battle-collector": [
@@ -83,8 +93,8 @@
       "height": 480
     },
     {
-      "key": "scenery-bakery",
-      "url": "art/vector/scenery/bakery.svg",
+      "key": "scene-one-prop-bakery",
+      "url": "art/vector/chapter-one-kit/bakery.svg",
       "x": 72,
       "y": -144,
       "depth": 67,
@@ -93,8 +103,8 @@
       "height": 216
     },
     {
-      "key": "scenery-collector-machine",
-      "url": "art/vector/scenery/collector-machine.svg",
+      "key": "scene-one-prop-collector-machine",
+      "url": "art/vector/chapter-one-kit/collector-machine.svg",
       "x": 816,
       "y": -72,
       "depth": 67,
@@ -103,8 +113,8 @@
       "height": 144
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-one-prop-canopy",
+      "url": "art/vector/chapter-one-kit/canopy.svg",
       "x": -72,
       "y": 216,
       "depth": 451,
@@ -113,14 +123,44 @@
       "height": 240
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 936,
       "y": 96,
       "depth": 235,
       "layerId": 7,
       "width": 48,
       "height": 144
+    },
+    {
+      "key": "scene-battle-collector-light-4",
+      "url": "art/vector/scenes/battle-collector/light-4.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 4,
+      "width": 1008,
+      "height": 480
+    },
+    {
+      "key": "scene-battle-collector-light-5",
+      "url": "art/vector/scenes/battle-collector/light-5.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 5,
+      "width": 1008,
+      "height": 480
+    },
+    {
+      "key": "scene-battle-collector-light-7",
+      "url": "art/vector/scenes/battle-collector/light-7.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 7,
+      "width": 1008,
+      "height": 480
     }
   ],
   "battle-pursuit": [
@@ -155,8 +195,8 @@
       "height": 480
     },
     {
-      "key": "scenery-coach",
-      "url": "art/vector/scenery/coach.svg",
+      "key": "scene-one-prop-coach",
+      "url": "art/vector/chapter-one-kit/coach.svg",
       "x": 48,
       "y": -96,
       "depth": 67,
@@ -165,8 +205,8 @@
       "height": 168
     },
     {
-      "key": "scenery-prison-coach",
-      "url": "art/vector/scenery/prison-coach.svg",
+      "key": "scene-one-prop-prison-coach",
+      "url": "art/vector/chapter-one-kit/prison-coach.svg",
       "x": 696,
       "y": -96,
       "depth": 67,
@@ -175,8 +215,8 @@
       "height": 168
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 24,
       "y": 96,
       "depth": 235,
@@ -185,14 +225,34 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 936,
       "y": 96,
       "depth": 235,
       "layerId": 7,
       "width": 48,
       "height": 144
+    },
+    {
+      "key": "scene-battle-pursuit-light-6",
+      "url": "art/vector/scenes/battle-pursuit/light-6.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 6,
+      "width": 1008,
+      "height": 480
+    },
+    {
+      "key": "scene-battle-pursuit-light-7",
+      "url": "art/vector/scenes/battle-pursuit/light-7.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 7,
+      "width": 1008,
+      "height": 480
     }
   ],
   "battle-workshop": [
@@ -227,8 +287,8 @@
       "height": 480
     },
     {
-      "key": "scenery-workshop",
-      "url": "art/vector/scenery/workshop.svg",
+      "key": "scene-one-prop-workshop",
+      "url": "art/vector/chapter-one-kit/workshop.svg",
       "x": 72,
       "y": -144,
       "depth": 67,
@@ -237,8 +297,8 @@
       "height": 216
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
+      "key": "scene-one-prop-engine",
+      "url": "art/vector/chapter-one-kit/engine.svg",
       "x": 672,
       "y": -120,
       "depth": 67,
@@ -247,8 +307,8 @@
       "height": 192
     },
     {
-      "key": "scenery-barrel",
-      "url": "art/vector/scenery/barrel.svg",
+      "key": "scene-one-prop-barrel",
+      "url": "art/vector/chapter-one-kit/barrel.svg",
       "x": 24,
       "y": 360,
       "depth": 427,
@@ -257,14 +317,34 @@
       "height": 72
     },
     {
-      "key": "scenery-crate",
-      "url": "art/vector/scenery/crate.svg",
+      "key": "scene-one-prop-crate",
+      "url": "art/vector/chapter-one-kit/crate.svg",
       "x": 936,
       "y": 360,
       "depth": 427,
       "layerId": 7,
       "width": 72,
       "height": 72
+    },
+    {
+      "key": "scene-battle-workshop-light-4",
+      "url": "art/vector/scenes/battle-workshop/light-4.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 4,
+      "width": 1008,
+      "height": 480
+    },
+    {
+      "key": "scene-battle-workshop-light-5",
+      "url": "art/vector/scenes/battle-workshop/light-5.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 5,
+      "width": 1008,
+      "height": 480
     }
   ],
   "rillbridge": [
@@ -289,8 +369,8 @@
       "height": 672
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-one-prop-river-wall",
+      "url": "art/vector/chapter-one-kit/river-wall.svg",
       "x": 480,
       "y": 336,
       "depth": -998,
@@ -309,8 +389,8 @@
       "height": 672
     },
     {
-      "key": "scenery-bakery",
-      "url": "art/vector/scenery/bakery.svg",
+      "key": "scene-one-prop-bakery",
+      "url": "art/vector/chapter-one-kit/bakery.svg",
       "x": 936,
       "y": 96,
       "depth": 307,
@@ -319,8 +399,8 @@
       "height": 216
     },
     {
-      "key": "scenery-coach",
-      "url": "art/vector/scenery/coach.svg",
+      "key": "scene-one-prop-coach",
+      "url": "art/vector/chapter-one-kit/coach.svg",
       "x": 1248,
       "y": 192,
       "depth": 355,
@@ -329,8 +409,8 @@
       "height": 168
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
+      "key": "scene-one-prop-engine",
+      "url": "art/vector/chapter-one-kit/engine.svg",
       "x": 144,
       "y": 168,
       "depth": 355,
@@ -339,8 +419,8 @@
       "height": 192
     },
     {
-      "key": "scenery-footbridge",
-      "url": "art/vector/scenery/footbridge.svg",
+      "key": "scene-one-prop-footbridge",
+      "url": "art/vector/chapter-one-kit/footbridge.svg",
       "x": 480,
       "y": 384,
       "depth": -993,
@@ -349,8 +429,8 @@
       "height": 120
     },
     {
-      "key": "scenery-footbridge-front",
-      "url": "art/vector/scenery/footbridge-front.svg",
+      "key": "scene-one-prop-footbridge-front",
+      "url": "art/vector/chapter-one-kit/footbridge-front.svg",
       "x": 480,
       "y": 384,
       "depth": 499,
@@ -359,8 +439,8 @@
       "height": 120
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-one-prop-canopy",
+      "url": "art/vector/chapter-one-kit/canopy.svg",
       "x": -48,
       "y": 0,
       "depth": 235,
@@ -369,8 +449,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-one-prop-canopy",
+      "url": "art/vector/chapter-one-kit/canopy.svg",
       "x": 720,
       "y": 384,
       "depth": 619,
@@ -379,8 +459,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-one-prop-canopy",
+      "url": "art/vector/chapter-one-kit/canopy.svg",
       "x": 1392,
       "y": 408,
       "depth": 643,
@@ -389,8 +469,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-one-prop-canopy",
+      "url": "art/vector/chapter-one-kit/canopy.svg",
       "x": 1176,
       "y": -72,
       "depth": 163,
@@ -399,8 +479,8 @@
       "height": 240
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 816,
       "y": 216,
       "depth": 355,
@@ -409,8 +489,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 1176,
       "y": 408,
       "depth": 547,
@@ -419,8 +499,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 384,
       "y": 384,
       "depth": 523,
@@ -429,8 +509,8 @@
       "height": 144
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-one-prop-planter",
+      "url": "art/vector/chapter-one-kit/planter.svg",
       "x": 960,
       "y": 336,
       "depth": 403,
@@ -439,8 +519,8 @@
       "height": 72
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-one-prop-planter",
+      "url": "art/vector/chapter-one-kit/planter.svg",
       "x": 1416,
       "y": 360,
       "depth": 427,
@@ -449,8 +529,8 @@
       "height": 72
     },
     {
-      "key": "scenery-collector-machine",
-      "url": "art/vector/scenery/collector-machine.svg",
+      "key": "scene-one-prop-collector-machine",
+      "url": "art/vector/chapter-one-kit/collector-machine.svg",
       "x": 1344,
       "y": 264,
       "depth": 403,
@@ -459,8 +539,8 @@
       "height": 144
     },
     {
-      "key": "scenery-collector-broken",
-      "url": "art/vector/scenery/collector-broken.svg",
+      "key": "scene-one-prop-collector-broken",
+      "url": "art/vector/chapter-one-kit/collector-broken.svg",
       "x": 1344,
       "y": 312,
       "depth": 403,
@@ -489,8 +569,8 @@
       "height": 672
     },
     {
-      "key": "scenery-station-house",
-      "url": "art/vector/scenery/station-house.svg",
+      "key": "scene-one-prop-station-house",
+      "url": "art/vector/chapter-one-kit/station-house.svg",
       "x": 936,
       "y": 552,
       "depth": 763,
@@ -499,14 +579,94 @@
       "height": 216
     },
     {
-      "key": "scenery-bakery",
-      "url": "art/vector/scenery/bakery.svg",
+      "key": "scene-one-prop-bakery",
+      "url": "art/vector/chapter-one-kit/bakery.svg",
       "x": 1224,
       "y": 552,
       "depth": 763,
       "layerId": 22,
       "width": 240,
       "height": 216
+    },
+    {
+      "key": "scene-rillbridge-light-4",
+      "url": "art/vector/scenes/rillbridge/light-4.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 4,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-6",
+      "url": "art/vector/scenes/rillbridge/light-6.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 6,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-12",
+      "url": "art/vector/scenes/rillbridge/light-12.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 12,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-13",
+      "url": "art/vector/scenes/rillbridge/light-13.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 13,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-14",
+      "url": "art/vector/scenes/rillbridge/light-14.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 14,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-17",
+      "url": "art/vector/scenes/rillbridge/light-17.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 17,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-21",
+      "url": "art/vector/scenes/rillbridge/light-21.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 21,
+      "width": 1536,
+      "height": 672
+    },
+    {
+      "key": "scene-rillbridge-light-22",
+      "url": "art/vector/scenes/rillbridge/light-22.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 22,
+      "width": 1536,
+      "height": 672
     }
   ],
   "station": [
@@ -541,8 +701,8 @@
       "height": 624
     },
     {
-      "key": "scenery-station-house",
-      "url": "art/vector/scenery/station-house.svg",
+      "key": "scene-station-prop-station-house",
+      "url": "art/vector/scenes/station/station-house.svg",
       "x": 120,
       "y": 48,
       "depth": 259,
@@ -571,8 +731,8 @@
       "height": 168
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-432",
+      "url": "art/vector/scenes/station/river-wall-432.svg",
       "x": 432,
       "y": 168,
       "depth": 259,
@@ -581,8 +741,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-624",
+      "url": "art/vector/scenes/station/river-wall-624.svg",
       "x": 624,
       "y": 168,
       "depth": 259,
@@ -591,8 +751,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-816",
+      "url": "art/vector/scenes/station/river-wall-816.svg",
       "x": 816,
       "y": 168,
       "depth": 259,
@@ -601,8 +761,8 @@
       "height": 96
     },
     {
-      "key": "scenery-stone-steps",
-      "url": "art/vector/scenery/stone-steps.svg",
+      "key": "scene-station-prop-stone-steps",
+      "url": "art/vector/scenes/station/stone-steps.svg",
       "x": 672,
       "y": 192,
       "depth": -991,
@@ -611,8 +771,8 @@
       "height": 96
     },
     {
-      "key": "scenery-market-stall",
-      "url": "art/vector/scenery/market-stall.svg",
+      "key": "scene-station-prop-market-stall",
+      "url": "art/vector/scenes/station/market-stall.svg",
       "x": 648,
       "y": 312,
       "depth": 451,
@@ -621,8 +781,8 @@
       "height": 168
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -72,
       "y": 336,
       "depth": 571,
@@ -631,8 +791,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": 864,
       "y": 384,
       "depth": 619,
@@ -641,8 +801,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
       "y": -72,
       "depth": 163,
@@ -651,8 +811,8 @@
       "height": 240
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-station-prop-fir",
+      "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
       "y": -24,
       "depth": 235,
@@ -661,8 +821,8 @@
       "height": 264
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 384,
       "y": 144,
       "depth": 283,
@@ -671,8 +831,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 576,
       "y": 408,
       "depth": 547,
@@ -681,8 +841,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 864,
       "y": 288,
       "depth": 427,
@@ -691,8 +851,8 @@
       "height": 144
     },
     {
-      "key": "scenery-bunting",
-      "url": "art/vector/scenery/bunting.svg",
+      "key": "scene-station-prop-bunting",
+      "url": "art/vector/scenes/station/bunting.svg",
       "x": 456,
       "y": 192,
       "depth": 283,
@@ -701,8 +861,8 @@
       "height": 96
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 144,
       "y": 384,
       "depth": 451,
@@ -711,8 +871,8 @@
       "height": 72
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 840,
       "y": 504,
       "depth": 571,
@@ -783,8 +943,8 @@
       "height": 624
     },
     {
-      "key": "scenery-sun-mural",
-      "url": "art/vector/scenery/sun-mural.svg",
+      "key": "scene-one-prop-sun-mural",
+      "url": "art/vector/chapter-one-kit/sun-mural.svg",
       "x": 432,
       "y": 48,
       "depth": 187,
@@ -793,8 +953,8 @@
       "height": 168
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
+      "key": "scene-one-prop-engine",
+      "url": "art/vector/chapter-one-kit/engine.svg",
       "x": 648,
       "y": 120,
       "depth": 307,
@@ -803,8 +963,8 @@
       "height": 192
     },
     {
-      "key": "scenery-stone-steps",
-      "url": "art/vector/scenery/stone-steps.svg",
+      "key": "scene-one-prop-stone-steps",
+      "url": "art/vector/chapter-one-kit/stone-steps.svg",
       "x": 792,
       "y": 240,
       "depth": -993,
@@ -813,8 +973,8 @@
       "height": 96
     },
     {
-      "key": "scenery-shelter",
-      "url": "art/vector/scenery/shelter.svg",
+      "key": "scene-one-prop-shelter",
+      "url": "art/vector/chapter-one-kit/shelter.svg",
       "x": 480,
       "y": 360,
       "depth": 547,
@@ -823,8 +983,8 @@
       "height": 192
     },
     {
-      "key": "scenery-supplies",
-      "url": "art/vector/scenery/supplies.svg",
+      "key": "scene-one-prop-supplies",
+      "url": "art/vector/chapter-one-kit/supplies.svg",
       "x": 624,
       "y": 504,
       "depth": 571,
@@ -833,8 +993,8 @@
       "height": 96
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 192,
       "y": 144,
       "depth": 283,
@@ -843,8 +1003,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 624,
       "y": 120,
       "depth": 259,
@@ -853,14 +1013,64 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 432,
       "y": 432,
       "depth": 571,
       "layerId": 19,
       "width": 48,
       "height": 144
+    },
+    {
+      "key": "scene-tunnel-light-13",
+      "url": "art/vector/scenes/tunnel/light-13.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 13,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-tunnel-light-15",
+      "url": "art/vector/scenes/tunnel/light-15.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 15,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-tunnel-light-17",
+      "url": "art/vector/scenes/tunnel/light-17.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 17,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-tunnel-light-18",
+      "url": "art/vector/scenes/tunnel/light-18.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 18,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-tunnel-light-19",
+      "url": "art/vector/scenes/tunnel/light-19.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 19,
+      "width": 1008,
+      "height": 624
     }
   ],
   "yard": [
@@ -895,8 +1105,8 @@
       "height": 624
     },
     {
-      "key": "scenery-workshop",
-      "url": "art/vector/scenery/workshop.svg",
+      "key": "scene-one-prop-workshop",
+      "url": "art/vector/chapter-one-kit/workshop.svg",
       "x": 528,
       "y": 24,
       "depth": 235,
@@ -905,8 +1115,8 @@
       "height": 216
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
+      "key": "scene-one-prop-engine",
+      "url": "art/vector/chapter-one-kit/engine.svg",
       "x": 528,
       "y": 96,
       "depth": 283,
@@ -915,8 +1125,8 @@
       "height": 192
     },
     {
-      "key": "scenery-shelter",
-      "url": "art/vector/scenery/shelter.svg",
+      "key": "scene-one-prop-shelter",
+      "url": "art/vector/chapter-one-kit/shelter.svg",
       "x": 672,
       "y": 360,
       "depth": 547,
@@ -925,8 +1135,8 @@
       "height": 192
     },
     {
-      "key": "scenery-barrel",
-      "url": "art/vector/scenery/barrel.svg",
+      "key": "scene-one-prop-barrel",
+      "url": "art/vector/chapter-one-kit/barrel.svg",
       "x": 672,
       "y": 552,
       "depth": 619,
@@ -935,8 +1145,8 @@
       "height": 72
     },
     {
-      "key": "scenery-crate",
-      "url": "art/vector/scenery/crate.svg",
+      "key": "scene-one-prop-crate",
+      "url": "art/vector/chapter-one-kit/crate.svg",
       "x": 840,
       "y": 552,
       "depth": 619,
@@ -945,8 +1155,8 @@
       "height": 72
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-one-prop-fir",
+      "url": "art/vector/chapter-one-kit/fir.svg",
       "x": 0,
       "y": 336,
       "depth": 595,
@@ -955,8 +1165,8 @@
       "height": 264
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-one-prop-fir",
+      "url": "art/vector/chapter-one-kit/fir.svg",
       "x": 888,
       "y": -72,
       "depth": 187,
@@ -965,8 +1175,8 @@
       "height": 264
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-one-prop-fir",
+      "url": "art/vector/chapter-one-kit/fir.svg",
       "x": 240,
       "y": -72,
       "depth": 187,
@@ -975,8 +1185,8 @@
       "height": 264
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 456,
       "y": 168,
       "depth": 307,
@@ -985,8 +1195,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-one-prop-lamp",
+      "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 840,
       "y": 312,
       "depth": 451,
@@ -995,8 +1205,8 @@
       "height": 144
     },
     {
-      "key": "scenery-supplies",
-      "url": "art/vector/scenery/supplies.svg",
+      "key": "scene-one-prop-supplies",
+      "url": "art/vector/chapter-one-kit/supplies.svg",
       "x": 792,
       "y": 504,
       "depth": 571,
@@ -1005,14 +1215,64 @@
       "height": 96
     },
     {
-      "key": "scenery-fence",
-      "url": "art/vector/scenery/fence.svg",
+      "key": "scene-one-prop-fence",
+      "url": "art/vector/chapter-one-kit/fence.svg",
       "x": 72,
       "y": 552,
       "depth": 619,
       "layerId": 15,
       "width": 192,
       "height": 72
+    },
+    {
+      "key": "scene-yard-light-4",
+      "url": "art/vector/scenes/yard/light-4.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 4,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-yard-light-5",
+      "url": "art/vector/scenes/yard/light-5.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 5,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-yard-light-6",
+      "url": "art/vector/scenes/yard/light-6.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 6,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-yard-light-12",
+      "url": "art/vector/scenes/yard/light-12.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 12,
+      "width": 1008,
+      "height": 624
+    },
+    {
+      "key": "scene-yard-light-13",
+      "url": "art/vector/scenes/yard/light-13.svg",
+      "x": 0,
+      "y": 0,
+      "depth": -950,
+      "layerId": 13,
+      "width": 1008,
+      "height": 624
     }
   ]
 }

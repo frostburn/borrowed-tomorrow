@@ -34,3 +34,29 @@ All eight Chapter Three layouts now use whole SVG scene pieces. Seven new editab
 
 
 [Chapter Five Act I](chapter-five.md) continues the native direction across the western airfield, survey deck, Hammerplain, cooling race, anchor gantry and five arenas. `node scripts/export-chapter-five-art.mjs` reproduces the Tiled layouts and SVG planes/props, including the carrier’s world/battle geometry. Story flags control the street, water, crew and horizon. No bitmap input or new production dependency is needed.
+
+## Chapter One night scenery and lighting
+
+All eight Chapter One maps now share the approved opening's crooked, faceted vector style and festival-night lighting. Station retains its accepted SVG study. The other seven maps use variants under `public/art/vector/chapter-one-kit/`, derived from the editable shared originals. Building walls narrow toward slanted lintels and eaves; wood supports lean; broad ground and cave contours break at angular corners. Railway mechanics and prop anchors stay exact. Most painted terrain edges move by less than half a navigation cell. The source map data, routes, story flags, cutscene staging and tactical geometry remain unchanged.
+
+`chapter_one_landforms.py` authors Rillbridge's river and crossings and the pass's resting recess. The river widens and bends beyond the routes, with uneven rocky banks, stones, reeds and sparse current ribbons. The paths clip to those same bank vertices, removing stray paving strips over water. A single open masonry arch supports the railway, and a worn plank footbridge meets stone abutments below it. The deck remains below actors, with its near rail separately sorted. The river-release effect remains a small story-flag layer. The tunnel's cubby has a widened, fractured rock silhouette, matching floor and slanted front ledge around the existing shelter/lamp anchors. Its original walkable floor remains enclosed. Regenerate with `python3 assets/vector/chapter-one.py --map rillbridge` and `--map tunnel`; do not hand-edit their generated SVGs.
+
+| Location | Treatment |
+| --- | --- |
+| Larkspur | Indigo square, warm windows and persistent paper festival lanterns |
+| Orrin's yard | Crooked workshop and shed; amber windows, hanging oil lamp and engine headlamp |
+| Rillbridge | Blue river light, tilted bakery/storefronts, warm windows and a cold collector core that goes dark on release |
+| Eastern pass | Faceted blue rock, amber service lamps, lit shelter and engine; clear stone walkway |
+| Four battlefields | Related regional palettes and light, with unobstructed tactical floors |
+
+Reproduce scenery with `python3 assets/vector/chapter-one.py`, or `--map yard` (likewise any Chapter One map ID) for a focused export. `station.py` owns the accepted opening study; `chapter_one_style.py` owns the rest. Both use native SVGs only. Shared original scenery and later chapters retain their existing artwork. Each SVG remains below 128 KiB.
+
+`src/content/chapter-one/lighting.json` registers ambient colors, broad cool bounce, and prop-local emitters for all eight maps. The compiler paints matching floor spill; `chapterOneLight` builds the runtime rig from the visible props. Spill inherits each emitter's own visibility layer, so the collector's glow disappears with its working casing. Festival lanterns remain lit after the arrest. Light sources use exact ground positions and heights: warm lamps, directional window apertures, a subtle blue fill and the collector's pale turquoise core.
+
+The campaign's `world-lighting.ts` applies the same Canvas actor lighting to exploration, temporary cutscene casts and Chapter One battle units. Cached native pixels and shaded per-actor surfaces retain original alpha, dimensions, handedness and animation frames. Mirrored enemy art is lit in its displayed orientation. Dead battle units cast no shadows. Other chapters keep their current renderer. There is no new production dependency or raster asset.
+
+`actor-planes.ts` derives cached, stylized relief from contiguous material-color regions: broad slanted left/front/right and exposed upper planes respond to scene lights in three discrete bands. Tiny details stay flat. Festival and regional fill keep action readable without removing the surface planes. These are sprite relief planes, not a 3D mesh.
+
+Up to three meaningful nearby sources project each visible actor's current silhouette onto real floor, alongside a restrained contact shadow. The shared 0.45 opacity budget and 18% relative cutoff bound overlapping darkness. Window shadows clip to the painted beam apertures. Shadows stay below sorted scenery and tactical indicators. `light-canvas.ts` shares the shadow projection and floor clipping with the Maps workshop. Scenery does not ray-occlude light; this remains stylized 2.5D lighting. No flicker or extra idle repaint loop is used. Frame surfaces and per-actor textures are released when their owners are cleared.
+
+The Maps workshop (`?dev=maps`) previews the actual Chapter One colors, emitter visibility, actor highlight planes and shadows. Scene casts, layer isolation, flags and native PNG review exports use the same rig and floor mask. Later chapters retain their existing map previews. Review lit moving actors and attack frames in the campaign or practice battles; detailed visual/journey checks stay outside the small default CI gate.

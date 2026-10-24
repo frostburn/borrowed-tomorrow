@@ -136,7 +136,7 @@ it('through tracks reach both map edges and remain on a supported railway shelf'
 it('festival and collector scenery follow the actual campaign flags',()=>{
   const festival=MAPS.station.tiles!.layers.find(l=>l.name==='Festival lanterns')!,cap=MAPS.station.tiles!.layers.find(l=>l.name==='After the arrest')!;
   expect(layerVisible(festival,newGame())).toBe(true);expect(layerVisible(cap,newGame())).toBe(false);
-  expect(layerVisible(festival,checkpoint('raidSeen'))).toBe(false);expect(layerVisible(cap,checkpoint('raidSeen'))).toBe(true);
+  expect(layerVisible(festival,checkpoint('raidSeen'))).toBe(true);expect(layerVisible(cap,checkpoint('raidSeen'))).toBe(true);
   const village=MAPS.rillbridge.tiles!,before=checkpoint('collectorDefeated'),after=checkpoint('villageFreed');
   for(const name of ['Collector working','Suspended drops and threads']){
     const layer=village.layers.find(l=>l.name===name)!;expect(layerVisible(layer,before)).toBe(true);expect(layerVisible(layer,after)).toBe(false);

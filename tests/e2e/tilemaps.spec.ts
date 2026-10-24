@@ -30,12 +30,16 @@ test('native foreground trees occlude actors behind them and yield to actors in 
     await expect.poll(()=>page.evaluate(async({row,pieces,map,actorUrl})=>{
       const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();const native=document.createElement('canvas');native.width=image.naturalWidth;native.height=image.naturalHeight;native.getContext('2d')!.drawImage(image,0,0);return native;};
       const actor=await decode(actorUrl);
+      const lightingModule='/src/game/world-light.ts';
+      const {lightPixels,stationLight}=await import(/* @vite-ignore */lightingModule);
+      const ac=actor.getContext('2d')!,original=ac.getImageData(0,0,80,80),lit=ac.createImageData(80,80);
+      lightPixels(original,lit,stationLight(pieces!),36,(row+.5)*24+7,40,68);ac.putImageData(lit,0,0);
       const reference=document.createElement('canvas');reference.width=map.width*24;reference.height=map.height*24;const ctx=reference.getContext('2d')!;
       const tree=document.createElement('canvas');tree.width=reference.width;tree.height=reference.height;const t=tree.getContext('2d')!;
       const queue:{image:HTMLCanvasElement;x:number;y:number;depth:number}[]=[];
       for(const piece of pieces!){
         const image=await decode(`/${piece.url}`);
-        if(piece.depth>=0){queue.push({image,x:piece.x,y:piece.y,depth:piece.depth});if(piece.key==='scenery-canopy'&&piece.x<120)t.drawImage(image,piece.x,piece.y);}
+        if(piece.depth>=0){queue.push({image,x:piece.x,y:piece.y,depth:piece.depth});if(piece.url.endsWith('/canopy.svg')&&piece.x<120)t.drawImage(image,piece.x,piece.y);}
         else ctx.drawImage(image,piece.x,piece.y);
       }
       const actorX=36-40,actorY=(row+.5)*24+7-68;

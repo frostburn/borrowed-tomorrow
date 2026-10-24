@@ -8,6 +8,8 @@ import { art } from '../game/ui';
 import { vectorSurface } from '../game/vector-image';
 import { vectorAsset } from '../content/art-assets';
 import { sceneArt, visibleSceneArt } from '../content/scene-art';
+import { chapterOneLight, lightPixels } from '../game/world-light';
+import { lightGround, paintActorShadow } from '../game/light-canvas';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -24,6 +26,7 @@ export class MapWorkshop {
   private host?:HTMLElement;
   private images=new Map<string,HTMLImageElement>();
   private failed=new Set<string>();
+  private actorSurfaces=new WeakMap<HTMLImageElement,{pixels:ImageData;shadow:HTMLCanvasElement}>();
   private raf?:number;
   private urlTimer?:ReturnType<typeof setTimeout>;
   constructor(private report:(message:string)=>void){
@@ -120,6 +123,7 @@ export class MapWorkshop {
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
     const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
+    const rig=chapterOneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
     if(pieces){
       for(const piece of pieces){
         const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y);};
@@ -137,7 +141,22 @@ export class MapWorkshop {
     if(this.overlays.has('actors')){
       const cast=e.tiles?mapPoints(e.tiles,this.scene):[],castSprites=new Set<string>(cast.map(o=>CHARACTERS[o.name as keyof typeof CHARACTERS]?.sprite));
       const visible=(o:{hiddenFlag?:string;requiredFlag?:string})=>(!o.hiddenFlag||!this.flags[o.hiddenFlag])&&(!o.requiredFlag||this.flags[o.requiredFlag]);
-      const actor=(sprite:string,p:Point)=>{const image=this.image(art(sprite)),y=(p.y+.5)*24+7;sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,(p.x+.5)*24-40,y-68);}});};
+      const actor=(sprite:string,p:Point)=>{
+        const image=this.image(art(sprite)),x=(p.x+.5)*24,y=(p.y+.5)*24+7;
+        if(rig&&ground&&image.complete&&image.naturalWidth){
+          let surface=this.actorSurfaces.get(image);
+          if(!surface){
+            const shadow=document.createElement('canvas');shadow.width=shadow.height=80;const s=shadow.getContext('2d',{willReadFrequently:true})!;
+            s.drawImage(vectorSurface(image),0,0);const pixels=s.getImageData(0,0,80,80);s.globalCompositeOperation='source-in';s.fillStyle='#172038';s.fillRect(0,0,80,80);
+            surface={pixels,shadow};this.actorSurfaces.set(image,surface);
+          }
+          const native=document.createElement('canvas');native.width=native.height=80;const s=native.getContext('2d')!,lit=s.createImageData(80,80);
+          lightPixels(surface.pixels,lit,rig,x,y,40,68);s.putImageData(lit,0,0);
+          const shadow=surface.shadow;
+          sorted.push({depth:-900,draw:()=>{ctx.save();ctx.clip(ground);paintActorShadow(ctx,rig,{x,y,originX:40,originY:68,scaleX:1,scaleY:1,rotation:0,alpha:1,image:shadow});ctx.restore();}});
+          sorted.push({depth:y,draw:()=>ctx.drawImage(native,x-40,y-68)});
+        }else sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,x-40,y-68);}});
+      };
       for(const o of e.world?.objects??[])if(o.sprite&&visible(o)&&(!o.spriteHiddenFlag||!this.flags[o.spriteHiddenFlag])&&!castSprites.has(o.sprite))actor(o.sprite,o);
       for(const p of e.world?.people??[])if(visible(p))actor(p.sprite,p);
       for(const o of cast){const character=CHARACTERS[o.name as keyof typeof CHARACTERS];if(character&&!properties(o).hidden)actor(character.sprite,gridPoint(o));}
