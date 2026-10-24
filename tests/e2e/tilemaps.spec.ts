@@ -35,7 +35,7 @@ test('native foreground trees occlude actors behind them and yield to actors in 
       const queue:{image:HTMLCanvasElement;x:number;y:number;depth:number}[]=[];
       for(const piece of pieces!){
         const image=await decode(`/${piece.url}`);
-        if(piece.depth>=0){queue.push({image,x:piece.x,y:piece.y,depth:piece.depth});if(piece.key==='scenery-canopy'&&piece.x<120)t.drawImage(image,piece.x,piece.y);}
+        if(piece.depth>=0){queue.push({image,x:piece.x,y:piece.y,depth:piece.depth});if(piece.url.endsWith('/canopy.svg')&&piece.x<120)t.drawImage(image,piece.x,piece.y);}
         else ctx.drawImage(image,piece.x,piece.y);
       }
       const actorX=36-40,actorY=(row+.5)*24+7-68;

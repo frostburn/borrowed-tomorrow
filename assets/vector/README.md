@@ -34,3 +34,11 @@ All eight Chapter Three layouts now use whole SVG scene pieces. Seven new editab
 
 
 [Chapter Five Act I](chapter-five.md) continues the native direction across the western airfield, survey deck, Hammerplain, cooling race, anchor gantry and five arenas. `node scripts/export-chapter-five-art.mjs` reproduces the Tiled layouts and SVG planes/props, including the carrier’s world/battle geometry. Story flags control the street, water, crew and horizon. No bitmap input or new production dependency is needed.
+
+## Larkspur opening study
+
+The opening `station` map adds a cozy storybook/dollhouse treatment: bowed eaves and paving, a slightly leaning façade, softer foliage and cool indigo festival-night ambient colors against amber windows and oil lamps. Lamp spill is authored as translucent, uneven pools that retain the stone underneath. The railway stays straight and mechanically legible. Keep real volume and shaded overlaps as the shapes become more playful.
+
+`assets/vector/station.py` derives station-only native SVG prop variants from the shared originals, plus its floor palette and gently bent painted contours. It is a reproducible vector transformation, with no raster source, palette quantization or image generator. Native dimensions, ground anchors and sorting remain fixed. Tiled still owns every interaction, collision cell and cutscene position. Other maps, including later Larkspur memories, retain their existing art.
+
+Use `python3 assets/vector/chapter-one.py --map station` to rebuild just this screen and retain all other manifest entries. A normal Chapter One export uses the same station treatment. Review it in the opening campaign scene and `?dev=maps&map=station`, before and after `raidSeen`. The actor renderer and actor-lighting behavior are outside this art study.

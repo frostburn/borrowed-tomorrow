@@ -165,17 +165,20 @@ def fittings(kind,cells):
             else:raise ValueError(kind)
     return ''.join(out)
 
-def export(chapter='one'):
+def export(chapter='one', only=None):
+    if only and not (ROOT/f'src/content/chapter-{chapter}/maps/{only}.json').is_file():raise ValueError(f'Unknown Chapter {chapter} map: {only}')
     OUT.mkdir(parents=True,exist_ok=True)
     tileset=json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text());defs={}
     for page in tileset['pages']:
         data=json.loads((ROOT/'assets/tiles/pages'/f'{page["name"]}.json').read_text())
         defs.update({page['firstgid']+t['id']:t for t in data['tiles']})
-    manifest={}
+    manifest_path=ROOT/f'src/content/chapter-{chapter}/scene-art.json'
+    manifest=json.loads(manifest_path.read_text()) if only else {}
     if chapter=='two':C.update(water='#25465c',paving='#71838a',earth='#657374',ballast='#3c5261')
     if chapter=='three':C.update(grass='#384f43',paving='#8a9690',ballast='#40575d')
     modules={p.stem:p for p in KIT.glob('*.svg')}
     for file in sorted((ROOT/f'src/content/chapter-{chapter}/maps').glob('*.json')):
+        if only and file.stem!=only:continue
         data=json.loads(file.read_text());w=data['width']*24;h=data['height']*24;entries=[];floor_depth=-1000
         folder=OUT/file.stem;folder.mkdir(exist_ok=True)
         for layer in data['layers']:
@@ -187,7 +190,12 @@ def export(chapter='one'):
                 if m and m[1] in modules:
                     module,xx,yy=m.groups();module='miners-cottage' if file.stem=='cinderbank' and module=='shelter' else module;ox=(x-int(xx))*24;oy=(y-int(yy))*24
                     depth=y*24+int(prop(t).get('sortOffset',24)) if prop(layer).get('sort') else floor_depth
-                    instances[(module,ox,oy)]={'key':f'scenery-{module}','url':f'art/vector/scenery/{module}.svg','x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
+                    key=f'scenery-{module}';url=f'art/vector/scenery/{module}.svg'
+                    if chapter=='one' and file.stem=='station':
+                        from station import scenery
+                        variant=scenery(module,modules[module],folder)
+                        if variant:key,url=variant
+                    instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
                     if kind not in C:kind=re.sub(r'-\d+-\d+$','',kind)
@@ -195,14 +203,23 @@ def export(chapter='one'):
                     fields[kind].add((x,y))
             if fields:
                 parts=[]
-                for kind,cells in fields.items():parts.append(field(kind,cells,w,h,file.stem) if kind in C else fittings(kind,cells))
+                for kind,cells in fields.items():
+                    art=field(kind,cells,w,h,file.stem) if kind in C else fittings(kind,cells)
+                    if chapter=='one' and file.stem=='station':
+                        from station import terrain
+                        art=terrain(kind,art,w,h)
+                    parts.append(art)
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
                 if layer['name']=='Paths and platforms':
                     lamps=set()
                     for l in data['layers']:
                         for i,g in enumerate(l.get('data',[])):
                             if g and defs[g]['type']=='lamp-0-0':lamps.add((i%data['width']*24+24,i//data['width']*24+134))
-                    for x,y in sorted(lamps):parts.append(polygon([(x-63,y),(x-33,y-14),(x+26,y-18),(x+69,y-3),(x+45,y+18),(x-21,y+23)],'#8c8667'))
+                    for x,y in sorted(lamps):
+                        if chapter=='one' and file.stem=='station':
+                            from station import lamplight
+                            parts.append(lamplight(x,y))
+                        else:parts.append(polygon([(x-63,y),(x-33,y-14),(x+26,y-18),(x+69,y-3),(x+45,y+18),(x-21,y+23)],'#8c8667'))
                 url=f'art/vector/scenes/{file.stem}/layer-{layer["id"]}.svg'
                 title=layer['name'].replace('&','&amp;')
                 (ROOT/'public'/url).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{title}</title>'+''.join(parts)+'</svg>\n')
@@ -218,5 +235,5 @@ def export(chapter='one'):
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--chapter',choices=('one','two','three'),default='one')
-    export(parser.parse_args().chapter)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--chapter',choices=('one','two','three'),default='one');parser.add_argument('--map',dest='only',help='Rebuild one map while retaining the other manifest entries')
+    args=parser.parse_args();export(args.chapter,args.only)

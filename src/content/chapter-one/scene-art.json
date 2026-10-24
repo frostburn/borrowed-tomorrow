@@ -541,8 +541,8 @@
       "height": 624
     },
     {
-      "key": "scenery-station-house",
-      "url": "art/vector/scenery/station-house.svg",
+      "key": "scene-station-prop-station-house",
+      "url": "art/vector/scenes/station/station-house.svg",
       "x": 120,
       "y": 48,
       "depth": 259,
@@ -571,8 +571,8 @@
       "height": 168
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall",
+      "url": "art/vector/scenes/station/river-wall.svg",
       "x": 432,
       "y": 168,
       "depth": 259,
@@ -581,8 +581,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall",
+      "url": "art/vector/scenes/station/river-wall.svg",
       "x": 624,
       "y": 168,
       "depth": 259,
@@ -591,8 +591,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall",
+      "url": "art/vector/scenes/station/river-wall.svg",
       "x": 816,
       "y": 168,
       "depth": 259,
@@ -601,8 +601,8 @@
       "height": 96
     },
     {
-      "key": "scenery-stone-steps",
-      "url": "art/vector/scenery/stone-steps.svg",
+      "key": "scene-station-prop-stone-steps",
+      "url": "art/vector/scenes/station/stone-steps.svg",
       "x": 672,
       "y": 192,
       "depth": -991,
@@ -611,8 +611,8 @@
       "height": 96
     },
     {
-      "key": "scenery-market-stall",
-      "url": "art/vector/scenery/market-stall.svg",
+      "key": "scene-station-prop-market-stall",
+      "url": "art/vector/scenes/station/market-stall.svg",
       "x": 648,
       "y": 312,
       "depth": 451,
@@ -621,8 +621,8 @@
       "height": 168
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -72,
       "y": 336,
       "depth": 571,
@@ -631,8 +631,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": 864,
       "y": 384,
       "depth": 619,
@@ -641,8 +641,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
       "y": -72,
       "depth": 163,
@@ -651,8 +651,8 @@
       "height": 240
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-station-prop-fir",
+      "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
       "y": -24,
       "depth": 235,
@@ -661,8 +661,8 @@
       "height": 264
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 384,
       "y": 144,
       "depth": 283,
@@ -671,8 +671,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 576,
       "y": 408,
       "depth": 547,
@@ -681,8 +681,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 864,
       "y": 288,
       "depth": 427,
@@ -691,8 +691,8 @@
       "height": 144
     },
     {
-      "key": "scenery-bunting",
-      "url": "art/vector/scenery/bunting.svg",
+      "key": "scene-station-prop-bunting",
+      "url": "art/vector/scenes/station/bunting.svg",
       "x": 456,
       "y": 192,
       "depth": 283,
@@ -701,8 +701,8 @@
       "height": 96
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 144,
       "y": 384,
       "depth": 451,
@@ -711,8 +711,8 @@
       "height": 72
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 840,
       "y": 504,
       "depth": 571,
