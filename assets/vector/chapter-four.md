@@ -22,3 +22,15 @@ Bram and the Sanctuary Warden have new 80 × 80 body models in `assets/character
 All four chapters now use the same on-demand native SVG scene loader, nearest filtering and shared final 2px raster for graphics/text. Failed destination assets preserve the previous checkpoint; retry completes preparation before entry. The Maps workshop catalogs all eight new layouts with layers, story flags, collision and casts. Inspect `?dev=maps&map=refuge`, `breakwater`, `sanctuary`, or the `battle-*` entries; inspect Bram and the warden in Sprites. The Vite-only canonical Chapter Four start replays the new refuge arrival.
 
 Run `npm run check`, the focused `tests/e2e/chapter-four.spec.ts` journeys and production Chapter Four checks. Screenshots and traces belong outside the repo. Stage explicit changes and run `npm run check:art-upload`; every SVG remains self-contained and below 128 KiB. The three maps share the same 64 × 42 navigation size; no oversized raster sheets are uploaded.
+
+## Angular coastal art and illumination
+
+`chapter_four_style.py` supplies the chapter-local geometry/material treatment and `chapter-four/lighting.json` owns registered emitters. The ward and pump-house have slanted roofs/lintels and colored depth planes; the old hospice wings lean around a rigid calibrated bronze ring. Straight slanted masonry/deck courses span each whole floor without rectangular restarts. Only outer quay edges have depth faces, with sparse foam beneath exposed sea walls. The sanctuary's rock faces are fractured planes; the sea has sparse unequal reflections against a dusk horizon.
+
+The pump-house awning and ward entry have uncovered opal lights. Outdoor coastal lanterns illuminate the forecourts, rest spots and the sea-wall conversation; matching window/ferry spill clips to actual quay surfaces. Campaign, cutscene casts, civilians, all five tactical floors and Maps share actor highlight planes and restrained overlapping shadows. Ferry lighting inherits each mooring's story layer. There is no extra idle animation loop. The wheel now visibly connects to the gate tower through a supported drive shaft. Controls, casts, collision, navigation, interaction IDs, flags and saves remain unchanged.
+
+Both ferry hulls sit in open water: the waiting ferry is lifted clear of the eastern quay; the returning ferry moors below the southwest quay rather than on its walking surface. The suspended skiff stays between distant water and foreground land. Review both `harborOpened` states and the separated cable/suspended-water states in Maps. Existing Chapter One–Three art and the train originals are untouched.
+
+Phone sea-wall framing keeps Nell and Tomas above the dialogue through camera tracking and reflow, without moving their stage positions.
+
+Reproduce with `npm run art:four` or `python3 assets/vector/chapter-four.py`. All SVGs remain native, self-contained and below 128 KiB. Run `npm run check` and the detailed Chapter Four, native-lighting and Maps browser checks outside normal CI.
