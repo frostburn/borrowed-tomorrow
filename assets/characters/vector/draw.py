@@ -13,7 +13,7 @@ PALETTE = {
     'steel': '#8b9b9b', 'copper': '#b7784e', 'leather': '#9a7151',
 }
 
-# Cloth folds stay in the garment's own material, rather than black piping.
+# Shading stays in the surface's own material, rather than black piping.
 MATERIALS = {
     'red': ('#843f39', '#c27054'), 'white': ('#c0ad87', '#fae3b8'),
     'navy': ('#243747', '#385368'), 'green': ('#304d43', '#50735b'),
@@ -22,6 +22,7 @@ MATERIALS = {
     'plum': ('#674c63', '#9c7387'), 'slate': ('#515c6b', '#7c8994'),
     'brown': ('#694a3b', '#a07854'), 'copper': ('#956547', '#d09a6c'),
     'skin': ('#ad795b', '#e1b68c'), 'leather': ('#805d47', '#b18b62'),
+    'gold': ('#b58b4f', '#eed090'),
 }
 for material, (shadow, light) in MATERIALS.items():
     PALETTE[material+'-shadow'] = shadow
@@ -63,6 +64,29 @@ class Drawing:
         for shade,positive,cut in [('shadow',True,mid),('light',False,min(xs)+(max(xs)-min(xs))*.25)]:
             facet=clip_plane(points,lambda x,y:x-cut-.12*(y-top),positive)
             if len(facet)>2:self.poly(facet,fill+'-'+shade,None)
+
+    def tube(self, points, fill, width):
+        """A connected metal rod with light/shadow facets, without an outline."""
+        normals=[]
+        for (ax,ay),(bx,by) in zip(points,points[1:]):
+            dx,dy=bx-ax,by-ay;length=math.hypot(dx,dy)
+            normals.append((-dy/length,dx/length))
+        # Keep the highlighted side facing the upper-left light in every pose.
+        sign=1 if sum(normals[0])<=0 else -1
+        normals=[(x*sign,y*sign)for x,y in normals]
+        offsets=[];radius=width/2
+        for i in range(len(points)):
+            a,b=normals[max(0,i-1)],normals[min(i,len(normals)-1)]
+            mx,my=a[0]+b[0],a[1]+b[1];length=math.hypot(mx,my)
+            nx,ny=(mx/length,my/length)if length>.1 else b
+            reach=min(radius*1.6,radius/max(.6,nx*b[0]+ny*b[1]))
+            offsets.append((nx*reach,ny*reach))
+        light=[(x+dx,y+dy)for (x,y),(dx,dy) in zip(points,offsets)]
+        shade=[(x-dx,y-dy)for (x,y),(dx,dy) in zip(points,offsets)]
+        inner=[(x+dx*.55,y+dy*.55)for (x,y),(dx,dy) in zip(points,offsets)]
+        self.poly(light+shade[::-1],fill,None)
+        self.poly(points+shade[::-1],fill+'-shadow',None)
+        self.poly(light+inner[::-1],fill+'-light',None)
 
     def transform(self, start, sx, sy, x_origin, y_origin, y_offset, end=None):
         """Retarget vector parts before rasterization, keeping contour widths."""
@@ -160,7 +184,7 @@ def human(d, head_start, head_end=None, width=.75, complexion='skin'):
 
 def lantern(d, hand):
     x, y = hand
-    d.oval((x-2, y+1, x+2, y+7), 'ink')
+    d.oval((x-2, y+1, x+2, y+7), 'gold-shadow')
     d.oval((x-1, y+2, x+1, y+6), 'gold', None)
     d.rect((x-2, y+6, x+2, y+13), 'gold', 'ink')
     d.rect((x-1, y+8, x+1, y+11), 'white')
@@ -172,13 +196,12 @@ def lance(d, hand, tip):
     x, y = hand
     tx, ty = tip
     # A connected brass barrel with a steel nozzle and wooden rear grip.
-    d.line([(x-1, y-2), (tx, ty)], 'ink', 5)
-    d.line([(x-1, y-2), (tx, ty)], 'gold', 3)
+    d.tube([(x-1, y-2), (tx, ty)], 'gold', 5)
     d.line([(x-1, y-2), (x+1, y+1)], 'brown', 2)
     nx, ny = tx-(tx-x)*.25, ty-(ty-y)*.25
-    d.line([(nx, ny), (tx, ty)], 'silver', 3)
+    d.tube([(nx, ny), (tx, ty)], 'silver', 3)
     d.oval((tx-1, ty-1, tx+1, ty+1), 'shade')
-    d.line([(x+2, y), (x+3, y+5), (x+1, y+8)], 'ink')
+    d.line([(x+2, y), (x+3, y+5), (x+1, y+8)], 'leather-shadow')
 
 
 def braid(d, x, y, length=14):
