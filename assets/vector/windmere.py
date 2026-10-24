@@ -14,7 +14,7 @@ def export(g):
   return out
  def staff_cast(extra=None):return {'nell':(29,28),'celia':(31,26),'orrin':(26,27),'kit':(27,30),'petra':(30,30),**(extra or {})}
  lake=sky(1536,1008)+[poly([(0,380),(430,334),(890,389),(1536,320),(1536,1008),(0,1008)],'#668e92'),poly([(0,493),(290,447),(760,502),(1230,436),(1536,474),(1536,490),(1220,456),(753,522),(285,466),(0,510)],'#a7c4b8'),poly([(0,660),(240,539),(540,610),(900,526),(1220,606),(1536,530),(1536,1008),(0,1008)],'#526f65')]
- world('windmere','Windmere · the lakeside hospital','The lower dispensary is east of the ward. Patients wait beneath the green canopy.',[(5,24,55,13),(14,18,38,7)],[(15,18,10,5),(26,18,18,2),(48,20,3,3)], [
+ world('windmere','Windmere · the lakeside hospital','The lower dispensary is east of the ward. Patients wait beneath the green canopy.',OUTLINES['windmere'],[(15,18,10,5),(26,18,18,2),(48,20,3,3)], [
   obj('wind-supply',11,31,'Hospital bench · rest and bandages',sign=True),obj('wind-ship',6,32,'Survey landing · return aboard',sign=True),obj('wind-dispensary',51,28,'Lower dispensary · the old water lift',sign=True),control('wind-transfer',35,24,(33,21,5,3),'Ordinary ward · the bypass valve',sign=True),obj('wind-mirrorward',44,23,'Treatment gallery · the anchor',sign=True),obj('wind-sera',32,26,'Sera · the ward nurse',sprite='sera'),obj('wind-teren',39,26,'Teren · the garden walk',sprite='teren',requiredFlag='windmereFreed')],
   {'start':(9,32),'ward':(29,28),'dispensary':(48,30),'transfer':(34,26),'mirrorward':(42,25),'night':(31,28),'patient-step':(35,25)},
   {'five-wind-arrival':staff_cast({'sera':(34,25),'teren':(38,25),'iven':(41,24)}),'five-wind-transfer':staff_cast({'sera':(36,24),'iven':(41,24)}),'five-wind-night':staff_cast({'sera':(34,25),'teren':(38,26),'iven':(42,25)})},
@@ -24,7 +24,7 @@ def export(g):
  interior=[rect(0,0,1536,1008,'#213b49'),rect(80,232,1376,300,'#597d7a'),rect(80,246,1376,15,'#b9ba9a')]
  for x in range(100,1450,180):interior += [rect(x,286,116,142,'#2e505a'),rect(x+10,297,96,120,'#789a92'),line([(x+58,297),(x+58,417)],'#c7c9a5',4)]
  platform=[poly([(0,16),(75,0),(161,17),(84,39)],'#a2b7a2'),poly([(0,16),(84,39),(161,17),(161,36),(84,58),(0,36)],'#35565e'),rect(14,-32,9,62,'#d2c49c'),rect(139,-32,9,62,'#d2c49c'),poly([(46,-19),(85,-29),(121,-13),(83,0)],'#e1d2ae'),rect(46,-19,76,18,'#a3926e')]
- world('dispensary','Windmere · the lower dispensary','Stored ward equipment waits beside the old water lift. Its wheel is on the eastern walk.',[(6,25,52,12),(8,19,45,7),(28,14,17,6)],[(9,19,11,3),(31,20,6,4),(48,27,4,3)], [
+ world('dispensary','Windmere · the lower dispensary','Stored ward equipment waits beside the old water lift. Its wheel is on the eastern walk.',OUTLINES['dispensary'],[(9,19,11,3),(31,20,6,4),(48,27,4,3)], [
   obj('wind-lift-guard',30,27,'Water-lift brake · imperial machines',sprite='guardian-forge',doneFlag='windLiftWon',spriteHiddenFlag='windLiftWon'),control('wind-lift-wheel',43,24,(42,20,4,4),'Water lift · manual wheel',sign=True),obj('wind-ward',8,32,'Return to the hospital ward',sign=True),control('wind-reflector',22,23,(19,20,4,3),'Old lamp cabinet · opal reflector',sign=True),obj('wind-lift-sera',46,25,'Sera · the stored ward kit',sprite='sera')],
   {'start':(12,32),'junction':(27,28),'wheel':(42,26),'volunteer-high':(39,23)},
   {'five-wind-dispensary':staff_cast({'sera':(33,25)}),'five-wind-lift':{'nell':(40,26),'celia':(39,25),'orrin':(43,24),'kit':(38,28),'petra':(42,28),'sera':(46,25)}},
@@ -33,7 +33,7 @@ def export(g):
 
  gallery=[rect(0,0,1536,1008,'#233c4a'),poly([(0,90),(460,0),(1050,0),(1536,90),(1536,420),(0,420)],'#436769'),rect(0,272,1536,13,'#b8b294')]
  for x in (210,500,990,1280):gallery += [poly([(x,160),(x+80,111),(x+155,160),(x+155,341),(x,341)],'#203f4c'),poly([(x+15,167),(x+80,128),(x+140,167),(x+140,321),(x+15,321)],'#83a89d'),line([(x+80,130),(x+80,321)],'#b8bf9e',5)]
- world('mirrorward','Windmere · the mirrored ward','The treatment engine holds the anchor. The manual release stands below its lens.',[(6,25,52,12),(11,18,43,8),(27,14,14,5)],[(27,14,13,4),(14,20,5,3),(46,20,5,3)], [
+ world('mirrorward','Windmere · the mirrored ward','The treatment engine holds the anchor. The manual release stands below its lens.',OUTLINES['mirrorward'],[(27,14,13,4),(14,20,5,3),(46,20,5,3)], [
   obj('wind-gallery-guard',29,28,'Gallery bridge · anchor guards',sprite='crow-forge',doneFlag='windGalleryWon',spriteHiddenFlag='windGalleryWon'),control('wind-engine',33,23,(27,8,13,11),'Mirrored ward engine · release the patients',sign=True,hiddenFlag='wardEngineWon',accessFlag='windGalleryWon'),control('wind-anchor',32,19,(27,7,13,13),'Ward anchor · support-release controls',sign=True,accessFlag='wardEngineWon'),obj('wind-gallery-return',9,32,'Return to the ordinary ward',sign=True),obj('wind-iven',42,25,'Director Iven · the ward ledger',sprite='iven')],
   {'start':(13,32),'stand':(28,29),'release':(32,22)},
   {'five-wind-mirror':{'nell':(28,29),'celia':(31,26),'orrin':(26,28),'kit':(27,31),'petra':(30,30),'iven':(37,24),'sera':(35,27)},'five-wind-release':{'nell':(30,24),'celia':(33,21),'orrin':(29,22),'kit':(27,26),'petra':(36,24),'iven':(40,24),'sera':(35,22)}},

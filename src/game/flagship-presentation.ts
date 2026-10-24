@@ -34,6 +34,7 @@ function propeller(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:numbe
 
 export function flagshipPresentation(encounter:Encounter):BattlePresentation{return {
   encounter,prepare:prepareFlagship,focus:offset(5,3),
+  lighting:{scene:'flagship-battle',ground:'M110 292H842L958 480H10Z'},
   animating:b=>!b.result&&bossMotionEnabled(),
   portrait:u=>isFlagshipPart(u)?FLAGSHIP_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,

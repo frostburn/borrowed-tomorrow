@@ -15,6 +15,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
  let source:Hex|undefined;
  return {
   encounter,prepare:prepareWard,focus:offset(5,3),
+  lighting:encounter.id==='wind-engine'?{scene:'battle-wind-engine',ground:'M24 72H984V552H24Z'}:undefined,
   portrait:u=>u.id===WARD_ID?`${import.meta.env.BASE_URL}art/vector/portrait-ward-engine.svg`:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WARD_ID?bossPlacement({...u,hex}):undefined,
