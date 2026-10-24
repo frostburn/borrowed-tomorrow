@@ -61,7 +61,7 @@ class LitActor extends Phaser.GameObjects.Image {
   renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:LitActor,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
     camera.addToRenderList(src);
     const frame=src.frame,pose=[Math.round(src.x),Math.round(src.y),src.scaleX,src.scaleY,src.rotation,src.originX,src.originY,src.flipX,src.flipY].join(':');
-    if(!src.lit)src.lit=src.scene.textures.createCanvas(`actor-light-${serial++}`,frame.cutWidth,frame.cutHeight)!;
+    if(!src.lit){src.lit=src.scene.textures.createCanvas(`actor-light-${serial++}`,frame.cutWidth,frame.cutHeight)!;src.lit.setFilter(Phaser.Textures.FilterMode.NEAREST);}
     if(src.lastFrame!==frame||src.lastPose!==pose){
       const pixels=src.worldLighting.surface(frame).pixels;
       if(!src.output||src.output.width!==pixels.width||src.output.height!==pixels.height){src.lit.setSize(pixels.width,pixels.height);src.output=src.lit.context.createImageData(pixels.width,pixels.height);}

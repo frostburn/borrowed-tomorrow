@@ -4,6 +4,27 @@ import {importSave} from './navigation';
 import {capture,inspect} from './controls';
 import {palaceCheckpoint} from '../support/progress';
 
+test('Chapter One Maps casts use the campaign highlight planes at native size',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/?dev=maps&map=yard&mapScene=Scene:one-orrin');
+ await expect(page.locator('#map-workshop')).toHaveAttribute('data-ready','true');
+ await expect.poll(()=>page.evaluate(async()=>{
+  const module='/src/game/world-light.ts',{chapterOneLight,lightPixels}=await import(/* @vite-ignore */module);
+  const maps='/src/content/maps.ts',art='/src/content/scene-art.ts';
+  const {MAPS}=await import(/* @vite-ignore */maps),{visibleSceneArt}=await import(/* @vite-ignore */art);
+  const image=new Image();image.src='/art/vector/nell.svg';await image.decode();
+  const native=document.createElement('canvas');native.width=native.height=80;const ctx=native.getContext('2d')!;ctx.drawImage(image,0,0);
+  const source=ctx.getImageData(0,0,80,80),expected=ctx.createImageData(80,80);
+  lightPixels(source,expected,chapterOneLight('yard',visibleSceneArt(MAPS.yard.tiles,{flags:{}})),660,379,40,68);
+  const actual=document.querySelector<HTMLCanvasElement>('#map-preview')!.getContext('2d')!.getImageData(620,311,80,80).data;
+  let compared=0,wrong=0;
+  for(let i=0;i<actual.length;i+=4)if(source.data[i+3]>=254){compared++;if([0,1,2].some(c=>Math.abs(actual[i+c]-expected.data[i+c])>1))wrong++;}
+  return compared>200&&!wrong;
+ })).toBe(true);
+ await capture(page,'maps-lit-yard');
+ await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+});
+
 for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
  test.describe(`maps on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr,permissions:['clipboard-read','clipboard-write']});

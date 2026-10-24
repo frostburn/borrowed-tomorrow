@@ -17,11 +17,19 @@ import { facingAsset } from '../content/actors';
 import { EMPEROR_WALK } from '../content/cinematic-art';
 import { ConduitCinematic } from './conduit-cinematic';
 import type { WorldLighting } from './world-lighting';
+import { narrowScreen } from './resolution';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
+  private cameraPoint(point:StagePoint){
+    const p=pixel(point);
+    // The phone dialogue covers the lower half of the scene. Keep Chapter
+    // One's full actors above it, rather than centering their feet beneath it.
+    if(this.script.id.startsWith('one-')&&narrowScreen())p.y+=48;
+    return p;
+  }
   private layer:Phaser.GameObjects.Container;
   private actors=new Map<string,Phaser.GameObjects.Image>();
   private hidden:Phaser.GameObjects.Image[]=[];
@@ -70,7 +78,7 @@ export class Cutscene {
     const duration=this.duration?(shot.duration??this.duration):0;
     const camera=this.scene.cameras.main;camera.stopFollow();camera.panEffect.reset();
     if(this.tracked?.active)camera.centerOn(this.tracked.x,this.tracked.y);
-    else if(this.focus){const p=pixel(this.focus);camera.centerOn(p.x,p.y);}
+    else if(this.focus){const p=this.cameraPoint(this.focus);camera.centerOn(p.x,p.y);}
     this.tracked=undefined;
     for(const actor of this.actors.values()){
       this.motion.stop(actor);
@@ -78,7 +86,7 @@ export class Cutscene {
       if(to){actor.setPosition(to.x,to.y);actor.setData('destination',undefined);const idle=actor.getData('cinematic-idle');if(idle)actor.setTexture(idle);}
     }
     if(shot.focus){
-      this.focus=shot.focus;const p=pixel(shot.focus);
+      this.focus=shot.focus;const p=this.cameraPoint(shot.focus);
       if(shot.cut||!duration)camera.centerOn(p.x,p.y);else camera.pan(p.x,p.y,duration,'Sine.easeInOut',true);
     }
     for(const [id,direction] of Object.entries(shot.actors??{})){
@@ -124,7 +132,7 @@ export class Cutscene {
     }
     this.audio.cinematicMix(shot.silence?0:.25);if(shot.cue)this.audio.effect(shot.cue);
   }
-  reframe(){const p=this.tracked?.active?this.tracked:this.focus?pixel(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
+  reframe(){const p=this.tracked?.active?this.tracked:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
     if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
