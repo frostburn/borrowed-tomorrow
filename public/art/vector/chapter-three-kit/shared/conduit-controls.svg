@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="72" viewBox="0 0 192 72"><title>Green conduit · conduit-controls</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/conduit-controls.svg</metadata>
+<ellipse cx="96" cy="-4" rx="17" ry="19" fill="#c1ded0" opacity=".1" /><polygon points="13.00,43.00 23.00,43.00 25.00,67.00 11.00,67.00" fill="#243e45" />
+<rect x="15" y="46" width="5" height="18" fill="#3e6659" />
+<polygon points="169.00,43.00 179.00,43.00 181.00,67.00 167.00,67.00" fill="#243e45" />
+<rect x="171" y="46" width="5" height="18" fill="#3e6659" />
+<polygon points="0.00,28.00 15.00,20.00 176.00,20.00 192.00,29.00 190.00,47.00 2.00,47.00" fill="#243e45" />
+<polygon points="3.00,29.00 17.00,24.00 175.00,24.00 188.00,29.00 181.00,36.00 10.00,36.00" fill="#7b9980" />
+<rect x="7" y="37" width="177" height="17" fill="#3e6659" />
+<rect x="7" y="38" width="177" height="3" fill="#c69e60" />
+<rect x="11" y="52" width="169" height="7" fill="#304c51" />
+<polygon points="25.00,28.00 26.00,8.00 34.00,8.00 35.00,28.00" fill="#876c48" />
+<ellipse cx="30.0" cy="16.0" rx="14" ry="15" fill="#243e45" />
+<ellipse cx="29.0" cy="15.0" rx="12" ry="13" fill="#c69e60" />
+<ellipse cx="29.0" cy="15.0" rx="9" ry="10" fill="#e6d7ae" />
+<polygon points="21.00,15.00 29.00,7.00 29.00,24.00 21.00,21.00" fill="#b9baa5" />
+<polyline points="29.00,16.00 34.00,9.00" fill="none" stroke="#304c51" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="29.0" cy="16.0" rx="2" ry="2" fill="#304c51" />
+<polygon points="57.00,28.00 58.00,8.00 66.00,8.00 67.00,28.00" fill="#876c48" />
+<ellipse cx="62.0" cy="16.0" rx="14" ry="15" fill="#243e45" />
+<ellipse cx="61.0" cy="15.0" rx="12" ry="13" fill="#c69e60" />
+<ellipse cx="61.0" cy="15.0" rx="9" ry="10" fill="#e6d7ae" />
+<polygon points="53.00,15.00 61.00,7.00 61.00,24.00 53.00,21.00" fill="#b9baa5" />
+<polyline points="61.00,16.00 62.00,13.00" fill="none" stroke="#304c51" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="61.0" cy="16.0" rx="2" ry="2" fill="#304c51" />
+<polygon points="89.00,28.00 90.00,8.00 98.00,8.00 99.00,28.00" fill="#876c48" />
+<ellipse cx="94.0" cy="16.0" rx="14" ry="15" fill="#243e45" />
+<ellipse cx="93.0" cy="15.0" rx="12" ry="13" fill="#c69e60" />
+<ellipse cx="93.0" cy="15.0" rx="9" ry="10" fill="#e6d7ae" />
+<polygon points="85.00,15.00 93.00,7.00 93.00,24.00 85.00,21.00" fill="#b9baa5" />
+<polyline points="93.00,16.00 90.00,9.00" fill="none" stroke="#304c51" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="93.0" cy="16.0" rx="2" ry="2" fill="#304c51" />
+<polygon points="121.00,28.00 122.00,8.00 130.00,8.00 131.00,28.00" fill="#876c48" />
+<ellipse cx="126.0" cy="16.0" rx="14" ry="15" fill="#243e45" />
+<ellipse cx="125.0" cy="15.0" rx="12" ry="13" fill="#c69e60" />
+<ellipse cx="125.0" cy="15.0" rx="9" ry="10" fill="#e6d7ae" />
+<polygon points="117.00,15.00 125.00,7.00 125.00,24.00 117.00,21.00" fill="#b9baa5" />
+<polyline points="125.00,16.00 130.00,13.00" fill="none" stroke="#304c51" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="125.0" cy="16.0" rx="2" ry="2" fill="#304c51" />
+<polygon points="153.00,28.00 154.00,8.00 162.00,8.00 163.00,28.00" fill="#876c48" />
+<ellipse cx="158.0" cy="16.0" rx="14" ry="15" fill="#243e45" />
+<ellipse cx="157.0" cy="15.0" rx="12" ry="13" fill="#c69e60" />
+<ellipse cx="157.0" cy="15.0" rx="9" ry="10" fill="#e6d7ae" />
+<polygon points="149.00,15.00 157.00,7.00 157.00,24.00 149.00,21.00" fill="#b9baa5" />
+<polyline points="157.00,16.00 158.00,9.00" fill="none" stroke="#304c51" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="157.0" cy="16.0" rx="2" ry="2" fill="#304c51" />
+<ellipse cx="23.0" cy="42.0" rx="6" ry="5" fill="#876c48" />
+<polyline points="17.00,42.00 29.00,42.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<polyline points="23.00,37.00 23.00,47.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="76.0" cy="42.0" rx="6" ry="5" fill="#876c48" />
+<polyline points="70.00,42.00 82.00,42.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<polyline points="76.00,37.00 76.00,47.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="135.0" cy="42.0" rx="6" ry="5" fill="#876c48" />
+<polyline points="129.00,42.00 141.00,42.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<polyline points="135.00,37.00 135.00,47.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<ellipse cx="170.0" cy="42.0" rx="6" ry="5" fill="#876c48" />
+<polyline points="164.00,42.00 176.00,42.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<polyline points="170.00,37.00 170.00,47.00" fill="none" stroke="#c69e60" stroke-width="2" stroke-linejoin="bevel" />
+<rect x="45" y="32" width="12" height="4" fill="#a0c3b5" />
+<rect x="47" y="32" width="4" height="4" fill="#d0ddd0" />
+<rect x="100" y="32" width="12" height="4" fill="#a0c3b5" />
+<rect x="102" y="32" width="4" height="4" fill="#d0ddd0" />
+<rect x="151" y="32" width="12" height="4" fill="#a0c3b5" />
+<rect x="153" y="32" width="4" height="4" fill="#d0ddd0" />
+</svg>

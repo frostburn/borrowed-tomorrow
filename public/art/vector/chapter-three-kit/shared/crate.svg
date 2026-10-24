@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+<title>Green conduit · crate</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/crate.svg</metadata>
+<polygon points="7.59,20.27 44.66,6.55 66.19,20.77 66.65,61.76 27.00,72.00 6.71,57.35" fill="#695547" />
+<polygon points="7.59,20.27 44.66,6.55 66.19,20.77 28.67,34.23" fill="#9a7e58" />
+<polygon points="28.67,34.23 66.19,20.77 66.65,61.76 27.00,72.00" fill="#895e48" />
+<polyline points="10.24,23.08 25.81,35.31 26.10,67.04" fill="none" stroke="#243e46" stroke-width="3" />
+<polyline points="31.47,38.13 62.62,58.73" fill="none" stroke="#9a7e58" stroke-width="4" />
+<polyline points="60.73,26.10 32.09,65.02" fill="none" stroke="#9a7e58" stroke-width="4" />
+</svg>

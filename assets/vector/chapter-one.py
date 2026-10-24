@@ -201,6 +201,9 @@ def export(chapter='one', only=None):
                     elif chapter=='two':
                         from chapter_two_style import scenery
                         key,url=scenery(module,modules[module],file.stem,ox)
+                    elif chapter=='three':
+                        from chapter_three_style import scenery
+                        key,url=scenery(module,modules[module],file.stem,ox)
                     instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
@@ -223,6 +226,12 @@ def export(chapter='one', only=None):
                         if kind in ('paving','earth','ballast'):
                             clip=re.search(r'<clipPath[^>]*>(.*?)</clipPath>',art)
                             if clip:light_floor.append(clip[1])
+                    elif chapter=='three':
+                        from chapter_three_style import terrain
+                        art=terrain(kind,art,w,h,file.stem)
+                        if kind in ('paving','ballast','works-stone','works-deck','cave-floor'):
+                            clip=re.search(r'<clipPath[^>]*>(.*?)</clipPath>',art)
+                            if clip:light_floor.append(clip[1])
                     parts.append(art)
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
                 if layer['name']=='Paths and platforms' and (chapter!='one' or file.stem=='station'):
@@ -241,16 +250,17 @@ def export(chapter='one', only=None):
                 entries.append({'key':f'scene-{file.stem}-{layer["id"]}','url':url,'x':0,'y':0,'depth':floor_depth,'layerId':layer['id']})
             entries.extend(instances.values());floor_depth+=1
         # Dimensions allow picking exact source pieces in the Maps inspector.
-        if (chapter=='one' and file.stem!='station')or chapter=='two':
+        if (chapter=='one' and file.stem!='station')or chapter in ('two','three'):
             if chapter=='one':from chapter_one_style import spill
-            else:from chapter_two_style import spill
+            elif chapter=='two':from chapter_two_style import spill
+            else:from chapter_three_style import spill
             # Spill inherits the emitter's visibility layer, including the
             # collector's shutdown. Ground light stays below actor shadows.
             for layer in data['layers']:
                 props=[(e['url'].split('/')[-1][:-4],e['x'],e['y'])for e in entries if e['layerId']==layer['id'] and f'/chapter-{chapter}-kit/'in e['url']]
                 light=spill(props)
                 if not light:continue
-                if chapter=='two':
+                if chapter in ('two','three'):
                     light='<defs><clipPath id="light-floor">'+''.join(light_floor)+'</clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
                 url=f'art/vector/scenes/{file.stem}/light-{layer["id"]}.svg'
                 (ROOT/'public'/url).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>Ground light</title>'+light+'</svg>\n')

@@ -1034,6 +1034,11 @@
           "name": "hiddenFlag",
           "type": "string",
           "value": "extractionStopped"
+        },
+        {
+          "name": "live",
+          "type": "bool",
+          "value": true
         }
       ]
     },

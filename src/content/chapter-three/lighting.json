@@ -1,0 +1,453 @@
+{
+  "profiles": {
+    "northglass": {
+      "ambient": [
+        0.69,
+        0.78,
+        0.79
+      ],
+      "lamps": [
+        {
+          "x": 550,
+          "y": 620,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "relayhall": {
+      "ambient": [
+        0.63,
+        0.74,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 620,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "conduit": {
+      "ambient": [
+        0.57,
+        0.7,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 620,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-capital-arrest": {
+      "ambient": [
+        0.69,
+        0.78,
+        0.79
+      ],
+      "lamps": [
+        {
+          "x": 550,
+          "y": 410,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-palace-stores": {
+      "ambient": [
+        0.63,
+        0.74,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 410,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-works-warden": {
+      "ambient": [
+        0.63,
+        0.74,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 410,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-heart-feeds": {
+      "ambient": [
+        0.57,
+        0.7,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 410,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-heart-pressure": {
+      "ambient": [
+        0.57,
+        0.7,
+        0.68
+      ],
+      "lamps": [
+        {
+          "x": 780,
+          "y": 410,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "conduit-regulator": {
+      "ambient": [
+        0.64,
+        0.76,
+        0.72
+      ],
+      "lamps": [
+        {
+          "x": 464,
+          "y": 315,
+          "height": 240,
+          "radius": 680,
+          "strength": 0.65,
+          "color": [
+            0.56,
+            0.8,
+            0.88
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        },
+        {
+          "x": 109,
+          "y": 240,
+          "height": 115,
+          "radius": 370,
+          "strength": 1.1,
+          "shadowStrength": 0.5
+        },
+        {
+          "x": 821,
+          "y": 240,
+          "height": 115,
+          "radius": 370,
+          "strength": 1.1,
+          "shadowStrength": 0.5
+        }
+      ]
+    }
+  },
+  "props": {
+    "lamp": [
+      {
+        "x": 24,
+        "y": 134,
+        "height": 108,
+        "radius": 235,
+        "strength": 1.15
+      }
+    ],
+    "engine": [
+      {
+        "x": 41,
+        "y": 179,
+        "height": 80,
+        "radius": 265,
+        "strength": 1.2,
+        "fill": 0.2
+      }
+    ],
+    "coach": [
+      {
+        "x": 42,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 84,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 126,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 168,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 210,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      }
+    ],
+    "collector-machine": [
+      {
+        "x": 60,
+        "y": 135,
+        "height": 104,
+        "radius": 220,
+        "strength": 1.15,
+        "color": [
+          0.35,
+          0.9,
+          1.1
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.45
+      }
+    ],
+    "ward-stove": [
+      {
+        "x": 34,
+        "y": 151,
+        "height": 68,
+        "radius": 280,
+        "strength": 1.45,
+        "fill": 0.3,
+        "shadowStrength": 0.4
+      }
+    ],
+    "conduit-controls": [
+      {
+        "x": 96,
+        "y": 66,
+        "height": 70,
+        "radius": 180,
+        "strength": 0.8,
+        "color": [
+          0.6,
+          0.95,
+          0.8
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.25
+      }
+    ],
+    "conduit-vessel": [
+      {
+        "x": 108,
+        "y": 300,
+        "height": 170,
+        "radius": 325,
+        "strength": 0.95,
+        "color": [
+          0.58,
+          0.9,
+          1.02
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.35
+      }
+    ],
+    "works-wall": [
+      {
+        "x": 96,
+        "y": 164,
+        "height": 86,
+        "radius": 285,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      }
+    ],
+    "conduit-factory-wing": [
+      {
+        "x": 55,
+        "y": 237,
+        "height": 65,
+        "radius": 240,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      },
+      {
+        "x": 136,
+        "y": 237,
+        "height": 65,
+        "radius": 240,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      }
+    ],
+    "conduit-medical-pavilion": [
+      {
+        "x": 50,
+        "y": 211,
+        "height": 66,
+        "radius": 260,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      },
+      {
+        "x": 286,
+        "y": 211,
+        "height": 66,
+        "radius": 260,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      }
+    ],
+    "conduit-dome": [
+      {
+        "x": 48,
+        "y": 307,
+        "height": 60,
+        "radius": 240,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      },
+      {
+        "x": 336,
+        "y": 307,
+        "height": 60,
+        "radius": 240,
+        "strength": 1.8,
+        "shadowStrength": 0.45,
+        "beam": {
+          "reach": 196,
+          "width": 24,
+          "spread": 0.37
+        }
+      }
+    ]
+  }
+}
