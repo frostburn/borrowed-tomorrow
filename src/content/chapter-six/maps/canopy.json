@@ -696,6 +696,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "riverPatrolWon"
             }
           ],
           "id": 2

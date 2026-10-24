@@ -702,6 +702,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "capitalProcessionWon"
             }
           ],
           "id": 2

@@ -29,18 +29,6 @@ def layer(i,name,rects,w,h,gid):
   for yy in range(y,y+hh):
    for xx in range(x,x+ww):data[yy*w+xx]=gid
  return {'id':i,'name':name,'type':'tilelayer','visible':True,'width':w,'height':h,'data':data}
-def plane(floor,w,h,colour=STONE,wood=False):
- cells={(xx,yy)for x,y,ww,hh in floor for xx in range(x,x+ww)for yy in range(y,y+hh)}
- path=' '.join(f'M{x*24} {y*24}h{ww*24}v{hh*24}h{-ww*24}Z'for x,y,ww,hh in floor)
- out=[f'<defs><clipPath id="floor"><path d="{path}"/></clipPath></defs><g clip-path="url(#floor)">',rect(0,0,w,h,colour),poly([(0,470),(450,430),(920,590),(w,490),(w,640),(800,730),(0,610)],'#c59d70')]
- for y in range(0,h,24 if wood else 72):
-  out.append(line([(0,y),(w,y)],'#6e5f4b'if wood else '#a17e60',2))
-  if not wood:
-   for x in range((y//72)%2*80,w,160):out.append(line([(x,y),(x,y+72)],'#a17e60',2))
- out.append('</g>')
- for x,y in sorted(cells):
-  if(x,y+1)not in cells:out.extend([rect(x*24,(y+1)*24,24,16,DARK),rect(x*24,(y+1)*24-3,24,3,LIGHT)])
- return out
 def dunes(w=1536,h=1008):
  return [rect(0,0,w,h,NIGHT),poly([(0,60),(350,130),(700,48),(1050,120),(w,35),(w,280),(0,280)],'#bd8b78'),poly([(0,230),(230,172),(530,239),(840,161),(1140,226),(w,168),(w,h),(0,h)],'#916d65'),poly([(0,365),(270,274),(620,410),(950,284),(w,388),(w,h),(0,h)],'#b88a69'),poly([(0,647),(440,394),(670,520),(1060,402),(w,600),(w,h),(0,h)],'#765d54')]
 def building(x,y,w=170,h=160,dome=False):
@@ -58,15 +46,16 @@ def astrolabe(cx,cy,rx=150):
   t=math.radians(a);out.append(line([(cx+math.cos(t)*rx*.76,cy-7+math.sin(t)*rx*.31),(cx+math.cos(t)*rx*.96,cy-7+math.sin(t)*rx*.4)],LIGHT,3))
  out.extend([poly([(cx-15,cy+3),(cx+7,cy-104),(cx+25,cy-108),(cx+15,cy+3)],GOLD),ellipse(cx+17,cy-102,20,20,LIGHT),ellipse(cx+17,cy-102,12,12,INK)])
  return out
-def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,w=64,h=42,wood=False,ground=None,gated=None):
+def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,w=64,h=42,ground=None,gated=None):
  layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),layer(2,'Walking surfaces',floor,w,h,3),layer(3,'Scenery footprints',blocks,w,h,6)];entries=[]
  arena=id.startswith('battle-');outline=OUTLINES.get(id,[(72,72),(888,72),(888,456),(72,456)]if arena else None)
+ if outline is None and ground is None:raise ValueError(f'Missing floor perimeter: {id}')
  if id in OUTLINES:layers[1]['data']=polygon_cells(outline,w,h)
  layers[2]['properties']=props(sort=True)
  def add(n,body,ww=w*24,hh=h*24,x=0,y=0,depth=-1000,lid=1):
   svg(ART/f'{n}.svg',ww,hh,body);entries.append({'key':f'scene-six-{n}','url':f'art/vector/chapter-six/{n}.svg','x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':lid})
  add(id+'-back',back if back is not None else dunes(w*24,h*24))
- add(id+'-floor',floor_shapes(outline,w*24,h*24,id,arena)if outline else ground if ground is not None else plane(floor,w*24,h*24,'#917a55'if wood else STONE,wood),depth=-999,lid=2)
+ add(id+'-floor',floor_shapes(outline,w*24,h*24,id,arena)if outline else ground,depth=-999,lid=2)
  if arena:add(id+'-lamps',arena_fixtures(id.removeprefix('battle-')),depth=-998,lid=1)
  for n,body,ww,hh,x,y,depth,flags in decor:
   lid=3 if depth>=0 else 2
@@ -88,6 +77,9 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
   for lid in sorted({e['layerId']for e in entries}):
    field=spill_layer([e for e in entries if e['layerId']==lid],outline)
    if field:add(f'light-{id}-{lid}',field,depth=-950,lid=lid)
+ for o in objects:
+  required={'roof-chest':'desertAscentWon','river-chain':'riverPatrolWon','river-treatment':'rainhouseWon','north-windlass':'northWatchWon','north-hunters':'northLogRead','city-release':'capitalProcessionWon'}.get(o['name'])
+  if required:o['properties'].extend(props(markerFlags=required))
  retain_interaction_roles(MAP/f'{id}.json',layers)
  d={'type':'map','version':'1.10','tiledversion':'1.11.2','orientation':'orthogonal','renderorder':'right-down','infinite':False,'width':w,'height':h,'tilewidth':24,'tileheight':24,'nextlayerid':len(layers)+1,'nextobjectid':1,'properties':props(name=name,subtitle=subtitle,sceneArt=id,artStyle='rotoscope',safeArrival=next(iter(arrivals))),'tilesets':[{'firstgid':p['firstgid'],'source':'../../../../assets/tiles/pages/'+p['name']+'.json'}for p in json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text())['pages']],'layers':layers}
  for ll in layers:
@@ -110,7 +102,7 @@ world('outermooring','The capital · outer mooring','The landing bridge points t
  obj('six-chart',33,23,'Flight chart · the two pact seals',sign=True),obj('six-nell',18,28,'Nell · the shaded berth',kind='talk',sprite='nell-ill',hiddenFlag='nellRecovered',sign=True),obj('six-nell-ready',28,26,'Crew table · Nell',kind='talk',requiredFlag='nellRecovered',sign=True),obj('six-alda',36,26,'Alda · the outer mooring',kind='talk',sprite='alda'),obj('six-supplies',45,30,'Crew stores · rest and bandages',kind='optional',sign=True),obj('six-report',24,30,'Signal desk · Sera’s reply',storyUntil='jungleLeadKnown',sign=True),obj('six-capital',32,19,'Landing bridge · sealed capital',kind='talk',hiddenFlag='capitalOpened',sign=True),obj('six-capital-open',32,19,'Landing bridge · allied quay',kind='exit',requiredFlag='capitalOpened',sign=True)],
  {'start':(32,29),'namar':(32,29),'briefing':(32,28)}, {'six-sealed':{**crew,'emperor':(32,19)},'six-briefing':crew,'six-letter':{**crew,'nell':(19,28)},'six-home':{**crew,'nell':(19,28)},'six-river-home':crew,'six-north-home':{**crew,'nell':(19,28)},'six-capital-open':crew},
  [point('lookout',42,25,sprite='civilian-traveler-blue'),point('fitter',25,25,sprite='civilian-dockhand')],
- [('mooring-city-life',far_cart,80,64,802,365,-998.5,{}),('mooring-rail',[line([(290,540),(290,856),(1245,856),(1245,540)],GOLD,5)],1536,1008,0,0,-997,{}),('mooring-barrier',['<g opacity=".65">',*barrier,'</g>'],1536,540,0,0,-998,{'requiredFlag':'capitalSealed','hiddenFlag':'capitalOpened'}),('mooring-chart',chest(),60,48,785,515,563,{}),('mooring-berth',bench(),168,86,324,565,651,{}),('mooring-stores',chest(),60,48,1100,680,728,{})],capital,wood=True)
+ [('mooring-city-life',far_cart,80,64,802,365,-998.5,{}),('mooring-rail',[line([(290,540),(290,856),(1245,856),(1245,540)],GOLD,5)],1536,1008,0,0,-997,{}),('mooring-barrier',['<g opacity=".65">',*barrier,'</g>'],1536,540,0,0,-998,{'requiredFlag':'capitalSealed','hiddenFlag':'capitalOpened'}),('mooring-chart',chest(),60,48,785,515,563,{}),('mooring-berth',bench(),168,86,324,565,651,{}),('mooring-stores',chest(),60,48,1100,680,728,{})],capital)
 
 cityback=dunes()+[rect(744,430,120,578,'#315b64'),poly([(765,430),(800,430),(825,1008),(788,1008)],'#638a87')]
 for x,y,w,h in [(35,264,260,251),(330,285,225,194),(1080,214,340,263),(893,106,170,328)]:cityback.extend(building(x,y,w,h,x>800))

@@ -61,6 +61,20 @@ it('dims Chapter Two story gates and exits until their actual prerequisites are 
  }
 });
 
+it('dims Chapter Six mechanisms, supplies and exits while their guards or route gates remain',()=>{
+ const s=newGame();
+ for(const [map,id,flag]of [
+  ['skywalk','roof-chest','desertAscentWon'],['canopy','river-chain','riverPatrolWon'],
+  ['rainhouse','river-treatment','rainhouseWon'],['frostwatch','north-windlass','northWatchWon'],
+  ['glacier','north-hunters','northLogRead'],['canopy','canopy-rainhouse','riverChainOpen'],
+  ['frostwatch','watch-glacier','northPassOpened'],['stillcity','city-palace','capitalStreetFreed'],
+ ]as const){
+  const object=MAPS[map].objects.find(o=>o.id===id)!;s.flags[flag]=false;
+  expect(interactionMarker(object,s)?.color,`${map}:${id}`).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;expect(interactionMarker(object,s)?.color,`${map}:${id}`).toBe(INTERACTION_MARKERS[object.kind].color);
+ }
+});
+
 it('shows just the procession marker on Stillwater Avenue, with no stacked release cue',()=>{
  const s=newGame();s.location={map:'stillcity',x:32,y:31};
  const storyCues=()=>visibleObjects(MAPS.stillcity,s).filter(o=>interactionMarker(o,s)?.glyph==='!').map(o=>o.id);

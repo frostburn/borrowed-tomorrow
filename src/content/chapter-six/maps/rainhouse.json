@@ -627,6 +627,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "rainhouseWon"
             }
           ],
           "id": 2

@@ -671,6 +671,11 @@
               "name": "sprite",
               "type": "string",
               "value": "herald"
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "northLogRead"
             }
           ],
           "id": 2

@@ -686,6 +686,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "northWatchWon"
             }
           ],
           "id": 2

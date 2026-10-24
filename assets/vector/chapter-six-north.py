@@ -7,18 +7,6 @@ ROOT=b['ROOT'];manifest=b['manifest'];world=b['world'];rect=b['rect'];poly=b['po
 DARK='#233b55';MID='#4d718b';BLUE='#709bb0';SNOW='#d7e2df';LIGHT='#b0cdd5';WOOD='#725a4d';GOLD='#c8ab75'
 def mountains():
  return [rect(0,0,1536,1008,'#7d9eae'),poly([(0,215),(215,74),(340,190),(537,30),(741,223),(1026,57),(1243,220),(1411,75),(1536,165),(1536,1008),(0,1008)],'#53778f'),poly([(145,125),(215,74),(284,141),(226,132),(209,112),(188,142)],SNOW),poly([(431,140),(537,30),(663,148),(560,109),(532,75),(499,128)],LIGHT),poly([(918,139),(1026,57),(1158,161),(1067,128),(1023,95),(990,138)],SNOW),poly([(0,410),(280,252),(551,372),(798,199),(1134,384),(1536,226),(1536,1008),(0,1008)],DARK)]
-def floor(floors,wood=False):
- p=' '.join(f'M{x*24} {y*24}h{w*24}v{h*24}h{-w*24}Z'for x,y,w,h in floors)
- out=[f'<defs><clipPath id="north-floor"><path d="{p}"/></clipPath></defs><g clip-path="url(#north-floor)">',rect(0,0,1536,1008,'#8f8f88'if wood else '#9db9c5'),poly([(0,570),(410,480),(780,566),(1210,430),(1536,496),(1536,650),(930,737),(480,644),(0,756)],'#b8c7c8'if wood else SNOW),poly([(0,734),(430,625),(809,711),(1280,588),(1536,642),(1536,811),(1036,851),(480,786),(0,900)],'#7c8a8b'if wood else '#83a8ba')]
- if wood:
-  for y in range(360,1008,32):out.append(line([(0,y),(1536,y)],'#64747d',2))
- else:
-  for x,y in [(230,735),(450,615),(867,540),(1170,681),(660,812)]:out.append(poly([(x,y),(x+80,y-10),(x+126,y+1),(x+63,y+12)],'#c4d9dd'))
- out.append('</g>');cells={(xx,yy)for x,y,w,h in floors for xx in range(x,x+w)for yy in range(y,y+h)}
- for x,y in sorted(cells):
-  if(x,y+1)not in cells:out.extend([rect(x*24,(y+1)*24,24,30,MID),rect(x*24,(y+1)*24-4,24,4,SNOW)])
- return out
-
 def house(x,y,w=200,h=170):
  return lean([rect(x,y,w,h,WOOD),poly([(x+w-30,y),(x+w,y),(x+w,y+h),(x+w-30,y+h)],'#494c50'),poly([(x-23,y),(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73),(x,y+12)],SNOW),poly([(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73)],LIGHT),rect(x+26,y+35,44,61,DARK),rect(x+w-71,y+35,44,61,DARK),rect(x+35,y+42,12,35,'#c2b787'),rect(x+w-62,y+42,12,35,'#c2b787'),rect(x+15,y+h-18,w-30,6,SNOW)],y+h,-.025)
 
@@ -45,21 +33,21 @@ world('bellharbor','Skeld · the bell harbor','The king meets the expedition at 
  obj('north-king',34,24,'King Edric · the northern pact',sprite='edric',hiddenFlag='northSeen'),obj('north-signe',39,28,'Signe · the mountain expedition',sprite='signe',kind='talk'),obj('north-egil',25,29,'Egil · the harbor bells',sprite='egil',kind='talk'),obj('harbor-stores',17,32,'Harbor shelter · rest and supplies',kind='optional',sign=True),obj('harbor-watch',52,18,'Covered passage · Frostwatch',kind='exit',accessFlag='northSeen',sign=True),obj('harbor-ship',9,34,'Survey launch · return aboard',kind='exit',sign=True),obj('north-records',34,24,'Open records · the relief fleet',requiredFlag='northSealBroken',kind='talk',sign=True)],
  {'start':(14,33),'watch':(50,23),'return':(32,29)}, {'six-north-arrival':{**party,'edric':(34,24)},'six-north-return':{**party,'edric':(34,24)}},
  [point('harbor-fisher',12,29,sprite='civilian-dockhand-rust'),point('harbor-family',43,32,sprite='civilian-family-blue'),point('harbor-patient',20,34,sprite='civilian-patient-green'),point('harbor-loader',49,25,sprite='civilian-traveler-blue')],
- [('harbor-bell',bell(),98,114,758,452,566,{}),('harbor-launch',ship(0,0,.8),250,110,142,863,973,{}),('harbor-shelter',bench(),168,86,325,673,759,{}),('harbor-rail',[line([(129,576),(1110,576)],LIGHT,4)],1200,600,0,0,-997,{})],harbor,ground=floor(harborfloor,True))
+ [('harbor-bell',bell(),98,114,758,452,566,{}),('harbor-launch',ship(0,0,.8),250,110,142,863,973,{}),('harbor-shelter',bench(),168,86,325,673,759,{}),('harbor-rail',[line([(129,576),(1110,576)],LIGHT,4)],1200,600,0,0,-997,{})],harbor)
 watchfloor=[(7,28,25,8),(28,24,16,8),(40,23,16,3),(47,18,9,5)]
 watch=mountains()+house(610,285,325,214)+[poly([(1093,220),(1189,201),(1412,373),(1392,535),(1310,533),(1326,383)],MID),poly([(1130,258),(1191,242),(1355,381),(1337,532),(1220,532),(1246,372)],DARK)]
 world('frostwatch','Skeld · Frostwatch passage','The imperial signal post holds the covered passage. The windlass lifts its gate; the western shelter is out of the wind.',watchfloor,[(28,24,6,2)],[
  obj('north-watch',35,28,'Signal post · imperial winter patrol',hiddenFlag='northWatchWon',doneFlag='northWatchWon',sprite='guardian-frost'),obj('north-windlass',43,24,'Gate windlass · reopen the expedition route',hiddenFlag='northPassOpened',doneFlag='northPassOpened',sign=True),obj('watch-glacier',51,21,'Covered passage · the glacier wrecks',kind='exit',accessFlag='northPassOpened',sign=True),obj('watch-harbor',10,32,'Harbor road · return to Skeld',kind='exit',sign=True),obj('watch-rest',21,31,'Signal shelter · rest and supplies',kind='optional',sign=True)],
  {'start':(15,32),'gate':(40,28),'glacier':(48,23)}, {'six-north-watch':party,'six-north-gate':{**party,'signe':(43,25),'orrin':(42,26)}},
  [point('expedition-porter',23,33,sprite='civilian-traveler-blue')],
- [('watch-windlass',[rect(15,25,45,19,WOOD),ellipse(39,24,25,12,GOLD),line([(6,13),(72,31)],LIGHT,5),rect(16,37,7,25,DARK),rect(55,37,7,25,DARK)],80,66,1020,520,586,{}),('north-pass-gate',[rect(0,0,240,55,DARK),line([(0,15),(240,15)],LIGHT,5),line([(0,40),(240,40)],GOLD,5)],240,60,1128,524,584,{'hiddenFlag':'northPassOpened'}),('watch-bench',bench(),168,86,433,665,751,{})],watch,ground=floor(watchfloor),gated={'north-pass-gate':[(47,22,9,1)]})
+ [('watch-windlass',[rect(15,25,45,19,WOOD),ellipse(39,24,25,12,GOLD),line([(6,13),(72,31)],LIGHT,5),rect(16,37,7,25,DARK),rect(55,37,7,25,DARK)],80,66,1020,520,586,{}),('north-pass-gate',[rect(0,0,240,55,DARK),line([(0,15),(240,15)],LIGHT,5),line([(0,40),(240,40)],GOLD,5)],240,60,1128,524,584,{'hiddenFlag':'northPassOpened'}),('watch-bench',bench(),168,86,433,665,751,{})],watch,gated={'north-pass-gate':[(47,22,9,1)]})
 glacierfloor=[(6,28,23,8),(26,25,18,8),(40,18,16,10),(18,21,10,9)]
 ices=mountains()+[poly([(0,620),(294,390),(644,460),(877,243),(1197,416),(1536,248),(1536,1008),(0,1008)],BLUE),poly([(0,620),(294,390),(644,460),(491,534),(224,481)],SNOW),poly([(877,243),(1197,416),(1077,503),(909,330),(734,460)],LIGHT),poly([(1090,676),(1290,560),(1536,610),(1536,1008),(1189,930)],DARK)]+wreckship(205,405,1.13)+wreckship(890,263,.9)
 ices += [poly([(5,722),(58,741),(160,717),(139,767),(55,787),(13,757)],DARK),poly([(8,722),(58,735),(160,717),(117,745),(54,755)],SNOW),poly([(21,812),(67,827),(145,806),(128,849),(62,867),(28,846)],DARK),poly([(25,812),(67,821),(145,806),(116,833),(60,841)],LIGHT),rect(58,733,25,12,WOOD),rect(60,824,22,10,WOOD)]
 world('glacier','Skeld · the relief fleet','The wreck’s dispatch cabin is beside the lower ice walk. The sanctuary path climbs above the eastern shelf.',glacierfloor,[(19,21,6,2),(42,18,7,2)],[
  control('north-log',24,25,(22,22,4,3),'Dispatch cabin · the frozen relief fleet',doneFlag='northLogRead',hiddenFlag='northLogRead',sign=True),obj('north-hunters',43,25,'Upper shelf · divine hunters',doneFlag='northHuntersWon',hiddenFlag='northHuntersWon',sprite='herald'),obj('glacier-shrine',52,21,'Winter sanctuary · the upper path',kind='exit',accessFlag='northHuntersWon',sign=True),obj('glacier-watch',9,32,'Covered passage · return to Frostwatch',kind='exit',sign=True),obj('glacier-cache',20,23,'Relief stores · perched patrol',kind='optional',hiddenFlag='northCacheWon',doneFlag='northCacheWon',sign=True),obj('glacier-rest',32,30,'Wreck shelter · rest and supplies',kind='optional',sign=True)],
  {'start':(14,32),'wreck':(27,28),'shrine':(49,24)}, {'six-north-wrecks':{**party,'egil':(23,26),'signe':(27,25)}},
- [],[('glacier-dispatch',[rect(0,17,71,42,DARK),poly([(0,17),(13,0),(58,0),(71,17)],MID),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD),rect(27,30,17,12,LIGHT),line([(34,27),(34,44)],GOLD,3)],74,63,548,538,601,{'hiddenFlag':'northLogRead'}),('glacier-dispatch-open',[rect(0,20,71,39,DARK),poly([(0,20),(2,0),(70,0),(71,20)],MID),rect(8,27,55,23,WOOD),poly([(18,28),(47,24),(53,44),(22,48)],SNOW),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD)],74,63,548,538,601,{'requiredFlag':'northLogRead'}),('glacier-bench',bench(),168,86,696,673,759,{}),('glacier-cache',chest(),60,48,445,492,540,{}),('glacier-ice-face',[poly([(0,0),(87,31),(130,144),(72,174),(22,124)],LIGHT),poly([(0,0),(32,77),(22,124),(72,174),(17,160),(-13,56)],SNOW)],150,180,1304,641,-998,{})],ices,ground=floor(glacierfloor))
+ [],[('glacier-dispatch',[rect(0,17,71,42,DARK),poly([(0,17),(13,0),(58,0),(71,17)],MID),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD),rect(27,30,17,12,LIGHT),line([(34,27),(34,44)],GOLD,3)],74,63,548,538,601,{'hiddenFlag':'northLogRead'}),('glacier-dispatch-open',[rect(0,20,71,39,DARK),poly([(0,20),(2,0),(70,0),(71,20)],MID),rect(8,27,55,23,WOOD),poly([(18,28),(47,24),(53,44),(22,48)],SNOW),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD)],74,63,548,538,601,{'requiredFlag':'northLogRead'}),('glacier-bench',bench(),168,86,696,673,759,{}),('glacier-cache',chest(),60,48,445,492,540,{}),('glacier-ice-face',[poly([(0,0),(87,31),(130,144),(72,174),(22,124)],LIGHT),poly([(0,0),(32,77),(22,124),(72,174),(17,160),(-13,56)],SNOW)],150,180,1304,641,-998,{})],ices)
 shrines=[(12,25,40,11),(23,19,18,7)]
 shrine=caveback()+[poly([(612,340),(768,245),(931,340),(921,454),(612,454)],'#45667e'),line([(649,352),(768,284),(890,352)],LIGHT,8)]
 drag=runpy.run_path(str(ROOT/'assets/bosses/export-winter-dragon.py'))['dragon']
@@ -67,7 +55,7 @@ world('wintershrine','Skeld · the winter sanctuary','The winter dragon holds th
  obj('north-dragon',32,25,'Winter dragon · the pact sanctuary',hiddenFlag='winterDragonWon',doneFlag='winterDragonWon',sign=True),control('north-release',32,22,(28,17,9,5),'Pact bell · release the northern seal',hiddenFlag='northSealBroken',doneFlag='northSealBroken',sign=True),obj('shrine-rest',19,31,'Expedition camp · rest and supplies',kind='optional',sign=True),obj('shrine-glacier',15,33,'Glacier walk · return to the harbor',kind='exit',sign=True),obj('shrine-home',45,31,'Signe · return expedition',kind='exit',requiredFlag='northSealBroken',sprite='signe',sign=True)],
  {'start':(32,32),'stand':(32,28),'release':(32,24)}, {'six-north-shrine':party,'six-north-release':{**party,'signe':(32,23),'egil':(36,25)}},
  [point('sanctuary-porter',22,31,sprite='civilian-dockhand-rust')],
- [('shrine-dragon',drag(),528,280,504,262,542,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench(),168,86,369,689,775,{})],shrine,ground=floor(shrines))
+ [('shrine-dragon',drag(),528,280,504,262,542,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench(),168,86,369,689,775,{})],shrine)
 
 quay=[(10,24,45,12),(26,17,13,8)]
 royal=b['base']['capital'][:]
@@ -75,10 +63,10 @@ world('capitalquay','The capital · allied landing','The landing bridge is open.
  obj('capital-stores',20,31,'Allied shelter · rest and supplies',kind='optional',sign=True),obj('capital-return',13,33,'Survey launch · return to the flight chart',kind='exit',sign=True),obj('capital-inner',32,19,'Inner capital · next adventure',kind='talk',sign=True),obj('capital-crew',40,28,'Alda · the allied landing',kind='talk',sprite='alda')],
  {'start':(32,31)}, {'six-capital-open':{**party,'alda':(34,25)},'six-capital-quay':{**party,'alda':(34,25)}},
  [point('capital-cart',44,31,sprite='civilian-dockhand'),point('capital-woman',27,27,sprite='civilian-traveler-blue'),point('western-boat-hand',18,28,sprite='civilian-dockhand-rust'),point('northern-navigator',46,29,sprite='civilian-traveler')],
- [('capital-bench',bench(),168,86,402,674,760,{})],royal,ground=[part.replace('#c59d70','#e2e6df').replace('#a17e60','#aebfc5').replace('#745b50','#819aa8')for part in b['base']['plane'](quay,1536,1008,'#d5d9d0')])
+ [('capital-bench',bench(),168,86,402,674,760,{})],royal)
 for id,title in [('north-watch','Frostwatch patrol'),('north-hunters','The glacier hunters'),('north-cache','Relief stores'),('winter-dragon','The winter sanctuary')]:
  f=[(3,3,34,16)];back=[rect(0,0,1008,480,DARK),poly([(0,70),(200,5),(440,76),(705,0),(1008,60),(1008,480),(0,480)],MID)]
  if id=='winter-dragon':back+=[poly([(0,85),(100,0),(275,35),(190,126),(61,142),(0,227)],LIGHT),poly([(1008,65),(911,0),(740,27),(814,129),(962,143),(1008,237)],BLUE)]
- world('battle-'+id,title,'',f,[],[],{'start':(20,17)},{},[],[],back,w=42,h=20,ground=floor(f))
+ world('battle-'+id,title,'',f,[],[],{'start':(20,17)},{},[],[],back,w=42,h=20)
 (ROOT/'src/content/chapter-six/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('Exported Skeld, Frostwatch, glacier, winter sanctuary, allied landing and four tactical floors.')
