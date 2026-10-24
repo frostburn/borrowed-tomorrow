@@ -74,7 +74,7 @@ export class Synth {
     if(!this.tritaverWave){
       // Six tritave-spaced partials retain the written fundamental.
       const real=new Float32Array(244),imag=new Float32Array(244);
-      for(let i=0;i<6;++i)imag[3 ** i]=1/(i*i+1);
+      for(let i=0;i<6;++i)imag[3 ** i]=1/(i*i*i+1);
       this.tritaverWave=this.context.createPeriodicWave(real,imag);
     }
     return this.tritaverWave;
@@ -130,7 +130,7 @@ export class Synth {
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='organ'){osc('sine',0,1,.62);osc('sine',0,2,.22);osc('sine',0,3,.1);osc('sine',0,4,.04);}
     else if(instrument==='sine'){osc('sine');}
-    else if(instrument==='tritaver'){osc('custom',0,1,.8);}
+    else if(instrument==='tritaver'){osc('custom');}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
     else if(instrument==='wood'){osc('sine',0,1,.84);osc('sine',0,2,.12);osc('sine',0,4,.035);}
