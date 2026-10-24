@@ -25,6 +25,10 @@ export function sceneLight(id:string,pieces:readonly {x:number;y:number;url:stri
 
 export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
   const distance=Math.hypot(x-lamp.x,(y-lamp.y)*1.35,lamp.height-height);
+  return attenuation(lamp,x,y,distance);
+}
+function attenuation(lamp:WorldLamp,x:number,y:number,distance:number){
+  if(distance>=lamp.radius)return 0;
   let aperture=1;
   if(lamp.beam){
     const forward=y-lamp.y;
@@ -35,9 +39,27 @@ export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
   return lamp.strength*Math.max(0,1-distance/lamp.radius)**2*aperture;
 }
 
+/** Conservative transformed frame bounds: never omit a partially lit edge. */
+function frameLamps(rig:WorldLight,w:number,h:number,x:number,y:number,ox:number,oy:number,sx:number,sy:number,cos:number,sin:number){
+  let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;
+  for(const px of [0,w])for(const py of [0,h]){
+    const dx=(px-ox)*sx,dy=(py-oy)*sy,wx=x+dx*cos-dy*sin,height=Math.max(0,-dx*sin-dy*cos);
+    left=Math.min(left,wx);right=Math.max(right,wx);top=Math.min(top,height);bottom=Math.max(bottom,height);
+  }
+  return rig.lamps.filter(l=>{
+    const dx=Math.max(left-l.x,0,l.x-right),dh=Math.max(top-l.height,0,l.height-bottom),dz=(l.y-y)*1.35;
+    if(dx*dx+dh*dh+dz*dz>=l.radius*l.radius)return false;
+    if(l.beam){const forward=y-l.y,width=l.beam.width+forward*l.beam.spread,center=l.x+forward*.1;
+      if(forward<0||forward>l.beam.reach||right<=center-width||left>=center+width)return false;
+    }
+    return true;
+  });
+}
+
 /** A small material-neutral light field; original alpha and geometry survive. */
 export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:number,y:number,originX:number,originY:number,scaleX=1,scaleY=1,rotation=0){
   const a=source.data,b=output.data,w=source.width,cos=Math.cos(rotation),sin=Math.sin(rotation),planes=actorPlanes(source);
+  const lamps=frameLamps(rig,w,source.height,x,y,originX,originY,scaleX,scaleY,cos,sin);
   for(let i=0;i<a.length;i+=4){
     b[i+3]=a[i+3];if(!a[i+3]){b[i]=b[i+1]=b[i+2]=0;continue;}
     const sx=(i/4%w-originX)*scaleX,sy=(Math.floor(i/4/w)-originY)*scaleY;
@@ -45,10 +67,11 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
     const at=i/4*3,nx=planes[at]/100,ny=planes[at+1]/100,nz=planes[at+2]/100;
     const normalX=nx*Math.sign(scaleX)*cos+ny*Math.sign(scaleY)*sin,normalY=ny*Math.sign(scaleY)*cos-nx*Math.sign(scaleX)*sin;
     let strength=0,red=0,green=0,blue=0;
-    for(const lamp of rig.lamps){
-      const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,length=Math.max(1,Math.hypot(lx,ly,lz));
+    for(const lamp of lamps){
+      const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,distance=Math.hypot(lx,ly,lz);
+      const power=attenuation(lamp,wx,y,distance);if(!power)continue;
+      const length=Math.max(1,distance);
       const dot=(normalX*lx+normalY*ly+nz*lz)/length;
-      const power=lampStrength(lamp,wx,y,height);
       const band=dot>.55?1.08:dot>.05?.72:.30,fill=lamp.fill??0;
       const response=power*(fill+(1-fill)*band),color=lamp.color??WARM;
       strength+=power;red+=response*color[0];green+=response*color[1];blue+=response*color[2];

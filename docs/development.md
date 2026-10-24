@@ -47,6 +47,14 @@ Before publishing, run `npm run check` for rule/content tests, TypeScript and th
 
 Art exports have matching commands: `npm run art:one` through `npm run art:seven`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
 
+## Rendering performance
+
+Chapter One/Two's lit maps blend static planes below depth −900 into a native Canvas texture when `drawTileMap` builds the world. Actors, ground shadows, sorted props, markers and effects remain live. The texture belongs to that world container and is released on destruction. Story refreshes, battle redraws and restarts rebuild from the current visible pieces, so collector shutdown and other flag changes cannot reuse stale light. Other chapters' individually animated scenery keeps its existing renderer. No raster assets are written to disk.
+
+`world-light.ts` rejects lights outside the transformed frame bounds before visiting pixels. Bounds include flips, rotation, scale and beam apertures; surviving lights share their distance calculation between attenuation and surface response. The exhaustive-lighting regression compares exact pixels at beam/radius edges and under transformed poses.
+
+To profile, record a Chromium CPU profile while walking right for 2.2 seconds and left for 2.2 seconds with Nell/Orrin/Kit in each Chapter Two map. Keep viewport, checkpoint, motion settings and sample interval the same. In headless Chromium at 1280 × 800 with 500µs sampling, these changes reduced sampled busy time from 75% to 24% in the harbor, 51% to 25% in the ward and 89% to 24% in Cinderbank. Both runs already met the environment's 60Hz frame cadence; the improvement is CPU headroom, not a claimed frame-rate multiplier. Native scene/actor checks, collector visibility and the boarding animation should accompany performance changes. Detailed profiling stays outside default CI.
+
 ## Adding the next chapter
 
 1. Add chapter-local scenes, interactions, journals/objectives, encounters, Tiled maps and vector source. Keep map IDs and story checkpoints deliberate; use named arrivals/casts rather than copying world coordinates into new scenes.
