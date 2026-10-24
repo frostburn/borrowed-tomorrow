@@ -31,7 +31,7 @@ it('keeps the ward supplies marked after its arrival scene and rest becomes repe
  s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('optional');expect(interactionMarker(supplies,s)).toBeDefined();
 });
 
-it('shows one cue for Petra and Alban, and stages the mirrored engine cue after the gallery fight',()=>{
+it('shows one cue for Petra and Alban, and distinguishes the blocked mirrored engine',()=>{
  const s=newGame();s.flags.evacuationReady=true;
  const alban=MAPS.cinderbank.objects.find(o=>o.id==='siding-captain')!,petra=MAPS.cinderbank.objects.find(o=>o.id==='siding-alban')!;
  expect(interactionMarker(alban,s)).toBeUndefined();expect(alban.sprite).toBe('alban');
@@ -49,6 +49,14 @@ it('dims Chapter Two story gates and exits until their actual prerequisites are 
   expect(blocked.color).toBe(BLOCKED_MARKER_COLOR);
   s.flags[flag]=true;const open=interactionMarker(object,s)!;
   expect(open.glyph).toBe(blocked.glyph);expect(open.color).toBe(INTERACTION_MARKERS[object.kind].color);
+ }
+ s.flags.trainRaidWon=false;s.flags.raidPlanned=true;
+ for(const diversion of [false,true]){
+  s.flags.raidDiversion=diversion;
+  for(const id of ['loading-gate','signal-walk']){
+   const marker=interactionMarker(MAPS.coast.objects.find(o=>o.id===id)!,s)!;
+   expect(marker.color).toBe((id==='signal-walk')===diversion?INTERACTION_MARKERS.story.color:BLOCKED_MARKER_COLOR);
+  }
  }
 });
 

@@ -5,6 +5,7 @@ import { THIRD_CHAPTER, recruit, remember, restoreParty } from '../../rules/stat
 import * as scenes from './scenes';
 import { arrival } from '../maps';
 import type { MapId } from '../../rules/state';
+import { trainApproachBlock } from './access';
 
 export function resumeChapterTwo(host: StoryHost) {
   const s = host.state, f = s.flags;
@@ -23,10 +24,9 @@ export function interactChapterTwo(host: StoryHost, id: string) {
   const travel=(map:MapId,name:string)=>{const p=arrival(map,name);host.travel(p.map,p.x,p.y);};
   const raidId = () => f.raidDiversion ? 'coast-signals' : 'coast-loading';
   const breach = (diversion: boolean) => {
-    if (!f.kitJoined) return host.toast('Meet Kit at the loading gate first.');
+    const blocked=trainApproachBlock(s,diversion);if(blocked)return host.toast(blocked);
     if (f.trainRaidWon) return say('Kit', 'The coach is clear. Let’s open it.');
     if (f.raidPlanned) {
-      if (f.raidDiversion !== diversion) return host.toast(`Our approach is the ${f.raidDiversion ? 'signal walk' : 'loading gate'}.`);
       if (f.raidConfronted) return host.battle(raidId());
       host.talk({ ...scenes.raid(diversion), done: () => { host.commit('raidConfronted'); host.battle(raidId()); } });
       return;
