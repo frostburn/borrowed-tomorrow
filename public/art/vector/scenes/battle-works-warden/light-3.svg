@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1008" height="624" viewBox="0 0 1008 624"><title>Ground light</title><defs><clipPath id="light-floor"><path d="M96,96 L96,96 L936,96 L936,96 L936,552 L936,552 L96,552 L96,552 Z" clip-rule="evenodd"/></clipPath></defs><g clip-path="url(#light-floor)"><ellipse cx="96" cy="92" rx="160" ry="68" fill="#f3d49c" opacity=".025"/></g></svg>

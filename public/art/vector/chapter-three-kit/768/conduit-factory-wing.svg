@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="240" viewBox="0 0 192 240"><title>Green conduit · conduit-factory-wing</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/conduit-factory-wing.svg</metadata>
+<polygon points="0.00,46.56 17.00,27.46 48.00,17.34 143.00,13.11 176.00,21.66 192.00,39.06 192.00,240.00 0.00,240.00" fill="#243e45" />
+<polygon fill="#647b75" points="0.00,70.74 192.00,64.18 192.00,232.97 0.00,233.23" />
+<polygon points="0.00,70.74 192.00,64.18 192.00,79.25 0.00,79.45" fill="#a1a494" />
+<polygon fill="#304c51" points="0.00,149.08 192.00,145.56 192.00,154.60 0.00,157.79" />
+<polygon fill="#c69e60" points="0.00,150.05 192.00,146.56 192.00,149.58 0.00,152.95" />
+<polygon fill="#304c51" points="0.00,230.33 192.00,229.95 192.00,240.00 0.00,240.00" />
+<polygon points="0.00,46.56 20.00,30.24 47.00,22.27 145.00,18.00 174.00,25.75 192.00,39.06 192.00,65.18 0.00,71.71" fill="#3e6659" />
+<polygon points="2.00,45.52 23.00,33.03 48.00,25.16 145.00,20.99 174.00,28.75 186.00,38.29" fill="#7b9980" />
+<polygon fill="#876c48" points="0.00,65.91 192.00,59.16 192.00,66.19 0.00,72.68" />
+<polygon fill="#c69e60" points="0.00,65.91 192.00,59.16 192.00,62.17 0.00,68.81" />
+<polyline points="15.00,65.38 15.00,45.01 20.00,29.27" fill="none" stroke="#876c48" stroke-width="5" stroke-linejoin="bevel" />
+<polyline points="92.00,62.67 92.00,41.98 97.00,26.01" fill="none" stroke="#876c48" stroke-width="5" stroke-linejoin="bevel" />
+<polyline points="171.00,59.89 171.00,38.88 176.00,22.66" fill="none" stroke="#876c48" stroke-width="5" stroke-linejoin="bevel" />
+<polygon points="28.00,136.90 28.00,106.75 36.00,92.89 55.50,84.49 75.00,91.74 83.00,105.27 83.00,135.76" fill="#243e45" />
+<polygon points="33.00,131.93 33.00,107.59 40.00,96.67 55.50,90.36 71.00,95.78 78.00,106.39 78.00,130.95" fill="#a2b7a3" />
+<polygon points="34.00,108.53 55.50,93.30 55.50,130.46 34.00,130.93" fill="#e4cf96" />
+<polygon points="55.50,93.30 76.00,107.43 76.00,130.01 55.50,130.46" fill="#7c9b91" />
+<polygon points="35.00,109.48 47.00,101.36 47.00,130.65 35.00,130.91" fill="#f5e4b2" />
+<polyline points="55.50,91.34 55.50,132.42" fill="none" stroke="#304c51" stroke-width="4" stroke-linejoin="bevel" />
+<polyline points="32.00,105.86 79.00,104.60" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polyline points="32.00,122.89 79.00,121.78" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="25.00,136.96 86.00,135.70 86.00,141.60 25.00,142.79" />
+<polygon fill="#304c51" points="25.00,142.79 86.00,141.60 86.00,146.52 25.00,147.65" />
+<polygon points="28.00,215.68 28.00,185.53 36.00,171.80 55.50,163.71 75.00,171.27 83.00,184.93 83.00,215.42" fill="#243e45" />
+<polygon points="33.00,210.79 33.00,186.45 40.00,175.65 55.50,169.58 71.00,175.25 78.00,185.97 78.00,210.53" fill="#a2b7a3" />
+<polygon points="34.00,187.41 55.50,172.52 55.50,209.68 34.00,209.81" fill="#e4cf96" />
+<polygon points="55.50,172.52 76.00,186.97 76.00,209.56 55.50,209.68" fill="#7c9b91" />
+<polygon points="35.00,188.38 47.00,180.44 47.00,209.73 35.00,209.81" fill="#f5e4b2" />
+<polyline points="55.50,170.56 55.50,211.64" fill="none" stroke="#304c51" stroke-width="4" stroke-linejoin="bevel" />
+<polyline points="32.00,184.71 79.00,184.19" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polyline points="32.00,201.73 79.00,201.37" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="25.00,215.70 86.00,215.40 86.00,221.30 25.00,221.53" />
+<polygon fill="#304c51" points="25.00,221.53 86.00,221.30 86.00,226.22 25.00,226.39" />
+<polygon points="108.00,135.24 108.00,104.61 116.00,90.53 135.50,82.01 155.00,89.38 163.00,103.13 163.00,134.10" fill="#243e45" />
+<polygon points="113.00,130.19 113.00,105.46 120.00,94.38 135.50,87.97 151.00,93.49 158.00,104.27 158.00,129.22" fill="#a2b7a3" />
+<polygon points="114.00,106.42 135.50,90.95 135.50,128.71 114.00,129.18" fill="#e4cf96" />
+<polygon points="135.50,90.95 156.00,105.32 156.00,128.26 135.50,128.71" fill="#7c9b91" />
+<polygon points="115.00,107.39 127.00,99.14 127.00,128.90 115.00,129.16" fill="#f5e4b2" />
+<polyline points="135.50,88.96 135.50,130.70" fill="none" stroke="#304c51" stroke-width="4" stroke-linejoin="bevel" />
+<polyline points="112.00,103.71 159.00,102.44" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polyline points="112.00,121.01 159.00,119.90" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="105.00,135.30 166.00,134.04 166.00,140.04 105.00,141.23" />
+<polygon fill="#304c51" points="105.00,141.23 166.00,140.04 166.00,145.04 105.00,146.17" />
+<polygon points="108.00,215.29 108.00,184.66 116.00,170.71 135.50,162.50 155.00,170.18 163.00,184.05 163.00,215.02" fill="#243e45" />
+<polygon points="113.00,210.32 113.00,185.59 120.00,174.62 135.50,168.46 151.00,174.22 158.00,185.11 158.00,210.06" fill="#a2b7a3" />
+<polygon points="114.00,186.57 135.50,171.44 135.50,209.20 114.00,209.33" fill="#e4cf96" />
+<polygon points="135.50,171.44 156.00,186.13 156.00,209.07 135.50,209.20" fill="#7c9b91" />
+<polygon points="115.00,187.55 127.00,179.49 127.00,209.25 115.00,209.32" fill="#f5e4b2" />
+<polyline points="135.50,169.45 135.50,211.18" fill="none" stroke="#304c51" stroke-width="4" stroke-linejoin="bevel" />
+<polyline points="112.00,183.82 159.00,183.30" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polyline points="112.00,201.12 159.00,200.76" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="105.00,215.31 166.00,215.01 166.00,221.01 105.00,221.23" />
+<polygon fill="#304c51" points="105.00,221.23 166.00,221.01 166.00,226.01 105.00,226.17" />
+<polygon points="0.00,68.81 16.00,68.25 20.00,76.86 20.00,237.09 0.00,237.10" fill="#243e45" />
+<polygon fill="#3e6659" points="3.00,72.58 16.00,72.14 16.00,237.09 3.00,237.10" />
+<polygon fill="#7b9980" points="4.00,74.48 8.00,74.34 8.00,235.16 4.00,235.16" />
+<polygon fill="#304c51" points="13.00,74.18 17.00,74.04 17.00,235.15 13.00,235.15" />
+<polygon fill="#876c48" points="-2.00,78.54 21.00,77.79 21.00,84.59 -2.00,85.31" />
+<polygon fill="#c69e60" points="-2.00,78.54 21.00,77.79 21.00,80.71 -2.00,81.45" />
+<polygon fill="#876c48" points="-2.00,152.99 21.00,152.58 21.00,159.38 -2.00,159.76" />
+<polygon fill="#c69e60" points="-2.00,152.99 21.00,152.58 21.00,155.50 -2.00,155.89" />
+<polygon fill="#876c48" points="-2.00,227.43 21.00,227.37 21.00,234.17 -2.00,234.20" />
+<polygon fill="#c69e60" points="-2.00,227.43 21.00,227.37 21.00,230.29 -2.00,230.33" />
+<polygon points="172.00,62.86 188.00,62.31 192.00,71.21 192.00,236.99 172.00,237.00" fill="#243e45" />
+<polygon fill="#3e6659" points="175.00,66.76 188.00,66.32 188.00,236.99 175.00,237.00" />
+<polygon fill="#7b9980" points="176.00,68.73 180.00,68.60 180.00,234.99 176.00,234.99" />
+<polygon fill="#304c51" points="185.00,68.43 189.00,68.30 189.00,234.98 185.00,234.98" />
+<polygon fill="#876c48" points="170.00,72.93 193.00,72.18 193.00,79.22 170.00,79.94" />
+<polygon fill="#c69e60" points="170.00,72.93 193.00,72.18 193.00,75.20 170.00,75.94" />
+<polygon fill="#876c48" points="170.00,149.96 193.00,149.56 193.00,156.59 170.00,156.97" />
+<polygon fill="#c69e60" points="170.00,149.96 193.00,149.56 193.00,152.58 170.00,152.97" />
+<polygon fill="#876c48" points="170.00,226.99 193.00,226.94 193.00,233.97 170.00,234.00" />
+<polygon fill="#c69e60" points="170.00,226.99 193.00,226.94 193.00,229.95 170.00,230.00" />
+<polyline points="62.00,140.11 62.00,146.97" fill="none" stroke="#5d7273" stroke-width="2" stroke-linejoin="bevel" />
+<polyline points="141.00,138.54 141.00,145.50" fill="none" stroke="#5d7273" stroke-width="2" stroke-linejoin="bevel" />
+</svg>

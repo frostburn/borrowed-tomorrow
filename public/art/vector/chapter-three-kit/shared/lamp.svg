@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="144" viewBox="0 0 48 144">
+<title>Green conduit · lamp</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/lamp.svg</metadata>
+<ellipse cx="24.40972222222222" cy="26.0" rx="17" ry="19" fill="#ffdaa0" opacity=".1" /><polygon points="17.06,138.02 18.13,130.05 21.13,124.03 21.64,45.17 19.00,39.36 17.48,16.59 24.49,4.00 31.40,14.40 30.62,38.57 27.04,45.83 27.01,123.97 30.96,131.95 32.98,140.98 15.00,144.00" fill="#1d343c" />
+<polygon points="21.64,46.17 23.44,46.06 23.06,130.01 20.05,137.02 17.05,139.02 28.00,138.99 26.02,129.98 25.24,44.94" fill="#6d9390" />
+<polygon points="17.47,17.59 24.47,10.00 31.41,16.41 29.73,38.64 18.98,41.36" fill="#bd945a" />
+<polygon points="20.06,20.36 27.93,17.71 27.05,35.81 19.90,38.31" fill="#dca05b" />
+<polygon points="21.80,21.21 26.18,19.86 25.27,34.94 21.70,36.19" fill="#f5dca4" />
+<polyline points="24.44,16.00 24.36,40.00" fill="none" stroke="#253e48" stroke-width="2" />
+<polygon points="13.98,17.88 24.49,3.00 34.89,15.11 29.67,18.57" fill="#243e46" />
+<polygon points="23.65,0.08 26.21,-0.17 26.20,4.84 23.62,5.08" fill="#bd945a" />
+</svg>

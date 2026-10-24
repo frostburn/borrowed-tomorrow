@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="120" viewBox="0 0 72 120"><title>Green conduit · ward-stove</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/ward-stove.svg</metadata>
+<ellipse cx="34" cy="83" rx="17" ry="19" fill="#ffdaa0" opacity=".1" /><polygon points="24.00,0.00 35.00,0.00 36.00,51.00 47.00,55.00 47.00,65.00 32.00,64.00 25.00,54.00" fill="#132b3b" />
+<polygon points="26.00,0.00 30.00,0.00 31.00,50.00 42.00,58.00 42.00,61.00 29.00,54.00" fill="#6e9096" />
+<polygon points="9.00,61.00 52.00,55.00 64.00,65.00 61.00,107.00 49.00,115.00 13.00,112.00" fill="#132b3b" />
+<polygon points="13.00,65.00 50.00,60.00 56.00,66.00 54.00,104.00 15.00,108.00" fill="#345562" />
+<polygon points="19.00,73.00 45.00,70.00 48.00,96.00 21.00,100.00" fill="#0c1f2f" />
+<polygon points="22.00,78.00 42.00,76.00 43.00,92.00 24.00,95.00" fill="#b0714e" />
+<polygon points="25.00,91.00 27.00,79.00 32.00,85.00 37.00,76.00 39.00,88.00 36.00,94.00" fill="#dba36b" />
+<polygon points="13.00,107.00 21.00,108.00 20.00,118.00 12.00,119.00" fill="#6e9096" />
+<polygon points="50.00,106.00 58.00,105.00 61.00,117.00 54.00,119.00" fill="#6e9096" />
+<polygon points="7.00,61.00 53.00,54.00 65.00,62.00 13.00,70.00" fill="#6e9096" />
+<polyline points="48.00,76.00 54.00,75.00" fill="none" stroke="#bd9968" stroke-width="3" />
+</svg>

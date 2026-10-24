@@ -2,6 +2,7 @@ import type Phaser from 'phaser';
 import type { AbilityId, Battle, Encounter, Unit, enemyTurn } from '../rules/combat';
 import type { Hex } from '../rules/hex';
 import type { Effect } from './synth';
+import type { SceneIllumination } from './world-light';
 
 /** Optional encounter presentation shared by campaign and workshop battles. */
 export interface BattlePresentation {
@@ -10,6 +11,7 @@ export interface BattlePresentation {
   animating?:(battle:Battle)=>boolean;
   prepare?:(battle:Battle)=>void;
   background:(scene:Phaser.Scene,world:Phaser.GameObjects.Container,battle:Battle)=>void;
+  lighting?:SceneIllumination;
   actor?:(scene:Phaser.Scene,unit:Unit,hp:number,hex:Hex)=>Phaser.GameObjects.Image|undefined;
   position?:(unit:Unit,hex:Hex)=>{x:number;y:number}|undefined;
   attackTiming?:(unit:Unit)=>{contact:number;duration:number}|undefined;

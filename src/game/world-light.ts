@@ -1,11 +1,14 @@
 import { actorPlanes } from './actor-planes';
 import chapterOne from '../content/chapter-one/lighting.json' with { type:'json' };
 import chapterTwo from '../content/chapter-two/lighting.json' with { type:'json' };
+import chapterThree from '../content/chapter-three/lighting.json' with { type:'json' };
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
 export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; color?:readonly number[]; beam?:{reach:number;width:number;spread:number} }
-export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[] }
-interface LightRegistry { profiles:Record<string,WorldLight>; props:Record<string,WorldLamp[]> }
-const registries:readonly LightRegistry[]=[chapterOne,chapterTwo];
+export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[]; shadowOpacity?:number }
+/** Custom whole-image arenas supply their own native floor silhouette. */
+export interface SceneIllumination { scene:string; ground:string }
+interface LightRegistry { profiles:Record<string,WorldLight & {propStrength?:number}>; props:Record<string,WorldLamp[]> }
+const registries:readonly LightRegistry[]=[chapterOne,chapterTwo,chapterThree];
 export const NIGHT_AMBIENT=[.62,.70,.88] as const;
 const WARM=[1.12,.78,.38] as const;
 export function stationLight(pieces:readonly {x:number;y:number;url:string}[]):WorldLight{
@@ -18,9 +21,9 @@ export function sceneLight(id:string,pieces:readonly {x:number;y:number;url:stri
   const lamps=[...profile.lamps];
   for(const piece of pieces){
     const name=piece.url.split('/').pop()!.replace(/\.svg$/,'');
-    for(const light of registry.props[name]??[])lamps.push({...light,x:piece.x+light.x,y:piece.y+light.y});
+    for(const light of registry.props[name]??[])lamps.push({...light,strength:light.strength*(profile.propStrength??1),x:piece.x+light.x,y:piece.y+light.y});
   }
-  return {ambient:profile.ambient,lamps};
+  return {ambient:profile.ambient,lamps,shadowOpacity:profile.shadowOpacity};
 }
 
 export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
@@ -87,7 +90,7 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
 export function castShadows(rig:WorldLight,x:number,y:number){
   const candidates=rig.lamps.map(light=>({light,strength:lampStrength(light,x,y)*(light.shadowStrength??1)})).filter(s=>s.strength>=.025).sort((a,b)=>b.strength-a.strength);
   const selected=candidates.filter(s=>s.strength>=candidates[0].strength*.18).slice(0,3);
-  const total=selected.reduce((sum,s)=>sum+Math.min(.30,s.strength*.58),0),budget=Math.min(1,.45/Math.max(.001,total));
+  const total=selected.reduce((sum,s)=>sum+Math.min(.30,s.strength*.58),0),budget=Math.min(1,(rig.shadowOpacity??.45)/Math.max(.001,total));
   return selected.map(({light,strength})=>{
     const ratio=58/Math.max(40,light.height-58);
     return {dx:Math.max(-105,Math.min(105,(x-light.x)*ratio)),dy:Math.max(-42,Math.min(48,(y-light.y)*ratio*.45+8)),alpha:Math.min(.30,strength*.58)*budget,light};

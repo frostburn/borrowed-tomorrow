@@ -9,7 +9,7 @@ export function lightGround(map:TileMap,state:{flags:Record<string,boolean>}){
 export interface ShadowActor { x:number;y:number;originX:number;originY:number;scaleX:number;scaleY:number;rotation:number;alpha:number;image:CanvasImageSource }
 /** Ground-space drawing shared by live actors and the Maps workshop. */
 export function paintActorShadow(ctx:CanvasRenderingContext2D,rig:WorldLight,actor:ShadowActor){
-  ctx.save();ctx.globalAlpha*=.18*actor.alpha;ctx.fillStyle='#172038';ctx.beginPath();ctx.ellipse(actor.x,actor.y-2,10*Math.abs(actor.scaleX),3,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.save();ctx.globalAlpha*=Math.min(.18,rig.shadowOpacity??.18)*actor.alpha;ctx.fillStyle='#172038';ctx.beginPath();ctx.ellipse(actor.x,actor.y-2,10*Math.abs(actor.scaleX),3,0,0,Math.PI*2);ctx.fill();ctx.restore();
   for(const cast of castShadows(rig,actor.x,actor.y)){
     ctx.save();ctx.globalAlpha*=cast.alpha*actor.alpha;ctx.translate(actor.x,actor.y-2);
     if(cast.light.beam){

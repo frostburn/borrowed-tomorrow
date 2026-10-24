@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="168" viewBox="0 0 192 168"><title>Green conduit · works-wall</title><metadata>Angular green-iron variant; source: assets/vector/chapter_three_style.py; editable original: art/vector/scenery/works-wall.svg</metadata>
+<ellipse cx="96" cy="74.98660714285714" rx="17" ry="19" fill="#ffdaa0" opacity=".1" /><polygon fill="#243e45" points="0.00,6.93 192.00,0.21 192.00,168.00 0.00,168.00" />
+<polygon fill="#647b75" points="8.00,12.62 184.00,6.25 184.00,153.30 8.00,153.88" />
+<polygon points="8.00,14.64 184.00,8.35 184.00,34.61 8.00,31.79" fill="#8c9a85" />
+<polygon fill="#3e6659" points="8.00,144.79 184.00,143.84 184.00,164.85 8.00,164.97" />
+<polygon fill="#c69e60" points="8.00,144.79 184.00,143.84 184.00,148.04 8.00,148.83" />
+<polygon points="39.00,133.40 39.00,45.89 47.00,31.35 96.00,21.25 145.00,27.68 153.00,42.07 153.00,132.32" fill="#243e45" />
+<polygon points="44.00,128.26 44.00,46.74 51.00,35.28 96.00,27.45 141.00,32.02 148.00,43.29 148.00,127.13" fill="#a2b7a3" />
+<polygon points="45.00,47.73 96.00,30.55 96.00,126.66 45.00,127.23" fill="#e4cf96" />
+<polygon points="96.00,30.55 146.00,44.40 146.00,126.10 96.00,126.66" fill="#7c9b91" />
+<polygon points="46.00,48.71 58.00,40.14 58.00,127.08 46.00,127.22" fill="#f5e4b2" />
+<polyline points="96.00,28.48 96.00,128.73" fill="none" stroke="#304c51" stroke-width="4" stroke-linejoin="bevel" />
+<polyline points="43.00,67.35 149.00,64.43" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polyline points="43.00,103.66 149.00,101.79" fill="none" stroke="#304c51" stroke-width="3" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="36.00,133.43 156.00,132.29 156.00,138.59 36.00,139.53" />
+<polygon fill="#304c51" points="36.00,139.53 156.00,138.59 156.00,143.84 36.00,144.61" />
+<polygon points="0.00,4.92 15.00,4.24 19.00,13.16 19.00,163.95 0.00,163.97" fill="#243e45" />
+<polygon fill="#3e6659" points="3.00,8.81 15.00,8.28 15.00,163.96 3.00,163.97" />
+<polygon fill="#7b9980" points="4.00,10.78 8.00,10.61 8.00,161.95 4.00,161.95" />
+<polygon fill="#304c51" points="12.00,10.43 16.00,10.26 16.00,161.93 12.00,161.94" />
+<polygon fill="#876c48" points="-2.00,15.07 20.00,14.13 20.00,21.22 -2.00,22.11" />
+<polygon fill="#c69e60" points="-2.00,15.07 20.00,14.13 20.00,17.17 -2.00,18.09" />
+<polygon fill="#876c48" points="-2.00,84.49 20.00,83.98 20.00,91.07 -2.00,91.53" />
+<polygon fill="#c69e60" points="-2.00,84.49 20.00,83.98 20.00,87.02 -2.00,87.51" />
+<polygon fill="#876c48" points="-2.00,153.91 20.00,153.83 20.00,160.91 -2.00,160.96" />
+<polygon fill="#c69e60" points="-2.00,153.91 20.00,153.83 20.00,156.86 -2.00,156.93" />
+<polygon points="173.00,-2.51 188.00,-2.02 192.00,7.55 192.00,163.81 173.00,163.79" fill="#243e45" />
+<polygon fill="#3e6659" points="176.00,1.79 188.00,2.18 188.00,163.80 176.00,163.79" />
+<polygon fill="#7b9980" points="177.00,3.93 181.00,4.06 181.00,161.69 177.00,161.69" />
+<polygon fill="#304c51" points="185.00,4.18 189.00,4.31 189.00,161.70 185.00,161.70" />
+<polygon fill="#876c48" points="171.00,7.95 193.00,8.63 193.00,15.97 171.00,15.32" />
+<polygon fill="#c69e60" points="171.00,7.95 193.00,8.63 193.00,11.78 171.00,11.11" />
+<polygon fill="#876c48" points="171.00,80.60 193.00,80.98 193.00,88.32 171.00,87.98" />
+<polygon fill="#c69e60" points="171.00,80.60 193.00,80.98 193.00,84.12 171.00,83.76" />
+<polygon fill="#876c48" points="171.00,153.26 193.00,153.32 193.00,160.66 171.00,160.63" />
+<polygon fill="#c69e60" points="171.00,153.26 193.00,153.32 193.00,156.47 171.00,156.42" />
+<polyline points="22.00,145.72 22.00,48.49 30.00,36.04 41.00,35.64" fill="none" stroke="#243e45" stroke-width="11" stroke-linejoin="bevel" />
+<polyline points="22.00,144.70 22.00,49.50 31.00,38.04 41.00,37.68" fill="none" stroke="#c69e60" stroke-width="6" stroke-linejoin="bevel" />
+<polyline points="167.00,143.77 167.00,44.76 159.00,33.46 150.00,33.79" fill="none" stroke="#243e45" stroke-width="11" stroke-linejoin="bevel" />
+<polyline points="167.00,143.77 167.00,44.76 158.00,33.50 150.00,33.79" fill="none" stroke="#876c48" stroke-width="6" stroke-linejoin="bevel" />
+<polygon fill="#c69e60" points="12.00,156.89 16.00,156.88 16.00,159.91 12.00,159.92" />
+<polygon fill="#c69e60" points="70.00,156.71 74.00,156.70 74.00,159.78 70.00,159.79" />
+<polygon fill="#c69e60" points="122.00,156.55 126.00,156.54 126.00,159.67 122.00,159.67" />
+<polygon fill="#c69e60" points="180.00,156.44 184.00,156.45 184.00,159.60 180.00,159.59" />
+<polygon fill="#243e45" points="0.00,163.97 192.00,163.81 192.00,168.00 0.00,168.00" />
+</svg>

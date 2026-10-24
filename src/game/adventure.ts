@@ -8,7 +8,7 @@ import { flagshipPresentation } from './flagship-presentation';
 import { wardPresentation } from './ward-presentation';
 import { furnacePresentation } from './furnace-presentation';
 import Phaser from 'phaser';
-import { facingAsset, PLAYABLE_ACTORS } from '../content/actors';
+import { facingAsset, PLAYABLE_ACTORS, worldActorScaleY } from '../content/actors';
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
@@ -306,7 +306,7 @@ export class Adventure extends Phaser.Scene {
       if (object.sprite&&(!object.spriteHiddenFlag||!this.state.flags[object.spriteHiddenFlag])) this.lighting.actor(this.layer!,x,y+7,object.sprite).setOrigin(.5,.85).setData('world-actor',true);
       const indicator=interactionMarker(object,this.state);
       if (indicator) {
-        const marker = this.label(x,y-(object.sprite?74:9),indicator.glyph,indicator.color,3,true);
+        const marker = this.label(x,y-(object.sprite?74*worldActorScaleY(object.sprite):9),indicator.glyph,indicator.color,3,true);
         this.layer!.add(marker.setDepth(20000));
       }
     }
@@ -552,7 +552,7 @@ export class Adventure extends Phaser.Scene {
     const backdrop=this.battleDefinition.backdrop??{map:'yard' as const,y:0};
     if(this.battlePresentation)this.battlePresentation.background(this,this.layer,this.battle!);
     else this.background(backdrop.map,backdrop.y);
-    if(!this.battlePresentation)this.lighting.attach(this.layer,BATTLE_MAPS[this.battle!.encounter],this.state);
+    this.lighting.attach(this.layer,this.battlePresentation?undefined:BATTLE_MAPS[this.battle!.encounter],this.state,this.battlePresentation?.lighting);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}

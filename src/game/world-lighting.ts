@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
+import { worldActorScaleY } from '../content/actors';
 import { properties, type TileMap } from '../content/tilemaps';
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
-import { lightPixels, sceneLight, type WorldLight } from './world-light';
+import { lightPixels, sceneLight, type WorldLight, type SceneIllumination } from './world-light';
 import { lightGround, paintActorShadow } from './light-canvas';
 
 let serial=0;
@@ -16,18 +17,18 @@ export class WorldLighting {
   private frames=new WeakMap<Phaser.Textures.Frame,FrameSurface>();
   constructor(private scene:Phaser.Scene){}
   clear(){this.rig=undefined;this.ground=undefined;this.actors.clear();this.frames=new WeakMap();}
-  attach(world:Phaser.GameObjects.Container,map:TileMap|undefined,state:Pick<GameState,'flags'>){
-    this.clear();if(!map)return;
-    this.rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,state)??[]);if(!this.rig)return;
+  attach(world:Phaser.GameObjects.Container,map:TileMap|undefined,state:Pick<GameState,'flags'>,illumination?:SceneIllumination){
+    this.clear();if(!map&&!illumination)return;
+    this.rig=sceneLight(illumination?.scene??String(properties(map!).sceneArt),map?visibleSceneArt(map,state)??[]:[]);if(!this.rig)return;
     // One ground pass, clipped to real floor cells, beneath every sorted prop.
-    this.ground=lightGround(map,state);
+    this.ground=illumination?new Path2D(illumination.ground):lightGround(map!,state);
     world.add(this.scene.add.existing(new GroundShadows(this.scene,this)).setDepth(-900));
     world.sort('depth');
   }
   actor(world:Phaser.GameObjects.Container,x:number,y:number,key:string){
     const image=this.rig?this.scene.add.existing(new LitActor(this.scene,x,y,key,this,this.rig)):this.scene.add.image(x,y,key);
     if(image instanceof LitActor){this.actors.add(image);image.once('destroy',()=>this.actors.delete(image));}
-    world.add(image);return image;
+    image.setScale(1,worldActorScaleY(key));world.add(image);return image;
   }
   surface(frame:Phaser.Textures.Frame){
     let cached=this.frames.get(frame);if(cached)return cached;
