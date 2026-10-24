@@ -51,6 +51,56 @@
       "layerId": 5
     },
     {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 264,
+      "y": 576,
+      "width": 48,
+      "height": 144,
+      "depth": 715,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 600,
+      "y": 552,
+      "width": 48,
+      "height": 144,
+      "depth": 691,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 912,
+      "y": 576,
+      "width": 48,
+      "height": 144,
+      "depth": 715,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-light-refuge-3",
+      "url": "art/vector/chapter-four/light-refuge-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-light-refuge-4",
+      "url": "art/vector/chapter-four/light-refuge-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
+    },
+    {
       "key": "scene-four-refuge-wave",
       "url": "art/vector/chapter-four/refuge-wave.svg",
       "x": 0,
@@ -103,6 +153,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-four-harbor-drive",
+      "url": "art/vector/chapter-four/harbor-drive.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 2
+    },
+    {
       "key": "scene-four-harbor-pumphouse",
       "url": "art/vector/chapter-four/harbor-pumphouse.svg",
       "x": 300,
@@ -116,20 +176,20 @@
       "key": "scene-four-harbor-ferry-out",
       "url": "art/vector/chapter-four/harbor-ferry-out.svg",
       "x": 1038,
-      "y": 378,
+      "y": 366,
       "width": 360,
       "height": 192,
-      "depth": 570,
+      "depth": 558,
       "layerId": 4
     },
     {
       "key": "scene-four-harbor-ferry-in",
       "url": "art/vector/chapter-four/harbor-ferry-in.svg",
-      "x": 139,
-      "y": 630,
+      "x": 36,
+      "y": 768,
       "width": 360,
       "height": 192,
-      "depth": 822,
+      "depth": 960,
       "layerId": 5
     },
     {
@@ -171,6 +231,66 @@
       "height": 80,
       "depth": 693,
       "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 432,
+      "y": 552,
+      "width": 48,
+      "height": 144,
+      "depth": 691,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 816,
+      "y": 576,
+      "width": 48,
+      "height": 144,
+      "depth": 715,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 840,
+      "y": 312,
+      "width": 48,
+      "height": 144,
+      "depth": 451,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-light-breakwater-3",
+      "url": "art/vector/chapter-four/light-breakwater-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-light-breakwater-4",
+      "url": "art/vector/chapter-four/light-breakwater-4.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 4
+    },
+    {
+      "key": "scene-four-light-breakwater-5",
+      "url": "art/vector/chapter-four/light-breakwater-5.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
+      "layerId": 5
     },
     {
       "key": "scene-four-breakwater-wave",
@@ -242,6 +362,46 @@
       "width": 84,
       "height": 80,
       "depth": 696,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 360,
+      "y": 648,
+      "width": 48,
+      "height": 144,
+      "depth": 787,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 600,
+      "y": 600,
+      "width": 48,
+      "height": 144,
+      "depth": 739,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-coastal-lamp",
+      "url": "art/vector/chapter-four/coastal-lamp.svg",
+      "x": 912,
+      "y": 624,
+      "width": 48,
+      "height": 144,
+      "depth": 763,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-light-sanctuary-3",
+      "url": "art/vector/chapter-four/light-sanctuary-3.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -950,
       "layerId": 3
     }
   ],

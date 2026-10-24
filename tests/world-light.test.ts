@@ -3,6 +3,7 @@ import { castShadows, lightPixels, lampStrength, stationLight, sceneLight, NIGHT
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
+import { CHAPTER_FOUR_MAPS, CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
 import { actorPlanes } from '../src/game/actor-planes';
@@ -12,13 +13,27 @@ const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One–Three world and battle floor, without opting later chapters in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES)]){
+  it('covers every Chapter One–Four world and battle floor, without opting later chapters in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES)]){
       const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(sceneLight('refuge',[])).toBeUndefined();
+    expect(sceneLight('airfield',[])).toBeUndefined();
+  });
+  it('keeps ferry illumination and its spill in the same story visibility layer',()=>{
+    const map=CHAPTER_FOUR_MAPS.breakwater.tiles!;
+    for(const opened of [false,true]){
+      const pieces=visibleSceneArt(map,{flags:{harborOpened:opened}})!;
+      const rig=sceneLight('breakwater',pieces)!;
+      const moored=opened?'harbor-ferry-in':'harbor-ferry-out',gone=opened?'harbor-ferry-out':'harbor-ferry-in';
+      expect(pieces.some(p=>p.url.endsWith(`/${moored}.svg`))).toBe(true);
+      expect(pieces.some(p=>p.url.endsWith(`/${gone}.svg`))).toBe(false);
+      expect(rig.lamps.some(l=>l.x===(opened?172:1174)&&l.y===(opened?942:540))).toBe(true);
+      expect(rig.lamps.some(l=>l.x===(opened?1174:172)&&l.y===(opened?540:942))).toBe(false);
+      const ferry=pieces.find(p=>p.url.endsWith(`/${moored}.svg`))!;
+      expect(pieces.some(p=>p.layerId===ferry.layerId&&p.url.includes('/light-'))).toBe(true);
+    }
   });
   it('registers the conduit windows, crystal and feed console at their real anchors',()=>{
     const gallery=sceneLight('relayhall',visibleSceneArt(CHAPTER_THREE_MAPS.relayhall.tiles!,{flags:{}})??[])!;
