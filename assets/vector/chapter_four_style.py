@@ -3,7 +3,7 @@
 Only computed Chapter Four art uses these treatments. Navigation, story casts,
 machine controls and the calibrated bronze ring keep their original anchors.
 """
-import json,re
+import json
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from scene_lighting import spill

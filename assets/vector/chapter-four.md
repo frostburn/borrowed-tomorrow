@@ -31,4 +31,6 @@ The pump-house awning and ward entry have uncovered opal lights. Outdoor coastal
 
 Both ferry hulls sit in open water: the waiting ferry is lifted clear of the eastern quay; the returning ferry moors below the southwest quay rather than on its walking surface. The suspended skiff stays between distant water and foreground land. Review both `harborOpened` states and the separated cable/suspended-water states in Maps. Existing Chapter One–Three art and the train originals are untouched.
 
+Phone sea-wall framing keeps Nell and Tomas above the dialogue through camera tracking and reflow, without moving their stage positions.
+
 Reproduce with `npm run art:four` or `python3 assets/vector/chapter-four.py`. All SVGs remain native, self-contained and below 128 KiB. Run `npm run check` and the detailed Chapter Four, native-lighting and Maps browser checks outside normal CI.

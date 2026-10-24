@@ -66,7 +66,8 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    const home=brokenCheckpoint('anchorsKnown');await importSave(page,home);await approach(page,'refuge-tomas');
    for(let n=0;n<14&&!((await page.locator('.dialogue').textContent())??'').includes('I’m glad we got here.');n++)await page.locator('.dialogue-actions button').first().click();
    await expect(page.locator('.dialogue')).toContainText('I’m glad we got here.');await expect.poll(async()=>(await inspect(page)).actors.find(a=>a.hero==='nell')?.motion).toBe('idle');
-   const nell=(await inspect(page)).actors.find(a=>a.hero==='nell')!;await nativeActor(page,nell.texture,{x:8,y:28},.08);await nativeActor(page,'tomas',{x:10,y:28},.08);await capture(page,`sea-wall-visible-${device}`);
+   await capture(page,`sea-wall-visible-${device}`);
+   const nell=(await inspect(page)).actors.find(a=>a.hero==='nell')!;await nativeActor(page,nell.texture,{x:8,y:28},.08);await nativeActor(page,'tomas',{x:10,y:28},.08);
    await choices(page);await page.getByRole('button',{name:'Prepare our equipment first',exact:true}).click();expect((await inspect(page)).state.flags.seaWalkSeen).toBe(true);
    await approach(page,'refuge-tomas');expect((await inspect(page)).cinematic).toBeNull();await expect(page.locator('.dialogue')).toContainText('Ready to go?');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();expect(errors).toEqual([]);
   });

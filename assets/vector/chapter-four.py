@@ -1,7 +1,7 @@
 """Author Chapter Four's SVG scenes and Tiled story layouts together.
 
 No bitmap inputs, filters, external resources or raster exports. Whole planes
-share exact 24px floor boundaries with Tiled; props sort at their sole anchors.
+preserve Tiled's 24px navigation and registered prop/actor anchors.
 Run: python3 assets/vector/chapter-four.py
 """
 import json, math
