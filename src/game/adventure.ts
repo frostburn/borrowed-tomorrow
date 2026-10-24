@@ -552,7 +552,7 @@ export class Adventure extends Phaser.Scene {
     const backdrop=this.battleDefinition.backdrop??{map:'yard' as const,y:0};
     if(this.battlePresentation)this.battlePresentation.background(this,this.layer,this.battle!);
     else this.background(backdrop.map,backdrop.y);
-    if(!this.battlePresentation)this.lighting.attach(this.layer,BATTLE_MAPS[this.battle!.encounter],this.state);
+    this.lighting.attach(this.layer,this.battlePresentation?undefined:BATTLE_MAPS[this.battle!.encounter],this.state,this.battlePresentation?.lighting);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}

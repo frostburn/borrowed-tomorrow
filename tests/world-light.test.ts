@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { castShadows, lightPixels, lampStrength, stationLight, sceneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
+import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
 import { actorPlanes } from '../src/game/actor-planes';
@@ -11,13 +12,22 @@ const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One/Two world and battle floor, without opting later chapters in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES)]){
+  it('covers every Chapter One–Three world and battle floor, without opting later chapters in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES)]){
       const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(sceneLight('northglass',[])).toBeUndefined();
+    expect(sceneLight('refuge',[])).toBeUndefined();
+  });
+  it('registers the conduit windows, crystal and feed console at their real anchors',()=>{
+    const gallery=sceneLight('relayhall',visibleSceneArt(CHAPTER_THREE_MAPS.relayhall.tiles!,{flags:{}})??[])!;
+    expect(gallery.lamps.filter(l=>l.beam)).toHaveLength(7);
+    expect(castShadows(gallery,840,323).some(s=>s.light.beam)).toBe(true);
+    const chamber=sceneLight('conduit',visibleSceneArt(CHAPTER_THREE_MAPS.conduit.tiles!,{flags:{}})??[])!;
+    expect(chamber.lamps.some(l=>l.x===780&&l.y===444&&l.height===170)).toBe(true);
+    expect(chamber.lamps.some(l=>l.x===1128&&l.y===450&&l.height===70)).toBe(true);
+    expect(sceneLight('conduit-regulator',[])!.lamps).toHaveLength(3);
   });
   it('shares ward window/stove sources and removes the Cinderbank collector glow at victory',()=>{
     const ward=CHAPTER_TWO_MAPS.infirmary.tiles!,village=CHAPTER_TWO_MAPS.cinderbank.tiles!;

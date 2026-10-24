@@ -11,7 +11,7 @@ describe('traced SVG scenes',()=>{
  it('keeps the green conduit architecture separate from the royal marble originals',()=>{
   const pieces=Object.values(CHAPTER_THREE_MAPS).flatMap(m=>sceneArt(m.tiles!)??[]);
   for(const name of ['conduit-dome','conduit-factory-wing','conduit-medical-pavilion','conduit-controls','conduit-vessel']){
-   expect(pieces.some(p=>p.key===`scenery-${name}`)).toBe(true);
+   expect(pieces.some(p=>p.url.endsWith(`/${name}.svg`))).toBe(true);
   }
   expect(pieces.some(p=>p.url.includes('royal-palace'))).toBe(false);
   const dome=readFileSync('public/art/vector/scenery/conduit-dome.svg','utf8');
@@ -50,5 +50,7 @@ describe('traced SVG scenes',()=>{
    expect(visibleSceneArt(map,{flags:{}})!.some(p=>p.layerId===light.id)).toBe(true);
    expect(visibleSceneArt(map,{flags:{extractionStopped:true}})!.some(p=>p.layerId===light.id)).toBe(false);
   }
+  const feeds=CHAPTER_THREE_MAPS.conduit.tiles!.layers.find(l=>l.id===17)!;
+  expect(properties(feeds).live).toBe(true);
  });
 });

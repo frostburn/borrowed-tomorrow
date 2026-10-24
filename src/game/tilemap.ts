@@ -19,10 +19,12 @@ class NativeTile extends Phaser.GameObjects.Image {
 export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Container,data:TileMap,state:GameState,x=0,y=0){
   const pieces=visibleSceneArt(data,state);
   if(pieces){
-    // These chapters' negative-depth planes are static until the world is
-    // rebuilt for a story change. Blend them once, below the live shadow pass.
-    const ground=sceneLight(String(properties(data).sceneArt),[])?pieces.filter(p=>p.depth<-900):[];
-    if(ground.length>1){
+    // Cache consecutive static floor planes. A layer marked live (the conduit
+    // feed shutdown) keeps its own image and exact position in the stack.
+    const cached=new Set<typeof pieces[number]>(),live=new Set(data.layers.filter(l=>properties(l).live).map(l=>l.id));
+    let ground:typeof pieces=[];
+    const flush=()=>{
+      if(ground.length<2){ground=[];return;}
       const key=`ground-cache-${groundId++}`,texture=scene.textures.createCanvas(key,data.width*data.tilewidth,data.height*data.tileheight)!;
       const ctx=texture.context;ctx.imageSmoothingEnabled=false;
       for(const piece of [...ground].sort((a,b)=>a.depth-b.depth)){
@@ -33,9 +35,16 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
       const image=new NativeTile(scene,x,y,key).setOrigin(0).setDepth(y+Math.min(...ground.map(p=>p.depth)));
       scene.add.existing(image);world.add(image);
       world.once('destroy',()=>scene.textures.remove(key));
+      for(const piece of ground)cached.add(piece);ground=[];
+    };
+    if(sceneLight(String(properties(data).sceneArt),[])){
+      for(const piece of [...pieces].filter(p=>p.depth<-900).sort((a,b)=>a.depth-b.depth)){
+        if(live.has(piece.layerId))flush();else ground.push(piece);
+      }
+      flush();
     }
     for(const piece of pieces){
-      if(ground.length>1&&piece.depth<-900)continue;
+      if(cached.has(piece))continue;
       const image=new NativeTile(scene,x+piece.x,y+piece.y,piece.key).setOrigin(0).setDepth(y+piece.depth).setData('scene-piece',piece);
       scene.add.existing(image);world.add(image);
     }
