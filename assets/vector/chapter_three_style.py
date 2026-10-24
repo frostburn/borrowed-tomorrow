@@ -105,6 +105,34 @@ def angled_boundary(base,w,h):
 def terrain(kind,base,w,h,scene):
  # One replacement pass avoids accidental recoloring of a replacement color.
  base=re.sub(r'#[0-9a-f]{6}',lambda m:PALETTE.get(m[0],m[0]),base)
+ if scene=='relayhall'and kind=='motes':
+  return base.replace('x="707"','x="699"').replace('x="851"','x="855"')
+ if scene in ('relayhall','conduit')and kind.startswith('works-pipe-'):
+  # Whole rigid pipe runs with elbows and clearance offsets, rather than a
+  # ruler-straight rectangular circuit or independently warped tile fragments.
+  if kind!='works-pipe-h':return ''
+  routes=[[(708,456),(700,424),(700,378),(716,350),(766,344),(782,332),(826,336),(850,358),(858,410),(852,456)]]if scene=='relayhall'else[
+   [(864,444),(880,444),(900,436),(914,444),(980,444),(994,430),(1020,430),(1032,442),(1080,442)],
+   [(1032,442),(1032,486),(1020,500),(1020,580),(1008,592),(1008,624),(1020,636),(1020,744)],
+   [(324,600),(324,630),(338,646),(338,710),(324,724),(324,792)]]
+  out=[]
+  for pts in routes:
+   for color,width in [('#36594f',9),('#6a8b70',6),('#b3b997',2)]:
+    out.append('<polyline points="'+' '.join(fmt(p)for p in pts)+f'" fill="none" stroke="{color}" stroke-width="{width}" stroke-linejoin="bevel"/>')
+  return ''.join(out)
+ if kind in ('works-stone','works-deck'):
+  # Both materials share one world-space slab field, including lighting planes
+  # and joints. The service strip must not restart courses or change their tint.
+  prefix=base[:base.index('<g clip-path=')]
+  out=[prefix,f'<g clip-path="url(#{kind})"><rect width="{w}" height="{h}" fill="#7b8e7d"/>',
+   polygon([(0,260),(w,280),(w,500),(0,480)],'#859784'),
+   polygon([(0,680),(w,700),(w,h),(0,h)],'#728674')]
+  for i,y in enumerate(range(61,h,112)):
+   out.append(f'<path d="M0 {y} L{w} {y+w*.013:g}" fill="none" stroke="#587365" stroke-width="2"/>')
+   for x in range(56+(i%2)*112,w,224):
+    yy=y+x*.013
+    out.append(f'<path d="M{x} {yy:g} L{x-9} {yy+112-9*.013:g}" fill="none" stroke="#587365" stroke-width="2"/>')
+  return ''.join(out)+'</g>'
  if scene=='conduit'and kind=='cave-wall':
   # Exposed rock is a broken geological face, not a rectangular factory wall.
   # Its foot meets the existing service floor; all new height is behind actors.

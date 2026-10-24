@@ -42,3 +42,5 @@ The conduit Feed light layer is marked `live`: it stays independently addressabl
 Reproduce with `python3 assets/vector/chapter-one.py --chapter three` (or `npm run art:three`). `conduit-chamber.svg` remains an editable boss-arena original. Review the three world maps, standard battlefields and both regulator routes. Detailed `chapter-three-lighting.spec.ts`, chapter journey, Maps, sprites, regulator and Emperor suites stay outside the normal CI gate.
 
 The vessel cage uses green-iron and bronze shadow edges in place of black contours. The on-map Heart regulator has 1.35 vertical stature at its existing sole anchor, shared by campaign and Maps through `worldActorScaleY`; its native frame and combat boss body remain unchanged.
+
+Indoor stone and service-deck layers share one world-space slab pattern, palette, lighting planes and straight slanted courses; the service strip never restarts the tiling. Pipe manifolds are authored whole runs with rigid elbows and clearance offsets; their light motes remain registered to those runs. Tiled navigation, interaction coordinates and console anchors remain unchanged.
