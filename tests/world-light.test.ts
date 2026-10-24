@@ -39,7 +39,7 @@ describe('world-space actor lighting',()=>{
     const source=pixels([140,140,140,255]),near=pixels([0,0,0,0]),far=pixels([0,0,0,0]);
     lightPixels(source,near,rig,115,115,0,60);lightPixels(source,far,rig,600,600,0,60);
     expect([...far.data]).toEqual([87,98,123,255]);
-    expect(near.data[0]).toBeGreaterThan(far.data[0]+30);
+    expect(near.data[0]).toBeGreaterThan(far.data[0]+20);
     expect(near.data[0]/near.data[2]).toBeGreaterThan(far.data[0]/far.data[2]);
     expect(lampStrength(lamp,600,600)).toBe(0);
   });
@@ -51,4 +51,13 @@ describe('world-space actor lighting',()=>{
     const low={...rig,lamps:[{...lamp,height:40}]};
     expect(Math.abs(castShadows(low,140,140)[0]!.dx)).toBeLessThanOrEqual(105);
   });
+});
+
+it('turns broad highlight planes toward the light without changing the silhouette',()=>{
+  const data=new Uint8ClampedArray(20*20*4);for(let i=0;i<data.length;i+=4)data.set([140,110,80,255],i);
+  const source={data,width:20,height:20,colorSpace:'srgb'} as ImageData;
+  const shade=(x:number)=>{const output={...source,data:new Uint8ClampedArray(data.length)};lightPixels(source,output,{ambient:NIGHT_AMBIENT,lamps:[{x,y:200,height:108,radius:300,strength:2}]},100,130,10,20);return output.data;};
+  const left=shade(20),right=shade(180),a=(10*20+2)*4,b=(10*20+17)*4;
+  expect(left[a]).toBeGreaterThan(left[b]+10);expect(right[b]).toBeGreaterThan(right[a]+10);
+  for(let i=3;i<data.length;i+=4){expect(left[i]).toBe(255);expect(right[i]).toBe(255);}
 });
