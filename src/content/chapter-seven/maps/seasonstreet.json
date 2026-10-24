@@ -671,7 +671,7 @@
               "value": "optional"
             },
             {
-              "name": "doneFlag",
+              "name": "hiddenFlag",
               "type": "string",
               "value": "domainPatrolWon"
             },

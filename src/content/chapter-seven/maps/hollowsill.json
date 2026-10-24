@@ -556,7 +556,13 @@
       "name": "distant-god",
       "visible": true,
       "objects": [],
-      "properties": []
+      "properties": [
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "domainEntered"
+        }
+      ]
     },
     {
       "id": 5,

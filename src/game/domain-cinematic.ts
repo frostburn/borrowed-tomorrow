@@ -1,21 +1,30 @@
 import Phaser from 'phaser';
 import type {StagePoint} from '../content/cinematics';
-export type DomainEffect='domain-break'|'domain-fragment'|'domain-release';
+export type DomainEffect='domain-withdraw'|'domain-break'|'domain-fragment'|'domain-release';
 /** Scene-time light and debris. Story completion owns every permanent change. */
 export class DomainCinematic{
  private tweens:Phaser.Tweens.Tween[]=[];
  private objects:Phaser.GameObjects.Graphics[]=[];
- private faded:Phaser.GameObjects.Image[]=[];
+ private faded:{image:Phaser.GameObjects.Image;alpha:number;y:number}[]=[];
  constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,private actors:Map<string,Phaser.GameObjects.Image>){}
  get animating(){return this.tweens.some(t=>t.isPlaying());}
  play(kind:DomainEffect,focus?:StagePoint){
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(kind==='domain-withdraw'){
+   const image=this.world.list.find((o):o is Phaser.GameObjects.Image=>o instanceof Phaser.GameObjects.Image&&o.visible&&o.getData('scene-piece')?.key==='scene-seven-hollowsill-distant-god');
+   if(image){
+    this.faded.push({image,alpha:image.alpha,y:image.y});
+    if(reduced)image.setAlpha(0);
+    else this.tweens.push(this.scene.tweens.add({targets:image,alpha:0,y:image.y-96,duration:1600,ease:'Sine.easeInOut'}));
+   }
+   return;
+  }
   const center={x:focus?(focus.x+.5)*24:768,y:focus?(focus.y+.5)*24-80:440};
   const g=this.scene.add.graphics().setDepth(29999);this.world.add(g);this.objects.push(g);
   const nell=this.actors.get('nell'),from={x:(nell?.x??780)+18,y:(nell?.y??660)-27},to={x:768,y:412};
   if(kind==='domain-break'||kind==='domain-release'){
    const body=this.world.list.find((o):o is Phaser.GameObjects.Image=>o instanceof Phaser.GameObjects.Image&&o.visible&&String(o.getData('scene-piece')?.key??'').startsWith('scene-seven-sunthrone-')&&['monument','revealed-sun','revealed-heart'].some(n=>String(o.getData('scene-piece')?.key).endsWith(n)));
-   if(body){this.faded.push(body);if(reduced)body.setAlpha(.3);else this.tweens.push(this.scene.tweens.add({targets:body,alpha:.1,duration:1400,ease:'Sine.easeIn'}));}
+   if(body){this.faded.push({image:body,alpha:body.alpha,y:body.y});if(reduced)body.setAlpha(.3);else this.tweens.push(this.scene.tweens.add({targets:body,alpha:.1,duration:1400,ease:'Sine.easeIn'}));}
   }
   const draw=(p:number)=>{
    if(!g.active)return;g.clear();
@@ -38,5 +47,5 @@ export class DomainCinematic{
   draw(reduced?1:0);
   if(!reduced)this.tweens.push(this.scene.tweens.addCounter({from:0,to:1,duration:kind==='domain-fragment'?1800:2100,ease:'Sine.easeInOut',onUpdate:t=>draw(t.getValue()??0)}));
  }
- close(){for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const image of this.faded)if(image.active)image.setAlpha(1);this.faded=[];}
+ close(){for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const {image,alpha,y}of this.faded)if(image.active)image.setAlpha(alpha).setY(y);this.faded=[];}
 }

@@ -1,7 +1,7 @@
 import type {GameState} from '../../rules/state';
 const entry=(title:string,text:string)=>({title,text});
 export const JOURNAL={
- domainEntered:entry('Beneath the hollow sun','The fragment opened the crossing beneath a suspended sea. Alda holds the mooring. The Benefactor is visible beyond the stolen landscapes.'),
+ domainEntered:entry('Beneath the hollow sun','The fragment opened the crossing beneath a suspended sea. The Benefactor ordered us back, then withdrew through the water. Living people are held at the platform beyond the stair. Alda holds our mooring.'),
  domainWaterSeen:entry('The waiting platform','Living captives from Rillbridge are held at a familiar railway platform. Clear the pursuit and defeat the old collector.'),
  domainHoundsWon:entry('The platform is clear','The hounds are stopped. The collector still holds the passengers beyond the bell.'),
  domainCollectorWon:entry('The first collector','The pressure guardian is stopped. Its casing resembles the palace machine; gold veins run through its joins.'),

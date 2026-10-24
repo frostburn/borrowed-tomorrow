@@ -8,10 +8,13 @@ export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
  l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:22},cut:true,music:'hollowsill'}),
  l('Orrin','The mooring line’s tight. Alda, keep the drum locked.'),
  l('Alda','I can do that. Coming back will be your part.'),
- l('Nell','There’s a platform on the other side.'),
- l('The hollow sun','Far beyond it, a gold ring turns above a pair of enormous shoulders. A current of pale light runs from the water into its breast.'),
- l('Celia','That light has people in it.'),
- l('Kit','There are stairs down to them. I’ll mark the turns.'),
+ l('The hollow sun','A gold ring turns above the far stair. The figure beneath it lowers its hands across the road.',{focus:{x:32,y:19},duration:900}),
+ l('The Benefactor','Return to your ship. You have no place here.'),
+ l('Celia','There are people in that light.',{focus:{x:32,y:29}}),
+ l('Nell','Let them go.'),
+ l('The Benefactor','Their lives are in my keeping. You will go no farther.',{focus:{x:32,y:19}}),
+ l('The crossing','The figure rises through the hanging water. Its hands lift clear of the stair.',{focus:{x:32,y:19},effect:'domain-withdraw',duration:1600}),
+ l('Kit','There are stairs down to them. I’ll mark the turns.',{focus:{x:32,y:29}}),
  l('Nell','Then we start there.'),
 ]);
 export const water=()=>scene('takenwater','seven-water','The waiting platform',[
@@ -54,7 +57,7 @@ export const harvestFree=()=>scene('firstfield','seven-harvest-free','The uncut 
 ]);
 export const hospice=()=>scene('quietward','seven-hospice','After the healing',[
  l('The hospice','A woman sits beside a made bed. Beyond the window, the same leaf falls upward into a tree.',{focus:{x:32,y:23},cut:true,music:'quietward'}),
- l('A patient','My daughter brought me here last winter. They said my fever had broken. She went to fetch my shoes.'),
+ l('A patient','My daughter brought me here last winter. They said my fever had broken. She went to fetch my shoes.',{focus:{x:24,y:32}}),
  l('Celia','May I look at your wrist?'),
  l('A patient','You’re a physician. Can you discharge me?'),
  l('Celia','I can help you walk out. That binding has rubbed through the skin.'),
@@ -65,8 +68,8 @@ export const hospice=()=>scene('quietward','seven-hospice','After the healing',[
  l('Orrin','The lamps are feeding the lens, just like Windmere. Break its projections and we can get her past it.'),
 ]);
 export const hospiceFree=()=>scene('quietward','seven-hospice-free','Out of bed',[
- l('The hospice','The mirrors go dark. Celia folds a strip of clean cloth around the woman’s wrist.',{focus:{x:32,y:24},cut:true,cue:'mend'}),
- l('Celia','Put your weight on my arm. We’ll stop if you need to.'),
+ l('The hospice','The mirrors go dark. Celia folds a strip of clean cloth around the woman’s wrist.',{focus:{x:24,y:32},cut:true,cue:'mend'}),
+ l('Celia','Put your weight on my arm. We’ll stop if you need to.',{focus:{x:24,y:32}}),
  l('A patient','I’d like to keep going.'),
  l('Kit','The porter’s waiting at the lower turn. He can walk with you.'),
  l('The hollow sun','A second stream breaks. The gold figure shifts; flakes of its mantle fall into the sea.'),

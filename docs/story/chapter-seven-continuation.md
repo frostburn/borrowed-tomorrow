@@ -4,7 +4,7 @@ Entry: a current version-10 Chapter Six save at `chapter-seven:hollow-sun`, with
 
 | Location | Required progress and next checkpoint |
 | --- | --- |
-| `hollowsill` | Entry scene → `domainEntered`; supplies and Alda. |
+| `hollowsill` | Warning and visible withdrawal → `domainEntered`; the god leaves the stair clear. Supplies and Alda. |
 | `takenwater` | `domainWaterSeen`; confront/win `domain-hounds`, then `domain-collector`; release → `takenPeopleFreed`. |
 | `firstfield` | `firstHarvestSeen`; confront/win `domain-furnace`; release → `harvestFreed`; optional lamp → `domainReflectorTaken`. |
 | `quietward` | `firstHospiceSeen`; confront/win `domain-ward`; patient release → `wardPeopleFreed`. |

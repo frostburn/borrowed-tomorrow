@@ -173,7 +173,7 @@ Proceeding deliberately uncured forms the Lightbearer around Nell. Her right han
 
 ## Chapter Seven — The God Who Lent Tomorrow
 
-Only the recovered `chapter-seven:hollow-sun` departure enters the domain. The uncured Lightbearer ending remains terminal. Entry preserves the actual roster, formation, loadouts, HP/focus, currency, bandages and all prior choices. Nell opens the crossing with the intact fragment; Alda holds its mortal end.
+Only the recovered `chapter-seven:hollow-sun` departure enters the domain. The uncured Lightbearer ending remains terminal. Entry preserves the actual roster, formation, loadouts, HP/focus, currency, bandages and all prior choices. Nell opens the crossing with the intact fragment; Alda holds its mortal end. The Benefactor confronts the party at the far stair, orders them back and withdraws through the hanging water. Its figure is gone when exploration begins; the warning does not recur on return visits.
 
 The domain contains living captives and days taken from different places, not people resurrected after violent deaths. A Rillbridge porter remembers Elspeth counting the people taken by the collector. A founding-era farmer remembers the first miraculous grain rising through frost while the next valley's summer went dark. The first bargain predates the empire: a prince promised winter days and later generations; the Benefactor deliberately accepted those lives and expanded the taking. The prince's decision to close his granary and the god's decision to imprison people remain separate wrongs.
 

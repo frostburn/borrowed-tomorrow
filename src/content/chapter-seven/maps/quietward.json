@@ -748,7 +748,7 @@
           "name": "old-patient",
           "point": true,
           "x": 492,
-          "y": 684,
+          "y": 732,
           "properties": [
             {
               "name": "sprite",
@@ -775,8 +775,8 @@
         {
           "name": "nell",
           "point": true,
-          "x": 780,
-          "y": 660,
+          "x": 612,
+          "y": 708,
           "properties": [],
           "id": 9
         },
@@ -807,7 +807,7 @@
         {
           "name": "celia",
           "point": true,
-          "x": 852,
+          "x": 540,
           "y": 732,
           "properties": [],
           "id": 13
@@ -824,8 +824,8 @@
         {
           "name": "nell",
           "point": true,
-          "x": 780,
-          "y": 660,
+          "x": 612,
+          "y": 708,
           "properties": [],
           "id": 14
         },
@@ -856,7 +856,7 @@
         {
           "name": "celia",
           "point": true,
-          "x": 852,
+          "x": 540,
           "y": 732,
           "properties": [],
           "id": 18

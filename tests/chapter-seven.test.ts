@@ -4,7 +4,8 @@ import {beginChapterSeven,level,remember} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {resumeChapter,interactChapter} from '../src/content/story';
 import {createBattle,awardVictory} from '../src/rules/combat';
-import {arrival,MAPS,walkable,worldPath} from '../src/content/maps';
+import {arrival,MAPS,walkable,worldPath,visibleObjects,visiblePeople} from '../src/content/maps';
+import {visibleSceneArt} from '../src/content/scene-art';
 import {SEVEN_PREREQUISITES,SEVEN_MAP_IDS} from '../src/content/chapter-seven/progress';
 import type {StoryHost} from '../src/content/story-host';
 import type {Dialogue} from '../src/content/dialogue';
@@ -19,6 +20,24 @@ function journey(state=chapterSevenStart()){
  const win=()=>{const b=createBattle(encounter,state);b.result='victory';awardVictory(b,state);const earned=structuredClone(state);awardVictory(b,state);expect(state).toEqual(earned);valid();resumeChapter(h);finish();};
  return {s:state,h,valid,finish,act,choose,win,read:()=>d,ended:()=>end,encounter:()=>encounter};
 }
+it('withdraws the opening god on scene completion and keeps the cleared crossing on restore',()=>{
+ const j=journey(),tiles=MAPS.hollowsill.tiles!,god='scene-seven-hollowsill-distant-god';
+ resumeChapter(j.h);const d=j.read()!;
+ expect(d.lines.some(l=>l.who==='The Benefactor')).toBe(true);expect(d.lines.some(l=>l.shot?.effect==='domain-withdraw')).toBe(true);
+ expect(visibleSceneArt(tiles,j.s)!.some(p=>p.key===god)).toBe(true);expect(j.s.flags.domainEntered).toBeUndefined();
+ j.finish();const restored=journey(decodeSave(JSON.stringify(j.s)));resumeChapter(restored.h);
+ expect(restored.read()).toBeUndefined();expect(visibleSceneArt(tiles,restored.s)!.some(p=>p.key===god)).toBe(false);
+ restored.act('sill-cross');expect(restored.s.location.map).toBe('takenwater');
+});
+it('places the hospice patient in front of her bed and removes defeated courier-stair hunters',()=>{
+ const s=chapterSevenStart(),patient=visiblePeople(MAPS.quietward,s).find(p=>p.id==='old-patient')!;
+ const bed=visibleSceneArt(MAPS.quietward.tiles!,s)!.find(p=>p.key.endsWith('western-bed'))!;
+ expect((patient.y+.5)*24+7).toBeGreaterThan(bed.depth);
+ const j=journey(chapterSevenRefugeStart());j.s.location=arrival('seasonstreet','start');
+ expect(visibleObjects(MAPS.seasonstreet,j.s).some(o=>o.id==='season-patrol')).toBe(true);
+ j.act('season-patrol');j.choose();j.win();
+ expect(j.s.flags.domainPatrolWon).toBe(true);expect(visibleObjects(MAPS.seasonstreet,decodeSave(JSON.stringify(j.s))).some(o=>o.id==='season-patrol')).toBe(false);
+});
 it('opens only the recovered departure after loading, preserving actual formation and resources',()=>{
  const s=chapterSevenDeparture();s.activeParty=['orrin'];s.party[0].hp=23;s.bandages=3;s.playSeconds=322;const before=structuredClone(s);
  expect(beginChapterSeven(s)).toBe(true);expect(s.chapter).toBe('chapter-seven');expect(s.boundary).toBeNull();
