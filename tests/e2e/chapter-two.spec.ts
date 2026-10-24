@@ -34,6 +34,9 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await approach(page,'siding-collector');await dialogue(page);
     await expect(page.getByLabel('Boarding objective')).toContainText('Families aboard: 0/3');
     await expect(page.getByLabel('Boarding objective')).toContainText('gold loading walk');
+    await expect(page.getByLabel('Boarding objective')).toContainText('Boarding is automatic');
+    expect(await page.locator('.topbar').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;})).toBe(true);
+    if(device==='desktop')expect(await page.locator('.initiative').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
     await nativeScene(page,'cinderbank');await capture(page,`loading-walk-${device}`);
     for(let actions=0;actions<3;actions++){
       const button=page.locator('.actions').getByRole('button',{name:/^F\s+Defend$/});await expect(button).toBeEnabled();await button.click();

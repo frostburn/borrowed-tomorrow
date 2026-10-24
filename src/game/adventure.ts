@@ -611,7 +611,7 @@ export class Adventure extends Phaser.Scene {
   }
   private drawInitiative() {
     const b=this.battle!,u=active(b),esc=this.ui.escape;
-    this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.evacuation?` · Families ${b.evacuation.boarded}/${b.evacuation.groups} aboard`:b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
+    this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
   }
   private renderBattleControls() {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
@@ -619,7 +619,7 @@ export class Adventure extends Phaser.Scene {
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
     this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
-    if(b.evacuation){const objective=document.createElement('p');objective.className='hint';objective.setAttribute('aria-label','Boarding objective');objective.textContent=`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Keep machines off the gold loading walk. One family boards after each clear round; clearing all machines brings everyone aboard.`;actions.before(objective);}
+    if(b.evacuation){const objective=document.createElement('p');objective.className='hint';objective.setAttribute('aria-label','Boarding objective');objective.textContent=`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Arrows mark the families’ gold loading walk. Boarding is automatic: keep machines off it until round end. One family boards per clear round; all three aboard or all machines defeated wins.`;actions.before(objective);}
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-list')!,{
       current:()=>this.mode==='battle'&&!this.ui.modalOpen&&!this.ui.panelOpen?this.battle:undefined,
       initial:()=>this.testingBattle,
