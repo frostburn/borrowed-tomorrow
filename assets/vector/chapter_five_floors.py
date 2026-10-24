@@ -39,16 +39,31 @@ def chips(w,top,bottom,palette,count=130):
   out.append(poly([(x,y),(x+s,y-2),(x+s+3,y+2),(x+2,y+5)],palette[i%len(palette)]))
  return out
 
-def fan(cx,cy,radius,palette):
- out=[]
- for row,r in enumerate(range(35,radius,35)):
-  count=max(7,round(math.pi*r/43))
-  for i in range(count):
-   a=math.pi+i*math.pi/count+.012;b=math.pi+(i+1)*math.pi/count-.012
-   pts=[(cx+math.cos(a)*r,cy+math.sin(a)*r*.62),(cx+math.cos(b)*r,cy+math.sin(b)*r*.62),
-    (cx+math.cos(b)*(r+31),cy+math.sin(b)*(r+31)*.62),(cx+math.cos(a)*(r+31),cy+math.sin(a)*(r+31)*.62)]
+def radial_paving(cx,cy,edges,palette,grout,yscale=.62,span=math.tau,start=0,block=43):
+ """Replace the underlying bond, including its joints, with curved courses."""
+ full=span==math.tau;out=[f'<g transform="translate({cx:g} {cy:g}) scale(1 {yscale:g})">']
+ # The opaque mortar bed prevents straight brick joints showing through the fan.
+ angles=[start+span*i/64 for i in range(65)]
+ out.append(poly([(0,0)]+[(math.cos(a)*edges[-1],math.sin(a)*edges[-1])for a in angles],grout))
+ for row,(inner,outer)in enumerate(zip(edges,edges[1:])):
+  middle=(inner+outer)/2;count=max(5,round(span*middle/block));pitch=span/count
+  if full:cuts=[start+(i+(row%2)*.5)*pitch for i in range(count+1)]
+  elif row%2:cuts=[start]+[start+(i+.5)*pitch for i in range(count)]+[start+span]
+  else:cuts=[start+i*pitch for i in range(count+1)]
+  gap=min(.06,1.2/max(12,middle))
+  for i,(a,b)in enumerate(zip(cuts,cuts[1:])):
+   a+=gap;b-=gap
+   if a>=b:continue
+   # Several points per edge make a curved brick rather than a straight tile
+   # with a decorative circle painted over it. Courses stagger their joints.
+   divisions=max(2,math.ceil((b-a)/.14));arc=[a+(b-a)*j/divisions for j in range(divisions+1)]
+   pts=[(math.cos(t)*(outer-1.5),math.sin(t)*(outer-1.5))for t in arc]
+   pts += [(math.cos(t)*(inner+1.5),math.sin(t)*(inner+1.5))for t in reversed(arc)]
    out.append(poly(pts,palette[variation(i,row,len(palette))]))
- return out
+ return out+['</g>']
+
+def fan(cx,cy,radius,palette):
+ return radial_paving(cx,cy,[*range(0,radius,35),radius],palette,'#777a66',span=math.pi,start=math.pi)
 
 def herringbone(w,top,bottom,palette,ux=34,uy=23):
  # Two perpendicular bricks repeated on the (2,2),(1,-1) lattice.
@@ -133,21 +148,28 @@ def floor_paint(w,h,scene,points,arena=False):
   out += chips(w,top,bottom,['#a3a28a','#7f9b8a','#415f60'],55)
  elif material=='heat-brick':
   out += herringbone(w,top,bottom,['#917a5e','#806c57','#a08867','#8b775e'],35,23)
-  cx=w*.52;cy=top+(bottom-top)*.54
-  for r in (200,240):
-   pts=[(cx+math.cos(a/12*math.pi)*r,cy+math.sin(a/12*math.pi)*r*.32)for a in range(25)]
-   out += [line(pts,'#59655d',10),line([(x,y-3)for x,y in pts],'#aaa080',3)]
+  # The exploration gantry has a turntable; combat has straight casting rails.
+  if not arena:
+   cx=w*.52;cy=top+(bottom-top)*.54
+   out += radial_paving(cx,cy,[0,42,84,126,168,210,258],['#917a5e','#806c57','#a08867','#8b775e'],'#665e50',yscale=.32)
+   for r in (200,240):
+    pts=[(cx+math.cos(a/12*math.pi)*r,cy+math.sin(a/12*math.pi)*r*.32)for a in range(25)]
+    out += [line(pts,'#59655d',10),line([(x,y-3)for x,y in pts],'#aaa080',3)]
   out += chips(w,top,bottom,['#605c50','#5c6053','#b09a74'],75)
  elif material=='town-cobbles':
   out += stones(w,top,bottom,['#929580','#9e9c83','#a8a187','#898f7a'],64,36)
   for x,y,r in [(w*.23,bottom-15,220),(w*.53,bottom-160,240),(w*.83,bottom-55,180)]:out += fan(x,y,r,['#a29e83','#b1a88c','#97987e'])
  elif material=='gun-terrace':
   out += ['<g transform="skewX(-18)">',*herringbone(round(w+bottom*.33),top,bottom,['#687d78','#738780','#5d7674','#7e8b80'],40,24),'</g>']
-  for x in (w*.22,w*.77):out += [ellipse(x,top+62,105,36,'#4f696b'),ellipse(x,top+59,92,29,'#819085'),line([(x-64,top+61),(x+67,top+55)],'#a6a489',3)]
+  for x in (w*.22,w*.77):
+   out += radial_paving(x,top+62,[0,105,139],['#687d78','#738780','#5d7674','#7e8b80'],'#4f6668',yscale=36/105)
+   out += [ellipse(x,top+62,105,36,'#4f696b'),ellipse(x,top+59,92,29,'#819085'),line([(x-64,top+61),(x+67,top+55)],'#a6a489',3)]
   out += grate(w*.58,bottom-70,190,36)
  elif material=='watch-slate':
   out += stones(w,top,bottom,['#81918a','#8c998e','#788d85','#9aa18e'],93,48)
-  out += crest(w*.51,top+(bottom-top)*.68,88 if arena else 121)
+  cx=w*.51;cy=top+(bottom-top)*.68;r=88 if arena else 121
+  out += radial_paving(cx,cy,[0,r,r+34,r+68],['#81918a','#8c998e','#788d85','#9aa18e'],'#687775',yscale=.5)
+  out += crest(cx,cy,r)
  elif material=='garden-stone':
   out += stones(w,top,bottom,['#98aa8e','#a2af91','#92a287','#b0b69a'],76,43)
   for x,y in [(w*.23,bottom-32),(w*.69,bottom-10),(w*.9,top+130)]:
@@ -157,12 +179,17 @@ def floor_paint(w,h,scene,points,arena=False):
   out += ceramic(w,top,bottom)
   out += [poly([(w*.4,top+140),(w*.61,top+123),(w*.69,bottom-56),(w*.5,bottom-38)],'#8aa493'),line([(w*.42,top+151),(w*.51,bottom-53),(w*.67,bottom-70)],'#c5c7ab',4)]
  elif material=='optical-terrazzo':
-  out += [poly([(0,top+40),(w*.44,top),(w*.59,bottom),(0,bottom)],'#a5b8a5'),poly([(w*.48,top),(w,top+70),(w,bottom),(w*.65,bottom-30)],'#9bb2a2')]
+  # Arena: col 5 / row 2, with lower footprint contacts on row 3. The
+  # renderer's body anchor is (463,286). Its native base center is 23px above it.
+  # Exploration: the native engine's base at (684+128,198+217).
+  cx,cy=(463,263)if arena else(812,415)
+  out += radial_paving(cx,cy,[0,185,330,475,1100],['#a5b8a5','#9bb2a2','#9fb5a2','#aabca7'],'#8da69a',yscale=.65,block=180)
   out += chips(w,top,bottom,['#6c9089','#c7c8ac','#8b9e8d','#b3bca0'],210)
-  cx=w*.53;cy=top+40
+  out.append(f'<g id="ward-floor-inlays" transform="translate({cx:g} {cy:g})">')
   for r in (185,330,475):
-   pts=[(cx+math.cos(a/18*math.pi)*r,cy+math.sin(a/18*math.pi)*r*.65)for a in range(19)]
-   out += [line(pts,'#6c8d82',8),line([(x,y-2)for x,y in pts],'#c4b98c',3)]
+   pts=[(math.cos(a/18*math.pi)*r,math.sin(a/18*math.pi)*r*.65)for a in range(37)]
+   out += [line(pts,'#6c8d82',8),line(pts,'#c4b98c',3)]
+  out.append('</g>')
  elif material=='ship-timber':
   out += timber(w,top,bottom)
   for x,y in [(w*.35,bottom-130),(w*.64,top+130)]:out += [poly([(x-68,y),(x+51,y-4),(x+70,y+66),(x-55,y+75)],'#69776b'),line([(x-57,y+8),(x+42,y+4),(x+59,y+56)],'#c2ae7f',3)]

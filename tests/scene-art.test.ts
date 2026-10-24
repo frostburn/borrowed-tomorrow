@@ -7,8 +7,26 @@ import { CHAPTER_FOUR_MAPS,CHAPTER_FOUR_BATTLES } from '../src/content/chapter-f
 import { CHAPTER_FIVE_MAPS,CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
 import { sceneArt,visibleSceneArt,SCENE_ASSETS } from '../src/content/scene-art';
 import { properties,tilePages,mapPoints } from '../src/content/tilemaps';
+import {createBattle} from '../src/rules/combat';
+import {occupiedHexes} from '../src/rules/footprint';
+import {toPixel} from '../src/rules/hex';
+import {wardUnit} from '../src/rules/ward';
+import {chapterFiveFinaleStart} from '../src/dev/canonical-saves';
 
 describe('traced SVG scenes',()=>{
+ it('centres the ward floor inlays on the actual native engine base in exploration and battle',()=>{
+  const model=readFileSync('public/art/vector/chapter-five/ward-engine-battle.svg','utf8');
+  const [,width,height]=model.match(/width="([\d.]+)" height="([\d.]+)"/)!;
+  const [,cx,cy]=model.match(/<ellipse\b[^>]*cx="([\d.]+)"[^>]*cy="([\d.]+)"/)!;
+  const core=wardUnit(createBattle('wind-engine',chapterFiveFinaleStart()))!;
+  const anchor={x:Math.round(toPixel(core.hex).x),y:Math.round(Math.max(...occupiedHexes(core).map(h=>toPixel(h).y))+24)};
+  const world=CHAPTER_FIVE_MAPS.mirrorward.tiles!,piece=sceneArt(world)!.find(p=>p.key==='scene-five-windmere-engine')!;
+  for(const [tiles,expected]of [[CHAPTER_FIVE_BATTLES['wind-engine'],[anchor.x-Number(width)/2+Number(cx),anchor.y-Number(height)+Number(cy)]],[world,[piece.x+Number(cx),piece.y+Number(cy)]]]as const){
+   const floor=sceneArt(tiles)!.find(p=>p.url.endsWith('-floor.svg'))!,svg=readFileSync(`public/${floor.url}`,'utf8');
+   const [,x,y]=svg.match(/id="ward-floor-inlays" transform="translate\(([-\d.]+) ([-\d.]+)\)"/)!;
+   expect([Number(x),Number(y)]).toEqual(expected);
+  }
+ });
  it('shows one full-sized furnace carrier on the gantry, with a clear approach and no duplicate scene miniature',()=>{
   const map=CHAPTER_FIVE_MAPS.anchorforge,body=visibleSceneArt(map.tiles!,{flags:{}})!.find(p=>p.key==='scene-five-gantry-carrier')!;
   expect(body.width).toBeGreaterThan(220);expect(body.height).toBeGreaterThan(168);
