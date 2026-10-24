@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Export the imperial exterior without repacking accepted tiles.
 
-Usage: python3 assets/tiles/import-palace.py HALL.png WING.png PAVILION.png
+Usage: python3 assets/tiles/import-conduit-exterior.py HALL.png WING.png PAVILION.png
 Authoring images stay outside git; runtime uses the bounded lossless tile pages.
 """
 import json
@@ -12,7 +12,7 @@ from native_tiles import load_tiles, write_pages, clean_cutout
 
 S = 24
 root = Path(__file__).resolve().parents[2]
-manifest = json.loads((root / 'assets/tiles/palace.json').read_text())
+manifest = json.loads((root / 'assets/tiles/conduit-exterior.json').read_text())
 modules = json.loads((root / 'assets/tiles/modules.json').read_text())
 tiles = load_tiles(root)
 byname = {t['type']: i for i, (_, t) in enumerate(tiles)}

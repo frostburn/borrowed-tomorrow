@@ -21,8 +21,8 @@
       "height": 624
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 0,
       "y": -144,
       "depth": 91,
@@ -31,8 +31,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 192,
       "y": -144,
       "depth": 91,
@@ -41,8 +41,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 384,
       "y": -144,
       "depth": 91,
@@ -51,8 +51,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 576,
       "y": -144,
       "depth": 91,
@@ -61,8 +61,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 768,
       "y": -144,
       "depth": 91,
@@ -71,8 +71,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 960,
       "y": -144,
       "depth": 91,
@@ -133,8 +133,8 @@
       "height": 624
     },
     {
-      "key": "scenery-palace-vessel",
-      "url": "art/vector/scenery/palace-vessel.svg",
+      "key": "scenery-conduit-vessel",
+      "url": "art/vector/scenery/conduit-vessel.svg",
       "x": -96,
       "y": 120,
       "depth": 427,
@@ -143,8 +143,8 @@
       "height": 312
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 744,
       "y": 0,
       "depth": 67,
@@ -185,8 +185,8 @@
       "height": 624
     },
     {
-      "key": "scenery-palace-vessel",
-      "url": "art/vector/scenery/palace-vessel.svg",
+      "key": "scenery-conduit-vessel",
+      "url": "art/vector/scenery/conduit-vessel.svg",
       "x": -96,
       "y": 120,
       "depth": 427,
@@ -195,8 +195,8 @@
       "height": 312
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 744,
       "y": 0,
       "depth": 67,
@@ -297,8 +297,8 @@
       "height": 168
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 480,
       "y": 0,
       "depth": 67,
@@ -419,8 +419,8 @@
       "height": 168
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 480,
       "y": 0,
       "depth": 67,
@@ -511,8 +511,8 @@
       "height": 1008
     },
     {
-      "key": "scenery-palace-vessel",
-      "url": "art/vector/scenery/palace-vessel.svg",
+      "key": "scenery-conduit-vessel",
+      "url": "art/vector/scenery/conduit-vessel.svg",
       "x": 672,
       "y": 144,
       "depth": 451,
@@ -521,8 +521,8 @@
       "height": 312
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 1032,
       "y": 384,
       "depth": 451,
@@ -703,8 +703,8 @@
       "height": 1008
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 552,
       "y": 72,
       "depth": 307,
@@ -713,8 +713,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 744,
       "y": 72,
       "depth": 307,
@@ -723,8 +723,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-wing",
-      "url": "art/vector/scenery/palace-wing.svg",
+      "key": "scenery-conduit-factory-wing",
+      "url": "art/vector/scenery/conduit-factory-wing.svg",
       "x": 1320,
       "y": 72,
       "depth": 307,
@@ -733,8 +733,8 @@
       "height": 240
     },
     {
-      "key": "scenery-palace-portico",
-      "url": "art/vector/scenery/palace-portico.svg",
+      "key": "scenery-conduit-dome",
+      "url": "art/vector/scenery/conduit-dome.svg",
       "x": 936,
       "y": 24,
       "depth": 331,
@@ -743,8 +743,8 @@
       "height": 312
     },
     {
-      "key": "scenery-palace-gate",
-      "url": "art/vector/scenery/palace-gate.svg",
+      "key": "scenery-conduit-medical-pavilion",
+      "url": "art/vector/scenery/conduit-medical-pavilion.svg",
       "x": 216,
       "y": 96,
       "depth": 307,
@@ -1025,8 +1025,8 @@
       "height": 168
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 240,
       "y": 360,
       "depth": 427,
@@ -1035,8 +1035,8 @@
       "height": 72
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 1008,
       "y": 336,
       "depth": 403,
@@ -1045,8 +1045,8 @@
       "height": 72
     },
     {
-      "key": "scenery-palace-controls",
-      "url": "art/vector/scenery/palace-controls.svg",
+      "key": "scenery-conduit-controls",
+      "url": "art/vector/scenery/conduit-controls.svg",
       "x": 672,
       "y": 456,
       "depth": 523,

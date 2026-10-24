@@ -15,12 +15,12 @@
   "tiles": [
     {
       "id": 0,
-      "type": "palace-portico-0-12",
+      "type": "conduit-dome-0-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-0-12"
+          "value": "conduit-dome-0-12"
         },
         {
           "name": "sortOffset",
@@ -41,12 +41,12 @@
     },
     {
       "id": 1,
-      "type": "palace-portico-1-12",
+      "type": "conduit-dome-1-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-1-12"
+          "value": "conduit-dome-1-12"
         },
         {
           "name": "sortOffset",
@@ -67,12 +67,12 @@
     },
     {
       "id": 2,
-      "type": "palace-portico-2-12",
+      "type": "conduit-dome-2-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-2-12"
+          "value": "conduit-dome-2-12"
         },
         {
           "name": "sortOffset",
@@ -93,12 +93,12 @@
     },
     {
       "id": 3,
-      "type": "palace-portico-3-12",
+      "type": "conduit-dome-3-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-3-12"
+          "value": "conduit-dome-3-12"
         },
         {
           "name": "sortOffset",
@@ -119,12 +119,12 @@
     },
     {
       "id": 4,
-      "type": "palace-portico-4-12",
+      "type": "conduit-dome-4-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-4-12"
+          "value": "conduit-dome-4-12"
         },
         {
           "name": "sortOffset",
@@ -145,12 +145,12 @@
     },
     {
       "id": 5,
-      "type": "palace-portico-5-12",
+      "type": "conduit-dome-5-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-5-12"
+          "value": "conduit-dome-5-12"
         },
         {
           "name": "sortOffset",
@@ -171,12 +171,12 @@
     },
     {
       "id": 6,
-      "type": "palace-portico-6-12",
+      "type": "conduit-dome-6-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-6-12"
+          "value": "conduit-dome-6-12"
         },
         {
           "name": "sortOffset",
@@ -197,12 +197,12 @@
     },
     {
       "id": 7,
-      "type": "palace-portico-7-12",
+      "type": "conduit-dome-7-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-7-12"
+          "value": "conduit-dome-7-12"
         },
         {
           "name": "sortOffset",
@@ -223,12 +223,12 @@
     },
     {
       "id": 8,
-      "type": "palace-portico-8-12",
+      "type": "conduit-dome-8-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-8-12"
+          "value": "conduit-dome-8-12"
         },
         {
           "name": "sortOffset",
@@ -249,12 +249,12 @@
     },
     {
       "id": 9,
-      "type": "palace-portico-9-12",
+      "type": "conduit-dome-9-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-9-12"
+          "value": "conduit-dome-9-12"
         },
         {
           "name": "sortOffset",
@@ -275,12 +275,12 @@
     },
     {
       "id": 10,
-      "type": "palace-portico-10-12",
+      "type": "conduit-dome-10-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-10-12"
+          "value": "conduit-dome-10-12"
         },
         {
           "name": "sortOffset",
@@ -301,12 +301,12 @@
     },
     {
       "id": 11,
-      "type": "palace-portico-11-12",
+      "type": "conduit-dome-11-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-11-12"
+          "value": "conduit-dome-11-12"
         },
         {
           "name": "sortOffset",
@@ -327,12 +327,12 @@
     },
     {
       "id": 12,
-      "type": "palace-portico-12-12",
+      "type": "conduit-dome-12-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-12-12"
+          "value": "conduit-dome-12-12"
         },
         {
           "name": "sortOffset",
@@ -353,12 +353,12 @@
     },
     {
       "id": 13,
-      "type": "palace-portico-13-12",
+      "type": "conduit-dome-13-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-13-12"
+          "value": "conduit-dome-13-12"
         },
         {
           "name": "sortOffset",
@@ -379,12 +379,12 @@
     },
     {
       "id": 14,
-      "type": "palace-portico-14-12",
+      "type": "conduit-dome-14-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-14-12"
+          "value": "conduit-dome-14-12"
         },
         {
           "name": "sortOffset",
@@ -405,12 +405,12 @@
     },
     {
       "id": 15,
-      "type": "palace-portico-15-12",
+      "type": "conduit-dome-15-12",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-15-12"
+          "value": "conduit-dome-15-12"
         },
         {
           "name": "sortOffset",
@@ -431,12 +431,12 @@
     },
     {
       "id": 16,
-      "type": "palace-wing-0-0",
+      "type": "conduit-factory-wing-0-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-0"
+          "value": "conduit-factory-wing-0-0"
         },
         {
           "name": "sortOffset",
@@ -451,7 +451,7 @@
         {
           "name": "module",
           "type": "string",
-          "value": "palace-wing"
+          "value": "conduit-factory-wing"
         },
         {
           "name": "moduleWidth",
@@ -477,12 +477,12 @@
     },
     {
       "id": 17,
-      "type": "palace-wing-1-0",
+      "type": "conduit-factory-wing-1-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-0"
+          "value": "conduit-factory-wing-1-0"
         },
         {
           "name": "sortOffset",
@@ -498,12 +498,12 @@
     },
     {
       "id": 18,
-      "type": "palace-wing-2-0",
+      "type": "conduit-factory-wing-2-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-0"
+          "value": "conduit-factory-wing-2-0"
         },
         {
           "name": "sortOffset",
@@ -519,12 +519,12 @@
     },
     {
       "id": 19,
-      "type": "palace-wing-3-0",
+      "type": "conduit-factory-wing-3-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-0"
+          "value": "conduit-factory-wing-3-0"
         },
         {
           "name": "sortOffset",
@@ -540,12 +540,12 @@
     },
     {
       "id": 20,
-      "type": "palace-wing-4-0",
+      "type": "conduit-factory-wing-4-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-0"
+          "value": "conduit-factory-wing-4-0"
         },
         {
           "name": "sortOffset",
@@ -561,12 +561,12 @@
     },
     {
       "id": 21,
-      "type": "palace-wing-5-0",
+      "type": "conduit-factory-wing-5-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-0"
+          "value": "conduit-factory-wing-5-0"
         },
         {
           "name": "sortOffset",
@@ -582,12 +582,12 @@
     },
     {
       "id": 22,
-      "type": "palace-wing-6-0",
+      "type": "conduit-factory-wing-6-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-0"
+          "value": "conduit-factory-wing-6-0"
         },
         {
           "name": "sortOffset",
@@ -603,12 +603,12 @@
     },
     {
       "id": 23,
-      "type": "palace-wing-7-0",
+      "type": "conduit-factory-wing-7-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-0"
+          "value": "conduit-factory-wing-7-0"
         },
         {
           "name": "sortOffset",
@@ -624,12 +624,12 @@
     },
     {
       "id": 24,
-      "type": "palace-wing-0-1",
+      "type": "conduit-factory-wing-0-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-1"
+          "value": "conduit-factory-wing-0-1"
         },
         {
           "name": "sortOffset",
@@ -645,12 +645,12 @@
     },
     {
       "id": 25,
-      "type": "palace-wing-1-1",
+      "type": "conduit-factory-wing-1-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-1"
+          "value": "conduit-factory-wing-1-1"
         },
         {
           "name": "sortOffset",
@@ -666,12 +666,12 @@
     },
     {
       "id": 26,
-      "type": "palace-wing-2-1",
+      "type": "conduit-factory-wing-2-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-1"
+          "value": "conduit-factory-wing-2-1"
         },
         {
           "name": "sortOffset",
@@ -687,12 +687,12 @@
     },
     {
       "id": 27,
-      "type": "palace-wing-3-1",
+      "type": "conduit-factory-wing-3-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-1"
+          "value": "conduit-factory-wing-3-1"
         },
         {
           "name": "sortOffset",
@@ -708,12 +708,12 @@
     },
     {
       "id": 28,
-      "type": "palace-wing-4-1",
+      "type": "conduit-factory-wing-4-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-1"
+          "value": "conduit-factory-wing-4-1"
         },
         {
           "name": "sortOffset",
@@ -729,12 +729,12 @@
     },
     {
       "id": 29,
-      "type": "palace-wing-5-1",
+      "type": "conduit-factory-wing-5-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-1"
+          "value": "conduit-factory-wing-5-1"
         },
         {
           "name": "sortOffset",
@@ -750,12 +750,12 @@
     },
     {
       "id": 30,
-      "type": "palace-wing-6-1",
+      "type": "conduit-factory-wing-6-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-1"
+          "value": "conduit-factory-wing-6-1"
         },
         {
           "name": "sortOffset",
@@ -771,12 +771,12 @@
     },
     {
       "id": 31,
-      "type": "palace-wing-7-1",
+      "type": "conduit-factory-wing-7-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-1"
+          "value": "conduit-factory-wing-7-1"
         },
         {
           "name": "sortOffset",
@@ -792,12 +792,12 @@
     },
     {
       "id": 32,
-      "type": "palace-wing-0-2",
+      "type": "conduit-factory-wing-0-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-2"
+          "value": "conduit-factory-wing-0-2"
         },
         {
           "name": "sortOffset",
@@ -813,12 +813,12 @@
     },
     {
       "id": 33,
-      "type": "palace-wing-1-2",
+      "type": "conduit-factory-wing-1-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-2"
+          "value": "conduit-factory-wing-1-2"
         },
         {
           "name": "sortOffset",
@@ -834,12 +834,12 @@
     },
     {
       "id": 34,
-      "type": "palace-wing-2-2",
+      "type": "conduit-factory-wing-2-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-2"
+          "value": "conduit-factory-wing-2-2"
         },
         {
           "name": "sortOffset",
@@ -855,12 +855,12 @@
     },
     {
       "id": 35,
-      "type": "palace-wing-3-2",
+      "type": "conduit-factory-wing-3-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-2"
+          "value": "conduit-factory-wing-3-2"
         },
         {
           "name": "sortOffset",
@@ -876,12 +876,12 @@
     },
     {
       "id": 36,
-      "type": "palace-wing-4-2",
+      "type": "conduit-factory-wing-4-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-2"
+          "value": "conduit-factory-wing-4-2"
         },
         {
           "name": "sortOffset",
@@ -897,12 +897,12 @@
     },
     {
       "id": 37,
-      "type": "palace-wing-5-2",
+      "type": "conduit-factory-wing-5-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-2"
+          "value": "conduit-factory-wing-5-2"
         },
         {
           "name": "sortOffset",
@@ -918,12 +918,12 @@
     },
     {
       "id": 38,
-      "type": "palace-wing-6-2",
+      "type": "conduit-factory-wing-6-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-2"
+          "value": "conduit-factory-wing-6-2"
         },
         {
           "name": "sortOffset",
@@ -939,12 +939,12 @@
     },
     {
       "id": 39,
-      "type": "palace-wing-7-2",
+      "type": "conduit-factory-wing-7-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-2"
+          "value": "conduit-factory-wing-7-2"
         },
         {
           "name": "sortOffset",
@@ -960,12 +960,12 @@
     },
     {
       "id": 40,
-      "type": "palace-wing-0-3",
+      "type": "conduit-factory-wing-0-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-3"
+          "value": "conduit-factory-wing-0-3"
         },
         {
           "name": "sortOffset",
@@ -981,12 +981,12 @@
     },
     {
       "id": 41,
-      "type": "palace-wing-1-3",
+      "type": "conduit-factory-wing-1-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-3"
+          "value": "conduit-factory-wing-1-3"
         },
         {
           "name": "sortOffset",
@@ -1002,12 +1002,12 @@
     },
     {
       "id": 42,
-      "type": "palace-wing-2-3",
+      "type": "conduit-factory-wing-2-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-3"
+          "value": "conduit-factory-wing-2-3"
         },
         {
           "name": "sortOffset",
@@ -1023,12 +1023,12 @@
     },
     {
       "id": 43,
-      "type": "palace-wing-3-3",
+      "type": "conduit-factory-wing-3-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-3"
+          "value": "conduit-factory-wing-3-3"
         },
         {
           "name": "sortOffset",
@@ -1044,12 +1044,12 @@
     },
     {
       "id": 44,
-      "type": "palace-wing-4-3",
+      "type": "conduit-factory-wing-4-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-3"
+          "value": "conduit-factory-wing-4-3"
         },
         {
           "name": "sortOffset",
@@ -1065,12 +1065,12 @@
     },
     {
       "id": 45,
-      "type": "palace-wing-5-3",
+      "type": "conduit-factory-wing-5-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-3"
+          "value": "conduit-factory-wing-5-3"
         },
         {
           "name": "sortOffset",
@@ -1086,12 +1086,12 @@
     },
     {
       "id": 46,
-      "type": "palace-wing-6-3",
+      "type": "conduit-factory-wing-6-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-3"
+          "value": "conduit-factory-wing-6-3"
         },
         {
           "name": "sortOffset",
@@ -1107,12 +1107,12 @@
     },
     {
       "id": 47,
-      "type": "palace-wing-7-3",
+      "type": "conduit-factory-wing-7-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-3"
+          "value": "conduit-factory-wing-7-3"
         },
         {
           "name": "sortOffset",
@@ -1128,12 +1128,12 @@
     },
     {
       "id": 48,
-      "type": "palace-wing-0-4",
+      "type": "conduit-factory-wing-0-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-4"
+          "value": "conduit-factory-wing-0-4"
         },
         {
           "name": "sortOffset",
@@ -1149,12 +1149,12 @@
     },
     {
       "id": 49,
-      "type": "palace-wing-1-4",
+      "type": "conduit-factory-wing-1-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-4"
+          "value": "conduit-factory-wing-1-4"
         },
         {
           "name": "sortOffset",
@@ -1170,12 +1170,12 @@
     },
     {
       "id": 50,
-      "type": "palace-wing-2-4",
+      "type": "conduit-factory-wing-2-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-4"
+          "value": "conduit-factory-wing-2-4"
         },
         {
           "name": "sortOffset",
@@ -1191,12 +1191,12 @@
     },
     {
       "id": 51,
-      "type": "palace-wing-3-4",
+      "type": "conduit-factory-wing-3-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-4"
+          "value": "conduit-factory-wing-3-4"
         },
         {
           "name": "sortOffset",
@@ -1212,12 +1212,12 @@
     },
     {
       "id": 52,
-      "type": "palace-wing-4-4",
+      "type": "conduit-factory-wing-4-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-4"
+          "value": "conduit-factory-wing-4-4"
         },
         {
           "name": "sortOffset",
@@ -1233,12 +1233,12 @@
     },
     {
       "id": 53,
-      "type": "palace-wing-5-4",
+      "type": "conduit-factory-wing-5-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-4"
+          "value": "conduit-factory-wing-5-4"
         },
         {
           "name": "sortOffset",
@@ -1254,12 +1254,12 @@
     },
     {
       "id": 54,
-      "type": "palace-wing-6-4",
+      "type": "conduit-factory-wing-6-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-4"
+          "value": "conduit-factory-wing-6-4"
         },
         {
           "name": "sortOffset",
@@ -1275,12 +1275,12 @@
     },
     {
       "id": 55,
-      "type": "palace-wing-7-4",
+      "type": "conduit-factory-wing-7-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-4"
+          "value": "conduit-factory-wing-7-4"
         },
         {
           "name": "sortOffset",
@@ -1296,12 +1296,12 @@
     },
     {
       "id": 56,
-      "type": "palace-wing-0-5",
+      "type": "conduit-factory-wing-0-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-0-5"
+          "value": "conduit-factory-wing-0-5"
         },
         {
           "name": "sortOffset",
@@ -1317,12 +1317,12 @@
     },
     {
       "id": 57,
-      "type": "palace-wing-1-5",
+      "type": "conduit-factory-wing-1-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-1-5"
+          "value": "conduit-factory-wing-1-5"
         },
         {
           "name": "sortOffset",
@@ -1338,12 +1338,12 @@
     },
     {
       "id": 58,
-      "type": "palace-wing-2-5",
+      "type": "conduit-factory-wing-2-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-2-5"
+          "value": "conduit-factory-wing-2-5"
         },
         {
           "name": "sortOffset",
@@ -1359,12 +1359,12 @@
     },
     {
       "id": 59,
-      "type": "palace-wing-3-5",
+      "type": "conduit-factory-wing-3-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-3-5"
+          "value": "conduit-factory-wing-3-5"
         },
         {
           "name": "sortOffset",
@@ -1380,12 +1380,12 @@
     },
     {
       "id": 60,
-      "type": "palace-wing-4-5",
+      "type": "conduit-factory-wing-4-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-4-5"
+          "value": "conduit-factory-wing-4-5"
         },
         {
           "name": "sortOffset",
@@ -1401,12 +1401,12 @@
     },
     {
       "id": 61,
-      "type": "palace-wing-5-5",
+      "type": "conduit-factory-wing-5-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-5-5"
+          "value": "conduit-factory-wing-5-5"
         },
         {
           "name": "sortOffset",
@@ -1422,12 +1422,12 @@
     },
     {
       "id": 62,
-      "type": "palace-wing-6-5",
+      "type": "conduit-factory-wing-6-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-6-5"
+          "value": "conduit-factory-wing-6-5"
         },
         {
           "name": "sortOffset",
@@ -1443,12 +1443,12 @@
     },
     {
       "id": 63,
-      "type": "palace-wing-7-5",
+      "type": "conduit-factory-wing-7-5",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-wing-7-5"
+          "value": "conduit-factory-wing-7-5"
         },
         {
           "name": "sortOffset",

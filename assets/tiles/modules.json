@@ -216,35 +216,35 @@
     "anchorX": 1,
     "anchorY": 4
   },
-  "palace-gate": {
+  "conduit-medical-pavilion": {
     "firstgid": 2936,
     "width": 14,
     "height": 9,
     "anchorX": 7,
     "anchorY": 8
   },
-  "palace-controls": {
+  "conduit-controls": {
     "firstgid": 3062,
     "width": 8,
     "height": 3,
     "anchorX": 4,
     "anchorY": 2
   },
-  "palace-vessel": {
+  "conduit-vessel": {
     "firstgid": 3086,
     "width": 9,
     "height": 13,
     "anchorX": 4,
     "anchorY": 12
   },
-  "palace-portico": {
+  "conduit-dome": {
     "firstgid": 3313,
     "width": 16,
     "height": 13,
     "anchorX": 8,
     "anchorY": 12
   },
-  "palace-wing": {
+  "conduit-factory-wing": {
     "firstgid": 3521,
     "width": 8,
     "height": 10,

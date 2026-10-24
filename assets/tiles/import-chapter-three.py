@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Append native palace modules; authoring inputs stay outside git.
+"""Append native conduit modules; authoring inputs stay outside git.
 Usage: python3 assets/tiles/import-chapter-three.py GATE.png CONTROLS.png VESSEL.png
 """
 import json, math, sys
