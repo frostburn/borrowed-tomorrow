@@ -8,6 +8,7 @@ import { BATTLE_MAPS } from '../../src/content/battle-maps';
 import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
 import { visibleSceneArt } from '../../src/content/scene-art';
+import { chapterOneLight } from '../../src/game/world-light';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -76,12 +77,18 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
 
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
 export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
-  await expect.poll(()=>page.evaluate(async({spriteUrl,at})=>{
+  const snapshot=await inspect(page),tiles=MAPS[snapshot.state.location.map].tiles;
+  const rig=tiles?chapterOneLight(String(properties(tiles).sceneArt),visibleSceneArt(tiles,snapshot.state)??[]):undefined;
+  await expect.poll(()=>page.evaluate(async({spriteUrl,at,rig})=>{
     const actor=new Image();actor.src=spriteUrl;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;
     const reference=document.createElement('canvas');reference.width=80;reference.height=80;
     const ctx=reference.getContext('2d')!;
     ctx.drawImage(actor,0,0);
+    if(rig){
+      const module='/src/game/world-light.ts';const {lightPixels}=await import(/* @vite-ignore */module);
+      const source=ctx.getImageData(0,0,80,80),lit=ctx.createImageData(80,80);lightPixels(source,lit,rig,(at.x+.5)*24,(at.y+.5)*24+7,40,68);ctx.putImageData(lit,0,0);
+    }
     const expected=ctx.getImageData(0,0,80,80).data;
     const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
@@ -101,7 +108,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
       compared++;if(Math.abs(actual[index]-expected[(sy*80+sx)*4+c])>6)missing++;
     }
     return compared>=600?missing/compared:1;
-  },{spriteUrl:`/${artPath(sprite)}`,at}),{timeout:15000}).toBeLessThanOrEqual(maxObscuredFraction);
+  },{spriteUrl:`/${artPath(sprite)}`,at,rig}),{timeout:15000}).toBeLessThanOrEqual(maxObscuredFraction);
 }
 
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {

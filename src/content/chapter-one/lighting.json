@@ -1,0 +1,362 @@
+{
+  "profiles": {
+    "station": {
+      "ambient": [
+        0.62,
+        0.7,
+        0.88
+      ],
+      "lamps": []
+    },
+    "yard": {
+      "ambient": [
+        0.65,
+        0.71,
+        0.86
+      ],
+      "lamps": [
+        {
+          "x": 470,
+          "y": 450,
+          "height": 220,
+          "radius": 900,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "rillbridge": {
+      "ambient": [
+        0.63,
+        0.72,
+        0.88
+      ],
+      "lamps": [
+        {
+          "x": 530,
+          "y": 610,
+          "height": 220,
+          "radius": 1000,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        },
+        {
+          "x": 1250,
+          "y": 540,
+          "height": 220,
+          "radius": 850,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "tunnel": {
+      "ambient": [
+        0.58,
+        0.67,
+        0.79
+      ],
+      "lamps": [
+        {
+          "x": 500,
+          "y": 430,
+          "height": 220,
+          "radius": 800,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-pursuit": {
+      "ambient": [
+        0.68,
+        0.73,
+        0.87
+      ],
+      "lamps": [
+        {
+          "x": 500,
+          "y": 450,
+          "height": 220,
+          "radius": 850,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-workshop": {
+      "ambient": [
+        0.67,
+        0.72,
+        0.83
+      ],
+      "lamps": [
+        {
+          "x": 500,
+          "y": 440,
+          "height": 220,
+          "radius": 850,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-collector": {
+      "ambient": [
+        0.64,
+        0.73,
+        0.86
+      ],
+      "lamps": [
+        {
+          "x": 500,
+          "y": 430,
+          "height": 220,
+          "radius": 850,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-captain": {
+      "ambient": [
+        0.64,
+        0.7,
+        0.82
+      ],
+      "lamps": [
+        {
+          "x": 500,
+          "y": 420,
+          "height": 220,
+          "radius": 850,
+          "strength": 0.5,
+          "color": [
+            0.38,
+            0.64,
+            1.05
+          ],
+          "fill": 0.6,
+          "shadowStrength": 0
+        }
+      ]
+    }
+  },
+  "props": {
+    "lamp": [
+      {
+        "x": 24,
+        "y": 134,
+        "height": 108,
+        "radius": 235,
+        "strength": 1.15
+      }
+    ],
+    "station-house": [
+      {
+        "x": 42,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 84,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 204,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      }
+    ],
+    "bunting": [
+      {
+        "x": 21,
+        "y": 133,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 75,
+        "y": 145,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 129,
+        "y": 148,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 183,
+        "y": 138,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      }
+    ],
+    "workshop": [
+      {
+        "x": 74,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 16,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 184,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 16,
+          "spread": 0.38
+        }
+      }
+    ],
+    "bakery": [
+      {
+        "x": 52,
+        "y": 205,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 18,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 108,
+        "y": 205,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 18,
+          "spread": 0.38
+        }
+      }
+    ],
+    "engine": [
+      {
+        "x": 41,
+        "y": 179,
+        "height": 80,
+        "radius": 265,
+        "strength": 1.2,
+        "fill": 0.2
+      }
+    ],
+    "shelter": [
+      {
+        "x": 138,
+        "y": 177,
+        "height": 90,
+        "radius": 225,
+        "strength": 1.25,
+        "fill": 0.3
+      }
+    ],
+    "collector-machine": [
+      {
+        "x": 60,
+        "y": 135,
+        "height": 104,
+        "radius": 220,
+        "strength": 1.15,
+        "color": [
+          0.35,
+          0.9,
+          1.1
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.45
+      }
+    ]
+  }
+}

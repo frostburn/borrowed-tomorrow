@@ -195,6 +195,9 @@ def export(chapter='one', only=None):
                         from station import scenery
                         variant=scenery(module,modules[module],folder,ox)
                         if variant:key,url=variant
+                    elif chapter=='one':
+                        from chapter_one_style import scenery
+                        key,url=scenery(module,modules[module])
                     instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
@@ -208,9 +211,12 @@ def export(chapter='one', only=None):
                     if chapter=='one' and file.stem=='station':
                         from station import terrain
                         art=terrain(kind,art,w,h)
+                    elif chapter=='one':
+                        from chapter_one_style import terrain
+                        art=terrain(kind,art,w,h)
                     parts.append(art)
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
-                if layer['name']=='Paths and platforms':
+                if layer['name']=='Paths and platforms' and (chapter!='one' or file.stem=='station'):
                     lamps=set()
                     for l in data['layers']:
                         for i,g in enumerate(l.get('data',[])):
@@ -226,6 +232,17 @@ def export(chapter='one', only=None):
                 entries.append({'key':f'scene-{file.stem}-{layer["id"]}','url':url,'x':0,'y':0,'depth':floor_depth,'layerId':layer['id']})
             entries.extend(instances.values());floor_depth+=1
         # Dimensions allow picking exact source pieces in the Maps inspector.
+        if chapter=='one' and file.stem!='station':
+            from chapter_one_style import spill
+            # Spill inherits the emitter's visibility layer, including the
+            # collector's shutdown. Ground light stays below actor shadows.
+            for layer in data['layers']:
+                props=[(e['url'].split('/')[-1][:-4],e['x'],e['y'])for e in entries if e['layerId']==layer['id'] and '/chapter-one-kit/'in e['url']]
+                light=spill(props)
+                if not light:continue
+                url=f'art/vector/scenes/{file.stem}/light-{layer["id"]}.svg'
+                (ROOT/'public'/url).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>Ground light</title>'+light+'</svg>\n')
+                entries.append({'key':f'scene-{file.stem}-light-{layer["id"]}','url':url,'x':0,'y':0,'depth':-950,'layerId':layer['id']})
         for e in entries:
             source=(ROOT/'public'/e['url']).read_text();m=re.search(r'width="(\d+)" height="(\d+)"',source)
             e.update(width=int(m[1]),height=int(m[2]))

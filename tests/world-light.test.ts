@@ -1,11 +1,29 @@
 import { describe, expect, it } from 'vitest';
-import { castShadows, lightPixels, lampStrength, stationLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadows, lightPixels, lampStrength, stationLight, chapterOneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
+import { visibleSceneArt } from '../src/content/scene-art';
+import { properties } from '../src/content/tilemaps';
 
 const lamp={x:100,y:100,height:108,radius:235,strength:1.15};
 const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
+  it('covers every Chapter One world and battle floor, without opting other chapters in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES)]){
+      const rig=chapterOneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
+      expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
+      for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
+    }
+    expect(chapterOneLight('coast',[])).toBeUndefined();
+  });
+  it('removes the collector light with its working casing and retains the village windows',()=>{
+    const map=CHAPTER_ONE_MAPS.rillbridge.tiles!;
+    const rig=(released:boolean)=>chapterOneLight('rillbridge',visibleSceneArt(map,{flags:{villageFreed:released}})??[])!;
+    expect(rig(false).lamps.some(l=>l.x===1404&&l.y===399)).toBe(true);
+    expect(rig(true).lamps.some(l=>l.x===1404&&l.y===399)).toBe(false);
+    expect(rig(true).lamps.some(l=>l.beam)).toBe(true);
+  });
   it('casts window shadows inside the painted beams, with no light behind the house',()=>{
     const windows=stationLight([{x:120,y:48,url:'/station-house.svg'}]);
     expect(windows.lamps).toHaveLength(3);
@@ -59,5 +77,10 @@ it('turns broad highlight planes toward the light without changing the silhouett
   const shade=(x:number)=>{const output={...source,data:new Uint8ClampedArray(data.length)};lightPixels(source,output,{ambient:NIGHT_AMBIENT,lamps:[{x,y:200,height:108,radius:300,strength:2}]},100,130,10,20);return output.data;};
   const left=shade(20),right=shade(180),a=(10*20+2)*4,b=(10*20+17)*4;
   expect(left[a]).toBeGreaterThan(left[b]+10);expect(right[b]).toBeGreaterThan(right[a]+10);
+  const flipped={...source,data:new Uint8ClampedArray(data.length)};
+  lightPixels(source,flipped,{ambient:NIGHT_AMBIENT,lamps:[{x:20,y:200,height:108,radius:300,strength:2}]},100,130,10,20,-1,1);
+  // Mirroring the source must also mirror its surface directions, rather than
+  // putting the brightest facet on the side away from the real light.
+  expect(flipped.data[b]).toBeGreaterThan(flipped.data[a]+10);
   for(let i=3;i<data.length;i+=4){expect(left[i]).toBe(255);expect(right[i]).toBe(255);}
 });

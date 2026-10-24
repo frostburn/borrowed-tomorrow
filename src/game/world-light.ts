@@ -1,20 +1,23 @@
 import { actorPlanes } from './actor-planes';
+import definitions from '../content/chapter-one/lighting.json' with { type:'json' };
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
-export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; beam?:{reach:number;width:number;spread:number} }
-export interface WorldLight { ambient:readonly [number,number,number]; lamps:readonly WorldLamp[] }
+export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; color?:readonly number[]; beam?:{reach:number;width:number;spread:number} }
+export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[] }
 export const NIGHT_AMBIENT=[.62,.70,.88] as const;
 const WARM=[1.12,.78,.38] as const;
 export function stationLight(pieces:readonly {x:number;y:number;url:string}[]):WorldLight{
-  const lamps:WorldLamp[]=pieces.filter(p=>p.url.endsWith('/lamp.svg')).map(p=>({x:p.x+24,y:p.y+134,height:108,radius:235,strength:1.15}));
-  for(const house of pieces.filter(p=>p.url.endsWith('/station-house.svg'))){
-    for(const x of [42,84,204])lamps.push({x:house.x+x,y:house.y+201,height:80,radius:185,strength:2.3,beam:{reach:90,width:14,spread:.38}});
+  return chapterOneLight('station',pieces)!;
+}
+/** Shared with the compiler: visible emitters, local ambient and broad bounce. */
+export function chapterOneLight(id:string,pieces:readonly {x:number;y:number;url:string}[]):WorldLight|undefined{
+  const registry=definitions as {profiles:Record<string,WorldLight>;props:Record<string,WorldLamp[]>};
+  const profile=registry.profiles[id];if(!profile)return;
+  const lamps=[...profile.lamps];
+  for(const piece of pieces){
+    const name=piece.url.split('/').pop()!.replace(/\.svg$/,'');
+    for(const light of registry.props[name]??[])lamps.push({...light,x:piece.x+light.x,y:piece.y+light.y});
   }
-  // Small overhead festival lanterns act together as a broad warm fill. They
-  // illuminate the whole dramatic space with restrained shadows alongside the sharper window and street lights.
-  for(const strand of pieces.filter(p=>p.url.endsWith('/bunting.svg'))){
-    for(const [x,y] of [[21,25],[75,37],[129,40],[183,30]])lamps.push({x:strand.x+x,y:strand.y+y+108,height:108,radius:330,strength:.70,shadowStrength:.3,fill:.5});
-  }
-  return {ambient:NIGHT_AMBIENT,lamps};
+  return {ambient:profile.ambient,lamps};
 }
 
 export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
@@ -37,19 +40,20 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
     const sx=(i/4%w-originX)*scaleX,sy=(Math.floor(i/4/w)-originY)*scaleY;
     const wx=x+sx*cos-sy*sin,height=Math.max(0,-sx*sin-sy*cos);
     const at=i/4*3,nx=planes[at]/100,ny=planes[at+1]/100,nz=planes[at+2]/100;
-    const normalX=nx*cos+ny*sin,normalY=ny*cos-nx*sin;
-    let strength=0,response=0;
+    const normalX=nx*Math.sign(scaleX)*cos+ny*Math.sign(scaleY)*sin,normalY=ny*Math.sign(scaleY)*cos-nx*Math.sign(scaleX)*sin;
+    let strength=0,red=0,green=0,blue=0;
     for(const lamp of rig.lamps){
       const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,length=Math.max(1,Math.hypot(lx,ly,lz));
       const dot=(normalX*lx+normalY*ly+nz*lz)/length;
       const power=lampStrength(lamp,wx,y,height);
       const band=dot>.55?1.08:dot>.05?.72:.30,fill=lamp.fill??0;
-      strength+=power;response+=power*(fill+(1-fill)*band);
+      const response=power*(fill+(1-fill)*band),color=lamp.color??WARM;
+      strength+=power;red+=response*color[0];green+=response*color[1];blue+=response*color[2];
     }
-    const warmth=strength?Math.min(.65,strength)*response/strength:0;
+    const factor=strength?Math.min(.65,strength)/strength:0;
     // Diffuse illumination multiplies reflectance: warm light must not bleach
     // dark eyes, cloth folds or tool details into one flat orange silhouette.
-    for(let c=0;c<3;c++)b[i+c]=a[i+c]*(rig.ambient[c]+warmth*WARM[c]);
+    b[i]=a[i]*(rig.ambient[0]+factor*red);b[i+1]=a[i+1]*(rig.ambient[1]+factor*green);b[i+2]=a[i+2]*(rig.ambient[2]+factor*blue);
   }
 }
 

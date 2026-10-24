@@ -17,7 +17,7 @@ describe('traced SVG scenes',()=>{
     expect(svg).not.toMatch(/<image\b|data:|<script\b|<foreignObject\b|(?:href|src)\s*=\s*["'](?!#)/i);
     expect(statSync(`public/${p.url}`).size).toBeLessThanOrEqual(131072);
     const sorted=properties(map.layers.find(l=>l.id===p.layerId)!).sort;
-    expect(sorted?p.depth>=0:p.depth<0).toBe(true);
+    expect(p.url.includes('/light-')?p.depth===-950:sorted?p.depth>=0:p.depth<0).toBe(true);
    }
   }
   expect(new Set(SCENE_ASSETS.map(a=>a.key)).size).toBe(SCENE_ASSETS.length);
@@ -29,10 +29,10 @@ describe('traced SVG scenes',()=>{
   for(const raidSeen of [false,true])expect(visibleSceneArt(station,{flags:{raidSeen}})!.some(p=>p.url.endsWith('/bunting.svg'))).toBe(true);
   for(const released of [false,true]){
    const pieces=visibleSceneArt(village,{flags:{villageFreed:released}})!;
-   expect(pieces.some(p=>p.key==='scenery-collector-machine')).toBe(!released);
-   expect(pieces.some(p=>p.key==='scenery-collector-broken')).toBe(released);
+   expect(pieces.some(p=>p.url.endsWith('/collector-machine.svg'))).toBe(!released);
+   expect(pieces.some(p=>p.url.endsWith('/collector-broken.svg'))).toBe(released);
   }
-  const bridge=sceneArt(village)!.find(p=>p.key==='scenery-footbridge')!,rail=sceneArt(village)!.find(p=>p.key==='scenery-footbridge-front')!;
+  const bridge=sceneArt(village)!.find(p=>p.url.endsWith('/footbridge.svg'))!,rail=sceneArt(village)!.find(p=>p.url.endsWith('/footbridge-front.svg'))!;
   expect(bridge.depth).toBeLessThan(0);expect(rail.depth).toBeGreaterThan(0);
   expect(visibleSceneArt(village,{flags:{}},new Set([bridge.layerId]))!.some(p=>p.key===bridge.key)).toBe(false);
   for(const map of [CHAPTER_THREE_MAPS.relayhall.tiles!,CHAPTER_THREE_MAPS.conduit.tiles!]){
