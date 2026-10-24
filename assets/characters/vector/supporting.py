@@ -47,7 +47,7 @@ def person(name,weapon='saber'):
         d.rect((11,24,29,57),'brown','ink')
         d.rect((10,24,12,45),'gold','ink');d.rect((28,24,30,45),'gold','ink')
         d.poly([(15,29),(25,29),(28,43),(26,60),(14,60),(12,43)],'navy')
-        d.poly([(15,28),(25,28),(28,38),(21,42),(12,38)],'plum')
+        d.cloth([(15,28),(25,28),(28,38),(21,42),(12,38)],'plum')
         d.rect((12,46,28,49),'brown','ink')
         for x in (11,29):
             d.oval((x-4,42,x+4,66),'ink');d.oval((x-3,44,x+3,64),'gold')
@@ -66,7 +66,7 @@ def person(name,weapon='saber'):
             for x in (17,23):d.poly([(x-2,44),(x+2,44),(x+2,64),(x-2,64)],'navy')
             for x in (17,23):boots(d,x,top=60,bottom=67)
         d.rect((18,24,22,30),'skin','ink')
-        d.poly([(15,27),(25,27),(27,35),(26,49),(22,52),(20,48),(17,52),(13,49),(13,36)],jacket)
+        d.cloth([(15,27),(25,27),(27,35),(26,49),(22,52),(20,48),(17,52),(13,49),(13,36)],jacket)
         if name=='master':
             d.poly([(17,28),(23,28),(24,44),(16,44)],'brown')
             d.poly([(18,27),(22,27),(20,33)],'white');d.line([(20,32),(20,40)])
@@ -103,7 +103,8 @@ def person(name,weapon='saber'):
                 d.oval((11,44,13,48),'white');d.oval((27,44,29,48),'white')
                 if weapon=='saber':d.line([(12,47),(8,64)],'silver',2);d.line([(9,48),(15,49)],'gold',2)
                 elif weapon=='rod':d.line([(12,45),(12,58)],'gold',2);d.oval((10,42,14,46),'gold')
-    head(d,name)
+    start=len(d.shapes);head(d,name)
+    d.transform(start,.85,.85,20,26,24)
     return d
 
 
@@ -111,7 +112,8 @@ def enemy(name):
     d=Drawing()
     if name=='hound':
         for x in (13,27):
-            d.line([(x,47),(x-1,57),(x+1,66)],'ink',4);d.line([(x,48),(x-1,57),(x+1,65)],'copper',2)
+            d.poly([(x-2,47),(x+2,47),(x+1,57),(x+3,66),(x-1,66),(x-3,57)],'copper',None)
+            d.poly([(x,47),(x+2,47),(x+1,57),(x+3,66),(x+1,66),(x-1,57)],'copper-shadow',None)
             d.poly([(x-1,64),(x+3,64),(x+4,68),(x-2,68)],'brown')
         d.poly([(13,32),(29,33),(31,43),(27,50),(14,48),(10,40)],'brown')
         d.oval((17,33,27,48),'copper');d.oval((19,36,25,45),'gold');d.line([(21,37),(21,44)],'brown')
@@ -136,8 +138,8 @@ def enemy(name):
         d.oval((15,10,25,26),'brown');d.rect((16,16,24,19),'gold','ink')
         d.rect((28,9,31,28),'copper','ink');d.rect((27,8,32,10),'gold','ink')
         for x in (8,32):d.oval((x-4,23,x+4,32),'gold')
-        d.line([(8,31),(5,41),(7,51)],'ink',5);d.line([(8,31),(5,41),(7,51)],'copper',3)
-        d.line([(32,31),(34,41),(31,49)],'ink',5);d.line([(32,31),(34,41),(31,49)],'copper',3)
+        d.tube([(8,31),(5,41),(7,51)],'copper',5)
+        d.tube([(32,31),(34,41),(31,49)],'copper',5)
         d.rect((3,45,10,51),'brown','ink');d.line([(7,49),(4,59)],'silver',2)
     else:
         d.poly([(4,65),(7,53),(14,49),(18,37),(26,38),(31,51),(35,56),(36,68),(9,68)],'slate')

@@ -58,10 +58,15 @@ def hero(name,direction,walk=None,attack=None,bash=None):
     left={'front':(26,39),'left':(23,39),'right':(17,39),'back':(12,39)}[direction]
     if attack is not None:
         right={'front':(15+attack*2,29-attack*3),'left':(14-attack*2,29),'right':(28+attack*2,29),'back':(26,28-attack*4)}[direction]
-        if name=='kit':left=(right[0]+(-3 if direction=='left' else 3),right[1]-2)
+        if name=='kit' and side:
+            # Leave room for the entire bow at the edge of each 80px frame.
+            right=(15-attack,29) if direction=='left' else (25+attack*2,29)
     if bash is not None:left=(left[0]+((-3 if direction=='left' else 3)*bash),left[1]-5-bash*4)
     # Weapons keep a fixed pitch while walking. Only Kit's light carry sways.
     if name=='kit' and walk is not None:right=(right[0]+(swing*.6 if side else 0),right[1]+swing*.7)
+    if name=='kit':
+        # Both hands follow the same stock, even during its small carrying sway.
+        left=(right[0]+(-5 if direction=='left' else 5),right[1]+(0 if attack is not None else 3)) if side else (right[0]+1,right[1]-5)
     coat='navy' if name=='kit' else 'green'
     rshoulder=(15,25) if direction=='front' else (18,25) if direction=='left' else (24,25)
     lshoulder=(25,25) if direction=='front' else (22,25) if direction=='left' else (16,25)
@@ -69,18 +74,22 @@ def hero(name,direction,walk=None,attack=None,bash=None):
         grip=right if which=='right' else left;shoulder=rshoulder if which=='right' else lshoulder
         elbow=((shoulder[0]+grip[0])/2+(-1 if which=='right' else 1),(shoulder[1]+grip[1])/2)
         sleeve(d,shoulder,elbow,grip,'navy' if name=='kit' else 'silver')
-        if name=='kit' and which=='right':crossbow(d,grip,attack is not None,direction)
+        if name=='kit' and which=='right':
+            crossbow(d,grip,attack is not None,direction)
+            # The trigger hand wraps the stock, rather than disappearing under it.
+            d.oval((grip[0]-1,grip[1]-1,grip[0]+1,grip[1]+2),'skin',None)
         elif name=='petra' and which=='right':saber(d,grip,direction,attack)
         elif name=='petra':shield(d,grip,bash is not None)
-    if direction=='left':arm('right')
+    if name=='kit' and direction=='back':arm('right');arm('left')
+    elif direction=='left':arm('right')
     elif direction=='right':arm('left')
     # Kit and Petra share Nell's shorter support travel, with independent costumes.
     legs(d,direction,name,walk)
     if side:
-        d.poly([(17,24),(22,23),(25,31),(24,42),(18,44),(15,37),(16,29)],coat)
+        d.cloth([(17,24),(22,23),(25,31),(24,42),(18,44),(15,37),(16,29)],coat)
         d.line([(18 if direction=='left' else 23,28),(19 if direction=='left' else 23,39)],'gold')
     else:
-        d.poly([(15,24),(24,24),(27,31),(26,42),(22,45),(17,43),(13,39),(14,29)],coat)
+        d.cloth([(15,24),(24,24),(27,31),(26,42),(22,45),(17,43),(13,39),(14,29)],coat)
         if name=='petra':d.poly([(17,26),(23,26),(24,35),(20,39),(16,34)],'silver');d.line([(20,27),(20,34)],'gold',2)
         else:d.poly([(18,24),(23,24),(23,32),(19,34),(17,29)],'cream')
     if name=='kit':
@@ -93,13 +102,17 @@ def hero(name,direction,walk=None,attack=None,bash=None):
             d.poly([(x-3,24),(x,22),(x+4,25),(x+4,29),(x-3,30)],'gold');d.poly([(x-2,25),(x+1,24),(x+3,26),(x+3,28),(x-2,29)],'silver')
         d.line([(15,39),(25,39)],'brown',2);d.rect((19,38,21,40),'gold')
     face(d,name,direction)
-    if direction=='left':arm('left')
-    elif direction=='right':arm('right')
+    if name=='kit' and direction=='back':pass # Bow and hands face away, behind the torso.
+    elif direction=='left':arm('left')
+    elif direction=='right':
+        arm('right')
+        if name=='kit':d.oval((left[0]-1,left[1]-1,left[0]+1,left[1]+2),'skin',None)
+    elif name=='kit':arm('right');arm('left')
     else:arm('left');arm('right')
     return d
 
 def dena():
-    d=Drawing();legs(d,'front','nell');d.poly([(15,25),(24,25),(27,36),(28,59),(23,62),(15,60),(12,56),(13,36)],'teal');d.poly([(16,29),(23,29),(25,56),(22,59),(14,57)],'white');sleeve(d,(14,27),(12,35),(14,43),'teal');sleeve(d,(25,27),(27,35),(25,43),'teal');face(d,'dena','front');d.line([(16,31),(23,31)],'cream');return d
+    d=Drawing();legs(d,'front','nell');d.cloth([(15,25),(24,25),(27,36),(28,59),(23,62),(15,60),(12,56),(13,36)],'green');d.poly([(16,29),(23,29),(25,56),(22,59),(14,57)],'white');sleeve(d,(14,27),(12,35),(14,43),'green');sleeve(d,(25,27),(27,35),(25,43),'green');face(d,'dena','front');d.line([(16,31),(23,31)],'cream');return d
 
 def inspector():
     d=Drawing();legs(d,'front','orrin');d.poly([(13,24),(26,24),(28,36),(27,54),(22,57),(17,54),(11,56),(12,36)],'navy');d.line([(16,24),(21,33),(26,26)],'gold',2);d.line([(25,29),(16,44)],'brown',3);d.rect((18,37,21,41),'gold');sleeve(d,(13,27),(10,36),(10,46),'navy');sleeve(d,(26,27),(29,36),(28,46),'navy');d.poly([(16,10),(23,9),(26,14),(25,22),(21,25),(17,22),(14,17)],'silver');d.rect((16,14,24,18),'ink');d.rect((17,15,19,17),'gold');d.rect((22,15,24,17),'copper');d.poly([(13,10),(15,5),(22,3),(27,7),(27,12),(15,13)],'navy');d.line([(13,12),(27,12)],'gold',2);d.line([(28,44),(29,21)],'brown',2);d.oval((26,17,32,24),'gold');d.oval((28,19,30,22),'copper');return d
@@ -115,7 +128,7 @@ def resident(role,variant=''):
             d.rect((cx-1,top+12,cx+1,top+17),'skin');d.oval((cx-3,top+2,cx+3,top+13),'skin',None);d.poly([(cx-4,top+6),(cx-3,top+1),(cx,top-1),(cx+4,top+2),(cx+4,top+7),(cx+1,top+4),(cx-2,top+6)],'hair');d.rect((cx+1,top+7,cx+2,top+8),'ink')
         d.line([(19,29),(21,41),(24,48)],'green' if not variant else coat,3);d.line([(24,48),(25,43)],'gold',2);d.oval((22,44,25,48),'skin',None)
     else:
-        legs(d,'front','nell');d.poly([(14,25),(24,24),(27,34),(26,47),(16,48),(12,39)],coat)
+        legs(d,'front','nell');d.cloth([(14,25),(24,24),(27,34),(26,47),(16,48),(12,39)],coat)
         if role=='patient':d.poly([(15,28),(23,28),(27,59),(23,62),(13,59)],coat);d.line([(17,32),(22,32)],'white');d.line([(19,34),(19,55)],'white')
         sleeve(d,(14,27),(12,35),(13,44),coat);sleeve(d,(25,27),(27,35),(26,44),coat)
         d.rect((19,20,21,26),'skin');d.oval((16,9,24,22),'skin',None);d.rect((18,15,19,16),'ink');d.rect((22,15,23,16),'ink')

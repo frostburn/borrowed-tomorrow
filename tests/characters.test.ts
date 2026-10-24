@@ -60,7 +60,7 @@ it('the complete six-step walk wraps without entering attack poses',()=>{
   expect(motionFrame('attack',140)).toBe(ATTACK_CONTACT_FRAME);
   expect(motionFrame('attack',280)).toBeUndefined();
   expect(walkingHero('celia')).toBe(true);
-  expect(motionFrame('attack',140,'celia')).toBeUndefined();
+  expect([0,139,140,279,280].map(t=>motionFrame('attack',t,'celia'))).toEqual([6,6,7,7,undefined]);
 });
 
 

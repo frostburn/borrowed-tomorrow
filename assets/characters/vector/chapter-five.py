@@ -1,70 +1,74 @@
 """Native Chapter Five cast. Each person has an independent silhouette and portrait."""
 from pathlib import Path
-from draw import Drawing, boots, sleeve
+from draw import human, Drawing, boots, sleeve
 ROOT=Path(__file__).resolve().parents[3]
 
 def alda():
  d=Drawing()
  for x in (15,25):
-  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=68)
- d.poly([(12,27),(27,27),(31,39),(29,52),(25,57),(13,55),(9,41)],'blue')
- d.poly([(13,28),(19,31),(17,51),(12,54),(9,41)],'teal')
- d.poly([(22,28),(27,28),(29,49),(24,54),(23,39)],'navy')
+  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=67)
+ d.cloth([(12,27),(27,27),(31,39),(29,52),(25,57),(13,55),(9,41)],'blue')
+ d.poly([(13,28),(19,31),(17,51),(12,54),(9,41)],'blue-light')
+ d.poly([(22,28),(27,28),(29,49),(24,54),(23,39)],'blue-shadow')
  sleeve(d,(11,30),(7,38),(9,46),'blue');sleeve(d,(28,30),(32,38),(30,45),'blue')
  d.poly([(12,31),(19,37),(29,29),(25,25),(19,29)],'cream')
  d.line([(15,45),(27,44)],'hair',2);d.rect((18,44,23,47),'gold')
+ head_start=len(d.shapes)
  d.poly([(12,12),(17,6),(26,8),(29,18),(26,29),(15,29),(11,22)],'silver')
  d.poly([(15,13),(24,12),(27,19),(24,26),(18,27),(13,21)],'skin')
  d.poly([(12,13),(15,6),(25,8),(28,14),(21,12),(17,16)],'slate')
  d.poly([(12,14),(15,17),(14,25),(11,22)],'silver');d.poly([(26,16),(28,19),(27,27),(25,25)],'shade')
  d.line([(15,18),(18,18)],'ink');d.line([(22,18),(25,18)],'ink')
  d.line([(18,24),(22,24)],'rose');d.poly([(10,10),(15,5),(26,7),(28,12),(13,14)],'navy');d.rect((17,9,22,11),'gold')
- return d
+ return human(d,head_start)
 
 def hester():
  d=Drawing()
  for x in (15,25):
-  d.poly([(x-4,43),(x+4,43),(x+3,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=68)
- d.poly([(10,27),(28,27),(32,40),(28,53),(12,53),(8,40)],'cream')
+  d.poly([(x-4,43),(x+4,43),(x+3,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=67)
+ d.cloth([(10,27),(28,27),(32,40),(28,53),(12,53),(8,40)],'cream')
  d.poly([(14,26),(26,26),(28,55),(22,61),(12,56)],'brown');d.poly([(15,28),(19,30),(17,51),(13,55)],'copper')
  sleeve(d,(10,30),(6,38),(9,46),'cream');sleeve(d,(29,30),(34,37),(31,45),'cream')
  d.line([(15,45),(28,46)],'hair',2);d.rect((17,39,24,45),'leather')
  d.line([(31,44),(34,24)],'steel',2);d.poly([(32,22),(37,21),(38,27),(34,29)],'gold')
+ head_start=len(d.shapes)
  d.poly([(12,12),(18,7),(26,10),(29,18),(26,28),(17,29),(12,22)],'hair')
  d.poly([(15,13),(24,13),(27,19),(24,26),(18,27),(14,21)],'skin')
  d.poly([(12,13),(17,6),(26,8),(29,15),(22,13),(18,16)],'copper')
  d.poly([(13,12),(16,9),(27,12),(28,15),(15,14)],'red');d.oval((8,16,14,23),'hair')
  d.line([(15,18),(18,18)],'ink');d.line([(23,18),(26,18)],'ink');d.line([(18,24),(23,24)],'rose')
  d.poly([(13,22),(16,23),(16,25),(13,24)],'shade')
- return d
+ return human(d,head_start)
 
 def durn():
  d=Drawing()
  for x in (15,25):
-  d.poly([(x-3,44),(x+3,44),(x+2,61),(x-2,64)],'navy');boots(d,x,top=61,bottom=68)
- d.poly([(12,26),(27,26),(30,37),(30,58),(23,57),(20,48),(16,57),(9,55),(10,37)],'green')
- d.poly([(13,28),(18,30),(16,50),(10,54),(11,38)],'teal');d.poly([(23,28),(28,29),(29,55),(24,53)],'navy')
+  d.poly([(x-3,44),(x+3,44),(x+2,61),(x-2,64)],'navy');boots(d,x,top=61,bottom=67)
+ d.cloth([(12,26),(27,26),(30,37),(30,58),(23,57),(20,48),(16,57),(9,55),(10,37)],'green')
+ d.poly([(13,28),(18,30),(16,50),(10,54),(11,38)],'green-light');d.poly([(23,28),(28,29),(29,55),(24,53)],'green-shadow')
  sleeve(d,(11,29),(7,37),(9,45),'green');sleeve(d,(28,29),(32,36),(30,44),'green')
  d.poly([(15,25),(20,33),(26,25),(22,24),(19,28)],'gold');d.line([(13,43),(28,43)],'hair',2)
  d.rect((27,42,33,49),'gold');d.rect((28,43,32,46),'white')
+ head_start=len(d.shapes)
  d.poly([(13,11),(24,10),(28,17),(27,25),(23,30),(18,30),(13,25),(11,18)],'skin')
  d.poly([(12,12),(17,6),(25,8),(29,15),(26,17),(23,11),(15,13),(13,19)],'hair')
  d.poly([(23,17),(27,18),(25,26),(20,29),(21,25)],'brown')
  d.line([(14,16),(18,16)],'hair',2);d.line([(22,16),(26,17)],'hair',2)
  d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink')
  d.poly([(20,18),(18,23),(22,23)],'copper');d.line([(17,26),(23,26)],'hair')
- return d
+ return human(d,head_start)
 
 def aurel():
  d=Drawing()
  for x in (14,26):
-  d.poly([(x-4,43),(x+4,43),(x+2,62),(x-2,64)],'navy');boots(d,x,top=61,bottom=68)
- d.poly([(9,27),(30,27),(34,39),(31,58),(23,56),(20,49),(16,56),(6,57),(7,39)],'plum')
- d.poly([(9,28),(17,32),(14,53),(7,56),(7,38)],'red');d.poly([(25,29),(30,29),(32,51),(27,55)],'navy')
+  d.poly([(x-4,43),(x+4,43),(x+2,62),(x-2,64)],'navy');boots(d,x,top=61,bottom=67)
+ d.cloth([(9,27),(30,27),(34,39),(31,58),(23,56),(20,49),(16,56),(6,57),(7,39)],'plum')
+ d.poly([(9,28),(17,32),(14,53),(7,56),(7,38)],'plum-light');d.poly([(25,29),(30,29),(32,51),(27,55)],'plum-shadow')
  d.poly([(8,27),(14,26),(17,33),(6,33)],'gold');d.poly([(25,26),(31,27),(34,33),(25,32)],'gold')
  sleeve(d,(8,33),(4,40),(7,47),'plum');sleeve(d,(31,33),(35,40),(32,46),'plum')
  d.line([(7,47),(6,30)],'steel',2);d.line([(2,45),(11,45)],'gold',2)
- d.poly([(12,27),(20,35),(27,27),(24,24),(19,30)],'cream');d.line([(10,44),(30,44)],'hair',2);d.rect((18,42,23,46),'gold')
+ d.cloth([(12,27),(20,35),(27,27),(24,24),(19,30)],'cream');d.line([(10,44),(30,44)],'hair',2);d.rect((18,42,23,46),'gold')
+ head_start=len(d.shapes)
  d.poly([(11,13),(16,7),(26,9),(30,17),(28,26),(24,31),(16,31),(11,26),(9,18)],'skin')
  d.poly([(10,14),(13,7),(24,6),(29,11),(30,16),(27,18),(25,12),(15,12),(12,17),(12,20),(10,19)],'silver')
  d.poly([(24,17),(29,18),(28,26),(24,31),(20,31),(20,28),(25,25)],'copper')
@@ -72,12 +76,12 @@ def aurel():
  d.line([(13,19),(17,19)],'ink');d.line([(23,19),(27,19)],'ink')
  d.poly([(20,18),(18,23),(23,23),(21,21)],'copper');d.line([(15,26),(24,26)],'hair')
  d.poly([(12,22),(14,23),(15,27),(13,26)],'cream')
- return d
+ return human(d,head_start)
 
 def watch_soldier(gunner=False,enna=False):
  d=Drawing()
  for x in (14,26):
-  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=68)
+  d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,63)],'navy');boots(d,x,top=61,bottom=67)
  d.poly([(11,28),(28,28),(31,40),(28,55),(13,55),(8,41)],'teal' if enna else 'slate')
  d.poly([(11,29),(17,31),(16,53),(10,52),(8,40)],'green' if enna else 'blue')
  sleeve(d,(10,31),(6,39),(9,47),'teal' if enna else 'slate');sleeve(d,(29,31),(33,39),(30,47),'teal' if enna else 'slate')
@@ -87,6 +91,7 @@ def watch_soldier(gunner=False,enna=False):
  else:
   d.poly([(2,34),(11,32),(15,38),(14,54),(8,59),(1,51)],'steel');d.poly([(3,36),(9,35),(10,53),(7,55),(3,49)],'navy')
   d.line([(31,47),(33,28)],'steel',2);d.line([(28,43),(36,43)],'gold',2)
+ head_start=len(d.shapes)
  d.poly([(12,13),(18,8),(26,11),(29,19),(25,28),(17,28),(11,20)],'skin')
  if enna:
   d.poly([(10,18),(11,11),(18,6),(26,8),(30,16),(25,15),(19,11),(15,18),(15,29),(10,26)],'hair');d.poly([(25,18),(28,17),(28,27),(25,29)],'hair')
@@ -94,7 +99,7 @@ def watch_soldier(gunner=False,enna=False):
  else:
   d.poly([(9,17),(12,8),(21,5),(29,11),(31,19),(22,17),(14,19)],'navy' if gunner else 'steel');d.line([(12,17),(28,17)],'gold',2)
  d.line([(14,20),(17,20)],'ink');d.line([(23,20),(26,20)],'ink');d.line([(17,25),(22,25)],'rose')
- return d
+ return human(d,head_start)
 
 def dawn_portrait(name):
  # Initial Enna seed only; Aurel's portrait is a hand-authored SVG original.
