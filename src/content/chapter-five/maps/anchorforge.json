@@ -554,25 +554,6 @@
     },
     {
       "id": 4,
-      "name": "gantry-carrier",
-      "type": "objectgroup",
-      "visible": true,
-      "objects": [],
-      "properties": [
-        {
-          "name": "sort",
-          "type": "bool",
-          "value": true
-        },
-        {
-          "name": "hiddenFlag",
-          "type": "string",
-          "value": "furnaceWon"
-        }
-      ]
-    },
-    {
-      "id": 5,
       "name": "gantry-signal",
       "type": "objectgroup",
       "visible": true,
@@ -587,6 +568,25 @@
           "name": "hiddenFlag",
           "type": "string",
           "value": "hammerplainFreed"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "gantry-carrier",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "sort",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "furnaceWon"
         }
       ]
     },

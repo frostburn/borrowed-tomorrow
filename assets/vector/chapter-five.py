@@ -168,7 +168,7 @@ world('anchorforge','Hammerplain · the anchor gantry','The replacement engines 
  {'start':(13,30),'breaker':(32,22),'stand':(27,26)},
  {'five-gantry':{'nell':(27,26),'orrin':(25,25),'kit':(24,28),'petra':(28,28),'celia':(23,29),'hester':(22,26),'durn':(39,23)},'five-release':{'nell':(31,21),'orrin':(30,20),'hester':(34,20),'kit':(28,23),'petra':(35,23),'celia':(27,24),'durn':(53,24)}},
  [point('gantry-hand',20,26,sprite='civilian-dockhand'),point('gantry-helper',41,27,sprite='civilian-dockhand-rust')],
- [('gantry-carrier',['<g transform="scale(1.25)">',*carrier(),'</g>'],280,210,664,366,571,{'hiddenFlag':'furnaceWon'}),('gantry-rest-bench',rest_bench(),168,80,324,636,716,{}),('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'})],forgebackground)
+ [('gantry-rest-bench',rest_bench(),168,80,324,636,716,{}),('forge-anchor',conduit(),320,286,620,122,408,{}),('gantry-crane',crane(),312,330,1060,160,490,{}),('gantry-engine',engine(),200,140,456,450,590,{}),('gantry-second-engine',engine(),200,140,1010,440,580,{}),('gantry-signal',[line([(776,360),(776,500)],'#a9d3cd',5)],1000,600,0,0,-997,{'hiddenFlag':'hammerplainFreed'}),('gantry-carrier',['<g transform="scale(1.25)">',*carrier(),'</g>'],280,210,664,366,571,{'hiddenFlag':'furnaceWon'})],forgebackground)
 
 # Dawnwatch: warm lived-in terraces below a cold military signal wall.
 def gun():
