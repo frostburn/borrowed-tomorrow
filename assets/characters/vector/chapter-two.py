@@ -58,10 +58,15 @@ def hero(name,direction,walk=None,attack=None,bash=None):
     left={'front':(26,39),'left':(23,39),'right':(17,39),'back':(12,39)}[direction]
     if attack is not None:
         right={'front':(15+attack*2,29-attack*3),'left':(14-attack*2,29),'right':(28+attack*2,29),'back':(26,28-attack*4)}[direction]
-        if name=='kit':left=(right[0]+(-3 if direction=='left' else 3),right[1]-2)
+        if name=='kit' and side:
+            # Leave room for the entire bow at the edge of each 80px frame.
+            right=(15-attack,29) if direction=='left' else (25+attack*2,29)
     if bash is not None:left=(left[0]+((-3 if direction=='left' else 3)*bash),left[1]-5-bash*4)
     # Weapons keep a fixed pitch while walking. Only Kit's light carry sways.
     if name=='kit' and walk is not None:right=(right[0]+(swing*.6 if side else 0),right[1]+swing*.7)
+    if name=='kit':
+        # Both hands follow the same stock, even during its small carrying sway.
+        left=(right[0]+(-5 if direction=='left' else 5),right[1]+(0 if attack is not None else 3)) if side else (right[0]+1,right[1]-5)
     coat='navy' if name=='kit' else 'green'
     rshoulder=(15,25) if direction=='front' else (18,25) if direction=='left' else (24,25)
     lshoulder=(25,25) if direction=='front' else (22,25) if direction=='left' else (16,25)
@@ -69,10 +74,14 @@ def hero(name,direction,walk=None,attack=None,bash=None):
         grip=right if which=='right' else left;shoulder=rshoulder if which=='right' else lshoulder
         elbow=((shoulder[0]+grip[0])/2+(-1 if which=='right' else 1),(shoulder[1]+grip[1])/2)
         sleeve(d,shoulder,elbow,grip,'navy' if name=='kit' else 'silver')
-        if name=='kit' and which=='right':crossbow(d,grip,attack is not None,direction)
+        if name=='kit' and which=='right':
+            crossbow(d,grip,attack is not None,direction)
+            # The trigger hand wraps the stock, rather than disappearing under it.
+            d.oval((grip[0]-1,grip[1]-1,grip[0]+1,grip[1]+2),'skin',None)
         elif name=='petra' and which=='right':saber(d,grip,direction,attack)
         elif name=='petra':shield(d,grip,bash is not None)
-    if direction=='left':arm('right')
+    if name=='kit' and direction=='back':arm('right');arm('left')
+    elif direction=='left':arm('right')
     elif direction=='right':arm('left')
     # Kit and Petra share Nell's shorter support travel, with independent costumes.
     legs(d,direction,name,walk)
@@ -93,8 +102,12 @@ def hero(name,direction,walk=None,attack=None,bash=None):
             d.poly([(x-3,24),(x,22),(x+4,25),(x+4,29),(x-3,30)],'gold');d.poly([(x-2,25),(x+1,24),(x+3,26),(x+3,28),(x-2,29)],'silver')
         d.line([(15,39),(25,39)],'brown',2);d.rect((19,38,21,40),'gold')
     face(d,name,direction)
-    if direction=='left':arm('left')
-    elif direction=='right':arm('right')
+    if name=='kit' and direction=='back':pass # Bow and hands face away, behind the torso.
+    elif direction=='left':arm('left')
+    elif direction=='right':
+        arm('right')
+        if name=='kit':d.oval((left[0]-1,left[1]-1,left[0]+1,left[1]+2),'skin',None)
+    elif name=='kit':arm('right');arm('left')
     else:arm('left');arm('right')
     return d
 

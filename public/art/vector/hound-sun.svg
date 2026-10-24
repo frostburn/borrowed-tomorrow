@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 40 80" preserveAspectRatio="none" shape-rendering="crispEdges">
-<polyline points="13,47 12,57 14,66" fill="none" stroke="#142536" stroke-width="4"/>
-<polyline points="13,48 12,57 14,65" fill="none" stroke="#c49a63" stroke-width="2"/>
+<polygon points="11,47 15,47 14,57 16,66 12,66 10,57" fill="#c49a63"/>
+<polygon points="13,47 15,47 14,57 16,66 14,66 12,57" fill="#a17e51"/>
 <polygon points="12,64 16,64 17,68 11,68" fill="#63534b"/>
-<polyline points="27,47 26,57 28,66" fill="none" stroke="#142536" stroke-width="4"/>
-<polyline points="27,48 26,57 28,65" fill="none" stroke="#c49a63" stroke-width="2"/>
+<polygon points="25,47 29,47 28,57 30,66 26,66 24,57" fill="#c49a63"/>
+<polygon points="27,47 29,47 28,57 30,66 28,66 26,57" fill="#a17e51"/>
 <polygon points="26,64 30,64 31,68 25,68" fill="#63534b"/>
 <polygon points="13,32 29,33 31,43 27,50 14,48 10,40" fill="#63534b"/>
 <ellipse cx="22.0" cy="40.5" rx="5.0" ry="7.5" fill="#c49a63"/>

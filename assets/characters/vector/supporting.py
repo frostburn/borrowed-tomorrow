@@ -112,7 +112,8 @@ def enemy(name):
     d=Drawing()
     if name=='hound':
         for x in (13,27):
-            d.line([(x,47),(x-1,57),(x+1,66)],'ink',4);d.line([(x,48),(x-1,57),(x+1,65)],'copper',2)
+            d.poly([(x-2,47),(x+2,47),(x+1,57),(x+3,66),(x-1,66),(x-3,57)],'copper',None)
+            d.poly([(x,47),(x+2,47),(x+1,57),(x+3,66),(x+1,66),(x-1,57)],'copper-shadow',None)
             d.poly([(x-1,64),(x+3,64),(x+4,68),(x-2,68)],'brown')
         d.poly([(13,32),(29,33),(31,43),(27,50),(14,48),(10,40)],'brown')
         d.oval((17,33,27,48),'copper');d.oval((19,36,25,45),'gold');d.line([(21,37),(21,44)],'brown')
