@@ -32,9 +32,8 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     const saved=coastCheckpoint('settlementSeen');saved.location={map:'cinderbank',x:39,y:21};await importSave(page,saved);
     await approach(page,'siding-collector');await dialogue(page);
-    await expect(page.getByLabel('Boarding objective')).toContainText('Families aboard: 0/3');
-    await expect(page.getByLabel('Boarding objective')).toContainText('gold loading walk');
-    await expect(page.getByLabel('Boarding objective')).toContainText('Boarding is automatic');
+    await expect(page.locator('#canvas')).toHaveAttribute('aria-description',/Families aboard: 0\/3/);
+    await expect(page.getByLabel('Boarding objective')).toHaveCount(0);
     expect(await page.locator('.topbar').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;})).toBe(true);
     if(device==='desktop')expect(await page.locator('.initiative').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
     await nativeScene(page,'cinderbank');await capture(page,`loading-walk-${device}`);

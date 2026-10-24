@@ -1,3 +1,4 @@
+import { BoardingPresentation } from './boarding-presentation';
 import {benefactorPresentation} from './benefactor-presentation';
 import { imperialPresentation } from './imperial-presentation';
 import { winterDragonPresentation } from './winter-dragon-presentation';
@@ -65,6 +66,7 @@ export class Adventure extends Phaser.Scene {
   private motion=new ActorAnimator(this);
   private lighting=new WorldLighting(this);
   private battleFaces=new Map<string,string>();
+  private boarding=new BoardingPresentation();
   private enemyAttack?:{battle:Battle;actorId:string;ability:AbilityId;cells:Hex[];impact:boolean};
   private mode: 'title' | 'world' | 'battle' = 'title';
   private selected: Action = 'move';
@@ -143,7 +145,7 @@ export class Adventure extends Phaser.Scene {
   }
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
-    return this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
+    return (this.mode==='battle'&&this.boarding.active)||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
   }
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const pixelAligned=this.mode==='battle',padding=outline?1:0,canvas=document.createElement('canvas');
@@ -161,6 +163,8 @@ export class Adventure extends Phaser.Scene {
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.boarding.clear();
+    this.ui.canvas.removeAttribute('aria-description');
     this.lighting.clear();
     this.motion.clear();
     this.enemyAttack=undefined;
@@ -539,6 +543,7 @@ export class Adventure extends Phaser.Scene {
     this.audio.setMode(this.battleDefinition.music);this.drawBattle();this.renderBattleControls();this.ui.location(this.battleDefinition.name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle(before?:BattleSnapshot) {
+    this.boarding.settle(this);
     this.battlePresentation?.prepare?.(this.battle!);
     if(!this.busy&&this.battlePresentation?.facing)for(const unit of this.battle!.units){const facing=this.battlePresentation.facing(unit);if(facing)this.battleFaces.set(unit.id,facing);}
     this.motion.clear();
@@ -564,7 +569,8 @@ export class Adventure extends Phaser.Scene {
         if(u.guard||u.dazzledAttacks||tauntTarget(b,u))badges.add(this.label(0,35,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
-    if(b.evacuation){this.layer.add(this.add.image(850,440,'dena').setOrigin(.5,.85));this.layer.add(this.label(850,461,'To coaches','#f4d598',1));}
+    this.boarding.sync(b);
+    if(b.evacuation){this.ui.canvas.setAttribute('aria-description',`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Gold arrows mark the loading walk.`);this.layer.add(this.label(worldView().width-80,20,`${b.evacuation.boarded}/${b.evacuation.groups} aboard`,'#f4d598',1).setScrollFactor(0).setDepth(20000));this.layer.add(this.add.image(850,440,'dena').setOrigin(.5,.85));this.layer.add(this.label(850,461,'To coaches','#f4d598',1));}
     this.drawGrid();this.drawInitiative();
     this.battlePresentation?.overlay?.(this,this.layer,b);
   }
@@ -619,7 +625,6 @@ export class Adventure extends Phaser.Scene {
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
     this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
-    if(b.evacuation){const objective=document.createElement('p');objective.className='hint';objective.setAttribute('aria-label','Boarding objective');objective.textContent=`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Arrows mark the families’ gold loading walk. Boarding is automatic: keep machines off it until round end. One family boards per clear round; all three aboard or all machines defeated wins.`;actions.before(objective);}
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-list')!,{
       current:()=>this.mode==='battle'&&!this.ui.modalOpen&&!this.ui.panelOpen?this.battle:undefined,
       initial:()=>this.testingBattle,
@@ -770,7 +775,9 @@ export class Adventure extends Phaser.Scene {
       const hadAttackArea=!!this.enemyAttack;this.enemyAttack=undefined;
       if(path||this.battlePresentation||hadAttackArea)this.drawBattle();
       const next=active(battle);if(next){this.revealHex(next.hex);this.shownTurn=next.id;}
-      if(battle.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}
+      const finish=()=>{if(!valid())return;this.busy=false;const next=active(battle);if(next)this.revealHex(next.hex);if(battle.result)this.battleEnded();else{this.drawGrid();this.renderBattleControls();this.scheduleEnemy();}};
+      if(battle.evacuation){this.busy=true;this.renderBattleControls();if(this.boarding.play(this,this.layer!,battle,(x,y)=>this.lighting.actor(this.layer!,x,y,'civilian-family'),finish))return;}
+      finish();
     });
   }
   private scheduleEnemy() {
