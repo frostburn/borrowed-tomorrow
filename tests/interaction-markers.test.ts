@@ -67,3 +67,14 @@ it('shows just the procession marker on Stillwater Avenue, with no stacked relea
  s.flags.capitalProcessionWon=true;expect(storyCues()).toEqual([]);
  s.flags.capitalStreetFreed=true;expect(storyCues()).toEqual([]);
 });
+
+it('dims the sealed sanctuary fight and leaves Chapter Four mechanisms to their automatic aftermaths',()=>{
+ const s=newGame();
+ const warden=MAPS.sanctuary.objects.find(o=>o.id==='sanctuary-warden')!;
+ expect(interactionMarker(warden,s)).toMatchObject({glyph:'!',color:BLOCKED_MARKER_COLOR});
+ s.flags.signalCut=true;expect(interactionMarker(warden,s)?.color).toBe(INTERACTION_MARKERS.story.color);
+ for(const [map,id]of [['breakwater','works-wheel'],['sanctuary','sanctuary-cable']]as const){
+  const object=MAPS[map].objects.find(o=>o.id===id)!;
+  expect(interactionMarker(object,s)).toBeUndefined();
+ }
+});

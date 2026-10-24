@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { equipItem } from '../../src/rules/inventory';
 import { brokenCheckpoint,palaceCheckpoint } from '../support/progress';
 import { approach,importSave,travel,visit } from './navigation';
-import { battle,capture,dialogue,inspect,nativeScene,nativeActor,clickWorld } from './controls';
+import { battle,capture,dialogue,inspect,nativeScene,nativeActor } from './controls';
 async function choices(page:Page){
  await expect(page.locator('.dialogue')).toBeVisible();
  while(await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).count())await page.locator('.dialogue-actions').getByRole('button',{name:/Next/}).click();
@@ -39,10 +39,10 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
   await travel(page,'refuge-works','breakwater');await dialogue(page);await nativeScene(page,'breakwater');await capture(page,`breakwater-${device}`);expect((await inspect(page)).state.activeParty).toEqual(departure.activeParty);
   await approach(page,'works-cart');await page.getByRole('button',{name:'Leave the cart sealed',exact:true}).click();expect((await inspect(page)).state.flags.worksStoresWon).toBeUndefined();
   if(route==='dry'){await approach(page,'works-cart');await page.getByRole('button',{name:'Open the survey cart · fight its patrol',exact:true}).click();await battle(page,'survey-cart');await equip(page,'Kit','Folding range sight');}
-  await approach(page,'works-approach');await choices(page);await page.getByRole('button',{name:route==='dry'?'Take the dry chain walk · ranged crows':'Cross the pump floor · shallow water',exact:true}).click();await battle(page,`sea-gate-${route}`);await equip(page,'Orrin','Counterweighted return valve');
-  await approach(page,'works-wheel');await dialogue(page);await capture(page,`harbor-open-${device}`);await travel(page,'works-sanctuary','sanctuary');await dialogue(page);await nativeScene(page,'sanctuary');await capture(page,`signal-sanctuary-${device}`);
+  await approach(page,'works-approach');await choices(page);await page.getByRole('button',{name:route==='dry'?'Take the dry chain walk · ranged crows':'Cross the pump floor · shallow water',exact:true}).click();await battle(page,`sea-gate-${route}`);
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-gate');await dialogue(page);await equip(page,'Orrin','Counterweighted return valve');await capture(page,`harbor-open-${device}`);await travel(page,'works-sanctuary','sanctuary');await dialogue(page);await nativeScene(page,'sanctuary');await capture(page,`signal-sanctuary-${device}`);
   await visit(page,'sanctuary-chest');await equip(page,'Celia','Silver field clasp');await approach(page,'sanctuary-bench');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();
-  await approach(page,'sanctuary-patrol');await battle(page,`return-bridge-${device}`);await equip(page,'Petra','Braced rescue coat');await approach(page,'sanctuary-cable');await dialogue(page);await capture(page,`return-line-cut-${device}`);
+  await approach(page,'sanctuary-patrol');await battle(page,`return-bridge-${device}`);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-cable');await dialogue(page);await equip(page,'Petra','Braced rescue coat');await capture(page,`return-line-cut-${device}`);
   await approach(page,'sanctuary-bench');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();await approach(page,'sanctuary-warden');await battle(page,`sanctuary-warden-${device}`);
   // Victory starts the chart aftermath automatically; finish it before Equipment.
   await capture(page,`covered-chart-${device}`);await dialogue(page);await equip(page,'Nell','Guardian prism');await travel(page,'sanctuary-refuge','refuge');await capture(page,`refuge-supplied-${device}`);
@@ -57,11 +57,11 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
 for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
  test.describe(`Chapter Four painted controls and sea wall on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
-  test('uses the actual wheel and clamp artwork, and keeps both siblings visible beside the boat',async({page})=>{
+  test('automatically resumes the wheel and clamp, and keeps both siblings visible beside the boat',async({page})=>{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
-   const gate=brokenCheckpoint('worksGateWon');gate.location={map:'breakwater',x:34,y:25};await importSave(page,gate);await clickWorld(page,34,20);
+   const gate=brokenCheckpoint('worksGateWon');gate.location={map:'breakwater',x:34,y:25};await importSave(page,gate);
    await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-gate');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.harborOpened).toBe(true);
-   const cable=brokenCheckpoint('roadGuardWon');cable.location={map:'sanctuary',x:43,y:28};await importSave(page,cable);await clickWorld(page,44,22);
+   const cable=brokenCheckpoint('roadGuardWon');cable.location={map:'sanctuary',x:43,y:28};await importSave(page,cable);
    await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-cable');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.signalCut).toBe(true);
    const home=brokenCheckpoint('anchorsKnown');await importSave(page,home);await approach(page,'refuge-tomas');
    for(let n=0;n<14&&!((await page.locator('.dialogue').textContent())??'').includes('I’m glad we got here.');n++)await page.locator('.dialogue-actions button').first().click();

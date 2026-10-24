@@ -8,7 +8,7 @@ import json, math
 from pathlib import Path
 from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
-from chapter_four_style import treatment, floor_point, floor_paint, coastal_lamp, opal, floor_spill, drive_link, arena_lights
+from chapter_four_style import treatment, floor_paint, coastal_lamp, opal, floor_spill, drive_link, arena_lights
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-four'
 MAP=ROOT/'src/content/chapter-four/maps'
@@ -68,31 +68,34 @@ def seascape(w,h,temple=False):
    ([(1451,515),(w,466),(w,842),(1430,786),(1374,710)],'#526e6b')]:out.append(poly(pts,color))
  return out
 
-def floor_contours(rects):
- # Union the navigation cells before drawing. Internal rectangle seams must not
- # become fake quay edges or cutaways across a walkable bridge.
- import importlib.util
- spec=importlib.util.spec_from_file_location('contours',ROOT/'assets/vector/chapter-one.py')
- compiler=importlib.util.module_from_spec(spec);spec.loader.exec_module(compiler)
- covered={(xx,yy) for x,y,rw,rh in rects for xx in range(x,x+rw) for yy in range(y,y+rh)}
- return compiler.outline(covered)
+def quay_cells(outlines,w,h):
+ # Native polygon edges and Tiled footing share one source. Sample cell centers
+ # so broad crooked quay faces do not conceal square invisible collision walls.
+ def inside(x,y):
+  result=False
+  for loop in outlines:
+   for (ax,ay),(bx,by) in zip(loop,loop[1:]+loop[:1]):
+    if (ay>y)!=(by>y) and x<(bx-ax)*(y-ay)/(by-ay)+ax:result=not result
+  return result
+ return [3 if inside(x*24+12,y*24+12)else 0 for y in range(h)for x in range(w)]
 
-def floor_shapes(rects,w,h,steel=False,shore=False):
- outlines=floor_contours(rects)
- outlines=[[floor_point(x,y,w,h)for x,y in pts]for pts in outlines]
+def floor_path(outlines):return ' '.join('M'+' L'.join(f'{x},{y}'for x,y in pts)+' Z'for pts in outlines)
+
+def floor_shapes(outlines,w,h,steel=False,shore=False):
  path=' '.join('M'+' L'.join(f'{x},{y}' for x,y in pts)+' Z' for pts in outlines)
  out=[f'<defs><clipPath id="floor"><path d="{path}" clip-rule="evenodd"/></clipPath></defs>',f'<g clip-path="url(#floor)">',*floor_paint(w,h,steel)]
  out.append('</g>')
  for pts in outlines:
   for i,(x,y) in enumerate(pts):
    nx,ny=pts[(i+1)%len(pts)]
-   if abs(y-ny)<abs(x-nx)*.01 and nx<x:
+   if nx<x:
     out.extend([poly([(nx,ny),(x,y),(x,y+18),(nx,ny+27)],'#36515d'),poly([(nx,ny-4),(x,y-4),(x,y),(nx,ny)],'#b6ad92')])
     if shore and x-nx>=96:
      for ratio,length in [(.18,39),(.61,57),(.86,25)]:
+      length=min(length,(x-nx)*(1-ratio));slope=(y-ny)/(x-nx)
       xx=nx+(x-nx)*ratio;yy=ny+(y-ny)*ratio+30
-      out.append(poly([(xx,yy),(xx+length*.68,yy-3),(xx+length,yy),(xx+length*.19,yy+2)],'#87a8ac'))
-   elif abs(y-ny)<abs(x-nx)*.01:out.append(line([(x,y+3),(nx,ny+3)],'#a6ac99',4))
+      out.append(poly([(xx,yy),(xx+length*.68,yy+slope*length*.68-3),(xx+length,yy+slope*length),(xx+length*.19,yy+slope*length*.19+2)],'#87a8ac'))
+   elif nx>x:out.append(line([(x,y+3),(nx,ny+3)],'#a6ac99',4))
  return out
 
 def ward():
@@ -156,33 +159,43 @@ def clamp(cut=False):
  out.append(line([(0,40),(52,40),(72,63 if cut else 40),(143,66 if cut else 40)],'#c1b87f',5))
  return out
 
-def world(id,name,subtitle,floors,blocks,objects,arrivals,casts,people,decor,back=None):
- w,h=64,42;layers=[tile(1,'Sea and cliffs',[5]*(w*h),w,h),tile(2,'Continuous walking surfaces',cells(floors,w,h),w,h),tile(3,'Scenery footprints',cells(blocks,w,h,6),w,h,sort=True)]
+def world(id,name,subtitle,outlines,blocks,objects,arrivals,casts,people,decor,back=None):
+ w,h=64,42;layers=[tile(1,'Sea and cliffs',[5]*(w*h),w,h),tile(2,'Continuous walking surfaces',quay_cells(outlines,w,h),w,h),tile(3,'Scenery footprints',cells(blocks,w,h,6),w,h,sort=True)]
  entries=[]
  def add(n,parts,ww=1536,hh=1008,x=0,y=0,depth=-1000,layer=1):
   entries.append({'key':f'scene-four-{n}','url':svg(n,ww,hh,parts),'x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':layer})
  add(id+'-coast',back if back is not None else seascape(1536,1008,id=='sanctuary'))
- add(id+'-floor',floor_shapes(floors,1536,1008,id=='breakwater',id!='refuge'),depth=-998,layer=2)
- if id=='breakwater':add('harbor-drive',drive_link(),depth=-997,layer=2)
+ add(id+'-floor',floor_shapes(outlines,1536,1008,id=='breakwater',id!='refuge'),depth=-998,layer=2)
+ if id=='breakwater':
+  add('harbor-drive',drive_link(),depth=-997,layer=2)
+  stair=[poly([(980,284),(1064,248),(1164,270),(1172,406),(970,432)],'#7d9185')]
+  for i in range(9):
+   y=285+i*16;x=980-(y-285)*.07;right=1165+(y-285)*.055
+   stair.extend([line([(x,y),(right,y+10)],'#4d6a6b',5),line([(x,y-3),(right,y+7)],'#bdba99',2)])
+  add('harbor-service-stair',stair,depth=-996,layer=2)
  lamp_positions={'refuge':[(264,576),(600,552),(912,576)],'breakwater':[(432,552),(816,576),(840,312)],'sanctuary':[(360,648),(600,600),(912,624)]}
  decor=decor+[('coastal-lamp',coastal_lamp(),48,144,x,y,y+139,{})for x,y in lamp_positions[id]]
  # Each prop has explicit unchanging ground sorting, separate from floor decks.
  for n,parts,ww,hh,x,y,depth,extra in decor:
   lid=3
   if extra:
-   lid=len(layers)+1;layers.append(group(lid,n,sort=True,**extra))
+   lid=len(layers)+1
+   # The painted closed-gate layer also blocks its upper service stair. Its
+   # existing visibility flag opens both together, without a side-route bypass.
+   if n=='harbor-gate-closed':layers.append(tile(lid,n,cells([(40,11,9,8)],w,h,6),w,h,sort=True,**extra))
+   else:layers.append(group(lid,n,sort=True,**extra))
   add(n,parts,ww,hh,x,y,depth,lid)
  # Ground spill inherits the emitter's exact visibility layer, including ferries.
  for lid in sorted({e['layerId']for e in entries}):
   emitters=[e for e in entries if e['layerId']==lid];light=floor_spill(emitters)
   if light:
-   clipped=f'<defs><clipPath id="light-floor"><path d="'+(' '.join('M'+' L'.join(f'{xx},{yy}'for xx,yy in [floor_point(x,y,1536,1008)for x,y in loop])+' Z'for loop in floor_contours(floors)))+'"/></clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
+   clipped=f'<defs><clipPath id="light-floor"><path d="'+floor_path(outlines)+'" clip-rule="evenodd"/></clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
    add(f'light-{id}-{lid}',[clipped],depth=-950,layer=lid)
  # The unnatural raised wave disappears in all locations after the local victory.
  lid=len(layers)+1;layers.append(group(lid,'Suspended water',hiddenFlag='sanctuaryWardenWon'))
  wave=[poly([(82,388),(137,340),(156,288),(188,253),(223,264),(201,306),(172,337),(170,385),(208,411)],'#8aaca8'),poly([(156,288),(188,253),(223,264),(204,274),(180,273),(168,294)],'#d1d2b4'),line([(175,290),(173,321),(152,353)],'#bed0ba',4)]
  if id!='sanctuary':
-  wave.extend([poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(168,402),(200,398)],'#9b895d',3)])
+  wave.extend([line([(173,240),(173,412)],'#6d5845',5),line([(172,242),(172,408)],'#c6af7b',2),line([(173,245),(222,405)],'#a9a88a',1.5),poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(173,399),(217,397)],'#9b895d',3)])
   # Keep the stranded skiff in open water, with the quay occluding sea scenery.
   shift,y_shift=(1000,0) if id=='refuge' else (480,-40)
   add(id+'-wave',[f'<g transform="translate({shift} {y_shift})">',*wave,'</g>'],depth=-999,layer=lid)
@@ -202,7 +215,7 @@ def write_map(id,name,subtitle,w,h,layers,safe=None):
  text=re.sub(r'"data": \[\n([\s\d,]+?)\n      \]',lambda m:'"data": [\n'+',\n'.join('        '+','.join(str(x) for x in json.loads('['+m[1]+']')[i:i+w]) for i in range(0,w*h,w))+'\n      ]',text)
  (MAP/f'{id}.json').write_text(text+'\n')
 
-refuge_f=[(9,20,47,15),(2,25,10,7),(17,18,26,4),(50,23,14,6)]
+refuge_f=[[(48,612),(207,586),(226,484),(399,462),(414,428),(1029,439),(1044,468),(1332,494),(1357,552),(1536,570),(1536,708),(1326,683),(1344,818),(948,832),(676,818),(400,836),(226,820),(203,775),(55,789)]]
 refuge_decor=[('refuge-ward',ward(),652,264,384,240,504,{}),('refuge-ferry',ferry(),360,192,12,408,600,{'requiredFlag':'harborOpened'}),('refuge-supplies',crate(),84,80,1040,652,732,{'requiredFlag':'harborOpened'})]
 # The real coal engine and coach persist on continuous railway tracks.
 back=seascape(1536,1008)
@@ -222,21 +235,21 @@ for module,x in [('engine',1080),('coach',660)]:
  url=f'art/vector/scenery/{module}.svg';src=(ROOT/'public'/url).read_text();ww,hh=map(int,re.search(r'width="(\d+)" height="(\d+)"',src).groups())
  manifest['refuge'].append({'key':f'scenery-{module}','url':url,'x':x,'y':846-hh+8,'width':ww,'height':hh,'depth':854,'layerId':3})
 
-harbor_f=[(9,25,45,11),(23,21,18,5),(28,17,14,5),(39,18,19,5),(11,22,14,5),(4,29,9,5),(50,23,14,5)]
-decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1038,366,558,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,36,768,960,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
-world('breakwater','Breakwater · the sea gate','The winding wheel is on the middle pier. A service stair climbs east.',harbor_f,[(13,19,12,5),(43,17,5,2)],[
- interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian-dusk',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',54,20,'Service stair · signal sanctuary',sign=True,accessFlag='harborOpened')],
- {'refuge':(25,29),'gate':(34,25),'sanctuary':(50,21)},
+harbor_f=[[(96,704),(210,682),(238,600),(270,572),(284,530),(548,514),(566,492),(660,510),(678,420),(920,414),(970,400),(980,284),(1064,248),(1164,270),(1172,406),(1390,452),(1406,550),(1536,570),(1536,682),(1312,660),(1280,858),(1024,882),(760,852),(500,876),(222,850),(206,809),(100,830)],[(990,552),(982,600),(1194,612),(1200,568)]]
+decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1170,228,420,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,36,768,960,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
+world('breakwater','Breakwater · the sea gate','The winding wheel operates the gate. Its service stair climbs to the sanctuary.',harbor_f,[(13,19,12,5),(38,17,2,2),(49,17,2,2)],[
+ interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian-dusk',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,accessFlag='worksGateWon',doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',45,13,'Through the gate · sanctuary service stair',sign=True,accessFlag='harborOpened')],
+ {'refuge':(25,29),'gate':(34,25),'sanctuary':(45,20)},
  {'four-harbor':{'nell':(28,27),'orrin':(31,28),'kit':(26,28),'petra':(33,27),'celia':(24,24),'bram':(25,25)},'four-gate':{'nell':(32,25),'orrin':(31,24),'kit':(37,25),'petra':(38,27),'celia':(30,26),'bram':(29,28)}},
  [point('ferry-injury',22,24,sprite='civilian-patient-green',hiddenFlag='harborOpened'),point('deck-worker',30,20,sprite='civilian-dockhand',hiddenFlag='harborOpened'),point('returning-worker',17,32,sprite='civilian-dockhand-rust',requiredFlag='harborOpened')],decor)
 
-sanctuary_f=[(20,18,23,17),(14,27,9,8),(38,24,15,7),(40,20,15,5),(26,14,15,5),(26,34,13,7),(8,30,10,5)]
+sanctuary_f=[[(192,732),(330,712),(350,650),(462,632),(494,450),(616,438),(642,336),(802,320),(986,344),(998,430),(1044,460),(1316,492),(1336,590),(1264,616),(1288,736),(1052,758),(1018,832),(936,856),(952,968),(818,984),(638,972),(608,850),(398,862),(204,826)]]
 decor=[('sanctuary-ring',sanctuary(),648,312,456,132,444,{}),('sanctuary-clamp-live',clamp(),144,96,984,504,600,{'hiddenFlag':'signalCut'}),('sanctuary-clamp-cut',clamp(True),144,96,984,504,600,{'requiredFlag':'signalCut'}),('sanctuary-fieldchest',crate(),84,80,482,616,696,{})]
 back=seascape(1536,1008,True)
 # Imperial cable rises from the mainland over the eastern bridge.
 back.extend([line([(1536,540),(1250,535),(1080,540),(1050,432),(960,410),(850,377)],'#182f41',13),line([(1536,536),(1250,531),(1080,536),(1050,428),(960,406),(850,373)],'#a08e63',5)])
 world('sanctuary','The signal sanctuary · the hollow sun','The eastern bridge carries the palace line. The bronze ring watches the coast.',sanctuary_f,[(26,14,15,4)], [
- interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian-dusk',hiddenFlag='roadGuardWon'),control('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',(41,21,6,4),sign=True,doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',hiddenFlag='sanctuaryWardenWon'),control('sanctuary-record',32,18,'Bronze ring · the covered chart',(29,15,7,3),sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),control('sanctuary-chest',22,29,'Hospice field chest · silver clasp',(20,26,4,3),sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,38,'Service stair · Breakwater harbor',sign=True),interaction('sanctuary-refuge',11,32,'Coastal path · railway refuge',sign=True)],
+ interaction('sanctuary-patrol',44,28,'Eastern bridge · return-line guards',sprite='guardian-dusk',hiddenFlag='roadGuardWon'),control('sanctuary-cable',43,26,'Copper clamp · disconnect the return line',(41,21,6,4),sign=True,accessFlag='roadGuardWon',doneFlag='signalCut'),interaction('sanctuary-warden',32,19,'The Sanctuary Warden',sprite='sluice-keeper',accessFlag='signalCut',hiddenFlag='sanctuaryWardenWon'),control('sanctuary-record',32,18,'Bronze ring · the covered chart',(29,15,7,3),sign=True,requiredFlag='sanctuaryWardenWon',doneFlag='anchorsKnown'),control('sanctuary-chest',22,29,'Hospice field chest · silver clasp',(20,26,4,3),sign=True,doneFlag='sanctuaryCache'),interaction('sanctuary-bench',17,31,'Old hospice bench · rest',sign=True),interaction('sanctuary-harbor',32,38,'Service stair · Breakwater harbor',sign=True),interaction('sanctuary-refuge',11,32,'Coastal path · railway refuge',sign=True)],
  {'harbor':(32,32),'cable':(40,27)},
  {'four-terrace':{'nell':(31,30),'orrin':(34,31),'kit':(29,32),'petra':(36,30),'celia':(29,29),'sanctuaryWarden':(32,19)},'four-cable':{'nell':(40,28),'orrin':(42,28),'kit':(39,30),'petra':(43,29),'celia':(38,28),'sanctuaryWarden':(32,19)},'four-chart':{'nell':(31,21),'orrin':(35,21),'kit':(30,23),'petra':(37,23),'celia':(33,19)}},[],decor,back)
 

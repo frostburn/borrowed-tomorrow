@@ -163,6 +163,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-four-harbor-service-stair",
+      "url": "art/vector/chapter-four/harbor-service-stair.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -996,
+      "layerId": 2
+    },
+    {
       "key": "scene-four-harbor-pumphouse",
       "url": "art/vector/chapter-four/harbor-pumphouse.svg",
       "x": 300,
@@ -175,11 +185,11 @@
     {
       "key": "scene-four-harbor-ferry-out",
       "url": "art/vector/chapter-four/harbor-ferry-out.svg",
-      "x": 1038,
-      "y": 366,
+      "x": 1170,
+      "y": 228,
       "width": 360,
       "height": 192,
-      "depth": 558,
+      "depth": 420,
       "layerId": 4
     },
     {

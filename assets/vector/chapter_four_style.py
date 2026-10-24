@@ -16,8 +16,6 @@ LIGHTS=json.loads((ROOT/'src/content/chapter-four/lighting.json').read_text())
 def poly(pts,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in pts)+'" fill="'+c+'"/>'
 def line(pts,c,width=2):return '<polyline points="'+' '.join(f'{x:g},{y:g}'for x,y in pts)+f'" fill="none" stroke="{c}" stroke-width="{width}"/>'
 
-def floor_point(x,y,w,h):return x,y+.006*(x-w/2)
-
 def floor_paint(w,h,steel=False):
  # A single slanted architectural plane, rather than bowed courses or a
  # different pattern every time the navigation rectangles overlap.

@@ -5,6 +5,8 @@ import type { GameState,MapId } from '../rules/state';
 export const BOSS_AFTERMATHS:readonly {map:MapId;won:string;done:string;interaction:string}[]=[
  {map:'relayhall',won:'worksWardenWon',done:'tomasRescued',interaction:'works-tomas'},
  {map:'conduit',won:'conduitGuardWon',done:'extractionStopped',interaction:'heart-release'},
+ {map:'breakwater',won:'worksGateWon',done:'harborOpened',interaction:'works-wheel'},
+ {map:'sanctuary',won:'roadGuardWon',done:'signalCut',interaction:'sanctuary-cable'},
  {map:'sanctuary',won:'sanctuaryWardenWon',done:'anchorsKnown',interaction:'sanctuary-record'},
  {map:'anchorforge',won:'furnaceWon',done:'hammerplainFreed',interaction:'forge-anchor'},
  {map:'signalwall',won:'aurelWon',done:'dawnwatchFreed',interaction:'wall-anchor'},
