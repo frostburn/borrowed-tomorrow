@@ -8,6 +8,16 @@ import { sceneArt,visibleSceneArt,SCENE_ASSETS } from '../src/content/scene-art'
 import { properties,tilePages } from '../src/content/tilemaps';
 
 describe('traced SVG scenes',()=>{
+ it('keeps the green conduit architecture separate from the royal marble originals',()=>{
+  const pieces=Object.values(CHAPTER_THREE_MAPS).flatMap(m=>sceneArt(m.tiles!)??[]);
+  for(const name of ['conduit-dome','conduit-factory-wing','conduit-medical-pavilion','conduit-controls','conduit-vessel']){
+   expect(pieces.some(p=>p.key===`scenery-${name}`)).toBe(true);
+  }
+  expect(pieces.some(p=>p.url.includes('royal-palace'))).toBe(false);
+  const dome=readFileSync('public/art/vector/scenery/conduit-dome.svg','utf8');
+  expect(dome).toContain('#3f6159');expect(dome).toContain('#bf995b');expect(dome).not.toContain('Royal white marble');
+  for(const name of ['royal-palace-front','royal-palace-wing'])expect(readFileSync(`public/art/vector/scenery/${name}.svg`,'utf8')).toContain('#dfe6e0');
+ });
  it('covers every painted story layer with self-contained, correctly sized vector sources',()=>{
   for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES)]){
    const pieces=sceneArt(map)!;expect(pieces.length).toBeGreaterThan(0);expect(tilePages(map)).toEqual([]);

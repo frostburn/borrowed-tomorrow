@@ -81,11 +81,11 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
 
 crew={'kit':(32,28),'orrin':(29,29),'petra':(35,29),'celia':(30,31),'alda':(34,25),'nell':(27,28)}
 capital=[rect(0,0,1536,1008,NIGHT),poly([(0,90),(320,170),(720,100),(1140,153),(1536,80),(1536,350),(0,350)],'#7e9698'),poly([(0,320),(270,233),(610,333),(1010,232),(1536,305),(1536,1008),(0,1008)],'#526d6c'),poly([(0,630),(340,540),(700,647),(1110,535),(1536,590),(1536,760),(1120,704),(710,790),(320,714),(0,770)],'#b3bfa8'),poly([(120,350),(380,308),(740,358),(1100,304),(1430,350),(1360,427),(920,460),(420,439),(170,405)],'#aebec7'),poly([(120,350),(380,308),(740,358),(1100,304),(1430,350),(1390,372),(1100,331),(740,385),(380,337),(155,375)],'#e3e6dc')]
-def imperial(n,x,y,scale):
+def royal_exterior(n,x,y,scale):
  original=(ROOT/f'public/art/vector/scenery/{n}.svg').read_text().split('>',1)[1].rsplit('</svg>',1)[0]
  return [f'<g transform="translate({x} {y}) scale({scale})">',original,'</g>']
-capital.extend(imperial('palace-portico',575,61,1.1))
-capital.extend(imperial('palace-wing',330,155,.85));capital.extend(imperial('palace-wing',1035,154,.85))
+capital.extend(royal_exterior('royal-palace-front',575,61,1.1))
+capital.extend(royal_exterior('royal-palace-wing',330,155,.85));capital.extend(royal_exterior('royal-palace-wing',1035,154,.85))
 far_cart=[ellipse(42,56,7,7,INK),ellipse(64,56,7,7,INK),rect(31,33,42,20,'#8f9278'),poly([(31,33),(42,24),(76,24),(73,33)],'#c6b78b'),line([(30,45),(17,40)],'#b89c6d',3),poly([(9,22),(19,22),(24,39),(17,42),(9,37)],'#76908a'),poly([(12,39),(17,40),(15,59),(11,59)],INK),poly([(17,39),(21,39),(25,56),(21,58)],INK),ellipse(14,15,6,8,'#c69b73'),poly([(7,10),(13,6),(21,12),(21,15),(8,14)],'#65776d')]
 barrier=[poly([(100,357),(380,296),(742,346),(1100,290),(1450,353),(1391,463),(910,501),(405,483),(135,426)],'#7b9b96'),line([(100,357),(380,296),(742,346),(1100,290),(1450,353)],'#c9d4af',8)]
 for x in range(180,1450,94):barrier.append(line([(x,340),(x+20,451)],'#bac5a4',3))

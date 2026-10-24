@@ -15,12 +15,12 @@
   "tiles": [
     {
       "id": 0,
-      "type": "palace-controls-2-0",
+      "type": "conduit-controls-2-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-2-0"
+          "value": "conduit-controls-2-0"
         },
         {
           "name": "sortOffset",
@@ -36,12 +36,12 @@
     },
     {
       "id": 1,
-      "type": "palace-controls-3-0",
+      "type": "conduit-controls-3-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-3-0"
+          "value": "conduit-controls-3-0"
         },
         {
           "name": "sortOffset",
@@ -57,12 +57,12 @@
     },
     {
       "id": 2,
-      "type": "palace-controls-4-0",
+      "type": "conduit-controls-4-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-4-0"
+          "value": "conduit-controls-4-0"
         },
         {
           "name": "sortOffset",
@@ -78,12 +78,12 @@
     },
     {
       "id": 3,
-      "type": "palace-controls-5-0",
+      "type": "conduit-controls-5-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-5-0"
+          "value": "conduit-controls-5-0"
         },
         {
           "name": "sortOffset",
@@ -99,12 +99,12 @@
     },
     {
       "id": 4,
-      "type": "palace-controls-6-0",
+      "type": "conduit-controls-6-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-6-0"
+          "value": "conduit-controls-6-0"
         },
         {
           "name": "sortOffset",
@@ -120,12 +120,12 @@
     },
     {
       "id": 5,
-      "type": "palace-controls-7-0",
+      "type": "conduit-controls-7-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-7-0"
+          "value": "conduit-controls-7-0"
         },
         {
           "name": "sortOffset",
@@ -141,12 +141,12 @@
     },
     {
       "id": 6,
-      "type": "palace-controls-0-1",
+      "type": "conduit-controls-0-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-0-1"
+          "value": "conduit-controls-0-1"
         },
         {
           "name": "sortOffset",
@@ -162,12 +162,12 @@
     },
     {
       "id": 7,
-      "type": "palace-controls-1-1",
+      "type": "conduit-controls-1-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-1-1"
+          "value": "conduit-controls-1-1"
         },
         {
           "name": "sortOffset",
@@ -183,12 +183,12 @@
     },
     {
       "id": 8,
-      "type": "palace-controls-2-1",
+      "type": "conduit-controls-2-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-2-1"
+          "value": "conduit-controls-2-1"
         },
         {
           "name": "sortOffset",
@@ -204,12 +204,12 @@
     },
     {
       "id": 9,
-      "type": "palace-controls-3-1",
+      "type": "conduit-controls-3-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-3-1"
+          "value": "conduit-controls-3-1"
         },
         {
           "name": "sortOffset",
@@ -225,12 +225,12 @@
     },
     {
       "id": 10,
-      "type": "palace-controls-4-1",
+      "type": "conduit-controls-4-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-4-1"
+          "value": "conduit-controls-4-1"
         },
         {
           "name": "sortOffset",
@@ -246,12 +246,12 @@
     },
     {
       "id": 11,
-      "type": "palace-controls-5-1",
+      "type": "conduit-controls-5-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-5-1"
+          "value": "conduit-controls-5-1"
         },
         {
           "name": "sortOffset",
@@ -267,12 +267,12 @@
     },
     {
       "id": 12,
-      "type": "palace-controls-6-1",
+      "type": "conduit-controls-6-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-6-1"
+          "value": "conduit-controls-6-1"
         },
         {
           "name": "sortOffset",
@@ -288,12 +288,12 @@
     },
     {
       "id": 13,
-      "type": "palace-controls-7-1",
+      "type": "conduit-controls-7-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-7-1"
+          "value": "conduit-controls-7-1"
         },
         {
           "name": "sortOffset",
@@ -309,12 +309,12 @@
     },
     {
       "id": 14,
-      "type": "palace-controls-0-2",
+      "type": "conduit-controls-0-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-0-2"
+          "value": "conduit-controls-0-2"
         },
         {
           "name": "sortOffset",
@@ -335,12 +335,12 @@
     },
     {
       "id": 15,
-      "type": "palace-controls-1-2",
+      "type": "conduit-controls-1-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-1-2"
+          "value": "conduit-controls-1-2"
         },
         {
           "name": "sortOffset",
@@ -361,12 +361,12 @@
     },
     {
       "id": 16,
-      "type": "palace-controls-2-2",
+      "type": "conduit-controls-2-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-2-2"
+          "value": "conduit-controls-2-2"
         },
         {
           "name": "sortOffset",
@@ -387,12 +387,12 @@
     },
     {
       "id": 17,
-      "type": "palace-controls-3-2",
+      "type": "conduit-controls-3-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-3-2"
+          "value": "conduit-controls-3-2"
         },
         {
           "name": "sortOffset",
@@ -413,12 +413,12 @@
     },
     {
       "id": 18,
-      "type": "palace-controls-4-2",
+      "type": "conduit-controls-4-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-4-2"
+          "value": "conduit-controls-4-2"
         },
         {
           "name": "sortOffset",
@@ -439,12 +439,12 @@
     },
     {
       "id": 19,
-      "type": "palace-controls-5-2",
+      "type": "conduit-controls-5-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-5-2"
+          "value": "conduit-controls-5-2"
         },
         {
           "name": "sortOffset",
@@ -465,12 +465,12 @@
     },
     {
       "id": 20,
-      "type": "palace-controls-6-2",
+      "type": "conduit-controls-6-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-6-2"
+          "value": "conduit-controls-6-2"
         },
         {
           "name": "sortOffset",
@@ -491,12 +491,12 @@
     },
     {
       "id": 21,
-      "type": "palace-controls-7-2",
+      "type": "conduit-controls-7-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-controls-7-2"
+          "value": "conduit-controls-7-2"
         },
         {
           "name": "sortOffset",
@@ -517,12 +517,12 @@
     },
     {
       "id": 22,
-      "type": "palace-vessel-0-0",
+      "type": "conduit-vessel-0-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-0-0"
+          "value": "conduit-vessel-0-0"
         },
         {
           "name": "sortOffset",
@@ -537,7 +537,7 @@
         {
           "name": "module",
           "type": "string",
-          "value": "palace-vessel"
+          "value": "conduit-vessel"
         },
         {
           "name": "moduleWidth",
@@ -563,12 +563,12 @@
     },
     {
       "id": 23,
-      "type": "palace-vessel-1-0",
+      "type": "conduit-vessel-1-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-1-0"
+          "value": "conduit-vessel-1-0"
         },
         {
           "name": "sortOffset",
@@ -584,12 +584,12 @@
     },
     {
       "id": 24,
-      "type": "palace-vessel-2-0",
+      "type": "conduit-vessel-2-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-2-0"
+          "value": "conduit-vessel-2-0"
         },
         {
           "name": "sortOffset",
@@ -605,12 +605,12 @@
     },
     {
       "id": 25,
-      "type": "palace-vessel-3-0",
+      "type": "conduit-vessel-3-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-3-0"
+          "value": "conduit-vessel-3-0"
         },
         {
           "name": "sortOffset",
@@ -626,12 +626,12 @@
     },
     {
       "id": 26,
-      "type": "palace-vessel-4-0",
+      "type": "conduit-vessel-4-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-4-0"
+          "value": "conduit-vessel-4-0"
         },
         {
           "name": "sortOffset",
@@ -647,12 +647,12 @@
     },
     {
       "id": 27,
-      "type": "palace-vessel-5-0",
+      "type": "conduit-vessel-5-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-5-0"
+          "value": "conduit-vessel-5-0"
         },
         {
           "name": "sortOffset",
@@ -668,12 +668,12 @@
     },
     {
       "id": 28,
-      "type": "palace-vessel-6-0",
+      "type": "conduit-vessel-6-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-6-0"
+          "value": "conduit-vessel-6-0"
         },
         {
           "name": "sortOffset",
@@ -689,12 +689,12 @@
     },
     {
       "id": 29,
-      "type": "palace-vessel-7-0",
+      "type": "conduit-vessel-7-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-7-0"
+          "value": "conduit-vessel-7-0"
         },
         {
           "name": "sortOffset",
@@ -710,12 +710,12 @@
     },
     {
       "id": 30,
-      "type": "palace-vessel-8-0",
+      "type": "conduit-vessel-8-0",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-8-0"
+          "value": "conduit-vessel-8-0"
         },
         {
           "name": "sortOffset",
@@ -731,12 +731,12 @@
     },
     {
       "id": 31,
-      "type": "palace-vessel-0-1",
+      "type": "conduit-vessel-0-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-0-1"
+          "value": "conduit-vessel-0-1"
         },
         {
           "name": "sortOffset",
@@ -752,12 +752,12 @@
     },
     {
       "id": 32,
-      "type": "palace-vessel-1-1",
+      "type": "conduit-vessel-1-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-1-1"
+          "value": "conduit-vessel-1-1"
         },
         {
           "name": "sortOffset",
@@ -773,12 +773,12 @@
     },
     {
       "id": 33,
-      "type": "palace-vessel-2-1",
+      "type": "conduit-vessel-2-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-2-1"
+          "value": "conduit-vessel-2-1"
         },
         {
           "name": "sortOffset",
@@ -794,12 +794,12 @@
     },
     {
       "id": 34,
-      "type": "palace-vessel-3-1",
+      "type": "conduit-vessel-3-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-3-1"
+          "value": "conduit-vessel-3-1"
         },
         {
           "name": "sortOffset",
@@ -815,12 +815,12 @@
     },
     {
       "id": 35,
-      "type": "palace-vessel-4-1",
+      "type": "conduit-vessel-4-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-4-1"
+          "value": "conduit-vessel-4-1"
         },
         {
           "name": "sortOffset",
@@ -836,12 +836,12 @@
     },
     {
       "id": 36,
-      "type": "palace-vessel-5-1",
+      "type": "conduit-vessel-5-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-5-1"
+          "value": "conduit-vessel-5-1"
         },
         {
           "name": "sortOffset",
@@ -857,12 +857,12 @@
     },
     {
       "id": 37,
-      "type": "palace-vessel-6-1",
+      "type": "conduit-vessel-6-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-6-1"
+          "value": "conduit-vessel-6-1"
         },
         {
           "name": "sortOffset",
@@ -878,12 +878,12 @@
     },
     {
       "id": 38,
-      "type": "palace-vessel-7-1",
+      "type": "conduit-vessel-7-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-7-1"
+          "value": "conduit-vessel-7-1"
         },
         {
           "name": "sortOffset",
@@ -899,12 +899,12 @@
     },
     {
       "id": 39,
-      "type": "palace-vessel-8-1",
+      "type": "conduit-vessel-8-1",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-8-1"
+          "value": "conduit-vessel-8-1"
         },
         {
           "name": "sortOffset",
@@ -920,12 +920,12 @@
     },
     {
       "id": 40,
-      "type": "palace-vessel-0-2",
+      "type": "conduit-vessel-0-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-0-2"
+          "value": "conduit-vessel-0-2"
         },
         {
           "name": "sortOffset",
@@ -941,12 +941,12 @@
     },
     {
       "id": 41,
-      "type": "palace-vessel-1-2",
+      "type": "conduit-vessel-1-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-1-2"
+          "value": "conduit-vessel-1-2"
         },
         {
           "name": "sortOffset",
@@ -962,12 +962,12 @@
     },
     {
       "id": 42,
-      "type": "palace-vessel-2-2",
+      "type": "conduit-vessel-2-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-2-2"
+          "value": "conduit-vessel-2-2"
         },
         {
           "name": "sortOffset",
@@ -983,12 +983,12 @@
     },
     {
       "id": 43,
-      "type": "palace-vessel-3-2",
+      "type": "conduit-vessel-3-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-3-2"
+          "value": "conduit-vessel-3-2"
         },
         {
           "name": "sortOffset",
@@ -1004,12 +1004,12 @@
     },
     {
       "id": 44,
-      "type": "palace-vessel-4-2",
+      "type": "conduit-vessel-4-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-4-2"
+          "value": "conduit-vessel-4-2"
         },
         {
           "name": "sortOffset",
@@ -1025,12 +1025,12 @@
     },
     {
       "id": 45,
-      "type": "palace-vessel-5-2",
+      "type": "conduit-vessel-5-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-5-2"
+          "value": "conduit-vessel-5-2"
         },
         {
           "name": "sortOffset",
@@ -1046,12 +1046,12 @@
     },
     {
       "id": 46,
-      "type": "palace-vessel-6-2",
+      "type": "conduit-vessel-6-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-6-2"
+          "value": "conduit-vessel-6-2"
         },
         {
           "name": "sortOffset",
@@ -1067,12 +1067,12 @@
     },
     {
       "id": 47,
-      "type": "palace-vessel-7-2",
+      "type": "conduit-vessel-7-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-7-2"
+          "value": "conduit-vessel-7-2"
         },
         {
           "name": "sortOffset",
@@ -1088,12 +1088,12 @@
     },
     {
       "id": 48,
-      "type": "palace-vessel-8-2",
+      "type": "conduit-vessel-8-2",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-8-2"
+          "value": "conduit-vessel-8-2"
         },
         {
           "name": "sortOffset",
@@ -1109,12 +1109,12 @@
     },
     {
       "id": 49,
-      "type": "palace-vessel-0-3",
+      "type": "conduit-vessel-0-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-0-3"
+          "value": "conduit-vessel-0-3"
         },
         {
           "name": "sortOffset",
@@ -1130,12 +1130,12 @@
     },
     {
       "id": 50,
-      "type": "palace-vessel-1-3",
+      "type": "conduit-vessel-1-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-1-3"
+          "value": "conduit-vessel-1-3"
         },
         {
           "name": "sortOffset",
@@ -1151,12 +1151,12 @@
     },
     {
       "id": 51,
-      "type": "palace-vessel-2-3",
+      "type": "conduit-vessel-2-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-2-3"
+          "value": "conduit-vessel-2-3"
         },
         {
           "name": "sortOffset",
@@ -1172,12 +1172,12 @@
     },
     {
       "id": 52,
-      "type": "palace-vessel-3-3",
+      "type": "conduit-vessel-3-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-3-3"
+          "value": "conduit-vessel-3-3"
         },
         {
           "name": "sortOffset",
@@ -1193,12 +1193,12 @@
     },
     {
       "id": 53,
-      "type": "palace-vessel-4-3",
+      "type": "conduit-vessel-4-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-4-3"
+          "value": "conduit-vessel-4-3"
         },
         {
           "name": "sortOffset",
@@ -1214,12 +1214,12 @@
     },
     {
       "id": 54,
-      "type": "palace-vessel-5-3",
+      "type": "conduit-vessel-5-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-5-3"
+          "value": "conduit-vessel-5-3"
         },
         {
           "name": "sortOffset",
@@ -1235,12 +1235,12 @@
     },
     {
       "id": 55,
-      "type": "palace-vessel-6-3",
+      "type": "conduit-vessel-6-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-6-3"
+          "value": "conduit-vessel-6-3"
         },
         {
           "name": "sortOffset",
@@ -1256,12 +1256,12 @@
     },
     {
       "id": 56,
-      "type": "palace-vessel-7-3",
+      "type": "conduit-vessel-7-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-7-3"
+          "value": "conduit-vessel-7-3"
         },
         {
           "name": "sortOffset",
@@ -1277,12 +1277,12 @@
     },
     {
       "id": 57,
-      "type": "palace-vessel-8-3",
+      "type": "conduit-vessel-8-3",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-8-3"
+          "value": "conduit-vessel-8-3"
         },
         {
           "name": "sortOffset",
@@ -1298,12 +1298,12 @@
     },
     {
       "id": 58,
-      "type": "palace-vessel-0-4",
+      "type": "conduit-vessel-0-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-0-4"
+          "value": "conduit-vessel-0-4"
         },
         {
           "name": "sortOffset",
@@ -1319,12 +1319,12 @@
     },
     {
       "id": 59,
-      "type": "palace-vessel-1-4",
+      "type": "conduit-vessel-1-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-1-4"
+          "value": "conduit-vessel-1-4"
         },
         {
           "name": "sortOffset",
@@ -1340,12 +1340,12 @@
     },
     {
       "id": 60,
-      "type": "palace-vessel-2-4",
+      "type": "conduit-vessel-2-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-2-4"
+          "value": "conduit-vessel-2-4"
         },
         {
           "name": "sortOffset",
@@ -1361,12 +1361,12 @@
     },
     {
       "id": 61,
-      "type": "palace-vessel-3-4",
+      "type": "conduit-vessel-3-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-3-4"
+          "value": "conduit-vessel-3-4"
         },
         {
           "name": "sortOffset",
@@ -1382,12 +1382,12 @@
     },
     {
       "id": 62,
-      "type": "palace-vessel-4-4",
+      "type": "conduit-vessel-4-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-4-4"
+          "value": "conduit-vessel-4-4"
         },
         {
           "name": "sortOffset",
@@ -1403,12 +1403,12 @@
     },
     {
       "id": 63,
-      "type": "palace-vessel-5-4",
+      "type": "conduit-vessel-5-4",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-vessel-5-4"
+          "value": "conduit-vessel-5-4"
         },
         {
           "name": "sortOffset",

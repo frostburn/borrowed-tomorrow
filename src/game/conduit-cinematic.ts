@@ -24,8 +24,8 @@ export class ConduitCinematic {
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,overlay:Phaser.GameObjects.Container,private emperor?:Phaser.GameObjects.Image){
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image){
       const key=child.getData('scene-piece')?.key;
-      if(key==='scenery-palace-vessel')this.vessel=child;
-      if(key==='scenery-palace-controls')this.controls=child;
+      if(key==='scenery-conduit-vessel')this.vessel=child;
+      if(key==='scenery-conduit-controls')this.controls=child;
       if(key==='scene-conduit-17')this.lights.push(child);
     }
     for(const image of [this.vessel,...this.lights])if(image)this.originals.push({image,x:image.x,y:image.y,alpha:image.alpha});

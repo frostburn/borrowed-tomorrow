@@ -15,12 +15,12 @@
   "tiles": [
     {
       "id": 0,
-      "type": "palace-portico-0-8",
+      "type": "conduit-dome-0-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-0-8"
+          "value": "conduit-dome-0-8"
         },
         {
           "name": "sortOffset",
@@ -36,12 +36,12 @@
     },
     {
       "id": 1,
-      "type": "palace-portico-1-8",
+      "type": "conduit-dome-1-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-1-8"
+          "value": "conduit-dome-1-8"
         },
         {
           "name": "sortOffset",
@@ -57,12 +57,12 @@
     },
     {
       "id": 2,
-      "type": "palace-portico-2-8",
+      "type": "conduit-dome-2-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-2-8"
+          "value": "conduit-dome-2-8"
         },
         {
           "name": "sortOffset",
@@ -78,12 +78,12 @@
     },
     {
       "id": 3,
-      "type": "palace-portico-3-8",
+      "type": "conduit-dome-3-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-3-8"
+          "value": "conduit-dome-3-8"
         },
         {
           "name": "sortOffset",
@@ -99,12 +99,12 @@
     },
     {
       "id": 4,
-      "type": "palace-portico-4-8",
+      "type": "conduit-dome-4-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-4-8"
+          "value": "conduit-dome-4-8"
         },
         {
           "name": "sortOffset",
@@ -120,12 +120,12 @@
     },
     {
       "id": 5,
-      "type": "palace-portico-5-8",
+      "type": "conduit-dome-5-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-5-8"
+          "value": "conduit-dome-5-8"
         },
         {
           "name": "sortOffset",
@@ -141,12 +141,12 @@
     },
     {
       "id": 6,
-      "type": "palace-portico-6-8",
+      "type": "conduit-dome-6-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-6-8"
+          "value": "conduit-dome-6-8"
         },
         {
           "name": "sortOffset",
@@ -162,12 +162,12 @@
     },
     {
       "id": 7,
-      "type": "palace-portico-7-8",
+      "type": "conduit-dome-7-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-7-8"
+          "value": "conduit-dome-7-8"
         },
         {
           "name": "sortOffset",
@@ -183,12 +183,12 @@
     },
     {
       "id": 8,
-      "type": "palace-portico-8-8",
+      "type": "conduit-dome-8-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-8-8"
+          "value": "conduit-dome-8-8"
         },
         {
           "name": "sortOffset",
@@ -204,12 +204,12 @@
     },
     {
       "id": 9,
-      "type": "palace-portico-9-8",
+      "type": "conduit-dome-9-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-9-8"
+          "value": "conduit-dome-9-8"
         },
         {
           "name": "sortOffset",
@@ -225,12 +225,12 @@
     },
     {
       "id": 10,
-      "type": "palace-portico-10-8",
+      "type": "conduit-dome-10-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-10-8"
+          "value": "conduit-dome-10-8"
         },
         {
           "name": "sortOffset",
@@ -246,12 +246,12 @@
     },
     {
       "id": 11,
-      "type": "palace-portico-11-8",
+      "type": "conduit-dome-11-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-11-8"
+          "value": "conduit-dome-11-8"
         },
         {
           "name": "sortOffset",
@@ -267,12 +267,12 @@
     },
     {
       "id": 12,
-      "type": "palace-portico-12-8",
+      "type": "conduit-dome-12-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-12-8"
+          "value": "conduit-dome-12-8"
         },
         {
           "name": "sortOffset",
@@ -288,12 +288,12 @@
     },
     {
       "id": 13,
-      "type": "palace-portico-13-8",
+      "type": "conduit-dome-13-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-13-8"
+          "value": "conduit-dome-13-8"
         },
         {
           "name": "sortOffset",
@@ -309,12 +309,12 @@
     },
     {
       "id": 14,
-      "type": "palace-portico-14-8",
+      "type": "conduit-dome-14-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-14-8"
+          "value": "conduit-dome-14-8"
         },
         {
           "name": "sortOffset",
@@ -330,12 +330,12 @@
     },
     {
       "id": 15,
-      "type": "palace-portico-15-8",
+      "type": "conduit-dome-15-8",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-15-8"
+          "value": "conduit-dome-15-8"
         },
         {
           "name": "sortOffset",
@@ -351,12 +351,12 @@
     },
     {
       "id": 16,
-      "type": "palace-portico-0-9",
+      "type": "conduit-dome-0-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-0-9"
+          "value": "conduit-dome-0-9"
         },
         {
           "name": "sortOffset",
@@ -372,12 +372,12 @@
     },
     {
       "id": 17,
-      "type": "palace-portico-1-9",
+      "type": "conduit-dome-1-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-1-9"
+          "value": "conduit-dome-1-9"
         },
         {
           "name": "sortOffset",
@@ -393,12 +393,12 @@
     },
     {
       "id": 18,
-      "type": "palace-portico-2-9",
+      "type": "conduit-dome-2-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-2-9"
+          "value": "conduit-dome-2-9"
         },
         {
           "name": "sortOffset",
@@ -414,12 +414,12 @@
     },
     {
       "id": 19,
-      "type": "palace-portico-3-9",
+      "type": "conduit-dome-3-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-3-9"
+          "value": "conduit-dome-3-9"
         },
         {
           "name": "sortOffset",
@@ -435,12 +435,12 @@
     },
     {
       "id": 20,
-      "type": "palace-portico-4-9",
+      "type": "conduit-dome-4-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-4-9"
+          "value": "conduit-dome-4-9"
         },
         {
           "name": "sortOffset",
@@ -456,12 +456,12 @@
     },
     {
       "id": 21,
-      "type": "palace-portico-5-9",
+      "type": "conduit-dome-5-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-5-9"
+          "value": "conduit-dome-5-9"
         },
         {
           "name": "sortOffset",
@@ -477,12 +477,12 @@
     },
     {
       "id": 22,
-      "type": "palace-portico-6-9",
+      "type": "conduit-dome-6-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-6-9"
+          "value": "conduit-dome-6-9"
         },
         {
           "name": "sortOffset",
@@ -498,12 +498,12 @@
     },
     {
       "id": 23,
-      "type": "palace-portico-7-9",
+      "type": "conduit-dome-7-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-7-9"
+          "value": "conduit-dome-7-9"
         },
         {
           "name": "sortOffset",
@@ -519,12 +519,12 @@
     },
     {
       "id": 24,
-      "type": "palace-portico-8-9",
+      "type": "conduit-dome-8-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-8-9"
+          "value": "conduit-dome-8-9"
         },
         {
           "name": "sortOffset",
@@ -540,12 +540,12 @@
     },
     {
       "id": 25,
-      "type": "palace-portico-9-9",
+      "type": "conduit-dome-9-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-9-9"
+          "value": "conduit-dome-9-9"
         },
         {
           "name": "sortOffset",
@@ -561,12 +561,12 @@
     },
     {
       "id": 26,
-      "type": "palace-portico-10-9",
+      "type": "conduit-dome-10-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-10-9"
+          "value": "conduit-dome-10-9"
         },
         {
           "name": "sortOffset",
@@ -582,12 +582,12 @@
     },
     {
       "id": 27,
-      "type": "palace-portico-11-9",
+      "type": "conduit-dome-11-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-11-9"
+          "value": "conduit-dome-11-9"
         },
         {
           "name": "sortOffset",
@@ -603,12 +603,12 @@
     },
     {
       "id": 28,
-      "type": "palace-portico-12-9",
+      "type": "conduit-dome-12-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-12-9"
+          "value": "conduit-dome-12-9"
         },
         {
           "name": "sortOffset",
@@ -624,12 +624,12 @@
     },
     {
       "id": 29,
-      "type": "palace-portico-13-9",
+      "type": "conduit-dome-13-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-13-9"
+          "value": "conduit-dome-13-9"
         },
         {
           "name": "sortOffset",
@@ -645,12 +645,12 @@
     },
     {
       "id": 30,
-      "type": "palace-portico-14-9",
+      "type": "conduit-dome-14-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-14-9"
+          "value": "conduit-dome-14-9"
         },
         {
           "name": "sortOffset",
@@ -666,12 +666,12 @@
     },
     {
       "id": 31,
-      "type": "palace-portico-15-9",
+      "type": "conduit-dome-15-9",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-15-9"
+          "value": "conduit-dome-15-9"
         },
         {
           "name": "sortOffset",
@@ -687,12 +687,12 @@
     },
     {
       "id": 32,
-      "type": "palace-portico-0-10",
+      "type": "conduit-dome-0-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-0-10"
+          "value": "conduit-dome-0-10"
         },
         {
           "name": "sortOffset",
@@ -708,12 +708,12 @@
     },
     {
       "id": 33,
-      "type": "palace-portico-1-10",
+      "type": "conduit-dome-1-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-1-10"
+          "value": "conduit-dome-1-10"
         },
         {
           "name": "sortOffset",
@@ -729,12 +729,12 @@
     },
     {
       "id": 34,
-      "type": "palace-portico-2-10",
+      "type": "conduit-dome-2-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-2-10"
+          "value": "conduit-dome-2-10"
         },
         {
           "name": "sortOffset",
@@ -750,12 +750,12 @@
     },
     {
       "id": 35,
-      "type": "palace-portico-3-10",
+      "type": "conduit-dome-3-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-3-10"
+          "value": "conduit-dome-3-10"
         },
         {
           "name": "sortOffset",
@@ -771,12 +771,12 @@
     },
     {
       "id": 36,
-      "type": "palace-portico-4-10",
+      "type": "conduit-dome-4-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-4-10"
+          "value": "conduit-dome-4-10"
         },
         {
           "name": "sortOffset",
@@ -792,12 +792,12 @@
     },
     {
       "id": 37,
-      "type": "palace-portico-5-10",
+      "type": "conduit-dome-5-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-5-10"
+          "value": "conduit-dome-5-10"
         },
         {
           "name": "sortOffset",
@@ -813,12 +813,12 @@
     },
     {
       "id": 38,
-      "type": "palace-portico-6-10",
+      "type": "conduit-dome-6-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-6-10"
+          "value": "conduit-dome-6-10"
         },
         {
           "name": "sortOffset",
@@ -834,12 +834,12 @@
     },
     {
       "id": 39,
-      "type": "palace-portico-7-10",
+      "type": "conduit-dome-7-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-7-10"
+          "value": "conduit-dome-7-10"
         },
         {
           "name": "sortOffset",
@@ -855,12 +855,12 @@
     },
     {
       "id": 40,
-      "type": "palace-portico-8-10",
+      "type": "conduit-dome-8-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-8-10"
+          "value": "conduit-dome-8-10"
         },
         {
           "name": "sortOffset",
@@ -876,12 +876,12 @@
     },
     {
       "id": 41,
-      "type": "palace-portico-9-10",
+      "type": "conduit-dome-9-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-9-10"
+          "value": "conduit-dome-9-10"
         },
         {
           "name": "sortOffset",
@@ -897,12 +897,12 @@
     },
     {
       "id": 42,
-      "type": "palace-portico-10-10",
+      "type": "conduit-dome-10-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-10-10"
+          "value": "conduit-dome-10-10"
         },
         {
           "name": "sortOffset",
@@ -918,12 +918,12 @@
     },
     {
       "id": 43,
-      "type": "palace-portico-11-10",
+      "type": "conduit-dome-11-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-11-10"
+          "value": "conduit-dome-11-10"
         },
         {
           "name": "sortOffset",
@@ -939,12 +939,12 @@
     },
     {
       "id": 44,
-      "type": "palace-portico-12-10",
+      "type": "conduit-dome-12-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-12-10"
+          "value": "conduit-dome-12-10"
         },
         {
           "name": "sortOffset",
@@ -960,12 +960,12 @@
     },
     {
       "id": 45,
-      "type": "palace-portico-13-10",
+      "type": "conduit-dome-13-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-13-10"
+          "value": "conduit-dome-13-10"
         },
         {
           "name": "sortOffset",
@@ -981,12 +981,12 @@
     },
     {
       "id": 46,
-      "type": "palace-portico-14-10",
+      "type": "conduit-dome-14-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-14-10"
+          "value": "conduit-dome-14-10"
         },
         {
           "name": "sortOffset",
@@ -1002,12 +1002,12 @@
     },
     {
       "id": 47,
-      "type": "palace-portico-15-10",
+      "type": "conduit-dome-15-10",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-15-10"
+          "value": "conduit-dome-15-10"
         },
         {
           "name": "sortOffset",
@@ -1023,12 +1023,12 @@
     },
     {
       "id": 48,
-      "type": "palace-portico-0-11",
+      "type": "conduit-dome-0-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-0-11"
+          "value": "conduit-dome-0-11"
         },
         {
           "name": "sortOffset",
@@ -1049,12 +1049,12 @@
     },
     {
       "id": 49,
-      "type": "palace-portico-1-11",
+      "type": "conduit-dome-1-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-1-11"
+          "value": "conduit-dome-1-11"
         },
         {
           "name": "sortOffset",
@@ -1075,12 +1075,12 @@
     },
     {
       "id": 50,
-      "type": "palace-portico-2-11",
+      "type": "conduit-dome-2-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-2-11"
+          "value": "conduit-dome-2-11"
         },
         {
           "name": "sortOffset",
@@ -1101,12 +1101,12 @@
     },
     {
       "id": 51,
-      "type": "palace-portico-3-11",
+      "type": "conduit-dome-3-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-3-11"
+          "value": "conduit-dome-3-11"
         },
         {
           "name": "sortOffset",
@@ -1127,12 +1127,12 @@
     },
     {
       "id": 52,
-      "type": "palace-portico-4-11",
+      "type": "conduit-dome-4-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-4-11"
+          "value": "conduit-dome-4-11"
         },
         {
           "name": "sortOffset",
@@ -1153,12 +1153,12 @@
     },
     {
       "id": 53,
-      "type": "palace-portico-5-11",
+      "type": "conduit-dome-5-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-5-11"
+          "value": "conduit-dome-5-11"
         },
         {
           "name": "sortOffset",
@@ -1179,12 +1179,12 @@
     },
     {
       "id": 54,
-      "type": "palace-portico-6-11",
+      "type": "conduit-dome-6-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-6-11"
+          "value": "conduit-dome-6-11"
         },
         {
           "name": "sortOffset",
@@ -1205,12 +1205,12 @@
     },
     {
       "id": 55,
-      "type": "palace-portico-7-11",
+      "type": "conduit-dome-7-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-7-11"
+          "value": "conduit-dome-7-11"
         },
         {
           "name": "sortOffset",
@@ -1231,12 +1231,12 @@
     },
     {
       "id": 56,
-      "type": "palace-portico-8-11",
+      "type": "conduit-dome-8-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-8-11"
+          "value": "conduit-dome-8-11"
         },
         {
           "name": "sortOffset",
@@ -1257,12 +1257,12 @@
     },
     {
       "id": 57,
-      "type": "palace-portico-9-11",
+      "type": "conduit-dome-9-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-9-11"
+          "value": "conduit-dome-9-11"
         },
         {
           "name": "sortOffset",
@@ -1283,12 +1283,12 @@
     },
     {
       "id": 58,
-      "type": "palace-portico-10-11",
+      "type": "conduit-dome-10-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-10-11"
+          "value": "conduit-dome-10-11"
         },
         {
           "name": "sortOffset",
@@ -1309,12 +1309,12 @@
     },
     {
       "id": 59,
-      "type": "palace-portico-11-11",
+      "type": "conduit-dome-11-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-11-11"
+          "value": "conduit-dome-11-11"
         },
         {
           "name": "sortOffset",
@@ -1335,12 +1335,12 @@
     },
     {
       "id": 60,
-      "type": "palace-portico-12-11",
+      "type": "conduit-dome-12-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-12-11"
+          "value": "conduit-dome-12-11"
         },
         {
           "name": "sortOffset",
@@ -1361,12 +1361,12 @@
     },
     {
       "id": 61,
-      "type": "palace-portico-13-11",
+      "type": "conduit-dome-13-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-13-11"
+          "value": "conduit-dome-13-11"
         },
         {
           "name": "sortOffset",
@@ -1387,12 +1387,12 @@
     },
     {
       "id": 62,
-      "type": "palace-portico-14-11",
+      "type": "conduit-dome-14-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-14-11"
+          "value": "conduit-dome-14-11"
         },
         {
           "name": "sortOffset",
@@ -1413,12 +1413,12 @@
     },
     {
       "id": 63,
-      "type": "palace-portico-15-11",
+      "type": "conduit-dome-15-11",
       "properties": [
         {
           "name": "name",
           "type": "string",
-          "value": "palace-portico-15-11"
+          "value": "conduit-dome-15-11"
         },
         {
           "name": "sortOffset",

@@ -1,0 +1,5 @@
+[
+  {"name":"conduit-dome","input":0,"size":[384,312],"contentSize":[384,288],"block":[16,1]},
+  {"name":"conduit-factory-wing","input":1,"size":[192,240],"contentSize":[192,224],"block":[8,0]},
+  {"name":"conduit-medical-pavilion","input":2,"size":[336,216],"block":[12,0]}
+]

@@ -80,7 +80,7 @@ test('the pressure route, optional stores refusal and escape work on a phone',as
  await capture(page,'emperor-rupture-phone');await visit(page,'capital-departure');await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await capture(page,'chapter-three-complete-phone');expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
 });
 test('failed chamber SVG preserves the current departure for retry',async({page})=>{
- const chamberArt=sceneAssets(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>p.key==='scenery-palace-vessel')!;expect(chamberArt).toBeTruthy();
+ const chamberArt=sceneAssets(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>p.key==='scenery-conduit-vessel')!;expect(chamberArt).toBeTruthy();
  await page.route(`**/${chamberArt.url}`,route=>route.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);
  await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
  await page.unroute(`**/${chamberArt.url}`);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
