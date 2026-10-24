@@ -1,41 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>dena portrait</title><metadata>{"reference": "babe8ca:public/art/portrait-dena.png", "construction": "female: tapering lower face, shallow chin, compact nasal tip; individual cheek/age planes", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
-<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
-<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="3,128 12,102 35,88 53,80 80,83 106,100 122,128" fill="#35584d"/>
-<polygon points="9,111 32,95 43,128 3,128" fill="#5d7660"/>
-<polygon points="87,91 108,104 121,128 93,128" fill="#263e39"/>
-<polygon points="40,94 51,86 66,96 82,88 94,98 91,128 40,128" fill="#baa989"/>
-<polygon points="47,95 53,91 65,103 81,92 86,99 86,128 45,128" fill="#f1d8ae"/>
-<polygon points="53,77 55,89 66,98 79,86 75,75" fill="#d49c70"/>
-<polygon points="27,36 39,19 63,16 86,28 97,49 93,73 78,86 46,83 31,69" fill="#372a25"/>
-<polygon points="25,69 32,66 36,73 33,81 26,79 24,73" fill="#623d29"/>
-<polygon points="27,69 31,68 33,73 29,77 26,74" fill="#9b5d32"/>
-<polygon points="27,80 34,77 38,84 35,92 28,90 26,84" fill="#623d29"/>
-<polygon points="29,80 33,79 35,84 31,88 28,85" fill="#9b5d32"/>
-<polygon points="25,91 32,88 36,95 33,103 26,101 24,95" fill="#623d29"/>
-<polygon points="27,91 31,90 33,95 29,99 26,96" fill="#9b5d32"/>
-<polygon points="27,102 34,99 38,106 35,114 28,112 26,106" fill="#623d29"/>
-<polygon points="29,102 33,101 35,106 31,110 28,107" fill="#9b5d32"/>
-<polygon points="42,34 53,27 71,29 83,41 85,55 88,63 83,69 79,78 70,85 61,83 49,76 41,64 38,48" fill="#d49c70"/>
-<polygon points="42,34 52,41 51,61 58,74 69,81 74,82 67,85 54,78 44,66 39,50" fill="#ad7253"/>
-<polygon points="55,33 69,32 78,41 79,53 69,59 56,52" fill="#efc596"/>
-<polygon points="55,53 58,51 63,51 65,53 62,55 57,55" fill="#a7765e"/>
-<polygon points="57,53 63,52 63,54 57,54" fill="#f1d8ae"/>
-<polygon points="60,52 62,52 62,55 60,55" fill="#122634"/>
-<polygon points="73,52 76,50 81,50 83,52 80,54 75,54" fill="#a7765e"/>
-<polygon points="75,52 81,51 81,53 75,53" fill="#f1d8ae"/>
-<polygon points="78,51 80,51 80,54 78,54" fill="#122634"/>
-<polyline points="55,48 61,47 65,48" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polyline points="74,47 79,46 83,48" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polygon points="76,56 76,63 80,65 77,67 73,65" fill="#bd8463"/>
-<polygon points="77,57 79,63 80,64 77,64" fill="#efc596"/>
-<polygon points="65,72 70,71 75,72 79,70 76,74 69,75" fill="#9d6054"/>
-<polygon points="69,75 74,74 72,76" fill="#efc596"/>
-<polygon points="29,40 39,28 59,23 80,27 91,39 85,46 78,36 70,40 62,32 51,43 45,38 40,52 39,64 32,67 28,55" fill="#623d29"/>
-<polygon points="34,39 43,30 56,27 51,34 44,44 38,47" fill="#9b5d32"/>
-<polygon points="86,37 95,46 96,62 89,75 81,70 87,61 90,52" fill="#623d29"/>
-<polygon points="28,31 30,19 49,8 70,9 85,19 65,18 47,23 36,34" fill="#baa989"/>
-<polygon points="32,24 49,12 68,12 76,16 57,17 42,26" fill="#f1d8ae"/>
-<polygon points="87,103 91,98 98,100 99,128 88,128" fill="#baa989"/>
-<polygon points="90,114 92,108 101,106 107,110 105,117 101,128 91,128" fill="#d49c70"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>dena portrait</title>
+<metadata>{"reference": "babe8ca:public/art/portrait-dena.png", "construction": "Fuller cheek, gentle smile, one braid, cream apron and nurse cap. Independently revised facial planes; no shared face template.", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b" />
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550" />
+<polygon points="3,128 12,102 35,88 53,80 80,83 106,100 122,128" fill="#35584d" />
+<polygon points="9,111 32,95 43,128 3,128" fill="#5d7660" />
+<polygon points="87,91 108,104 121,128 93,128" fill="#263e39" />
+<polygon points="40,94 51,86 66,96 82,88 94,98 91,128 40,128" fill="#baa989" />
+<polygon points="47,95 53,91 65,103 81,92 86,99 86,128 45,128" fill="#f1d8ae" />
+<polygon points="53,77 55,89 66,98 79,86 75,75" fill="#d49c70" />
+<polygon points="27,36 39,19 63,16 86,28 97,49 93,73 78,86 46,83 31,69" fill="#372a25" />
+<polygon points="25,69 32,66 36,73 33,81 26,79 24,73" fill="#623d29" />
+<polygon points="27,69 31,68 33,73 29,77 26,74" fill="#9b5d32" />
+<polygon points="27,80 34,77 38,84 35,92 28,90 26,84" fill="#623d29" />
+<polygon points="29,80 33,79 35,84 31,88 28,85" fill="#9b5d32" />
+<polygon points="25,91 32,88 36,95 33,103 26,101 24,95" fill="#623d29" />
+<polygon points="27,91 31,90 33,95 29,99 26,96" fill="#9b5d32" />
+<polygon points="27,102 34,99 38,106 35,114 28,112 26,106" fill="#623d29" />
+<polygon points="29,102 33,101 35,106 31,110 28,107" fill="#9b5d32" />
+<polygon points="42,34 53,27 71,29 83,41 85,55 88,63 84,70 79,79 70,86 60,84 48,77 41,65 38,48" fill="#d49c70" />
+<polygon points="79,36 83,41 85,55 88,63 84,70 79,79 70,86 60,84 61,81 73,76 79,65 80,52" fill="#ad795b" />
+<polygon points="45,37 54,31 69,32 78,41 77,51 65,57 47,51" fill="#e6bc91" />
+<polygon points="52,52 58,49 64,50 66,53 62,56 54,55" fill="#b17b5c" />
+<polygon points="54,53 63,51 64,54 56,54" fill="#e8cfaa" />
+<polygon points="59,51 63,51 63,55 59,55" fill="#263e4b" />
+<polygon points="73,51 79,49 84,51 85,54 81,56 74,55" fill="#b17b5c" />
+<polygon points="75,52 82,51 83,54 76,54" fill="#e8cfaa" />
+<polygon points="79,51 82,51 82,55 79,55" fill="#263e4b" />
+<polyline points="52,47 59,45 65,47" fill="none" stroke="#623d29" stroke-width="2" />
+<polyline points="74,46 80,45 84,48" fill="none" stroke="#623d29" stroke-width="2" />
+<polygon points="74,56 74,64 78,67 82,65 79,62 78,56" fill="#b17b5c" />
+<polygon points="77,57 79,63 80,64 77,64" fill="#e6bc91" />
+<polygon points="61,74 67,72 73,74 79,71 77,76 69,79 63,77" fill="#975f51" />
+<polygon points="65,75 70,76 75,74 73,77 68,78" fill="#e8cfaa" />
+<polygon points="29,40 39,28 59,23 80,27 91,39 85,46 78,36 70,40 62,32 51,43 45,38 40,52 39,64 32,67 28,55" fill="#623d29" />
+<polygon points="34,39 43,30 56,27 51,34 44,44 38,47" fill="#9b5d32" />
+<polygon points="86,37 95,46 96,62 89,75 81,70 87,61 90,52" fill="#623d29" />
+<polygon points="28,31 30,19 49,8 70,9 85,19 65,18 47,23 36,34" fill="#baa989" />
+<polygon points="32,24 49,12 68,12 76,16 57,17 42,26" fill="#f1d8ae" />
+<polygon points="87,103 91,98 98,100 99,128 88,128" fill="#baa989" />
+<polygon points="90,114 92,108 101,106 107,110 105,117 101,128 91,128" fill="#d49c70" />
 </svg>

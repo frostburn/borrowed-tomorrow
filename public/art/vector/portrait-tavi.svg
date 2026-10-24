@@ -1,1 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>tavi portrait</title><path d="M0 0H128V128H0Z" fill="#334b47"/><path d="M0 128V109L26 90L42 81H85L114 98L128 115V128Z" fill="#a95243"/><path d="M43 70L42 94L62 110L84 93L79 70Z" fill="#85573f"/><path d="M24 34L38 15L75 13L97 34L100 57L92 80L76 98L47 97L28 82L20 57Z" fill="#ae724e"/><path d="M78 31L98 47L93 77L76 97L61 94L65 83L81 69Z" fill="#80553d"/><path d="M18 43L22 23L38 9L53 13L70 6L91 15L103 32L99 49L84 41L77 29L62 33L48 27L35 40L29 51Z" fill="#493c33"/><path d="M28 51L48 46L53 51L29 57Z M72 46L93 51L92 57L72 52Z" fill="#493c33"/><path d="M36 55H44V61H36Z M79 55H87V61H79Z" fill="#233d3c"/><path d="M60 50L53 71L65 76L70 69Z" fill="#8b583f"/><path d="M34 77L49 86L72 87L89 74L85 90L74 101L48 100L34 88Z" fill="#6f503b"/><path d="M50 84L63 86L77 82L72 88L56 90Z" fill="#d8b287"/><path d="M23 97L42 85L64 111L85 85L113 102L78 128H49Z" fill="#c9b98e"/><path d="M97 102L109 109L89 128H76Z" fill="#d9ae62"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Tavi, river pilot</title>
+<desc>Warm brown face, wavy dark hair and a short beard; a broad grin and a turned shoulder under a cream scarf. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M1 128L10 109 33 96 51 87H80L105 101 124 128Z" fill="#a95243"/>
+<path d="M5 123L18 108 37 98 43 128Z" fill="#c47154"/>
+<path d="M89 96L109 110 124 128H89Z" fill="#7c403b"/>
+<path d="M48 76L46 97 63 110 83 94 80 74Z" fill="#85573f"/>
+<path d="M60 85L80 78 83 94 65 107 53 96Z" fill="#6f503b"/>
+<path d="M29 96L46 89 64 105 82 88 99 101 75 125H50Z" fill="#c9b98e"/>
+<path d="M83 94L99 101 75 125 65 117Z" fill="#a28e69"/>
+<path d="M87 45L94 42 96 49 92 60 85 63Z" fill="#85573f"/>
+<path d="M41 31L57 23 74 25 86 38 89 57 83 75 71 90 55 89 40 80 31 64 29 47Z" fill="#ae724e"/>
+<path d="M41 34L56 27 70 29 77 41 69 50 45 51 33 44Z" fill="#cd9b6d"/>
+<path d="M79 31L86 38 89 57 83 75 71 90 58 89 63 81 75 71 78 55Z" fill="#80553d"/>
+<path d="M32 56L41 57 48 64 44 70 36 67Z" fill="#b9855d"/>
+<path d="M29 43L27 32 33 27 31 19 42 20 44 10 55 15 64 9 73 16 82 13 85 24 95 30 94 43 87 50 80 39 72 30 64 34 55 28 45 35 39 45 36 54 30 51Z" fill="#493c33"/>
+<path d="M33 32L40 26 41 21 49 23 49 17 57 21 64 15 68 21 77 20 76 25 65 27 56 23 46 29 40 33 35 43Z" fill="#715443"/>
+<path d="M83 29L91 34 94 43 87 50 84 41Z" fill="#3e3736"/>
+<path d="M35 50L46 47 52 50 49 56 36 56Z M63 48L74 50 80 53 76 57 65 55Z" fill="#8b583f"/>
+<path d="M34 45L44 42 51 45 52 48 44 46 35 50Z M63 43L72 43 79 47 81 50 77 51 65 47Z" fill="#493c33"/>
+<path d="M37 52L48 51V54H38Z M66 51L76 52V55H66Z" fill="#ddbf96"/>
+<path d="M41 51H45V56H41Z M69 51H73V56H69Z" fill="#233d3c"/>
+<path d="M56 50L53 62 49 67 54 72 65 70 66 67 60 63 60 53Z" fill="#8b583f"/>
+<path d="M56 53L56 64 62 67 58 69 53 67Z" fill="#cd9b6d"/>
+<path d="M51 71L58 72 63 70V73L56 75Z" fill="#6f503b"/>
+<path d="M32 67L39 72 44 78 55 82 68 81 80 72 84 68 82 82 72 95 56 97 44 90 36 80Z" fill="#6f503b"/>
+<path d="M38 76L47 83 59 88 69 86 73 83 70 91 58 93 47 87Z" fill="#8a6347"/>
+<path d="M44 78L54 77 64 79 75 76 73 82 62 88 51 86 46 83Z" fill="#493c33"/>
+<path d="M48 79L55 80 65 81 71 79 68 83 61 85 53 83Z" fill="#d8b287"/>
+<path d="M54 91L61 92 67 90 65 94H58Z" fill="#b9855d"/>
+<path d="M99 102L110 111 90 128H77Z" fill="#d9ae62"/>
+</svg>

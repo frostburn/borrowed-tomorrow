@@ -1,1 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>egil portrait</title><path d="M0 0H128V128H0Z" fill="#3a5368"/><path d="M0 128V109L24 91L46 80H86L115 98L128 115V128Z" fill="#825875"/><path d="M23 41L33 21L61 17L87 23L104 45L98 74L84 96L64 105L42 98L26 79L19 58Z" fill="#c18f6e"/><path d="M81 29L102 45L97 72L81 95L66 102L62 91L82 74Z" fill="#9b7058"/><path d="M17 46L18 27L32 9L64 4L95 16L108 39L99 50L80 35L47 34L29 49Z" fill="#263e53"/><path d="M19 34L45 25L80 28L104 39L101 50L78 39L47 37L23 47Z" fill="#8b9b9b"/><path d="M28 54L50 49L53 55L30 61Z M73 50L94 55L92 61L72 55Z" fill="#b7c1b8"/><path d="M36 59H44V64H36Z M79 60H87V65H79Z" fill="#233b55"/><path d="M60 56L53 77L65 82L72 74Z" fill="#a57256"/><path d="M26 76L45 87L74 89L97 73L94 96L77 113L48 113L30 97Z" fill="#c4c8b7"/><path d="M46 88L61 93L79 87L73 96L56 99Z" fill="#80553d"/><path d="M19 99L41 91L64 120L89 92L113 103L89 128H37Z" fill="#687478"/><path d="M24 107L37 104L49 128H32Z" fill="#c8ab75"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Egil, glacier guide</title>
+<desc>Navy wool cap with a grey band, a wind-reddened nose and a long cream beard; broad shoulders and kind tired eyes. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M0 128V110L23 96 46 87H82L109 100 128 119V128Z" fill="#825875"/>
+<path d="M3 123L17 108 35 97 42 128H0Z" fill="#a06c86"/>
+<path d="M90 96L112 108 128 123V128H91Z" fill="#62465d"/>
+<path d="M24 98L43 89 64 112 85 92 108 104 87 128H39Z" fill="#687478"/>
+<path d="M30 99L42 94 63 117 76 109 67 126H43Z" fill="#8b9b9b"/>
+<path d="M20 109L32 102 50 128H35Z" fill="#c8ab75"/>
+<path d="M34 46L29 44 28 52 33 63H40Z M91 46L98 43 100 51 96 63 88 66Z" fill="#ad795b"/>
+<path d="M39 31L53 24 72 27 86 40 91 57 85 74 74 90 60 93 47 85 36 70 32 52 33 41Z" fill="#c18f6e"/>
+<path d="M40 35L53 28 68 31 77 42 71 51 46 54 35 46Z" fill="#ddb287"/>
+<path d="M81 34L87 43 91 57 85 74 74 90 60 93 58 87 74 76 79 57Z" fill="#9b7058"/>
+<path d="M34 57L44 58 48 64 44 70 37 66Z" fill="#cb9a75"/>
+<path d="M39 50L50 48 57 51 53 58 41 58Z M70 49L81 51 87 54 84 59 72 57Z" fill="#a57256"/>
+<path d="M38 45L49 42 56 46 57 49 48 47 40 51Z M69 44L78 45 86 49 87 52 81 53 71 48Z" fill="#b7c1b8"/>
+<path d="M42 53L53 52V55H43Z M73 53H83V56H73Z" fill="#e8cfaa"/>
+<path d="M48 52H52V57H48Z M77 52H81V57H77Z" fill="#263e53"/>
+<path d="M62 51L59 63 54 69 60 74 72 71 74 67 67 64 67 54Z" fill="#a57256"/>
+<path d="M63 54L62 65 69 68 65 71 59 69Z" fill="#ddb287"/>
+<path d="M55 67L62 66 71 69 70 73 62 75 56 72Z" fill="#b17b5c"/>
+<path d="M58 72L64 73 68 71 68 74 63 76Z" fill="#895d49"/>
+<path d="M42 61L48 64 50 68 46 66Z M76 62L82 61 81 64 77 66Z" fill="#9b7058"/>
+<path d="M34 68L42 74 47 80 59 85 73 82 85 72 88 70 86 86 78 101 65 115 49 106 39 91Z" fill="#b7c1b8"/>
+<path d="M41 79L50 87 62 92 76 88 76 96 64 108 53 101 46 91Z" fill="#d2d4bc"/>
+<path d="M79 87L86 79 83 94 73 108 65 115 67 106Z" fill="#8b9b9b"/>
+<path d="M48 76L58 73 65 77 73 75 81 78 78 83 69 83 63 80 55 84 48 82 44 79Z" fill="#cbd0b8"/>
+<path d="M54 84L63 82 73 83 70 87 63 89 56 87Z" fill="#80553d"/>
+<path d="M29 31L34 17 49 9 70 11 87 22 96 39 89 47 69 38 48 37 32 46Z" fill="#263e53"/>
+<path d="M34 29L40 21 51 15 68 17 79 24 64 24 49 25 37 35Z" fill="#3e596b"/>
+<path d="M29 34L46 28 69 30 92 39 94 45 85 49 67 41 48 39 31 47Z" fill="#8b9b9b"/>
+<path d="M31 35L46 31 69 33 86 39 86 42 68 37 47 35 32 41Z" fill="#b7c1b8"/>
+</svg>

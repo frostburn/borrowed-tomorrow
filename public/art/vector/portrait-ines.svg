@@ -1,1 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>ines portrait</title><path d="M0 0H128V128H0Z" fill="#334b47"/><path d="M0 128V109L27 91L48 82H82L110 98L128 115V128Z" fill="#385d4a"/><path d="M46 73L44 94L63 109L82 93L77 72Z" fill="#995f49"/><path d="M20 37L30 15L55 5L83 13L101 37L97 75L83 94L26 87L17 61Z" fill="#b7c1b8"/><path d="M34 36L54 23L79 29L91 51L85 73L67 91L48 84L34 66L30 49Z" fill="#b7784e"/><path d="M77 31L91 51L85 73L67 91L63 83L78 65Z" fill="#895644"/><path d="M20 40L30 18L56 5L82 14L100 35L96 48L80 33L57 23L40 35L29 57Z" fill="#d6d5bf"/><path d="M23 61L32 68L28 82L34 94L28 108L16 96L22 83L17 70Z" fill="#879b95"/><path d="M38 48L53 45L56 49L40 52Z M71 46L85 50L84 54L70 50Z" fill="#d3cda9"/><path d="M44 53H50V57H44Z M75 54H81V58H75Z" fill="#233d3c"/><path d="M61 52L55 69L64 73L68 68Z" fill="#9a6148"/><path d="M43 63L50 65 M76 65L83 63" fill="none" stroke="#8f5b48" stroke-width="2"/><path d="M51 78L63 80L74 77L68 84L59 84Z" fill="#784e45"/><path d="M25 99L44 86L63 111L82 86L110 102L76 128H49Z" fill="#d8c59b"/><path d="M15 113L29 106L49 128H35Z" fill="#9a7151"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Ines, Iria healer</title>
+<desc>Silver hair with a loose side braid, warm brown skin and deeply lined cheeks; a patient, attentive gaze. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M1 128L12 107 33 96 50 88H80L106 102 123 128Z" fill="#385d4a"/>
+<path d="M5 122L19 107 37 99 43 128Z" fill="#5d7660"/>
+<path d="M87 96L109 109 123 128H88Z" fill="#263e39"/>
+<path d="M48 75L46 96 63 109 81 94 77 73Z" fill="#995f49"/>
+<path d="M59 85L77 78 81 94 64 106 53 96Z" fill="#784e45"/>
+<path d="M33 95L46 89 63 104 80 88 94 101 73 126H50Z" fill="#d8c59b"/>
+<path d="M80 94L94 101 73 126 63 117Z" fill="#b9b69a"/>
+<path d="M28 33L37 17 55 9 78 15 92 31 97 54 90 79 76 93 39 88 26 70 22 50Z" fill="#879b95"/>
+<path d="M40 32L55 24 73 30 83 43 85 59 80 75 68 88 57 87 44 78 36 63 32 47Z" fill="#b7784e"/>
+<path d="M41 34L54 28 69 33 76 43 70 51 48 55 35 47Z" fill="#d4a276"/>
+<path d="M78 35L83 43 85 59 80 75 68 88 57 87 60 82 72 73 76 58Z" fill="#895644"/>
+<path d="M35 56L43 54 50 61 46 67 38 64Z" fill="#c18a65"/>
+<path d="M40 49L50 47 56 50 54 56 41 55Z M66 48L76 49 81 53 77 56 67 54Z" fill="#995f49"/>
+<path d="M39 44L48 41 55 44 56 47 48 45 40 48Z M65 43L73 43 80 47 79 50 67 47Z" fill="#b7c1b8"/>
+<path d="M42 51L52 50V53H43Z M68 51H77V54H68Z" fill="#ddbf96"/>
+<path d="M46 50H50V54H46Z M71 50H75V55H71Z" fill="#233d3c"/>
+<path d="M59 51L56 63 52 68 58 72 66 70 68 66 62 63Z" fill="#9a6148"/>
+<path d="M60 54L60 64 65 67 61 69 57 67Z" fill="#d4a276"/>
+<path d="M54 70L60 71 64 69 64 72 59 74Z" fill="#784e45"/>
+<path d="M42 59L48 61 50 65 47 64 42 61Z M72 59L78 58 77 61 73 62Z M47 70L50 73 50 77 47 75Z M71 69L69 73 70 77 72 73Z" fill="#784e45"/>
+<path d="M50 78L58 77 64 79 72 76 70 81 61 83 53 81Z" fill="#784e45"/>
+<path d="M55 79L61 80 67 79 65 81H58Z" fill="#b7784e"/>
+<path d="M58 86L64 85 67 83 66 86 61 88Z" fill="#d4a276"/>
+<path d="M27 38L34 23 45 15 56 12 72 16 83 24 91 37 86 43 75 33 58 24 45 30 36 43 31 59 29 70 24 63 22 50Z" fill="#d6d5bf"/>
+<path d="M32 33L39 23 50 18 57 16 68 19 52 22 43 29 36 43 31 50 28 54Z" fill="#b7c1b8"/>
+<path d="M40 25L47 19 57 16 65 18 53 20 45 27 37 37Z" fill="#e2d6bb"/>
+<path d="M82 27L92 38 96 55 89 74 81 84 78 78 86 64 87 46Z" fill="#879b95"/>
+<path d="M29 68L35 75 32 86 36 93 29 101 33 110 26 118 20 107 24 98 20 89 26 81 23 73Z" fill="#879b95"/>
+<path d="M28 76L31 78 28 86 25 89 24 85Z M26 94L30 97 27 104 24 102Z M25 108L29 110 26 114Z" fill="#b7c1b8"/>
+<path d="M15 113L27 105 49 128H35Z" fill="#9a7151"/>
+</svg>

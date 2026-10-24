@@ -1,1 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>enna portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/><path d="M0 128V110L23 91L47 82H80L106 94L128 118V128Z" fill="#638487"/><path d="M43 79L44 100L63 111L83 96L79 79Z" fill="#a96f50"/><path d="M26 35L36 14L59 5L87 13L101 36L96 88L82 95L29 85L21 62Z" fill="#453a37"/><path d="M38 30L60 19L82 30L92 54L85 77L66 91L46 80L33 57Z" fill="#ce9471"/><path d="M80 34L92 54L85 77L66 91L66 82L78 69Z" fill="#a56e55"/><path d="M26 43L35 15L59 5L87 13L101 36L89 44L70 24L48 30L39 47L34 84L25 77L21 60Z" fill="#453a37"/><path d="M40 49L53 46L55 50L42 53Z M73 47L86 50L85 54L72 51Z" fill="#233543"/><path d="M48 49H53V54H48Z M74 50H79V55H74Z" fill="#263e53"/><path d="M62 50L57 67L65 70L67 65Z" fill="#b37b5a"/><path d="M53 76L64 78L75 75L69 81L59 81Z" fill="#9e6157"/><path d="M23 94L46 86L64 107L82 87L107 99L72 121L48 115Z" fill="#8ca66d"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Enna, Dawnwatch guard</title>
+<desc>A broad cheek, close brown bob and bright steady gaze; green neckerchief over the watch uniform. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M2 128L10 109 30 97 48 90H80L103 100 124 128Z" fill="#638487"/>
+<path d="M5 123L17 109 34 101 42 128Z" fill="#7c9994"/>
+<path d="M87 97L107 108 124 128H88Z" fill="#385d57"/>
+<path d="M48 78L47 97 64 108 80 94 78 75Z" fill="#b57f60"/>
+<path d="M60 86L78 79 80 94 65 105 56 96Z" fill="#96674f"/>
+<path d="M28 99L46 91 63 104 80 89 97 99 73 121 50 115Z" fill="#8ca66d"/>
+<path d="M80 96L91 100 73 121 63 116Z" fill="#617c56"/>
+<path d="M30 34L37 18 53 10 76 14 90 28 94 53 89 83 77 91 40 86 27 65 26 47Z" fill="#453a37"/>
+<path d="M40 32L54 25 71 29 81 40 85 57 80 74 70 85 59 88 46 81 38 67 34 51Z" fill="#ce9471"/>
+<path d="M42 34L54 29 67 32 74 41 71 51 54 56 40 50 37 43Z" fill="#e6bc91"/>
+<path d="M77 36L83 47 85 57 80 74 70 85 59 88 61 83 72 75 76 62Z" fill="#a7745a"/>
+<path d="M37 55L44 56 49 63 46 68 40 65Z" fill="#c08865"/>
+<path d="M45 49L55 48 60 51 57 55 46 55Z M71 49L80 50 83 53 80 56 72 55Z" fill="#9f6e55"/>
+<path d="M44 44L53 42 59 45 60 48 52 46 45 48Z M71 44L78 45 83 48 82 50 72 48Z" fill="#593e35"/>
+<path d="M47 51L57 50 57 54 48 54Z M73 52H80V55H73Z" fill="#e8cfaa"/>
+<path d="M53 50H57V55H53Z M76 51H80V56H76Z" fill="#263e4b"/>
+<path d="M66 51L63 62 62 66 65 69 72 68 74 65 69 63Z" fill="#b17b5c"/>
+<path d="M66 54L66 63 71 65 68 67 65 65Z" fill="#e6bc91"/>
+<path d="M63 68L68 69 72 67 71 70 66 71Z" fill="#895d49"/>
+<path d="M54 77L62 76 69 77 76 75 74 80 65 83 57 81Z" fill="#9a6254"/>
+<path d="M58 78L64 79 71 78 69 80H61Z" fill="#e8cfaa"/>
+<path d="M61 84L67 84 71 82 69 85 64 86Z" fill="#ce9471"/>
+<path d="M30 38L36 23 48 15 64 13 80 20 91 33 92 48 84 47 76 35 64 27 51 30 42 42 38 58 39 77 34 81 28 69 25 53Z" fill="#453a37"/>
+<path d="M34 34L40 24 50 19 64 18 74 23 57 23 47 29 39 40 34 49Z" fill="#65544b"/>
+<path d="M84 34L91 42 92 60 86 79 78 85 79 74 85 58Z" fill="#322f30"/>
+</svg>

@@ -1,0 +1,56 @@
+# Portrait direction
+
+The thirty human portraits in `public/art/vector/portrait-*.svg` are editable 128 × 128 originals. Edit their paths directly. Actor exporters retain them; their one-time seeds are not the portrait authoring source. No face builder, gender template, palette swap or raster replacement owns these drawings.
+
+## Shared treatment
+
+- Use the slate `#182e3b` background and the restrained upper-left `#294550` plane. Keep the background quieter than the person. Celia also has this opaque background; do not depend on the enclosing menu's color.
+- Frame a head and shoulders. Leave room for caps, crowns and hair near the top, place eyes around rows 48–56, and begin the shoulders around rows 90–105. Allow pose, age, build and headwear to vary within that envelope.
+- Light the forehead and near cheek from above-left. Use broad, connected base/light/shadow planes for skin, hair and clothing. Preserve each person's complexion and material colors; the palette is not a fixed retro limit.
+- Construct eyes from an eyelid plane, muted sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
+- Draw a bridge, tip and underside for the nose. Avoid the old single triangular nose stamp. Fit them to the head's turn and the person's face. Mouth corners, lower lip and chin should support the expression without an outlined cartoon mouth.
+- Use the same detail density, not the same anatomy. Keep differently shaped cheeks, foreheads, noses, jaws, eyelids and mouths, asymmetry, age and direction of gaze. Don't smooth every adult into a youthful face or give every man the same square jaw.
+- Large shapes are filled polygons. Sparse 2px contours can describe brows, spectacles or costume trim. No gradients, filters, embedded images or external resources. The runtime's common coarse raster supplies the pixel weight.
+
+## Individual likenesses
+
+Costumes and established hair remain consistent with the actors. Features to preserve when revising:
+
+| Character | Likeness and expression |
+| --- | --- |
+| Nell | Young rounded cheek, open eyes, two braids, red railway cap/jacket. |
+| Orrin | Broad bearded engineer, sidelong gaze, brass goggles on navy cap. |
+| Kit | Round youthful chin, tousled hair, open gaze, ochre courier scarf. |
+| Petra | Angular lower face, level brows and tight mouth; green armor and gold shoulder plates. |
+| Celia | Long mature cheeks, silver bob, round spectacles, patient expression and medical book. |
+| Tomas | Longer cheek and stronger jaw than Nell/Kit, tousled hair and rust scarf. |
+| Ansel | Swept white hair, weathered cheek and broad moustache. |
+| Iona | Brown bob, rounded jaw, brass spectacles, low station cap and clipboard. |
+| Tilda | Full cheeks, wide smile, copper curls and cream headscarf. |
+| Elspeth | Elderly long face, silver waves, fine spectacles, plum cardigan and chair. |
+| Alban | Turned face, swept black hair, projecting nose and hard thin mouth. |
+| Emperor | Silver mane, hollow cheeks, pointed white beard and sun diadem. |
+| Dena | Fuller cheek, gentle smile, one braid, cream apron and nurse cap. |
+| Bram | Wide straw hat, weathered cheeks, grey beard and easy sidelong smile. |
+| Alda | Silver hair under navy cap; narrower profile, alert eyes and long cheek. |
+| Hester | Copper scarf, tied brown hair, full working face and firm, slightly amused mouth. |
+| Durn | Slick dark hair, narrow face, heavy lower lids and pinched mouth. |
+| Aurel | Silver crop, heavy brows, blunt nose and broad square jaw. |
+| Enna | Close brown bob, broad cheek and bright steady gaze. |
+| Iven | High temples, round brass spectacles, full white beard and guarded glance. |
+| Sera | Cream ward cap, dark bob, tired lower lids and small determined smile. |
+| Teren | Broad work-worn jaw, short dark hair, crooked nose and uneven brow. |
+| Samira | Long copper face, high cheekbones, level gaze, gold crown and turquoise throat jewel. |
+| Sahir | Narrow bearded profile, arched brows, measured smile and cream wrapped cap. |
+| Amal | Practical cap, braid, strong curved nose and brisk sidelong smile. |
+| Ines | Silver braid, warm brown skin, deeply lined cheeks and attentive gaze. |
+| Tavi | Wavy dark hair, short beard, broad grin and turned shoulder. |
+| Edric | Low square crown, swept silver hair, close beard and weary level stare. |
+| Signe | Long braid, angular cheek and watchful three-quarter gaze. |
+| Egil | Wool cap, wind-reddened nose, long cream beard and kind tired eyes. |
+
+## Review
+
+Use `?dev=sprites` → Party / NPCs to compare the real portrait files with their corresponding world actors. Check a mixed group across chapters, not just one regional cast. Review native 128px and through the game's coarse raster; dialogue and Equipment use these same files. On a compact phone at fractional DPR, verify eyes, glasses and mouth corners still survive and that no portrait is stretched or cropped. Keep review screenshots/contact sheets outside the repository.
+
+Run the existing character/content checks, native portrait presentation and desktop/phone sprite-workshop checks. Stage the SVGs and run `npm run check:art-upload` before publishing. Each image retains the 128 KiB budget. No gameplay, save, animation, source texture dimensions or display filtering change is needed for portrait edits.

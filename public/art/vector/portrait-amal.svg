@@ -1,1 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>amal portrait</title><path d="M0 0H128V128H0Z" fill="#33434f"/><path d="M0 128V111L25 92L46 83H79L108 99L128 116V128Z" fill="#547a96"/><path d="M45 74L44 96L61 110L80 93L77 72Z" fill="#b27b58"/><path d="M23 36L32 14L58 4L86 14L101 37L96 81L83 94L28 86L19 60Z" fill="#593e35"/><path d="M35 33L56 21L81 29L91 53L82 77L64 92L44 81L31 57Z" fill="#d49c70"/><path d="M79 33L91 53L82 77L64 92L62 83L77 66Z" fill="#b57c59"/><path d="M20 39L27 17L51 2L81 8L101 29L101 41L77 29L54 17L36 32L27 54Z" fill="#dfcda0"/><path d="M21 51L32 50L34 76L29 87L36 99L27 110L16 96L23 86L18 73Z" fill="#593e35"/><path d="M38 49L52 47L55 51L40 54Z M71 47L86 51L84 55L70 52Z" fill="#293b49"/><path d="M46 51H51V56H46Z M75 52H80V57H75Z" fill="#142536"/><path d="M61 53L56 68L64 71L67 66Z" fill="#ba805b"/><path d="M51 76L63 78L75 74L69 81L59 83Z" fill="#ad6b5c"/><path d="M35 92L46 87L62 110L81 88L104 100L72 126H49Z" fill="#d8c59b"/><path d="M18 112L27 101L58 128H43Z" fill="#b28b53"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Amal, Namar postmistress</title>
+<desc>Practical cream cap, braided brown hair, a strong curved nose and a brisk sidelong smile; blue postal coat. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M2 128L12 109 34 96 50 89H79L105 102 123 128Z" fill="#547a96"/>
+<path d="M6 123L19 108 37 99 43 128Z" fill="#7393a1"/>
+<path d="M86 97L107 108 123 128H89Z" fill="#38586e"/>
+<path d="M49 77L47 96 62 109 80 94 77 74Z" fill="#b27b58"/>
+<path d="M59 85L77 79 80 94 63 106 54 96Z" fill="#96674f"/>
+<path d="M35 96L47 90 62 105 79 90 92 101 71 124H50Z" fill="#d8c59b"/>
+<path d="M30 34L39 18 58 12 78 19 91 34 95 57 89 83 75 93 40 87 27 67 25 49Z" fill="#593e35"/>
+<path d="M42 32L57 24 73 30 82 43 83 59 77 76 64 88 54 86 42 76 35 61 33 46Z" fill="#d49c70"/>
+<path d="M43 34L56 28 69 34 73 44 65 51 45 52 36 45Z" fill="#e6bc91"/>
+<path d="M76 35L82 43 83 59 77 76 64 88 54 86 58 82 70 74 74 59Z" fill="#ad795b"/>
+<path d="M36 57L44 56 49 63 46 69 39 66Z" fill="#ce9872"/>
+<path d="M39 49L49 46 55 49 53 54 41 55Z M65 47L74 48 80 52 77 55 66 53Z" fill="#ad795b"/>
+<path d="M38 45L48 41 54 44 54 47 47 45 39 49Z M65 43L73 43 80 47 79 50 67 47Z" fill="#593e35"/>
+<path d="M41 51L51 50V54H42Z M67 50L76 51V54H67Z" fill="#e8cfaa"/>
+<path d="M44 50H48V55H44Z M69 50H73V55H69Z" fill="#263e4b"/>
+<path d="M57 50L53 61 48 66 53 71 62 69 64 65 58 62Z" fill="#b17b5c"/>
+<path d="M57 53L56 63 61 65 57 68 53 66Z" fill="#e6bc91"/>
+<path d="M51 69L57 70 61 68 60 72H55Z" fill="#895d49"/>
+<path d="M48 77L55 76 62 78 70 74 68 79 59 83 51 81Z" fill="#975f51"/>
+<path d="M53 78L60 79 65 77 63 80H56Z" fill="#e8cfaa"/>
+<path d="M55 85L62 84 65 82 64 85 59 87Z" fill="#d49c70"/>
+<path d="M29 41L37 30 45 26 53 25 44 35 39 48 34 59 35 75 30 80 26 68 24 52Z" fill="#593e35"/>
+<path d="M32 40L38 32 44 30 38 40 33 54 29 59Z" fill="#7c5138"/>
+<path d="M83 34L91 44 93 61 86 78 78 85 79 75 85 59Z" fill="#593e35"/>
+<path d="M29 76L35 81 34 90 39 96 33 101 37 108 32 116 25 110 29 102 24 95 29 88 25 83Z" fill="#593e35"/>
+<path d="M29 81L32 82 31 89 28 92 27 88Z M29 97L33 99 31 105 28 104Z" fill="#9b5d32"/>
+<path d="M28 92L35 94 34 98 28 96Z" fill="#baa989"/>
+<path d="M28 28L34 15 50 7 69 9 85 21 93 35 84 40 65 29 45 29 31 39Z" fill="#dfcda0"/>
+<path d="M33 25L39 18 51 12 67 14 78 22 64 21 48 23 35 31Z" fill="#f1d8ae"/>
+<path d="M72 17L85 23 93 35 84 40 76 32 64 27 46 29 31 38 29 34 45 26 65 24Z" fill="#b49f79"/>
+<path d="M18 111L26 102 55 128H42Z" fill="#b28b53"/>
+<path d="M24 111L28 108 51 128H46Z" fill="#e2b86b"/>
+</svg>

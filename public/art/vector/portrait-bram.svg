@@ -1,1 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>Bram, harbor foreman</title><path fill="#253e50" d="M0 0h128v128H0z"/><path fill="#8a9077" d="M0 15 76 0h52v54L0 99z"/><path fill="#345663" d="m9 128 5-26 25-16 44-3 34 25 9 20z"/><path fill="#b68856" d="m35 88 19 9 23-7 25 38H27z"/><path fill="#684d3c" d="m48 74-3 25 16 13 23-15-8-24z"/><path fill="#b67c50" d="m32 39 50-6 17 25-8 31-25 17-24-12-13-31z"/><path fill="#d9a477" d="m43 38 36 1 10 19-4 22-19 11-16-17z"/><path fill="#865b40" d="m32 43 12-2 1 27 12 15 1 14-19-12-9-23z"/><path fill="#5b665f" d="m29 56 10-1 2 20 16 9 22-3 14-14-1 20-15 20-21 3-20-14-8-20z"/><path fill="#b6bcb1" d="m45 83 14 7 19-4 7-9-2 17-12 9-16-3z"/><path fill="#2b363c" d="m41 52 15-2 2 5-14 2zm29-4 14 2-1 4-14-2z"/><path fill="#d3a173" d="m61 56-5 18 12 1 3-6z"/><path fill="#916644" d="m58 78 17-2-8 6z"/><path fill="#c5a36b" d="m20 39 6-19L48 8l33 3 17 20 6 11-25 7-55-1z"/><path fill="#e0be78" d="m27 29 5-10 20-9 13 3-13 18-26 8z"/><path fill="#a78352" d="m62 12 8-1 2 29-13 2z"/><path fill="#4f5146" d="m18 42 42-7 46 5-2 7-47 2-39-2z"/><path fill="#c7a474" d="m38 91 10 9-9 28H28z"/><path fill="#6f5846" d="m88 96 7 8 10 24H92z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Bram, ferry supplier</title>
+<desc>Wide straw hat, weathered cheeks, grey beard and ochre work vest; an easy sidelong smile. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M3 128L10 106 34 92 52 86 79 87 103 101 117 128Z" fill="#233d52"/>
+<path d="M5 125L14 109 33 98 39 128Z" fill="#3e596b"/>
+<path d="M29 99L44 89 59 105 79 93 93 101 99 128H31Z" fill="#b18a55"/>
+<path d="M80 97L93 102 99 128H82Z" fill="#8a6847"/>
+<path d="M48 77L49 98 65 109 82 95 81 76Z" fill="#b58261"/>
+<path d="M68 86L81 78 82 95 66 108 59 100Z" fill="#8e624f"/>
+<path d="M43 94L52 97 62 109 73 100 84 96 84 109 66 121 48 108Z" fill="#d8c59b"/>
+<path d="M31 33L43 23 67 20 86 30 94 46 91 72 79 89 52 89 37 76 29 57Z" fill="#687a79"/>
+<path d="M40 35L53 29 75 32 85 43 86 58 92 65 88 70 83 70 81 79 71 87 57 83 46 73 38 55Z" fill="#be8c65"/>
+<path d="M42 36L55 31 72 34 77 44 71 53 52 53 42 49Z" fill="#e1b78a"/>
+<path d="M79 40L85 46 86 58 92 65 88 70 83 70 81 79 71 87 62 84 69 76 75 68 77 56Z" fill="#a47154"/>
+<path d="M44 58L52 57 57 63 53 69 46 66Z" fill="#ce9d74"/>
+<path d="M46 49L58 47 63 49 60 53 48 54Z M72 48L82 50 84 53 73 52Z" fill="#8e624f"/>
+<path d="M46 46L57 44 63 46 62 48 48 49Z M73 45L83 48 84 50 73 48Z" fill="#3d3e38"/>
+<path d="M49 51L59 50V53L50 54Z M74 51H81V54H74Z" fill="#e8cfaa"/>
+<path d="M55 50H59V54H55Z M77 51H81V55H77Z" fill="#263e4b"/>
+<path d="M75 54L73 62 77 65 81 65 80 68 73 68 70 64Z" fill="#a47154"/>
+<path d="M75 56L76 62 80 64 77 65 74 63Z" fill="#e1b78a"/>
+<path d="M36 61L42 65 47 74 59 79 71 78 83 70 87 69 85 81 77 94 63 100 49 92 40 81Z" fill="#83948b"/>
+<path d="M42 70L49 77 61 84 72 83 80 77 77 88 64 94 52 87 46 80Z" fill="#b7c1b8"/>
+<path d="M77 85L84 77 81 90 71 98 64 100 65 94Z" fill="#687a79"/>
+<path d="M54 71L64 69 73 71 80 70 78 74 70 76 64 74 58 77 50 76Z" fill="#cbd0b8"/>
+<path d="M59 78L70 77 76 75 73 80 65 82 60 81Z" fill="#725442"/>
+<path d="M24 37L33 16 50 7 72 8 87 20 94 38Z" fill="#d0b77d"/>
+<path d="M29 33L37 18 52 11 69 12 78 23 76 35Z" fill="#f0d9a4"/>
+<path d="M73 14L87 22 94 38 77 37 79 25Z" fill="#ab8d59"/>
+<path d="M25 33L43 29 71 30 94 37 93 41 61 38 25 39Z" fill="#725d42"/>
+<path d="M11 41L33 34 67 34 100 39 114 46 96 51 69 46 40 45 13 47Z" fill="#cbb17a"/>
+<path d="M13 47L40 45 69 46 96 51 112 47 108 52 93 55 65 49 39 48 14 50Z" fill="#947b50"/>
+</svg>

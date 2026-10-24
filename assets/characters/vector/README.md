@@ -4,7 +4,7 @@ Chapter One uses original vector actors with tall adventure-game proportions, br
 
 ## Authoring and reproduction
 
-`draw.py` defines Nell and Orrin with polygons, ellipses, polylines and explicit poses. `supporting.py` uses the same primitives for Ansel, Iona, Tomas, Alban, Tilda and Elspeth, plus the hound, crow, guardian and tactical rocks. The models export self-contained SVGs to `public/art/vector/`. These SVGs are the **actual runtime assets**, including motion pages. World actors and animation are drawn directly from these models. Edit actor models and regenerate; their SVG outputs will be overwritten. The sixteen 128 × 128 portrait SVGs are separately hand-authored originals interpreted from the earlier generated portraits; their embedded metadata records the exact reference commit and path (`ec894d8` for Chapter One, `babe8ca` for Chapter Two). Edit these SVGs directly: neither character exporter overwrites them.
+`draw.py` defines Nell and Orrin with polygons, ellipses, polylines and explicit poses. `supporting.py` uses the same primitives for Ansel, Iona, Tomas, Alban, Tilda and Elspeth, plus the hound, crow, guardian and tactical rocks. The models export self-contained SVGs to `public/art/vector/`. These SVGs are the **actual runtime assets**, including motion pages. World actors and animation are drawn directly from these models. Edit actor models and regenerate; their SVG outputs will be overwritten. The thirty human 128 × 128 portrait SVGs are separately hand-authored originals. Early references retain their exact commit/path metadata (`ec894d8` for Chapter One, `babe8ca` for Chapter Two); later regional portraits have individually drawn silhouettes and facial planes. The shared treatment and individual likenesses are recorded in [the portrait guide](portraits.md). Edit these SVGs directly: neither character exporter overwrites them.
 
 ```sh
 # Rebuild the entire chapter, including scene layers:
@@ -35,7 +35,7 @@ Open `?dev=sprites` for native and enlarged comparisons, independent facing view
 
 The old lead rigs, PNG runtime replacements and duplicate inspection-only SVGs are retired. The Animation tab retains its mannequin and Kit/Petra tools. Campaign gameplay, save format, equipment, dialogue and progression stay unchanged.
 
-The female portraits have a separate face construction with tapered lower faces, shallow chins, compact nasal tips and finer eyes/brows, independently fitted to each character. Body exporters leave these portrait originals intact. `node scripts/export-chapter-two-art.mjs` rebuilds Chapter Two actors and maps; Kit/Petra export entry points now use that vector actor source.
+Portrait faces are constructed individually, with different cheeks, noses, jaws, brows, age and expressions. They share lighting, material planes, framing and readable native-size features; there is no common face template. Body exporters leave these portrait originals intact. `node scripts/export-chapter-two-art.mjs` rebuilds Chapter Two actors and maps; Kit/Petra export entry points now use that vector actor source.
 
 Celia’s 160 × 240 motion pages hold six walking poses only. Coat hems follow the legs while her anatomical left arm holds the medical book steadily. A 24px distance stride drives exploration, cutscenes, tactical movement and Sprites playback; her attack preview stays disabled. Walk capability is separate from attack capability, so reviewing another hero’s attack leaves Celia in her idle pose.
 

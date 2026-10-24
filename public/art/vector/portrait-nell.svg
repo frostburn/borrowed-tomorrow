@@ -1,53 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>nell portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-nell.png", "construction": "female: tapering lower face, shallow chin, compact nasal tip; individual cheek/age planes", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
-<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
-<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="8,128 16,100 38,87 51,80 78,82 103,101 117,128" fill="#8e4136"/>
-<polygon points="14,110 36,93 42,128 8,128" fill="#ba6348"/>
-<polygon points="88,92 105,105 115,128 83,128" fill="#6e3430"/>
-<polygon points="44,93 56,85 75,87 85,97 75,128 43,128" fill="#233d52"/>
-<polygon points="51,78 54,91 65,100 77,88 75,77" fill="#d49c70"/>
-<polygon points="49,88 64,99 77,88 81,97 66,112 52,99" fill="#f1d8ae"/>
-<polygon points="43,96 48,95 45,128 40,128" fill="#c69c5c"/>
-<polygon points="79,96 84,95 81,128 76,128" fill="#c69c5c"/>
-<polygon points="23,63 30,60 34,67 31,75 24,73 22,67" fill="#623d29"/>
-<polygon points="25,63 29,62 31,67 27,71 24,68" fill="#9b5d32"/>
-<polygon points="25,74 32,71 36,78 33,86 26,84 24,78" fill="#623d29"/>
-<polygon points="27,74 31,73 33,78 29,82 26,79" fill="#9b5d32"/>
-<polygon points="23,85 30,82 34,89 31,97 24,95 22,89" fill="#623d29"/>
-<polygon points="25,85 29,84 31,89 27,93 24,90" fill="#9b5d32"/>
-<polygon points="25,96 32,93 36,100 33,108 26,106 24,100" fill="#623d29"/>
-<polygon points="27,96 31,95 33,100 29,104 26,101" fill="#9b5d32"/>
-<polygon points="86,63 93,60 97,67 94,75 87,73 85,67" fill="#623d29"/>
-<polygon points="88,63 92,62 94,67 90,71 87,68" fill="#9b5d32"/>
-<polygon points="88,74 95,71 99,78 96,86 89,84 87,78" fill="#623d29"/>
-<polygon points="90,74 94,73 96,78 92,82 89,79" fill="#9b5d32"/>
-<polygon points="86,85 93,82 97,89 94,97 87,95 85,89" fill="#623d29"/>
-<polygon points="88,85 92,84 94,89 90,93 87,90" fill="#9b5d32"/>
-<polygon points="88,96 95,93 99,100 96,108 89,106 87,100" fill="#623d29"/>
-<polygon points="90,96 94,95 96,100 92,104 89,101" fill="#9b5d32"/>
-<polygon points="33,39 42,23 68,19 88,30 96,48 91,72 80,86 47,84 34,65" fill="#372a25"/>
-<polygon points="44,36 54,27 70,28 81,38 84,52 86,61 83,67 81,75 74,83 67,85 56,80 47,70 42,54" fill="#d49c70"/>
-<polygon points="44,36 52,41 51,61 58,74 69,81 74,82 67,85 54,78 44,66 39,50" fill="#ad7253"/>
-<polygon points="55,33 69,32 78,41 79,53 69,59 56,52" fill="#efc596"/>
-<polygon points="55,51 58,49 63,49 65,51 62,53 57,53" fill="#a7765e"/>
-<polygon points="57,51 63,50 63,52 57,52" fill="#f1d8ae"/>
-<polygon points="60,50 62,50 62,53 60,53" fill="#122634"/>
-<polygon points="73,50 76,48 81,48 83,50 80,52 75,52" fill="#a7765e"/>
-<polygon points="75,50 81,49 81,51 75,51" fill="#f1d8ae"/>
-<polygon points="78,49 80,49 80,52 78,52" fill="#122634"/>
-<polyline points="55,46 61,45 65,46" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polyline points="74,45 79,44 83,46" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polygon points="76,54 76,61 80,63 77,65 73,63" fill="#bd8463"/>
-<polygon points="77,55 79,61 80,62 77,62" fill="#efc596"/>
-<polygon points="65,72 70,71 75,72 79,70 76,74 69,75" fill="#9d6054"/>
-<polygon points="69,75 74,74 72,76" fill="#efc596"/>
-<polygon points="35,38 47,28 65,26 82,33 89,44 82,43 72,36 62,41 55,35 46,45 42,59 36,63 33,52" fill="#623d29"/>
-<polygon points="38,38 49,31 60,30 51,37 46,46 41,49" fill="#9b5d32"/>
-<polygon points="85,39 92,46 92,61 86,72 83,65 88,54" fill="#623d29"/>
-<polygon points="28,29 34,13 55,6 78,9 94,22 90,39 45,39" fill="#8e4136"/>
-<polygon points="33,24 38,15 55,11 76,14 86,23 77,22 49,20" fill="#ba6348"/>
-<polygon points="28,31 50,26 86,33 96,38 81,44 48,36 30,38" fill="#122634"/>
-<polygon points="33,31 51,29 79,34 76,37 49,33 34,35" fill="#c69c5c"/>
-<polygon points="46,28 53,28 53,36 46,36" fill="#c69c5c"/>
-<polygon points="48,30 51,30 51,34 48,34" fill="#122634"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>nell portrait</title>
+<metadata>{"reference": "ec894d8:public/art/portrait-nell.png", "construction": "Young rounded cheek, open eyes, two braids, red railway cap and jacket. Independently revised facial planes; no shared face template.", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b" />
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550" />
+<polygon points="8,128 16,100 38,87 51,80 78,82 103,101 117,128" fill="#8e4136" />
+<polygon points="14,110 36,93 42,128 8,128" fill="#ba6348" />
+<polygon points="88,92 105,105 115,128 83,128" fill="#6e3430" />
+<polygon points="44,93 56,85 75,87 85,97 75,128 43,128" fill="#233d52" />
+<polygon points="51,78 54,91 65,100 77,88 75,77" fill="#d49c70" />
+<polygon points="49,88 64,99 77,88 81,97 66,112 52,99" fill="#f1d8ae" />
+<polygon points="43,96 48,95 45,128 40,128" fill="#c69c5c" />
+<polygon points="79,96 84,95 81,128 76,128" fill="#c69c5c" />
+<polygon points="23,63 30,60 34,67 31,75 24,73 22,67" fill="#623d29" />
+<polygon points="25,63 29,62 31,67 27,71 24,68" fill="#9b5d32" />
+<polygon points="25,74 32,71 36,78 33,86 26,84 24,78" fill="#623d29" />
+<polygon points="27,74 31,73 33,78 29,82 26,79" fill="#9b5d32" />
+<polygon points="23,85 30,82 34,89 31,97 24,95 22,89" fill="#623d29" />
+<polygon points="25,85 29,84 31,89 27,93 24,90" fill="#9b5d32" />
+<polygon points="25,96 32,93 36,100 33,108 26,106 24,100" fill="#623d29" />
+<polygon points="27,96 31,95 33,100 29,104 26,101" fill="#9b5d32" />
+<polygon points="86,63 93,60 97,67 94,75 87,73 85,67" fill="#623d29" />
+<polygon points="88,63 92,62 94,67 90,71 87,68" fill="#9b5d32" />
+<polygon points="88,74 95,71 99,78 96,86 89,84 87,78" fill="#623d29" />
+<polygon points="90,74 94,73 96,78 92,82 89,79" fill="#9b5d32" />
+<polygon points="86,85 93,82 97,89 94,97 87,95 85,89" fill="#623d29" />
+<polygon points="88,85 92,84 94,89 90,93 87,90" fill="#9b5d32" />
+<polygon points="88,96 95,93 99,100 96,108 89,106 87,100" fill="#623d29" />
+<polygon points="90,96 94,95 96,100 92,104 89,101" fill="#9b5d32" />
+<polygon points="33,39 42,23 68,19 88,30 96,48 91,72 80,86 47,84 34,65" fill="#372a25" />
+<polygon points="44,36 54,27 70,28 81,38 84,52 86,61 83,67 81,75 74,83 67,85 56,80 47,70 42,54" fill="#d49c70" />
+<polygon points="78,38 84,52 86,61 83,67 81,75 74,83 67,85 64,82 74,76 78,67 80,54" fill="#ad795b" />
+<polygon points="48,37 57,31 70,32 77,41 76,50 66,56 51,51" fill="#e6bc91" />
+<polygon points="54,50 59,48 64,49 66,52 62,55 55,54" fill="#b17b5c" />
+<polygon points="56,51 63,50 64,53 57,54" fill="#e8cfaa" />
+<polygon points="59,50 63,50 63,54 59,54" fill="#263e4b" />
+<polygon points="73,49 78,47 82,49 84,51 80,54 74,53" fill="#b17b5c" />
+<polygon points="75,50 81,49 82,52 75,52" fill="#e8cfaa" />
+<polygon points="78,49 81,49 81,53 78,53" fill="#263e4b" />
+<polyline points="54,46 60,44 65,46" fill="none" stroke="#623d29" stroke-width="2" />
+<polyline points="74,45 79,44 83,46" fill="none" stroke="#623d29" stroke-width="2" />
+<polygon points="76,54 76,61 80,63 77,65 73,63" fill="#bd8463" />
+<polygon points="77,55 79,61 80,62 77,62" fill="#e6bc91" />
+<polygon points="64,72 69,71 74,72 79,70 77,74 70,76 65,74" fill="#975f51" />
+<polygon points="69,75 74,74 72,76" fill="#e6bc91" />
+<polygon points="35,38 47,28 65,26 82,33 89,44 82,43 72,36 62,41 55,35 46,45 42,59 36,63 33,52" fill="#623d29" />
+<polygon points="38,38 49,31 60,30 51,37 46,46 41,49" fill="#9b5d32" />
+<polygon points="85,39 92,46 92,61 86,72 83,65 88,54" fill="#623d29" />
+<polygon points="28,29 34,13 55,6 78,9 94,22 90,39 45,39" fill="#8e4136" />
+<polygon points="33,24 38,15 55,11 76,14 86,23 77,22 49,20" fill="#ba6348" />
+<polygon points="28,31 50,26 86,33 96,38 81,44 48,36 30,38" fill="#122634" />
+<polygon points="33,31 51,29 79,34 76,37 49,33 34,35" fill="#c69c5c" />
+<polygon points="46,28 53,28 53,36 46,36" fill="#c69c5c" />
+<polygon points="48,30 51,30 51,34 48,34" fill="#122634" />
 </svg>
