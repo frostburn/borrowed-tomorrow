@@ -335,6 +335,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-four-sanctuary-departures",
+      "url": "art/vector/chapter-four/sanctuary-departures.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -996,
+      "layerId": 2
+    },
+    {
       "key": "scene-four-sanctuary-ring",
       "url": "art/vector/chapter-four/sanctuary-ring.svg",
       "x": 456,
@@ -372,6 +382,16 @@
       "width": 84,
       "height": 80,
       "depth": 696,
+      "layerId": 3
+    },
+    {
+      "key": "scene-four-sanctuary-ferry",
+      "url": "art/vector/chapter-four/sanctuary-ferry.svg",
+      "x": 0,
+      "y": 688,
+      "width": 192,
+      "height": 144,
+      "depth": 832,
       "layerId": 3
     },
     {

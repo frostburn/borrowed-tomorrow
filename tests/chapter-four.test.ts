@@ -91,3 +91,15 @@ it('routes the sanctuary exit through the gate and opens its actual stair only a
  expect(walkable(map,38,18,opened)).toBe(false);expect(walkable(map,49,18,opened)).toBe(false);
  expect(path.every(p=>walkable(map,p.x,p.y,opened))).toBe(true);
 });
+
+it('keeps the railway clear of the refuge quay and connects both sanctuary departures',()=>{
+ const s=brokenCheckpoint('sanctuaryEntered'),map=MAPS.sanctuary,start=arrival('sanctuary','harbor');
+ for(let x=0;x<64;x++)expect(walkable(MAPS.refuge,x,35,s)).toBe(false);
+ expect(worldPath(map,start,{x:32,y:41},s).length).toBeGreaterThan(0);
+ for(const id of ['sanctuary-harbor','sanctuary-refuge']){
+  const exit=map.objects.find(o=>o.id===id)!;expect(worldPath(map,start,exit,s).length).toBeGreaterThan(0);
+ }
+ const ferry=map.objects.find(o=>o.id==='sanctuary-refuge')!;
+ expect(ferry.hitArea).toBeDefined();expect(ferry.x).toBeGreaterThan(ferry.hitArea!.x);
+ expect(ferry.x).toBeLessThan(ferry.hitArea!.x+ferry.hitArea!.width);
+});

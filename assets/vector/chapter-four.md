@@ -36,3 +36,11 @@ Phone sea-wall framing keeps Nell and Tomas above the dialogue through camera tr
 Reproduce with `npm run art:four` or `python3 assets/vector/chapter-four.py`. All SVGs remain native, self-contained and below 128 KiB. Run `npm run check` and the detailed Chapter Four, native-lighting and Maps browser checks outside normal CI.
 
 The sanctuary exit now sits on the service stair between the gate towers. The existing closed-gate layer owns both its art and the upper stair collision until `harborOpened`, without renumbering layers. The approach from the sanctuary resumes below the threshold. Gate-guard and bridge-guard victories automatically play the wheel and cable scenes through the shared aftermath dispatcher, including interrupted-save replay. Their recovery interactions remain but show no redundant markers. The warden uses `signalCut` as its real access prerequisite and stays grey until the line is cut.
+
+## Route geometry
+
+The refuge paving and its cutaway end above the first ballast bed at y=841. A continuous lower railway embankment supports both tracks across the full map width; neither rail nor ballast is painted over by the quay. The train originals keep their accepted anchors.
+
+Breakwater’s service span has a wide near threshold and a narrow far landing on a headland. Deck joints, parapets and shrinking posts share converging perspective edges. Its polygon also owns the walking cells; the closed gate still blocks the only approach. The floating capital remains visible beyond the headland.
+
+The Sanctuary’s descending return stair continues through the bottom edge, with its exit kept above the screen margin and its arrival on the same approach. The western refuge exit has a small passenger launch, a wooden boarding gangway, a clickable boat/landing area and registered warm window light. The launch’s hull stays wholly in water. Both exits preserve their existing IDs and destinations.

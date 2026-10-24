@@ -585,6 +585,22 @@
         "fill": 0.75,
         "shadowStrength": 0.15
       }
+    ],
+    "sanctuary-ferry": [
+      {
+        "x": 86,
+        "y": 128,
+        "height": 64,
+        "radius": 180,
+        "strength": 0.55,
+        "shadowStrength": 0.15,
+        "fill": 0.75,
+        "color": [
+          1.1,
+          0.89,
+          0.62
+        ]
+      }
     ]
   }
 }
