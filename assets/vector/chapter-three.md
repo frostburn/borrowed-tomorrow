@@ -44,3 +44,5 @@ Reproduce with `python3 assets/vector/chapter-one.py --chapter three` (or `npm r
 The vessel cage uses green-iron and bronze shadow edges in place of black contours. The on-map Heart regulator has 1.35 vertical stature at its existing sole anchor, shared by campaign and Maps through `worldActorScaleY`; its native frame and combat boss body remain unchanged.
 
 Indoor stone and service-deck layers share one world-space slab pattern, palette, lighting planes and straight slanted courses; the service strip never restarts the tiling. Pipe manifolds are authored whole runs with rigid elbows and clearance offsets; their light motes remain registered to those runs. Tiled navigation, interaction coordinates and console anchors remain unchanged.
+
+The gallery pipe network has a functional visual topology: the two auxiliary governors connect to the side instrument banks, both banks feed the central intake console, and its outlet reaches the lower-chamber stair. No decorative self-returning manifold loop remains.

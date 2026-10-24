@@ -106,12 +106,19 @@ def terrain(kind,base,w,h,scene):
  # One replacement pass avoids accidental recoloring of a replacement color.
  base=re.sub(r'#[0-9a-f]{6}',lambda m:PALETTE.get(m[0],m[0]),base)
  if scene=='relayhall'and kind=='motes':
-  return base.replace('x="707"','x="699"').replace('x="851"','x="855"')
+  return base.replace('x="707" y="394"','x="559" y="420"').replace('x="851" y="394"','x="919" y="396"')
  if scene in ('relayhall','conduit')and kind.startswith('works-pipe-'):
   # Whole rigid pipe runs with elbows and clearance offsets, rather than a
   # ruler-straight rectangular circuit or independently warped tile fragments.
   if kind!='works-pipe-h':return ''
-  routes=[[(708,456),(700,424),(700,378),(716,350),(766,344),(782,332),(826,336),(850,358),(858,410),(852,456)]]if scene=='relayhall'else[
+  # Governors feed the side instrument banks; both banks feed the central
+  # intake console, whose outlet meets the lower-chamber stair.
+  routes=[
+   [(324,604),(312,576),(312,450),(336,432),(336,410)],
+   [(420,400),(470,400),(488,422),(592,422),(616,446),(704,446),(720,474)],
+   [(1260,656),(1248,640),(1248,490),(1232,468),(1232,400),(1188,376)],
+   [(1020,376),(980,376),(956,398),(908,398),(884,422),(848,422),(832,474)],
+   [(768,510),(768,548),(744,572),(744,690),(760,706),(760,790)]]if scene=='relayhall'else[
    [(864,444),(880,444),(900,436),(914,444),(980,444),(994,430),(1020,430),(1032,442),(1080,442)],
    [(1032,442),(1032,486),(1020,500),(1020,580),(1008,592),(1008,624),(1020,636),(1020,744)],
    [(324,600),(324,630),(338,646),(338,710),(324,724),(324,792)]]
