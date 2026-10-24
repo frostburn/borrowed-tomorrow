@@ -16,6 +16,7 @@ import { walkingHero } from '../content/actor-motion';
 import { facingAsset } from '../content/actors';
 import { EMPEROR_WALK } from '../content/cinematic-art';
 import { ConduitCinematic } from './conduit-cinematic';
+import type { WorldLighting } from './world-lighting';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
@@ -39,7 +40,7 @@ export class Cutscene {
   private domain?:DomainCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
-  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator){
+  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
@@ -47,8 +48,8 @@ export class Cutscene {
     }
     this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
-      const p=pixel(actor.at),image=scene.add.image(p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setAlpha(actor.projection?.72:1).setData('world-actor',true).setDepth(p.y);
-      image.setData('hero',CHARACTERS[actor.id].sprite);world.add(image);this.actors.set(actor.id,image);
+      const p=pixel(actor.at),image=lighting.actor(world,p.x,p.y,actor.face??CHARACTERS[actor.id].sprite).setOrigin(.5,.85).setVisible(!actor.hidden).setAlpha(actor.projection?.72:1).setData('world-actor',true).setData('projection',!!actor.projection).setDepth(p.y);
+      image.setData('hero',CHARACTERS[actor.id].sprite);this.actors.set(actor.id,image);
     }
     if(script.id.startsWith('six-capital-')||script.id.startsWith('six-imperial-')||script.id.startsWith('six-lightbearer-')||script.id==='six-palace-open')this.imperial=new ImperialCinematic(scene,world);
     if(script.id==='six-river-chain'||script.id==='six-river-treatment')this.river=new RiverCinematic(scene,world);

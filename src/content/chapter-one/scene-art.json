@@ -571,8 +571,8 @@
       "height": 168
     },
     {
-      "key": "scene-station-prop-river-wall",
-      "url": "art/vector/scenes/station/river-wall.svg",
+      "key": "scene-station-prop-river-wall-432",
+      "url": "art/vector/scenes/station/river-wall-432.svg",
       "x": 432,
       "y": 168,
       "depth": 259,
@@ -581,8 +581,8 @@
       "height": 96
     },
     {
-      "key": "scene-station-prop-river-wall",
-      "url": "art/vector/scenes/station/river-wall.svg",
+      "key": "scene-station-prop-river-wall-624",
+      "url": "art/vector/scenes/station/river-wall-624.svg",
       "x": 624,
       "y": 168,
       "depth": 259,
@@ -591,8 +591,8 @@
       "height": 96
     },
     {
-      "key": "scene-station-prop-river-wall",
-      "url": "art/vector/scenes/station/river-wall.svg",
+      "key": "scene-station-prop-river-wall-816",
+      "url": "art/vector/scenes/station/river-wall-816.svg",
       "x": 816,
       "y": 168,
       "depth": 259,

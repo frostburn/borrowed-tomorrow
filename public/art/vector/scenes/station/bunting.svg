@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="216" height="96" viewBox="0 0 216 96">
-<title>Larkspur festival night · bunting</title><metadata>Station-only moonlit, gently bowed variant of public/art/vector/scenery/bunting.svg</metadata>
-<path fill="none" stroke="#a98b70" stroke-width="2" d="M1.01,16.01 Q28.41,22.23 55.78,28.33 Q84.13,31.83 112.13,34.97 Q139.58,30.62 166.72,26.68 Q190.86,20.31 215.01,13.99" />
-<path fill="#7a5355" d="M8.11,19.32 L25.36,22.45 Q20.34,33.99 15.25,45.44 Q11.69,32.38 8.11,19.32 Z" />
-<path fill="#bd945a" d="M31.45,23.10 L48.69,26.19 Q43.70,37.79 38.58,49.25 Q35.08,36.23 31.45,23.10 Z" />
-<path fill="#7c879d" d="M54.76,26.82 L71.95,29.80 Q66.99,41.41 61.84,52.91 Q58.40,39.94 54.76,26.82 Z" />
-<path fill="#7a5355" d="M78.00,30.40 L95.10,33.27 Q90.15,44.85 84.98,56.38 Q81.62,43.45 78.00,30.40 Z" />
-<path fill="#bd945a" d="M101.12,33.83 L118.13,36.64 Q113.18,48.19 107.98,59.75 Q104.70,46.80 101.12,33.83 Z" />
-<path fill="#7c879d" d="M124.10,32.48 L141.02,35.33 Q136.10,46.82 130.95,58.40 Q127.66,45.41 124.10,32.48 Z" />
-<path fill="#7a5355" d="M146.93,28.71 L163.78,31.65 Q158.90,43.07 153.83,54.62 Q150.50,41.60 146.93,28.71 Z" />
-<path fill="#bd945a" d="M169.67,25.09 L186.46,28.14 Q181.59,39.53 176.60,51.01 Q173.22,37.98 169.67,25.09 Z" />
-<path fill="#7c879d" d="M192.35,21.60 L209.11,24.72 Q204.21,36.14 199.27,47.58 Q195.86,34.54 192.35,21.60 Z" />
+<title>Larkspur festival night · bunting</title><metadata>Station-only festival-night angular variant of public/art/vector/scenery/bunting.svg</metadata>
+<polyline points="4.31,18.48 56.75,29.22 111.58,35.27 165.56,26.39 213.32,12.31" fill="none" stroke="#a98b70" stroke-width="2" />
+<polygon points="11.02,21.51 27.54,24.12 16.89,46.66" fill="#7a5355" />
+<polygon points="33.39,24.62 49.95,27.26 39.45,49.92" fill="#bd945a" />
+<polygon points="55.81,27.77 72.40,30.44 62.04,53.22" fill="#7c879d" />
+<polygon points="78.28,30.96 94.91,33.66 84.69,56.56" fill="#7a5355" />
+<polygon points="100.79,34.19 117.46,36.92 107.39,59.94" fill="#bd945a" />
+<polygon points="123.39,32.74 140.07,35.49 130.15,58.64" fill="#7c879d" />
+<polygon points="145.96,28.75 162.65,31.50 152.89,54.79" fill="#7a5355" />
+<polygon points="168.49,24.73 185.18,27.48 175.59,50.90" fill="#bd945a" />
+<polygon points="190.97,20.66 207.66,23.41 198.23,46.97" fill="#7c879d" />
 </svg>

@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="144" viewBox="0 0 48 144">
-<title>Larkspur festival night · lamp</title><metadata>Station-only moonlit, gently bowed variant of public/art/vector/scenery/lamp.svg</metadata>
-<ellipse cx="24" cy="28" rx="17" ry="22" fill="#ffd59c" opacity="0.14" /><ellipse cx="24" cy="28" rx="23" ry="29" fill="#ffd59c" opacity="0.1" /><path fill="#141d32" d="M17.12,138.04 L18.28,130.09 L21.42,124.07 Q22.28,84.71 22.08,45.13 L18.99,39.22 Q17.88,27.70 16.73,16.12 L24.69,4.00 L32.72,14.88 Q32.36,26.80 31.96,38.75 L28.09,45.86 Q28.27,84.79 27.42,123.93 L31.23,131.91 L33.05,140.97 L15.00,144.00 L17.12,138.04 Z" />
-<path fill="#7c879d" d="M22.09,46.14 L24.11,46.05 Q24.29,88.07 23.30,130.02 L20.15,137.03 L17.10,139.04 L28.11,138.98 L26.30,129.97 Q26.80,87.38 26.10,44.95 L22.09,46.14 Z" />
-<path fill="#bd945a" d="M16.74,17.13 L24.77,10.00 L32.74,16.87 Q31.88,27.80 30.99,38.78 L19.00,41.23 Q17.90,29.21 16.74,17.13 Z" />
-<path fill="#dca05b" d="M19.84,20.11 L28.84,17.92 L28.03,35.89 L20.00,38.19 L19.84,20.11 Z" />
-<path fill="#f5dca4" d="M21.88,21.07 L26.88,19.95 L26.04,34.96 L22.03,36.11 L21.88,21.07 Z" />
-<path fill="none" stroke="#253e48" stroke-width="2" d="M24.84,16.00 Q24.99,28.00 25.08,40.00" />
-<path fill="#242e47" d="M12.60,17.15 L24.68,3.00 L36.60,15.86 L30.81,18.88 L12.60,17.15 Z" />
-<path fill="#bd945a" d="M23.64,0.00 L26.63,0.00 L26.70,4.99 L23.70,5.01 L23.64,0.00 Z" />
+<title>Larkspur festival night · lamp</title><metadata>Station-only festival-night angular variant of public/art/vector/scenery/lamp.svg</metadata>
+<ellipse cx="24" cy="28" rx="17" ry="22" fill="#ffd59c" opacity="0.14" /><ellipse cx="24" cy="28" rx="23" ry="29" fill="#ffd59c" opacity="0.1" /><polygon points="17.17,138.00 18.39,130.00 21.56,124.00 23.75,45.00 20.92,39.00 19.56,16.00 27.89,4.00 35.58,15.00 33.92,39.00 29.72,46.00 27.56,124.00 31.33,132.00 33.08,141.00 15.00,144.00" fill="#141d32" />
+<polygon points="23.72,46.00 25.72,46.00 23.39,130.00 20.19,137.00 17.14,139.00 28.14,139.00 26.39,130.00 27.75,45.00" fill="#7c879d" />
+<polygon points="19.53,17.00 27.72,10.00 35.53,17.00 32.92,39.00 20.86,41.00" fill="#bd945a" />
+<polygon points="22.44,20.00 31.50,18.00 30.00,36.00 21.94,38.00" fill="#dca05b" />
+<polygon points="24.42,21.00 29.44,20.00 28.03,35.00 24.00,36.00" fill="#f5dca4" />
+<polyline points="27.56,16.00 26.89,40.00" fill="none" stroke="#253e48" stroke-width="2" />
+<polygon points="15.53,17.00 27.92,3.00 39.56,16.00 33.47,19.00" fill="#242e47" />
+<polygon points="27.00,0.00 30.00,0.00 29.86,5.00 26.86,5.00" fill="#bd945a" />
 </svg>

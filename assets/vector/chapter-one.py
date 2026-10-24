@@ -193,7 +193,7 @@ def export(chapter='one', only=None):
                     key=f'scenery-{module}';url=f'art/vector/scenery/{module}.svg'
                     if chapter=='one' and file.stem=='station':
                         from station import scenery
-                        variant=scenery(module,modules[module],folder)
+                        variant=scenery(module,modules[module],folder,ox)
                         if variant:key,url=variant
                     instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
