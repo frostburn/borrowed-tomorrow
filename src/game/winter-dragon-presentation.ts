@@ -21,7 +21,7 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WINTER_DRAGON_ID?bossPlacement({...u,hex}):undefined,
   hint:b=>`${winterDragon(b)?.intent?.phase}. Loose ice costs 2 movement and deals 6 cold damage at round end.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['winter-dragon'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['winter-dragon'],newGame());},
   actor(scene,u,hp,hex){
    if(u.id!==WINTER_DRAGON_ID)return;
    for(const {key}of DRAGON_ASSETS){
@@ -61,7 +61,7 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
   },
   overlay(scene,world,b){
    const dragon=winterDragon(b)!,g=scene.add.graphics();world.add(g);
-   g.fillStyle(0x233b55,.96).fillRect(300,0,340,27);bossLabel(scene,world,470,14,`Winter dragon  ${dragon.hp}/${dragon.maxHp}`,2);
+   g.fillStyle(0x233b55,.96).fillRect(300,0,340,27);bossLabel(scene,world,470,14,`${dragon.name}  ${dragon.hp}/${dragon.maxHp}`,2);
    g.fillStyle(0x233b55,.95).fillRect(315,28,310,11).fillStyle(0xaedce3).fillRect(320,32,Math.round(300*dragon.hp/dragon.maxHp),4);
    for(const h of b.winterIce??[]){const p=toPixel(h);g.fillStyle(0x82c6dc,.3).fillEllipse(p.x,p.y,44,25);g.lineStyle(2,0xd8f1ef,.95).lineBetween(p.x-18,p.y+6,p.x-3,p.y-5).lineBetween(p.x-3,p.y-5,p.x+16,p.y+5).lineBetween(p.x-3,p.y-5,p.x+7,p.y-12);}
   },

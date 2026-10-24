@@ -19,7 +19,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WARD_ID?bossPlacement({...u,hex}):undefined,
   hint:b=>`${wardUnit(b)?.intent?.name??'Optical circuit'} · break the lit projection to interrupt this beam and open the core. Both gone: core stays open.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['wind-engine'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['wind-engine'],newGame());},
   actor(scene,u,_hp,hex){
    if(u.id!==WARD_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
@@ -41,7 +41,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
    },onComplete:()=>{if(g.active)g.destroy();}});return true;
   },
   overlay(scene,world,b){
-   const u=wardUnit(b)!;bossLabel(scene,world,512,16,`Mirrored ward engine  ${u.hp}/${u.maxHp}`,2);
+   const u=wardUnit(b)!;bossLabel(scene,world,512,16,`${u.name}  ${u.hp}/${u.maxHp}`,2);
    const g=scene.add.graphics();world.add(g);g.fillStyle(0x18252b,.97).fillRect(359,29,306,10).fillStyle(0xa4c6ae).fillRect(362,32,Math.floor(300*u.hp/u.maxHp),4);
    bossLabel(scene,world,512,49,u.hp<=0?'Engine stopped':u.sealed?'Core sealed · break the lit projection':'Core exposed',1);
    for(const m of wardMirrors(b).filter(m=>m.hp>0)){

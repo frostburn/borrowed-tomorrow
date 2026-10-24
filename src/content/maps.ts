@@ -1,3 +1,4 @@
+import {CHAPTER_SEVEN_MAPS} from './chapter-seven/maps';
 import { CHAPTER_SIX_MAPS } from './chapter-six/maps';
 import { partyLeader } from '../rules/state';
 import type { InteractionKind } from './interaction-markers';
@@ -16,7 +17,7 @@ export interface MapObject { kind:InteractionKind; marker?:boolean; storyUntil?:
 export interface MapPerson { id:string; x:number; y:number; sprite:CivilianSprite; hiddenFlag?:string; requiredFlag?:string }
 export interface MapData { id: MapId; name: string; subtitle: string; width?: number; height?: number; cameraLeadY?:number; art?:string; tiles?:TileMap; objects: MapObject[]; people?:MapPerson[]; gates?: { x:number; y:number; width:number; height:number; openFlag:string }[]; solid: [number, number, number, number][] }
 export const MAPS: Record<MapId, MapData> = {
-  ...CHAPTER_SIX_MAPS, ...CHAPTER_FIVE_MAPS, ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
+  ...CHAPTER_SIX_MAPS,...CHAPTER_SEVEN_MAPS, ...CHAPTER_FIVE_MAPS, ...CHAPTER_FOUR_MAPS, ...CHAPTER_TWO_MAPS, ...CHAPTER_THREE_MAPS, ...CHAPTER_ONE_MAPS,
 };
 /** Named story endpoints live alongside the routes they use in the Tiled map. */
 export function arrival(map:MapId,name:string){

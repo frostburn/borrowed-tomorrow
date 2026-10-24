@@ -45,7 +45,7 @@ it('variants remain fixed to their encounter and keep their base combat roles an
 it('each later chapter uses tougher common enemies, visibly tied to a distinct palette',()=>{
  for(const kind of ['hound','crow','guardian']as const){
   const tiers=Object.entries(ENEMY_VARIANTS).filter(([,v])=>v.kind===kind).sort(([,a],[,z])=>a.chapter-z.chapter);
-  expect([...new Set(tiers.map(([,v])=>v.chapter))]).toEqual([2,3,4,5,6]);
+  expect([...new Set(tiers.map(([,v])=>v.chapter))]).toEqual([2,3,4,5,6,7]);
   for(let i=1;i<tiers.length;i++){
    // Parallel regions in one chapter may share a tier; later chapters still
    // exceed every prior region, independently of registry order.

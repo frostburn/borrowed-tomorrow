@@ -1,3 +1,4 @@
+import {SEVEN_MODES} from './score-seven';
 import { ARRANGEMENTS,scoreBar,scoreLength,type MusicMode } from './score';
 
 export interface PerformanceOptions {rubato?:boolean;expression?:boolean}
@@ -5,6 +6,9 @@ type TempoKnot=readonly [bar:number,stretch:number];
 // Local beat lengths, interpolated through the phrases. A breath at a cadence
 // belongs to the whole ensemble, including a pedal begun in an earlier bar.
 const breaths:Partial<Record<MusicMode,readonly TempoKnot[]>>={
+ lastrefuge:[[0,.98],[7.5,1.13],[8,.97],[15.5,1.16],[16,.96],[23.5,1.12],[24,.98],[31.5,1.18],[32,.98]],
+ homecoming:[[0,.98],[7.5,1.1],[8,.97],[15.5,1.13],[16,.98],[23.5,1.1],[24,.97],[31.5,1.15],[32,.98]],
+ quietward:[[0,.99],[7.5,1.12],[8,.98],[15.5,1.16],[16,.98],[23.5,1.13],[24,.97],[31.5,1.17],[32,.99]],
  'capital-return':[[0,.98],[7.5,1.12],[8,.98],[15.5,1.15],[16,.98],[23.5,1.12],[24,.98],[31.5,1.14],[32,.98]],
  laststation:[[0,.97],[7.5,1.16],[8,.98],[15.5,1.2],[16,.96],[23.5,1.17],[24,.98],[31.5,1.2],[32,.97]],
  bellharbor:[[0,.98],[4,.96],[7.5,1.1],[8,.98],[12,.96],[15.5,1.12],[16,.98],[20,.97],[23.5,1.1],[24,.96],[28,.98],[31.5,1.13],[32,.98]],
@@ -32,7 +36,7 @@ for(const [name,knots]of Object.entries(breaths)){
  clock[length]=length;clocks[mode]=clock;
 }
 export const hasRubato=(mode:MusicMode)=>!!clocks[mode];
-const expressive:readonly MusicMode[]=['stillcity','lastpalace','crown','laststation','capital-return','capital-battle','emperor','lightbearer','bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
+const expressive:readonly MusicMode[]=[...SEVEN_MODES,'stillcity','lastpalace','crown','laststation','capital-return','capital-battle','emperor','lightbearer','bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon','riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden','outermooring','namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent','airship','windmere','refuge','conduit','sanctuary','mirrorward','airfield','anchorforge','signalwall','observation','flagship','claim'];
 export const hasExpression=(mode:MusicMode)=>expressive.includes(mode);
 
 /** Absolute score beats to seconds, with periodic rubato and no accumulated drift. */

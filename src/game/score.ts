@@ -1,3 +1,4 @@
+import {sevenBar,SEVEN_MODES,type SevenMode} from './score-seven';
 import { capitalBar } from './score-capital';
 import { northBar } from './score-north';
 import { jungleBar } from './score-jungle';
@@ -15,11 +16,28 @@ import { scoreB } from './score-b';
 import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
-export type MusicMode = 'stillcity'|'lastpalace'|'lastmorning'|'crown'|'laststation'|'capital-battle'|'emperor'|'lightbearer'|'capital-return'|'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
-export type Instrument = 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
+export type MusicMode = SevenMode | 'stillcity'|'lastpalace'|'lastmorning'|'crown'|'laststation'|'capital-battle'|'emperor'|'lightbearer'|'capital-return'|'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
+export type Instrument = 'organ' | 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
+ 'hollowsill':{beats:4,bpm:68,lead:'organ',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'takenwater':{beats:4,bpm:78,lead:'bell',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'firstfield':{beats:3,bpm:94,lead:'lute',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'quietward':{beats:3,bpm:66,lead:'sine',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'seasonstreet':{beats:4,bpm:102,lead:'wood',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'lastrefuge':{beats:4,bpm:72,lead:'keys',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'sunthrone':{beats:4,bpm:76,lead:'organ',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'homecoming':{beats:4,bpm:92,lead:'reed',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'seaholiday':{beats:3,bpm:90,lead:'lute',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'domain-battle':{beats:4,bpm:138,lead:'brass',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'harvest-battle':{beats:4,bpm:132,lead:'brass',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'hospice-battle':{beats:3,bpm:132,lead:'organ',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1},
+ 'seasons-battle':{beats:5,bpm:118,lead:'tritaver',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1,meter:[5,4]},
+ 'benefactor':{beats:4,bpm:120,lead:'organ',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1,introBars:2},
+ 'hollow-sun':{beats:5,bpm:128,lead:'brass',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1,introBars:2,meter:[5,4]},
+ 'unborrowed':{beats:4,bpm:148,lead:'strings',leadGain:.18,keys:0,strings:.025,bass:.13,percussion:.1,introBars:2},
+
   stillcity:{beats:4,bpm:88,lead:'keys',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
   lastpalace:{beats:3,bpm:86,lead:'strings',leadGain:.16,keys:0,strings:.028,bass:.12,percussion:0},
   lastmorning:{beats:4,bpm:82,lead:'reed',leadGain:.29,keys:.14,strings:.08,bass:.2,percussion:0},
@@ -132,6 +150,7 @@ const ALBAN:[number,Pitch,number][][]=[[
 const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
 /** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  if(SEVEN_MODES.includes(mode as SevenMode))return sevenBar(mode as SevenMode,scorePosition(mode,bar));
   if(mode==='lastmorning')return scoreBar('station',bar);
   if(mode==='stillcity'||mode==='lastpalace'||mode==='crown'||mode==='laststation'||mode==='capital-return'||mode==='capital-battle'||mode==='emperor'||mode==='lightbearer')return capitalBar(mode,scorePosition(mode,bar));
   if(mode==='bellharbor'||mode==='frostwatch'||mode==='glacier'||mode==='wintershrine'||mode==='north-battle'||mode==='winter-dragon')return northBar(mode,scorePosition(mode,bar));
@@ -185,6 +204,7 @@ export function scoreBar(mode:MusicMode,bar:number):Note[]{
 }
 
 export function scoreLength(mode:MusicMode):number {
+  if(SEVEN_MODES.includes(mode as SevenMode))return ARRANGEMENTS[mode].introBars?34:32;
   if(mode==='emperor'||mode==='lightbearer')return 34;
   if(mode==='stillcity'||mode==='lastpalace'||mode==='crown'||mode==='laststation'||mode==='capital-return'||mode==='capital-battle')return 32;
   if(mode==='lastmorning')return scoreLength('station');

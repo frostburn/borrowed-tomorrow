@@ -1,3 +1,4 @@
+import seventh from './chapter-seven/scene-art.json' with {type:'json'};
 import sixth from './chapter-six/scene-art.json' with { type: 'json' };
 import fifth from './chapter-five/scene-art.json' with { type: 'json' };
 import first from './chapter-one/scene-art.json' with { type: 'json' };
@@ -7,7 +8,7 @@ import fourth from './chapter-four/scene-art.json' with { type: 'json' };
 import { layerVisible, properties, type TileMap } from './tilemaps';
 import type { GameState } from '../rules/state';
 
-const scenes={...first,...second,...third,...fourth,...fifth,...sixth};
+const scenes={...first,...second,...third,...fourth,...fifth,...sixth,...seventh};
 
 export interface ScenePiece { key:string; url:string; x:number; y:number; width:number; height:number; depth:number; layerId:number }
 /** Whole SVG planes and props; Tiled remains the layout/collision source. */

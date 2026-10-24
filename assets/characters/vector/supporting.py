@@ -6,7 +6,7 @@ CAST=('master','clerk','tomas','alban','tilda','elspeth')
 
 
 def head(d,name):
-    hair={'master':'silver','clerk':'hair','tomas':'brown','alban':'hair','tilda':'copper','elspeth':'silver'}[name]
+    hair={'master':'silver','clerk':'brown','tomas':'brown','alban':'hair','tilda':'copper','elspeth':'silver'}[name]
     if name=='elspeth':d.oval((24,10,29,17),'silver')
     d.oval((15,8,25,24),hair)
     d.poly([(16,12),(24,12),(25,18),(23,24),(20,26),(16,23),(15,18)],'skin')
@@ -22,14 +22,17 @@ def head(d,name):
     if name=='master':
         d.poly([(15,21),(18,20),(20,22),(22,20),(25,21),(24,24),(20,23),(16,24)],'white')
         d.line([(15,16),(18,16)],'white',2);d.line([(22,16),(25,16)],'white',2)
-    if name in ('clerk','elspeth'):
+    if name=='elspeth':
         d.oval((14,16,19,21),'skin','gold')
         d.oval((21,16,26,21),'skin','gold')
         d.line([(19,18),(21,18)],'gold')
         d.rect((16,18,17,19),'ink');d.rect((23,18,24,19),'ink')
     if name=='clerk':
-        d.poly([(14,12),(15,3),(24,3),(26,12)],'slate')
-        d.rect((14,9,26,12),'ink');d.oval((12,11,28,14),'slate')
+        # Iona's brown bob and low cap match her portrait, distinct from Ansel.
+        d.poly([(14,12),(16,13),(16,22),(18,26),(14,28),(12,23),(12,16)],'brown')
+        d.poly([(24,12),(26,14),(27,22),(25,28),(22,25),(24,22)],'brown')
+        d.poly([(14,11),(15,5),(23,5),(26,9),(26,12)],'slate')
+        d.rect((14,9,26,12),'ink');d.poly([(12,11),(25,10),(28,12),(25,14),(12,14)],'slate')
         d.rect((19,6,21,8),'gold')
     if name=='tilda':
         d.poly([(14,12),(15,7),(20,5),(25,8),(26,13),(22,10),(17,10)],'white')

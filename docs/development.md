@@ -1,6 +1,6 @@
 # Working on Borrowed Tomorrow
 
-Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the capital assault, Emperor and Lightbearer outcomes are playable; Chapter Seven remains planned under `docs/story/`.
+Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the capital assault, Emperor and Lightbearer outcomes are playable; Chapter Seven now completes the campaign through the domain, guardian sequence, three divine forms and real seaside epilogue.
 
 ## Find the right place
 
@@ -33,7 +33,7 @@ npm ci
 npm run dev
 ```
 
-Use `npm run dev:workshop` instead to open the existing Vite-only tools directly. Direct review URLs include `/?dev=maps`, `/?dev=music`, `/?dev=sprites`, `/?dev=animation` and `/?dev=boss`. The dev title also has canonical starts through Chapter Six. These tools use their own fixtures/storage; preserve their production exclusion.
+Use `npm run dev:workshop` instead to open the existing Vite-only tools directly. Direct review URLs include `/?dev=maps`, `/?dev=music`, `/?dev=sprites`, `/?dev=animation` and `/?dev=boss`. The dev title also has canonical starts through Chapter Seven. These tools use their own fixtures/storage; preserve their production exclusion.
 
 For a focused change:
 
@@ -45,7 +45,7 @@ npm test -- tests/chapter-five-finale.test.ts
 
 Before publishing, run `npm run check` for rule/content tests, TypeScript and the production build. Use existing Playwright regressions for changed rendered behavior, especially scene loading and save restoration. The normal browser gates remain `npm run test:e2e:ci` and `npm run test:e2e:ci:production` (the latter uses the built app). New detailed regressions do not need an `@ci` tag. Full journeys and long audio renders stay in the manually dispatched full run. Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` when using an existing browser installation.
 
-Art exports have matching commands: `npm run art:one` through `npm run art:six`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
+Art exports have matching commands: `npm run art:one` through `npm run art:seven`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
 
 ## Adding the next chapter
 
@@ -61,4 +61,4 @@ The catalogue tests check that every exploration map has one owner and that depa
 Chapter Six keeps its smaller expedition modules under `content/chapter-six/jungle/` and `north/`. The shared interactions coordinate ship reports and opening the landing after both independent seals; neither a cure nor a region alone grants a chapter boundary. `rules/winter-dragon.ts` owns pulls and separate `winterIce`, with movement/cold damage resolved by the ordinary combat rules. The matching presentation is shared with the Vite boss preview. Northern music is authored in `score-north.ts`.
 
 
-The Chapter Six capital finale is playable: free Stillwater Avenue, clear the palace, face the Emperor and reach either the recovered departure or the explicitly committed uncured Lightbearer ending. Recovered Nell alone receives the playable Larkspur morning. Dev canonical Capital/Final preparations starts and both boss previews are available. The separate Chapter Seven remains forthcoming. See `docs/story/chapter-six-continuation.md` (from the repository root) for checkpoints.
+The Chapter Six capital finale is playable: free Stillwater Avenue, clear the palace, face the Emperor and reach either the recovered departure or the explicitly committed uncured Lightbearer ending. Recovered Nell alone receives the playable Larkspur morning. Dev canonical Capital/Final preparations starts and both boss previews are available. Chapter Seven is playable from the recovered departure; see `docs/story/chapter-seven-continuation.md`. See `docs/story/chapter-six-continuation.md` (from the repository root) for checkpoints.

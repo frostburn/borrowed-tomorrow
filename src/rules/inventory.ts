@@ -5,6 +5,12 @@ export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+ 'crossing-coat':{name:'Crossing coat',slot:'coat',heroes:COMPANION_IDS,description:'A strong lining from the first collector’s store, cut to leave room at the shoulders.',bonuses:{attack:0,armor:6,speed:1}},
+ 'morning-reflector':{name:'Morning-glass reflector',slot:'fitting',heroes:['nell'],description:'The first keeper’s lamp glass, cleaned and fitted to Ansel’s lantern.',bonuses:{attack:11,armor:2,speed:2}},
+ 'first-valve':{name:'Original expansion valve',slot:'fitting',heroes:['orrin'],description:'A sound return valve from the harvest machine, adapted to the steam lance.',bonuses:{attack:11,armor:3,speed:1}},
+ 'first-focus':{name:'Unbound field focus',slot:'fitting',heroes:['celia'],description:'A hospice lens with the return contacts removed. It keeps the examination light steady.',bonuses:{attack:10,armor:4,speed:1}},
+ 'open-guard':{name:'Open-road saber guard',slot:'fitting',heroes:['petra'],description:'An intact guard from the seasons gate, fitted to Petra’s saber grip.',bonuses:{attack:11,armor:5,speed:1}},
+ 'farroad-sight':{name:'Far-road survey sight',slot:'fitting',heroes:['kit'],description:'A sight from the courier stair, with a wide field and quick folding rest.',bonuses:{attack:11,armor:1,speed:3}},
   'procession-coat':{name:'Lined ceremonial coat',slot:'coat',heroes:COMPANION_IDS,description:'A palace coat with its stiff train removed. Protective lining and room to move.',bonuses:{attack:0,armor:5,speed:1}},
   'crown-nozzle':{name:'Pressure-crown nozzle',slot:'fitting',heroes:['orrin'],description:'A guarded regulator from the palace service engine, fitted to the steam lance.',bonuses:{attack:9,armor:2,speed:0}},
   'cloister-sight':{name:'Cloister range sight',slot:'fitting',heroes:['kit'],description:'A compact survey sight from the palace roof walk. Fast to raise, with a narrow field.',bonuses:{attack:8,armor:0,speed:3}},

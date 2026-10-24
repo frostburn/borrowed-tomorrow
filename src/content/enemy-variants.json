@@ -388,5 +388,54 @@
       "#263e53": "#93766b",
       "#b7c1b8": "#bcc9cc"
     }
+  },
+  "hound-solar": {
+    "kind": "hound",
+    "name": "Sunbound hound",
+    "chapter": 7,
+    "hp": 135,
+    "bonus": 16,
+    "armor": 2,
+    "speed": 7,
+    "movement": 4,
+    "colors": {
+      "#80553d": "#536b84",
+      "#b7784e": "#c5d8ce",
+      "#d9ae62": "#d4ac67"
+    }
+  },
+  "crow-solar": {
+    "kind": "crow",
+    "name": "Sunbound crow",
+    "chapter": 7,
+    "hp": 108,
+    "bonus": 16,
+    "armor": 2,
+    "speed": 8,
+    "movement": 3,
+    "colors": {
+      "#263e53": "#536b84",
+      "#626d7f": "#c5d8ce",
+      "#b7784e": "#d4ac67",
+      "#d9ae62": "#745b77",
+      "#142536": "#91bbb4"
+    }
+  },
+  "guardian-solar": {
+    "kind": "guardian",
+    "name": "First-pattern guardian",
+    "chapter": 7,
+    "hp": 260,
+    "bonus": 16,
+    "armor": 4,
+    "speed": 4,
+    "movement": 2,
+    "colors": {
+      "#80553d": "#536b84",
+      "#b7784e": "#c5d8ce",
+      "#d9ae62": "#d4ac67",
+      "#263e53": "#745b77",
+      "#b7c1b8": "#91bbb4"
+    }
   }
 }

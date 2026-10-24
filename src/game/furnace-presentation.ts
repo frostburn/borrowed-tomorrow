@@ -21,7 +21,7 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===FURNACE_ID?placement(u,hex):undefined,
   hint:b=>`${furnaceUnit(b)?.intent?.name??'Casting cycle'} · red X: next pour. Orange tracks: 6 damage at round end; cool after the following round.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS['hammer-carrier'],newGame());},
+  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['hammer-carrier'],newGame());},
   actor(scene,u,_hp,hex){
    if(u.id!==FURNACE_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
@@ -39,7 +39,7 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
    },onComplete:()=>{if(g.active)g.destroy();}});return true;
   },
   overlay(scene,world,b){
-   const u=furnaceUnit(b)!;bossLabel(scene,world,512,16,`Furnace carrier  ${u.hp}/${u.maxHp}`,2);
+   const u=furnaceUnit(b)!;bossLabel(scene,world,512,16,`${u.name}  ${u.hp}/${u.maxHp}`,2);
    const g=scene.add.graphics();world.add(g);g.fillStyle(0x18252b,.97).fillRect(359,29,306,10).fillStyle(0xc87a49).fillRect(362,32,Math.floor(300*u.hp/u.maxHp),4);
    bossLabel(scene,world,512,49,u.hp>0?'Mobile · three contacts · hot tracks':'Carrier stopped',1);
   },

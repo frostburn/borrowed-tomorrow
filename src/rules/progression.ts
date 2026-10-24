@@ -1,7 +1,7 @@
 import type { AbilityId } from './combat';
 import type { CompanionId } from './party';
 
-export const MAX_LEVEL=12;
+export const MAX_LEVEL=15;
 
 /** Read-only character rules shared by the campaign and development workshop. */
 export const BASE_STATS = {

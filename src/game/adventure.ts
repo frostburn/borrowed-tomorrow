@@ -1,3 +1,4 @@
+import {benefactorPresentation} from './benefactor-presentation';
 import { imperialPresentation } from './imperial-presentation';
 import { winterDragonPresentation } from './winter-dragon-presentation';
 import { serpentPresentation } from './sun-serpent-presentation';
@@ -199,6 +200,10 @@ export class Adventure extends Phaser.Scene {
       this.ui.sceneLayer.querySelector('.scene-panel')!.append(group);
       const target=group.querySelector<HTMLElement>('.canonical-actions')!;
       this.ui.actionRow(target,[
+        ...(['Chapter Seven','final refuge'] as const).map(destination=>({label:`Begin ${destination} (canonical)`,action:()=>{
+          const start=()=>{void import('../dev/canonical-saves').then(saves=>this.loadState(destination==='Chapter Seven'?saves.chapterSevenStart():saves.chapterSevenRefugeStart()));};
+          if(this.latestSave)this.ui.showModal(`Start the canonical ${destination} save?`,'<p>This replaces the autosave with the recovered party in the Benefactor’s domain. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);else start();
+        }})),
         {label:'Begin Chapter Two (canonical)',action:()=>{
           const start=()=>{void import('../dev/canonical-saves').then(({chapterTwoStart})=>this.loadState(chapterTwoStart()));};
           if(this.latestSave)this.ui.showModal('Start the canonical Chapter Two save?','<p>This replaces the autosave with Nell and Orrin at the Iron Coast. Manual save slots remain available.</p>',[{label:'Start canonical save',action:start}]);
@@ -372,7 +377,7 @@ export class Adventure extends Phaser.Scene {
     }
   }
   private worldLeader():HeroId {
-    if((this.state.location.map==='lastmorning'||this.state.location.map==='lastshore'))return 'nell';
+    if((this.state.location.map==='lastmorning'||this.state.location.map==='lastshore'||this.state.location.map==='seaholiday'||this.state.location.map==='homecoming'))return 'nell';
     // Kit waits with Tomas during the aftermath, without changing the saved formation.
     if(this.state.location.map==='laststation')return this.state.activeParty.find(id=>id!=='kit')??'orrin';
     return partyLeader(this.state);
@@ -380,7 +385,7 @@ export class Adventure extends Phaser.Scene {
   private syncWorldFollowers() {
     const mapId=this.state.location.map;
     const stationed=mapId==='airship'||mapId==='laststation'?new Set(visibleObjects(MAPS[mapId],this.state).map(o=>o.sprite)):new Set<string>();
-    const ids=mapId==='lastmorning'||mapId==='lastshore'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
+    const ids=mapId==='lastmorning'||mapId==='lastshore'||mapId==='seaholiday'?[]:this.state.activeParty.filter(id=>id!==this.worldLeader()&&!stationed.has(id));
     if(ids.length===this.followers.length&&ids.every((id,i)=>this.followers[i].getData('hero')===id))return;
     for(const follower of this.followers){
       this.tweens.killTweensOf(follower);this.motion.stop(follower);follower.destroy();
@@ -491,7 +496,7 @@ export class Adventure extends Phaser.Scene {
       ]);return;
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
-    this.ui.panel(`${chapter.title} complete`,chapter.ending.html,[
+    this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
       ...(destination?[{label:`Begin ${destination.title}`,action:()=>{void this.beginNextChapter();}}]:[]),
       {label:chapter.ending.returnLabel,action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
       {label:chapter.ending.exportLabel??'Export departure save',action:()=>exportSave(this.state)},
@@ -501,7 +506,7 @@ export class Adventure extends Phaser.Scene {
   private startBattle(id: string) {
     const definition=ENCOUNTERS[id];
     if(definition.boss==='conduit'&&definition.grounding&&this.state.activeParty.length<2){this.ui.toast('Sealed intake needs two active companions. Add a companion in Equipment.');return;}
-    this.battlePresentation=definition.boss==='emperor'||definition.boss==='lightbearer'?imperialPresentation(definition):definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
+    this.battlePresentation=definition.boss==='benefactor'?benefactorPresentation(definition):definition.boss==='emperor'||definition.boss==='lightbearer'?imperialPresentation(definition):definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }

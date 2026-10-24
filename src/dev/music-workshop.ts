@@ -5,6 +5,23 @@ import { fifthsCircle, isPercussion, pitchFrequency, pitchSteps, transpose, type
 import { Synth } from '../game/synth';
 
 const library: {mode:MusicMode;title:string;group:string}[] = [
+ {mode:'hollowsill',title:'Under the Hanging Sea',group:'7'},
+ {mode:'takenwater',title:'The Bell’s Second Note',group:'7'},
+ {mode:'firstfield',title:'The First Good Year',group:'7'},
+ {mode:'quietward',title:'You May Leave',group:'7'},
+ {mode:'seasonstreet',title:'Snow on the Postal Stair',group:'7'},
+ {mode:'lastrefuge',title:'The Unwritten Hour',group:'7'},
+ {mode:'sunthrone',title:'The Empty Channels',group:'7'},
+ {mode:'homecoming',title:'One Train without Us',group:'7'},
+ {mode:'seaholiday',title:'Until Evening',group:'7'},
+ {mode:'domain-battle',title:'The Road We Know',group:'7'},
+ {mode:'harvest-battle',title:'The Uncut Row',group:'7'},
+ {mode:'hospice-battle',title:'Discharge the Patient',group:'7'},
+ {mode:'seasons-battle',title:'The Winter Kept Here',group:'7'},
+ {mode:'benefactor',title:'The God Who Lent Tomorrow',group:'7'},
+ {mode:'hollow-sun',title:'The Broken Meridian',group:'7'},
+ {mode:'unborrowed',title:'Tomorrow',group:'7'},
+
   {mode:'stillcity',title:'The Procession Never Ends',group:'6'},{mode:'lastpalace',title:'A Place at the Table',group:'6'},
   {mode:'capital-battle',title:'Open the Patient Stair',group:'6'},{mode:'emperor',title:'The Emperor’s Last Day',group:'6'},
   {mode:'lightbearer',title:'The Hand on the Shutter',group:'6'},{mode:'capital-return',title:'The City Comes Down',group:'6'},
@@ -45,7 +62,7 @@ const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
  flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Sine:['sine'],Tritaver:['tritaver'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Organ:['organ'],Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Sine:['sine'],Tritaver:['tritaver'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 const displayBeat=(beat:number)=>{
   const whole=Math.floor(beat),third=Math.round((beat-whole)*3);
