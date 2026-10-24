@@ -7,8 +7,8 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 def svg(w,h,body,view=None):
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="{view or f"0 0 {w} {h}"}"><title>Imperial flagship — editable polygonal vector artwork</title>{body}</svg>\n'
-def poly(points,color,stroke=None):
-    return f'<path d="M{points}Z" fill="{color}"'+(f' stroke="{stroke}" stroke-width="2" stroke-linejoin="miter"' if stroke else '')+'/>'
+def poly(points,color):
+    return f'<path d="M{points}Z" fill="{color}"/>'
 def rect(x,y,w,h,color):return f'<path d="M{x} {y}h{w}v{h}h-{w}Z" fill="{color}"/>'
 def sun(x,y,r):
     pts=' '.join(f'{x+cos(-pi/2+i*pi/12)*(r if i%2==0 else r*.58):.1f} {y+sin(-pi/2+i*pi/12)*(r if i%2==0 else r*.58):.1f}' for i in range(24))
@@ -37,17 +37,30 @@ sky+=poly('0 464 958 464 994 480 0 480','#25363a')
 OUT.joinpath('flagship-deck.svg').write_text(svg(1008,480,sky))
 
 # Whole armored hull. Lower edges stop above the heroes' deck.
-hull=poly('44 102 172 44 366 26 476 46 586 26 780 44 908 102 816 188 658 214 476 242 294 214 136 188','#182e36','#121f29')
-hull+=poly('44 102 172 44 366 26 476 46 586 26 780 44 908 102 738 136 476 170 214 136','#617b79')
+hull=poly('44 102 172 44 366 26 476 46 586 26 780 44 908 102 816 188 658 214 476 242 294 214 136 188','#3c555c')
+hull+=poly('44 102 172 44 366 26 476 46 586 26 780 44 908 102 738 136 476 170 214 136','#708782')
 hull+=poly('44 102 214 136 476 170 476 242 294 214 136 188','#334e53')
 hull+=poly('908 102 738 136 476 170 476 242 658 214 816 188','#233e48')
+# The suspended belly and far side turn away from the upper-left sky light.
+hull+=poly('44 102 136 188 294 214 476 242 476 216 306 191 160 170 98 125','#243e46')
+hull+=poly('908 102 816 188 658 214 476 242 476 216 646 191 792 169 858 126','#192f3d')
 hull+=poly('172 44 366 26 476 46 586 26 780 44 742 64 584 50 476 68 368 50 210 64','#b49b66')
 hull+=poly('136 168 294 192 476 222 658 192 816 168 800 184 476 240 152 184','#aa8d55')
 hull+=poly('268 82 476 108 684 82 650 104 476 132 302 104','#c3b48c')
+hull+=poly('214 136 476 170 738 136 718 146 476 182 234 146','#29454e')
+# Broad armor panels share the same light direction as the smaller machinery.
+hull+=poly('150 112 222 126 213 153 158 141','#738d86')
+hull+=poly('226 128 299 139 294 171 219 157','#607d79')
+hull+=poly('308 141 397 155 394 191 302 176','#4d6b6b')
+hull+=poly('799 114 733 127 741 153 791 142','#405e64')
+hull+=poly('725 130 652 141 657 173 734 157','#344f58')
+hull+=poly('643 143 555 156 559 190 650 176','#29434f')
+for x,y in [(160,122),(230,139),(312,153),(790,124),(720,141),(638,155)]:
+    hull+=rect(x,y,5,4,'#bca675')
 for x in (194,270,346,606,682,758):
     hull+=poly(f'{x} 124 {x+7} 125 {x+1} 184 {x-6} 182','#93a39a')
 for x in (64,818):
-    hull+=poly(f'{x} 74 {x+36} 54 {x+70} 76 {x+78} 162 {x+44} 192 {x+4} 164','#162a35','#111f29')
+    hull+=poly(f'{x} 74 {x+36} 54 {x+70} 76 {x+78} 162 {x+44} 192 {x+4} 164','#162a35')
     hull+=poly(f'{x+6} 78 {x+34} 66 {x+58} 82 {x+60} 150 {x+36} 164 {x+10} 146','#597473')
     hull+=poly(f'{x+8} 154 {x+38} 172 {x+70} 154 {x+60} 176 {x+40} 188 {x+16} 176','#c0a26a')
     for y in (94,110,126):hull+=rect(x+16,y,34,5,'#253d45')
@@ -60,17 +73,17 @@ OUT.joinpath('flagship-hull.svg').write_text(svg(952,256,hull))
 # Independent gun housings share geometry, but are built with distinct side lighting.
 for side in ('port','starboard'):
     for fire in (False,True):
-        body=poly('22 78 40 44 134 40 172 70 180 132 160 168 94 184 28 160 12 126','#162b34','#101e28')
+        body=poly('22 78 40 44 134 40 172 70 180 132 160 168 94 184 28 160 12 126','#4d6867')
         body+=poly('22 78 40 44 134 40 172 70 132 96 62 100','#798c83')
         body+=poly('22 78 62 100 94 184 28 160 12 126','#3d5e60' if side=='port' else '#2b474e')
         body+=poly('62 100 132 96 172 70 180 132 160 168 94 184','#2f4a51' if side=='port' else '#486568')
         body+=poly('28 150 94 172 162 150 160 164 94 184 28 160','#b49a62')
-        body+=poly('54 46 64 20 128 20 140 44 128 80 64 84','#233c45','#10232d')
+        body+=poly('54 46 64 20 128 20 140 44 128 80 64 84','#536b68')
         body+=poly('64 20 128 20 134 32 72 38','#b4b69a')+poly('72 38 134 32 128 80 76 84','#536e6e')
         # Two forward-pointing barrels recoil into a rigid turret, with no body deformation.
         recoil=12 if fire else 0
         for x in (66,104):
-            body+=poly(f'{x} 74 {x+18} 72 {x+20} {144-recoil} {x+2} {152-recoil} {x-4} {143-recoil}','#1a2e38','#101e28')
+            body+=poly(f'{x} 74 {x+18} 72 {x+20} {144-recoil} {x+2} {152-recoil} {x-4} {143-recoil}','#546e71')
             body+=poly(f'{x+2} 76 {x+10} 76 {x+12} {140-recoil} {x+4} {144-recoil}','#81988d')
             body+=poly(f'{x-4} {132-recoil} {x+19} {130-recoil} {x+20} {144-recoil} {x+1} {153-recoil} {x-5} {144-recoil}','#b09a67')
             body+=poly(f'{x+1} {139-recoil} {x+14} {135-recoil} {x+16} {142-recoil} {x+3} {148-recoil}','#111f29')
@@ -80,7 +93,7 @@ for side in ('port','starboard'):
         OUT.joinpath(f'flagship-{side}{"-fire" if fire else ""}.svg').write_text(svg(192,184,body))
 
 for fire in (False,True):
-    body=poly('36 152 42 116 62 110 62 62 80 38 144 38 164 62 164 110 182 116 188 152 162 204 112 232 62 204','#1d3540','#111f29')
+    body=poly('36 152 42 116 62 110 62 62 80 38 144 38 164 62 164 110 182 116 188 152 162 204 112 232 62 204','#4b6569')
     body+=poly('62 62 80 38 144 38 164 62 142 80 82 80','#a6ad95')
     body+=poly('62 62 82 80 112 174 62 204 36 152 42 116 62 110','#4c6b6b')
     body+=poly('164 62 142 80 112 174 162 204 188 152 182 116 164 110','#2e4a54')
@@ -98,7 +111,7 @@ for fire in (False,True):
 # Anonymous boarding marine. 80px actor, soles at y=68, distinct from named soldiers.
 marine='<ellipse cx="40" cy="68" rx="17" ry="4" fill="#14262d" opacity=".55"/>'
 marine+=poly('29 45 38 45 38 65 27 68 24 65','#172c39')+poly('43 45 51 44 54 65 44 68 41 64','#213c48')
-marine+=poly('25 29 38 23 50 26 56 43 49 52 29 50 22 41','#425d61','#152a35')
+marine+=poly('25 29 38 23 50 26 56 43 49 52 29 50 22 41','#425d61')
 marine+=poly('30 29 39 27 47 31 47 47 31 46','#919b89')+poly('24 32 29 34 26 48 20 47 19 38','#536f71')
 marine+=poly('48 30 55 31 59 45 53 49 48 40','#304b56')
 marine+=poly('32 14 46 12 51 20 48 29 38 31 30 25','#baa082')
