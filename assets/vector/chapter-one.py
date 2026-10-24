@@ -179,7 +179,7 @@ def export(chapter='one', only=None):
     modules={p.stem:p for p in KIT.glob('*.svg')}
     for file in sorted((ROOT/f'src/content/chapter-{chapter}/maps').glob('*.json')):
         if only and file.stem!=only:continue
-        data=json.loads(file.read_text());w=data['width']*24;h=data['height']*24;entries=[];floor_depth=-1000
+        data=json.loads(file.read_text());w=data['width']*24;h=data['height']*24;entries=[];floor_depth=-1000;light_floor=[]
         folder=OUT/file.stem;folder.mkdir(exist_ok=True)
         for layer in data['layers']:
             if not layer.get('data'):continue
@@ -198,6 +198,9 @@ def export(chapter='one', only=None):
                     elif chapter=='one':
                         from chapter_one_style import scenery
                         key,url=scenery(module,modules[module])
+                    elif chapter=='two':
+                        from chapter_two_style import scenery
+                        key,url=scenery(module,modules[module],file.stem,ox)
                     instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
@@ -214,6 +217,12 @@ def export(chapter='one', only=None):
                     elif chapter=='one':
                         from chapter_one_style import terrain
                         art=terrain(kind,art,w,h,file.stem,layer['id'])
+                    elif chapter=='two':
+                        from chapter_two_style import terrain
+                        art=terrain(kind,art,w,h,file.stem)
+                        if kind in ('paving','earth','ballast'):
+                            clip=re.search(r'<clipPath[^>]*>(.*?)</clipPath>',art)
+                            if clip:light_floor.append(clip[1])
                     parts.append(art)
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
                 if layer['name']=='Paths and platforms' and (chapter!='one' or file.stem=='station'):
@@ -232,14 +241,17 @@ def export(chapter='one', only=None):
                 entries.append({'key':f'scene-{file.stem}-{layer["id"]}','url':url,'x':0,'y':0,'depth':floor_depth,'layerId':layer['id']})
             entries.extend(instances.values());floor_depth+=1
         # Dimensions allow picking exact source pieces in the Maps inspector.
-        if chapter=='one' and file.stem!='station':
-            from chapter_one_style import spill
+        if (chapter=='one' and file.stem!='station')or chapter=='two':
+            if chapter=='one':from chapter_one_style import spill
+            else:from chapter_two_style import spill
             # Spill inherits the emitter's visibility layer, including the
             # collector's shutdown. Ground light stays below actor shadows.
             for layer in data['layers']:
-                props=[(e['url'].split('/')[-1][:-4],e['x'],e['y'])for e in entries if e['layerId']==layer['id'] and '/chapter-one-kit/'in e['url']]
+                props=[(e['url'].split('/')[-1][:-4],e['x'],e['y'])for e in entries if e['layerId']==layer['id'] and f'/chapter-{chapter}-kit/'in e['url']]
                 light=spill(props)
                 if not light:continue
+                if chapter=='two':
+                    light='<defs><clipPath id="light-floor">'+''.join(light_floor)+'</clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
                 url=f'art/vector/scenes/{file.stem}/light-{layer["id"]}.svg'
                 (ROOT/'public'/url).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>Ground light</title>'+light+'</svg>\n')
                 entries.append({'key':f'scene-{file.stem}-light-{layer["id"]}','url':url,'x':0,'y':0,'depth':-950,'layerId':layer['id']})

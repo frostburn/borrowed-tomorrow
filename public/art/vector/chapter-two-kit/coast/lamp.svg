@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="144" viewBox="0 0 48 144">
+<title>Railway blue hour · lamp</title><metadata>Chapter Two angular variant; source: assets/vector/chapter_two_style.py; editable original: art/vector/scenery/lamp.svg</metadata>
+<ellipse cx="24" cy="26" rx="19" ry="23" fill="#ffd59c" opacity=".1" /><polygon points="17.06,138.00 18.13,130.00 21.13,124.00 21.64,45.00 19.00,39.00 17.48,16.00 24.49,4.00 31.40,15.00 30.62,39.00 27.04,46.00 27.01,124.00 30.96,132.00 32.98,141.00 15.00,144.00" fill="#18243c" />
+<polygon points="21.64,46.00 23.44,46.00 23.06,130.00 20.05,137.00 17.05,139.00 28.00,139.00 26.02,130.00 25.24,45.00" fill="#8197a5" />
+<polygon points="17.47,17.00 24.47,10.00 31.41,17.00 29.73,39.00 18.98,41.00" fill="#bd945a" />
+<polygon points="20.06,20.00 27.93,18.00 27.05,36.00 19.90,38.00" fill="#dca05b" />
+<polygon points="21.80,21.00 26.18,20.00 25.27,35.00 21.70,36.00" fill="#f5dca4" />
+<polyline points="24.44,16.00 24.36,40.00" fill="none" stroke="#253e48" stroke-width="2" />
+<polygon points="13.98,17.00 24.49,3.00 34.89,16.00 29.67,19.00" fill="#293a54" />
+<polygon points="23.65,0.00 26.21,0.00 26.20,5.00 23.62,5.00" fill="#bd945a" />
+</svg>

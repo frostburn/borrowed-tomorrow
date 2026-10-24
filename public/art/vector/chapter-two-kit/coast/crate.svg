@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+<title>Railway blue hour · crate</title><metadata>Chapter Two angular variant; source: assets/vector/chapter_two_style.py; editable original: art/vector/scenery/crate.svg</metadata>
+<polygon points="7.59,19.00 44.66,7.00 66.19,22.00 66.65,62.00 27.00,72.00 6.71,57.00" fill="#615363" />
+<polygon points="7.59,19.00 44.66,7.00 66.19,22.00 28.67,34.00" fill="#9a7e58" />
+<polygon points="28.67,34.00 66.19,22.00 66.65,62.00 27.00,72.00" fill="#806469" />
+<polyline points="10.24,22.00 25.81,35.00 26.10,67.00" fill="none" stroke="#293a54" stroke-width="3" />
+<polyline points="31.47,38.00 62.62,59.00" fill="none" stroke="#9a7e58" stroke-width="4" />
+<polyline points="60.73,27.00 32.09,65.00" fill="none" stroke="#9a7e58" stroke-width="4" />
+</svg>

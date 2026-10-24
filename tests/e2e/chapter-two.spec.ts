@@ -32,8 +32,10 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     const saved=coastCheckpoint('settlementSeen');saved.location={map:'cinderbank',x:39,y:21};await importSave(page,saved);
     await approach(page,'siding-collector');await dialogue(page);
-    await expect(page.getByLabel('Boarding objective')).toContainText('Families aboard: 0/3');
-    await expect(page.getByLabel('Boarding objective')).toContainText('gold loading walk');
+    await expect(page.locator('#canvas')).toHaveAttribute('aria-description',/Families aboard: 0\/3/);
+    await expect(page.getByLabel('Boarding objective')).toHaveCount(0);
+    expect(await page.locator('.topbar').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;})).toBe(true);
+    if(device==='desktop')expect(await page.locator('.initiative').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
     await nativeScene(page,'cinderbank');await capture(page,`loading-walk-${device}`);
     for(let actions=0;actions<3;actions++){
       const button=page.locator('.actions').getByRole('button',{name:/^F\s+Defend$/});await expect(button).toBeEnabled();await button.click();
@@ -146,7 +148,7 @@ test('the three traveling companions fit the compact inventory and phone HUD',as
 });
 
 test('failed region artwork keeps the original departure available for retry',async({page})=>{
-  const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.key==='scenery-coast-crane')!;
+  const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.url.endsWith('/coast-crane.svg'))!;
   const url='**/'+crane.url;await page.route(url,route=>route.abort());
   await page.goto('/');const original=checkpoint('chapterOneComplete');await importSave(page,original);
   await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();

@@ -1,0 +1,377 @@
+{
+  "profiles": {
+    "coast": {
+      "ambient": [
+        0.68,
+        0.76,
+        0.91
+      ],
+      "lamps": [
+        {
+          "x": 540,
+          "y": 510,
+          "height": 240,
+          "radius": 900,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        },
+        {
+          "x": 1270,
+          "y": 580,
+          "height": 240,
+          "radius": 900,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "infirmary": {
+      "ambient": [
+        0.78,
+        0.76,
+        0.78
+      ],
+      "lamps": [
+        {
+          "x": 830,
+          "y": 630,
+          "height": 180,
+          "radius": 880,
+          "strength": 0.45,
+          "fill": 0.7,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "cinderbank": {
+      "ambient": [
+        0.65,
+        0.73,
+        0.89
+      ],
+      "lamps": [
+        {
+          "x": 520,
+          "y": 600,
+          "height": 240,
+          "radius": 900,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        },
+        {
+          "x": 1190,
+          "y": 570,
+          "height": 240,
+          "radius": 900,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-coast-signals": {
+      "ambient": [
+        0.68,
+        0.76,
+        0.9
+      ],
+      "lamps": [
+        {
+          "x": 510,
+          "y": 420,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-coast-loading": {
+      "ambient": [
+        0.68,
+        0.76,
+        0.9
+      ],
+      "lamps": [
+        {
+          "x": 510,
+          "y": 420,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-coast-collector": {
+      "ambient": [
+        0.68,
+        0.76,
+        0.9
+      ],
+      "lamps": [
+        {
+          "x": 510,
+          "y": 420,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-coast-recapture": {
+      "ambient": [
+        0.68,
+        0.76,
+        0.9
+      ],
+      "lamps": [
+        {
+          "x": 510,
+          "y": 420,
+          "height": 240,
+          "radius": 1000,
+          "strength": 0.65,
+          "color": [
+            0.5,
+            0.72,
+            1.05
+          ],
+          "fill": 0.5,
+          "shadowStrength": 0
+        }
+      ]
+    }
+  },
+  "props": {
+    "lamp": [
+      {
+        "x": 24,
+        "y": 134,
+        "height": 108,
+        "radius": 235,
+        "strength": 1.15
+      }
+    ],
+    "engine": [
+      {
+        "x": 41,
+        "y": 179,
+        "height": 80,
+        "radius": 265,
+        "strength": 1.2,
+        "fill": 0.2
+      }
+    ],
+    "station-house": [
+      {
+        "x": 42,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 84,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 204,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      }
+    ],
+    "collector-machine": [
+      {
+        "x": 60,
+        "y": 135,
+        "height": 104,
+        "radius": 220,
+        "strength": 1.15,
+        "color": [
+          0.35,
+          0.9,
+          1.1
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.45
+      }
+    ],
+    "miners-cottage": [
+      {
+        "x": 51,
+        "y": 181,
+        "height": 65,
+        "radius": 220,
+        "strength": 1.65,
+        "beam": {
+          "reach": 116,
+          "width": 18,
+          "spread": 0.4
+        }
+      }
+    ],
+    "coast-coal-shed": [
+      {
+        "x": 45,
+        "y": 181,
+        "height": 62,
+        "radius": 230,
+        "strength": 1.6,
+        "beam": {
+          "reach": 118,
+          "width": 16,
+          "spread": 0.4
+        }
+      }
+    ],
+    "ward-wall": [
+      {
+        "x": 55,
+        "y": 120,
+        "height": 70,
+        "radius": 280,
+        "strength": 1.05,
+        "shadowStrength": 0.35,
+        "beam": {
+          "reach": 172,
+          "width": 24,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 163,
+        "y": 120,
+        "height": 70,
+        "radius": 280,
+        "strength": 1.05,
+        "shadowStrength": 0.35,
+        "beam": {
+          "reach": 172,
+          "width": 24,
+          "spread": 0.38
+        }
+      }
+    ],
+    "ward-stove": [
+      {
+        "x": 34,
+        "y": 151,
+        "height": 68,
+        "radius": 280,
+        "strength": 1.45,
+        "fill": 0.3,
+        "shadowStrength": 0.4
+      }
+    ],
+    "coach": [
+      {
+        "x": 42,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 84,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 126,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 168,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      },
+      {
+        "x": 210,
+        "y": 160,
+        "height": 96,
+        "radius": 240,
+        "strength": 0.42,
+        "shadowStrength": 0.18,
+        "fill": 0.35
+      }
+    ]
+  }
+}

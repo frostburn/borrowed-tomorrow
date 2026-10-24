@@ -8,6 +8,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 from station import COLORS,NS,path,fmt
 from chapter_one_landforms import crossing,terrain as landform
+from scene_lighting import spill as ground_spill
 
 ROOT=Path(__file__).resolve().parents[2]
 LIGHTS=json.loads((ROOT/'src/content/chapter-one/lighting.json').read_text())
@@ -82,13 +83,4 @@ def terrain(kind,base,w,h,scene='',layer=0):
  return landform(scene,kind,base,w,h,layer)
 
 def spill(pieces):
- out=[]
- for name,x,y in pieces:
-  for light in LIGHTS['props'].get(name,[]):
-   cx,cy=x+light['x'],y+light['y'];beam=light.get('beam');color='#9ac9c5'if light.get('color')else'#efbd82'
-   if beam:
-    a=beam['width'];r=beam['reach'];b=a+r*beam['spread']
-    out.append(f'<path d="M{cx-a} {cy} L{cx+a} {cy} L{cx+r*.1+b} {cy+r} L{cx+r*.1-b} {cy+r}Z" fill="{color}" opacity=".12"/>')
-   else:
-    out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="91" ry="32" fill="{color}" opacity=".08"/><ellipse cx="{cx}" cy="{cy}" rx="48" ry="18" fill="{color}" opacity=".12"/>')
- return ''.join(out)
+ return ground_spill(pieces,LIGHTS['props'])

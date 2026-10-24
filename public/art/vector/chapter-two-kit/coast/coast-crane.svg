@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="216" viewBox="0 0 192 216"><title>Railway blue hour · coast-crane</title><metadata>Chapter Two angular variant; source: assets/vector/chapter_two_style.py; editable original: art/vector/scenery/coast-crane.svg</metadata>
+<polygon points="13.00,197.00 75.00,190.00 94.00,202.00 85.00,215.00 14.00,216.00 3.00,208.00" fill="#566881" />
+<polygon points="11.00,195.00 75.00,189.00 89.00,198.00 25.00,205.00" fill="#8a99a8" />
+<polygon points="26.00,195.00 31.00,68.00 49.00,55.00 65.00,70.00 69.00,192.00" fill="#24354e" />
+<polygon points="33.00,74.00 44.00,69.00 55.00,76.00 60.00,192.00 33.00,196.00" fill="#3a536d" />
+<polyline points="34.00,88.00 57.00,114.00 35.00,123.00" fill="none" stroke="#7391a4" stroke-width="4" />
+<polyline points="34.00,122.00 57.00,148.00 35.00,157.00" fill="none" stroke="#7391a4" stroke-width="4" />
+<polyline points="34.00,156.00 57.00,182.00 35.00,191.00" fill="none" stroke="#7391a4" stroke-width="4" />
+<polygon points="33.00,69.00 14.00,25.00 21.00,18.00 53.00,62.00" fill="#30445e" />
+<polygon points="18.00,18.00 145.00,5.00 181.00,24.00 174.00,40.00 55.00,82.00 34.00,70.00" fill="#24354e" />
+<polygon points="25.00,23.00 144.00,11.00 168.00,25.00 53.00,73.00 42.00,67.00 158.00,24.00 143.00,18.00 35.00,30.00" fill="#7391a4" />
+<polyline points="44.00,32.00 56.00,61.00 77.00,26.00 89.00,49.00 110.00,20.00 122.00,37.00 143.00,16.00" fill="none" stroke="#3a536d" stroke-width="4" />
+<polygon points="19.00,17.00 145.00,3.00 163.00,11.00 144.00,10.00 110.00,16.00 73.00,18.00 36.00,25.00 18.00,24.00" fill="#b5c1cc" />
+<ellipse cx="173.0" cy="29.0" rx="11" ry="12" fill="#3a536d" />
+<ellipse cx="173.0" cy="29.0" rx="6" ry="7" fill="#bd9968" />
+<ellipse cx="173.0" cy="29.0" rx="3" ry="4" fill="#1b2b43" />
+<polyline points="169.00,40.00 169.00,155.00" fill="none" stroke="#7391a4" stroke-width="2" />
+<polyline points="177.00,40.00 177.00,155.00" fill="none" stroke="#7391a4" stroke-width="2" />
+<polygon points="166.00,155.00 180.00,155.00 181.00,164.00 176.00,168.00 176.00,176.00 169.00,179.00 163.00,174.00 163.00,170.00 167.00,170.00 170.00,174.00 172.00,172.00 172.00,165.00 166.00,162.00" fill="#bd9968" />
+<polygon points="27.00,142.00 16.00,144.00 16.00,169.00 28.00,168.00" fill="#625649" />
+<ellipse cx="25.0" cy="154.0" rx="9" ry="11" fill="#3a536d" />
+<ellipse cx="25.0" cy="154.0" rx="5" ry="6" fill="#bd9968" />
+<polyline points="26.00,154.00 28.00,116.00 38.00,99.00" fill="none" stroke="#7391a4" stroke-width="3" />
+</svg>

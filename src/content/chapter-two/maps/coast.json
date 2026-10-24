@@ -2049,6 +2049,11 @@
               "name": "kind",
               "type": "string",
               "value": "story"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "kitJoined"
             }
           ],
           "x": 564,
@@ -2083,6 +2088,11 @@
               "name": "kind",
               "type": "string",
               "value": "story"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "kitJoined"
             }
           ],
           "x": 1164,
@@ -2127,6 +2137,11 @@
               "name": "kind",
               "type": "string",
               "value": "story"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "trainRaidWon"
             }
           ],
           "x": 576,
@@ -2155,6 +2170,11 @@
               "name": "kind",
               "type": "string",
               "value": "exit"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "prisonersFreed"
             }
           ],
           "x": 348,

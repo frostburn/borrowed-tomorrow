@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="120" viewBox="0 0 240 120"><title>Railway ward · ward-wall</title><metadata>Chapter Two angular variant; source: assets/vector/chapter_two_style.py; editable original: art/vector/scenery/ward-wall.svg</metadata>
+<polygon points="0.00,6.00 240.00,-10.00 240.00,117.00 0.00,121.80" fill="#736e77" />
+<polygon points="0.00,9.86 240.00,-5.77 240.00,79.96 0.00,88.03" fill="#9a8e80" />
+<polygon points="0.00,10.82 240.00,-4.71 240.00,16.46 0.00,22.41" fill="#b6a18a" />
+<polygon points="0.00,88.99 240.00,81.02 240.00,117.00 0.00,121.80" fill="#4c555f" />
+<polygon points="0.00,85.13 240.00,76.78 240.00,83.13 0.00,90.92" fill="#ac8a67" />
+<polygon points="0.00,116.01 240.00,110.65 240.00,117.00 0.00,121.80" fill="#313f52" />
+<polygon points="0.00,6.00 240.00,-10.00 240.00,-4.71 0.00,10.82" fill="#a09385" />
+<polygon points="31.00,78.19 31.00,34.22 40.00,18.04 54.00,12.26 69.00,16.28 79.00,30.61 79.00,76.41" fill="#30445e" />
+<polygon points="35.00,76.08 35.00,34.98 43.00,22.77 55.00,17.13 67.00,21.35 74.00,32.87 74.00,74.61" fill="#b0714e" />
+<polygon points="38.00,74.01 38.00,36.78 46.00,26.52 56.00,22.00 65.00,26.42 71.00,36.01 71.00,72.73" fill="#dba36b" />
+<polygon points="40.00,69.03 40.00,37.65 48.00,28.38 55.00,26.01 55.00,68.42" fill="#e8ddbb" />
+<polyline points="55.00,17.13 55.00,77.30" fill="none" stroke="#625649" stroke-width="3" />
+<polyline points="36.00,43.74 75.00,41.76" fill="none" stroke="#625649" stroke-width="3" />
+<polyline points="36.00,61.36 75.00,59.66" fill="none" stroke="#625649" stroke-width="2" />
+<polygon points="27.00,78.34 83.00,76.26 83.00,81.25 27.00,83.22" fill="#ac8a67" />
+<polygon points="139.00,74.18 139.00,28.32 148.00,11.47 162.00,5.48 177.00,9.71 187.00,24.66 187.00,72.40" fill="#30445e" />
+<polygon points="143.00,71.99 143.00,29.13 151.00,16.41 163.00,10.56 175.00,14.99 182.00,27.01 182.00,70.51" fill="#b0714e" />
+<polygon points="146.00,69.83 146.00,31.01 154.00,20.33 164.00,15.64 173.00,20.27 179.00,30.28 179.00,68.56" fill="#dba36b" />
+<polygon points="148.00,64.64 148.00,31.92 156.00,22.27 163.00,19.81 163.00,64.04" fill="#e8ddbb" />
+<polyline points="163.00,10.56 163.00,73.29" fill="none" stroke="#625649" stroke-width="3" />
+<polyline points="144.00,38.26 183.00,36.28" fill="none" stroke="#625649" stroke-width="3" />
+<polyline points="144.00,56.64 183.00,54.93" fill="none" stroke="#625649" stroke-width="2" />
+<polygon points="135.00,74.33 191.00,72.25 191.00,77.45 135.00,79.42" fill="#ac8a67" />
+</svg>

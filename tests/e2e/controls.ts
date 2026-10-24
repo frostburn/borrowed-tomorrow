@@ -8,7 +8,7 @@ import { BATTLE_MAPS } from '../../src/content/battle-maps';
 import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
 import type { MapId } from '../../src/rules/state';
 import { visibleSceneArt } from '../../src/content/scene-art';
-import { chapterOneLight } from '../../src/game/world-light';
+import { sceneLight } from '../../src/game/world-light';
 
 export async function inspect(page: Page) { return page.evaluate(()=>window.borrowedTomorrow.inspect()); }
 export async function clickWorld(page: Page, x: number, y: number) {
@@ -78,7 +78,7 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
 /** Check opaque sprite pixels at their floor position, allowing neighboring actors. */
 export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number},maxObscuredFraction=0){
   const snapshot=await inspect(page),tiles=MAPS[snapshot.state.location.map].tiles;
-  const rig=tiles?chapterOneLight(String(properties(tiles).sceneArt),visibleSceneArt(tiles,snapshot.state)??[]):undefined;
+  const rig=tiles?sceneLight(String(properties(tiles).sceneArt),visibleSceneArt(tiles,snapshot.state)??[]):undefined;
   await expect.poll(()=>page.evaluate(async({spriteUrl,at,rig})=>{
     const actor=new Image();actor.src=spriteUrl;await actor.decode();
     const x=Math.round((at.x+.5)*24)-40,y=Math.round((at.y+.5)*24)+7-68;

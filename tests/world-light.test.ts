@@ -1,25 +1,37 @@
 import { describe, expect, it } from 'vitest';
-import { castShadows, lightPixels, lampStrength, stationLight, chapterOneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadows, lightPixels, lampStrength, stationLight, sceneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
+import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
+import { actorPlanes } from '../src/game/actor-planes';
 
 const lamp={x:100,y:100,height:108,radius:235,strength:1.15};
 const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One world and battle floor, without opting other chapters in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES)]){
-      const rig=chapterOneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
+  it('covers every Chapter One/Two world and battle floor, without opting later chapters in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES)]){
+      const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(chapterOneLight('coast',[])).toBeUndefined();
+    expect(sceneLight('northglass',[])).toBeUndefined();
+  });
+  it('shares ward window/stove sources and removes the Cinderbank collector glow at victory',()=>{
+    const ward=CHAPTER_TWO_MAPS.infirmary.tiles!,village=CHAPTER_TWO_MAPS.cinderbank.tiles!;
+    const hospital=sceneLight('infirmary',visibleSceneArt(ward,{flags:{}})??[])!;
+    expect(hospital.lamps.filter(l=>l.beam)).toHaveLength(10);
+    expect(hospital.lamps.some(l=>l.x===946&&l.y===535)).toBe(true);
+    const rig=(won:boolean)=>sceneLight('cinderbank',visibleSceneArt(village,{flags:{coastCollectorWon:won}})??[])!;
+    expect(rig(false).lamps.some(l=>l.x===924&&l.y===423)).toBe(true);
+    expect(rig(true).lamps.some(l=>l.x===924&&l.y===423)).toBe(false);
+    expect(rig(true).lamps.some(l=>l.beam)).toBe(true);
   });
   it('removes the collector light with its working casing and retains the village windows',()=>{
     const map=CHAPTER_ONE_MAPS.rillbridge.tiles!;
-    const rig=(released:boolean)=>chapterOneLight('rillbridge',visibleSceneArt(map,{flags:{villageFreed:released}})??[])!;
+    const rig=(released:boolean)=>sceneLight('rillbridge',visibleSceneArt(map,{flags:{villageFreed:released}})??[])!;
     expect(rig(false).lamps.some(l=>l.x===1404&&l.y===399)).toBe(true);
     expect(rig(true).lamps.some(l=>l.x===1404&&l.y===399)).toBe(false);
     expect(rig(true).lamps.some(l=>l.beam)).toBe(true);
@@ -83,4 +95,31 @@ it('turns broad highlight planes toward the light without changing the silhouett
   // putting the brightest facet on the side away from the real light.
   expect(flipped.data[b]).toBeGreaterThan(flipped.data[a]+10);
   for(let i=3;i<data.length;i+=4){expect(left[i]).toBe(255);expect(right[i]).toBe(255);}
+});
+
+it('matches exhaustive lighting at radius/beam edges, including rotated and mirrored frames',()=>{
+  // Preserve the original exhaustive shader as a pixel oracle for the fast
+  // frame rejection path. It deliberately visits every source for every pixel.
+  const w=18,h=22,data=new Uint8ClampedArray(w*h*4);
+  for(let i=0;i<w*h;i++)data.set([110+i%50,75+i%25,80,i%7?255:0],i*4);
+  const source={data,width:w,height:h,colorSpace:'srgb'} as ImageData,planes=actorPlanes(source);
+  const lights:WorldLight={ambient:NIGHT_AMBIENT,lamps:[...[-100,18,45,100,900].flatMap(x=>[32,65,140].map(y=>({x,y,height:90,radius:125,strength:1.2}))),{x:35,y:60,height:80,radius:160,strength:.8,fill:.2,beam:{reach:70,width:8,spread:.38}}]};
+  for(const [x,y,sx,sy,r]of [[28,90,1,1,0],[28,90,-1,1,0],[70,61,1.7,-1,.7],[31,130,-1.5,1.4,-.8],[33,59,1,1,0],[140,90,1,1,2.3]]){
+    const expected=new Uint8ClampedArray(data.length),actual={...source,data:new Uint8ClampedArray(data.length)},cos=Math.cos(r),sin=Math.sin(r);
+    for(let i=0;i<data.length;i+=4){
+      expected[i+3]=data[i+3];if(!data[i+3])continue;
+      const dx=(i/4%w-9)*sx,dy=(Math.floor(i/4/w)-19)*sy,wx=x+dx*cos-dy*sin,height=Math.max(0,-dx*sin-dy*cos),at=i/4*3;
+      const nx=planes[at]/100,ny=planes[at+1]/100,nz=planes[at+2]/100,normalX=nx*Math.sign(sx)*cos+ny*Math.sign(sy)*sin,normalY=ny*Math.sign(sy)*cos-nx*Math.sign(sx)*sin;
+      let power=0,red=0,green=0,blue=0;
+      for(const lamp of lights.lamps){
+        const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,length=Math.max(1,Math.hypot(lx,ly,lz)),dot=(normalX*lx+normalY*ly+nz*lz)/length,p=lampStrength(lamp,wx,y,height);
+        const band=dot>.55?1.08:dot>.05?.72:.30,fill=lamp.fill??0,response=p*(fill+(1-fill)*band),color=lamp.color??[1.12,.78,.38];
+        power+=p;red+=response*color[0];green+=response*color[1];blue+=response*color[2];
+      }
+      const f=power?Math.min(.65,power)/power:0;
+      expected[i]=data[i]*(lights.ambient[0]+f*red);expected[i+1]=data[i+1]*(lights.ambient[1]+f*green);expected[i+2]=data[i+2]*(lights.ambient[2]+f*blue);
+    }
+    lightPixels(source,actual,lights,x,y,9,19,sx,sy,r);
+    expect(actual.data).toEqual(expected);
+  }
 });
