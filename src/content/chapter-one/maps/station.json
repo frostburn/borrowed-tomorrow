@@ -855,11 +855,6 @@
           "name": "sort",
           "type": "bool",
           "value": true
-        },
-        {
-          "name": "hiddenFlag",
-          "type": "string",
-          "value": "raidSeen"
         }
       ]
     },

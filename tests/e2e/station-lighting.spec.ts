@@ -11,7 +11,7 @@ test.use({deviceScaleFactor:1.25});
 async function renderedLight(page:Page){
   const snapshot=await inspect(page),actor=snapshot.actors.find(a=>a.hero==='nell')!;
   return page.evaluate(async({actor,pieces,url})=>{
-    const module='/src/game/world-light.ts';const {lightPixels,stationLight,castShadow}=await import(/* @vite-ignore */module);
+    const module='/src/game/world-light.ts';const {lightPixels,stationLight,castShadows}=await import(/* @vite-ignore */module);
     const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();return image;};
     const native=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!,ctx=native.getContext('2d')!,view=window.borrowedTomorrow.inspect().view;
     const image=await decode(url),sprite=document.createElement('canvas');sprite.width=sprite.height=80;
@@ -22,7 +22,7 @@ async function renderedLight(page:Page){
     for(let i=0;i<actual.length;i+=4){if(source.data[i+3]<254)continue;compared++;red+=actual[i];blue+=actual[i+2];if([0,1,2].some(c=>Math.abs(actual[i+c]-lit.data[i+c])>3))wrong++;}
     const floor=document.createElement('canvas');floor.width=1008;floor.height=624;const f=floor.getContext('2d')!;
     for(const p of [...pieces!].sort((a,b)=>a.depth-b.depth))f.drawImage(await decode(`/${p.url}`),p.x,p.y);
-    const cast=castShadow(rig,actor.x,actor.y);let shadowPixels=0;
+    const cast=castShadows(rig,actor.x,actor.y)[0];let shadowPixels=0;
     if(cast){
       for(let sy=5;sy<60;sy++)for(let sx=20;sx<60;sx++){
         if(source.data[(sy*80+sx)*4+3]<250)continue;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { castShadow, lightPixels, lampStrength, stationLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadows, lightPixels, lampStrength, stationLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 
 const lamp={x:100,y:100,height:108,radius:235,strength:1.15};
 const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
@@ -9,17 +9,24 @@ describe('world-space actor lighting',()=>{
   it('casts window shadows inside the painted beams, with no light behind the house',()=>{
     const windows=stationLight([{x:120,y:48,url:'/station-house.svg'}]);
     expect(windows.lamps).toHaveLength(3);
-    expect(castShadow(windows,204,283)?.light.beam).toBeDefined();
-    expect(castShadow(windows,204,283)!.dy).toBeGreaterThan(0);
-    expect(castShadow(windows,204,240)).toBeUndefined();
-    expect(castShadow(windows,260,283)).toBeUndefined();
+    expect(castShadows(windows,204,283)[0]?.light.beam).toBeDefined();
+    expect(castShadows(windows,204,283)[0]!.dy).toBeGreaterThan(0);
+    expect(castShadows(windows,204,240)[0]).toBeUndefined();
+    expect(castShadows(windows,260,283)[0]).toBeUndefined();
   });
-  it('fills the entrance and arrest staging with festival warmth without extra hard shadows',()=>{
+  it('fills the entrance and arrest staging with festival warmth with restrained overlapping shadows',()=>{
     const festival=stationLight([{x:456,y:192,url:'/bunting.svg'}]);
     for(const [x,y] of [[516,403],[492,307],[636,331],[780,283]]){
       expect(festival.lamps.reduce((sum,l)=>sum+lampStrength(l,x,y),0)).toBeGreaterThan(.2);
-      expect(castShadow(festival,x,y)).toBeUndefined();
+      expect(castShadows(festival,x,y).length).toBeLessThanOrEqual(3);
     }
+  });
+  it('retains several sources while bounding count and cumulative darkness',()=>{
+    const crowded={...rig,lamps:Array.from({length:8},(_,i)=>({...lamp,x:60+i*12}))};
+    const shadows=castShadows(crowded,100,140);
+    expect(shadows).toHaveLength(3);
+    expect(shadows.reduce((sum,s)=>sum+s.alpha,0)).toBeLessThanOrEqual(.450001);
+    expect(new Set(shadows.map(s=>s.dx)).size).toBe(3);
   });
   it('preserves native dimensions, exact alpha and the source when shading',()=>{
     const source=pixels([150,100,80,255,80,90,100,117,0,0,0,0]),before=source.data.slice(),output=pixels(Array(12).fill(0));
@@ -37,11 +44,11 @@ describe('world-space actor lighting',()=>{
     expect(lampStrength(lamp,600,600)).toBe(0);
   });
   it('casts away from the lamp on both sides, stays bounded and fades out',()=>{
-    expect(castShadow(rig,60,140)!.dx).toBeLessThan(0);
-    expect(castShadow(rig,140,140)!.dx).toBeGreaterThan(0);
-    expect(castShadow(rig,100,170)!.dy).toBeGreaterThan(0);
-    expect(castShadow(rig,600,600)).toBeUndefined();
+    expect(castShadows(rig,60,140)[0]!.dx).toBeLessThan(0);
+    expect(castShadows(rig,140,140)[0]!.dx).toBeGreaterThan(0);
+    expect(castShadows(rig,100,170)[0]!.dy).toBeGreaterThan(0);
+    expect(castShadows(rig,600,600)[0]).toBeUndefined();
     const low={...rig,lamps:[{...lamp,height:40}]};
-    expect(Math.abs(castShadow(low,140,140)!.dx)).toBeLessThanOrEqual(105);
+    expect(Math.abs(castShadows(low,140,140)[0]!.dx)).toBeLessThanOrEqual(105);
   });
 });

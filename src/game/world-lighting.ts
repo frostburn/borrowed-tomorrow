@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { mapSize, TILE, walkable, type MapData } from '../content/maps';
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
-import { castShadow, lightPixels, stationLight, type WorldLight } from './world-light';
+import { castShadows, lightPixels, stationLight, type WorldLight } from './world-light';
 
 let serial=0;
 interface FrameSurface { pixels:ImageData; shadow:HTMLCanvasElement }
@@ -43,7 +43,7 @@ export class WorldLighting {
     for(const actor of this.actors){
       if(!actor.active||!actor.visible||!actor.alpha||actor.getData('projection'))continue;
       ctx.save();ctx.globalAlpha*=.18*actor.alpha;ctx.fillStyle='#172038';ctx.beginPath();ctx.ellipse(actor.x,actor.y-2,10*Math.abs(actor.scaleX),3,0,0,Math.PI*2);ctx.fill();ctx.restore();
-      const cast=castShadow(this.rig,actor.x,actor.y);if(!cast)continue;
+      for(const cast of castShadows(this.rig,actor.x,actor.y)){
       const frame=this.surface(actor.frame),ox=actor.displayOriginX,oy=actor.displayOriginY;
       // Project the live frame onto the ground from its sole pivot. Flattened
       // silhouettes change direction/length with position and retain the gait.
@@ -54,6 +54,7 @@ export class WorldLighting {
       }
       ctx.transform(1,0,-cast.dx/58,-cast.dy/58,0,0);ctx.rotate(actor.rotation);ctx.scale(actor.scaleX,actor.scaleY);
       ctx.drawImage(frame.shadow,-ox,-oy);ctx.restore();
+      }
     }
     ctx.restore();
   }

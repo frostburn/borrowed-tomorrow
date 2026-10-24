@@ -26,6 +26,7 @@ describe('traced SVG scenes',()=>{
   const station=CHAPTER_ONE_MAPS.station.tiles!,village=CHAPTER_ONE_MAPS.rillbridge.tiles!;
   expect(visibleSceneArt(station,{flags:{}})!.some(p=>p.key==='scenery-prison-coach')).toBe(true);
   expect(visibleSceneArt(station,{flags:{raidSeen:true}})!.some(p=>p.key==='scenery-prison-coach')).toBe(false);
+  for(const raidSeen of [false,true])expect(visibleSceneArt(station,{flags:{raidSeen}})!.some(p=>p.url.endsWith('/bunting.svg'))).toBe(true);
   for(const released of [false,true]){
    const pieces=visibleSceneArt(village,{flags:{villageFreed:released}})!;
    expect(pieces.some(p=>p.key==='scenery-collector-machine')).toBe(!released);
