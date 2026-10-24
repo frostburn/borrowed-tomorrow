@@ -5,15 +5,15 @@ import type {Shot} from '../cinematics';
 const l=(who:string,text:string,shot?:Shot)=>({...SAY(who,text,who==='The Benefactor'?'benefactor':undefined),shot});
 const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines:lines.map((line,index)=>index===1?{...line,shot:{focus:map==='homecoming'?{x:24,y:18}:map==='seaholiday'?{x:31,y:24}:{x:32,y:29},duration:900,...line.shot}}:line)});
 export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
- l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:22},cut:true,music:'hollowsill'}),
+ l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:29},cut:true,music:'hollowsill'}),
  l('Orrin','The mooring line’s tight. Alda, keep the drum locked.'),
  l('Alda','I can do that. Coming back will be your part.'),
- l('The hollow sun','A gold ring turns above the far stair. The figure beneath it lowers its hands across the road.',{focus:{x:32,y:15},duration:2200}),
+ l('The hollow sun','A gold ring turns above the far stair. The figure beneath it lowers its hands across the road.',{focus:{x:32,y:22},duration:2200}),
  l('The Benefactor','Return to your ship. You have no place here.'),
  l('Celia','There are people in that light.',{focus:{x:32,y:29}}),
  l('Nell','Let them go.'),
- l('The Benefactor','Their lives are in my keeping. You will go no farther.',{focus:{x:32,y:15},duration:1200}),
- l('The crossing','The figure rises through the hanging water. Its hands lift clear of the stair.',{focus:{x:32,y:15},effect:'domain-withdraw',duration:1600}),
+ l('The Benefactor','Their lives are in my keeping. You will go no farther.',{focus:{x:32,y:22},duration:1200}),
+ l('The crossing','The figure rises through the hanging water. Its hands lift clear of the stair.',{focus:{x:32,y:22},effect:'domain-withdraw',duration:1600}),
  l('Kit','There are stairs down to them. I’ll mark the turns.',{focus:{x:32,y:29}}),
  l('Nell','Then we start there.'),
 ]);

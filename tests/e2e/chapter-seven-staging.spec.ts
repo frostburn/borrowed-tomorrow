@@ -32,7 +32,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await importSave(page,chapterSevenStart());await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-crossing');
   for(let i=0;i<3;i++)await next(page);
-  if(device==='desktop'){await page.waitForTimeout(200);const start=(await inspect(page)).view.scrollY;await page.mouse.move(0,0);await page.waitForTimeout(900);const middle=(await inspect(page)).view.scrollY;expect(middle).toBeLessThan(start-40);await page.waitForTimeout(1400);expect((await inspect(page)).view.scrollY).toBeLessThan(middle-30);}
+  if(device==='desktop'){await page.waitForTimeout(200);const start=(await inspect(page)).view.scrollY;await page.mouse.move(0,0);await page.waitForTimeout(900);const middle=(await inspect(page)).view.scrollY;expect(middle).toBeLessThan(start-40);await page.waitForTimeout(1400);expect((await inspect(page)).view.scrollY).toBeLessThan(middle-20);}
   await capture(page,`crossing-reveal-${device}`);await next(page);await expect(page.locator('.dialogue h2')).toHaveText('The Benefactor');await expect(page.locator('.dialogue')).toContainText('Return to your ship.');await page.waitForTimeout(1000);await page.mouse.move(0,0);await capture(page,`crossing-warning-${device}`);
   if(device==='desktop'){
    for(let i=0;i<3;i++)await next(page);await page.waitForTimeout(600);await next(page);await page.mouse.move(0,0);await page.waitForTimeout(150);const first=await chest(page);await page.waitForTimeout(800);expect(await chest(page)).not.toBe(first);await page.waitForTimeout(900);await capture(page,'crossing-withdrawal');await dialogue(page);

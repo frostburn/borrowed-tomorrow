@@ -23,7 +23,7 @@ function journey(state=chapterSevenStart()){
 it('withdraws the opening god on scene completion and keeps the cleared crossing on restore',()=>{
  const j=journey(),tiles=MAPS.hollowsill.tiles!,god='scene-seven-hollowsill-distant-god';
  resumeChapter(j.h);const d=j.read()!;
- expect(d.lines[3].shot).toMatchObject({focus:{x:32,y:15},duration:2200});
+ expect(d.lines[3].shot).toMatchObject({focus:{x:32,y:22},duration:2200});
  expect(d.lines.some(l=>l.who==='The Benefactor')).toBe(true);expect(d.lines.some(l=>l.shot?.effect==='domain-withdraw')).toBe(true);
  expect(visibleSceneArt(tiles,j.s)!.some(p=>p.key===god)).toBe(true);expect(j.s.flags.domainEntered).toBeUndefined();
  j.finish();const restored=journey(decodeSave(JSON.stringify(j.s)));resumeChapter(restored.h);
