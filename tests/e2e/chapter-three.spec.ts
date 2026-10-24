@@ -38,6 +38,7 @@ test('canonical Chapter Three replays arrival with earned equipment and preserve
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).state.flags.capitalSeen).toBe(true);
  await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();
+ await expect.poll(async()=>(await inspect(page)).state.chapter).toBe('chapter-two');
  expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',coins:37,inventory:original.inventory});expect(errors).toEqual([]);
 });
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
@@ -91,7 +92,8 @@ test('covered Chapter Three saves restore onto connected native floors at fracti
  try{
   const page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   for(const [map,point,startName] of [['northglass',{x:47,y:12},'start'],['relayhall',{x:32,y:21},'from-siding'],['conduit',{x:32,y:17},'from-gallery']] as const){
-   const saved=palaceCheckpoint('conduitGuardWon');saved.location={map,...point};saved.party[0].hp=19;saved.bandages=7;
+   // Exercise free exploration rather than the automatic post-boss cinematic.
+   const saved=palaceCheckpoint('conduitSeen');saved.location={map,...point};saved.party[0].hp=19;saved.bandages=7;
    await importSave(page,saved);const restored=(await inspect(page)).state;
    expect(walkable(MAPS[map],restored.location.x,restored.location.y,restored)).toBe(true);
    expect(restored).toMatchObject({flags:saved.flags,inventory:saved.inventory,party:saved.party,activeParty:saved.activeParty,coins:saved.coins,bandages:7});
