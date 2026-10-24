@@ -1,17 +1,20 @@
 import { actorPlanes } from './actor-planes';
-import definitions from '../content/chapter-one/lighting.json' with { type:'json' };
+import chapterOne from '../content/chapter-one/lighting.json' with { type:'json' };
+import chapterTwo from '../content/chapter-two/lighting.json' with { type:'json' };
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
 export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; color?:readonly number[]; beam?:{reach:number;width:number;spread:number} }
 export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[] }
+interface LightRegistry { profiles:Record<string,WorldLight>; props:Record<string,WorldLamp[]> }
+const registries:readonly LightRegistry[]=[chapterOne,chapterTwo];
 export const NIGHT_AMBIENT=[.62,.70,.88] as const;
 const WARM=[1.12,.78,.38] as const;
 export function stationLight(pieces:readonly {x:number;y:number;url:string}[]):WorldLight{
-  return chapterOneLight('station',pieces)!;
+  return sceneLight('station',pieces)!;
 }
 /** Shared with the compiler: visible emitters, local ambient and broad bounce. */
-export function chapterOneLight(id:string,pieces:readonly {x:number;y:number;url:string}[]):WorldLight|undefined{
-  const registry=definitions as {profiles:Record<string,WorldLight>;props:Record<string,WorldLamp[]>};
-  const profile=registry.profiles[id];if(!profile)return;
+export function sceneLight(id:string,pieces:readonly {x:number;y:number;url:string}[]):WorldLight|undefined{
+  const registry=registries.find(r=>id in r.profiles);if(!registry)return;
+  const profile=registry.profiles[id];
   const lamps=[...profile.lamps];
   for(const piece of pieces){
     const name=piece.url.split('/').pop()!.replace(/\.svg$/,'');

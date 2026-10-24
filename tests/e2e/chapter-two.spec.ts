@@ -146,7 +146,7 @@ test('the three traveling companions fit the compact inventory and phone HUD',as
 });
 
 test('failed region artwork keeps the original departure available for retry',async({page})=>{
-  const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.key==='scenery-coast-crane')!;
+  const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.url.endsWith('/coast-crane.svg'))!;
   const url='**/'+crane.url;await page.route(url,route=>route.abort());
   await page.goto('/');const original=checkpoint('chapterOneComplete');await importSave(page,original);
   await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();

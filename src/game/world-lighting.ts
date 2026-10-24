@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { properties, type TileMap } from '../content/tilemaps';
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
-import { lightPixels, chapterOneLight, type WorldLight } from './world-light';
+import { lightPixels, sceneLight, type WorldLight } from './world-light';
 import { lightGround, paintActorShadow } from './light-canvas';
 
 let serial=0;
@@ -18,7 +18,7 @@ export class WorldLighting {
   clear(){this.rig=undefined;this.ground=undefined;this.actors.clear();this.frames=new WeakMap();}
   attach(world:Phaser.GameObjects.Container,map:TileMap|undefined,state:Pick<GameState,'flags'>){
     this.clear();if(!map)return;
-    this.rig=chapterOneLight(String(properties(map).sceneArt),visibleSceneArt(map,state)??[]);if(!this.rig)return;
+    this.rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,state)??[]);if(!this.rig)return;
     // One ground pass, clipped to real floor cells, beneath every sorted prop.
     this.ground=lightGround(map,state);
     world.add(this.scene.add.existing(new GroundShadows(this.scene,this)).setDepth(-900));

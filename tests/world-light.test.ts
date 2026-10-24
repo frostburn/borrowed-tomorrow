@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { castShadows, lightPixels, lampStrength, stationLight, chapterOneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadows, lightPixels, lampStrength, stationLight, sceneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
+import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
 
@@ -9,17 +10,27 @@ const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One world and battle floor, without opting other chapters in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES)]){
-      const rig=chapterOneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
+  it('covers every Chapter One/Two world and battle floor, without opting later chapters in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES)]){
+      const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(chapterOneLight('coast',[])).toBeUndefined();
+    expect(sceneLight('northglass',[])).toBeUndefined();
+  });
+  it('shares ward window/stove sources and removes the Cinderbank collector glow at victory',()=>{
+    const ward=CHAPTER_TWO_MAPS.infirmary.tiles!,village=CHAPTER_TWO_MAPS.cinderbank.tiles!;
+    const hospital=sceneLight('infirmary',visibleSceneArt(ward,{flags:{}})??[])!;
+    expect(hospital.lamps.filter(l=>l.beam)).toHaveLength(10);
+    expect(hospital.lamps.some(l=>l.x===946&&l.y===535)).toBe(true);
+    const rig=(won:boolean)=>sceneLight('cinderbank',visibleSceneArt(village,{flags:{coastCollectorWon:won}})??[])!;
+    expect(rig(false).lamps.some(l=>l.x===924&&l.y===423)).toBe(true);
+    expect(rig(true).lamps.some(l=>l.x===924&&l.y===423)).toBe(false);
+    expect(rig(true).lamps.some(l=>l.beam)).toBe(true);
   });
   it('removes the collector light with its working casing and retains the village windows',()=>{
     const map=CHAPTER_ONE_MAPS.rillbridge.tiles!;
-    const rig=(released:boolean)=>chapterOneLight('rillbridge',visibleSceneArt(map,{flags:{villageFreed:released}})??[])!;
+    const rig=(released:boolean)=>sceneLight('rillbridge',visibleSceneArt(map,{flags:{villageFreed:released}})??[])!;
     expect(rig(false).lamps.some(l=>l.x===1404&&l.y===399)).toBe(true);
     expect(rig(true).lamps.some(l=>l.x===1404&&l.y===399)).toBe(false);
     expect(rig(true).lamps.some(l=>l.beam)).toBe(true);

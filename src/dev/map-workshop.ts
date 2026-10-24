@@ -8,7 +8,7 @@ import { art } from '../game/ui';
 import { vectorSurface } from '../game/vector-image';
 import { vectorAsset } from '../content/art-assets';
 import { sceneArt, visibleSceneArt } from '../content/scene-art';
-import { chapterOneLight, lightPixels } from '../game/world-light';
+import { sceneLight, lightPixels } from '../game/world-light';
 import { lightGround, paintActorShadow } from '../game/light-canvas';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
@@ -123,7 +123,7 @@ export class MapWorkshop {
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
     const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
-    const rig=chapterOneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
+    const rig=sceneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
     if(pieces){
       for(const piece of pieces){
         const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y);};

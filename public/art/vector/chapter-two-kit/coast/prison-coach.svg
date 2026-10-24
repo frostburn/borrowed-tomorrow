@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="168" viewBox="0 0 264 168">
+<title>Railway blue hour · prison-coach</title><metadata>Chapter Two angular variant; source: assets/vector/chapter_two_style.py; editable original: art/vector/scenery/prison-coach.svg</metadata>
+<polygon points="6.00,136.00 256.00,132.00 261.00,145.00 10.00,151.00" fill="#18243c" />
+<ellipse cx="47.0" cy="149.0" rx="21" ry="14" fill="#18243c" />
+<ellipse cx="47.0" cy="148.0" rx="14" ry="10" fill="#253e48" />
+<ellipse cx="47.0" cy="147.0" rx="8" ry="6" fill="#8197a5" />
+<ellipse cx="45.0" cy="145.0" rx="3" ry="3" fill="#86a19c" />
+<ellipse cx="205.0" cy="149.0" rx="21" ry="14" fill="#18243c" />
+<ellipse cx="205.0" cy="148.0" rx="14" ry="10" fill="#253e48" />
+<ellipse cx="205.0" cy="147.0" rx="8" ry="6" fill="#8197a5" />
+<ellipse cx="203.0" cy="145.0" rx="3" ry="3" fill="#86a19c" />
+<polygon points="11.00,55.00 24.00,38.00 229.00,35.00 256.00,51.00 258.00,65.00 10.00,68.00" fill="#142536" />
+<polygon points="26.00,42.00 227.00,39.00 246.00,51.00 19.00,57.00" fill="#546889" />
+<polygon points="13.00,67.00 254.00,59.00 254.00,128.00 13.00,137.00" fill="#253e48" />
+<polygon points="14.00,68.00 254.00,61.00 254.00,83.00 14.00,89.00" fill="#34465f" />
+<polygon points="14.00,115.00 253.00,107.00 253.00,121.00 14.00,130.00" fill="#293a54" />
+<polygon points="28.00,74.26 57.00,73.26 57.00,109.26 28.00,110.26" fill="#bd945a" />
+<polygon points="31.00,77.26 54.00,76.26 54.00,105.26 31.00,106.26" fill="#18243c" />
+<polygon points="33.00,79.26 52.00,78.26 52.00,103.26 33.00,104.26" fill="#8197a5" />
+<polyline points="38.00,76.26 38.00,107.26" fill="none" stroke="#142536" stroke-width="3" />
+<polyline points="48.00,76.26 48.00,107.26" fill="none" stroke="#142536" stroke-width="3" />
+<polygon points="71.00,73.12 100.00,72.12 100.00,108.12 71.00,109.12" fill="#bd945a" />
+<polygon points="74.00,76.12 97.00,75.12 97.00,104.12 74.00,105.12" fill="#18243c" />
+<polygon points="76.00,78.12 95.00,77.12 95.00,102.12 76.00,103.12" fill="#8197a5" />
+<polyline points="81.00,75.12 81.00,106.12" fill="none" stroke="#142536" stroke-width="3" />
+<polyline points="91.00,75.12 91.00,106.12" fill="none" stroke="#142536" stroke-width="3" />
+<polygon points="114.00,71.98 143.00,70.98 143.00,106.98 114.00,107.98" fill="#bd945a" />
+<polygon points="117.00,74.98 140.00,73.98 140.00,102.98 117.00,103.98" fill="#18243c" />
+<polygon points="119.00,76.98 138.00,75.98 138.00,100.98 119.00,101.98" fill="#8197a5" />
+<polyline points="124.00,73.98 124.00,104.98" fill="none" stroke="#142536" stroke-width="3" />
+<polyline points="134.00,73.98 134.00,104.98" fill="none" stroke="#142536" stroke-width="3" />
+<polygon points="157.00,70.84 186.00,69.84 186.00,105.84 157.00,106.84" fill="#bd945a" />
+<polygon points="160.00,73.84 183.00,72.84 183.00,101.84 160.00,102.84" fill="#18243c" />
+<polygon points="162.00,75.84 181.00,74.84 181.00,99.84 162.00,100.84" fill="#8197a5" />
+<polyline points="167.00,72.84 167.00,103.84" fill="none" stroke="#142536" stroke-width="3" />
+<polyline points="177.00,72.84 177.00,103.84" fill="none" stroke="#142536" stroke-width="3" />
+<polygon points="200.00,69.70 229.00,68.70 229.00,104.70 200.00,105.70" fill="#bd945a" />
+<polygon points="203.00,72.70 226.00,71.70 226.00,100.70 203.00,101.70" fill="#18243c" />
+<polygon points="205.00,74.70 224.00,73.70 224.00,98.70 205.00,99.70" fill="#8197a5" />
+<polyline points="210.00,71.70 210.00,102.70" fill="none" stroke="#142536" stroke-width="3" />
+<polyline points="220.00,71.70 220.00,102.70" fill="none" stroke="#142536" stroke-width="3" />
+<polygon points="213.00,64.00 243.00,63.00 243.00,126.00 213.00,127.00" fill="#293a54" />
+<polygon points="217.00,69.00 239.00,68.00 239.00,99.00 217.00,100.00" fill="#18243c" />
+<polygon points="219.00,72.00 236.00,71.00 236.00,97.00 219.00,98.00" fill="#8197a5" />
+<polyline points="15.00,133.00 251.00,124.00" fill="none" stroke="#bd945a" stroke-width="3" />
+<polygon points="2.00,145.00 18.00,145.00 18.00,149.00 2.00,149.00" fill="#253e48" />
+<polygon points="246.00,138.00 264.00,138.00 264.00,142.00 246.00,142.00" fill="#253e48" />
+</svg>
