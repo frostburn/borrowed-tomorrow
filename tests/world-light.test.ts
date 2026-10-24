@@ -1,11 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { castShadow, lightPixels, lampStrength, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadow, lightPixels, lampStrength, stationLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 
 const lamp={x:100,y:100,height:108,radius:235,strength:1.15};
 const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
+  it('casts window shadows inside the painted beams, with no light behind the house',()=>{
+    const windows=stationLight([{x:120,y:48,url:'/station-house.svg'}]);
+    expect(windows.lamps).toHaveLength(3);
+    expect(castShadow(windows,204,283)?.light.beam).toBeDefined();
+    expect(castShadow(windows,204,283)!.dy).toBeGreaterThan(0);
+    expect(castShadow(windows,204,240)).toBeUndefined();
+    expect(castShadow(windows,260,283)).toBeUndefined();
+  });
+  it('fills the entrance and arrest staging with festival warmth without extra hard shadows',()=>{
+    const festival=stationLight([{x:456,y:192,url:'/bunting.svg'}]);
+    for(const [x,y] of [[516,403],[492,307],[636,331],[780,283]]){
+      expect(festival.lamps.reduce((sum,l)=>sum+lampStrength(l,x,y),0)).toBeGreaterThan(.2);
+      expect(castShadow(festival,x,y)).toBeUndefined();
+    }
+  });
   it('preserves native dimensions, exact alpha and the source when shading',()=>{
     const source=pixels([150,100,80,255,80,90,100,117,0,0,0,0]),before=source.data.slice(),output=pixels(Array(12).fill(0));
     lightPixels(source,output,rig,150,130,1,60);

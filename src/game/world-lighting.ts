@@ -48,6 +48,10 @@ export class WorldLighting {
       // Project the live frame onto the ground from its sole pivot. Flattened
       // silhouettes change direction/length with position and retain the gait.
       ctx.save();ctx.globalAlpha*=cast.alpha*actor.alpha;ctx.translate(actor.x,actor.y-2);
+      if(cast.light.beam){
+        const light=cast.light,b=light.beam!,x=light.x-actor.x,y=light.y-actor.y+2,far=b.width+b.reach*b.spread;
+        ctx.beginPath();ctx.moveTo(x-b.width,y);ctx.lineTo(x+b.width,y);ctx.lineTo(x+b.reach*.1+far,y+b.reach);ctx.lineTo(x+b.reach*.1-far,y+b.reach);ctx.closePath();ctx.clip();
+      }
       ctx.transform(1,0,-cast.dx/58,-cast.dy/58,0,0);ctx.rotate(actor.rotation);ctx.scale(actor.scaleX,actor.scaleY);
       ctx.drawImage(frame.shadow,-ox,-oy);ctx.restore();
     }

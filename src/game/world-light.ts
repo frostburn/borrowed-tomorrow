@@ -1,15 +1,31 @@
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
-export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number }
+export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; castsShadow?:boolean; beam?:{reach:number;width:number;spread:number} }
 export interface WorldLight { ambient:readonly [number,number,number]; lamps:readonly WorldLamp[] }
 export const NIGHT_AMBIENT=[.62,.70,.88] as const;
 const WARM=[1.12,.78,.38] as const;
 export function stationLight(pieces:readonly {x:number;y:number;url:string}[]):WorldLight{
-  return {ambient:NIGHT_AMBIENT,lamps:pieces.filter(p=>p.url.endsWith('/lamp.svg')).map(p=>({x:p.x+24,y:p.y+134,height:108,radius:235,strength:1.15}))};
+  const lamps:WorldLamp[]=pieces.filter(p=>p.url.endsWith('/lamp.svg')).map(p=>({x:p.x+24,y:p.y+134,height:108,radius:235,strength:1.15}));
+  for(const house of pieces.filter(p=>p.url.endsWith('/station-house.svg'))){
+    for(const x of [42,84,204])lamps.push({x:house.x+x,y:house.y+201,height:80,radius:185,strength:2.3,beam:{reach:90,width:14,spread:.38}});
+  }
+  // Small overhead festival lanterns act together as a broad warm fill. They
+  // illuminate the whole dramatic space without competing hard shadow fans.
+  for(const strand of pieces.filter(p=>p.url.endsWith('/bunting.svg'))){
+    for(const [x,y] of [[21,25],[75,37],[129,40],[183,30]])lamps.push({x:strand.x+x,y:strand.y+y+108,height:108,radius:330,strength:.70,castsShadow:false});
+  }
+  return {ambient:NIGHT_AMBIENT,lamps};
 }
 
 export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
   const distance=Math.hypot(x-lamp.x,(y-lamp.y)*1.35,lamp.height-height);
-  return lamp.strength*Math.max(0,1-distance/lamp.radius)**2;
+  let aperture=1;
+  if(lamp.beam){
+    const forward=y-lamp.y;
+    if(forward<0||forward>lamp.beam.reach)return 0;
+    const width=lamp.beam.width+forward*lamp.beam.spread;
+    aperture=Math.min(1,Math.max(0,(width-Math.abs(x-lamp.x-forward*.10))/8));
+  }
+  return lamp.strength*Math.max(0,1-distance/lamp.radius)**2*aperture;
 }
 
 /** A small material-neutral light field; original alpha and geometry survive. */
@@ -36,8 +52,8 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
 /** Strongest local lamp supplies one readable cast shadow, rather than a fan. */
 export function castShadow(rig:WorldLight,x:number,y:number){
   let lamp:WorldLamp|undefined,strength=0;
-  for(const candidate of rig.lamps){const s=lampStrength(candidate,x,y);if(s>strength){lamp=candidate;strength=s;}}
+  for(const candidate of rig.lamps){if(candidate.castsShadow===false)continue;const s=lampStrength(candidate,x,y);if(s>strength){lamp=candidate;strength=s;}}
   if(!lamp||strength<.025)return;
   const height=58,ratio=height/Math.max(40,lamp.height-height);
-  return {dx:Math.max(-105,Math.min(105,(x-lamp.x)*ratio)),dy:Math.max(-42,Math.min(48,(y-lamp.y)*ratio*.45+8)),alpha:Math.min(.30,strength*.58)};
+  return {dx:Math.max(-105,Math.min(105,(x-lamp.x)*ratio)),dy:Math.max(-42,Math.min(48,(y-lamp.y)*ratio*.45+8)),alpha:Math.min(.30,strength*.58),light:lamp};
 }

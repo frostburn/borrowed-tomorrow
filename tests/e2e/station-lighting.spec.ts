@@ -27,14 +27,23 @@ async function renderedLight(page:Page){
       for(let sy=5;sy<60;sy++)for(let sx=20;sx<60;sx++){
         if(source.data[(sy*80+sx)*4+3]<250)continue;
         const x=Math.round(actor.x+sx-40-(sy-68)*cast.dx/58),y=Math.round(actor.y-2-(sy-68)*cast.dy/58);
-        if(Math.abs(x-actor.x)<18||x<0||y<0||y>=624||x-view.scrollX<0||y-view.scrollY<0||x-view.scrollX>=native.width||y-view.scrollY>=native.height)continue;
+        const localX=x-actor.x+40,localY=y-actor.y+68;
+        if(localX>=0&&localX<80&&localY>=0&&localY<80&&source.data[(localY*80+localX)*4+3])continue;
+        if(x<0||y<0||y>=624||x-view.scrollX<0||y-view.scrollY<0||x-view.scrollX>=native.width||y-view.scrollY>=native.height)continue;
         const a=ctx.getImageData(Math.round(x-view.scrollX),Math.round(y-view.scrollY),1,1).data,b=f.getImageData(x,y,1,1).data;
         if(b[0]-a[0]+b[1]-a[1]+b[2]-a[2]>10)shadowPixels++;
       }
     }
-    return {compared,wrong,red:red/compared,blue:blue/compared,shadowPixels,shadowDx:cast?.dx};
+    return {compared,wrong,red:red/compared,blue:blue/compared,shadowPixels,shadowDx:cast?.dx,windowShadow:!!cast?.light.beam};
   },{actor,pieces:visibleSceneArt(MAPS.station.tiles!,snapshot.state),url:`/${artPath(actor.texture)}`});
 }
+
+test('station window beams illuminate Nell and cast her shadow into the square',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');const state=checkpoint('festivalSeen');state.location={map:'station',x:8,y:11};await importSave(page,state);
+  await expect.poll(async()=>{const p=await renderedLight(page);return p.windowShadow&&p.compared>200&&p.wrong===0&&p.shadowPixels>5;}).toBe(true);
+  await capture(page,'station-window-shadow');expect(errors).toEqual([]);
+});
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`Larkspur actor lighting, moving shadows and unobscured supply keeper on ${device}`,async({page})=>{

@@ -52,6 +52,13 @@ def scenery(name,source,folder,placement_x=0):
    x,y=crook(float(e.get('cx')),float(e.get('cy')));e.set('cx',str(x));e.set('cy',str(y))
  if name=='lamp':
   for rx,ry,opacity in [(23,29,.10),(17,22,.14)]:svg.insert(2,ET.Element(NS+'ellipse',{'cx':'24','cy':'28','rx':str(rx),'ry':str(ry),'fill':'#ffd59c','opacity':str(opacity)}))
+ if name=='bunting':
+  # Warm paper lanterns hang between the pennants, above the staged action.
+  for x,y in [(21,25),(75,37),(129,40),(183,30)]:
+   svg.append(ET.Element(NS+'ellipse',{'cx':str(x),'cy':str(y+7),'rx':'15','ry':'18','fill':'#ffd28a','opacity':'.13'}))
+   svg.append(path(f'M{x} {y-3} L{x} {y+2}','none',stroke='#a98b70',**{'stroke-width':2}))
+   svg.append(path(f'M{x-5} {y+3} L{x+4} {y+2} L{x+6} {y+12} L{x+1} {y+17} L{x-5} {y+13}Z','#d99350'))
+   svg.append(path(f'M{x-3} {y+4} L{x+2} {y+3} L{x+3} {y+12} L{x} {y+15} L{x-3} {y+12}Z','#ffe2a3'))
  if name=='station-house':
   # Explicit angular roof planes: one high corner, an off-centre dormer and
   # slanted eaves. Keep this architecture faceted, rather than rubbery.
@@ -94,5 +101,8 @@ def terrain(kind,base,w,h):
   out.append(f'<path d="M0 {y} L396 {y+12} L760 {y-9} L{w} {y+3}" fill="none" stroke="#36435c" stroke-width="2"/>')
   for x in range(50+(i%2)*79,w,157):out.append(f'<path d="M{x} {y+2} L{x-10} {y+55}" fill="none" stroke="#39465e" stroke-width="2"/>')
  # Warm light spilling from the station's three windows into the cool street.
- for x in (162,204,324):out.append(f'<path d="M{x-13} 249 L{x+15} 247 L{x+42} 313 Q{x+3} 325 {x-38} 313Z" fill="#e8b879" opacity=".10"/>')
+ for x in (162,204,324):out.append(f'<path d="M{x-14} 249 L{x+14} 249 L{x+57} 339 L{x-39} 339Z" fill="#e8b879" opacity=".14"/>')
+ # Diffuse spill from the lantern strand ties the visible warm lights to the
+ # plaza and keeps Nell's entrance and the arrest within the festival glow.
+ out.append('<ellipse cx="574" cy="343" rx="233" ry="112" fill="#f5bf7a" opacity=".09"/><ellipse cx="574" cy="340" rx="158" ry="77" fill="#ffcf8e" opacity=".07"/>')
  out.append('</g>');return ''.join(out)
