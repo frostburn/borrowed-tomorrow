@@ -23,6 +23,20 @@ async function markerColor(page:Page,map:keyof typeof MAPS,id:string,color:strin
  },{o,color})).toBeGreaterThan(6);
 }
 
+test('Maps exposes marker-only prerequisites and paints their actual unlock colors',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/?dev=maps&map=windmere&mapOverlays=actors,markers');await expect(page).toHaveTitle(/Borrowed Tomorrow/);
+ await expect(page.locator('#map-workshop')).toHaveAttribute('data-ready','true');await page.getByText('Story flags',{exact:true}).click();
+ const colorCount=(color:string)=>page.locator('#map-preview').evaluate((canvas,color)=>{
+  const c=canvas as HTMLCanvasElement,p=c.getContext('2d')!.getImageData(800,504,170,18).data,rgb=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16));let count=0;
+  for(let i=0;i<p.length;i+=4)if(rgb.every((v,j)=>p[i+j]===v))count++;return count;
+ },color);
+ await expect.poll(()=>colorCount(BLOCKED_MARKER_COLOR)).toBeGreaterThan(6);
+ await page.locator('[data-map-flag="waterLiftOpened"]').click();await expect(page.locator('[data-map-flag="waterLiftOpened"]')).toHaveAttribute('aria-pressed','true');
+ await expect.poll(()=>colorCount(INTERACTION_MARKERS.story.color)).toBeGreaterThan(6);
+ await capture(page,'workshop-marker-unlocked');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+});
+
 async function openingRay(page:Page){
  return page.evaluate(()=>{
   const view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect(),source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();

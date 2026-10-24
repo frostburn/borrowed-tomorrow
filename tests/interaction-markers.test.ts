@@ -2,6 +2,7 @@ import {expect,it} from 'vitest';
 import {MAPS,visibleObjects} from '../src/content/maps';
 import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
 import {newGame} from '../src/rules/state';
+import {MAP_REVIEWS,reviewFlags} from '../src/dev/map-catalog';
 
 it('gives every authored interaction an explicit purpose with a distinct supported shape',()=>{
  for(const map of Object.values(MAPS))for(const object of map.objects){
@@ -97,4 +98,10 @@ it('greys Chapter Five routes and mechanisms until all their real prerequisites 
  expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
  s.flags.hammerplainComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
  s.flags.windmereComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(INTERACTION_MARKERS.exit.color);
+});
+
+it('offers individual marker prerequisites in Maps even when no scenery layer uses them',()=>{
+ expect(reviewFlags(MAP_REVIEWS.find(m=>m.id==='windmere')!)).toContain('waterLiftOpened');
+ const flags=reviewFlags(MAP_REVIEWS.find(m=>m.id==='watchbarracks')!);
+ expect(flags).toContain('mortarWon');expect(flags).toContain('repeaterWon');expect(flags).not.toContain('mortarWon,repeaterWon');
 });
