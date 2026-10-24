@@ -519,6 +519,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-five-gantry-carrier",
+      "url": "art/vector/chapter-five/gantry-carrier.svg",
+      "x": 664,
+      "y": 366,
+      "width": 280,
+      "height": 210,
+      "depth": 571,
+      "layerId": 4
+    },
+    {
       "key": "scene-five-gantry-rest-bench",
       "url": "art/vector/chapter-five/gantry-rest-bench.svg",
       "x": 324,
@@ -576,7 +586,7 @@
       "width": 1000,
       "height": 600,
       "depth": -997,
-      "layerId": 4
+      "layerId": 5
     },
     {
       "key": "scene-five-opal-standard",
@@ -619,14 +629,14 @@
       "layerId": 3
     },
     {
-      "key": "scene-five-light-anchorforge-4",
-      "url": "art/vector/chapter-five/light-anchorforge-4.svg",
+      "key": "scene-five-light-anchorforge-5",
+      "url": "art/vector/chapter-five/light-anchorforge-5.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
       "height": 1008,
       "depth": -950,
-      "layerId": 4
+      "layerId": 5
     }
   ],
   "dawnwatch": [

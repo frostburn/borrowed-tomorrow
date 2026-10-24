@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 10,
-  "nextobjectid": 26,
+  "nextlayerid": 11,
+  "nextobjectid": 25,
   "properties": [
     {
       "name": "name",
@@ -554,6 +554,25 @@
     },
     {
       "id": 4,
+      "name": "gantry-carrier",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "sort",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "furnaceWon"
+        }
+      ]
+    },
+    {
+      "id": 5,
       "name": "gantry-signal",
       "type": "objectgroup",
       "visible": true,
@@ -572,16 +591,17 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "Interactions",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "forge-carrier",
-          "point": true,
-          "x": 804,
-          "y": 564,
+          "x": 648,
+          "y": 360,
+          "width": 336,
+          "height": 240,
           "properties": [
             {
               "name": "label",
@@ -589,17 +609,22 @@
               "value": "Furnace carrier \u00b7 defend the engines"
             },
             {
-              "name": "sprite",
-              "type": "string",
-              "value": "furnace-carrier"
+              "name": "approachX",
+              "type": "int",
+              "value": 33
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "sign",
+              "type": "bool",
+              "value": true
             },
             {
               "name": "doneFlag",
-              "type": "string",
-              "value": "furnaceWon"
-            },
-            {
-              "name": "spriteHiddenFlag",
               "type": "string",
               "value": "furnaceWon"
             },
@@ -743,7 +768,7 @@
       "properties": []
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "Arrivals",
       "type": "objectgroup",
       "visible": true,
@@ -776,7 +801,7 @@
       "properties": []
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "People",
       "type": "objectgroup",
       "visible": true,
@@ -813,7 +838,7 @@
       "properties": []
     },
     {
-      "id": 8,
+      "id": 9,
       "name": "Scene:five-gantry",
       "type": "objectgroup",
       "visible": true,
@@ -873,20 +898,12 @@
           "y": 564,
           "properties": [],
           "id": 17
-        },
-        {
-          "name": "furnaceCarrier",
-          "point": true,
-          "x": 852,
-          "y": 540,
-          "properties": [],
-          "id": 18
         }
       ],
       "properties": []
     },
     {
-      "id": 9,
+      "id": 10,
       "name": "Scene:five-release",
       "type": "objectgroup",
       "visible": true,
@@ -897,7 +914,7 @@
           "x": 756,
           "y": 516,
           "properties": [],
-          "id": 19
+          "id": 18
         },
         {
           "name": "orrin",
@@ -905,7 +922,7 @@
           "x": 732,
           "y": 492,
           "properties": [],
-          "id": 20
+          "id": 19
         },
         {
           "name": "hester",
@@ -913,7 +930,7 @@
           "x": 828,
           "y": 492,
           "properties": [],
-          "id": 21
+          "id": 20
         },
         {
           "name": "kit",
@@ -921,7 +938,7 @@
           "x": 684,
           "y": 564,
           "properties": [],
-          "id": 22
+          "id": 21
         },
         {
           "name": "petra",
@@ -929,7 +946,7 @@
           "x": 852,
           "y": 564,
           "properties": [],
-          "id": 23
+          "id": 22
         },
         {
           "name": "celia",
@@ -937,7 +954,7 @@
           "x": 660,
           "y": 588,
           "properties": [],
-          "id": 24
+          "id": 23
         },
         {
           "name": "durn",
@@ -945,7 +962,7 @@
           "x": 1284,
           "y": 588,
           "properties": [],
-          "id": 25
+          "id": 24
         }
       ],
       "properties": []

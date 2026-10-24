@@ -634,6 +634,11 @@
               "value": true
             },
             {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "forgeApproachWon"
+            },
+            {
               "name": "kind",
               "type": "string",
               "value": "story"

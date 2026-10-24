@@ -7,6 +7,7 @@ import json,re
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from scene_lighting import spill
+from chapter_five_floors import floor_paint
 
 ROOT=Path(__file__).resolve().parents[2]
 NS='{http://www.w3.org/2000/svg}'
@@ -50,17 +51,8 @@ def cells(pts,w,h):
   return result
  return [3 if inside(x*24+12,y*24+12)else 0 for y in range(h)for x in range(w)]
 
-def floor_paint(w,h,steel=False,wood=False):
- base,light,shadow=('#91805f','#a69169','#7c7057')if wood else('#637e7e','#758d87','#536f74')if steel else('#859180','#969f8b','#70867b')
- out=[f'<path d="M0 0H{w}V{h}H0Z" fill="{base}"/>',poly([(0,500),(w,500+w*.012),(w,680+w*.012),(0,680)],light),poly([(0,820),(w,820+w*.012),(w,h),(0,h)],shadow)]
- step=32 if wood else 96
- for row,y in enumerate(range(32,h,step)):
-  out.append(line([(0,y),(w,y+w*.012)],'#6d6550'if wood else'#59746e',2))
-  for x in range(72+(row%2)*116,w,232):out.append(line([(x,y+x*.012),(x-5,y+step+(x-5)*.012)],'#796c52'if wood else'#677b70',1 if wood else 2))
- return out
-
-def floor_shapes(pts,w,h,steel=False,wood=False):
- out=[f'<defs><clipPath id="floor"><path d="{path(pts)}"/></clipPath></defs><g clip-path="url(#floor)">',*floor_paint(w,h,steel,wood),'</g>']
+def floor_shapes(pts,w,h,scene):
+ out=[f'<defs><clipPath id="floor"><path d="{path(pts)}"/></clipPath></defs><g clip-path="url(#floor)">',*floor_paint(w,h,scene,pts),'</g>']
  for a,b in zip(pts,pts[1:]+pts[:1]):
   if b[0]<a[0]:out.extend([poly([b,a,(a[0],a[1]+19),(b[0],b[1]+19)],'#3f5c63'),line([a,b],'#b5b493',4)])
   elif b[0]>a[0]:out.append(line([a,b],'#9eac96',3))
@@ -94,7 +86,7 @@ def spill_layer(entries,pts):
 def treatment(name,source,w,h):
  root=ET.fromstring(source)
  # Primary boss bodies retain the accepted shared battle/world geometry.
- if name in ('furnace-carrier-battle','ward-engine-battle','windmere-engine'):return source
+ if name in ('furnace-carrier-battle','ward-engine-battle','windmere-engine','gantry-carrier'):return source
  architecture=name in ('hangar','casting-hall','watch-barracks-wing','foundry-street','lower-houses','watch-citadel','shelter-front','windmere-pavilion','windmere-canopy')
  def point(x,y):
   if not architecture:return x,y

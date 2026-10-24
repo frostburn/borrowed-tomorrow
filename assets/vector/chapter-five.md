@@ -4,7 +4,7 @@
 node scripts/export-chapter-five-art.mjs
 ```
 
-`assets/vector/chapter-five.py` reproduces thirteen 1536 × 1008 exploration maps, fourteen 1008 × 624 arenas, native whole SVG layers and their scene manifest. It uses Python's standard library. `assets/characters/vector/chapter-five.py` uses the existing Drawing/Pillow authoring helper to reproduce Alda, Hester, Durn, Aurel, Enna and two unnamed watch models. Their individual 128px portraits are editable originals: the exporter never overwrites them. Aurel and Durn have hand-authored portrait SVGs; only initial female portrait seeds remain in the model helper. The carrier's 80px actor, 128px portrait and 224 × 168 battle body use the same geometry in the scenery exporter. No bitmap input, resampling or new production dependency is involved.
+`assets/vector/chapter-five.py` reproduces thirteen 1536 × 1008 exploration maps, fourteen 1008 × 624 arenas, native whole SVG layers and their scene manifest. It uses Python's standard library. `assets/characters/vector/chapter-five.py` uses the existing Drawing/Pillow authoring helper to reproduce Alda, Hester, Durn, Aurel, Enna and two unnamed watch models. Their individual 128px portraits are editable originals: the exporter never overwrites them. Aurel and Durn have hand-authored portrait SVGs; only initial female portrait seeds remain in the model helper. The carrier's 80px catalogue actor, 128px portrait, 224 × 168 battle body and 280 × 210 gantry model use the same geometry in the scenery exporter. No bitmap input, resampling or new production dependency is involved.
 
 The new cast follows the accepted broad polygonal models, 80 × 80 frames and (40,68) ground anchor. Alda has a blue pilot coat, pale scarf, gray hair and cap; Hester wears a russet headwrap and rolled sleeves with a brown apron; Durn has a narrow face, green uniform and requisition board. The women have distinct female face construction. Forge enemy recolors preserve their base geometry and are reproduced with `node scripts/export-enemy-variants.mjs`.
 
@@ -43,10 +43,34 @@ The command deck now stages `five-benefactor-claim`, followed aboard by `five-re
 
 ## Regional angular art and actor illumination
 
-`chapter_five_style.py` owns the thirteen crooked floor perimeters, continuous straight slab/plank courses, colored underside/overlap planes, and the slanted factory, cottage and pavilion treatments. Windows and mechanical ports remain legible; the red cooling wheel, shared survey hull, boss bodies, source cast anchors and all interaction IDs retain their identities. Dawnwatch and Windmere now have real survey moorings and boarding planks, with hull collision and the existing safe-arrival restoration for covered current-version saves.
+`chapter_five_style.py` owns the thirteen crooked floor perimeters, colored underside/overlap planes, and the slanted factory, cottage and pavilion treatments. `chapter_five_floors.py` authors a distinct material layout for each location; no map-wide slab lattice is shared across the chapter. Windows and mechanical ports remain legible; the red cooling wheel, shared survey hull, boss bodies, source cast anchors and all interaction IDs retain their identities. Dawnwatch and Windmere now have real survey moorings and boarding planks, with hull collision and the existing safe-arrival restoration for covered current-version saves.
 
 `chapter-five/lighting.json` is the shared source registry for campaign, cutscenes, civilians, combat and Maps. It describes uncovered opal work lights, furnace/window glow, hospital glazing, the cabin memory and the three flag-bound anchor sources. Interiors use bright diffuse ambient light and very faint shadows. Outdoor terraces and wooden flight decks have bounded overlapping shadows. The cooling wheel drives the water header, and the hospital wheel connects to the lift guide through a supported line. All fourteen tactical floors retain their actual cells and receive matching fixtures; the furnace, ward and flagship presentations opt into their correct floor silhouettes without changing the accepted boss art or later domain reprises.
 
 Keep the survey takeoff piece on its appended `live` layer, and every command-deck piece individually `live` for the Benefactor strike. Static floor caching must not swallow the images used by cinematic transforms. Command-deck fixture/spill keys share its destruction prefix. Shelter bars, patients, lift equipment, fleet/cordon/blockade/open-crossing flags and Nell’s berth remain separate story layers. Native actors, manual equipment, resources and campaign checkpoints are unchanged.
 
 Run `npm run art:five` to reproduce the full kit. Inspect all thirteen exploration layouts, fourteen arenas and regional flag states in Maps. Run `npm run check`, the native-lighting matrix, regional journeys and the existing takeoff/shelter/lift/finale motion checks; detailed browser checks remain outside the small default CI set. Stage and run `npm run check:art-upload` before publishing.
+
+## Regional floor materials and markers
+
+| Location | Construction and wear |
+| --- | --- |
+| Airfield | Packed cinder, gravel patches, tie-down rings and cart scuffs |
+| Survey deck | Tapered timber planks, staggered butt joints, knots and service hatches |
+| Hammerplain | Casting-yard brick, cinder wear and fan-laid landing stones |
+| Cooling race | Riveted weathered panels, inset open grates and mineral deposits |
+| Anchor gantry | Heat brick and the carrier's paired curved casting rails |
+| Dawnwatch | Short, uneven cobbles and fan-laid repairs |
+| Gun terraces | Diagonal slate bond, gun platforms and drainage grating |
+| Signal wall | Chipped slate and a worn compass/sun inlay |
+| Observation cabin | Timber parquet and a woven runner |
+| Windmere | Garden fieldstone, moss patches and pale aggregate |
+| Dispensary | Small cream/sage ceramic hexagons and a utility runner |
+| Mirrored ward | Terrazzo, broad mineral planes and brass optical inlays |
+| Flagship bridge | Riveted armor panels, a worn naval stripe and insignia |
+
+Each arena inherits its actual region's material at the same physical scale. Patterns and local repairs are deterministic native SVG geometry, clipped to the unchanged floor perimeter. Keep tactical overlays readable, short material joints, modest contrast and the 128 KiB image budget. Re-export with `npm run art:five`.
+
+The gantry's carrier is a whole native prop, visible during its introduction and hidden on `furnaceWon`. Its painted interaction rectangle covers the model and approaches from the clear floor below its tracks; do not add a second 80px actor to the introduction. Battle art and rules remain shared and unchanged.
+
+`markerFlags` is a comma-separated list of prerequisites for a marker's active color. It requires every listed flag while preserving the interaction's explanatory dialogue. `accessFlag` retains its existing actual access restriction. Both game and Maps use `interactionMarker`; the signal-wall stair/locker require both guns, while the empty observation cabin becomes available after any two regions. Completed and automatic aftermath markers remain suppressed. The Benefactor's opening seam uses a broad ivory core and warm layered halo, on scene time with reduced-motion and skip cleanup.

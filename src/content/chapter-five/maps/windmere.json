@@ -688,6 +688,11 @@
               "value": true
             },
             {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "waterLiftOpened"
+            },
+            {
               "name": "kind",
               "type": "string",
               "value": "story"
@@ -715,6 +720,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "patientsTransferred"
             },
             {
               "name": "kind",

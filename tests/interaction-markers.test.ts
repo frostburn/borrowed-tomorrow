@@ -78,3 +78,23 @@ it('dims the sealed sanctuary fight and leaves Chapter Four mechanisms to their 
   expect(interactionMarker(object,s)).toBeUndefined();
  }
 });
+
+it('greys Chapter Five routes and mechanisms until all their real prerequisites are met',()=>{
+ const s=newGame();
+ for(const [map,id,flag]of [['airfield','airfield-board','airfieldGuardWon'],['coolingworks','cooling-wheel','forgeApproachWon'],['windmere','wind-transfer','waterLiftOpened'],['windmere','wind-mirrorward','patientsTransferred'],['dispensary','wind-lift-wheel','windLiftWon'],['dispensary','wind-reflector','waterLiftOpened']]as const){
+  const s=newGame(),object=MAPS[map].objects.find(o=>o.id===id)!;
+  delete s.flags[flag];expect(interactionMarker(object,s)?.color,`${id} closed`).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;expect(interactionMarker(object,s)?.color,`${id} open`).toBe(INTERACTION_MARKERS[object.kind].color);
+ }
+ for(const mortar of [false,true])for(const repeater of [false,true]){
+  s.flags.mortarWon=mortar;s.flags.repeaterWon=repeater;
+  for(const id of ['watch-wall','watch-coat']){
+   const object=MAPS.watchbarracks.objects.find(o=>o.id===id)!;
+   expect(interactionMarker(object,s)?.color,id).toBe(mortar&&repeater?INTERACTION_MARKERS[object.kind].color:BLOCKED_MARKER_COLOR);
+  }
+ }
+ const cabin=MAPS.airship.objects.find(o=>o.id==='ship-cabin')!;
+ expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+ s.flags.hammerplainComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+ s.flags.windmereComplete=true;expect(interactionMarker(cabin,s)?.color).toBe(INTERACTION_MARKERS.exit.color);
+});

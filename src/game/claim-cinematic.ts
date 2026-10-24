@@ -22,9 +22,11 @@ export class ClaimCinematic {
   const t=this.reduced?1700:this.scene.time.now-this.started,p=Math.min(1,t/1700);
   this.light.clear();
   if(!this.striking){
-   const width=this.reduced?9:7+2*Math.sin(t/170);
-   this.light.lineStyle(width,0xf0d9a1,.8).lineBetween(650,262,945,190);
-   this.light.lineStyle(3,0x102738,1).lineBetween(650,262,945,190);return;
+   const width=this.reduced?18:18+2*Math.sin(t/360);
+   this.light.lineStyle(width+28,0xdcc38b,.08).lineBetween(650,262,945,190);
+   this.light.lineStyle(width+12,0xf4dca4,.22).lineBetween(650,262,945,190);
+   this.light.lineStyle(width,0xffe9b6,.8).lineBetween(650,262,945,190);
+   this.light.lineStyle(7,0xfff8da,1).lineBetween(650,262,945,190);return;
   }
   this.sky.setVisible(true).setAlpha(p).clear().fillStyle(0x425965).fillRect(0,0,1536,1008);
   this.sky.fillStyle(0x9caeaa).fillPoints([{x:0,y:575},{x:460,y:490},{x:950,y:580},{x:1536,y:485},{x:1536,y:1008},{x:0,y:1008}].map(p=>new Phaser.Math.Vector2(p.x,p.y)),true);

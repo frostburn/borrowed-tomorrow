@@ -6,9 +6,17 @@ import { CHAPTER_THREE_MAPS,CHAPTER_THREE_BATTLES } from '../src/content/chapter
 import { CHAPTER_FOUR_MAPS,CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { CHAPTER_FIVE_MAPS,CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
 import { sceneArt,visibleSceneArt,SCENE_ASSETS } from '../src/content/scene-art';
-import { properties,tilePages } from '../src/content/tilemaps';
+import { properties,tilePages,mapPoints } from '../src/content/tilemaps';
 
 describe('traced SVG scenes',()=>{
+ it('shows one full-sized furnace carrier on the gantry, with a clear approach and no duplicate scene miniature',()=>{
+  const map=CHAPTER_FIVE_MAPS.anchorforge,body=visibleSceneArt(map.tiles!,{flags:{}})!.find(p=>p.key==='scene-five-gantry-carrier')!;
+  expect(body.width).toBeGreaterThan(220);expect(body.height).toBeGreaterThan(168);
+  const control=map.objects.find(o=>o.id==='forge-carrier')!;
+  expect(control.sprite).toBeUndefined();expect((control.y+.5)*24).toBeGreaterThan(body.y+body.height);
+  expect(mapPoints(map.tiles!,'Scene:five-gantry').some(o=>o.name==='furnaceCarrier')).toBe(false);
+  expect(visibleSceneArt(map.tiles!,{flags:{furnaceWon:true}})!.some(p=>p.key===body.key)).toBe(false);
+ });
  it('keeps the green conduit architecture separate from the royal marble originals',()=>{
   const pieces=Object.values(CHAPTER_THREE_MAPS).flatMap(m=>sceneArt(m.tiles!)??[]);
   for(const name of ['conduit-dome','conduit-factory-wing','conduit-medical-pavilion','conduit-controls','conduit-vessel']){

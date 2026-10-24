@@ -1,5 +1,6 @@
 import { BOSS_AFTERMATHS } from './boss-aftermath';
 import { trainApproachBlock } from './chapter-two/access';
+import { completedAnchors } from './chapter-five/progress';
 import type { MapObject } from './maps';
 import type { GameState } from '../rules/state';
 
@@ -20,6 +21,7 @@ export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>
  // The boss owns this arena's story cue; its follow-up starts automatically.
  if(BOSS_AFTERMATHS.some(scene=>scene.interaction===object.id&&!state.flags[scene.done]))return;
  const marker=INTERACTION_MARKERS[interactionKind(object,state)];
- const blocked=(object.accessFlag&&!state.flags[object.accessFlag])||((object.id==='loading-gate'||object.id==='signal-walk')&&trainApproachBlock(state,object.id==='signal-walk'));
+ // Marker-only prerequisites keep useful blocked-route dialogue available.
+ const blocked=(object.accessFlag&&!state.flags[object.accessFlag])||object.markerFlags?.split(',').some(flag=>!state.flags[flag.trim()])||(object.id==='ship-cabin'&&completedAnchors(state)<2)||((object.id==='loading-gate'||object.id==='signal-walk')&&trainApproachBlock(state,object.id==='signal-walk'));
  return {...marker,color:blocked?BLOCKED_MARKER_COLOR:marker.color};
 }

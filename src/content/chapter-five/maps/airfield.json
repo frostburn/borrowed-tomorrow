@@ -644,6 +644,11 @@
               "value": true
             },
             {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "airfieldGuardWon"
+            },
+            {
               "name": "kind",
               "type": "string",
               "value": "exit"
