@@ -142,7 +142,7 @@ export class MapWorkshop {
       const cast=e.tiles?mapPoints(e.tiles,this.scene):[],castSprites=new Set<string>(cast.map(o=>CHARACTERS[o.name as keyof typeof CHARACTERS]?.sprite));
       const visible=(o:{hiddenFlag?:string;requiredFlag?:string})=>(!o.hiddenFlag||!this.flags[o.hiddenFlag])&&(!o.requiredFlag||this.flags[o.requiredFlag]);
       const actor=(sprite:string,p:Point)=>{
-        const image=this.image(art(sprite)),x=(p.x+.5)*24,y=(p.y+.5)*24+7;
+        const image=this.image(art(sprite)),x=(p.x+.5)*24,y=(p.y+.5)*24+7,sy=worldActorScaleY(sprite);
         if(rig&&ground&&image.complete&&image.naturalWidth){
           let surface=this.actorSurfaces.get(image);
           if(!surface){
@@ -151,11 +151,11 @@ export class MapWorkshop {
             surface={pixels,shadow};this.actorSurfaces.set(image,surface);
           }
           const native=document.createElement('canvas');native.width=native.height=80;const s=native.getContext('2d')!,lit=s.createImageData(80,80);
-          lightPixels(surface.pixels,lit,rig,x,y,40,68);s.putImageData(lit,0,0);
+          lightPixels(surface.pixels,lit,rig,x,y,40,68,1,sy);s.putImageData(lit,0,0);
           const shadow=surface.shadow;
-          sorted.push({depth:-900,draw:()=>{ctx.save();ctx.clip(ground);paintActorShadow(ctx,rig,{x,y,originX:40,originY:68,scaleX:1,scaleY:1,rotation:0,alpha:1,image:shadow});ctx.restore();}});
-          sorted.push({depth:y,draw:()=>ctx.drawImage(native,x-40,y-68)});
-        }else sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,x-40,y-68);}});
+          sorted.push({depth:-900,draw:()=>{ctx.save();ctx.clip(ground);paintActorShadow(ctx,rig,{x,y,originX:40,originY:68,scaleX:1,scaleY:sy,rotation:0,alpha:1,image:shadow});ctx.restore();}});
+          sorted.push({depth:y,draw:()=>ctx.drawImage(native,x-40,y-68*sy,80,80*sy)});
+        }else sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,x-40,y-68*sy,80,80*sy);}});
       };
       for(const o of e.world?.objects??[])if(o.sprite&&visible(o)&&(!o.spriteHiddenFlag||!this.flags[o.spriteHiddenFlag])&&!castSprites.has(o.sprite))actor(o.sprite,o);
       for(const p of e.world?.people??[])if(visible(p))actor(p.sprite,p);
@@ -201,3 +201,4 @@ export class MapWorkshop {
     crop.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`${this.entry.id}-${this.selected.x}-${this.selected.y}.png`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
   }
 }
+import { worldActorScaleY } from '../content/actors';

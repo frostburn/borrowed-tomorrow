@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { worldActorScaleY } from '../content/actors';
 import { properties, type TileMap } from '../content/tilemaps';
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
@@ -27,7 +28,7 @@ export class WorldLighting {
   actor(world:Phaser.GameObjects.Container,x:number,y:number,key:string){
     const image=this.rig?this.scene.add.existing(new LitActor(this.scene,x,y,key,this,this.rig)):this.scene.add.image(x,y,key);
     if(image instanceof LitActor){this.actors.add(image);image.once('destroy',()=>this.actors.delete(image));}
-    world.add(image);return image;
+    image.setScale(1,worldActorScaleY(key));world.add(image);return image;
   }
   surface(frame:Phaser.Textures.Frame){
     let cached=this.frames.get(frame);if(cached)return cached;
