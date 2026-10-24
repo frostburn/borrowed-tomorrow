@@ -37,6 +37,20 @@ def face(d,name,direction):
 
 def crossbow(d,grip,raised=False,direction='front'):
     x,y=grip;sign=-1 if direction=='left' else 1
+    if not raised:
+        # Lower the stock and prod together. Independent profiles retain the
+        # anatomical right trigger hand; the other hand supports the fore-stock.
+        if direction in ('front','back'):
+            d.tube([(x-1,y-3),(x+2,y+13)],'brown',3)
+            d.line([(x-8,y+5),(x-5,y+9),(x,y+10),(x+5,y+8),(x+8,y+4)],'leather',3)
+            d.line([(x-8,y+5),(x+8,y+4)],'cream',1)
+            d.line([(x,y+2),(x+2,y+12)],'silver',1)
+        else:
+            d.tube([(x-sign*3,y-4),(x+sign*6,y+14)],'brown',3)
+            d.line([(x-sign*2,y+11),(x+sign*3,y+10),(x+sign*6,y+7),(x+sign*11,y+3)],'leather',3)
+            d.line([(x-sign*2,y+11),(x+sign*11,y+3)],'cream',1)
+            d.line([(x,y+1),(x+sign*6,y+13)],'silver',1)
+        return
     if direction in ('front','back'):
         d.line([(x-1,y+2),(x+2,y-9)],'brown',3);d.poly([(x-9,y-3),(x-7,y-6),(x-3,y-4),(x,y-5),(x+5,y-8),(x+8,y-7),(x+10,y-3),(x+7,y-4),(x+4,y-5),(x,y-2),(x-4,y-2)],'leather');d.line([(x-9,y-3),(x+10,y-3)],'cream',1)
     else:
@@ -66,7 +80,8 @@ def hero(name,direction,walk=None,attack=None,bash=None):
     if name=='kit' and walk is not None:right=(right[0]+(swing*.6 if side else 0),right[1]+swing*.7)
     if name=='kit':
         # Both hands follow the same stock, even during its small carrying sway.
-        left=(right[0]+(-5 if direction=='left' else 5),right[1]+(0 if attack is not None else 3)) if side else (right[0]+1,right[1]-5)
+        if attack is None:left=(right[0]+(-3 if direction=='left' else 3),right[1]+6)if side else(right[0]+1,right[1]+5)
+        else:left=(right[0]+(-5 if direction=='left' else 5),right[1])if side else(right[0]+1,right[1]-5)
     coat='navy' if name=='kit' else 'green'
     rshoulder=(15,25) if direction=='front' else (18,25) if direction=='left' else (24,25)
     lshoulder=(25,25) if direction=='front' else (22,25) if direction=='left' else (16,25)

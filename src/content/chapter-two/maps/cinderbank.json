@@ -2472,6 +2472,11 @@
               "name": "kind",
               "type": "string",
               "value": "exit"
+            },
+            {
+              "name": "accessFlag",
+              "type": "string",
+              "value": "recaptureWon"
             }
           ],
           "x": 1236,

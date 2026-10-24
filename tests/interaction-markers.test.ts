@@ -1,6 +1,6 @@
 import {expect,it} from 'vitest';
 import {MAPS,visibleObjects} from '../src/content/maps';
-import {INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
+import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
 import {newGame} from '../src/rules/state';
 
 it('gives every authored interaction an explicit purpose with a distinct supported shape',()=>{
@@ -37,8 +37,19 @@ it('shows one cue for Petra and Alban, and stages the mirrored engine cue after 
  expect(interactionMarker(alban,s)).toBeUndefined();expect(alban.sprite).toBe('alban');
  expect(interactionMarker(petra,s)?.glyph).toBe('!');
  const engine=MAPS.mirrorward.objects.find(o=>o.id==='wind-engine')!,guard=MAPS.mirrorward.objects.find(o=>o.id==='wind-gallery-guard')!;
- expect(interactionMarker(engine,s)).toBeUndefined();expect(interactionMarker(guard,s)?.glyph).toBe('!');
+ expect(interactionMarker(engine,s)).toMatchObject({glyph:'!',color:BLOCKED_MARKER_COLOR});expect(interactionMarker(guard,s)?.glyph).toBe('!');
  s.flags.windGalleryWon=true;expect(interactionMarker(engine,s)?.glyph).toBe('!');expect(interactionMarker(guard,s)).toBeUndefined();
+});
+
+it('dims Chapter Two story gates and exits until their actual prerequisites are met',()=>{
+ const s=newGame();
+ for(const [map,id,flag]of [['coast','loading-gate','kitJoined'],['coast','signal-walk','kitJoined'],['coast','prison-coach','trainRaidWon'],['coast','coast-ward','prisonersFreed'],['cinderbank','capital-engine','recaptureWon']]as const){
+  const object=MAPS[map].objects.find(o=>o.id===id)!;
+  delete s.flags[flag];const blocked=interactionMarker(object,s)!;
+  expect(blocked.color).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;const open=interactionMarker(object,s)!;
+  expect(open.glyph).toBe(blocked.glyph);expect(open.color).toBe(INTERACTION_MARKERS[object.kind].color);
+ }
 });
 
 it('shows just the procession marker on Stillwater Avenue, with no stacked release cue',()=>{
