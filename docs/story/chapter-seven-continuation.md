@@ -4,11 +4,11 @@ Entry: a current version-10 Chapter Six save at `chapter-seven:hollow-sun`, with
 
 | Location | Required progress and next checkpoint |
 | --- | --- |
-| `hollowsill` | Warning and visible withdrawal → `domainEntered`; the god leaves the stair clear. Supplies and Alda. |
+| `hollowsill` | Upward camera reveal, warning and visible withdrawal → `domainEntered`; the god leaves the stair clear. Supplies and Alda. |
 | `takenwater` | `domainWaterSeen`; confront/win `domain-hounds`, then `domain-collector`; release → `takenPeopleFreed`. |
 | `firstfield` | `firstHarvestSeen`; confront/win `domain-furnace`; release → `harvestFreed`; optional lamp → `domainReflectorTaken`. |
 | `quietward` | `firstHospiceSeen`; confront/win `domain-ward`; patient release → `wardPeopleFreed`. |
-| `seasonstreet` | `seasonStreetSeen`; optional `domain-patrol`; confront/win `domain-dragon`; road release → `seasonsFreed`. |
+| `seasonstreet` | `seasonStreetSeen`; optional `domain-patrol` opens the local rest/supplies stop and awards Kit’s sight; confront/win `domain-dragon`; road release → `seasonsFreed`. |
 | `lastrefuge` | Arrival → `lastRefugeSeen`; repeatable rest/supplies, companion conversations and final stair. |
 | `sunthrone` | `benefactorSeen`; `benefactorBodyConfronted/Won`; transformation → `hollowSunSeen`; `benefactorSunConfronted/Won`; fragment scene → `fragmentReturned`; `benefactorHeartConfronted/Won`; release → `daysReturned`, then travel home. |
 | `homecoming` | Arrival → `homecomingSeen`; Tomas, Iona, cap and ordinary train; board for the sea. |

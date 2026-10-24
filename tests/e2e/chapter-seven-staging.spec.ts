@@ -31,7 +31,9 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await importSave(page,chapterSevenStart());await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-crossing');
-  for(let i=0;i<4;i++)await next(page);await expect(page.locator('.dialogue h2')).toHaveText('The Benefactor');await expect(page.locator('.dialogue')).toContainText('Return to your ship.');await page.waitForTimeout(1000);await page.mouse.move(0,0);await capture(page,`crossing-warning-${device}`);
+  for(let i=0;i<3;i++)await next(page);
+  if(device==='desktop'){await page.waitForTimeout(200);const start=(await inspect(page)).view.scrollY;await page.mouse.move(0,0);await page.waitForTimeout(900);const middle=(await inspect(page)).view.scrollY;expect(middle).toBeLessThan(start-40);await page.waitForTimeout(1400);expect((await inspect(page)).view.scrollY).toBeLessThan(middle-30);}
+  await capture(page,`crossing-reveal-${device}`);await next(page);await expect(page.locator('.dialogue h2')).toHaveText('The Benefactor');await expect(page.locator('.dialogue')).toContainText('Return to your ship.');await page.waitForTimeout(1000);await page.mouse.move(0,0);await capture(page,`crossing-warning-${device}`);
   if(device==='desktop'){
    for(let i=0;i<3;i++)await next(page);await page.waitForTimeout(600);await next(page);await page.mouse.move(0,0);await page.waitForTimeout(150);const first=await chest(page);await page.waitForTimeout(800);expect(await chest(page)).not.toBe(first);await page.waitForTimeout(900);await capture(page,'crossing-withdrawal');await dialogue(page);
   }else await drain(page);
@@ -41,9 +43,10 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   await importSave(page,before('firstHospiceSeen','quietward'));await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-hospice');await next(page);await page.waitForTimeout(600);
   await nativeActor(page,'civilian-patient-green',{x:20,y:30});await capture(page,`hospice-patient-${device}`);await drain(page);
 
-  await importSave(page,before('domainDragonConfronted','seasonstreet'));await approach(page,'season-patrol');await page.getByRole('button',{name:'Prepare first',exact:true}).click();await capture(page,`courier-stair-before-${device}`);
+  await importSave(page,before('domainDragonConfronted','seasonstreet'));await approach(page,'season-rest');await expect(page.locator('.dialogue')).toHaveCount(0);await expect(page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true})).toHaveCount(0);await approach(page,'season-patrol');await page.getByRole('button',{name:'Prepare first',exact:true}).click();await capture(page,`courier-stair-before-${device}`);
   await approach(page,'season-patrol');await page.getByRole('button',{name:'Clear the courier stair',exact:true}).click();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   expect((await inspect(page)).state.flags.domainPatrolWon).toBe(true);expect(visibleObjects(MAPS.seasonstreet,(await inspect(page)).state).some(o=>o.id==='season-patrol')).toBe(false);await capture(page,`courier-stair-cleared-${device}`);
+  await approach(page,'season-rest');await expect(page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true})).toBeVisible();await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.domainPatrolWon).toBe(true);
 
   await importSave(page,homecoming());await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-home');

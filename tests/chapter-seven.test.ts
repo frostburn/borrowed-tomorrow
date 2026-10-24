@@ -23,6 +23,7 @@ function journey(state=chapterSevenStart()){
 it('withdraws the opening god on scene completion and keeps the cleared crossing on restore',()=>{
  const j=journey(),tiles=MAPS.hollowsill.tiles!,god='scene-seven-hollowsill-distant-god';
  resumeChapter(j.h);const d=j.read()!;
+ expect(d.lines[3].shot).toMatchObject({focus:{x:32,y:15},duration:2200});
  expect(d.lines.some(l=>l.who==='The Benefactor')).toBe(true);expect(d.lines.some(l=>l.shot?.effect==='domain-withdraw')).toBe(true);
  expect(visibleSceneArt(tiles,j.s)!.some(p=>p.key===god)).toBe(true);expect(j.s.flags.domainEntered).toBeUndefined();
  j.finish();const restored=journey(decodeSave(JSON.stringify(j.s)));resumeChapter(restored.h);
@@ -35,7 +36,10 @@ it('places the hospice patient in front of her bed and removes defeated courier-
  expect((patient.y+.5)*24+7).toBeGreaterThan(bed.depth);
  const j=journey(chapterSevenRefugeStart());j.s.location=arrival('seasonstreet','start');
  expect(visibleObjects(MAPS.seasonstreet,j.s).some(o=>o.id==='season-patrol')).toBe(true);
+ const supplies=MAPS.seasonstreet.objects.find(o=>o.id==='season-rest')!;expect(supplies.accessFlag).toBe('domainPatrolWon');
+ j.s.party[0].hp=1;j.act('season-rest');expect(j.read()?.choices).toBeUndefined();expect(j.s.party[0].hp).toBe(1);
  j.act('season-patrol');j.choose();j.win();
+ j.act('season-rest');expect(j.read()?.choices?.[0].label).toContain('Rest');j.choose();expect(j.s.party[0].hp).toBeGreaterThan(1);
  expect(j.s.flags.domainPatrolWon).toBe(true);expect(visibleObjects(MAPS.seasonstreet,decodeSave(JSON.stringify(j.s))).some(o=>o.id==='season-patrol')).toBe(false);
 });
 it('opens only the recovered departure after loading, preserving actual formation and resources',()=>{

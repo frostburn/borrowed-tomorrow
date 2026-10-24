@@ -45,6 +45,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
  const fight=(encounter:string,flag:string,label:string,warning:string)=>h.talk({lines:[SAY('Petra',warning)],choices:[
   {label,action:()=>{h.commit(flag);h.battle(encounter);}}, {label:'Prepare first',action:()=>{}},
  ]});
+ if(id==='season-rest'&&!f.domainPatrolWon)return say('Petra','The hunters have the supplies covered. We need to clear the courier stair.');
  if(id.endsWith('-rest'))return h.talk({lines:[SAY('Supplies','Clean water, folded blankets and a field kit are under cover.')],choices:[
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
   {label:'Buy a field bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
@@ -71,7 +72,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
   case 'ward-seasons':if(f.wardPeopleFreed)go(h,'seasonstreet');return;
   case 'season-ward':return go(h,'quietward');
   case 'season-dragon':if(!f.domainDragonWon)fight('domain-dragon','domainDragonConfronted','Break the last return','Brace when it draws breath. The loose ice slows us down; keep a route to the clear floor.');return;
-  case 'season-patrol':if(!f.domainPatrolWon)fight('domain-patrol','domainPatrolConfronted','Clear the courier stair','Those hunters have the side stair covered. There’s a survey sight in the stores beyond them.');return;
+  case 'season-patrol':if(!f.domainPatrolWon)fight('domain-patrol','domainPatrolConfronted','Clear the courier stair','Those hunters have the side stair covered. The field supplies are beyond them, with a survey sight we can use.');return;
   case 'season-nameplate':return say('Petra','A tow-rope cut clean through. Skeld’s lost fleet didn’t end up here. We can bring back the days taken from survivors, but the dead stay dead.');
   case 'season-refuge':if(f.seasonsFreed)go(h,'lastrefuge');return;
   case 'refuge-seasons':return go(h,'seasonstreet');

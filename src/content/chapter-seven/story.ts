@@ -16,7 +16,7 @@ export const JOURNAL={
  seasonStreetSeen:entry('The seasons meet','Skeld’s snow, Namar’s terraces and a river stair have been folded together. The winter dragon guards the last return. Kit and Petra are guiding the freed people through.'),
  domainDragonWon:entry('Winter leaves the gate','The dragon fell. Its sound saber guard is in the bag for Petra.'),
  seasonsFreed:entry('One road stays open','Orrin jammed the gate open without its divine supply. The last stream broke and the Benefactor’s ring stopped turning.'),
- domainPatrolWon:entry('The courier stair','The divine hunters are stopped. A far-road survey sight is in the bag for Kit.'),
+ domainPatrolWon:entry('The courier stair','The divine hunters are stopped. The field supplies are accessible, and a far-road survey sight is in the bag for Kit.'),
  lastRefugeSeen:entry('The unwritten hour','The freed people have made a shelter and begun crossing to Alda. Rest, supplies and equipment remain available before and between the final forms.'),
  benefactorSeen:entry('The Benefactor','The god claims the lives its miracles made possible. The three sources are cut; its body can no longer draw from them.'),
  benefactorBodyWon:entry('The mantle breaks','The Benefactor’s body is defeated. It cannot refill the empty shoulder channels.'),
