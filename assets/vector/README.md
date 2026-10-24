@@ -63,4 +63,4 @@ The Maps workshop (`?dev=maps`) previews the actual Chapter One colors, emitter 
 
 Chapter Three now extends angular scenery and registered illumination through the green-iron conduit complex and its battlefields; see [its source and lighting guide](chapter-three.md). Royal marble remains a separate asset family.
 
-[Chapter Four](chapter-four.md) now shares native actor planes/shadows, flag-aware coastal lamps and the angular architecture treatment across its three world maps and five arenas. Tiled navigation/staging stays unchanged.
+[Chapter Four](chapter-four.md) now shares native actor planes/shadows, flag-aware coastal lamps and the angular architecture treatment across its three world maps and five arenas. Authored crooked quay outlines generate matching 24px walking cells; Breakwater's flag-blocked stair leads through the gate to the sanctuary. Cast anchors, interaction IDs and story flags stay intact.
