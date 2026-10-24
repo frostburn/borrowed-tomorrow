@@ -39,6 +39,8 @@ describe('world-space actor lighting',()=>{
   it('keeps Chapter Five cinematic pieces live and removes disconnected anchor light',()=>{
     const airfield=CHAPTER_FIVE_MAPS.airfield.tiles!,launch=visibleSceneArt(airfield,{flags:{}})!.find(p=>p.key==='scene-five-survey-ship')!;
     expect(properties(airfield.layers.find(l=>l.id===launch.layerId)!).live).toBe(true);
+    const shelter=visibleSceneArt(CHAPTER_FIVE_MAPS.dawnwatch.tiles!,{flags:{}})!;
+    expect(shelter.find(p=>p.key==='scene-five-shelter-bar')!.depth).toBeGreaterThan(shelter.find(p=>p.key==='scene-five-shelter-front')!.depth);
     const deck=CHAPTER_FIVE_MAPS.flagship.tiles!;
     for(const piece of visibleSceneArt(deck,{flags:{}})!.filter(p=>p.key.startsWith('scene-five-flagship-')&&!p.key.endsWith('-launch')))
       expect(properties(deck.layers.find(l=>l.id===piece.layerId)!).live).toBe(true);

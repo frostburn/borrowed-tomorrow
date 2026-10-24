@@ -603,9 +603,9 @@
         },
         {
           "name": "wind-ship",
-          "x": 0,
+          "x": 48,
           "y": 696,
-          "width": 288,
+          "width": 216,
           "height": 120,
           "properties": [
             {
@@ -616,12 +616,12 @@
             {
               "name": "approachX",
               "type": "int",
-              "value": 6
+              "value": 8
             },
             {
               "name": "approachY",
               "type": "int",
-              "value": 32
+              "value": 31
             },
             {
               "name": "sign",

@@ -79,7 +79,7 @@ it('keeps the boarding gangways reachable when docked hulls cover older regional
  const safe=restorePoint(map,old,s)!;
  expect(walkable(map,safe.x,safe.y,s)).toBe(true);
  const gangway=map.objects.find(o=>o.id===exit)!;
- expect(worldPath(map,safe,gangway,s).length).toBeGreaterThan(0);
+ expect(safe.x===gangway.x&&safe.y===gangway.y||worldPath(map,safe,gangway,s).length>0,id).toBe(true);
  expect(worldPath(map,arrival(id,'start'),gangway,s).length).toBeGreaterThan(0);
  }
 });

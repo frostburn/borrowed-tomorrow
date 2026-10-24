@@ -95,9 +95,10 @@ def world(id,name,subtitle,outline,blocks,objects,arrivals,casts,people,decor,ba
   blocks=blocks+[(0,24,14,6),(3,30,9,1)]
   decor=decor+[(id+'-survey-mooring',docked_ship(),342,208,0,574,-997,{}),
    (id+'-boarding-plank',[poly([(141,780),(157,791),(242,739),(224,729)],'#ae9870'),line([(149,783),(234,732)],'#d1bc89',3)]+[line([(150+i*10,775-i*6),(160+i*10,784-i*6)],'#766b54',2)for i in range(8)],250,800,0,0,-996,{})]
+  # Board from the gangway, leaving the infirmary's approach outside its hit area.
   for o in objects:
    if o['name']in ('dawn-ship','wind-ship'):
-    replacement=control(o['name'],6,32,(0,29,12,5),'Survey mooring · return aboard',sign=True);o.clear();o.update(replacement)
+    replacement=control(o['name'],8,31,(2,29,9,5),'Survey mooring · return aboard',sign=True);o.clear();o.update(replacement)
  layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),{'id':2,'name':'Walking surfaces','type':'tilelayer','visible':True,'width':w,'height':h,'data':polygon_cells(outline,w,h)},layer(3,'Scenery footprints',blocks,w,h,6)]
  layers[2]['properties']=prop(sort=True)
  entries=[]
@@ -190,7 +191,7 @@ world('dawnwatch','Dawnwatch · the lower town','The shelter gate is above the l
  {'start':(9,32),'gate':(35,24),'barracks':(49,27),'shelter':(35,25),'queue':(29,29)},
  {'five-dawn-arrival':{'nell':(28,28),'petra':(30,26),'orrin':(26,27),'kit':(25,29),'celia':(27,30),'aurel':(36,22),'enna':(32,25)},'five-shelter':{'nell':(34,26),'petra':(35,23),'orrin':(32,26),'kit':(30,28),'celia':(32,29),'enna':(37,25)},'five-dawn-freed':{'nell':(34,27),'petra':(36,25),'orrin':(31,26),'kit':(32,29),'celia':(30,28),'aurel':(38,25),'enna':(34,24)}},
  [point('lower-family',21,29,sprite='civilian-family-plum',hiddenFlag='shelterOpened'),point('shelter-family',35,21,sprite='civilian-family-plum',requiredFlag='shelterOpened'),point('lower-resident',18,32,sprite='civilian-traveler-blue',hiddenFlag='shelterOpened'),point('shelter-resident',37,22,sprite='civilian-traveler-blue',requiredFlag='shelterOpened'),point('gate-watch',42,25,sprite='dawn-soldier'),point('infirmary-hand',13,30,sprite='civilian-dockhand-rust')],
- [('watch-citadel',fortress(),800,300,450,80,380,{}),('lower-houses',dwellings(),410,260,20,335,595,{}),('watch-barracks-wing',factory(),600,270,1010,265,535,{}),('shelter-front',[rect(0,25,250,165,'#6c7f7a'),poly([(0,25),(125,0),(250,25),(250,43),(0,43)],'#b3ac87'),rect(66,68,117,122,'#203946'),rect(54,60,141,12,'#c0ac79')],252,192,702,311,503,{}),('shelter-bar',[rect(0,0,112,14,'#b49a69'),rect(8,0,7,119,'#374f58'),rect(96,0,7,119,'#374f58')],114,120,772,380,500,{'hiddenFlag':'shelterOpened'}),('shelter-lamps',[rect(713,390,15,37,'#e2c78d'),rect(925,390,15,37,'#e2c78d')],960,450,0,0,504,{'requiredFlag':'shelterOpened'})],watchback)
+ [('watch-citadel',fortress(),800,300,450,80,380,{}),('lower-houses',dwellings(),410,260,20,335,595,{}),('watch-barracks-wing',factory(),600,270,1010,265,535,{}),('shelter-front',[rect(0,25,250,165,'#6c7f7a'),poly([(0,25),(125,0),(250,25),(250,43),(0,43)],'#b3ac87'),rect(66,68,117,122,'#203946'),rect(54,60,141,12,'#c0ac79')],252,192,702,311,503,{}),('shelter-bar',[rect(0,0,112,14,'#b49a69'),rect(8,0,7,119,'#374f58'),rect(96,0,7,119,'#374f58')],114,120,772,380,506,{'hiddenFlag':'shelterOpened'}),('shelter-lamps',[rect(713,390,15,37,'#e2c78d'),rect(925,390,15,37,'#e2c78d')],960,450,0,0,504,{'requiredFlag':'shelterOpened'})],watchback)
 
 barrackback=ground(1536,1008)+[rect(0,270,1536,207,'#3b555f'),rect(0,280,1536,15,'#a49e7e')]
 world('watchbarracks','Dawnwatch · the gun terraces','The mortar is west, the repeater east. Both positions command the signal-wall stair.',OUTLINES['watchbarracks'],[(10,19,7,3),(45,19,7,3),(27,15,10,3)], [
