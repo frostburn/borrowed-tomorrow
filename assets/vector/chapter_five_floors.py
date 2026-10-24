@@ -111,7 +111,7 @@ def ceramic(w,top,bottom):
    if variation(col,row,19)==0:out.append(poly([(x-9,y),(x,y-8),(x+9,y),(x,y+8)],'#8da393'))
  return out
 
-def floor_paint(w,h,scene,points):
+def floor_paint(w,h,scene,points,arena=False):
  material=MATERIALS[scene];top=min(p[1]for p in points);bottom=max(p[1]for p in points)
  bases={'packed-cinder':'#7b8273','casting-yard':'#636b60','waterworks-grating':'#566e6c','heat-brick':'#665e50',
   'town-cobbles':'#797d6c','gun-terrace':'#4f6668','watch-slate':'#687775','garden-stone':'#657e6b',

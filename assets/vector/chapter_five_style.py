@@ -51,8 +51,8 @@ def cells(pts,w,h):
   return result
  return [3 if inside(x*24+12,y*24+12)else 0 for y in range(h)for x in range(w)]
 
-def floor_shapes(pts,w,h,scene):
- out=[f'<defs><clipPath id="floor"><path d="{path(pts)}"/></clipPath></defs><g clip-path="url(#floor)">',*floor_paint(w,h,scene,pts),'</g>']
+def floor_shapes(pts,w,h,scene,arena=False):
+ out=[f'<defs><clipPath id="floor"><path d="{path(pts)}"/></clipPath></defs><g clip-path="url(#floor)">',*floor_paint(w,h,scene,pts,arena),'</g>']
  for a,b in zip(pts,pts[1:]+pts[:1]):
   if b[0]<a[0]:out.extend([poly([b,a,(a[0],a[1]+19),(b[0],b[1]+19)],'#3f5c63'),line([a,b],'#b5b493',4)])
   elif b[0]>a[0]:out.append(line([a,b],'#9eac96',3))

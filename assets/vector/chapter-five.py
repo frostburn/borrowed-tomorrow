@@ -232,7 +232,7 @@ for id,mapid in [('benefactor-retaliation','airship'),('wind-lift','dispensary')
  if id=='hammer-carrier':
   for y in (195,248):back += [rect(0,y,1008,7,'#1b3440'),rect(0,y,1008,2,'#b8a67c')]
  back.extend(arena_fixtures())
- floorart=floor_shapes([(24,72),(984,72),(984,552),(24,552)],1008,624,mapid)
+ floorart=floor_shapes([(24,72),(984,72),(984,552),(24,552)],1008,624,mapid,arena=True)
  if id=='hammer-carrier':
   for y in (195,248):floorart += [rect(24,y,960,7,'#1b3440'),rect(24,y,960,2,'#b8a67c')]
  svg(ART/f'{key}-back.svg',1008,624,back);svg(ART/f'{key}-floor.svg',1008,624,floorart)
