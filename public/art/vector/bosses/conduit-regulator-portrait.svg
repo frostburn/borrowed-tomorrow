@@ -2,59 +2,59 @@
 <title>Heart regulator</title>
 <metadata>{"reference":"public/art/vector/boiler-keeper.svg and the accepted Chapter Three green-iron engine works","method":"Original vector expansion of the boiler keeper: pressure dial, furnace grille, twin inspection lenses and side chimney. A side-mounted horizontal compressor, solid lower chassis and three fixed contact feet fit a triangular three-hex base.","portraitViewBox":[64,34,128,128]}</metadata>
 <g id="rear-foot">
- <path d="M117 145H139L145 174 140 181H115L110 175Z" fill="#101d28"/>
+ <path d="M117 145H139L145 174 140 181H115L110 175Z" fill="#765b46"/>
  <path d="M122 148H134L138 171H118Z" fill="#7c6247"/>
  <path d="M118 170H139L142 177H114Z" fill="#b99b63"/>
 </g>
 <g id="pipes">
- <path d="M159 88V35L167 27H197V18H211V41H180V99Z" fill="#101d28"/>
+ <path d="M159 88V35L167 27H197V18H211V41H180V99Z" fill="#806647"/>
  <path d="M164 87V38L170 32H202V21H207V37H175V96Z" fill="#9c784e"/>
  <path d="M165 39 171 34H204V25H207V37H175V87H170V39Z" fill="#cfaf70"/>
  <path d="M196 16H214V23H196ZM164 49H180V56H164ZM164 79H180V86H164Z" fill="#b99b63"/>
- <path d="M83 81H64L54 92V123H47V89L61 74H83Z" fill="#101d28"/>
+ <path d="M83 81H64L54 92V123H47V89L61 74H83Z" fill="#806647"/>
  <path d="M82 78H62L51 90V122H56V93L64 84H82Z" fill="#9c784e"/>
 </g>
 <g id="legs">
- <path d="M94 156 110 162 105 190 96 210 99 222H72L75 206 85 184Z M146 157 164 153 171 183 180 208 181 224H154L155 208 149 190Z" fill="#101d28"/>
+ <path d="M94 156 110 162 105 190 96 210 99 222H72L75 206 85 184Z M146 157 164 153 171 183 180 208 181 224H154L155 208 149 190Z" fill="#765f48"/>
  <path d="M95 163 104 166 98 189 88 209 90 217H78L82 206 92 185Z" fill="#9d7a50"/>
  <path d="M153 162 160 159 166 185 173 208 174 217H162L163 208 156 188Z" fill="#7c6247"/>
  <path d="M87 182 101 186 98 197 84 192Z M153 184 167 181 171 192 157 196Z" fill="#cfaf70"/>
- <path d="M75 211 97 213 108 229 103 237H62L62 228Z M156 213 178 210 193 226 193 237H151L146 231Z" fill="#101d28"/>
+ <path d="M75 211 97 213 108 229 103 237H62L62 228Z M156 213 178 210 193 226 193 237H151L146 231Z" fill="#775f47"/>
  <path d="M77 216 94 217 102 229H67Z M160 218 176 216 187 229H153Z" fill="#aa8353"/>
  <path d="M67 229H103V233H64Z M152 229H189V233H151Z" fill="#cfaf70"/>
  <path d="M78 219 88 220 92 226H71Z M162 220 172 218 181 226H157Z" fill="#e1c68c"/>
 </g>
 <g id="chassis">
- <path d="M96 164H159L172 181 159 197H99L86 183Z" fill="#101d28"/>
+ <path d="M96 164H159L172 181 159 197H99L86 183Z" fill="#3e5e5d"/>
  <path d="M99 169H156L165 181 155 191H102L94 182Z" fill="#294b4e"/>
  <path d="M101 171H154L157 176H99Z" fill="#728d87"/>
  <path d="M102 185H155L151 190H106Z" fill="#486d69"/>
  <path d="M99 177H104V182H99Z M152 177H157V182H152Z" fill="#b99b63"/>
 </g>
 <g id="pump-frame">
- <path d="M20 66H82L98 79V101H20L13 94V75Z" fill="#101d28"/>
+ <path d="M20 66H82L98 79V101H20L13 94V75Z" fill="#3e5d5c"/>
  <path d="M23 71H80L92 82V95H23L19 91V77Z" fill="#294b4e"/>
  <path d="M23 71H80L86 77H25L19 83V77Z" fill="#728d87"/>
  <path d="M22 96H91V101H22Z" fill="#9c784e"/>
  <path d="M22 76H26V80H22Z M83 88H87V92H83Z" fill="#e1c68c"/>
 </g>
 <g id="pump-rod">
- <path d="M47 85H71" stroke="#101d28" stroke-width="7"/>
- <path d="M47 85H71" stroke="#b99b63" stroke-width="3"/>
+ <path d="M47 85H71" stroke="#9c784e" stroke-width="7"/>
+ <path d="M47 85H71" stroke="#cfaf70" stroke-width="3"/>
 </g>
 <g id="pump-piston">
- <path d="M69 81H94V89H69Z" fill="#101d28"/>
+ <path d="M69 81H94V89H69Z" fill="#7f928a"/>
  <path d="M70 83H93V87H70Z" fill="#c0c9b4"/>
  <path d="M68 78H74V92H68Z" fill="#cfaf70"/>
 </g>
 <g id="pump-cylinder">
- <path d="M77 74H94V96H77Z" fill="#101d28"/>
+ <path d="M77 74H94V96H77Z" fill="#8e704e"/>
  <path d="M81 77H90V93H81Z" fill="#7c6247"/>
  <path d="M81 77H85V93H81Z" fill="#b99b63"/>
  <path d="M77 74H94V79H77Z M77 91H94V96H77Z" fill="#cfaf70"/>
 </g>
 <g id="pump-crank">
- <path d="M34 72H46L54 80V90L46 98H34L26 90V80Z" fill="#101d28"/>
+ <path d="M34 72H46L54 80V90L46 98H34L26 90V80Z" fill="#7f694c"/>
  <path d="M35 76H45L50 81V89L45 94H35L30 89V81Z" fill="#b99b63"/>
  <path d="M36 79H44L47 82V88L44 91H36L33 88V82Z" fill="#294b4e"/>
  <path d="M33 83H47V87H33Z M38 78H42V92H38Z" fill="#cfaf70"/>
@@ -62,27 +62,27 @@
  <path d="M38 83H42V87H38Z" fill="#efe0ad"/>
 </g>
 <g id="left-arm">
- <path d="M81 99 67 97 49 122 51 149 65 160 79 149 75 127 87 114Z" fill="#101d28"/>
+ <path d="M81 99 67 97 49 122 51 149 65 160 79 149 75 127 87 114Z" fill="#8a6b48"/>
  <path d="M73 106 64 104 55 123 57 142 65 149 72 143 68 125 80 111Z" fill="#9c784e"/>
  <path d="M60 116 65 108 71 110 63 127 65 144 60 140Z" fill="#cfaf70"/>
- <path d="M60 134 73 131 79 150 76 168 64 176 49 168 48 153Z" fill="#101d28"/>
+ <path d="M60 134 73 131 79 150 76 168 64 176 49 168 48 153Z" fill="#54746c"/>
  <path d="M60 139 70 137 74 150 71 164 64 169 54 164 54 153Z" fill="#728d87"/>
  <path d="M58 142 64 139 63 154 58 161 54 158 55 151Z" fill="#a7b5a7"/>
- <path d="M52 162 62 159 74 163 73 171 65 185 57 178 49 175Z" fill="#101d28"/>
+ <path d="M52 162 62 159 74 163 73 171 65 185 57 178 49 175Z" fill="#806446"/>
  <path d="M55 165 62 163 69 165 67 173 64 177 61 172 56 175 53 172Z" fill="#9c784e"/>
 </g>
 <g id="right-arm">
- <path d="M174 97 189 98 205 122 202 149 189 160 175 149 180 127 166 112Z" fill="#101d28"/>
+ <path d="M174 97 189 98 205 122 202 149 189 160 175 149 180 127 166 112Z" fill="#765b46"/>
  <path d="M182 105 189 106 198 125 196 142 189 150 181 142 186 125 173 110Z" fill="#7c6247"/>
  <path d="M190 111 194 119 191 139 187 144 184 139 190 124 185 115Z" fill="#b99b63"/>
- <path d="M182 132 196 135 207 153 206 168 191 176 177 169 174 150Z" fill="#101d28"/>
+ <path d="M182 132 196 135 207 153 206 168 191 176 177 169 174 150Z" fill="#3e625c"/>
  <path d="M183 138 193 140 201 154 200 165 191 170 181 164 180 151Z" fill="#486d69"/>
  <path d="M183 141 188 141 188 157 183 164 180 158Z" fill="#8da49a"/>
- <path d="M178 163 190 159 203 164 207 176 198 181 191 186 184 175 177 171Z" fill="#101d28"/>
+ <path d="M178 163 190 159 203 164 207 176 198 181 191 186 184 175 177 171Z" fill="#806446"/>
  <path d="M182 166 190 164 200 167 202 173 198 176 194 173 191 179 187 173 182 171Z" fill="#9c784e"/>
 </g>
 <g id="boiler">
- <path d="M93 75 156 72 177 91 181 146 163 177 94 179 75 153 77 98Z" fill="#101d28"/>
+ <path d="M93 75 156 72 177 91 181 146 163 177 94 179 75 153 77 98Z" fill="#5d6b60"/>
  <path d="M96 80 153 78 171 95 174 145 158 170 98 172 82 150 84 100Z" fill="#7c6247"/>
  <path d="M96 84 113 80 108 149 99 163 87 147 89 102Z" fill="#b89460"/>
  <path d="M115 81 151 82 167 98 170 143 156 162 110 165 112 144Z" fill="#486d69"/>
@@ -95,7 +95,7 @@
  <path d="M89 98H94V104H89Z M159 96H164V102H159Z M91 140H96V146H91Z M159 134H164V140H159Z" fill="#e1c68c"/>
 </g>
 <g id="cowl">
- <path d="M90 78 90 59 102 42 128 34 152 40 166 57 168 82Z" fill="#101d28"/>
+ <path d="M90 78 90 59 102 42 128 34 152 40 166 57 168 82Z" fill="#355550"/>
  <path d="M96 60 106 47 129 40 149 46 160 60 161 77 95 79Z" fill="#294b4e"/>
  <path d="M99 60 108 49 128 43 141 46 124 50 110 64Z" fill="#8da49a"/>
  <path d="M145 48 157 61 158 76 145 76Z" fill="#192e3b"/>
@@ -106,7 +106,7 @@
  <path d="M107 85H112V88H107Z M144 84H149V87H144Z" fill="#f2e8c6"/>
 </g>
 <g id="dial">
- <path d="M119 91H140L152 101V118L141 128H120L109 118V102Z" fill="#101d28"/>
+ <path d="M119 91H140L152 101V118L141 128H120L109 118V102Z" fill="#806849"/>
  <path d="M120 95H139L148 103V116L139 124H121L113 116V104Z" fill="#cfaf70"/>
  <path d="M122 99H137L144 105V114L137 120H123L117 114V106Z" fill="#efe0ad"/>
  <path d="M121 104 123 107 M129 100V104 M138 103 135 106" stroke="#7c6247" stroke-width="2"/>

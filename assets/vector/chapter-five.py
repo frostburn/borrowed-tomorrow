@@ -4,6 +4,7 @@ No bitmap inputs or resampling. Navigation, markers and scene casts share 24px c
 import json, math, re
 from pathlib import Path
 from map_metadata import retain_interaction_roles
+from anchor_engines import carrier
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-five'; MAP=ROOT/'src/content/chapter-five/maps'
@@ -92,13 +93,6 @@ def conduit():
  for x in (47,252):out += [rect(x,120,20,131,'#9c885f'),rect(x-9,119,38,11,'#d4b580')]
  return out
 
-def carrier(w=224,h=168):
- out=[poly([(8,115),(31,94),(188,94),(216,115),(211,153),(32,164),(7,144)],'#152c38'),poly([(12,113),(39,96),(184,96),(214,115),(189,132),(32,136)],'#5e6d67')]
- for x in (35,74,116,157,193):out += [ellipse(x,140,16,15,'#172c37'),ellipse(x,140,9,8,'#8b927a')]
- out += [poly([(38,48),(71,23),(174,23),(198,48),(187,115),(55,122),(29,91)],'#354f53'),poly([(38,48),(71,23),(174,23),(198,48),(158,68),(71,70)],'#8e9275'),poly([(71,70),(158,68),(187,115),(55,122)],'#5e6c5b'),poly([(41,59),(68,76),(61,107),(38,91)],'#142b36'),poly([(46,68),(62,78),(57,99),(43,90)],'#dd8b4c')]
- for x in (83,110,137):out += [rect(x,78,13,26,'#263e45'),rect(x+3,80,7,18,'#d3a05f')]
- out += [rect(153,0,25,37,'#223c48'),poly([(146,0),(162,0),(184,0),(180,12),(151,12)],'#9b9471'),poly([(189,50),(213,56),(223,91),(205,104),(188,81)],'#29454c'),line([(191,62),(216,81)],'#bda16d',5)]
- return out
 
 def write_map(id,name,subtitle,layers,w=64,h=42,safe='start'):
  d={'type':'map','version':'1.10','tiledversion':'1.11.2','orientation':'orthogonal','renderorder':'right-down','infinite':False,'width':w,'height':h,'tilewidth':24,'tileheight':24,'nextlayerid':len(layers)+1,'nextobjectid':1,'properties':prop(name=name,subtitle=subtitle,artStyle='rotoscope',sceneArt=id,safeArrival=safe),'tilesets':[{'firstgid':p['firstgid'],'source':'../../../../assets/tiles/pages/'+p['name']+'.json'}for p in json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text())['pages']],'layers':layers}
