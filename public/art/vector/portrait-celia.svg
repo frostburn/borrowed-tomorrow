@@ -1,42 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
 <title>Celia, physician</title>
-<metadata>{"reference":"8b21977:public/art/portrait-celia.png","method":"Original polygonal interpretation of Celia's silver bob, spectacles, green coat and medical book","construction":"Female: mature long cheeks, tapered jaw, shallow chin, compact nose tip and fine eye planes; individual rounded spectacles and patient expression"}</metadata>
-<path d="M0 128V103L20 89 40 83H80L108 94 128 111V128Z" fill="#142536"/>
-<path d="M4 128 8 106 31 91 47 86 77 85 104 95 120 114 123 128Z" fill="#385d4a"/>
-<path d="M6 115 31 94 38 100 29 128H4Z" fill="#638487"/>
-<path d="M84 93 107 99 115 128H85Z" fill="#263e53"/>
-<path d="M49 75 74 76 76 92 64 108 49 92Z" fill="#d49c70"/>
-<path d="M49 78 73 81 69 91 52 88Z" fill="#a87558"/>
-<path d="M46 88 59 96 73 88 80 94 64 124 48 103Z" fill="#d8c59b"/>
-<path d="M36 89 46 86 57 106 43 102 42 115 28 95Z" fill="#263e53"/>
-<path d="M77 86 85 92 91 105 77 105 70 119 68 106Z" fill="#142536"/>
-<path d="M60 102 65 105 64 113 59 113 57 108Z" fill="#d9ae62"/>
-<path d="M33 24 41 14 56 9 73 11 87 21 94 38 89 62 79 79 68 87 52 85 39 75 29 57 27 40Z" fill="#687478"/>
-<path d="M39 25 53 17 70 20 82 30 83 48 78 64 69 76 60 80 51 77 42 69 37 54 35 39Z" fill="#d49c70"/>
-<path d="M40 32 53 22 68 25 70 39 64 49 65 63 57 70 46 63 39 48Z" fill="#e1b68c"/>
-<path d="M74 29 81 37 80 52 74 66 67 74 61 77 69 77 79 68 84 51 84 34Z" fill="#b37e60"/>
-<path d="M35 49 31 47 30 53 34 61 38 60Z" fill="#c58b68"/>
-<path d="M65 45 69 51 73 54 68 57 64 54Z" fill="#c18c69"/>
-<path d="M63 55 69 55 68 57 64 57Z" fill="#a87558"/>
-<path d="M52 66 59 65 64 66 69 64 66 68 59 70 54 69Z" fill="#975e52"/>
-<path d="M55 67 63 67 66 66 63 68 57 69Z" fill="#e1b68c"/>
-<path d="M44 38 50 36 57 38 56 40 50 39 44 40Z" fill="#687478"/>
-<path d="M69 37 75 36 79 39 78 41 73 39 69 40Z" fill="#687478"/>
-<path d="M44 44 49 42 55 43 57 46 51 48 46 47Z" fill="#e8cfaa"/>
-<path d="M68 44 73 42 78 44 78 46 73 47 69 47Z" fill="#e8cfaa"/>
-<path d="M49 43H52V47H49ZM73 43H76V47H73Z" fill="#385d4a"/>
-<path d="M50 43H52V46H50ZM74 43H76V46H74Z" fill="#142536"/>
-<path d="M41 43 44 40 54 40 59 43 58 49 54 52 45 51 41 48ZM67 43 71 40 78 41 81 44 80 49 76 51 70 50 67 47ZM59 44H67M35 42 41 44M81 44 85 40" fill="none" stroke="#80553d" stroke-width="1.4"/>
-<path d="M44 55 49 57M74 54 77 52M48 63 50 66M70 61 72 64M54 73 62 75" fill="none" stroke="#b37e60" stroke-width="1"/>
-<path d="M29 24 38 13 51 7 65 5 81 11 92 23 98 42 95 62 88 74 79 78 80 63 86 48 81 28 69 21 57 22 47 29 42 41 37 52 40 71 34 75 26 64 22 50 23 36Z" fill="#b7c1b8"/>
-<path d="M27 36 32 24 43 15 55 12 66 10 78 15 59 15 49 20 42 29 36 44 33 58 35 70 30 63 26 49Z" fill="#d8c59b"/>
-<path d="M52 15 62 15 53 27 45 38 40 54 41 68 36 61 37 45 43 30Z" fill="#8b9b9b"/>
-<path d="M64 11 79 15 89 26 93 42 89 58 84 69 86 49 81 31 70 24 58 22 64 17 78 25 87 38 85 28 74 18Z" fill="#e2d6bb"/>
-<path d="M93 34 96 45 92 63 87 71 81 74 83 65 89 53Z" fill="#687478"/>
-<path d="M34 80 43 85 37 91 27 98" fill="none" stroke="#d9ae62" stroke-width="2"/>
-<path d="M80 104 109 99 121 124 89 128Z" fill="#80553d"/>
-<path d="M85 106 108 102 117 123 91 127Z" fill="#9a7151"/>
-<path d="M82 104 86 105 94 127 90 128Z" fill="#d9ae62"/>
-<path d="M92 120 117 116 119 121 94 126Z" fill="#d8c59b"/>
-<path d="M91 112 94 110 96 112 95 115 92 115Z" fill="#d9ae62"/>
+<metadata>{"reference": "8b21977:public/art/portrait-celia.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Mature long cheeks, a gently narrowed chin and calm tired eyes. Silver bob, substantial round spectacles, green medical coat and book; connected broad planes at the same face scale as Edric and Samira."}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M1 128L10 109 32 97 49 89H80L106 102 124 128Z" fill="#385d4a"/>
+<path d="M5 123L18 108 36 100 43 128Z" fill="#5d7660"/>
+<path d="M87 98L109 110 124 128H88Z" fill="#263e39"/>
+<path d="M49 76L48 96 64 108 81 95 78 74Z" fill="#b58261"/>
+<path d="M61 85L78 79 81 95 65 105 55 95Z" fill="#96674f"/>
+<path d="M42 94L48 90 63 104 79 90 87 98 70 125H52Z" fill="#d8c59b"/>
+<path d="M35 96L43 90 58 107 48 106 45 119 29 102Z M82 91L89 96 96 109 82 108 75 122 71 110Z" fill="#263e53"/>
+<path d="M59 108L65 105 69 111 65 118H59L56 113Z" fill="#d9ae62"/>
+<path d="M29 33L37 18 53 10 73 12 88 25 97 46 94 67 85 83 75 92 40 86 26 68 23 49Z" fill="#879b95"/>
+<path d="M40 32L54 24 72 29 83 42 86 59 81 76 69 90 59 92 47 84 38 70 34 52 34 43Z" fill="#c99571"/>
+<path d="M41 34L54 28 68 32 76 42 72 51 52 55 37 47Z" fill="#e1b68c"/>
+<path d="M78 35L83 42 86 59 81 76 69 90 59 92 58 86 72 77 77 61Z" fill="#a7745a"/>
+<path d="M36 57L45 56 51 63 47 70 39 66Z" fill="#ce9872"/>
+<path d="M43 50L53 48 59 51 56 57 44 56Z M69 49L79 51 84 54 80 58 70 56Z" fill="#ad795b"/>
+<path d="M42 45L51 43 58 46 59 49 51 47 44 50Z M69 45L77 45 83 49 84 52 79 52 71 48Z" fill="#879b95"/>
+<path d="M46 53L55 52V55H47Z M72 53H80V56H72Z" fill="#e8cfaa"/>
+<path d="M50 52H54V56H50Z M75 52H79V57H75Z" fill="#263e4b"/>
+<path d="M63 51L61 63 57 68 62 72 71 69 73 66 66 63Z" fill="#b17b5c"/>
+<path d="M64 54L64 64 69 67 66 69 61 67Z" fill="#e1b68c"/>
+<path d="M59 70L65 71 68 69 69 72 64 74Z" fill="#895d49"/>
+<path d="M44 62L49 64 51 67 48 66Z M74 62L80 61 78 65 75 66Z M49 72L51 75 51 79 48 76Z M72 72L70 76 71 79 74 75Z" fill="#ad795b"/>
+<path d="M53 79L61 77 68 79 75 77 73 82 64 85 56 82Z" fill="#975f51"/>
+<path d="M58 80L64 82 70 80 68 83H61Z" fill="#c99571"/>
+<path d="M61 88L67 87 70 85 69 88 65 90Z" fill="#e1b68c"/>
+<path d="M28 40L33 25 43 17 55 13 69 14 82 22 91 37 86 43 75 33 65 25 54 29 43 39 37 53 34 67 37 80 30 77 24 64 22 49Z" fill="#b7c1b8"/>
+<path d="M33 34L40 24 50 18 58 17 67 19 53 23 44 31 38 44 32 52 29 59Z" fill="#d2d4bc"/>
+<path d="M37 45L42 37 49 31 51 31 43 42 38 56 36 71 33 74 32 64Z" fill="#879b95"/>
+<path d="M77 22L88 30 96 46 94 65 87 78 78 85 77 79 84 66 87 48 81 34 70 27Z" fill="#b7c1b8"/>
+<path d="M77 25L85 31 91 44 88 50 84 38 74 29 68 27Z" fill="#e2d6bb"/>
+<path d="M91 44L94 52 90 68 84 78 79 82 82 71 87 58Z" fill="#687478"/>
+<path d="M40 50L45 47H55L61 51V59L56 64H45L40 59Z M43 52V57L47 61H54L58 57V52L54 50H47Z M68 51L72 48H80L86 53V60L81 64H72L68 60Z M71 53V58L74 61H80L83 58V54L79 51H74Z M61 53H68V56H61Z M34 49L40 52V55L34 52Z M86 54L89 51V54L86 57Z" fill="#9a7151"/>
+<path d="M84 106L109 101 121 124 94 128H89Z" fill="#80553d"/>
+<path d="M88 108L108 104 117 122 95 126Z" fill="#9a7151"/>
+<path d="M84 106L88 107 97 128H91Z" fill="#d9ae62"/>
+<path d="M94 119L115 115 118 121 97 126Z" fill="#d8c59b"/>
 </svg>

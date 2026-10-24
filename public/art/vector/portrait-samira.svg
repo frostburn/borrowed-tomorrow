@@ -1,1 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>samira portrait</title><path d="M0 0H128V128H0Z" fill="#33434f"/><path d="M0 128V112L24 94L45 85H80L110 98L128 119V128Z" fill="#497c7b"/><path d="M48 76L46 96L63 108L82 94L78 74Z" fill="#9a654e"/><path d="M27 31L40 9L72 5L94 22L102 55L94 90L75 98L28 91L18 61Z" fill="#303e49"/><path d="M35 39L53 22L79 30L91 52L85 75L67 91L48 83L34 63Z" fill="#bb805c"/><path d="M77 32L91 52L85 75L67 91L65 83L77 66Z" fill="#8f5b4c"/><path d="M28 38L33 19L46 26L58 13L71 24L86 15L97 34L94 43L74 38L52 32L34 45Z" fill="#cba35b"/><path d="M39 52L53 48L56 51L42 55Z M72 49L85 52L84 56L71 53Z" fill="#293743"/><path d="M47 53H52V57H47Z M75 54H80V58H75Z" fill="#142536"/><path d="M63 54L58 69L65 72L68 68Z" fill="#a56b4f"/><path d="M52 78L64 79L75 76L69 83L60 84Z" fill="#794e48"/><path d="M35 70L30 82L35 88L40 80Z M89 70L86 82L91 87L96 78Z" fill="#e2b86b"/><path d="M21 101L42 90L64 112L85 90L112 103L78 127H49Z" fill="#bd9654"/><path d="M60 106L64 117L69 106Z" fill="#6fa8a1"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Queen Samira of Namar</title>
+<desc>Long copper face, high cheekbones and level gaze; a gold crown over dark hair with turquoise at the throat. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M2 128L13 109 35 97 52 88H80L106 101 123 128Z" fill="#497c7b"/>
+<path d="M5 125L20 107 38 100 43 128Z" fill="#6b9590"/>
+<path d="M87 97L109 109 123 128H88Z" fill="#35565c"/>
+<path d="M51 75L50 96 66 109 82 95 80 75Z" fill="#9a654e"/>
+<path d="M65 85L79 78 82 95 66 106 58 96Z" fill="#794e48"/>
+<path d="M33 31L43 17 64 13 83 21 94 40 94 65 85 90 72 98 38 91 27 68 27 47Z" fill="#303e49"/>
+<path d="M44 33L59 26 76 31 84 43 85 60 81 76 72 87 64 89 53 84 44 75 38 60 37 46Z" fill="#bb805c"/>
+<path d="M45 35L58 29 70 32 78 42 75 51 57 55 41 48 40 42Z" fill="#d5a679"/>
+<path d="M79 36L84 43 85 60 81 76 72 87 64 89 65 83 76 74 77 60Z" fill="#8f5b4c"/>
+<path d="M40 56L51 55 57 61 52 66 42 63Z" fill="#c18a65"/>
+<path d="M51 50L61 48 66 51 64 55 52 55Z M74 49L82 50 85 53 82 55 75 54Z" fill="#9a654e"/>
+<path d="M50 46L59 44 65 46 66 49 58 48 51 49Z M74 45H81L85 48 84 50 75 48Z" fill="#293743"/>
+<path d="M53 52L62 51 63 54 54 54Z M76 51H82V54H76Z" fill="#e2bf91"/>
+<path d="M58 51H62V55H58Z M79 50H83V55H79Z" fill="#142536"/>
+<path d="M70 52L68 63 65 69 69 72 77 70 78 67 73 64Z" fill="#a56b4f"/>
+<path d="M70 55L71 64 75 67 72 69 68 67Z" fill="#d5a679"/>
+<path d="M66 70L72 71 76 69 75 72 70 73Z" fill="#794e48"/>
+<path d="M58 78L65 76 71 78 78 76 77 80 68 83 60 81Z" fill="#794e48"/>
+<path d="M62 79L68 80 73 79 72 81H65Z" fill="#bb805c"/>
+<path d="M66 85L72 84 74 82 73 85 69 87Z" fill="#d5a679"/>
+<path d="M31 42L36 28 42 30 43 48 37 62 39 78 34 88 29 77 27 59Z M86 34L93 43 94 65 86 87 80 92 80 81 86 65Z" fill="#233342"/>
+<path d="M30 28L34 15 46 24 58 9 70 23 84 13 95 30 94 40 76 36 55 29 35 40Z" fill="#cba35b"/>
+<path d="M34 27L36 22 46 28 58 16 69 28 84 20 89 29 75 29 58 24 45 32Z" fill="#e2b86b"/>
+<path d="M31 34L46 29 60 28 77 34 94 34V40L76 36 55 31 35 40Z" fill="#a17f49"/>
+<path d="M58 24L63 29 60 35 55 30Z" fill="#6fa8a1"/>
+<path d="M36 68L32 78 35 85 41 79Z M89 69L86 80 91 85 95 77Z" fill="#e2b86b"/>
+<path d="M21 102L44 92 65 110 84 92 112 104 78 128H50Z" fill="#bd9654"/>
+<path d="M26 103L43 96 65 115 84 96 103 105 79 123H53Z" fill="#e2b86b"/>
+<path d="M58 114L65 110 72 115 66 127Z" fill="#497c7b"/>
+<path d="M61 115L65 113 69 116 65 123Z" fill="#6fa8a1"/>
+</svg>

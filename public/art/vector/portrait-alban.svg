@@ -1,43 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<title>alban portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-alban.png", "method": "Hand-traced portrait silhouette, pose and clothing; original polygonal face planes"}</metadata>
-<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
-<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="0,105 128,65 128,128 0,128" fill="#1b303a"/>
-<polygon points="4,128 13,99 38,84 53,79 82,82 111,99 125,128" fill="#233d52"/>
-<polygon points="6,125 17,103 38,94 47,128" fill="#3e596b"/>
-<polygon points="91,90 109,103 122,128 91,128" fill="#122634"/>
-<polygon points="45,85 57,94 75,89 86,96 91,128 44,128" fill="#baa989"/>
-<polygon points="53,94 66,99 79,94 83,128 52,128" fill="#f1d8ae"/>
-<polygon points="39,85 45,78 58,93 53,104 43,98" fill="#122634"/>
-<polygon points="75,88 83,79 92,89 86,103" fill="#122634"/>
-<polyline points="40,84 45,80 58,93 53,101" fill="none" stroke="#c69c5c" stroke-width="3"/>
-<polyline points="79,91 84,82 90,89 87,99" fill="none" stroke="#c69c5c" stroke-width="3"/>
-<polygon points="38,28 51,16 77,17 92,32 92,55 86,77 72,89 53,83 41,68 34,47" fill="#372a25"/>
-<polygon points="45,30 69,25 83,35 86,50 95,62 87,67 83,80 72,87 56,82 43,67 37,48" fill="#d49c70"/>
-<polygon points="40,37 51,42 52,61 63,76 77,81 72,87 55,80 43,66 37,48" fill="#ad7253"/>
-<polygon points="54,31 70,28 80,36 82,48 74,55 58,50" fill="#efc596"/>
-<polygon points="31,40 30,30 42,23 39,19 51,18 55,11 63,14 70,11 82,17 90,26 94,38 86,38 80,29 72,29 65,36 56,35 47,44 42,42 37,55 32,56" fill="#322e2e"/>
-<polygon points="36,32 47,25 55,19 65,19 60,26 49,30 43,39 38,40" fill="#72675b"/>
-<polygon points="55,21 65,15 73,16 67,21 59,26 53,26" fill="#baa989"/>
-<polygon points="86,35 92,41 93,54 87,60 84,51" fill="#372a25"/>
-<polygon points="58,49 64,48 67,51 64,53 58,52" fill="#80523e"/>
-<polygon points="59,51 65,50 64,52 60,52" fill="#f1d8ae"/>
-<polygon points="62,50 64,50 64,53 62,53" fill="#122634"/>
-<polygon points="78,48 84,47 87,50 84,52 78,51" fill="#80523e"/>
-<polygon points="79,50 85,49 84,51 80,51" fill="#f1d8ae"/>
-<polygon points="82,49 84,49 84,52 82,52" fill="#122634"/>
-<polyline points="55,45 66,46" fill="none" stroke="#372a25" stroke-width="3"/>
-<polyline points="77,45 86,43" fill="none" stroke="#372a25" stroke-width="3"/>
-<polygon points="79,54 77,63 84,66 86,64 81,61" fill="#ad7253"/>
-<polygon points="81,55 83,62 85,63 82,64" fill="#efc596"/>
-<polyline points="65,74 80,73" fill="none" stroke="#80523e" stroke-width="2"/>
-<polygon points="56,66 61,70 60,73 55,69" fill="#ad7253"/>
-<polygon points="9,100 15,92 29,94 34,102 28,107 14,105" fill="#c69c5c"/>
-<polygon points="14,98 18,96 28,98 28,102 14,102" fill="#baa989"/>
-<polygon points="89,100 95,92 109,94 114,102 108,107 94,105" fill="#c69c5c"/>
-<polygon points="94,98 98,96 108,98 108,102 94,102" fill="#baa989"/>
-<polygon points="92,99 101,106 78,128 65,128" fill="#8e4136"/>
-<polyline points="94,101 97,105 73,128" fill="none" stroke="#ba6348" stroke-width="3"/>
-<polygon points="61,113 65,106 69,113 76,116 69,119 65,127 61,119 54,116" fill="#c69c5c"/>
-<polygon points="63,113 67,113 69,117 65,120 62,117" fill="#baa989"/>
+<title>Captain Alban</title>
+<metadata>{"reference": "ec894d8:public/art/portrait-alban.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Lean adult cheek, controlled scowl, projecting bridge and hard thin mouth. Neatly swept black hair, blue dress coat, cream bib and brass insignia; a modest turn using the larger regional face construction."}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M0 128V108L23 94 47 87H82L108 100 128 119V128Z" fill="#233d52"/>
+<path d="M3 122L17 107 36 96 42 128H0Z" fill="#3e596b"/>
+<path d="M89 95L111 108 128 122V128H90Z" fill="#122634"/>
+<path d="M48 75L47 96 65 108 84 94 81 73Z" fill="#b58261"/>
+<path d="M61 85L81 79 84 94 66 106 54 95Z" fill="#96674f"/>
+<path d="M45 94L62 104 82 91 91 104 88 128H44Z" fill="#d8c59b"/>
+<path d="M34 95L43 89 61 104 54 114 42 105Z M81 92L86 89 97 101 87 113 77 107Z" fill="#122634"/>
+<path d="M38 95L43 92 58 104 54 109 52 106 54 104Z M85 92L93 101 87 108 85 105 90 101Z" fill="#c69c5c"/>
+<path d="M33 44L28 42 27 51 32 62H40Z M91 44L98 42 100 50 96 61 88 64Z" fill="#b58261"/>
+<path d="M40 30L55 21 75 26 87 40 91 58 86 74 76 88 64 94 49 85 38 70 33 51 34 41Z" fill="#c99571"/>
+<path d="M41 33L55 25 70 29 80 40 75 50 50 54 36 46Z" fill="#e1b68c"/>
+<path d="M81 32L87 40 91 58 86 74 76 88 64 94 58 88 75 80 81 62Z" fill="#a7745a"/>
+<path d="M35 55L44 56 51 64 47 71 39 66Z" fill="#ce9872"/>
+<path d="M29 42L30 28 40 17 56 10 76 14 89 26 95 43 88 50 82 37 69 27 50 31 41 43 37 55 32 55Z" fill="#322f30"/>
+<path d="M35 31L43 22 56 16 71 19 58 21 47 27 38 39 34 46Z" fill="#65544b"/>
+<path d="M77 21L88 28 94 42 88 49 85 39 80 33Z" fill="#242a2d"/>
+<path d="M44 50L55 48 61 51 58 57 45 56Z M73 48L83 49 89 53 85 57 74 55Z" fill="#a7745a"/>
+<path d="M43 44L53 42 61 47 61 50 53 47 44 50Z M71 45L80 42 87 44 90 48 88 51 81 47 74 49Z" fill="#322f30"/>
+<path d="M47 52L57 51V54H48Z M76 51H85V54H76Z" fill="#e8cfaa"/>
+<path d="M53 51H57V56H53Z M79 50H83V55H79Z" fill="#263e4b"/>
+<path d="M67 49L65 61 60 68 66 73 78 69 79 66 72 62 72 52Z" fill="#b17b5c"/>
+<path d="M68 52L68 63 74 66 70 69 64 67Z" fill="#e1b68c"/>
+<path d="M63 71L69 72 74 70 73 74 68 76Z" fill="#895d49"/>
+<path d="M45 64L50 68 53 76 50 74Z M80 64L76 70V76L79 72Z" fill="#96674f"/>
+<path d="M56 81L65 79 79 80 78 83 66 83 57 84Z" fill="#805948"/>
+<path d="M63 88L69 87 74 85 73 89 67 92Z" fill="#b58261"/>
+<path d="M8 103L15 95 28 95 36 103 29 108 13 106Z M93 102L100 95 113 96 121 105 113 109 98 107Z" fill="#c69c5c"/>
+<path d="M14 101L18 98 28 99 30 103 15 103Z M99 100L103 98 113 100 114 104 100 103Z" fill="#baa989"/>
+<path d="M96 103L104 110 84 128H68Z" fill="#8e4136"/>
+<path d="M97 106L100 110 79 128H74Z" fill="#ba6348"/>
+<path d="M60 115L65 108 70 115 77 118 70 121 65 128 60 122 53 118Z" fill="#c69c5c"/>
+<path d="M62 115H68L70 119 65 123 61 119Z" fill="#baa989"/>
 </svg>

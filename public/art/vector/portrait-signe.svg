@@ -1,1 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>signe portrait</title><path d="M0 0H128V128H0Z" fill="#3a5368"/><path d="M0 128V110L28 91L46 82H83L108 98L128 118V128Z" fill="#547a96"/><path d="M47 72L45 96L63 108L81 95L77 71Z" fill="#b47d60"/><path d="M23 39L31 18L55 10L80 14L97 34L100 64L89 85L73 94L30 88L20 65Z" fill="#593e35"/><path d="M36 37L52 24L76 27L89 45L86 68L72 87L55 90L39 76L31 57Z" fill="#d49c70"/><path d="M77 30L89 45L86 68L72 87L63 89L63 80L77 65Z" fill="#af775a"/><path d="M21 45L26 25L44 10L65 7L88 20L100 43L94 51L79 35L69 24L49 27L34 44L28 64Z" fill="#68483b"/><path d="M89 65L101 77L96 96L109 106L99 120L88 112L91 98L84 83Z" fill="#593e35"/><path d="M36 50L52 46L56 50L38 55Z M70 46L85 49L85 54L71 50Z" fill="#593e35"/><path d="M43 55H50V59H43Z M75 54H81V58H75Z" fill="#233b55"/><path d="M59 55L54 70L62 74L67 70Z" fill="#b47d60"/><path d="M50 80L61 82L73 77L68 85L58 87Z" fill="#a96760"/><path d="M24 98L43 87L64 111L83 87L111 103L81 128H47Z" fill="#b7c1b8"/><path d="M104 107L114 114L97 128H87Z" fill="#725a4d"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Signe, Skeld envoy</title>
+<desc>Long brown braid, high collar and an angular cheek; a watchful three-quarter gaze over a steel-blue cloak. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M3 128L12 109 33 96 50 87H80L106 100 123 128Z" fill="#547a96"/>
+<path d="M7 123L21 107 38 99 43 128Z" fill="#7393a1"/>
+<path d="M89 96L109 108 123 128H88Z" fill="#38586e"/>
+<path d="M50 75L48 96 64 110 82 95 79 73Z" fill="#b47d60"/>
+<path d="M62 85L79 78 82 95 65 107 55 97Z" fill="#96674f"/>
+<path d="M30 98L47 90 64 105 82 90 100 102 78 128H49Z" fill="#b7c1b8"/>
+<path d="M82 96L100 102 78 128H68L71 112Z" fill="#879b99"/>
+<path d="M32 32L39 18 56 10 76 15 89 28 96 49 92 74 81 88 45 88 30 71 27 51Z" fill="#593e35"/>
+<path d="M42 32L56 24 73 29 84 43 85 58 80 73 69 86 61 88 49 81 41 70 36 54 35 43Z" fill="#d49c70"/>
+<path d="M43 34L56 28 69 32 77 41 74 51 55 55 40 48 38 42Z" fill="#e6bc91"/>
+<path d="M79 35L84 43 85 58 80 73 69 86 61 88 62 82 73 72 77 58Z" fill="#af775a"/>
+<path d="M38 56L47 55 53 61 49 67 41 64Z" fill="#c99571"/>
+<path d="M47 49L57 47 63 50 60 55 48 55Z M72 48L81 50 85 53 82 56 73 54Z" fill="#ad795b"/>
+<path d="M46 44L56 42 62 45 63 48 55 46 47 49Z M72 43L79 44 85 48 84 50 74 47Z" fill="#593e35"/>
+<path d="M49 51L59 50V54H50Z M74 51H82V54H74Z" fill="#e8cfaa"/>
+<path d="M55 50H59V55H55Z M78 50H82V55H78Z" fill="#263e53"/>
+<path d="M67 50L65 62 61 68 66 72 75 69 76 66 70 63 71 53Z" fill="#b47d60"/>
+<path d="M68 53L68 64 73 67 69 69 65 67Z" fill="#e6bc91"/>
+<path d="M63 70L69 71 73 69 73 72 68 74Z" fill="#895d49"/>
+<path d="M55 78L63 76 70 78 77 76 76 80 67 83 57 81Z" fill="#a96760"/>
+<path d="M60 79L67 80 72 79 70 81H63Z" fill="#d49c70"/>
+<path d="M63 86L69 85 72 83 71 86 66 88Z" fill="#e6bc91"/>
+<path d="M29 40L34 24 44 15 58 10 74 13 88 24 94 39 89 47 80 38 71 28 56 24 45 32 39 44 35 60 31 68 27 58 26 48Z" fill="#68483b"/>
+<path d="M34 33L41 23 51 17 59 15 70 18 55 20 45 28 38 40 33 47Z" fill="#8e6247"/>
+<path d="M85 32L93 42 95 59 89 74 83 81 81 72 87 56Z" fill="#593e35"/>
+<path d="M86 73L95 80 94 89 100 96 96 106 104 114 97 123 89 117 92 108 86 101 89 92 84 84Z" fill="#593e35"/>
+<path d="M88 80L92 82 90 89 87 88Z M91 94L96 97 93 104 90 101Z M94 109L98 113 95 118 92 115Z" fill="#8e6247"/>
+<path d="M91 103L97 105 96 109 90 107Z" fill="#725a4d"/>
+<path d="M104 107L115 115 98 128H88Z" fill="#725a4d"/>
+</svg>

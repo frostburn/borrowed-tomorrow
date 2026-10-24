@@ -1,40 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>petra portrait</title><metadata>{"reference": "babe8ca:public/art/portrait-petra.png", "construction": "female: tapering lower face, shallow chin, compact nasal tip; individual cheek/age planes", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
-<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
-<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="0,128 10,100 35,84 52,77 79,80 109,98 128,128" fill="#122634"/>
-<polygon points="6,122 15,102 35,91 44,128" fill="#3e596b"/>
-<polygon points="47,86 63,96 81,86 94,98 90,128 41,128" fill="#35584d"/>
-<polygon points="46,108 62,102 82,107 86,128 44,128" fill="#587067"/>
-<polygon points="52,76 56,91 65,98 78,87 76,74" fill="#d49c70"/>
-<polygon points="46,82 53,76 64,93 59,104 46,96" fill="#122634"/>
-<polygon points="76,87 82,78 90,88 85,103" fill="#122634"/>
-<polyline points="48,82 53,79 63,93 58,101" fill="none" stroke="#c69c5c" stroke-width="2"/>
-<polyline points="78,89 83,81 88,88 85,100" fill="none" stroke="#c69c5c" stroke-width="2"/>
-<polygon points="6,108 11,98 23,90 37,99 42,112 36,120 14,118" fill="#c69c5c"/>
-<polygon points="13,104 16,99 23,95 33,101 36,109 31,113 16,112" fill="#8caaa6"/>
-<polygon points="13,112 32,112 37,116 15,117" fill="#80523e"/>
-<polygon points="87,108 92,98 104,90 118,99 123,112 117,120 95,118" fill="#c69c5c"/>
-<polygon points="94,104 97,99 104,95 114,101 117,109 112,113 97,112" fill="#8caaa6"/>
-<polygon points="94,112 113,112 118,116 96,117" fill="#80523e"/>
-<polygon points="32,36 37,21 51,14 73,12 88,24 94,44 89,67 80,82 48,83 35,65" fill="#242a2d"/>
-<polygon points="44,31 56,25 73,29 82,39 84,53 86,61 82,67 80,76 71,84 64,85 54,78 46,66 41,48" fill="#d49c70"/>
-<polygon points="44,31 52,41 51,61 58,74 69,81 74,82 67,85 54,78 44,66 39,50" fill="#ad7253"/>
-<polygon points="55,33 69,32 78,41 79,53 69,59 56,52" fill="#efc596"/>
-<polygon points="55,51 58,49 63,50 65,52 62,53 57,53" fill="#a7765e"/>
-<polygon points="57,51 63,50 63,52 57,52" fill="#f1d8ae"/>
-<polygon points="60,50 62,50 62,53 60,53" fill="#122634"/>
-<polygon points="73,50 76,48 81,47 83,49 80,52 75,52" fill="#a7765e"/>
-<polygon points="75,50 81,49 81,51 75,51" fill="#f1d8ae"/>
-<polygon points="78,49 80,49 80,52 78,52" fill="#122634"/>
-<polyline points="55,46 61,45 65,46" fill="none" stroke="#372a25" stroke-width="1.5"/>
-<polyline points="74,45 79,44 83,46" fill="none" stroke="#372a25" stroke-width="1.5"/>
-<polygon points="76,54 76,61 80,63 77,65 73,63" fill="#bd8463"/>
-<polygon points="77,55 79,61 80,62 77,62" fill="#efc596"/>
-<polygon points="65,73 70,72 77,73 77,75 69,74" fill="#9d6054"/>
-<polygon points="67,73 77,72" fill="#80523e"/>
-<polygon points="30,37 34,27 43,21 44,15 55,17 62,10 77,13 86,21 91,33 83,38 78,29 68,29 59,36 53,32 45,43 40,55 34,58" fill="#322f30"/>
-<polygon points="36,31 47,25 52,21 61,23 69,17 77,20 66,26 55,27 47,35 41,40" fill="#65544b"/>
-<polygon points="86,34 93,42 92,59 87,70 82,64 87,54" fill="#242a2d"/>
-<polygon points="60,116 65,108 69,116 77,120 69,123 65,128 61,123 53,120" fill="#c69c5c"/>
-<polygon points="63,117 67,117 69,121 65,124 62,121" fill="#baa989"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Petra, knight of the open gate</title>
+<metadata>{"reference": "babe8ca:public/art/portrait-petra.png", "construction": "Angular lower face, level brows, straight nose and a tight mouth. Short dark hair, green armor and gold-edged shoulder plates; broad frontal planes with a slight turn.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M0 128V109L23 95 47 87H82L108 100 128 119V128Z" fill="#122634"/>
+<path d="M3 123L18 107 37 96 43 128H0Z" fill="#3e596b"/>
+<path d="M40 97L53 91 66 103 82 91 96 105 91 128H38Z" fill="#35584d"/>
+<path d="M43 113L64 105 86 112 90 128H42Z" fill="#587067"/>
+<path d="M49 75L48 95 65 107 82 93 78 73Z" fill="#b58261"/>
+<path d="M61 84L78 78 82 93 66 105 55 94Z" fill="#96674f"/>
+<path d="M41 94L48 88 64 102 60 112 44 102Z M79 91L84 88 93 99 86 111 76 106Z" fill="#122634"/>
+<path d="M44 93L48 90 63 103 59 108 58 105 60 103Z M83 91L90 99 85 107 84 104 87 99Z" fill="#c69c5c"/>
+<path d="M4 106L12 96 25 92 38 100 43 114 35 121 14 119 5 115Z M88 105L96 96 109 93 121 102 127 116 118 122 97 119 89 113Z" fill="#c69c5c"/>
+<path d="M11 105L17 99 25 97 34 103 37 111 32 115 16 113Z M95 105L101 99 109 98 118 105 121 113 115 116 100 113Z" fill="#8caaa6"/>
+<path d="M12 115L33 116 36 119 15 118Z M98 115L118 118 119 121 99 118Z" fill="#80553d"/>
+<path d="M29 34L35 21 51 13 74 16 90 30 96 50 92 73 79 91 46 89 31 74 26 53Z" fill="#242a2d"/>
+<path d="M40 32L55 24 73 29 85 42 88 60 82 76 71 88 60 91 47 83 38 69 34 52 34 42Z" fill="#c99571"/>
+<path d="M41 34L54 28 69 32 78 42 75 51 54 55 37 47Z" fill="#e1b68c"/>
+<path d="M80 34L85 42 88 60 82 76 71 88 60 91 59 85 73 77 78 62Z" fill="#a7745a"/>
+<path d="M36 56L45 55 52 62 47 69 39 66Z" fill="#ce9872"/>
+<path d="M43 49L54 47 60 51 57 57 44 56Z M71 49L82 51 86 54 82 58 72 56Z" fill="#a7745a"/>
+<path d="M42 44L53 42 60 46 60 49 51 47 43 50Z M70 45L78 43 85 47 86 50 82 51 72 48Z" fill="#322f30"/>
+<path d="M46 52L56 51V54H47Z M73 52H82V55H73Z" fill="#e8cfaa"/>
+<path d="M51 51H55V56H51Z M77 51H81V56H77Z" fill="#263e4b"/>
+<path d="M64 50L61 62 57 68 63 72 73 69 74 66 67 62 68 53Z" fill="#b17b5c"/>
+<path d="M65 53L64 64 70 67 66 69 61 67Z" fill="#e1b68c"/>
+<path d="M60 70L66 71 70 69 70 72 65 74Z" fill="#895d49"/>
+<path d="M53 79L61 77 69 78 76 77 76 80 65 82 55 81Z" fill="#975f51"/>
+<path d="M59 84L65 85 71 83 70 86H62Z" fill="#c99571"/>
+<path d="M29 40L33 26 44 17 54 17 61 11 78 16 88 26 93 39 86 46 77 35 67 27 56 34 49 30 41 43 36 59 31 67 27 55Z" fill="#322f30"/>
+<path d="M34 34L42 25 50 22 55 23 63 18 74 21 65 23 56 29 49 26 40 36 34 46Z" fill="#65544b"/>
+<path d="M86 34L94 45 94 63 88 78 80 85 80 75 87 59Z" fill="#242a2d"/>
+<path d="M59 118L65 110 71 118 78 121 70 124 65 128 60 124 53 121Z" fill="#c69c5c"/>
+<path d="M62 118H68L70 122 65 125 61 122Z" fill="#baa989"/>
 </svg>

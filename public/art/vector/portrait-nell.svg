@@ -1,53 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>nell portrait</title><metadata>{"reference": "ec894d8:public/art/portrait-nell.png", "construction": "female: tapering lower face, shallow chin, compact nasal tip; individual cheek/age planes", "method": "Original polygon drawing from costume reference; independently fitted face planes"}</metadata>
-<polygon points="0,0 128,0 128,128 0,128" fill="#142936"/>
-<polygon points="0,0 128,0 128,23 40,10 0,65" fill="#213b47"/>
-<polygon points="8,128 16,100 38,87 51,80 78,82 103,101 117,128" fill="#8e4136"/>
-<polygon points="14,110 36,93 42,128 8,128" fill="#ba6348"/>
-<polygon points="88,92 105,105 115,128 83,128" fill="#6e3430"/>
-<polygon points="44,93 56,85 75,87 85,97 75,128 43,128" fill="#233d52"/>
-<polygon points="51,78 54,91 65,100 77,88 75,77" fill="#d49c70"/>
-<polygon points="49,88 64,99 77,88 81,97 66,112 52,99" fill="#f1d8ae"/>
-<polygon points="43,96 48,95 45,128 40,128" fill="#c69c5c"/>
-<polygon points="79,96 84,95 81,128 76,128" fill="#c69c5c"/>
-<polygon points="23,63 30,60 34,67 31,75 24,73 22,67" fill="#623d29"/>
-<polygon points="25,63 29,62 31,67 27,71 24,68" fill="#9b5d32"/>
-<polygon points="25,74 32,71 36,78 33,86 26,84 24,78" fill="#623d29"/>
-<polygon points="27,74 31,73 33,78 29,82 26,79" fill="#9b5d32"/>
-<polygon points="23,85 30,82 34,89 31,97 24,95 22,89" fill="#623d29"/>
-<polygon points="25,85 29,84 31,89 27,93 24,90" fill="#9b5d32"/>
-<polygon points="25,96 32,93 36,100 33,108 26,106 24,100" fill="#623d29"/>
-<polygon points="27,96 31,95 33,100 29,104 26,101" fill="#9b5d32"/>
-<polygon points="86,63 93,60 97,67 94,75 87,73 85,67" fill="#623d29"/>
-<polygon points="88,63 92,62 94,67 90,71 87,68" fill="#9b5d32"/>
-<polygon points="88,74 95,71 99,78 96,86 89,84 87,78" fill="#623d29"/>
-<polygon points="90,74 94,73 96,78 92,82 89,79" fill="#9b5d32"/>
-<polygon points="86,85 93,82 97,89 94,97 87,95 85,89" fill="#623d29"/>
-<polygon points="88,85 92,84 94,89 90,93 87,90" fill="#9b5d32"/>
-<polygon points="88,96 95,93 99,100 96,108 89,106 87,100" fill="#623d29"/>
-<polygon points="90,96 94,95 96,100 92,104 89,101" fill="#9b5d32"/>
-<polygon points="33,39 42,23 68,19 88,30 96,48 91,72 80,86 47,84 34,65" fill="#372a25"/>
-<polygon points="44,36 54,27 70,28 81,38 84,52 86,61 83,67 81,75 74,83 67,85 56,80 47,70 42,54" fill="#d49c70"/>
-<polygon points="44,36 52,41 51,61 58,74 69,81 74,82 67,85 54,78 44,66 39,50" fill="#ad7253"/>
-<polygon points="55,33 69,32 78,41 79,53 69,59 56,52" fill="#efc596"/>
-<polygon points="55,51 58,49 63,49 65,51 62,53 57,53" fill="#a7765e"/>
-<polygon points="57,51 63,50 63,52 57,52" fill="#f1d8ae"/>
-<polygon points="60,50 62,50 62,53 60,53" fill="#122634"/>
-<polygon points="73,50 76,48 81,48 83,50 80,52 75,52" fill="#a7765e"/>
-<polygon points="75,50 81,49 81,51 75,51" fill="#f1d8ae"/>
-<polygon points="78,49 80,49 80,52 78,52" fill="#122634"/>
-<polyline points="55,46 61,45 65,46" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polyline points="74,45 79,44 83,46" fill="none" stroke="#623d29" stroke-width="1.5"/>
-<polygon points="76,54 76,61 80,63 77,65 73,63" fill="#bd8463"/>
-<polygon points="77,55 79,61 80,62 77,62" fill="#efc596"/>
-<polygon points="65,72 70,71 75,72 79,70 76,74 69,75" fill="#9d6054"/>
-<polygon points="69,75 74,74 72,76" fill="#efc596"/>
-<polygon points="35,38 47,28 65,26 82,33 89,44 82,43 72,36 62,41 55,35 46,45 42,59 36,63 33,52" fill="#623d29"/>
-<polygon points="38,38 49,31 60,30 51,37 46,46 41,49" fill="#9b5d32"/>
-<polygon points="85,39 92,46 92,61 86,72 83,65 88,54" fill="#623d29"/>
-<polygon points="28,29 34,13 55,6 78,9 94,22 90,39 45,39" fill="#8e4136"/>
-<polygon points="33,24 38,15 55,11 76,14 86,23 77,22 49,20" fill="#ba6348"/>
-<polygon points="28,31 50,26 86,33 96,38 81,44 48,36 30,38" fill="#122634"/>
-<polygon points="33,31 51,29 79,34 76,37 49,33 34,35" fill="#c69c5c"/>
-<polygon points="46,28 53,28 53,36 46,36" fill="#c69c5c"/>
-<polygon points="48,30 51,30 51,34 48,34" fill="#122634"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Nell, railway apprentice</title>
+<metadata>{"reference": "ec894d8:public/art/portrait-nell.png", "construction": "Young full cheek, short rounded chin and alert open eyes. Red work cap, two brown braids and red jacket; broad centered face and connected light/shadow planes.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M3 128L12 108 34 96 51 88H79L105 101 123 128Z" fill="#8e4136"/>
+<path d="M6 123L19 108 37 99 43 128Z" fill="#ba6348"/>
+<path d="M87 97L108 109 123 128H88Z" fill="#6e3430"/>
+<path d="M45 95L61 103 79 94 90 105 86 128H43Z" fill="#233d52"/>
+<path d="M49 75L48 95 64 106 80 94 77 75Z" fill="#b58261"/>
+<path d="M61 84L77 78 80 94 65 104 55 94Z" fill="#96674f"/>
+<path d="M44 91L49 89 63 102 78 89 84 96 67 115 51 103Z" fill="#d8c59b"/>
+<path d="M34 99L39 97 43 128H37Z M85 98L90 100 86 128H81Z" fill="#c69c5c"/>
+<path d="M31 34L40 21 58 15 77 21 90 36 93 59 87 80 74 91 42 86 29 68 26 49Z" fill="#49362c"/>
+<path d="M40 33L54 26 71 30 82 42 85 59 80 75 69 86 60 88 48 81 40 69 35 53 35 44Z" fill="#c99571"/>
+<path d="M41 35L54 30 67 33 76 42 73 51 54 56 39 49 37 43Z" fill="#e1b68c"/>
+<path d="M77 35L82 42 85 59 80 75 69 86 60 88 61 83 73 75 77 62Z" fill="#a7745a"/>
+<path d="M37 56L46 55 52 62 48 68 40 65Z" fill="#ce9872"/>
+<path d="M44 50L54 48 60 51 58 56 45 55Z M69 49L79 50 83 53 80 56 70 55Z" fill="#b58261"/>
+<path d="M43 45L52 43 58 45 59 48 51 47 44 49Z M69 45L77 44 82 47 82 49 72 48Z" fill="#623d29"/>
+<path d="M46 52L56 51 57 54H47Z M72 51H80V54H72Z" fill="#e8cfaa"/>
+<path d="M52 51H56V55H52Z M75 50H79V55H75Z" fill="#263e4b"/>
+<path d="M64 51L62 62 59 67 63 70 70 68 72 65 67 62Z" fill="#b17b5c"/>
+<path d="M64 54L65 63 69 65 66 67 62 65Z" fill="#e1b68c"/>
+<path d="M60 68L65 69 69 67 69 70 64 72Z" fill="#895d49"/>
+<path d="M54 77L61 75 67 77 74 75 72 80 64 83 56 81Z" fill="#975f51"/>
+<path d="M58 78L64 79 70 77 68 80H61Z" fill="#c99571"/>
+<path d="M61 85L67 84 70 82 69 85 65 87Z" fill="#e1b68c"/>
+<path d="M29 40L36 27 47 22 60 23 74 29 85 40 82 47 72 37 63 34 54 40 47 35 40 47 36 63 31 70 27 58 26 47Z" fill="#623d29"/>
+<path d="M34 35L41 28 48 26 57 27 47 31 41 39 36 49 31 55Z" fill="#9b5d32"/>
+<path d="M85 35L92 46 92 62 85 78 80 82 80 71 86 56Z" fill="#49362c"/>
+<path d="M31 65L37 74 33 82 37 89 32 97 36 105 30 115 24 110 27 101 23 93 28 85 24 78 26 70Z M85 67L92 75 89 83 94 90 90 99 95 107 88 116 82 111 85 103 80 95 85 87 81 80Z" fill="#623d29"/>
+<path d="M29 75L32 76 30 84 27 87 26 82Z M28 92L32 94 29 101 26 99Z M86 77L89 78 87 84 84 86Z M86 94L90 96 88 103 84 100Z" fill="#9b5d32"/>
+<path d="M25 104L33 107 32 111 25 109Z M84 106L92 108 90 112 83 110Z" fill="#c69c5c"/>
+<path d="M29 25L35 13 51 7 73 10 88 21 93 32 80 38 48 32Z" fill="#8e4136"/>
+<path d="M34 23L41 16 53 12 69 14 81 21 64 20 46 24Z" fill="#ba6348"/>
+<path d="M28 29L49 25 78 29 91 34 80 40 49 33 29 36Z" fill="#122634"/>
+<path d="M32 29L49 28 78 33 77 36 49 31 32 33Z M49 26H55V33H49Z" fill="#c69c5c"/>
 </svg>

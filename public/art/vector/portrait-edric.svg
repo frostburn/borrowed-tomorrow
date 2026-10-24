@@ -1,1 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>edric portrait</title><path d="M0 0H128V128H0Z" fill="#3a5368"/><path d="M0 128V106L30 87L48 79H84L110 96L128 115V128Z" fill="#263e53"/><path d="M23 40L31 22L55 14L83 20L100 40L98 68L85 91L70 105L48 98L29 80L20 55Z" fill="#c18c69"/><path d="M78 25L99 41L96 69L81 91L66 102L62 87L80 72Z" fill="#966a53"/><path d="M21 44L25 27L38 16L56 12L83 17L101 33L99 48L85 37L78 28L47 29L32 43Z" fill="#b7c1b8"/><path d="M24 33L22 15L33 22L45 6L58 21L74 8L86 23L99 17L97 36L65 30Z" fill="#c8ab75"/><path d="M30 53L52 48L55 54L31 60Z M73 48L94 52L93 59L72 54Z" fill="#5b5d5b"/><path d="M39 57H47V62H39Z M79 56H87V61H79Z" fill="#233b55"/><path d="M62 53L55 76L67 81L73 74Z" fill="#a16e55"/><path d="M30 77L48 86L75 86L94 71L89 94L72 112L47 104L32 91Z" fill="#8c9999"/><path d="M49 87L63 90L77 85L72 93L57 95Z" fill="#e5d1af"/><path d="M22 99L42 89L64 118L87 91L112 103L89 128H42Z" fill="#b7c1b8"/><path d="M63 115L71 128H57Z" fill="#c8ab75"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>King Edric of Skeld</title>
+<desc>Low square crown, swept silver hair and a close grey beard; a lined face and a weary, level stare. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M0 128V108L25 94 47 86H83L109 99 128 118V128Z" fill="#263e53"/>
+<path d="M4 122L18 106 37 95 43 128H0Z" fill="#3e596b"/>
+<path d="M90 94L112 107 128 122V128H89Z" fill="#142536"/>
+<path d="M47 75L45 98 65 112 85 95 82 73Z" fill="#ad795b"/>
+<path d="M58 84L82 78 85 95 66 108 53 97Z" fill="#895d49"/>
+<path d="M27 98L43 89 64 109 85 90 104 103 83 128H44Z" fill="#b7c1b8"/>
+<path d="M85 96L104 103 83 128H73L76 112Z" fill="#8b9b9b"/>
+<path d="M60 113L66 109 73 116 69 128H59Z" fill="#c8ab75"/>
+<path d="M34 44L29 43 28 53 33 65H40Z M91 44L98 42 100 52 96 64 88 66Z" fill="#ad795b"/>
+<path d="M39 29L53 21 72 23 86 36 91 54 86 73 77 86 64 92 51 87 39 75 34 59 33 43Z" fill="#c18c69"/>
+<path d="M40 32L54 25 69 28 78 38 72 48 48 51 36 44Z" fill="#ddb287"/>
+<path d="M81 30L87 38 91 54 86 73 77 86 64 92 55 88 62 82 76 73 80 55Z" fill="#966a53"/>
+<path d="M35 56L44 59 48 68 44 73 38 66Z" fill="#b58261"/>
+<path d="M31 43L33 28 43 18 57 14 76 18 89 27 95 41 90 49 83 37 74 29 58 26 45 33 39 46 36 56 32 54Z" fill="#b7c1b8"/>
+<path d="M36 31L44 23 56 19 70 21 59 22 47 28 38 40Z" fill="#d2d4bc"/>
+<path d="M84 29L92 37 95 46 90 51 86 45Z" fill="#83948b"/>
+<path d="M41 49L52 47 58 50 54 57 42 57Z M71 48L83 50 88 54 84 58 72 56Z" fill="#9f6e55"/>
+<path d="M40 44L50 42 57 45 58 48 49 47 41 50Z M70 43L80 44 87 48 88 51 83 52 72 48Z" fill="#5b5d5b"/>
+<path d="M43 52L54 51V54H44Z M74 52L84 53V55H74Z" fill="#e8cfaa"/>
+<path d="M49 51H53V56H49Z M78 51H82V56H78Z" fill="#263e53"/>
+<path d="M63 49L60 61 55 67 61 72 73 69 74 65 67 62 68 52Z" fill="#a16e55"/>
+<path d="M64 52L63 63 69 66 66 69 60 67Z" fill="#ddb287"/>
+<path d="M58 71L64 72 68 70 68 73 63 75Z" fill="#805948"/>
+<path d="M43 61L49 64 51 68 47 66Z M77 61L83 60 81 63 77 65Z M49 71L51 75 51 80 48 77Z" fill="#966a53"/>
+<path d="M38 68L45 74 50 79 63 83 76 80 86 70 88 68 85 86 75 99 63 103 49 95 41 83Z" fill="#8c9999"/>
+<path d="M44 77L52 83 65 88 77 83 78 91 66 98 54 92 47 86Z" fill="#b7c1b8"/>
+<path d="M80 84L86 76 83 89 75 99 65 103 67 96Z" fill="#687a80"/>
+<path d="M51 74L60 71 67 75 74 73 81 76 79 81 69 81 63 78 56 81 50 79Z" fill="#d2d4bc"/>
+<path d="M57 81L65 80 75 81 72 85H61Z" fill="#725442"/>
+<path d="M33 29L32 13 42 21 51 8 61 21 75 10 83 24 95 18 93 35 73 31 54 28 35 35Z" fill="#c8ab75"/>
+<path d="M37 27L37 22 43 26 51 15 61 26 75 18 81 28 88 26 89 31 72 27 55 24 43 30Z" fill="#e2c589"/>
+<path d="M34 31L54 26 74 29 94 31 93 36 73 32 54 29 35 35Z" fill="#947b50"/>
+</svg>

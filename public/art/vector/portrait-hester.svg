@@ -1,1 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>hester portrait</title><path d="M0 0H128V128H0Z" fill="#203b49"/><path d="M0 128V109L24 88L49 80H79L104 91L128 116V128Z" fill="#7e573e"/><path d="M47 78L47 98L64 111L82 96L79 77Z" fill="#b77b59"/><path d="M27 36L33 14L57 5L85 13L100 34L98 80L85 93L30 84L22 61Z" fill="#8e5239"/><path d="M37 31L60 18L83 31L92 55L86 77L68 92L48 81L34 59Z" fill="#d6a27d"/><path d="M79 34L92 54L86 77L68 92L65 84L78 71Z" fill="#ae775c"/><path d="M28 40L35 15L57 5L85 13L98 32L85 39L69 24L48 30L39 45Z" fill="#8e5239"/><path d="M28 25L43 14L87 23L96 37L48 28L30 36Z" fill="#ac5c48"/><path d="M17 48L31 39L33 67L24 82L14 70Z" fill="#593e35"/><path d="M35 98L46 87L53 117L84 128H39Z" fill="#b7784e"/><path d="M35 64L43 65L45 73L37 71Z" fill="#77766c"/><path d="M41 48L53 46L55 50L42 52Z M72 47L86 49L85 53L72 51Z" fill="#233543"/><path d="M48 49H53V53H48Z M74 50H79V54H74Z" fill="#243c4c"/><path d="M61 49L57 67L65 69L67 65Z" fill="#bc825f"/><path d="M52 76L64 78L75 75L68 81L59 81Z" fill="#9e6157"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Hester, casting forewoman</title>
+<desc>Copper headscarf, tied brown hair, round working face and a firm, slightly amused mouth. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M3 128L12 109 31 98 48 87 77 87 107 102 121 128Z" fill="#674a38"/>
+<path d="M7 125L17 110 37 98 44 128Z" fill="#967052"/>
+<path d="M86 96L109 107 121 128H88Z" fill="#4d3c33"/>
+<path d="M48 77L48 97 65 108 81 94 78 73Z" fill="#b47e5b"/>
+<path d="M50 81L69 86 78 78 81 94 66 106 57 96Z" fill="#96664f"/>
+<path d="M36 96L47 90 56 112 83 128H40Z" fill="#b7784e"/>
+<path d="M39 98L45 95 49 110 44 115Z" fill="#d0a16f"/>
+<path d="M31 34L39 22 58 17 81 23 94 38 95 65 86 83 65 92 41 84 28 65 25 47Z" fill="#593e35"/>
+<path d="M39 36L53 28 72 29 84 41 88 57 84 73 72 86 60 88 46 80 38 66 33 49Z" fill="#ce9872"/>
+<path d="M40 37L53 31 68 33 76 42 73 53 55 56 41 51 36 45Z" fill="#e6bc91"/>
+<path d="M79 37L85 45 88 57 84 73 72 86 60 88 62 82 74 75 78 63Z" fill="#a7745a"/>
+<path d="M40 58L52 57 59 65 56 72 45 70 39 65Z" fill="#d8a47b"/>
+<path d="M47 50L57 49 62 52 59 56 48 56Z M73 49L82 50 85 54 82 57 73 55Z" fill="#b17b5c"/>
+<path d="M45 46L53 44 60 46 61 49 53 48 46 50Z M72 45L79 45 84 48 83 50 73 49Z" fill="#623d29"/>
+<path d="M49 52L58 51V54L50 55Z M74 52H82V55H74Z" fill="#e8cfaa"/>
+<path d="M54 51H58V55H54Z M78 52H82V56H78Z" fill="#263e4b"/>
+<path d="M68 52L65 63 62 68 66 71 75 69 76 66 71 64Z" fill="#b17b5c"/>
+<path d="M68 55L69 64 73 67 69 68 66 66Z" fill="#e6bc91"/>
+<path d="M64 69L70 70 74 68 73 72 67 73Z" fill="#895d49"/>
+<path d="M55 78L64 76 71 78 78 75 76 80 66 83 58 82Z" fill="#9a6254"/>
+<path d="M59 79L66 80 73 79 69 81 63 82Z" fill="#ce9872"/>
+<path d="M61 85L68 85 71 83 71 86 64 88Z" fill="#e6bc91"/>
+<path d="M31 42L37 35 38 48 34 61 38 74 32 79 27 66 25 51Z M84 33L94 44 94 61 89 71 85 64 88 51Z" fill="#593e35"/>
+<path d="M31 45L34 45 31 59 33 70 30 66 28 55Z" fill="#7c5138"/>
+<path d="M29 59L23 67 26 79 20 89 25 95 34 85 32 74 35 68Z" fill="#593e35"/>
+<path d="M33 68L41 69 42 74 35 73Z" fill="#77766c"/>
+<path d="M30 30L34 16 49 9 73 12 87 23 91 36 77 40 58 30 39 35Z" fill="#8e5239"/>
+<path d="M33 24L39 17 51 14 71 17 82 25 61 23 45 27 32 31Z" fill="#ac5c48"/>
+<path d="M42 18L51 16 71 19 76 23 54 20Z" fill="#c57d5d"/>
+<path d="M30 31L48 27 62 28 83 35 86 40 66 34 50 33 32 38Z" fill="#774538"/>
+</svg>
