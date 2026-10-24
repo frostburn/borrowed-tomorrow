@@ -36,7 +36,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    const host=page.locator('#map-workshop'),review=page.getByRole('region',{name:'Map review',exact:true});
    await expect(host).toHaveAttribute('data-ready','true');await expect(review).toBeVisible();
    const stored=await page.evaluate(()=>JSON.stringify(localStorage));
-   await review.getByRole('button',{name:'Only Grand palace portico',exact:true}).click();
+   await review.getByRole('button',{name:'Only Pressure dome entrance',exact:true}).click();
    await expect(review.getByRole('button',{name:'Show Medical platform',exact:true})).toHaveAttribute('aria-pressed','false');
    expect(await review.locator('#map-preview').evaluate(el=>Array.from((el as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,1,1).data))).toEqual([8,15,25,255]);
    await review.getByRole('button',{name:'Reset layers',exact:true}).click();
@@ -50,7 +50,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    const box=(await canvas.boundingBox())!;await page.mouse.click(box.x+(48.5)*24*box.width/1536,box.y+(12.5)*24*box.height/1008);
    await expect(review.getByRole('region',{name:'Selected map cell',exact:true})).toContainText('Cell (48, 12)');
    await review.getByRole('button',{name:'Copy reference',exact:true}).click();
-   const reference=await page.evaluate(()=>navigator.clipboard.readText());expect(reference).toContain('Map: northglass');expect(reference).toContain('Cell: (48, 12)');expect(reference).toContain('Grand palace portico');expect(reference).toContain('tomasRescued');
+   const reference=await page.evaluate(()=>navigator.clipboard.readText());expect(reference).toContain('Map: northglass');expect(reference).toContain('Cell: (48, 12)');expect(reference).toContain('Pressure dome entrance');expect(reference).toContain('tomasRescued');
    const url=page.url();await page.reload();await expect(host).toHaveAttribute('data-ready','true');
    expect(page.url()).toBe(url);await expect(review.getByRole('button',{name:'2x',exact:true})).toHaveAttribute('aria-pressed','true');
    await expect(review.getByRole('button',{name:'Collision',exact:true})).toHaveAttribute('aria-pressed','true');

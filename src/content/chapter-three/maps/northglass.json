@@ -60,7 +60,7 @@
       "properties": []
     },
     {
-      "name": "Palace grounds",
+      "name": "Conduit forecourt",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -179,7 +179,7 @@
     },
     {
       "id": 4,
-      "name": "Palace gardens",
+      "name": "Siding gardens",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -420,7 +420,7 @@
       "properties": []
     },
     {
-      "name": "West palace wing",
+      "name": "West factory wing",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -482,7 +482,7 @@
       "id": 8
     },
     {
-      "name": "Central palace wing",
+      "name": "Central factory wing",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -544,7 +544,7 @@
       "id": 9
     },
     {
-      "name": "East palace wing",
+      "name": "East factory wing",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
@@ -606,7 +606,7 @@
       "id": 10
     },
     {
-      "name": "Grand palace portico",
+      "name": "Pressure dome entrance",
       "type": "tilelayer",
       "x": 0,
       "y": 0,
