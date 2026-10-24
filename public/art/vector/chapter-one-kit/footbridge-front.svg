@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="120" viewBox="0 0 192 120">
-<title>Chapter One night · footbridge-front</title><metadata>Angular festival-night variant; editable original: art/vector/scenery/footbridge-front.svg</metadata>
-<polygon points="0.00,88.00 192.00,84.00 192.00,92.00 0.00,97.00" fill="#59495a" />
-<polygon points="0.00,87.00 192.00,83.00 192.00,86.00 0.00,91.00" fill="#a98b70" />
-<polygon points="7.00,72.00 15.00,70.00 16.00,112.00 7.00,115.00" fill="#59495a" />
-<polygon points="5.00,71.00 12.00,66.00 19.00,69.00 16.00,76.00 7.00,77.00" fill="#9c8992" />
-<polygon points="177.00,72.00 185.00,70.00 186.00,112.00 177.00,115.00" fill="#59495a" />
-<polygon points="175.00,71.00 182.00,66.00 189.00,69.00 186.00,76.00 177.00,77.00" fill="#9c8992" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="120" viewBox="0 0 192 120"><title>Chapter One night · footbridge-front</title><metadata>Authored crossing; source: assets/vector/chapter_one_landforms.py; reference: art/vector/scenery/footbridge-front.svg</metadata><polygon points="0.00,91.00 54.00,84.00 134.00,88.00 192.00,82.00 192.00,90.00 134.00,96.00 54.00,92.00 0.00,99.00" fill="#5f5550" /><polygon points="0.00,87.00 54.00,80.00 134.00,84.00 192.00,78.00 192.00,83.00 134.00,89.00 54.00,85.00 0.00,92.00" fill="#b09a75" /><polygon points="7.00,73.00 15.00,71.00 12.00,113.00 4.00,116.00" fill="#736451" /><polygon points="4.00,70.00 12.00,66.00 19.00,70.00 16.00,76.00 7.00,77.00" fill="#b4ae8c" /><polygon points="181.00,67.00 189.00,65.00 192.00,113.00 184.00,116.00" fill="#736451" /><polygon points="178.00,64.00 186.00,60.00 193.00,64.00 190.00,70.00 181.00,71.00" fill="#b4ae8c" /></svg>

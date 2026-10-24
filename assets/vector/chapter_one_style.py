@@ -7,6 +7,7 @@ import json,re
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from station import COLORS,NS,path,fmt
+from chapter_one_landforms import crossing,terrain as landform
 
 ROOT=Path(__file__).resolve().parents[2]
 LIGHTS=json.loads((ROOT/'src/content/chapter-one/lighting.json').read_text())
@@ -30,6 +31,9 @@ def scenery(name,source):
  folder=ROOT/'public/art/vector/chapter-one-kit';folder.mkdir(exist_ok=True)
  out=folder/(name+'.svg')
  svg=ET.fromstring(source.read_text());w,h=float(svg.get('width')),float(svg.get('height'))
+ geometry=crossing(name)
+ if geometry is not None:
+  svg=ET.fromstring(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:g}" height="{h:g}" viewBox="0 0 {w:g} {h:g}"><title>{name}</title><metadata/>{geometry}</svg>')
  for e in svg.iter():
   for attr in ('fill','stroke'):
    if e.get(attr)in NIGHT:e.set(attr,NIGHT[e.get(attr)])
@@ -51,11 +55,12 @@ def scenery(name,source):
     'rx':'16','ry':'20','fill':color,'opacity':'.10'}))
  svg.find(NS+'title').text='Chapter One night · '+name
  metadata=svg.find(NS+'metadata')
- if metadata is not None:metadata.text='Angular festival-night variant; editable original: art/vector/scenery/'+name+'.svg'
+ if metadata is not None:
+  metadata.text=('Authored crossing; source: assets/vector/chapter_one_landforms.py; reference: 'if geometry is not None else'Angular festival-night variant; editable original: ')+'art/vector/scenery/'+name+'.svg'
  out.write_text(ET.tostring(svg,encoding='unicode')+'\n')
  return 'scene-one-prop-'+name,'art/vector/chapter-one-kit/'+name+'.svg'
 
-def terrain(kind,base,w,h):
+def terrain(kind,base,w,h,scene='',layer=0):
  for a,b in NIGHT.items():base=base.replace(a,b)
  # Only painted contours lean; cell centres, real floor and bridge deck stay
  # exact. Straight segments, no sinusoidal displacement or waving masonry.
@@ -74,7 +79,7 @@ def terrain(kind,base,w,h):
     loops.append('M'+' L'.join(samples)+' Z')
    return '<path d="'+' '.join(loops)+'"'
   base=re.sub(r'<path d="([^"]+)"',skew,base,count=1)
- return base
+ return landform(scene,kind,base,w,h,layer)
 
 def spill(pieces):
  out=[]

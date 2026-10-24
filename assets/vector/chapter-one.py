@@ -213,7 +213,7 @@ def export(chapter='one', only=None):
                         art=terrain(kind,art,w,h)
                     elif chapter=='one':
                         from chapter_one_style import terrain
-                        art=terrain(kind,art,w,h)
+                        art=terrain(kind,art,w,h,file.stem,layer['id'])
                     parts.append(art)
                 # Registered pools of lamplight belong to the floor, not the lamp's sort plane.
                 if layer['name']=='Paths and platforms' and (chapter!='one' or file.stem=='station'):
