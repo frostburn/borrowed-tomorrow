@@ -18,7 +18,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const feet=await page.evaluate(async(paths)=>{
       const all=[];
       const party=['nell','orrin','kit','celia','petra'];
-      const supporting=['iven','sera','teren','master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
+      const supporting=['alda','hester','durn','aurel','enna','samira','sahir','amal','ines','tavi','edric','signe','egil','iven','sera','teren','master','clerk','tilda','elspeth','tomas','alban','bram','dena','emperor','relay-keeper','boiler-keeper','sluice-keeper','inspector','hound','crow','guardian','civilian-dockhand','civilian-traveler','civilian-family','civilian-patient','civilian-dockhand-rust','civilian-traveler-blue','civilian-family-blue','civilian-family-plum','civilian-patient-green'];
       for(const hero of [...party,...supporting])for(const suffix of party.includes(hero)?['','-left','-right','-back']:['']){
         const image=new Image();image.src=paths[hero+suffix];await image.decode();
         const canvas=document.createElement('canvas'),w=image.naturalWidth,h=image.naturalHeight;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);

@@ -50,6 +50,33 @@ test('Celia follows the party with six-pose directional walks and restores her i
   await capture(page,'celia-walk-sanctuary');
 });
 
+for(const reduced of [false,true])test(`Celia casts once, restores her book pose and cancels interrupted casts${reduced?' with reduced motion':''}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+  if(reduced)await page.setViewportSize({width:390,height:844});
+  await page.emulateMedia({reducedMotion:reduced?'reduce':'no-preference'});await page.goto('/?dev=workshop');
+  await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true}).click();
+  await page.getByRole('button',{name:'Add Celia to party',exact:true}).click();
+  await page.getByRole('spinbutton',{name:'Celia Speed',exact:true}).fill('30');await page.getByRole('button',{name:'Apply base stats',exact:true}).click();
+  await page.getByRole('button',{name:'Test battle',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).toBe('celia');
+  const before=(await inspect(page)).battle!,target=before.units.find(u=>u.side==='enemy')!;
+  await page.locator('.actions').getByRole('button',{name:/^\d\s+Celestial bolt$/}).click();await clickHex(page,target.hex);
+  const sampling=record(page,600);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();const samples=await sampling;
+  const frames=samples.flatMap(s=>s.actors.filter(a=>a.hero==='celia'&&a.motion==='attack').map(a=>a.frame));
+  if(reduced)expect(frames).toEqual([]);else{expect(frames).toContain('6');expect(frames).toContain('7');}
+  await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
+  const after=await inspect(page),celia=after.battle!.units.find(u=>u.id==='celia')!;
+  expect(celia.focus).toBe(5);expect(after.battle!.log.filter(l=>l.startsWith('Celia: Celestial bolt'))).toHaveLength(1);
+  expect(after.actors.find(a=>a.hero==='celia')).toMatchObject({motion:'idle'});
+  expect(after.actors.find(a=>a.hero==='celia')!.texture).not.toContain('-motion-');
+  await capture(page,`celia-cast-restored${reduced?'-reduced':''}`);
+  await page.getByRole('button',{name:'Restart battle',exact:true}).click();
+  await page.locator('.actions').getByRole('button',{name:/^\d\s+Celestial bolt$/}).click();await clickHex(page,target.hex);
+  await page.getByRole('button',{name:'Confirm attack',exact:true}).click();await page.getByRole('button',{name:'Win battle',exact:true}).click();
+  await page.waitForTimeout(450);await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
+  expect((await inspect(page)).battle!.result).toBe('victory');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+});
+
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`sprite workshop plays, pauses and steps native motion frames on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/?dev=sprites');
@@ -68,7 +95,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     for(const hero of ['nell','orrin','kit','petra','celia']){
       await review.getByRole('button',{name:`Inspect ${hero[0].toUpperCase()+hero.slice(1)}`,exact:true}).click();
       await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Right',exact:true}).click();
-      for(const motion of ['Walk',...(hero==='celia'?[]:['Attack']),...(hero==='petra'?['Bash']:[])]){
+      for(const motion of ['Walk','Attack',...(hero==='petra'?['Bash']:[])]){
       await controls.getByRole('button',{name:motion,exact:true}).click();await controls.getByRole('button',{name:'Pause',exact:true}).click();
       const stopped=await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame);
       await page.waitForTimeout(120);expect(await review.evaluate(element=>(element.parentElement as HTMLElement).dataset.frame)).toBe(stopped);
@@ -99,7 +126,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
       }
     }
     await capture(page,`actor-animation-${device}`);expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
-    await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeEnabled();await expect(controls.getByRole('button',{name:'Attack',exact:true})).toBeDisabled();
+    await review.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(controls.getByRole('button',{name:'Walk',exact:true})).toBeEnabled();await expect(controls.getByRole('button',{name:'Attack',exact:true})).toBeEnabled();
     expect(await page.evaluate(()=>JSON.stringify(localStorage))).toBe(stored);expect(errors).toEqual([]);
   });
 }

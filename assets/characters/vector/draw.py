@@ -13,6 +13,32 @@ PALETTE = {
     'steel': '#8b9b9b', 'copper': '#b7784e', 'leather': '#9a7151',
 }
 
+# Cloth folds stay in the garment's own material, rather than black piping.
+MATERIALS = {
+    'red': ('#843f39', '#c27054'), 'white': ('#c0ad87', '#fae3b8'),
+    'navy': ('#243747', '#385368'), 'green': ('#304d43', '#50735b'),
+    'teal': ('#4f6f74', '#7c9791'), 'blue': ('#46647b', '#7393a1'),
+    'silver': ('#8d9d98', '#d2d4bc'), 'cream': ('#b4a784', '#e5d5b0'),
+    'plum': ('#674c63', '#9c7387'), 'slate': ('#515c6b', '#7c8994'),
+    'brown': ('#694a3b', '#a07854'), 'copper': ('#956547', '#d09a6c'),
+    'skin': ('#ad795b', '#e1b68c'), 'leather': ('#805d47', '#b18b62'),
+}
+for material, (shadow, light) in MATERIALS.items():
+    PALETTE[material+'-shadow'] = shadow
+    PALETTE[material+'-light'] = light
+
+
+def clip_plane(points, value, positive):
+    """Clip a material facet to its authored silhouette."""
+    result=[]
+    for a,b in zip(points,points[1:]+points[:1]):
+        va,vb=value(*a),value(*b)
+        ina,inb=(va>=0)==positive,(vb>=0)==positive
+        if ina:result.append(a)
+        if ina!=inb:
+            t=va/(va-vb);result.append((a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t))
+    return result
+
 
 class Drawing:
     def __init__(self, width=40, height=80):
@@ -31,10 +57,17 @@ class Drawing:
     def line(self, points, fill='ink', width=1):
         self.shapes.append(('line', points, fill, width))
 
-    def transform(self, start, sx, sy, x_origin, y_origin, y_offset):
+    def cloth(self, points, fill):
+        self.poly(points,fill,None)
+        xs,ys=zip(*points);mid=(min(xs)+max(xs))/2;top=min(ys)
+        for shade,positive,cut in [('shadow',True,mid),('light',False,min(xs)+(max(xs)-min(xs))*.25)]:
+            facet=clip_plane(points,lambda x,y:x-cut-.12*(y-top),positive)
+            if len(facet)>2:self.poly(facet,fill+'-'+shade,None)
+
+    def transform(self, start, sx, sy, x_origin, y_origin, y_offset, end=None):
         """Retarget vector parts before rasterization, keeping contour widths."""
         def point(x,y):return x_origin+(x-x_origin)*sx, y_offset+(y-y_origin)*sy
-        for index in range(start,len(self.shapes)):
+        for index in range(start,len(self.shapes) if end is None else end):
             kind,coords,fill,edge=self.shapes[index]
             if kind in ('line','polygon'):coords=[point(x,y) for x,y in coords]
             else:coords=(*point(*coords[:2]),*point(*coords[2:]))
@@ -48,7 +81,7 @@ class Drawing:
             if kind == 'line':
                 draw.line(points, fill=color, width=max(1,round(edge)))
             else:
-                outline = PALETTE[edge] if edge else None
+                outline = PALETTE[edge] if edge and edge!='ink' else None
                 if kind == 'polygon':
                     draw.polygon(points, fill=color, outline=outline)
                 elif kind == 'ellipse':
@@ -85,14 +118,44 @@ class Drawing:
 
 
 def sleeve(d, shoulder, elbow, hand, color, cuff=True):
-    sx, sy = shoulder
-    ex, ey = elbow
-    hx, hy = hand
-    d.line([shoulder, elbow, hand], 'ink', 4)
-    d.line([shoulder, elbow, hand], color, 2)
+    def normal(a,b):
+        dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy) or 1
+        return -dy/length,dx/length
+    a,b=normal(shoulder,elbow),normal(elbow,hand)
+    mx,my=a[0]+b[0],a[1]+b[1];length=math.hypot(mx,my)
+    joint=(mx/length,my/length) if length>.1 else b
+    # A continuous tapered silhouette meets at the elbow, including raised arms.
+    join=min(2.7,2/max(.55,joint[0]*b[0]+joint[1]*b[1]))
+    widths=(2.1,join,1.5);normals=(a,joint,b);points=(shoulder,elbow,hand)
+    left=[(x+n[0]*w,y+n[1]*w)for (x,y),n,w in zip(points,normals,widths)]
+    right=[(x-n[0]*w,y-n[1]*w)for (x,y),n,w in zip(points,normals,widths)]
+    d.poly(left+right[::-1],color,None)
+    d.poly([shoulder,elbow,hand,*right[::-1]],color+'-shadow',None)
+    hx,hy=hand
     if cuff:
-        d.line([(hx-1, hy-2), (hx+1, hy-2)], 'white')
-    d.oval((hx-1, hy-1, hx+1, hy+2), 'skin')
+        dx,dy=hx-elbow[0],hy-elbow[1];length=math.hypot(dx,dy)or 1
+        cx,cy=hx-dx/length,hy-dy/length
+        d.poly([(cx+b[0]*1.5,cy+b[1]*1.5),(hx+b[0]*1.5,hy+b[1]*1.5),
+                (hx-b[0]*1.5,hy-b[1]*1.5),(cx-b[0]*1.5,cy-b[1]*1.5)],'cream',None)
+    d.oval((hx-1,hy-1,hx+1,hy+2),'skin',None)
+
+
+def human(d, head_start, head_end=None, width=.75, complexion='skin'):
+    """Retain each NPC's drawing while matching the party's adult proportions."""
+    # Layer the neck behind the collar, rather than floating a resized head.
+    d.shapes[0:0]=[
+        ('polygon',[(18,21),(22,21),(22,31),(18,31)],complexion,None),
+        ('polygon',[(20,21),(22,21),(22,31),(20,31)],complexion+'-shadow',None),
+    ]
+    head_start+=2
+    if head_end is not None:head_end+=2
+    d.transform(head_start,.9,.8,20,30,25,end=head_end)
+    for i in range(head_start,len(d.shapes) if head_end is None else head_end):
+        kind,points,fill,edge=d.shapes[i]
+        if kind=='line' and fill=='ink':
+            d.shapes[i]=(kind,[(x,round(y))for x,y in points],fill,max(2,edge))
+    d.transform(0,width,1,20,68,68)
+    return d
 
 
 def lantern(d, hand):
@@ -129,7 +192,7 @@ def boots(d, x, top=58, bottom=67, facing='front'):
     toe = -2 if facing == 'left' else 2 if facing == 'right' else 0
     d.poly([(x-1,top),(x+1,top),(x+1,bottom-2),(x+2+toe,bottom-1),
             (x+2+toe,bottom),(x-2+min(toe,0),bottom),(x-2,bottom-3)], 'brown')
-    d.line([(x-2+min(toe,0),bottom),(x+2+toe,bottom)])
+    d.line([(x-2+min(toe,0),bottom),(x+2+toe,bottom)],'hair')
 
 
 def legs(d, direction, hero, walk=None):
@@ -153,9 +216,9 @@ def legs(d, direction, hero, walk=None):
         knee_x=(hip+x)/2
         knee_y=(43+y-8)/2
         d.poly([(hip-1.5,39),(hip+1.5,39),(knee_x+1.5,knee_y),
-                (x+1,y-7),(x-1,y-7),(knee_x-1.5,knee_y)],'ink' if hero=='petra' and i==(0 if side else 1) else 'navy')
+                (x+1,y-7),(x-1,y-7),(knee_x-1.5,knee_y)],'navy-shadow' if hero=='petra' and i==(0 if side else 1) else 'navy')
         boots(d,x,y-10,y,direction)
-    if not side:d.line([(20,43),(20,49)],'blue' if direction=='front' else 'ink')
+    if not side:d.line([(20,43),(20,49)],'navy-shadow')
 
 
 def nell(direction, walk=None, attack=None):
@@ -181,7 +244,7 @@ def nell(direction, walk=None, attack=None):
     legs(d,direction,'nell',walk)
     # A flared work jacket over a continuous navy bib and trousers.
     if not side:
-        d.poly([(16,22),(24,22),(26,30),(26,40),(23,43),(20,40),(17,43),(14,40),(15,29)], 'red')
+        d.cloth([(16,22),(24,22),(26,30),(26,40),(23,43),(20,40),(17,43),(14,40),(15,29)], 'red')
         if direction=='front':
             d.poly([(18,22),(22,22),(22,29),(20,32),(18,29)], 'white')
             d.rect((18,29,22,40),'navy','ink')
@@ -193,7 +256,7 @@ def nell(direction, walk=None, attack=None):
         sleeve(d,(25,24),(27,31),(28,40-(swing if walk is not None else 0)),'red') if direction=='front' else sleeve(d,(15,24),(13,32),(12,40-(swing if walk is not None else 0)),'red')
     else:
         front = 17 if direction=='left' else 23
-        d.poly([(18,22),(22,22),(24,30),(24,40),(22,43),(17,41),(16,36),(17,28)],'red')
+        d.cloth([(18,22),(22,22),(24,30),(24,40),(22,43),(17,41),(16,36),(17,28)],'red')
         d.line([(front,26),(front,38)],'navy')
         braid(d,23 if direction=='left' else 17,19)
         # Near left arm in the left profile is empty.
@@ -222,7 +285,7 @@ def nell(direction, walk=None, attack=None):
         d.rect((23,14,23,15),'ink')
         d.poly([(16,8),(19,5),(24,7),(25,11),(16,11)],'red')
         d.line([(17,11),(26,11)],'ink')
-    d.transform(head_start,1,.75,20,5,8)
+    d.transform(head_start,1.1,.9,20,5,6)
     if not far_weapon:
         shoulder=(15,24) if direction=='front' else (24,24)
         sleeve(d,shoulder,elbow[direction],hand,'red')
@@ -243,19 +306,19 @@ def orrin(direction, walk=None, attack=None):
     hand,tip=hands[direction],tips[direction]
     far_weapon=direction=='left' or (direction=='back' and attack is not None)
     if far_weapon:
-        sleeve(d,(17,23),(15,30),hand,'white',False);lance(d,hand,tip)
+        sleeve(d,(17,23),(15,30),hand,'cream',False);lance(d,hand,tip)
     legs(d,direction,'orrin',walk)
     if side:
-        d.poly([(17,22),(23,22),(26,29),(25,41),(16,41),(15,30)],'white')
+        d.cloth([(17,22),(23,22),(26,29),(25,41),(16,41),(15,30)],'cream')
         d.poly([(20,23),(23,24),(25,32),(25,43),(16,43),(16,34),(18,31)],'navy')
         d.line([(17,39),(24,39)],'brown')
-        if direction=='left':sleeve(d,(22,24),(25,31),(23,41),'white',False)
+        if direction=='left':sleeve(d,(22,24),(25,31),(23,41),'cream',False)
     else:
-        d.poly([(15,22),(25,22),(28,28),(27,39),(24,43),(16,43),(13,38),(12,28)],'white')
+        d.cloth([(15,22),(25,22),(28,28),(27,39),(24,43),(16,43),(13,38),(12,28)],'cream')
         d.poly([(16,24),(18,24),(18,30),(22,30),(22,24),(24,24),(24,42),(16,42)],'navy')
         d.line([(15,39),(25,39)],'brown');d.rect((20,38,21,39),'gold')
-        if direction=='front':sleeve(d,(26,24),(29,32),(29,41),'white',False)
-        else:sleeve(d,(14,24),(11,32),(11,41),'white',False)
+        if direction=='front':sleeve(d,(26,24),(29,32),(29,41),'cream',False)
+        else:sleeve(d,(14,24),(11,32),(11,41),'cream',False)
     d.rect((18,17,22,24),'skin')
     head_start=len(d.shapes)
     if direction=='front':
@@ -281,10 +344,10 @@ def orrin(direction, walk=None, attack=None):
         d.rect((23,14,23,15),'ink')
         d.poly([(15,7),(20,4),(25,7),(26,11),(15,11)],'navy')
         d.line([(16,12),(27,12)],'ink');d.oval((22,7,24,10),'gold')
-    d.transform(head_start,.8,.6,20,4,6)
+    d.transform(head_start,1,.8,20,4,6)
     if not far_weapon:
         shoulder=(14,24) if direction=='front' else (25,24)
-        sleeve(d,shoulder,(hand[0]-1,30),hand,'white',False)
+        sleeve(d,shoulder,(hand[0]-1,30),hand,'cream',False)
         lance(d,hand,tip)
     return d
 

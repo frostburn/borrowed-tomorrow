@@ -1,18 +1,19 @@
 """Windmere staff and patient. Native actors, independent male/female portrait planes."""
 from pathlib import Path
-from draw import Drawing,boots,sleeve
+from draw import human, Drawing,boots,sleeve
 ROOT=Path(__file__).resolve().parents[3]
 def model(name):
  d=Drawing();keeper=name=='iven';nurse=name=='sera';coat='cream' if keeper else 'teal' if nurse else 'brown'
  for x in (15,25):
   d.poly([(x-3,44),(x+3,44),(x+2,62),(x-2,64)],'navy');boots(d,x,top=62,bottom=67)
- d.poly([(12,28),(27,28),(31,40),(29,57),(22,56),(20,51),(17,57),(10,56),(8,41)],coat)
- d.poly([(12,29),(17,32),(16,54),(11,55),(9,41)],'silver' if keeper else 'green' if nurse else 'copper')
+ d.cloth([(12,28),(27,28),(31,40),(29,57),(22,56),(20,51),(17,57),(10,56),(8,41)],coat)
+ d.poly([(12,29),(17,32),(16,54),(11,55),(9,41)],coat+'-light')
  sleeve(d,(11,31),(7,39),(9,47),coat);sleeve(d,(28,31),(33,39),(30,47),coat)
  d.poly([(16,28),(20,35),(25,28),(23,25),(18,26)],'white' if nurse else 'gold' if keeper else 'cream')
  if nurse:
   d.poly([(16,34),(24,34),(27,55),(13,55)],'cream');d.rect((27,41,34,49),'white');d.line([(29,45),(32,45)],'red',1)
  if keeper:d.rect((6,40,13,51),'green');d.line([(8,42),(11,42)],'gold',1)
+ head_start=len(d.shapes)
  d.poly([(12,14),(17,8),(25,10),(29,18),(26,27),(20,30),(14,26),(11,20)] if nurse else [(12,14),(17,8),(25,10),(29,18),(28,25),(24,30),(17,30),(13,26),(11,20)],'skin')
  if nurse:
   d.poly([(10,19),(11,11),(18,6),(27,10),(30,18),(24,16),(19,12),(15,17),(14,29),(10,26)],'hair');d.oval((25,19,32,27),'hair');d.poly([(11,10),(19,6),(26,9),(25,12),(14,13)],'cream')
@@ -23,8 +24,7 @@ def model(name):
   d.line([(13,16),(18,16)],'silver' if keeper else 'hair',2);d.line([(22,16),(27,17)],'silver' if keeper else 'hair',2)
   d.poly([(20,18),(18,23),(23,23)],'copper')
  d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink');d.line([(17,25),(23,25)],'rose' if nurse else 'hair')
- d.transform(0,.72,1,20,0,0)
- return d
+ return human(d,head_start)
 
 def portrait(name):
  # Initial Sera seed only; Iven and Teren have hand-authored SVG originals.

@@ -1,18 +1,19 @@
 """Native Chapter Four supporting actors; portraits are separate SVG originals."""
 from pathlib import Path
-from draw import Drawing, boots, sleeve
+from draw import human, Drawing, boots, sleeve
 
 def bram():
  d=Drawing()
  for x in (16,24):
   d.poly([(x-3,45),(x+3,45),(x+2,61),(x-2,63)],'navy');boots(d,x,top=60,bottom=67)
- d.poly([(12,26),(27,26),(31,36),(29,51),(12,51),(9,36)],'blue')
+ d.cloth([(12,26),(27,26),(31,36),(29,51),(12,51),(9,36)],'blue')
  d.poly([(15,27),(25,27),(28,51),(24,58),(12,55),(13,40)],'leather')
  d.poly([(15,28),(18,30),(16,48),(13,53),(12,43)],'copper')
  d.line([(13,49),(27,49)],'hair');d.rect((17,40,24,45),'brown')
  sleeve(d,(12,29),(8,37),(9,45),'blue');sleeve(d,(28,30),(32,36),(30,42),'blue')
  # A light mallet belongs to the anatomical right hand (screen left).
  d.line([(8,43),(6,28)],'brown',2);d.poly([(2,24),(8,22),(11,26),(9,31),(3,32)],'steel')
+ head_start=len(d.shapes)
  d.poly([(14,12),(24,11),(28,17),(26,24),(22,29),(16,27),(12,21)],'brown')
  d.poly([(16,13),(24,13),(26,18),(23,25),(17,24),(14,19)],'skin')
  d.poly([(12,17),(14,12),(17,14),(15,22),(18,27),(24,26),(26,21),(27,25),(23,31),(16,30),(12,25)],'shade')
@@ -21,7 +22,7 @@ def bram():
  d.poly([(12,13),(13,8),(18,5),(25,7),(28,13),(30,15),(10,16)],'gold')
  d.poly([(14,10),(18,6),(21,7),(19,12),(13,13)],'white')
  d.rect((19,7,21,14),'copper');d.line([(10,16),(29,15)],'hair')
- return d
+ return human(d,head_start,width=.85)
 
 def warden():
  d=Drawing()

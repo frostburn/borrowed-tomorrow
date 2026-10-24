@@ -47,7 +47,7 @@ def person(name,weapon='saber'):
         d.rect((11,24,29,57),'brown','ink')
         d.rect((10,24,12,45),'gold','ink');d.rect((28,24,30,45),'gold','ink')
         d.poly([(15,29),(25,29),(28,43),(26,60),(14,60),(12,43)],'navy')
-        d.poly([(15,28),(25,28),(28,38),(21,42),(12,38)],'plum')
+        d.cloth([(15,28),(25,28),(28,38),(21,42),(12,38)],'plum')
         d.rect((12,46,28,49),'brown','ink')
         for x in (11,29):
             d.oval((x-4,42,x+4,66),'ink');d.oval((x-3,44,x+3,64),'gold')
@@ -66,7 +66,7 @@ def person(name,weapon='saber'):
             for x in (17,23):d.poly([(x-2,44),(x+2,44),(x+2,64),(x-2,64)],'navy')
             for x in (17,23):boots(d,x,top=60,bottom=67)
         d.rect((18,24,22,30),'skin','ink')
-        d.poly([(15,27),(25,27),(27,35),(26,49),(22,52),(20,48),(17,52),(13,49),(13,36)],jacket)
+        d.cloth([(15,27),(25,27),(27,35),(26,49),(22,52),(20,48),(17,52),(13,49),(13,36)],jacket)
         if name=='master':
             d.poly([(17,28),(23,28),(24,44),(16,44)],'brown')
             d.poly([(18,27),(22,27),(20,33)],'white');d.line([(20,32),(20,40)])
@@ -103,7 +103,8 @@ def person(name,weapon='saber'):
                 d.oval((11,44,13,48),'white');d.oval((27,44,29,48),'white')
                 if weapon=='saber':d.line([(12,47),(8,64)],'silver',2);d.line([(9,48),(15,49)],'gold',2)
                 elif weapon=='rod':d.line([(12,45),(12,58)],'gold',2);d.oval((10,42,14,46),'gold')
-    head(d,name)
+    start=len(d.shapes);head(d,name)
+    d.transform(start,.85,.85,20,26,24)
     return d
 
 

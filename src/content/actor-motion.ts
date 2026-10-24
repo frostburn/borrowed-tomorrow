@@ -17,13 +17,12 @@ export const BASH_CONTACT_FRAME = WALK_FRAMES + 3;
 export const ATTACK_CONTACT_MS = 140;
 export const ATTACK_DURATION_MS = 380;
 export const walkingHero = (hero:string):hero is MotionHero => MOTION_HEROES.some(id=>id===hero);
-export const animatedHero = (hero:string):hero is MotionHero => hero!=='celia'&&walkingHero(hero);
+export const animatedHero = walkingHero;
 export const NELL_ATTACK_TIMES = [0, ATTACK_CONTACT_MS, 220, 300] as const;
-export const motionPage = (hero:MotionHero,direction:ActorDirection) => ({key:`${hero}-motion-${direction}`,asset:`animation/${hero}-${direction}`,frames:hero==='celia'?6:hero==='nell'?9:hero==='petra'?10:8});
+export const motionPage = (hero:MotionHero,direction:ActorDirection) => ({key:`${hero}-motion-${direction}`,asset:`animation/${hero}-${direction}`,frames:hero==='nell'?9:hero==='petra'?10:8});
 export const MOTION_PAGES = MOTION_HEROES.flatMap(hero=>ACTOR_DIRECTIONS.map(direction=>motionPage(hero,direction)));
 export const directionOf = (face:string):ActorDirection => ACTOR_DIRECTIONS.find(direction=>face.endsWith(`-${direction}`))??'front';
 export const motionFrame = (motion:ActorMotion,elapsed:number,hero?:string):number|undefined => {
-  if(hero==='celia'&&motion!=='walk')return undefined;
   if(hero==='nell'&&motion==='attack'){
     if(elapsed>=NELL_ATTACK_TIMES[3])return undefined;
     return WALK_FRAMES+(elapsed<NELL_ATTACK_TIMES[1]?0:elapsed<NELL_ATTACK_TIMES[2]?1:2);
