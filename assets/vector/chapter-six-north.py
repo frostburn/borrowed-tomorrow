@@ -1,6 +1,7 @@
 """Skeld: snow roofs, glacier wrecks and a winter sanctuary, native SVG over Tiled routes."""
 import runpy,json
 from pathlib import Path
+from chapter_six_style import lean
 b=runpy.run_path(str(Path(__file__).with_name('chapter-six-jungle.py')))
 ROOT=b['ROOT'];manifest=b['manifest'];world=b['world'];rect=b['rect'];poly=b['poly'];line=b['line'];ellipse=b['ellipse'];obj=b['obj'];point=b['point'];control=b['control'];bench=b['bench'];chest=b['chest']
 DARK='#233b55';MID='#4d718b';BLUE='#709bb0';SNOW='#d7e2df';LIGHT='#b0cdd5';WOOD='#725a4d';GOLD='#c8ab75'
@@ -19,7 +20,8 @@ def floor(floors,wood=False):
  return out
 
 def house(x,y,w=200,h=170):
- return [rect(x,y,w,h,WOOD),poly([(x+w-30,y),(x+w,y),(x+w,y+h),(x+w-30,y+h)],'#494c50'),poly([(x-23,y),(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73),(x,y+12)],SNOW),poly([(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73)],LIGHT),rect(x+26,y+35,44,61,DARK),rect(x+w-71,y+35,44,61,DARK),rect(x+35,y+42,12,35,'#c2b787'),rect(x+w-62,y+42,12,35,'#c2b787'),rect(x+15,y+h-18,w-30,6,SNOW)]
+ return lean([rect(x,y,w,h,WOOD),poly([(x+w-30,y),(x+w,y),(x+w,y+h),(x+w-30,y+h)],'#494c50'),poly([(x-23,y),(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73),(x,y+12)],SNOW),poly([(x+w*.5,y-110),(x+w+23,y),(x+w-1,y+12),(x+w*.5,y-73)],LIGHT),rect(x+26,y+35,44,61,DARK),rect(x+w-71,y+35,44,61,DARK),rect(x+35,y+42,12,35,'#c2b787'),rect(x+w-62,y+42,12,35,'#c2b787'),rect(x+15,y+h-18,w-30,6,SNOW)],y+h,-.025)
+
 def bell():return [rect(4,0,9,108,WOOD),rect(81,0,9,108,WOOD),poly([(0,0),(47,-24),(95,0)],SNOW),rect(13,5,68,8,GOLD),poly([(35,22),(60,22),(64,56),(74,65),(24,65),(33,53)],GOLD),ellipse(49,66,25,7,DARK),line([(49,13),(49,99)],LIGHT,3)]
 def ship(x,y,s=1):
  return [f'<g transform="translate({x} {y}) scale({s})">',poly([(0,49),(47,69),(242,58),(302,21),(274,93),(216,120),(76,125),(24,99)],'#384c5b'),poly([(4,48),(47,63),(240,53),(297,22),(258,50),(220,78),(63,85)],SNOW),poly([(56,61),(102,46),(224,36),(247,48),(215,68),(78,79)],WOOD),rect(109,11,78,42,MID),poly([(97,11),(146,-10),(199,9)],SNOW),line([(230,42),(219,-48)],GOLD,5),'</g>']

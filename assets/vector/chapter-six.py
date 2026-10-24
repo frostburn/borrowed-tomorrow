@@ -5,6 +5,7 @@ import json, math, re
 from pathlib import Path
 from xml.sax.saxutils import escape
 from map_metadata import retain_interaction_roles
+from chapter_six_style import OUTLINES,FIXTURES,cells as polygon_cells,floor_shapes,lean,fixture_kind,fixture,arena_fixtures,spill_layer
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-six'; MAP=ROOT/'src/content/chapter-six/maps'
 ART.mkdir(parents=True,exist_ok=True); MAP.mkdir(parents=True,exist_ok=True)
@@ -46,7 +47,7 @@ def building(x,y,w=170,h=160,dome=False):
  out=[rect(x,y,w,h,STONE),poly([(x,y),(x+w,y),(x+w,y+h),(x+w-27,y+h),(x+w-27,y+12)],'#8d6d56'),poly([(x-10,y),(x+w/2,y-36),(x+w+8,y),(x+w-8,y+14),(x,y+14)],LIGHT)]
  if dome:out.extend([f'<path d="M{x+12} {y}Q{x+20} {y-76} {x+w/2} {y-92}Q{x+w-20} {y-76} {x+w-12} {y}Z" fill="{TEAL}"/>',line([(x+w/2,y-94),(x+w/2,y-115)],GOLD,4)])
  for xx in range(int(x+22),int(x+w-14),48):out.extend([f'<path d="M{xx} {y+45}q12-23 24 0v43h-24Z" fill="{INK}"/>',rect(xx+4,y+49,7,28,'#cca775')])
- out.append(rect(x+18,y+h-12,w-44,5,LIGHT));return out
+ out.append(rect(x+18,y+h-12,w-44,5,LIGHT));return lean(out,y+h,.025 if x<760 else -.022)
 def palm(x,y,s=1):
  return [f'<g transform="translate({x} {y}) scale({s})">',poly([(0,130),(8,32),(20,0),(25,6),(19,47),(12,134)],'#705742'),poly([(18,6),(-50,-21),(-72,-5),(-25,-6),(19,14)],'#4c6d5b'),poly([(19,6),(71,-27),(97,-9),(42,-8),(22,14)],'#557b62'),poly([(19,4),(24,-41),(50,-60),(40,-21),(22,14)],'#75936c'),poly([(17,6),(-2,-35),(-25,-44),(-9,-10),(20,15)],'#3a5f54'),'</g>']
 def bench():return [poly([(0,32),(95,32),(117,47),(20,47)],LIGHT),rect(20,47,97,10,DARK),rect(25,57,9,24,INK),rect(99,57,9,24,INK),rect(11,5,101,29,TEAL),rect(19,10,86,5,'#8ea48b'),ellipse(142,53,14,8,INK),rect(131,22,22,30,TEAL),ellipse(142,22,11,6,LIGHT)]
@@ -59,19 +60,34 @@ def astrolabe(cx,cy,rx=150):
  return out
 def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back=None,w=64,h=42,wood=False,ground=None,gated=None):
  layers=[layer(1,'Surroundings',[(0,0,w,h)],w,h,5),layer(2,'Walking surfaces',floor,w,h,3),layer(3,'Scenery footprints',blocks,w,h,6)];entries=[]
+ arena=id.startswith('battle-');outline=OUTLINES.get(id,[(72,72),(888,72),(888,456),(72,456)]if arena else None)
+ if id in OUTLINES:layers[1]['data']=polygon_cells(outline,w,h)
+ layers[2]['properties']=props(sort=True)
  def add(n,body,ww=w*24,hh=h*24,x=0,y=0,depth=-1000,lid=1):
   svg(ART/f'{n}.svg',ww,hh,body);entries.append({'key':f'scene-six-{n}','url':f'art/vector/chapter-six/{n}.svg','x':x,'y':y,'width':ww,'height':hh,'depth':depth,'layerId':lid})
- add(id+'-back',back if back is not None else dunes(w*24,h*24));add(id+'-floor',ground if ground is not None else plane(floor,w*24,h*24,'#917a55'if wood else STONE,wood),depth=-999,lid=2)
+ add(id+'-back',back if back is not None else dunes(w*24,h*24))
+ add(id+'-floor',floor_shapes(outline,w*24,h*24,id,arena)if outline else ground if ground is not None else plane(floor,w*24,h*24,'#917a55'if wood else STONE,wood),depth=-999,lid=2)
+ if arena:add(id+'-lamps',arena_fixtures(id.removeprefix('battle-')),depth=-998,lid=1)
  for n,body,ww,hh,x,y,depth,flags in decor:
-  lid=3
+  lid=3 if depth>=0 else 2
   if flags:
    lid=len(layers)+1
    gate=(gated or {}).get(n,[(27,33,9,1)]if n=='palace-bar'else None)
    item=layer(lid,n,gate,w,h,6)if gate else group(lid,n)
-   item['properties']=props(**flags);layers.append(item)
+   item['properties']=props(sort=depth>=0,**flags);layers.append(item)
   add(n,body,ww,hh,x,y,depth,lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v,**({'projection':True}if sid=='six-sealed' and k=='emperor' else {'hidden':True}if sid=='six-court' and k=='amal' else {}))for k,v in cast.items()]))
+ # Cache static ground, but retain individual images moved by the cinematics.
+ for key in ('mooring-city-life','canopy-launch'):
+  moving=next((e for e in entries if e['key']=='scene-six-'+key),None)
+  if moving:
+   lid=len(layers)+1;layers.append(group(lid,key+' motion',live=True));moving['layerId']=lid
+ for x,y in FIXTURES.get(id,[]):add(fixture_kind(id),fixture(fixture_kind(id)),48,144,x-24,y-142,y,3)
+ if outline:
+  for lid in sorted({e['layerId']for e in entries}):
+   field=spill_layer([e for e in entries if e['layerId']==lid],outline)
+   if field:add(f'light-{id}-{lid}',field,depth=-950,lid=lid)
  retain_interaction_roles(MAP/f'{id}.json',layers)
  d={'type':'map','version':'1.10','tiledversion':'1.11.2','orientation':'orthogonal','renderorder':'right-down','infinite':False,'width':w,'height':h,'tilewidth':24,'tileheight':24,'nextlayerid':len(layers)+1,'nextobjectid':1,'properties':props(name=name,subtitle=subtitle,sceneArt=id,artStyle='rotoscope',safeArrival=next(iter(arrivals))),'tilesets':[{'firstgid':p['firstgid'],'source':'../../../../assets/tiles/pages/'+p['name']+'.json'}for p in json.loads((ROOT/'assets/tiles/chapter-one.tileset.json').read_text())['pages']],'layers':layers}
  for ll in layers:
@@ -107,8 +123,10 @@ world('namar','Namar · the evening exchange','The palace is beyond the eastern 
  [point('market-buyer',17,26,sprite='civilian-traveler',hiddenFlag='palaceCoup'),point('boat-family',26,33,sprite='civilian-family-blue',hiddenFlag='palaceCoup'),point('clock-keeper',40,29,sprite='civilian-dockhand-rust'),point('returning-family',26,33,sprite='civilian-family-blue',requiredFlag='desertSealBroken'),point('western-watch',41,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken'),point('eastern-watch',43,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken')],
  [('namar-market',market,328,110,146,493,600,{}),('namar-palms',palm(0,0)+palm(181,19,.8),285,181,943,513,675,{}),('namar-clock',astrolabe(50,58,48)+[rect(38,52,24,85,TEAL),ellipse(50,133,55,17,DARK)],112,154,914,495,649,{}),('namar-fountain',bench(),168,86,230,650,736,{}),('namar-bridge-rail',[line([(696,628),(862,628)],GOLD,4),line([(696,716),(862,716)],GOLD,4)],880,730,0,0,-997,{}),('namar-shelters',[rect(0,8,143,6,DARK),poly([(0,8),(24,0),(124,0),(143,8),(143,91),(0,91)],TEAL)],148,96,155,490,586,{'requiredFlag':'palaceCoup','hiddenFlag':'desertSealBroken'})],cityback)
 
-courtback=[rect(0,0,1536,1008,'#4b5554'),rect(240,120,1056,650,'#856b55'),rect(270,154,996,590,LIGHT),rect(355,182,826,280,INK),poly([(355,462),(520,290),(800,400),(1181,258),(1181,462)],'#78665c')]
-for x in range(285,1280,120):courtback.extend([rect(x,120,24,395,STONE),rect(x-10,119,44,21,GOLD),rect(x-8,495,40,18,GOLD)])
+courtback=[rect(0,0,1536,1008,'#4b5554'),poly([(238,142),(750,96),(1294,128),(1310,770),(242,770)],'#967b5f'),poly([(268,169),(751,128),(1266,157),(1280,744),(268,744)],LIGHT),poly([(354,202),(755,168),(1182,196),(1181,476),(355,476)],'#3d5556'),poly([(355,476),(520,310),(800,419),(1181,278),(1181,476)],'#8a7768'),poly([(224,137),(751,89),(1308,122),(1296,146),(752,116),(242,163)],'#d1ac73'),line([(260,160),(752,121),(1282,152)],'#eed09a',5)]
+for i,x in enumerate(range(285,1280,120)):
+ top=146+abs(x-750)*.035;shift=(750-x)*.025
+ courtback.extend([poly([(x+shift,top),(x+24+shift,top-1),(x+24,507),(x,513)],STONE),poly([(x+17+shift,top),(x+24+shift,top-1),(x+24,507),(x+17,509)],'#94734f'),poly([(x-10+shift,top),(x+34+shift,top-2),(x+32+shift,top+18),(x-8+shift,top+20)],GOLD),poly([(x-8,494),(x+32,492),(x+33,511),(x-8,515)],'#d9b576')])
 courtback.extend([rect(700,465,175,10,GOLD),rect(709,458,157,8,LIGHT)])
 courtcrew={'kit':(31,28),'orrin':(28,29),'petra':(34,29),'celia':(30,31),'samira':(32,23),'sahir':(39,25),'amal':(22,29),'nell':(32,29)}
 world('sunpalace','Namar · the open court','The queen receives visitors beneath the northern colonnade. The postal stair is west of the fountain.',[(10,22,45,11),(27,33,9,3),(20,18,24,5),(8,27,5,6)],[(22,24,3,3),(41,24,3,3)], [

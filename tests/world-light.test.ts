@@ -5,6 +5,7 @@ import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-tw
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { CHAPTER_FOUR_MAPS, CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { CHAPTER_FIVE_MAPS, CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
+import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../src/content/chapter-six/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
 import { actorPlanes } from '../src/game/actor-planes';
@@ -14,13 +15,13 @@ const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One–Five world and battle floor, without opting later regions in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES),...Object.values(CHAPTER_FIVE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FIVE_BATTLES)]){
+  it('covers every Chapter One–Six world and battle floor, without opting later regions in',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES),...Object.values(CHAPTER_FIVE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FIVE_BATTLES),...Object.values(CHAPTER_SIX_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_SIX_BATTLES)]){
       const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(sceneLight('outermooring',[])).toBeUndefined();
+    expect(sceneLight('hollowsill',[])).toBeUndefined();
   });
   it('keeps ferry illumination and its spill in the same story visibility layer',()=>{
     const map=CHAPTER_FOUR_MAPS.breakwater.tiles!;
@@ -52,6 +53,22 @@ describe('world-space actor lighting',()=>{
       }
     }
     expect(sceneLight('flagship-battle',[])?.lamps.length).toBeGreaterThan(0);
+  });
+  it('keeps Chapter Six moving floor pieces live and released seal light in its own flag layer',()=>{
+    for(const [id,key]of [['outermooring','mooring-city-life'],['canopy','canopy-launch']]as const){
+      const map=CHAPTER_SIX_MAPS[id].tiles!,piece=visibleSceneArt(map,{flags:{}})!.find(p=>p.key==='scene-six-'+key)!;
+      expect(properties(map.layers.find(l=>l.id===piece.layerId)!).live).toBe(true);
+    }
+    const map=CHAPTER_SIX_MAPS.observatory.tiles!;
+    for(const released of [false,true]){
+      const pieces=visibleSceneArt(map,{flags:{desertSealBroken:released}})!,rig=sceneLight('observatory',pieces)!;
+      expect(rig.lamps.some(l=>l.x===768&&l.y===510)).toBe(released);
+      const seal=pieces.find(p=>p.key==='scene-six-observatory-released');
+      expect(Boolean(seal)).toBe(released);
+      if(seal)expect(pieces.some(p=>p.layerId===seal.layerId&&p.url.includes('/light-'))).toBe(true);
+    }
+    for(const id of ['rainhouse','lastpalace','crown'])expect(sceneLight(id,[])!.shadowOpacity).toBe(.035);
+    for(const id of ['lastmorning','laststation']as const)expect(sceneLight(id,visibleSceneArt(CHAPTER_SIX_MAPS[id].tiles!,{flags:{}})!)!.lamps.length).toBeGreaterThan(1);
   });
   it('registers the conduit windows, crystal and feed console at their real anchors',()=>{
     const gallery=sceneLight('relayhall',visibleSceneArt(CHAPTER_THREE_MAPS.relayhall.tiles!,{flags:{}})??[])!;

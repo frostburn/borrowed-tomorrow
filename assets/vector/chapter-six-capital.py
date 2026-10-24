@@ -1,13 +1,15 @@
 """Capital finale: continuous native SVG scenes over real Tiled routes/layers/casts."""
 import runpy,json,re,copy
 from pathlib import Path
+from chapter_six_style import lean
 b=runpy.run_path(str(Path(__file__).with_name('chapter-six-north.py')))
 ROOT=b['ROOT'];world=b['world'];manifest=b['manifest'];rect=b['rect'];poly=b['poly'];line=b['line'];ellipse=b['ellipse'];obj=b['obj'];point=b['point'];control=b['control'];bench=b['bench'];chest=b['chest'];ART=ROOT/'public/art/vector/chapter-six'
 INK='#243943';BLUE='#819aa8';SHADOW='#536f80';WHITE='#e9e6d8';GOLD='#c89b53';TEAL='#527c72';DUSK='#876e76'
 def inline(name):return (ART/f'{name}.svg').read_text().split('>',1)[1].rsplit('</svg>',1)[0]
 def floor(f):return [p.replace('#c59d70','#e9e6d8').replace('#a17e60','#aab9bf').replace('#745b50','#819aa8')for p in b['b']['base']['plane'](f,1536,1008,'#d3d9d5')]
 def arch(x,y,w=210,h=190):
- return [rect(x,y,w,h,SHADOW),poly([(x-12,y),(x+w/2,y-62),(x+w+12,y),(x+w,y+15),(x,y+15)],WHITE),f'<path d="M{x+30} {y+h}V{y+72}Q{x+w/2} {y-26} {x+w-30} {y+72}V{y+h}Z" fill="{INK}"/>',rect(x+7,y+17,17,h-17,WHITE),rect(x+w-24,y+17,17,h-17,BLUE),line([(x+20,y+20),(x+w-20,y+20)],GOLD,4)]
+ return lean([rect(x,y,w,h,SHADOW),poly([(x-12,y),(x+w/2,y-62),(x+w+12,y),(x+w,y+15),(x,y+15)],WHITE),f'<path d="M{x+30} {y+h}V{y+72}Q{x+w/2} {y-26} {x+w-30} {y+72}V{y+h}Z" fill="{INK}"/>',rect(x+7,y+17,17,h-17,WHITE),rect(x+w-24,y+17,17,h-17,BLUE),line([(x+20,y+20),(x+w-20,y+20)],GOLD,4)],y+h,.018)
+
 def facade():
  out=[rect(0,0,1536,1008,'#475d70'),poly([(0,260),(260,188),(580,268),(890,175),(1180,222),(1536,151),(1536,1008),(0,1008)],DUSK),rect(120,260,1280,336,BLUE),rect(120,260,1280,28,WHITE)]
  for x in [150,380,610,840,1070]:out+=arch(x,306,190,245)
@@ -56,7 +58,7 @@ def home_map(id,remembered):
  (ROOT/f'src/content/chapter-six/maps/{id}.json').write_text(text+'\n')
  ids={l['id']for l in d['layers']if l['type']=='tilelayer'};pieces=copy.deepcopy(json.loads((ROOT/'src/content/chapter-one/scene-art.json').read_text())['station']);pieces=[p for p in pieces if p['layerId']in ids]
  if remembered:
-  palette={'#1e3c36':'#617956','#233e36':'#80916c','#29483e':'#91a27c','#315044':'#a6b18a','#385546':'#bfbd90'}
+  palette={'#172937':'#617956','#192c37':'#80916c','#1d3039':'#91a27c','#2a414c':'#a6b18a','#354b55':'#bfbd90','#1e3c36':'#617956','#233e36':'#80916c','#29483e':'#91a27c','#315044':'#a6b18a','#385546':'#bfbd90'}
   piece=next(p for p in pieces if p['layerId']==1);source=(ROOT/'public'/piece['url']).read_text()
   for old,new in palette.items():source=source.replace(old,new)
   (ART/'memory-grass.svg').write_text(source);piece['key']='scene-six-memory-grass';piece['url']='art/vector/chapter-six/memory-grass.svg'

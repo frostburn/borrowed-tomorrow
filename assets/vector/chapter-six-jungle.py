@@ -4,6 +4,7 @@ No raster sources. All scenery remains directly editable planar vector art.
 """
 import runpy,math,json
 from pathlib import Path
+from chapter_six_style import lean
 base=runpy.run_path(str(Path(__file__).with_name('chapter-six.py')))
 ROOT=base['ROOT']; ART=base['ART']; MAP=base['MAP']; manifest=base['manifest']
 rect=base['rect']; poly=base['poly']; line=base['line']; ellipse=base['ellipse']; point=base['point']; obj=base['obj']; control=base['control']; chest=base['chest']; bench=base['bench']
@@ -13,7 +14,8 @@ def tree(x,y,s=1):
 def fern(x,y,s=1):
  return [f'<g transform="translate({x} {y}) scale({s})">',poly([(1,49),(13,22),(32,9),(40,12),(28,24),(17,29),(11,49)],'#557e59'),poly([(9,50),(-4,26),(-24,15),(-39,18),(-18,31),(-7,33)],'#729363'),poly([(11,49),(27,33),(50,31),(66,41),(41,40),(24,45)],'#3b6651'),line([(9,49),(20,14)],'#a0a46f',2),'</g>']
 def hut(x,y,w=225,h=155):
- return [poly([(x,y+30),(x+w,y+30),(x+w,y+h),(x,y+h)],'#5b6450'),poly([(x+12,y+35),(x+w-12,y+35),(x+w-12,y+h-12),(x+12,y+h-12)],'#a18d68'),poly([(x-24,y+27),(x+w*.4,y-57),(x+w+22,y+24),(x+w-4,y+44),(x+4,y+45)],'#6b8060'),poly([(x-15,y+23),(x+w*.4,y-47),(x+w+12,y+22),(x+w*.45,y-2)],'#91a079'),rect(x+35,y+54,45,65,INK),rect(x+w-72,y+58,41,40,INK),rect(x+13,y+h,10,40,'#47594b'),rect(x+w-23,y+h,10,40,'#47594b'),rect(x+4,y+h-5,w-8,9,LIGHT)]
+ return lean([poly([(x,y+30),(x+w,y+30),(x+w,y+h),(x,y+h)],'#5b6450'),poly([(x+12,y+35),(x+w-12,y+35),(x+w-12,y+h-12),(x+12,y+h-12)],'#a18d68'),poly([(x-24,y+27),(x+w*.4,y-57),(x+w+22,y+24),(x+w-4,y+44),(x+4,y+45)],'#6b8060'),poly([(x-15,y+23),(x+w*.4,y-47),(x+w+12,y+22),(x+w*.45,y-2)],'#91a079'),rect(x+35,y+54,45,65,INK),rect(x+w-72,y+58,41,40,INK),rect(x+13,y+h,10,40,'#47594b'),rect(x+w-23,y+h,10,40,'#47594b'),rect(x+4,y+h-5,w-8,9,LIGHT)],y+h+40,.025)
+
 def riverback():
  out=[rect(0,0,1536,1008,'#668879'),poly([(0,107),(220,64),(457,149),(735,77),(1014,128),(1302,54),(1536,88),(1536,615),(0,615)],'#456c5c'),poly([(0,289),(260,161),(557,278),(820,177),(1095,300),(1322,160),(1536,234),(1536,1008),(0,1008)],'#294f45'),poly([(331,1008),(445,781),(846,562),(899,299),(1083,210),(1271,225),(1057,397),(1094,648),(782,830),(685,1008)],WATER)]
  for y,x in [(454,951),(530,920),(665,889),(747,721),(831,614),(922,524)]:out+=[poly([(x-65,y),(x+110,y-4),(x+141,y+4),(x-18,y+8)],'#638a7c')]

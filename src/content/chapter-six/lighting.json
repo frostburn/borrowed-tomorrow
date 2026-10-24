@@ -1,0 +1,1338 @@
+{
+  "profiles": {
+    "outermooring": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            1.08,
+            1,
+            0.81
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "namar": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            1.08,
+            1,
+            0.81
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "sunpalace": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            1.08,
+            1,
+            0.81
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "skywalk": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            1.08,
+            1,
+            0.81
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "observatory": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            1.08,
+            1,
+            0.81
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-palace-gallery": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-palace-channel": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-desert-ascent": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-sun-serpent": {
+      "ambient": [
+        0.87,
+        0.87,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "riverhaven": {
+      "ambient": [
+        0.81,
+        0.89,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "canopy": {
+      "ambient": [
+        0.81,
+        0.89,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "rainhouse": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-river-patrol": {
+      "ambient": [
+        0.81,
+        0.89,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-river-cache": {
+      "ambient": [
+        0.81,
+        0.89,
+        0.81
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-rainhouse-guard": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "bellharbor": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "frostwatch": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "glacier": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "wintershrine": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "capitalquay": {
+      "ambient": [
+        0.9,
+        0.94,
+        0.95
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-north-watch": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        }
+      ]
+    },
+    "battle-north-hunters": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        }
+      ]
+    },
+    "battle-north-cache": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        }
+      ]
+    },
+    "battle-winter-dragon": {
+      "ambient": [
+        0.82,
+        0.91,
+        0.98
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            0.85,
+            1.03,
+            1.12
+          ]
+        }
+      ]
+    },
+    "stillcity": {
+      "ambient": [
+        0.9,
+        0.94,
+        0.95
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "lastpalace": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "lastmorning": {
+      "ambient": [
+        0.94,
+        0.94,
+        0.88
+      ],
+      "shadowOpacity": 0.06,
+      "propStrength": 0.15,
+      "lamps": [
+        {
+          "x": 520,
+          "y": 480,
+          "height": 470,
+          "radius": 1800,
+          "strength": 0.18,
+          "color": [
+            1.05,
+            1,
+            0.84
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0.15
+        }
+      ]
+    },
+    "lastshore": {
+      "ambient": [
+        0.94,
+        0.94,
+        0.88
+      ],
+      "shadowOpacity": 0.06,
+      "propStrength": 0.15,
+      "lamps": [
+        {
+          "x": 520,
+          "y": 480,
+          "height": 470,
+          "radius": 1800,
+          "strength": 0.18,
+          "color": [
+            1.05,
+            1,
+            0.84
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0.15
+        }
+      ]
+    },
+    "crown": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 650,
+          "y": 470,
+          "height": 440,
+          "radius": 1600,
+          "strength": 0.18,
+          "color": [
+            0.85,
+            0.99,
+            1.07
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "laststation": {
+      "ambient": [
+        0.72,
+        0.79,
+        0.91
+      ],
+      "shadowOpacity": 0.13,
+      "propStrength": 0.7,
+      "lamps": [
+        {
+          "x": 600,
+          "y": 460,
+          "height": 450,
+          "radius": 1700,
+          "strength": 0.1,
+          "color": [
+            0.8,
+            0.94,
+            1.12
+          ],
+          "fill": 0.9,
+          "shadowStrength": 0
+        }
+      ]
+    },
+    "battle-capital-procession": {
+      "ambient": [
+        0.9,
+        0.94,
+        0.95
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-palace-command": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-capital-hunters": {
+      "ambient": [
+        0.9,
+        0.94,
+        0.95
+      ],
+      "shadowOpacity": 0.12,
+      "propStrength": 0.85,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-imperial-vessel": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    },
+    "battle-lightbearer": {
+      "ambient": [
+        0.92,
+        0.96,
+        0.93
+      ],
+      "shadowOpacity": 0.035,
+      "propStrength": 0.65,
+      "lamps": [
+        {
+          "x": 100,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        },
+        {
+          "x": 904,
+          "y": 154,
+          "height": 113,
+          "radius": 550,
+          "strength": 0.42,
+          "fill": 0.8,
+          "shadowStrength": 0.13,
+          "color": [
+            1.13,
+            0.91,
+            0.64
+          ]
+        }
+      ]
+    }
+  },
+  "props": {
+    "namar-opal": [
+      {
+        "x": 24,
+        "y": 142,
+        "height": 113,
+        "radius": 345,
+        "strength": 0.7,
+        "fill": 0.75,
+        "shadowStrength": 0.45
+      }
+    ],
+    "royal-globe": [
+      {
+        "x": 24,
+        "y": 142,
+        "height": 113,
+        "radius": 345,
+        "strength": 0.7,
+        "fill": 0.75,
+        "shadowStrength": 0.45
+      }
+    ],
+    "iria-lantern": [
+      {
+        "x": 40,
+        "y": 142,
+        "height": 99,
+        "radius": 345,
+        "strength": 0.7,
+        "fill": 0.75,
+        "shadowStrength": 0.45
+      }
+    ],
+    "skeld-lantern": [
+      {
+        "x": 24,
+        "y": 142,
+        "height": 107,
+        "radius": 345,
+        "strength": 0.7,
+        "fill": 0.75,
+        "shadowStrength": 0.45
+      }
+    ],
+    "lamp": [
+      {
+        "x": 24,
+        "y": 134,
+        "height": 108,
+        "radius": 235,
+        "strength": 1.15
+      }
+    ],
+    "station-house": [
+      {
+        "x": 42,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 84,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 204,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 14,
+          "spread": 0.38
+        }
+      }
+    ],
+    "bunting": [
+      {
+        "x": 21,
+        "y": 133,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 75,
+        "y": 145,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 129,
+        "y": 148,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      },
+      {
+        "x": 183,
+        "y": 138,
+        "height": 108,
+        "radius": 330,
+        "strength": 0.7,
+        "shadowStrength": 0.3,
+        "fill": 0.5
+      }
+    ],
+    "workshop": [
+      {
+        "x": 74,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 16,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 184,
+        "y": 201,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 16,
+          "spread": 0.38
+        }
+      }
+    ],
+    "bakery": [
+      {
+        "x": 52,
+        "y": 205,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 18,
+          "spread": 0.38
+        }
+      },
+      {
+        "x": 108,
+        "y": 205,
+        "height": 80,
+        "radius": 185,
+        "strength": 2.3,
+        "beam": {
+          "reach": 90,
+          "width": 18,
+          "spread": 0.38
+        }
+      }
+    ],
+    "engine": [
+      {
+        "x": 41,
+        "y": 179,
+        "height": 80,
+        "radius": 265,
+        "strength": 1.2,
+        "fill": 0.2
+      }
+    ],
+    "shelter": [
+      {
+        "x": 138,
+        "y": 177,
+        "height": 90,
+        "radius": 225,
+        "strength": 1.25,
+        "fill": 0.3
+      }
+    ],
+    "collector-machine": [
+      {
+        "x": 60,
+        "y": 135,
+        "height": 104,
+        "radius": 220,
+        "strength": 1.15,
+        "color": [
+          0.35,
+          0.9,
+          1.1
+        ],
+        "fill": 0.2,
+        "shadowStrength": 0.45
+      }
+    ],
+    "observatory-released": [
+      {
+        "x": 768,
+        "y": 510,
+        "height": 150,
+        "radius": 430,
+        "strength": 0.32,
+        "fill": 0.85,
+        "shadowStrength": 0,
+        "color": [
+          0.82,
+          1.03,
+          1.12
+        ]
+      }
+    ]
+  }
+}

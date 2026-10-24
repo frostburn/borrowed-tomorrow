@@ -16,6 +16,7 @@ const masks=new Map<string,Uint8Array>();
 export function imperialPresentation(encounter:Encounter):BattlePresentation{
  const light=encounter.boss==='lightbearer',base=light?'lightbearer-idle':'imperial-idle';let texture=base,pattern=0;
  return {
+  lighting:{scene:light?'battle-lightbearer':'battle-imperial-vessel',ground:'M72 72H888V456H72Z'},
   encounter,prepare:prepareImperial,focus:offset(5,3),animating:b=>!b.result&&bossMotionEnabled(),
   enemyTurn(b,onRetaliation,onAction){pattern=(b.round-1)%4;return enemyTurn(b,onRetaliation,onAction);},
   portrait:u=>u.id===EMPEROR_ID||u.id===LIGHTBEARER_ID?imperialPortrait(light):undefined,

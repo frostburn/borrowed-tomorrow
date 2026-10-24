@@ -5,6 +5,7 @@ import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-tw
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
 import { CHAPTER_FOUR_MAPS,CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { CHAPTER_FIVE_MAPS,CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
+import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../src/content/chapter-six/maps';
 import { arrival, MAPS, restorePoint, stage, visibleObjects, visiblePeople, walkable, worldPath } from '../src/content/maps';
 import { sceneAssets } from '../src/content/scene-art';
 import { CIVILIAN_SPRITES } from '../src/content/civilians';
@@ -14,7 +15,7 @@ import { newGame } from '../src/rules/state';
 import { decodeSave } from '../src/rules/save';
 import { coastCheckpoint, palaceCheckpoint, checkpoint } from './support/progress';
 
-const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS,...CHAPTER_THREE_MAPS,...CHAPTER_FOUR_MAPS,...CHAPTER_FIVE_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES,...CHAPTER_THREE_BATTLES,...CHAPTER_FOUR_BATTLES,...CHAPTER_FIVE_BATTLES};
+const worlds={...CHAPTER_ONE_MAPS,...CHAPTER_TWO_MAPS,...CHAPTER_THREE_MAPS,...CHAPTER_FOUR_MAPS,...CHAPTER_FIVE_MAPS,...CHAPTER_SIX_MAPS},battles={...CHAPTER_ONE_BATTLES,...CHAPTER_TWO_BATTLES,...CHAPTER_THREE_BATTLES,...CHAPTER_FOUR_BATTLES,...CHAPTER_FIVE_BATTLES,...CHAPTER_SIX_BATTLES};
 
 it('Chapter Three doors and consoles have reachable approaches beside their physical artwork',()=>{
   const state=palaceCheckpoint('conduitGuardWon');
@@ -99,12 +100,13 @@ it('converted chapters use complete native layers and bounded image pages',()=>{
 it('all map-owned arrivals and scene casts stand on connected floors',()=>{
   for(const map of Object.values(worlds)){
     const points=mapPoints(map.tiles!,'Arrivals');const start=gridPoint(points[0]);
+    const state=map.id in CHAPTER_SIX_MAPS?{flags:{palaceEscaped:true,riverChainOpen:true,northPassOpened:true,capitalStreetFreed:true,capitalHallOpened:true}}:undefined;
     for(const point of points){
-      const p=arrival(map.id,point.name);expect(walkable(map,p.x,p.y),`${map.id}:${point.name}`).toBe(true);
-      expect(p.x===start.x&&p.y===start.y||worldPath(map,start,p).length>0).toBe(true);
+      const p=arrival(map.id,point.name);expect(walkable(map,p.x,p.y,state),`${map.id}:${point.name}`).toBe(true);
+      expect(p.x===start.x&&p.y===start.y||worldPath(map,start,p,state).length>0,`${map.id}:${point.name}`).toBe(true);
     }
     for(const group of map.tiles!.layers.filter(l=>l.name.startsWith('Scene:'))){
-      for(const actor of stage(map.id,group.name.slice(6)))expect(walkable(map,actor.at.x,actor.at.y),`${group.name}:${actor.id}`).toBe(true);
+      for(const actor of stage(map.id,group.name.slice(6)).filter(a=>!a.projection))expect(walkable(map,actor.at.x,actor.at.y,state),`${group.name}:${actor.id}`).toBe(true);
     }
   }
 });
@@ -118,6 +120,20 @@ it('bridge floors override river tiles while the banks and pass drop stay blocke
   expect(worldPath(village,{x:15,y:18},{x:58,y:18}).length).toBeGreaterThan(40);
   expect(walkable(pass,38,14)).toBe(true);expect(walkable(pass,39,14)).toBe(false);
   expect(walkable(pass,12,18)).toBe(false);
+});
+
+it('crooked Chapter Six perimeters cannot bypass a story gate',()=>{
+  for(const [id,from,to,closedFlags,flag]of [
+    ['sunpalace',{x:31,y:31},{x:31,y:35},{palaceCoup:true},'palaceEscaped'],
+    ['canopy',{x:15,y:32},{x:49,y:20},{riverCrossingSeen:true},'riverChainOpen'],
+    ['frostwatch',{x:15,y:32},{x:48,y:20},{},'northPassOpened'],
+    ['stillcity',{x:32,y:33},{x:32,y:20},{},'capitalStreetFreed'],
+    ['lastpalace',{x:32,y:34},{x:32,y:22},{},'capitalHallOpened'],
+  ]as const){
+    const map=MAPS[id];
+    expect(worldPath(map,from,to,{flags:closedFlags}),`${id}: closed`).toEqual([]);
+    expect(worldPath(map,from,to,{flags:{...closedFlags,[flag]:true}}).length,`${id}: open`).toBeGreaterThan(0);
+  }
 });
 
 it('through tracks reach both map edges and remain on a supported railway shelf',()=>{
