@@ -40,7 +40,7 @@ it('reports evacuees to Alda only after the first collector actually releases it
  j.act('sill-cross');j.act('water-hounds');j.choose();j.win();
  j.act('water-collector');j.choose();j.win();expect(j.s.flags.takenPeopleFreed).toBe(true);
  j.act('water-sill');const freed=structuredClone(j.s);j.act('sill-alda');
- expect(j.read()!.lines[0].text).toContain('people are crossing');expect(j.s).toEqual(freed);j.valid();
+ expect(j.read()!.lines[0].text).toContain('bringing people across');expect(j.s).toEqual(freed);j.valid();
 });
 it('places the hospice patient in front of her bed and removes defeated courier-stair hunters',()=>{
  const s=chapterSevenStart(),patient=visiblePeople(MAPS.quietward,s).find(p=>p.id==='old-patient')!;
