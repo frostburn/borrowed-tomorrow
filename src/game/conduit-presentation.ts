@@ -9,12 +9,12 @@ import { offset, toPixel } from '../rules/hex';
 import type { Encounter } from '../rules/combat';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { prepareConduit, regulatorUnit } from '../rules/conduit';
-import { nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
 import { animateBoss, bossAttack, bossMotionEnabled, BOSS_FRAME_COUNT, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 export const CONDUIT_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/bosses/conduit-regulator-portrait.svg`;
 const textureKey='conduit-regulator-motion',chamberKey='conduit-chamber';
 export const CONDUIT_ASSETS=[{key:textureKey,url:'art/vector/bosses/conduit-regulator-motion.svg'},{key:chamberKey,url:'art/vector/bosses/conduit-chamber.svg'},{key:'conduit-regulator-portrait',url:'art/vector/bosses/conduit-regulator-portrait.svg'}];
-let masks:Uint8Array[]|undefined,currentFrame=0;
+const masks=new BossMaskCache<Uint8Array[]>();let currentFrame=0;
 
 function pressureEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},affected:{q:number;r:number}[]){
   const g=scene.add.graphics();world.add(g);
@@ -46,10 +46,10 @@ export function conduitPresentation(encounter:Encounter):BattlePresentation{
       if(u.id!==REGULATOR_ID)return;
       const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
       if(!texture.has('0'))for(let i=0;i<BOSS_FRAME_COUNT;i++)texture.add(String(i),0,i%2*256,Math.floor(i/2)*240,256,240);
-      masks??=Array.from({length:BOSS_FRAME_COUNT},(_,i)=>{
+      if(!masks.has(textureKey))masks.set(textureKey,Array.from({length:BOSS_FRAME_COUNT},(_,i)=>{
         const pixels=surface.getContext('2d')!.getImageData(i%2*256,Math.floor(i/2)*240,256,240).data;
         return Uint8Array.from({length:256*240},(_,p)=>pixels[p*4+3]);
-      });
+      }));
       const p=bossPlacement(u),image=scene.add.image(p.x,p.y,textureKey,0).setOrigin(.5,1);
       animateBoss(scene,image,hp>0,frame=>{currentFrame=frame;},{motion:'mechanical',cycleMs:1600});return image;
     },
@@ -71,6 +71,6 @@ export function conduitPresentation(encounter:Encounter):BattlePresentation{
         g.lineStyle(2,0x96cfc9,.4).strokeEllipse(p.x,p.y-113,170,194);
       }
     },
-    pick:(b,action,x,y)=>pickBossBody(b,action,x,y,regulatorUnit(b),256,240,masks?.[currentFrame]),
+    pick:(b,action,x,y)=>pickBossBody(b,action,x,y,regulatorUnit(b),256,240,masks.get(textureKey)?.[currentFrame]),
   };
 }

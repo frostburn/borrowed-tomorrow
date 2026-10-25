@@ -26,6 +26,7 @@
     "art:seven": "node scripts/export-chapter-seven-art.mjs",
     "art:six": "node scripts/export-chapter-six-art.mjs",
     "art:raster-maps": "node scripts/export-raster-maps.mjs",
+    "art:raster-actors": "node scripts/export-raster-actors.mjs",
     "check:art-upload": "node scripts/check-art-upload.mjs"
   },
   "dependencies": {

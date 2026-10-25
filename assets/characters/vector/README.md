@@ -76,3 +76,11 @@ elbow bends behind the wrist in the left-facing stance/walk, then opens forward
 for the reach. Regenerate all four campaign/review poses with
 `python3 assets/characters/vector/chapter-three.py`. The NPC native-size lineup
 wraps after ten actors, retaining the same 80px frames and 112px row spacing.
+
+## Alternate raster skin
+
+The vector originals and the workflows above remain available in production.
+The raster actor skin uses small registered paintings, exact 2x native expansion,
+and the same logical frames/rig timing. See [raster actor authoring](../../raster-actors/README.md)
+for its sources, export, skin controls and review. The current user request
+supersedes the earlier vector-only runtime direction; do not remove either skin.

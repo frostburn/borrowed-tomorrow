@@ -1,4 +1,6 @@
 import {BENEFACTOR_ASSETS} from './benefactor-presentation';
+import { actorArtUrl, RASTER_ACTORS, type ActorArtSkin } from '../content/actor-art-skin';
+import { MOTION_PAGES } from '../content/actor-motion';
 import { IMPERIAL_ASSETS } from './imperial-presentation';
 import { DRAGON_ASSETS } from './winter-dragon-presentation';
 import { SERPENT_ASSETS } from './sun-serpent-presentation';
@@ -11,7 +13,7 @@ import { TILESET,tilePages } from '../content/tilemaps';
 import { sceneAssets } from '../content/scene-art';
 import { cinematicAssets } from '../content/cinematic-art';
 import { vectorAsset } from '../content/art-assets';
-import { vectorSurface } from './vector-image';
+import { prepareArtTexture } from './vector-image';
 import { CONDUIT_ASSETS } from './conduit-presentation';
 import { FURNACE_ASSETS } from './furnace-presentation';
 import { WARD_ASSETS } from './ward-presentation';
@@ -20,16 +22,42 @@ import { FLAGSHIP_ASSETS } from './flagship-presentation';
 /** Region scenery, tactical pages, cinematic poses and native vector preparation. */
 export class RegionAssets {
   private pending?:Promise<void>;
+  private actors=new Map<string,string>();
   constructor(private scene:Phaser.Scene){}
+  registerActors(assets:Iterable<{key:string;url:string}>){
+    for(const {key,url} of assets){
+      const at=url.indexOf('art/vector/'),path=at<0?url:url.slice(at);
+      if(Object.hasOwn(RASTER_ACTORS,path))this.actors.set(key,path);
+    }
+  }
+  /** Load the entire replacement before touching any visible texture. */
+  async stageActorSkin(skin:ActorArtSkin){
+    const assets=[...this.actors].filter(([key])=>this.scene.textures.exists(key));
+    const queued=assets.map(([key,url],i)=>({key,url,temp:`actor-skin-pending-${i}`}));
+    await new Promise<void>((resolve,reject)=>{
+      this.scene.load.once('complete',()=>{
+        if(queued.every(a=>this.scene.textures.exists(a.temp)))resolve();
+        else{
+          for(const a of queued)if(this.scene.textures.exists(a.temp))this.scene.textures.remove(a.temp);
+          reject(new Error('Actor skin could not load'));
+        }
+      });
+      for(const a of queued)this.scene.load.image(a.temp,`${import.meta.env.BASE_URL}${actorArtUrl(a.url,skin)}`);
+      this.scene.load.start();
+    });
+    return ()=>{
+      for(const a of queued){this.scene.textures.remove(a.key);this.scene.textures.renameTexture(a.temp,a.key);}
+      this.prepareVectors(queued.map(a=>a.key));
+    };
+  }
   prepareVectors(keys:Iterable<string>){
     for(const key of keys){
       if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
         const texture=this.scene.textures.get(key);
-        for(const source of texture.source)if(source.image instanceof HTMLImageElement){
-          const canvas=vectorSurface(source.image);
-          source.source=source.image=canvas;source.isCanvas=true;source.update();
-        }
-        texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+        const path=this.actors.get(key);
+        prepareArtTexture(texture,path?RASTER_ACTORS[path]:undefined);
+        const page=MOTION_PAGES.find(page=>page.key===key);
+        if(page&&!texture.has('0'))for(let i=0;i<page.frames;i++)texture.add(String(i),0,i%2*80,Math.floor(i/2)*80,80,80);
       }
     }
   }
@@ -41,13 +69,14 @@ export class RegionAssets {
       const pages=maps.flatMap(m=>tilePages(m)),svg=[...new Map([...maps.flatMap(m=>sceneAssets(m)),...cinematicAssets(map),...Object.values(ENCOUNTERS).filter(e=>e.backdrop?.map===map).flatMap(e=>e.boss==='benefactor'?BENEFACTOR_ASSETS:e.boss==='emperor'||e.boss==='lightbearer'?IMPERIAL_ASSETS:e.boss==='dragon'?DRAGON_ASSETS:e.boss==='serpent'?SERPENT_ASSETS:e.boss==='conduit'?CONDUIT_ASSETS:e.boss==='furnace'?FURNACE_ASSETS:e.boss==='ward'?WARD_ASSETS:e.boss==='flagship'?FLAGSHIP_ASSETS:[])].map(a=>[a.key,a])).values()].filter(a=>!this.scene.textures.exists(a.key));
       const missing=[...new Map(pages.map(p=>[p.name,p])).values()].filter(page=>!this.scene.textures.exists(page.name));
       if(missing.length||svg.length){
+        this.registerActors(svg);
         if(!this.pending)this.pending=new Promise<void>((resolve,reject)=>{
           this.scene.load.once('complete',()=>{
             if(missing.every(page=>this.scene.textures.exists(page.name))&&svg.every(a=>this.scene.textures.exists(a.key))){this.prepareVectors(svg.map(a=>a.key));resolve();}
             else reject(new Error(`${MAPS[map].name} scenery could not load. Your checkpoint is intact; try again.`));
           });
           for(const page of missing)this.scene.load.spritesheet(page.name,`${import.meta.env.BASE_URL}${page.url}`,{frameWidth:TILESET.tilewidth,frameHeight:TILESET.tileheight});
-          for(const asset of svg)this.scene.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
+          for(const asset of svg)this.scene.load.image(asset.key,`${import.meta.env.BASE_URL}${actorArtUrl(asset.url)}`);
           this.scene.load.start();
         }).finally(()=>{this.pending=undefined;});
         await this.pending;

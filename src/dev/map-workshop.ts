@@ -1,4 +1,5 @@
 import {mapArtSkin,setMapArtSkin} from '../content/map-art-skin';
+import {actorArtUrl} from '../content/actor-art-skin';
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
 import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
@@ -131,7 +132,7 @@ export class MapWorkshop {
     const rig=sceneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
     if(pieces){
       for(const piece of pieces){
-        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y,piece.width,piece.height);};
+        const image=this.image(`${import.meta.env.BASE_URL}${actorArtUrl(piece.url)}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y,piece.width,piece.height);};
         if(piece.depth>=0)sorted.push({depth:piece.depth,draw});else draw();
       }
     }else if(e.tiles){

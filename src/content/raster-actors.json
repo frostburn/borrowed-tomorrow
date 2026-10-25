@@ -1,0 +1,847 @@
+{
+  "art/vector/alban-command.svg": {
+    "url": "art/raster-actors/alban-command.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/alban.svg": {
+    "url": "art/raster-actors/alban.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/alda.svg": {
+    "url": "art/raster-actors/alda.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/amal.svg": {
+    "url": "art/raster-actors/amal.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/animation/celia-back.svg": {
+    "url": "art/raster-actors/animation/celia-back.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/celia-front.svg": {
+    "url": "art/raster-actors/animation/celia-front.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/celia-left.svg": {
+    "url": "art/raster-actors/animation/celia-left.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/celia-right.svg": {
+    "url": "art/raster-actors/animation/celia-right.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/kit-back.svg": {
+    "url": "art/raster-actors/animation/kit-back.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/kit-front.svg": {
+    "url": "art/raster-actors/animation/kit-front.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/kit-left.svg": {
+    "url": "art/raster-actors/animation/kit-left.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/kit-right.svg": {
+    "url": "art/raster-actors/animation/kit-right.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/nell-back.svg": {
+    "url": "art/raster-actors/animation/nell-back.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/nell-front.svg": {
+    "url": "art/raster-actors/animation/nell-front.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/nell-left.svg": {
+    "url": "art/raster-actors/animation/nell-left.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/nell-right.svg": {
+    "url": "art/raster-actors/animation/nell-right.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/orrin-back.svg": {
+    "url": "art/raster-actors/animation/orrin-back.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/orrin-front.svg": {
+    "url": "art/raster-actors/animation/orrin-front.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/orrin-left.svg": {
+    "url": "art/raster-actors/animation/orrin-left.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/orrin-right.svg": {
+    "url": "art/raster-actors/animation/orrin-right.png",
+    "width": 160,
+    "height": 320
+  },
+  "art/vector/animation/petra-back.svg": {
+    "url": "art/raster-actors/animation/petra-back.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/petra-front.svg": {
+    "url": "art/raster-actors/animation/petra-front.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/petra-left.svg": {
+    "url": "art/raster-actors/animation/petra-left.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/animation/petra-right.svg": {
+    "url": "art/raster-actors/animation/petra-right.png",
+    "width": 160,
+    "height": 400
+  },
+  "art/vector/aurel.svg": {
+    "url": "art/raster-actors/aurel.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/benefactor.svg": {
+    "url": "art/raster-actors/benefactor.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/benefactor/benefactor-heart-motion.svg": {
+    "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
+    "width": 720,
+    "height": 1728
+  },
+  "art/vector/benefactor/benefactor-motion.svg": {
+    "url": "art/raster-actors/benefactor/benefactor-motion.png",
+    "width": 720,
+    "height": 1728
+  },
+  "art/vector/benefactor/benefactor-sun-motion.svg": {
+    "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
+    "width": 720,
+    "height": 1728
+  },
+  "art/vector/boiler-keeper.svg": {
+    "url": "art/raster-actors/boiler-keeper.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/bosses/conduit-regulator-motion.svg": {
+    "url": "art/raster-actors/bosses/conduit-regulator-motion.png",
+    "width": 512,
+    "height": 1440
+  },
+  "art/vector/bosses/conduit-regulator.svg": {
+    "url": "art/raster-actors/bosses/conduit-regulator.png",
+    "width": 256,
+    "height": 240
+  },
+  "art/vector/bosses/flagship-bridge-fire.svg": {
+    "url": "art/raster-actors/bosses/flagship-bridge-fire.png",
+    "width": 224,
+    "height": 232
+  },
+  "art/vector/bosses/flagship-bridge.svg": {
+    "url": "art/raster-actors/bosses/flagship-bridge.png",
+    "width": 224,
+    "height": 232
+  },
+  "art/vector/bosses/flagship-hull.svg": {
+    "url": "art/raster-actors/bosses/flagship-hull.png",
+    "width": 952,
+    "height": 256
+  },
+  "art/vector/bosses/flagship-port-fire.svg": {
+    "url": "art/raster-actors/bosses/flagship-port-fire.png",
+    "width": 192,
+    "height": 184
+  },
+  "art/vector/bosses/flagship-port.svg": {
+    "url": "art/raster-actors/bosses/flagship-port.png",
+    "width": 192,
+    "height": 184
+  },
+  "art/vector/bosses/flagship-starboard-fire.svg": {
+    "url": "art/raster-actors/bosses/flagship-starboard-fire.png",
+    "width": 192,
+    "height": 184
+  },
+  "art/vector/bosses/flagship-starboard.svg": {
+    "url": "art/raster-actors/bosses/flagship-starboard.png",
+    "width": 192,
+    "height": 184
+  },
+  "art/vector/bram.svg": {
+    "url": "art/raster-actors/bram.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/celia-back.svg": {
+    "url": "art/raster-actors/celia-back.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/celia-left.svg": {
+    "url": "art/raster-actors/celia-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/celia-right.svg": {
+    "url": "art/raster-actors/celia-right.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/celia.svg": {
+    "url": "art/raster-actors/celia.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/chapter-five/furnace-carrier-battle.svg": {
+    "url": "art/raster-actors/chapter-five/furnace-carrier-battle.png",
+    "width": 224,
+    "height": 168
+  },
+  "art/vector/chapter-five/gantry-carrier.svg": {
+    "url": "art/raster-actors/chapter-five/gantry-carrier.png",
+    "width": 280,
+    "height": 210
+  },
+  "art/vector/chapter-five/ward-engine-battle.svg": {
+    "url": "art/raster-actors/chapter-five/ward-engine-battle.png",
+    "width": 256,
+    "height": 240
+  },
+  "art/vector/chapter-six/dragon-breath.svg": {
+    "url": "art/raster-actors/chapter-six/dragon-breath.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/dragon-inhale.svg": {
+    "url": "art/raster-actors/chapter-six/dragon-inhale.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/dragon-shatter.svg": {
+    "url": "art/raster-actors/chapter-six/dragon-shatter.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/imperial-cast.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-cast.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/imperial-charge.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-charge.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/imperial-fallen.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-fallen.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/imperial-idle.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-idle.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/imperial-support-broken.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-support-broken.png",
+    "width": 96,
+    "height": 160
+  },
+  "art/vector/chapter-six/imperial-support.svg": {
+    "url": "art/raster-actors/chapter-six/imperial-support.png",
+    "width": 96,
+    "height": 160
+  },
+  "art/vector/chapter-six/lightbearer-cast.svg": {
+    "url": "art/raster-actors/chapter-six/lightbearer-cast.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/lightbearer-idle.svg": {
+    "url": "art/raster-actors/chapter-six/lightbearer-idle.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/lightbearer-resist.svg": {
+    "url": "art/raster-actors/chapter-six/lightbearer-resist.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/lightbearer-rise.svg": {
+    "url": "art/raster-actors/chapter-six/lightbearer-rise.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/chapter-six/serpent-east.svg": {
+    "url": "art/raster-actors/chapter-six/serpent-east.png",
+    "width": 128,
+    "height": 112
+  },
+  "art/vector/chapter-six/serpent-fire.svg": {
+    "url": "art/raster-actors/chapter-six/serpent-fire.png",
+    "width": 296,
+    "height": 244
+  },
+  "art/vector/chapter-six/serpent-head.svg": {
+    "url": "art/raster-actors/chapter-six/serpent-head.png",
+    "width": 296,
+    "height": 244
+  },
+  "art/vector/chapter-six/serpent-inhale.svg": {
+    "url": "art/raster-actors/chapter-six/serpent-inhale.png",
+    "width": 296,
+    "height": 244
+  },
+  "art/vector/chapter-six/serpent-west.svg": {
+    "url": "art/raster-actors/chapter-six/serpent-west.png",
+    "width": 128,
+    "height": 112
+  },
+  "art/vector/chapter-six/winter-dragon.svg": {
+    "url": "art/raster-actors/chapter-six/winter-dragon.png",
+    "width": 528,
+    "height": 280
+  },
+  "art/vector/civilian-dockhand-rust.svg": {
+    "url": "art/raster-actors/civilian-dockhand-rust.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-dockhand.svg": {
+    "url": "art/raster-actors/civilian-dockhand.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-family-blue.svg": {
+    "url": "art/raster-actors/civilian-family-blue.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-family-plum.svg": {
+    "url": "art/raster-actors/civilian-family-plum.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-family.svg": {
+    "url": "art/raster-actors/civilian-family.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-patient-green.svg": {
+    "url": "art/raster-actors/civilian-patient-green.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-patient.svg": {
+    "url": "art/raster-actors/civilian-patient.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-traveler-blue.svg": {
+    "url": "art/raster-actors/civilian-traveler-blue.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/civilian-traveler.svg": {
+    "url": "art/raster-actors/civilian-traveler.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/clerk.svg": {
+    "url": "art/raster-actors/clerk.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-copper.svg": {
+    "url": "art/raster-actors/crow-copper.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-crown.svg": {
+    "url": "art/raster-actors/crow-crown.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-dusk.svg": {
+    "url": "art/raster-actors/crow-dusk.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-fern.svg": {
+    "url": "art/raster-actors/crow-fern.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-forge.svg": {
+    "url": "art/raster-actors/crow-forge.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-frost.svg": {
+    "url": "art/raster-actors/crow-frost.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-gilded.svg": {
+    "url": "art/raster-actors/crow-gilded.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-solar.svg": {
+    "url": "art/raster-actors/crow-solar.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow-sun.svg": {
+    "url": "art/raster-actors/crow-sun.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/crow.svg": {
+    "url": "art/raster-actors/crow.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/dawn-gunner.svg": {
+    "url": "art/raster-actors/dawn-gunner.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/dawn-soldier.svg": {
+    "url": "art/raster-actors/dawn-soldier.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/dena.svg": {
+    "url": "art/raster-actors/dena.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/durn.svg": {
+    "url": "art/raster-actors/durn.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/edric.svg": {
+    "url": "art/raster-actors/edric.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/egil.svg": {
+    "url": "art/raster-actors/egil.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/elspeth.svg": {
+    "url": "art/raster-actors/elspeth.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/emperor-left-step-0.svg": {
+    "url": "art/raster-actors/emperor-left-step-0.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/emperor-left-step-1.svg": {
+    "url": "art/raster-actors/emperor-left-step-1.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/emperor-left.svg": {
+    "url": "art/raster-actors/emperor-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/emperor-reach.svg": {
+    "url": "art/raster-actors/emperor-reach.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/emperor.svg": {
+    "url": "art/raster-actors/emperor.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/enna.svg": {
+    "url": "art/raster-actors/enna.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/flagship-crew.svg": {
+    "url": "art/raster-actors/flagship-crew.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/flagship-marine.svg": {
+    "url": "art/raster-actors/flagship-marine.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/furnace-carrier.svg": {
+    "url": "art/raster-actors/furnace-carrier.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/glasswing.svg": {
+    "url": "art/raster-actors/glasswing.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-crown.svg": {
+    "url": "art/raster-actors/guardian-crown.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-dusk.svg": {
+    "url": "art/raster-actors/guardian-dusk.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-fern.svg": {
+    "url": "art/raster-actors/guardian-fern.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-forge.svg": {
+    "url": "art/raster-actors/guardian-forge.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-frost.svg": {
+    "url": "art/raster-actors/guardian-frost.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-gilded.svg": {
+    "url": "art/raster-actors/guardian-gilded.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-iron.svg": {
+    "url": "art/raster-actors/guardian-iron.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-solar.svg": {
+    "url": "art/raster-actors/guardian-solar.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian-sun.svg": {
+    "url": "art/raster-actors/guardian-sun.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/guardian.svg": {
+    "url": "art/raster-actors/guardian.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/herald.svg": {
+    "url": "art/raster-actors/herald.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hester.svg": {
+    "url": "art/raster-actors/hester.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-crown.svg": {
+    "url": "art/raster-actors/hound-crown.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-dusk.svg": {
+    "url": "art/raster-actors/hound-dusk.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-fern.svg": {
+    "url": "art/raster-actors/hound-fern.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-forge.svg": {
+    "url": "art/raster-actors/hound-forge.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-frost.svg": {
+    "url": "art/raster-actors/hound-frost.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-gilded.svg": {
+    "url": "art/raster-actors/hound-gilded.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-solar.svg": {
+    "url": "art/raster-actors/hound-solar.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-steel.svg": {
+    "url": "art/raster-actors/hound-steel.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound-sun.svg": {
+    "url": "art/raster-actors/hound-sun.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/hound.svg": {
+    "url": "art/raster-actors/hound.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/ines.svg": {
+    "url": "art/raster-actors/ines.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/inspector.svg": {
+    "url": "art/raster-actors/inspector.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/iven.svg": {
+    "url": "art/raster-actors/iven.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit-back.svg": {
+    "url": "art/raster-actors/kit-back.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit-carry.svg": {
+    "url": "art/raster-actors/kit-carry.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit-left.svg": {
+    "url": "art/raster-actors/kit-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit-rest.svg": {
+    "url": "art/raster-actors/kit-rest.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit-right.svg": {
+    "url": "art/raster-actors/kit-right.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/kit.svg": {
+    "url": "art/raster-actors/kit.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/master.svg": {
+    "url": "art/raster-actors/master.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/namar-watch.svg": {
+    "url": "art/raster-actors/namar-watch.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-back.svg": {
+    "url": "art/raster-actors/nell-back.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-bed.svg": {
+    "url": "art/raster-actors/nell-bed.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-faint.svg": {
+    "url": "art/raster-actors/nell-faint.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-ill.svg": {
+    "url": "art/raster-actors/nell-ill.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-left.svg": {
+    "url": "art/raster-actors/nell-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-rest.svg": {
+    "url": "art/raster-actors/nell-rest.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell-right.svg": {
+    "url": "art/raster-actors/nell-right.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/nell.svg": {
+    "url": "art/raster-actors/nell.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/orrin-back.svg": {
+    "url": "art/raster-actors/orrin-back.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/orrin-left.svg": {
+    "url": "art/raster-actors/orrin-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/orrin-right.svg": {
+    "url": "art/raster-actors/orrin-right.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/orrin.svg": {
+    "url": "art/raster-actors/orrin.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/pair-hands.svg": {
+    "url": "art/raster-actors/pair-hands.png",
+    "width": 128,
+    "height": 80
+  },
+  "art/vector/pair-hug.svg": {
+    "url": "art/raster-actors/pair-hug.png",
+    "width": 104,
+    "height": 80
+  },
+  "art/vector/petra-back.svg": {
+    "url": "art/raster-actors/petra-back.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/petra-carry.svg": {
+    "url": "art/raster-actors/petra-carry.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/petra-left.svg": {
+    "url": "art/raster-actors/petra-left.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/petra-right.svg": {
+    "url": "art/raster-actors/petra-right.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/petra.svg": {
+    "url": "art/raster-actors/petra.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/relay-keeper.svg": {
+    "url": "art/raster-actors/relay-keeper.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/rock.svg": {
+    "url": "art/raster-actors/rock.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/sahir.svg": {
+    "url": "art/raster-actors/sahir.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/samira.svg": {
+    "url": "art/raster-actors/samira.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/sera.svg": {
+    "url": "art/raster-actors/sera.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/signe.svg": {
+    "url": "art/raster-actors/signe.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/sluice-keeper.svg": {
+    "url": "art/raster-actors/sluice-keeper.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/tavi.svg": {
+    "url": "art/raster-actors/tavi.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/teren.svg": {
+    "url": "art/raster-actors/teren.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/tilda.svg": {
+    "url": "art/raster-actors/tilda.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/tomas.svg": {
+    "url": "art/raster-actors/tomas.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/treatment-cot.svg": {
+    "url": "art/raster-actors/treatment-cot.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/ward-engine.svg": {
+    "url": "art/raster-actors/ward-engine.png",
+    "width": 80,
+    "height": 80
+  },
+  "art/vector/ward-reflector.svg": {
+    "url": "art/raster-actors/ward-reflector.png",
+    "width": 80,
+    "height": 80
+  }
+}

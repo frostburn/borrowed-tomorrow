@@ -6,11 +6,11 @@ import type { CompanionId } from '../rules/party';
 import { WARD_ID,wardUnit,wardMirrors,prepareWard } from '../rules/ward';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { drawTileMap } from './tilemap';
-import { nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
 import { newGame } from '../rules/state';
 const textureKey='ward-engine-battle';
 export const WARD_ASSETS=[{key:textureKey,url:'art/vector/chapter-five/ward-engine-battle.svg'}];
-let mask:Uint8Array|undefined;
+const masks=new BossMaskCache<Uint8Array>();
 export function wardPresentation(encounter:Encounter):BattlePresentation{
  let source:Hex|undefined;
  return {
@@ -24,7 +24,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
   actor(scene,u,_hp,hex){
    if(u.id!==WARD_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
-   if(!mask){const rgba=surface.getContext('2d')!.getImageData(0,0,256,240).data;mask=Uint8Array.from({length:256*240},(_,p)=>rgba[p*4+3]);}
+   if(!masks.has(textureKey)){const rgba=surface.getContext('2d')!.getImageData(0,0,256,240).data;masks.set(textureKey,Uint8Array.from({length:256*240},(_,p)=>rgba[p*4+3]));}
    const p=bossPlacement({...u,hex});return scene.add.image(p.x,p.y,textureKey).setOrigin(.5,1);
   },
   // Capture the fired mirror before enemyTurn can roll into a new announcement.
@@ -51,6 +51,6 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
     if(lit)g.lineStyle(3,0xf3df9c,.8).strokeEllipse(p.x,p.y-25,70,72);
    }
   },
-  pick:(b,action,x,y)=>pickBossBody(b,action,x,y,wardUnit(b)!,256,240,mask),
+  pick:(b,action,x,y)=>pickBossBody(b,action,x,y,wardUnit(b)!,256,240,masks.get(textureKey)),
  };
 }

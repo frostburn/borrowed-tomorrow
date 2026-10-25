@@ -55,11 +55,14 @@ test('@journey the finale preset defeats both attack phases through ordinary com
   }
   throw new Error('The finale preset did not win within the action budget.');
 });
-/** Compare native SVG chest pixels with the common 2px physical framebuffer. */
+/** Compare the selected skin's native chest pixels with the shared framebuffer. */
 async function nativeBoss(page:Page,portrait:string){
   await expect.poll(()=>page.evaluate(async portrait=>{
     const canvas=document.createElement('canvas');canvas.width=360;canvas.height=288;const ctx=canvas.getContext('2d')!;
-    const img=new Image();img.src=new URL('benefactor.svg',new URL(portrait,location.href)).href;await img.decode();ctx.drawImage(img,0,0);
+    const raster=localStorage.getItem('borrowed-tomorrow-actor-art')!=='vector',img=new Image();
+    img.src=raster?new URL('/art/raster-actors/benefactor/benefactor-motion.png',location.href).href:new URL('benefactor.svg',new URL(portrait,location.href)).href;
+    await img.decode();ctx.imageSmoothingEnabled=false;
+    if(raster)ctx.drawImage(img,0,0,180,144,0,0,360,288);else ctx.drawImage(img,0,0);
     const expected=ctx.getImageData(0,0,360,288).data,view=window.borrowedTomorrow.inspect().view,info=window.borrowedTomorrowPixels.inspect();
     const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect(),output=document.querySelector<HTMLCanvasElement>('.pixel-output')!;
     const actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;

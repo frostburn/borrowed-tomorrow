@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
 import { enemyTurn,type Encounter } from '../rules/combat';
-import { nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
 import { bossMotionEnabled } from './boss-motion';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
@@ -12,7 +12,7 @@ import { drawTileMap } from './tilemap';
 import { newGame } from '../rules/state';
 export const DRAGON_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/chapter-six/dragon-portrait.svg`;
 export const DRAGON_ASSETS=['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
-const masks=new Map<string,Uint8Array>();
+const masks=new BossMaskCache<Uint8Array>();
 export function winterDragonPresentation(encounter:Encounter):BattlePresentation{
  let texture='winter-dragon',attackPose='dragon-inhale';
  return {

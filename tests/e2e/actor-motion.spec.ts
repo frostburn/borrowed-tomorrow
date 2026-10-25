@@ -79,6 +79,7 @@ for(const reduced of [false,true])test(`Celia casts once, restores her book pose
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
   test(`sprite workshop plays, pauses and steps native motion frames on ${device}`,async({page})=>{
+    await page.addInitScript(()=>localStorage.setItem('borrowed-tomorrow-actor-art','vector'));
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/?dev=sprites');
     await expect(page).toHaveURL(/dev=sprites/);await expect(page).toHaveTitle(/Borrowed Tomorrow/);
     await expect(page.locator('vite-error-overlay')).toHaveCount(0);
@@ -115,7 +116,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
           if(frame==='idle')ctx.drawImage(native,0,0,240,240);else{const f=Number(frame);ctx.drawImage(native,f%2*80,Math.floor(f/2)*80,80,80,0,0,240,240);}
           const actual=(canvas as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data,expected=ctx.getImageData(0,0,240,240).data;
           return actual.reduce((n,v,i)=>n+Number(v!==expected[i]),0);
-        },{idleUrl:`/${artPath(hero+'-right')}`,motionUrl:`/${artPath('animation/'+hero+'-right')}`})).toBe(0);
+        },{idleUrl:`/${artPath(hero+'-right','vector')}`,motionUrl:`/${artPath('animation/'+hero+'-right','vector')}`})).toBe(0);
       }
       expect(seen).toEqual(motion==='Walk'?new Set(['0','1','2','3','4','5']):new Set(hero==='nell'?['6','7','8','idle']:motion==='Bash'?['8','9','idle']:[String(ATTACK_WINDUP_FRAME),String(ATTACK_CONTACT_FRAME),'idle']));
       if(hero==='nell'||hero==='orrin')await capture(page,`${hero}-vector-native-${device}`);

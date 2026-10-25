@@ -1,0 +1,3172 @@
+{
+  "sources": [
+    {
+      "name": "nell",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        0,
+        0,
+        280,
+        280
+      ],
+      "alphaCrop": [
+        63,
+        24,
+        198,
+        258
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        36,
+        62
+      ]
+    },
+    {
+      "name": "nell-left",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        280,
+        0,
+        561,
+        280
+      ],
+      "alphaCrop": [
+        83,
+        23,
+        187,
+        258
+      ],
+      "registeredAt": [
+        25,
+        6
+      ],
+      "registeredSize": [
+        27,
+        62
+      ]
+    },
+    {
+      "name": "nell-right",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        561,
+        0,
+        842,
+        280
+      ],
+      "alphaCrop": [
+        83,
+        24,
+        189,
+        258
+      ],
+      "registeredAt": [
+        31,
+        6
+      ],
+      "registeredSize": [
+        28,
+        62
+      ]
+    },
+    {
+      "name": "nell-back",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        842,
+        0,
+        1122,
+        280
+      ],
+      "alphaCrop": [
+        69,
+        23,
+        213,
+        258
+      ],
+      "registeredAt": [
+        24,
+        6
+      ],
+      "registeredSize": [
+        38,
+        62
+      ]
+    },
+    {
+      "name": "orrin",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        0,
+        280,
+        280,
+        561
+      ],
+      "alphaCrop": [
+        32,
+        18,
+        219,
+        265
+      ],
+      "registeredAt": [
+        12,
+        6
+      ],
+      "registeredSize": [
+        47,
+        62
+      ]
+    },
+    {
+      "name": "orrin-left",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        280,
+        280,
+        561,
+        561
+      ],
+      "alphaCrop": [
+        32,
+        19,
+        197,
+        265
+      ],
+      "registeredAt": [
+        11,
+        6
+      ],
+      "registeredSize": [
+        42,
+        62
+      ]
+    },
+    {
+      "name": "orrin-right",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        561,
+        280,
+        842,
+        561
+      ],
+      "alphaCrop": [
+        83,
+        19,
+        248,
+        265
+      ],
+      "registeredAt": [
+        31,
+        6
+      ],
+      "registeredSize": [
+        42,
+        62
+      ]
+    },
+    {
+      "name": "orrin-back",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        842,
+        280,
+        1122,
+        561
+      ],
+      "alphaCrop": [
+        57,
+        18,
+        248,
+        265
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        48,
+        62
+      ]
+    },
+    {
+      "name": "kit",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        0,
+        561,
+        280,
+        841
+      ],
+      "alphaCrop": [
+        24,
+        7,
+        211,
+        265
+      ],
+      "registeredAt": [
+        9,
+        3
+      ],
+      "registeredSize": [
+        47,
+        65
+      ]
+    },
+    {
+      "name": "kit-left",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        280,
+        561,
+        561,
+        841
+      ],
+      "alphaCrop": [
+        48,
+        9,
+        200,
+        263
+      ],
+      "registeredAt": [
+        14,
+        3
+      ],
+      "registeredSize": [
+        39,
+        65
+      ]
+    },
+    {
+      "name": "kit-right",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        561,
+        561,
+        842,
+        841
+      ],
+      "alphaCrop": [
+        83,
+        8,
+        241,
+        263
+      ],
+      "registeredAt": [
+        30,
+        3
+      ],
+      "registeredSize": [
+        40,
+        65
+      ]
+    },
+    {
+      "name": "kit-back",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        842,
+        561,
+        1122,
+        841
+      ],
+      "alphaCrop": [
+        78,
+        10,
+        257,
+        263
+      ],
+      "registeredAt": [
+        26,
+        3
+      ],
+      "registeredSize": [
+        46,
+        65
+      ]
+    },
+    {
+      "name": "celia",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        0,
+        841,
+        280,
+        1122
+      ],
+      "alphaCrop": [
+        70,
+        14,
+        212,
+        260
+      ],
+      "registeredAt": [
+        20,
+        4
+      ],
+      "registeredSize": [
+        37,
+        64
+      ]
+    },
+    {
+      "name": "celia-left",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        280,
+        841,
+        561,
+        1122
+      ],
+      "alphaCrop": [
+        92,
+        14,
+        200,
+        260
+      ],
+      "registeredAt": [
+        25,
+        5
+      ],
+      "registeredSize": [
+        28,
+        63
+      ]
+    },
+    {
+      "name": "celia-right",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        561,
+        841,
+        842,
+        1122
+      ],
+      "alphaCrop": [
+        77,
+        14,
+        180,
+        260
+      ],
+      "registeredAt": [
+        26,
+        4
+      ],
+      "registeredSize": [
+        27,
+        64
+      ]
+    },
+    {
+      "name": "celia-back",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        842,
+        841,
+        1122,
+        1122
+      ],
+      "alphaCrop": [
+        72,
+        14,
+        204,
+        260
+      ],
+      "registeredAt": [
+        22,
+        4
+      ],
+      "registeredSize": [
+        34,
+        64
+      ]
+    },
+    {
+      "name": "petra",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        0,
+        1122,
+        280,
+        1402
+      ],
+      "alphaCrop": [
+        56,
+        0,
+        224,
+        260
+      ],
+      "registeredAt": [
+        22,
+        5
+      ],
+      "registeredSize": [
+        41,
+        63
+      ]
+    },
+    {
+      "name": "petra-left",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        280,
+        1122,
+        561,
+        1402
+      ],
+      "alphaCrop": [
+        62,
+        0,
+        209,
+        260
+      ],
+      "registeredAt": [
+        24,
+        5
+      ],
+      "registeredSize": [
+        36,
+        63
+      ]
+    },
+    {
+      "name": "petra-right",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        561,
+        1122,
+        842,
+        1402
+      ],
+      "alphaCrop": [
+        69,
+        0,
+        216,
+        258
+      ],
+      "registeredAt": [
+        23,
+        5
+      ],
+      "registeredSize": [
+        36,
+        63
+      ]
+    },
+    {
+      "name": "petra-back",
+      "sourceSha256": "6690913e03f441e750f5ffa0bb2cffe18a6a3aa751ab188899465e02007cf416",
+      "cell": [
+        842,
+        1122,
+        1122,
+        1402
+      ],
+      "alphaCrop": [
+        61,
+        0,
+        247,
+        258
+      ],
+      "registeredAt": [
+        20,
+        5
+      ],
+      "registeredSize": [
+        45,
+        63
+      ]
+    },
+    {
+      "name": "master",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        0,
+        209,
+        209
+      ],
+      "alphaCrop": [
+        48,
+        21,
+        167,
+        206
+      ],
+      "registeredAt": [
+        20,
+        8
+      ],
+      "registeredSize": [
+        39,
+        60
+      ]
+    },
+    {
+      "name": "clerk",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        0,
+        418,
+        209
+      ],
+      "alphaCrop": [
+        57,
+        21,
+        153,
+        205
+      ],
+      "registeredAt": [
+        24,
+        6
+      ],
+      "registeredSize": [
+        32,
+        62
+      ]
+    },
+    {
+      "name": "tomas",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        0,
+        627,
+        209
+      ],
+      "alphaCrop": [
+        49,
+        21,
+        159,
+        206
+      ],
+      "registeredAt": [
+        22,
+        8
+      ],
+      "registeredSize": [
+        36,
+        60
+      ]
+    },
+    {
+      "name": "alban",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        627,
+        0,
+        836,
+        209
+      ],
+      "alphaCrop": [
+        36,
+        21,
+        162,
+        206
+      ],
+      "registeredAt": [
+        16,
+        8
+      ],
+      "registeredSize": [
+        41,
+        60
+      ]
+    },
+    {
+      "name": "tilda",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        836,
+        0,
+        1045,
+        209
+      ],
+      "alphaCrop": [
+        57,
+        24,
+        153,
+        206
+      ],
+      "registeredAt": [
+        24,
+        6
+      ],
+      "registeredSize": [
+        33,
+        62
+      ]
+    },
+    {
+      "name": "elspeth",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        0,
+        1254,
+        209
+      ],
+      "alphaCrop": [
+        32,
+        37,
+        176,
+        207
+      ],
+      "registeredAt": [
+        14,
+        8
+      ],
+      "registeredSize": [
+        51,
+        60
+      ]
+    },
+    {
+      "name": "dena",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        209,
+        209,
+        418
+      ],
+      "alphaCrop": [
+        60,
+        22,
+        159,
+        209
+      ],
+      "registeredAt": [
+        22,
+        3
+      ],
+      "registeredSize": [
+        34,
+        65
+      ]
+    },
+    {
+      "name": "bram",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        209,
+        418,
+        418
+      ],
+      "alphaCrop": [
+        29,
+        19,
+        176,
+        209
+      ],
+      "registeredAt": [
+        12,
+        5
+      ],
+      "registeredSize": [
+        49,
+        63
+      ]
+    },
+    {
+      "name": "alda",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        209,
+        627,
+        418
+      ],
+      "alphaCrop": [
+        46,
+        18,
+        167,
+        209
+      ],
+      "registeredAt": [
+        19,
+        5
+      ],
+      "registeredSize": [
+        40,
+        63
+      ]
+    },
+    {
+      "name": "hester",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        627,
+        209,
+        836,
+        418
+      ],
+      "alphaCrop": [
+        33,
+        22,
+        175,
+        209
+      ],
+      "registeredAt": [
+        18,
+        6
+      ],
+      "registeredSize": [
+        47,
+        62
+      ]
+    },
+    {
+      "name": "durn",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        836,
+        209,
+        1045,
+        418
+      ],
+      "alphaCrop": [
+        36,
+        20,
+        163,
+        209
+      ],
+      "registeredAt": [
+        18,
+        6
+      ],
+      "registeredSize": [
+        42,
+        62
+      ]
+    },
+    {
+      "name": "aurel",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        209,
+        1254,
+        418
+      ],
+      "alphaCrop": [
+        33,
+        27,
+        167,
+        209
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        46,
+        62
+      ]
+    },
+    {
+      "name": "enna",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        418,
+        209,
+        627
+      ],
+      "alphaCrop": [
+        41,
+        23,
+        175,
+        208
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        45,
+        62
+      ]
+    },
+    {
+      "name": "iven",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        418,
+        418,
+        627
+      ],
+      "alphaCrop": [
+        45,
+        23,
+        173,
+        208
+      ],
+      "registeredAt": [
+        18,
+        6
+      ],
+      "registeredSize": [
+        43,
+        62
+      ]
+    },
+    {
+      "name": "sera",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        418,
+        627,
+        627
+      ],
+      "alphaCrop": [
+        46,
+        25,
+        167,
+        208
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        41,
+        62
+      ]
+    },
+    {
+      "name": "teren",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        627,
+        418,
+        836,
+        627
+      ],
+      "alphaCrop": [
+        36,
+        21,
+        159,
+        208
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        41,
+        62
+      ]
+    },
+    {
+      "name": "samira",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        955,
+        927,
+        1273,
+        1236
+      ],
+      "alphaCrop": [
+        99,
+        23,
+        277,
+        262
+      ],
+      "registeredAt": [
+        16,
+        7
+      ],
+      "registeredSize": [
+        45,
+        61
+      ]
+    },
+    {
+      "name": "sahir",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        418,
+        1254,
+        627
+      ],
+      "alphaCrop": [
+        35,
+        24,
+        169,
+        208
+      ],
+      "registeredAt": [
+        17,
+        5
+      ],
+      "registeredSize": [
+        46,
+        63
+      ]
+    },
+    {
+      "name": "amal",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        627,
+        209,
+        836
+      ],
+      "alphaCrop": [
+        50,
+        18,
+        175,
+        204
+      ],
+      "registeredAt": [
+        18,
+        5
+      ],
+      "registeredSize": [
+        42,
+        63
+      ]
+    },
+    {
+      "name": "ines",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        627,
+        418,
+        836
+      ],
+      "alphaCrop": [
+        43,
+        22,
+        174,
+        204
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        45,
+        62
+      ]
+    },
+    {
+      "name": "tavi",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        627,
+        627,
+        836
+      ],
+      "alphaCrop": [
+        31,
+        16,
+        170,
+        204
+      ],
+      "registeredAt": [
+        14,
+        6
+      ],
+      "registeredSize": [
+        46,
+        62
+      ]
+    },
+    {
+      "name": "edric",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        636,
+        927,
+        955,
+        1236
+      ],
+      "alphaCrop": [
+        88,
+        14,
+        264,
+        259
+      ],
+      "registeredAt": [
+        17,
+        4
+      ],
+      "registeredSize": [
+        46,
+        64
+      ]
+    },
+    {
+      "name": "signe",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        836,
+        627,
+        1045,
+        836
+      ],
+      "alphaCrop": [
+        37,
+        18,
+        170,
+        204
+      ],
+      "registeredAt": [
+        17,
+        6
+      ],
+      "registeredSize": [
+        44,
+        62
+      ]
+    },
+    {
+      "name": "egil",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        627,
+        1254,
+        836
+      ],
+      "alphaCrop": [
+        40,
+        18,
+        171,
+        204
+      ],
+      "registeredAt": [
+        18,
+        4
+      ],
+      "registeredSize": [
+        45,
+        64
+      ]
+    },
+    {
+      "name": "emperor",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        836,
+        209,
+        1045
+      ],
+      "alphaCrop": [
+        43,
+        9,
+        177,
+        190
+      ],
+      "registeredAt": [
+        16,
+        5
+      ],
+      "registeredSize": [
+        47,
+        63
+      ]
+    },
+    {
+      "name": "namar-watch",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        836,
+        418,
+        1045
+      ],
+      "alphaCrop": [
+        40,
+        11,
+        177,
+        191
+      ],
+      "registeredAt": [
+        14,
+        5
+      ],
+      "registeredSize": [
+        48,
+        63
+      ]
+    },
+    {
+      "name": "dawn-soldier",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        836,
+        627,
+        1045
+      ],
+      "alphaCrop": [
+        36,
+        11,
+        174,
+        191
+      ],
+      "registeredAt": [
+        14,
+        5
+      ],
+      "registeredSize": [
+        48,
+        63
+      ]
+    },
+    {
+      "name": "dawn-gunner",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        627,
+        836,
+        836,
+        1045
+      ],
+      "alphaCrop": [
+        37,
+        13,
+        169,
+        191
+      ],
+      "registeredAt": [
+        16,
+        5
+      ],
+      "registeredSize": [
+        47,
+        63
+      ]
+    },
+    {
+      "name": "flagship-marine",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        836,
+        836,
+        1045,
+        1045
+      ],
+      "alphaCrop": [
+        39,
+        14,
+        175,
+        191
+      ],
+      "registeredAt": [
+        18,
+        9
+      ],
+      "registeredSize": [
+        48,
+        63
+      ]
+    },
+    {
+      "name": "flagship-crew",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        836,
+        1254,
+        1045
+      ],
+      "alphaCrop": [
+        40,
+        18,
+        155,
+        191
+      ],
+      "registeredAt": [
+        18,
+        9
+      ],
+      "registeredSize": [
+        42,
+        63
+      ]
+    },
+    {
+      "name": "civilian-dockhand",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        0,
+        1045,
+        209,
+        1254
+      ],
+      "alphaCrop": [
+        48,
+        1,
+        159,
+        180
+      ],
+      "registeredAt": [
+        19,
+        4
+      ],
+      "registeredSize": [
+        40,
+        64
+      ]
+    },
+    {
+      "name": "civilian-traveler",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        209,
+        1045,
+        418,
+        1254
+      ],
+      "alphaCrop": [
+        49,
+        2,
+        161,
+        181
+      ],
+      "registeredAt": [
+        20,
+        5
+      ],
+      "registeredSize": [
+        39,
+        63
+      ]
+    },
+    {
+      "name": "civilian-family",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        418,
+        1045,
+        627,
+        1254
+      ],
+      "alphaCrop": [
+        38,
+        1,
+        168,
+        181
+      ],
+      "registeredAt": [
+        22,
+        7
+      ],
+      "registeredSize": [
+        44,
+        61
+      ]
+    },
+    {
+      "name": "civilian-patient",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        627,
+        1045,
+        836,
+        1254
+      ],
+      "alphaCrop": [
+        45,
+        6,
+        159,
+        181
+      ],
+      "registeredAt": [
+        18,
+        5
+      ],
+      "registeredSize": [
+        41,
+        63
+      ]
+    },
+    {
+      "name": "herald",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        836,
+        1045,
+        1045,
+        1254
+      ],
+      "alphaCrop": [
+        26,
+        13,
+        172,
+        180
+      ],
+      "registeredAt": [
+        10,
+        8
+      ],
+      "registeredSize": [
+        53,
+        61
+      ]
+    },
+    {
+      "name": "glasswing",
+      "sourceSha256": "8cbc0ca53e1323d19e6c3c320a32fab59a96f38f7ea2f0c8b804a1cac6769b19",
+      "cell": [
+        1045,
+        1045,
+        1254,
+        1254
+      ],
+      "alphaCrop": [
+        8,
+        15,
+        193,
+        164
+      ],
+      "registeredAt": [
+        6,
+        8
+      ],
+      "registeredSize": [
+        68,
+        55
+      ]
+    },
+    {
+      "name": "hound",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "alphaCrop": [
+        47,
+        69,
+        322,
+        319
+      ],
+      "registeredAt": [
+        10,
+        15
+      ],
+      "registeredSize": [
+        58,
+        53
+      ]
+    },
+    {
+      "name": "crow",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        362,
+        0,
+        724,
+        362
+      ],
+      "alphaCrop": [
+        67,
+        115,
+        320,
+        322
+      ],
+      "registeredAt": [
+        18,
+        26
+      ],
+      "registeredSize": [
+        51,
+        42
+      ]
+    },
+    {
+      "name": "guardian",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        724,
+        0,
+        1086,
+        362
+      ],
+      "alphaCrop": [
+        40,
+        41,
+        322,
+        319
+      ],
+      "registeredAt": [
+        8,
+        8
+      ],
+      "registeredSize": [
+        61,
+        60
+      ]
+    },
+    {
+      "name": "inspector",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        1086,
+        0,
+        1448,
+        362
+      ],
+      "alphaCrop": [
+        111,
+        28,
+        304,
+        322
+      ],
+      "registeredAt": [
+        18,
+        3
+      ],
+      "registeredSize": [
+        43,
+        65
+      ]
+    },
+    {
+      "name": "relay-keeper",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        0,
+        362,
+        362,
+        724
+      ],
+      "alphaCrop": [
+        64,
+        16,
+        348,
+        310
+      ],
+      "registeredAt": [
+        14,
+        3
+      ],
+      "registeredSize": [
+        63,
+        65
+      ]
+    },
+    {
+      "name": "boiler-keeper",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        362,
+        362,
+        724,
+        724
+      ],
+      "alphaCrop": [
+        43,
+        11,
+        331,
+        306
+      ],
+      "registeredAt": [
+        10,
+        6
+      ],
+      "registeredSize": [
+        61,
+        62
+      ]
+    },
+    {
+      "name": "sluice-keeper",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        724,
+        362,
+        1086,
+        724
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        312,
+        309
+      ],
+      "registeredAt": [
+        10,
+        5
+      ],
+      "registeredSize": [
+        54,
+        63
+      ]
+    },
+    {
+      "name": "ward-engine",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        1086,
+        362,
+        1448,
+        724
+      ],
+      "alphaCrop": [
+        51,
+        0,
+        324,
+        306
+      ],
+      "registeredAt": [
+        11,
+        2
+      ],
+      "registeredSize": [
+        57,
+        64
+      ]
+    },
+    {
+      "name": "furnace-carrier",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        0,
+        724,
+        362,
+        1086
+      ],
+      "alphaCrop": [
+        24,
+        39,
+        348,
+        276
+      ],
+      "registeredAt": [
+        4,
+        14
+      ],
+      "registeredSize": [
+        74,
+        54
+      ]
+    },
+    {
+      "name": "benefactor",
+      "sourceSha256": "0af505f396865b1b426420c290f1e6e81e31f3546c0c9452c10c3fc97cceb31b",
+      "cell": [
+        362,
+        724,
+        724,
+        1086
+      ],
+      "alphaCrop": [
+        6,
+        0,
+        362,
+        317
+      ],
+      "registeredAt": [
+        5,
+        9
+      ],
+      "registeredSize": [
+        70,
+        62
+      ]
+    },
+    {
+      "name": "emperor-left",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        636,
+        618,
+        955,
+        927
+      ],
+      "alphaCrop": [
+        121,
+        29,
+        283,
+        260
+      ],
+      "registeredAt": [
+        19,
+        5
+      ],
+      "registeredSize": [
+        44,
+        63
+      ]
+    },
+    {
+      "name": "nell-ill",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        0,
+        0,
+        318,
+        309
+      ],
+      "alphaCrop": [
+        43,
+        123,
+        290,
+        220
+      ],
+      "registeredAt": [
+        -2,
+        31
+      ],
+      "registeredSize": [
+        79,
+        31
+      ]
+    },
+    {
+      "name": "nell-faint",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        318,
+        0,
+        636,
+        309
+      ],
+      "alphaCrop": [
+        54,
+        133,
+        280,
+        220
+      ],
+      "registeredAt": [
+        -6,
+        31
+      ],
+      "registeredSize": [
+        81,
+        31
+      ]
+    },
+    {
+      "name": "nell-bed",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        636,
+        0,
+        955,
+        309
+      ],
+      "alphaCrop": [
+        33,
+        123,
+        307,
+        252
+      ],
+      "registeredAt": [
+        -10,
+        29
+      ],
+      "registeredSize": [
+        98,
+        46
+      ]
+    },
+    {
+      "name": "nell-rest",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        955,
+        0,
+        1273,
+        309
+      ],
+      "alphaCrop": [
+        93,
+        26,
+        266,
+        258
+      ],
+      "registeredAt": [
+        10,
+        6
+      ],
+      "registeredSize": [
+        46,
+        62
+      ]
+    },
+    {
+      "name": "kit-rest",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        0,
+        309,
+        318,
+        618
+      ],
+      "alphaCrop": [
+        112,
+        18,
+        224,
+        258
+      ],
+      "registeredAt": [
+        24,
+        3
+      ],
+      "registeredSize": [
+        30,
+        65
+      ]
+    },
+    {
+      "name": "kit-carry",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        318,
+        309,
+        636,
+        618
+      ],
+      "alphaCrop": [
+        123,
+        19,
+        243,
+        257
+      ],
+      "registeredAt": [
+        26,
+        3
+      ],
+      "registeredSize": [
+        33,
+        65
+      ]
+    },
+    {
+      "name": "petra-carry",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        636,
+        309,
+        955,
+        618
+      ],
+      "alphaCrop": [
+        126,
+        28,
+        247,
+        258
+      ],
+      "registeredAt": [
+        24,
+        5
+      ],
+      "registeredSize": [
+        33,
+        63
+      ]
+    },
+    {
+      "name": "pair-hug",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        955,
+        309,
+        1273,
+        618
+      ],
+      "alphaCrop": [
+        70,
+        19,
+        266,
+        259
+      ],
+      "registeredAt": [
+        16,
+        3
+      ],
+      "registeredSize": [
+        53,
+        65
+      ]
+    },
+    {
+      "name": "pair-hands",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        0,
+        618,
+        318,
+        927
+      ],
+      "alphaCrop": [
+        27,
+        41,
+        306,
+        261
+      ],
+      "registeredAt": [
+        16,
+        3
+      ],
+      "registeredSize": [
+        82,
+        65
+      ]
+    },
+    {
+      "name": "alban-command",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        318,
+        618,
+        636,
+        927
+      ],
+      "alphaCrop": [
+        116,
+        31,
+        299,
+        260
+      ],
+      "registeredAt": [
+        16,
+        8
+      ],
+      "registeredSize": [
+        48,
+        60
+      ]
+    },
+    {
+      "name": "emperor-left-step-0",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        955,
+        618,
+        1273,
+        927
+      ],
+      "alphaCrop": [
+        106,
+        31,
+        285,
+        261
+      ],
+      "registeredAt": [
+        16,
+        5
+      ],
+      "registeredSize": [
+        49,
+        63
+      ]
+    },
+    {
+      "name": "emperor-left-step-1",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        0,
+        927,
+        318,
+        1236
+      ],
+      "alphaCrop": [
+        94,
+        21,
+        263,
+        260
+      ],
+      "registeredAt": [
+        19,
+        5
+      ],
+      "registeredSize": [
+        45,
+        63
+      ]
+    },
+    {
+      "name": "emperor-reach",
+      "sourceSha256": "477e610bb1b248b89798ac1442f0809b7c1cba575f5d3800eb583d2247af51af",
+      "cell": [
+        318,
+        927,
+        636,
+        1236
+      ],
+      "alphaCrop": [
+        60,
+        21,
+        275,
+        255
+      ],
+      "registeredAt": [
+        4,
+        5
+      ],
+      "registeredSize": [
+        58,
+        63
+      ]
+    },
+    {
+      "name": "animation/nell-front-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        0,
+        168,
+        168
+      ],
+      "alphaCrop": [
+        46,
+        8,
+        135,
+        145
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        40,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-front-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        0,
+        335,
+        168
+      ],
+      "alphaCrop": [
+        42,
+        14,
+        133,
+        145
+      ],
+      "registeredAt": [
+        19,
+        6
+      ],
+      "registeredSize": [
+        43,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-left-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        0,
+        503,
+        168
+      ],
+      "alphaCrop": [
+        40,
+        10,
+        126,
+        145
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        39,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-left-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        0,
+        670,
+        168
+      ],
+      "alphaCrop": [
+        30,
+        10,
+        135,
+        145
+      ],
+      "registeredAt": [
+        5,
+        6
+      ],
+      "registeredSize": [
+        48,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-right-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        0,
+        838,
+        168
+      ],
+      "alphaCrop": [
+        52,
+        10,
+        143,
+        146
+      ],
+      "registeredAt": [
+        28,
+        6
+      ],
+      "registeredSize": [
+        41,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-right-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        0,
+        1006,
+        168
+      ],
+      "alphaCrop": [
+        56,
+        10,
+        159,
+        146
+      ],
+      "registeredAt": [
+        28,
+        6
+      ],
+      "registeredSize": [
+        47,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-back-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        0,
+        1173,
+        168
+      ],
+      "alphaCrop": [
+        42,
+        9,
+        141,
+        146
+      ],
+      "registeredAt": [
+        19,
+        6
+      ],
+      "registeredSize": [
+        45,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-back-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        0,
+        1341,
+        168
+      ],
+      "alphaCrop": [
+        41,
+        8,
+        133,
+        146
+      ],
+      "registeredAt": [
+        20,
+        6
+      ],
+      "registeredSize": [
+        41,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-front-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        168,
+        168,
+        335
+      ],
+      "alphaCrop": [
+        31,
+        0,
+        143,
+        136
+      ],
+      "registeredAt": [
+        13,
+        6
+      ],
+      "registeredSize": [
+        51,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-front-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        168,
+        335,
+        335
+      ],
+      "alphaCrop": [
+        44,
+        0,
+        140,
+        137
+      ],
+      "registeredAt": [
+        22,
+        6
+      ],
+      "registeredSize": [
+        43,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-left-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        168,
+        503,
+        335
+      ],
+      "alphaCrop": [
+        7,
+        0,
+        128,
+        137
+      ],
+      "registeredAt": [
+        2,
+        6
+      ],
+      "registeredSize": [
+        55,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-left-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        168,
+        670,
+        335
+      ],
+      "alphaCrop": [
+        13,
+        0,
+        137,
+        138
+      ],
+      "registeredAt": [
+        0,
+        6
+      ],
+      "registeredSize": [
+        56,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-right-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        168,
+        838,
+        335
+      ],
+      "alphaCrop": [
+        57,
+        0,
+        168,
+        138
+      ],
+      "registeredAt": [
+        27,
+        6
+      ],
+      "registeredSize": [
+        50,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-right-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        168,
+        1006,
+        335
+      ],
+      "alphaCrop": [
+        57,
+        0,
+        168,
+        138
+      ],
+      "registeredAt": [
+        29,
+        6
+      ],
+      "registeredSize": [
+        50,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-back-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        168,
+        1173,
+        335
+      ],
+      "alphaCrop": [
+        39,
+        0,
+        141,
+        138
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        46,
+        62
+      ]
+    },
+    {
+      "name": "animation/orrin-back-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        168,
+        1341,
+        335
+      ],
+      "alphaCrop": [
+        33,
+        0,
+        140,
+        138
+      ],
+      "registeredAt": [
+        14,
+        6
+      ],
+      "registeredSize": [
+        48,
+        62
+      ]
+    },
+    {
+      "name": "animation/kit-front-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        335,
+        168,
+        503
+      ],
+      "alphaCrop": [
+        23,
+        0,
+        128,
+        133
+      ],
+      "registeredAt": [
+        10,
+        3
+      ],
+      "registeredSize": [
+        51,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-front-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        335,
+        335,
+        503
+      ],
+      "alphaCrop": [
+        18,
+        0,
+        125,
+        133
+      ],
+      "registeredAt": [
+        11,
+        3
+      ],
+      "registeredSize": [
+        52,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-left-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        335,
+        503,
+        503
+      ],
+      "alphaCrop": [
+        10,
+        0,
+        125,
+        135
+      ],
+      "registeredAt": [
+        2,
+        3
+      ],
+      "registeredSize": [
+        55,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-left-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        335,
+        670,
+        503
+      ],
+      "alphaCrop": [
+        12,
+        0,
+        129,
+        136
+      ],
+      "registeredAt": [
+        1,
+        3
+      ],
+      "registeredSize": [
+        56,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-right-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        335,
+        838,
+        503
+      ],
+      "alphaCrop": [
+        49,
+        0,
+        168,
+        136
+      ],
+      "registeredAt": [
+        21,
+        3
+      ],
+      "registeredSize": [
+        57,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-right-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        335,
+        1006,
+        503
+      ],
+      "alphaCrop": [
+        51,
+        0,
+        168,
+        136
+      ],
+      "registeredAt": [
+        24,
+        3
+      ],
+      "registeredSize": [
+        56,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-back-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        335,
+        1173,
+        503
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        159,
+        135
+      ],
+      "registeredAt": [
+        21,
+        3
+      ],
+      "registeredSize": [
+        54,
+        65
+      ]
+    },
+    {
+      "name": "animation/kit-back-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        335,
+        1341,
+        503
+      ],
+      "alphaCrop": [
+        44,
+        0,
+        158,
+        135
+      ],
+      "registeredAt": [
+        20,
+        3
+      ],
+      "registeredSize": [
+        55,
+        65
+      ]
+    },
+    {
+      "name": "animation/celia-front-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        503,
+        168,
+        670
+      ],
+      "alphaCrop": [
+        39,
+        0,
+        132,
+        131
+      ],
+      "registeredAt": [
+        17,
+        4
+      ],
+      "registeredSize": [
+        45,
+        64
+      ]
+    },
+    {
+      "name": "animation/celia-front-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        503,
+        335,
+        670
+      ],
+      "alphaCrop": [
+        35,
+        0,
+        134,
+        132
+      ],
+      "registeredAt": [
+        13,
+        1
+      ],
+      "registeredSize": [
+        50,
+        67
+      ]
+    },
+    {
+      "name": "animation/celia-left-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        503,
+        503,
+        670
+      ],
+      "alphaCrop": [
+        44,
+        0,
+        127,
+        132
+      ],
+      "registeredAt": [
+        19,
+        5
+      ],
+      "registeredSize": [
+        40,
+        63
+      ]
+    },
+    {
+      "name": "animation/celia-left-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        503,
+        670,
+        670
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        129,
+        133
+      ],
+      "registeredAt": [
+        17,
+        2
+      ],
+      "registeredSize": [
+        41,
+        66
+      ]
+    },
+    {
+      "name": "animation/celia-right-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        503,
+        838,
+        670
+      ],
+      "alphaCrop": [
+        52,
+        0,
+        127,
+        132
+      ],
+      "registeredAt": [
+        22,
+        4
+      ],
+      "registeredSize": [
+        36,
+        64
+      ]
+    },
+    {
+      "name": "animation/celia-right-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        503,
+        1006,
+        670
+      ],
+      "alphaCrop": [
+        53,
+        0,
+        143,
+        132
+      ],
+      "registeredAt": [
+        22,
+        1
+      ],
+      "registeredSize": [
+        46,
+        67
+      ]
+    },
+    {
+      "name": "animation/celia-back-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        503,
+        1173,
+        670
+      ],
+      "alphaCrop": [
+        39,
+        0,
+        131,
+        132
+      ],
+      "registeredAt": [
+        16,
+        4
+      ],
+      "registeredSize": [
+        45,
+        64
+      ]
+    },
+    {
+      "name": "animation/celia-back-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        503,
+        1341,
+        670
+      ],
+      "alphaCrop": [
+        35,
+        0,
+        132,
+        132
+      ],
+      "registeredAt": [
+        16,
+        1
+      ],
+      "registeredSize": [
+        49,
+        67
+      ]
+    },
+    {
+      "name": "animation/petra-front-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        670,
+        168,
+        838
+      ],
+      "alphaCrop": [
+        44,
+        0,
+        150,
+        124
+      ],
+      "registeredAt": [
+        18,
+        5
+      ],
+      "registeredSize": [
+        54,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-front-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        670,
+        335,
+        838
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        147,
+        124
+      ],
+      "registeredAt": [
+        20,
+        5
+      ],
+      "registeredSize": [
+        51,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-left-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        670,
+        503,
+        838
+      ],
+      "alphaCrop": [
+        19,
+        0,
+        137,
+        124
+      ],
+      "registeredAt": [
+        7,
+        5
+      ],
+      "registeredSize": [
+        60,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-left-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        670,
+        670,
+        838
+      ],
+      "alphaCrop": [
+        10,
+        0,
+        139,
+        124
+      ],
+      "registeredAt": [
+        -3,
+        5
+      ],
+      "registeredSize": [
+        66,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-right-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        670,
+        838,
+        838
+      ],
+      "alphaCrop": [
+        40,
+        0,
+        166,
+        125
+      ],
+      "registeredAt": [
+        13,
+        5
+      ],
+      "registeredSize": [
+        64,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-right-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        670,
+        1006,
+        838
+      ],
+      "alphaCrop": [
+        43,
+        0,
+        168,
+        125
+      ],
+      "registeredAt": [
+        18,
+        5
+      ],
+      "registeredSize": [
+        63,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-back-6",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        670,
+        1173,
+        838
+      ],
+      "alphaCrop": [
+        35,
+        0,
+        148,
+        124
+      ],
+      "registeredAt": [
+        14,
+        5
+      ],
+      "registeredSize": [
+        57,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-back-7",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        670,
+        1341,
+        838
+      ],
+      "alphaCrop": [
+        33,
+        0,
+        161,
+        124
+      ],
+      "registeredAt": [
+        17,
+        5
+      ],
+      "registeredSize": [
+        65,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-front-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        838,
+        168,
+        1005
+      ],
+      "alphaCrop": [
+        38,
+        0,
+        153,
+        124
+      ],
+      "registeredAt": [
+        13,
+        5
+      ],
+      "registeredSize": [
+        58,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-front-9",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        838,
+        335,
+        1005
+      ],
+      "alphaCrop": [
+        40,
+        0,
+        167,
+        124
+      ],
+      "registeredAt": [
+        12,
+        5
+      ],
+      "registeredSize": [
+        65,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-left-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        838,
+        503,
+        1005
+      ],
+      "alphaCrop": [
+        38,
+        0,
+        139,
+        124
+      ],
+      "registeredAt": [
+        16,
+        5
+      ],
+      "registeredSize": [
+        51,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-left-9",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        838,
+        670,
+        1005
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        127,
+        124
+      ],
+      "registeredAt": [
+        18,
+        5
+      ],
+      "registeredSize": [
+        41,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-right-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        670,
+        838,
+        838,
+        1005
+      ],
+      "alphaCrop": [
+        40,
+        0,
+        142,
+        124
+      ],
+      "registeredAt": [
+        15,
+        5
+      ],
+      "registeredSize": [
+        52,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-right-9",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        838,
+        838,
+        1006,
+        1005
+      ],
+      "alphaCrop": [
+        57,
+        0,
+        147,
+        124
+      ],
+      "registeredAt": [
+        21,
+        5
+      ],
+      "registeredSize": [
+        46,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-back-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1006,
+        838,
+        1173,
+        1005
+      ],
+      "alphaCrop": [
+        37,
+        0,
+        148,
+        124
+      ],
+      "registeredAt": [
+        14,
+        5
+      ],
+      "registeredSize": [
+        56,
+        63
+      ]
+    },
+    {
+      "name": "animation/petra-back-9",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        1173,
+        838,
+        1341,
+        1005
+      ],
+      "alphaCrop": [
+        42,
+        0,
+        145,
+        124
+      ],
+      "registeredAt": [
+        19,
+        5
+      ],
+      "registeredSize": [
+        52,
+        63
+      ]
+    },
+    {
+      "name": "animation/nell-front-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        0,
+        1005,
+        168,
+        1173
+      ],
+      "alphaCrop": [
+        30,
+        0,
+        140,
+        125
+      ],
+      "registeredAt": [
+        12,
+        6
+      ],
+      "registeredSize": [
+        55,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-left-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        168,
+        1005,
+        335,
+        1173
+      ],
+      "alphaCrop": [
+        29,
+        0,
+        134,
+        125
+      ],
+      "registeredAt": [
+        6,
+        6
+      ],
+      "registeredSize": [
+        52,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-right-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        335,
+        1005,
+        503,
+        1173
+      ],
+      "alphaCrop": [
+        46,
+        0,
+        147,
+        125
+      ],
+      "registeredAt": [
+        24,
+        6
+      ],
+      "registeredSize": [
+        50,
+        62
+      ]
+    },
+    {
+      "name": "animation/nell-back-8",
+      "sourceSha256": "26ddb907d092b8240cbd5579cbe064899d90e38355cafd19e7309b30fc3e7c5d",
+      "cell": [
+        503,
+        1005,
+        670,
+        1173
+      ],
+      "alphaCrop": [
+        38,
+        0,
+        146,
+        125
+      ],
+      "registeredAt": [
+        16,
+        6
+      ],
+      "registeredSize": [
+        54,
+        62
+      ]
+    }
+  ]
+}

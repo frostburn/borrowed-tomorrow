@@ -267,3 +267,12 @@ restored review links, dragging, centering and the bottom/right edges.
 a stationary face through the screen raster; it also covers cinematic pans and
 workshop scrolling on desktop and an odd-width phone at fractional DPR. These
 rendered checks stay outside the default CI gate.
+
+### Actor skins
+
+Sprites → Actor skin preview compares the vector originals and raster actors
+locally, including directional walks, attacks, shield bash, NPCs, recolors and
+the Emperor’s escape poses. It does not change the campaign preference. The
+production Help menu switches Vector actors / Raster actors while idle,
+independently of map art and saves. See `assets/raster-actors/README.md` for
+registered sources and `npm run art:raster-actors`.

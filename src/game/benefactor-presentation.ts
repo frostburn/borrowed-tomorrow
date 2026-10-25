@@ -4,11 +4,11 @@ import {BENEFACTOR_ID,benefactorUnit,prepareBenefactor} from '../rules/benefacto
 import {offset} from '../rules/hex';
 import {actorAsset} from '../content/actors';
 import type {CompanionId} from '../rules/party';
-import {nativeTexture,bossLabel as label,bossPlacement as placement,pickBossBody} from './boss-display';
+import {BossMaskCache,nativeTexture,bossLabel as label,bossPlacement as placement,pickBossBody} from './boss-display';
 import {animateBoss,bossAttack,bossMotionEnabled,BOSS_FRAME_COUNT,BOSS_ATTACK_CONTACT,BOSS_ATTACK_DURATION} from './boss-motion';
 export const BENEFACTOR_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/benefactor/benefactor-portrait.svg`;
 export const BENEFACTOR_ASSETS=['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion','benefactor-domain'].map(key=>({key,url:`art/vector/benefactor/${key}.svg`}));
-const masks=new Map<string,Uint8Array[]>();
+const masks=new BossMaskCache<Uint8Array[]>();
 export function benefactorPresentation(encounter:Encounter):BattlePresentation{
  const form=encounter.benefactorForm??0,key=form===0?'benefactor-motion':form===1?'benefactor-sun-motion':'benefactor-heart-motion';let currentFrame=0;
  return {
