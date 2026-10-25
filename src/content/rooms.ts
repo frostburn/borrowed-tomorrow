@@ -7,7 +7,7 @@ export const ROOMS={
  open:{name:'Open air',size:.38,feedback:.38,wet:.045,damping:4400},
  cabin:{name:'Timber cabin',size:.5,feedback:.52,wet:.14,damping:3800},
  ward:{name:'Ward',size:.8,feedback:.57,wet:.17,damping:5200},
- court:{name:'Stone courtyard',size:1.1,feedback:.56,wet:.12,damping:5800},
+ court:{name:'Stone courtyard',size:1.1,feedback:.46,wet:.09,damping:3200},
  works:{name:'Engine hall',size:1.05,feedback:.5,wet:.18,damping:4200},
  hall:{name:'Marble hall',size:1.4,feedback:.5,wet:.2,damping:5600},
  cave:{name:'Cavern',size:1.35,feedback:.44,wet:.17,damping:3200},
