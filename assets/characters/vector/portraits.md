@@ -64,3 +64,5 @@ Rear hair stays behind the neck: explicit foreground neck-root planes overlap th
 
 Portrait paint order is rear hair → neck and neck root → clothing/collar → face and foreground hair. Both neck groups sit below the entire clothing group, including apron edges, lapels and scarves; never paint a throat plane over a collar to bridge the jaw.
 The shoulder fabric has a vector neckline cutout; collars and lapels paint above that opening without the cutout. This preserves their authored edges while the throat remains connected beneath them.
+
+Samira uses the same rear-hair → neck → clothing order: her dark rear hair no longer covers the throat. Alban’s pupils are equal 4×4 native rectangles aligned to the two-pixel grid; render checks count four sampled pixels per pupil at all four sampling phases. Spectacle frames must contrast with skin: Celia uses deep teal and cool rim light, Iona dark bronze and gold, Elspeth plum and lavender, and Iven blue with gold accents. Keep the lens openings clear so the eyes remain readable.

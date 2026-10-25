@@ -3,12 +3,17 @@
 <desc>Long copper face, high cheekbones and level gaze; a gold crown over dark hair with turquoise at the throat. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M33 31L43 17 64 13 83 21 94 40 94 65 85 90 72 98 38 91 27 68 27 47Z" fill="#303e49"/>
+<g data-part="neck">
+<path d="M51 75L50 96 66 109 82 95 80 75Z" fill="#bb805c"/>
+<path d="M65 85L79 78 82 95 66 106 58 96Z" fill="#a56b4f"/>
+</g>
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M51 75L50 96 66 109 82 95 80 75Z" clip-rule="evenodd"/></clipPath></defs>
+<g data-part="clothing" clip-path="url(#shoulder-neckline)">
 <path d="M2 128L13 109 35 97 52 88H80L106 101 123 128Z" fill="#497c7b"/>
 <path d="M5 125L20 107 38 100 43 128Z" fill="#6b9590"/>
 <path d="M87 97L109 109 123 128H88Z" fill="#35565c"/>
-<path d="M51 75L50 96 66 109 82 95 80 75Z" fill="#9a654e"/>
-<path d="M65 85L79 78 82 95 66 106 58 96Z" fill="#794e48"/>
-<path d="M33 31L43 17 64 13 83 21 94 40 94 65 85 90 72 98 38 91 27 68 27 47Z" fill="#303e49"/>
+</g>
 <path d="M44 33L59 26 76 31 84 43 85 60 81 76 72 87 64 89 53 84 44 75 38 60 37 46Z" fill="#bb805c"/>
 <path d="M45 35L58 29 70 32 78 42 75 51 57 55 41 48 40 42Z" fill="#d5a679"/>
 <path d="M79 36L84 43 85 60 81 76 72 87 64 89 65 83 76 74 77 60Z" fill="#8f5b4c"/>
