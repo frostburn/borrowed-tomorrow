@@ -359,7 +359,7 @@
       "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
-  "nextlayerid": 15,
+  "nextlayerid": 16,
   "nextobjectid": 19,
   "properties": [
     {
@@ -553,15 +553,21 @@
     {
       "id": 4,
       "type": "objectgroup",
-      "name": "western-bed",
+      "name": "original-engine",
       "visible": true,
       "objects": [],
-      "properties": []
+      "properties": [
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "domainWardWon"
+        }
+      ]
     },
     {
       "id": 5,
       "type": "objectgroup",
-      "name": "eastern-bed",
+      "name": "western-bed",
       "visible": true,
       "objects": [],
       "properties": []
@@ -569,7 +575,7 @@
     {
       "id": 6,
       "type": "objectgroup",
-      "name": "light-0",
+      "name": "eastern-bed",
       "visible": true,
       "objects": [],
       "properties": []
@@ -577,7 +583,7 @@
     {
       "id": 7,
       "type": "objectgroup",
-      "name": "light-0-spill",
+      "name": "light-0",
       "visible": true,
       "objects": [],
       "properties": []
@@ -585,7 +591,7 @@
     {
       "id": 8,
       "type": "objectgroup",
-      "name": "light-1",
+      "name": "light-0-spill",
       "visible": true,
       "objects": [],
       "properties": []
@@ -593,7 +599,7 @@
     {
       "id": 9,
       "type": "objectgroup",
-      "name": "light-1-spill",
+      "name": "light-1",
       "visible": true,
       "objects": [],
       "properties": []
@@ -601,19 +607,38 @@
     {
       "id": 10,
       "type": "objectgroup",
+      "name": "light-1-spill",
+      "visible": true,
+      "objects": [],
+      "properties": []
+    },
+    {
+      "id": 11,
+      "type": "objectgroup",
       "name": "Interactions",
       "visible": true,
       "objects": [
         {
           "name": "ward-engine-seven",
-          "point": true,
-          "x": 780,
-          "y": 588,
+          "x": 648,
+          "y": 336,
+          "width": 264,
+          "height": 240,
           "properties": [
             {
               "name": "label",
               "type": "string",
               "value": "The gift of healing \u00b7 mirrored engine"
+            },
+            {
+              "name": "approachX",
+              "type": "int",
+              "value": 32
+            },
+            {
+              "name": "approachY",
+              "type": "int",
+              "value": 24
             },
             {
               "name": "kind",
@@ -624,11 +649,6 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "domainWardWon"
-            },
-            {
-              "name": "sprite",
-              "type": "string",
-              "value": "ward-engine"
             }
           ],
           "id": 1
@@ -743,7 +763,7 @@
       "properties": []
     },
     {
-      "id": 11,
+      "id": 12,
       "type": "objectgroup",
       "name": "Arrivals",
       "visible": true,
@@ -768,7 +788,7 @@
       "properties": []
     },
     {
-      "id": 12,
+      "id": 13,
       "type": "objectgroup",
       "name": "People",
       "visible": true,
@@ -796,7 +816,7 @@
       "properties": []
     },
     {
-      "id": 13,
+      "id": 14,
       "type": "objectgroup",
       "name": "Scene:seven-hospice",
       "visible": true,
@@ -845,7 +865,7 @@
       "properties": []
     },
     {
-      "id": 14,
+      "id": 15,
       "type": "objectgroup",
       "name": "Scene:seven-hospice-free",
       "visible": true,

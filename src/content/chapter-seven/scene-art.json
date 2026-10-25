@@ -57,17 +57,17 @@
       "y": 665,
       "width": 288,
       "height": 120,
-      "depth": 785,
+      "depth": 779,
       "layerId": 7
     },
     {
       "key": "scene-seven-hollowsill-light-0",
       "url": "art/vector/chapter-seven/hollowsill-light-0.svg",
-      "x": 469,
-      "y": 626,
+      "x": 543,
+      "y": 674,
       "width": 48,
       "height": 148,
-      "depth": 774,
+      "depth": 822,
       "layerId": 8
     },
     {
@@ -297,6 +297,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-seven-quietward-original-engine",
+      "url": "art/vector/chapter-seven/quietward-original-engine.svg",
+      "x": 652,
+      "y": 348,
+      "width": 256,
+      "height": 240,
+      "depth": 588,
+      "layerId": 4
+    },
+    {
       "key": "scene-seven-quietward-western-bed",
       "url": "art/vector/chapter-seven/quietward-western-bed.svg",
       "x": 380,
@@ -304,7 +314,7 @@
       "width": 132,
       "height": 96,
       "depth": 696,
-      "layerId": 4
+      "layerId": 5
     },
     {
       "key": "scene-seven-quietward-eastern-bed",
@@ -314,7 +324,7 @@
       "width": 132,
       "height": 96,
       "depth": 696,
-      "layerId": 5
+      "layerId": 6
     },
     {
       "key": "scene-seven-quietward-light-0",
@@ -324,7 +334,7 @@
       "width": 48,
       "height": 148,
       "depth": 790,
-      "layerId": 6
+      "layerId": 7
     },
     {
       "key": "scene-seven-quietward-light-0-spill",
@@ -334,7 +344,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 7
+      "layerId": 8
     },
     {
       "key": "scene-seven-quietward-light-1",
@@ -344,7 +354,7 @@
       "width": 48,
       "height": 148,
       "depth": 798,
-      "layerId": 8
+      "layerId": 9
     },
     {
       "key": "scene-seven-quietward-light-1-spill",
@@ -354,7 +364,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 9
+      "layerId": 10
     }
   ],
   "seasonstreet": [
@@ -477,7 +487,7 @@
       "y": 575,
       "width": 288,
       "height": 120,
-      "depth": 695,
+      "depth": 689,
       "layerId": 5
     },
     {
