@@ -3,6 +3,7 @@
 <desc>Long brown braid, high collar and an angular cheek; a watchful three-quarter gaze over a steel-blue cloak. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 6)" data-part="shoulders-and-neck">
 <path d="M3 128L12 109 33 96 50 87H80L106 100 123 128Z" fill="#547a96"/>
 <path d="M7 123L21 107 38 99 43 128Z" fill="#7393a1"/>
 <path d="M89 96L109 108 123 128H88Z" fill="#38586e"/>
@@ -10,6 +11,7 @@
 <path d="M62 85L79 78 82 95 65 107 55 97Z" fill="#96674f"/>
 <path d="M30 98L47 90 64 105 82 90 100 102 78 128H49Z" fill="#b7c1b8"/>
 <path d="M82 96L100 102 78 128H68L71 112Z" fill="#879b99"/>
+</g>
 <path d="M32 32L39 18 56 10 76 15 89 28 96 49 92 74 81 88 45 88 30 71 27 51Z" fill="#593e35"/>
 <path d="M42 32L56 24 73 29 84 43 85 58 80 73 69 86 61 88 49 81 41 70 36 54 35 43Z" fill="#d49c70"/>
 <path d="M43 34L56 28 69 32 77 41 74 51 55 55 40 48 38 42Z" fill="#e6bc91"/>

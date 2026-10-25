@@ -3,6 +3,7 @@
 <metadata>{"reference": "ec894d8:public/art/portrait-elspeth.png", "construction": "Long elderly face with light brows, tired lower lids, narrow jaw and a reserved smile. Swept silver waves, fine brass spectacles, plum cardigan and chair posts; broad connected age planes.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 7)" data-part="shoulders-and-neck">
 <path d="M14 128L15 80 20 73 25 81 27 128Z M99 128L100 80 105 73 110 81 112 128Z" fill="#623d29"/>
 <path d="M18 82L20 78 22 83 24 128H20Z M103 82L105 78 107 83 109 128H105Z" fill="#c69c5c"/>
 <path d="M7 128L14 110 33 98 50 89H79L101 102 117 128Z" fill="#653f50"/>
@@ -12,6 +13,7 @@
 <path d="M50 76L48 96 62 107 79 94 76 73Z" fill="#b58261"/>
 <path d="M59 85L76 79 79 94 63 105 53 95Z" fill="#96674f"/>
 <path d="M48 95L54 95 63 106 76 96 79 101 66 116 56 109Z" fill="#d8c59b"/>
+</g>
 <path d="M29 32L36 19 52 11 72 14 85 27 92 46 90 66 81 83 69 92 42 85 29 70 25 50Z" fill="#879b95"/>
 <path d="M40 32L54 24 70 29 80 42 83 58 78 75 66 90 57 92 46 84 37 69 33 51 33 42Z" fill="#c99571"/>
 <path d="M41 34L53 28 67 33 73 43 66 52 46 55 35 47Z" fill="#e1b68c"/>

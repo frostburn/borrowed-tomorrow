@@ -3,6 +3,7 @@
 <metadata>{"reference": "babe8ca:public/art/portrait-dena.png", "construction": "Full cheeks, a gently lifted mouth and a steady leftward gaze. Brown side braid, cream nurse cap and apron over green work clothes; broad face and simple connected hair planes.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 6)" data-part="shoulders-and-neck">
 <path d="M2 128L11 109 33 97 50 89H80L105 101 123 128Z" fill="#35584d"/>
 <path d="M6 123L19 108 37 100 44 128Z" fill="#5d7660"/>
 <path d="M87 98L108 109 123 128H89Z" fill="#263e39"/>
@@ -10,6 +11,7 @@
 <path d="M43 97L51 94 64 108 80 94 86 100 86 128H45Z" fill="#d8c59b"/>
 <path d="M48 76L46 96 63 108 81 95 77 74Z" fill="#b58261"/>
 <path d="M60 85L77 79 81 95 65 105 53 95Z" fill="#96674f"/>
+</g>
 <path d="M28 35L35 21 54 14 75 19 90 34 95 55 89 78 76 92 42 88 28 71 25 51Z" fill="#49362c"/>
 <path d="M39 33L55 25 72 30 82 44 84 61 78 77 66 88 56 88 44 80 36 65 32 49 32 42Z" fill="#c99571"/>
 <path d="M40 35L54 29 68 34 74 44 67 52 47 55 34 47Z" fill="#e1b68c"/>

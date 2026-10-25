@@ -3,6 +3,7 @@
 <desc>Cream ward cap, dark bob and a full cheek; tired lower lids with a small, determined smile. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 5)" data-part="shoulders-and-neck">
 <path d="M1 128L10 109 32 97 49 90H79L106 101 123 128Z" fill="#4d7d79"/>
 <path d="M5 123L17 109 37 99 43 128Z" fill="#6c9490"/>
 <path d="M87 97L108 108 123 128H87Z" fill="#355b58"/>
@@ -10,6 +11,7 @@
 <path d="M60 85L78 79 81 95 63 106 54 95Z" fill="#96674f"/>
 <path d="M38 95L47 91 62 104 80 91 89 100 91 128H33Z" fill="#ddd2ae"/>
 <path d="M80 96L89 100 91 128H80L75 110Z" fill="#b9b69a"/>
+</g>
 <path d="M30 32L38 18 56 12 76 16 90 31 95 54 91 78 77 91 43 88 29 73 25 51Z" fill="#3e3736"/>
 <path d="M43 32L59 26 73 32 81 44 82 60 77 76 65 88 55 86 44 77 36 62 34 47Z" fill="#ce9671"/>
 <path d="M43 34L57 29 70 34 73 43 65 52 47 54 37 46Z" fill="#e6bc91"/>

@@ -3,6 +3,7 @@
 <metadata>{"reference": "ec894d8:public/art/portrait-tilda.png", "construction": "Wide full cheeks, a short rounded chin and a generous smile. Copper curls grouped into broad clumps, cream headscarf, green clothes and apron; shoulders and bread frame the lower crop.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 6)" data-part="shoulders-and-neck">
 <path d="M0 128V109L23 96 46 88H83L108 101 128 120V128Z" fill="#35584d"/>
 <path d="M3 123L16 109 35 98 42 128H0Z" fill="#5d7660"/>
 <path d="M91 98L112 111 128 124V128H92Z" fill="#263e39"/>
@@ -10,6 +11,7 @@
 <path d="M41 98L49 94 64 108 82 94 88 101 87 128H43Z" fill="#d8c59b"/>
 <path d="M48 76L47 96 65 108 83 94 79 73Z" fill="#b58261"/>
 <path d="M61 85L79 79 83 94 66 106 54 95Z" fill="#96674f"/>
+</g>
 <path d="M27 34L34 22 49 13 71 13 87 24 97 42 98 65 89 82 76 93 42 88 26 73 22 51Z" fill="#623d29"/>
 <path d="M38 34L53 24 73 28 86 42 90 59 85 76 74 88 62 91 47 85 36 71 31 53 32 43Z" fill="#c99571"/>
 <path d="M39 36L53 28 69 32 79 43 74 52 49 57 34 48Z" fill="#e1b68c"/>

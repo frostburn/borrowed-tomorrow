@@ -3,6 +3,7 @@
 <desc>Silver hair with a loose side braid, warm brown skin and deeply lined cheeks; a patient, attentive gaze. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<g transform="translate(0 6)" data-part="shoulders-and-neck">
 <path d="M1 128L12 107 33 96 50 88H80L106 102 123 128Z" fill="#385d4a"/>
 <path d="M5 122L19 107 37 99 43 128Z" fill="#5d7660"/>
 <path d="M87 96L109 109 123 128H88Z" fill="#263e39"/>
@@ -10,6 +11,7 @@
 <path d="M59 85L77 78 81 94 64 106 53 96Z" fill="#784e45"/>
 <path d="M33 95L46 89 63 104 80 88 94 101 73 126H50Z" fill="#d8c59b"/>
 <path d="M80 94L94 101 73 126 63 117Z" fill="#b9b69a"/>
+</g>
 <path d="M28 33L37 17 55 9 78 15 92 31 97 54 90 79 76 93 39 88 26 70 22 50Z" fill="#879b95"/>
 <path d="M40 32L55 24 73 30 83 43 85 59 80 75 68 88 57 87 44 78 36 63 32 47Z" fill="#b7784e"/>
 <path d="M41 34L54 28 69 33 76 43 70 51 48 55 35 47Z" fill="#d4a276"/>

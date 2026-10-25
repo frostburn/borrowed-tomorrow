@@ -22,7 +22,7 @@ Costumes and established hair remain consistent with the actors. Features to pre
 | Character | Likeness and expression |
 | --- | --- |
 | Nell | Young rounded cheek, open eyes, two braids, red railway cap/jacket. |
-| Orrin | Broad bearded engineer, heavy level brows, sidelong gaze and a closed mouth; brass goggles on navy cap. |
+| Orrin | Broad bearded engineer, an open sidelong gaze and continuous warm beard facets around a closed mouth; brass goggles on navy cap. |
 | Kit | Round youthful chin, tousled hair, open gaze, ochre courier scarf. |
 | Petra | Angular lower face, level brows and tight mouth; green armor and gold shoulder plates. |
 | Celia | Long mature cheeks, silver bob, round spectacles, patient expression and medical book. |
@@ -57,3 +57,5 @@ Costumes and established hair remain consistent with the actors. Features to pre
 Use `?dev=sprites` → Party / NPCs to compare the real portrait files with their corresponding world actors. Check a mixed group across chapters, not just one regional cast. Review native 128px and through the game's coarse raster; dialogue and Equipment use these same files. On a compact phone at fractional DPR, verify eyes, glasses and mouth corners still survive and that no portrait is stretched or cropped. Keep review screenshots/contact sheets outside the repository.
 
 Run the existing character/content checks, native portrait presentation and desktop/phone sprite-workshop checks. Stage the SVGs and run `npm run check:art-upload` before publishing. Each image retains the 128 KiB budget. No gameplay, save, animation, source texture dimensions or display filtering change is needed for portrait edits.
+
+Keep a visible neck between the jaw and collar. Individual shoulder/neck groups sit lower where the old collar met the chin; head size, facial landmarks and the 128px crop stay fixed. Iven’s receding hair lies over a complete bald scalp plane. Tomas has fuller lower cheeks, a blunt nose and a relaxed uneven smile; Alban has a longer angular jaw, more turned projecting nose and a narrow far eye. Orrin’s beard highlights join across the lower face so the mouth cannot read as a dark hole; his open eye expression is retained.
