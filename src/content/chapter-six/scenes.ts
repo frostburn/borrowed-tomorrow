@@ -91,7 +91,7 @@ export const escaped=(s:SceneState=empty)=>scene(s,'sunpalace','six-escape','The
  ...(s.flags.nellRecovered?[line('Nell','I’ll stay with Samira. Amal, show us the stair.')]:[]),
 ]);
 export const roofs=(s:SceneState=empty)=>scene(s,'skywalk','six-roofs','Above the awnings',[
- line('The upper terraces','The market awnings lie below. Pale wings settle on the observatory’s release walk.',{focus:{x:47,y:17},cut:true}),
+ line('The upper terraces','The market awnings lie below. Pale wings settle on the observatory’s release walk.',{focus:{x:27,y:30},cut:true}),
  line('Amal','Those aren’t our machines.'),
  line('Celia','We saw them at Nell’s hatch. The Benefactor’s creatures.'),
  line('Queen Samira','Sahir’s guards are running. Those things have cut off the release walk.'),

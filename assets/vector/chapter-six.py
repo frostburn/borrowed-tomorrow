@@ -51,6 +51,15 @@ def lattice_gate(width):
  for x in (0,width-12):out.extend([rect(x,2,12,58,'#9b835e'),poly([(x-2,5),(x+6,0),(x+14,5),(x+12,12),(x,12)],'#dfc28c')])
  cx=width/2;out.extend([ellipse(cx,27,14,14,'#d8ba7d'),ellipse(cx,27,9,9,'#7c927e'),poly([(cx,17),(cx+4,24),(cx+10,27),(cx+3,31),(cx,38),(cx-3,31),(cx-10,27),(cx-4,24)],'#ead4a3')])
  return out
+def court_fountain(frame=0):
+ out=[ellipse(40,102,39,10,'#758a79'),poly([(15,92),(65,92),(70,103),(11,103)],GOLD),rect(29,51,21,47,TEAL),poly([(29,51),(37,56),(37,97),(29,96)],'#71968b'),ellipse(40,49,34,14,GOLD),ellipse(40,46,29,10,'#65999b'),ellipse(40,45,24,7,'#96c8c3'),rect(36,23,8,27,'#bca16b')]
+ for side in (-1,1):
+  out.append(f'<path d="M40 28Q{40+side*20} 11 {40+side*24} 44" fill="none" stroke="#b5d9d0" stroke-width="3"/>')
+  for j in range(3):
+   y=60+((frame*5+j*14)%32);x=40+side*(21+(y-60)*.18)
+   out.extend([line([(x,y),(x+side*2,y+8)],'#9bcac7',3),ellipse(x+side*4,96,5+(frame+j)%4,2,'#b9d7c7')])
+ out.extend([ellipse(40,96,28,6,'#709e99'),line([(20,52),(30,57),(51,57),(61,52)],'#ddc89b',3)])
+ return out
 def water_clock(frame=0):
  fill=min(1,(frame+1)/12)if frame<12 else [1,.6,.1,0][frame-12];tip=[24,65,42,0][frame-12]if frame>=12 else 0
  out=[ellipse(70,161,58,10,'#647a72'),poly([(32,155),(38,72),(47,72),(45,157)],'#a88b5d'),poly([(78,157),(76,72),(85,72),(91,156)],'#c3a16c'),line([(0,25),(38,25),(38,42),(49,46)],'#6f877a',11),line([(0,22),(40,22),(41,39),(49,42)],'#d0b680',4)]
@@ -151,7 +160,7 @@ world('sunpalace','Namar · the open court','The queen receives visitors beneath
  obj('palace-audience',32,24,'Queen Samira · revoke the pact',sprite='samira',storyUntil='palaceCoup',hiddenFlag='palaceEscaped'),obj('palace-route',22,29,'Postal stair · escape the palace',requiredFlag='palaceCoup',doneFlag='palaceEscaped',sign=True),obj('palace-supply',15,31,'Shaded fountain · rest and supplies',kind='optional',sign=True),obj('palace-city',31,34,'Evening exchange · palace gate',kind='exit',sign=True),obj('palace-roofs',10,29,'Postal stair · the observatory terraces',requiredFlag='palaceEscapeWon',kind='exit',sign=True)],
  {'start':(31,31),'audience':(31,28),'escape':(20,29),'roofs':(13,29)}, {'six-court':courtcrew,'six-coup':courtcrew,'six-escape':courtcrew},
  [point('court-attendant',19,25,sprite='civilian-traveler-blue'),point('court-attendant-two',46,28,sprite='civilian-traveler')],
- [('palace-fountain',astrolabe(38,51,34)+[rect(28,49,20,60,TEAL)],82,114,532,535,649,{}),('palace-vase',[rect(20,34,28,45,TEAL),ellipse(34,38,23,15,TEAL)]+palm(23,-36,.7),88,115,983,542,657,{}),('palace-bar',lattice_gate(192),192,60,660,790,850,{'requiredFlag':'palaceCoup','hiddenFlag':'palaceEscaped'})],courtback)
+ [('palace-fountain',court_fountain(),82,114,532,535,649,{}),('palace-vase',[rect(20,34,28,45,TEAL),ellipse(34,38,23,15,TEAL)]+palm(23,-36,.7),88,115,983,542,657,{}),('palace-bar',lattice_gate(192),192,60,660,790,850,{'requiredFlag':'palaceCoup','hiddenFlag':'palaceEscaped'})],courtback)
 
 roofback=dunes()
 for x,y,w,h in [(30,580,280,250),(380,710,225,220),(1080,555,360,300),(880,710,150,242)]:roofback.extend(building(x,y,w,h,True))
@@ -178,6 +187,7 @@ for id,title in [('palace-gallery','Palace gallery cordon'),('palace-channel','P
  floor=[(3,3,34,16)]
  world('battle-'+id,title,'',floor,[],[],{'start':(20,17)},{},[],[],back,w=42,h=20)
 
+for frame in range(1,8):svg(ART/f'palace-fountain-{frame}.svg',82,114,court_fountain(frame))
 for frame in range(1,16):svg(ART/f'namar-clock-{frame}.svg',144,174,water_clock(frame))
 
 (ROOT/'src/content/chapter-six/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')

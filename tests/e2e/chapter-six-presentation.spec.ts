@@ -54,3 +54,16 @@ test('rest shelters and one-time report rewards have distinct markers and labels
  while(await page.locator('.dialogue').isVisible())await page.locator('.dialogue-actions button').first().click();
  await approach(page,'namar-post-sent');await expect(page.locator('.dialogue')).toContainText('Your report has gone to Dena');await capture(page,'rest-and-reward-markers');
 });
+
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`court fountain, rooftop framing and post-serpent return on ${device}`,async({browser})=>{
+ const context=await browser.newContext({viewport}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
+  const s=desertCheckpoint('desertSealBroken');s.location=arrival('sunpalace','start');await page.goto('/');await importSave(page,s);await page.mouse.move(0,0);
+  const seen=new Set<number>();for(let i=0;i<5;i++){seen.add(await frame(page));await page.waitForTimeout(180);}expect(seen.size).toBeGreaterThan(2);await capture(page,`court-fountain-${device}`);
+  await approach(page,'palace-city');await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('namar');expect((await inspect(page)).state.flags.capitalStreetSeen).toBeUndefined();
+  await approach(page,'namar-palace');await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('sunpalace');
+  const roof=desertCheckpoint('palaceEscaped');roof.location=arrival('skywalk','start');await importSave(page,roof);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-roofs');await capture(page,`above-awnings-${device}`);
+  const v=await inspect(page);expect(v.actors.some(a=>a.x>v.view.scrollX&&a.x<v.view.scrollX+v.view.width&&a.y>v.view.scrollY&&a.y<v.view.scrollY+v.view.height/2)).toBe(true);
+  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+ }finally{await context.close();}
+});

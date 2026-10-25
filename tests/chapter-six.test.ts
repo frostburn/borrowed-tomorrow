@@ -173,3 +173,11 @@ it('quiet desert harmonies hold through their rests, while both battle rhythms k
  }
  expect(['Ft4','Ct4'].every(pitch=>Array.from({length:32},(_,bar)=>scoreBar('sunpalace',bar)).flat().some(n=>n.pitch===pitch))).toBe(true);
 });
+
+it('keeps the Namar court exit in Namar before and after the serpent, without entering the imperial capital',()=>{
+ for(const flag of ['palaceCoup','palaceEscaped','desertSealBroken']as const){
+  const s=desertCheckpoint(flag);s.location=arrival('sunpalace','start');const v=visit(s);v.act('palace-city');
+  expect(s.location.map).toBe(flag==='palaceCoup'?'sunpalace':'namar');
+  expect(s.flags.capitalStreetSeen).toBeUndefined();expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ }
+});
