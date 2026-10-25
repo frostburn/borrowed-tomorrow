@@ -49,7 +49,7 @@ export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pu
  line('Ines','The binding is on her now. Set the lantern beside the basin; I’ll follow it back.'),
  line('Nell','Do I have to hold it?'),
  line('Ines','Just two fingers on the handle. Tell me when it feels cold.'),
- line('Celia','Let me turn the collar. If it tightens again—'),
+ line('Celia','Let me turn the collar. If it hurts her—'),
  line('Ines','I’ve used it before, Celia. Watch her pulse for me.'),
  line('Nell','Celia. Will you stay by me?'),
  line('Celia','Yes. I’ll watch your wrist.',{actors:{celia:{face:'celia-right'}}}),
