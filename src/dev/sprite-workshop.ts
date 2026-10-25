@@ -54,7 +54,7 @@ export class SpriteWorkshop {
   private render() {
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
     const host = this.host!, entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
-    const columns=this.group==='NPCs'?Math.min(10,entries.length):entries.length, rows=Math.ceil(entries.length/columns);
+    const columns=Math.min(10,entries.length), rows=Math.ceil(entries.length/columns);
     if(this.motion!=='walk'&&!animatedHero(entry.id)){this.motion='idle';this.playing=false;}
     if(this.motion==='walk'&&!walkingHero(entry.id)){this.motion='idle';this.playing=false;}
     if(!entry.directions.includes(this.direction))this.direction='front';
