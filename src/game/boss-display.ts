@@ -4,6 +4,7 @@ import { ABILITIES, active, legalAim, targets, unitAt, type AbilityId, type Batt
 import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, toPixel } from '../rules/hex';
 import { prepareArtTexture } from './vector-image';
+import {prepareRasterAtlas} from './raster-atlas';
 import {actorArtSkin} from '../content/actor-art-skin';
 
 /** Picking silhouettes must change with the visible skin, including reprises. */
@@ -17,6 +18,7 @@ export class BossMaskCache<T> extends Map<string,T>{
 let labelId=0;
 export function nativeTexture(scene:Phaser.Scene,key:string){
   const texture=scene.textures.get(key);
+  prepareRasterAtlas(scene,texture);
   return prepareArtTexture(texture);
 }
 export function bossLabel(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){

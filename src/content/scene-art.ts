@@ -6,15 +6,18 @@ import second from './chapter-two/scene-art.json' with { type: 'json' };
 import third from './chapter-three/scene-art.json' with { type: 'json' };
 import fourth from './chapter-four/scene-art.json' with { type: 'json' };
 import raster from './raster-map-art.json' with { type:'json' };
+import benefactor from './benefactor-domain-art.json' with {type:'json'};
 import { layerVisible, properties, type TileMap } from './tilemaps';
 import type { GameState } from '../rules/state';
 import {mapArtSkin,type MapArtSkin} from './map-art-skin';
 
 const firstScenes={...first,station:raster.station},sixthScenes={...sixth,stillcity:raster.stillcity};
 const vectorScenes={...first,...second,...third,...fourth,...fifth,...sixth,...seventh};
-const scenes={...firstScenes,...second,...third,...fourth,...fifth,...sixthScenes,...seventh};
+const seventhScenes={...seventh,...Object.fromEntries(['body','sun','heart'].map(form=>[`battle-benefactor-${form}`,benefactor]))};
+const scenes={...firstScenes,...second,...third,...fourth,...fifth,...sixthScenes,...seventhScenes};
 
 export interface ScenePiece { key:string; url:string; x:number; y:number; width:number; height:number; depth:number; layerId:number }
+export const benefactorDomainArt=(skin:MapArtSkin=mapArtSkin()):ScenePiece[]=>skin==='raster'?benefactor:seventh['battle-benefactor-body'];
 /** Whole vector or native raster planes/props; Tiled owns layout and collision. */
 export function sceneArt(map?:TileMap,skin:MapArtSkin=mapArtSkin()):ScenePiece[]|undefined {
   const id=map&&properties(map).sceneArt;

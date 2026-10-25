@@ -1,0 +1,77 @@
+# Painted Benefactor battles
+
+The optional raster skin repaints the Benefactor's body, hollow sun, exposed
+heart and shared battle platform. The vector originals and portraits remain
+available. **Help → Vector actors / Raster actors** selects the models;
+**Vector maps / Raster maps** independently selects the arena. Campaign and
+**Workshop → Bosses** use the same assets, including all three Campaign presets.
+
+## Reviewed sources
+
+`paint/` contains five transparent **180×144** key poses and two indexed
+**256×240** arena halves. Built-in ImageGen painted these using the existing
+models/arena as geometry references and the approved raster cast as the style
+reference. `prompts.json` records the exact prompts; `generation.json` records
+master hashes, explicit crops, alpha bounds and registration. Full generated
+sheets are deliberately excluded from git and uploads.
+
+The body's open palms extend across the nominal sheet column boundary. The
+registered crops retain both hands rather than blindly dividing equal cells.
+Its three painted poses share head/base anchors. Sun and heart attacks derive
+from their resting paintings to retain a stable design. The hollow apertures
+stay opaque and dark; surrounding space is transparent. The arena's row
+registration aligns its front walking edge with the existing combat floor,
+keeping the front row on top of the platform. Central inlays are solid flooring.
+
+## Offline reproduction
+
+Install authoring dependencies in a task environment, not the game:
+
+```sh
+python3 -m venv /tmp/borrowed-tomorrow-art
+/tmp/borrowed-tomorrow-art/bin/pip install -r assets/raster-actors/requirements.txt
+. /tmp/borrowed-tomorrow-art/bin/activate
+npm ci
+npm run art:raster-benefactor
+```
+
+This focused command needs no browser, network or image API. The complete
+`npm run art:raster-actors` command also runs this exporter after rebuilding
+the ordinary cast. Repeated exports must be byte-identical. Optional recovery
+from the exact recorded master images uses:
+
+```sh
+python3 assets/raster-benefactor/register.py /path/to/boss-sheet.png /path/to/arena.png
+```
+
+Registration samples the painted master once with area averaging. These are
+new painted sources, not a claim of recovered authentic pixel grids. Committed
+sources are then animated with nearest sampling, indexed without dithering and
+given binary transparency. Runtime uses exact **2× nearest expansion**, before
+frame cropping or lighting. A boss-local 255-color palette avoids changing the
+reviewed ordinary cast when rebuilding this kit. Arena halves share their own
+palette. Dynamic lighting remains unrestricted RGB.
+
+Each model retains **360×288 logical frames**, eight idle phases over 3.2s and
+four attack phases at the existing 220/420/660/920ms boundaries. Three small
+**360×288 native PNG pages** carry four frames each. Runtime assembles these
+into the existing **720×1728 logical atlas** once, before frame crops and alpha
+picking. This preserves footprints, placement and targeting. The two map
+panels reconstruct **1024×480** world pixels. No combat or story data changes.
+
+`conversion.json` audits all eleven runtime files, their dimensions, byte counts
+and SHA-256 hashes. Every file remains below the ordinary **128 KiB** guard;
+the largest current panel is under **44 KiB**. No upload limit was raised.
+
+## Review
+
+Use `/?dev=boss` and each **Campaign** form button. Check open palms, intact
+shoulder spikes, opaque apertures, the crystal, grounded party feet, both arena
+halves and motion with a parked pointer. Compare vector/raster models and maps
+independently. Reduced motion holds frame zero; restart cancels attacks.
+
+`tests/raster-benefactor.test.ts` audits page coverage, files and map bounds.
+`tests/e2e/benefactor-raster.spec.ts` compares actual rendered boss pixels,
+breathing and attack/recovery on desktop and fractional-DPR phones. Existing
+boss-preview tests retain picking, damage, restart and campaign-isolation
+coverage. Detailed browser checks remain outside the small default CI gate.

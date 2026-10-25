@@ -1,0 +1,139 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "bossSha256": "39490c60509cad392152926817740b66ba0daffbdd9d4c5b02e2301ad47aa5d3",
+  "arenaSha256": "32fff99e07e13cde607b010666508f9dcf812ac839115a4a90b317b71733856f",
+  "panels": [
+    {
+      "name": "body-rest",
+      "form": "body",
+      "crop": [
+        0,
+        0,
+        525,
+        374
+      ],
+      "alphaCrop": [
+        30,
+        6,
+        493,
+        372
+      ],
+      "target": [
+        2,
+        8,
+        178,
+        140
+      ]
+    },
+    {
+      "name": "body-gather",
+      "form": "body",
+      "crop": [
+        0,
+        374,
+        525,
+        748
+      ],
+      "alphaCrop": [
+        91,
+        9,
+        431,
+        367
+      ],
+      "target": [
+        27,
+        8,
+        153,
+        140
+      ]
+    },
+    {
+      "name": "body-release",
+      "form": "body",
+      "crop": [
+        0,
+        748,
+        525,
+        1122
+      ],
+      "alphaCrop": [
+        28,
+        1,
+        498,
+        359
+      ],
+      "target": [
+        2,
+        8,
+        178,
+        140
+      ]
+    },
+    {
+      "name": "sun-rest",
+      "form": "sun",
+      "crop": [
+        530,
+        0,
+        968,
+        374
+      ],
+      "alphaCrop": [
+        23,
+        19,
+        383,
+        363
+      ],
+      "target": [
+        22,
+        2,
+        158,
+        138
+      ]
+    },
+    {
+      "name": "heart-rest",
+      "form": "heart",
+      "crop": [
+        978,
+        0,
+        1402,
+        374
+      ],
+      "alphaCrop": [
+        36,
+        38,
+        342,
+        351
+      ],
+      "target": [
+        26,
+        6,
+        154,
+        134
+      ]
+    }
+  ],
+  "arena": {
+    "native": [
+      512,
+      240
+    ],
+    "targetRows": [
+      0,
+      36,
+      221.5,
+      231,
+      239,
+      240
+    ],
+    "sourceRows": [
+      0,
+      33,
+      189,
+      201,
+      217.5,
+      240
+    ]
+  }
+}

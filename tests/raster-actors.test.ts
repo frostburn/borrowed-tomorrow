@@ -30,13 +30,14 @@ it('ships small indexed transparent PNGs with exact integer logical expansion an
   expect(report.assets.length).toBe(Object.keys(RASTER_ACTORS).length);
   for(const asset of report.assets){
     const vector=`art/vector/${asset.source}`,entry=RASTER_ACTORS[vector],bytes=readFileSync(`public/${entry.url}`);
-    expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)],entry.url).toEqual([entry.width/2,entry.height/2]);
+    const first=entry.pages?.[0]??entry;
+    expect([bytes.readUInt32BE(16),bytes.readUInt32BE(20)],entry.url).toEqual([first.width/2,first.height/2]);
     expect(bytes[25],entry.url).toBe(3); // indexed PNG, alpha through tRNS
     expect(bytes.includes(Buffer.from('tRNS')),entry.url).toBe(true);
     expect(bytes.length,entry.url).toBeLessThanOrEqual(131072);
     expect(bytes.length).toBe(asset.bytes);
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(asset.sha256);
-    expect(rasterActorDimensions(`https://example.test/game/${entry.url}`)).toEqual(entry);
+    expect(rasterActorDimensions(`https://example.test/game/${entry.url}`)).toEqual(first);
     expect(actorArtUrl(`/game/${vector}`)).toBe(`/game/${entry.url}`);
     expect(actorArtUrl(vector,'vector')).toBe(vector);
   }

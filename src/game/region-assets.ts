@@ -55,7 +55,10 @@ export class RegionAssets {
       if(vectorAsset(key)||key.startsWith('scene-')||key.startsWith('scenery-')){
         const texture=this.scene.textures.get(key);
         const path=this.actors.get(key);
-        prepareArtTexture(texture,path?RASTER_ACTORS[path]:undefined);
+        // Paged boss atlases assemble from their small source pages inside
+        // nativeTexture, before creating any of the original frame crops.
+        const asset=path?RASTER_ACTORS[path]:undefined;
+        if(!asset?.pages)prepareArtTexture(texture,asset);
         const page=MOTION_PAGES.find(page=>page.key===key);
         if(page&&!texture.has('0'))for(let i=0;i<page.frames;i++)texture.add(String(i),0,i%2*80,Math.floor(i/2)*80,80,80);
       }

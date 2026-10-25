@@ -1,0 +1,22 @@
+[
+  {
+    "key": "benefactor-domain-raster-left",
+    "url": "art/raster-maps/benefactor/arena-left.png",
+    "x": 0,
+    "y": 0,
+    "width": 512,
+    "height": 480,
+    "depth": -1000,
+    "layerId": 1
+  },
+  {
+    "key": "benefactor-domain-raster-right",
+    "url": "art/raster-maps/benefactor/arena-right.png",
+    "x": 512,
+    "y": 0,
+    "width": 512,
+    "height": 480,
+    "depth": -1000,
+    "layerId": 1
+  }
+]

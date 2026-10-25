@@ -1,0 +1,106 @@
+{
+  "grid": 2,
+  "frames": 12,
+  "idleFrames": 8,
+  "assets": [
+    {
+      "url": "art/raster-actors/benefactor/benefactor-motion.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 28715,
+      "sha256": "96cbd651a724a54b40815730d1dc8142708b9f2129d18c52cad1c04b9fcaa52c"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-motion-1.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 28767,
+      "sha256": "0e8ad5c88ddb5a9d80e56dfb140de80e8d408693dac29b07f5b4ff1940123b72"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-motion-2.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 38583,
+      "sha256": "6a17eab8fec92358a1c562d0f4fa244da8ead9d9d9aed7ec99e272c3b7e31795"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 18350,
+      "sha256": "c6151f56a874d92148a6a39c86493e64f88cdd79be3a8668be7c5558162ca5f6"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-sun-motion-1.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 18342,
+      "sha256": "19efb00419c6b6ddc826af358e26ea116d19a2cbc56cd777bd0df3fe11ba7087"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-sun-motion-2.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 24813,
+      "sha256": "f71971d7e5a2e8f234ffe794472bed9d13d7f294fe13dacbbb5fbd398922a8bc"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 9302,
+      "sha256": "d3cb035ee1d00f53ee27d7f93c64e6194b6978c4937f38b0205554ddb1a2fec0"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-heart-motion-1.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 9493,
+      "sha256": "8e758a1dbfc2c6e8cbbe93dc62160fda00c4faf115496c1641ad0c106cb29709"
+    },
+    {
+      "url": "art/raster-actors/benefactor/benefactor-heart-motion-2.png",
+      "native": [
+        360,
+        288
+      ],
+      "bytes": 12414,
+      "sha256": "aabffdf6b1c47dbfe15e0aff9023244b30c8b008608b029ffc71b62d6fbc3198"
+    },
+    {
+      "url": "art/raster-maps/benefactor/arena-left.png",
+      "native": [
+        256,
+        240
+      ],
+      "bytes": 44285,
+      "sha256": "5b229193a74c0a7274007d783d3ba5bcf46c7e1ffa8347188018d7eadaa45ef8"
+    },
+    {
+      "url": "art/raster-maps/benefactor/arena-right.png",
+      "native": [
+        256,
+        240
+      ],
+      "bytes": 43573,
+      "sha256": "c2fd5b0d8a76fb7da701c209bd3baba49c254df4f67b8d43b9f8e4beb21359b2"
+    }
+  ]
+}

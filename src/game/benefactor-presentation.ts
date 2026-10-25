@@ -3,11 +3,19 @@ import type {Encounter} from '../rules/combat';
 import {BENEFACTOR_ID,benefactorUnit,prepareBenefactor} from '../rules/benefactor';
 import {offset} from '../rules/hex';
 import {actorAsset} from '../content/actors';
+import {actorAtlasPages} from '../content/actor-art-skin';
+import {benefactorDomainArt} from '../content/scene-art';
+import {BATTLE_MAPS} from '../content/battle-maps';
+import {newGame} from '../rules/state';
+import {drawTileMap} from './tilemap';
 import type {CompanionId} from '../rules/party';
 import {BossMaskCache,nativeTexture,bossLabel as label,bossPlacement as placement,pickBossBody} from './boss-display';
 import {animateBoss,bossAttack,bossMotionEnabled,BOSS_FRAME_COUNT,BOSS_ATTACK_CONTACT,BOSS_ATTACK_DURATION} from './boss-motion';
 export const BENEFACTOR_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/benefactor/benefactor-portrait.svg`;
-export const BENEFACTOR_ASSETS=['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion','benefactor-domain'].map(key=>({key,url:`art/vector/benefactor/${key}.svg`}));
+export const BENEFACTOR_ASSETS=[
+ ...['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion'].map(key=>({key,url:`art/vector/benefactor/${key}.svg`})),
+ ...benefactorDomainArt('vector'),...benefactorDomainArt('raster'),...actorAtlasPages('benefactor'),
+];
 const masks=new BossMaskCache<Uint8Array[]>();
 export function benefactorPresentation(encounter:Encounter):BattlePresentation{
  const form=encounter.benefactorForm??0,key=form===0?'benefactor-motion':form===1?'benefactor-sun-motion':'benefactor-heart-motion';let currentFrame=0;
@@ -18,7 +26,7 @@ export function benefactorPresentation(encounter:Encounter):BattlePresentation{
   portrait:u=>u.id===BENEFACTOR_ID?BENEFACTOR_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   hint:b=>`${benefactorUnit(b)?.intent?.name??'Judgment'} · the marked hexes are struck on the god’s turn.`,
-  background(scene,world){nativeTexture(scene,'benefactor-domain');world.add(scene.add.image(0,0,'benefactor-domain').setOrigin(0));},
+  background:(scene,world)=>drawTileMap(scene,world,BATTLE_MAPS[`benefactor-${['body','sun','heart'][form]}`],newGame()),
   actor(scene,u,hp){
    if(u.id!==BENEFACTOR_ID)return;
    const texture=nativeTexture(scene,key),surface=texture.getSourceImage() as HTMLCanvasElement;

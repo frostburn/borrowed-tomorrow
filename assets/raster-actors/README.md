@@ -46,12 +46,15 @@ Attacks and story poses have separate painted sources, keeping faces and tools
 coherent during more substantial gestures. Common enemy and civilian variants
 carry the existing authored palette deltas onto their new base painting.
 
-Large boss bodies retain their accepted designs and mechanical/breathing poses,
-baked through the same raster grid and shared palette. Their frame rectangles,
+Large boss bodies retain their accepted designs and mechanical/breathing poses.
+Most are baked through the same raster grid and shared palette. The Benefactor's
+three forms use the dedicated painted kit in `../raster-benefactor/README.md`,
+with three bounded pages per model and a boss-local palette. The complete
+actor export runs this focused exporter last. Their frame rectangles,
 animation clocks, footprint and picking coordinates remain unchanged. Raster
 hit masks are rebuilt when switching skin.
 
-All exports have one shared 255-color palette plus a transparent entry. Palette
+Ordinary exports have one shared 255-color palette plus a transparent entry. Palette
 indexing compresses files; live lighting still uses unrestricted RGB, highlight
 planes and multiple shadows. Native ordinary sprites are **40×40**, restored to
 the existing **80×80** logical frame with exactly **2× nearest expansion** before

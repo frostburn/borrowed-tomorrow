@@ -29,4 +29,6 @@ try{
  await writeFile(join(temp,'files.json'),JSON.stringify(files));
  const result=spawnSync('python3',[join(root,'assets/raster-actors/export.py'),temp],{stdio:'inherit',cwd:root});
  if(result.error)throw result.error;if(result.status!==0)throw new Error('Raster actor export failed');
+ const bosses=spawnSync('node',[join(root,'scripts/export-raster-benefactor.mjs')],{stdio:'inherit',cwd:root});
+ if(bosses.error)throw bosses.error;if(bosses.status!==0)throw new Error('Painted Benefactor export failed');
 }finally{await browser.close();await rm(temp,{recursive:true,force:true});}

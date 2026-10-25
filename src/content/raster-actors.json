@@ -132,17 +132,86 @@
   "art/vector/benefactor/benefactor-heart-motion.svg": {
     "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
     "width": 720,
-    "height": 1728
+    "height": 1728,
+    "pages": [
+      {
+        "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-heart-motion-1.png",
+        "x": 0,
+        "y": 576,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-heart-motion-2.png",
+        "x": 0,
+        "y": 1152,
+        "width": 720,
+        "height": 576
+      }
+    ]
   },
   "art/vector/benefactor/benefactor-motion.svg": {
     "url": "art/raster-actors/benefactor/benefactor-motion.png",
     "width": 720,
-    "height": 1728
+    "height": 1728,
+    "pages": [
+      {
+        "url": "art/raster-actors/benefactor/benefactor-motion.png",
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-motion-1.png",
+        "x": 0,
+        "y": 576,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-motion-2.png",
+        "x": 0,
+        "y": 1152,
+        "width": 720,
+        "height": 576
+      }
+    ]
   },
   "art/vector/benefactor/benefactor-sun-motion.svg": {
     "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
     "width": 720,
-    "height": 1728
+    "height": 1728,
+    "pages": [
+      {
+        "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-sun-motion-1.png",
+        "x": 0,
+        "y": 576,
+        "width": 720,
+        "height": 576
+      },
+      {
+        "url": "art/raster-actors/benefactor/benefactor-sun-motion-2.png",
+        "x": 0,
+        "y": 1152,
+        "width": 720,
+        "height": 576
+      }
+    ]
   },
   "art/vector/boiler-keeper.svg": {
     "url": "art/raster-actors/boiler-keeper.png",
