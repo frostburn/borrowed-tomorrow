@@ -12,7 +12,7 @@ Edric and Samira are the style anchors. Match their broad face scale, modest tur
 - Construct eyes from an eyelid plane, muted sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
 - Draw a bridge, tip and underside for the nose. Avoid the old single triangular nose stamp. Fit them to the head's turn and the person's face. Mouth corners, lower lip and chin should support the expression without an outlined cartoon mouth.
 - Use the same detail density, not the same anatomy. Keep differently shaped cheeks, foreheads, noses, jaws, eyelids and mouths, asymmetry, age and direction of gaze. Don't smooth every adult into a youthful face or give every man the same square jaw.
-- Group hair into a few connected clumps and facets. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
+- Group hair into a few connected clumps and facets. Side-lock and braid roots overlap their scalp masses by several native pixels, so a single missed 2px sample cannot leave a floating lock. Short-haired clean-shaven characters expose skin along the jaw; rear hair must not continue as a dark ring beneath the chin. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
 - Large shapes are filled polygons. Sparse 2px contours can describe brows, spectacles or costume trim. No gradients, filters, embedded images or external resources. The runtime's common coarse raster supplies the pixel weight.
 
 ## Individual likenesses
@@ -22,7 +22,7 @@ Costumes and established hair remain consistent with the actors. Features to pre
 | Character | Likeness and expression |
 | --- | --- |
 | Nell | Young rounded cheek, open eyes, two braids, red railway cap/jacket. |
-| Orrin | Broad bearded engineer, sidelong gaze, brass goggles on navy cap. |
+| Orrin | Broad bearded engineer, heavy level brows, sidelong gaze and a closed mouth; brass goggles on navy cap. |
 | Kit | Round youthful chin, tousled hair, open gaze, ochre courier scarf. |
 | Petra | Angular lower face, level brows and tight mouth; green armor and gold shoulder plates. |
 | Celia | Long mature cheeks, silver bob, round spectacles, patient expression and medical book. |

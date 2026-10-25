@@ -11,6 +11,7 @@ PALETTE = {
     'skin': '#d49c70', 'rose': '#c58077', 'gold': '#d9ae62', 'white': '#f5dca4',
     'hair': '#593e35', 'cream': '#d8c59b', 'slate': '#626d7f',
     'steel': '#8b9b9b', 'copper': '#b7784e', 'leather': '#9a7151',
+    'lens': '#f5f6ed',
 }
 
 # Shading stays in the surface's own material, rather than black piping.
