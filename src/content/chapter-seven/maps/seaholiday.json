@@ -359,8 +359,8 @@
       "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
-  "nextlayerid": 8,
-  "nextobjectid": 16,
+  "nextlayerid": 9,
+  "nextobjectid": 22,
   "properties": [
     {
       "name": "name",
@@ -813,6 +813,63 @@
           "y": 588,
           "properties": [],
           "id": 15
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 8,
+      "type": "objectgroup",
+      "name": "Scene:seven-picnic",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 732,
+          "y": 612,
+          "properties": [],
+          "id": 16
+        },
+        {
+          "name": "tomas",
+          "point": true,
+          "x": 804,
+          "y": 540,
+          "properties": [],
+          "id": 17
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 588,
+          "properties": [],
+          "id": 18
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 756,
+          "y": 564,
+          "properties": [],
+          "id": 19
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 828,
+          "y": 588,
+          "properties": [],
+          "id": 20
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 852,
+          "y": 612,
+          "properties": [],
+          "id": 21
         }
       ],
       "properties": []

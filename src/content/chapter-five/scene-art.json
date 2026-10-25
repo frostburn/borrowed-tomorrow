@@ -250,7 +250,7 @@
       "width": 1536,
       "height": 350,
       "depth": -998,
-      "layerId": 15
+      "layerId": 18
     },
     {
       "key": "scene-five-ship-berth",
@@ -260,7 +260,7 @@
       "width": 108,
       "height": 52,
       "depth": 650,
-      "layerId": 19
+      "layerId": 22
     }
   ],
   "hammerplain": [

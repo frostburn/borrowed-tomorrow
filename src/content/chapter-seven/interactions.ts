@@ -115,7 +115,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
    SAY('Nell','You didn’t hear the engine?'),
    SAY('Orrin','A bit. Then I went back to sleep.'),
   ]});
-  case 'sea-friends':return say('Orrin','Petra’s cutting the bread. Celia says we’re allowed to eat before we check the return timetable.');
+  case 'sea-friends':return h.talk(scenes.picnic());
   case 'sea-ending':if(!f.realSeaSeen)return resumeChapterSeven(h);f.chapterSevenComplete=true;remember(s,'chapterSevenComplete');h.refresh();h.save();h.boundary();return;
  }
 }
