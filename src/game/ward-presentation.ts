@@ -15,7 +15,7 @@ export function wardPresentation(encounter:Encounter):BattlePresentation{
  let source:Hex|undefined;
  return {
   encounter,prepare:prepareWard,focus:offset(5,3),
-  lighting:encounter.id==='wind-engine'?{scene:'battle-wind-engine',ground:'M24 72H984V552H24Z'}:undefined,
+  lighting:encounter.id==='wind-engine'?{scene:'battle-wind-engine',ground:'M24 72H984V552H24Z'}:{scene:'battle-domain-ward',ground:'M72 78L330 68L510 82L708 68L888 82L906 444L704 460L490 446L280 462L72 446Z'},
   portrait:u=>u.id===WARD_ID?`${import.meta.env.BASE_URL}art/vector/portrait-ward-engine.svg`:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WARD_ID?bossPlacement({...u,hex}):undefined,

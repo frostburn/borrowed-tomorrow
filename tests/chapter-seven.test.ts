@@ -1,4 +1,7 @@
 import {expect,it} from 'vitest';
+import {CHAPTER_SEVEN_BATTLES} from '../src/content/chapter-seven/maps';
+import {tileWalkable} from '../src/content/tilemaps';
+import {cells as hexes,toPixel} from '../src/rules/hex';
 import {chapterSevenDeparture,chapterSevenStart,chapterSevenRefugeStart} from '../src/dev/canonical-saves';
 import {beginChapterSeven,level,remember} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
@@ -84,5 +87,23 @@ it('keeps all authored scene casts and destinations on connected real floor, wit
  }
  for(const fn of Object.values(scenes)){const d=fn();expect(d.scene).toBeTruthy();const map=Object.values(MAPS).find(m=>m.tiles?.layers.some(l=>l.name==='Scene:'+d.scene!.id))!;
   for(const a of d.scene!.actors){expect(['alban','emperor','ansel']).not.toContain(a.id);expect(walkable(map,a.at.x,a.at.y),d.scene!.id+':'+a.id).toBe(true);}
+ }
+});
+
+it('keeps the temporary god and each revealed form individually live through ground caching',()=>{
+ for(const [map,names]of [['hollowsill',['distant-god']],['sunthrone',['monument','revealed-sun','revealed-heart']]]as const){
+  for(const name of names){
+   const layers=MAPS[map].tiles!.layers;
+   const body=layers.find(l=>l.name===name)!,glow=layers.find(l=>l.name===name+'-spill')!;
+   expect(body,`${map}:${name}`).toBeDefined();expect(glow).toBeDefined();
+   const props=(l:typeof body)=>Object.fromEntries((l.properties??[]).map(p=>[p.name,p.value]));
+   expect(props(body).live).toBe(true);expect(props(glow)).toEqual(props(body));
+  }
+ }
+});
+
+it('keeps every legal battle hex on the domain arenas’ authored ground',()=>{
+ for(const [id,map]of Object.entries(CHAPTER_SEVEN_BATTLES))for(const hex of hexes()){
+  const p=toPixel(hex);expect(tileWalkable(map,Math.floor(p.x/24),Math.floor(p.y/24),{flags:{}}),`${id}:${hex.q},${hex.r}`).toBe(true);
  }
 });

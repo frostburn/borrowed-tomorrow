@@ -6,6 +6,7 @@ import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapte
 import { CHAPTER_FOUR_MAPS, CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { CHAPTER_FIVE_MAPS, CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
 import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../src/content/chapter-six/maps';
+import { CHAPTER_SEVEN_MAPS,CHAPTER_SEVEN_BATTLES } from '../src/content/chapter-seven/maps';
 import { visibleSceneArt } from '../src/content/scene-art';
 import { properties } from '../src/content/tilemaps';
 import { actorPlanes } from '../src/game/actor-planes';
@@ -15,13 +16,13 @@ const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{
-  it('covers every Chapter One–Six world and battle floor, without opting later regions in',()=>{
-    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES),...Object.values(CHAPTER_FIVE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FIVE_BATTLES),...Object.values(CHAPTER_SIX_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_SIX_BATTLES)]){
+  it('covers every campaign world and battle floor',()=>{
+    for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES),...Object.values(CHAPTER_FIVE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FIVE_BATTLES),...Object.values(CHAPTER_SIX_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_SIX_BATTLES),...Object.values(CHAPTER_SEVEN_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_SEVEN_BATTLES)]){
       const rig=sceneLight(String(properties(map).sceneArt),visibleSceneArt(map,{flags:{}})??[])!;
       expect(rig.ambient).toHaveLength(3);expect(rig.lamps.length).toBeGreaterThan(0);
       for(const light of rig.lamps){expect(light.radius).toBeGreaterThan(0);expect(light.height).toBeGreaterThan(58);}
     }
-    expect(sceneLight('hollowsill',[])).toBeUndefined();
+    expect(sceneLight('unregistered-scene',[])).toBeUndefined();
   });
   it('keeps ferry illumination and its spill in the same story visibility layer',()=>{
     const map=CHAPTER_FOUR_MAPS.breakwater.tiles!;

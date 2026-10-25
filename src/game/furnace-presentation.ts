@@ -17,7 +17,7 @@ const placement=(u:Unit,hex:Hex=u.hex)=>({x:Math.round(toPixel(hex).x),y:Math.ro
 export function furnacePresentation(encounter:Encounter):BattlePresentation{
  return {
   encounter,prepare:prepareFurnace,focus:offset(5,3),
-  lighting:encounter.id==='hammer-carrier'?{scene:'battle-hammer-carrier',ground:'M24 72H984V552H24Z'}:undefined,
+  lighting:encounter.id==='hammer-carrier'?{scene:'battle-hammer-carrier',ground:'M24 72H984V552H24Z'}:{scene:'battle-domain-furnace',ground:'M72 78L330 68L510 82L708 68L888 82L906 444L704 460L490 446L280 462L72 446Z'},
   portrait:u=>u.id===FURNACE_ID?`${import.meta.env.BASE_URL}art/vector/portrait-furnace-carrier.svg`:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===FURNACE_ID?placement(u,hex):undefined,
