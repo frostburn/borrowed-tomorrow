@@ -5,7 +5,7 @@ import {chapterSixCapitalStart,chapterSixFinaleStart} from '../../src/dev/canoni
 import {createBattle,awardVictory} from '../../src/rules/combat';
 import {arrival} from '../../src/content/maps';
 import {importSave} from './navigation';
-import {inspect,capture,nativeActor} from './controls';
+import {inspect,capture} from './controls';
 
 async function until(page:Page,text:string){
  for(let i=0;i<32;i++){
@@ -27,7 +27,7 @@ for(const [device,viewport,recovered]of [['desktop',{width:1280,height:800},true
   expect((await inspect(page)).state.flags.emperorOfferSeen).toBeUndefined();await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-told');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.activeParty).toEqual(five.activeParty);expect((await inspect(page)).state.inventory).toEqual(five.inventory);
 
   const palace=chapterSixCapitalStart(recovered);for(const f of ['capitalQuaySeen','capitalStreetSeen','capitalProcessionConfronted'])palace.flags[f]=true;const b=createBattle('capital-procession',palace);b.result='victory';awardVictory(b,palace);palace.flags.capitalStreetFreed=true;palace.location=arrival('lastpalace','start');palace.activeParty=['kit','orrin','petra'];await importSave(page,palace);
-  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-palace-arrival');await until(page,'I can hear the bread cart');await page.waitForTimeout(850);await nativeActor(page,'civilian-traveler',{x:38,y:21},.02);await capture(page,`emperor-household-${device}`);expect((await inspect(page)).actors.some(a=>a.hero==='nell')).toBe(recovered);
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-palace-arrival');await until(page,'I can hear the bread cart');await page.waitForTimeout(850);const memory=(await inspect(page)).people.find(p=>p.id==='palace-memory')!;expect(memory.alpha).toBeGreaterThan(0);expect(memory.alpha).toBeLessThan(1);expect((await inspect(page)).people.find(p=>p.id==='palace-servant')!.alpha).toBe(1);await capture(page,`emperor-household-${device}`);expect((await inspect(page)).actors.some(a=>a.hero==='nell')).toBe(recovered);
   await until(page,'guard at her funeral');await page.getByRole('button',{name:'Skip scene',exact:true}).click();const arrived=(await inspect(page)).state;expect(arrived.flags.capitalPalaceSeen).toBe(true);expect(arrived.flags.capitalHallOpened).toBeUndefined();expect(arrived.activeParty).toEqual(palace.activeParty);expect(arrived.inventory).toEqual(palace.inventory);expect(arrived.xp).toBe(palace.xp);
 
   const crown=chapterSixFinaleStart(recovered);crown.flags.capitalWarningSeen=true;crown.flags.capitalAssaultCommitted=true;crown.flags.capitalRiskAccepted=!recovered;crown.location=arrival('crown','start');await importSave(page,crown);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await until(page,'finished her breakfast');await capture(page,`emperor-breakfast-${device}`);
