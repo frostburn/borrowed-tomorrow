@@ -116,5 +116,13 @@ export const quay=(s:GameState)=>scene(s,'capitalquay','six-capital-quay','Behin
  line('Petra','That’s the cart we saw when the wall came down.'),
  line('Celia','Leave a clear way beside her. I want to see whether she can hear us.'),
  ...(s.flags.nellRecovered?[line('Nell','She’s dropped that cloth twice. Each time it’s back on the cart when she turns.')]:[line('Orrin','She’s dropped that cloth twice. Each time it’s back on the cart when she turns.')]),
+ line('Alda','Hester’s fitters are at the patient hoist. Its bearing housing has split.',{focus:{x:44,y:30},cut:true,actors:{orrin:{at:{x:42,y:29},face:'orrin-right'}}}),
+ line('Orrin','I can sleeve that. There’s a length of copper on the ship.'),
+ line('A fitter','We’re taking it out. There’s a hand drum on the launch.'),
+ line('Orrin','You’ll need something under the outer mounting.'),
+ line('A fitter','Timber brace. We’ve checked the piles. We’ll test it with the ballast before anyone gets on.'),
+ line('Alda','Do you need to stay with them?'),
+ line('Orrin','No. That’ll do the job. Take my ring spanner; it fits the mounting.'),
+ line('The quay','Orrin leaves the spanner beside the fitter’s tools and heads for the inner stair.',{focus:{x:40,y:30},actors:{orrin:{to:{x:38,y:29}}},duration:1400}),
  line('Alda','The launches can use this quay. I’ll keep a crew here while we find a way to reach the people inside.'),
 ]);

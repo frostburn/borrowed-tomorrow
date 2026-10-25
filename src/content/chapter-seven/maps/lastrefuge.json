@@ -359,8 +359,8 @@
       "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
-  "nextlayerid": 16,
-  "nextobjectid": 25,
+  "nextlayerid": 17,
+  "nextobjectid": 30,
   "properties": [
     {
       "name": "name",
@@ -996,6 +996,55 @@
           "y": 732,
           "properties": [],
           "id": 24
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 16,
+      "type": "objectgroup",
+      "name": "Scene:seven-orrin",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 660,
+          "properties": [],
+          "id": 25
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 684,
+          "properties": [],
+          "id": 26
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 828,
+          "y": 684,
+          "properties": [],
+          "id": 27
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 684,
+          "y": 732,
+          "properties": [],
+          "id": 28
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 852,
+          "y": 732,
+          "properties": [],
+          "id": 29
         }
       ],
       "properties": []
