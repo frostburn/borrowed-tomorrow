@@ -153,7 +153,7 @@ export const home=()=>scene('homecoming','seven-home','Larkspur, this morning',[
  l('Orrin','Hester sent the first ordinary ward engine. They had it running before we got back.'),
  l('Petra','Namar and Skeld have crews on the roads. There’s work waiting when we return.'),
  l('Nell','When we return.'),
- l('Iona','Petra, there’s a letter for you. Dena sent it with the ward post.',{focus:{x:22,y:17},actors:{petra:{to:{x:22,y:16},face:'petra-back'}},duration:650}),
+ l('Iona','Petra, there’s a letter for you. Dena sent it with the ward post.',{focus:{x:21,y:14},actors:{petra:{to:{x:22,y:13},face:'petra-back'}},duration:1000}),
  l('Petra','About the exchange?'),
  l('Iona','Some of the Cinderbank families want to ask you about the crossing. She wants to know if you’ll come back.'),
  l('Petra','Tell her I’ll be there after the sea trip. She has my account; I’ll answer them in person.'),
