@@ -3,15 +3,18 @@ import {ROOMS,type RoomId} from '../content/rooms';
 export const ROOM_FADE=.28;
 const delays=[.0137,.0199,.0311,.0437,.0613,.0899];
 
-/** Schroeder all-pass: H(z) = (z^-m - g) / (1 - g z^-m).
+/** Damped Schroeder diffuser: H(z) = (L(z) z^-m - g) / (1 - g L(z) z^-m).
+ * L is a nonresonant one-pole absorption filter on the delayed branch,
+ * including its feedback. High frequencies lose energy on every reflection.
  * Every feedback cycle contains a fixed delay; |g| < 1. No oscillators,
  * convolution buffers, delay modulation or pitch-shifting room transitions. */
-function diffuser(c:BaseAudioContext,input:AudioNode,seconds:number,g:number,nodes:AudioNode[]){
+function diffuser(c:BaseAudioContext,input:AudioNode,seconds:number,g:number,damping:number,nodes:AudioNode[]){
  const sum=c.createGain(),delay=c.createDelay(1),feedback=c.createGain(),forward=c.createGain(),out=c.createGain();
+ const pole=Math.exp(-2*Math.PI*damping/c.sampleRate),absorption=c.createIIRFilter([1-pole],[1,-pole]);
  delay.delayTime.value=seconds;feedback.gain.value=g;forward.gain.value=-g;
- input.connect(sum);sum.connect(delay);delay.connect(feedback);feedback.connect(sum);
- sum.connect(forward);forward.connect(out);delay.connect(out);
- nodes.push(sum,delay,feedback,forward,out);return out;
+ input.connect(sum);sum.connect(delay);delay.connect(absorption);absorption.connect(feedback);feedback.connect(sum);
+ sum.connect(forward);forward.connect(out);absorption.connect(out);
+ nodes.push(sum,delay,absorption,feedback,forward,out);return out;
 }
 
 /** One immutable stereo room, shared by all incoming voices. */
@@ -24,7 +27,7 @@ function room(c:BaseAudioContext,input:AudioNode,output:AudioNode,id:RoomId,star
   for(let ch=0;ch<2;ch++){
    const channel=c.createGain();nodes.push(channel);split.connect(channel,ch);
    let end:AudioNode=channel;
-   for(const [i,t]of delays.entries())end=diffuser(c,end,t*p.size*(ch?1.071+i*.009:1),p.feedback,nodes);
+   for(const [i,t]of delays.entries())end=diffuser(c,end,t*p.size*(ch?1.071+i*.009:1),p.feedback,p.damping,nodes);
    const filter=c.createBiquadFilter();filter.type='lowpass';filter.frequency.value=p.damping;filter.Q.value=.5;nodes.push(filter);
    end.connect(filter);filter.connect(merge,0,ch);
   }
