@@ -1,6 +1,11 @@
 /** One screen pixel is a 2×2 game-space square, for text and artwork alike. */
 export const RASTER_UNIT = 2;
 export const snapRaster = (value:number) => Math.round(value/RASTER_UNIT)*RASTER_UNIT;
+/** Keep the final step inside the bounds even when a viewport has odd dimensions. */
+export function snapRasterWithin(value:number,min:number,max:number){
+  const first=Math.ceil(min/RASTER_UNIT)*RASTER_UNIT,last=Math.floor(max/RASTER_UNIT)*RASTER_UNIT;
+  return first<=last?Math.max(first,Math.min(last,snapRaster(value))):snapRaster(min);
+}
 
 export function rasterize(source:HTMLCanvasElement,target:HTMLCanvasElement,unit=RASTER_UNIT){
   const width=Math.ceil(source.width/unit),height=Math.ceil(source.height/unit);

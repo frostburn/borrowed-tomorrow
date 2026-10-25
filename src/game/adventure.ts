@@ -1,4 +1,5 @@
 import {MAP_ROOMS,TRACK_ROOMS} from '../content/rooms';
+import { alignCameraScroll } from './raster-camera';
 import { WorldMechanisms } from './world-mechanisms';
 import { BoardingPresentation } from './boarding-presentation';
 import {benefactorPresentation} from './benefactor-presentation';
@@ -106,6 +107,7 @@ export class Adventure extends Phaser.Scene {
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
+    alignCameraScroll(this.cameras.main);
     this.regionAssets.prepareVectors([...textures,...MOTION_PAGES.map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;

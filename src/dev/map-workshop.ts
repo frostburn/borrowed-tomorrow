@@ -10,6 +10,7 @@ import { vectorAsset } from '../content/art-assets';
 import { sceneArt, visibleSceneArt } from '../content/scene-art';
 import { sceneLight, lightPixels } from '../game/world-light';
 import { lightGround, paintActorShadow } from '../game/light-canvas';
+import { snapRasterWithin } from '../game/raster';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -109,9 +110,10 @@ export class MapWorkshop {
     for(const details of host.querySelectorAll('details'))details.open=opened.includes(details.querySelector('summary')?.textContent??'');
     host.querySelector('.map-sidebar')!.scrollTop=keepView?sideScroll:0;outer.scrollTop=outerScroll;
     if(view){viewport.scrollLeft=view.x*this.zoom;viewport.scrollTop=view.y*this.zoom;}else this.center();
-    viewport.onscroll=()=>{if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=setTimeout(()=>{this.urlTimer=undefined;this.syncUrl();},150);};this.paint();this.syncUrl();
+    viewport.onscroll=()=>{this.alignView(viewport);if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=setTimeout(()=>{this.urlTimer=undefined;this.syncUrl();},150);};this.alignView(viewport);this.paint();this.syncUrl();
   }
-  private center(){const v=this.host!.querySelector<HTMLElement>('.map-viewport')!;v.scrollLeft=(this.selected.x+.5)*24*this.zoom-v.clientWidth/2;v.scrollTop=(this.selected.y+.5)*24*this.zoom-v.clientHeight/2;}
+  private alignView(v:HTMLElement){v.scrollLeft=snapRasterWithin(v.scrollLeft,0,v.scrollWidth-v.clientWidth);v.scrollTop=snapRasterWithin(v.scrollTop,0,v.scrollHeight-v.clientHeight);}
+  private center(){const v=this.host!.querySelector<HTMLElement>('.map-viewport')!;v.scrollLeft=(this.selected.x+.5)*24*this.zoom-v.clientWidth/2;v.scrollTop=(this.selected.y+.5)*24*this.zoom-v.clientHeight/2;this.alignView(v);}
   private select(p:Point){this.selected=this.clamp(p);this.host!.querySelector<HTMLInputElement>('#map-x')!.value=String(this.selected.x);this.host!.querySelector<HTMLInputElement>('#map-y')!.value=String(this.selected.y);this.paint();this.syncUrl();}
   private active(l:TileLayer){return !this.hidden.has(l.id)&&layerVisible(l,{flags:this.flags});}
   private tile(ctx:CanvasRenderingContext2D,gid:number,x:number,y:number){
