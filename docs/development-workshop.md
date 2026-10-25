@@ -107,6 +107,8 @@ Open **Music** in the workshop or go directly to `/?dev=music`. This route and a
 
 **Expression** compares authored dynamics, vibrato, pitch bends and bell release against a neutral performance. It appears on every expressive cue. **Rubato** appears on Above the Railway, The Garden Walk, A Place to Return, Under the Gantry, The Town Wheel and The Empty Cabin; the whole ensemble shares its clock, including cross-bar holds. Both switches start on; toggling while playing restarts the selected bar. Other cues keep their normal pulse. These choices are session-only and do not alter campaign performance. See [music-direction.md](music-direction.md#expression-and-review) for suggested bars and parts.
 
+**Room** starts with each track’s canonical acoustic space. Select another room or **Dry** while listening; it crossfades without restarting the bar. Picking a different cue restores Canonical. Pitch and fifth auditions share the selected room, and leaving review restores campaign map acoustics. See [room-audio.md](room-audio.md) for authored mappings and routing.
+
 Audio starts only after a playback or audition click. The header Sound control also starts/stops review audio. Leaving Music or entering a practice battle stops the review. The campaign uses the same 31-EDO score data, mixer and instruments.
 
 

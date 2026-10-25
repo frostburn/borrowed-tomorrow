@@ -1,3 +1,4 @@
+import {MAP_ROOMS,TRACK_ROOMS} from '../content/rooms';
 import { WorldMechanisms } from './world-mechanisms';
 import { BoardingPresentation } from './boarding-presentation';
 import {benefactorPresentation} from './benefactor-presentation';
@@ -116,7 +117,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -188,7 +189,7 @@ export class Adventure extends Phaser.Scene {
   }
   private showTitle() {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
-    this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');
+    this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');this.audio.setRoom(MAP_ROOMS.station);
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Chapter One · A journey beyond the empire';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey begins at home</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
     this.titlePanel();
@@ -299,7 +300,7 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=undefined;
     this.mode = 'world';this.ui.battlePan.hidden=true; this.battle = undefined; this.hover = undefined; this.plan = undefined; this.busy = false;
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
-    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
+    this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setRoom(MAP_ROOMS[map.id]);this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     this.lighting.attach(this.layer!,map.tiles,this.state);
     this.mechanisms=new WorldMechanisms(this,this.layer!);
     for(const person of visiblePeople(map,this.state)){
@@ -544,7 +545,7 @@ export class Adventure extends Phaser.Scene {
     if(import.meta.env.DEV)this.testingBattle=structuredClone(this.battle!);
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.shownTurn=undefined;this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,480);this.cameras.main.setScroll(0,0);this.clearLayer();
     if(this.battlePresentation?.focus)this.revealHex(this.battlePresentation.focus);
-    this.audio.setMode(this.battleDefinition.music);this.drawBattle();this.renderBattleControls();this.ui.location(this.battleDefinition.name);this.ui.canvas.focus();this.scheduleEnemy();
+    this.audio.setRoom(this.practiceReady?TRACK_ROOMS[this.battleDefinition.music]:MAP_ROOMS[this.state.location.map]);this.audio.setMode(this.battleDefinition.music);this.drawBattle();this.renderBattleControls();this.ui.location(this.battleDefinition.name);this.ui.canvas.focus();this.scheduleEnemy();
   }
   private drawBattle(before?:BattleSnapshot) {
     this.boarding.settle(this);

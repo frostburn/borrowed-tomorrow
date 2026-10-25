@@ -1,3 +1,5 @@
+import {RoomReverb} from './room-reverb';
+import {MAP_ROOMS,type RoomId} from '../content/rooms';
 import type { MapId } from '../rules/state';
 import { ARRANGEMENTS, type Instrument, type MusicMode } from './score';
 import { Synth, type Effect } from './synth';
@@ -7,6 +9,10 @@ import { performanceBar,scoreTime,scoreBeat,type PerformanceOptions } from './sc
 export class Audio {
   private context?:AudioContext;
   private master?:GainNode;
+  private reverb?:RoomReverb;
+  private roomId:RoomId=MAP_ROOMS.station;
+  get room(){return this.roomId;}
+  setRoom(id:RoomId){this.roomId=id;if(this.enabled)this.reverb?.setRoom(id);}
   private music?:Synth;
   private musicGain?:GainNode;
   private cinematicLevel=1;
@@ -29,12 +35,8 @@ export class Audio {
     const master=c.createGain(),compressor=c.createDynamicsCompressor(),music=c.createGain(),fx=c.createGain();
     this.master=master;this.musicGain=music;master.gain.value=0;music.gain.value=.52*this.cinematicLevel;fx.gain.value=.58;
     compressor.threshold.value=-12;compressor.knee.value=9;compressor.ratio.value=4;compressor.attack.value=.005;compressor.release.value=.2;
-    music.connect(compressor);fx.connect(compressor);compressor.connect(master);master.connect(c.destination);
-    // A quiet stereo room tail: no downloaded samples and no per-note reverbs.
-    const room=c.createConvolver(),wet=c.createGain();wet.gain.value=.16;
-    const impulse=c.createBuffer(2,Math.floor(c.sampleRate*.85),c.sampleRate);let seed=731;
-    for(let ch=0;ch<2;ch++){const data=impulse.getChannelData(ch);for(let i=0;i<data.length;i++){seed=(Math.imul(seed,1664525)+1013904223)|0;data[i]=((seed>>>0)/2147483648-1)*(1-i/data.length)**3*.4;}}
-    room.buffer=impulse;music.connect(room);room.connect(wet);wet.connect(compressor);
+    const mix=c.createGain();music.connect(mix);fx.connect(mix);
+    this.reverb=new RoomReverb(c,mix,compressor);compressor.connect(master);master.connect(c.destination);
     this.music=new Synth(c,music);this.effects=new Synth(c,fx);
   }
   async toggle():Promise<boolean>{
@@ -46,12 +48,12 @@ export class Audio {
     const generation=++this.generation;
     if(!this.context)this.initialize();const c=this.context!;await c.resume();if(generation!==this.generation)return;
     this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;this.performance={...performance};
-    this.history=[];this.next=c.currentTime+.045;this.enabled=true;
+    this.history=[];this.next=c.currentTime+.045;this.enabled=true;this.reverb!.setRoom(this.roomId);
     this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
   }
   pause(){
-    this.generation++;this.enabled=false;
+    this.generation++;this.enabled=false;this.reverb?.setRoom('dry');
     if(this.context){const now=this.context.currentTime;this.master!.gain.setTargetAtTime(0,now,.025);this.music!.stop(now+.08);this.effects!.stop(now+.08);}
     if(this.timer){clearInterval(this.timer);this.timer=undefined;}
   }

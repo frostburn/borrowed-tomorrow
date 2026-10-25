@@ -47,3 +47,6 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 .canonical-saves h3{font:10px/12px SwitchyardCompact,monospace;margin-bottom:8px}
 .canonical-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
 @media(max-width:1023px){.title-panel .panel-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.canonical-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Music review uses the same compact controls on desktop and phone. */
+.music-rooms{margin:8px 0}.music-rooms summary{color:#f4e5be;background:#182b32;border:1px solid #8b805e;padding:6px;cursor:pointer}.music-rooms .music-parts{margin-top:6px}
