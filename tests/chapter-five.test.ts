@@ -11,6 +11,7 @@ import { arrival,MAPS,restorePoint,visiblePeople,walkable,worldPath } from '../s
 import { objective } from '../src/content/chapter-five/story';
 import { anchorCheckpoint } from './support/anchors';
 import * as scenes from '../src/content/chapter-five/scenes';
+import * as companions from '../src/content/chapter-five/companion-scenes';
 function host(state:GameState){
  let dialogue:Dialogue|undefined,encounter='';
  const h:StoryHost={state,talk:d=>{dialogue=d;},commit:(f,e)=>{state.flags[f]=true;if(e)remember(state,e);},refresh(){},save(){},travel:(map,x,y)=>{state.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast(){},async checkpoint(){return true;},endingMusic(){}};
@@ -51,7 +52,7 @@ it('keeps interrupted scenes replayable without granting a ship, anchor or dupli
  expect(s.flags.airshipOwned).toBeUndefined();expect(s.flags.hammerplainFreed).toBeUndefined();
 });
 it('stages all five companions and every movement on connected authored floor, with a silent god',()=>{
- const scripts={airfield:[scenes.airfield(),scenes.launch()],airship:[scenes.firstFlight(),scenes.fleet()],hammerplain:[scenes.hammerplain(),scenes.workers()],coolingworks:[scenes.cooling(),scenes.water()],anchorforge:[scenes.gantry(),scenes.release()]};
+ const scripts={airfield:[scenes.airfield(),scenes.launch()],airship:[scenes.firstFlight(),scenes.fleet(),...[false,true].flatMap(done=>[companions.engineWatch(done),companions.shieldRoom(done),companions.putThingsDown(done)])],hammerplain:[scenes.hammerplain(),scenes.workers()],coolingworks:[scenes.cooling(),scenes.water()],anchorforge:[scenes.gantry(),scenes.release()]};
  for(const [id,ss]of Object.entries(scripts))for(const d of ss){
   const map=MAPS[id as keyof typeof MAPS],start=arrival(map.id,'start');
   expect(['nell','orrin','kit','petra','celia'].every(id=>d.scene!.actors.some(a=>a.id===id))).toBe(true);

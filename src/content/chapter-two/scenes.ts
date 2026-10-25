@@ -85,6 +85,10 @@ export const ward = () => scene('infirmary', 'two-ward', 'THE WARD AT THE END OF
   line('Nell', 'He asked me to find Orrin. He knew I’d need help. We can stop for them.'),
   line('Orrin', 'I’ll bring the engine round.'),
   line('Dena', 'I’m coming. Those coaches will need someone who knows which bed is whose.'),
+  line('Orrin', 'Nell, take some bread for the cab. You haven’t eaten since we left.'),
+  line('Nell', 'Neither have you. Here. Half.'),
+  line('Orrin', 'Mine’ll taste of coal.'),
+  line('Nell', 'Then wash your hands.'),
 ]);
 
 export const abandonment = () => scene('cinderbank', 'two-settlement', 'THE CAPITAL COMES FIRST', [

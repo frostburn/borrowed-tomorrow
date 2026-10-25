@@ -193,3 +193,15 @@ export const sea=()=>scene('seaholiday','seven-sea','Tomorrow belongs to us',[
  l('Nell','I’m glad you came with us.'),
  l('Kit','So am I.'),
 ]);
+export const picnic=()=>scene('seaholiday','seven-picnic','A hand of cards',[
+ l('Petra','Orrin. It’s your turn.',{focus:{x:32,y:26},cut:true}),
+ l('Orrin','I’m deciding.',{focus:{x:32,y:26}}),
+ l('Kit','You’ve got one card.'),
+ l('Orrin','It’s an important decision.'),
+ l('Celia','Does he take this long with a valve?'),
+ l('Nell','Longer. He explains what it ought to have done.'),
+ l('Orrin','They never listen.'),
+ l('Celia','Come over here, Nell. Petra’s been helping me.'),
+ l('Petra','And we’re still losing.'),
+ l('Nell','Deal me in.'),
+]);

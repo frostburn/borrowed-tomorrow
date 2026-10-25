@@ -9,8 +9,8 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 20,
-  "nextobjectid": 66,
+  "nextlayerid": 23,
+  "nextobjectid": 84,
   "properties": [
     {
       "name": "name",
@@ -1341,61 +1341,47 @@
     },
     {
       "id": 15,
-      "name": "The open crossing",
-      "type": "objectgroup",
-      "visible": true,
-      "objects": [],
-      "properties": [
-        {
-          "name": "requiredFlag",
-          "type": "string",
-          "value": "flagshipWon"
-        }
-      ]
-    },
-    {
-      "id": 16,
-      "name": "Scene:five-flagship-approach",
+      "name": "Scene:five-deck-orrin",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "nell",
           "point": true,
-          "x": 780,
-          "y": 516,
+          "x": 924,
+          "y": 588,
           "properties": [],
           "id": 48
         },
         {
           "name": "orrin",
           "point": true,
-          "x": 708,
-          "y": 564,
+          "x": 1044,
+          "y": 732,
           "properties": [],
           "id": 49
         },
         {
           "name": "kit",
           "point": true,
-          "x": 876,
-          "y": 588,
+          "x": 1092,
+          "y": 732,
           "properties": [],
           "id": 50
         },
         {
           "name": "petra",
           "point": true,
-          "x": 924,
-          "y": 612,
+          "x": 900,
+          "y": 660,
           "properties": [],
           "id": 51
         },
         {
           "name": "celia",
           "point": true,
-          "x": 708,
-          "y": 636,
+          "x": 948,
+          "y": 660,
           "properties": [],
           "id": 52
         },
@@ -1411,48 +1397,48 @@
       "properties": []
     },
     {
-      "id": 17,
-      "name": "Scene:five-retaliation",
+      "id": 16,
+      "name": "Scene:five-deck-petra",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "nell",
           "point": true,
-          "x": 732,
-          "y": 660,
+          "x": 780,
+          "y": 540,
           "properties": [],
           "id": 54
         },
         {
           "name": "orrin",
           "point": true,
-          "x": 708,
-          "y": 564,
+          "x": 852,
+          "y": 588,
           "properties": [],
           "id": 55
         },
         {
           "name": "kit",
           "point": true,
-          "x": 780,
-          "y": 660,
+          "x": 732,
+          "y": 612,
           "properties": [],
           "id": 56
         },
         {
           "name": "petra",
           "point": true,
-          "x": 924,
-          "y": 612,
+          "x": 684,
+          "y": 588,
           "properties": [],
           "id": 57
         },
         {
           "name": "celia",
           "point": true,
-          "x": 708,
-          "y": 684,
+          "x": 876,
+          "y": 636,
           "properties": [],
           "id": 58
         },
@@ -1468,48 +1454,48 @@
       "properties": []
     },
     {
-      "id": 18,
-      "name": "Scene:five-capital-departure",
+      "id": 17,
+      "name": "Scene:five-deck-celia",
       "type": "objectgroup",
       "visible": true,
       "objects": [
         {
           "name": "nell",
           "point": true,
-          "x": 732,
-          "y": 660,
+          "x": 780,
+          "y": 540,
           "properties": [],
           "id": 60
         },
         {
           "name": "orrin",
           "point": true,
-          "x": 708,
-          "y": 564,
+          "x": 684,
+          "y": 588,
           "properties": [],
           "id": 61
         },
         {
           "name": "kit",
           "point": true,
-          "x": 780,
-          "y": 660,
+          "x": 708,
+          "y": 636,
           "properties": [],
           "id": 62
         },
         {
           "name": "petra",
           "point": true,
-          "x": 924,
-          "y": 612,
+          "x": 876,
+          "y": 588,
           "properties": [],
           "id": 63
         },
         {
           "name": "celia",
           "point": true,
-          "x": 708,
-          "y": 684,
+          "x": 828,
+          "y": 588,
           "properties": [],
           "id": 64
         },
@@ -1525,7 +1511,192 @@
       "properties": []
     },
     {
+      "id": 18,
+      "name": "The open crossing",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "flagshipWon"
+        }
+      ]
+    },
+    {
       "id": 19,
+      "name": "Scene:five-flagship-approach",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 780,
+          "y": 516,
+          "properties": [],
+          "id": 66
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 67
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 876,
+          "y": 588,
+          "properties": [],
+          "id": 68
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 69
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 636,
+          "properties": [],
+          "id": 70
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 71
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 20,
+      "name": "Scene:five-retaliation",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 732,
+          "y": 660,
+          "properties": [],
+          "id": 72
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 73
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 780,
+          "y": 660,
+          "properties": [],
+          "id": 74
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 75
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 684,
+          "properties": [],
+          "id": 76
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 77
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 21,
+      "name": "Scene:five-capital-departure",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [
+        {
+          "name": "nell",
+          "point": true,
+          "x": 732,
+          "y": 660,
+          "properties": [],
+          "id": 78
+        },
+        {
+          "name": "orrin",
+          "point": true,
+          "x": 708,
+          "y": 564,
+          "properties": [],
+          "id": 79
+        },
+        {
+          "name": "kit",
+          "point": true,
+          "x": 780,
+          "y": 660,
+          "properties": [],
+          "id": 80
+        },
+        {
+          "name": "petra",
+          "point": true,
+          "x": 924,
+          "y": 612,
+          "properties": [],
+          "id": 81
+        },
+        {
+          "name": "celia",
+          "point": true,
+          "x": 708,
+          "y": 684,
+          "properties": [],
+          "id": 82
+        },
+        {
+          "name": "alda",
+          "point": true,
+          "x": 828,
+          "y": 468,
+          "properties": [],
+          "id": 83
+        }
+      ],
+      "properties": []
+    },
+    {
+      "id": 22,
       "name": "Nell\u2019s berth",
       "type": "objectgroup",
       "visible": true,
