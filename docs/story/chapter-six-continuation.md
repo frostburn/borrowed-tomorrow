@@ -1,6 +1,6 @@
 # Chapter Six — exact playable continuation
 
-Implemented: the sealed-capital opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay. The two foreign routes work in either order, with Nell ill or recovered. The capital finale, Emperor and optional Lightbearer bad ending are now playable; Chapter Seven remains upcoming.
+Implemented: the sealed-capital opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay. The two foreign routes work in either order, with Nell ill or recovered. The capital finale, Emperor and optional Lightbearer bad ending are now playable; The recovered route continues into the playable Chapter Seven; the untreated ending remains terminal.
 
 ## Entry and resources
 

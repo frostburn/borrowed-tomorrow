@@ -1,6 +1,6 @@
 # Chapter Six — The Emperor's Last Day
 
-The shared opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay are playable. The capital finale below is implemented; Chapter Seven remains planned. The exact capital route is in chapter-six-capital-plan.md. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
+The shared opening, Namar and Skeld seal expeditions, optional Iria treatment and allied capital quay are playable. The capital finale below is implemented; Chapter Seven is also implemented on the recovered route. The exact capital route is in chapter-six-capital-plan.md. See [the exact playable continuation](chapter-six-continuation.md). Begin from `chapter-six:capital-approach` with Alban and his men dead, all three anchors disconnected, the divine hunters defeated and Nell ill aboard Alda's ship. The player controls the remaining companions, keeping actual formation, equipment and supplies. The Benefactor is an established enemy whose body has not been seen.
 
 ## Approved chapter structure
 

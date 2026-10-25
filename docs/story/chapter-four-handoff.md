@@ -12,7 +12,7 @@ Required new flags: `capitalSeen`, `capitalConfronted`, `capitalGateWon`, `petra
 
 ## What happened
 
-The medical clearance worked. Petra broke with Alban rather than surrender the passengers and joined after the custody battle. Tomas held a valve open to disable the outer alarm, giving the party its opening. The party stopped his execution and freed his restraints. Nell told him about Ansel’s death. Tomas explained the collectors’ connection to the vessel below the palace and bypassed the execution circuit before going to the medical train.
+The medical clearance worked. Petra broke with Alban rather than surrender the passengers and joined after the custody battle. Tomas held a valve open to disable the outer alarm, giving the party its opening. The party stopped his execution and freed his restraints. Tomas had seen Ansel wounded; Nell confirmed that he did not survive after Tomas was taken away. Tomas explained the collectors’ connection to the vessel below the palace and bypassed the execution circuit before going to the medical train.
 
 The party defeated the regulator and stopped extraction. The emperor chose to enter the restrained vessel in reaction; he was not defeated in combat. The capital rose, and time began failing in the valley. Tomas, the coast prisoners and the Cinderbank families all escaped on Orrin’s coal engine. Petra stayed with the party. Alban survives; his later resolution remains planned for Chapter Five.
 

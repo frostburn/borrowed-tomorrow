@@ -98,7 +98,7 @@ export const home=(s:GameState)=>scene(s,'outermooring','six-north-home','News f
  line('Nell','Will you teach me that one?'),
  line('Kit','On the cup? Celia said—'),
  line('Celia','Use the empty one. I’m putting this on her table.'),
- line('The berth','Kit taps the rim twice. Nell answers on the arm of her chair.'),
+ line('The berth','Kit taps the rim twice. Nell answers on the bed frame.'),
  ]),
  line('Orrin',s.flags.desertSealBroken?'The bridge latch is moving. Alda, bring us alongside.':'The western line is still lit. We can take Namar’s course when everyone’s aboard.'),
 ]);
@@ -113,7 +113,7 @@ export const opened=(s:GameState)=>scene(s,'outermooring','six-capital-open','Th
 export const quay=(s:GameState)=>scene(s,'capitalquay','six-capital-quay','Behind the wall',[
  line('The capital quay','A woman pulls a handcart through the arch. At the fountain she turns, walks back, and pulls it through again.',{focus:{x:32,y:17},cut:true}),
  line('Kit','She’s going to the same place. She hasn’t even looked at the boats.'),
- line('Petra','That’s the cart we saw when the wall came down.'),
+ line('Petra','That’s the cart we saw when he sealed the landing.'),
  line('Celia','Leave a clear way beside her. I want to see whether she can hear us.'),
  ...(s.flags.nellRecovered?[line('Nell','She’s dropped that cloth twice. Each time it’s back on the cart when she turns.')]:[line('Orrin','She’s dropped that cloth twice. Each time it’s back on the cart when she turns.')]),
  line('Alda','Hester’s fitters are at the patient hoist. Its bearing housing has split.',{focus:{x:44,y:30},cut:true,actors:{orrin:{at:{x:42,y:29},face:'orrin-right'}}}),
