@@ -59,7 +59,7 @@ The graphics repair pass for issues #83–#86 joins Orrin’s beard shading arou
 Profile joint corrections keep Nell, Orrin and Celia's right shoulders rooted
 inside their coat/shirt silhouettes, with independently placed elbows for idle,
 walk and attack/cast poses. Preserve the anatomical right-hand grips. Celia's
-profile glare is narrower and shallower than her front lenses. Petra's rear
+profile glare retains its original width and is thinner vertically. Petra's rear
 shield compresses its rim, face and boss together to 38% width around the left
 hand, retaining full height in idle, walk, saber and bash poses. Rebuild with
 `node scripts/export-vector-characters.mjs`, `node scripts/export-celia-art.mjs`
