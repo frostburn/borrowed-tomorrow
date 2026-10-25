@@ -470,6 +470,16 @@
         "strength": 1.2,
         "fill": 1
       }
+    ],
+    "engine-right": [
+      {
+        "x": 247,
+        "y": 179,
+        "height": 80,
+        "radius": 265,
+        "strength": 1.2,
+        "fill": 0.2
+      }
     ]
   }
 }

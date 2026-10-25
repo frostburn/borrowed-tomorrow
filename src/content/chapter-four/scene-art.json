@@ -111,9 +111,9 @@
       "layerId": 6
     },
     {
-      "key": "scenery-engine",
-      "url": "art/vector/scenery/engine.svg",
-      "x": 1080,
+      "key": "scenery-engine-right",
+      "url": "art/vector/scenery/engine-right.svg",
+      "x": 948,
       "y": 662,
       "width": 288,
       "height": 192,

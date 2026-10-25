@@ -68,3 +68,66 @@ Chapter Three now extends angular scenery and registered illumination through th
 [Chapter Five](chapter-five.md) extends angular terraces, shaded architecture and live actor planes/shadows through all thirteen exploration maps and fourteen arenas. Its floor author gives each location distinct brick, grating, cobbles, ceramics, terrazzo, parquet, timber or riveted armor, with local wear/inlays rather than a shared slab grid. Its shared light registry owns opal work lights, furnace/hospital/cabin glow and flag-bound anchor light. Whole perimeters generate matching walking cells; Dawnwatch/Windmere have actual survey moorings. Keep takeoff and command-deck destruction pieces live through floor caching.
 
 Repeatable rest/supply interactions declare the boolean Tiled property `rest`. The shared marker renderer uses a pale-blue shelter (⌂); one-time rewards and optional encounters keep the green diamond. `map_metadata.py` preserves the rest classification through every chapter's art export.
+
+## Railway placement repairs (#91, #71)
+
+Larkspur's two northern trees are stamped into Tiled layers 14/15 with their
+roots on the verge above the first ballast bed (y=144), rather than through the
+rails. The remembered morning, empty-seat ending and ordinary departure inherit
+those layers and the station manifest from the same source map.
+
+An engine layer's string `railFacing: right` selects a right-facing native SVG
+through `assets/vector/railway.py`. The existing left-facing original is retained
+for Rillbridge's west-end engine and the exchange's shunting engine. The yard,
+eastern pass and their battle views, eastbound exchange train, capital-line
+engine and Northglass medical train face right. Cabs face the trailing coaches.
+`engine-right` in each Chapter One–Three lighting registry places the lamp at
+native x=247 (288−41); the generated halo, floor spill and actor illumination
+therefore agree. Dimensions, ground anchors, flags and navigation stay fixed.
+The refuge's coach and right-facing engine also share a continuous consist,
+removing the former 132px gap.
+
+Reproduce these changes using Python's standard library, in this order:
+
+```sh
+python3 assets/vector/chapter-one.py
+python3 assets/vector/chapter-one.py --chapter two
+python3 assets/vector/chapter-one.py --chapter three
+python3 assets/vector/chapter-four.py
+python3 assets/vector/chapter-seven.py
+python3 assets/vector/chapter-six-capital.py
+```
+
+The final capital pass restores the completed capital entrance after the domain
+export imports its earlier regional layout tools. No painting, raster conversion,
+production dependency or runtime art mirroring is involved. Review the same
+files under Maps for station, yard, tunnel, coast, cinderbank, northglass, refuge
+and the three later Larkspur visits; the west-facing siding stays independent.
+
+The railway fixture audit also covers lamp/tree footings across Chapters
+One–Three. Rillbridge's eastern lamp stands on the platform north of the line;
+the pass's two northern lamps stand on the southern apron (the eastern one is
+set left of Orrin's cutscene position). The exchange's eastern platform lamp
+sits one cell back from its lower rail bed. The Tiled stamps own positions and
+collision, and recompilation relocates the matching native light pools. The
+repeated vertical thread stamps on Rillbridge's pavement are removed; suspended
+water drops at the river remain. Rebuild these maps with `chapter-one.py --map
+rillbridge`, `--map tunnel` and `--chapter two --map coast`. No actors, route IDs,
+story markers or cutscene destinations move.
+
+
+### Filled roof gables and regional rest furniture
+
+The editable workshop, bakery, miners’ cottage and coal-shed originals include
+solid wall faces behind the angled roof trim. Their Chapter One/Two variants
+inherit those faces. `chapter-five.py::factory()` fills both sawtooth gables;
+`chapter-six-north.py::house()` fills the complete northern timber gable before
+painting the snow trim. Roof silhouettes, windows, door positions, dimensions
+and navigation are preserved. The station already has a closed front gable;
+the desert and Iria roof planes are solid.
+
+Rebuild Chapters One–Three with `chapter-one.py` and its `--chapter two` /
+`--chapter three` options, the factory kit with `chapter-five.py`, and the north
+and regional benches with `chapter-six-capital.py`. Chapter Six’s rest furniture
+is described in [its source guide](chapter-six.md); medical beds are separate.
+All results remain native SVGs, with no new raster assets or dependencies.

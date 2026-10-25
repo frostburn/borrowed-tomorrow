@@ -1946,8 +1946,8 @@
       "key": "scene-station-prop-canopy",
       "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
-      "y": -72,
-      "depth": 163,
+      "y": -120,
+      "depth": 115,
       "layerId": 14,
       "width": 216,
       "height": 240
@@ -1956,8 +1956,8 @@
       "key": "scene-station-prop-fir",
       "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
-      "y": -24,
-      "depth": 235,
+      "y": -144,
+      "depth": 115,
       "layerId": 15,
       "width": 168,
       "height": 264
@@ -2292,8 +2292,8 @@
       "key": "scene-station-prop-canopy",
       "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
-      "y": -72,
-      "depth": 163,
+      "y": -120,
+      "depth": 115,
       "layerId": 14,
       "width": 216,
       "height": 240
@@ -2302,8 +2302,8 @@
       "key": "scene-station-prop-fir",
       "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
-      "y": -24,
-      "depth": 235,
+      "y": -144,
+      "depth": 115,
       "layerId": 15,
       "width": 168,
       "height": 264

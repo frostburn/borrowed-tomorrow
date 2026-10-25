@@ -13,6 +13,18 @@ import { actorPlanes } from '../src/game/actor-planes';
 
 const lamp={x:100,y:100,height:108,radius:235,strength:1.15};
 const rig:WorldLight={ambient:NIGHT_AMBIENT,lamps:[lamp]};
+it('keeps locomotive lights at the smokebox end when a siding has both directions',()=>{
+ for(const [id,map] of [['yard',CHAPTER_ONE_MAPS.yard],['coast',CHAPTER_TWO_MAPS.coast],['northglass',CHAPTER_THREE_MAPS.northglass]] as const){
+  const pieces=visibleSceneArt(map.tiles!,{flags:{}})!,light=sceneLight(id,pieces)!;
+  const engines=pieces.filter(p=>/\/engine(?:-right)?\.svg$/.test(p.url));
+  expect(engines.length).toBeGreaterThan(0);
+  for(const engine of engines){
+   const dx=engine.url.endsWith('/engine-right.svg')?247:41;
+   expect(light.lamps.some(l=>l.x===engine.x+dx&&l.y===engine.y+179&&l.height===80)).toBe(true);
+   expect(light.lamps.some(l=>l.x===engine.x+288-dx&&l.y===engine.y+179&&l.height===80)).toBe(false);
+  }
+ }
+});
 // ImageData's data layout is available in Node without introducing a DOM shim.
 const pixels=(values:number[])=>({data:new Uint8ClampedArray(values),width:values.length/4,height:1,colorSpace:'srgb'}) as ImageData;
 describe('world-space actor lighting',()=>{

@@ -176,6 +176,11 @@
           "name": "sort",
           "type": "bool",
           "value": true
+        },
+        {
+          "name": "railFacing",
+          "type": "string",
+          "value": "right"
         }
       ]
     },

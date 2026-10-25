@@ -31,8 +31,8 @@
       "height": 480
     },
     {
-      "key": "scene-one-prop-engine",
-      "url": "art/vector/chapter-one-kit/engine.svg",
+      "key": "scene-one-prop-engine-right",
+      "url": "art/vector/chapter-one-kit/engine-right.svg",
       "x": 672,
       "y": -120,
       "depth": 67,
@@ -297,8 +297,8 @@
       "height": 216
     },
     {
-      "key": "scene-one-prop-engine",
-      "url": "art/vector/chapter-one-kit/engine.svg",
+      "key": "scene-one-prop-engine-right",
+      "url": "art/vector/chapter-one-kit/engine-right.svg",
       "x": 672,
       "y": -120,
       "depth": 67,
@@ -482,8 +482,8 @@
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 816,
-      "y": 216,
-      "depth": 355,
+      "y": 168,
+      "depth": 307,
       "layerId": 12,
       "width": 48,
       "height": 144
@@ -804,8 +804,8 @@
       "key": "scene-station-prop-canopy",
       "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
-      "y": -72,
-      "depth": 163,
+      "y": -120,
+      "depth": 115,
       "layerId": 14,
       "width": 216,
       "height": 240
@@ -814,8 +814,8 @@
       "key": "scene-station-prop-fir",
       "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
-      "y": -24,
-      "depth": 235,
+      "y": -144,
+      "depth": 115,
       "layerId": 15,
       "width": 168,
       "height": 264
@@ -953,8 +953,8 @@
       "height": 168
     },
     {
-      "key": "scene-one-prop-engine",
-      "url": "art/vector/chapter-one-kit/engine.svg",
+      "key": "scene-one-prop-engine-right",
+      "url": "art/vector/chapter-one-kit/engine-right.svg",
       "x": 648,
       "y": 120,
       "depth": 307,
@@ -996,8 +996,8 @@
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 192,
-      "y": 144,
-      "depth": 283,
+      "y": 192,
+      "depth": 331,
       "layerId": 17,
       "width": 48,
       "height": 144
@@ -1005,9 +1005,9 @@
     {
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
-      "x": 624,
-      "y": 120,
-      "depth": 259,
+      "x": 552,
+      "y": 192,
+      "depth": 331,
       "layerId": 18,
       "width": 48,
       "height": 144
@@ -1115,8 +1115,8 @@
       "height": 216
     },
     {
-      "key": "scene-one-prop-engine",
-      "url": "art/vector/chapter-one-kit/engine.svg",
+      "key": "scene-one-prop-engine-right",
+      "url": "art/vector/chapter-one-kit/engine-right.svg",
       "x": 528,
       "y": 96,
       "depth": 283,

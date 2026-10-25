@@ -272,10 +272,14 @@ world('refuge','Iron Coast · the railway refuge','The harbor path runs east. To
  {'four-home':{'nell':(31,28),'tomas':(31,25),'orrin':(34,29),'kit':(29,30),'petra':(36,29),'dena':(22,22),'bram':(42,27)},'four-choice':{'nell':(23,28),'tomas':(24,27),'orrin':(20,29),'kit':(19,31),'petra':(22,31),'celia':(17,30),'bram':(17,27)}},
  [point('ward-patient',19,23,sprite='civilian-patient'),point('medical-family',41,23,sprite='civilian-family-blue'),point('supply-worker',45,29,sprite='civilian-dockhand-rust',requiredFlag='harborOpened'),point('ferry-family',12,30,sprite='civilian-family-plum',requiredFlag='harborOpened')],refuge_decor,back)
 # Reuse engine/coach SVGs without reauthoring accepted Chapter One art.
-for module,x in [('engine',1080),('coach',660)]:
+for module,x in [('engine',948),('coach',660)]:
  import re
  url=f'art/vector/scenery/{module}.svg';src=(ROOT/'public'/url).read_text();ww,hh=map(int,re.search(r'width="(\d+)" height="(\d+)"',src).groups())
- manifest['refuge'].append({'key':f'scenery-{module}','url':url,'x':x,'y':846-hh+8,'width':ww,'height':hh,'depth':854,'layerId':3})
+ key=f'scenery-{module}'
+ if module=='engine':
+  from railway import engine_right
+  key,url=engine_right(key,url)
+ manifest['refuge'].append({'key':key,'url':url,'x':x,'y':846-hh+8,'width':ww,'height':hh,'depth':854,'layerId':3})
 
 harbor_f=[[(96,704),(210,682),(238,600),(270,572),(284,530),(548,514),(566,492),(660,510),(678,420),(920,414),(970,432),(1040,174),(1090,174),(1172,406),(1390,452),(1406,550),(1536,570),(1536,682),(1312,660),(1280,858),(1024,882),(760,852),(500,876),(222,850),(206,809),(100,830)],[(990,552),(982,600),(1194,612),(1200,568)]]
 decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1170,228,420,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,36,768,960,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
