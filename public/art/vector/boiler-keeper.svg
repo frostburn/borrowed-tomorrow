@@ -23,9 +23,9 @@
 <rect x="23" y="42" width="2" height="6" fill="#d9ae62"/>
 <ellipse cx="21.0" cy="34.0" rx="5.0" ry="5.0" fill="#d9ae62"/>
 <ellipse cx="21.0" cy="34.0" rx="4.0" ry="4.0" fill="#d8c59b"/>
-<polyline points="21,35 23,31" fill="none" stroke="#142536" stroke-width="1"/>
+<polyline points="21,35 23,31" fill="none" stroke="#694a3b" stroke-width="1"/>
 <rect x="20" y="34" width="2" height="2" fill="#80553d"/>
-<polygon points="11,18 13,12 18,9 25,10 29,15 30,24 11,24" fill="#263e53"/>
+<polygon points="11,18 13,12 18,9 25,10 29,15 30,24 11,24" fill="#626d7f"/>
 <polygon points="13,15 18,11 24,12 27,15" fill="#687478"/>
 <rect x="11" y="18" width="19" height="4" fill="#d9ae62"/>
 <rect x="13" y="21" width="16" height="7" fill="#80553d"/>
