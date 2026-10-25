@@ -31,6 +31,8 @@ The supporting cast keeps its established costume identities. Elspeth remains se
 
 ## Review
 
+Judge actor faces through the final 2px display raster as well as the native SVG. A small nose hook, cheek dash or dark lip can merge into an unintended moustache; prefer open skin between the eyes and a short, softer mouth. Omit redundant strokes rather than shrinking them further. Keep intentional beards, spectacles, face silhouettes and individual hair/costume shapes. Compare both x/y sampling offsets when reviewing faces, since world positions can meet any of the four phases of the display grid.
+
 Open `?dev=sprites` for native and enlarged comparisons, independent facing views and motion playback. Nell's Walk previews all six poses; attacks retain their three separate frames. Check NPCs and Enemies as well as Party. `?dev=maps&map=station` reviews the matching environments; see [the scenery guide](../../vector/README.md). Workshop review never changes campaign saves.
 
 The old lead rigs, PNG runtime replacements and duplicate inspection-only SVGs are retired. The Animation tab retains its mannequin and Kit/Petra tools. Campaign gameplay, save format, equipment, dialogue and progression stay unchanged.

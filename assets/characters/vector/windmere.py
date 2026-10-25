@@ -22,8 +22,7 @@ def model(name):
  else:d.poly([(11,17),(12,11),(19,6),(27,10),(30,17),(24,14),(18,12),(14,19)],'hair')
  if not nurse:
   d.line([(13,16),(18,16)],'silver' if keeper else 'hair',2);d.line([(22,16),(27,17)],'silver' if keeper else 'hair',2)
-  d.poly([(20,18),(18,23),(23,23)],'copper')
- d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink');d.line([(17,25),(23,25)],'rose' if nurse else 'hair')
+ d.line([(14,19),(17,19)],'ink');d.line([(23,19),(26,19)],'ink');d.line([(18,25),(22,25)],'rose')
  return human(d,head_start)
 
 def portrait(name):
