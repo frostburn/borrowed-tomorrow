@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
 <title>Orrin, engine mechanic</title>
-<metadata>{"reference": "ec894d8:public/art/portrait-orrin.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Broad brow, thick dark beard, substantial nose and a practical sidelong gaze. Navy cap and brass goggles; cream sleeves, blue work overalls and leather straps."}</metadata>
+<metadata>{"reference": "ec894d8:public/art/portrait-orrin.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Open brows, continuous warm beard planes, a closed mouth and thick dark beard, substantial nose and a practical sidelong gaze. Navy cap and brass goggles; cream sleeves, blue work overalls and leather straps."}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
 <path d="M2 128L11 107 33 94 49 87H81L106 101 124 128Z" fill="#baa989"/>
@@ -25,11 +25,11 @@
 <path d="M63 49L60 61 56 67 62 72 74 69 75 65 68 62 68 52Z" fill="#b17b5c"/>
 <path d="M64 52L63 63 70 66 67 69 61 67Z" fill="#e1b68c"/>
 <path d="M59 70L65 71 69 69V72L64 74Z" fill="#895d49"/>
-<path d="M34 66L43 71 48 77 61 82 75 79 86 69 89 67 86 84 77 99 64 106 48 97 38 84Z" fill="#372a25"/>
-<path d="M40 77L50 85 63 91 76 86 76 94 65 101 52 94 44 86Z" fill="#623d29"/>
+<path d="M34 66L43 71 48 77 61 82 75 79 86 69 89 67 86 84 77 99 64 106 48 97 38 84Z" fill="#623d29"/>
+<path d="M38 73L45 77 55 82 64 85 66 96 63 102 51 94 43 85Z" fill="#80583c"/>
 <path d="M80 82L87 76 83 91 74 102 65 106 67 98Z" fill="#49362c"/>
-<path d="M48 73L58 69 65 73 74 70 81 74 79 79 68 79 62 76 55 80 47 78Z" fill="#623d29"/>
-<path d="M56 80L64 79 74 80 71 84 64 86 58 84Z" fill="#122634"/>
+<path d="M48 73L58 70 65 73 74 71 81 74 79 78 68 79 62 77 55 79 47 77Z" fill="#754c33"/>
+<path d="M57 79L64 79 72 78 72 80 64 81 58 81Z" fill="#49362c"/>
 <path d="M31 42L38 33 40 43 36 56 33 62 29 54Z" fill="#623d29"/>
 <path d="M28 25L34 13 52 7 75 11 90 23 95 36 84 40 53 33 28 32Z" fill="#233d52"/>
 <path d="M33 23L40 16 54 12 71 15 83 22 67 21 46 24Z" fill="#3e596b"/>

@@ -99,7 +99,12 @@ def hero(name,direction,walk=None,attack=None,bash=None,carry=False,arms=True,un
             # The trigger hand wraps the stock, rather than disappearing under it.
             d.oval((grip[0]-1,grip[1]-1,grip[0]+1,grip[1]+2),'skin',None)
         elif name=='petra' and which=='right':saber(d,grip,direction,attack)
-        elif name=='petra':shield(d,grip,bash is not None)
+        elif name=='petra':
+            start=len(d.shapes)
+            shield(d,grip,bash is not None)
+            # From behind, the left-arm shield is viewed obliquely at her side.
+            # Compress every face/rim/boss together around the same hand grip.
+            if direction=='back':d.transform(start,.38,1,grip[0],0,0)
     if name=='kit' and direction=='back':arm('right');arm('left')
     elif direction=='left':arm('right')
     elif direction=='right':arm('left')

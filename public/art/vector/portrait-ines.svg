@@ -3,14 +3,26 @@
 <desc>Silver hair with a loose side braid, warm brown skin and deeply lined cheeks; a patient, attentive gaze. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M28 33L37 17 55 9 78 15 92 31 97 54 90 79 76 93 39 88 26 70 22 50Z" fill="#879b95"/>
+<g transform="translate(0 6)" data-part="neck">
+<path d="M48 75L46 96 63 109 81 94 77 73Z" fill="#995f49"/>
+<path d="M59 85L77 78 81 94 64 106 53 96Z" fill="#784e45"/>
+</g>
+<g data-part="neck-root">
+<polygon points="49.70,81 48.07,100 79.40,100 79.40,100 75.80,79" fill="#b7784e"/>
+<polygon points="59.60,91 75.80,84 79.40,100 79.40,100 55.18,100" fill="#784e45"/>
+</g>
+<g transform="translate(0 6)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M48 75L46 96 63 109 81 94 77 73Z" clip-rule="evenodd"/></clipPath></defs>
+
+<g clip-path="url(#shoulder-neckline)">
 <path d="M1 128L12 107 33 96 50 88H80L106 102 123 128Z" fill="#385d4a"/>
 <path d="M5 122L19 107 37 99 43 128Z" fill="#5d7660"/>
 <path d="M87 96L109 109 123 128H88Z" fill="#263e39"/>
-<path d="M48 75L46 96 63 109 81 94 77 73Z" fill="#995f49"/>
-<path d="M59 85L77 78 81 94 64 106 53 96Z" fill="#784e45"/>
+</g>
 <path d="M33 95L46 89 63 104 80 88 94 101 73 126H50Z" fill="#d8c59b"/>
 <path d="M80 94L94 101 73 126 63 117Z" fill="#b9b69a"/>
-<path d="M28 33L37 17 55 9 78 15 92 31 97 54 90 79 76 93 39 88 26 70 22 50Z" fill="#879b95"/>
+</g>
 <path d="M40 32L55 24 73 30 83 43 85 59 80 75 68 88 57 87 44 78 36 63 32 47Z" fill="#b7784e"/>
 <path d="M41 34L54 28 69 33 76 43 70 51 48 55 35 47Z" fill="#d4a276"/>
 <path d="M78 35L83 43 85 59 80 75 68 88 57 87 60 82 72 73 76 58Z" fill="#895644"/>
@@ -29,8 +41,8 @@
 <path d="M27 38L34 23 45 15 56 12 72 16 83 24 91 37 86 43 75 33 58 24 45 30 36 43 31 59 29 70 24 63 22 50Z" fill="#d6d5bf"/>
 <path d="M32 33L39 23 50 18 57 16 68 19 52 22 43 29 36 43 31 50 28 54Z" fill="#b7c1b8"/>
 <path d="M40 25L47 19 57 16 65 18 53 20 45 27 37 37Z" fill="#e2d6bb"/>
-<path d="M82 27L92 38 96 55 89 74 81 84 78 78 86 64 87 46Z" fill="#879b95"/>
-<path d="M29 68L35 75 32 86 36 93 29 101 33 110 26 118 20 107 24 98 20 89 26 81 23 73Z" fill="#879b95"/>
+<path d="M78 22L88 28 95 41 97 55 89 74 81 84 78 77 85 63 86 46 82 34Z" fill="#879b95"/>
+<path d="M27 62L32 65 35 75 32 86 36 93 29 101 33 110 26 118 20 107 24 98 20 89 26 81 23 73Z" fill="#879b95"/>
 <path d="M28 76L31 78 28 86 25 89 24 85Z M26 94L30 97 27 104 24 102Z M25 108L29 110 26 114Z" fill="#b7c1b8"/>
 <path d="M15 113L27 105 49 128H35Z" fill="#9a7151"/>
 </svg>

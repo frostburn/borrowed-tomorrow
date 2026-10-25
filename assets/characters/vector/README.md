@@ -53,3 +53,24 @@ Human actors share adult proportions and the (40,68) sole anchor, with individua
 Rebuild the cast with the existing character exporters, then run `node scripts/export-enemy-variants.mjs` so human troop/knight variants follow their source actors. Keep the old PNG skin studies used by Animation and the PNG tile pages used by map tools. Ivo/Mira’s unreferenced runtime sprites and portraits are removed; no retired-story raster placeholders ship in `public/art/`.
 
 `companions.py` derives unarmed idle poses and joint hug/hand-holding poses from Nell and Kit’s accepted rigs. The bodies retain their proportions and handedness; only the sleeves are posed for contact. `art:six` and `art:seven` reproduce the four native SVGs. They load with Iria and the real seaside epilogue, with Kit’s separate actor hidden only for the joint poses. Cutscene teardown restores the world cast and never changes the selected formation.
+
+The graphics repair pass for issues #83–#86 joins Orrin’s beard shading around a closed mouth while retaining his open gaze, removes the under-jaw rear hair from Kit and shortens Tomas’s side lock, and reinforces the side-lock/braid roots of Alda, Elspeth and Ines. Alban’s near ear meets his temple without a detached sliver. Portraits remain individually edited originals. Celia’s world lenses use opaque off-white glare (`lens` in `draw.py`) across front/profile idle, walk and casting poses; her separate portrait still shows eyes through actual spectacle rims. The Emperor’s actor uses ivory material facets, narrow gold edging and a sun clasp, with connected silver hair, a pointed beard and a shorter profile nose in all four escape poses. Reproduce the actor outputs with `node scripts/export-celia-art.mjs` and `python3 assets/characters/vector/chapter-three.py`; no raster replacements are shipped.
+
+Profile joint corrections keep Nell, Orrin and Celia's right shoulders rooted
+inside their coat/shirt silhouettes, with independently placed elbows for idle,
+walk and attack/cast poses. Preserve the anatomical right-hand grips. Celia's
+profile glare uses tall, narrow rectangular lenses (2 × 4 native pixels), with the temple arm joining their inner edge. Petra's rear
+shield compresses its rim, face and boss together to 38% width around the left
+hand, retaining full height in idle, walk, saber and bash poses. Rebuild with
+`node scripts/export-vector-characters.mjs`, `node scripts/export-celia-art.mjs`
+and `node scripts/export-petra-animation.mjs`.
+
+Sprites → NPCs → The Emperor now exposes his front/left views and all four real
+escape poses (side stance, both walking steps, reach). These reference existing
+campaign SVGs directly; there is no separate review-only artwork or atlas.
+
+The Emperor's escape profile draws the far sleeve before the mantle. His near
+elbow bends behind the wrist in the left-facing stance/walk, then opens forward
+for the reach. Regenerate all four campaign/review poses with
+`python3 assets/characters/vector/chapter-three.py`. The NPC native-size lineup
+wraps after ten actors, retaining the same 80px frames and 112px row spacing.

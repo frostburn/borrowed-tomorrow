@@ -18,6 +18,7 @@ export class SpriteWorkshop {
   private group: SpriteGroup = 'Party';
   private get entry() { return SPRITE_CATALOG.find(entry=>entry.id===this.hero)!; }
   private direction: ActorDirection = 'front';
+  private pose?: string;
   private background: Background = 'Slate';
   private zoom = 2;
   private guides = true;
@@ -47,9 +48,13 @@ export class SpriteWorkshop {
     }
     return image;
   }
+  private asset(entry: SpriteEntry, direction: ActorDirection) {
+    return entry.id===this.entry.id?entry.poses?.find(pose=>pose.sprite===this.pose&&pose.direction===direction)?.sprite??spriteAsset(entry,direction):spriteAsset(entry,direction);
+  }
   private render() {
     if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
     const host = this.host!, entry=this.entry, entries=SPRITE_CATALOG.filter(character=>character.group===this.group);
+    const columns=Math.min(10,entries.length), rows=Math.ceil(entries.length/columns);
     if(this.motion!=='walk'&&!animatedHero(entry.id)){this.motion='idle';this.playing=false;}
     if(this.motion==='walk'&&!walkingHero(entry.id)){this.motion='idle';this.playing=false;}
     if(!entry.directions.includes(this.direction))this.direction='front';
@@ -59,10 +64,11 @@ export class SpriteWorkshop {
       <div class="sprite-settings"><div role="group" aria-label="Facing">${ACTOR_DIRECTIONS.map(direction=>`<button data-facing="${direction}" aria-pressed="${direction===this.direction}" ${entry.directions.includes(direction)?'':'disabled'}>${direction[0].toUpperCase()+direction.slice(1)}</button>`).join('')}</div>
       <div role="group" aria-label="Preview background">${Object.keys(backgrounds).map(background=>`<button data-background="${background}" aria-pressed="${background===this.background}">${background}</button>`).join('')}</div>
       <button id="sprite-guides" aria-pressed="${this.guides}">Ground guides</button></div>
+      ${entry.poses?`<div class="sprite-settings" role="group" aria-label="Cutscene poses">${entry.poses.map(pose=>`<button data-pose="${pose.sprite}" aria-pressed="${this.direction===pose.direction&&this.asset(entry,this.direction)===pose.sprite}">${pose.name}</button>`).join('')}</div>`:''}
       <div class="sprite-settings" role="group" aria-label="Animation preview">${(['idle','walk','attack',...(entry.id==='petra'?['bash' as const]:[])] as const).map(motion=>`<button data-motion="${motion}" aria-pressed="${this.motion===motion}" ${motion==='walk'?!walkingHero(entry.id)?'disabled':'':motion!=='idle'&&!animatedHero(entry.id)?'disabled':''}>${motion[0].toUpperCase()+motion.slice(1)}</button>`).join('')}<button id="sprite-play" ${this.motion==='idle'?'disabled':''}>${this.playing?'Pause':'Play'}</button><button id="sprite-next-frame" ${this.motion==='idle'?'disabled':''}>Next frame</button><span id="sprite-frame" aria-live="off"></span></div>
-      <section class="sprite-lineup"><h3>${this.group} lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entries.length*96}" height="112" aria-label="${this.group} at native size"></canvas></div></section>
+      <section class="sprite-lineup"><h3>${this.group} lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${columns*96}" height="${rows*112}" aria-label="${this.group} at native size"></canvas></div></section>
       <div class="sprite-inspector"><section><h3>${entry.name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${entry.name} ${this.direction} at ${this.zoom}x"></canvas></section>
-      <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':'One front view is available for this asset.'}</p><p>Actor: 80 x 80<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row ${ACTOR_FEET} / center: column 40${vectorAsset(entry.sprite)?'<br/>Vector source / SVG / 2:1 logical proportions.':''}</p><p class="sprite-file">${artPath(spriteAsset(entry,this.direction))}${entry.portrait?'<br/>'+artPath(entry.portrait):''}</p></section></div></section>`;
+      <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':entry.poses?'Cutscene poses use the actual campaign escape assets.':'One front view is available for this asset.'}</p><p>Actor: 80 x 80<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row ${ACTOR_FEET} / center: column 40${vectorAsset(entry.sprite)?'<br/>Vector source / SVG / 2:1 logical proportions.':''}</p><p class="sprite-file">${artPath(spriteAsset(entry,this.direction))}${entry.portrait?'<br/>'+artPath(entry.portrait):''}</p></section></div></section>`;
     const bind = (selector: string, action: (button: HTMLButtonElement) => void) => {
       for (const button of host.querySelectorAll<HTMLButtonElement>(selector)) button.onclick = () => {
         const scroll = host.closest('.inventory-panel')!.scrollTop;
@@ -72,9 +78,10 @@ export class SpriteWorkshop {
         host.querySelector<HTMLButtonElement>(focus)?.focus({preventScroll:true});
       };
     };
-    bind('[data-sprite-hero]', button=>{ this.hero=button.dataset.spriteHero!;this.frame=0; });
+    bind('[data-sprite-hero]', button=>{ this.hero=button.dataset.spriteHero!;this.frame=0;this.pose=undefined; });
     bind('[data-sprite-group]', button=>{ this.group=button.dataset.spriteGroup as SpriteGroup;this.hero=SPRITE_CATALOG.find(entry=>entry.group===this.group)!.id; });
-    bind('[data-facing]', button=>{ this.direction=button.dataset.facing as ActorDirection; });
+    bind('[data-facing]', button=>{ this.direction=button.dataset.facing as ActorDirection;this.pose=undefined; });
+    bind('[data-pose]',button=>{const pose=this.entry.poses!.find(pose=>pose.sprite===button.dataset.pose)!;this.pose=pose.sprite;this.direction=pose.direction;});
     bind('[data-background]', button=>{ this.background=button.dataset.background as Background; });
     bind('[data-zoom]', button=>{ this.zoom=Number(button.dataset.zoom); });
     bind('#sprite-guides', ()=>{ this.guides=!this.guides; });
@@ -109,7 +116,7 @@ export class SpriteWorkshop {
   }
   private actor(ctx: CanvasRenderingContext2D, entry: SpriteEntry, direction: ActorDirection, x: number, y: number, zoom=1) {
     const frame=walkingHero(entry.id)?(entry.id===this.entry.id?this.displayedFrame:this.currentFrame(entry.id)):undefined;
-    const image=this.image(frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,direction).asset:spriteAsset(entry,direction)),size=ACTOR_SIZE*zoom;
+    const image=this.image(frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,direction).asset:this.asset(entry,direction)),size=ACTOR_SIZE*zoom;
     if (this.guides) {
       ctx.strokeStyle='#87a3a2';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,size-1,size-1);
       ctx.fillStyle='#f4c77a';ctx.fillRect(x,y+ACTOR_FEET*zoom,size,1);
@@ -130,9 +137,10 @@ export class SpriteWorkshop {
     const frame=this.currentFrame();this.displayedFrame=frame;this.paintedFrame=frame??-1;
     this.host.querySelector('#sprite-frame')!.textContent=frame===undefined?'Idle':frame<WALK_FRAMES?`Step ${frame+1}/${WALK_FRAMES} · ${WALK_PHASES[frame]}`:entry.id==='nell'?['Wind-up','Contact','Follow-through'][frame-WALK_FRAMES]:frame%2===0?'Wind-up':'Contact';
     this.host.dataset.frame=String(frame??'idle');
-    const asset=frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,this.direction).asset:spriteAsset(entry,this.direction);
+    const asset=frame!==undefined&&walkingHero(entry.id)?motionPage(entry.id,this.direction).asset:this.asset(entry,this.direction);
     this.host.querySelector('.sprite-file')!.innerHTML=`${artPath(asset)}${frame===undefined?'':` / frame ${frame}`}${entry.portrait?'<br/>'+artPath(entry.portrait):''}`;
-    entries.forEach((character,index)=>this.actor(a,character,this.direction,8+96*index,16+68-ACTOR_FEET));
+    const columns=lineup.width/96;
+    entries.forEach((character,index)=>this.actor(a,character,this.direction,8+96*(index%columns),16+112*Math.floor(index/columns)+68-ACTOR_FEET));
     const offset=(240-ACTOR_SIZE*this.zoom)/2;this.actor(b,entry,this.direction,offset,offset,this.zoom);
     entry.directions.forEach((direction,index)=>this.actor(c,entry,direction,8+88*index,16+68-ACTOR_FEET));
     // A DOM mutation asks the shared native framebuffer to repaint these canvases.

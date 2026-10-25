@@ -3,16 +3,27 @@
 <metadata>{"reference": "ec894d8:public/art/portrait-elspeth.png", "construction": "Long elderly face with light brows, tired lower lids, narrow jaw and a reserved smile. Swept silver waves, fine brass spectacles, plum cardigan and chair posts; broad connected age planes.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M29 32L36 19 52 11 72 14 85 27 92 46 90 66 81 83 69 92 42 85 29 70 25 50Z" fill="#879b95"/>
+<g transform="translate(0 7)" data-part="neck">
+<path d="M50 76L48 96 62 107 79 94 76 73Z" fill="#b58261"/>
+<path d="M59 85L76 79 79 94 63 105 53 95Z" fill="#96674f"/>
+</g>
+<g data-part="neck-root">
+<polygon points="51.50,83 49.88,101 77.60,101 77.60,101 74.90,80" fill="#c99571"/>
+<polygon points="59.60,92 74.90,86 77.60,101 77.60,101 54.74,101" fill="#a7745a"/>
+</g>
+<g transform="translate(0 7)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M50 76L48 96 62 107 79 94 76 73Z" clip-rule="evenodd"/></clipPath></defs>
 <path d="M14 128L15 80 20 73 25 81 27 128Z M99 128L100 80 105 73 110 81 112 128Z" fill="#623d29"/>
 <path d="M18 82L20 78 22 83 24 128H20Z M103 82L105 78 107 83 109 128H105Z" fill="#c69c5c"/>
+<g clip-path="url(#shoulder-neckline)">
 <path d="M7 128L14 110 33 98 50 89H79L101 102 117 128Z" fill="#653f50"/>
 <path d="M10 123L23 108 39 99 45 128Z" fill="#895767"/>
 <path d="M86 98L104 111 117 128H86Z" fill="#4a3345"/>
+</g>
 <path d="M42 96L55 91 64 104 80 92 89 104 83 128H47Z" fill="#233d52"/>
-<path d="M50 76L48 96 62 107 79 94 76 73Z" fill="#b58261"/>
-<path d="M59 85L76 79 79 94 63 105 53 95Z" fill="#96674f"/>
 <path d="M48 95L54 95 63 106 76 96 79 101 66 116 56 109Z" fill="#d8c59b"/>
-<path d="M29 32L36 19 52 11 72 14 85 27 92 46 90 66 81 83 69 92 42 85 29 70 25 50Z" fill="#879b95"/>
+</g>
 <path d="M40 32L54 24 70 29 80 42 83 58 78 75 66 90 57 92 46 84 37 69 33 51 33 42Z" fill="#c99571"/>
 <path d="M41 34L53 28 67 33 73 43 66 52 46 55 35 47Z" fill="#e1b68c"/>
 <path d="M74 35L80 42 83 58 78 75 66 90 57 92 56 86 69 77 73 60Z" fill="#a7745a"/>
@@ -31,8 +42,9 @@
 <path d="M27 40L29 27 37 20 39 12 50 15 57 8 68 13 78 12 87 24 90 38 84 45 76 34 66 28 53 29 43 38 36 52 33 63 28 67 24 54Z" fill="#b3b8aa"/>
 <path d="M31 32L38 26 43 18 49 20 57 14 66 18 76 17 81 23 69 24 57 21 48 27 39 33 32 44Z" fill="#d2d4bc"/>
 <path d="M32 43L37 37 44 33 44 37 38 47 34 61 30 67 28 59Z" fill="#879b95"/>
-<path d="M80 29L87 34 91 47 89 64 82 77 76 82 77 73 83 58 83 45Z" fill="#b7c1b8"/>
-<path d="M36 49L40 47H53L57 51 56 60 52 63 39 61Z M39 51L41 59 51 60 54 58V52L51 50H42Z M62 50L66 48H76L80 52 79 61 74 64 64 61Z M65 52L66 59 74 61 77 59V53L74 51H68Z M57 53H62V56H57Z M31 48L36 51V54L31 51Z" fill="#c69c5c"/>
+<path d="M77 24L86 29 91 41 92 49 89 64 82 77 76 82 77 71 83 57 82 43 80 34Z" fill="#b7c1b8"/>
+<path d="M36 49L40 47H53L57 51 56 60 52 63 39 61Z M39 51L41 59 51 60 54 58V52L51 50H42Z M62 50L66 48H76L80 52 79 61 74 64 64 61Z M65 52L66 59 74 61 77 59V53L74 51H68Z M57 53H62V56H57Z M31 48L36 51V54L31 51Z" fill="#654158"/>
+<path d="M41 47H51V49H41Z M66 48H75V50H66Z" fill="#cab9d2"/>
 <path d="M74 116L104 110 116 128H66Z" fill="#3e596b"/>
 <path d="M78 119L103 114 110 128H72Z" fill="#baa989"/>
 </svg>

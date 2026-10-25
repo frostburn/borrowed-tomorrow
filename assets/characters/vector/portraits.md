@@ -12,7 +12,7 @@ Edric and Samira are the style anchors. Match their broad face scale, modest tur
 - Construct eyes from an eyelid plane, muted sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
 - Draw a bridge, tip and underside for the nose. Avoid the old single triangular nose stamp. Fit them to the head's turn and the person's face. Mouth corners, lower lip and chin should support the expression without an outlined cartoon mouth.
 - Use the same detail density, not the same anatomy. Keep differently shaped cheeks, foreheads, noses, jaws, eyelids and mouths, asymmetry, age and direction of gaze. Don't smooth every adult into a youthful face or give every man the same square jaw.
-- Group hair into a few connected clumps and facets. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
+- Group hair into a few connected clumps and facets. Side-lock and braid roots overlap their scalp masses by several native pixels, so a single missed 2px sample cannot leave a floating lock. Short-haired clean-shaven characters expose skin along the jaw; rear hair must not continue as a dark ring beneath the chin. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
 - Large shapes are filled polygons. Sparse 2px contours can describe brows, spectacles or costume trim. No gradients, filters, embedded images or external resources. The runtime's common coarse raster supplies the pixel weight.
 
 ## Individual likenesses
@@ -22,7 +22,7 @@ Costumes and established hair remain consistent with the actors. Features to pre
 | Character | Likeness and expression |
 | --- | --- |
 | Nell | Young rounded cheek, open eyes, two braids, red railway cap/jacket. |
-| Orrin | Broad bearded engineer, sidelong gaze, brass goggles on navy cap. |
+| Orrin | Broad bearded engineer, an open sidelong gaze and continuous warm beard facets around a closed mouth; brass goggles on navy cap. |
 | Kit | Round youthful chin, tousled hair, open gaze, ochre courier scarf. |
 | Petra | Angular lower face, level brows and tight mouth; green armor and gold shoulder plates. |
 | Celia | Long mature cheeks, silver bob, round spectacles, patient expression and medical book. |
@@ -57,3 +57,12 @@ Costumes and established hair remain consistent with the actors. Features to pre
 Use `?dev=sprites` → Party / NPCs to compare the real portrait files with their corresponding world actors. Check a mixed group across chapters, not just one regional cast. Review native 128px and through the game's coarse raster; dialogue and Equipment use these same files. On a compact phone at fractional DPR, verify eyes, glasses and mouth corners still survive and that no portrait is stretched or cropped. Keep review screenshots/contact sheets outside the repository.
 
 Run the existing character/content checks, native portrait presentation and desktop/phone sprite-workshop checks. Stage the SVGs and run `npm run check:art-upload` before publishing. Each image retains the 128 KiB budget. No gameplay, save, animation, source texture dimensions or display filtering change is needed for portrait edits.
+
+Keep a visible neck between the jaw and collar. Individual shoulder/neck groups sit lower where the old collar met the chin; head size, facial landmarks and the 128px crop stay fixed. Iven’s receding hair lies over a complete bald scalp plane. Tomas has fuller lower cheeks, a blunt nose and a relaxed uneven smile; Alban has a longer angular jaw, more turned projecting nose and a narrow far eye. Orrin’s beard highlights join across the lower face so the mouth cannot read as a dark hole; his open eye expression is retained.
+
+Rear hair stays behind the neck: explicit foreground neck-root planes overlap the rear hair under the jaw before the face is drawn. Lowering a collar alone does not fix a hair silhouette covering the throat. Match those root planes to each face’s skin, keeping the collar rim visible. Tomas has dark green irises with distinct pupils; Alban’s far eye retains a visible sclera at the shared 2px raster. The Engine Warden and Heart regulator use copper/brass-colored edge shadows instead of heavy navy borders, retaining dark interior apertures.
+
+Portrait paint order is rear hair → neck and neck root → clothing/collar → face and foreground hair. Both neck groups sit below the entire clothing group, including apron edges, lapels and scarves; never paint a throat plane over a collar to bridge the jaw.
+The shoulder fabric has a vector neckline cutout; collars and lapels paint above that opening without the cutout. This preserves their authored edges while the throat remains connected beneath them.
+
+Samira uses the same rear-hair → neck → clothing order: her dark rear hair no longer covers the throat. Alban’s pupils are equal 4×4 native rectangles aligned to the two-pixel grid; render checks count four sampled pixels per pupil at all four sampling phases. Spectacle frames must contrast with skin: Celia uses deep teal and cool rim light, Iona dark bronze and gold, Elspeth plum and lavender, and Iven blue with gold accents. Keep the lens openings clear so the eyes remain readable.
