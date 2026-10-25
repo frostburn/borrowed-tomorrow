@@ -3,19 +3,25 @@
 <desc>Silver hair under a navy cap, narrow eyes and a long cheek; alert, turned toward the ship. Independent polygon drawing; upper-left key light, broad material planes and native-size facial marks.</desc>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
-<g transform="translate(0 4)" data-part="shoulders-and-neck">
-<path d="M5 128L13 106 34 94 51 86 78 87 101 98 120 128Z" fill="#38586e"/>
-<path d="M6 124L17 108 38 96 43 128Z" fill="#547a8b"/>
-<path d="M84 95L105 105 120 128H84Z" fill="#263e53"/>
+<path d="M32 28L45 18 70 16 86 28 90 46 87 70 77 85 53 87 36 72 29 50Z" fill="#687a80"/>
+<g transform="translate(0 4)" data-part="neck">
 <path d="M48 74L46 94 60 109 80 96 77 74Z" fill="#b57f60"/>
 <path d="M49 78L70 84 77 78 79 95 61 107 52 95Z" fill="#96674f"/>
-<path d="M34 94L46 88 61 103 79 89 91 97 67 120 51 113Z" fill="#d8c59b"/>
-<path d="M78 95L88 98 67 120 61 116Z" fill="#b49f79"/>
 </g>
-<path d="M32 28L45 18 70 16 86 28 90 46 87 70 77 85 53 87 36 72 29 50Z" fill="#687a80"/>
 <g data-part="neck-root">
 <polygon points="49.70,78 47.90,98 47.90,98 78.25,98 75.80,78" fill="#c99571"/>
 <polygon points="50.60,82 69.50,88 75.80,82 77.49,98 53.14,98" fill="#a7745a"/>
+</g>
+<g transform="translate(0 4)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M48 74L46 94 60 109 80 96 77 74Z" clip-rule="evenodd"/></clipPath></defs>
+
+<g clip-path="url(#shoulder-neckline)">
+<path d="M5 128L13 106 34 94 51 86 78 87 101 98 120 128Z" fill="#38586e"/>
+<path d="M6 124L17 108 38 96 43 128Z" fill="#547a8b"/>
+<path d="M84 95L105 105 120 128H84Z" fill="#263e53"/>
+</g>
+<path d="M34 94L46 88 61 103 79 89 91 97 67 120 51 113Z" fill="#d8c59b"/>
+<path d="M78 95L88 98 67 120 61 116Z" fill="#b49f79"/>
 </g>
 <path d="M42 32L60 25 76 33 80 49 76 62 72 76 62 86 53 83 42 72 36 57 33 46Z" fill="#c99571"/>
 <path d="M42 33L58 29 68 35 67 45 55 50 41 48 36 43Z" fill="#e6bc91"/>

@@ -3,20 +3,26 @@
 <metadata>{"reference": "ec894d8:public/art/portrait-clerk.png", "construction": "Broad rounded jaw, brown bob and a composed leftward gaze. Low slate cap with brass band, angular spectacles and clipboard; independently drawn face at the regional portrait scale.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
-<g transform="translate(0 5)" data-part="shoulders-and-neck">
-<path d="M2 128L11 108 34 96 50 88H81L107 102 123 128Z" fill="#6c7170"/>
-<path d="M6 123L19 108 37 99 44 128Z" fill="#858a80"/>
-<path d="M88 98L109 110 123 128H89Z" fill="#46545b"/>
+<path d="M29 34L37 20 55 14 77 20 91 34 96 55 90 79 77 92 42 87 28 70 25 50Z" fill="#49362c"/>
+<g transform="translate(0 5)" data-part="neck">
 <path d="M48 75L46 96 63 108 82 94 78 74Z" fill="#b58261"/>
 <path d="M59 85L78 79 82 94 65 105 53 95Z" fill="#96674f"/>
-<path d="M40 94L47 90 62 104 80 89 89 98 69 120 54 111Z" fill="#d8c59b"/>
-<path d="M61 107L66 104 71 111 69 128H59L61 115Z" fill="#233d52"/>
-<path d="M33 98L42 93 54 106 46 106 44 117 29 103Z M82 94L90 98 97 109 85 110 76 120 73 109Z" fill="#3c4c55"/>
 </g>
-<path d="M29 34L37 20 55 14 77 20 91 34 96 55 90 79 77 92 42 87 28 70 25 50Z" fill="#49362c"/>
 <g data-part="neck-root">
 <polygon points="49.70,80 48.07,99 80.30,99 80.30,99 76.70,79" fill="#c99571"/>
 <polygon points="59.60,90 76.70,84 80.30,99 80.30,99 54.74,99" fill="#a7745a"/>
+</g>
+<g transform="translate(0 5)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M48 75L46 96 63 108 82 94 78 74Z" clip-rule="evenodd"/></clipPath></defs>
+
+<g clip-path="url(#shoulder-neckline)">
+<path d="M2 128L11 108 34 96 50 88H81L107 102 123 128Z" fill="#6c7170"/>
+<path d="M6 123L19 108 37 99 44 128Z" fill="#858a80"/>
+<path d="M88 98L109 110 123 128H89Z" fill="#46545b"/>
+</g>
+<path d="M40 94L47 90 62 104 80 89 89 98 69 120 54 111Z" fill="#d8c59b"/>
+<path d="M61 107L66 104 71 111 69 128H59L61 115Z" fill="#233d52"/>
+<path d="M33 98L42 93 54 106 46 106 44 117 29 103Z M82 94L90 98 97 109 85 110 76 120 73 109Z" fill="#3c4c55"/>
 </g>
 <path d="M40 33L56 25 73 31 83 44 85 61 79 77 67 88 56 88 44 79 36 64 32 48 33 41Z" fill="#c99571"/>
 <path d="M41 35L55 29 69 34 75 44 67 52 46 55 34 47Z" fill="#e1b68c"/>

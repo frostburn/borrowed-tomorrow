@@ -3,23 +3,29 @@
 <metadata>{"reference": "babe8ca:public/art/portrait-petra.png", "construction": "Angular lower face, level brows, straight nose and a tight mouth. Short dark hair, green armor and gold-edged shoulder plates; broad frontal planes with a slight turn.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
 <path d="M0 0H128V128H0Z" fill="#182e3b"/>
 <path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
-<g transform="translate(0 8)" data-part="shoulders-and-neck">
+<path d="M29 34L35 21 51 13 74 16 90 30 96 50 92 73 79 91 46 89 31 74 26 53Z" fill="#242a2d"/>
+<g transform="translate(0 8)" data-part="neck">
+<path d="M49 75L48 95 65 107 82 93 78 73Z" fill="#b58261"/>
+<path d="M61 84L78 78 82 93 66 105 55 94Z" fill="#96674f"/>
+</g>
+<g data-part="neck-root">
+<polygon points="50.60,83 49.74,102 79.21,102 80.30,101 76.70,81" fill="#c99571"/>
+<polygon points="61.40,92 76.70,86 80.30,101 79.10,102 56.00,102 56.00,102" fill="#a7745a"/>
+</g>
+<g transform="translate(0 8)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M49 75L48 95 65 107 82 93 78 73Z" clip-rule="evenodd"/></clipPath></defs>
+
+<g clip-path="url(#shoulder-neckline)">
 <path d="M0 128V109L23 95 47 87H82L108 100 128 119V128Z" fill="#122634"/>
 <path d="M3 123L18 107 37 96 43 128H0Z" fill="#3e596b"/>
 <path d="M40 97L53 91 66 103 82 91 96 105 91 128H38Z" fill="#35584d"/>
+</g>
 <path d="M43 113L64 105 86 112 90 128H42Z" fill="#587067"/>
-<path d="M49 75L48 95 65 107 82 93 78 73Z" fill="#b58261"/>
-<path d="M61 84L78 78 82 93 66 105 55 94Z" fill="#96674f"/>
 <path d="M41 94L48 88 64 102 60 112 44 102Z M79 91L84 88 93 99 86 111 76 106Z" fill="#122634"/>
 <path d="M44 93L48 90 63 103 59 108 58 105 60 103Z M83 91L90 99 85 107 84 104 87 99Z" fill="#c69c5c"/>
 <path d="M4 106L12 96 25 92 38 100 43 114 35 121 14 119 5 115Z M88 105L96 96 109 93 121 102 127 116 118 122 97 119 89 113Z" fill="#c69c5c"/>
 <path d="M11 105L17 99 25 97 34 103 37 111 32 115 16 113Z M95 105L101 99 109 98 118 105 121 113 115 116 100 113Z" fill="#8caaa6"/>
 <path d="M12 115L33 116 36 119 15 118Z M98 115L118 118 119 121 99 118Z" fill="#80553d"/>
-</g>
-<path d="M29 34L35 21 51 13 74 16 90 30 96 50 92 73 79 91 46 89 31 74 26 53Z" fill="#242a2d"/>
-<g data-part="neck-root">
-<polygon points="50.60,83 49.74,102 79.21,102 80.30,101 76.70,81" fill="#c99571"/>
-<polygon points="61.40,92 76.70,86 80.30,101 79.10,102 56.00,102 56.00,102" fill="#a7745a"/>
 </g>
 <path d="M40 32L55 24 73 29 85 42 88 60 82 76 71 88 60 91 47 83 38 69 34 52 34 42Z" fill="#c99571"/>
 <path d="M41 34L54 28 69 32 78 42 75 51 54 55 37 47Z" fill="#e1b68c"/>
