@@ -138,7 +138,7 @@ world('airfield','Western airfield','The survey crew is loading beside the north
 
 # Optional conversations use their own casts; reserves join without changing formation.
 ship_companions={
- 'five-deck-orrin':{'nell':(32,22),'orrin':(28,24),'kit':(30,24),'petra':(34,26),'celia':(36,26),'alda':(34,19)},
+ 'five-deck-orrin':{'nell':(38,24),'orrin':(43,30),'kit':(45,30),'petra':(37,27),'celia':(39,27),'alda':(34,19)},
  'five-deck-petra':{'nell':(32,22),'orrin':(35,24),'kit':(30,25),'petra':(28,24),'celia':(36,26),'alda':(34,19)},
  'five-deck-celia':{'nell':(32,22),'orrin':(28,24),'kit':(29,26),'petra':(36,24),'celia':(34,24),'alda':(34,19)},
 }

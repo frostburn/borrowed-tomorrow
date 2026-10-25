@@ -87,7 +87,7 @@ export const thanks=()=>scene('riverhaven','six-river-thanks','The open passage'
  line('Ines','Tell Sera what happened. She’ll have other patients to use it for.'),
  line('Celia','I’ve copied every step. I’d like your corrections before we send it.'),
  line('Ines','Leave it at the table. You can use the launch whenever you need us.'),
- line('Nell','Petra. You kept telling me where the next step was, on the way to the cot.',{focus:{x:27,y:34},actors:{petra:{to:{x:26,y:33},face:'petra-right'},nell:{face:'nell-left'}},duration:650}),
+ line('Nell','Petra. You kept telling me where the next step was, on the way to the cot.',{focus:{x:27,y:33},actors:{petra:{to:{x:26,y:30},face:'petra-right'},nell:{to:{x:28,y:30},face:'nell-left'}},duration:650}),
  line('Petra','I didn’t know if you could hear.'),
  line('Nell','I could. It helped.'),
  line('Petra','Shall I walk with you to the boat?'),

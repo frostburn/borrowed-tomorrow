@@ -6,7 +6,7 @@ const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage('airship',id)},lines});
 
 export const engineWatch=(hammerplainComplete:boolean)=>scene('five-deck-orrin','Learning the engine',[
- line('Orrin',hammerplainComplete?'Hester sent the drive drawings. This time I’m reading them before I offer advice.':'Kit, you wanted to see the pressure dial. Come round this side.',{focus:{x:29,y:25},cut:true,actors:{orrin:{face:'orrin-right'},kit:{face:'kit-left'}}}),
+ line('Orrin',hammerplainComplete?'Hester sent the drive drawings. This time I’m reading them before I offer advice.':'Kit, you wanted to see the pressure dial. Come round this side.',{focus:{x:44,y:32},cut:true,actors:{orrin:{face:'orrin-right'},kit:{face:'kit-left'}}}),
  line('Kit',hammerplainComplete?'Does the spare have the same warning needle?':'I’d like to know when you’re actually in trouble.'),
  line('Orrin','I’d wave.'),
  line('Kit','You waved yesterday. You wanted me to move a crate.'),
