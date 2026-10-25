@@ -83,7 +83,14 @@ export function interactChapterSeven(h:StoryHost,id:string){
   case 'refuge-kit':return say('Kit','Alda knows the signal. If the next group has trouble on the step, she’ll send a rope.');
   case 'refuge-orrin':return say('Orrin','I took the return spring out. It can’t put the gate back while anyone’s crossing.');
   case 'refuge-celia':return say('Celia','I’ve left water at the next landing. Check your dressings before we go.');
-  case 'refuge-petra':return say('Petra','They’re making their own groups for the walk. I’ve shown them where to wait if the stair is crowded.');
+  case 'refuge-petra':return h.talk({lines:[
+   SAY('Petra','They’re making their own groups for the walk. I’ve shown them where to wait if the stair is crowded.'),
+   SAY('Petra','I keep thinking someone will recognize me.'),
+   SAY('Nell','From the exchange?'),
+   SAY('Petra','Or before it. There were other trains.'),
+   SAY('Nell','What will you say?'),
+   SAY('Petra','I’ll ask if they want to speak to me. If they don’t, I’ll leave them alone.'),
+  ]});
   case 'throne-retreat':return go(h,'lastrefuge');
   case 'throne-fight':
    if(f.benefactorHeartWon)return resumeChapterSeven(h);

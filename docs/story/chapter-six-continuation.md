@@ -124,3 +124,5 @@ The two final bosses share campaign/workshop rules and native assets. The Empero
 Vite starts **Capital** and **Final preparations** offer ill/recovered Nell. The former replays the quay before either city battle; the latter has the avenue/commandant cleared and the remembered morning authored complete only on its recovered variant. Neither grants Emperor rewards or final commitment. Both regional seals are already broken. Boss previews use `?dev=boss&boss=emperor` / `lightbearer` and never write campaign saves.
 
 Nell and Kit’s revised affection follows [their arc notes](nell-kit-arc.md), including the recovery gate and real-sea payoff.
+
+Petra’s accountability continues through [her arc notes](petra-arc.md): a Cinderbank passenger declines her help, she sends Dena her own account after Alban’s death, and she commits to answer the families in person after the sea trip. Neither her service nor the final victory grants a pardon.

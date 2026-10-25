@@ -23,3 +23,5 @@ The pressure collector has no earth-plate restriction, so all legal one-to-three
 Authoring: `npm run art:seven` regenerates the native SVG/Tiled scenes, accepted Benefactor motion, two additional forms and common-enemy recolors. It preserves editable primary art/portraits. No bitmap sheets or new production dependencies. The per-image 128 KiB guard still applies.
 
 Nell and Kit’s revised affection follows [their arc notes](nell-kit-arc.md), including the recovery gate and real-sea payoff.
+
+Petra’s accountability continues through [her arc notes](petra-arc.md): a Cinderbank passenger declines her help, she sends Dena her own account after Alban’s death, and she commits to answer the families in person after the sea trip. Neither her service nor the final victory grants a pardon.

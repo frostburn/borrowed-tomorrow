@@ -30,6 +30,16 @@ export const briefing=(s:SceneState=empty)=>scene(s,'outermooring','six-briefing
  line('Celia',s.flags.nellRecovered?'The treatment record is going to Sera with the next launch.':'They may know how to interrupt what’s happening to Nell. I’ve asked them to read her notes before we land.'),
  line(s.flags.nellRecovered?'Nell':'Kit',s.flags.nellRecovered?'We should send Tomas the route too.':'I’ll tell Nell where we’re going. She’ll want Tomas to have the route.'),
  line('Alda',s.flags.nellRecovered?'Keep the landings open. Mark your course when you’re ready.':'The medics keep the berth. We keep the landings open. Mark your course when you’re ready.'),
+ line('The deck','Petra unfolds a page. Cramped lines of writing cover both sides.',{focus:{x:34,y:29},actors:{kit:{to:{x:33,y:29}},petra:{face:'petra-left'}},duration:600}),
+ line('Petra','I kept imagining Alban in front of the families. Having to explain the orders he gave.'),
+ line('Kit','And what were you going to tell them?'),
+ line('Petra','I was going to stand beside them. As if I’d never stood beside him.'),
+ line('Kit','You did stop the guns.'),
+ line('Petra','After I’d tried to stop your train. That man at the ward remembered.'),
+ line('Petra','Alban’s dead. They can still ask me.'),
+ line('Petra','Will you take this to Dena? It’s what I did at the exchange. She can give it to anyone who asks.'),
+ line('Kit','I’ll put it with the ward post.'),
+ line('The deck','Petra hands him the page. He folds it into the packet for the next launch.'),
 ]);
 export const letter=(s:SceneState=empty)=>scene(s,'outermooring','six-letter','The next letter',[
  line('Nell',s.flags.nellRecovered?'Have we heard from Tomas?':'Is the gate open?',{focus:s.flags.nellRecovered?{x:32,y:27}:{x:20,y:28},cut:true}),

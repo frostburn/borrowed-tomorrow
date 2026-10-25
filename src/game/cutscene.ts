@@ -23,7 +23,7 @@ const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
-  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-choice'||this.script.id==='six-roofs'||this.script.id==='six-river-treatment'||this.script.id==='six-river-rest'||this.script.id==='seven-sea')?48:0;}
+  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-home'||this.script.id==='four-choice'||this.script.id==='six-briefing'||this.script.id==='six-roofs'||this.script.id==='six-river-treatment'||this.script.id==='six-river-rest'||this.script.id==='seven-home'||this.script.id==='seven-sea')?48:0;}
   private cameraPoint(point:StagePoint){
     const p=pixel(point);
     // Keep the full actors above phone dialogue, including the sea-wall walk.
