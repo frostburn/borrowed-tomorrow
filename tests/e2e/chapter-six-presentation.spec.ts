@@ -50,7 +50,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
 test('rest shelters and one-time report rewards have distinct markers and labels',async({page})=>{
  await page.goto('/');await importSave(page,desertCheckpoint('desertSeen'));
  await approach(page,'namar-supply');await expect(page.locator('.world-objective h3')).toContainText('Rest & supplies');await page.getByRole('button',{name:'Keep going',exact:true}).click();
- await approach(page,'namar-post');await expect(page.locator('.world-objective h3')).toContainText('Optional reward');
+ await approach(page,'namar-post');await expect(page.locator('.dialogue')).toContainText('report goes to Dena');
  while(await page.locator('.dialogue').isVisible())await page.locator('.dialogue-actions button').first().click();
- await approach(page,'namar-post-sent');await expect(page.locator('.world-objective h3')).toContainText('Conversation');await capture(page,'rest-and-reward-markers');
+ await approach(page,'namar-post-sent');await expect(page.locator('.dialogue')).toContainText('Your report has gone to Dena');await capture(page,'rest-and-reward-markers');
 });
