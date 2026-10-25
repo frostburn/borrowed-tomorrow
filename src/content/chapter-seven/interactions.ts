@@ -82,7 +82,14 @@ export function interactChapterSeven(h:StoryHost,id:string){
   case 'refuge-nell':return say('Nell',f.fragmentReturned?'The lantern doesn’t pull toward it anymore. I can carry it without gripping so hard.':'I keep checking the flame. It hasn’t gone out once.');
   case 'refuge-kit':return say('Kit','Alda knows the signal. If the next group has trouble on the step, she’ll send a rope.');
   case 'refuge-orrin':return say('Orrin','I took the return spring out. It can’t put the gate back while anyone’s crossing.');
-  case 'refuge-celia':return say('Celia','I’ve left water at the next landing. Check your dressings before we go.');
+  case 'refuge-celia':return h.talk({lines:[
+   SAY('Celia','I’ve left water at the next landing. Check your dressings before we go.'),
+   SAY('Nell','Have you had any water?'),
+   SAY('Celia','Not yet. There’s some in the flask.'),
+   SAY('Nell','We can wait.'),
+   SAY('Celia','Then stay here a little, will you? I’d like some company.'),
+   SAY('Nell','Until we’re all ready.'),
+  ]});
   case 'refuge-petra':return h.talk({lines:[
    SAY('Petra','They’re making their own groups for the walk. I’ve shown them where to wait if the stair is crowded.'),
    SAY('Petra','I keep thinking someone will recognize me.'),
@@ -105,7 +112,11 @@ export function interactChapterSeven(h:StoryHost,id:string){
   case 'sea-tomas':return say('Tomas','It’s colder than it looks. Come on, just up to the ankles.');
   case 'sea-kit':return say('Kit','Iona packed enough for the whole carriage. I’ve got the plates here.');
   case 'sea-petra':return say('Petra','The crust’s good. Who wants the end?');
-  case 'sea-celia':return say('Celia','Leave the timetable in the bag for a while.');
+  case 'sea-celia':return h.talk({lines:[
+   SAY('Celia','Leave the timetable in the bag for a while.'),
+   SAY('Nell','You haven’t checked it either.'),
+   SAY('Celia','I gave it to Tomas. Pass me a plate.'),
+  ]});
   case 'sea-orrin':
   case 'sea-friends':return say('Orrin','Petra’s cutting the bread. Celia says we’re allowed to eat before we check the return timetable.');
   case 'sea-ending':if(!f.realSeaSeen)return resumeChapterSeven(h);f.chapterSevenComplete=true;remember(s,'chapterSevenComplete');h.refresh();h.save();h.boundary();return;
