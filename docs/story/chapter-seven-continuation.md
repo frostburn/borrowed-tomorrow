@@ -21,3 +21,5 @@ The pressure collector has no earth-plate restriction, so all legal one-to-three
 `Begin Chapter Seven (canonical)` and `Begin final refuge (canonical)` are Vite-only authored fixtures. Bosses → The Benefactor exposes all three actual campaign forms without rewards or campaign writes; the earlier off-story fixture remains separately labeled. Maps → Ch 7 and Music → Ch 7 review real assets/scores. Full journeys, ordinary combat, artwork/audio and missing-asset tests remain outside default CI.
 
 Authoring: `npm run art:seven` regenerates the native SVG/Tiled scenes, accepted Benefactor motion, two additional forms and common-enemy recolors. It preserves editable primary art/portraits. No bitmap sheets or new production dependencies. The per-image 128 KiB guard still applies.
+
+Nell and Kit’s revised affection follows [their arc notes](nell-kit-arc.md), including the recovery gate and real-sea payoff.

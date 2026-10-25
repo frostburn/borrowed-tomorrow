@@ -66,7 +66,7 @@ def saber(d,grip,direction,phase=None):
     else:tip=(x+(-4 if direction=='left' else 4),y+20)
     d.line([(x,y),tip],'silver',2);d.line([(x-3,y+1),(x+3,y-1)],'gold',2);d.line([(x,y),(x-1,y-4)],'brown',2)
 
-def hero(name,direction,walk=None,attack=None,bash=None,carry=False):
+def hero(name,direction,walk=None,attack=None,bash=None,carry=False,arms=True,unarmed=False):
     d=Drawing();side=direction in ('left','right');swing=0 if walk is None else math.sin(walk*math.pi/3)
     right={'front':(12,39),'left':(17,39),'right':(26,39),'back':(28,39)}[direction]
     left={'front':(26,39),'left':(23,39),'right':(17,39),'back':(12,39)}[direction]
@@ -84,14 +84,16 @@ def hero(name,direction,walk=None,attack=None,bash=None,carry=False):
         else:left=(right[0]+(-5 if direction=='left' else 5),right[1])if side else(right[0]+1,right[1]-5)
     if carry:
         right=(27 if name=='kit' else 13,35);left=(right[0]+1,37)
+    if unarmed:left={'front':(26,40),'back':(12,40),'left':(23,40),'right':(17,40)}[direction]
     coat='navy' if name=='kit' else 'green'
     rshoulder=(15,25) if direction=='front' else (18,25) if direction=='left' else (24,25)
     lshoulder=(25,25) if direction=='front' else (22,25) if direction=='left' else (16,25)
     def arm(which):
+        if not arms:return
         grip=right if which=='right' else left;shoulder=rshoulder if which=='right' else lshoulder
         elbow=((shoulder[0]+grip[0])/2+(-1 if which=='right' else 1),(shoulder[1]+grip[1])/2)
         sleeve(d,shoulder,elbow,grip,'navy' if name=='kit' else 'silver')
-        if carry:return
+        if carry or unarmed:return
         if name=='kit' and which=='right':
             crossbow(d,grip,attack is not None,direction)
             # The trigger hand wraps the stock, rather than disappearing under it.

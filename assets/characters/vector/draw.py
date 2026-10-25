@@ -244,7 +244,7 @@ def legs(d, direction, hero, walk=None):
     if not side:d.line([(20,43),(20,49)],'navy-shadow')
 
 
-def nell(direction, walk=None, attack=None):
+def nell(direction, walk=None, attack=None, arms=True, unarmed=False):
     d = Drawing()
     side = direction in ('left','right')
     hands = {'front':(11,39),'left':(17,39),'right':(26,39),'back':(28,39)}
@@ -261,9 +261,9 @@ def nell(direction, walk=None, attack=None):
         elbow[direction]=(ex+(swing*.5 if side else 0),ey+swing*.5)
     hand=hands[direction]
     far_weapon = direction=='left' or (direction=='back' and attack is not None)
-    if far_weapon:
+    if far_weapon and arms:
         sleeve(d,(18,24),elbow[direction],hand,'red')
-        lantern(d,hand)
+        if not unarmed:lantern(d,hand)
     legs(d,direction,'nell',walk)
     # A flared work jacket over a continuous navy bib and trousers.
     if not side:
@@ -276,14 +276,14 @@ def nell(direction, walk=None, attack=None):
         else:
             d.line([(16,37),(24,37)],'brown')
             braid(d,16,19);braid(d,24,19)
-        sleeve(d,(25,24),(27,31),(28,40-(swing if walk is not None else 0)),'red') if direction=='front' else sleeve(d,(15,24),(13,32),(12,40-(swing if walk is not None else 0)),'red')
+        if arms:sleeve(d,(25,24),(27,31),(28,40-(swing if walk is not None else 0)),'red') if direction=='front' else sleeve(d,(15,24),(13,32),(12,40-(swing if walk is not None else 0)),'red')
     else:
         front = 17 if direction=='left' else 23
         d.cloth([(18,22),(22,22),(24,30),(24,40),(22,43),(17,41),(16,36),(17,28)],'red')
         d.line([(front,26),(front,38)],'navy')
         braid(d,23 if direction=='left' else 17,19)
         # Near left arm in the left profile is empty.
-        if direction=='left':sleeve(d,(21,24),(23,32),(22-(swing if walk is not None else 0),41),'red')
+        if direction=='left' and arms:sleeve(d,(21,24),(23,32),(22-(swing if walk is not None else 0),41),'red')
     # A small head and visible neck keep adventure-game rather than chibi proportions.
     d.rect((19,19,21,24),'skin')
     if direction=='front':braid(d,16,18,12);braid(d,24,18,12)
@@ -309,10 +309,10 @@ def nell(direction, walk=None, attack=None):
         d.poly([(16,8),(19,5),(24,7),(25,11),(16,11)],'red')
         d.line([(17,11),(26,11)],'ink')
     d.transform(head_start,1.1,.9,20,5,6)
-    if not far_weapon:
+    if not far_weapon and arms:
         shoulder=(15,24) if direction=='front' else (24,24)
         sleeve(d,shoulder,elbow[direction],hand,'red')
-        lantern(d,hand)
+        if not unarmed:lantern(d,hand)
     return d
 
 

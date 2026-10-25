@@ -39,7 +39,7 @@ export const letter=(s:SceneState=empty)=>scene(s,'outermooring','six-letter','T
  line('Kit',s.flags.nellRecovered?'Ines put a copy of the treatment in the same packet.':'I’ve got Sera’s notes for the river healers. I’ll keep a copy on the ship.'),
  line('Nell',s.flags.nellRecovered?'I want to write this one myself. He’ll need a proper account.':'Send Tomas the route too. And put in that I’m awake. He’ll worry if it’s all flight plans.'),
  line('Kit',s.flags.nellRecovered?'There’s a clean page by the chart.':'I left space for you. There’s a board under the blanket.'),
- line('Nell','Good. Pass me the pencil.'),
+ line('Nell','Thank you. Stay here while I write it? You can put your bit in after mine.'),
 ]);
 export const city=(s:SceneState=empty)=>scene(s,'namar','six-namar','The evening exchange',[
  line('Namar','A narrow postal boat slips beneath the bridge. Above the canal, awnings open for the evening market.',{focus:{x:32,y:23},cut:true}),
@@ -146,6 +146,6 @@ export const home=(s:SceneState=empty)=>scene(s,'outermooring','six-home',s.flag
  line('Nell','I’d like to see that.'),
  line('Orrin','I drew it for you. Kit’s got the page.'),
  line('Kit','I kept it flat. There’s a clean bit on the back if you want to— I’ll turn it round.'),
- line('Nell','Leave it there. I want to work out which boat is holding up the clock.'),
+ line('Nell','You kept it for me? Thank you. Come and help me work out which boat is holding up the clock.'),
  line('Celia','And someone bring the tea over. She’s been waiting to hear this all afternoon.'),
 ]);
