@@ -482,8 +482,8 @@
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 816,
-      "y": 216,
-      "depth": 355,
+      "y": 168,
+      "depth": 307,
       "layerId": 12,
       "width": 48,
       "height": 144
@@ -996,8 +996,8 @@
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
       "x": 192,
-      "y": 144,
-      "depth": 283,
+      "y": 192,
+      "depth": 331,
       "layerId": 17,
       "width": 48,
       "height": 144
@@ -1005,9 +1005,9 @@
     {
       "key": "scene-one-prop-lamp",
       "url": "art/vector/chapter-one-kit/lamp.svg",
-      "x": 624,
-      "y": 120,
-      "depth": 259,
+      "x": 552,
+      "y": 192,
+      "depth": 331,
       "layerId": 18,
       "width": 48,
       "height": 144

@@ -103,3 +103,14 @@ export imports its earlier regional layout tools. No painting, raster conversion
 production dependency or runtime art mirroring is involved. Review the same
 files under Maps for station, yard, tunnel, coast, cinderbank, northglass, refuge
 and the three later Larkspur visits; the west-facing siding stays independent.
+
+The railway fixture audit also covers lamp/tree footings across Chapters
+One–Three. Rillbridge's eastern lamp stands on the platform north of the line;
+the pass's two northern lamps stand on the southern apron (the eastern one is
+set left of Orrin's cutscene position). The exchange's eastern platform lamp
+sits one cell back from its lower rail bed. The Tiled stamps own positions and
+collision, and recompilation relocates the matching native light pools. The
+repeated vertical thread stamps on Rillbridge's pavement are removed; suspended
+water drops at the river remain. Rebuild these maps with `chapter-one.py --map
+rillbridge`, `--map tunnel` and `--chapter two --map coast`. No actors, route IDs,
+story markers or cutscene destinations move.
