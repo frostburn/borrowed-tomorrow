@@ -68,3 +68,9 @@ and `node scripts/export-petra-animation.mjs`.
 Sprites → NPCs → The Emperor now exposes his front/left views and all four real
 escape poses (side stance, both walking steps, reach). These reference existing
 campaign SVGs directly; there is no separate review-only artwork or atlas.
+
+The Emperor's escape profile draws the far sleeve before the mantle. His near
+elbow bends behind the wrist in the left-facing stance/walk, then opens forward
+for the reach. Regenerate all four campaign/review poses with
+`python3 assets/characters/vector/chapter-three.py`. The NPC native-size lineup
+wraps after ten actors, retaining the same 80px frames and 112px row spacing.

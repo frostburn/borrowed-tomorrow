@@ -87,6 +87,8 @@ def emperor_profile(step=0,reach=False):
     for x,travel,lift in [(18,-step,0),(23,step,2 if step else 0)]:
         d.poly([(x-2,45),(x+2,45),(x+travel+2,61-lift),(x+travel-2,61-lift)],'navy')
         boots(d,x+travel,top=59-lift,bottom=67-lift,facing='left')
+    # Far arm passes behind the mantle instead of drawing across its front.
+    sleeve(d,(23,30),(25+step,39),(23+step,46),'cream',False)
     d.cloth([(17,27),(25,27),(28,39),(29+step,57),(25,60),(21,51),(17,58),(12-step,57),(14,39)],'cream')
     d.poly([(17,28),(20,28),(19,47),(15,56),(12-step,57),(14,39)],'white')
     d.poly([(25,29),(27,36),(27,49),(29+step,57),(25,60),(23,49)],'cream-shadow')
@@ -95,13 +97,13 @@ def emperor_profile(step=0,reach=False):
     d.line([(17,27),(18,40),(20,47)],'gold')
     d.poly([(15,25),(22,25),(24,30),(19,34),(15,30)],'ink')
     d.line([(15,27),(19,32),(23,28)],'gold')
-    sleeve(d,(23,30),(25+step,39),(23+step,46),'cream',False)
     if reach:
-        sleeve(d,(17,30),(11,31),(5,37),'cream',False)
+        sleeve(d,(17,30),(14,36),(5,37),'cream',False)
         d.line([(6,34),(8,37)],'gold',2)
     else:
-        sleeve(d,(17,31),(14-step,39),(15-step,46),'cream',False)
-        d.line([(13-step,40),(16-step,40)],'gold',2)
+        # Facing left, the elbow sits behind the wrist (screen right).
+        sleeve(d,(18,31),(20-step,39),(15-step,46),'cream',False)
+        d.line([(18-step,40),(21-step,40)],'gold',2)
     d.oval((16,28,19,31),'gold')
     d.poly([(16,9),(21,5),(25,8),(27,15),(25,24),(22,27),(19,24),(16,24),(14,19)],'silver-shadow')
     d.poly([(16,12),(21,11),(23,15),(22,21),(19,25),(16,24),(14,21),(13,20),(15,18),(15,15)],'skin')

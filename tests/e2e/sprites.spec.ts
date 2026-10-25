@@ -86,7 +86,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
     await expect(review.locator('.sprite-file')).toContainText(artPath('master'));
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
-    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual(Array(2).fill(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length*96));
+    expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,c.height,Math.round(c.getBoundingClientRect().height/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([960,...Array(2).fill(Math.ceil(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length/10)*112)]);
     await capture(page,`sprite-npcs-${device}`);
     await review.getByRole('button',{name:'Inspect The Emperor',exact:true}).click();
     await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true}).click();
