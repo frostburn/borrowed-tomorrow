@@ -32,3 +32,8 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
 });
+
+test('a late-game save preloads the hand-holding pose without earlier chapter textures',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');const s=holiday();await importSave(page,s);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-sea');await untilPose(page,'pair-hands');await capture(page,'hands-deep-restore');
+ await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.realSeaSeen).toBe(true);expect(errors).toEqual([]);
+});
