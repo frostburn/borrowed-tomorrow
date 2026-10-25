@@ -8,10 +8,10 @@ export const ROOMS={
  cabin:{name:'Timber cabin',size:.5,feedback:.52,wet:.14,damping:3800},
  ward:{name:'Ward',size:.8,feedback:.57,wet:.17,damping:5200},
  court:{name:'Stone courtyard',size:1.1,feedback:.56,wet:.12,damping:5800},
- works:{name:'Engine hall',size:1.4,feedback:.63,wet:.22,damping:4600},
- hall:{name:'Marble hall',size:2,feedback:.66,wet:.25,damping:6500},
- cave:{name:'Cavern',size:2.8,feedback:.68,wet:.27,damping:3600},
- domain:{name:'Hollow domain',size:3.6,feedback:.7,wet:.28,damping:5400},
+ works:{name:'Engine hall',size:1.05,feedback:.5,wet:.18,damping:4200},
+ hall:{name:'Marble hall',size:1.4,feedback:.5,wet:.2,damping:5600},
+ cave:{name:'Cavern',size:1.35,feedback:.44,wet:.17,damping:3200},
+ domain:{name:'Hollow domain',size:1.9,feedback:.54,wet:.22,damping:4400},
 }as const;
 export type RoomId=keyof typeof ROOMS;
 
