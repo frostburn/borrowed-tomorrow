@@ -82,7 +82,9 @@ it('native jungle scenes, approaches and actor movements share connected floor, 
  for(const [id,scenes]of Object.entries(scripts)){
   const map=MAPS[id as keyof typeof scripts],start=arrival(map.id,'start');
   for(const d of scenes)for(const p of [...d.scene!.actors.map(a=>a.at),...d.lines.flatMap(l=>Object.values(l.shot?.actors??{}).flatMap(a=>[a?.at,a?.to].filter(Boolean)))]){
-   expect(walkable(map,p!.x,p!.y,s),`${d.scene!.id} ${p!.x},${p!.y}`).toBe(true);expect((p!.x===start.x&&p!.y===start.y)||worldPath(map,start,p!,s).length>0,`${d.scene!.id} connected`).toBe(true);
+   // Cinematic bedside placement may use sub-tile offsets; check its floor cell.
+   const cell={x:Math.floor(p!.x),y:Math.floor(p!.y)};
+   expect(walkable(map,cell.x,cell.y,s),`${d.scene!.id} ${p!.x},${p!.y}`).toBe(true);expect((cell.x===start.x&&cell.y===start.y)||worldPath(map,start,cell,s).length>0,`${d.scene!.id} connected`).toBe(true);
   }
   for(const o of visibleObjects(map,s))expect(worldPath(map,start,o,s).length>0,`${id}: ${o.id}`).toBe(true);
   for(const a of sceneAssets(map.tiles!)){const svg=readFileSync(`public/${a.url}`,'utf8');expect(svg).not.toContain('<image');expect(Buffer.byteLength(svg)).toBeLessThanOrEqual(131072);}

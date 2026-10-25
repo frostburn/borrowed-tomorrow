@@ -8,7 +8,7 @@ export interface DocumentInsert { heading:string;lines:string[];stamp?:string;si
 export interface Shot {
   duration?:number;music?:MusicMode;
   track?:CharacterId;
-  effect?:'domain-withdraw'|'domain-break'|'domain-fragment'|'domain-release'|'capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall'|'river-launch'|'river-treatment'|'pact-seal'|'pact-break'|'claim-omen'|'claim-strike'|'flagship-approach'|'capital-blockade'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'|'fleet-sighting'|'survey-launch'|'feeds-close'|'vessel-entry'|'chamber-rupture';
+  effect?:'domain-withdraw'|'domain-break'|'domain-fragment'|'domain-release'|'capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall'|'river-launch'|'river-treatment'|'pact-seal'|'pact-break'|'pact-open'|'claim-omen'|'claim-strike'|'flagship-approach'|'capital-blockade'|'water-lift'|'ward-transfer'|'shelter-open'|'survey-board'|'fleet-sighting'|'survey-launch'|'feeds-close'|'vessel-entry'|'chamber-rupture';
   focus?:StagePoint;cut?:boolean;cue?:Effect;silence?:boolean;document?:DocumentInsert;
   omen?:'shard'|'sun'|'none';
   actors?:Partial<Record<CharacterId,{to?:StagePoint;at?:StagePoint;face?:string;visible?:boolean;fallen?:boolean}>>;

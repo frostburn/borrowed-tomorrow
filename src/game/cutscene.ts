@@ -23,7 +23,7 @@ const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
-  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-choice')?48:0;}
+  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-choice'||this.script.id==='six-roofs'||this.script.id==='six-river-treatment')?48:0;}
   private cameraPoint(point:StagePoint){
     const p=pixel(point);
     // Keep the full actors above phone dialogue, including the sea-wall walk.
@@ -52,7 +52,7 @@ export class Cutscene {
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
-      if(sprites.has(name)||name==='nell-ill'&&sprites.has('nell')||script.hideCompanions&&['orrin','kit','petra','celia'].includes(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
+      if(sprites.has(name)||(name==='nell-ill'||name==='nell-bed')&&sprites.has('nell')||script.hideCompanions&&['orrin','kit','petra','celia'].includes(name)||name.startsWith('label-')){child.setVisible(false);this.hidden.push(child);}
     }
     this.layer=scene.add.container(0,0).setDepth(30000);world.add(this.layer);
     for(const actor of script.actors){
@@ -61,7 +61,7 @@ export class Cutscene {
     }
     if(script.id.startsWith('six-capital-')||script.id.startsWith('six-imperial-')||script.id.startsWith('six-lightbearer-')||script.id==='six-palace-open')this.imperial=new ImperialCinematic(scene,world);
     if(script.id==='six-river-chain'||script.id==='six-river-treatment')this.river=new RiverCinematic(scene,world);
-    if(script.id==='six-sealed'||script.id==='six-public')this.pact=new PactCinematic(scene,world);
+    if(script.id==='six-sealed'||script.id==='six-public'||script.id==='six-capital-open'||script.id==='six-north-release')this.pact=new PactCinematic(scene,world);
     if(script.id==='five-benefactor-claim')this.claim=new ClaimCinematic(scene,world);
     if(script.id==='five-flagship-approach')this.flagship=new FlagshipCinematic(scene,world);
     if(script.id==='five-wind-lift'||script.id==='five-wind-transfer')this.ward=new WardCinematic(scene,world);
@@ -71,7 +71,7 @@ export class Cutscene {
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
     if(shot.music)this.audio.setMode(shot.music);
@@ -97,7 +97,7 @@ export class Cutscene {
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
         if(!duration){actor.setPosition(p.x,p.y).setData('destination',undefined);continue;}
-        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill')this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
+        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill'&&actor.texture.key!=='nell-bed'&&!actor.texture.key.endsWith('-carry'))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
         const emperor=hero==='emperor'&&this.scene.textures.exists(EMPEROR_WALK[0]),start={x:actor.x,y:actor.y};
         if(emperor)actor.setData('cinematic-idle','emperor-left');
         this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration,ease:'Sine.easeInOut',
@@ -106,7 +106,7 @@ export class Cutscene {
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1,0,-this.dialogueInset);}
     if(shot.effect==='domain-withdraw'||shot.effect==='domain-break'||shot.effect==='domain-fragment'||shot.effect==='domain-release')this.domain?.play(shot.effect,shot.focus??this.focus);
-    else if(shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break')this.pact?.play(shot.effect,shot.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
+    else if(shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break'||shot.effect==='pact-open')this.pact?.play(shot.effect,shot.focus??this.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
       this.omen?.destroy();this.omen=undefined;
       if(shot.omen!=='none'){

@@ -3,7 +3,7 @@ import { stage } from '../../maps';
 import type { GameState,MapId } from '../../../rules/state';
 import type { Shot } from '../../cinematics';
 const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
-const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-north-home').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:'nell-ill'}:a.id==='nell'&&map==='outermooring'?{...a,at:{x:27,y:28}}:a)},lines});
+const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-north-home').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:map==='outermooring'?'nell-bed':'nell-ill',...(map==='outermooring'?{at:{x:18,y:28}}:{})}:a.id==='nell'&&map==='outermooring'?{...a,at:{x:27,y:28}}:a)},lines});
 export const arrival=(s:GameState)=>scene(s,'bellharbor','six-north-arrival','Skeld · the winter expedition',[
  line('The bell harbor','A bell sounds across the snow roofs. A pilot answers from a launch beyond the covered quay.',{focus:{x:32,y:22},cut:true}),
  line('Egil','Two short bells for an open berth. In fog you follow the next boat’s answer.'),
@@ -103,7 +103,7 @@ export const home=(s:GameState)=>scene(s,'outermooring','six-north-home','News f
 ]);
 export const opened=(s:GameState)=>scene(s,'outermooring','six-capital-open','The allied landing',[
  line('Orrin','Both returns are out. Put a little weight on the bridge.',{focus:{x:32,y:19},cut:true}),
- line('The landing bridge','The bent latch lifts. Alda’s crew draw the bridge level; the pale wall thins above the white quay.',{cue:'resonance',effect:'pact-break',duration:1300}),
+ line('The landing bridge','The bent latch lifts. Alda’s crew draw the bridge level; the pale wall thins above the white quay.',{cue:'resonance',effect:'pact-open',duration:1700}),
  line('Alda','Skeld’s pilots have the first berths. Namar’s barges are coming under us.'),
  line('Petra','The Emperor’s guards have left the outer steps. We can land.'),
  ...(s.flags.nellRecovered?[line('Nell','Take the patients first. We’ll meet the launches on the quay.')]:[line('Celia','I’m keeping Nell’s berth here. The launch can bring us back whenever we need it.')]),

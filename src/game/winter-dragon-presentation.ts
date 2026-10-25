@@ -16,6 +16,7 @@ const masks=new Map<string,Uint8Array>();
 export function winterDragonPresentation(encounter:Encounter):BattlePresentation{
  let texture='winter-dragon',attackPose='dragon-inhale';
  return {
+  lighting:encounter.id==='winter-dragon'?{scene:'battle-winter-dragon',ground:'M72 72H888V456H72Z'}:undefined,
   encounter,enemyTurn(b,onRetaliation,onAction){attackPose=winterDragon(b)?.intent?.name.toLowerCase().includes('shatter')?'dragon-shatter':winterDragon(b)?.intent?.name.toLowerCase().includes('drawn')?'dragon-inhale':'dragon-breath';return enemyTurn(b,onRetaliation,onAction);},prepare:prepareWinterDragon,focus:offset(5,3),animating:b=>!b.result&&bossMotionEnabled(),
   portrait:u=>u.id===WINTER_DRAGON_ID?DRAGON_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,

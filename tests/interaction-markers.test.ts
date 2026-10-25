@@ -4,12 +4,21 @@ import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMark
 import {newGame} from '../src/rules/state';
 import {MAP_REVIEWS,reviewFlags} from '../src/dev/map-catalog';
 
+it('turns the sent report and the completed capital entrance into conversations',()=>{
+ const s=newGame();
+ for(const [map,x,y,flag]of [['namar',19,28,'desertMailSent'],['capitalquay',32,19,'emperorWon']]as const){
+  const at=()=>visibleObjects(MAPS[map],s).filter(o=>o.x===x&&o.y===y);
+  expect(at()).toHaveLength(1);expect(interactionKind(at()[0],s)).toBe(map==='namar'?'optional':'exit');
+  s.flags[flag]=true;expect(at()).toHaveLength(1);expect(interactionMarker(at()[0],s)?.glyph).toBe(INTERACTION_MARKERS.talk.glyph);
+ }
+});
+
 it('gives every authored interaction an explicit purpose with a distinct supported shape',()=>{
  for(const map of Object.values(MAPS))for(const object of map.objects){
   expect(Object.keys(INTERACTION_MARKERS),`${map.id}:${object.id}`).toContain(object.kind);
   if(object.storyUntil)expect(object.kind).toBe('story');
  }
- expect(new Set(Object.values(INTERACTION_MARKERS).map(m=>m.glyph)).size).toBe(4);
+ expect(new Set(Object.values(INTERACTION_MARKERS).map(m=>m.glyph)).size).toBe(5);
  const station=MAPS.station.objects;
  for(const [id,kind]of [['tomas','story'],['iona','optional'],['ansel','talk'],['west-yard','exit']])expect(station.find(o=>o.id===id)?.kind).toBe(kind);
  // A train is a resting place on the coast and an exit at Cinderbank: visual
@@ -29,7 +38,7 @@ it('changes a finished mechanism to conversation and keeps closed exits distinct
 });
 it('keeps the ward supplies marked after its arrival scene and rest becomes repeatable',()=>{
  const s=newGame(),supplies=MAPS.infirmary.objects.find(o=>o.id==='ward-rest')!;
- s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('optional');expect(interactionMarker(supplies,s)).toBeDefined();
+ s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('rest');expect(interactionMarker(supplies,s)).toBeDefined();
 });
 
 it('shows one cue for Petra and Alban, and distinguishes the blocked mirrored engine',()=>{
@@ -58,6 +67,20 @@ it('dims Chapter Two story gates and exits until their actual prerequisites are 
    const marker=interactionMarker(MAPS.coast.objects.find(o=>o.id===id)!,s)!;
    expect(marker.color).toBe((id==='signal-walk')===diversion?INTERACTION_MARKERS.story.color:BLOCKED_MARKER_COLOR);
   }
+ }
+});
+
+it('dims Chapter Six mechanisms, supplies and exits while their guards or route gates remain',()=>{
+ const s=newGame();
+ for(const [map,id,flag]of [
+  ['skywalk','roof-chest','desertAscentWon'],['canopy','river-chain','riverPatrolWon'],
+  ['rainhouse','river-treatment','rainhouseWon'],['frostwatch','north-windlass','northWatchWon'],
+  ['glacier','north-hunters','northLogRead'],['canopy','canopy-rainhouse','riverChainOpen'],
+  ['frostwatch','watch-glacier','northPassOpened'],['stillcity','city-palace','capitalStreetFreed'],
+ ]as const){
+  const object=MAPS[map].objects.find(o=>o.id===id)!;s.flags[flag]=false;
+  expect(interactionMarker(object,s)?.color,`${map}:${id}`).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;expect(interactionMarker(object,s)?.color,`${map}:${id}`).toBe(INTERACTION_MARKERS[object.kind].color);
  }
 });
 
@@ -104,4 +127,19 @@ it('offers individual marker prerequisites in Maps even when no scenery layer us
  expect(reviewFlags(MAP_REVIEWS.find(m=>m.id==='windmere')!)).toContain('waterLiftOpened');
  const flags=reviewFlags(MAP_REVIEWS.find(m=>m.id==='watchbarracks')!);
  expect(flags).toContain('mortarWon');expect(flags).toContain('repeaterWon');expect(flags).not.toContain('mortarWon,repeaterWon');
+});
+
+it('keeps rest markers persistent while the report diamond becomes a conversation',()=>{
+ const s=newGame(),rest=MAPS.namar.objects.find(o=>o.id==='namar-supply')!;
+ expect(interactionMarker(rest,s)?.glyph).toBe('⌂');
+ expect(interactionKind(rest,s)).toBe('rest');s.flags.desertMailSent=true;
+ expect(interactionMarker(rest,s)?.glyph).toBe('⌂');
+ expect(visibleObjects(MAPS.namar,s).filter(o=>o.x===19&&o.y===28).map(o=>interactionMarker(o,s)?.glyph)).toEqual(['…']);
+});
+
+it('marks Alda’s final crossing as a main quest only when it is ready',()=>{
+ const s=newGame(),alda=()=>visibleObjects(MAPS.capitalquay,s).filter(o=>o.id==='capital-crew'||o.id==='capital-departure');
+ expect(alda()).toHaveLength(1);expect(interactionKind(alda()[0],s)).toBe('talk');
+ s.flags.capitalLandingSeen=true;expect(alda()).toHaveLength(1);expect(interactionMarker(alda()[0],s)?.glyph).toBe('!');
+ s.flags.chapterSixComplete=true;expect(interactionKind(alda()[0],s)).toBe('talk');
 });

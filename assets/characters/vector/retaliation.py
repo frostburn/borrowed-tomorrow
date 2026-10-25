@@ -1,6 +1,5 @@
 """Native planar minions and two Nell illness poses. No god body is depicted."""
 from pathlib import Path
-import re
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'public/art/vector'
 def svg(w,h,body,view=None):return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="{view or f"0 0 {w} {h}"}">{body}</svg>\n'
@@ -23,12 +22,6 @@ wing+=poly('33,24 30,17 36,11 43,12 47,20 44,25','#789d99')+line('35,20 42,20','
 for name,body in [('herald',herald),('glasswing',wing)]:
  (OUT/f'{name}.svg').write_text(svg(80,80,body))
  (OUT/f'portrait-{name}.svg').write_text(svg(128,128,body,'0 0 80 80'))
-source=(OUT/'nell.svg').read_text()
-source=re.sub(r'^<svg[^>]*>|</svg>\s*$','',source)
-# Preserve the accepted actor's 2:1 SVG proportions before reclining it.
-body='<g transform="translate(8 74) rotate(-90) scale(.72)"><g transform="scale(2 1)">'+source+'</g></g>'
-(OUT/'nell-faint.svg').write_text(svg(80,80,body))
-pillow=poly('6,34 26,32 31,49 8,52','#ded4b1')
-blanket=poly('31,34 65,36 70,55 30,55 25,48','#607e7c')+poly('31,34 65,36 65,42 30,40','#aab9a3')
-(OUT/'nell-ill.svg').write_text(svg(80,80,pillow+body+blanket))
+import runpy
+runpy.run_path(str(Path(__file__).with_name('illness.py')))
 print('Exported two divine minions, matching portraits and Nell’s illness poses.')

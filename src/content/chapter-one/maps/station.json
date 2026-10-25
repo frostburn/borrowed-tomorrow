@@ -1137,6 +1137,11 @@
               "name": "kind",
               "type": "string",
               "value": "optional"
+            },
+            {
+              "name": "rest",
+              "type": "bool",
+              "value": true
             }
           ]
         },
