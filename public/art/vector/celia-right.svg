@@ -24,9 +24,9 @@
 <polygon points="17,11 22,10 23,14 25,16 23,18 23,21 21,24 18,22" fill="#d49c70"/>
 <polygon points="14,10 17,5 22,4 25,9 25,13 22,12 20,9 18,13 18,20 20,24 16,24 14,20 13,14" fill="#b7c1b8"/>
 <polygon points="14,12 17,10 16,18 18,23 15,22 13,17" fill="#8b9b9b"/>
-<polygon points="20.8,14 24.3,14 23.8,15.6 21.3,15.8" fill="#f5f6ed"/>
-<polyline points="20.8,14 24.3,14" fill="none" stroke="#80553d" stroke-width="0.6"/>
-<polyline points="20.8,14 17,13" fill="none" stroke="#80553d" stroke-width="0.7"/>
+<polygon points="23.3,13.5 24.3,13.5 24.3,17.5 23.3,17.5" fill="#f5f6ed"/>
+<polyline points="23.3,13.5 24.3,13.5" fill="none" stroke="#80553d" stroke-width="0.6"/>
+<polyline points="23.3,14 17,13" fill="none" stroke="#80553d" stroke-width="0.7"/>
 <polyline points="21,21 23,21" fill="none" stroke="#c58077" stroke-width="0.7"/>
 <ellipse cx="20.0" cy="26.5" rx="1.0" ry="1.5" fill="#d9ae62"/>
 <polygon points="19.404089585185933,28.13099440092588 20.022517255983665,36.422715179501466 23.595506233646432,44.526685162382584 26.404493766353568,43.473314837617416 23.977482744016335,35.577284820498534 23.595910414814067,27.86900559907412" fill="#385d4a"/>
