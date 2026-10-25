@@ -569,8 +569,8 @@
       "height": 168
     },
     {
-      "key": "scene-two-prop-coast-engine",
-      "url": "art/vector/chapter-two-kit/coast/engine.svg",
+      "key": "scene-two-prop-coast-engine-right",
+      "url": "art/vector/chapter-two-kit/coast/engine-right.svg",
       "x": 1224,
       "y": 432,
       "depth": 619,
@@ -1031,8 +1031,8 @@
       "height": 168
     },
     {
-      "key": "scene-two-prop-coast-engine",
-      "url": "art/vector/chapter-two-kit/coast/engine.svg",
+      "key": "scene-two-prop-coast-engine-right",
+      "url": "art/vector/chapter-two-kit/coast/engine-right.svg",
       "x": 1104,
       "y": 144,
       "depth": 331,

@@ -6,6 +6,7 @@ import { CHAPTER_THREE_MAPS,CHAPTER_THREE_BATTLES } from '../src/content/chapter
 import { CHAPTER_FOUR_MAPS,CHAPTER_FOUR_BATTLES } from '../src/content/chapter-four/maps';
 import { CHAPTER_FIVE_MAPS,CHAPTER_FIVE_BATTLES } from '../src/content/chapter-five/maps';
 import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../src/content/chapter-six/maps';
+import { CHAPTER_SEVEN_MAPS } from '../src/content/chapter-seven/maps';
 import { sceneArt,visibleSceneArt,SCENE_ASSETS } from '../src/content/scene-art';
 import { properties,tilePages,mapPoints } from '../src/content/tilemaps';
 import {createBattle} from '../src/rules/combat';
@@ -15,6 +16,13 @@ import {wardUnit} from '../src/rules/ward';
 import {chapterFiveFinaleStart} from '../src/dev/canonical-saves';
 
 describe('traced SVG scenes',()=>{
+ it('keeps the northern Larkspur tree bases clear of both tracks, including later visits',()=>{
+  for(const map of [CHAPTER_ONE_MAPS.station,CHAPTER_SIX_MAPS.lastmorning,CHAPTER_SIX_MAPS.laststation,CHAPTER_SEVEN_MAPS.homecoming]){
+   const trees=sceneArt(map.tiles!)!.filter(p=>[14,15].includes(p.layerId));
+   expect(trees).toHaveLength(2);
+   for(const tree of trees)expect(tree.y+tree.height).toBeLessThan(144);
+  }
+ });
  it('centres the ward floor inlays on the actual native engine base in exploration and battle',()=>{
   const model=readFileSync('public/art/vector/chapter-five/ward-engine-battle.svg','utf8');
   const [,width,height]=model.match(/width="([\d.]+)" height="([\d.]+)"/)!;

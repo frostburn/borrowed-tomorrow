@@ -204,6 +204,9 @@ def export(chapter='one', only=None):
                     elif chapter=='three':
                         from chapter_three_style import scenery
                         key,url=scenery(module,modules[module],file.stem,ox)
+                    if module=='engine' and prop(layer).get('railFacing')=='right':
+                        from railway import engine_right
+                        key,url=engine_right(key,url)
                     instances[(module,ox,oy)]={'key':key,'url':url,'x':ox,'y':oy,'depth':depth,'layerId':layer['id']}
                 else:
                     kind=re.sub(r'-(?:field|join)-.*$','',name)
