@@ -1,0 +1,11 @@
+# Petra — returning to answer
+
+Petra’s Chapter Three promise to answer for her actions remains unfinished when she joins. Refusing Alban and saving people do not give her authority to decide that the families have forgiven her.
+
+- **Chapter Four, `four-home`:** the existing patient beside Dena is a Cinderbank passenger. He recognizes Petra from the crossing and asks Dena to bring the blankets instead. Petra acknowledges trying to stop his train, steps back and continues helping without asking him to accept her. The patient keeps the existing unnamed civilian model; camera and companion movement bring the exchange to him.
+- **Chapter Five:** preserve the Dawnwatch admission that she enforced these orders, the loss of her commission and Aurel’s custody. The Benefactor destroys Alban and his men before the intended arrest. They remain dead.
+- **Chapter Six, `six-briefing`:** after the immediate crisis and route briefing, Petra tells Kit how she imagined Alban answering before the families while she stood beside them. She admits that this would have concealed her own part. Kit agrees to carry her written account of the exchange to Dena in the ordinary ward post. This plays with Nell ill or recovered, including when Petra and Kit are reserves.
+- **Chapter Seven, `refuge-petra`:** an optional conversation acknowledges that someone from her earlier service might recognize her. She will offer to listen and respect a refusal to speak. Nell supplies no forgiveness on other people’s behalf.
+- **Chapter Seven, `seven-home`:** Iona delivers Dena’s reply: Cinderbank families want to question Petra about the crossing. Petra commits to return after the sea trip and answer in person. Her friends’ holiday still happens; no trial verdict, pardon, restored commission or compulsory punishment is invented.
+
+These are revisions inside existing scenes and one existing repeatable conversation. Scene completion/skip, interruptions, flags, journal IDs, rewards, formation, equipment and version-10 saves retain their normal behavior. No new errand, relationship variable or optional-scene prerequisite gates the ending. The untreated ending still stops in Chapter Six; it receives the written-account scene but no Chapter Seven promise or epilogue.

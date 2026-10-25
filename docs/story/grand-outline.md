@@ -135,3 +135,5 @@ The fragment gives Nell access to the conflict and a limited shelter from stoppe
 - Protect the completed rescue of Tomas and every local victory. The finale restores stolen futures without erasing the cost of the journey.
 
 Nell and Kit’s revised affection follows [their arc notes](nell-kit-arc.md), including the recovery gate and real-sea payoff.
+
+Petra’s accountability continues through [her arc notes](petra-arc.md): a Cinderbank passenger declines her help, she sends Dena her own account after Alban’s death, and she commits to answer the families in person after the sea trip. Neither her service nor the final victory grants a pardon.
