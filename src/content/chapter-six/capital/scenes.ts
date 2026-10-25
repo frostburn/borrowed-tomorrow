@@ -22,6 +22,8 @@ export const released=(s:GameState)=>scene(s,'stillcity','six-capital-release','
  line('The baker','Those aren’t my loaves. How long have they been in there?'),
  line('Celia','Put the tray down. Let me wrap your hands before you carry anything.'),
  line('Alda','The first boat’s ready. Namar’s crews will take the carts; Skeld’s pilots have the crossing.'),
+ line('Alda','The hand hoist has the first stretchers aboard. Hester’s fitters sent your spanner back with the boat.'),
+ line('Orrin','Send it back down. They’ll need it for the next load.'),
  ...(s.flags.nellRecovered?[line('Nell','Take the people who can’t manage the steps first. We’ll send the next group down.')]:[line('Petra','Take the people who can’t manage the steps first. We’ll send the next group down.')]),
  line('Stillwater Avenue','The baker leaves the burnt loaf on the counter. This time it stays there.'),
 ]);

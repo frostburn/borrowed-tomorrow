@@ -57,13 +57,22 @@ world('wintershrine','Skeld · the winter sanctuary','The winter dragon holds th
  [point('sanctuary-porter',22,31,sprite='civilian-dockhand-rust')],
  [('shrine-dragon',drag(),528,280,504,262,542,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench(),168,86,369,689,775,{})],shrine)
 
+def patient_hoist(ready=False):
+ # A crooked royal quay crane; the manual repair shares its existing footing.
+ out=[poly([(22,174),(80,160),(142,178),(84,201),(23,190)],'#899a96'),poly([(23,190),(84,201),(142,178),(142,194),(84,214),(23,202)],'#536f80'),poly([(72,25),(83,23),(91,173),(78,179)],'#547c72'),poly([(83,23),(90,26),(99,174),(91,173)],'#355b58'),poly([(46,26),(153,7),(162,21),(53,41)],'#c8ab75'),poly([(53,41),(162,21),(162,30),(55,49)],'#8e795b'),line([(49,31),(151,13)],'#ead7a3',3),poly([(83,56),(89,66),(145,27),(137,26)],'#809b8c'),ellipse(147,30,14,15,'#9b835b'),ellipse(147,30,8,9,'#d9c18b'),line([(147,26),(147,112)],'#d0b479',3),poly([(139,114),(147,124),(154,113),(154,143),(143,149),(136,140)],'#a0b3ac'),ellipse(76,139,23,19,'#8d785b'),ellipse(76,136,18,15,'#c8ab75'),ellipse(76,136,8,7,'#547c72')]
+ if ready:
+  out.extend([poly([(28,180),(35,183),(80,93),(72,93)],'#8c6d4f'),poly([(35,183),(40,180),(84,96),(80,93)],'#b19368'),line([(47,157),(147,128)],'#c7b28b',3),line([(40,151),(63,137)],'#a7bab0',5),ellipse(38,153,5,5,'#d5c69b'),poly([(64,126),(86,121),(96,140),(72,148)],'#7f9b8c'),line([(67,128),(87,126)],'#d9c18b',3)])
+ else:
+  out.extend([poly([(67,122),(81,122),(76,134),(88,141),(72,150),(61,140)],'#8d5b4e'),line([(70,121),(74,132),(69,141)],'#d4ad84',3),line([(47,161),(83,159),(113,171),(145,144)],'#ac9a75',3),poly([(30,183),(48,179),(52,188),(33,193)],'#9b835b')])
+ return out
+
 quay=[(10,24,45,12),(26,17,13,8)]
 royal=b['base']['capital'][:]
-world('capitalquay','The capital · allied landing','The landing bridge is open. Namar’s barges and Skeld’s launches can reach the white quay; the inner capital continues in the next adventure.',quay,[(12,24,5,2),(48,24,4,2)],[
+world('capitalquay','The capital · allied landing','The landing bridge is open. Namar’s barges and Skeld’s launches can reach the white quay; the inner capital continues in the next adventure.',quay,[(12,24,5,2),(48,24,4,2),(47,30,6,2)],[
  obj('capital-stores',20,31,'Allied shelter · rest and supplies',kind='optional',sign=True),obj('capital-return',13,33,'Survey launch · return to the flight chart',kind='exit',sign=True),obj('capital-inner',32,19,'Inner capital · next adventure',kind='talk',hiddenFlag='emperorWon',sign=True),obj('capital-after',32,19,'Alda · the open capital',kind='talk',requiredFlag='emperorWon',sign=True),obj('capital-crew',40,28,'Alda · the allied landing',kind='talk',sprite='alda',hiddenFlag='capitalLandingSeen'),obj('capital-departure',40,28,'Alda · prepare the final crossing',sprite='alda',requiredFlag='capitalLandingSeen',storyUntil='chapterSixComplete')],
  {'start':(32,31)}, {'six-capital-open':{**party,'alda':(34,25)},'six-capital-quay':{**party,'alda':(34,25)}},
- [point('capital-cart',44,31,sprite='civilian-dockhand'),point('capital-woman',27,27,sprite='civilian-traveler-blue'),point('western-boat-hand',18,28,sprite='civilian-dockhand-rust'),point('northern-navigator',46,29,sprite='civilian-traveler')],
- [('capital-bench',bench(),168,86,402,674,760,{})],royal)
+ [point('capital-cart',42,33,sprite='civilian-dockhand'),point('capital-woman',27,27,sprite='civilian-traveler-blue'),point('western-boat-hand',18,28,sprite='civilian-dockhand-rust'),point('northern-navigator',48,28,sprite='civilian-traveler'),point('hammerplain-fitter',44,29,sprite='civilian-dockhand-rust')],
+ [('capital-bench',bench(),168,86,402,674,760,{}),('capital-hoist-damaged',patient_hoist(),168,216,1110,550,751,{'hiddenFlag':'capitalStreetFreed'}),('capital-hoist-hand',patient_hoist(True),168,216,1110,550,751,{'requiredFlag':'capitalStreetFreed'})],royal)
 for id,title in [('north-watch','Frostwatch patrol'),('north-hunters','The glacier hunters'),('north-cache','Relief stores'),('winter-dragon','The winter sanctuary')]:
  f=[(3,3,34,16)];back=[rect(0,0,1008,480,DARK),poly([(0,70),(200,5),(440,76),(705,0),(1008,60),(1008,480),(0,480)],MID)]
  if id=='winter-dragon':back+=[poly([(0,85),(100,0),(275,35),(190,126),(61,142),(0,227)],LIGHT),poly([(1008,65),(911,0),(740,27),(814,129),(962,143),(1008,237)],BLUE)]

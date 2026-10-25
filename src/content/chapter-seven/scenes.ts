@@ -112,6 +112,15 @@ export const celia=()=>scene('lastrefuge','seven-ready','A drink of water',[
  l('Celia','Then stay here a little, will you? I’d like some company.'),
  l('Nell','Until we’re all ready.'),
 ]);
+export const orrin=()=>scene('lastrefuge','seven-orrin','The next watch',[
+ l('Orrin','I took the return spring out. It can’t put the gate back while anyone’s crossing.',{focus:{x:30,y:29},cut:true}),
+ l('Nell','You’re still listening for it.',{actors:{nell:{to:{x:31,y:28},face:'nell-left'},orrin:{face:'orrin-right'}},duration:700}),
+ l('Orrin','Old habit. The porter knows the catch now. He’s taking the next watch.'),
+ l('Nell','And you?'),
+ l('Orrin','I’d like to ride a train without listening for what’s about to break.'),
+ l('Nell','You’re coming with us.'),
+ l('Orrin','Then I’m getting a window seat.'),
+]);
 export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
  l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:18},cut:true,music:'benefactor'}),
  l('The Benefactor','You carry my light into my own house. Where are the lives you took from it?'),

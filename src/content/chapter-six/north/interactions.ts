@@ -61,7 +61,7 @@ export function interactNorth(h:StoryHost,id:string):boolean{
   case 'shrine-home':if(f.northSealBroken)go(h,'bellharbor','return');break;
   case 'six-capital-open':go(h,'capitalquay');break;
   case 'capital-return':go(h,'outermooring','namar');break;
-  case 'capital-crew':say('Alda','Namar’s barges take the lower berths. Skeld’s pilots have the launches. Your ship and all three foreign landings are still available.');break;
+  case 'capital-crew':say('Alda',f.capitalStreetFreed?'The hand hoist passed its load test. Hester’s crew has the stretchers; the pilots have the boats. Your ship and all three foreign landings are still available.':'Hester’s fitters are bracing the patient hoist. The ordinary steps are clear; your ship and all three foreign landings are still available.');break;
   default:return false;
  }
  return true;

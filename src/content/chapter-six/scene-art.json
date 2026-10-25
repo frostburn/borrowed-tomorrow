@@ -1469,6 +1469,26 @@
       "layerId": 3
     },
     {
+      "key": "scene-six-capital-hoist-damaged",
+      "url": "art/vector/chapter-six/capital-hoist-damaged.svg",
+      "x": 1110,
+      "y": 550,
+      "width": 168,
+      "height": 216,
+      "depth": 751,
+      "layerId": 4
+    },
+    {
+      "key": "scene-six-capital-hoist-hand",
+      "url": "art/vector/chapter-six/capital-hoist-hand.svg",
+      "x": 1110,
+      "y": 550,
+      "width": 168,
+      "height": 216,
+      "depth": 751,
+      "layerId": 5
+    },
+    {
       "key": "scene-six-royal-globe",
       "url": "art/vector/chapter-six/royal-globe.svg",
       "x": 502,
@@ -1481,11 +1501,11 @@
     {
       "key": "scene-six-royal-globe",
       "url": "art/vector/chapter-six/royal-globe.svg",
-      "x": 1150,
-      "y": 648,
+      "x": 1280,
+      "y": 684,
       "width": 48,
       "height": 144,
-      "depth": 790,
+      "depth": 826,
       "layerId": 3
     },
     {

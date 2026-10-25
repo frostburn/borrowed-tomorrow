@@ -27,3 +27,5 @@ Nell and Kit’s revised affection follows [their arc notes](nell-kit-arc.md), i
 Petra’s accountability continues through [her arc notes](petra-arc.md): a Cinderbank passenger declines her help, she sends Dena her own account after Alban’s death, and she commits to answer the families in person after the sea trip. Neither her service nor the final victory grants a pardon.
 
 Celia’s [personal arc](celia-arc.md) follows her uncertainty as a teacher through Sera’s support after Windmere, trusting Ines with Nell’s treatment, and accepting company and rest herself. Sera is a former pupil; Celia never knew the omitted pledge before the sanctuary discovery.
+
+Orrin’s [crew-trust thread](orrin-arc.md) pays off Hammerplain at the capital patient hoist: he leaves Hester’s fitters to complete their own repair, sees it support the evacuation, and later hands the gate watch to the porter. The sea trip lets him rest while someone else runs the train.

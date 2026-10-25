@@ -81,7 +81,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
   ]});
   case 'refuge-nell':return say('Nell',f.fragmentReturned?'The lantern doesn’t pull toward it anymore. I can carry it without gripping so hard.':'I keep checking the flame. It hasn’t gone out once.');
   case 'refuge-kit':return say('Kit','Alda knows the signal. If the next group has trouble on the step, she’ll send a rope.');
-  case 'refuge-orrin':return say('Orrin','I took the return spring out. It can’t put the gate back while anyone’s crossing.');
+  case 'refuge-orrin':return h.talk(scenes.orrin());
   case 'refuge-celia':return h.talk(scenes.celia());
   case 'refuge-petra':return h.talk({lines:[
    SAY('Petra','They’re making their own groups for the walk. I’ve shown them where to wait if the stair is crowded.'),
@@ -110,7 +110,11 @@ export function interactChapterSeven(h:StoryHost,id:string){
    SAY('Nell','You haven’t checked it either.'),
    SAY('Celia','I gave it to Tomas. Pass me a plate.'),
   ]});
-  case 'sea-orrin':
+  case 'sea-orrin':return h.talk({lines:[
+   SAY('Orrin','I slept through half the journey.'),
+   SAY('Nell','You didn’t hear the engine?'),
+   SAY('Orrin','A bit. Then I went back to sleep.'),
+  ]});
   case 'sea-friends':return say('Orrin','Petra’s cutting the bread. Celia says we’re allowed to eat before we check the return timetable.');
   case 'sea-ending':if(!f.realSeaSeen)return resumeChapterSeven(h);f.chapterSevenComplete=true;remember(s,'chapterSevenComplete');h.refresh();h.save();h.boundary();return;
  }
