@@ -89,12 +89,13 @@ export const home=(s:GameState)=>scene(s,'outermooring','six-north-home','News f
  ...(s.flags.nellRecovered?[
  line('Nell','He rang the sanctuary bell before we came down. Someone answered all the way from the harbor.'),
  line('Kit','He’s teaching me the signals. I got the open berth right.'),
- line('Nell','After you asked for fish.'),
- line('Kit','That was one bell too many. I know now.'),
+ line('Nell','I liked the one for fish. Can we keep that one too?'),
+ line('Kit','I think Egil would prefer we didn’t.'),
+ line('Nell','Then you’ll have to teach me the right one.'),
  ]:[
  line('Nell','I heard bells from the launch. Were they for us?',{focus:{x:20,y:28}}),
  line('Kit','Two short for an open berth. Egil’s teaching me the rest.'),
- line('Nell','Show me.'),
+ line('Nell','Will you teach me that one?'),
  line('Kit','On the cup? Celia said—'),
  line('Celia','Use the empty one. I’m putting this on her table.'),
  line('The berth','Kit taps the rim twice. Nell answers on the arm of her chair.'),

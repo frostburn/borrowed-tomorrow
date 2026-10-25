@@ -63,6 +63,7 @@ it('a recovered Nell participates throughout the desert and returns to the chart
 });
 it('rest, the terrace victory and an interrupted treatment leave Nell ill; only the completed or skipped scene cures her',()=>{
  const j=journey(jungleCheckpoint('rainhouseWon')),s=j.s;
+ resumeChapterSix(j.h);expect(j.read()?.scene?.id).not.toBe('six-river-rest');
  const base=structuredClone(s);restoreParty(s);expect(s.party[0].hp).toBe(1);expect(s.flags.nellRecovered).toBeUndefined();
  interactChapterSix(j.h,'river-treatment');j.read().choices![0].action();const scene=j.read();expect(scene.scene?.id).toBe('six-river-treatment');expect(s.flags.riverCareArrived).toBeUndefined();expect(s.flags.nellRecovered).toBeUndefined();
  const restored=decodeSave(JSON.stringify(s));expect(restored.flags.nellRecovered).toBeUndefined();expect(ownedCopies(restored.inventory,'riverglass-reflector')).toBe(0);

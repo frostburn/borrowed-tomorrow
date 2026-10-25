@@ -108,6 +108,6 @@ export const emperorTold=()=>scene('airship','five-emperor-told','Back on deck',
  line('Nell','No. I wanted you to know. I nearly asked him how to get there.'),
  line('Orrin','Sit here a minute. I’ll get you something warm.'),
  line('Kit','I’ve got Tomas’s last message. It’s mostly about a broken desk drawer. Do you want it?'),
- line('Nell','Yes. Read it to me.'),
+ line('Nell','Will you read it to me? I’d like to hear about that drawer.'),
  line('Alda','We’ll hold our course. The fleet’s moved closer to the inland crossings; the anchor landings are still open.'),
 ]);

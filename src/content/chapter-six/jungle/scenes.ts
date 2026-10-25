@@ -58,15 +58,24 @@ export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pu
  line('Celia','I’ve checked it twice. You can get up when you’ve eaten something.'),
  line('Nell','Then someone had better find my shoes.'),
 ]);
-export const rest=()=>scene('rainhouse','six-river-rest','A seat by the river',[
- line('Nell','Why are you still standing?',{focus:{x:31,y:28},cut:true,actors:{nell:{to:{x:29,y:28}}},duration:800}),
- line('Kit','I put your water here. And there’s a towel if the rail’s wet. I can move the chair—'),
- line('Nell','Sit down, Kit.'),
- line('Kit','Oh. Yes.',{actors:{kit:{to:{x:31,y:29}}},duration:500}),
- line('Nell','When’s the next boat?'),
- line('Kit','Tavi said he’d take us whenever you’re ready.'),
- line('Nell','I’d like a walk first. Just as far as the rail.'),
- line('Celia','I’ll leave the boots here. Call me if you get tired.'),
+export const rest=()=>scene('rainhouse','six-river-rest','A little farther',[
+ line('Nell','Kit. Come over here, will you?',{focus:{x:30,y:28},cut:true,actors:{nell:{to:{x:29,y:28}}},duration:800}),
+ line('Kit','I put your water here. Is there anything else you—'),
+ line('Nell','You. I wanted to see you without someone counting my pulse.'),
+ line('Kit','Oh. I kept thinking I’d left something on the boat.'),
+ line('Nell','My shoes?'),
+ line('Kit','Only once.'),
+ line('Nell','I missed talking to you.'),
+ line('Kit','I missed it too.',{actors:{kit:{to:{x:30,y:28}}},duration:600}),
+ line('The rain house','Nell sets the lantern by her feet and steps close to Kit.',{actors:{nell:{face:'nell-rest'},kit:{face:'kit-rest'}}}),
+ line('Nell','I’m all right now.'),
+ line('The river','She puts her arms around him. After a moment, he hugs her back.',{actors:{nell:{at:{x:29.5,y:28},face:'pair-hug'},kit:{visible:false}},duration:900}),
+ line('Kit','I was frightened.'),
+ line('Nell','So was I. Stay here a little while.'),
+ line('Celia','I’ll be inside if you need me. Take your time.'),
+ line('The rain house','They let go. Nell stays beside him, watching the rain reach the river.',{actors:{nell:{at:{x:29,y:28},face:'nell-rest'},kit:{at:{x:30,y:28},face:'kit-rest',visible:true}}}),
+ line('Nell','I’d like a walk when it stops. Will you come with me?'),
+ line('Kit','As far as you like.'),
 ]);
 export const thanks=()=>scene('riverhaven','six-river-thanks','The open passage',[
  line('Tavi','The morning patients are back. We can use the upper landing again.',{focus:{x:28,y:30},cut:true}),

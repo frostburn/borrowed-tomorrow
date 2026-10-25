@@ -41,6 +41,12 @@ export const openGate=()=>scene('breakwater','four-gate','A way through',[
  line('Kit','Dena’s going to make him sit down, isn’t she?'),
  line('Celia','She’ll make all of you sit down if I ask her.'),
  line('Nell','We might need that later.'),
+ line('Nell','Kit, which one’s the fishing boat? The little blue one?'),
+ line('Kit','That’s the pilot boat. The fishing boats have the baskets along the rail.'),
+ line('Nell','You can tell from here?'),
+ line('Kit','I’ve delivered to most of them. I’m usually looking for the name on the bow.'),
+ line('Nell','Then show me the others on the way back. I’d like to look at something that isn’t a locked gate.'),
+ line('Kit','I’d like that.'),
  line('Bram','I’ll keep the ferry running. You’ve opened us a supply route.'),
  line('Celia','The stair’s clear now. Come and see what they connected to my old hospice.'),
 ]);

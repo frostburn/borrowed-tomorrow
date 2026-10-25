@@ -161,6 +161,7 @@ export const departure = () => scene('cinderbank', 'two-departure', 'THE CAPITAL
   line('Kit', 'And all the letters are delivered.'),
   line('Nell', 'Come to the capital with us, Kit.'),
   line('Kit', 'I should see the coaches through. And you’ll want the south siding. I’ve done that round.'),
+  line('Nell', 'I’m glad you’re coming.'),
   line('Nell', 'Tomas is at the palace engine works. We’ve got a train. This time we go straight to him.'),
   line('The lantern', 'The glass trembles against Nell’s coat. She wraps it in Ansel’s old cloth and watches the last harbor lights pass.', { silence: true }),
 ]);
