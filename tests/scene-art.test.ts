@@ -15,7 +15,16 @@ import {toPixel} from '../src/rules/hex';
 import {wardUnit} from '../src/rules/ward';
 import {chapterFiveFinaleStart} from '../src/dev/canonical-saves';
 
-describe('traced SVG scenes',()=>{
+describe('layered scene art',()=>{
+ it('ships both original vector maps and raster skins with distinct texture keys',()=>{
+  for(const map of [CHAPTER_ONE_MAPS.station,CHAPTER_SIX_MAPS.stillcity]){
+   const original=sceneArt(map.tiles!,'vector')!,alternate=sceneArt(map.tiles!,'raster')!;
+   expect(original.every(p=>p.url.endsWith('.svg'))).toBe(true);
+   expect(alternate.every(p=>p.url.endsWith('.png'))).toBe(true);
+   for(const p of [...original,...alternate])expect(SCENE_ASSETS).toContainEqual({key:p.key,url:p.url});
+   expect(alternate.some(p=>original.some(v=>v.key===p.key))).toBe(false);
+  }
+ });
  it('places railway lamps and tree bases beside the rails across the first three chapters',()=>{
   const anchors:Record<string,readonly [number,number]>={lamp:[24,139],fir:[84,263],canopy:[110,239]};
   for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES)]){
@@ -66,14 +75,29 @@ describe('traced SVG scenes',()=>{
   expect(dome).toContain('#3f6159');expect(dome).toContain('#bf995b');expect(dome).not.toContain('Royal white marble');
   for(const name of ['royal-palace-front','royal-palace-wing'])expect(readFileSync(`public/art/vector/scenery/${name}.svg`,'utf8')).toContain('#dfe6e0');
  });
- it('covers every painted story layer with self-contained, correctly sized vector sources',()=>{
+ it('covers every painted story layer with correctly sized, bounded artwork',()=>{
+  const urls=new Map<string,string>();
   for(const map of [...Object.values(CHAPTER_ONE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_ONE_BATTLES),...Object.values(CHAPTER_TWO_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_TWO_BATTLES),...Object.values(CHAPTER_THREE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_THREE_BATTLES),...Object.values(CHAPTER_FOUR_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FOUR_BATTLES),...Object.values(CHAPTER_FIVE_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_FIVE_BATTLES),...Object.values(CHAPTER_SIX_MAPS).map(m=>m.tiles!),...Object.values(CHAPTER_SIX_BATTLES)]){
    const pieces=sceneArt(map)!;expect(pieces.length).toBeGreaterThan(0);expect(tilePages(map)).toEqual([]);
    for(const layer of map.layers.filter(l=>l.data?.some(Boolean)))expect(pieces.some(p=>p.layerId===layer.id)).toBe(true);
    for(const p of pieces){
-    const svg=readFileSync(`public/${p.url}`,'utf8');expect(svg).toContain(`width="${p.width}" height="${p.height}"`);
-    expect(svg).not.toMatch(/<image\b|data:|<script\b|<foreignObject\b|(?:href|src)\s*=\s*["'](?!#)/i);
-    expect(statSync(`public/${p.url}`).size).toBeLessThanOrEqual(131072);
+    if(urls.has(p.key))expect(p.url,`${p.key} must not reuse another scene's texture`).toBe(urls.get(p.key));
+    urls.set(p.key,p.url);
+    if(p.url.endsWith('.png')){
+     const png=readFileSync(`public/${p.url}`);
+     expect(p.url).toMatch(/^art\/raster-maps\/(station|stillcity)\//);
+     expect(png.subarray(0,8).toString('hex')).toBe('89504e470d0a1a0a');
+     expect([png.readUInt32BE(16)*2,png.readUInt32BE(20)*2]).toEqual([p.width,p.height]);
+     expect(png.readUInt32BE(16)).toBeLessThanOrEqual(384);
+     expect(png.readUInt32BE(20)).toBeLessThanOrEqual(252);
+     expect(png[25]).toBe(3); // Indexed PNG: compression palette, not a lighting limit.
+     expect([Math.abs(p.x%2),Math.abs(p.y%2)]).toEqual([0,0]);
+     expect(png.length).toBeLessThanOrEqual(262144);
+    }else{
+     const svg=readFileSync(`public/${p.url}`,'utf8');expect(svg).toContain(`width="${p.width}" height="${p.height}"`);
+     expect(svg).not.toMatch(/<image\b|data:|<script\b|<foreignObject\b|(?:href|src)\s*=\s*["'](?!#)/i);
+     expect(statSync(`public/${p.url}`).size).toBeLessThanOrEqual(131072);
+    }
     const sorted=properties(map.layers.find(l=>l.id===p.layerId)!).sort;
     expect(p.url.includes('/light-')?p.depth===-950:sorted?p.depth>=0:p.depth<0,`${p.key}: layer ${p.layerId}`).toBe(true);
    }
@@ -82,9 +106,9 @@ describe('traced SVG scenes',()=>{
  });
  it('uses the same story visibility and layer isolation for whole props and floor planes',()=>{
   const station=CHAPTER_ONE_MAPS.station.tiles!,village=CHAPTER_ONE_MAPS.rillbridge.tiles!;
-  expect(visibleSceneArt(station,{flags:{}})!.some(p=>p.key==='scenery-prison-coach')).toBe(true);
-  expect(visibleSceneArt(station,{flags:{raidSeen:true}})!.some(p=>p.key==='scenery-prison-coach')).toBe(false);
-  for(const raidSeen of [false,true])expect(visibleSceneArt(station,{flags:{raidSeen}})!.some(p=>p.url.endsWith('/bunting.svg'))).toBe(true);
+  expect(visibleSceneArt(station,{flags:{}})!.some(p=>p.url.endsWith('/prison-coach.png'))).toBe(true);
+  expect(visibleSceneArt(station,{flags:{raidSeen:true}})!.some(p=>p.url.endsWith('/prison-coach.png'))).toBe(false);
+  for(const raidSeen of [false,true])expect(visibleSceneArt(station,{flags:{raidSeen}})!.some(p=>/\/bunting\.(svg|png)$/.test(p.url))).toBe(true);
   for(const released of [false,true]){
    const pieces=visibleSceneArt(village,{flags:{villageFreed:released}})!;
    expect(pieces.some(p=>p.url.endsWith('/collector-machine.svg'))).toBe(!released);

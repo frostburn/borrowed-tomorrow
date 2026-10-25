@@ -122,6 +122,7 @@ describe('world-space actor lighting',()=>{
   });
   it('casts window shadows inside the painted beams, with no light behind the house',()=>{
     const windows=stationLight([{x:120,y:48,url:'/station-house.svg'}]);
+    expect(stationLight([{x:120,y:48,url:'/raster-maps/station/3/station-house.png'}])).toEqual(windows);
     expect(windows.lamps).toHaveLength(3);
     expect(castShadows(windows,204,283)[0]?.light.beam).toBeDefined();
     expect(castShadows(windows,204,283)[0]!.dy).toBeGreaterThan(0);
