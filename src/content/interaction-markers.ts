@@ -4,15 +4,17 @@ import { completedAnchors } from './chapter-five/progress';
 import type { MapObject } from './maps';
 import type { GameState } from '../rules/state';
 
-export type InteractionKind = 'story' | 'optional' | 'talk' | 'exit';
+export type InteractionKind = 'rest' | 'story' | 'optional' | 'talk' | 'exit';
 export const INTERACTION_MARKERS = {
  story:{glyph:'!',color:'#f4c77a',label:'Story'},
- optional:{glyph:'◇',color:'#8cc68e',label:'Optional'},
+ rest:{glyph:'⌂',color:'#9bc9d5',label:'Rest & supplies'},
+ optional:{glyph:'◇',color:'#8cc68e',label:'Optional reward / encounter'},
  talk:{glyph:'…',color:'#a9bdc4',label:'Conversation'},
  exit:{glyph:'→',color:'#76c6df',label:'Exit'},
 } as const;
 export const BLOCKED_MARKER_COLOR='#7c8990';
 export function interactionKind(object:MapObject,state:Pick<GameState,'flags'>):InteractionKind {
+ if(object.rest)return 'rest';
  return object.kind==='story'&&((object.storyUntil&&state.flags[object.storyUntil])||(object.doneFlag&&state.flags[object.doneFlag]))?'talk':object.kind;
 }
 export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>){

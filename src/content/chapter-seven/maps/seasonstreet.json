@@ -732,6 +732,11 @@
               "name": "accessFlag",
               "type": "string",
               "value": "domainPatrolWon"
+            },
+            {
+              "name": "rest",
+              "type": "bool",
+              "value": true
             }
           ],
           "id": 6

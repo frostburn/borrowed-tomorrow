@@ -18,7 +18,7 @@ it('gives every authored interaction an explicit purpose with a distinct support
   expect(Object.keys(INTERACTION_MARKERS),`${map.id}:${object.id}`).toContain(object.kind);
   if(object.storyUntil)expect(object.kind).toBe('story');
  }
- expect(new Set(Object.values(INTERACTION_MARKERS).map(m=>m.glyph)).size).toBe(4);
+ expect(new Set(Object.values(INTERACTION_MARKERS).map(m=>m.glyph)).size).toBe(5);
  const station=MAPS.station.objects;
  for(const [id,kind]of [['tomas','story'],['iona','optional'],['ansel','talk'],['west-yard','exit']])expect(station.find(o=>o.id===id)?.kind).toBe(kind);
  // A train is a resting place on the coast and an exit at Cinderbank: visual
@@ -38,7 +38,7 @@ it('changes a finished mechanism to conversation and keeps closed exits distinct
 });
 it('keeps the ward supplies marked after its arrival scene and rest becomes repeatable',()=>{
  const s=newGame(),supplies=MAPS.infirmary.objects.find(o=>o.id==='ward-rest')!;
- s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('optional');expect(interactionMarker(supplies,s)).toBeDefined();
+ s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('rest');expect(interactionMarker(supplies,s)).toBeDefined();
 });
 
 it('shows one cue for Petra and Alban, and distinguishes the blocked mirrored engine',()=>{
@@ -127,4 +127,12 @@ it('offers individual marker prerequisites in Maps even when no scenery layer us
  expect(reviewFlags(MAP_REVIEWS.find(m=>m.id==='windmere')!)).toContain('waterLiftOpened');
  const flags=reviewFlags(MAP_REVIEWS.find(m=>m.id==='watchbarracks')!);
  expect(flags).toContain('mortarWon');expect(flags).toContain('repeaterWon');expect(flags).not.toContain('mortarWon,repeaterWon');
+});
+
+it('keeps rest markers persistent while the report diamond becomes a conversation',()=>{
+ const s=newGame(),rest=MAPS.namar.objects.find(o=>o.id==='namar-supply')!;
+ expect(interactionMarker(rest,s)?.glyph).toBe('⌂');
+ expect(interactionKind(rest,s)).toBe('rest');s.flags.desertMailSent=true;
+ expect(interactionMarker(rest,s)?.glyph).toBe('⌂');
+ expect(visibleObjects(MAPS.namar,s).filter(o=>o.x===19&&o.y===28).map(o=>interactionMarker(o,s)?.glyph)).toEqual(['…']);
 });
