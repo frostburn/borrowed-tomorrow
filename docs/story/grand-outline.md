@@ -1,6 +1,6 @@
 # Borrowed Tomorrow — the whole adventure
 
-This is the agreed direction for the story reboot. Chapters One–Five are playable with bundled vector artwork, including all three freely ordered anchors and Alban’s flagship finale. Chapter Six’s sealed-capital opening and Namar desert expedition are also playable. Its northern/jungle routes, Emperor climax and Chapter Seven remain a plan to develop with the user. Future implementation can change routes and supporting characters while preserving the central pursuit, the emperor's defeat, and the separate final journey into the god's domain.
+This is the complete storyline of the playable seven-chapter campaign. It includes the three freely ordered anchors, both foreign seals, the optional Iria cure, the Emperor’s defeat, the untreated Lightbearer ending and the recovered route into the Benefactor’s domain. Chapter-specific handoffs record what the characters know at each departure.
 
 ## The promise
 
@@ -12,7 +12,7 @@ The pursuit becomes a rebellion, a rescue that succeeds while the world changes,
 
 The empire's patron is worshipped as **the Benefactor**. It lent the empire power: abundant harvests, healing and crystal engines. The founding dynasty pledged future generations' days in exchange. Every miracle brought the empire's prosperity forward and enlarged what the god would eventually take back. The present emperor continued drawing on the bargain, telling himself he could find a way out before collection began.
 
-The stopped towns are the first repayments. Their people did not consent to the bargain. Breaking a local collector releases its captives, but does not recover the years already taken or end the god's claim. Stopping the extraction is a real local victory; ending the source of it requires the final chapter.
+The stopped towns are the first repayments. Their people did not consent to the bargain. Breaking a local collector lets the remaining residents move again, but does not recover the people or days already drawn away or end the god's claim. Stopping the extraction is a real local victory; ending the source of it requires the final chapter.
 
 The god's body beneath the palace is a conduit into its domain, rather than its whole existence. The empire calls the restraints a prison and thinks it has mastered its patron. The Benefactor permitted the arrangement because the conduit makes the empire dependent and gives it access to mortal lives. Begin with imperial worship, an unexplained lantern hum and a damaged sun mural, without divine speech or a boss cutaway; establish the distinction between conduit and source well before the finale.
 
@@ -58,7 +58,7 @@ Alban then orders fire on the departing coaches. Petra steps into the firing lin
 
 The medical clearance admits the train to the capital’s south siding. Alban offers Petra her commission back if she seals the coaches; Petra recalls his firing order, breaks his command rod, refuses to surrender them and protects the coach doors while Nell’s party defeats the custody machines. She joins permanently afterward. Celia remains deferred. Four travelers may now choose three active fighters in Equipment; no story explanation for that limit is established here.
 
-Tomas has been holding a valve open from captivity, disabling the outer alarm and creating the party’s opening. Interrupt the engine warden’s execution order, defeat it and free his restraints. Give the siblings a substantial reunion, including Tomas learning of Ansel’s death. The ward staff take Tomas to the coal engine; he remains safe and never becomes a combat unit.
+Tomas has been holding a valve open from captivity, disabling the outer alarm and creating the party’s opening. Interrupt the engine warden’s execution order, defeat it and free his restraints. Give the siblings a substantial reunion, including Tomas learning that Ansel did not survive the wound he witnessed. The ward staff take Tomas to the coal engine; he remains safe and never becomes a combat unit.
 
 Tomas explains that the collectors send people’s days into the restrained vessel below the palace. His bypass gives the party a choice: cut the crystal feeds and release a regulator shield by occupying both earth plates, or vent the pressure line and fight crows among steam outlets. An optional stores patrol and five manually equipped rewards support different companion builds.
 

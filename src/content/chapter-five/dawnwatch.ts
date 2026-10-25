@@ -68,6 +68,6 @@ export function interactDawnwatch(h:StoryHost,id:string){
    if(f.dawnwatchFreed)return say('Enna','The contacts are open. We control the signal lamps from the town now.');
    return h.talk({...scenes.release(),done:()=>{s.location=arrival('signalwall','release');h.commit('dawnwatchFreed','dawnwatchFreed');}});
   case 'wall-barracks':return go('watchbarracks','wall');
-  case 'wall-sentry':return say('Enna',f.dawnwatchFreed?'Bring those approach charts down to the shelter. We’ll find people who want to fly.':'The lower gate is still open. Nobody’s leaving those families outside.');
+  case 'wall-sentry':return say('Enna',f.dawnwatchComplete?'The pilots have taken the charts to Alda. We’re keeping the shelter open.':f.dawnwatchFreed?'Bring those approach charts down to the shelter. We’ll find people who want to fly.':'The lower gate is still open. Nobody’s leaving those families outside.');
  }
 }

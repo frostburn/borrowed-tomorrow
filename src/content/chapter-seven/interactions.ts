@@ -52,7 +52,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
   {label:'Keep moving',action:()=>{}},
  ]});
  switch(id){
-  case 'sill-alda':return say('Alda','The first people are crossing. I’ll keep the line here until you’re back.');
+  case 'sill-alda':return say('Alda',f.takenPeopleFreed?'The crews are bringing people across. I’ll keep the line here until you’re back.':'The mooring drum’s locked. I’ll keep your way back open.');
   case 'sill-cross':if(f.domainEntered)go(h,'takenwater');return;
   case 'water-sill':return go(h,'hollowsill');
   case 'water-hounds':if(!f.domainHoundsWon)fight('domain-hounds','domainHoundsConfronted','Clear the platform','Draw the hounds away from the passengers. Leave room to move when the wings come down.');return;

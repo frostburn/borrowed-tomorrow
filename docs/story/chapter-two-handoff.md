@@ -18,6 +18,6 @@ Introduce Kit, a registered courier and Nell’s peer, while he attempts an hone
 
 ## What carries forward
 
-Ansel is dead, Iona keeps Larkspur open, Rillbridge is awake, and its inhabitants still feel the cost of the collection. Alban survived his defeat, but lost the crossing. Tomas is captive and has not joined the party. Nell's fragment is in Ansel's lantern; it is not an equipment purchase that may be sold or removed. The optional brass reflector improves that lantern without being the fragment itself.
+Ansel is dead, Iona keeps Larkspur open, Rillbridge’s remaining residents are awake and still feel the cost of the collection; Elspeth and Tilda are searching for those still missing. The three days are the collector’s recorded charge, not elapsed time in the train pursuit. Alban survived his defeat, but lost the crossing. Tomas is captive and has not joined the party. Nell's fragment is in Ansel's lantern; it is not an equipment purchase that may be sold or removed. The optional brass reflector improves that lantern without being the fragment itself.
 
 Nell and Orrin know about local repayment but not the whole bargain. They have heard no divine voice and seen no palace cutaway. The lantern hums and its handle feels cold; neither character knows what the crystal can do or why they could move in Rillbridge. The temple, imperial conduit and original bargain require later discoveries. Foreshadow the Benefactor's own domain before the emperor's defeat; the separate final chapter must feel like the culmination of known danger.

@@ -71,7 +71,7 @@ export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Be
 ]);
 export const shore=(s:GameState)=>scene(s,'lastshore','six-memory-sea','The sea, at last',[
  line('The coast','The carriage door opens onto salt air. Tomas takes their bags, and Nell walks beside him down to the water.',{focus:{x:31,y:21},cut:true,duration:1800,actors:{nell:{to:{x:31,y:22}},tomas:{to:{x:33,y:22}}}}),
- line('Tomas','A beach. No ferry leaning against a gate. This is more like it.'),
+ line('Tomas','There. A proper beach, just like I promised.'),
  line('Nell','You’ve brought enough bread for a week.'),
  line('Tomas','I was hungry when I bought it. Sit down before the gulls notice.'),
  line('The sea','Nell leans against her brother. The wind is warm, and the next train is hours away.',{duration:1200}),
@@ -100,7 +100,7 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
 ]:[
  line('Celia','I’ve just come from Nell. Her pulse is following the palace engine.',{focus:{x:32,y:23},cut:true}),
  line('Kit','Even with the lantern here?'),
- line('Celia','Yes. Ines’s notes describe this binding. Taking the shard away hasn’t broken it.'),
+ line('Celia','Yes. Moving it hasn’t changed her pulse.'),
  line('Orrin','If we break the vessel, the current will need somewhere else to go.'),
  line('Celia','I won’t promise she’ll survive that. We can still take her to Iria before we do this.'),
  line('Petra','The patient stair is clear. The crews can hold the landing while we return.'),

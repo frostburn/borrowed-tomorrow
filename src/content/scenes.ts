@@ -55,24 +55,26 @@ export const stillness = () => scene('one-stillness', 'RILLBRIDGE', stage('rillb
 
 export const collector = () => scene('one-collector', 'THE FIRST REPAYMENT', stage('rillbridge','one-collector'), [
   line('The collector', 'Light leaves the houses in thin threads. Each thread enters the sun-shaped opening in the carriage.', { focus: { x: 57, y: 18 }, cut: true, cue: 'resonance' }),
-  line('Captain Alban', 'Rillbridge collection complete. Record the repayment and clear the branch.'),
+  line('Captain Alban', 'Record Rillbridge’s repayment: three days from every household. Clear the branch.'),
   line('Nell', 'Repayment? What did these people borrow?'),
   line('Orrin', 'Its guard’s turning. Stay out of the steam line. We can break the collector once it’s down.', { cue: 'steam' }),
 ]);
 
 export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', stage('rillbridge','one-release'), [
   line('Orrin', 'Keep the lantern up. I’m opening the casing.', { focus: { x: 57, y: 18 }, cut: true }),
-  line('Rillbridge', 'The casing splits. Water falls, a plate smashes, and a woman finishes a word she began three days ago.', { cue: 'burst' }),
+  line('Rillbridge', 'The casing splits. Water falls, a plate smashes, and a woman finishes a word cut off by the bell.', { cue: 'burst' }),
   line('Tilda', 'Who are you? Where’s the carriage?', { actors: { tilda: { visible: true, to: { x: 55, y: 18 } }, elspeth: { visible: true, to: { x: 53, y: 18 } } } }),
-  line('Nell', 'Nell. From Larkspur. The army put a machine here. How long has it been?'),
-  line('Tilda', 'They arrived on Monday. Why?'),
-  line('Nell', 'It’s Thursday.'),
-  line('Tilda', 'Three days? My hands—why do they hurt?'),
-  line('Elspeth', 'Help me with my register. I could lift it this morning.'),
+  line('Nell', 'Nell. From Larkspur. The army put a machine here.'),
+  line('Tilda', 'The captain rang the crossing bell. I was bringing the bread out.'),
+  line('Nell', 'He said he was taking three days from every household.'),
+  line('Tilda', 'Taking them? My hands—why do they hurt?'),
+  line('Elspeth', 'Help me with my register. I could lift it before the bell.'),
   line('Orrin', 'We stopped it taking any more. I don’t know how to give back what it took.', { silence: true }),
+  line('Elspeth', 'The porter was beside the bell. Has anyone seen him?'),
+  line('Tilda', 'I’ll check the station. Keep the register here.'),
   line('Nell', 'A prison coach came through. My brother was on it.'),
   line('Tilda', 'The eastern pass. I heard the captain order it through before he started this. The north road will take you there.'),
-  line('Elspeth', 'Go. We can look after each other now.'),
+  line('Elspeth', 'Go. We’ll keep looking for the others.'),
 ]);
 
 export const passArrival = () => scene('one-pass', 'THE CROSSING', stage('tunnel','one-pass'), [

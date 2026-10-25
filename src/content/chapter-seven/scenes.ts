@@ -154,7 +154,7 @@ export const heart=()=>scene('sunthrone','seven-heart','The fragment goes home',
 export const released=()=>scene('sunthrone','seven-release','The days return',[
  l('The sun throne','The heart breaks. The ring opens into separate rays, then falls apart.',{focus:{x:32,y:18},cut:true,cue:'mend',effect:'domain-release',duration:2100,music:'homecoming'}),
  l('The sea','Water drops toward a real horizon. Across the broken terraces, people turn toward voices from the crossing.'),
- l('Celia','The patient’s pulse is steady. The binding’s gone.'),
+ l('Celia','Nell, your pulse is steady. The binding’s gone.',{actors:{celia:{to:{x:33,y:27},face:'celia-left'}},duration:600}),
  l('Orrin','The return channels are empty. There’s nothing left to collect them.'),
  l('Nell','Kit, can you see the blue ties?'),
  l('Kit','All the way back.'),

@@ -69,7 +69,7 @@ export function interactChapterOne(host: StoryHost, id: string) {
       say('Tilda', 'We’ve taken down the imperial lamps. Elspeth found some candles. Go and find your brother; I’ll have something hot for you when you come back.'); return;
     case 'elspeth':
       if (!f.villageFreed) return say('The square', 'Elspeth’s hand rests on a class register. A page hangs halfway through a turn.');
-      say('Elspeth', 'Everyone’s accounted for. Tired, hungry and very cross. Tell your mechanic the railway can wait until we’ve had tea.'); return;
+      say('Elspeth', 'Some names are still missing. Tilda’s checking the houses. We’ll keep looking; you find your brother.'); return;
     case 'still-water':
       host.talk({ lines: [SAY('Nell', f.villageFreed ? 'It’s running again. I can hear it from the bridge.' : 'The drops are separate. I can put the lantern between them. They don’t fall.')], done: () => host.commit('waterSeen') }); return;
     case 'collector':

@@ -33,6 +33,15 @@ it('withdraws the opening god on scene completion and keeps the cleared crossing
  expect(restored.read()).toBeUndefined();expect(visibleSceneArt(tiles,restored.s)!.some(p=>p.key===god)).toBe(false);
  restored.act('sill-cross');expect(restored.s.location.map).toBe('takenwater');
 });
+it('reports evacuees to Alda only after the first collector actually releases its captives',()=>{
+ const j=journey();resumeChapter(j.h);j.finish();
+ const before=structuredClone(j.s);j.act('sill-alda');
+ expect(j.read()!.lines[0].text).toContain('mooring');expect(j.s).toEqual(before);
+ j.act('sill-cross');j.act('water-hounds');j.choose();j.win();
+ j.act('water-collector');j.choose();j.win();expect(j.s.flags.takenPeopleFreed).toBe(true);
+ j.act('water-sill');const freed=structuredClone(j.s);j.act('sill-alda');
+ expect(j.read()!.lines[0].text).toContain('bringing people across');expect(j.s).toEqual(freed);j.valid();
+});
 it('places the hospice patient in front of her bed and removes defeated courier-stair hunters',()=>{
  const s=chapterSevenStart(),patient=visiblePeople(MAPS.quietward,s).find(p=>p.id==='old-patient')!;
  const bed=visibleSceneArt(MAPS.quietward.tiles!,s)!.find(p=>p.key.endsWith('western-bed'))!;
