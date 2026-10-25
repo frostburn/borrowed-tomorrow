@@ -88,6 +88,35 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
     expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,Math.round(c.getBoundingClientRect().width/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual(Array(2).fill(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length*96));
     await capture(page,`sprite-npcs-${device}`);
+    await review.getByRole('button',{name:'Inspect The Emperor',exact:true}).click();
+    await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true}).click();
+    await expect(review.locator('.sprite-file')).toContainText(artPath('emperor-left'));
+    const poses=review.getByRole('group',{name:'Cutscene poses',exact:true});
+    const emperor=SPRITE_CATALOG.find(entry=>entry.id==='emperor')!;
+    const pixels=new Set<string>();
+    const emperorDetail=review.getByRole('img',{name:'The Emperor left at 3x',exact:true});
+    for(const pose of emperor.poses!){
+      await poses.getByRole('button',{name:pose.name,exact:true}).click();
+      await expect(poses.getByRole('button',{name:pose.name,exact:true})).toHaveAttribute('aria-pressed','true');
+      await expect(review.locator('.sprite-file')).toContainText(artPath(pose.sprite));
+      // Wait for the selected native campaign file to finish painting, rather
+      // than accepting a filename update with the old or blank preview.
+      await expect.poll(()=>emperorDetail.evaluate(async(element,url)=>{
+        const image=new Image();image.src=url;await image.decode();
+        const native=document.createElement('canvas');native.width=native.height=80;
+        native.getContext('2d')!.drawImage(image,0,0);
+        const canvas=document.createElement('canvas');canvas.width=canvas.height=240;
+        const ctx=canvas.getContext('2d')!;ctx.imageSmoothingEnabled=false;
+        for(let y=0;y<240;y+=8)for(let x=0;x<240;x+=8){ctx.fillStyle=(x/8+y/8)%2?'#f4e5be':'#dac9a0';ctx.fillRect(x,y,8,8);}
+        ctx.drawImage(native,0,0,240,240);
+        const expected=ctx.getImageData(0,0,240,240).data,actual=(element as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data;
+        return actual.every((value,index)=>value===expected[index]);
+      },`/${artPath(pose.sprite)}`)).toBe(true);
+      pixels.add(await emperorDetail.evaluate(canvas=>(canvas as HTMLCanvasElement).toDataURL()));
+    }
+    expect(pixels.size).toBe(emperor.poses!.length);
+    await emperorDetail.scrollIntoViewIfNeeded();
+    await capture(page,`sprite-emperor-escape-${device}`);
     await collections.getByRole('button',{name:`Enemies (${SPRITE_CATALOG.filter(e=>e.group==='Enemies').length})`,exact:true}).click();
     await review.getByRole('button',{name:'Inspect Hound',exact:true}).click();
     const hound=review.getByRole('img',{name:'Hound actor',exact:true});

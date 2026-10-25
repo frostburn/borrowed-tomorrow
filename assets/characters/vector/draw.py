@@ -249,12 +249,13 @@ def nell(direction, walk=None, attack=None, arms=True, unarmed=False):
     d = Drawing()
     side = direction in ('left','right')
     hands = {'front':(11,39),'left':(17,39),'right':(26,39),'back':(28,39)}
-    elbow = {'front':(13,30),'left':(18,31),'right':(25,30),'back':(27,30)}
+    elbow = {'front':(13,30),'left':(18,31),'right':(22,33),'back':(27,30)}
     if attack is not None:
         hands = [dict(front=(14,29),left=(13,32),right=(29,32),back=(27,27)),
                  dict(front=(19,19),left=(7,26),right=(33,26),back=(25,9)),
                  dict(front=(16,25),left=(10,32),right=(30,32),back=(28,20))][attack]
         elbow = dict(front=(13,25),left=(15,26),right=(27,25),back=(28,24))
+        elbow['right']=[(23,33),(26,29),(23,33)][attack]
     if walk is not None:
         swing=math.sin(walk*math.pi/3)
         hx,hy=hands[direction];ex,ey=elbow[direction]
@@ -312,6 +313,7 @@ def nell(direction, walk=None, attack=None, arms=True, unarmed=False):
     d.transform(head_start,1.1,.9,20,5,6)
     if not far_weapon and arms:
         shoulder=(15,24) if direction=='front' else (24,24)
+        if direction=='right':shoulder=(22,25)
         sleeve(d,shoulder,elbow[direction],hand,'red')
         if not unarmed:lantern(d,hand)
     return d
@@ -371,7 +373,13 @@ def orrin(direction, walk=None, attack=None):
     d.transform(head_start,1,.8,20,4,6)
     if not far_weapon:
         shoulder=(14,24) if direction=='front' else (25,24)
-        sleeve(d,shoulder,(hand[0]-1,30),hand,'cream',False)
+        elbow=(hand[0]-1,30)
+        if direction=='right':
+            # Seat the upper arm inside the shirt; flex forward at the elbow
+            # rather than hanging a detached straight tube off its front edge.
+            shoulder=(22,25)
+            elbow=(22,33) if attack is None else [(23,34),(25,32)][attack]
+        sleeve(d,shoulder,elbow,hand,'cream',False)
         lance(d,hand,tip)
     return d
 
