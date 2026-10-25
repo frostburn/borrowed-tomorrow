@@ -14,11 +14,10 @@ def head(d,name):
     if name=='alban':
         d.line([(23,10),(25,14)],'silver',2)
         d.line([(16,16),(19,17)]);d.line([(21,17),(24,16)])
-    else:
-        d.line([(16,16),(18,16)],hair);d.line([(22,16),(24,16)],hair)
+    # At the final 2px raster, separate brows and a hooked nose crowd into
+    # the eyes/mouth. Keep a clear skin field between two eyes and a soft lip.
     for x in (17,23):d.rect((x,18,x,19),'ink')
-    d.line([(20,18),(19,21),(21,21)],'brown')
-    d.line([(18,23),(22,23)],'ink' if name in ('alban','elspeth') else 'brown')
+    d.line([(19,23),(22,23)],'rose')
     if name=='master':
         d.poly([(15,21),(18,20),(20,22),(22,20),(25,21),(24,24),(20,23),(16,24)],'white')
         d.line([(15,16),(18,16)],'white',2);d.line([(22,16),(25,16)],'white',2)

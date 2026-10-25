@@ -29,8 +29,7 @@
 <polyline points="21.35,15.399999999999999 24.725,15.399999999999999" fill="none" stroke="#d9ae62" stroke-width="1"/>
 <polyline points="15.274999999999999,13.799999999999997 18.65,13.799999999999997" fill="none" stroke="#b7c1b8" stroke-width="2"/>
 <polyline points="21.35,13.799999999999997 24.725,14.600000000000001" fill="none" stroke="#b7c1b8" stroke-width="2"/>
-<polygon points="20.0,15.399999999999999 18.65,19.4 22.025,19.4" fill="#b7784e"/>
 <polyline points="15.95,16 17.975,16" fill="none" stroke="#142536" stroke-width="2"/>
 <polyline points="22.025,16 24.049999999999997,16" fill="none" stroke="#142536" stroke-width="2"/>
-<polyline points="17.975,21.0 22.025,21.0" fill="none" stroke="#593e35" stroke-width="1"/>
+<polyline points="18.65,21.0 21.35,21.0" fill="none" stroke="#c58077" stroke-width="1"/>
 </svg>

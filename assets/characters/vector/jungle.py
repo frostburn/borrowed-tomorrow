@@ -19,7 +19,6 @@ def ines():
  d.poly([(10,24),(14,28),(12,35),(15,39),(12,43),(8,38),(10,32),(8,28)],'shade')
  d.line([(13,19),(17,18)],'cream');d.line([(22,18),(26,19)],'cream')
  d.line([(14,21),(17,21)],'ink');d.line([(23,21),(25,21)],'ink');d.line([(17,26),(22,26)],'rose')
- d.line([(14,24),(16,24)],'brown');d.line([(24,24),(26,24)],'brown')
  return human(d,head_start,complexion='copper')
 def tavi():
  d=Drawing()
@@ -35,7 +34,7 @@ def tavi():
  d.poly([(12,16),(19,13),(26,17),(27,24),(22,29),(14,27),(11,22)],'copper')
  d.poly([(9,18),(10,11),(15,6),(23,8),(28,7),(31,14),(30,19),(25,16),(22,13),(17,15),(13,19)],'hair')
  d.line([(12,20),(17,19)],'hair',2);d.line([(23,19),(28,20)],'hair',2)
- d.line([(13,22),(17,22)],'ink');d.line([(24,22),(27,22)],'ink');d.poly([(19,21),(18,26),(21,26)],'brown');d.line([(16,29),(23,29)],'hair',2)
+ d.line([(13,22),(17,22)],'ink');d.line([(24,22),(27,22)],'ink');d.line([(16,29),(23,29)],'hair',2)
  head_end=len(d.shapes)
  # A short pole in his right grip; a coiled painter at the opposite hip.
  d.line([(11,51),(4,36),(2,25)],'leather',3);d.oval((29,45,35,55),'gold');d.oval((30,47,34,53),'leather',None)
