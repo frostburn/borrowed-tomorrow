@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 10,
-  "nextobjectid": 32,
+  "nextobjectid": 33,
   "properties": [
     {
       "name": "name",
@@ -623,12 +623,46 @@
               "value": "optional"
             },
             {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "desertMailSent"
+            },
+            {
               "name": "sign",
               "type": "bool",
               "value": true
             }
           ],
           "id": 2
+        },
+        {
+          "name": "namar-post-sent",
+          "point": true,
+          "x": 468,
+          "y": 684,
+          "properties": [
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Amal \u00b7 the dispatched letters"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "talk"
+            },
+            {
+              "name": "requiredFlag",
+              "type": "string",
+              "value": "desertMailSent"
+            },
+            {
+              "name": "sign",
+              "type": "bool",
+              "value": true
+            }
+          ],
+          "id": 3
         },
         {
           "name": "namar-supply",
@@ -652,7 +686,7 @@
               "value": true
             }
           ],
-          "id": 3
+          "id": 4
         },
         {
           "name": "namar-palace",
@@ -687,7 +721,7 @@
               "value": true
             }
           ],
-          "id": 4
+          "id": 5
         },
         {
           "name": "namar-ship",
@@ -711,7 +745,7 @@
               "value": true
             }
           ],
-          "id": 5
+          "id": 6
         },
         {
           "name": "namar-clock",
@@ -735,7 +769,7 @@
               "value": true
             }
           ],
-          "id": 6
+          "id": 7
         },
         {
           "name": "namar-celebrate",
@@ -764,7 +798,7 @@
               "value": "samira"
             }
           ],
-          "id": 7
+          "id": 8
         }
       ],
       "properties": []
@@ -781,7 +815,7 @@
           "x": 324,
           "y": 780,
           "properties": [],
-          "id": 8
+          "id": 9
         },
         {
           "name": "palace",
@@ -789,7 +823,7 @@
           "x": 1044,
           "y": 564,
           "properties": [],
-          "id": 9
+          "id": 10
         },
         {
           "name": "return",
@@ -797,7 +831,7 @@
           "x": 804,
           "y": 684,
           "properties": [],
-          "id": 10
+          "id": 11
         },
         {
           "name": "home",
@@ -805,7 +839,7 @@
           "x": 828,
           "y": 756,
           "properties": [],
-          "id": 11
+          "id": 12
         }
       ],
       "properties": []
@@ -833,7 +867,7 @@
               "value": "palaceCoup"
             }
           ],
-          "id": 12
+          "id": 13
         },
         {
           "name": "boat-family",
@@ -852,7 +886,7 @@
               "value": "palaceCoup"
             }
           ],
-          "id": 13
+          "id": 14
         },
         {
           "name": "clock-keeper",
@@ -866,7 +900,7 @@
               "value": "civilian-dockhand-rust"
             }
           ],
-          "id": 14
+          "id": 15
         },
         {
           "name": "returning-family",
@@ -885,7 +919,7 @@
               "value": "desertSealBroken"
             }
           ],
-          "id": 15
+          "id": 16
         },
         {
           "name": "western-watch",
@@ -909,7 +943,7 @@
               "value": "desertSealBroken"
             }
           ],
-          "id": 16
+          "id": 17
         },
         {
           "name": "eastern-watch",
@@ -933,7 +967,7 @@
               "value": "desertSealBroken"
             }
           ],
-          "id": 17
+          "id": 18
         }
       ],
       "properties": []
@@ -950,7 +984,7 @@
           "x": 492,
           "y": 684,
           "properties": [],
-          "id": 18
+          "id": 19
         },
         {
           "name": "orrin",
@@ -958,7 +992,7 @@
           "x": 444,
           "y": 708,
           "properties": [],
-          "id": 19
+          "id": 20
         },
         {
           "name": "petra",
@@ -966,7 +1000,7 @@
           "x": 540,
           "y": 732,
           "properties": [],
-          "id": 20
+          "id": 21
         },
         {
           "name": "celia",
@@ -974,7 +1008,7 @@
           "x": 492,
           "y": 756,
           "properties": [],
-          "id": 21
+          "id": 22
         },
         {
           "name": "amal",
@@ -982,7 +1016,7 @@
           "x": 564,
           "y": 660,
           "properties": [],
-          "id": 22
+          "id": 23
         },
         {
           "name": "nell",
@@ -990,7 +1024,7 @@
           "x": 420,
           "y": 756,
           "properties": [],
-          "id": 23
+          "id": 24
         }
       ],
       "properties": []
@@ -1007,7 +1041,7 @@
           "x": 780,
           "y": 684,
           "properties": [],
-          "id": 24
+          "id": 25
         },
         {
           "name": "orrin",
@@ -1015,7 +1049,7 @@
           "x": 708,
           "y": 756,
           "properties": [],
-          "id": 25
+          "id": 26
         },
         {
           "name": "petra",
@@ -1023,7 +1057,7 @@
           "x": 852,
           "y": 756,
           "properties": [],
-          "id": 26
+          "id": 27
         },
         {
           "name": "celia",
@@ -1031,7 +1065,7 @@
           "x": 828,
           "y": 804,
           "properties": [],
-          "id": 27
+          "id": 28
         },
         {
           "name": "samira",
@@ -1039,7 +1073,7 @@
           "x": 876,
           "y": 708,
           "properties": [],
-          "id": 28
+          "id": 29
         },
         {
           "name": "sahir",
@@ -1047,7 +1081,7 @@
           "x": 1020,
           "y": 732,
           "properties": [],
-          "id": 29
+          "id": 30
         },
         {
           "name": "amal",
@@ -1055,7 +1089,7 @@
           "x": 924,
           "y": 780,
           "properties": [],
-          "id": 30
+          "id": 31
         },
         {
           "name": "nell",
@@ -1063,7 +1097,7 @@
           "x": 684,
           "y": 828,
           "properties": [],
-          "id": 31
+          "id": 32
         }
       ],
       "properties": []

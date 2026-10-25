@@ -67,7 +67,7 @@ it('never stages an ill Nell in the expedition; recovered reserve Nell participa
    expect(d.scene!.actors.some(a=>a.id==='nell')).toBe(well);
    if(well)expect(d.lines.some(l=>l.who==='Nell'),d.scene!.id).toBe(true);
   }
-  expect(scenes.home(s).scene!.actors.find(a=>a.id==='nell')?.face==='nell-ill').toBe(!well);
+  expect(scenes.home(s).scene!.actors.find(a=>a.id==='nell')?.face==='nell-bed').toBe(!well);
  }
 });
 it('reports actual seal states in the desert, river and mooring after north-first and both released',()=>{

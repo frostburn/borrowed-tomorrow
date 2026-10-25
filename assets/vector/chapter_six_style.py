@@ -29,7 +29,7 @@ OUTLINES={
  'crown':[(292,592),(570,574),(586,438),(974,426),(992,574),(1240,592),(1260,850),(1020,884),(764,860),(494,884),(302,852)],
 }
 FIXTURES={
- 'outermooring':[(465,784),(1128,800)],'namar':[(348,796),(1230,772)],
+ 'outermooring':[(548,820),(1128,800)],'namar':[(348,796),(1230,772)],
  'sunpalace':[(340,718),(1190,706)],'skywalk':[(362,774),(1198,534)],'observatory':[(416,734),(1144,728)],
  'riverhaven':[(318,786),(1288,750)],'canopy':[(298,788),(1200,636)],'rainhouse':[(562,742),(1090,742)],
  'bellharbor':[(554,790),(1194,760)],'frostwatch':[(530,776),(1232,494)],'glacier':[(340,786),(1194,584)],'wintershrine':[(498,778),(1108,758)],
@@ -71,7 +71,7 @@ def fixture(kind):
 def arena_fixtures(scene):
  out=[]
  scene={'north-watch':'bellharbor','north-hunters':'glacier','north-cache':'glacier','winter-dragon':'wintershrine','river-patrol':'riverhaven','river-cache':'riverhaven','rainhouse-guard':'rainhouse','imperial-vessel':'crown','lightbearer':'crown','palace-command':'lastpalace','capital-procession':'stillcity','capital-hunters':'stillcity'}.get(scene,scene)
- for x in (100,904):out.extend([f'<g transform="translate({x-24} 12)">',*fixture(fixture_kind(scene)),'</g>'])
+ for x in (100,864):out.extend([f'<g transform="translate({x-24} 12)">',*fixture(fixture_kind(scene)),'</g>'])
  return out
 def spill_layer(entries,pts):
  field=spill([(Path(e['url']).stem,e['x'],e['y'])for e in entries],LIGHTS['props'])

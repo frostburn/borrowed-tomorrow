@@ -5,7 +5,7 @@ import type { Shot } from '../cinematics';
 const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 type SceneState=Pick<GameState,'flags'>;
 const empty:SceneState={flags:{}};
-const scene=(s:SceneState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-letter'||id==='six-home').map(a=>a.id==='nell'?!s.flags.nellRecovered?{...a,face:'nell-ill'}:map==='outermooring'?{...a,at:{x:27,y:28}}:a:a)},lines});
+const scene=(s:SceneState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-letter'||id==='six-home').map(a=>a.id==='nell'?!s.flags.nellRecovered?{...a,face:map==='outermooring'?'nell-bed':'nell-ill',...(map==='outermooring'?{at:{x:18,y:28}}:{})}:map==='outermooring'?{...a,at:{x:27,y:28}}:a:a)},lines});
 export const sealed=(s:SceneState=empty)=>scene(s,'outermooring','six-sealed','Chapter Six · The Emperor’s Last Day',[
  line('The outer mooring','The landing bridge unfolds. Across the gap, a woman pulls a handcart through the capital gate.',{focus:{x:32,y:13},cut:true}),
  line('Alda','Hold for the bridge latch. Kit, pass me that line.',{focus:{x:32,y:25}}),

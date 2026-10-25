@@ -63,11 +63,11 @@
     {
       "key": "scene-six-mooring-berth",
       "url": "art/vector/chapter-six/mooring-berth.svg",
-      "x": 324,
-      "y": 565,
-      "width": 168,
-      "height": 86,
-      "depth": 651,
+      "x": 368,
+      "y": 514,
+      "width": 176,
+      "height": 176,
+      "depth": 645,
       "layerId": 3
     },
     {
@@ -83,11 +83,11 @@
     {
       "key": "scene-six-namar-opal",
       "url": "art/vector/chapter-six/namar-opal.svg",
-      "x": 441,
-      "y": 642,
+      "x": 524,
+      "y": 678,
       "width": 48,
       "height": 144,
-      "depth": 784,
+      "depth": 820,
       "layerId": 3
     },
     {
@@ -145,7 +145,7 @@
     {
       "key": "scene-six-namar-palms",
       "url": "art/vector/chapter-six/namar-palms.svg",
-      "x": 943,
+      "x": 1080,
       "y": 513,
       "width": 285,
       "height": 181,
@@ -155,10 +155,10 @@
     {
       "key": "scene-six-namar-clock",
       "url": "art/vector/chapter-six/namar-clock.svg",
-      "x": 914,
-      "y": 495,
-      "width": 112,
-      "height": 154,
+      "x": 900,
+      "y": 475,
+      "width": 144,
+      "height": 174,
       "depth": 649,
       "layerId": 3
     },

@@ -56,3 +56,10 @@ npm run check:art-upload
 ```
 
 A second `art:six` run must produce identical output. Review all nineteen exploration maps and sixteen arenas through Maps → Ch 6, including open/closed gates and released seals. Check desktop and fractional-DPR phone journeys, both Nell outcomes and the passive mooring/river cinematics. Browser QA can use the existing Playwright/Chromium setup when no Browser plugin is available; screenshots and traces stay outside the repository. All generated scenery stays self-contained SVG below 128 KiB, with no added production dependency.
+
+
+### Chapter Six presentation corrections
+
+The mooring uses `nell-bed.svg`, a single native reclining/cot composition, under a separate shelter. `illness.py` reproduces it alongside the reclining-only treatment pose; the latter remains separate so the Iria scene does not gain a second cot. Both ship-return scene families place ill Nell at the actual berth. The nearby lamp and Namar palms leave the bed and water clock visible.
+
+Namar’s sixteen small native clock poses show the inlet, filling bowl, tip, discharge and one-tooth dial step. `WorldMechanisms` uses scene time and requests passive framebuffer refresh; it stops on scene teardown and displays a stationary pose under reduced motion. Frames preload with Namar, including deep restores. `pact-open` lifts/fades the actual live capital wall, and the pact presenter participates in passive-time reporting and restores temporary state on close. North’s existing bell effect now also has its presenter. Gate graphics are open bronze latticework with the same blocking rows. Tactical lamp bases and their light emitters sit inside the floor. Dispatched post and post-Emperor entrance use conversation objects, preserving each original actionable interaction before completion.

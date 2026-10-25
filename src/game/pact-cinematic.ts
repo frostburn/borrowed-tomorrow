@@ -5,16 +5,26 @@ export class PactCinematic {
  private tweens:Phaser.Tweens.Tween[]=[];
  private cart?:Phaser.GameObjects.Image;
  private cartX=0;
+ private wall?:Phaser.GameObjects.Image;
+ private wallPose?:{y:number;alpha:number};
+ get animating(){return this.tweens.some(t=>t.isPlaying());}
  private objects:(Phaser.GameObjects.Image|Phaser.GameObjects.Graphics)[]=[];
  constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container){
   this.cart=world.list.find((o):o is Phaser.GameObjects.Image=>o instanceof Phaser.GameObjects.Image&&o.getData('scene-piece')?.key==='scene-six-mooring-city-life');this.cartX=this.cart?.x??0;
  }
- play(kind:'pact-seal'|'pact-break',focus?:StagePoint){
+ play(kind:'pact-seal'|'pact-break'|'pact-open',focus?:StagePoint){
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(kind==='pact-seal'){
    const wall=this.scene.add.image(0,reduced?0:-250,'scene-six-mooring-barrier').setOrigin(0).setDepth(-997.5);this.world.add(wall);this.objects.push(wall);
    if(!reduced&&this.cart)this.tweens.push(this.scene.tweens.add({targets:this.cart,x:this.cartX+40,duration:3400,ease:'Linear'}));
    if(!reduced)this.tweens.push(this.scene.tweens.add({targets:wall,y:0,duration:1350,ease:'Cubic.easeOut'}));
+  }else if(kind==='pact-open'){
+   this.wall=this.world.list.find((o):o is Phaser.GameObjects.Image=>o instanceof Phaser.GameObjects.Image&&o.getData('scene-piece')?.key==='scene-six-mooring-barrier');
+   if(this.wall){
+    this.wallPose={y:this.wall.y,alpha:this.wall.alpha};
+    if(reduced)this.wall.setY(this.wall.y-180).setAlpha(0);
+    else this.tweens.push(this.scene.tweens.add({targets:this.wall,y:this.wall.y-180,alpha:0,duration:1700,ease:'Sine.easeInOut'}));
+   }
   }else if(focus){
    const x=(focus.x+.5)*24,y=(focus.y+.5)*24-27,g=this.scene.add.graphics().setDepth(29999);this.world.add(g);this.objects.push(g);
    const draw=(p:number)=>{
@@ -27,5 +37,5 @@ export class PactCinematic {
   }
   this.world.sort('depth');
  }
- close(){for(const tween of this.tweens)tween.remove();this.tweens=[];if(this.cart?.active)this.cart.x=this.cartX;for(const object of this.objects){this.scene.tweens.killTweensOf(object);object.destroy();}this.objects=[];}
+ close(){for(const tween of this.tweens)tween.remove();this.tweens=[];if(this.wall?.active&&this.wallPose)this.wall.setY(this.wallPose.y).setAlpha(this.wallPose.alpha);this.wall=undefined;this.wallPose=undefined;if(this.cart?.active)this.cart.x=this.cartX;for(const object of this.objects){this.scene.tweens.killTweensOf(object);object.destroy();}this.objects=[];}
 }

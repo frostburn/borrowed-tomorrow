@@ -573,6 +573,11 @@
           "name": "hiddenFlag",
           "type": "string",
           "value": "capitalOpened"
+        },
+        {
+          "name": "live",
+          "type": "bool",
+          "value": true
         }
       ]
     },
@@ -625,7 +630,7 @@
             {
               "name": "sprite",
               "type": "string",
-              "value": "nell-ill"
+              "value": "nell-bed"
             },
             {
               "name": "hiddenFlag",

@@ -4,6 +4,15 @@ import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMark
 import {newGame} from '../src/rules/state';
 import {MAP_REVIEWS,reviewFlags} from '../src/dev/map-catalog';
 
+it('turns the sent report and the completed capital entrance into conversations',()=>{
+ const s=newGame();
+ for(const [map,x,y,flag]of [['namar',19,28,'desertMailSent'],['capitalquay',32,19,'emperorWon']]as const){
+  const at=()=>visibleObjects(MAPS[map],s).filter(o=>o.x===x&&o.y===y);
+  expect(at()).toHaveLength(1);expect(interactionKind(at()[0],s)).toBe(map==='namar'?'optional':'exit');
+  s.flags[flag]=true;expect(at()).toHaveLength(1);expect(interactionMarker(at()[0],s)?.glyph).toBe(INTERACTION_MARKERS.talk.glyph);
+ }
+});
+
 it('gives every authored interaction an explicit purpose with a distinct supported shape',()=>{
  for(const map of Object.values(MAPS))for(const object of map.objects){
   expect(Object.keys(INTERACTION_MARKERS),`${map.id}:${object.id}`).toContain(object.kind);

@@ -1,3 +1,4 @@
+import { WorldMechanisms } from './world-mechanisms';
 import { BoardingPresentation } from './boarding-presentation';
 import {benefactorPresentation} from './benefactor-presentation';
 import { imperialPresentation } from './imperial-presentation';
@@ -143,9 +144,10 @@ export class Adventure extends Phaser.Scene {
     const camera=this.cameras.main,p=toPixel(hex);
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
+  private mechanisms?:WorldMechanisms;
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
-    return (this.mode==='battle'&&this.boarding.active)||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
+    return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
   }
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const pixelAligned=this.mode==='battle',padding=outline?1:0,canvas=document.createElement('canvas');
@@ -163,6 +165,7 @@ export class Adventure extends Phaser.Scene {
   }
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.mechanisms?.close();this.mechanisms=undefined;
     this.boarding.clear();
     this.ui.canvas.removeAttribute('aria-description');
     this.lighting.clear();
@@ -298,6 +301,7 @@ export class Adventure extends Phaser.Scene {
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     this.lighting.attach(this.layer!,map.tiles,this.state);
+    this.mechanisms=new WorldMechanisms(this,this.layer!);
     for(const person of visiblePeople(map,this.state)){
       this.lighting.actor(this.layer!,(person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setData('world-actor',true).setData('person',person.id);
     }

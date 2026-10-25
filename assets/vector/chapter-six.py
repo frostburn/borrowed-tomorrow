@@ -40,6 +40,30 @@ def palm(x,y,s=1):
  return [f'<g transform="translate({x} {y}) scale({s})">',poly([(0,130),(8,32),(20,0),(25,6),(19,47),(12,134)],'#705742'),poly([(18,6),(-50,-21),(-72,-5),(-25,-6),(19,14)],'#4c6d5b'),poly([(19,6),(71,-27),(97,-9),(42,-8),(22,14)],'#557b62'),poly([(19,4),(24,-41),(50,-60),(40,-21),(22,14)],'#75936c'),poly([(17,6),(-2,-35),(-25,-44),(-9,-10),(20,15)],'#3a5f54'),'</g>']
 def bench():return [poly([(0,32),(95,32),(117,47),(20,47)],LIGHT),rect(20,47,97,10,DARK),rect(25,57,9,24,INK),rect(99,57,9,24,INK),rect(11,5,101,29,TEAL),rect(19,10,86,5,'#8ea48b'),ellipse(142,53,14,8,INK),rect(131,22,22,30,TEAL),ellipse(142,22,11,6,LIGHT)]
 def chest():return [rect(0,12,56,32,DARK),poly([(0,12),(10,0),(48,0),(56,12)],GOLD),rect(7,11,5,33,LIGHT),rect(43,11,5,33,LIGHT),rect(24,20,8,11,GOLD)]
+def berth_shelter():
+ return [poly([(8,14),(143,5),(174,31),(24,44)],'#718d83'),poly([(8,14),(24,44),(24,52),(8,23)],'#546f69'),line([(24,48),(23,167)],'#a6a081',5),line([(154,35),(156,164)],'#a6a081',5),poly([(24,44),(174,31),(167,42),(25,55)],'#b8b698'),rect(116,107,38,43,'#6e8b82'),poly([(116,107),(131,98),(168,104),(154,112)],'#c1ba97'),line([(125,128),(146,128)],'#d2c5a0',4)]
+def lattice_gate(width):
+ out=[rect(0,49,width,9,'#8e7756')]
+ for x in range(8,width,24):
+  out.extend([poly([(x,6),(x+5,5),(x+7,51),(x+1,53)],'#b49864'),line([(x+1,9),(x+3,49)],'#e1c48c',2)])
+ for y in (11,42):out.extend([poly([(0,y),(width,y-2),(width,y+5),(0,y+7)],'#c6a36b'),line([(0,y),(width,y-2)],'#e6c990',2)])
+ for x in range(20,width-12,48):out.append(poly([(x,19),(x+10,27),(x,36),(x-10,28)],'#af915b'))
+ for x in (0,width-12):out.extend([rect(x,2,12,58,'#9b835e'),poly([(x-2,5),(x+6,0),(x+14,5),(x+12,12),(x,12)],'#dfc28c')])
+ cx=width/2;out.extend([ellipse(cx,27,14,14,'#d8ba7d'),ellipse(cx,27,9,9,'#7c927e'),poly([(cx,17),(cx+4,24),(cx+10,27),(cx+3,31),(cx,38),(cx-3,31),(cx-10,27),(cx-4,24)],'#ead4a3')])
+ return out
+def water_clock(frame=0):
+ fill=min(1,(frame+1)/12)if frame<12 else [1,.6,.1,0][frame-12];tip=[24,65,42,0][frame-12]if frame>=12 else 0
+ out=[ellipse(70,161,58,10,'#647a72'),poly([(32,155),(38,72),(47,72),(45,157)],'#a88b5d'),poly([(78,157),(76,72),(85,72),(91,156)],'#c3a16c'),line([(0,25),(38,25),(38,42),(49,46)],'#6f877a',11),line([(0,22),(40,22),(41,39),(49,42)],'#d0b680',4)]
+ if frame<12:out.extend([line([(49,47),(59,56)],'#80b7bc',4),line([(51,48),(57,54)],'#d7e5cf',1.5)])
+ out.extend([f'<g transform="translate(64 62) rotate({tip})">','<defs><clipPath id="clock-bowl"><path d="M-23 0Q-21 22 0 23Q21 22 23 0Z"/></clipPath></defs>','<path d="M-26 -1Q-24 27 0 28Q24 27 26 -1Z" fill="#bca06f"/>','<path d="M-23 0Q-21 22 0 23Q21 22 23 0Z" fill="#567f7e"/>',f'<g clip-path="url(#clock-bowl)">{rect(-24,23-fill*23,48,28,"#83b9b8")}</g>',ellipse(0,-1,26,6,'#d4b980'),ellipse(0,-2,22,3,'#94c4bf'if fill>.85 and frame<12 else '#577f7a'),'</g>'])
+ if frame in (12,13,14):out.extend([line([(84,74),(103,98),(100,133)],'#9bcac7',4),ellipse(100,140,13,3,'#cadcd0')])
+ out.extend([ellipse(71,144,44,12,'#c7ac7c'),ellipse(71,141,38,8,'#659493'),line([(44,130),(44,157)],'#b6a178',5),line([(90,130),(96,155)],'#b6a178',5)])
+ angle=max(0,(frame-12)/3)*45
+ out.extend([f'<g transform="translate(108 113) rotate({angle})">',ellipse(0,0,23,23,'#ab915f'),ellipse(0,0,16,16,'#577d78')])
+ for a in range(0,360,45):
+  t=math.radians(a);out.append(line([(math.cos(t)*5,math.sin(t)*5),(math.cos(t)*25,math.sin(t)*25)],'#dac18b',4))
+ out.extend([ellipse(0,0,5,5,'#d8c796'),'</g>'])
+ return out
 def astrolabe(cx,cy,rx=150):
  out=[ellipse(cx,cy,rx,rx*.42,INK),f'<ellipse cx="{cx}" cy="{cy-7}" rx="{rx}" ry="{rx*.42}" fill="none" stroke="{GOLD}" stroke-width="13"/>',f'<ellipse cx="{cx}" cy="{cy-7}" rx="{rx*.72}" ry="{rx*.3}" fill="none" stroke="{LIGHT}" stroke-width="4"/>']
  for a in range(0,360,30):
@@ -63,7 +87,9 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
    lid=len(layers)+1
    gate=(gated or {}).get(n,[(27,33,9,1)]if n=='palace-bar'else None)
    item=layer(lid,n,gate,w,h,6)if gate else group(lid,n)
-   item['properties']=props(sort=depth>=0,**flags);layers.append(item)
+   item['properties']=props(sort=depth>=0,**flags)
+   if n=='mooring-barrier':item['properties'].extend(props(live=True))
+   layers.append(item)
   add(n,body,ww,hh,x,y,depth,lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v,**({'projection':True}if sid=='six-sealed' and k=='emperor' else {'hidden':True}if sid=='six-court' and k=='amal' else {}))for k,v in cast.items()]))
@@ -99,10 +125,10 @@ barrier=[poly([(100,357),(380,296),(742,346),(1100,290),(1450,353),(1391,463),(9
 for x in range(180,1450,94):barrier.append(line([(x,340),(x+20,451)],'#bac5a4',3))
 deck=[(12,22,40,14),(29,18,7,5)]
 world('outermooring','The capital · outer mooring','The landing bridge points toward the sealed capital. Alda keeps the flight chart by the bow.',deck,[(13,23,4,3)], [
- obj('six-chart',33,23,'Flight chart · the two pact seals',sign=True),obj('six-nell',18,28,'Nell · the shaded berth',kind='talk',sprite='nell-ill',hiddenFlag='nellRecovered',sign=True),obj('six-nell-ready',28,26,'Crew table · Nell',kind='talk',requiredFlag='nellRecovered',sign=True),obj('six-alda',36,26,'Alda · the outer mooring',kind='talk',sprite='alda'),obj('six-supplies',45,30,'Crew stores · rest and bandages',kind='optional',sign=True),obj('six-report',24,30,'Signal desk · Sera’s reply',storyUntil='jungleLeadKnown',sign=True),obj('six-capital',32,19,'Landing bridge · sealed capital',kind='talk',hiddenFlag='capitalOpened',sign=True),obj('six-capital-open',32,19,'Landing bridge · allied quay',kind='exit',requiredFlag='capitalOpened',sign=True)],
+ obj('six-chart',33,23,'Flight chart · the two pact seals',sign=True),obj('six-nell',18,28,'Nell · the shaded berth',kind='talk',sprite='nell-bed',hiddenFlag='nellRecovered',sign=True),obj('six-nell-ready',28,26,'Crew table · Nell',kind='talk',requiredFlag='nellRecovered',sign=True),obj('six-alda',36,26,'Alda · the outer mooring',kind='talk',sprite='alda'),obj('six-supplies',45,30,'Crew stores · rest and bandages',kind='optional',sign=True),obj('six-report',24,30,'Signal desk · Sera’s reply',storyUntil='jungleLeadKnown',sign=True),obj('six-capital',32,19,'Landing bridge · sealed capital',kind='talk',hiddenFlag='capitalOpened',sign=True),obj('six-capital-open',32,19,'Landing bridge · allied quay',kind='exit',requiredFlag='capitalOpened',sign=True)],
  {'start':(32,29),'namar':(32,29),'briefing':(32,28)}, {'six-sealed':{**crew,'emperor':(32,19)},'six-briefing':crew,'six-letter':{**crew,'nell':(19,28)},'six-home':{**crew,'nell':(19,28)},'six-river-home':crew,'six-north-home':{**crew,'nell':(19,28)},'six-capital-open':crew},
  [point('lookout',42,25,sprite='civilian-traveler-blue'),point('fitter',25,25,sprite='civilian-dockhand')],
- [('mooring-city-life',far_cart,80,64,802,365,-998.5,{}),('mooring-rail',[line([(290,540),(290,856),(1245,856),(1245,540)],GOLD,5)],1536,1008,0,0,-997,{}),('mooring-barrier',['<g opacity=".65">',*barrier,'</g>'],1536,540,0,0,-998,{'requiredFlag':'capitalSealed','hiddenFlag':'capitalOpened'}),('mooring-chart',chest(),60,48,785,515,563,{}),('mooring-berth',bench(),168,86,324,565,651,{}),('mooring-stores',chest(),60,48,1100,680,728,{})],capital)
+ [('mooring-city-life',far_cart,80,64,802,365,-998.5,{}),('mooring-rail',[line([(290,540),(290,856),(1245,856),(1245,540)],GOLD,5)],1536,1008,0,0,-997,{}),('mooring-barrier',['<g opacity=".65">',*barrier,'</g>'],1536,540,0,0,-998,{'requiredFlag':'capitalSealed','hiddenFlag':'capitalOpened'}),('mooring-chart',chest(),60,48,785,515,563,{}),('mooring-berth',berth_shelter(),176,176,368,514,645,{}),('mooring-stores',chest(),60,48,1100,680,728,{})],capital)
 
 cityback=dunes()+[rect(744,430,120,578,'#315b64'),poly([(765,430),(800,430),(825,1008),(788,1008)],'#638a87')]
 for x,y,w,h in [(35,264,260,251),(330,285,225,194),(1080,214,340,263),(893,106,170,328)]:cityback.extend(building(x,y,w,h,x>800))
@@ -110,10 +136,10 @@ cityback.extend([poly([(480,520),(610,305),(670,305),(574,520)],'#96775c'),poly(
 market=[]
 for x,c in [(0,'#a65949'),(166,'#4f7777')]:market.extend([rect(x+12,37,136,51,DARK),poly([(x,33),(23,0),(137,0),(158,33)],c),rect(x+9,33,5,75,GOLD),rect(x+144,33,5,75,GOLD),line([(x+21,57),(x+131,57)],LIGHT,3)])
 world('namar','Namar · the evening exchange','The palace is beyond the eastern bridge. The post exchange and drinking water are on the western quay.',[(4,22,27,15),(34,19,26,18),(29,26,7,4),(20,17,29,6)],[(6,22,12,3),(43,19,9,2)], [
- obj('namar-amal',23,27,'Amal · the evening post',sprite='amal',kind='talk'),obj('namar-post',19,28,'Post exchange · letters to the railway',kind='optional',sign=True),obj('namar-supply',12,30,'Canal fountain · rest and supplies',kind='optional',sign=True),control('namar-palace',47,22,(44,17,9,5),'Royal palace · Queen Samira',kind='exit',sign=True),obj('namar-ship',9,34,'Survey landing · return aboard',kind='exit',sign=True),obj('namar-clock',38,27,'The water clock',kind='talk',sign=True),obj('namar-celebrate',36,31,'Samira · the western seal',requiredFlag='desertSealBroken',sprite='samira',kind='talk')],
+ obj('namar-amal',23,27,'Amal · the evening post',sprite='amal',kind='talk'),obj('namar-post',19,28,'Post exchange · letters to the railway',kind='optional',hiddenFlag='desertMailSent',sign=True),obj('namar-post-sent',19,28,'Amal · the dispatched letters',kind='talk',requiredFlag='desertMailSent',sign=True),obj('namar-supply',12,30,'Canal fountain · rest and supplies',kind='optional',sign=True),control('namar-palace',47,22,(44,17,9,5),'Royal palace · Queen Samira',kind='exit',sign=True),obj('namar-ship',9,34,'Survey landing · return aboard',kind='exit',sign=True),obj('namar-clock',38,27,'The water clock',kind='talk',sign=True),obj('namar-celebrate',36,31,'Samira · the western seal',requiredFlag='desertSealBroken',sprite='samira',kind='talk')],
  {'start':(13,32),'palace':(43,23),'return':(33,28),'home':(34,31)}, {'six-namar':{'kit':(20,28),'orrin':(18,29),'petra':(22,30),'celia':(20,31),'amal':(23,27),'nell':(17,31)},'six-public':{'kit':(32,28),'orrin':(29,31),'petra':(35,31),'celia':(34,33),'samira':(36,29),'sahir':(42,30),'amal':(38,32),'nell':(28,34)}},
  [point('market-buyer',17,26,sprite='civilian-traveler',hiddenFlag='palaceCoup'),point('boat-family',26,33,sprite='civilian-family-blue',hiddenFlag='palaceCoup'),point('clock-keeper',40,29,sprite='civilian-dockhand-rust'),point('returning-family',26,33,sprite='civilian-family-blue',requiredFlag='desertSealBroken'),point('western-watch',41,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken'),point('eastern-watch',43,30,sprite='namar-watch',requiredFlag='desertReleaseReady',hiddenFlag='desertSealBroken')],
- [('namar-market',market,328,110,146,493,600,{}),('namar-palms',palm(0,0)+palm(181,19,.8),285,181,943,513,675,{}),('namar-clock',astrolabe(50,58,48)+[rect(38,52,24,85,TEAL),ellipse(50,133,55,17,DARK)],112,154,914,495,649,{}),('namar-fountain',bench(),168,86,230,650,736,{}),('namar-bridge-rail',[line([(696,628),(862,628)],GOLD,4),line([(696,716),(862,716)],GOLD,4)],880,730,0,0,-997,{}),('namar-shelters',[rect(0,8,143,6,DARK),poly([(0,8),(24,0),(124,0),(143,8),(143,91),(0,91)],TEAL)],148,96,155,490,586,{'requiredFlag':'palaceCoup','hiddenFlag':'desertSealBroken'})],cityback)
+ [('namar-market',market,328,110,146,493,600,{}),('namar-palms',palm(0,0)+palm(181,19,.8),285,181,1080,513,675,{}),('namar-clock',water_clock(),144,174,900,475,649,{}),('namar-fountain',bench(),168,86,230,650,736,{}),('namar-bridge-rail',[line([(696,628),(862,628)],GOLD,4),line([(696,716),(862,716)],GOLD,4)],880,730,0,0,-997,{}),('namar-shelters',[rect(0,8,143,6,DARK),poly([(0,8),(24,0),(124,0),(143,8),(143,91),(0,91)],TEAL)],148,96,155,490,586,{'requiredFlag':'palaceCoup','hiddenFlag':'desertSealBroken'})],cityback)
 
 courtback=[rect(0,0,1536,1008,'#4b5554'),poly([(238,142),(750,96),(1294,128),(1310,770),(242,770)],'#967b5f'),poly([(268,169),(751,128),(1266,157),(1280,744),(268,744)],LIGHT),poly([(354,202),(755,168),(1182,196),(1181,476),(355,476)],'#3d5556'),poly([(355,476),(520,310),(800,419),(1181,278),(1181,476)],'#8a7768'),poly([(224,137),(751,89),(1308,122),(1296,146),(752,116),(242,163)],'#d1ac73'),line([(260,160),(752,121),(1282,152)],'#eed09a',5)]
 for i,x in enumerate(range(285,1280,120)):
@@ -125,7 +151,7 @@ world('sunpalace','Namar · the open court','The queen receives visitors beneath
  obj('palace-audience',32,24,'Queen Samira · revoke the pact',sprite='samira',storyUntil='palaceCoup',hiddenFlag='palaceEscaped'),obj('palace-route',22,29,'Postal stair · escape the palace',requiredFlag='palaceCoup',doneFlag='palaceEscaped',sign=True),obj('palace-supply',15,31,'Shaded fountain · rest and supplies',kind='optional',sign=True),obj('palace-city',31,34,'Evening exchange · palace gate',kind='exit',sign=True),obj('palace-roofs',10,29,'Postal stair · the observatory terraces',requiredFlag='palaceEscapeWon',kind='exit',sign=True)],
  {'start':(31,31),'audience':(31,28),'escape':(20,29),'roofs':(13,29)}, {'six-court':courtcrew,'six-coup':courtcrew,'six-escape':courtcrew},
  [point('court-attendant',19,25,sprite='civilian-traveler-blue'),point('court-attendant-two',46,28,sprite='civilian-traveler')],
- [('palace-fountain',astrolabe(38,51,34)+[rect(28,49,20,60,TEAL)],82,114,532,535,649,{}),('palace-vase',[rect(20,34,28,45,TEAL),ellipse(34,38,23,15,TEAL)]+palm(23,-36,.7),88,115,983,542,657,{}),('palace-bar',[rect(0,0,192,54,INK),line([(0,18),(192,18)],GOLD,7),line([(0,40),(192,40)],GOLD,7)],192,60,660,790,850,{'requiredFlag':'palaceCoup','hiddenFlag':'palaceEscaped'})],courtback)
+ [('palace-fountain',astrolabe(38,51,34)+[rect(28,49,20,60,TEAL)],82,114,532,535,649,{}),('palace-vase',[rect(20,34,28,45,TEAL),ellipse(34,38,23,15,TEAL)]+palm(23,-36,.7),88,115,983,542,657,{}),('palace-bar',lattice_gate(192),192,60,660,790,850,{'requiredFlag':'palaceCoup','hiddenFlag':'palaceEscaped'})],courtback)
 
 roofback=dunes()
 for x,y,w,h in [(30,580,280,250),(380,710,225,220),(1080,555,360,300),(880,710,150,242)]:roofback.extend(building(x,y,w,h,True))
@@ -151,6 +177,8 @@ for id,title in [('palace-gallery','Palace gallery cordon'),('palace-channel','P
   for x in (0,810):back.extend(building(x,-25,180,170,True))
  floor=[(3,3,34,16)]
  world('battle-'+id,title,'',floor,[],[],{'start':(20,17)},{},[],[],back,w=42,h=20)
+
+for frame in range(1,16):svg(ART/f'namar-clock-{frame}.svg',144,174,water_clock(frame))
 
 (ROOT/'src/content/chapter-six/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print(f'Exported {len(manifest)} Chapter Six SVG scenes and Tiled layouts.')
