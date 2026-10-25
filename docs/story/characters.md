@@ -138,3 +138,5 @@ All five companions reach the source together, regardless of the selected fighte
 Petra’s accountability continues through [her arc notes](petra-arc.md): a Cinderbank passenger declines her help, she sends Dena her own account after Alban’s death, and she commits to answer the families in person after the sea trip. Neither her service nor the final victory grants a pardon.
 
 Celia’s [personal arc](celia-arc.md) follows her uncertainty as a teacher through Sera’s support after Windmere, trusting Ines with Nell’s treatment, and accepting company and rest herself. Sera is a former pupil; Celia never knew the omitted pledge before the sanctuary discovery.
+
+The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter Three memory of his wife, the bounded promise to Nell and the repeated household in the final palace. His private grief does not excuse the collection or revive his family; he remains dead and silent after vessel victory.

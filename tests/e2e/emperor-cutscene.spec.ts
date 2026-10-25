@@ -8,7 +8,7 @@ async function begin(page:Page){
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-rupture');return saved;
 }
 async function line(page:Page,text:string){
- for(let i=0;i<14;i++){
+ for(let i=0;i<32;i++){
   if((await page.locator('.dialogue p').textContent())?.includes(text))return;
   await page.locator('.dialogue-actions button').click();
  }

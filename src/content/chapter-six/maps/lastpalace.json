@@ -908,6 +908,11 @@
               "name": "projection",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "emperorWon"
             }
           ],
           "id": 11

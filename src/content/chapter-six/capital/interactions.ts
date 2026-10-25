@@ -64,7 +64,12 @@ export function interactCapital(h:StoryHost,id:string):boolean{
    else if(!f.capitalStreetFreed)show(h,scenes.released(s),'capitalStreetFreed',()=>h.refresh());break;
   case 'palace-city':go(h,'stillcity','palace');break;
   case 'palace-command':if(!f.capitalCommandWon)h.talk({...scenes.command(s),done:()=>battle('palace-command','capitalCommandConfronted','Break the palace cordon')});break;
-  case 'palace-household':say('Celia','The servant asks whether the table needs another place. The woman answers a question about the weather.');break;
+  case 'palace-household':
+   if(f.emperorWon)say('The household','The room is quiet; the bowl has cooled.');
+   else h.talk({lines:[
+    SAY('The household','The covered bowl still steams. At the window, the same request begins again.'),
+    SAY('Celia','The attendants asked for water. This bowl never had time to cool.'),
+   ]});break;
   case 'palace-hunters':if(!f.capitalHuntersWon)battle('capital-hunters','capitalHuntersConfronted','Clear the eastern cloister');break;
   case 'palace-locker':if(!f.capitalFocusTaken)h.talk({lines:[SAY('Celia','They left the treatment lenses here when the private rooms took the water. This one will fit my focus.')],done:()=>{receiveItem(s.inventory,'palace-focus');h.commit('capitalFocusTaken','capitalFocusTaken');}});break;
   case 'morning-ansel':say('Ansel','Lantern trimmed? Take your brother before he eats the whole picnic on the platform.');break;

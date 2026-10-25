@@ -19,6 +19,8 @@ def interior():
  for x in [235,444,855,1064]:out+=arch(x,300,190,245)
  for x in [170,1320]:out+=[rect(x,195,42,464,WHITE),rect(x-11,630,65,26,BLUE),rect(x-9,192,60,19,GOLD)]
  out+=arch(610,215,305,290)
+ # The remembered Empress waits below this shut breakfast casement.
+ out+=lean([rect(883,326,135,118,WHITE),rect(889,332,123,106,SHADOW),rect(895,338,51,94,'#8da8ad'),rect(955,338,51,94,'#9bb2b2'),poly([(895,338),(946,338),(946,365),(895,390)],'#bdc9bf'),poly([(955,338),(1006,338),(1006,354),(955,380)],'#cbd0bf'),line([(950,332),(950,438)],GOLD,4),line([(889,390),(1012,390)],WHITE,4),rect(946,391,15,4,GOLD)],444,.018)
  return out
 party={'kit':(32,29),'orrin':(29,30),'petra':(35,30),'celia':(30,32),'nell':(33,28)}
 # Stillwater Avenue: open lower plaza, real closed neck, visible release on its safe side.
@@ -33,7 +35,7 @@ f=[(9,25,46,12),(20,18,25,8),(26,13,13,6)]
 world('lastpalace','Palace of the Last Day','A service shelter faces the lower gallery. The private apartments and crown stair lie beyond the remaining palace cordon.',f,[(11,26,4,2),(48,26,4,2)],[
  obj('palace-command',32,28,'Palace commandant · the remaining cordon',hiddenFlag='capitalCommandWon',doneFlag='capitalCommandWon',sprite='inspector'),obj('palace-preparations',32,16,'Crown stair · final preparations',kind='story',sign=True,accessFlag='capitalHallOpened'),obj('palace-city',13,34,'Stillwater Avenue · return to the boats',kind='exit',sign=True),obj('palace-rest',18,31,'Service shelter · rest and supplies',kind='optional',sign=True),obj('palace-locker',46,31,'Service locker · medical focus',kind='optional',sign=True,hiddenFlag='capitalFocusTaken',doneFlag='capitalFocusTaken'),obj('palace-hunters',43,23,'Eastern cloister · divine hunters',accessFlag='capitalHallOpened',kind='optional',sign=True,hiddenFlag='capitalHuntersWon',doneFlag='capitalHuntersWon'),obj('palace-household',25,21,'The household · a repeated conversation',accessFlag='capitalHallOpened',kind='talk',sign=True)],
  {'start':(32,34),'memory':(32,22)}, {'six-palace-arrival':party,'six-palace-command':{**party,'petra':(34,27)},'six-palace-open':party,'six-capital-warning':party,'six-emperor-audience':{**party,'emperor':(32,17)},'six-memory-wake':{**party,'nell':(32,23),'celia':(34,24),'kit':(30,24),'emperor':(32,17)}},
- [point('palace-servant',23,23,sprite='civilian-dockhand-rust'),point('palace-memory',38,21,sprite='civilian-traveler',projection=True)],
+ [point('palace-servant',23,23,sprite='civilian-dockhand-rust'),point('palace-memory',38,21,sprite='civilian-traveler',projection=True,hiddenFlag='emperorWon')],
  [('palace-cordon',b['b']['base']['lattice_gate'](600),600,40,480,574,614,{'hiddenFlag':'capitalHallOpened'}),('palace-safe-bench',bench(),168,86,350,692,778,{}),('palace-service-locker',chest(),60,48,1074,693,741,{})],interior(),gated={'palace-cordon':[(20,24,25,1)]})
 # Reuse the real Larkspur station geometry instead of inventing a palace-like home.
 def home_map(id,remembered):
