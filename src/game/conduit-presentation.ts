@@ -34,7 +34,7 @@ function pressureEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,so
 export function conduitPresentation(encounter:Encounter):BattlePresentation{
   return {
     encounter,prepare:prepareConduit,focus:offset(5,3),
-    lighting:encounter.id==='domain-collector'?undefined:{scene:'conduit-regulator',ground:'M145 176H781L812 202V414L785 438H145L116 414V205Z'},
+    lighting:encounter.id==='domain-collector'?{scene:'battle-domain-collector',ground:'M72 78L330 68L510 82L708 68L888 82L906 444L704 460L490 446L280 462L72 446Z'}:{scene:'conduit-regulator',ground:'M145 176H781L812 202V414L785 438H145L116 414V205Z'},
     animating:b=>regulatorUnit(b).hp>0&&bossMotionEnabled(),
     portrait:u=>u.id===REGULATOR_ID?CONDUIT_PORTRAIT:undefined,
     facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,

@@ -86,3 +86,15 @@ it('keeps all authored scene casts and destinations on connected real floor, wit
   for(const a of d.scene!.actors){expect(['alban','emperor','ansel']).not.toContain(a.id);expect(walkable(map,a.at.x,a.at.y),d.scene!.id+':'+a.id).toBe(true);}
  }
 });
+
+it('keeps the temporary god and each revealed form individually live through ground caching',()=>{
+ for(const [map,names]of [['hollowsill',['distant-god']],['sunthrone',['monument','revealed-sun','revealed-heart']]]as const){
+  for(const name of names){
+   const layers=MAPS[map].tiles!.layers;
+   const body=layers.find(l=>l.name===name)!,glow=layers.find(l=>l.name===name+'-spill')!;
+   expect(body,`${map}:${name}`).toBeDefined();expect(glow).toBeDefined();
+   const props=(l:typeof body)=>Object.fromEntries((l.properties??[]).map(p=>[p.name,p.value]));
+   expect(props(body).live).toBe(true);expect(props(glow)).toEqual(props(body));
+  }
+ }
+});

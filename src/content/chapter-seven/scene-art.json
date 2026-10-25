@@ -21,6 +21,16 @@
       "layerId": 2
     },
     {
+      "key": "scene-seven-hollowsill-survey-ship",
+      "url": "art/vector/chapter-seven/hollowsill-survey-ship.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -998.3,
+      "layerId": 4
+    },
+    {
       "key": "scene-seven-hollowsill-distant-god",
       "url": "art/vector/chapter-seven/hollowsill-distant-god.svg",
       "x": 0,
@@ -28,17 +38,17 @@
       "width": 1536,
       "height": 1008,
       "depth": -998.5,
-      "layerId": 4
+      "layerId": 5
     },
     {
-      "key": "scene-seven-hollowsill-lamp",
-      "url": "art/vector/chapter-seven/hollowsill-lamp.svg",
+      "key": "scene-seven-hollowsill-distant-god-spill",
+      "url": "art/vector/chapter-seven/hollowsill-distant-god-spill.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
       "height": 1008,
-      "depth": 744,
-      "layerId": 5
+      "depth": -997,
+      "layerId": 6
     },
     {
       "key": "scene-seven-hollowsill-crossing-shelter",
@@ -48,7 +58,47 @@
       "width": 288,
       "height": 120,
       "depth": 785,
-      "layerId": 6
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-hollowsill-light-0",
+      "url": "art/vector/chapter-seven/hollowsill-light-0.svg",
+      "x": 469,
+      "y": 626,
+      "width": 48,
+      "height": 148,
+      "depth": 774,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-hollowsill-light-0-spill",
+      "url": "art/vector/chapter-seven/hollowsill-light-0-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 9
+    },
+    {
+      "key": "scene-seven-hollowsill-light-1",
+      "url": "art/vector/chapter-seven/hollowsill-light-1.svg",
+      "x": 1029,
+      "y": 632,
+      "width": 48,
+      "height": 148,
+      "depth": 780,
+      "layerId": 10
+    },
+    {
+      "key": "scene-seven-hollowsill-light-1-spill",
+      "url": "art/vector/chapter-seven/hollowsill-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 11
     }
   ],
   "takenwater": [
@@ -79,18 +129,58 @@
       "y": 0,
       "width": 1536,
       "height": 1008,
-      "depth": -998.2,
+      "depth": 671,
       "layerId": 4
     },
     {
-      "key": "scene-seven-takenwater-lamp",
-      "url": "art/vector/chapter-seven/takenwater-lamp.svg",
+      "key": "scene-seven-takenwater-station-house-spill",
+      "url": "art/vector/chapter-seven/takenwater-station-house-spill.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
       "height": 1008,
-      "depth": 744,
+      "depth": -997,
       "layerId": 5
+    },
+    {
+      "key": "scene-seven-takenwater-light-0",
+      "url": "art/vector/chapter-seven/takenwater-light-0.svg",
+      "x": 399,
+      "y": 642,
+      "width": 48,
+      "height": 148,
+      "depth": 790,
+      "layerId": 6
+    },
+    {
+      "key": "scene-seven-takenwater-light-0-spill",
+      "url": "art/vector/chapter-seven/takenwater-light-0-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-takenwater-light-1",
+      "url": "art/vector/chapter-seven/takenwater-light-1.svg",
+      "x": 1091,
+      "y": 628,
+      "width": 48,
+      "height": 148,
+      "depth": 776,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-takenwater-light-1-spill",
+      "url": "art/vector/chapter-seven/takenwater-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 9
     }
   ],
   "firstfield": [
@@ -133,6 +223,56 @@
       "height": 1008,
       "depth": 684,
       "layerId": 5
+    },
+    {
+      "key": "scene-seven-firstfield-harvest-keeper",
+      "url": "art/vector/chapter-seven/firstfield-harvest-keeper.svg",
+      "x": 668,
+      "y": 426,
+      "width": 224,
+      "height": 168,
+      "depth": 594,
+      "layerId": 6
+    },
+    {
+      "key": "scene-seven-firstfield-light-0",
+      "url": "art/vector/chapter-seven/firstfield-light-0.svg",
+      "x": 487,
+      "y": 644,
+      "width": 48,
+      "height": 148,
+      "depth": 792,
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-firstfield-light-0-spill",
+      "url": "art/vector/chapter-seven/firstfield-light-0-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-firstfield-light-1",
+      "url": "art/vector/chapter-seven/firstfield-light-1.svg",
+      "x": 1079,
+      "y": 626,
+      "width": 48,
+      "height": 148,
+      "depth": 774,
+      "layerId": 9
+    },
+    {
+      "key": "scene-seven-firstfield-light-1-spill",
+      "url": "art/vector/chapter-seven/firstfield-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 10
     }
   ],
   "quietward": [
@@ -162,8 +302,8 @@
       "x": 380,
       "y": 600,
       "width": 132,
-      "height": 94,
-      "depth": 694,
+      "height": 96,
+      "depth": 696,
       "layerId": 4
     },
     {
@@ -172,19 +312,49 @@
       "x": 1075,
       "y": 600,
       "width": 132,
-      "height": 94,
-      "depth": 694,
+      "height": 96,
+      "depth": 696,
       "layerId": 5
     },
     {
-      "key": "scene-seven-quietward-lamp",
-      "url": "art/vector/chapter-seven/quietward-lamp.svg",
+      "key": "scene-seven-quietward-light-0",
+      "url": "art/vector/chapter-seven/quietward-light-0.svg",
+      "x": 551,
+      "y": 642,
+      "width": 48,
+      "height": 148,
+      "depth": 790,
+      "layerId": 6
+    },
+    {
+      "key": "scene-seven-quietward-light-0-spill",
+      "url": "art/vector/chapter-seven/quietward-light-0-spill.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
       "height": 1008,
-      "depth": 744,
-      "layerId": 6
+      "depth": -997,
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-quietward-light-1",
+      "url": "art/vector/chapter-seven/quietward-light-1.svg",
+      "x": 1089,
+      "y": 650,
+      "width": 48,
+      "height": 148,
+      "depth": 798,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-quietward-light-1-spill",
+      "url": "art/vector/chapter-seven/quietward-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 9
     }
   ],
   "seasonstreet": [
@@ -219,14 +389,54 @@
       "layerId": 4
     },
     {
-      "key": "scene-seven-seasonstreet-lamp",
-      "url": "art/vector/chapter-seven/seasonstreet-lamp.svg",
+      "key": "scene-seven-seasonstreet-tow-rope",
+      "url": "art/vector/chapter-seven/seasonstreet-tow-rope.svg",
+      "x": 396,
+      "y": 670,
+      "width": 84,
+      "height": 52,
+      "depth": 722,
+      "layerId": 5
+    },
+    {
+      "key": "scene-seven-seasonstreet-light-0",
+      "url": "art/vector/chapter-seven/seasonstreet-light-0.svg",
+      "x": 437,
+      "y": 652,
+      "width": 48,
+      "height": 148,
+      "depth": 800,
+      "layerId": 6
+    },
+    {
+      "key": "scene-seven-seasonstreet-light-0-spill",
+      "url": "art/vector/chapter-seven/seasonstreet-light-0-spill.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
       "height": 1008,
-      "depth": 730,
-      "layerId": 5
+      "depth": -997,
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-seasonstreet-light-1",
+      "url": "art/vector/chapter-seven/seasonstreet-light-1.svg",
+      "x": 1111,
+      "y": 648,
+      "width": 48,
+      "height": 148,
+      "depth": 796,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-seasonstreet-light-1-spill",
+      "url": "art/vector/chapter-seven/seasonstreet-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 9
     }
   ],
   "lastrefuge": [
@@ -276,9 +486,49 @@
       "x": 1063,
       "y": 657,
       "width": 132,
-      "height": 94,
-      "depth": 751,
+      "height": 96,
+      "depth": 753,
       "layerId": 6
+    },
+    {
+      "key": "scene-seven-lastrefuge-light-0",
+      "url": "art/vector/chapter-seven/lastrefuge-light-0.svg",
+      "x": 691,
+      "y": 628,
+      "width": 48,
+      "height": 148,
+      "depth": 776,
+      "layerId": 7
+    },
+    {
+      "key": "scene-seven-lastrefuge-light-0-spill",
+      "url": "art/vector/chapter-seven/lastrefuge-light-0-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-lastrefuge-light-1",
+      "url": "art/vector/chapter-seven/lastrefuge-light-1.svg",
+      "x": 1067,
+      "y": 666,
+      "width": 48,
+      "height": 148,
+      "depth": 814,
+      "layerId": 9
+    },
+    {
+      "key": "scene-seven-lastrefuge-light-1-spill",
+      "url": "art/vector/chapter-seven/lastrefuge-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 10
     }
   ],
   "sunthrone": [
@@ -313,6 +563,16 @@
       "layerId": 4
     },
     {
+      "key": "scene-seven-sunthrone-monument-spill",
+      "url": "art/vector/chapter-seven/sunthrone-monument-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 5
+    },
+    {
       "key": "scene-seven-sunthrone-revealed-sun",
       "url": "art/vector/chapter-seven/sunthrone-revealed-sun.svg",
       "x": 0,
@@ -320,7 +580,17 @@
       "width": 1536,
       "height": 1008,
       "depth": -998.5,
-      "layerId": 5
+      "layerId": 6
+    },
+    {
+      "key": "scene-seven-sunthrone-revealed-sun-spill",
+      "url": "art/vector/chapter-seven/sunthrone-revealed-sun-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 7
     },
     {
       "key": "scene-seven-sunthrone-revealed-heart",
@@ -330,7 +600,57 @@
       "width": 1536,
       "height": 1008,
       "depth": -998.5,
-      "layerId": 6
+      "layerId": 8
+    },
+    {
+      "key": "scene-seven-sunthrone-revealed-heart-spill",
+      "url": "art/vector/chapter-seven/sunthrone-revealed-heart-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 9
+    },
+    {
+      "key": "scene-seven-sunthrone-light-0",
+      "url": "art/vector/chapter-seven/sunthrone-light-0.svg",
+      "x": 485,
+      "y": 634,
+      "width": 48,
+      "height": 148,
+      "depth": 782,
+      "layerId": 10
+    },
+    {
+      "key": "scene-seven-sunthrone-light-0-spill",
+      "url": "art/vector/chapter-seven/sunthrone-light-0-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 11
+    },
+    {
+      "key": "scene-seven-sunthrone-light-1",
+      "url": "art/vector/chapter-seven/sunthrone-light-1.svg",
+      "x": 1037,
+      "y": 632,
+      "width": 48,
+      "height": 148,
+      "depth": 780,
+      "layerId": 12
+    },
+    {
+      "key": "scene-seven-sunthrone-light-1-spill",
+      "url": "art/vector/chapter-seven/sunthrone-light-1-spill.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -997,
+      "layerId": 13
     }
   ],
   "homecoming": [
@@ -365,8 +685,8 @@
       "height": 624
     },
     {
-      "key": "scenery-station-house",
-      "url": "art/vector/scenery/station-house.svg",
+      "key": "scene-station-prop-station-house",
+      "url": "art/vector/scenes/station/station-house.svg",
       "x": 120,
       "y": 48,
       "depth": 259,
@@ -385,8 +705,8 @@
       "height": 168
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-432",
+      "url": "art/vector/scenes/station/river-wall-432.svg",
       "x": 432,
       "y": 168,
       "depth": 259,
@@ -395,8 +715,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-624",
+      "url": "art/vector/scenes/station/river-wall-624.svg",
       "x": 624,
       "y": 168,
       "depth": 259,
@@ -405,8 +725,8 @@
       "height": 96
     },
     {
-      "key": "scenery-river-wall",
-      "url": "art/vector/scenery/river-wall.svg",
+      "key": "scene-station-prop-river-wall-816",
+      "url": "art/vector/scenes/station/river-wall-816.svg",
       "x": 816,
       "y": 168,
       "depth": 259,
@@ -415,8 +735,8 @@
       "height": 96
     },
     {
-      "key": "scenery-stone-steps",
-      "url": "art/vector/scenery/stone-steps.svg",
+      "key": "scene-station-prop-stone-steps",
+      "url": "art/vector/scenes/station/stone-steps.svg",
       "x": 672,
       "y": 192,
       "depth": -991,
@@ -425,8 +745,8 @@
       "height": 96
     },
     {
-      "key": "scenery-market-stall",
-      "url": "art/vector/scenery/market-stall.svg",
+      "key": "scene-station-prop-market-stall",
+      "url": "art/vector/scenes/station/market-stall.svg",
       "x": 648,
       "y": 312,
       "depth": 451,
@@ -435,8 +755,8 @@
       "height": 168
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -72,
       "y": 336,
       "depth": 571,
@@ -445,8 +765,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": 864,
       "y": 384,
       "depth": 619,
@@ -455,8 +775,8 @@
       "height": 240
     },
     {
-      "key": "scenery-canopy",
-      "url": "art/vector/scenery/canopy.svg",
+      "key": "scene-station-prop-canopy",
+      "url": "art/vector/scenes/station/canopy.svg",
       "x": -24,
       "y": -72,
       "depth": 163,
@@ -465,8 +785,8 @@
       "height": 240
     },
     {
-      "key": "scenery-fir",
-      "url": "art/vector/scenery/fir.svg",
+      "key": "scene-station-prop-fir",
+      "url": "art/vector/scenes/station/fir.svg",
       "x": 888,
       "y": -24,
       "depth": 235,
@@ -475,8 +795,8 @@
       "height": 264
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 384,
       "y": 144,
       "depth": 283,
@@ -485,8 +805,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 576,
       "y": 408,
       "depth": 547,
@@ -495,8 +815,8 @@
       "height": 144
     },
     {
-      "key": "scenery-lamp",
-      "url": "art/vector/scenery/lamp.svg",
+      "key": "scene-station-prop-lamp",
+      "url": "art/vector/scenes/station/lamp.svg",
       "x": 864,
       "y": 288,
       "depth": 427,
@@ -505,8 +825,8 @@
       "height": 144
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 144,
       "y": 384,
       "depth": 451,
@@ -515,8 +835,8 @@
       "height": 72
     },
     {
-      "key": "scenery-planter",
-      "url": "art/vector/scenery/planter.svg",
+      "key": "scene-station-prop-planter",
+      "url": "art/vector/scenes/station/planter.svg",
       "x": 840,
       "y": 504,
       "depth": 571,

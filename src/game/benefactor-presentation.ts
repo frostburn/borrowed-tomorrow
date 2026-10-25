@@ -13,6 +13,7 @@ export function benefactorPresentation(encounter:Encounter):BattlePresentation{
  const form=encounter.benefactorForm??0,key=form===0?'benefactor-motion':form===1?'benefactor-sun-motion':'benefactor-heart-motion';let currentFrame=0;
  return {
   encounter,prepare:prepareBenefactor,focus:offset(5,2),
+  lighting:{scene:'battle-'+encounter.id,ground:'M136 193L334 127L611 135L793 204L810 330L637 413L360 430L143 349Z'},
   animating:b=>(benefactorUnit(b)?.hp??0)>0&&bossMotionEnabled(),
   portrait:u=>u.id===BENEFACTOR_ID?BENEFACTOR_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
