@@ -5,7 +5,7 @@ import json,re,math,copy
 from pathlib import Path
 from xml.sax.saxutils import escape
 from map_metadata import retain_interaction_roles
-from chapter_seven_style import OUTLINES,FIXTURES,LIGHTS,cells,floor_art,lean,fixture,spill_art,arena
+from chapter_seven_style import OUTLINES,ARENA,GOD_GROUND,FIXTURES,LIGHTS,cells,floor_art,lean,fixture,spill_art,arena
 ROOT=Path(__file__).resolve().parents[2];ART=ROOT/'public/art/vector/chapter-seven';MAP=ROOT/'src/content/chapter-seven/maps'
 ART.mkdir(parents=True,exist_ok=True);MAP.mkdir(parents=True,exist_ok=True);manifest={}
 INK='#172c3b';BLUE='#466578';PALE='#d7dbce';GOLD='#c5a36b';TEAL='#5a9692';RUST='#966450'
@@ -143,6 +143,7 @@ for id,mapid in [('domain-hounds','takenwater'),('domain-collector','takenwater'
  source['properties']=props(name=id,sceneArt='battle-'+id,artStyle='rotoscope')
  for l in source['layers']:
   if l['type']=='objectgroup':l['objects']=[]
+  elif l['name']=='Walking surfaces':l['data']=cells(GOD_GROUND if id.startswith('benefactor-')else ARENA,source['width'],source['height'])
  (MAP/('battle-'+id+'.json')).write_text(json.dumps(source,separators=(',',':'))+'\n')
  body=arena(mapid)
  lid=next(l['id']for l in source['layers']if l['type']=='tilelayer')

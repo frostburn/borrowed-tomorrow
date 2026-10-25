@@ -18,6 +18,7 @@ OUTLINES={
  'lastrefuge':[(290,806),(330,788),(350,618),(634,600),(652,440),(900,428),(918,600),(1194,624),(1214,880),(986,906),(752,884),(468,906),(342,882),(292,874)],
  'sunthrone':[(290,806),(428,788),(448,618),(562,600),(580,414),(970,402),(992,600),(1122,620),(1146,878),(976,906),(754,882),(556,906),(434,878),(292,872)],
 }
+GOD_GROUND=[(148,94),(783,94),(833,152),(833,407),(782,443),(148,443),(101,401),(101,152)]
 ARENA=[(72,78),(330,68),(510,82),(708,68),(888,82),(906,444),(704,460),(490,446),(280,462),(72,446)]
 FIXTURES={
  'hollowsill':[(492,774),(1052,780)],'takenwater':[(422,790),(1114,776)],
@@ -115,11 +116,11 @@ def spill_art(entries,pts):return clipped('light-floor',pts,[spill([(Path(e['url
 def arena(scene):
  out=[rect(0,0,1024,480,'#243c50'),poly([(0,0),(1024,0),(1024,135),(831,93),(681,136),(470,92),(244,123),(0,88)],'#36596c')]
  if scene=='firstfield':
-  for x in range(20,1024,35):out.extend([line([(x,115),(x+9,39)],'#b7aa7e',3),poly([(x+9,39),(x,58),(x+10,54),(x+17,65)],'#d6c192')])
+  for x in range(20,1024,35):out.extend([line([(x,115),(x+9,39)],'#b7aa7e',3),poly([(x+9,39),(x+3,49),(x+4,62),(x+9,58),(x+13,45),(x+17,54),(x+14,69),(x+19,64),(x+23,51)],'#d6c192')])
  if scene=='quietward':
   for x in (18,912):out.extend([rect(x,0,94,172,'#72958e'),poly([(x,3),(x+44,19),(x+94,0),(x+90,11),(x+44,29),(x+3,13)],'#b9c8b6'),rect(x+12,41,15,94,'#b0c5b4')])
  out.extend(floor_art(scene,True))
  for x in (104,870):
   out.extend([f'<g transform="translate({x-23} 14)">',*fixture(scene=='quietward'),'</g>'])
-  out.append(f'<ellipse cx="{x}" cy="172" rx="64" ry="20" fill="#d7bf8d" opacity=".12"/>')
+  out.extend(clipped(f'arena-opal-{x}',ARENA,[f'<ellipse cx="{x}" cy="172" rx="64" ry="20" fill="#d7bf8d" opacity=".12"/>']))
  return out

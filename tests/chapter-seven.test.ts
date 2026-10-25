@@ -1,4 +1,7 @@
 import {expect,it} from 'vitest';
+import {CHAPTER_SEVEN_BATTLES} from '../src/content/chapter-seven/maps';
+import {tileWalkable} from '../src/content/tilemaps';
+import {cells as hexes,toPixel} from '../src/rules/hex';
 import {chapterSevenDeparture,chapterSevenStart,chapterSevenRefugeStart} from '../src/dev/canonical-saves';
 import {beginChapterSeven,level,remember} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
@@ -96,5 +99,11 @@ it('keeps the temporary god and each revealed form individually live through gro
    const props=(l:typeof body)=>Object.fromEntries((l.properties??[]).map(p=>[p.name,p.value]));
    expect(props(body).live).toBe(true);expect(props(glow)).toEqual(props(body));
   }
+ }
+});
+
+it('keeps every legal battle hex on the domain arenas’ authored ground',()=>{
+ for(const [id,map]of Object.entries(CHAPTER_SEVEN_BATTLES))for(const hex of hexes()){
+  const p=toPixel(hex);expect(tileWalkable(map,Math.floor(p.x/24),Math.floor(p.y/24),{flags:{}}),`${id}:${hex.q},${hex.r}`).toBe(true);
  }
 });
