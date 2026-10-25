@@ -114,3 +114,20 @@ repeated vertical thread stamps on Rillbridge's pavement are removed; suspended
 water drops at the river remain. Rebuild these maps with `chapter-one.py --map
 rillbridge`, `--map tunnel` and `--chapter two --map coast`. No actors, route IDs,
 story markers or cutscene destinations move.
+
+
+### Filled roof gables and regional rest furniture
+
+The editable workshop, bakery, miners’ cottage and coal-shed originals include
+solid wall faces behind the angled roof trim. Their Chapter One/Two variants
+inherit those faces. `chapter-five.py::factory()` fills both sawtooth gables;
+`chapter-six-north.py::house()` fills the complete northern timber gable before
+painting the snow trim. Roof silhouettes, windows, door positions, dimensions
+and navigation are preserved. The station already has a closed front gable;
+the desert and Iria roof planes are solid.
+
+Rebuild Chapters One–Three with `chapter-one.py` and its `--chapter two` /
+`--chapter three` options, the factory kit with `chapter-five.py`, and the north
+and regional benches with `chapter-six-capital.py`. Chapter Six’s rest furniture
+is described in [its source guide](chapter-six.md); medical beds are separate.
+All results remain native SVGs, with no new raster assets or dependencies.

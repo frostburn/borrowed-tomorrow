@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="216" viewBox="0 0 240 216">
 <title>bakery</title><metadata>{"reference": "feb2d47^:assets/maps/rillbridge", "crop": [856, 0, 1233, 280], "method": "Hand-traced silhouette and planar lighting; registered to story footprint"}</metadata>
+<polygon points="56,103 91,72 130,103 167,70 204,100" fill="#53676c"/>
 <polygon points="9,92 225,86 225,208 12,214" fill="#53676c"/>
 <polygon points="199,86 225,86 225,208 202,197" fill="#304653"/>
 <polygon points="2,91 32,20 207,19 239,88 202,103 167,78 130,104 92,80 56,106" fill="#142536"/>
