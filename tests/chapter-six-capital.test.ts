@@ -3,7 +3,7 @@ import { readFileSync,statSync } from 'node:fs';
 import { chapterSixCapitalStart,chapterSixFinaleStart } from '../src/dev/canonical-saves';
 import { interactChapterSix,resumeChapterSix } from '../src/content/chapter-six/interactions';
 import { ENCOUNTERS } from '../src/content/chapter-six/capital/encounters';
-import { arrival,MAPS,walkable,worldPath,visibleObjects } from '../src/content/maps';
+import { arrival,MAPS,walkable,worldPath,visibleObjects,visiblePeople } from '../src/content/maps';
 import { sceneAssets } from '../src/content/scene-art';
 import { decodeSave } from '../src/rules/save';
 import { remember,SEVENTH_CHAPTER,type GameState } from '../src/rules/state';
@@ -34,7 +34,8 @@ async function approach(recovered:boolean,reserve=false){
 for(const recovered of [false,true])it(`capital route with ${recovered?'recovered':'ill'} Nell commits only its earned outcome and preserves the return save`,async()=>{
  const p=await approach(recovered,true),formation=[...p.s.activeParty];p.touch('palace-preparations');await p.choose(recovered?'Climb the crown':'Proceed with Nell');p.finish();
  expect(p.returns).toBeDefined();expect(p.returns!.flags.capitalAssaultCommitted).toBeFalsy();expect(p.returns!.location.map).toBe('lastpalace');expect(p.s.activeParty).toEqual(formation);expect(p.s.flags.capitalRiskAccepted).toBe(!recovered);
- p.touch('capital-emperor');await p.choose('Face the Emperor');const afterVictory=p.read.length;p.win();expect(p.read.slice(afterVictory).flatMap(d=>d.lines).some(l=>l.who==='The Emperor')).toBe(false);
+ expect(visiblePeople(MAPS.lastpalace,p.s).some(p=>p.id==='palace-memory')).toBe(true);
+ p.touch('capital-emperor');await p.choose('Face the Emperor');const afterVictory=p.read.length;p.win();expect(visiblePeople(MAPS.lastpalace,p.s).some(p=>p.id==='palace-memory')).toBe(false);expect(p.read.slice(afterVictory).flatMap(d=>d.lines).some(l=>l.who==='The Emperor')).toBe(false);
  if(recovered){expect(p.s.location.map).toBe('capitalquay');expect(p.s.flags.capitalReleased).toBe(true);expect(p.s.flags.lightbearerSeen).toBeFalsy();p.touch('capital-crew');await p.choose('Prepare the final');expect(p.s.boundary).toBe(SEVENTH_CHAPTER);expect(p.s.flags.chapterSixComplete).toBe(true);}
  else{expect(p.s.flags.lightbearerSeen).toBe(true);expect(p.s.flags.capitalAudienceSeen).toBeFalsy();p.touch('capital-lightbearer');await p.choose('Face the Lightbearer');p.win();expect(p.s.location.map).toBe('laststation');expect(p.s.flags.nellLost).toBe(true);expect(p.s.party.find(h=>h.id==='nell')!.hp).toBe(0);p.touch('last-ending');expect(p.s.flags.lightbearerEnding).toBe(true);expect(p.s.boundary).toBeNull();expect(p.s.flags.chapterSixComplete).toBeFalsy();expect(p.read.flatMap(d=>d.lines).some(l=>l.who==='Nell'||l.who==='Ansel')).toBe(false);expect(p.read.flatMap(d=>d.lines).some(l=>Object.values(l.shot?.actors??{}).some(a=>a?.face?.startsWith('pair-')))).toBe(false);}
  expect(p.boundary).toBe(1);p.valid();expect(decodeSave(JSON.stringify(p.returns)).flags.capitalAssaultCommitted).toBeFalsy();

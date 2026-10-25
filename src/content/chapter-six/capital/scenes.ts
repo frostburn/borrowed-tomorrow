@@ -26,8 +26,11 @@ export const released=(s:GameState)=>scene(s,'stillcity','six-capital-release','
  line('Stillwater Avenue','The baker leaves the burnt loaf on the counter. This time it stays there.'),
 ]);
 export const palace=(s:GameState)=>scene(s,'lastpalace','six-palace-arrival','The palace of the last day',[
- line('The lower gallery','A servant carries a bowl to an empty chair. Behind it, a woman’s pale reflection turns toward a door that never opens.',{focus:{x:32,y:21},cut:true}),
- line('Celia','There’s someone breathing behind that screen. The servant keeps passing him.'),
+ line('The lower gallery','A servant carries a covered bowl to an empty chair. A woman’s pale reflection waits beside a closed window.',{focus:{x:38,y:22},cut:true}),
+ line('The household','“Open the window, would you? I can hear the bread cart.”'),
+ line('The lower gallery','She begins the request again, with the same pause before “window.”'),
+ line('Petra','The Empress. I was on guard at her funeral.',{focus:{x:34,y:29},duration:800}),
+ line('Celia','The man behind that screen is asking for water. The servant keeps passing him.',{focus:{x:24,y:25},duration:800}),
  line('Orrin','The private rooms are taking the service ward’s pressure. They’ve shut the other line down.'),
  line('Petra','This gallery served the whole palace. He’s keeping one household at the table.'),
  line('The eastern cloister','A white wing strikes a guardian against the rail. The guardian gets up and bars the patient stair again.',{cue:'strike',focus:{x:43,y:23}}),
@@ -103,9 +106,9 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
 ]);
 export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Emperor’s last day',[
  line('The crown platform','The palace roof opens around a crowned vessel. Two pale supports turn beneath its arms.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
- line('The Emperor','They were safe here. The wards worked. The gardens grew through winter.'),
+ line('The Emperor','The window was open. She could hear the carts again.'),
  line('Celia','The lower ward was left without water. We carried your patients out.'),
- line('The Emperor','I can restore the rooms. I need the supports kept in place.'),
+ line('The Emperor','She hasn’t finished her breakfast. Keep the supports in place.'),
  line('Orrin','He’s drawing them back together already. Break both, then go for the vessel.'),
  ...(s.flags.nellRecovered?[line('Nell','There are people on those boats. Let them have tomorrow.')]:[line('Petra','The people are at the boats. You’re letting them leave.')]),
 ]);

@@ -95,7 +95,7 @@ export const emperorOffer=():Dialogue=>{const d=scene('observation','five-empero
  line('The Emperor','Nothing would have to happen to him.'),
  line('The cabin','Nell rests her hand on the cold glass. The cup turns once more.',{duration:800,focus:{x:32,y:19},actors:{nell:{to:{x:32,y:19}}}}),
  line('Nell','Can he leave the station?'),
- line('The Emperor','He is safe there.'),
+ line('The Emperor','He is safe there. Open the window if you want to hear the trains.'),
  line('Nell','I need to go outside.',{duration:1500,actors:{nell:{to:{x:32,y:30}}},track:'nell'}),
 ]);d.scene!.hideCompanions=true;return d;};
 export const emperorTold=()=>scene('airship','five-emperor-told','Back on deck',[
