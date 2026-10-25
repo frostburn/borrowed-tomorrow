@@ -251,3 +251,19 @@ Under **Canonical saves**, **Begin Chapter Seven (canonical)** starts beyond the
 Bosses → **The Benefactor** adds **Campaign · the Benefactor**, **Campaign · hollow sun** and **Campaign · exposed heart**. These use the actual Chapter Seven rules, 19/19/7-contact bodies, native motion, targeting and dedicated scores with a prepared refuge party. They grant no campaign rewards or progress. The older phase fixture remains separately available.
 
 Maps → **Ch 7** includes nine exploration/epilogue scenes and nine tactical arenas. Music → **Ch 7** exposes sixteen complete cues, their meters and final two-bar intros, expression and quieter rubato; **Organ** isolates the new harmonic instrument. Run `npm run art:seven` to reproduce native vector art and Tiled layouts. See [the exact route](story/chapter-seven-continuation.md), [music direction](music-direction.md) and `tests/e2e/chapter-seven*.spec.ts` for detailed review. Full journeys, ordinary boss combat and full-form audio renders remain outside default CI.
+
+### Chunky camera scrolling
+
+The campaign's bounded main camera aligns scroll to `RASTER_UNIT` (currently two
+logical pixels) through `game/raster-camera.ts`. Phaser applies this at its bounds
+clamp, after follow/pan calculation and before building the camera matrix. The
+rendered world, camera view and pointer picking therefore share the same aligned
+coordinates. Odd viewport dimensions use the last complete raster step inside
+the map bounds. Actor positions and movement/cutscene timing stay in world space.
+Maps uses the same bounded snap for its scroll viewport at either zoom, including
+restored review links, dragging, centering and the bottom/right edges.
+
+`tests/e2e/raster-scroll.spec.ts` samples actual moving camera frames and compares
+a stationary face through the screen raster; it also covers cinematic pans and
+workshop scrolling on desktop and an odd-width phone at fractional DPR. These
+rendered checks stay outside the default CI gate.
