@@ -23,7 +23,7 @@ const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
-  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-choice'||this.script.id==='six-roofs')?48:0;}
+  private get dialogueInset(){return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='four-choice'||this.script.id==='six-roofs'||this.script.id==='six-river-treatment')?48:0;}
   private cameraPoint(point:StagePoint){
     const p=pixel(point);
     // Keep the full actors above phone dialogue, including the sea-wall walk.
@@ -71,7 +71,7 @@ export class Cutscene {
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating);}
   shot(shot?:Shot){
     if(this.closed||!shot)return;
     if(shot.music)this.audio.setMode(shot.music);
@@ -97,7 +97,7 @@ export class Cutscene {
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
         if(!duration){actor.setPosition(p.x,p.y).setData('destination',undefined);continue;}
-        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill'&&actor.texture.key!=='nell-bed')this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
+        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill'&&actor.texture.key!=='nell-bed'&&!actor.texture.key.endsWith('-carry'))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
         const emperor=hero==='emperor'&&this.scene.textures.exists(EMPEROR_WALK[0]),start={x:actor.x,y:actor.y};
         if(emperor)actor.setData('cinematic-idle','emperor-left');
         this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration,ease:'Sine.easeInOut',

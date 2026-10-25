@@ -896,8 +896,8 @@
         {
           "name": "kit",
           "point": true,
-          "x": 756,
-          "y": 708,
+          "x": 984.0,
+          "y": 732,
           "properties": [],
           "id": 18
         },
@@ -912,32 +912,32 @@
         {
           "name": "petra",
           "point": true,
-          "x": 900,
-          "y": 756,
+          "x": 1056.0,
+          "y": 732,
           "properties": [],
           "id": 20
         },
         {
           "name": "celia",
           "point": true,
-          "x": 732,
-          "y": 756,
+          "x": 948,
+          "y": 732,
           "properties": [],
           "id": 21
         },
         {
           "name": "tavi",
           "point": true,
-          "x": 972,
-          "y": 708,
+          "x": 1092,
+          "y": 756,
           "properties": [],
           "id": 22
         },
         {
           "name": "nell",
           "point": true,
-          "x": 1068,
-          "y": 756,
+          "x": 1020,
+          "y": 708,
           "properties": [],
           "id": 23
         },

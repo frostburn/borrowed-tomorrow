@@ -3,7 +3,7 @@ import { stage } from '../../maps';
 import type { Shot } from '../../cinematics';
 import type { GameState,MapId } from '../../../rules/state';
 const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
-const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='nell'&&id==='six-river-treatment'?{...a,face:'nell-ill'}:a)},lines});
+const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='nell'&&id==='six-river-treatment'?{...a,face:'nell-faint'}:a)},lines});
 export const arrival=()=>scene('riverhaven','six-river-arrival','Iria · the next launch',[
  line('The river landing','A launch noses between the piles. Two passengers pass a basket of folded cloth up to the quay.',{focus:{x:31,y:28},cut:true}),
  line('Tavi','Keep the blue basket dry. Ines, your examination lamp is under the seat.'),
@@ -40,11 +40,12 @@ export const rainhouse=()=>scene('rainhouse','six-rainhouse','The rain house',[
  line('Orrin','The west awning is clear. We can use the shelter before we go in.'),
 ]);
 export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pulse',[
- line('The upper landing','Tavi brings the launch alongside. Kit takes Nell’s bag while Celia and Ines help her onto the covered deck.',{focus:{x:42,y:30},cut:true,effect:'river-launch',duration:1300}),
+ line('The upper landing','Tavi brings the launch alongside. Kit and Petra lift Nell from the boat while Celia takes her bag.',{focus:{x:42,y:29},cut:true,effect:'river-launch',actors:{kit:{face:'kit-carry'},petra:{face:'petra-carry'}},duration:1300}),
  line('Nell','I can manage the last step.'),
- line('Kit','I’ve got the bag. Take your time.'),
- line('Ines','This way. Tell me if the pull changes.',{focus:{x:32,y:26},actors:{nell:{to:{x:32,y:26}},kit:{to:{x:30,y:28}},celia:{to:{x:31,y:26}}},duration:1200}),
- line('Celia','Moving the lantern didn’t break the rhythm. Even in the next room, her pulse followed it.'),
+ line('Kit','We’ve got you. Just to the cot.'),
+ line('Ines','This way. Tell me if the pull changes.',{focus:{x:32,y:25},actors:{nell:{to:{x:31.5,y:24}},kit:{to:{x:30,y:25}},petra:{to:{x:33,y:25}},celia:{to:{x:29,y:26}}},duration:2200}),
+ line('The cot','Kit and Petra lower Nell onto the mattress. Celia draws the cover over her.',{actors:{nell:{to:{x:31.5,y:25},face:'nell-ill'}},duration:650}),
+ line('Celia','Moving the lantern didn’t break the rhythm. Even in the next room, her pulse followed it.',{actors:{kit:{to:{x:29,y:27},face:'kit'},petra:{to:{x:34,y:27},face:'petra'},celia:{to:{x:30,y:25}}},duration:700}),
  line('Ines','The binding is on her now. Set the lantern beside the basin; I’ll follow it back.'),
  line('Nell','Do I have to hold it?'),
  line('Ines','Just two fingers on the handle. Tell me when it feels cold.'),

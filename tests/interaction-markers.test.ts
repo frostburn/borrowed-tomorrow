@@ -136,3 +136,10 @@ it('keeps rest markers persistent while the report diamond becomes a conversatio
  expect(interactionMarker(rest,s)?.glyph).toBe('⌂');
  expect(visibleObjects(MAPS.namar,s).filter(o=>o.x===19&&o.y===28).map(o=>interactionMarker(o,s)?.glyph)).toEqual(['…']);
 });
+
+it('marks Alda’s final crossing as a main quest only when it is ready',()=>{
+ const s=newGame(),alda=()=>visibleObjects(MAPS.capitalquay,s).filter(o=>o.id==='capital-crew'||o.id==='capital-departure');
+ expect(alda()).toHaveLength(1);expect(interactionKind(alda()[0],s)).toBe('talk');
+ s.flags.capitalLandingSeen=true;expect(alda()).toHaveLength(1);expect(interactionMarker(alda()[0],s)?.glyph).toBe('!');
+ s.flags.chapterSixComplete=true;expect(interactionKind(alda()[0],s)).toBe('talk');
+});

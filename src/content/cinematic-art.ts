@@ -7,4 +7,4 @@ export const cinematicAssets=(map:MapId)=>map==='conduit'
   ? [...new Set([...EMPEROR_WALK,'emperor-reach'])].map(key=>({key,url:`art/vector/${key}.svg`}))
   : map==='sunpalace'?COURT_FOUNTAIN_FRAMES.map((key,i)=>({key,url:`art/vector/chapter-six/palace-fountain${i?'-'+i:''}.svg`}))
   : map==='namar'?NAMAR_CLOCK_FRAMES.map((key,i)=>({key,url:`art/vector/chapter-six/namar-clock${i?'-'+i:''}.svg`}))
-  : (map==='outermooring'||map==='rainhouse')?(map==='outermooring'?['nell-ill','nell-bed']:['nell-ill']).map(key=>({key,url:`art/vector/${key}.svg`})) : map==='airship'||map==='flagship'?['alban-command','nell-faint','nell-ill'].map(key=>({key,url:`art/vector/${key}.svg`})) : [];
+  : (map==='outermooring'||map==='rainhouse')?(map==='outermooring'?['nell-ill','nell-bed']:[ 'nell-ill','nell-faint','kit-carry','petra-carry']).map(key=>({key,url:`art/vector/${key}.svg`})) : map==='airship'||map==='flagship'?['alban-command','nell-faint','nell-ill'].map(key=>({key,url:`art/vector/${key}.svg`})) : [];

@@ -47,7 +47,7 @@ export function interactCapital(h:StoryHost,id:string):boolean{
  const s=h.state,f=s.flags,say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
  const battle=(encounter:string,flag:string,label:string)=>h.talk({lines:[SAY('Petra',encounter==='lightbearer'?'When she closes the shutter, the mantle opens. Keep clear while the light is moving.':encounter==='imperial-vessel'?'Break both supports. The next coronation can rebuild a vacant mounting; watch the crown before it turns.':'Keep the stair behind us clear for the people coming down.')],choices:[{label,action:()=>{h.commit(flag);h.battle(encounter);}},{label:'Rest and prepare first',action:()=>{}}]});
  if(id==='capital-inner'||id==='capital-after'){if(f.capitalReleased)say('Alda','The upper streets are clear. The chart and all the foreign landings are still available.');else go(h,'stillcity');return true;}
- if(id==='capital-crew'&&f.capitalLandingSeen){
+ if((id==='capital-crew'||id==='capital-departure')&&f.capitalLandingSeen){
   h.talk({lines:[SAY('Alda','The route through the hollow sun is marked. We can sail when you’re ready, or keep the ship here while you finish your visits.')],choices:[{label:'Prepare the final crossing',action:()=>{f.chapterSixComplete=true;s.boundary=SEVENTH_CHAPTER;remember(s,'sixDeparture');h.save();h.boundary();}},{label:'Stay · visit allies and fit equipment',action:()=>{}}]});return true;
  }
  if(id==='palace-rest'||id==='crown-rest'){

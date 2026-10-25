@@ -2,7 +2,7 @@
 The desert exporter supplies shared map/manifest writers; it runs first.
 No raster sources. All scenery remains directly editable planar vector art.
 """
-import runpy,math,json
+import runpy,math,json,re
 from pathlib import Path
 from chapter_six_style import lean
 base=runpy.run_path(str(Path(__file__).with_name('chapter-six.py')))
@@ -47,13 +47,13 @@ housefloor=[(12,25,40,11),(22,19,21,7),(43,23,7,4)]
 house=riverback()+[poly([(984,557),(1219,505),(1536,624),(1536,1008),(782,1008),(866,909),(1182,822)],WATER),poly([(1194,938),(1427,931),(1450,939),(1251,947)],'#638a7c')]+hut(480,235,590,232)+[poly([(378,530),(505,441),(1154,441),(1282,530),(1239,555),(421,555)],'#59785c'),poly([(395,524),(521,456),(1147,456),(1263,524),(845,483)],'#8da57b')]
 house+=tree(1111,204,1.4)
 party={'kit':(31,29),'orrin':(27,31),'petra':(37,31),'celia':(30,31),'tavi':(40,31)}
-care={**party,'nell':(44,31),'ines':(34,25),'tavi':(40,29)}
+care={**party,'nell':(42,29),'kit':(40.5,30),'petra':(43.5,30),'celia':(39,30),'ines':(34,25),'tavi':(45,31)}
 restcast={**party,'nell':(32,27),'ines':(35,25),'tavi':(42,30)}
 world('rainhouse','Iria · the rain house','The treatment terrace is above the open deck. The river launch lands at the eastern rail; supplies are under the western roof.',housefloor,[(25,20,4,3),(38,20,3,3)],[
  obj('rainhouse-guard',33,28,'Treatment terrace · divine hunters',doneFlag='rainhouseWon',hiddenFlag='rainhouseWon',sprite='herald',spriteHiddenFlag='rainhouseWon'),obj('river-treatment',32,26,'Treatment bell · bring Nell and the healers',doneFlag='nellRecovered',hiddenFlag='nellRecovered',sign=True),obj('rainhouse-ines',36,26,'Ines · the rain house',requiredFlag='nellRecovered',kind='talk',sprite='ines'),obj('rainhouse-tavi',44,31,'Tavi · return launch',kind='exit',sprite='tavi',sign=True),obj('rainhouse-rest',19,32,'Western awning · rest and supplies',kind='optional',sign=True),obj('rainhouse-canopy',15,33,'Canopy path · return downriver',kind='exit',sign=True)],
  {'start':(32,32),'stand':(32,29),'treatment':(32,29),'return':(29,30)}, {'six-rainhouse':party,'six-river-treatment':care,'six-river-rest':restcast},
  [point('rainhouse-patient',23,25,sprite='civilian-patient-green',requiredFlag='nellRecovered'),point('rainhouse-helper',40,27,sprite='civilian-traveler',requiredFlag='nellRecovered')],
- [('rainhouse-near-tree',tree(0,0,1.3),260,280,4,562,-998,{}),('rainhouse-east-tree',tree(0,0,1.1),220,240,1387,495,-998,{}),('rainhouse-cot',[poly([(0,24),(67,9),(112,31),(49,48)],'#98ac8d'),poly([(0,24),(49,48),(49,58),(0,36)],'#455d4c'),poly([(49,48),(112,31),(112,42),(49,58)],'#6e8568')],116,63,713,561,624,{}),('rainhouse-basin',[ellipse(31,48,30,15,GOLD),ellipse(31,41,25,12,'#85a6a0'),rect(12,52,5,24,INK),rect(46,52,5,24,INK)],65,81,845,552,633,{}),('rainhouse-stores',bench(),168,86,367,684,770,{}),('rainhouse-launch',launch(),224,100,1066,866,966,{}),('rainhouse-ferns',fern(40,15)+fern(157,0),245,93,333,760,853,{})],house)
+ [('rainhouse-near-tree',tree(0,0,1.3),260,280,4,562,-998,{}),('rainhouse-east-tree',tree(0,0,1.1),220,240,1387,495,-998,{}),('rainhouse-cot',[re.sub(r'^<svg[^>]*>|</svg>\s*$','',(ROOT/'public/art/vector/treatment-cot.svg').read_text())],80,80,728,551,580,{}),('rainhouse-basin',[ellipse(31,48,30,15,GOLD),ellipse(31,41,25,12,'#85a6a0'),rect(12,52,5,24,INK),rect(46,52,5,24,INK)],65,81,845,552,633,{}),('rainhouse-stores',bench(),168,86,367,684,770,{}),('rainhouse-launch',launch(),224,100,1066,866,966,{}),('rainhouse-ferns',fern(40,15)+fern(157,0),245,93,333,760,853,{})],house)
 
 for id,title in [('river-patrol','Iria · the lower crossing'),('river-cache','Iria · the old survey locker'),('rainhouse-guard','Iria · the treatment terrace')]:
  floor=[(3,3,34,16)];back=[rect(0,0,1008,480,'#355d50'),poly([(0,175),(218,87),(465,140),(713,68),(1008,141),(1008,480),(0,480)],'#527a58')]

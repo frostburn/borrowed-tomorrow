@@ -16,3 +16,10 @@ pillow=poly('6,34 26,32 31,49 8,52','#ded4b1')
 blanket=poly('31,34 65,36 70,55 30,55 25,48','#607e7c')+poly('31,34 65,36 65,42 30,40','#aab9a3')
 (OUT/'nell-ill.svg').write_text(svg(80,80,pillow+body+blanket))
 (OUT/'nell-bed.svg').write_text(svg(80,80,bed+pillow+body+blanket+line('7,59 72,59','#b8b493',3)))
+
+# A matching empty cot and unarmed carrying poses for the Iria treatment.
+(OUT/'treatment-cot.svg').write_text(svg(80,80,bed))
+import runpy
+hero=runpy.run_path(str(Path(__file__).with_name('chapter-two.py')))['hero']
+for name in ('kit','petra'):
+ (OUT/f'{name}-carry.svg').write_text(hero(name,'front',carry=True).svg())

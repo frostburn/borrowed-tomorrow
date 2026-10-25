@@ -905,11 +905,11 @@
     {
       "key": "scene-six-rainhouse-cot",
       "url": "art/vector/chapter-six/rainhouse-cot.svg",
-      "x": 713,
-      "y": 561,
-      "width": 116,
-      "height": 63,
-      "depth": 624,
+      "x": 728,
+      "y": 551,
+      "width": 80,
+      "height": 80,
+      "depth": 580,
       "layerId": 3
     },
     {
