@@ -1,3 +1,5 @@
+import {ROOMS,TRACK_ROOMS,MAP_ROOMS,type RoomId} from '../content/rooms';
+import {RoomReverb} from '../game/room-reverb';
 import { hasExpression,hasRubato } from '../game/score-performance';
 import { Audio } from '../game/audio';
 import { ARRANGEMENTS, scoreBar, scoreLength, scorePosition, scoreMeter, type Instrument, type MusicMode } from '../game/score';
@@ -78,6 +80,9 @@ export class MusicWorkshop {
   private expression=true;
   private rubato=true;
   private volume=75;
+  private room?:RoomId;
+  private get selectedRoom(){return this.room??TRACK_ROOMS[this.mode];}
+  private auditionRoom?:RoomReverb;
   private container?:HTMLElement;
   private timer?:number;
   private auditionContext?:AudioContext;
@@ -89,14 +94,14 @@ export class MusicWorkshop {
   constructor(private audio:Audio,private sound:(on:boolean)=>void,private error:(message:string)=>void){}
   get active(){return !!this.container;}
   show(container:HTMLElement){if(!this.container){this.audio.pause();this.sound(false);}this.container=container;this.render();if(!this.timer)this.timer=window.setInterval(()=>this.tick(),100);}
-  hide(){if(!this.container)return;this.stop();this.audio.setMode('station');if(this.timer)clearInterval(this.timer);this.timer=undefined;this.container=undefined;}
+  hide(){if(!this.container)return;this.stop();this.audio.setMode('station');this.audio.setRoom(MAP_ROOMS.station);if(this.timer)clearInterval(this.timer);this.timer=undefined;this.container=undefined;}
   toggle(){if(this.audio.enabled||performance.now()<this.auditionUntil)this.stop();else void this.play();}
   private async play(){
-    try{this.endAudition();this.audio.cinematicMix(1);this.audio.setVolume(this.volume/100);await this.audio.play(this.mode,this.bar,parts[this.part],{expression:this.expression,rubato:this.rubato});this.sound(this.audio.enabled);this.tick();}
+    try{this.endAudition();this.audio.setRoom(this.selectedRoom);this.audio.cinematicMix(1);this.audio.setVolume(this.volume/100);await this.audio.play(this.mode,this.bar,parts[this.part],{expression:this.expression,rubato:this.rubato});this.sound(this.audio.enabled);this.tick();}
     catch{this.stop();this.error('Audio could not start in this browser.');}
   }
   private endAudition(){
-    this.auditionGeneration++;
+    this.auditionGeneration++;this.auditionRoom?.setRoom('dry');
     if(this.auditionContext)this.auditionSynth?.release(this.auditionContext.currentTime);
     if(this.auditionTimer)clearTimeout(this.auditionTimer);this.auditionTimer=undefined;this.auditionUntil=0;
   }
@@ -108,8 +113,8 @@ export class MusicWorkshop {
   private async audition(pitches:Pitch[]){
     this.stop();const generation=this.auditionGeneration;
     try{
-      if(!this.auditionContext){this.auditionContext=new AudioContext();const gain=this.auditionContext.createGain();gain.gain.value=this.volume/150;this.auditionGain=gain;gain.connect(this.auditionContext.destination);this.auditionSynth=new Synth(this.auditionContext,gain);}
-      const c=this.auditionContext;await c.resume();if(generation!==this.auditionGeneration)return;
+      if(!this.auditionContext){this.auditionContext=new AudioContext();const gain=this.auditionContext.createGain();gain.gain.value=this.volume/150;this.auditionGain=gain;this.auditionRoom=new RoomReverb(this.auditionContext,gain,this.auditionContext.destination);this.auditionSynth=new Synth(this.auditionContext,gain);}
+      const c=this.auditionContext;await c.resume();if(generation!==this.auditionGeneration)return;this.auditionRoom!.setRoom(this.selectedRoom);
       for(const [n,pitch]of pitches.entries())this.auditionSynth!.note('keys',pitch,c.currentTime+.03+n*.35,.85,.22/Math.sqrt(pitches.length),n? .15:-.15);
       this.auditionUntil=performance.now()+1400;this.sound(true);this.auditionTimer=window.setTimeout(()=>{this.sound(this.audio.enabled);this.auditionUntil=0;},1400);
     }catch{this.error('Audio could not start in this browser.');}
@@ -122,10 +127,17 @@ export class MusicWorkshop {
     const root=this.container!,theme=themes[this.mode];
     const cues=this.group==='Themes'?Object.keys(themes).map(mode=>library.find(c=>c.mode===mode)!):library.filter(c=>c.group===this.group);
     root.innerHTML=`<div class="music-layout"><section class="music-library" aria-label="Music library"><h2>Cues</h2><div class="music-groups" role="group" aria-label="Cue chapters">${groups.map(g=>`<button data-group="${g}" aria-pressed="${g===this.group}">${g==='Library'||g==='Themes'?g:`Ch ${g}`}</button>`).join('')}</div><div class="music-cues">${cues.map(c=>`<button data-cue="${c.mode}" aria-pressed="${c.mode===this.mode}"><span>${this.group==='Themes'?themes[c.mode]!.name:c.title}</span><small>${c.mode} / ${ARRANGEMENTS[c.mode].bpm} BPM / ${scoreMeter(c.mode)}</small></button>`).join('')}</div></section>
-    <section class="music-review" aria-label="Music review"><h2>${library.find(c=>c.mode===this.mode)!.title}</h2><p class="music-description">31-EDO / A4 = 440 Hz / ${ARRANGEMENTS[this.mode].bpm} BPM / ${scoreMeter(this.mode)} / ${scoreLength(this.mode)} bars${ARRANGEMENTS[this.mode].introBars?` / ${ARRANGEMENTS[this.mode].introBars}-bar intro, then ${scoreLength(this.mode)-ARRANGEMENTS[this.mode].introBars!}-bar loop${ARRANGEMENTS[this.mode].pulses?` / ${ARRANGEMENTS[this.mode].pulses!.join('+')}`:''}`:''}</p>${theme?`<p class="music-theme">${theme.name} · ${theme.description}</p>`:''}<div class="music-transport"><button id="music-play">Play</button><button id="music-stop">Stop</button><button id="music-restart">Restart cue</button><span id="music-position" role="status"></span></div><div class="music-bar"><button id="music-previous" aria-label="Previous bar">Previous</button><label for="music-bar">Bar</label><input id="music-bar" type="number" min="1" max="${scoreLength(this.mode)}" value="${this.bar+1}"/><button id="music-next" aria-label="Next bar">Next</button></div><div class="music-parts" role="group" aria-label="Instrument audition">${Object.keys(parts).map(p=>`<button data-part="${p}" aria-pressed="${p===this.part}">${p}</button>`).join('')}</div>${hasExpression(this.mode)?`<div class="music-parts" role="group" aria-label="Expressive performance"><button id="music-expression" aria-pressed="${this.expression}" title="Dynamics, vibrato, pitch bends and release">Expression</button>${hasRubato(this.mode)?`<button id="music-rubato" aria-pressed="${this.rubato}">Rubato</button>`:''}</div>`:''}<div class="music-volume"><button id="music-quieter" aria-label="Lower music volume">-</button><span id="music-volume">Volume ${this.volume}%</span><button id="music-louder" aria-label="Raise music volume">+</button></div><h3 id="music-notes-title"></h3><p class="music-description">Click a pitch to hear it alone. Wood and timpani are tuned; other drum pitches are unpitched.</p><div id="music-notes"></div></section>
+    <section class="music-review" aria-label="Music review"><h2>${library.find(c=>c.mode===this.mode)!.title}</h2><p class="music-description">31-EDO / A4 = 440 Hz / ${ARRANGEMENTS[this.mode].bpm} BPM / ${scoreMeter(this.mode)} / ${scoreLength(this.mode)} bars${ARRANGEMENTS[this.mode].introBars?` / ${ARRANGEMENTS[this.mode].introBars}-bar intro, then ${scoreLength(this.mode)-ARRANGEMENTS[this.mode].introBars!}-bar loop${ARRANGEMENTS[this.mode].pulses?` / ${ARRANGEMENTS[this.mode].pulses!.join('+')}`:''}`:''}</p>${theme?`<p class="music-theme">${theme.name} · ${theme.description}</p>`:''}<details class="music-rooms"><summary>Room: ${this.room?ROOMS[this.room].name:`Canonical · ${ROOMS[TRACK_ROOMS[this.mode]].name}`}</summary><div class="music-parts" role="group" aria-label="Room"><button data-room="" aria-pressed="${this.room===undefined}">Canonical · ${ROOMS[TRACK_ROOMS[this.mode]].name}</button>${Object.entries(ROOMS).map(([id,p])=>`<button data-room="${id}" aria-pressed="${this.room===id}">${p.name}</button>`).join('')}</div></details><div class="music-transport"><button id="music-play">Play</button><button id="music-stop">Stop</button><button id="music-restart">Restart cue</button><span id="music-position" role="status"></span></div><div class="music-bar"><button id="music-previous" aria-label="Previous bar">Previous</button><label for="music-bar">Bar</label><input id="music-bar" type="number" min="1" max="${scoreLength(this.mode)}" value="${this.bar+1}"/><button id="music-next" aria-label="Next bar">Next</button></div><div class="music-parts" role="group" aria-label="Instrument audition">${Object.keys(parts).map(p=>`<button data-part="${p}" aria-pressed="${p===this.part}">${p}</button>`).join('')}</div>${hasExpression(this.mode)?`<div class="music-parts" role="group" aria-label="Expressive performance"><button id="music-expression" aria-pressed="${this.expression}" title="Dynamics, vibrato, pitch bends and release">Expression</button>${hasRubato(this.mode)?`<button id="music-rubato" aria-pressed="${this.rubato}">Rubato</button>`:''}</div>`:''}<div class="music-volume"><button id="music-quieter" aria-label="Lower music volume">-</button><span id="music-volume">Volume ${this.volume}%</span><button id="music-louder" aria-label="Raise music volume">+</button></div><h3 id="music-notes-title"></h3><p class="music-description">Click a pitch to hear it alone. Wood and timpani are tuned; other drum pitches are unpitched.</p><div id="music-notes"></div></section>
     <section class="music-tuning" aria-label="31-EDO tuning"><h2>Circle of fifths</h2><p>Every fifth advances 18 of 31 steps. Sharps raise two steps; flats lower two. The circle closes after 31 fifths.</p><div class="music-circle">${fifthsCircle().map((p,i)=>`<button data-fifth="${i}" aria-label="Hear fifth ${p}">${p.replace(/4$/,'')}<small>${pc(p)}</small></button>`).join('')}</div><p>C# and Db are one step apart. Compare their sound:</p><div class="music-comparisons"><button id="music-sharp">Hear C#4</button><button id="music-flat">Hear Db4</button><button id="music-compare">Compare C#4 / Db4</button></div></section></div>`;
     for(const b of root.querySelectorAll<HTMLButtonElement>('[data-group]'))b.onclick=()=>{this.group=b.dataset.group!;this.render();};
-    for(const b of root.querySelectorAll<HTMLButtonElement>('[data-cue]'))b.onclick=()=>{const playing=this.audio.enabled;this.stop();this.mode=b.dataset.cue as MusicMode;this.bar=0;this.render();if(playing)void this.play();};
+    for(const b of root.querySelectorAll<HTMLButtonElement>('[data-cue]'))b.onclick=()=>{const playing=this.audio.enabled;this.stop();this.mode=b.dataset.cue as MusicMode;this.room=undefined;this.bar=0;this.audio.setRoom(this.selectedRoom);this.render();if(playing)void this.play();};
+    for(const button of root.querySelectorAll<HTMLButtonElement>('[data-room]'))button.onclick=()=>{
+      this.room=button.dataset.room as RoomId||undefined;this.audio.setRoom(this.selectedRoom);
+      if(this.auditionUntil>performance.now())this.auditionRoom?.setRoom(this.selectedRoom);
+      root.querySelector('.music-rooms summary')!.textContent=`Room: ${this.room?ROOMS[this.room].name:`Canonical · ${ROOMS[TRACK_ROOMS[this.mode]].name}`}`;
+      for(const b of root.querySelectorAll<HTMLButtonElement>('[data-room]'))b.setAttribute('aria-pressed',String((b.dataset.room||undefined)===this.room));
+      root.querySelector<HTMLDetailsElement>('.music-rooms')!.open=false;
+    };
     root.querySelector<HTMLButtonElement>('#music-play')!.onclick=()=>void this.play();
     root.querySelector<HTMLButtonElement>('#music-stop')!.onclick=()=>this.stop();
     root.querySelector<HTMLButtonElement>('#music-restart')!.onclick=()=>{this.bar=0;this.notes();void this.play();};
