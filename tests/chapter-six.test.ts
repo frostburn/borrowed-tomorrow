@@ -171,7 +171,7 @@ it('quiet desert harmonies hold through their rests, while both battle rhythms k
   const intro=ARRANGEMENTS[mode].introBars??0;
   for(let bar=0;bar<32;bar++)expect(scoreBar(mode,bar+intro).filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual(mode==='sun-serpent'?[0,1.5]:[0,2]);
  }
- expect(['Ft4','Ct4'].every(pitch=>Array.from({length:32},(_,bar)=>scoreBar('sunpalace',bar)).flat().some(n=>n.pitch===pitch))).toBe(true);
+ expect(['F4','Ad4','C5'].every(pitch=>Array.from({length:32},(_,bar)=>scoreBar('sunpalace',bar)).flat().some(n=>n.pitch===pitch))).toBe(true);
 });
 
 it('keeps the Namar court exit in Namar before and after the serpent, without entering the imperial capital',()=>{
