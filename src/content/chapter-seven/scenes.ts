@@ -104,6 +104,14 @@ export const refuge=()=>scene('lastrefuge','seven-refuge','The unwritten hour',[
  l('Orrin','The gate will stay open. It isn’t drawing from the sun anymore.'),
  l('Petra','We can rest. Then we finish this.'),
 ]);
+export const celia=()=>scene('lastrefuge','seven-ready','A drink of water',[
+ l('Celia','I’ve left water at the next landing. Check your dressings before we go.',{focus:{x:34,y:30},cut:true}),
+ l('Nell','Have you had any water?',{actors:{nell:{to:{x:33,y:30},face:'nell-right'}},duration:800}),
+ l('Celia','Not yet. There’s some in the flask.',{actors:{celia:{face:'celia-left'}}}),
+ l('Nell','We can wait.'),
+ l('Celia','Then stay here a little, will you? I’d like some company.'),
+ l('Nell','Until we’re all ready.'),
+]);
 export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
  l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:18},cut:true,music:'benefactor'}),
  l('The Benefactor','You carry my light into my own house. Where are the lives you took from it?'),
