@@ -161,7 +161,7 @@ export const released=()=>scene('sunthrone','seven-release','The days return',[
 ]);
 export const home=()=>scene('homecoming','seven-home','Larkspur, this morning',[
  l('Larkspur','The whistle sounds over the station. No lamp answers it.',{focus:{x:24,y:14},cut:true,music:'homecoming'}),
- l('Tomas','I thought I’d have to buy these tickets a third time.'),
+ l('Tomas','I thought I’d have to buy these tickets a third time.',{expression:'happy'}),
  l('Nell','You didn’t give my seat away?'),
  l('Tomas','Your bag’s already on it.'),
  l('Iona','The porter from Rillbridge came through yesterday. Elspeth made him sit while she counted everyone.'),
@@ -180,7 +180,7 @@ export const home=()=>scene('homecoming','seven-home','Larkspur, this morning',[
 ]);
 export const sea=()=>scene('seaholiday','seven-sea','Tomorrow belongs to us',[
  l('The coast','The sea moves under an ordinary sky. Tomas puts the picnic down and takes off his shoes.',{focus:{x:31,y:21},cut:true,music:'seaholiday'}),
- l('Tomas','All that way, and I forgot a knife.'),
+ l('Tomas','All that way, and I forgot a knife.',{expression:'happy'}),
  l('Petra','I have one.'),
  l('Orrin','She does tend to.'),
  l('Kit','I marked the path back to the station. We’ve got until evening.'),

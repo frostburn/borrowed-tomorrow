@@ -6,13 +6,14 @@ export const lifeStep=(time:number)=>Math.floor(time/LIFE_STEP_MS)*LIFE_STEP_MS;
 export function lifePaused(map:string,flags:Record<string,boolean>){
  return map==='rillbridge'&&!flags.villageFreed||map==='cinderbank'&&!flags.coastCollectorWon||['refuge','breakwater','sanctuary'].includes(map)&&!flags.sanctuaryWardenWon;
 }
-export const swayingScenery=(piece:Pick<ScenePiece,'url'>)=>/(?:^|\/|-)(?:fir|palms?|tree|fern)(?:-|\.svg$)/.test(piece.url);
+export const swayingScenery=(piece:Pick<ScenePiece,'url'>)=>/(?:^|\/|-)(?:fir|palms?|tree|fern)(?:-|\.svg$)/.test(piece.url)||/(?:^|\/)canopy\.svg$/.test(piece.url);
 function seed(text:string){let n=0;for(const c of text)n=(n*31+c.charCodeAt(0))>>>0;return n;}
 /** Pivot at the planted base; buildings and walkable geometry never move. */
 export function sceneryAngle(piece:Pick<ScenePiece,'url'|'x'|'y'|'height'>,time?:number){
  if(time===undefined||!swayingScenery(piece))return 0;
  const n=seed(`${piece.url}:${piece.x}:${piece.y}`),phase=n%628/100,t=lifeStep(time);
- return Math.sin(t/(2300+n%1700)+phase)*Math.min(.018,3/Math.max(1,piece.height));
+ const breeze=.75*Math.sin(t/(3300+n%1700)+phase)+.25*Math.sin(t/(1500+n%700)+phase*.6);
+ return breeze*Math.min(.018,3/Math.max(1,piece.height));
 }
 export interface WaterLife {colors:readonly number[];minY:number;ink:string}
 const coast={colors:[0x23425d,0x325c73,0x23465e,0x18394c,0x638399],minY:235,ink:'#9bbdc5'};

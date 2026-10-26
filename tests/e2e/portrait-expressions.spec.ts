@@ -22,10 +22,10 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
 
 test('every expression preserves identity outside the features and survives the shared chunky raster',async({page})=>{
  await page.goto('/?dev=sprites');
- const catalog=['nell','orrin','kit','celia','petra'].map(hero=>({hero,expressions:portraitExpressions(`portrait-${hero}`)}));
+ const catalog=['nell','orrin','kit','celia','petra','tomas'].map(hero=>({hero,expressions:portraitExpressions(`portrait-${hero}`)}));
  const result=await page.evaluate(async catalog=>{
   const decode=async(name:string)=>{const img=new Image();img.src=`/art/vector/portrait-${name}.svg`;await img.decode();return img;};
-  const sheet=document.createElement('canvas');sheet.width=7*136;sheet.height=5*152;const s=sheet.getContext('2d')!;s.fillStyle='#182b32';s.fillRect(0,0,sheet.width,sheet.height);s.imageSmoothingEnabled=false;
+  const sheet=document.createElement('canvas');sheet.width=7*136;sheet.height=6*152;const s=sheet.getContext('2d')!;s.fillStyle='#182b32';s.fillRect(0,0,sheet.width,sheet.height);s.imageSmoothingEnabled=false;
   const stats=[];
   for(const [row,{hero,expressions}]of catalog.entries()){
    const neutral=await decode(hero),canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d')!;ctx.drawImage(neutral,0,0);const original=ctx.getImageData(0,0,128,128).data;

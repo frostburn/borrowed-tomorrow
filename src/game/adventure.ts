@@ -196,6 +196,7 @@ export class Adventure extends Phaser.Scene {
   private showTitle() {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');this.audio.setRoom(MAP_ROOMS.station);
+    this.mapLife=new MapLife(this,this.layer!,MAPS.station,this.state);
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Chapter One · A journey beyond the empire';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey begins at home</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
     this.titlePanel();

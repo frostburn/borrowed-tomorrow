@@ -1,4 +1,4 @@
-"""Rebuild small expression SVGs from the five independent neutral portraits.
+"""Rebuild small expression SVGs from independent neutral portraits.
 
 Run from the repository root: python assets/vector/portrait-expressions.py
 Only named facial paths change; costume, face planes, hair, neck and glasses
@@ -21,6 +21,8 @@ FACES = {
   mouths=dict(happy='M54 79L63 81 75 77 72 82 64 85 57 83Z', worried='M57 82L64 80 72 81 73 83 64 82 58 84Z', sad='M54 83L63 79 70 80 75 83 71 84 64 82 57 85Z', angry='M54 81L75 79 74 82 56 84Z', surprised='M60 79L66 78 70 82 68 87 62 87 59 83Z')),
  'petra': dict(brows='M42 44', eyes='M46 52', pupils='M51 51', mouth='M53 79', lip='M59 84', near=(46,56,52), far=(73,82,53), brow=(42,60,70,86,44),
   mouths=dict(happy='M54 78L64 80 76 77 73 81 65 84 57 82Z', worried='M57 81L65 79 73 80 74 82 64 81 58 83Z', sad='M54 83L63 79 71 80 76 82 73 84 65 82 57 85Z', angry='M54 80L76 78 75 81 56 83Z', surprised='M60 78L67 77 71 81 69 86 63 86 60 83Z')),
+ 'tomas': dict(brows='M41 45', eyes='M44 52', pupils='M50 51', detail='M52 52', mouth='M52 79', lip='M58 81', near=(44,55,52), far=(73,82,53), brow=(41,59,71,86,44),
+  mouths=dict(happy='M52 78L61 81 69 80 78 75 75 81 68 85 59 85 54 82Z', worried='M56 82L63 80 72 80 76 82 74 84 64 82 57 84Z', sad='M53 84L62 80 69 80 77 83 75 85 67 82 60 83 55 86Z', angry='M53 80L76 78 76 81 55 84Z', surprised='M60 78L67 77 72 81 70 87 63 88 59 83Z')),
 }
 
 def replace_path(svg, prefix, d):
@@ -60,6 +62,13 @@ for hero,face in FACES.items():
   eyes,pupils=eye_paths(face,emotion)
   out=replace_path(out,face['eyes'],eyes)
   out=replace_path(out,face['pupils'],pupils)
+  if face.get('detail'):
+   detail=[]
+   for x,right,y in (face['near'],face['far']):
+    center=(x+right)//2+1
+    top,bottom=(y-3,y+4) if emotion=='surprised' else (y,y+2) if emotion=='happy' else (y-1,y+2)
+    detail.append(f'M{center+1} {top+1}H{center+2}V{bottom+1}H{center+1}Z')
+   out=replace_path(out,face['detail'],' '.join(detail))
   out=replace_path(out,face['mouth'],mouth)
   if face['lip']:out=replace_path(out,face['lip'],'')
   if emotion=='bashful':
@@ -68,4 +77,4 @@ for hero,face in FACES.items():
   out=re.sub(r'<title>(.*?)</title>',lambda m:f'<title>{m[1]} — {emotion}</title>',out)
   out=out.replace('<metadata>',f'<!-- Expression: {emotion}; derived by assets/vector/portrait-expressions.py -->\n<metadata>',1)
   (ART/f'portrait-{hero}-{emotion}.svg').write_text(out)
-print('Wrote 27 facial-expression variants; five neutral originals unchanged.')
+print(f'Wrote {sum(len(f["mouths"]) for f in FACES.values())} facial-expression variants; {len(FACES)} neutral originals unchanged.')

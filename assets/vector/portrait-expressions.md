@@ -1,11 +1,14 @@
 # Portrait expressions
 
-The five party members retain their independently drawn 128 x 128 neutral SVGs
+The five party members and Tomas retain their independently drawn 128 x 128 neutral SVGs
 in `public/art/vector/portrait-*.svg`. Expression variants replace only each
 portrait's existing brows, eyes, pupils and mouth. Orrin's beard, Celia's glasses,
 head shapes, hair, connected necks and costumes stay in their original layers.
+Tomas retains his two-tone dark green eyes, including paired iris accents in
+every expression. His first-screen welcome, concern and protective refusal
+use explicit cues, with further cues at his rescue and later sibling scenes.
 
-Rebuild the 27 variants from the repository root, without extra dependencies:
+Rebuild the 32 variants from the repository root, without extra dependencies:
 
 ```sh
 python assets/vector/portrait-expressions.py

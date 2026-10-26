@@ -8,10 +8,10 @@ import {rest} from '../src/content/chapter-six/jungle/scenes';
 import {refusal} from '../src/content/chapter-three/scenes';
 
 it('resolves only authored expressions, with neutral fallback for other portraits and narration',()=>{
- for(const hero of ['nell','orrin','kit','celia','petra'])for(const expression of portraitExpressions(`portrait-${hero}`)){
+ for(const hero of ['nell','orrin','kit','celia','petra','tomas'])for(const expression of portraitExpressions(`portrait-${hero}`)){
   const asset=expressivePortrait(`portrait-${hero}`,expression)!;expect(artPath(asset)).toMatch(/\.svg$/);expect(existsSync(`public/${artPath(asset)}`)).toBe(true);
  }
- expect(expressivePortrait('portrait-tomas','angry')).toBe('portrait-tomas');expect(expressivePortrait(undefined,'happy')).toBeUndefined();
+ expect(expressivePortrait('portrait-alban','angry')).toBe('portrait-alban');expect(expressivePortrait(undefined,'happy')).toBeUndefined();
  expect(expressivePortrait('portrait-celia','bashful')).toBe('portrait-celia');
  expect(SAY('Nell','A line.').expression).toBeUndefined();expect(SAY('Narrator','A line.').portrait).toBeUndefined();
  expect(SAY('Alias','A line.','master').portrait).toBe('portrait-master');
@@ -21,6 +21,7 @@ it('resolves only authored expressions, with neutral fallback for other portrait
 it('uses explicit, local emotional cues without retaining one expression for the next line',()=>{
  expect(opening().lines.find(l=>l.who==='Nell')?.expression).toBe('happy');
  expect(raid().lines.find(l=>l.text==='Ansel!')?.expression).toBe('surprised');
+ const tomas=raid().lines.filter(l=>l.who==='Tomas');expect(tomas.map(l=>l.expression)).toEqual(['happy','worried','angry','worried']);
  expect(recruit().lines.find(l=>l.who==='Nell')?.expression).toBe('sad');
  expect(refusal().lines.find(l=>l.text==='No. Let the passengers off.')?.expression).toBe('angry');
  const lines=rest().lines;

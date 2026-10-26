@@ -5,7 +5,10 @@ cloud locations and collection-release conditions. `game/map-life.ts` owns one
 scene-time listener, disposed with the campaign map. Poses update every 120 ms;
 only visible artwork moves, never navigation, interactions or actor positions.
 Foliage pivots at its planted base, with at most three native pixels of canopy
-displacement. Buildings, bridges and the suspended coastal wave are static.
+displacement. The broadleaf tree asset `canopy.svg` is included explicitly;
+building assets such as `canopy-house.svg` remain rigid. Two slow, differently
+phased wind components keep neighboring trees from swinging in lockstep. The
+title, opening scenes and exploration share the same breeze. Buildings, bridges and the suspended coastal wave are static.
 
 Water uses exact authored water colors and conservative eight-pixel interior
 blocks, excluding walkable navigation cells. The mask is built once from the

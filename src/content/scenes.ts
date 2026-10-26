@@ -13,19 +13,19 @@ export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME'
 ]);
 
 export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-raid'), [
-  line('Tomas', 'You kept the lantern. I thought Ansel would have given you a crystal one by now.', { focus: { x: 25, y: 14 }, cut: true }),
+  line('Tomas', 'You kept the lantern. I thought Ansel would have given you a crystal one by now.', {expression:'happy', focus: { x: 25, y: 14 }, cut: true }),
   line('Nell', 'You kept finding reasons to stay in the capital. Are we going to the sea or aren’t we?'),
-  line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.'),
+  line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.',{expression:'worried'}),
   line('Captain Alban', 'Tomas. Step away from the girl.', { cue: 'punch', focus: { x: 29, y: 13 }, actors: { alban: { visible: true, to: { x: 29, y: 13 } } } }),
   line('Nell', 'What’s he supposed to have done?',{expression:'worried'}),
   line('Captain Alban', 'Stolen property from the palace engine. Your brother knows what I want.'),
-  line('Tomas', 'Take me. Leave her out of it.', { actors: { tomas: { to: { x: 27, y: 13 } } } }),
+  line('Tomas', 'Take me. Leave her out of it.', {expression:'angry', actors: { tomas: { to: { x: 27, y: 13 } } } }),
   line('Stationmaster Ansel', 'You don’t draw a blade in my square. Put it away.', { actors: { ansel: { to: { x: 28, y: 14 } } } }),
   line('The square', 'Ansel catches the captain’s arm. Alban turns his blade. Tomas lunges; the crystal in his hand strikes the paving.', { silence: true, cue: 'strike', actors: { ansel: { fallen: true }, tomas: { to: { x: 28, y: 13 } } } }),
   line('Nell', 'Ansel!', {expression:'surprised', actors: { nell: { to: { x: 27, y: 14 } } } }),
   line('The broken crystal', 'A pale fleck catches in the lantern glass. A low hum runs through its handle, raising the hairs on Nell’s arm.', { silence: true, cue: 'resonance' }),
   line('The platform', 'A whistle cuts through the noise. Soldiers drag Tomas up the steps. The prison coach rolls east.', { cue: 'punch', focus: { x: 29, y: 12 }, actors: { tomas: { to: { x: 31, y: 11 } }, alban: { to: { x: 33, y: 11 } } } }),
-  line('Tomas', 'Nell! Find Orrin. The old branch!', { actors: { tomas: { visible: false }, alban: { visible: false } } }),
+  line('Tomas', 'Nell! Find Orrin. The old branch!', {expression:'worried', actors: { tomas: { visible: false }, alban: { visible: false } } }),
   line('Stationmaster Ansel', 'West gate. Iona’s got the key. Go on, Nell. Go.', { focus: { x: 27, y: 14 }, silence: true }),
   line('The square', 'His hand slips from hers. Nell closes his eyes and takes the lantern. The hounds are coming down the steps.'),
   line('Nell', 'I’m bringing him home. Iona, stay with Ansel.'),

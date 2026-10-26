@@ -4,13 +4,15 @@ export const ROOM_FADE=.28;
 const delays=[.0137,.0199,.0311,.0437,.0613,.0899];
 
 /** Damped Schroeder diffuser: H(z) = (L(z) z^-m - g) / (1 - g L(z) z^-m).
- * L is a nonresonant one-pole absorption filter on the delayed branch,
+ * L is a nonresonant two-pole absorption filter on the delayed branch,
  * including its feedback. High frequencies lose energy on every reflection.
  * Every feedback cycle contains a fixed delay; |g| < 1. No oscillators,
  * convolution buffers, delay modulation or pitch-shifting room transitions. */
 function diffuser(c:BaseAudioContext,input:AudioNode,seconds:number,g:number,damping:number,nodes:AudioNode[]){
  const sum=c.createGain(),delay=c.createDelay(1),feedback=c.createGain(),forward=c.createGain(),out=c.createGain();
- const pole=Math.exp(-2*Math.PI*damping/c.sampleRate),absorption=c.createIIRFilter([1-pole],[1,-pole]);
+ // Two real poles attenuate upper-register reflections on every pass. A
+ // return-only lowpass cannot stop those notes circulating in a large room.
+ const pole=Math.exp(-2*Math.PI*Math.min(damping,1800)/c.sampleRate),absorption=c.createIIRFilter([(1-pole)**2],[1,-2*pole,pole*pole]);
  delay.delayTime.value=seconds;feedback.gain.value=g;forward.gain.value=-g;
  input.connect(sum);sum.connect(delay);delay.connect(absorption);absorption.connect(feedback);feedback.connect(sum);
  sum.connect(forward);forward.connect(out);absorption.connect(out);
