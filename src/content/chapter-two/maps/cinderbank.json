@@ -2437,7 +2437,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Medical coaches · rescued prisoners"
+              "value": "Medical coaches · rest and supplies"
             },
             {
               "name": "sign",
@@ -2448,6 +2448,11 @@
               "name": "kind",
               "type": "string",
               "value": "talk"
+            },
+            {
+              "name": "rest",
+              "type": "bool",
+              "value": true
             }
           ],
           "x": 684,

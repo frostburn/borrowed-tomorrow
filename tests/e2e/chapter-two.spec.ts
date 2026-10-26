@@ -160,7 +160,7 @@ test('failed region artwork keeps the original departure available for retry',as
 
 test('loading-gate route, ward supplies and the escape work on a phone',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,coastCheckpoint('kitJoined'));
-  await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
+  await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier · Lv 3');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
   await visit(page,'prison-coach');await travel(page,'coast-ward','infirmary');await dialogue(page);await nativeScene(page,'infirmary');await capture(page,'railway-ward-phone');
   const before=(await inspect(page)).state;await approach(page,'ward-rest');await expect(page.locator('.dialogue')).toBeVisible();await capture(page,'ward-care-menu-phone');
   await page.getByRole('button',{name:'Buy a bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);

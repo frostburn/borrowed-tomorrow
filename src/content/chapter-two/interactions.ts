@@ -77,6 +77,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       host.talk({ ...scenes.evacuation(), done: () => { s.location = arrival('cinderbank','evacuated'); restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
     case 'siding-coaches':
       host.talk({lines:[SAY('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. That letter is for the family at the green door. We still need to reach them.')],choices:[
+        {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);host.refresh();host.save();host.toast('Everyone restored.');}},
         {label:'Browse supplies and trade gear',action:()=>host.shop('ward')},
         {label:'Keep moving',action:()=>{}},
       ]});return;

@@ -31,13 +31,13 @@ export function openShop(ui: UI, state: GameState, shop: ShopId, changed: () => 
       const ids = (Object.keys(ITEMS) as ItemId[]).filter(id => (state.inventory.bag[id] ?? 0) > 0);
       if (!ids.length) { const empty = document.createElement('p'); empty.textContent = 'No spare gear to sell.'; target.append(empty); }
       for (const id of ids) {
-        const item = ITEMS[id], row = document.createElement('section'); row.className = 'equipment-row'; row.setAttribute('role', 'group'); row.setAttribute('aria-label', item.name);
+        const item = ITEMS[id], row = document.createElement('section'); row.className = 'equipment-row'; row.dataset.gear = id; row.setAttribute('role', 'group'); row.setAttribute('aria-label', item.name);
         row.innerHTML = `<div><h3>${esc(item.name)}</h3><p>${state.inventory.bag[id]} in bag · ${sellPrice(id)} marks each</p></div>`;
-        row.append(ui.button({ label: `Sell · ${sellPrice(id)} marks`, disabled: !canSell(state, id), selected: selected === id, action: () => { selected = id; message = ''; render(); } })); target.append(row);
+        row.append(ui.button({ label: `Sell · ${sellPrice(id)} marks`, disabled: !canSell(state, id), selected: selected === id, action: () => { selected = id; message = ''; render(); root.querySelector<HTMLButtonElement>('.shop-sale button')?.focus(); } })); target.append(row);
         if (selected === id) {
           const confirm = document.createElement('div'); confirm.className = 'shop-sale'; confirm.setAttribute('role', 'group'); confirm.setAttribute('aria-label', 'Confirm sale');
           const question = document.createElement('p'); question.textContent = `Sell one ${item.name} for ${sellPrice(id)} marks?`; confirm.append(question);
-          confirm.append(ui.button({ label: 'Confirm sale', action: () => { if (sellEquipment(state, id)) { message = `${item.name} sold for ${sellPrice(id)} marks.`; selected = undefined; changed(); } render(); } }), ui.button({ label: 'Cancel sale', action: () => { selected = undefined; render(); } })); target.append(confirm);
+          confirm.append(ui.button({ label: 'Confirm sale', action: () => { if (sellEquipment(state, id)) { message = `${item.name} sold for ${sellPrice(id)} marks.`; selected = undefined; changed(); } render(); root.querySelector<HTMLButtonElement>('[data-tab="sell"]')!.focus(); } }), ui.button({ label: 'Cancel sale', action: () => { selected = undefined; render(); root.querySelector<HTMLButtonElement>(`[data-gear="${id}"] button`)?.focus(); } })); target.append(confirm);
         }
       }
       return;
@@ -46,12 +46,13 @@ export function openShop(ui: UI, state: GameState, shop: ShopId, changed: () => 
       const id = supply.id, item = isConsumable(id) ? undefined : ITEMS[id];
       if (item && !item.heroes.some(h => state.party.some(p => p.id === h))) continue;
       const definition = isConsumable(id) ? CONSUMABLES[id] : ITEMS[id], owned = supplyCount(state, id);
-      const row = document.createElement('div'); row.className = 'equipment-row'; row.setAttribute('role', 'group'); row.setAttribute('aria-label', definition.name);
+      const row = document.createElement('div'); row.className = 'equipment-row'; row.dataset.stock = id; row.setAttribute('role', 'group'); row.setAttribute('aria-label', definition.name);
       const bonuses = item ? Object.entries(item.bonuses).filter(([, n]) => n !== 0).map(([stat, n]) => `${stat[0].toUpperCase() + stat.slice(1)} ${n > 0 ? '+' : ''}${n}`).join(' · ') : '';
       row.innerHTML = `<div><h3>${esc(definition.name)}</h3><p>${esc(definition.description)}</p>${bonuses ? `<p>${bonuses} · ${item!.heroes.filter(h => state.party.some(p => p.id === h)).map(h => CHARACTERS[h].name).join(' / ')}</p>` : ''}<small>${owned} owned${item ? ` · ${state.inventory.bag[id as ItemId] ?? 0} in bag` : ''}</small></div>`;
       row.append(ui.button({ label: item?.slot === 'fitting' && owned ? 'Owned' : `Buy · ${supply.cost} marks`, disabled: !canBuy(state, id, shop), action: () => {
         if (!buySupply(state, id, shop)) return;
         message = `${definition.name} added to the bag.`; changed(); render();
+        (root.querySelector<HTMLButtonElement>(`[data-stock="${id}"] button:not(:disabled)`) ?? root.querySelector<HTMLButtonElement>('[data-tab="buy"]'))!.focus();
       } })); target.append(row);
     }
   };

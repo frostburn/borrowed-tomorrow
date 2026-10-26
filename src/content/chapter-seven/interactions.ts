@@ -48,7 +48,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
  if(id==='season-rest'&&!f.domainPatrolWon)return say('Petra','The hunters have the supplies covered. We need to clear the courier stair.');
  if(id.endsWith('-rest'))return h.talk({lines:[SAY('Supplies','Clean water, folded blankets and a field kit are under cover.')],choices:[
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
-  {label:'Buy a field bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
+  {label:'Buy a bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
   {label:'Keep moving',action:()=>{}},
  ]});
  switch(id){

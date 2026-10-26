@@ -40,6 +40,14 @@ it('keeps the ward supplies marked after its arrival scene and rest becomes repe
  const s=newGame(),supplies=MAPS.infirmary.objects.find(o=>o.id==='ward-rest')!;
  s.flags.wardSeen=true;expect(interactionKind(supplies,s)).toBe('rest');expect(interactionMarker(supplies,s)).toBeDefined();
 });
+it('marks both coastal and Cinderbank supply counters as persistent services',()=>{
+ const s=newGame();
+ for(const [map,id]of [['coast','coast-engine'],['cinderbank','siding-coaches']]as const){
+  const counter=MAPS[map].objects.find(o=>o.id===id)!;
+  expect(counter.label).toContain('rest and supplies');expect(interactionMarker(counter,s)).toMatchObject(INTERACTION_MARKERS.rest);
+  s.flags.chapterTwoComplete=true;expect(interactionKind(counter,s)).toBe('rest');
+ }
+});
 
 it('shows one cue for Petra and Alban, and distinguishes the blocked mirrored engine',()=>{
  const s=newGame();s.flags.evacuationReady=true;
