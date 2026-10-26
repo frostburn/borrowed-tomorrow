@@ -180,9 +180,9 @@ def floor_paint(w,h,scene,points,arena=False):
   out += [poly([(w*.4,top+140),(w*.61,top+123),(w*.69,bottom-56),(w*.5,bottom-38)],'#8aa493'),line([(w*.42,top+151),(w*.51,bottom-53),(w*.67,bottom-70)],'#c5c7ab',4)]
  elif material=='optical-terrazzo':
   # Arena: col 5 / row 2, with lower footprint contacts on row 3. The
-  # renderer's body anchor is (463,286). Its native base center is 23px above it.
+  # renderer's body anchor is (460,290). Its native base center is 23px above it.
   # Exploration: the native engine's base at (684+128,198+217).
-  cx,cy=(463,263)if arena else(812,415)
+  cx,cy=(460,267)if arena else(812,415)
   out += radial_paving(cx,cy,[0,185,330,475,1100],['#a5b8a5','#9bb2a2','#9fb5a2','#aabca7'],'#8da69a',yscale=.65,block=180)
   out += chips(w,top,bottom,['#6c9089','#c7c8ac','#8b9e8d','#b3bca0'],210)
   out.append(f'<g id="ward-floor-inlays" transform="translate({cx:g} {cy:g})">')

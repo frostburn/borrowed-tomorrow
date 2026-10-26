@@ -28,7 +28,7 @@ import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, active, awardVictory, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { ENCOUNTERS } from '../content/encounters';
-import { HEX_SIZE, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
+import { HEX_SIZE, hexVertices, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { partyLeader, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { decodeSave } from '../rules/save';
 import { Audio } from './audio';
@@ -587,10 +587,11 @@ export class Adventure extends Phaser.Scene {
     this.drawGrid();this.drawInitiative();
     this.battlePresentation?.overlay?.(this,this.layer,b);
   }
-  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1,radius=HEX_SIZE) {
-    const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+radius*Math.cos(a),p.y+radius*Math.sin(a));});
+  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1,inset=0) {
+    const g=this.grid!,points=hexVertices(h,inset).map(p=>new Phaser.Math.Vector2(p.x,p.y)),inner=hexVertices(h,inset+Math.max(2,Math.ceil(width/2)*2)).map(p=>new Phaser.Math.Vector2(p.x,p.y));
     if(alpha>0)g.fillStyle(color,alpha).fillPoints(points,true);
-    g.lineStyle(width,stroke,.78).strokePoints(points,true);
+    // Filled strips avoid centered strokes straddling a chunky pixel.
+    g.fillStyle(stroke,.78);for(let i=0;i<6;i++){const next=(i+1)%6;g.fillPoints([points[i],points[next],inner[next],inner[i]],true);}
   }
   private drawGrid() {
     if(!this.grid||!this.battle)return;this.grid.clear();const b=this.battle,u=active(b);
@@ -622,7 +623,7 @@ export class Adventure extends Phaser.Scene {
       if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;}
       this.hexPolygon(h,color,alpha,stroke,width);
       if(danger.has(id)){
-        if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,HEX_SIZE-5);
+        if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,6);
         const p=toPixel(h),x=Math.round(p.x/2)*2,y=Math.round((p.y-20)/2)*2;
         this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(x-4,y-4,x+4,y+4);this.grid.lineBetween(x-4,y+4,x+4,y-4);
       }
