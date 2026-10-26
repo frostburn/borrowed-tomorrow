@@ -60,7 +60,8 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     await expect.poll(async()=>{const p=await renderedLight(page);return p.compared>200&&p.wrong===0;}).toBe(true);
     const second=await renderedLight(page);expect(second.shadowDx).toBeGreaterThan(0);expect(second.shadowPixels).toBeGreaterThan(5);
     await capture(page,`station-light-right-${device}`);
-    // A static scene must not depend on pointer activity or accumulate shading.
+    // Reduced motion must settle without pointer activity or accumulated shading.
+    await page.emulateMedia({reducedMotion:'reduce'});await expect.poll(async()=>(await inspect(page)).ambient?.frame).toBe(-1);
     const stable=await page.locator('.phaser-host canvas').evaluate((c:HTMLCanvasElement)=>c.toDataURL());
     await page.waitForTimeout(180);expect(await page.locator('.phaser-host canvas').evaluate((c:HTMLCanvasElement)=>c.toDataURL())).toBe(stable);
     await approach(page,'iona');await expect(page.getByRole('dialog')).toContainText('Iona’s supplies');await capture(page,`station-supplies-${device}`);
