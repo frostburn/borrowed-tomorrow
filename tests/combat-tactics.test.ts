@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
-import {ABILITIES,active,cast,createBattle,damage,defend,enemyTurn,legalAim,movement,shape,targets,wait,type Encounter} from '../src/rules/combat';
-import {axisHexes,daybreakGuard,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
-import {cells,key,offset,distance} from '../src/rules/hex';
+import {ABILITIES,active,cast,createBattle,damage,damagingAbility,defend,enemyTurn,legalAim,movement,shape,targets,wait,type Encounter} from '../src/rules/combat';
+import {axisHexes,battleAbilities,daybreakGuard,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
+import {add,cells,diagonalRay,diagonalStart,DIAGONALS,hexVertices,inside,key,offset,distance,scale} from '../src/rules/hex';
 import {newGame} from '../src/rules/state';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {learnedAbilities} from '../src/rules/progression';
@@ -19,6 +19,19 @@ function yard(party:CompanionId[]=['nell','orrin','celia'],level=13,e:Encounter=
 }
 
 describe('shared-turn moves',()=>{
+ it('hides team commands only when their same-side partner is absent, retaining readiness explanations for fallen or distant partners',()=>{
+  const {b,u,partner,third,enemy}=yard();b.units=b.units.filter(v=>v.id!==third.id);
+  expect(battleAbilities(b,u)).not.toContain('daybreak');expect(battleAbilities(b,u)).toContain('prism');
+  partner.hex=offset(10,6);expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('clear link');
+  partner.hp=0;expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('alive');
+  b.units=b.units.filter(v=>v.id!==partner.id);enemy.kind='orrin';expect(battleAbilities(b,u)).not.toContain('prism');
+ });
+ it('Celia and Orrin share Falling stars, protecting both operators and consuming both turns',()=>{
+  const {b,u,partner,third,enemy}=yard(['celia','orrin','petra'],7);partner.hex=offset(3,2);enemy.hex=offset(4,2);u.hex=offset(3,3);third.hex=offset(4,1);
+  const aim=enemy.hex,axis=axisHexes('s',aim),hp=[u.hp,partner.hp,enemy.hp];expect(shape(b,u,'starline',aim)).toEqual(axis);
+  expect(teamStatus(b,u,'starline').partner).toBe(partner);expect(cast(b,u,'starline',aim)).toBe(true);
+  expect([u.hp,partner.hp]).toEqual(hp.slice(0,2));expect(enemy.hp).toBeLessThan(hp[2]);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);
+ });
  it('spends two pending turns and both focus costs; the preview equals the applied damage',()=>{
   const {b,u,partner,enemy}=yard();u.focus=partner.focus=6;
   const predicted=damage(u,enemy,'prism',partner),hp=enemy.hp;
@@ -63,17 +76,31 @@ describe('shared-turn moves',()=>{
 });
 
 describe('geometry and progression',()=>{
- it('covers all three full axial lines through every cell, independent of rocks',()=>{
-  const {b,u}=yard();for(const [ability,axis]of [['sunline','r'],['pressureline','q'],['starline','s']]as const)for(const aim of cells()){
+ it('reserves full-board axes for teams and keeps their preview independent of rocks',()=>{
+  for(const a of Object.values(ABILITIES))if(a.shape==='axis')expect(a.team,a.name).toBeDefined();
+  const {b,u}=yard();for(const [ability,axis]of [['prism','r'],['starline','s']]as const)for(const aim of cells()){
    expect(shape(b,u,ability,aim)).toEqual(axisHexes(axis,aim));
    const footprint=shape(b,u,ability,aim);expect(footprint).toContainEqual(aim);expect(footprint.length).toBeGreaterThan(0);
    expect(footprint.every(h=>axis==='s'?h.q+h.r===aim.q+aim.r:h[axis]===aim[axis])).toBe(true);
   }
-  b.obstacles.add(key(offset(5,3)));expect(shape(b,u,'sunline',offset(5,3))).toHaveLength(11);
+  b.obstacles.add(key(offset(5,3)));expect(shape(b,u,'prism',offset(5,3))).toHaveLength(11);
  });
- it('full lines hit an ally and a multi-contact enemy once, keeping their caster safe',()=>{
-  const {b,u,partner,enemy}=yard();partner.hex=offset(3,3);enemy.footprint=[{q:0,r:0},{q:1,r:0},{q:0,r:1}];
-  const hit=targets(b,u,'sunline',enemy.hex);expect(hit.filter(v=>v===enemy)).toHaveLength(1);expect(hit).toContain(partner);expect(hit).not.toContain(u);
+ it('casts six short diagonals from every origin, with spaced cells and no off-board or backward hits',()=>{
+  for(const from of cells())for(const d of DIAGONALS){
+   const expected=[1,2,3].map(n=>add(from,scale(d,n))).filter(inside),first=add(from,d);
+   expect(diagonalRay(from,first,6,new Set())).toEqual(expected);
+   for(const [i,h]of expected.entries())expect(distance(from,h)).toBe((i+1)*2);
+   expect(hexVertices(from)).toContainEqual(diagonalStart(from,first));
+  }
+  expect(diagonalRay(offset(5,3),offset(5,3),6,new Set())).toEqual([]);
+ });
+ it('solo diagonals move with the caster, stop at cover, hit allies and deduplicate a multi-contact enemy',()=>{
+  const {b,u,partner,enemy}=yard();u.hex=offset(2,1);partner.hex=offset(4,2);enemy.hex=offset(5,3);enemy.footprint=[{q:0,r:0},{q:1,r:1}];
+  expect(shape(b,u,'sunline',enemy.hex)).toEqual([offset(4,2),offset(5,3),offset(7,4)]);
+  const hit=targets(b,u,'sunline',enemy.hex),hp=enemy.hp,predicted=damage(u,enemy,'sunline');expect(hit.filter(v=>v===enemy)).toHaveLength(1);expect(hit).toContain(partner);expect(hit).not.toContain(u);
+  cast(b,u,'sunline',enemy.hex);expect(enemy.hp).toBe(hp-predicted);
+  const {b:other,u:orrin}=yard(['orrin','kit','petra']);orrin.hex=offset(2,1);other.obstacles.add(key(offset(5,3)));expect(shape(other,orrin,'pressureline',offset(5,3))).toEqual([offset(4,2),offset(5,3)]);
+  orrin.hex=offset(3,1);expect(shape(other,orrin,'pressureline',offset(6,3))[0]).toEqual(offset(5,2));
  });
  it('bounces only to a distinct enemy, chooses nearest with stable ties, and obeys cover',()=>{
   const {b,u,enemy,crow,partner}=yard(['kit','petra','celia']);partner.hex=offset(7,2);
@@ -88,6 +115,7 @@ describe('geometry and progression',()=>{
    for(const skill of high)expect(ABILITIES[skill]).toBeDefined();
   }
   expect(learnedAbilities('nell',12)).not.toContain('daybreak');expect(learnedAbilities('celia',13)).toContain('daybreak');
+  expect(learnedAbilities('celia',15).filter(id=>damagingAbility(id)&&!ABILITIES[id].team)).toEqual(['strike','celestialbolt']);
  });
  it('pin limits the next turn’s movement without taking away its attack or extending through wait',()=>{
   const {b,u,enemy}=yard(['kit','petra','celia']);cast(b,u,'pin',enemy.hex);expect(enemy.pinned).toBe(true);
@@ -134,11 +162,21 @@ describe('disruptible enemy links and battlefield objects',()=>{
    prepareRelay(b);expect(crow.intent!.cells).toEqual([]);expect(legalAim(b,crow,'relay',crow.hex)).toBe(false);
   }
  });
- it('turning a valve spends a main action, toggles exactly its vents and does not attack occupants',()=>{
+ it('a normal strike toggles only the valve’s vents, without damaging the wheel or distant occupants',()=>{
   const e:Encounter={...encounter,vents:[[10,6]],fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:true,vents:[[5,3]]}]};
   const {b,u,enemy}=yard(undefined,13,e);enemy.hex=offset(5,3);const hp=enemy.hp;expect(b.vents.size).toBe(2);
-  expect(targets(b,u,'operate',offset(3,3))).toEqual([]);expect(cast(b,u,'operate',offset(3,3))).toBe(true);
+  const wheel=fixtureAt(b,offset(3,3))!,wheelHp=wheel.hp;
+  expect(targets(b,u,'strike',wheel.hex)).toEqual([]);expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(wheel.hp).toBe(wheelHp);
   expect(enemy.hp).toBe(hp);expect(b.vents.has(key(enemy.hex))).toBe(false);expect(b.vents.has(key(offset(10,6)))).toBe(true);expect(b.queue).not.toContain(u.id);
+  b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(b.vents.has(key(enemy.hex))).toBe(true);
+ });
+ it('ranged and area attacks toggle valves, while support and zero-damage actions cannot',()=>{
+  for(const ability of ['quickshot','volley']as const){
+   const {b,u}=yard(['kit','petra','celia'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:5,row:3,active:true,vents:[[6,3]]}]});
+   expect(cast(b,u,ability,offset(5,3))).toBe(true);expect(b.fixtures![0].active).toBe(false);expect(b.vents.size).toBe(0);
+  }
+  const {b,u}=yard(['petra','celia','nell'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:true,vents:[[6,3]]}]});
+  for(const id of ['bash','bandage','taunt']as const)expect(legalAim(b,u,id,offset(3,3))).toBe(false);expect(b.fixtures![0].active).toBe(true);
  });
  it('breaks real cover, opening movement and sight while retaining enemies and the victory condition',()=>{
   const {b,u,enemy}=yard(['kit','petra','celia'],13,{...encounter,fixtures:[{id:'crate',kind:'barricade',name:'Crate',col:3,row:3,hp:20}]});

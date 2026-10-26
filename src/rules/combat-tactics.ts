@@ -13,6 +13,11 @@ export function supportPower(u:Unit,id:AbilityId):number{
  return a.power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
 }
 export const daybreakGuard=(u:Unit)=>8+Math.floor(Math.max(0,(u.level??1)-1)*1.5);
+/** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
+export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
+ const team=ABILITIES[id].team;
+ return !team||team.pair.includes(u.kind)&&b.units.some(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind)&&(!u.linkedTo||u.linkedTo===v.id));
+});
 export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:Unit;reason?:string}{
  const team=ABILITIES[id].team;if(!team)return {};
  const other=team.pair.find(kind=>kind!==u.kind);
@@ -50,14 +55,17 @@ export function prepareRelay(b:Battle){
   u.intent.name=linked?(charging?`Relay charging · fires in round ${b.round+1}`:'Linked relay · break either machine or its clear link'):'Relay disconnected · ordinary attacks';
  }
 }
-export function operateValve(b:Battle,aim:Hex):string{
+function operateValve(b:Battle,aim:Hex):string{
  const f=fixtureAt(b,aim)!;f.active=!f.active;
  for(const h of f.vents??[])if(f.active)b.vents.add(key(h));else b.vents.delete(key(h));
  return `${f.name}: steam ${f.active?'on':'off'}.`;
 }
 /** Props use the same affected footprint; a drum may also break nearby props. */
 export function damageFixtures(b:Battle,hexes:Hex[],power:number):string[]{
- const messages:string[]=[],pending=(b.fixtures??[]).filter(f=>f.hp>0&&f.kind!=='valve'&&hexes.some(h=>equal(h,f.hex))).map(f=>({f,power}));
+ if(power<=0)return [];
+ const valves=(b.fixtures??[]).filter(f=>f.hp>0&&f.kind==='valve'&&hexes.some(h=>equal(h,f.hex)));
+ const messages:string[]=valves.map(f=>operateValve(b,f.hex));
+ const pending=(b.fixtures??[]).filter(f=>f.hp>0&&f.kind!=='valve'&&hexes.some(h=>equal(h,f.hex))).map(f=>({f,power}));
  while(pending.length){
   const {f,power}=pending.shift()!;if(f.hp<=0)continue;
   f.hp=Math.max(0,f.hp-power);messages.push(`${f.name}: ${power} damage${f.hp?` · ${f.hp} HP left`: ' · broken'}.`);

@@ -1,4 +1,4 @@
-import {supportPower,daybreakGuard,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,operateValve,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
+import {supportPower,daybreakGuard,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
 import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
 import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
@@ -12,7 +12,7 @@ import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS } from '../content/encounters';
 import { BASE_STATS, learnedAbilities } from './progression';
 import { CHARACTERS } from '../content/characters';
-import { blast, cells, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
+import { blast, cells, diagonalRay, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
 import type { CharacterProfile, CompanionId } from './characters';
@@ -23,8 +23,8 @@ import { configureConduit, prepareConduit } from './conduit';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
-export {ABILITIES,type AbilityId,type Ability} from './abilities';
-import {ABILITIES,type AbilityId} from './abilities';
+export {ABILITIES,damagingAbility,type AbilityId,type Ability} from './abilities';
+import {ABILITIES,damagingAbility,type AbilityId} from './abilities';
 export interface Unit {
   id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
@@ -105,7 +105,6 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.fixtures?.length){
     battle.fixtures=e.fixtures.map(f=>({...f,hex:offset(f.col,f.row),hp:f.hp??30,maxHp:f.hp??30,vents:f.vents?.map(h=>offset(...h))}));
     for(const f of battle.fixtures){if(f.kind!=='valve')battle.obstacles.add(key(f.hex));else if(f.active)for(const h of f.vents??[])battle.vents.add(key(h));}
-    if(battle.fixtures.some(f=>f.kind==='valve'))for(const u of battle.units.filter(u=>u.side==='party'))u.abilities.push('operate');
   }
   nextRound(battle);
   return battle;
@@ -121,8 +120,8 @@ export function movement(b: Battle, u: Unit) {
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = ABILITIES[id];
-  if(a.effect==='terrain')return [aim,...(fixtureAt(b,aim)?.vents??[])];
   if(a.shape==='axis')return axisHexes(a.axis!,aim);
+  if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
   if(a.shape==='bounce')return ricochetHexes(b,u,aim);
   if(a.shape==='party')return alive(b).filter(v=>v.side===u.side).flatMap(v=>occupiedHexes(v));
   if (a.shape === 'pattern') return u.intent?.cells??[];
@@ -133,7 +132,6 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
 }
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const a = ABILITIES[id],hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
-  if(a.effect==='terrain')return [];
   if(id==='revive')return b.units.filter(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim)).sort((a,z)=>a.id.localeCompare(z.id)).slice(0,1);
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
   return alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
@@ -149,14 +147,13 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (id === 'bandage' && b.bandages <= 0) return false;
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
-  if (forced && (a.shape!=='pattern'||!!u.intent?.cells.length) && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='axis' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
+  if (forced && (a.shape!=='pattern'||!!u.intent?.cells.length) && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='diagonal' || a.shape==='axis' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
   if(id==='relay'&&(b.round%2!==0||!u.intent?.cells.length||u.intent.round!==b.round||u.teamSpentRound===b.round))return false;
   if(a.shape==='pattern')return equal(aim,u.hex)&&!!u.intent;
-  if (a.shape === 'line') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
-  if(a.effect==='terrain')return !!fixtureAt(b,aim)&&fixtureAt(b,aim)!.kind==='valve'&&bodyDistance(u,{...u,hex:aim,footprint:undefined})<=1;
+  if (a.shape === 'line'||a.shape==='diagonal') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
   if(id==='revive')return b.units.some(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim))&&!unitAt(b,aim)&&!b.obstacles.has(key(aim))&&distance(u.hex,aim)<=a.range&&visible(u.hex,aim,b.obstacles);
   if(a.shape==='bounce'&&!ricochetHexes(b,u,aim).length)return false;
-  if (a.shape==='single'&&a.power>0&&!a.heal&&fixtureAt(b,aim)&&fixtureAt(b,aim)!.kind!=='valve')return distance(u.hex,aim)<=a.range&&visible(u.hex,aim,new Set([...b.obstacles].filter(h=>h!==key(aim))));
+  if (a.shape==='single'&&damagingAbility(id)&&fixtureAt(b,aim))return a.unrestricted||distance(u.hex,aim)<=a.range&&visible(u.hex,aim,new Set([...b.obstacles].filter(h=>h!==key(aim))));
   if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
   const v = unitAt(b, aim);
   if(a.effect==='weaken')return targets(b,u,id,aim).some(t=>!t.dazzledAttacks);
@@ -174,7 +171,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
   if (a.heal) return Math.min(v.maxHp-v.hp,id==='revive'?Math.max(1,Math.ceil(v.maxHp*.35)):supportPower(u,id));
   if (a.effect==='guard') return Math.max(0,supportPower(u,id)-(v.guard??0));
   if (a.effect==='focus') return Math.min(6-v.focus,a.power);
-  if (a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt'||a.effect==='terrain') return 0;
+  if (a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id,partner)-(v.guard??0));
 }
@@ -267,7 +264,6 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
   if (id === 'bandage') b.bandages--;
   if(partner){partner.focus-=a.team!.cost;partner.defending=false;delete partner.pinned;u.teamSpentRound=partner.teamSpentRound=b.round;b.queue=b.queue.filter(id=>id!==partner.id);for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;log(b,`${u.name} + ${partner.name}: ${a.name} consumes both turns and ${a.team!.cost} focus each.`);}
-  if(a.effect==='terrain')log(b,operateValve(b,aim));
   for (const v of hit) {
     if(a.effect==='taunt'){v.tauntedBy=u.id;log(b,`${v.name} targets ${u.name} until ${u.name}’s next turn.`);}
     else if(a.effect==='shove'){log(b,`${u.name}: ${a.name} deals no damage.`);}
@@ -282,8 +278,8 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     }
     if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
-  if(a.power>0&&!a.heal&&!['guard','focus','weaken','taunt'].includes(a.effect??''))for(const message of damageFixtures(b,footprint,fixtureDamage(u,id,partner)))log(b,message);
-  if (!hit.length&&a.effect!=='terrain'&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
+  if(damagingAbility(id))for(const message of damageFixtures(b,footprint,fixtureDamage(u,id,partner)))log(b,message);
+  if (!hit.length&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
     if (defender && !defender.passive && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {

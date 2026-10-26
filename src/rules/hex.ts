@@ -5,6 +5,8 @@ export const DIRECTIONS: readonly Hex[] = [
   { q: 1, r: 0 }, { q: 1, r: -1 }, { q: 0, r: -1 },
   { q: -1, r: 0 }, { q: -1, r: 1 }, { q: 0, r: 1 },
 ];
+/** Between the six edge-normal axes: successive centers are two hex steps apart. */
+export const DIAGONALS:readonly Hex[]=DIRECTIONS.map((d,i)=>({q:d.q+DIRECTIONS[(i+1)%6].q,r:d.r+DIRECTIONS[(i+1)%6].r}));
 export const key = (h: Hex) => `${h.q},${h.r}`;
 export const equal = (a: Hex, b: Hex) => a.q === b.q && a.r === b.r;
 export const add = (a: Hex, b: Hex): Hex => ({ q: a.q + b.q, r: a.r + b.r });
@@ -58,6 +60,19 @@ export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>)
   return result;
 }
 
+/** A vertex-directed ray touches only the spaced center cells, including its first cover hit. */
+export function diagonalRay(from:Hex,aim:Hex,range:number,obstacles:Set<string>):Hex[]{
+ if(equal(from,aim))return [];
+ const dq=aim.q-from.q,dr=aim.r-from.r;
+ const dot=(d:Hex)=>dq*d.q+dr*d.r+(dq+dr)*(d.q+d.r);
+ const direction=[...DIAGONALS].sort((a,b)=>dot(b)-dot(a))[0],result:Hex[]=[];
+ for(let n=1;n<=Math.floor(range/2);n++){
+  const h=add(from,scale(direction,n));if(!inside(h))break;
+  result.push(h);if(obstacles.has(key(h)))break;
+ }
+ return result;
+}
+
 export interface Reach { hex: Hex; path: Hex[]; cost: number }
 /** Dijkstra search: choose the cheapest route, which may be longer on dry ground. */
 export function reachable(start: Hex, movement: number, blocked: Set<string>, cost:(hex:Hex)=>number=()=>1): Map<string, Reach> {
@@ -82,6 +97,8 @@ export const ORIGIN = { x: 160, y: 104 };
 export function toPixel(h: Hex): { x: number; y: number } {
   return { x: ORIGIN.x + HEX_WIDTH * (h.q + h.r / 2), y: ORIGIN.y + HEX_ROW * h.r };
 }
+/** A diagonal leaves the caster at a vertex joining the next pair of hex edges. */
+export function diagonalStart(from:Hex,first:Hex){const a=toPixel(from),b=toPixel(first);return {x:a.x+(b.x-a.x)/3,y:a.y+(b.y-a.y)/3};}
 /** Insets and vertices stay on complete 2x2 display pixels. */
 export function hexVertices(h:Hex,inset=0):{x:number;y:number}[]{
  const p=toPixel(h),i=Math.round(inset/2)*2,w=HEX_WIDTH/2-i,tip=HEX_SIZE-i,shoulder=18-Math.round(i/4)*2;

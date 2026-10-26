@@ -2,9 +2,9 @@ import type Phaser from 'phaser';
 import type {Battle} from '../rules/combat';
 import {toPixel} from '../rules/hex';
 /** Small native vector props with broad material planes, drawn at their hex's feet. */
-export function drawBattleFixtures(scene:Phaser.Scene,world:Phaser.GameObjects.Container,b:Battle,before?:ReadonlyMap<string,{hp:number}>){
+export function drawBattleFixtures(scene:Phaser.Scene,world:Phaser.GameObjects.Container,b:Battle,before?:ReadonlyMap<string,{hp:number;active?:boolean}>){
  for(const actual of b.fixtures??[]){
-  const f={...actual,hp:before?.get(`fixture:${actual.id}`)?.hp??actual.hp};
+  const old=before?.get(`fixture:${actual.id}`),f={...actual,hp:old?.hp??actual.hp,active:old?.active??actual.active};
   const {x,y}=toPixel(f.hex),g=scene.add.graphics();world.add(g);
   if(f.hp<=0){g.fillStyle(0x695c49,.8).fillRect(x-18,y+4,28,4).fillRect(x-8,y-2,24,4);continue;}
   g.fillStyle(0x1b2827,.25).fillEllipse(x,y+6,52,18);

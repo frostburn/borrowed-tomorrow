@@ -299,7 +299,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.state.location.map;}).toBe('coolingworks');await approach(page,'cooling-route');await page.getByRole('button',{name:'Take the freight lift · ranged crows',exact:true}).click();
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
   await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,2));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
-  await page.getByRole('button',{name:/Turn valve/}).click();await clickHex(page,offset(3,3));await expect(page.locator('#confirmation')).toContainText('steam off');await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
+  await expect(page.getByRole('button',{name:/Turn valve/})).toHaveCount(0);await page.getByRole('button',{name:/^2\s+Strike$/}).click();await clickHex(page,offset(3,3));await expect(page.locator('#confirmation')).toContainText('steam off');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
   expect((await inspect(page)).battle!.vents).toHaveLength(0);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
  });
 }

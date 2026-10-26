@@ -1,19 +1,28 @@
 import type Phaser from 'phaser';
 import { ABILITIES, type AbilityId } from '../rules/combat';
-import { toPixel, type Hex } from '../rules/hex';
+import { diagonalStart, toPixel, type Hex } from '../rules/hex';
 
 /** Short native-world effects from a tool, or from above for celestial attacks. */
-export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string){
+export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex){
   const g=scene.add.graphics();world.add(g);
   const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=ABILITIES[ability].heal||ABILITIES[ability].effect==='guard';
-  const definition=ABILITIES[ability],rich=definition.shape==='axis'||definition.shape==='bounce'||!!definition.team;
+  const definition=ABILITIES[ability],rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
   const hand={x:source.x+(face.endsWith('-left')?-26:face.endsWith('-right')?26:face.endsWith('-back')?18:-18),y:source.y-30};
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:rich?580:300,onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
-    if(definition.shape==='axis'){
+    if(definition.shape==='diagonal'&&origin&&affected.length){
+      const start=diagonalStart(origin,affected[0]),points=affected.map(toPixel),last=points.at(-1)!,progress=reduced?1:Math.min(1,p*2);
+      const tip={x:Math.round((start.x+(last.x-start.x)*progress)/2)*2,y:Math.round((start.y+(last.y-start.y)*progress)/2)*2};
+      g.lineStyle(10,steam?0x6babb3:0xd8b66e,.3).lineBetween(start.x,start.y,tip.x,tip.y);
+      g.lineStyle(4,color,.9).lineBetween(start.x,start.y,tip.x,tip.y);
+      for(const [i,at]of points.entries())if(reduced||progress>=(i+2/3)/(points.length-1/3)){
+        const r=6+Math.round(p*6)*2;g.lineStyle(2,color,.9).strokeEllipse(at.x,at.y,r*2,r);
+        g.lineBetween(at.x,at.y+4,at.x,at.y-20);g.fillStyle(0xeff0ce).fillRect(at.x-2,at.y-18,4,12);
+      }
+    }else if(definition.shape==='axis'){
       const points=affected.map(toPixel),first=points[0],last=points.at(-1);
       if(first&&last){
         const progress=reduced?1:Math.min(1,p*2),x=Math.round((first.x+(last.x-first.x)*progress)/2)*2,y=Math.round((first.y+(last.y-first.y)*progress)/2)*2-24;
@@ -31,9 +40,6 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
       }
     }else if(ability==='relay'){
       for(const hex of affected){const at=toPixel(hex),r=8+Math.round(p*12)*2;g.fillStyle(0x9dc8ce,.2).fillRect(at.x-8,at.y-90,16,70);g.lineStyle(4,0xd0e9df,.85).lineBetween(at.x,at.y-90,at.x,at.y-20);g.strokeEllipse(at.x,at.y-12,r*2,r);}
-    }else if(ability==='operate'){
-      g.lineStyle(3,0xc3b287,.9).strokeCircle(target.x,target.y-24,12);g.lineBetween(target.x-12,target.y-24,target.x+12,target.y-24);
-      for(const hex of affected.slice(1)){const at=toPixel(hex);g.fillStyle(0xcee9df,.3).fillCircle(at.x,at.y-10-p*20,6+p*10);}
     }else if(ability==='barrage'){
       for(const hex of affected){
         const at=toPixel(hex),hit=reduced?1:Math.min(1,p*2),tip={x:Math.round(at.x-40*(1-hit)),y:Math.round(at.y-100*(1-hit))};
@@ -77,6 +83,18 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
       }
     }
   },onComplete:()=>{if(g.active)g.destroy();}});
+}
+
+/** A normal attack spins the resilient valve wheel and changes its connected vents. */
+export function valveTurn(scene:Phaser.Scene,world:Phaser.GameObjects.Container,hex:Hex,vents:Hex[],active:boolean){
+ const g=scene.add.graphics(),at=toPixel(hex);world.add(g);const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ scene.tweens.addCounter({from:0,to:1,duration:reduced?100:360,onUpdate:t=>{
+  if(!g.active)return;const p=t.getValue()??0,angle=(reduced?1:p)*Math.PI/2;
+  const dx=Math.round(Math.cos(angle)*14/2)*2,dy=Math.round(Math.sin(angle)*14/2)*2;
+  g.clear().setAlpha(1-p).lineStyle(4,active?0xe9ae66:0xa3dac2).strokeCircle(at.x,at.y-24,18);
+  g.lineBetween(at.x-dx,at.y-24-dy,at.x+dx,at.y-24+dy);
+  for(const h of vents){const v=toPixel(h),r=4+Math.round(p*8)*2;g.lineStyle(2,active?0xedbb75:0xa3dac2,.7).strokeEllipse(v.x,v.y,r*2,r);if(active)g.fillStyle(0xc5e1d7,.3).fillCircle(v.x,v.y-8-Math.round(p*8)*2,r);}
+ },onComplete:()=>{if(g.active)g.destroy();}});
 }
 
 /** A short linked wind-up makes both participating tools readable before contact. */

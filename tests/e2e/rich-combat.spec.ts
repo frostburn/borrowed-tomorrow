@@ -2,6 +2,7 @@ import {test,expect} from '@playwright/test';
 import {clickHex,inspect,capture} from './controls';
 import {offset} from '../../src/rules/hex';
 import {damage,type Unit} from '../../src/rules/combat';
+import {defaultBuild,newCharacterSettings} from '../../src/rules/characters';
 
 for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
  test.describe(`rich combat ${device}`,()=>{
@@ -30,9 +31,9 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    const after=(await inspect(page)).battle!;for(const kind of ['guardian','crow'])expect(after.units.find(u=>u.kind===kind)!.hp).toBeLessThan(before.units.find(u=>u.kind===kind)!.hp);
    expect(after.queue).not.toContain('kit');expect(after.queue).not.toContain('petra');
-   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');
-   await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();await page.getByRole('button',{name:/Turn valve/}).click();await clickHex(page,offset(3,3));
-   await expect(page.locator('#confirmation')).toContainText('steam off');await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
+   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await expect(page.getByRole('button',{name:/Daybreak · Team|Falling stars · Team/})).toHaveCount(0);await page.keyboard.press('Escape');
+   await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();await expect(page.getByRole('button',{name:/Turn valve/})).toHaveCount(0);await page.getByRole('button',{name:/^2\s+Strike$/}).click();await clickHex(page,offset(3,3));
+   await expect(page.locator('#confirmation')).toContainText('steam off');await capture(page,`strike-valve-${device}`);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    expect((await inspect(page)).battle!.vents).toHaveLength(0);await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');
    await page.getByRole('button',{name:'Practice Crossfire',exact:true}).click();await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.getByRole('button',{name:/Quick shot$/}).click();await clickHex(page,offset(7,4));
    await expect(page.locator('#confirmation')).toContainText('Pressure drum');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
@@ -52,20 +53,35 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
 }
 
 for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
- test(`revival and all three axis previews work through ordinary turns on ${device}`,async({page})=>{
+ test(`revival, short diagonal rays and Celia’s team attack work through ordinary turns on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');
   await page.getByRole('button',{name:'Practice Revive',exact:true}).click();
   await page.getByRole('button',{name:/Revive$/}).click();await clickHex(page,offset(2,4));await expect(page.locator('#confirmation')).toContainText('Orrin');await page.getByRole('button',{name:'Confirm healing',exact:true}).click();
   const revived=(await inspect(page)).battle!;expect(revived.units.find(u=>u.id==='orrin')!.hp).toBe(38);expect(revived.queue).not.toContain('orrin');await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await capture(page,`revive-result-${device}`);
   await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();
-  for(const [hero,ability]of [['nell','Horizon light'],['celia','Falling stars'],['orrin','Pressure seam']]as const){
-   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe(hero);
-   await page.getByRole('button',{name:new RegExp(`${ability}$`)}).click();await clickHex(page,offset(7,3));await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`axis-${hero}-${device}`);
-   await page.getByRole('button',{name:/^F\s+Defend$/}).click();
-  }
+  await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(4,1));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await page.getByRole('button',{name:/Horizon light$/}).click();await clickHex(page,offset(7,3));await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`diagonal-nell-${device}`);
+  const before=(await inspect(page)).battle!,nell=before.units.find(u=>u.id==='nell')!,guardian=before.units.find(u=>u.kind==='guardian')!,predicted=damage(nell as Unit,guardian as Unit,'sunline');
+  await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.units.find(u=>u.id===guardian.id)!.hp).toBe(guardian.hp-predicted);
+  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('celia');await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
+  await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,5));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await page.getByRole('button',{name:/Pressure seam$/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Timber barricade');await capture(page,`diagonal-orrin-${device}`);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.fixtures!.find(f=>f.kind==='barricade')!.hp).toBe(0);
+  await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Falling stars',exact:true}).click();
+  await expect(page.getByRole('button',{name:/Prism lance · Team|Daybreak · Team/})).toHaveCount(0);await page.getByRole('button',{name:/Falling stars · Team/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Celia + Orrin');await capture(page,`falling-stars-team-${device}`);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+  const team=(await inspect(page)).battle!;expect(team.queue).not.toContain('celia');expect(team.queue).not.toContain('orrin');expect(team.units.find(u=>u.id==='orrin')!.focus).toBe(3);
   expect(errors).toEqual([]);
  });
 }
+
+test('absent team partners leave no commands or gaps in keyboard shortcuts',async({page})=>{
+ const settings=newCharacterSettings();settings.party=['orrin'];settings.characters.orrin=defaultBuild('orrin',10);
+ await page.addInitScript(s=>localStorage.setItem('borrowed-tomorrow:character-workshop:v1',JSON.stringify(s)),settings);
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');await page.getByRole('button',{name:'Practice current workshop party',exact:true}).click();
+ await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
+ await expect(page.getByRole('button',{name:/Prism lance · Team|Falling stars · Team/})).toHaveCount(0);
+ await page.keyboard.press('9');await expect(page.getByRole('button',{name:/^9\s+Field bracing$/})).toHaveClass(/selected/);await expect(page.locator('#confirmation')).toContainText('Orrin: +29 guard');
+});
 
 test('enemy relay charges for a full round and then spends both machine turns',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();

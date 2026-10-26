@@ -1,4 +1,4 @@
-import {teamStatus,fixtureAt,daybreakGuard} from '../rules/combat-tactics';
+import {teamStatus,battleAbilities,daybreakGuard} from '../rules/combat-tactics';
 import {drawBattleFixtures} from './battle-fixtures';
 import type {installSoundPreferences} from './sound-preferences';
 import {gridEdges,type HexOutline} from './hex-grid';
@@ -20,7 +20,7 @@ import { facingAsset, PLAYABLE_ACTORS, worldActorScaleY } from '../content/actor
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
-import { battleEffect,teamWindup,fixtureBurst } from './battle-effects';
+import { battleEffect,teamWindup,fixtureBurst,valveTurn } from './battle-effects';
 import { CHAPTERS,nextChapter,mapsForRestore } from '../content/chapters';
 import { INTERACTION_MARKERS,interactionKind,interactionMarker } from '../content/interaction-markers';
 import { CHARACTERS, NPC_SPRITES } from '../content/characters';
@@ -30,9 +30,9 @@ import type { StoryHost } from '../content/story-host';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
-import { ABILITIES, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
+import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, enemyTurn, legalAim, move, movement, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
 import { ENCOUNTERS } from '../content/encounters';
-import { HEX_SIZE, hexVertices, cells, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
+import { HEX_SIZE, hexVertices, cells, diagonalStart, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { partyLeader, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
 import { decodeSave } from '../rules/save';
 import { Audio } from './audio';
@@ -55,7 +55,7 @@ import { WorldLighting } from './world-lighting';
 
 type Action = AbilityId | 'move';
 type Plan = { action: Action; hex: Hex };
-type BattleSnapshot = Map<string,{hex:Hex;hp:number}>;
+type BattleSnapshot = Map<string,{hex:Hex;hp:number;active?:boolean}>;
 interface BattleMotion { actorId:string;aim:Hex;ability?:AbilityId;partnerId?:string;path?:Hex[];affected?:Hex[];retaliations?:string[] }
 const textures = [...PLAYABLE_ACTORS,'master','clerk','herald','glasswing','hound','crow','inspector','guardian','rock',...NPC_SPRITES,...CIVILIAN_SPRITES,...ENEMY_VARIANT_ACTORS];
 const roles: Record<string, string> = {herald:'Severing light · straight beam',glasswing:'Flying · glass splinters', nell: 'Porter', orrin: 'Mechanic', kit: 'Courier', petra:'Knight', celia: 'Physician', hound: 'Melee · retaliates', crow: 'Ranged · cover blocks shots', guardian: 'Steam lance · line AoE', inspector: 'Signal flare · blast AoE', knight:'Shield bash · Taunt · Saber sweep' };
@@ -483,7 +483,7 @@ export class Adventure extends Phaser.Scene {
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
       const u=active(this.battle!)!;
       if (e.key==='1') this.selectAction('move');
-      else if (/^[2-9]$/.test(e.key)) { const id=u.abilities[Number(e.key)-2];if(id)this.selectAction(id); }
+      else if (/^[2-9]$/.test(e.key)) { const id=battleAbilities(this.battle!,u)[Number(e.key)-2];if(id)this.selectAction(id); }
       else if (e.key.toLowerCase()==='f') this.doDefend();
       else if (e.key.toLowerCase()==='w') this.doWait();
       else if (e.key==='Enter' || e.key===' ') { if(this.plan)this.commitPlan();else this.chooseHex(this.battleCursor); }
@@ -611,6 +611,7 @@ export class Adventure extends Phaser.Scene {
     const attackCells=new Set(attack?.cells.map(key));
     const danger=new Set(b.units.filter(v=>v.hp>0&&!(v.id===attack?.actorId&&ABILITIES[attack.ability].shape==='pattern')).flatMap(v=>v.intent?.cells.map(key)??[]));
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
+    const valveVents=new Set(this.selected!=='move'&&damagingAbility(this.selected)?b.fixtures?.filter(f=>f.kind==='valve'&&affected.has(key(f.hex))).flatMap(f=>f.vents?.map(key)??[]):[]);
     const outlines:HexOutline[]=[];
     const fill=(h:Hex,color:number,alpha:number)=>this.grid!.fillStyle(color,alpha).fillPoints(hexVertices(h).map(p=>new Phaser.Math.Vector2(p.x,p.y)),true);
     for(const h of cells()){
@@ -627,6 +628,7 @@ export class Adventure extends Phaser.Scene {
         stroke=0xf7ae73;width=2;priority=5;
       }
       if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;priority=6;}
+      if(valveVents.has(id)&&!affected.has(id)){color=0x4bada7;alpha=.25;stroke=0x9ae4cc;width=2;priority=6;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);priority=8;if(alpha===.12){color=0xd7a548;alpha=.22;}}
@@ -662,6 +664,9 @@ export class Adventure extends Phaser.Scene {
     if(canAct&&aimed&&this.selected!=='move'&&ABILITIES[this.selected].shape==='bounce'&&legalAim(b,u!,this.selected,aimed)){
       const points=shape(b,u!,this.selected,aimed).map(toPixel);if(points.length===2)this.grid.lineStyle(4,0xf4d49c,.9).lineBetween(points[0].x,points[0].y-20,points[1].x,points[1].y-20);
     }
+    if(canAct&&aimed&&this.selected!=='move'&&ABILITIES[this.selected].shape==='diagonal'&&legalAim(b,u!,this.selected,aimed)){
+      const ray=shape(b,u!,this.selected,aimed),first=ray[0],last=ray.at(-1);if(first&&last){const start=diagonalStart(u!.hex,first),end=toPixel(last);this.grid.lineStyle(2,0xf4d49c,.9).lineBetween(start.x,start.y,end.x,end.y);}
+    }
     if(this.plan?.action==='move'&&u){const path=movement(b,u).get(key(this.plan.hex))?.path??[];this.grid.lineStyle(3,0xe8d6a2,.9);this.grid.beginPath();const start=toPixel(u.hex);this.grid.moveTo(start.x,start.y);for(const h of path){const p=toPixel(h);this.grid.lineTo(p.x,p.y);}this.grid.strokePath();}
   }
   private drawInitiative() {
@@ -671,6 +676,7 @@ export class Adventure extends Phaser.Scene {
   private renderBattleControls() {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
+    const abilities=battleAbilities(b,u);if(this.selected!=='move'&&!abilities.includes(this.selected)){this.selected='move';this.plan=undefined;}
     const commandScroll=this.ui.controls.dataset.unit===u.id?(this.ui.controls.querySelector('.command-list')?.scrollTop??0):0;this.ui.controls.dataset.unit=u.id;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
     this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / 6<div class="bar focus"><span style="width:${u.focus/6*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
@@ -686,7 +692,7 @@ export class Adventure extends Phaser.Scene {
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },
     });
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...u.abilities.map((id,i)=>({label:ABILITIES[id].name+(ABILITIES[id].bonus?' · Extra':ABILITIES[id].team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||!!(ABILITIES[id].bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:teamStatus(b,u,id).reason??ABILITIES[id].description})),
+    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>({label:ABILITIES[id].name+(ABILITIES[id].bonus?' · Extra':ABILITIES[id].team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||!!(ABILITIES[id].bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:teamStatus(b,u,id).reason??ABILITIES[id].description})),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]);
     this.ui.status.textContent=player?(u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&ABILITIES[this.selected].range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
@@ -712,14 +718,17 @@ export class Adventure extends Phaser.Scene {
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
       const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);
-      const fixture=fixtureAt(b,aimed),team=teamStatus(b,u,this.selected).partner;
-      const description=ability.effect==='taunt'?`All ${hits.length} enemies target ${u.name} until ${u.name}’s next turn.`:hits.map(v=>ability.effect==='shove'?`${v.name}: ${pushDestination(b,u,v)?'push one hex':'push blocked'} · no damage`:ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId,teamStatus(b,u,this.selected as AbilityId).partner)} guard`:ability.effect==='focus'?`${v.name}: +${damage(u,v,this.selected as AbilityId,teamStatus(b,u,this.selected as AbilityId).partner)} focus`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId,teamStatus(b,u,this.selected as AbilityId).partner)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId,teamStatus(b,u,this.selected as AbilityId).partner)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`).join(' · ')||(fixture?`${fixture.name}: ${fixture.kind==='valve'?`steam ${fixture.active?'off':'on'} on marked hexes`:`${fixture.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`:'Empty ground');
-      if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='guard'||ability.effect==='weaken'||ability.effect==='focus'||ability.effect==='taunt'||ability.effect==='shove'||ability.effect==='terrain'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
+      const team=teamStatus(b,u,this.selected).partner,footprint=shape(b,u,this.selected,aimed);
+      const fixtures=damagingAbility(this.selected)?b.fixtures?.filter(f=>f.hp>0&&footprint.some(h=>equal(f.hex,h)))??[]:[];
+      const descriptions=hits.map(v=>ability.effect==='shove'?`${v.name}: ${pushDestination(b,u,v)?'push one hex':'push blocked'} · no damage`:ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} guard`:ability.effect==='focus'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} focus`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId,team)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId,team)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`);
+      descriptions.push(...fixtures.map(f=>`${f.name}: ${f.kind==='valve'?`steam ${f.active?'off':'on'} on marked hexes`:`${f.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`));
+      const description=ability.effect==='taunt'?`All ${hits.length} enemies target ${u.name} until ${u.name}’s next turn.`:descriptions.join(' · ')||'Empty ground';
+      if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='guard'||ability.effect==='weaken'||ability.effect==='focus'||ability.effect==='taunt'||ability.effect==='shove'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
       const text=document.createElement('span');text.className='prediction';text.textContent=(team?`${u.name} + ${team.name} · both turns · ${ability.team!.cost} focus each. `:'')+description+(this.selected==='daybreak'?` · each ally also gains up to ${daybreakGuard(u)} guard`:'');confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
   }
   private selectAction(action: Action) {
-    const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&ABILITIES[action].bonus&&u.bonusUsed))return;
+    const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||ABILITIES[action].bonus&&u.bonusUsed)))return;
     this.selected=action;this.plan=undefined;
     if(action!=='move'&&ABILITIES[action].range===0&&legalAim(this.battle!,u,action,u.hex)){
       this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
@@ -751,7 +760,7 @@ export class Adventure extends Phaser.Scene {
   }
   private doDefend() {if(this.busy||active(this.battle!)?.side!=='party')return;defend(this.battle!);this.audio.effect('defend');this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}
   private doWait() {if(this.busy||active(this.battle!)?.side!=='party')return;if(wait(this.battle!)){this.plan=undefined;this.hover=undefined;this.selected='move';this.animateBattle(new Map());}}
-  private battleSnapshot():BattleSnapshot {return new Map([...this.battle!.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]as const),...(this.battle!.fixtures??[]).map(f=>[`fixture:${f.id}`,{hex:{...f.hex},hp:f.hp}]as const)]);}
+  private battleSnapshot():BattleSnapshot {return new Map([...this.battle!.units.map(v=>[v.id,{hex:{...v.hex},hp:v.hp}]as const),...(this.battle!.fixtures??[]).map(f=>[`fixture:${f.id}`,{hex:{...f.hex},hp:f.hp,active:f.active}]as const)]);}
   private animateBattle(before:BattleSnapshot,action?:BattleMotion) {
     const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
     const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
@@ -762,7 +771,7 @@ export class Adventure extends Phaser.Scene {
     const preview=this.battlePresentation;
     const timing=actor&&action?.ability?preview?.attackTiming?.(actor):undefined;
     const enemyAttack=actor?.side==='enemy'&&!!action?.ability;
-    const rich=!!action?.ability&&(['axis','bounce'].includes(ABILITIES[action.ability].shape)||!!ABILITIES[action.ability].team);
+    const rich=!!action?.ability&&(['axis','diagonal','bounce'].includes(ABILITIES[action.ability].shape)||!!ABILITIES[action.ability].team);
     const contact=timing?.contact??(enemyAttack&&!animatedHero(hero??'')?220:ATTACK_CONTACT_MS);
     const path=action?.path,stepMs=reduced?0:95,travel=path?path.length*stepMs:0,impact=travel+(action?.ability&&!reduced?contact:0);
     const duration=path&&!action?.ability?Math.max(80,travel+40):travel+(reduced?(enemyAttack?220:100):(timing?.duration??(rich?900:enemyAttack?560:ATTACK_DURATION_MS)));
@@ -805,6 +814,7 @@ export class Adventure extends Phaser.Scene {
       }
       this.drawBattle();
       for(const fixture of battle.fixtures??[])if(fixture.hp<=0&&(before.get(`fixture:${fixture.id}`)?.hp??0)>0){fixtureBurst(this,this.layer!,fixture.hex,fixture.kind==='drum');this.audio.effect(fixture.kind==='drum'?'drum':'shield');}
+      for(const fixture of battle.fixtures??[])if(fixture.kind==='valve'&&before.has(`fixture:${fixture.id}`)&&fixture.active!==before.get(`fixture:${fixture.id}`)?.active){valveTurn(this,this.layer!,fixture.hex,fixture.vents??[],!!fixture.active);this.audio.effect('valve');}
       if(actor&&action?.ability){
         const image=this.actorImages.get(actor.id)!;
         if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
@@ -812,7 +822,7 @@ export class Adventure extends Phaser.Scene {
         if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
         this.audio.effect(preview?.attackSound?.(actor,action.ability)??ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
-        if((actor.side==='enemy'||face||ABILITIES[action.ability].shape==='pattern')&&!preview?.attackEffect?.(this,this.layer!,image,actor,action.ability,action.affected??[]))battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'');
+        if((actor.side==='enemy'||face||ABILITIES[action.ability].shape==='pattern')&&!preview?.attackEffect?.(this,this.layer!,image,actor,action.ability,action.affected??[]))battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'',actor.hex);
       }
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
