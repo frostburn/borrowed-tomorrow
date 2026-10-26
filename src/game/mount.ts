@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { installSoundPreferences } from './sound-preferences';
 import { Adventure } from './adventure';
 import { UI } from './ui';
 import { worldView } from './resolution';
@@ -9,6 +10,7 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
     inventory:()=>adventure.inventory(),journal:()=>adventure.journal(),saves:()=>{void adventure.saves();},sound:()=>{void adventure.toggleSound();},help:()=>adventure.help(),pan:direction=>adventure.panBattle(direction),...overrides,
   });
   adventure.attach(ui);
+  if(!overrides.sound)adventure.soundPreferences=installSoundPreferences(root,adventure.audio,on=>ui.sound(on),()=>ui.toast('Audio could not start in this browser.'));
   root.addEventListener('click',event=>{const button=(event.target as HTMLElement).closest('button');if(button&&button.id!=='sound-button')adventure.audio.effect('click');});
   const display=new PixelDisplay(root,(x,y,click)=>adventure.point(x,y,click));
   // Canvas rendering keeps the compositor on one raster pipeline, avoiding GPU readback.
@@ -20,6 +22,7 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
     scene:[adventure],audio:{noAudio:true},banner:false,
   });
   // Finish all Phaser resize handlers, then sync before the next input event.
+  game.events.once('destroy',()=>adventure.soundPreferences?.close());
   game.scale.on('resize',()=>queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}}));
   game.events.on('postrender',()=>{display.attach(game.canvas);display.paint(adventure.animating,adventure.sceneryChanged);});
 
