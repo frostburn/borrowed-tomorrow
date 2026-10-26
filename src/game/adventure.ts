@@ -1,3 +1,4 @@
+import type {installSoundPreferences} from './sound-preferences';
 import {gridEdges,type HexOutline} from './hex-grid';
 import {MAP_ROOMS,TRACK_ROOMS} from '../content/rooms';
 import { alignCameraScroll } from './raster-camera';
@@ -61,6 +62,7 @@ export class Adventure extends Phaser.Scene {
   state: GameState = newGame();
   battle?: Battle;
   readonly audio = new Audio();
+  soundPreferences?:ReturnType<typeof installSoundPreferences>;
   private ui!: UI;
   private layer?: Phaser.GameObjects.Container;
   private cinematic?:Cutscene;
@@ -204,10 +206,8 @@ export class Adventure extends Phaser.Scene {
   }
   private titlePanel() {
     this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Chapter One · Leaving Home</div>', [
-      { label: 'Begin Chapter One', action: () => {
-        if (this.latestSave) this.ui.showModal('Begin a new journey?', '<p>Your manual save slots will remain available. Starting a new journey replaces the autosave.</p>', [{ label: 'Begin', action: () => { this.ui.closeModal(); this.begin(); } }]);
-        else this.begin();
-      } },
+      ...(!this.soundPreferences?.known?[{ label: 'Start adventure with sound', action: () => {void this.soundPreferences?.enable();this.requestNewGame();} }]:[]),
+      { label: 'Begin Chapter One', action: () => this.requestNewGame() },
       { label: 'Continue', disabled: !this.latestSave, action: () => { if (this.latestSave) this.loadState(this.latestSave); } },
       { label: 'Save files', action: () => this.saves() },
       ...(import.meta.env.DEV ? [{label:'Workshop',action:()=>{const url=new URL(location.href);url.searchParams.set('dev','workshop');location.assign(url);}}] : []),
@@ -270,6 +270,10 @@ export class Adventure extends Phaser.Scene {
         button.textContent=button.textContent!.replace(/^Begin /,'').replace(/ \(canonical\)$/,'');
       }
     }
+  }
+  private requestNewGame(){
+        if (this.latestSave) this.ui.showModal('Begin a new journey?', '<p>Your manual save slots will remain available. Starting a new journey replaces the autosave.</p>', [{ label: 'Begin', action: () => { this.ui.closeModal(); this.begin(); } }]);
+        else this.begin();
   }
   private begin() {
     this.state = newGame(); this.state.location=arrival('station','start'); this.ui.clearPanel(); this.showWorld();
@@ -873,7 +877,7 @@ export class Adventure extends Phaser.Scene {
   help() {
     this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');
   }
-  async toggleSound() { try {this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
+  async toggleSound() { try {if(this.soundPreferences)await this.soundPreferences.toggle();else this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {
     const snapshot=structuredClone(this.state);
     checkpoint(snapshot);this.latestSave=snapshot;
