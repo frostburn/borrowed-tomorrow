@@ -1,20 +1,18 @@
-import {SAY,type Dialogue} from '../dialogue';
+import {STAGED as line,type Dialogue} from '../dialogue';
 import {stage} from '../maps';
-import type {Shot} from '../cinematics';
 
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage('airship',id)},lines});
 
 export const engineWatch=(hammerplainComplete:boolean)=>scene('five-deck-orrin','Learning the engine',[
  line('Orrin',hammerplainComplete?'Hester sent the drive drawings. This time I’m reading them before I offer advice.':'Kit, you wanted to see the pressure dial. Come round this side.',{focus:{x:44,y:32},cut:true,actors:{orrin:{face:'orrin-right'},kit:{face:'kit-left'}}}),
  line('Kit',hammerplainComplete?'Does the spare have the same warning needle?':'I’d like to know when you’re actually in trouble.'),
- line('Orrin','I’d wave.'),
- line('Kit','You waved yesterday. You wanted me to move a crate.'),
+ line('Orrin','I’d wave.',{expression:'happy'}),
+ line('Kit','You waved yesterday. You wanted me to move a crate.',{expression:'happy'}),
  line('Orrin','Fair point. Here. Watch this needle when the drive takes the load.'),
  line('Kit','And if it doesn’t settle?'),
  line('Orrin','Call me. You can learn the rest with the engine stopped.'),
  line('Kit','Then I’m teaching you the landing signals. You keep waving at the post boat.'),
- line('Orrin','I wondered why it never waved back.'),
+ line('Orrin','I wondered why it never waved back.',{expression:'happy'}),
 ]);
 
 export const shieldRoom=(dawnwatchComplete:boolean)=>scene('five-deck-petra','Beside the shield',dawnwatchComplete?[
@@ -45,6 +43,6 @@ export const putThingsDown=(windmereComplete:boolean)=>scene('five-deck-celia','
  line('Petra','You said that when I came over.'),
  line('Celia','Did I? All right. Leave the list on the table.'),
  line('Petra','Do you play cards?'),
- line('Celia','Badly.'),
- line('Petra','Good. So do I.'),
+ line('Celia','Badly.',{expression:'happy'}),
+ line('Petra','Good. So do I.',{expression:'happy'}),
 ]);

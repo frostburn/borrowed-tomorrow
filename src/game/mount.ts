@@ -21,7 +21,7 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
   });
   // Finish all Phaser resize handlers, then sync before the next input event.
   game.scale.on('resize',()=>queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}}));
-  game.events.on('postrender',()=>{display.attach(game.canvas);display.paint(adventure.animating);});
+  game.events.on('postrender',()=>{display.attach(game.canvas);display.paint(adventure.animating,adventure.sceneryChanged);});
 
   window.addEventListener('resize',()=>adventure.resizeView());
 

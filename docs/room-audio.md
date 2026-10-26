@@ -4,7 +4,9 @@ Issue #88: exploration and battles share the room of their actual campaign locat
 
 `src/content/rooms.ts` assigns every map and every track a room. Open air, timber cabins, wards, courtyards, engine halls, marble halls, caverns and the hollow domain have distinct sizes, return levels and damping. Dry is the comparison option. Changing these authored presets changes future room instances, without changing scores or saves.
 
-The complete music/effects bus enters one shared dry/room mixer before the compressor and master volume. Each room has six fixed Schroeder diffusion stages per stereo side and a damped return. Each delayed branch also passes through a unity-DC, nonresonant one-pole absorption filter before both the output and feedback. This makes high frequencies lose energy on every reflection rather than circulating at full strength behind the return filter. The lossless all-pass form is recovered when that filter is unity. There are no downloaded impulses, convolution, per-note room effects, delay modulation or changes to 31-EDO pitches. The former music-only convolution is removed.
+The complete music/effects bus enters one shared dry/room mixer before the compressor and master volume. Each room has six fixed Schroeder diffusion stages per stereo side and a damped return. Each delayed branch also passes through a unity-DC, nonresonant two-pole absorption filter before both the output and feedback. Its two real poles use the profile
+cutoff capped at 1.8 kHz; the separate return filter retains the profile
+setting. This makes high frequencies lose energy on every reflection rather than circulating at full strength behind the return filter. The lossless all-pass form is recovered when that filter is unity. There are no downloaded impulses, convolution, per-note room effects, delay modulation or changes to 31-EDO pitches. The former music-only convolution is removed.
 
 Changing rooms crossfades the old sends/returns over 280 ms. Feedback gains and delay lengths remain fixed for the life of each graph. At most two rooms coexist; faster requests retain only the latest destination. A silent scheduled source retires the outgoing graph on the audio clock, so suspension cannot run a wall-clock cleanup early. Pause fades the room to Dry under the master mute; resume selects the current map again.
 
@@ -14,4 +16,14 @@ Validation uses native `OfflineAudioContext` impulse/tone renders at 44.1/48 kHz
 
 Large rooms use restrained delay lengths, feedback and return levels to keep held strings and bells from accumulating a long resonance. Regression limits require Captain Alban's canonical Cavern to shed 99.9% of its impulse-tail energy within 1.15 seconds and the longer Hollow domain within 1.9 seconds. `tests/e2e/room-decay.spec.ts` checks normalized tail decay independently of return volume at both device rates, plus the actual Captain Alban phrase after its sources stop. Run it with `npx playwright test room-decay room-reverb` to review decay alongside transition and routing regressions. Scores, instrument releases and tuning are unchanged.
 
-The courtyard used by Letters on the Water has a softer return (0.09), less feedback (0.46) and a 3.2 kHz absorption/return setting. Other room profiles retain their authored levels and geometry while sharing reflection absorption. `tests/e2e/room-absorption.spec.ts` compares 400 Hz and 4 kHz burst tails at 44.1/48 kHz; it requires audible low-frequency room energy and substantially weaker treble tails. Run `npx playwright test room-absorption room-decay room-reverb` for spectral decay, tail duration, dry reference, transition/cleanup and campaign/workshop routing checks.
+The courtyard used by Letters on the Water has a softer return (0.09), less feedback (0.46) and a 3.2 kHz return setting. Other room profiles retain their authored levels and geometry while sharing the stronger reflection absorption. `tests/e2e/room-absorption.spec.ts` compares 400 Hz and 4 kHz burst tails at 44.1/48 kHz; it requires audible low-frequency room energy and substantially weaker treble tails. Run `npx playwright test room-absorption room-decay room-reverb` for spectral decay, tail duration, dry reference, transition/cleanup and campaign/workshop routing checks.
+
+Isolated treble needs its own decay check: a broadband impulse or a comparison
+with loud bass can hide ringing. `room-absorption.spec.ts` now probes 1.6, 2.5,
+4 and 6.5 kHz bursts in the courtyard, hall and domain at both sample rates.
+It measures normalized tail duration and late-energy fraction, so reducing
+return volume alone cannot pass. A 400 Hz domain reference must retain more
+than a second of room tail. In the 48 kHz 4 kHz probe, 99.9% of the remaining
+tail clears in about 0.35 seconds after the note, versus about 1.01 seconds
+before the stronger absorption. The direct signal, instrument releases,
+score, room delay geometry and return gains are unchanged.

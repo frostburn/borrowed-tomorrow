@@ -1,8 +1,6 @@
-import { SAY,type Dialogue } from '../../dialogue';
+import { STAGED as line,type Dialogue } from '../../dialogue';
 import { stage } from '../../maps';
 import type { GameState,MapId } from '../../../rules/state';
-import type { Shot } from '../../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-north-home').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:map==='outermooring'?'nell-bed':'nell-ill',...(map==='outermooring'?{at:{x:18,y:28}}:{})}:a.id==='nell'&&map==='outermooring'?{...a,at:{x:27,y:28}}:a)},lines});
 export const arrival=(s:GameState)=>scene(s,'bellharbor','six-north-arrival','Skeld · the winter expedition',[
  line('The bell harbor','A bell sounds across the snow roofs. A pilot answers from a launch beyond the covered quay.',{focus:{x:32,y:22},cut:true}),
@@ -15,7 +13,7 @@ export const arrival=(s:GameState)=>scene(s,'bellharbor','six-north-arrival','Sk
  line('Orrin','We can open the passage. Will your expedition come with us?'),
  line('Signe','The porters are packed. Egil knows the glacier route; I know the release.'),
  line('Egil','It was a stair when I last took it. The ice has pulled back since then. We’ll see what’s left.'),
- ...(s.flags.nellRecovered?[line('Nell','We’ll bring rope. Kit, did the launch take our long coil?'),line('Kit','Under your bag. I mean—the equipment bag. I’ll get it.')]:[line('Celia','One of our companions is ill aboard. I’ll leave her care notes with your harbor medics.'),line('King Edric','They’ll take the next launch. We can keep the watch while you’re on the mountain.')]),
+ ...(s.flags.nellRecovered?[line('Nell','We’ll bring rope. Kit, did the launch take our long coil?'),line('Kit','Under your bag. I mean—the equipment bag. I’ll get it.',{expression:'bashful'})]:[line('Celia','One of our companions is ill aboard. I’ll leave her care notes with your harbor medics.'),line('King Edric','They’ll take the next launch. We can keep the watch while you’re on the mountain.')]),
  line('Signe','The covered road starts above the eastern quay. Take warm coats before we go.'),
 ]);
 export const watch=(s:GameState)=>scene(s,'frostwatch','six-north-watch','The closed mountain passage',[
@@ -31,7 +29,7 @@ export const gate=(s:GameState)=>scene(s,'frostwatch','six-north-gate','The expe
  line('Signe','I’ve got it. Egil, keep the porters back from the cable.'),
  line('The covered passage','The windlass turns. Snow falls from the rising gate; the porters shoulder their packs.',{cue:'defend',duration:1100}),
  line('Egil','Follow my tracks past the first turn. The old relief ships are below the eastern shelf.'),
- line('Kit','Ships? This high up?'),
+ line('Kit','Ships? This high up?',{expression:'surprised'}),
  line('Egil','The bay came this far once. The winter that took them never left.'),
  ...(s.flags.nellRecovered?[line('Nell','I’ll follow the last porter. Pass the rope back when everyone’s through.')]:[]),
 ]);
@@ -40,7 +38,7 @@ export const wrecks=(s:GameState)=>scene(s,'glacier','six-north-wrecks','The fle
  line('Egil','The White Finch. My father kept the engine on her.'),
  line('Signe','The memorial puts her inside the harbor. One of the rescue ships.'),
  line('Egil','Then somebody moved the harbor. That’s her name under the stern rail.'),
- line('Celia','There are coats in the small boats. They were carrying people.'),
+ line('Celia','There are coats in the small boats. They were carrying people.',{expression:'sad'}),
  line('Kit','The dispatch case is still strapped shut. Orrin, can you lift this hinge?'),
  line('Orrin','Keep your fingers clear. There.'),
  line('The dispatch','“Cut refugee tows at the outer marker. Keep the protected harbor clear. Admit only ships named in the pact.” The imperial seal is pressed beside the order.',{cue:'paper'}),

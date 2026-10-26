@@ -1,6 +1,7 @@
 import {MAP_ROOMS,TRACK_ROOMS} from '../content/rooms';
 import { alignCameraScroll } from './raster-camera';
 import { WorldMechanisms } from './world-mechanisms';
+import { MapLife } from './map-life';
 import { BoardingPresentation } from './boarding-presentation';
 import {benefactorPresentation} from './benefactor-presentation';
 import { imperialPresentation } from './imperial-presentation';
@@ -119,7 +120,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -148,10 +149,12 @@ export class Adventure extends Phaser.Scene {
     if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
   }
   private mechanisms?:WorldMechanisms;
+  private mapLife?:MapLife;
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
     return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
   }
+  get sceneryChanged(){return this.mapLife?.takeFrame()??false;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const pixelAligned=this.mode==='battle',padding=outline?1:0,canvas=document.createElement('canvas');
     canvas.width=text.length*(scale===1?8:6*scale)+padding*2;
@@ -169,6 +172,7 @@ export class Adventure extends Phaser.Scene {
   private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
     this.mechanisms?.close();this.mechanisms=undefined;
+    this.mapLife?.close();this.mapLife=undefined;
     this.boarding.clear();
     this.ui.canvas.removeAttribute('aria-description');
     this.lighting.clear();
@@ -192,6 +196,7 @@ export class Adventure extends Phaser.Scene {
   private showTitle() {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=true;
     this.mode = 'title';this.ui.battlePan.hidden=true; const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,WIDTH,HEIGHT);this.cameras.main.setScroll(Math.floor((WIDTH-view.width)/2),72);this.clearLayer();this.background('station');this.audio.setRoom(MAP_ROOMS.station);
+    this.mapLife=new MapLife(this,this.layer!,MAPS.station,this.state);
     this.ui.location(CHAPTER.title); this.ui.initiative.textContent = 'Chapter One · A journey beyond the empire';
     this.ui.controls.innerHTML = '<div class="world-objective"><h3>A journey begins at home</h3><p>Explore with the keyboard or click a destination. Battles take place on a hex grid.</p></div>';
     this.titlePanel();
@@ -305,6 +310,7 @@ export class Adventure extends Phaser.Scene {
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setRoom(MAP_ROOMS[map.id]);this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     this.lighting.attach(this.layer!,map.tiles,this.state);
     this.mechanisms=new WorldMechanisms(this,this.layer!);
+    this.mapLife=new MapLife(this,this.layer!,map,this.state);
     for(const person of visiblePeople(map,this.state)){
       this.lighting.actor(this.layer!,(person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setAlpha(person.projection?.72:1).setData('projection',!!person.projection).setData('world-actor',true).setData('person',person.id);
     }
@@ -581,8 +587,8 @@ export class Adventure extends Phaser.Scene {
     this.drawGrid();this.drawInitiative();
     this.battlePresentation?.overlay?.(this,this.layer,b);
   }
-  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1) {
-    const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+HEX_SIZE*Math.cos(a),p.y+HEX_SIZE*Math.sin(a));});
+  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1,radius=HEX_SIZE) {
+    const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+radius*Math.cos(a),p.y+radius*Math.sin(a));});
     if(alpha>0)g.fillStyle(color,alpha).fillPoints(points,true);
     g.lineStyle(width,stroke,.78).strokePoints(points,true);
   }
@@ -598,20 +604,28 @@ export class Adventure extends Phaser.Scene {
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     for(const h of cells()){
       const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1;
+      const reachable=!!reachableHexes?.get(id)?.path.length;
       if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;}
       if(b.grounding?.plates.some(p=>equal(p,h))){color=b.grounding.open?0x4b9787:0x3b7bba;alpha=.48;stroke=0x9be8e4;width=3;}
       if(b.vents.has(id)){color=0xb95025;alpha=.4;stroke=0xffbf6a;}
       if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;}
       else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;}
       if(occupied.has(id)){color=0x29233b;alpha=.5;stroke=0xbe965d;width=2;}
-      if(danger.has(id)){color=0xad4937;alpha=.4;stroke=0xf7ae73;width=2;}
+      if(danger.has(id)){
+        if(reachable){color=0x568d99;alpha=.32;}else{color=0xad4937;alpha=.4;}
+        stroke=0xf7ae73;width=2;
+      }
       if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);if(alpha===.12){color=0xd7a548;alpha=.22;}}
       if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;}
       this.hexPolygon(h,color,alpha,stroke,width);
-      if(danger.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(p.x-6,p.y-6,p.x+6,p.y+6);this.grid.lineBetween(p.x-6,p.y+6,p.x+6,p.y-6);}
+      if(danger.has(id)){
+        if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,HEX_SIZE-5);
+        const p=toPixel(h),x=Math.round(p.x/2)*2,y=Math.round((p.y-20)/2)*2;
+        this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(x-4,y-4,x+4,y+4);this.grid.lineBetween(x-4,y+4,x+4,y-4);
+      }
       if(b.evacuation?.route.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(2,0xf4cc72,.95);this.grid.lineBetween(p.x-9,p.y+15,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+10,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+20,p.x+9,p.y+15);}
       if(b.grounding?.plates.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(3,0xb7f0df,1);this.grid.lineBetween(p.x,p.y-9,p.x,p.y+7);for(let row=0;row<3;row++)this.grid.lineBetween(p.x-10+row*3,p.y+7+row*5,p.x+10-row*3,p.y+7+row*5);}
       if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
@@ -655,11 +669,14 @@ export class Adventure extends Phaser.Scene {
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):ABILITIES[this.selected].description;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
+    if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(!aimed)return;
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
-      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
+      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}
+        if(b.units.some(v=>v.hp>0&&v.intent?.cells.some(h=>equal(h,aimed)))){const warning=document.createElement('span');warning.className='prediction';warning.textContent='Threatened destination · an enemy has marked this hex.';confirm.append(warning);}
+      }
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
       const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);

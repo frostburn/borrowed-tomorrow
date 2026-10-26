@@ -1,3 +1,4 @@
+import {expressivePortrait} from '../content/portrait-expressions';
 import type { Choice, Dialogue } from '../content/dialogue';
 import { portraitAsset, speakerPortrait } from '../content/characters';
 import { artPath } from '../content/art-assets';
@@ -61,8 +62,8 @@ export class UI {
     const d = this.dialogue!; const line = d.lines[this.lineIndex];
     const last = this.lineIndex === d.lines.length - 1;
     this.onLine?.(this.lineIndex);this.sceneLayer.classList.toggle('cinematic',!!d.scene);
-    const portrait=line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who);
-    this.sceneLayer.innerHTML = `<section class="dialogue${last&&d.choices?'':' dialogue-linear'}" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt="${esc(line.who)}"/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
+    const portrait=expressivePortrait(line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who),line.expression);
+    this.sceneLayer.innerHTML = `<section class="dialogue${last&&d.choices?'':' dialogue-linear'}" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt="${esc(line.who)}" data-expression="${line.expression??'neutral'}"/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
     const buttons = this.sceneLayer.querySelector<HTMLElement>('.dialogue-actions')!;
     if(d.scene){
       const bar=document.createElement('div');bar.className='cinema-bar';bar.innerHTML=`<span>${esc(d.scene.title)}</span>`;

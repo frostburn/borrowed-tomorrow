@@ -1,7 +1,5 @@
-import { SAY,type Dialogue } from '../dialogue';
+import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage } from '../maps';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 
 export const airfield=()=>scene('airfield','five-airfield','Chapter Five · Taking the World Back',[
@@ -23,8 +21,8 @@ export const launch=()=>scene('airfield','five-launch','Above the railway',[
  line('Alda','Mooring brake is free. Everyone aboard. Mind the survey rods.',{focus:{x:31,y:23},cut:true,actors:{durn:{visible:false}}}),
  line('Kit','I’ll take the heavy case.'),
  line('Nell','Which one?'),
- line('Kit','Yours. If you— I mean, I’m already carrying the others.'),
- line('Nell','Thanks. I’ll get the door.'),
+ line('Kit','Yours. If you— I mean, I’m already carrying the others.',{expression:'bashful'}),
+ line('Nell','Thanks. I’ll get the door.',{expression:'happy'}),
  line('The gangway','The last bag goes aboard. Alda folds the gangway and releases the mooring.',{effect:'survey-board',duration:1400,focus:{x:32,y:21}} ),
  line('Alda','Hold a rail. She lifts a little nose-first.',{effect:'survey-launch',duration:1800,cue:'steam',focus:{x:32,y:18}}),
 ]);
@@ -46,7 +44,7 @@ export const hammerplain=()=>scene('hammerplain','five-hammer','The stopped shif
  line('Superintendent Durn','Finish the anchor quota and I can apply for its release.'),
  line('Hester','You said that last shift. And you’ve taken the engines we built to run the houses.'),
  line('Superintendent Durn','Their iron is required at the gantry.'),
- line('Orrin','You’re melting them? Those don’t even use crystals.'),
+ line('Orrin','You’re melting them? Those don’t even use crystals.',{expression:'angry'}),
  line('Hester','They don’t. That’s why we made them.'),
  line('Petra','Step away from her.'),
  line('Superintendent Durn','Keep them out of my works.',{duration:750,actors:{durn:{to:{x:44,y:29}}},track:'durn'}),
@@ -78,7 +76,7 @@ export const gantry=()=>scene('anchorforge','five-gantry','The furnace carrier',
  line('The anchor gantry','The finished engines stand beneath the crane. A tracked furnace rolls along the casting rails toward them.',{focus:{x:34,y:19},cut:true}),
  line('Hester','Stop that carrier! There are people under the load!',{focus:{x:27,y:25}}),
  line('Superintendent Durn','Clear the floor. Feed the engines into it.'),
- line('Petra','You’ll bury your own workers.'),
+ line('Petra','You’ll bury your own workers.',{expression:'angry'}),
  line('Superintendent Durn','I have an output order. I won’t answer for a failed anchor.'),
  line('Hester','You can answer to the people in that street.'),
  line('Nell','Hester, get your crew to the starters. We’ll keep it here.'),
@@ -103,7 +101,7 @@ export const workers=()=>scene('hammerplain','five-workers','The next shift',[
  line('The engine','Hester sets the lever and turns the crank. The flywheel takes up a steady beat.',{focus:{x:37,y:25},duration:600,actors:{hester:{to:{x:37,y:25}}},cue:'steam'}),
  line('Orrin','You’ve got it.'),
  line('Hester','We did build it.'),
- line('Orrin','I know. Sorry. I’m used to doing the whole thing myself.'),
+ line('Orrin','I know. Sorry. I’m used to doing the whole thing myself.',{expression:'worried'}),
  line('Hester','Well, go and find something else to fix. We’ll run this one.'),
  line('Nell','Can you keep the houses going?'),
  line('Hester','And the ward, when we get another engine on the railway. Tell Bram there’ll be freight for him.'),

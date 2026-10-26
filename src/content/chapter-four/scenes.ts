@@ -1,20 +1,18 @@
-import { SAY, type Dialogue } from '../dialogue';
+import { STAGED as line, type Dialogue } from '../dialogue';
 import { stage } from '../maps';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:'refuge'|'breakwater'|'sanctuary',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 
 export const home=()=>scene('refuge','four-home','Chapter Four · A Light on the Water',[
  line('The railway refuge','The medical train rests beside the ward. Out on the water, a wave stands above an empty fishing boat.',{focus:{x:46,y:15},cut:true}),
  line('Tomas','Dena has everyone inside. I checked the coaches twice.',{focus:{x:31,y:27}}),
  line('Nell','You can sit down now. Nobody’s taking you anywhere.'),
- line('Tomas','I was going to say the same to you.'),
+ line('Tomas','I was going to say the same to you.',{expression:'happy'}),
  line('Petra','Dena. Where do you want these blankets?',{focus:{x:21,y:25},actors:{petra:{to:{x:22,y:25}},dena:{to:{x:21,y:24}}},duration:1100}),
  line('The ward','The man beside the ward draws his feet back as Petra approaches.'),
  line('A Cinderbank passenger','You were at the crossing. Behind that shield.'),
- line('Petra','Yes. I tried to stop your train.'),
+ line('Petra','Yes. I tried to stop your train.',{expression:'sad'}),
  line('A Cinderbank passenger','Dena can bring those over.'),
- line('Petra','Of course. I’ll leave them here.'),
+ line('Petra','Of course. I’ll leave them here.',{expression:'sad'}),
  line('The ward','Petra puts the blankets on the step and moves back. Dena takes one to the man.',{actors:{petra:{to:{x:26,y:26}}},duration:700}),
  line('Dena','The rest can go by the coach. We’ll need them tonight.'),
  line('Bram','Sorry. Is this the mechanic who brought that train out?',{actors:{bram:{to:{x:38,y:27}}},focus:{x:36,y:26}}),
@@ -37,7 +35,7 @@ export const harbor=()=>scene('breakwater','four-harbor','The closed harbor',[
  line('Orrin','The gate itself still moves. Its drive chain’s warm. We can wind it open once the guards are down.'),
  line('Celia','The signal comes from the sanctuary above us. I worked in its hospice. There’s a service stair behind the gate.'),
  line('Petra','Will your patients be all right if you leave?'),
- line('Celia','Bram can bring them to Dena. I’d like to stop the thing that’s making more of them.'),
+ line('Celia','Bram can bring them to Dena. I’d like to stop the thing that’s making more of them.',{expression:'angry'}),
  line('Nell','Then come with us.'),
  line('Celia','First, let’s get this ferry home.'),
 ]);
@@ -101,11 +99,11 @@ export const decision=()=>scene('refuge','four-choice','The sea wall',[
  line('Tomas','Bram’s ferry brought flour, oil, and a letter from Rillbridge. Tilda says her oven clock started again.',{focus:{x:24,y:27},cut:true}),
  line('Nell','Can we leave the map for a moment? There’s something we were supposed to do.'),
  line('The sea wall','Nell and Tomas walk down to the water. For a while, neither tries to speak over the wind.',{duration:1100,track:'nell',actors:{nell:{to:{x:8,y:28}},tomas:{to:{x:10,y:28}}}}),
- line('Tomas','I imagined a beach. Perhaps a less alarming boat.'),
+ line('Tomas','I imagined a beach. Perhaps a less alarming boat.',{expression:'happy'}),
  line('Nell','You said the sea. You didn’t specify the boat.'),
- line('Tomas','I’m glad we got here.'),
+ line('Tomas','I’m glad we got here.',{expression:'happy'}),
  line('Nell','Me too.'),
- line('Tomas','You’ve got me home. You can stay, if you want.'),
+ line('Tomas','You’ve got me home. You can stay, if you want.',{expression:'worried'}),
  line('Nell','That wave stopped while I was looking at it. Next time it could be this ward.'),
  line('Nell','I want to go after those anchors. I just wanted us to have this first.'),
  line('Tomas','Then I’ll keep the railway talking to you. We’ve got a lot of people who owe us a letter.'),

@@ -1,15 +1,13 @@
-import { SAY,type Dialogue } from '../../dialogue';
+import { STAGED as line,type Dialogue } from '../../dialogue';
 import { stage } from '../../maps';
 import type { GameState,MapId } from '../../../rules/state';
-import type { Shot } from '../../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-lightbearer-fall').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:'nell-ill'}:a)},lines});
 export const street=(s:GameState)=>scene(s,'stillcity','six-capital-street','Stillwater Avenue',[
  line('Stillwater Avenue','A woman pulls her cart beneath the arch. A cloth slips from the load. She turns, and the cloth is folded on top again.',{focus:{x:32,y:25},cut:true}),
  line('Kit','I caught it on the quay. She took it back without looking at me.'),
  line('The baker','Mind the tray. These are for the procession.'),
  line('The bakery','He lifts a blackened loaf from the oven, sets it on the counter, then reaches for the same loaf inside.'),
- line('Celia','His hands are blistered. He doesn’t feel the heat anymore.'),
+ line('Celia','His hands are blistered. He doesn’t feel the heat anymore.',{expression:'worried'}),
  line('Orrin','The return runs under the arch. It’s pulling the whole street back to that bell.'),
  line('Petra','Those machines are keeping people on the route. We clear them, then open the return.'),
  ...(s.flags.nellRecovered?[line('Nell','The boats are below the southern steps. We’ll keep that way clear.')]:[line('Kit','The boats are below the southern steps. I’ll mark the way back.')]),
@@ -64,19 +62,19 @@ export const morning=(s:GameState)=>scene(s,'lastmorning','six-last-morning','Be
  line('Larkspur','Ansel turns the chipped side of his cup toward himself. Tomas leans against the station clock.',{focus:{x:21,y:13},cut:true}),
  line('Ansel','Lantern trimmed? Your brother’s been waiting. Don’t leave him standing there all morning.'),
  line('Nell','I remember this cup.'),
- line('Tomas','We’ll miss the sea train if you keep talking.'),
+ line('Tomas','We’ll miss the sea train if you keep talking.',{expression:'happy'}),
  line('Nell','You always said that before you’d bought the tickets.'),
- line('Tomas','This time I got there early. Two seats by the window.'),
+ line('Tomas','This time I got there early. Two seats by the window.',{expression:'happy'}),
  line('Ansel','Bring my flask back. I don’t want to drink the station tea.'),
 ]);
 export const shore=(s:GameState)=>scene(s,'lastshore','six-memory-sea','The sea, at last',[
  line('The coast','The carriage door opens onto salt air. Tomas takes their bags, and Nell walks beside him down to the water.',{focus:{x:31,y:21},cut:true,duration:1800,actors:{nell:{to:{x:31,y:22}},tomas:{to:{x:33,y:22}}}}),
- line('Tomas','There. A proper beach, just like I promised.'),
+ line('Tomas','There. A proper beach, just like I promised.',{expression:'happy'}),
  line('Nell','You’ve brought enough bread for a week.'),
- line('Tomas','I was hungry when I bought it. Sit down before the gulls notice.'),
+ line('Tomas','I was hungry when I bought it. Sit down before the gulls notice.',{expression:'happy'}),
  line('The sea','Nell leans against her brother. The wind is warm, and the next train is hours away.',{duration:1200}),
  line('Nell','There was a woman at the quay. She kept dropping the same cloth.'),
- line('Tomas','Tell me on the train. We’ve got time.'),
+ line('Tomas','Tell me on the train. We’ve got time.',{expression:'happy'}),
  line('Nell','She couldn’t leave. Neither could the baker. His hands were burned.'),
  line('The sea','Nell looks at the bread in her lap. She remembers the blackened loaf, and Celia carrying a patient past the palace table.'),
  line('Nell','They’re still taking people’s days. How many more have they taken while we’ve been here?'),
@@ -89,7 +87,7 @@ export const shore=(s:GameState)=>scene(s,'lastshore','six-memory-sea','The sea,
 export const awake=(s:GameState)=>scene(s,'lastpalace','six-memory-wake','The days outside',[
  line('Celia','Nell. Here. Look at me.',{focus:{x:32,y:22},cut:true,actors:{celia:{to:{x:33,y:23}}}}),
  line('The gallery','Cold marble presses against Nell’s knees. She pulls herself upright and faces the Emperor.'),
- line('Nell','No. I won’t take it. Let their days go.'),
+ line('Nell','No. I won’t take it. Let their days go.',{expression:'angry'}),
  line('The gallery','Her hand is still trembling. Kit draws a chair away from the wall.'),
  line('Kit','Sit with us for a minute.'),
 ]);
@@ -102,9 +100,9 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Kit','Even with the lantern here?'),
  line('Celia','Yes. Moving it hasn’t changed her pulse.'),
  line('Orrin','If we break the vessel, the current will need somewhere else to go.'),
- line('Celia','I won’t promise she’ll survive that. We can still take her to Iria before we do this.'),
+ line('Celia','I won’t promise she’ll survive that. We can still take her to Iria before we do this.',{expression:'worried'}),
  line('Petra','The patient stair is clear. The crews can hold the landing while we return.'),
- line('Kit','Then the launch stays ready. We don’t have to leave her like this.'),
+ line('Kit','Then the launch stays ready. We don’t have to leave her like this.',{expression:'worried'}),
 ]);
 export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Emperor’s last day',[
  line('The crown platform','The palace roof opens around a crowned vessel. Two pale supports turn beneath its arms.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
@@ -130,7 +128,7 @@ export const fallen=(s:GameState)=>scene(s,'crown','six-imperial-fall','The crow
 ]);
 export const manifestation=(s:GameState)=>scene(s,'crown','six-lightbearer-rise','The Lightbearer',[
  line('The broken crown','The thread tightens. Above the ship, a small figure rises into the light. Orange cloth shows through the unfolding white plates.',{focus:{x:32,y:20},cut:true,music:'lightbearer',effect:'lightbearer-rise',duration:1700,cue:'resonance'}),
- line('Kit','Nell!'),
+ line('Kit','Nell!',{expression:'surprised'}),
  line('The Lightbearer','Her lantern hangs in her right hand. Its shutter opens, and a white line cuts through the empty crown.'),
  line('Orrin','Behind the broken wall. Now.'),
  line('The lantern','Nell’s fingers close around the shutter. The line breaks; for a moment the mantle hangs open.',{effect:'capital-thread',duration:1000}),
@@ -143,7 +141,7 @@ export const lost=(s:GameState)=>scene(s,'crown','six-lightbearer-fall','The las
  line('Celia','Lay her here. Orrin, give me your coat.'),
  line('The lantern','The fragment crumbles against the glass. Kit holds the shutter shut while Celia kneels beside him.',{silence:true,duration:1100}),
  line('Kit','She kept it closed. I saw her.'),
- line('Celia','Kit. Put the lantern down.'),
+ line('Celia','Kit. Put the lantern down.',{expression:'sad'}),
  line('The platform','He sets it beside her hand. Celia does not ask him to move away.'),
 ]);
 export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city lands',actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
@@ -160,9 +158,9 @@ export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',t
 ]});
 export const emptySeat=(s:GameState)=>scene(s,'laststation','six-empty-seat','The empty seat',[
  line('Larkspur','A coal train waits beside the platform. Tomas has put his bag on the bench, leaving the place beside the window clear.',{focus:{x:22,y:15},cut:true}),
- line('Tomas','I booked the sea train. Before your letter came.'),
- line('Kit','I brought her coat. The lantern’s wrapped inside.'),
- line('Tomas','Leave it here. Please.'),
+ line('Tomas','I booked the sea train. Before your letter came.',{expression:'sad'}),
+ line('Kit','I brought her coat. The lantern’s wrapped inside.',{expression:'sad'}),
+ line('Tomas','Leave it here. Please.',{expression:'sad'}),
  line('The platform','Kit puts the folded coat beside the bag. The station clock advances.'),
  line('Orrin','The capital’s on the ground. The last boats got everyone off the lower terraces.'),
  line('Celia','There was another report from beyond Namar. A whole orchard stopped between one picking and the next.'),

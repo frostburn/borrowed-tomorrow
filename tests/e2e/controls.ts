@@ -1,3 +1,4 @@
+import {expressivePortrait,type PortraitExpression} from '../../src/content/portrait-expressions';
 import { artPath } from '../../src/content/art-assets';
 import { expect, type Page } from '@playwright/test';
 import { ABILITIES, active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
@@ -29,7 +30,8 @@ export async function dialogue(page: Page) {
     const who=await page.locator('.dialogue h2').textContent(),portrait=who?speakerPortrait(who):undefined;
     if(portrait){
       const image=page.locator('.dialogue-portrait img');
-      await expect(image).toHaveAttribute('src',new RegExp(`/${artPath(portrait).replaceAll('.','\\.')}$`));
+      const expression=(await image.getAttribute('data-expression')??'neutral')as PortraitExpression;
+      await expect(image).toHaveAttribute('src',new RegExp(`/${artPath(expressivePortrait(portrait,expression)!).replaceAll('.','\\.')}$`));
       await expect.poll(()=>image.evaluate(img=>{const i=img as HTMLImageElement;return i.complete&&i.naturalWidth===128&&i.naturalHeight===128;})).toBe(true);
     }
     await page.locator('.dialogue-actions button').first().click();

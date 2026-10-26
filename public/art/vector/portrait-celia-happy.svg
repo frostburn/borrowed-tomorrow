@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Celia, physician — happy</title>
+<!-- Expression: happy; derived by assets/vector/portrait-expressions.py -->
+<metadata>{"reference": "8b21977:public/art/portrait-celia.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Mature long cheeks, a gently narrowed chin and calm tired eyes. Silver bob, substantial round spectacles, green medical coat and book; connected broad planes at the same face scale as Edric and Samira."}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M29 33L37 18 53 10 73 12 88 25 97 46 94 67 85 83 75 92 40 86 26 68 23 49Z" fill="#879b95"/>
+<g transform="translate(0 8)" data-part="neck">
+<path d="M49 76L48 96 64 108 81 95 78 74Z" fill="#b58261"/>
+<path d="M61 85L78 79 81 95 65 105 55 95Z" fill="#96674f"/>
+</g>
+<g data-part="neck-root">
+<polygon points="50.60,84 49.79,102 79.27,102 76.70,82" fill="#c99571"/>
+<polygon points="61.40,93 76.70,87 79.23,102 56.54,102" fill="#a7745a"/>
+</g>
+<g transform="translate(0 8)" data-part="clothing">
+<defs><clipPath id="shoulder-neckline" clipPathUnits="userSpaceOnUse"><path d="M0 0H128V160H0Z M49 76L48 96 64 108 81 95 78 74Z" clip-rule="evenodd"/></clipPath></defs>
+
+<g clip-path="url(#shoulder-neckline)">
+<path d="M1 128L10 109 32 97 49 89H80L106 102 124 128Z" fill="#385d4a"/>
+<path d="M5 123L18 108 36 100 43 128Z" fill="#5d7660"/>
+<path d="M87 98L109 110 124 128H88Z" fill="#263e39"/>
+</g>
+<path d="M42 94L48 90 63 104 79 90 87 98 70 125H52Z" fill="#d8c59b"/>
+<path d="M35 96L43 90 58 107 48 106 45 119 29 102Z M82 91L89 96 96 109 82 108 75 122 71 110Z" fill="#263e53"/>
+<path d="M59 108L65 105 69 111 65 118H59L56 113Z" fill="#d9ae62"/>
+</g>
+<path d="M40 32L54 24 72 29 83 42 86 59 81 76 69 90 59 92 47 84 38 70 34 52 34 43Z" fill="#c99571"/>
+<path d="M41 34L54 28 68 32 76 42 72 51 52 55 37 47Z" fill="#e1b68c"/>
+<path d="M78 35L83 42 86 59 81 76 69 90 59 92 58 86 72 77 77 61Z" fill="#a7745a"/>
+<path d="M36 57L45 56 51 63 47 70 39 66Z" fill="#ce9872"/>
+<path d="M43 50L53 48 59 51 56 57 44 56Z M69 49L79 51 84 54 80 58 70 56Z" fill="#ad795b"/>
+<path d="M42 44L50 42 58 44V47L50 45 43 47Z M69 44L76 42 84 45V48L76 45 69 47Z" fill="#879b95"/>
+<path d="M46 55L54 54 55 56H47Z M72 55L79 54 80 56H73Z" fill="#e8cfaa"/>
+<path d="M50 54H53V57H50Z M76 54H79V57H76Z" fill="#263e4b"/>
+<path d="M63 51L61 63 57 68 62 72 71 69 73 66 66 63Z" fill="#b17b5c"/>
+<path d="M64 54L64 64 69 67 66 69 61 67Z" fill="#e1b68c"/>
+<path d="M59 70L65 71 68 69 69 72 64 74Z" fill="#895d49"/>
+<path d="M44 62L49 64 51 67 48 66Z M74 62L80 61 78 65 75 66Z M49 72L51 75 51 79 48 76Z M72 72L70 76 71 79 74 75Z" fill="#ad795b"/>
+<path d="M54 79L63 81 75 77 72 82 64 85 57 83Z" fill="#975f51"/>
+
+<path d="M61 88L67 87 70 85 69 88 65 90Z" fill="#e1b68c"/>
+<path d="M28 40L33 25 43 17 55 13 69 14 82 22 91 37 86 43 75 33 65 25 54 29 43 39 37 53 34 67 37 80 30 77 24 64 22 49Z" fill="#b7c1b8"/>
+<path d="M33 34L40 24 50 18 58 17 67 19 53 23 44 31 38 44 32 52 29 59Z" fill="#d2d4bc"/>
+<path d="M37 45L42 37 49 31 51 31 43 42 38 56 36 71 33 74 32 64Z" fill="#879b95"/>
+<path d="M77 22L88 30 96 46 94 65 87 78 78 85 77 79 84 66 87 48 81 34 70 27Z" fill="#b7c1b8"/>
+<path d="M77 25L85 31 91 44 88 50 84 38 74 29 68 27Z" fill="#e2d6bb"/>
+<path d="M91 44L94 52 90 68 84 78 79 82 82 71 87 58Z" fill="#687478"/>
+<path d="M40 50L45 47H55L61 51V59L56 64H45L40 59Z M43 52V57L47 61H54L58 57V52L54 50H47Z M68 51L72 48H80L86 53V60L81 64H72L68 60Z M71 53V58L74 61H80L83 58V54L79 51H74Z M61 53H68V56H61Z M34 49L40 52V55L34 52Z M86 54L89 51V54L86 57Z" fill="#2b505e"/>
+<path d="M44 48H54V50H44Z M72 49H79V51H72Z" fill="#83b2bb"/>
+<path d="M84 106L109 101 121 124 94 128H89Z" fill="#80553d"/>
+<path d="M88 108L108 104 117 122 95 126Z" fill="#9a7151"/>
+<path d="M84 106L88 107 97 128H91Z" fill="#d9ae62"/>
+<path d="M94 119L115 115 118 121 97 126Z" fill="#d8c59b"/>
+</svg>

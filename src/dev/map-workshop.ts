@@ -11,6 +11,8 @@ import { sceneArt, visibleSceneArt } from '../content/scene-art';
 import { sceneLight, lightPixels } from '../game/world-light';
 import { lightGround, paintActorShadow } from '../game/light-canvas';
 import { snapRasterWithin } from '../game/raster';
+import {lifePaused,lifeStep,sceneryAngle,swayingScenery} from '../content/map-life';
+import {lifeMasks,paintMapLife,type LifeMasks} from '../game/life-canvas';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -29,6 +31,12 @@ export class MapWorkshop {
   private failed=new Set<string>();
   private actorSurfaces=new WeakMap<HTMLImageElement,{pixels:ImageData;shadow:HTMLCanvasElement}>();
   private raf?:number;
+  private motion=new URLSearchParams(location.search).get('mapMotion')==='1';
+  private motionRaf?:number;
+  private motionStep=-1;
+  private masks?:{key:string;value:LifeMasks|undefined};
+  private reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  private motionPreference=()=>{if(this.host){this.paint();this.startMotion();}};
   private urlTimer?:ReturnType<typeof setTimeout>;
   constructor(private report:(message:string)=>void){
     const q=new URLSearchParams(location.search),cell=numbers(q.get('cell')),view=numbers(q.get('mapView'));
@@ -43,16 +51,17 @@ export class MapWorkshop {
   private get layers(){return this.entry.tiles?.layers.filter(l=>l.data)??[];}
   private get scenes(){return this.entry.tiles?.layers.filter(l=>l.name.startsWith('Scene:'))??[];}
   private clamp(p:Point){return {x:Math.max(0,Math.min(Math.floor(this.entry.width/24)-1,p.x)),y:Math.max(0,Math.min(Math.floor(this.entry.height/24)-1,p.y))};}
-  show(host:HTMLElement){this.host=host;this.render(false);}
+  show(host:HTMLElement){this.host=host;this.reduced.addEventListener('change',this.motionPreference);this.render(false);}
   hide(){
     const view=this.host?.querySelector<HTMLElement>('.map-viewport');
     if(view)this.initialView={x:view.scrollLeft/this.zoom,y:view.scrollTop/this.zoom};
     if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=undefined;
     this.host=undefined;if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;
+    if(this.motionRaf!==undefined)cancelAnimationFrame(this.motionRaf);this.motionRaf=undefined;this.reduced.removeEventListener('change',this.motionPreference);
   }
   private image(url:string){
     let image=this.images.get(url);
-    if(!image){image=new Image();this.images.set(url,image);image.onload=()=>this.repaint();image.onerror=()=>{this.failed.add(url);this.repaint();};image.src=url;}
+    if(!image){image=new Image();this.images.set(url,image);image.onload=()=>{this.masks=undefined;this.repaint();};image.onerror=()=>{this.failed.add(url);this.repaint();};image.src=url;}
     return image;
   }
   private repaint(){if(!this.host||this.raf!==undefined)return;this.raf=requestAnimationFrame(()=>{this.raf=undefined;if(this.host)this.paint();});}
@@ -70,7 +79,7 @@ export class MapWorkshop {
       <div class="map-toolbar" role="group" aria-label="Map chapters">${[...new Set(MAP_REVIEWS.map(m=>m.chapter))].sort((a,b)=>a-b).map(ch=>`<button data-map-chapter="${ch}" aria-pressed="${ch===e.chapter}">Chapter ${ch}</button>`).join('')}<span class="map-divider"></span>${['World','Battle'].map(kind=>`<button data-map-kind="${kind}" aria-pressed="${kind===e.kind}" ${MAP_REVIEWS.some(m=>m.chapter===e.chapter&&m.kind===kind)?'':'disabled'}>${kind}</button>`).join('')}</div>
       <div class="map-library" role="group" aria-label="Maps in chapter">${MAP_REVIEWS.filter(m=>m.chapter===e.chapter&&m.kind===e.kind).map(m=>`<button data-map="${m.id}" aria-pressed="${m.id===e.id}">${esc(m.id)}</button>`).join('')}</div>
       <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?sceneArt(e.tiles)?'Traced SVG scene / 24px navigation':'24px tiles':'Native painting'}</p>
-      <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
+      <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-motion" aria-pressed="${this.motion}">Scenery motion</button><button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
       <aside class="map-sidebar"><h3>Layers</h3><p>Toggle layers or use Only to isolate one.</p><div class="map-layers" role="group" aria-label="Map layers">${this.layers.map(l=>`<div><button data-map-layer="${l.id}" aria-label="Show ${esc(l.name)}" aria-pressed="${!this.hidden.has(l.id)}">${esc(l.name)}${layerVisible(l,{flags:this.flags})?'':' (story hidden)'}</button><button data-map-only="${l.id}" aria-label="Only ${esc(l.name)}">Only</button></div>`).join('')||'<p>Single scene; no tile layers.</p>'}</div>
@@ -90,6 +99,7 @@ export class MapWorkshop {
     bind('[data-map-scene]',b=>{this.scene=b.dataset.mapScene!;const actor=e.tiles?mapPoints(e.tiles,this.scene)[0]:undefined;if(actor)this.selected=gridPoint(actor);this.render(false);});
     bind('[data-map-overlay]',b=>{const o=b.dataset.mapOverlay!;if(this.overlays.has(o))this.overlays.delete(o);else this.overlays.add(o);this.render();});
     bind('[data-map-zoom]',b=>{this.zoom=Number(b.dataset.mapZoom);this.render(false);});
+    bind('#map-motion',()=>{this.motion=!this.motion;this.render();});
     bind('#map-reset',()=>{this.hidden.clear();this.render();});
     bind('#map-arrival',()=>{this.selected=gridPoint(mapPoints(e.tiles!,'Arrivals')[0]);this.render(false);});
     bind('#map-retry',()=>{for(const url of this.failed)this.images.delete(url);this.failed.clear();this.paint();});
@@ -110,7 +120,14 @@ export class MapWorkshop {
     for(const details of host.querySelectorAll('details'))details.open=opened.includes(details.querySelector('summary')?.textContent??'');
     host.querySelector('.map-sidebar')!.scrollTop=keepView?sideScroll:0;outer.scrollTop=outerScroll;
     if(view){viewport.scrollLeft=view.x*this.zoom;viewport.scrollTop=view.y*this.zoom;}else this.center();
-    viewport.onscroll=()=>{this.alignView(viewport);if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=setTimeout(()=>{this.urlTimer=undefined;this.syncUrl();},150);};this.alignView(viewport);this.paint();this.syncUrl();
+    viewport.onscroll=()=>{this.alignView(viewport);if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=setTimeout(()=>{this.urlTimer=undefined;this.syncUrl();},150);};this.alignView(viewport);this.paint();this.syncUrl();this.startMotion();
+  }
+  private get motionActive(){return this.motion&&!this.reduced.matches&&!lifePaused(this.entry.id,this.flags);}
+  private startMotion(){
+    if(this.motionRaf!==undefined)cancelAnimationFrame(this.motionRaf);this.motionRaf=undefined;this.motionStep=-1;
+    if(!this.host||!this.motionActive)return;
+    const tick=(time:number)=>{if(!this.host||!this.motionActive){this.motionRaf=undefined;return;}const step=lifeStep(time);if(step!==this.motionStep){this.motionStep=step;this.paint();}this.motionRaf=requestAnimationFrame(tick);};
+    this.motionRaf=requestAnimationFrame(tick);
   }
   private alignView(v:HTMLElement){v.scrollLeft=snapRasterWithin(v.scrollLeft,0,v.scrollWidth-v.clientWidth);v.scrollTop=snapRasterWithin(v.scrollTop,0,v.scrollHeight-v.clientHeight);}
   private center(){const v=this.host!.querySelector<HTMLElement>('.map-viewport')!;v.scrollLeft=(this.selected.x+.5)*24*this.zoom-v.clientWidth/2;v.scrollTop=(this.selected.y+.5)*24*this.zoom-v.clientHeight/2;this.alignView(v);}
@@ -125,11 +142,17 @@ export class MapWorkshop {
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
     const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
+    const time=this.motionActive?performance.now():undefined;
     const rig=sceneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
     if(pieces){
       for(const piece of pieces){
-        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y);};
-        if(piece.depth>=0)sorted.push({depth:piece.depth,draw});else draw();
+        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(!image.complete||!image.naturalWidth)return;ctx.save();const angle=sceneryAngle(piece,time);if(angle){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(angle);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);ctx.drawImage(vectorSurface(image),0,0);ctx.restore();};
+        if(piece.depth>=0||swayingScenery(piece))sorted.push({depth:piece.depth,draw});else draw();
+      }
+      if(time!==undefined&&e.tiles){
+        const key=JSON.stringify([e.id,this.flags,[...this.hidden]]);
+        if(this.masks?.key!==key){const value=lifeMasks(e.id,e.tiles,this.flags,pieces,p=>{const img=this.image(`${import.meta.env.BASE_URL}${p.url}`);return img.complete&&img.naturalWidth?vectorSurface(img):undefined;});this.masks={key,value};}
+        sorted.push({depth:-999.4,draw:()=>paintMapLife(ctx,e.id,this.masks?.value,time)});
       }
     }else if(e.tiles){
       for(const page of tilePages(e.tiles))this.image(`${import.meta.env.BASE_URL}${page.url}`);
@@ -193,6 +216,7 @@ export class MapWorkshop {
   private syncUrl(){
     if(!this.host)return;const url=new URL(location.href),q=url.searchParams,view=this.host.querySelector<HTMLElement>('.map-viewport')!;
     q.set('dev','maps');q.set('map',this.entry.id);q.set('cell',`${this.selected.x},${this.selected.y}`);q.set('mapZoom',String(this.zoom));q.set('mapView',`${Math.round(view.scrollLeft/this.zoom)},${Math.round(view.scrollTop/this.zoom)}`);q.set('mapOverlays',[...this.overlays].sort().join(','));
+    if(this.motion)q.set('mapMotion','1');else q.delete('mapMotion');
     for(const [key,value] of [['mapHide',[...this.hidden].sort((a,b)=>a-b).join(',')],['mapFlags',Object.keys(this.flags).filter(f=>this.flags[f]).sort().join(',')],['mapScene',this.scene]])if(value)q.set(key,value);else q.delete(key);
     if(url.href!==location.href)history.replaceState(null,'',url);
   }

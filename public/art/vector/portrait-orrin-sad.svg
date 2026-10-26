@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Orrin, engine mechanic — sad</title>
+<!-- Expression: sad; derived by assets/vector/portrait-expressions.py -->
+<metadata>{"reference": "ec894d8:public/art/portrait-orrin.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Open brows, continuous warm beard planes, a closed mouth and thick dark beard, substantial nose and a practical sidelong gaze. Navy cap and brass goggles; cream sleeves, blue work overalls and leather straps."}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M2 128L11 107 33 94 49 87H81L106 101 124 128Z" fill="#baa989"/>
+<path d="M5 123L19 106 35 98 42 128Z" fill="#d8c59b"/>
+<path d="M88 96L109 109 124 128H88Z" fill="#8e806a"/>
+<path d="M33 102L48 94 65 106 82 94 96 105 94 128H31Z" fill="#233d52"/>
+<path d="M48 74L47 96 65 110 84 94 80 72Z" fill="#ad795b"/>
+<path d="M61 84L81 78 84 94 67 106 54 96Z" fill="#895d49"/>
+<path d="M40 92L48 88 64 103 82 88 90 98 70 118 52 108Z" fill="#d8c59b"/>
+<path d="M31 98L38 97 42 128H34Z M88 99L94 101 90 128H83Z" fill="#623d29"/>
+<path d="M34 111H42V119H34Z M84 112H92V120H84Z" fill="#c69c5c"/>
+<path d="M36 113H40V117H36Z M86 114H90V118H86Z" fill="#233d52"/>
+<path d="M31 32L41 20 62 15 82 24 94 41 95 64 88 84 74 98 49 91 36 75 28 53Z" fill="#372a25"/>
+<path d="M39 32L54 24 74 28 86 43 89 59 84 75 73 88 59 91 45 81 37 67 33 49Z" fill="#c99571"/>
+<path d="M40 34L54 28 69 31 79 42 73 51 48 55 36 46Z" fill="#e1b68c"/>
+<path d="M80 34L86 43 89 59 84 75 73 88 59 91 58 86 73 77 80 63Z" fill="#a7745a"/>
+<path d="M34 55L44 57 50 64 46 70 38 65Z" fill="#ce9872"/>
+<path d="M42 49L53 47 59 51 56 57 43 56Z M70 48L81 50 87 54 83 58 72 56Z" fill="#a7745a"/>
+<path d="M41 47L57 39 59 42 42 50Z M70 39L87 46V49L70 42Z" fill="#372a25"/>
+<path d="M44 52L54 51 55 54H45Z M73 53L82 52 83 55H74Z" fill="#e8cfaa"/>
+<path d="M49 51H52V55H49Z M78 52H81V56H78Z" fill="#263e4b"/>
+<path d="M63 49L60 61 56 67 62 72 74 69 75 65 68 62 68 52Z" fill="#b17b5c"/>
+<path d="M64 52L63 63 70 66 67 69 61 67Z" fill="#e1b68c"/>
+<path d="M59 70L65 71 69 69V72L64 74Z" fill="#895d49"/>
+<path d="M34 66L43 71 48 77 61 82 75 79 86 69 89 67 86 84 77 99 64 106 48 97 38 84Z" fill="#623d29"/>
+<path d="M38 73L45 77 55 82 64 85 66 96 63 102 51 94 43 85Z" fill="#80583c"/>
+<path d="M80 82L87 76 83 91 74 102 65 106 67 98Z" fill="#49362c"/>
+<path d="M48 73L58 70 65 73 74 71 81 74 79 78 68 79 62 77 55 79 47 77Z" fill="#754c33"/>
+<path d="M57 81L65 78 72 80 72 82 65 81 58 83Z" fill="#49362c"/>
+<path d="M31 42L38 33 40 43 36 56 33 62 29 54Z" fill="#623d29"/>
+<path d="M28 25L34 13 52 7 75 11 90 23 95 36 84 40 53 33 28 32Z" fill="#233d52"/>
+<path d="M33 23L40 16 54 12 71 15 83 22 67 21 46 24Z" fill="#3e596b"/>
+<path d="M28 30L48 25 77 30 94 35 85 41 53 34 29 36Z" fill="#122634"/>
+<path d="M35 25L43 23 50 28 51 37 46 43H38L32 37V30Z M59 27L68 25 75 30 76 39 71 45H63L57 39V32Z" fill="#c69c5c"/>
+<path d="M36 29L42 27 47 30 47 36 44 39 38 38 35 34Z M61 31L67 29 72 32 72 38 69 41 63 40 60 36Z" fill="#80553d"/>
+<path d="M37 30L42 28 46 31 43 36 38 35Z M62 32L67 30 71 33 68 38 63 37Z" fill="#9ab5a9"/>
+<path d="M50 32H58V35H50Z" fill="#c69c5c"/>
+</svg>

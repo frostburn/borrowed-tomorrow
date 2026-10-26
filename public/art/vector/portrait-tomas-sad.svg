@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Tomas, Nell’s brother — sad</title>
+<!-- Expression: sad; derived by assets/vector/portrait-expressions.py -->
+<metadata>{"reference": "ec894d8:public/art/portrait-tomas.png", "method": "Independent polygon drawing in the Edric/Samira portrait direction", "construction": "Longer cheek, firm adult jaw, thick brows and a warm restrained smile. Swept tousled brown hair, rust railway scarf and blue coat; broad near-frontal face."}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M1 128L10 109 32 96 49 87H81L107 101 125 128Z" fill="#233d52"/>
+<path d="M5 123L18 108 36 99 44 128Z" fill="#3e596b"/>
+<path d="M88 96L110 110 125 128H89Z" fill="#122634"/>
+<path d="M48 75L47 97 65 109 84 94 80 73Z" fill="#b58261"/>
+<path d="M60 85L80 79 84 94 66 106 54 95Z" fill="#96674f"/>
+<path d="M31 96L46 89 64 104 82 89 97 100 75 118 63 114 68 128H49L48 110 39 106Z" fill="#9c503b"/>
+<path d="M36 97L47 94 63 109 81 94 89 98 71 114 60 110 48 103Z" fill="#bd7550"/>
+<path d="M76 111L86 107 77 128H66L65 116Z" fill="#774538"/>
+<path d="M29 99L35 98 41 128H34Z" fill="#c69c5c"/>
+<path d="M33 46L28 44 27 52 32 63H40Z M89 45L96 43 98 51 94 62 87 64Z" fill="#b58261"/>
+<path d="M39 31L55 23 74 27 86 41 89 59 85 75 77 86 66 93 54 90 44 82 36 69 33 52 33 42Z" fill="#c99571"/>
+<path d="M40 34L54 27 69 30 79 41 74 51 49 55 36 47Z" fill="#e1b68c"/>
+<path d="M80 33L86 41 89 59 85 75 77 86 66 93 54 90 58 85 73 78 79 63Z" fill="#a7745a"/>
+<path d="M35 57L44 57 51 64 47 71 39 67Z" fill="#ce9872"/>
+<path d="M42 50L53 47 59 51 56 57 43 56Z M70 49L81 51 86 54 82 58 71 56Z" fill="#a7745a"/>
+<path d="M41 47L57 39 59 42 42 50Z M71 39L86 46V49L71 42Z" fill="#372a25"/>
+<path d="M44 52L54 51 55 54H45Z M73 53L81 52 82 55H74Z" fill="#e8cfaa"/>
+<path d="M49 51H52V55H49Z M77 52H80V56H77Z" fill="#31543d"/>
+<path d="M51 52H52V55H51Z M79 53H80V56H79Z" fill="#25372b"/>
+<path d="M63 51L62 62 58 67 60 71 68 72 74 68 72 65 67 63 67 53Z" fill="#b17b5c"/>
+<path d="M64 54L64 64 70 66 70 69 64 70 61 67Z" fill="#e1b68c"/>
+<path d="M59 71L65 72 70 70 70 73 64 75Z" fill="#895d49"/>
+<path d="M53 84L62 80 69 80 77 83 75 85 67 82 60 83 55 86Z" fill="#975f51"/>
+
+<path d="M60 90L66 89 71 86 70 90 65 92Z" fill="#b58261"/>
+<path d="M28 42L31 29 38 22 37 16 48 18 55 10 67 14 79 10 84 22 95 26 92 39 86 48 79 37 69 29 58 32 51 28 42 38 37 52 34 62 29 56 26 49Z" fill="#623d29"/>
+<path d="M33 34L41 28 43 23 51 24 57 17 65 21 76 17 77 24 68 24 58 27 51 24 42 32 36 43 31 50Z" fill="#9b5d32"/>
+<path d="M83 28L92 36 94 48 91 60 86 67 83 63 87 51 86 40Z" fill="#49362c"/>
+</svg>
