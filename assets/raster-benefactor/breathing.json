@@ -1,0 +1,154 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "masterSha256": "191e33811c2861328c78b767cd498d14fa2e330e8063a2c3fc5770e5bd3e12de",
+  "masterSize": [
+    1536,
+    1024
+  ],
+  "alphaCutoff": 240,
+  "native": [
+    180,
+    144
+  ],
+  "anchor": [
+    90,
+    139
+  ],
+  "cycle": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    3,
+    2,
+    1
+  ],
+  "frames": [
+    {
+      "source": "paint/body-inhale-0.png",
+      "crop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "alphaCrop": [
+        15,
+        74,
+        491,
+        462
+      ],
+      "target": [
+        9,
+        8,
+        162,
+        132
+      ],
+      "align": [
+        0,
+        1
+      ]
+    },
+    {
+      "source": "paint/body-inhale-1.png",
+      "crop": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "alphaCrop": [
+        13,
+        65,
+        500,
+        462
+      ],
+      "target": [
+        8,
+        7,
+        163,
+        133
+      ],
+      "align": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "paint/body-inhale-2.png",
+      "crop": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "alphaCrop": [
+        15,
+        62,
+        506,
+        464
+      ],
+      "target": [
+        8,
+        6,
+        164,
+        134
+      ],
+      "align": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "paint/body-inhale-3.png",
+      "crop": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "alphaCrop": [
+        9,
+        29,
+        504,
+        434
+      ],
+      "target": [
+        7,
+        5,
+        165,
+        135
+      ],
+      "align": [
+        1,
+        0
+      ]
+    },
+    {
+      "source": "paint/body-inhale-4.png",
+      "crop": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "alphaCrop": [
+        11,
+        28,
+        503,
+        432
+      ],
+      "target": [
+        7,
+        4,
+        166,
+        136
+      ],
+      "align": [
+        1,
+        0
+      ]
+    }
+  ]
+}

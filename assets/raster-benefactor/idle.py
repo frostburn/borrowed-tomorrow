@@ -1,16 +1,7 @@
-"""Pixel-registered idle poses. Never scale, rotate or interpolate the painting.
-
-Coordinates and offsets are native pixels (one shared 2px display block).
-Only the two complete cuff/hand cutouts move on the body; the halo, face,
-shoulders, chest plate and hanging mantle remain registered to the rest pose.
-"""
+"""Pixel-registered sun/heart motion. The body's poses are dedicated paintings."""
 import numpy as np
 from PIL import Image,ImageDraw
 
-FOREARMS=[
-    [(0,86),(42,86),(52,98),(50,106),(57,118),(51,132),(0,132)],
-    [(180,86),(138,86),(128,98),(130,106),(123,118),(129,132),(180,132)],
-]
 SUN_CRYSTAL=[(82,46),(96,44),(108,63),(102,83),(88,96),(70,76),(71,58)]
 
 def mask(image,polygon):
@@ -41,12 +32,7 @@ def crystal_light(image,polygon,strength):
 
 def idle(form,rest,i):
     light=[0,1,2,3,4,3,2,1][i]*.035
-    if form=='body':
-        image=rest.copy()
-        # The cuff covers its elbow joint as it rises; the hand never deforms.
-        lift=[0,0,0,-1,-1,-1,0,0][i]
-        for polygon in FOREARMS:image=cutout(image,polygon,0,lift)
-        return crystal_light(image,[(79,61),(90,57),(102,70),(96,82),(87,84),(78,73)],light)
+    if form=='body':raise ValueError('Body breathing must use its painted key poses')
     if form=='sun':
         # The ring, rays and aperture remain perfectly still. Only the small
         # crystal floats inside the opaque dark aperture, with no rotation.

@@ -8,8 +8,9 @@ available. **Help → Vector actors / Raster actors** selects the models;
 
 ## Reviewed sources
 
-`paint/` contains five transparent **180×144** key poses and two indexed
-**256×240** arena halves. Built-in ImageGen painted these using the existing
+`paint/` contains the original five transparent **180×144** rest/attack poses,
+five dedicated body breathing paintings and two indexed **256×240** arena
+halves. Built-in ImageGen painted these using the existing
 models/arena as geometry references and the approved raster cast as the style
 reference. `prompts.json` records the exact prompts; `generation.json` records
 master hashes, explicit crops, alpha bounds and registration. Full generated
@@ -50,8 +51,8 @@ sources are then animated with exact pixel blits, indexed without dithering and
 given binary transparency. Runtime uses exact **2× nearest expansion**, before
 frame cropping or lighting. A boss-local 255-color palette avoids changing the
 reviewed ordinary cast when rebuilding this kit. `palette.json` freezes the
-reviewed boss palette, so editing motion never recolors the resting artwork
-or attack poses. Arena halves share their own
+reviewed boss palette, so the new breathing paintings do not recolor the
+existing attack poses or other forms. Arena halves share their own
 palette. Dynamic lighting remains unrestricted RGB.
 
 Each model retains **360×288 logical frames**, eight idle phases over 3.2s and
@@ -61,19 +62,35 @@ into the existing **720×1728 logical atlas** once, before frame crops and alpha
 picking. This preserves footprints, placement and targeting. The two map
 panels reconstruct **1024×480** world pixels. No combat or story data changes.
 
-`idle.py` authors the idle poses on the **180×144 native grid**. Both complete
-cuff/hand cutouts lift one native pixel at the crest; the halo, aperture,
-shoulders, chest plate and lower mantle stay fixed. The hollow sun's ring/rays
-stay fixed while its small crystal moves by zero, one or two whole pixels.
-The exposed heart floats as a rigid sprite at the same integer offsets.
-Only selected turquoise crystal facets change illumination. No idle pose
-scales, rotates, interpolates or resamples the painting. The eight-phase clock
-includes held poses instead of fractional in-betweens. Frame zero and all
-four attack frames retain their exact previously reviewed pixel colors.
+The body uses **five separately painted breathing poses**, not a deformation
+of the resting painting. The chest fills, cowl rises, shoulders open, mantle
+panels flare and connected arms follow. `breathing.json` selects them in the
+eight-phase **0,1,2,3,4,3,2,1** cycle. Every finished pose is **180×144**, with
+the lower mantle point fixed at native **(90,139)**. The exporter copies their
+palette indices exactly, with no second RGB quantization; there is no pose
+interpolation, scaling or procedural body
+motion. This replaces the earlier rigid torso with lifting cuff cutouts.
+
+`breathing-prompts.json` records the initial generation and targeted correction
+that keeps the face opening round. The vector cycle supplies the motion guide,
+and the accepted painting supplies the material/identity reference. The five
+reviewed panels are cropped from that corrected sheet, cleaned of outer haze,
+uniformly registered once, indexed with the frozen palette, and aligned on the
+native grid. Unused duplicate/uncorrected poses are excluded. Recover them only
+from the exact master recorded in `breathing.json`:
+
+```sh
+python3 assets/raster-benefactor/register-breath.py /path/to/breathing-master.png
+npm run art:raster-benefactor
+```
+
+`idle.py` now serves the sun and heart forms: the sun ring stays fixed while
+its small crystal moves in whole pixels; the exposed heart floats rigidly.
+Their existing frames and all four body attack frames remain byte-identical.
 
 `conversion.json` audits all eleven runtime files, their dimensions, byte counts
 and SHA-256 hashes. Every file remains below the ordinary **128 KiB** guard;
-the largest current panel is under **44 KiB**. No upload limit was raised.
+the largest current panel is under **46 KiB**. No upload limit was raised.
 
 ## Review
 
@@ -85,8 +102,8 @@ independently. Reduced motion holds frame zero; restart cancels attacks.
 `tests/raster-benefactor.test.ts` audits page coverage, files and map bounds.
 `tests/e2e/benefactor-raster.spec.ts` compares actual rendered boss pixels,
 breathing and attack/recovery on desktop and fractional-DPR phones. Its
-idle checks also compare every native pose's fixed details, rigid hands,
-unchanging sun silhouette and translated heart pixels, catching resampling
-deformation rather than merely checking that frames look different. Existing
+idle checks compare each body atlas frame against its actual source painting,
+verify the fixed base and expanding shoulder/mantle silhouettes, and retain
+the unchanging sun silhouette/translated heart checks. Existing
 boss-preview tests retain picking, damage, restart and campaign-isolation
 coverage. Detailed browser checks remain outside the small default CI gate.

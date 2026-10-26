@@ -9,6 +9,7 @@ from idle import idle,shift
 ROOT=Path(__file__).resolve().parents[2];HERE=Path(__file__).resolve().parent
 ACTORS=ROOT/'public/art/raster-actors/benefactor';MAPS=ROOT/'public/art/raster-maps/benefactor'
 ACTORS.mkdir(parents=True,exist_ok=True);MAPS.mkdir(parents=True,exist_ok=True)
+breathing=json.loads((HERE/'breathing.json').read_text())
 
 def source(name):
     a=np.asarray(Image.open(HERE/'paint'/f'{name}.png').convert('RGBA')).copy()
@@ -17,7 +18,9 @@ def source(name):
 
 def frame(form,i):
     rest=source(form+'-rest')
-    if i<8:return idle(form,rest,i)
+    if i<8:
+        if form=='body':return Image.open(HERE/breathing['frames'][breathing['cycle'][i]]['source']).copy()
+        return idle(form,rest,i)
     if form=='body':
         image=source('body-gather' if i in (8,9) else 'body-release' if i==10 else 'body-rest')
         if i==8:image=shift(image,0,1)
@@ -57,9 +60,21 @@ audits=[]
 for form,poses in frames.items():
     stem='benefactor'+(''if form=='body'else'-'+form)+'-motion';pages=[]
     for page_index in range(3):
-        page=Image.new('RGBA',(360,288))
-        for j in range(4):page.alpha_composite(poses[page_index*4+j],(j%2*180,j//2*144))
-        path=ACTORS/(stem+(''if page_index==0 else'-'+str(page_index))+'.png');indexed(page,path)
+        path=ACTORS/(stem+(''if page_index==0 else'-'+str(page_index))+'.png')
+        if form=='body' and page_index<2:
+            # These are final indexed paintings. RGB->palette conversion can
+            # remap even existing palette colors through the quantizer cache.
+            # Copy indices directly so every source pixel survives unchanged.
+            page=Image.new('P',(360,288),255);page.putpalette(colors+[0,0,0])
+            for j in range(4):
+                pose=poses[page_index*4+j]
+                assert pose.mode=='P' and pose.getpalette()[:765]==colors
+                page.paste(pose,(j%2*180,j//2*144))
+            page.save(path,optimize=True,transparency=255)
+        else:
+            page=Image.new('RGBA',(360,288))
+            for j in range(4):page.alpha_composite(poses[page_index*4+j],(j%2*180,j//2*144))
+            indexed(page,path)
         item=audit(path);audits.append(item)
         pages.append({'url':item['url'],'x':0,'y':page_index*576,'width':720,'height':576})
     vector='art/vector/benefactor/'+stem+'.svg'

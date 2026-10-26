@@ -3,10 +3,40 @@ import {inspect,capture} from './controls';
 import {RASTER_ACTORS} from '../../src/content/actor-art-skin';
 import {benefactorDomainArt} from '../../src/content/scene-art';
 import {mkdir,writeFile} from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
+const bodyBreathing=JSON.parse(readFileSync('assets/raster-benefactor/breathing.json','utf8')) as {frames:{source:string}[];cycle:number[]};
 
 const labels=['Campaign · the Benefactor','Campaign · hollow sun','Campaign · exposed heart'];
 const stems=['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion'];
-test('idle poses preserve fixed details and rigid native pixel shapes',async({page})=>{
+test('body breathing plays the five painted poses exactly, with an anchored expanding form',async({page})=>{
+ await page.goto('/?dev=boss');
+ const poses=bodyBreathing.frames.map(f=>'data:image/png;base64,'+readFileSync(`assets/raster-benefactor/${f.source}`).toString('base64'));
+ const result=await page.evaluate(async({poses,cycle})=>{
+  const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);return ctx;};
+  const references=await Promise.all(poses.map(async p=>(await decode(p)).getImageData(0,0,180,144).data));
+  const pages=await Promise.all(['','-1'].map(s=>decode(`/art/raster-actors/benefactor/benefactor-motion${s}.png`)));
+  const exact=cycle.map((pose,i)=>{
+   const pixels=pages[Math.floor(i/4)].getImageData(i%2*180,Math.floor(i%4/2)*144,180,144).data;
+   let different=0,edge=0;
+   for(let p=0;p<pixels.length;p++)if(pixels[p]!==references[pose][p])different++;
+   for(let x=0;x<180;x++)edge+=pixels[x*4+3]+pixels[(143*180+x)*4+3];
+   for(let y=0;y<144;y++)edge+=pixels[y*180*4+3]+pixels[(y*180+179)*4+3];
+   return {different,edge,anchor:pixels[(139*180+90)*4+3]};
+  });
+  const rest=references[0],peak=references[4];
+  const regions=[[25,27,130,45],[65,57,50,46],[48,92,83,47]].map(([left,top,w,h])=>{
+   let changed=0,silhouette=0;
+   for(let y=top;y<top+h;y++)for(let x=left;x<left+w;x++){
+    const p=(y*180+x)*4;if([0,1,2,3].some(c=>rest[p+c]!==peak[p+c]))changed++;
+    if(rest[p+3]!==peak[p+3])silhouette++;
+   }return {changed,silhouette};
+  });return {exact,regions};
+ },{poses,cycle:bodyBreathing.cycle});
+ expect(result.exact).toEqual(Array.from({length:8},()=>({different:0,edge:0,anchor:255})));
+ expect(result.regions.every(r=>r.changed>100)).toBe(true);
+ expect(result.regions[0].silhouette).toBeGreaterThan(10);expect(result.regions[2].silhouette).toBeGreaterThan(10);
+});
+test('sun and heart idle poses preserve their rigid native pixel shapes',async({page})=>{
  await page.goto('/?dev=boss');
  const result=await page.evaluate(async stems=>{
   const report=[];
@@ -22,14 +52,7 @@ test('idle poses preserve fixed details and rigid native pixel shapes',async({pa
      const p=(y*180+x)*4,sx=x-dx,sy=y-dy,q=(sy*180+sx)*4;
      return (alphaOnly?[3]:[0,1,2,3]).every(c=>pixels[p+c]===(sx<0||sx>=180||sy<0||sy>=144?0:rest[q+c]));
     };
-    if(stem==='benefactor-motion'){
-     for(let y=0;y<144;y++)for(let x=0;x<180;x++){
-      const cuff=y>=85&&y<=133&&(x<=58||x>=122),crystal=x>=77&&x<=104&&y>=56&&y<=85;
-      if(!cuff&&!crystal&&!same(x,y))fixed++;
-     }
-     const hands=[-1,0].filter(dy=>[12,140].every(left=>Array.from({length:24*18},(_,p)=>same(left+p%24,100+Math.floor(p/24),0,dy)).every(Boolean)));
-     report.push({fixed,rigid:hands.length===1});
-    }else if(stem==='benefactor-sun-motion'){
+    if(stem==='benefactor-sun-motion'){
      for(let y=0;y<144;y++)for(let x=0;x<180;x++)if(!(x>=68&&x<=110&&y>=40&&y<=99)&&!same(x,y))fixed++;
      // Its opaque aperture and complete ring/ray silhouette never deform.
      report.push({fixed,rigid:Array.from({length:180*144},(_,p)=>same(p%180,Math.floor(p/180),0,0,true)).every(Boolean)});
@@ -42,8 +65,8 @@ test('idle poses preserve fixed details and rigid native pixel shapes',async({pa
     }
    }
   }return report;
- },stems);
- expect(result).toHaveLength(24);expect(result.every(r=>r.fixed===0&&r.rigid)).toBe(true);
+ },stems.slice(1));
+ expect(result).toHaveLength(16);expect(result.every(r=>r.fixed===0&&r.rigid)).toBe(true);
 });
 async function nativePixels(page:Page,form:number){
  const s=await inspect(page),actor=s.actors.find(a=>a.hero==='benefactor')!;

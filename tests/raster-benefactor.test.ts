@@ -5,6 +5,19 @@ import {RASTER_ACTORS,actorAtlasPages,rasterActorDimensions} from '../src/conten
 import {benefactorDomainArt,sceneArt} from '../src/content/scene-art';
 import {BATTLE_MAPS} from '../src/content/battle-maps';
 import audit from '../assets/raster-benefactor/conversion.json';
+import breathing from '../assets/raster-benefactor/breathing.json';
+
+it('body breathing has five distinct native paintings and an explicit closed cycle',()=>{
+  expect(breathing.frames).toHaveLength(5);
+  expect(breathing.cycle).toEqual([0,1,2,3,4,3,2,1]);
+  const hashes=breathing.frames.map(frame=>{
+    const b=readFileSync(`assets/raster-benefactor/${frame.source}`);
+    expect([b.readUInt32BE(16),b.readUInt32BE(20)]).toEqual([180,144]);
+    expect(b[25]).toBe(3);expect(b.length).toBeLessThanOrEqual(131072);
+    return createHash('sha256').update(b).digest('hex');
+  });
+  expect(new Set(hashes).size).toBe(5);
+});
 
 it('all three final forms have complete bounded pages for the original twelve poses',()=>{
   expect(actorAtlasPages('benefactor')).toHaveLength(9);
