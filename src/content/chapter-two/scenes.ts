@@ -1,9 +1,7 @@
-import { SAY, type Dialogue, type Line } from '../dialogue';
-import type { Shot } from '../cinematics';
+import { STAGED as line, type Dialogue, type Line } from '../dialogue';
 import { stage } from '../maps';
 import type { MapId } from '../../rules/state';
 
-const line = (who: string, text: string, shot?: Shot): Line => ({ ...SAY(who, text), shot });
 const scene = (map:MapId, id:string, title:string, lines:Line[]):Dialogue => ({scene:{id,title,actors:stage(map,id)},lines});
 
 export const arrival = () => scene('coast', 'two-coast', 'CHAPTER TWO · PRISON TRAINS', [
@@ -12,11 +10,11 @@ export const arrival = () => scene('coast', 'two-coast', 'CHAPTER TWO · PRISON 
   line('Captain Alban', 'Nothing passes the gate. Leave the bag.'),
   line('Kit', 'The parcels are medicine. I brought them through yesterday.'),
   line('The loading gate', 'A hound catches Kit’s satchel strap in its jaws. Petra draws it back by the collar.', { actors: { petra: { to: { x: 29, y: 18 } } } }),
-  line('Petra', 'He’s shown his permit. Call the machine off.'),
+  line('Petra', 'He’s shown his permit. Call the machine off.',{expression:'angry'}),
   line('Captain Alban', 'The bag goes in the coach. He can collect it when we’ve searched it.'),
-  line('Kit', 'Dena needs those bottles before her evening round.'),
+  line('Kit', 'Dena needs those bottles before her evening round.',{expression:'worried'}),
   line('The loading gate', 'Alban tears the permit across its stamp and throws the satchel through the coach door.', { focus: { x: 28, y: 17 }, cut: true, cue: 'paper', actors: { alban: { to: { x: 28, y: 15 } } } }),
-  line('Kit', 'You can’t just keep it. People are waiting for those—'),
+  line('Kit', 'You can’t just keep it. People are waiting for those—',{expression:'angry'}),
   line('Petra', 'Step back, Kit. I’ll see that the bottles aren’t broken.'),
   line('Captain Alban', 'With me, Petra. Clear the gate.', { actors: { kit: { to: { x: 28, y: 21 } }, alban: { to: { x: 35, y: 18 } }, petra: { to: { x: 37, y: 19 } } } }),
   line('Nell', 'Orrin. That’s Alban.', { focus: { x: 25, y: 25 }, cut: true, actors: { alban: { visible: false }, petra: { visible: false } } }),
@@ -37,7 +35,7 @@ export const meetKit = () => scene('coast', 'two-kit', 'THE TORN PERMIT', [
   line('Orrin', 'We can get your bag back while we’re there.'),
   line('Kit', 'Those parcels need to reach Dena. I can show you the two ways in.'),
   line('Nell', 'You don’t have to come through with us.'),
-  line('Kit', 'I’m not leaving the medicine with him. Stay behind the wall until we’ve picked a route.'),
+  line('Kit', 'I’m not leaving the medicine with him. Stay behind the wall until we’ve picked a route.',{expression:'angry'}),
 ]);
 
 export const raid = (diversion: boolean) => scene('coast', 'two-raid', diversion ? 'THE SIGNAL WALK' : 'THE LOADING GATE', [
@@ -58,11 +56,11 @@ export const raid = (diversion: boolean) => scene('coast', 'two-raid', diversion
 export const freePrisoners = () => scene('coast', 'two-prisoners', 'THE COACH OPENS', [
   line('Kit', 'Stand back from the lock. There.', { focus: { x: 27, y: 13 }, cut: true, cue: 'strike' }),
   line('The prison coach', 'Kit slides the door aside. Orrin braces a shoulder beneath a prisoner’s arm and helps him down.'),
-  line('Nell', 'Tomas! Have you seen my brother? Brown hair, red scarf?'),
+  line('Nell', 'Tomas! Have you seen my brother? Brown hair, red scarf?',{expression:'surprised'}),
   line('The prisoners', 'A man in a torn railway coat holds out a folded slip. “They took him off here this morning. He said to keep this for his sister.”'),
   line('Transfer slip', '“Tomas · palace engine works, capital. Personal custody by imperial order.” Below the stamp: “The collectors feed the engines. I saw the houses go dark. — T.”', { document: { heading: 'CAPITAL TRANSFER', lines: ['TOMAS · PALACE ENGINE WORKS', 'PERSONAL CUSTODY · IMPERIAL ORDER', 'The collectors feed the engines.', 'I saw the houses go dark. — T.'], stamp: 'TRANSFERRED' } }),
-  line('Nell', 'He’s alive. And he left us a way to find him.'),
-  line('Kit', 'My bag’s here. The bottles are still packed. Dena can take everyone at the railway ward, west of the exchange.'),
+  line('Nell', 'He’s alive. And he left us a way to find him.',{expression:'happy'}),
+  line('Kit', 'My bag’s here. The bottles are still packed. Dena can take everyone at the railway ward, west of the exchange.',{expression:'happy'}),
   line('Orrin', 'There’s a dispatch case under the bench. Medical-train clearance, all the way to the capital.'),
   line('Kit', 'I deliver to that siding. Let me see the seal.'),
   line('Nell', 'Thank you, Kit.'),

@@ -1,8 +1,7 @@
-import {SAY,type Dialogue} from '../dialogue';
+import {STAGED,type StageCue,type Dialogue} from '../dialogue';
 import {stage} from '../maps';
 import type {MapId} from '../../rules/state';
-import type {Shot} from '../cinematics';
-const l=(who:string,text:string,shot?:Shot)=>({...SAY(who,text,who==='The Benefactor'?'benefactor':undefined),shot});
+const l=(who:string,text:string,cue?:StageCue)=>STAGED(who,text,{...cue,portrait:who==='The Benefactor'?'benefactor':cue?.portrait});
 const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines:lines.map((line,index)=>index===1?{...line,shot:{focus:map==='homecoming'?{x:24,y:18}:map==='seaholiday'?{x:31,y:24}:{x:32,y:29},duration:900,...line.shot}}:line)});
 export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
  l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:29},cut:true,music:'hollowsill'}),
@@ -10,8 +9,8 @@ export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
  l('Alda','I can do that. Coming back will be your part.'),
  l('The hollow sun','A gold ring turns above the far stair. The figure beneath it lowers its hands across the road.',{focus:{x:32,y:22},duration:2200}),
  l('The Benefactor','Return to your ship. You have no place here.'),
- l('Celia','There are people in that light.',{focus:{x:32,y:29}}),
- l('Nell','Let them go.'),
+ l('Celia','There are people in that light.',{expression:'worried',focus:{x:32,y:29}}),
+ l('Nell','Let them go.',{expression:'angry'}),
  l('The Benefactor','Their lives are in my keeping. You will go no farther.',{focus:{x:32,y:22},duration:1200}),
  l('The crossing','The figure rises through the hanging water. Its hands lift clear of the stair.',{focus:{x:32,y:22},effect:'domain-withdraw',duration:1600}),
  l('Kit','There are stairs down to them. I’ll mark the turns.',{focus:{x:32,y:29}}),
@@ -190,18 +189,18 @@ export const sea=()=>scene('seaholiday','seven-sea','Tomorrow belongs to us',[
  l('Kit','That one’s a fishing boat. See the baskets?'),
  l('Nell','I remember.'),
  l('The shore','She reaches for his hand. Kit takes it, and they stand together while the boat passes.',{actors:{nell:{at:{x:29,y:22},face:'pair-hands'},kit:{visible:false}},duration:900}),
- l('Nell','I’m glad you came with us.'),
- l('Kit','So am I.'),
+ l('Nell','I’m glad you came with us.',{expression:'happy'}),
+ l('Kit','So am I.',{expression:'happy'}),
 ]);
 export const picnic=()=>scene('seaholiday','seven-picnic','A hand of cards',[
  l('Petra','Orrin. It’s your turn.',{focus:{x:32,y:26},cut:true}),
  l('Orrin','I’m deciding.',{focus:{x:32,y:26}}),
  l('Kit','You’ve got one card.'),
- l('Orrin','It’s an important decision.'),
+ l('Orrin','It’s an important decision.',{expression:'happy'}),
  l('Celia','Does he take this long with a valve?'),
  l('Nell','Longer. He explains what it ought to have done.'),
  l('Orrin','They never listen.'),
  l('Celia','Come over here, Nell. Petra’s been helping me.'),
- l('Petra','And we’re still losing.'),
- l('Nell','Deal me in.'),
+ l('Petra','And we’re still losing.',{expression:'happy'}),
+ l('Nell','Deal me in.',{expression:'happy'}),
 ]);

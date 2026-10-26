@@ -1,16 +1,15 @@
-import { SAY, type Dialogue, type Line } from './dialogue';
-import type { Cinematic, Shot } from './cinematics';
+import { STAGED as line, type Dialogue, type Line } from './dialogue';
+import type { Cinematic } from './cinematics';
 import { stage } from './maps';
 
-const line = (who: string, text: string, shot?: Shot): Line => ({ ...SAY(who, text), shot });
 const scene = (id: string, title: string, actors: Cinematic['actors'], lines: Line[]): Dialogue => ({ scene: { id, title, actors }, lines });
 
 export const opening = () => scene('one-festival', 'CHAPTER ONE · LEAVING HOME', stage('station','one-festival'), [
   line('Larkspur · festival night', 'The last train is in. Music carries from the square, and every crystal lamp bears the imperial sun.', { focus: { x: 21, y: 12 }, cut: true, cue: 'return-call' }),
   line('Stationmaster Ansel', 'Off duty, Nell. Your brother’s by the festival lanterns. He asked if you still wanted to see the sea.'),
-  line('Nell', 'He promised we’d go before I turned eighteen. I’m starting to think he means the night before.'),
+  line('Nell', 'He promised we’d go before I turned eighteen. I’m starting to think he means the night before.',{expression:'happy'}),
   line('Stationmaster Ansel', 'Give him a chance to disappoint you properly.', { actors: { nell: { to: { x: 23, y: 15 } } } }),
-  line('Nell', 'I’ll make him pick a train this time.'),
+  line('Nell', 'I’ll make him pick a train this time.',{expression:'happy'}),
 ]);
 
 export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-raid'), [
@@ -18,12 +17,12 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
   line('Nell', 'You kept finding reasons to stay in the capital. Are we going to the sea or aren’t we?'),
   line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.'),
   line('Captain Alban', 'Tomas. Step away from the girl.', { cue: 'punch', focus: { x: 29, y: 13 }, actors: { alban: { visible: true, to: { x: 29, y: 13 } } } }),
-  line('Nell', 'What’s he supposed to have done?'),
+  line('Nell', 'What’s he supposed to have done?',{expression:'worried'}),
   line('Captain Alban', 'Stolen property from the palace engine. Your brother knows what I want.'),
   line('Tomas', 'Take me. Leave her out of it.', { actors: { tomas: { to: { x: 27, y: 13 } } } }),
   line('Stationmaster Ansel', 'You don’t draw a blade in my square. Put it away.', { actors: { ansel: { to: { x: 28, y: 14 } } } }),
   line('The square', 'Ansel catches the captain’s arm. Alban turns his blade. Tomas lunges; the crystal in his hand strikes the paving.', { silence: true, cue: 'strike', actors: { ansel: { fallen: true }, tomas: { to: { x: 28, y: 13 } } } }),
-  line('Nell', 'Ansel!', { actors: { nell: { to: { x: 27, y: 14 } } } }),
+  line('Nell', 'Ansel!', {expression:'surprised', actors: { nell: { to: { x: 27, y: 14 } } } }),
   line('The broken crystal', 'A pale fleck catches in the lantern glass. A low hum runs through its handle, raising the hairs on Nell’s arm.', { silence: true, cue: 'resonance' }),
   line('The platform', 'A whistle cuts through the noise. Soldiers drag Tomas up the steps. The prison coach rolls east.', { cue: 'punch', focus: { x: 29, y: 12 }, actors: { tomas: { to: { x: 31, y: 11 } }, alban: { to: { x: 33, y: 11 } } } }),
   line('Tomas', 'Nell! Find Orrin. The old branch!', { actors: { tomas: { visible: false }, alban: { visible: false } } }),
@@ -34,19 +33,19 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
 
 export const recruit = () => scene('one-orrin', 'A WAY EAST', stage('yard','one-orrin'), [
   line('Orrin', 'I heard the train. Where’s Tomas?', { focus: { x: 26, y: 14 }, cut: true }),
-  line('Nell', 'They took him. Alban killed Ansel. I couldn’t—'),
-  line('Orrin', 'Sit down a moment. Here. I’ve got you.', { actors: { orrin: { to: { x: 26, y: 15 } } }, silence: true }),
+  line('Nell', 'They took him. Alban killed Ansel. I couldn’t—',{expression:'sad'}),
+  line('Orrin', 'Sit down a moment. Here. I’ve got you.', {expression:'worried', actors: { orrin: { to: { x: 26, y: 15 } } }, silence: true }),
   line('Nell', 'When the crystal broke, my lantern started humming. The handle’s still cold.'),
   line('Orrin', 'Then we’ll work that out on the way. My engine burns coal. The army can’t turn it off with a signal.'),
   line('Nell', 'Can it catch them?'),
   line('Orrin', 'The Rillbridge branch joins the main line at the eastern pass. It’s shorter. We’ll take it.'),
-  line('Orrin', 'I’m bringing the lance. Don’t stand in front of it. And if your lantern’s about to explode, warn me.', { actors: { orrin: { to: { x: 25, y: 14 } } } }),
+  line('Orrin', 'I’m bringing the lance. Don’t stand in front of it. And if your lantern’s about to explode, warn me.', {expression:'happy', actors: { orrin: { to: { x: 25, y: 14 } } } }),
   line('Nell', 'It’s never done that before. I’ll try to give you some notice.'),
 ]);
 
 export const stillness = () => scene('one-stillness', 'RILLBRIDGE', stage('rillbridge','one-stillness'), [
   line('The branch', 'Orrin leaves the engine before the town crossing. Smoke from a chimney stands in a straight column.', { focus: { x: 17, y: 18 }, cut: true, silence: true }),
-  line('Nell', 'There’s water hanging over the river. Look at the people.'),
+  line('Nell', 'There’s water hanging over the river. Look at the people.',{expression:'surprised'}),
   line('Orrin', 'The lantern’s making my teeth ache. Is it louder here?', { actors: { nell: { to: { x: 15, y: 18 } } }, cue: 'resonance' }),
   line('Nell', 'It hasn’t been quiet since the square.'),
   line('Orrin', 'That machine by the eastern carriage is still running. Same sun on its casing.'),
@@ -69,7 +68,7 @@ export const releaseVillage = () => scene('one-release', 'THE VILLAGE WAKES', st
   line('Nell', 'He said he was taking three days from every household.'),
   line('Tilda', 'Taking them? My hands—why do they hurt?'),
   line('Elspeth', 'Help me with my register. I could lift it before the bell.'),
-  line('Orrin', 'We stopped it taking any more. I don’t know how to give back what it took.', { silence: true }),
+  line('Orrin', 'We stopped it taking any more. I don’t know how to give back what it took.', {expression:'sad', silence: true }),
   line('Elspeth', 'The porter was beside the bell. Has anyone seen him?'),
   line('Tilda', 'I’ll check the station. Keep the register here.'),
   line('Nell', 'A prison coach came through. My brother was on it.'),
@@ -89,7 +88,7 @@ export const confrontation = () => scene('one-captain', 'CAPTAIN ALBAN', stage('
   line('Captain Alban', 'Already east of the border. Give me the lantern, and you can go home.'),
   line('Nell', 'You killed Ansel. You put that machine in Rillbridge. What happens when you come back for us?'),
   line('Captain Alban', 'The empire has kept your lamps lit and your fields green. Someone has to settle what it owes.'),
-  line('Nell', 'Then start with the emperor.', { actors: { nell: { to: { x: 30, y: 14 } }, alban: { to: { x: 32, y: 14 } } } }),
+  line('Nell', 'Then start with the emperor.', {expression:'angry', actors: { nell: { to: { x: 30, y: 14 } }, alban: { to: { x: 32, y: 14 } } } }),
   line('Orrin', 'His sun flare hits a whole cluster. Keep apart, and watch the orange steam outlets.', { cue: 'flare' }),
 ]);
 
@@ -98,7 +97,7 @@ export const departure = () => scene('one-departure', 'LEAVING HOME', stage('tun
   line('Nell', 'Then that’s where we’re going.'),
   line('Captain Alban', 'The exchange is under military guard. You won’t get near him.', { actors: { alban: { to: { x: 38, y: 14 } } } }),
   line('Orrin', 'He’s gone. The engine’s ready.', { actors: { alban: { visible: false } } }),
-  line('Nell', 'Ansel wanted me to see the sea. He’d be furious about this route.'),
+  line('Nell', 'Ansel wanted me to see the sea. He’d be furious about this route.',{expression:'sad'}),
   line('Orrin', 'We’ll complain to the stationmaster when we get back.'),
   line('Nell', 'Iona will be stationmaster now. She’ll charge us for the coal.', { actors: { nell: { to: { x: 37, y: 14 } }, orrin: { to: { x: 36, y: 14 } } }, cue: 'return-call' }),
 ]);

@@ -1,7 +1,5 @@
-import { SAY,type Dialogue } from '../dialogue';
+import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage } from '../maps';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:'airship'|'flagship',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).map(a=>a.id==='alban'?{...a,face:'alban-command'}:a.id==='nell'&&id!=='five-benefactor-claim'&&id!=='five-flagship-approach'?{...a,face:'nell-ill'}:a)},lines});
 
 export const approach=()=>scene('airship','five-flagship-approach','Through the cordon',[

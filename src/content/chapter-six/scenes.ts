@@ -1,8 +1,6 @@
-import { SAY,type Dialogue } from '../dialogue';
+import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage } from '../maps';
 import type { GameState,MapId } from '../../rules/state';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 type SceneState=Pick<GameState,'flags'>;
 const empty:SceneState={flags:{}};
 const scene=(s:SceneState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-letter'||id==='six-home').map(a=>a.id==='nell'?!s.flags.nellRecovered?{...a,face:map==='outermooring'?'nell-bed':'nell-ill',...(map==='outermooring'?{at:{x:18,y:28}}:{})}:map==='outermooring'?{...a,at:{x:27,y:28}}:a:a)},lines});
@@ -31,9 +29,9 @@ export const briefing=(s:SceneState=empty)=>scene(s,'outermooring','six-briefing
  line(s.flags.nellRecovered?'Nell':'Kit',s.flags.nellRecovered?'We should send Tomas the route too.':'I’ll tell Nell where we’re going. She’ll want Tomas to have the route.'),
  line('Alda',s.flags.nellRecovered?'Keep the landings open. Mark your course when you’re ready.':'The medics keep the berth. We keep the landings open. Mark your course when you’re ready.'),
  line('The deck','Petra unfolds a page. Cramped lines of writing cover both sides.',{focus:{x:34,y:29},actors:{kit:{to:{x:33,y:29}},petra:{face:'petra-left'}},duration:600}),
- line('Petra','I kept imagining Alban in front of the families. Having to explain the orders he gave.'),
+ line('Petra','I kept imagining Alban in front of the families. Having to explain the orders he gave.',{expression:'sad'}),
  line('Kit','And what were you going to tell them?'),
- line('Petra','I was going to stand beside them. As if I’d never stood beside him.'),
+ line('Petra','I was going to stand beside them. As if I’d never stood beside him.',{expression:'sad'}),
  line('Kit','You did stop the guns.'),
  line('Petra','After I’d tried to stop your train. That man at the ward remembered.'),
  line('Petra','Alban’s dead. They can still ask me.'),
@@ -49,7 +47,7 @@ export const letter=(s:SceneState=empty)=>scene(s,'outermooring','six-letter','T
  line('Kit',s.flags.nellRecovered?'Ines put a copy of the treatment in the same packet.':'I’ve got Sera’s notes for the river healers. I’ll keep a copy on the ship.'),
  line('Nell',s.flags.nellRecovered?'I want to write this one myself. He’ll need a proper account.':'Send Tomas the route too. And put in that I’m awake. He’ll worry if it’s all flight plans.'),
  line('Kit',s.flags.nellRecovered?'There’s a clean page by the chart.':'I left space for you. There’s a board under the blanket.'),
- line('Nell','Thank you. Stay here while I write it? You can put your bit in after mine.'),
+ line('Nell','Thank you. Stay here while I write it? You can put your bit in after mine.',{expression:'happy'}),
 ]);
 export const city=(s:SceneState=empty)=>scene(s,'namar','six-namar','The evening exchange',[
  line('Namar','A narrow postal boat slips beneath the bridge. Above the canal, awnings open for the evening market.',{focus:{x:32,y:23},cut:true}),

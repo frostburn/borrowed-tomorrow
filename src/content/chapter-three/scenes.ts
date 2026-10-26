@@ -1,8 +1,6 @@
-import { SAY,type Dialogue,type Line } from '../dialogue';
-import type { Shot } from '../cinematics';
+import { STAGED as line,type Dialogue,type Line } from '../dialogue';
 import type { MapId } from '../../rules/state';
 import { stage } from '../maps';
-const line=(who:string,text:string,shot?:Shot):Line=>({...SAY(who,text),shot});
 const scene=(map:MapId,id:string,title:string,lines:Line[]):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 export const arrival=()=>scene('northglass','three-capital','CHAPTER THREE · BENEATH THE PALACE',[
   line('The south medical siding','The clerk checks the clearance, breaks the platform seal and waves the medical coaches through.',{focus:{x:47,y:6},cut:true,cue:'paper'}),
@@ -17,9 +15,9 @@ export const refusal=()=>scene('northglass','three-refusal','THE ARREST ORDER',[
   line('Captain Alban','You want your commission restored, Petra? Seal those coaches.',{focus:{x:38,y:21},cut:true}),
   line('Petra','They’re patients. Their clearance is in order.'),
   line('Captain Alban','Their clearance is revoked. Arrest the girl and deliver her lantern to the palace.'),
-  line('Petra','I held the crossing for you. Then you ordered fire on those same coaches.'),
+  line('Petra','I held the crossing for you. Then you ordered fire on those same coaches.',{expression:'angry'}),
   line('Captain Alban','I ordered a stolen engine stopped. You have one chance to obey.'),
-  line('Petra','No. Let the passengers off.'),
+  line('Petra','No. Let the passengers off.',{expression:'angry'}),
   line('The square','Petra takes the command rod from Alban’s hand and breaks it across her knee.',{cue:'strike',actors:{petra:{to:{x:40,y:20}}}}),
   line('Dena','Back inside. Away from the windows.',{actors:{dena:{to:{x:26,y:33}}}}),
   line('Captain Alban','The machines have their orders. You can answer to the emperor.',{actors:{alban:{to:{x:46,y:17}}}}),
@@ -38,7 +36,7 @@ export const defection=()=>scene('northglass','three-defection','NO RETURN ORDER
 ]);
 export const gallery=()=>scene('relayhall','three-gallery','A VALVE HELD OPEN',[
   line('The control gallery','The intake needles sink, rise, then sink again. A man at the rear workbench is keeping one hand inside an open valve casing.',{focus:{x:23,y:15},cut:true,cue:'steam'}),
-  line('Nell','Tomas!'),
+  line('Nell','Tomas!',{expression:'surprised'}),
   line('Tomas','Nell? Stay left of the table! I’ve got its alarm line open.'),
   line('The Engine Warden','Intake interference. Disposal authorized.',{actors:{engineWarden:{to:{x:22,y:16}}}}),
   line('The control gallery','The warden lowers its shears. Tomas wedges his wrench into the casing and pulls his hand free.',{cue:'punch'}),
@@ -48,9 +46,9 @@ export const rescue=()=>scene('relayhall','three-reunion','TOMAS',[
   line('Orrin','Give me your wrist. Hold still.',{focus:{x:22,y:15},cut:true,cue:'strike'}),
   line('The workbench','The restraint falls open. Tomas steps down and Nell catches him before his bad leg gives way.',{actors:{tomas:{to:{x:23,y:15}}}}),
   line('Tomas','You came all this way.'),
-  line('Nell','You kept leaving before I got there.'),
+  line('Nell','You kept leaving before I got there.',{expression:'happy'}),
   line('Tomas','I wasn’t doing it on purpose.'),
-  line('Nell','I know.'),
+  line('Nell','I know.',{expression:'sad'}),
   line('The gallery','For a moment Nell keeps both hands twisted in his coat. The open valve hisses behind them.'),
   line('Tomas','Did Ansel make it?'),
   line('Nell','No. I stayed with him. Iona’s looking after the station.'),

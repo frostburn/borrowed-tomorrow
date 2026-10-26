@@ -4,6 +4,7 @@ import { SPRITE_CATALOG, SPRITE_GROUPS, spriteAsset, type SpriteEntry, type Spri
 import { artPath, vectorAsset } from '../content/art-assets';
 import { art } from '../game/ui';
 import { vectorSurface } from '../game/vector-image';
+import {expressivePortrait,portraitExpressions,type PortraitExpression} from '../content/portrait-expressions';
 import { animatedHero, walkingHero, ATTACK_CONTACT_MS, NELL_ATTACK_TIMES, motionFrame, motionPage, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, WALK_PHASES, type ActorMotion } from '../content/actor-motion';
 
 const backgrounds = { Slate: ['#182b32', '#234047'], Paper: ['#dac9a0', '#f4e5be'], Night: ['#080f19', '#101d28'] } as const;
@@ -22,6 +23,7 @@ export class SpriteWorkshop {
   private background: Background = 'Slate';
   private zoom = 2;
   private guides = true;
+  private expression:PortraitExpression='neutral';
   private images = new Map<string, HTMLImageElement>();
   private host?: HTMLElement;
   private motion:ActorMotion='idle';
@@ -58,6 +60,7 @@ export class SpriteWorkshop {
     if(this.motion!=='walk'&&!animatedHero(entry.id)){this.motion='idle';this.playing=false;}
     if(this.motion==='walk'&&!walkingHero(entry.id)){this.motion='idle';this.playing=false;}
     if(!entry.directions.includes(this.direction))this.direction='front';
+    if(!portraitExpressions(entry.portrait).includes(this.expression))this.expression='neutral';
     host.innerHTML = `<section class="sprite-review" aria-label="Sprite review"><header><h2>Sprites</h2><p>Compare character and enemy artwork at native size.</p></header>
       <div class="sprite-settings" role="group" aria-label="Sprite collection">${SPRITE_GROUPS.map(group=>`<button data-sprite-group="${group}" aria-pressed="${group===this.group}">${group} (${SPRITE_CATALOG.filter(character=>character.group===group).length})</button>`).join('')}</div>
       <div class="sprite-cast" role="group" aria-label="${this.group==='Party'?'Playable characters':this.group}">${entries.map(character=>`<button data-sprite-hero="${character.id}" aria-label="Inspect ${character.name}" aria-pressed="${character.id===this.hero}"><span class="sprite-card-image"><img ${character.portrait?'':'data-actor-only'} src="${art(character.portrait??character.sprite)}" alt="${character.name} ${character.portrait?'portrait':'actor'}" width="${character.portrait?128:80}" height="${character.portrait?128:80}"/></span><span>${character.name}</span></button>`).join('')}</div>
@@ -69,6 +72,11 @@ export class SpriteWorkshop {
       <section class="sprite-lineup"><h3>${this.group} lineup / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${columns*96}" height="${rows*112}" aria-label="${this.group} at native size"></canvas></div></section>
       <div class="sprite-inspector"><section><h3>${entry.name} / ${this.direction}</h3><div class="sprite-zoom" role="group" aria-label="Sprite zoom">${[1,2,3].map(zoom=>`<button data-zoom="${zoom}" aria-pressed="${zoom===this.zoom}">${zoom}x</button>`).join('')}</div><canvas role="img" class="sprite-detail" width="240" height="240" aria-label="${entry.name} ${this.direction} at ${this.zoom}x"></canvas></section>
       <section class="sprite-reference"><h3>${entry.directions.length===4?'Four directions':'Available view'} / 1x</h3><div class="sprite-scroll"><canvas role="img" width="${entry.directions.length*88}" height="112" aria-label="${entry.name} available views"></canvas></div><p>${entry.directions.map(direction=>direction[0].toUpperCase()+direction.slice(1)).join(' / ')}</p><p>${entry.hero?equipmentSide[entry.hero]+' Side views keep equipment on its anatomical side.':entry.poses?'Cutscene poses use the actual campaign escape assets.':'One front view is available for this asset.'}</p><p>Actor: 80 x 80<br/>Portrait: ${entry.portrait?'128 x 128':'not available'}<br/>Guide: row ${ACTOR_FEET} / center: column 40${vectorAsset(entry.sprite)?'<br/>Vector source / SVG / 2:1 logical proportions.':''}</p><p class="sprite-file">${artPath(spriteAsset(entry,this.direction))}${entry.portrait?'<br/>'+artPath(entry.portrait):''}</p></section></div></section>`;
+    if(entry.portrait){
+      const expressions=portraitExpressions(entry.portrait),panel=document.createElement('section');panel.className='portrait-expressions';panel.setAttribute('aria-label','Portrait expressions');
+      panel.innerHTML=`<h3>${entry.name} / portrait</h3><div class="sprite-settings" role="group" aria-label="Expression">${expressions.map(e=>`<button data-expression="${e}" aria-pressed="${e===this.expression}">${e[0].toUpperCase()+e.slice(1)}</button>`).join('')}</div><img width="128" height="128" style="image-rendering:pixelated" src="${art(expressivePortrait(entry.portrait,this.expression)!)}" alt="${entry.name} · ${this.expression}"/><p>128 x 128 · same SVG used in dialogue</p>`;
+      host.querySelector('.sprite-review')!.append(panel);
+    }
     const bind = (selector: string, action: (button: HTMLButtonElement) => void) => {
       for (const button of host.querySelectorAll<HTMLButtonElement>(selector)) button.onclick = () => {
         const scroll = host.closest('.inventory-panel')!.scrollTop;
@@ -84,6 +92,7 @@ export class SpriteWorkshop {
     bind('[data-pose]',button=>{const pose=this.entry.poses!.find(pose=>pose.sprite===button.dataset.pose)!;this.pose=pose.sprite;this.direction=pose.direction;});
     bind('[data-background]', button=>{ this.background=button.dataset.background as Background; });
     bind('[data-zoom]', button=>{ this.zoom=Number(button.dataset.zoom); });
+    bind('[data-expression]',button=>{this.expression=button.dataset.expression as PortraitExpression;});
     bind('#sprite-guides', ()=>{ this.guides=!this.guides; });
     bind('[data-motion]',button=>{this.motion=button.dataset.motion as ActorMotion;this.frame=0;this.started=performance.now();this.playing=this.motion!=='idle';});
     bind('#sprite-play',()=>{

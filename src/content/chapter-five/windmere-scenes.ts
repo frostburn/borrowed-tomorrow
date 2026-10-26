@@ -1,8 +1,6 @@
-import { SAY,type Dialogue } from '../dialogue';
+import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage,arrival } from '../maps';
 import type { MapId } from '../../rules/state';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 export const hospital=()=>scene('windmere','five-wind-arrival','The garden walk',[
  line('Windmere','A man lets go of the ward rail. His sister reaches for his elbow; he shakes his head and takes another step.',{focus:{x:37,y:25},cut:true}),

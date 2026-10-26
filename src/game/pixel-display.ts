@@ -82,13 +82,13 @@ export class PixelDisplay {
       this.fitted=fitted;this.dirty=true;
     }
   }
-  paint(animated=false){
+  paint(animated=false,sceneChanged=false){
     if(!this.native)return;
     const now=performance.now();
     const resized=this.world.width!==this.native.width||this.world.height!==this.native.height;
     if(this.wasAnimated&&!animated)this.dirty=true;
     this.wasAnimated=animated;
-    if(!resized&&!this.dirty&&(!animated||now-this.lastPaint<50))return;
+    if(!resized&&!this.dirty&&!sceneChanged&&(!animated||now-this.lastPaint<50))return;
     this.lastPaint=now;
     this.fitWorld();
     if(this.dirty){this.rebuild();this.dirty=false;}

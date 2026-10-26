@@ -1,7 +1,5 @@
-import { SAY, type Dialogue } from '../dialogue';
+import { STAGED as line, type Dialogue } from '../dialogue';
 import { stage } from '../maps';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:'refuge'|'breakwater'|'sanctuary',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 
 export const home=()=>scene('refuge','four-home','Chapter Four · A Light on the Water',[
@@ -12,9 +10,9 @@ export const home=()=>scene('refuge','four-home','Chapter Four · A Light on the
  line('Petra','Dena. Where do you want these blankets?',{focus:{x:21,y:25},actors:{petra:{to:{x:22,y:25}},dena:{to:{x:21,y:24}}},duration:1100}),
  line('The ward','The man beside the ward draws his feet back as Petra approaches.'),
  line('A Cinderbank passenger','You were at the crossing. Behind that shield.'),
- line('Petra','Yes. I tried to stop your train.'),
+ line('Petra','Yes. I tried to stop your train.',{expression:'sad'}),
  line('A Cinderbank passenger','Dena can bring those over.'),
- line('Petra','Of course. I’ll leave them here.'),
+ line('Petra','Of course. I’ll leave them here.',{expression:'sad'}),
  line('The ward','Petra puts the blankets on the step and moves back. Dena takes one to the man.',{actors:{petra:{to:{x:26,y:26}}},duration:700}),
  line('Dena','The rest can go by the coach. We’ll need them tonight.'),
  line('Bram','Sorry. Is this the mechanic who brought that train out?',{actors:{bram:{to:{x:38,y:27}}},focus:{x:36,y:26}}),
@@ -37,7 +35,7 @@ export const harbor=()=>scene('breakwater','four-harbor','The closed harbor',[
  line('Orrin','The gate itself still moves. Its drive chain’s warm. We can wind it open once the guards are down.'),
  line('Celia','The signal comes from the sanctuary above us. I worked in its hospice. There’s a service stair behind the gate.'),
  line('Petra','Will your patients be all right if you leave?'),
- line('Celia','Bram can bring them to Dena. I’d like to stop the thing that’s making more of them.'),
+ line('Celia','Bram can bring them to Dena. I’d like to stop the thing that’s making more of them.',{expression:'angry'}),
  line('Nell','Then come with us.'),
  line('Celia','First, let’s get this ferry home.'),
 ]);

@@ -1,8 +1,6 @@
-import { SAY,type Dialogue } from '../dialogue';
+import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage } from '../maps';
 import type { MapId } from '../../rules/state';
-import type { Shot } from '../cinematics';
-const line=(who:string,text:string,shot?:Shot)=>({...SAY(who,text),shot});
 const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 export const arrivalScene=()=>scene('dawnwatch','five-dawn-arrival','The lower gate',[
  line('Dawnwatch','A cart of bedding blocks the lower street. Above it, soldiers carry ammunition up the shelter steps.',{focus:{x:31,y:24},cut:true}),
