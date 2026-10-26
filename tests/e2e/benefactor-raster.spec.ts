@@ -2,9 +2,49 @@ import {test,expect,type Page} from '@playwright/test';
 import {inspect,capture} from './controls';
 import {RASTER_ACTORS} from '../../src/content/actor-art-skin';
 import {benefactorDomainArt} from '../../src/content/scene-art';
+import {mkdir,writeFile} from 'node:fs/promises';
 
 const labels=['Campaign · the Benefactor','Campaign · hollow sun','Campaign · exposed heart'];
 const stems=['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion'];
+test('idle poses preserve fixed details and rigid native pixel shapes',async({page})=>{
+ await page.goto('/?dev=boss');
+ const result=await page.evaluate(async stems=>{
+  const report=[];
+  for(const stem of stems){
+   const pages=await Promise.all(['','-1'].map(async suffix=>{
+    const image=new Image();image.src=`/art/raster-actors/benefactor/${stem}${suffix}.png`;await image.decode();
+    const canvas=document.createElement('canvas');canvas.width=360;canvas.height=288;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);return ctx;
+   }));
+   const frames=Array.from({length:8},(_,i)=>pages[Math.floor(i/4)].getImageData(i%2*180,Math.floor(i%4/2)*144,180,144).data),rest=frames[0];
+   for(const pixels of frames){
+    let fixed=0;
+    const same=(x:number,y:number,dx=0,dy=0,alphaOnly=false)=>{
+     const p=(y*180+x)*4,sx=x-dx,sy=y-dy,q=(sy*180+sx)*4;
+     return (alphaOnly?[3]:[0,1,2,3]).every(c=>pixels[p+c]===(sx<0||sx>=180||sy<0||sy>=144?0:rest[q+c]));
+    };
+    if(stem==='benefactor-motion'){
+     for(let y=0;y<144;y++)for(let x=0;x<180;x++){
+      const cuff=y>=85&&y<=133&&(x<=58||x>=122),crystal=x>=77&&x<=104&&y>=56&&y<=85;
+      if(!cuff&&!crystal&&!same(x,y))fixed++;
+     }
+     const hands=[-1,0].filter(dy=>[12,140].every(left=>Array.from({length:24*18},(_,p)=>same(left+p%24,100+Math.floor(p/24),0,dy)).every(Boolean)));
+     report.push({fixed,rigid:hands.length===1});
+    }else if(stem==='benefactor-sun-motion'){
+     for(let y=0;y<144;y++)for(let x=0;x<180;x++)if(!(x>=68&&x<=110&&y>=40&&y<=99)&&!same(x,y))fixed++;
+     // Its opaque aperture and complete ring/ray silhouette never deform.
+     report.push({fixed,rigid:Array.from({length:180*144},(_,p)=>same(p%180,Math.floor(p/180),0,0,true)).every(Boolean)});
+    }else{
+     const offsets=[-2,-1,0].filter(dy=>Array.from({length:180*144},(_,p)=>{
+      const x=p%180,y=Math.floor(p/180),core=x>=60&&x<=121&&y>=29&&y<=111;
+      return same(x,y,0,dy,core);
+     }).every(Boolean));
+     report.push({fixed,rigid:offsets.length===1});
+    }
+   }
+  }return report;
+ },stems);
+ expect(result).toHaveLength(24);expect(result.every(r=>r.fixed===0&&r.rigid)).toBe(true);
+});
 async function nativePixels(page:Page,form:number){
  const s=await inspect(page),actor=s.actors.find(a=>a.hero==='benefactor')!;
  return page.evaluate(async({actor,url})=>{
@@ -46,6 +86,10 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:900},1],['phone
    await page.emulateMedia({reducedMotion:'no-preference'});await page.mouse.move(0,0);
    const breathing=await sample(page,3300);expect(new Set(breathing.map(s=>s.frame))).toEqual(new Set(['0','1','2','3','4','5','6','7']));
    expect(new Set(breathing.map(s=>s.pixels)).size).toBeGreaterThanOrEqual(3);
+   if(process.env.BT_QA_SCREENSHOTS&&device==='desktop'){
+    const dir=`${process.env.BT_QA_SCREENSHOTS}/cycle-${form}`;await mkdir(dir,{recursive:true});
+    await Promise.all(breathing.map(s=>writeFile(`${dir}/${s.frame}.png`,Buffer.from(s.pixels.split(',')[1],'base64'))));
+   }
    const attacks=new Set<string>();
    for(let i=0;i<7&&attacks.size<4;i++){
     await expect(page.getByRole('button',{name:/^F\s+Defend$/})).toBeEnabled();

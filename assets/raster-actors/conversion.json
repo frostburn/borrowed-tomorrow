@@ -378,8 +378,8 @@
         720,
         1728
       ],
-      "bytes": 9302,
-      "sha256": "d3cb035ee1d00f53ee27d7f93c64e6194b6978c4937f38b0205554ddb1a2fec0",
+      "bytes": 10549,
+      "sha256": "b61e87fb35cfcd553f6e1301323ea06200c476fd24eea63f891a2543c55859d2",
       "pages": [
         {
           "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
@@ -387,8 +387,8 @@
             360,
             288
           ],
-          "bytes": 9302,
-          "sha256": "d3cb035ee1d00f53ee27d7f93c64e6194b6978c4937f38b0205554ddb1a2fec0"
+          "bytes": 10549,
+          "sha256": "b61e87fb35cfcd553f6e1301323ea06200c476fd24eea63f891a2543c55859d2"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-heart-motion-1.png",
@@ -396,8 +396,8 @@
             360,
             288
           ],
-          "bytes": 9493,
-          "sha256": "8e758a1dbfc2c6e8cbbe93dc62160fda00c4faf115496c1641ad0c106cb29709"
+          "bytes": 10606,
+          "sha256": "803ecdd54c9b177528a6f2803954b346ebdddbc35e5fdcd552d340355bab37e0"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-heart-motion-2.png",
@@ -421,8 +421,8 @@
         720,
         1728
       ],
-      "bytes": 28715,
-      "sha256": "96cbd651a724a54b40815730d1dc8142708b9f2129d18c52cad1c04b9fcaa52c",
+      "bytes": 29180,
+      "sha256": "adc6964f7b9e5f0fbe94f550c60c198912be922e2d4e43dc29d0165577c316bd",
       "pages": [
         {
           "url": "art/raster-actors/benefactor/benefactor-motion.png",
@@ -430,8 +430,8 @@
             360,
             288
           ],
-          "bytes": 28715,
-          "sha256": "96cbd651a724a54b40815730d1dc8142708b9f2129d18c52cad1c04b9fcaa52c"
+          "bytes": 29180,
+          "sha256": "adc6964f7b9e5f0fbe94f550c60c198912be922e2d4e43dc29d0165577c316bd"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-motion-1.png",
@@ -439,8 +439,8 @@
             360,
             288
           ],
-          "bytes": 28767,
-          "sha256": "0e8ad5c88ddb5a9d80e56dfb140de80e8d408693dac29b07f5b4ff1940123b72"
+          "bytes": 28987,
+          "sha256": "7f86f7ce29ec4130ffbb89ff7af6c36d992d3e2d3f04d55a5154cd590d7afc37"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-motion-2.png",
@@ -464,8 +464,8 @@
         720,
         1728
       ],
-      "bytes": 18350,
-      "sha256": "c6151f56a874d92148a6a39c86493e64f88cdd79be3a8668be7c5558162ca5f6",
+      "bytes": 18228,
+      "sha256": "67d928a6f1bdd1f4d7ff97800d65cf99cca8ba46757deb2c33fbb0086726e3df",
       "pages": [
         {
           "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
@@ -473,8 +473,8 @@
             360,
             288
           ],
-          "bytes": 18350,
-          "sha256": "c6151f56a874d92148a6a39c86493e64f88cdd79be3a8668be7c5558162ca5f6"
+          "bytes": 18228,
+          "sha256": "67d928a6f1bdd1f4d7ff97800d65cf99cca8ba46757deb2c33fbb0086726e3df"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-sun-motion-1.png",
@@ -482,8 +482,8 @@
             360,
             288
           ],
-          "bytes": 18342,
-          "sha256": "19efb00419c6b6ddc826af358e26ea116d19a2cbc56cd777bd0df3fe11ba7087"
+          "bytes": 18533,
+          "sha256": "3e88181b708fe348a83add41234602b7c831785cf792a89049ca5379cd51263f"
         },
         {
           "url": "art/raster-actors/benefactor/benefactor-sun-motion-2.png",

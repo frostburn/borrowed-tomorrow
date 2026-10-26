@@ -2,9 +2,9 @@
 from pathlib import Path
 import hashlib
 import json
-import math
 import numpy as np
 from PIL import Image,ImageDraw,ImageEnhance
+from idle import idle,shift
 
 ROOT=Path(__file__).resolve().parents[2];HERE=Path(__file__).resolve().parent
 ACTORS=ROOT/'public/art/raster-actors/benefactor';MAPS=ROOT/'public/art/raster-maps/benefactor'
@@ -15,23 +15,12 @@ def source(name):
     a[:,:,3]=np.where(a[:,:,3]>=128,255,0);a[a[:,:,3]==0]=0
     return Image.fromarray(a)
 
-def anchored_scale(image,sx,sy,cx=90,cy=140,dy=0):
-    return image.transform(image.size,Image.Transform.AFFINE,(1/sx,0,cx-cx/sx,0,1/sy,cy-(cy+dy)/sy),Image.Resampling.NEAREST)
-
 def frame(form,i):
     rest=source(form+'-rest')
-    if i<8:
-        breath=(1-math.cos(i/8*math.tau))/2
-        if form=='body':
-            image=anchored_scale(rest,1+breath*.004,1+breath*.014)
-            # The mantle's sole stays fixed while the shoulders/chest rise.
-            image.paste(rest.crop((0,136,180,144)),(0,136))
-        elif form=='sun':image=rest.rotate(math.sin(i/8*math.tau)*1.0,Image.Resampling.NEAREST,center=(90,70))
-        else:image=anchored_scale(rest,1+breath*.012,1+breath*.012,cy=70,dy=-breath)
-        return image
+    if i<8:return idle(form,rest,i)
     if form=='body':
         image=source('body-gather' if i in (8,9) else 'body-release' if i==10 else 'body-rest')
-        if i==8:image=anchored_scale(image,1,1,dy=1)
+        if i==8:image=shift(image,0,1)
     else:
         image=rest.copy()
         if i in (8,9):image=ImageEnhance.Brightness(image).enhance(1.04 if i==8 else 1.13)
@@ -47,12 +36,10 @@ def frame(form,i):
     return image
 
 frames={form:[frame(form,i) for i in range(12)] for form in ['body','sun','heart']}
-# A boss-local palette keeps unrelated actor assets byte-identical on rebuild.
-strip=Image.new('RGB',(180,144*36));row=0
-for poses in frames.values():
-    for image in poses:strip.paste(image.convert('RGB'),(0,row*144));row+=1
-palette=strip.quantize(colors=255,method=Image.Quantize.MEDIANCUT)
-colors=palette.getpalette()[:765];palette.putpalette(colors+[0,0,0])
+# Freeze the reviewed palette: moving one part must not recolor every other
+# part through palette retraining, and frame zero stays byte-for-byte legible.
+colors=json.loads((HERE/'palette.json').read_text())
+palette=Image.new('P',(1,1));palette.putpalette(colors+[0,0,0])
 
 def indexed(image,path):
     rgba=np.asarray(image.convert('RGBA'));p=image.convert('RGB').quantize(palette=palette,dither=Image.Dither.NONE)

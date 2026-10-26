@@ -46,10 +46,12 @@ python3 assets/raster-benefactor/register.py /path/to/boss-sheet.png /path/to/ar
 
 Registration samples the painted master once with area averaging. These are
 new painted sources, not a claim of recovered authentic pixel grids. Committed
-sources are then animated with nearest sampling, indexed without dithering and
+sources are then animated with exact pixel blits, indexed without dithering and
 given binary transparency. Runtime uses exact **2× nearest expansion**, before
 frame cropping or lighting. A boss-local 255-color palette avoids changing the
-reviewed ordinary cast when rebuilding this kit. Arena halves share their own
+reviewed ordinary cast when rebuilding this kit. `palette.json` freezes the
+reviewed boss palette, so editing motion never recolors the resting artwork
+or attack poses. Arena halves share their own
 palette. Dynamic lighting remains unrestricted RGB.
 
 Each model retains **360×288 logical frames**, eight idle phases over 3.2s and
@@ -58,6 +60,16 @@ four attack phases at the existing 220/420/660/920ms boundaries. Three small
 into the existing **720×1728 logical atlas** once, before frame crops and alpha
 picking. This preserves footprints, placement and targeting. The two map
 panels reconstruct **1024×480** world pixels. No combat or story data changes.
+
+`idle.py` authors the idle poses on the **180×144 native grid**. Both complete
+cuff/hand cutouts lift one native pixel at the crest; the halo, aperture,
+shoulders, chest plate and lower mantle stay fixed. The hollow sun's ring/rays
+stay fixed while its small crystal moves by zero, one or two whole pixels.
+The exposed heart floats as a rigid sprite at the same integer offsets.
+Only selected turquoise crystal facets change illumination. No idle pose
+scales, rotates, interpolates or resamples the painting. The eight-phase clock
+includes held poses instead of fractional in-betweens. Frame zero and all
+four attack frames retain their exact previously reviewed pixel colors.
 
 `conversion.json` audits all eleven runtime files, their dimensions, byte counts
 and SHA-256 hashes. Every file remains below the ordinary **128 KiB** guard;
@@ -72,6 +84,9 @@ independently. Reduced motion holds frame zero; restart cancels attacks.
 
 `tests/raster-benefactor.test.ts` audits page coverage, files and map bounds.
 `tests/e2e/benefactor-raster.spec.ts` compares actual rendered boss pixels,
-breathing and attack/recovery on desktop and fractional-DPR phones. Existing
+breathing and attack/recovery on desktop and fractional-DPR phones. Its
+idle checks also compare every native pose's fixed details, rigid hands,
+unchanging sun silhouette and translated heart pixels, catching resampling
+deformation rather than merely checking that frames look different. Existing
 boss-preview tests retain picking, damage, restart and campaign-isolation
 coverage. Detailed browser checks remain outside the small default CI gate.
