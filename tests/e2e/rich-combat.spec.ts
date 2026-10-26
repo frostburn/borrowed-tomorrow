@@ -80,7 +80,7 @@ test('absent team partners leave no commands or gaps in keyboard shortcuts',asyn
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');await page.getByRole('button',{name:'Practice current workshop party',exact:true}).click();
  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
  await expect(page.getByRole('button',{name:/Prism lance · Team|Falling stars · Team/})).toHaveCount(0);
- await page.keyboard.press('6');await expect(page.getByRole('button',{name:/^6\s+Safety guard$/})).toHaveClass(/selected/);await expect(page.locator('#confirmation')).toContainText('Orrin: +29 guard');
+ await page.keyboard.press('6');await expect(page.getByRole('button',{name:/^6\s+Safety guard$/})).toHaveClass(/selected/);await expect(page.locator('#confirmation')).toContainText('Orrin: +38 guard');
 });
 
 test('enemy relay charges for a full round and then spends both machine turns',async({page})=>{

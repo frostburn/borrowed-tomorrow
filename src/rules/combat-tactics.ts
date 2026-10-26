@@ -53,7 +53,7 @@ export function prepareRelay(b:Battle){
   if(u.intent?.round!==b.round){
    const previous=pair.find(v=>v.intent?.cycle===cycle)?.intent;
    const target=b.units.filter(v=>v.hp>0&&v.side!==u.side).sort((a,z)=>bodyDistance(leader,a)-bodyDistance(leader,z)||a.id.localeCompare(z.id))[0];
-   u.intent={round:b.round,cycle,name:'Relay charging',cells:[],power:17,phase:'relay',destination:previous?.destination??(target?{...target.hex}:undefined)};
+   u.intent={round:b.round,cycle,name:'Relay charging',cells:[],power:partner?abilityFor(u,'relay',partner).power:0,phase:'relay',destination:previous?.destination??(target?{...target.hex}:undefined)};
   }
   const charging=b.round%2===1,linked=u.teamSpentRound!==b.round&&teamStatus(b,u,'relay',charging).partner;
   const forced=b.units.find(v=>v.hp>0&&v.id===leader.tauntedBy&&v.side!==u.side),center=forced?.hex??u.intent.destination;

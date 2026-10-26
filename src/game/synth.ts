@@ -173,7 +173,9 @@ export class Synth {
       case 'shield':noise(0,.08,.18,900,300);tone(160,0,.16,.17,'triangle',60);tone(780,.02,.2,.08);break;
       case 'barrier':[260,520,780].forEach((hz,i)=>tone(hz,i*.04,.35,.055,'sine',hz*1.08));noise(0,.08,.08,1200);break;
       case 'revive':(['D4','A4','D5','F5','A5']as Pitch[]).forEach((p,i)=>this.note('bell',p,when+i*.07,.48,.14));break;
-      case 'lightline':case 'stars':
+      case 'stars':
+        [2800,2200,3300,1900].forEach((hz,i)=>tone(hz,i*.035,.4,.045,'sine',hz*.25));noise(.32,.12,.1,2800,750);[660,990,1320].forEach((hz,i)=>tone(hz,.44+i*.025,.23,.04));break;
+      case 'lightline':
         [900,1350,1800].forEach((hz,i)=>tone(hz,i*.045,.24,.055,'sine',hz*.75));noise(.02,.24,.12,1700,3700);break;
       case 'pressure':case 'prism':case 'relay':
         tone(120,0,.25,.12,'triangle',65);noise(.03,.4,.22,700,3600);noise(.2,.15,.14,2600,500);

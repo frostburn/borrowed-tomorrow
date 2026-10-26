@@ -1,9 +1,10 @@
 import type Phaser from 'phaser';
 import { ABILITIES, type AbilityId,type Ability } from '../rules/combat';
 import { diagonalStart, toPixel, type Hex } from '../rules/hex';
+import {drawTeamEffect,TEAM_ANIMATION,type TeamSource} from './battle-team-effects';
 
 /** Short native-world effects from a tool, or from above for celestial attacks. */
-export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability]){
+export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability],teamSources:TeamSource[]=[]){
   const g=scene.add.graphics();world.add(g);
   const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard';
   const rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
@@ -11,8 +12,9 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
   const hand={x:source.x+(face.endsWith('-left')?-26:face.endsWith('-right')?26:face.endsWith('-back')?18:-18),y:source.y-30};
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  scene.tweens.addCounter({from:0,to:1,duration:reduced?100:rich?580:300,onUpdate:tween=>{
+  scene.tweens.addCounter({from:0,to:1,duration:reduced?100:TEAM_ANIMATION[ability]?.duration??(rich?580:300),onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
+    if(drawTeamEffect(g,ability,p,affected,teamSources,reduced))return;
     if(definition.shape==='diagonal'&&origin&&affected.length){
       const start=diagonalStart(origin,affected[0]),points=affected.map(toPixel),last=points.at(-1)!,progress=reduced?1:Math.min(1,p*2);
       const tip={x:Math.round((start.x+(last.x-start.x)*progress)/2)*2,y:Math.round((start.y+(last.y-start.y)*progress)/2)*2};
