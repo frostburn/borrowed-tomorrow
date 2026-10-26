@@ -136,7 +136,7 @@ export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   if(a.effect==='terrain')return [];
   if(id==='revive')return b.units.filter(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim)).sort((a,z)=>a.id.localeCompare(z.id)).slice(0,1);
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
-  return alive(b).filter(v => (!a.enemyOnly||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
+  return alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
 }
 export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
   return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
@@ -262,11 +262,10 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
 export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?:(defenderId:string)=>void): boolean {
   if (!legalAim(b, u, id, aim)) return false;
   const a = ABILITIES[id];
-  const partner=teamStatus(b,u,id).partner,footprint=shape(b,u,id,aim);
+  const partner=teamStatus(b,u,id).partner,footprint=shape(b,u,id,aim),hit=targets(b,u,id,aim);
   u.focus -= a.cost;
   const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
   if (id === 'bandage') b.bandages--;
-  const hit = targets(b, u, id, aim);
   if(partner){partner.focus-=a.team!.cost;partner.defending=false;delete partner.pinned;u.teamSpentRound=partner.teamSpentRound=b.round;b.queue=b.queue.filter(id=>id!==partner.id);for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;log(b,`${u.name} + ${partner.name}: ${a.name} consumes both turns and ${a.team!.cost} focus each.`);}
   if(a.effect==='terrain')log(b,operateValve(b,aim));
   for (const v of hit) {

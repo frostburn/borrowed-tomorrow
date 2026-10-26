@@ -25,6 +25,12 @@ describe('shared-turn moves',()=>{
   expect(teamStatus(b,u,'prism').partner).toBe(partner);expect(cast(b,u,'prism',enemy.hex)).toBe(true);
   expect(enemy.hp).toBe(hp-predicted);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);expect(active(b)?.id).toBe('celia');
  });
+ for(const initiator of ['nell','orrin']as const)for(const focus of [3,4,5])it(`keeps both Prism operators safe when ${initiator} starts with ${focus} focus`,()=>{
+  const {b,u,partner,third,enemy}=yard();partner.hex=offset(3,3);third.hex=offset(4,3);const caster=initiator==='nell'?u:partner,other=caster===u?partner:u;b.queue=[caster.id,other.id,third.id,...b.queue.filter(id=>!['nell','orrin','celia'].includes(id))];caster.focus=focus;
+  const preview=targets(b,caster,'prism',enemy.hex),partyHp=[u.hp,partner.hp],thirdHp=third.hp,predicted=damage(caster,third,'prism',other);
+  expect(preview).toContain(third);expect(preview).not.toContain(u);expect(preview).not.toContain(partner);expect(cast(b,caster,'prism',enemy.hex)).toBe(true);
+  expect([u.hp,partner.hp]).toEqual(partyHp);expect(third.hp).toBe(thirdHp-predicted);expect(caster.focus).toBe(focus-3);expect(other.focus).toBe(3);
+ });
  for(const reason of ['focus','spent','distance','cover','dead','unlearned']as const)it(`rejects a ${reason} partner without spending any resources`,()=>{
   const {b,u,partner,enemy}=yard();
   if(reason==='focus')partner.focus=2;
@@ -91,6 +97,7 @@ describe('geometry and progression',()=>{
 });
 
 describe('support at campaign levels',()=>{
+ it('Dazzle cannot target allies while a halo only affects enemies',()=>{const {b,u,partner,enemy}=yard();expect(legalAim(b,u,'dazzle',partner.hex)).toBe(false);expect(targets(b,u,'dazzle',partner.hex)).toEqual([]);u.hex=offset(6,3);expect(targets(b,u,'dimhalo',enemy.hex).every(v=>v.side==='enemy')).toBe(true);});
  it('scales healing and guard by caster level rather than weapon damage or target stat edits',()=>{
   const {u,partner}=yard();u.level=1;expect(supportPower(u,'mend')).toBe(18);expect(supportPower(u,'guard')).toBe(10);
   u.level=15;expect(supportPower(u,'mend')).toBe(46);expect(supportPower(u,'beacon')).toBe(42);expect(supportPower(u,'guard')).toBe(31);expect(supportPower(u,'sanctuary')).toBe(29);

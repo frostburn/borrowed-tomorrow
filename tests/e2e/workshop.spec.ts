@@ -53,11 +53,11 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     expect(units.find(u => u.id === 'orrin')).toMatchObject({ hp: 66, bonus: 6, speed: 15, level: 3 });
     expect(units.find(u => u.id === 'nell')!.abilities).toContain('beacon');
     await page.keyboard.press('6'); await clickHex(page, units.find(u => u.id === 'nell')!.hex);
-    await expect(page.locator('.prediction')).toContainText('10 guard');
+    await expect(page.locator('.prediction')).toContainText('13 guard');
     await expect(page.getByRole('button', { name: 'Confirm ability', exact: true })).toBeInViewport();
     await capture(page, `workshop-guard-${device}`);
     await page.getByRole('button', { name: 'Confirm ability', exact: true }).click();
-    await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.guard).toBe(10);
+    await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.guard).toBe(13);
     await page.getByRole('button', { name: 'Workshop', exact: true }).click();
     await setLevel(page, 'Nell', 1);
     await expect(page.locator('[data-ability="beacon"]')).toContainText('Lv 5 · Locked');

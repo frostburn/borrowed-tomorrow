@@ -1,6 +1,6 @@
 # Rich combat
 
-Issue #105 now shares one rule set between campaign battles and **Workshop → Combat** (`?dev=combat`). The three fixed practice presets show new skills without editing saved character builds, inventory or campaign progress. **Practice current workshop party** uses your actual workshop settings. All commands still use the existing move-then-act flow. Equipment remains numerical; deployment and victory conditions are unchanged.
+Issue #105 now shares one rule set between campaign battles and **Workshop → Combat** (`?dev=combat`). The four fixed practice presets show new skills without editing saved character builds, inventory or campaign progress. **Practice current workshop party** uses your actual workshop settings. All commands still use the existing move-then-act flow. Equipment remains numerical; deployment and victory conditions are unchanged.
 
 ## Team abilities
 
@@ -52,7 +52,7 @@ Brass valves are passable props. Any party member can select **Turn valve**, sta
 
 The Chapter One engine shed has a breakable timber barricade. Chapter Two's loading-gate route has a working steam valve. Hammerplain's freight lift and safety store introduce pressure drums and more terrain; the freight lift and Windmere's water-lift battle also have coordinated enemies.
 
-A coordinated encounter links one ordinary guardian and one crow. On odd rounds they lock and display one shared blast area for the next even round, giving every party member a full turn to respond before even a fast crow can fire. They can spend both pending turns and two focus each to fire it, provided their link remains clear within four hexes. Kill either machine, separate them, or break sight to interrupt it; they then use their ordinary AI. Taunt redirects the affected operator's blast, and Dazzle weakens both contributions. Boss pattern rules remain independent. The Combat practice yard demonstrates the link alongside all three fixture types.
+A coordinated encounter links one ordinary guardian and one crow. On odd rounds they lock and display one shared blast area for the next even round, giving every party member a full turn to respond before even a fast crow can fire. They can spend both pending turns and two focus each to fire it, provided their link remains clear within four hexes. Kill either machine, separate them, or break sight to interrupt it; they then use their ordinary AI. Taunt redirects the affected operator's blast, and Dazzle weakens both contributions. Boss pattern rules remain independent. The Combat practice yard demonstrates the link alongside all three fixture types. The Revive preset starts with Orrin fallen on a clear hex; the other presets show linked attacks and Daybreak.
 
 ## Implementation and checks
 

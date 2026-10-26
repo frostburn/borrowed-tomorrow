@@ -50,3 +50,33 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
   });
  });
 }
+
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+ test(`revival and all three axis previews work through ordinary turns on ${device}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');
+  await page.getByRole('button',{name:'Practice Revive',exact:true}).click();
+  await page.getByRole('button',{name:/Revive$/}).click();await clickHex(page,offset(2,4));await expect(page.locator('#confirmation')).toContainText('Orrin');await page.getByRole('button',{name:'Confirm healing',exact:true}).click();
+  const revived=(await inspect(page)).battle!;expect(revived.units.find(u=>u.id==='orrin')!.hp).toBe(38);expect(revived.queue).not.toContain('orrin');await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await capture(page,`revive-result-${device}`);
+  await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();
+  for(const [hero,ability]of [['nell','Horizon light'],['celia','Falling stars'],['orrin','Pressure seam']]as const){
+   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe(hero);
+   await page.getByRole('button',{name:new RegExp(`${ability}$`)}).click();await clickHex(page,offset(7,3));await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`axis-${hero}-${device}`);
+   await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+  }
+  expect(errors).toEqual([]);
+ });
+}
+
+test('enemy relay charges for a full round and then spends both machine turns',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();
+ const initial=(await inspect(page)).battle!,crow=initial.units.find(u=>u.kind==='crow')!,guardian=initial.units.find(u=>u.kind==='guardian')!;
+ expect(crow.intent!.cells.length).toBeGreaterThan(0);expect(crow.intent!.cells).toEqual(guardian.intent!.cells);
+ await capture(page,'relay-charging');
+ for(let turn=0;turn<8;turn++){
+  await expect.poll(async()=>{const s=await inspect(page),b=s.battle!;return b.log.some(t=>t.includes('Relay barrage consumes both turns'))||!s.busy&&b.units.find(u=>u.id===b.queue[0])?.side==='party';}).toBe(true);
+  if((await inspect(page)).battle!.log.some(t=>t.includes('Relay barrage consumes both turns')))break;
+  await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+ }
+ const fired=(await inspect(page)).battle!;expect(fired.round).toBe(2);expect(fired.log.some(t=>t.includes('Relay barrage consumes both turns'))).toBe(true);expect(fired.queue).not.toContain(crow.id);expect(fired.queue).not.toContain(guardian.id);
+ await capture(page,'relay-fired');expect(errors).toEqual([]);
+});
