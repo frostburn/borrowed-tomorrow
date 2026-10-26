@@ -19,10 +19,14 @@ function yard(party:CompanionId[]=['nell','orrin','celia'],level=13,e:Encounter=
 }
 
 describe('shared-turn moves',()=>{
- it('hides team commands only when their same-side partner is absent, retaining readiness explanations for fallen or distant partners',()=>{
+ it('allows distant party and enemy teammates even when cover lies between them',()=>{
+  const {b,u,partner,enemy}=yard();partner.hex=offset(10,6);b.obstacles.add(key(partner.hex));expect(teamStatus(b,u,'prism').partner).toBe(partner);expect(cast(b,u,'prism',enemy.hex)).toBe(true);
+  const m=yard(undefined,13,{...encounter,coordinated:true});m.enemy.hex=offset(0,6);m.crow.hex=offset(10,0);m.b.obstacles.add(key(m.enemy.hex));m.b.round=2;m.b.queue=[m.crow.id,m.enemy.id,m.u.id];prepareRelay(m.b);expect(m.crow.intent!.cells.length).toBeGreaterThan(0);expect(cast(m.b,m.crow,'relay',m.crow.hex)).toBe(true);
+ });
+ it('hides team commands only when their same-side partner is absent, retaining readiness explanations for fallen partners',()=>{
   const {b,u,partner,third,enemy}=yard();b.units=b.units.filter(v=>v.id!==third.id);
   expect(battleAbilities(b,u)).not.toContain('daybreak');expect(battleAbilities(b,u)).toContain('prism');
-  partner.hex=offset(10,6);expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('clear link');
+  partner.hex=offset(10,6);expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').partner).toBe(partner);
   partner.hp=0;expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('alive');
   b.units=b.units.filter(v=>v.id!==partner.id);enemy.kind='orrin';expect(battleAbilities(b,u)).not.toContain('prism');
  });
@@ -44,12 +48,10 @@ describe('shared-turn moves',()=>{
   expect(preview).toContain(third);expect(preview).not.toContain(u);expect(preview).not.toContain(partner);expect(cast(b,caster,'prism',enemy.hex)).toBe(true);
   expect([u.hp,partner.hp]).toEqual(partyHp);expect(third.hp).toBe(thirdHp-predicted);expect(caster.focus).toBe(focus-3);expect(other.focus).toBe(3);
  });
- for(const reason of ['focus','spent','distance','cover','dead','unlearned']as const)it(`rejects a ${reason} partner without spending any resources`,()=>{
+ for(const reason of ['focus','spent','dead','unlearned']as const)it(`rejects a ${reason} partner without spending any resources`,()=>{
   const {b,u,partner,enemy}=yard();
   if(reason==='focus')partner.focus=2;
   if(reason==='spent')b.queue=b.queue.filter(id=>id!==partner.id);
-  if(reason==='distance')partner.hex=offset(10,6);
-  if(reason==='cover')b.obstacles.add(key(partner.hex));
   if(reason==='dead')partner.hp=0;
   if(reason==='unlearned')partner.abilities=partner.abilities.filter(id=>id!=='prism');
   const before=structuredClone(b);expect(teamStatus(b,u,'prism').reason).toBeTruthy();expect(cast(b,u,'prism',enemy.hex)).toBe(false);expect(b).toEqual(before);
@@ -155,10 +157,10 @@ describe('disruptible enemy links and battlefield objects',()=>{
   b.queue=[crow.id,enemy.id,u.id];expect(legalAim(b,crow,'relay',crow.hex)).toBe(false);b.queue=[enemy.id,u.id];prepareRelay(b);expect(crow.intent!.cells).toEqual(warned);
   b.round=2;b.queue=[crow.id,enemy.id,u.id];u.hex=offset(0,0);prepareRelay(b);expect(crow.intent!.cells).toEqual(warned);expect(enemy.intent!.cells).toEqual(warned);
  });
- it('clears the warning when a partner dies, has spent its turn, or loses its clear link',()=>{
-  for(const failure of ['dead','spent','far','cover']as const){
+ it('clears the warning when a partner dies, has spent its turn, or has no focus',()=>{
+  for(const failure of ['dead','spent','focus']as const){
    const {b,enemy,crow}=yard(undefined,13,{...encounter,coordinated:true});b.round=2;b.queue=[crow.id,enemy.id,'nell'];prepareRelay(b);expect(crow.intent!.cells.length).toBeGreaterThan(0);
-   if(failure==='dead')enemy.hp=0;if(failure==='spent')b.queue=b.queue.filter(id=>id!==enemy.id);if(failure==='far')enemy.hex=offset(0,6);if(failure==='cover')b.obstacles.add(key(enemy.hex));
+   if(failure==='dead')enemy.hp=0;if(failure==='spent')b.queue=b.queue.filter(id=>id!==enemy.id);if(failure==='focus')enemy.focus=0;
    prepareRelay(b);expect(crow.intent!.cells).toEqual([]);expect(legalAim(b,crow,'relay',crow.hex)).toBe(false);
   }
  });

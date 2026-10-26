@@ -26,7 +26,6 @@ export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:
  if(!partner.abilities.includes(id))return {reason:`${partner.name} has not learned this team ability.`};
  if(!future&&(!b.queue.includes(u.id)||!b.queue.includes(partner.id)))return {reason:`Both fighters need an unspent turn this round.`};
  if(!future&&(u.focus<team.cost||partner.focus<team.cost))return {reason:`Both fighters need ${team.cost} focus.`};
- if(bodyDistance(u,partner)>team.reach||!occupiedHexes(u).some(a=>occupiedHexes(partner).some(z=>distance(a,z)<=team.reach&&visible(a,z,b.obstacles))))return {reason:`${partner.name} must be within ${team.reach} hexes with a clear link.`};
  return {partner};
 }
 export function ricochetHexes(b:Battle,u:Unit,aim:Hex):Hex[]{
@@ -52,7 +51,7 @@ export function prepareRelay(b:Battle){
   const charging=b.round%2===1,linked=u.teamSpentRound!==b.round&&teamStatus(b,u,'relay',charging).partner;
   const forced=b.units.find(v=>v.hp>0&&v.id===leader.tauntedBy&&v.side!==u.side),center=forced?.hex??u.intent.destination;
   u.intent.cells=linked&&center?blast(center):[];
-  u.intent.name=linked?(charging?`Relay charging · fires in round ${b.round+1}`:'Linked relay · break either machine or its clear link'):'Relay disconnected · ordinary attacks';
+  u.intent.name=linked?(charging?`Relay charging · fires in round ${b.round+1}`:'Linked relay · defeat either machine'):'Relay disconnected · ordinary attacks';
  }
 }
 function operateValve(b:Battle,aim:Hex):string{

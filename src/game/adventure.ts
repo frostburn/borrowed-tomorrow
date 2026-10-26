@@ -657,10 +657,6 @@ export class Adventure extends Phaser.Scene {
       for(const {a,b}of edges){this.grid.moveTo(a.x+phase,a.y+phase);this.grid.lineTo(b.x+phase,b.y+phase);}
       this.grid.strokePath();
     }
-    for(const machine of b.units.filter(v=>v.kind==='guardian'&&v.hp>0&&v.intent?.phase==='relay')){
-      const partner=b.units.find(v=>v.id===machine.linkedTo&&v.hp>0);if(!partner)continue;
-      const a=toPixel(machine.hex),z=toPixel(partner.hex);this.grid.lineStyle(2,machine.intent!.cells.length?0xe0ba77:0x729a98,.85).lineBetween(a.x,a.y-24,z.x,z.y-24);
-    }
     if(canAct&&aimed&&this.selected!=='move'&&ABILITIES[this.selected].shape==='bounce'&&legalAim(b,u!,this.selected,aimed)){
       const points=shape(b,u!,this.selected,aimed).map(toPixel);if(points.length===2)this.grid.lineStyle(4,0xf4d49c,.9).lineBetween(points[0].x,points[0].y-20,points[1].x,points[1].y-20);
     }
