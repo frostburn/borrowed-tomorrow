@@ -1,3 +1,4 @@
+import {abilityFor} from '../src/rules/skills';
 import { expect, it } from 'vitest';
 import { characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings } from '../src/rules/characters';
 import { active, cast, createBattle, damage, defend, legalAim, move, pushDestination, targets, wait } from '../src/rules/combat';
@@ -21,10 +22,10 @@ function practice() {
 
 it('derives independent ability unlocks from level, and removes them again when lowering level', () => {
   const settings = newCharacterSettings();
-  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage']);
+  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'prism', 'lanternvolley']);
   settings.characters.nell = defaultBuild('nell', 5);
-  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'mend', 'dazzle', 'beacon']);
-  expect(characterProfiles(settings).orrin.abilities).toEqual(['strike', 'steam', 'bandage']);
+  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'mend', 'dazzle', 'prism', 'lanternvolley']);
+  expect(characterProfiles(settings).orrin.abilities).toEqual(['strike', 'steam', 'bandage', 'prism']);
   settings.characters.orrin = defaultBuild('orrin', 3);
   expect(characterProfiles(settings).orrin.abilities).toContain('guard');
   expect(characterProfiles(settings).orrin.abilities).not.toContain('repulse');
@@ -45,13 +46,13 @@ it('round-trips only validated character settings and rejects invalid levels or 
 it('uses edited base stats plus gear in practice without changing the campaign battle defaults', () => {
   const state = newGame(); recruitOrrin(state);
   const settings = newCharacterSettings(), inventory = newInventory();
-  settings.characters.nell = { level: 5, maxHp: 120, attack: 20, armor: 4, speed: 12, movement: 6, focus: 2 };
+  settings.characters.nell = { ...defaultBuild('nell',5), level: 5, maxHp: 120, attack: 20, armor: 4, speed: 12, movement: 6, focus: 2 };
   receiveItem(inventory, 'brass-reflector'); receiveItem(inventory, 'heavy-coat');
   equipItem(inventory, 'nell', 'brass-reflector'); equipItem(inventory, 'nell', 'heavy-coat');
   const b = createBattle('workshop', state, equipmentBonuses(inventory), characterProfiles(settings));
   expect(b.units[0]).toMatchObject({ hp: 120, maxHp: 120, bonus: 12, armor: 6, speed: 10, movement: 6, focus: 3, level: 5 });
   expect(active(b)?.id).toBe('nell');
-  expect(b.units[0].abilities).toContain('beacon');
+  expect(abilityFor(b.units[0],'mend').shape).toBe('blast');
   const campaign = createBattle('workshop', state);
   expect(campaign.units[0]).toMatchObject({ maxHp: 42, bonus: 0, armor: 0, movement: 3 });
   expect(campaign.units[0].abilities).not.toContain('beacon'); expect(state.xp).toBe(0);
@@ -113,25 +114,25 @@ it('an area attack consumes one Dazzle attack while weakening every hit', () => 
   expect(enemy.dazzledAttacks).toBe(2);
 });
 
-it('Beacon can target an empty center, heals only allies, and clamps at maximum HP', () => {
+it('Upgraded Mend can target an empty center, heals only allies, and clamps at maximum HP', () => {
   const { b, nell, orrin, enemy } = practice(), center = offset(5, 3);
   nell.hex = { q: center.q - 1, r: center.r }; orrin.hex = { q: center.q + 1, r: center.r }; enemy.hex = { q: center.q, r: center.r - 1 };
   nell.hp -= 20; orrin.hp -= 5; enemy.hp = 10;
-  expect(targets(b, nell, 'beacon', center).map(u => u.id)).toEqual(['nell', 'orrin']);
-  expect(cast(b, nell, 'beacon', center)).toBe(true);
-  expect(nell.hp).toBe(nell.maxHp - 6); expect(orrin.hp).toBe(orrin.maxHp); expect(enemy.hp).toBe(10);
+  expect(targets(b, nell, 'mend', center).map(u => u.id)).toEqual(['nell', 'orrin']);
+  expect(cast(b, nell, 'mend', center)).toBe(true);
+  expect(nell.hp).toBe(nell.maxHp); expect(orrin.hp).toBe(orrin.maxHp); expect(enemy.hp).toBe(10);
   expect(nell.focus).toBe(3);
 });
 
 it('Safety guard absorbs real attacks, does not stack, and is consumed before HP', () => {
   const { b, nell, orrin, enemy } = practice(); b.queue = [orrin.id, enemy.id, nell.id];
-  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(10);
+  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(16);
   b.queue = [orrin.id, enemy.id, nell.id]; expect(legalAim(b, orrin, 'guard', nell.hex)).toBe(false);
   b.queue = [enemy.id, nell.id, orrin.id]; const hp = nell.hp;
   expect(cast(b, enemy, 'strike', nell.hex)).toBe(true);
-  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(2);
+  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(8);
   expect(cast(b, nell, 'strike', enemy.hex)).toBe(true);
-  expect(nell.guard).toBe(0); expect(nell.hp).toBe(hp - 6);
+  expect(nell.guard).toBe(0); expect(nell.hp).toBe(hp);
 });
 
 it('Rivet shot ignores two armor but still obeys line of sight and focus', () => {

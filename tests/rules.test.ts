@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ABILITIES, active, cast, createBattle, defend, enemyTurn, legalAim, move, movement, targets, wait } from '../src/rules/combat';
+import { active, cast, createBattle, damage, defend, enemyTurn, legalAim, move, movement, targets, wait } from '../src/rules/combat';
 import { blast, cells, distance, fromPixel, key, offset, ray, toPixel, visible } from '../src/rules/hex';
 import { newGame, recruitOrrin } from '../src/rules/state';
 
@@ -22,10 +22,10 @@ describe('position-sensitive combat', () => {
   it('the blast preview and committed damage include a neighboring ally', () => {
     const b=createBattle('collector',party()),nell=b.units[0],orrin=b.units[1],hound=b.units[2];
     b.obstacles.clear();nell.hex=offset(4,3);orrin.hex=offset(6,3);hound.hex=offset(5,3);
-    const before=orrin.hp;
+    const before=orrin.hp,predicted=damage(nell,orrin,'burst');
     expect(targets(b,nell,'burst',hound.hex).map(u=>u.id)).toContain(orrin.id);
     expect(cast(b,nell,'burst',hound.hex)).toBe(true);
-    expect(orrin.hp).toBe(before-ABILITIES.burst.power);
+    expect(orrin.hp).toBe(before-predicted);
   });
   it('movement cannot cross occupied cells or rocks and does not consume the attack', () => {
     const b=createBattle('collector',party()),nell=b.units[0],orrin=b.units[1];

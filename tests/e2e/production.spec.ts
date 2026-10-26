@@ -46,7 +46,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
-  for (const route of ['workshop', 'inventory', 'music', 'sprites', 'animation', 'maps', 'boss']) {
+  for (const route of ['combat', 'workshop', 'inventory', 'music', 'sprites', 'animation', 'maps', 'boss']) {
     await page.goto(`/?dev=${route}`);
     await expect(page).toHaveTitle('Borrowed Tomorrow');
     await expect(page.getByRole('button', { name: 'Begin Chapter One', exact: true })).toBeVisible();
@@ -60,7 +60,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   }
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
-  for (const devOnly of ['Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
+  for (const devOnly of ['Combat review', 'Practice Prism lance', 'Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'character-workshop:v3', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
   for(const devOnly of ['dev-benefactor','Epic boss battle preview','dev-conduit-feeds','dev-conduit-pressure','dev-flagship','devFlagship','Start Chapter Five preset'])expect(built).not.toContain(devOnly);
   // The Benefactor is now a campaign boss; its dev fixture remains excluded.
   expect(errors).toEqual([]);
@@ -284,3 +284,36 @@ test('production Namar preserves the real Chapter Five departure and completes t
  await approach(page,'namar-ship');await page.getByRole('button',{name:'Skip scene',exact:true}).click();const end=(await inspect(page)).state;expect(end.flags.desertReported).toBe(true);expect(end.chapter).toBe('chapter-six');expect(end.boundary).toBeNull();expect(end.flags.chapterSixComplete).toBeUndefined();expect(end.party[0]).toMatchObject({hp:1,focus:0});expect(end.inventory.bag['solar-guard']).toBe(1);expect(end.xp).toBe(deep.xp+380);expect(end.inventory.characters).toEqual(deep.inventory.characters);
  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.desertReported).toBe(true);expect((await inspect(page)).state.inventory).toEqual(reward);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);await capture(page,'six-production-return');
 });
+
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+ test(`production skill choices persist without workshop controls on ${device}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');const s=checkpoint('orrinJoined');s.xp=50;await importSave(page,s);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});await expect(skills).toContainText('1 upgrade point');await skills.getByRole('button',{name:'Upgrade Lantern burst to 2',exact:true}).click();await expect(skills.getByRole('status')).toContainText('skill 2');await page.getByRole('button',{name:'Close',exact:true}).click();
+  await page.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.nell.burst).toBe(2);expect((await inspect(page)).state.skills.orrin.guard).toBe(0);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+ });
+ test(`production keeps Celia’s Heal choices separate from Nell’s Mend on ${device}`,async({page})=>{
+  const {anchorCheckpoint}=await import('../support/anchors'),{startingSkills}=await import('../../src/rules/skills');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');
+  const saved=anchorCheckpoint('coolingSeen');saved.xp=1490;saved.skills.celia=startingSkills('celia');const mend=saved.skills.nell.mend;await importSave(page,saved);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});
+  await expect(skills.locator('[data-ability="mend"]')).toBeVisible();await expect(skills.locator('[data-ability="heal"]')).toHaveCount(0);await skills.getByRole('button',{name:/^Celia ·/}).click();
+  await expect(skills.locator('[data-ability="mend"]')).toHaveCount(0);await expect(skills.locator('[data-ability="heal"]')).toContainText('Heal');await skills.getByRole('button',{name:'Upgrade Heal to 2',exact:true}).click();await expect(skills.getByRole('status')).toContainText('Heal upgraded to skill 2');await capture(page,`celia-heal-choice-${device}`);
+  await page.getByRole('button',{name:'Close',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.celia.heal).toBe(2);expect((await inspect(page)).state.skills.nell.mend).toBe(mend);expect((await inspect(page)).state.skills.celia.mend).toBeUndefined();expect(errors).toEqual([]);
+ });
+ test(`production campaign uses shared-turn skills and real terrain on ${device}`,async({page})=>{
+  const {anchorCheckpoint}=await import('../support/anchors');const {clickHex}=await import('./controls');const {offset}=await import('../../src/rules/hex');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+  const saved=anchorCheckpoint('coolingSeen');saved.activeParty=['nell','orrin','celia'];saved.xp=1490;await importSave(page,saved);
+  await approach(page,'cooling-route');await page.getByRole('button',{name:'Take the freight lift · ranged crows',exact:true}).click();
+  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
+  expect((await inspect(page)).battle!.fixtures).toHaveLength(2);
+  await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,2));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await page.getByRole('button',{name:/Prism lance · Team/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Nell + Orrin');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).busy).toBe(false);const paired=(await inspect(page)).battle!;expect(paired.queue).not.toContain('nell');expect(paired.queue).toContain('orrin');expect(paired.units.find(u=>u.id==='orrin')!.focus).toBe(3);await capture(page,`rich-campaign-pair-${device}`);
+  await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');await expect(page.getByRole('button',{name:/^F\s+End turn$/})).toBeVisible();await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(2,3));await page.getByRole('button',{name:/Confirm move/}).click();const moved=(await inspect(page)).battle!;expect(moved.units.find(u=>u.id==='orrin')!.hex).toEqual(offset(2,3));expect(moved.queue).not.toContain('orrin');expect(moved.units.find(u=>u.id==='orrin')!.focus).toBe(3);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.state.location.map;}).toBe('coolingworks');await approach(page,'cooling-route');await page.getByRole('button',{name:'Take the freight lift · ranged crows',exact:true}).click();
+  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
+  await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,2));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await expect(page.getByRole('button',{name:/Turn valve/})).toHaveCount(0);await page.getByRole('button',{name:/^2\s+Strike$/}).click();await clickHex(page,offset(3,3));await expect(page.locator('#confirmation')).toContainText('steam off');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+  expect((await inspect(page)).battle!.vents).toHaveLength(0);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+ });
+}

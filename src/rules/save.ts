@@ -4,7 +4,8 @@ import { heroAvailable } from './availability';
 import { completedAnchors } from '../content/chapter-five/progress';
 import { decodeInventory } from './inventory';
 import { validParty } from './party';
-import { SAVE_FORMAT,SAVE_VERSION,CAMPAIGN,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,SIXTH_CHAPTER,SEVENTH_CHAPTER,maxHp,type GameState,type HeroState } from './state';
+import {decodeSkillBook} from './skills';
+import { SAVE_FORMAT,SAVE_VERSION,CAMPAIGN,NEXT_CHAPTER,THIRD_CHAPTER,FOURTH_CHAPTER,FIFTH_CHAPTER,SIXTH_CHAPTER,SEVENTH_CHAPTER,maxHp,level,type GameState,type HeroState } from './state';
 
 /** Validate the current save format; older formats are not migrated. */
 export function decodeSave(text: string): GameState {
@@ -105,7 +106,7 @@ export function decodeSave(text: string): GameState {
   const inventory = decodeInventory(JSON.stringify(s.inventory));
   return {
     format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: s.chapter as GameState['chapter'], location: { ...loc }, party, activeParty: [...activeParty],
-    flags, coins: s.coins, bandages: s.bandages, xp: s.xp, inventory, journal: [...new Set(s.journal)],
+    flags, coins: s.coins, bandages: s.bandages, xp: s.xp, inventory, skills:decodeSkillBook(s.skills,level({xp:s.xp})), journal: [...new Set(s.journal)],
     boundary: s.boundary as GameState['boundary'], playSeconds: s.playSeconds,
   };
 }

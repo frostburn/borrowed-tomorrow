@@ -1,9 +1,10 @@
 import { heroAvailable } from './availability';
 import { newInventory, type Inventory } from './inventory';
 import { BASE_STATS } from './progression';
+import {newSkillBook,type SkillBook} from './skills';
 
 export const SAVE_FORMAT = 'borrowed-tomorrow';
-export const SAVE_VERSION = 10;
+export const SAVE_VERSION = 11;
 export const CAMPAIGN = 'imperial-debt';
 export const NEXT_CHAPTER = 'chapter-two:iron-coast';
 export const THIRD_CHAPTER = 'chapter-three:capital';
@@ -27,6 +28,7 @@ export interface GameState {
   bandages: number;
   xp: number;
   inventory: Inventory;
+  skills: SkillBook;
   journal: string[];
   boundary: typeof NEXT_CHAPTER | typeof THIRD_CHAPTER | typeof FOURTH_CHAPTER | typeof FIFTH_CHAPTER | typeof SIXTH_CHAPTER | typeof SEVENTH_CHAPTER | null;
   playSeconds: number;
@@ -35,7 +37,7 @@ export function newGame(): GameState {
   return {
     format: SAVE_FORMAT, version: SAVE_VERSION, campaign: CAMPAIGN, chapter: 'chapter-one',
     location: { map: 'station', x: 21, y: 16 }, party: [{ id: 'nell', hp: 42, focus: 6 }], activeParty: ['nell'],
-    flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), journal: ['home'], boundary: null, playSeconds: 0,
+    flags: {}, coins: 18, bandages: 5, xp: 0, inventory: newInventory(), skills:newSkillBook(), journal: ['home'], boundary: null, playSeconds: 0,
   };
 }
 export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 8200 ? 15 : s.xp >= 6600 ? 14 : s.xp >= 5200 ? 13 : s.xp >= 4000 ? 12 : s.xp >= 3500 ? 11 : s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;

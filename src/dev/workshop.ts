@@ -1,3 +1,6 @@
+import {skillCards} from '../game/skills';
+import {startingSkills,upgradeSkill,type SkillId} from '../rules/skills';
+import {richCombatPreview,type CombatPreset} from './rich-combat';
 import {benefactorCampaignPreview} from './benefactor-campaign-preview';
 import { createImperialPreview,IMPERIAL_PREVIEW_ASSETS,IMPERIAL_PRESENTATIONS } from './imperial-preview';
 import { imperialPortrait } from '../game/imperial-presentation';
@@ -23,13 +26,13 @@ import { art, type UI } from '../game/ui';
 import { ABILITIES, createBattle, type Unit } from '../rules/combat';
 import { newGame, recruitOrrin } from '../rules/state';
 import { ITEMS, SLOTS, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, ownedCopies, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
-import { COMPANION_IDS, COMPANIONS, LEARNING, STAT_LIMITS, setPartyMember, type CompanionId, characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings, validStat, type CharacterStat } from '../rules/characters';
+import { COMPANION_IDS, COMPANIONS, STAT_LIMITS, setPartyMember, type CompanionId, characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings, validStat, type CharacterStat } from '../rules/characters';
 import { CHARACTERS } from '../content/characters';
 import { MAX_PARTY_SIZE } from '../rules/party';
 import './workshop.css';
 
 const STORAGE = 'borrowed-tomorrow:inventory-workshop:v1';
-const CHARACTER_STORAGE = 'borrowed-tomorrow:character-workshop:v1';
+const CHARACTER_STORAGE = 'borrowed-tomorrow:character-workshop:v3';
 const names = Object.fromEntries(COMPANION_IDS.map(id=>[id,CHARACTERS[id].name])) as Record<CompanionId,string>;
 function stock(): Inventory {
   const inventory = newInventory();
@@ -46,7 +49,7 @@ class Workshop {
   private sprites = new SpriteWorkshop();
   private animation = new AnimationWorkshop();
   private maps = new MapWorkshop(message=>this.ui.toast(message));
-  private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
+  private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private hero: CompanionId = 'nell';
   private boss: 'emperor'|'lightbearer'|'dragon'|'benefactor'|'conduit'|'flagship'|'serpent'=new URLSearchParams(location.search).get('boss')==='emperor'?'emperor':new URLSearchParams(location.search).get('boss')==='lightbearer'?'lightbearer':new URLSearchParams(location.search).get('boss')==='dragon'?'dragon':new URLSearchParams(location.search).get('boss')==='serpent'?'serpent':new URLSearchParams(location.search).get('boss')==='flagship'?'flagship':new URLSearchParams(location.search).get('boss')==='conduit'?'conduit':'benefactor';
   private conduitRoute:ConduitRoute=new URLSearchParams(location.search).get('route')==='pressure'?'pressure':'feeds';
@@ -84,14 +87,14 @@ class Workshop {
       const [min,max]=STAT_LIMITS[stat];
       return `<div class="workshop-stat-field"><label for="stat-${stat}">${labels[stat]}</label><button type="button" data-step="${stat}" data-delta="-1" aria-label="Decrease ${names[hero]} ${labels[stat]}">−</button><input id="stat-${stat}" aria-label="${names[hero]} ${labels[stat]}" name="${stat}" type="number" min="${min}" max="${max}" step="1" value="${build[stat]}" required/><button type="button" data-step="${stat}" data-delta="1" aria-label="Increase ${names[hero]} ${labels[stat]}">+</button></div>`;
     }).join('');
-    return `<section class="workshop-build" aria-label="Character settings"><h2>Character settings</h2><div class="workshop-level"><label for="character-level">Level</label><button data-level="-1" aria-label="Decrease ${names[hero]} level" ${build.level===1?'disabled':''}>−</button><input id="character-level" type="number" min="1" max="${MAX_LEVEL}" step="1" value="${build.level}" aria-label="${names[hero]} level"/><button data-level="1" aria-label="Increase ${names[hero]} level" ${build.level===MAX_LEVEL?'disabled':''}>+</button></div><p class="inv-note">Changing level restores base stats. Equipment stays equipped.</p><form id="character-stats" novalidate><h3>Base stats</h3>${fields}<button type="submit">Apply base stats</button><button type="button" id="level-defaults">Level defaults</button></form><p class="inv-note">Equipment bonuses are added to these values. Starting focus regenerates on a character’s turn.</p></section><section class="workshop-abilities" aria-label="Level abilities"><h2>Abilities</h2>${LEARNING[hero].map(entry=>{
-      const ability=ABILITIES[entry.ability],known=entry.level<=build.level;
-      return `<article class="workshop-ability ${known?'known':'locked'}" data-ability="${ability.id}"><div><h3>${ability.name}</h3><small>Lv ${entry.level} · ${known?'Known':'Locked'} · ${ability.cost} focus</small></div><p>${ability.description}</p></article>`;
-    }).join('')}</section>`;
+    return `<section class="workshop-build" aria-label="Character settings"><h2>Character settings</h2><div class="workshop-level"><label for="character-level">Level</label><button data-level="-1" aria-label="Decrease ${names[hero]} level" ${build.level===1?'disabled':''}>−</button><input id="character-level" type="number" min="1" max="${MAX_LEVEL}" step="1" value="${build.level}" aria-label="${names[hero]} level"/><button data-level="1" aria-label="Increase ${names[hero]} level" ${build.level===MAX_LEVEL?'disabled':''}>+</button></div><p class="inv-note">Changing level restores base stats and a balanced skill build. Reset skill choices to allocate points manually. Equipment stays equipped.</p><form id="character-stats" novalidate><h3>Base stats</h3>${fields}<button type="submit">Apply base stats</button><button type="button" id="level-defaults">Level defaults</button></form><p class="inv-note">Equipment bonuses are added to these values. Starting focus regenerates on a character’s turn.</p></section><section class="workshop-abilities" aria-label="Level abilities"><h2>Abilities</h2>${skillCards(hero,build.level,build.skills,this.ui.escape,false,COMPANION_IDS)}<button id="reset-skills">Reset skill choices</button></section>`;
   }
   private bindCharacterPanel() {
     if(this.tab!=='character')return;
-    const hero=this.hero,levelInput=this.ui.sceneLayer.querySelector<HTMLInputElement>('#character-level')!;
+    const hero=this.hero;
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-skill]'))button.onclick=()=>{const build=this.settings.characters[hero];if(upgradeSkill(hero,build.level,build.skills,button.dataset.skill as SkillId))this.save('Skill upgraded.');};
+    this.ui.sceneLayer.querySelector<HTMLButtonElement>('#reset-skills')!.onclick=()=>{this.settings.characters[hero].skills=startingSkills(hero);this.save('Skill choices reset.');};
+    const levelInput=this.ui.sceneLayer.querySelector<HTMLInputElement>('#character-level')!;
     const changeLevel=(level:number)=>{
       if(!Number.isInteger(level)||level<1||level>MAX_LEVEL){this.message=`Level must be a whole number from 1 to ${MAX_LEVEL}.`;this.show();return;}
       this.settings.characters[hero]=defaultBuild(hero,level);this.save(`${names[hero]} set to level ${level}.`);
@@ -114,6 +117,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
+    if(this.tab==='combat'){this.showCombat();return;}
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
@@ -171,9 +175,24 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','combat','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
+  private showCombat(){
+    this.music.hide();this.sprites.hide();this.animation.hide();this.maps.hide();this.scene.closePreview();
+    document.querySelector('.game-shell')!.classList.add('inventory-open');
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<h2>Combat review</h2><p>New skills, shared turns and battlefield mechanisms use the campaign rules. Each preset changes only this practice battle.</p><p>Team moves need two living partners with attacks left and enough focus, anywhere on the battlefield. They spend both main actions; the assisting fighter keeps unused movement. Red X locks the guardian–crow relay one round before its even-round shot: defeat either machine to cancel it.</p><p>Break timber to open a route. Burst the pressure drum to hurt nearby fighters on either side. Strike the brass valve with any damaging attack to toggle the orange steam vents.</p><div id="combat-start" class="panel-actions"></div><p>The level-10 presets include Nell’s hex-diagonal ray, Orrin’s straight Steam lance, full-width team attacks, Ricochet, barriers and Celia’s final Heal. Daybreak pairs Celia’s Heal with Petra’s Taunt at level 13 with an injured party; Lantern volley pairs Nell with Kit; Revive starts with Orrin down on a clear hex. The workshop option uses your current levels, equipment and formation.</p></section>`;
+    this.bindTabs();this.ui.actionRow(this.ui.sceneLayer.querySelector('#combat-start')!,[
+      ...(['prism','crossfire','stars','daybreak','lantern','recovery']as CombatPreset[]).map(preset=>({label:`Practice ${preset==='prism'?'Prism lance':preset==='crossfire'?'Crossfire':preset==='stars'?'Falling stars':preset==='recovery'?'Revive':preset==='lantern'?'Lantern volley':'Daybreak'}`,action:()=>this.combatBattle(preset)})),
+      {label:'Practice current workshop party',action:()=>this.combatBattle('workshop')},
+    ]);this.ui.initiative.textContent='Combat review / shared campaign rules';
+  }
+  private combatBattle(preset:CombatPreset|'workshop'){
+    document.querySelector('.game-shell')!.classList.remove('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=true;
+    this.scene.state=practiceState();const {battle,presentation}=richCombatPreview(preset,this.settings,this.inventory);
+    this.scene.previewBattle(battle,()=>this.show(),presentation);
+  }
   private showMusic(){
     this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
@@ -240,6 +259,7 @@ class Workshop {
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
     if(this.tab==='bosses'){this.bossBattle(true);return;}
+    if(this.tab==='combat'){this.combatBattle('workshop');return;}
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();

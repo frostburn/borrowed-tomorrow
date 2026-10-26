@@ -82,7 +82,7 @@ test('@ci phone combat pans and confirms real healing without shrinking the acto
   await page.getByRole('button', { name: 'Pan battlefield left' }).click();
   const snapshot = (await inspect(page)).battle!, b = { ...snapshot, obstacles: new Set(snapshot.obstacles), water: new Set(snapshot.water), vents: new Set(snapshot.vents) } as Battle;
   const nell = active(b)!; const before = snapshot.bandages;
-  await page.locator('.actions').getByRole('button', { name: /^5\s+Bandage$/ }).click(); await clickHex(page, nell.hex);
+  await page.locator('.actions').getByRole('button', { name: /^\d\s+Bandage$/ }).click(); await clickHex(page, nell.hex);
   await expect(page.getByRole('button', { name: 'Confirm healing', exact: true })).toBeInViewport();
   await capture(page, 'healing-phone'); await page.getByRole('button', { name: 'Confirm healing', exact: true }).click();
   await expect.poll(async () => (await inspect(page)).battle!.bandages).toBe(before - 1);

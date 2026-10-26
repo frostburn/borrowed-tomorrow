@@ -16,7 +16,7 @@ Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Ea
 
 ## Canonical Chapter Two start
 
-On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-10 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
+On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-11 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
 
 
 ## Canonical Chapter Three start
@@ -33,28 +33,32 @@ The workshop previews companions planned for later story chapters. Kit is a fast
 
 | Companion | Default HP / Attack / Armor / Speed / Move | Level 1 | Level 2 | Level 3 | Level 5 |
 | --- | --- | --- | --- | --- | --- |
-| Kit | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Piercing bolt | Feint | Volley |
-| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Celestial bolt, Mend, Bandage | Rally | Beacon | Sanctuary |
+| Kit | 38 / 10 / 0 / 9 / 4 | Strike, Quick shot, Bandage | Feint | — | Ricochet |
+| Celia | 40 / 8 / 0 / 6 / 3 | Strike, Celestial bolt, Heal, Bandage | Rally | Area Heal (rank 2) | Sanctuary |
 | Petra | 62 / 14 / 1 / 4 / 3 | Strike, Shield bash, Bandage | Taunt | Saber sweep | Crushing blow |
 
 Celestial bolt is available at level 1: a weak attack on any enemy, 1 focus, ignoring distance and obstacles. It uses Celia’s Attack bonus. Rally restores another ally’s focus, up to six. Sanctuary grants an area barrier only to allies and preserves stronger barriers. Shield bash is an optional extra action once per turn, before Petra’s main action. It deals no damage, leaves barriers and Dazzle counters unchanged, costs 1 focus, uses the existing clear-hex push rules and preserves her movement and main action. Its button disables after use, and waiting is unavailable after a bash. Taunt replaces Cover at level 2. Select it to preview all affected enemies, then confirm without aiming. For 2 focus, every enemy targets Petra until her next turn; enemies that cannot reach her approach her instead of attacking someone else. Area attacks can still catch other units. Taunt ends early if Petra falls. Saber sweep previews immediately on selection, excludes Petra and can hit neighboring allies. The courier sight, medic clasp and balanced saber hilt fit their respective owners; coats fit all five companions.
 
 ## Levels and base stats
 
-Levels range from 1 to 15. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
+Levels range from 1 to 15. Changing the workshop level restores base stats and installs a balanced authored skill allocation; equipment stays equipped. Reset skill choices to assign those points manually. In the campaign, one point per level after one may be spent or saved, and skills never upgrade automatically. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. The shared [combat and skill rules](combat-upgrade.md) describe all ranks and character-level requirements. Workshop → Combat supplies isolated level-10/13 practice presets. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
 
 Edit Max HP (1–999), Attack (1–199), Armor (0–99), Speed (1–30), Movement (1–10), or Starting focus (0–6), then choose **Apply base stats**. Plus and minus buttons edit the same fields. Only whole numbers in the shown ranges are accepted; an invalid field prevents the entire build from being applied. **Level defaults** restores the selected character's base stats without changing their level or equipment.
 
-Starting focus is the value before normal turn regeneration. A character gains one focus at the start of their turn, up to six. Higher speed acts earlier; armor reduces damage; movement determines reachable hexes. Base Attack is Strike's damage before armor, defense and equipment. Other attacks use the same bonus relative to their own power. Healing and support strength do not scale with Attack.
+Starting focus is the value before normal turn regeneration. A character gains one focus at the start of their turn, up to six. Higher speed acts earlier; armor reduces damage; movement determines reachable hexes. Base Attack is Strike's damage before armor, defense and equipment. Other attacks use the same bonus relative to their own power. Healing and barriers scale with caster level, independently of Attack; bandages remain fixed at 24 HP. Exact values appear in the battle preview. See [Combat and skill rules](combat-upgrade.md#other-geometry-and-support).
 
 | Level | Nell | Orrin |
 | --- | --- | --- |
 | 1 | Strike, Lantern burst, Bandage | Strike, Steam lance, Bandage |
-| 2 | Mend: heal one ally | Rivet shot: ranged attack ignoring 2 armor |
-| 3 | Dazzle: the enemy's next three attacks deal 40% less damage, including retaliations | Safety guard: a 10-point barrier for one ally |
-| 5 | Beacon: heal allies in a seven-hex area | Pressure wave: damage neighboring units and push survivors one clear hex |
+| 2 | Choose Burst rank 2 or learn Mend | Learn Rivet shot or Safety guard |
+| 3 | Learn Dazzle: three weakened attacks | Save a point or choose an eligible skill |
+| 5 | Mend rank 2: heal allies in seven hexes | Learn Pressure wave or choose Safety guard rank 2 |
 
-The Abilities panel shows every unlock and whether it is known. Lowering level removes abilities above that level. Combat buttons and number shortcuts include every learned ability. Beacon can aim at an empty center and never heals enemies. Guard lasts until absorbed and does not stack; reapplying it restores at most 10 points. Dazzle tracks attacks rather than turns: retaliation consumes one, an area attack consumes one for its whole area, and moving, defending, waiting, healing or granting guard consumes none. The remaining attack count appears on the unit. Pressure wave previews all affected hexes immediately when selected; only confirmation is required. It hits allies as well as enemies, excludes Orrin, and cannot push into a rock, an occupied hex or off the board. Its preview marks clear landing hexes.
+Orrin’s Steam lance keeps its contiguous four-hex caster-originating ray at every rank; upgrades increase damage without introducing gaps. Celia’s Heal has independent progression from Nell’s Mend.
+
+These tables show the earliest character level at which a skill or rank can be chosen, not automatic awards. The Abilities panel shows current/next ranks, their costs and level requirements. Lowering the workshop level installs a valid allocation for that level. Combat buttons and number shortcuts include learned solo skills and derived combinations whose partners are present. Area Mend can aim at an empty center and never heals enemies. Guard scales by rank and character level, lasts until absorbed and never stacks. Dazzle tracks attacks rather than turns: retaliation consumes one, an area attack consumes one for its whole area, and moving, defending, waiting, healing or granting guard consumes none. The remaining attack count appears on the unit. Pressure wave previews all affected hexes immediately when selected; only confirmation is required. It hits allies as well as enemies, excludes Orrin, and cannot push into a rock, an occupied hex or off the board. Its preview marks clear landing hexes.
+
+Team moves require both corresponding solo skills, with no extra upgrade purchase or distance between partners. They spend both attacks; the assisting fighter keeps unused movement at their initiative position, with Move and End turn (F) controls. Lantern volley uses the twelve-hex 3/4/3/2 footprint from the supplied cursor stencil. Damage sums both solo contributions; Daybreak combines Celia’s Heal and Petra’s Taunt; Lantern volley combines Nell’s Burst with Kit’s Quick shot. The circle is Nell → Orrin → Celia → Petra → Kit → Nell, giving everyone two partners. Unavailable moves are gray but can be selected to inspect the named partner's reason in the fixed confirmation area. Campaign upgrade cards reveal combinations only with recruited characters. Workshop → Combat previews Falling stars, Prism lance, Crossfire, Daybreak and Lantern volley with their dedicated effects; both participants animate.
 
 ## Equipment
 
@@ -79,7 +83,7 @@ Tools work during enemy turns and animations. Each action replaces the battle ob
 
 **Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
-Equipment uses local-storage key `borrowed-tomorrow:inventory-workshop:v1`; character settings use `borrowed-tomorrow:character-workshop:v1`. Both accept only version-2 records containing the current five companions. Retired version-1 records and replaced-character aliases are not migrated; invalid records use the existing reset behavior. Current loadouts and stat edits remain supported. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-10 saves carry their own inventory and active formation. Workshop storage never feeds campaign equipment.
+Equipment uses local-storage key `borrowed-tomorrow:inventory-workshop:v1`; character settings use `borrowed-tomorrow:character-workshop:v3`. Inventory accepts version-2 records; character settings accept version-3 records with per-character skill choices. Both contain the current five companions. Retired version-1 records and replaced-character aliases are not migrated; invalid records use the existing reset behavior. Current loadouts and stat edits remain supported. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-11 saves carry their own inventory and active formation. Workshop storage never feeds campaign equipment.
 
 ## Implementation boundary
 
@@ -207,7 +211,7 @@ Maps → Chapter 5 adds Dawnwatch, gun terraces, signal wall, observation cabin 
 Complete any two regional anchors to open the observation-cabin projection through the aft hatch. Its completion returns to the shared deck scene. Reload during the uncommitted projection replays it; skip commits normally. Windmere is available from the flight chart. After all three regions, the ship stages the capital blockade; the flagship approach opens once the Emperor offer is recorded and told. Detailed journey, motion, music and production checks stay outside default CI.
 
 
-Chapter Five Act III: choose Windmere at the flight chart after the shared opening, or continue a version-10 Act I/II save. Maps → Chapter 5 adds `windmere`, `dispensary`, `mirrorward` and the three `wind-` arenas. Sprites includes Iven, Sera, Teren, the mirrored engine and its reflector. Music → Ch 5 adds the five Windmere arrangements (ward/lift 3/4; gallery/battles 4/4), all 32 bars in 31-EDO. The campaign boss uses real resources and an anchored three-contact core: break the lit projection to interrupt its beam and expose it. Dev Win/Lose/Refill/Restart use the usual shared battle tools. Exact continuation and rewards are in `docs/story/chapter-five-act-three.md`.
+Chapter Five Act III: choose Windmere at the flight chart after the shared opening, or continue a version-11 Act I/II save. Maps → Chapter 5 adds `windmere`, `dispensary`, `mirrorward` and the three `wind-` arenas. Sprites includes Iven, Sera, Teren, the mirrored engine and its reflector. Music → Ch 5 adds the five Windmere arrangements (ward/lift 3/4; gallery/battles 4/4), all 32 bars in 31-EDO. The campaign boss uses real resources and an anchored three-contact core: break the lit projection to interrupt its beam and expose it. Dev Win/Lose/Refill/Restart use the usual shared battle tools. Exact continuation and rewards are in `docs/story/chapter-five-act-three.md`.
 
 ## Chapter Five — Act IV review start
 

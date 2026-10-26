@@ -1,0 +1,90 @@
+import {ABILITIES,teamSolo,type Ability,type AbilityId} from './abilities';
+import {COMPANION_IDS,type CompanionId} from './party';
+
+export type SkillId='burst'|'mend'|'heal'|'dazzle'|'sunline'|'steam'|'rivet'|'guard'|'repulse'|'quickshot'|'ricochet'|'feint'|'pin'|'celestialbolt'|'rally'|'sanctuary'|'bash'|'taunt'|'sweep'|'crush';
+export type SkillRanks=Partial<Record<SkillId,number>>;
+export type SkillBook=Record<CompanionId,SkillRanks>;
+export interface Skill {id:SkillId;levels:readonly number[];ranks:readonly Partial<Ability>[]}
+const skill=(id:SkillId,levels:readonly number[],ranks:readonly Partial<Ability>[]):Skill=>({id,levels,ranks});
+const restoration=(id:'mend'|'heal',levels:readonly number[])=>{const revive=id==='heal';return skill(id,levels,[
+ {power:18,description:'Heal one ally. Range 4. 2 focus.'},
+ {power:22,shape:'blast',cost:3,description:'Heal allies in a seven-hex area. Range 4. 3 focus.'},
+ {power:28,shape:'blast',cost:revive?4:3,cleanse:true,...(revive?{reviveFraction:.35,sound:'revive' as const}:{}),description:revive?'Heal allies in seven hexes and clear Dazzle/pin. A fallen ally at the clear center revives at 35% HP and acts next round. Range 4. 4 focus.':'Heal allies in a seven-hex area and clear Dazzle and pin. Range 4. 3 focus.'},
+]);};
+export const SKILLS:Record<CompanionId,readonly Skill[]>={
+ nell:[
+  skill('burst',[1,2,6],[
+   {shape:'quad',power:8,description:'A slanted four-hex burst extending right and down-right from the aim. Hits allies. Range 5. 2 focus.'},
+   {shape:'blast',power:13,description:'A seven-hex burst. Hits allies. Range 5. 2 focus.'},
+   {shape:'blast',power:19,friendlyFire:.5,description:'A stronger seven-hex burst. Allies take half damage. Range 5. 2 focus.'},
+  ]),restoration('mend',[2,5,10]),
+  skill('dazzle',[3,7,11],[{}, {shape:'blast',cost:3,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 3 focus.'},{shape:'blast',cost:2,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 2 focus.'}]),
+  skill('sunline',[7,10,13],[{range:4,power:12,cost:3,description:'A short hex-diagonal ray: two spaced contacts from Nell. Stops at cover, hits allies. 3 focus.'},{range:6,power:17},{range:6,power:24}]),
+ ],
+ orrin:[
+  skill('steam',[1,4,9],[{power:16},{power:21},{power:28}]),
+  skill('rivet',[2,6,11],[{power:10,pierce:2},{power:15,pierce:4,description:'One enemy within 5 hexes. Ignores 4 armor. 1 focus.'},{power:21,pierce:6,description:'One enemy within 5 hexes. Ignores 6 armor. 1 focus.'}]),
+  skill('guard',[2,5,10],[{power:10},{shape:'blast',range:0,power:16,cost:3,description:'Grant a barrier to Orrin and adjacent allies. Level-scaled; does not stack. 3 focus.'},{shape:'blast',range:0,power:25,cost:3,description:'Grant a stronger barrier to Orrin and adjacent allies. Level-scaled; does not stack. 3 focus.'}]),
+  skill('repulse',[5,8,12],[{power:8},{power:13},{power:19,friendlyFire:.5,description:'A strong pressure wave around Orrin. Allies take half damage. Push survivors one clear hex. 3 focus.'}]),
+ ],
+ kit:[
+  skill('quickshot',[1,4,9],[{power:10},{power:14,pierce:2,description:'A quick shot within 5 hexes. Ignores 2 armor. No focus cost.'},{power:19,pierce:4,description:'A quick shot within 5 hexes. Ignores 4 armor. No focus cost.'}]),
+  skill('feint',[2,6,10],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:0,description:'Dazzle one enemy for its next three attacks. Range 4. No focus cost.'}]),
+  skill('ricochet',[5,8,12],[{power:9,range:4,bounceRange:2,description:'Hit one enemy within 4 hexes, then another within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit one enemy within 6 hexes, then another within 4 of it. 3 focus.'}]),
+  skill('pin',[7,10,13],[{power:8},{power:14},{power:21}]),
+ ],
+ celia:[
+  skill('celestialbolt',[1,6,11],[{power:8},{power:10},{power:12}]),restoration('heal',[1,3,10]),
+  skill('rally',[2,6,10],[{}, {shape:'party',range:0,power:2,cost:3,description:'Restore up to 2 focus to every other living ally. 3 focus.'},{shape:'party',range:0,power:3,cost:4,description:'Restore up to 3 focus to every other living ally. 4 focus.'}]),
+  skill('sanctuary',[5,9,12],[{power:8},{power:16},{shape:'party',range:0,power:20,cost:4,description:'Grant a barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
+ ],
+ petra:[
+  skill('bash',[1,5,9],[{}, {cost:0,description:'Optional extra action: push an adjacent enemy one hex. No damage or focus cost; once per turn.'},{shape:'blast',range:0,cost:0,enemyOnly:true,description:'Optional extra action: push every adjacent enemy one hex. No damage or focus cost; once per turn.'}]),
+  skill('taunt',[2,6,10],[{}, {ward:{power:10},description:'Taunt every enemy and give Petra a level-scaled barrier. 2 focus.'},{ward:{power:12,party:true},cost:3,description:'Taunt every enemy and give the living party level-scaled barriers. 3 focus.'}]),
+  skill('sweep',[3,7,11],[{power:13},{power:18},{power:25,friendlyFire:.5,description:'Sweep all adjacent hexes. Allies take half damage. 2 focus.'}]),
+  skill('crush',[5,8,12],[{power:18,pierce:4},{power:24,pierce:6},{power:31,pierce:8,effect:'push',description:'Heavy adjacent strike, ignoring 8 armor. Push the survivor one clear hex. 3 focus.'}]),
+ ],
+};
+export function startingSkills(hero:CompanionId):SkillRanks{return Object.fromEntries(SKILLS[hero].map(s=>[s.id,s.levels[0]===1?1:0]));}
+export const newSkillBook=():SkillBook=>Object.fromEntries(COMPANION_IDS.map(id=>[id,startingSkills(id)]))as SkillBook;
+export const skillPoints=(hero:CompanionId,level:number,ranks:SkillRanks)=>Math.max(0,level-1-SKILLS[hero].reduce((sum,s)=>sum+Math.max(0,(ranks[s.id]??0)-(s.levels[0]===1?1:0)),0));
+export function upgradeReason(hero:CompanionId,level:number,ranks:SkillRanks,id:SkillId):string|undefined{
+ if(!Number.isInteger(level)||level<1||level>15)return 'Invalid character level.';
+ const s=SKILLS[hero].find(s=>s.id===id);if(!s)return 'This character cannot learn this skill.';
+ const rank=ranks[id]??0;if(rank>=s.ranks.length)return 'Maximum skill level.';
+ if(level<s.levels[rank])return `Requires character level ${s.levels[rank]}.`;
+ if(skillPoints(hero,level,ranks)<=0)return 'No upgrade points.';
+}
+export function upgradeSkill(hero:CompanionId,level:number,ranks:SkillRanks,id:SkillId){if(upgradeReason(hero,level,ranks,id))return false;ranks[id]=(ranks[id]??0)+1;return true;}
+/** Authored workshop/canonical builds; a new campaign leaves the choices to the player. */
+export function presetSkills(hero:CompanionId,level:number,priority:readonly SkillId[]=[]):SkillRanks{
+ const ranks=startingSkills(hero);
+ for(const id of priority)while(upgradeSkill(hero,level,ranks,id)){/* allocate the selected review skill first */}
+ for(let rank=1;rank<=3;rank++)for(const s of SKILLS[hero])if((ranks[s.id]??0)<rank)upgradeSkill(hero,level,ranks,s.id);
+ return ranks;
+}
+export const skillAbilities=(hero:CompanionId,ranks:SkillRanks):AbilityId[]=>['strike',...SKILLS[hero].filter(s=>s.levels[0]===1&&(ranks[s.id]??0)>0).map(s=>s.id),'bandage',...SKILLS[hero].filter(s=>s.levels[0]!==1&&(ranks[s.id]??0)>0).map(s=>s.id),...Object.values(ABILITIES).filter(a=>{const solo=teamSolo(hero,a.id);return solo&&(ranks[solo as SkillId]??0)>0;}).map(a=>a.id)];
+export function abilityFor(u:{kind:string;skills?:SkillRanks},id:AbilityId,partner?:{kind:string;skills?:SkillRanks}):Ability{
+ if(ABILITIES[id].team){
+  const solo=teamSolo(u.kind,id),other=partner&&teamSolo(partner.kind,id),a=ABILITIES[id];
+  const shot=id==='crossfire'?(u.kind==='kit'?abilityFor(u,'ricochet'):partner?.kind==='kit'?abilityFor(partner,'ricochet'):undefined):undefined;
+  const vanguard=id==='daybreak'?[u,partner].find(v=>v?.kind==='petra'):undefined,ward=vanguard?abilityFor(vanguard,'taunt').ward:undefined;
+  return {...a,...(solo&&other?{power:abilityFor(u,solo).power+abilityFor(partner!,other).power}:{}),...(shot?{range:shot.range,bounceRange:shot.bounceRange}: {}),...(ward?{ward}:{})};
+ }
+ const s=u.skills&&SKILLS[u.kind as CompanionId]?.find(s=>s.id===id);if(!s)return ABILITIES[id];
+ const rank=u.skills![s.id]??0;
+ return {...ABILITIES[id],...s.ranks[Math.max(0,rank-1)],rank};
+}
+export function decodeSkillRanks(raw:unknown,hero:CompanionId,level:number):SkillRanks{
+ if(!raw||typeof raw!=='object'||Array.isArray(raw)||Object.keys(raw).length!==SKILLS[hero].length)throw new Error('Invalid character skills.');
+ const ranks=raw as SkillRanks,result:SkillRanks={};let spent=0;
+ for(const s of SKILLS[hero]){
+  const r=ranks[s.id];if(typeof r!=='number'||!Number.isInteger(r)||r<0||r>s.ranks.length||s.levels[0]===1&&r<1||r>0&&s.levels[r-1]>level)throw new Error('Invalid skill level.');
+  result[s.id]=r;spent+=Math.max(0,r-(s.levels[0]===1?1:0));
+ }
+ if(spent>level-1)throw new Error('Too many skill upgrades.');return result;
+}
+export function decodeSkillBook(raw:unknown,level:number):SkillBook{
+ if(!raw||typeof raw!=='object'||Array.isArray(raw)||Object.keys(raw).length!==COMPANION_IDS.length)throw new Error('Invalid skill book.');
+ return Object.fromEntries(COMPANION_IDS.map(id=>[id,decodeSkillRanks((raw as SkillBook)[id],id,level)]))as SkillBook;
+}

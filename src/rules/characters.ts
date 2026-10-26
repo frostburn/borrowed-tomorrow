@@ -1,6 +1,7 @@
 import { CHARACTERS } from '../content/characters';
 import type { AbilityId } from './combat';
-import { LEARNING,MAX_LEVEL } from './progression';
+import { MAX_LEVEL } from './progression';
+import {presetSkills,skillAbilities,decodeSkillRanks,type SkillRanks} from './skills';
 export { LEARNING } from './progression';
 import { COMPANION_IDS, MAX_PARTY_SIZE, validParty, type CompanionId } from './party';
 export { COMPANION_IDS, type CompanionId } from './party';
@@ -14,16 +15,16 @@ export const COMPANIONS = {
 } as const;
 export const STAT_LIMITS = { maxHp: [1, 999], attack: [1, 199], armor: [0, 99], speed: [1, 30], movement: [1, 10], focus: [0, 6] } as const;
 export type CharacterStat = keyof typeof STAT_LIMITS;
-export interface CharacterBuild extends Record<CharacterStat, number> { level: number }
+export interface CharacterBuild extends Record<CharacterStat, number> { level: number;skills:SkillRanks }
 export interface CharacterProfile extends CharacterBuild { name: string; role: string; abilities: AbilityId[] }
-export interface CharacterSettings { version: 2; characters: Record<CompanionId, CharacterBuild>; party: CompanionId[] }
+export interface CharacterSettings { version: 3; characters: Record<CompanionId, CharacterBuild>; party: CompanionId[] }
 export function defaultBuild(hero: CompanionId, level = 1): CharacterBuild {
   if (!Number.isInteger(level) || level < 1 || level > MAX_LEVEL) throw new Error(`Level must be 1–${MAX_LEVEL}.`);
   const c = COMPANIONS[hero];
-  return { level, maxHp: c.maxHp + (level - 1) * 6, attack: c.attack + (level - 1) * 2, armor: c.armor, speed: c.speed, movement: c.movement, focus: 6 };
+  return { level, skills:presetSkills(hero,level), maxHp: c.maxHp + (level - 1) * 6, attack: c.attack + (level - 1) * 2, armor: c.armor, speed: c.speed, movement: c.movement, focus: 6 };
 }
 export function newCharacterSettings(): CharacterSettings {
-  return { version: 2, characters: Object.fromEntries(COMPANION_IDS.map(id => [id, defaultBuild(id)])) as Record<CompanionId, CharacterBuild>, party: ['nell', 'orrin'] };
+  return { version: 3, characters: Object.fromEntries(COMPANION_IDS.map(id => [id, defaultBuild(id)])) as Record<CompanionId, CharacterBuild>, party: ['nell', 'orrin'] };
 }
 export function setPartyMember(settings: CharacterSettings, hero: CompanionId, included: boolean): boolean {
   if (!COMPANION_IDS.includes(hero) || settings.party.includes(hero) === included) return false;
@@ -34,11 +35,11 @@ export function setPartyMember(settings: CharacterSettings, hero: CompanionId, i
 export function validStat(stat: CharacterStat, value: number) { const [min, max] = STAT_LIMITS[stat]; return Number.isInteger(value) && value >= min && value <= max; }
 export function characterProfiles(settings: CharacterSettings): Record<CompanionId, CharacterProfile> {
   return Object.fromEntries(COMPANION_IDS.map(hero => [hero, { ...settings.characters[hero], name: CHARACTERS[hero].name, role: COMPANIONS[hero].role,
-    abilities: LEARNING[hero].filter(entry => entry.level <= settings.characters[hero].level).map(entry => entry.ability) }])) as Record<CompanionId, CharacterProfile>;
+    abilities: skillAbilities(hero,settings.characters[hero].skills) }])) as Record<CompanionId, CharacterProfile>;
 }
 export function decodeCharacterSettings(text: string): CharacterSettings {
   const raw = JSON.parse(text), settings = newCharacterSettings();
-  if (!raw || raw.version !== 2 || !raw.characters) throw new Error('Invalid character settings.');
+  if (!raw || raw.version !== 3 || !raw.characters) throw new Error('Invalid character settings.');
   if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid character roster.');
   for (const hero of COMPANION_IDS) {
     const build = raw.characters[hero];
@@ -48,6 +49,7 @@ export function decodeCharacterSettings(text: string): CharacterSettings {
       settings.characters[hero][stat] = build[stat];
     }
     settings.characters[hero].level = build.level;
+    settings.characters[hero].skills=decodeSkillRanks(build.skills,hero,build.level);
   }
   if (!validParty(raw.party, COMPANION_IDS)) throw new Error('Choose one to three distinct companions.');
   settings.party = [...raw.party];

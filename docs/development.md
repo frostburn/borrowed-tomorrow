@@ -1,6 +1,6 @@
 # Working on Borrowed Tomorrow
 
-Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 10. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the capital assault, Emperor and Lightbearer outcomes are playable; Chapter Seven now completes the campaign through the domain, guardian sequence, three divine forms and real seaside epilogue.
+Start with the file that owns the behavior. The Phaser scene connects the systems; chapter content owns the adventure and rules modules own state changes. The current-format save is version 11. Chapter Six’s shared opening, Namar, Iria, Skeld and allied capital landing are playable; the capital assault, Emperor and Lightbearer outcomes are playable; Chapter Seven now completes the campaign through the domain, guardian sequence, three divine forms and real seaside epilogue.
 
 ## Find the right place
 

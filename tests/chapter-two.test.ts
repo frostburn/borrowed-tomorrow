@@ -36,7 +36,7 @@ it('commits Kit only at scene completion and never duplicates recruitment',()=>{
   interactChapterTwo(j.host,'kit-contact');expect(j.state.party).toHaveLength(2);j.finish();
   expect(j.state.activeParty).toEqual(['nell','orrin','kit']);expect(j.state.party).toHaveLength(3);
   recruit(j.state,'kit');expect(j.state.party).toHaveLength(3);expect(decodeSave(JSON.stringify(j.state))).toEqual(j.state);
-  expect(createBattle('coast-loading',j.state).units.find(u=>u.id==='kit')).toMatchObject({name:'Kit',movement:4,speed:9,abilities:expect.arrayContaining(['quickshot','bolt','feint'])});
+  expect(createBattle('coast-loading',j.state).units.find(u=>u.id==='kit')).toMatchObject({name:'Kit',movement:4,speed:9,abilities:expect.arrayContaining(['quickshot','bandage'])});
 });
 for(const diversion of [true,false])it(`raid ${diversion?'signals':'loading'} pays its reward once and opens the capital lead`,()=>{
   const j=raid(diversion);expect(j.battle()).toBe(diversion?'coast-signals':'coast-loading');
