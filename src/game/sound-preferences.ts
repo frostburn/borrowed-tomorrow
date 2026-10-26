@@ -2,9 +2,9 @@ import type {Audio} from './audio';
 const key='borrowed-tomorrow:sound';
 /** Campaign preference, independent of saves and workshop transport controls. */
 export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on:boolean)=>void,failed:()=>void){
- let wanted=false,pending:Promise<void>|undefined;
- try{wanted=localStorage.getItem(key)==='on';}catch{/* Storage is optional. */}
- const remember=()=>{try{localStorage.setItem(key,wanted?'on':'off');}catch{/* Play normally without persistence. */}};
+ let known=false,wanted=false,pending:Promise<void>|undefined;
+ try{const saved=localStorage.getItem(key);known=saved==='on'||saved==='off';wanted=saved==='on';}catch{/* Storage is optional. */}
+ const remember=()=>{known=true;try{localStorage.setItem(key,wanted?'on':'off');}catch{/* Play normally without persistence. */}};
  const close=()=>{root.removeEventListener('pointerdown',first,true);root.removeEventListener('keydown',first,true);};
  const enable=()=>{
   close();if(wanted&&pending)return pending;
@@ -25,5 +25,5 @@ export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on
   if(wanted)void enable();
  }
  root.addEventListener('pointerdown',first,true);root.addEventListener('keydown',first,true);
- return {enable,toggle,close};
+ return {enable,toggle,close,get known(){return known;}};
 }

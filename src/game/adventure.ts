@@ -206,7 +206,7 @@ export class Adventure extends Phaser.Scene {
   }
   private titlePanel() {
     this.ui.panel('Borrowed Tomorrow', '<div class="chapter-name">Chapter One · Leaving Home</div>', [
-      { label: 'Start adventure with sound', action: () => {void this.soundPreferences?.enable();this.requestNewGame();} },
+      ...(!this.soundPreferences?.known?[{ label: 'Start adventure with sound', action: () => {void this.soundPreferences?.enable();this.requestNewGame();} }]:[]),
       { label: 'Begin Chapter One', action: () => this.requestNewGame() },
       { label: 'Continue', disabled: !this.latestSave, action: () => { if (this.latestSave) this.loadState(this.latestSave); } },
       { label: 'Save files', action: () => this.saves() },

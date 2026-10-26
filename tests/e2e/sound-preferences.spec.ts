@@ -3,7 +3,7 @@ for(const viewport of [{width:1280,height:800},{width:390,height:844}])test(`sou
  await page.setViewportSize(viewport);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await page.getByRole('button',{name:'Start adventure with sound',exact:true}).click();
  await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await expect(page.locator('.dialogue')).toBeVisible();
- await page.reload();await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();
+ await page.reload();await expect(page.getByRole('button',{name:'Start adventure with sound',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Sound on',exact:true}).click();await page.reload();
  await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();
