@@ -60,7 +60,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   }
   const files = await readdir('dist/assets');
   const built = (await Promise.all(files.filter(f => /\.(js|css)$/.test(f)).map(f => readFile(`dist/assets/${f}`, 'utf8')))).join('\n');
-  for (const devOnly of ['Combat review', 'Practice Prism lance', 'Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'Invalid character level.', 'character-workshop:v1', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
+  for (const devOnly of ['Combat review', 'Practice Prism lance', 'Receive one copy', '.inventory-panel', 'Apply base stats', 'Level defaults', 'character-workshop:v3', 'Knows the coast routes by heart', '.workshop-party', 'Circle of fifths', 'Instrument audition', 'Compare C#4 / Db4', '.music-layout']) expect(built).not.toContain(devOnly);
   for(const devOnly of ['dev-benefactor','Epic boss battle preview','dev-conduit-feeds','dev-conduit-pressure','dev-flagship','devFlagship','Start Chapter Five preset'])expect(built).not.toContain(devOnly);
   // The Benefactor is now a campaign boss; its dev fixture remains excluded.
   expect(errors).toEqual([]);
@@ -286,6 +286,11 @@ test('production Namar preserves the real Chapter Five departure and completes t
 });
 
 for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+ test(`production skill choices persist without workshop controls on ${device}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');const s=checkpoint('orrinJoined');s.xp=50;await importSave(page,s);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});await expect(skills).toContainText('1 upgrade point');await skills.getByRole('button',{name:'Upgrade Lantern burst to 2',exact:true}).click();await expect(skills.getByRole('status')).toContainText('skill 2');await page.getByRole('button',{name:'Close',exact:true}).click();
+  await page.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.nell.burst).toBe(2);expect((await inspect(page)).state.skills.orrin.guard).toBe(0);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect(errors).toEqual([]);
+ });
  test(`production campaign uses shared-turn skills and real terrain on ${device}`,async({page})=>{
   const {anchorCheckpoint}=await import('../support/anchors');const {clickHex}=await import('./controls');const {offset}=await import('../../src/rules/hex');
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

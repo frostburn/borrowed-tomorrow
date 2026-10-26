@@ -25,7 +25,7 @@ it('earth plates release the seal permanently through normal movement',()=>{
 });
 it.each(['burst','steam'] as const)('%s damages overlapping contacts once',ability=>{
  const b=createConduitBattle('pressure'),boss=regulatorUnit(b),u=b.units.find(u=>u.id===(ability==='steam'?'orrin':'nell'))!;
- u.hex=offset(6,5);b.queue=[u.id,REGULATOR_ID];u.focus=6;
+ u.hex=offset(6,5);b.queue=[u.id,REGULATOR_ID];u.focus=6;if(ability==='steam')u.skills!.steam=1;
  const body=new Set(occupiedHexes(boss).map(key)),aim=cells().find(h=>legalAim(b,u,ability,h)&&shape(b,u,ability,h).filter(h=>body.has(key(h))).length>1)!;
  expect(aim).toBeTruthy();expect(targets(b,u,ability,aim).filter(v=>v.id===REGULATOR_ID)).toHaveLength(1);
  const hp=boss.hp,expected=damage(u,boss,ability);expect(cast(b,u,ability,aim)).toBe(true);expect(boss.hp).toBe(hp-expected);

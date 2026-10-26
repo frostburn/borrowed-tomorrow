@@ -41,7 +41,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(saved.bag['work-coat']).toBe(1);expect(saved.bag['heavy-coat']).toBe(0);
     await page.getByRole('button',{name:'Close',exact:true}).click();await page.getByRole('button',{name:'Save',exact:true}).click();
     const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export current save',exact:true}).click();
-    const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));expect(exported.version).toBe(10);expect(exported.inventory).toEqual(saved);expect(exported).not.toHaveProperty('gear');
+    const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));expect(exported.version).toBe(11);expect(exported.inventory).toEqual(saved);expect(exported).not.toHaveProperty('gear');
     await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).state.inventory).toEqual(saved);
     await page.keyboard.press('i');await expect(page.getByRole('dialog',{name:'Character inventory'})).toBeVisible();

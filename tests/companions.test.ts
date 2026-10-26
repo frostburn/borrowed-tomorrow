@@ -8,7 +8,7 @@ import { newGame, recruitOrrin } from '../src/rules/state';
 function trio(level = 5) {
   const settings = newCharacterSettings(); settings.party = ['kit', 'celia', 'petra'];
   for(const id of settings.party)settings.characters[id]=defaultBuild(id,level);
-  settings.characters.celia.speed=30;
+  settings.characters.celia.speed=30;settings.characters.petra.skills.bash=1;
   const b=createBattle('workshop',newGame(),equipmentBonuses(newInventory()),characterProfiles(settings),settings.party);
   b.obstacles.clear();
   return {b,kit:b.units[0],celia:b.units[1],petra:b.units[2],enemy:b.units[3]};
@@ -29,7 +29,7 @@ it('round-trips current character settings and rejects old or incomplete records
   expect(()=>decodeCharacterSettings(JSON.stringify({...current,version:1}))).toThrow();
   expect(()=>decodeCharacterSettings(JSON.stringify({...current,characters:{nell,orrin}}))).toThrow();
   expect(()=>decodeInventory(JSON.stringify({...newInventory(),version:1}))).toThrow();
-  expect(s.version).toBe(2);expect(s.characters.nell).toEqual(nell);expect(s.characters.orrin).toEqual(orrin);
+  expect(s.version).toBe(3);expect(s.characters.nell).toEqual(nell);expect(s.characters.orrin).toEqual(orrin);
   expect(s.characters.kit).toEqual(defaultBuild('kit'));expect(s.party).toEqual(['nell','orrin']);
   s.party=['kit','celia','petra'];expect(decodeCharacterSettings(JSON.stringify(s))).toEqual(s);
   for(const party of [[],['nell','nell'],['nell','orrin','kit','celia'],['missing'],null]){
@@ -63,7 +63,7 @@ it('creates any selected trio on separate spawn hexes and rejects invalid partie
   const campaign=newGame();recruitOrrin(campaign);expect(createBattle('workshop',campaign).units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(['nell','orrin']);
 });
 it('makes each companion’s level-five skill usable only after its level unlock',()=>{
-  for(const [hero,ability] of [['kit','volley'],['celia','sanctuary'],['petra','crush']] as const){
+  for(const [hero,ability] of [['kit','ricochet'],['celia','sanctuary'],['petra','crush']] as const){
     for(const level of [1,5]){
       const {b,enemy}=trio(level),u=b.units.find(u=>u.id===hero)!;
       b.queue=[u.id,...b.queue.filter(id=>id!==u.id)];u.hex=offset(4,3);enemy.hex=offset(5,3);

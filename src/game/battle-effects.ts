@@ -1,12 +1,12 @@
 import type Phaser from 'phaser';
-import { ABILITIES, type AbilityId } from '../rules/combat';
+import { ABILITIES, type AbilityId,type Ability } from '../rules/combat';
 import { diagonalStart, toPixel, type Hex } from '../rules/hex';
 
 /** Short native-world effects from a tool, or from above for celestial attacks. */
-export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex){
+export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability]){
   const g=scene.add.graphics();world.add(g);
-  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=ABILITIES[ability].heal||ABILITIES[ability].effect==='guard';
-  const definition=ABILITIES[ability],rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
+  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard';
+  const rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
   const hand={x:source.x+(face.endsWith('-left')?-26:face.endsWith('-right')?26:face.endsWith('-back')?18:-18),y:source.y-30};
@@ -46,7 +46,7 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
         if(!reduced&&p<.5){g.lineStyle(3,0xd9bb7f,.9);g.lineBetween(tip.x-10,tip.y-25,tip.x,tip.y);}
         if(reduced||p>=.4){const r=8+p*20;g.fillStyle(0xd4ae76,.25).fillEllipse(at.x,at.y,r*2,r);g.lineStyle(3,0xf2c47c,.9).strokeEllipse(at.x,at.y,r*2,r);for(const dx of [-12,0,12])g.lineBetween(at.x,at.y,at.x+dx*p,at.y-8-p*16);}
       }
-    }else if(ABILITIES[ability].shape==='pattern'){
+    }else if(definition.shape==='pattern'){
       for(const hex of affected){const at=toPixel(hex);g.fillStyle(0xf9dbad,.17).fillRect(Math.round(at.x-16),0,32,Math.round(at.y));g.lineStyle(3,0xf8dfb5,.85).lineBetween(at.x,0,at.x,at.y);g.strokeEllipse(at.x,at.y,38+p*12,16+p*10);}
     }else if(ability==='sunbeam'){
       for(const hex of affected){const at=toPixel(hex);g.lineStyle(5,0xf4dc9e,.8).lineBetween(hand.x,hand.y,at.x,at.y-14);g.lineStyle(2,0xe5f5e0,1).lineBetween(hand.x,hand.y,at.x,at.y-14);}

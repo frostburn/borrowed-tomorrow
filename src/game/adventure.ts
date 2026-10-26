@@ -1,3 +1,5 @@
+import {abilityFor} from '../rules/skills';
+import {openSkills,pendingSkillPoints} from './skills';
 import {teamStatus,battleAbilities,daybreakGuard} from '../rules/combat-tactics';
 import {drawBattleFixtures} from './battle-fixtures';
 import type {installSoundPreferences} from './sound-preferences';
@@ -378,6 +380,7 @@ export class Adventure extends Phaser.Scene {
     const pad = this.ui.controls.querySelector('.dpad')!;
     for (const [label, dx, dy] of [['↑',0,-1],['←',-1,0],['↓',0,1],['→',1,0]] as const) pad.append(this.ui.button({ label, action: () => { if (!this.blocked && !this.moving) this.stepWorld(dx,dy); } }));
     this.ui.controls.querySelector('.interact-action')!.append(this.ui.button({ label: this.near ? 'Interact' : 'Journal', key: this.near ? 'E' : 'J', action: () => this.near ? this.interact(this.near) : this.journal() }));
+    const points=pendingSkillPoints(s);if(points)this.ui.controls.querySelector('.world-actions')!.append(this.ui.button({label:`Upgrade skills · ${points}`,action:()=>openSkills(this.ui,s,()=>{this.autosave();this.renderWorldControls();})}));
     this.ui.status.textContent = `${s.coins} marks · ${s.bandages} bandages · click to walk · E interact · J journal`;
   }
   private closestObject(): MapObject | undefined {
@@ -627,7 +630,7 @@ export class Adventure extends Phaser.Scene {
         if(reachable){color=0x568d99;alpha=.32;}else{color=0xad4937;alpha=.4;}
         stroke=0xf7ae73;width=2;priority=5;
       }
-      if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;priority=6;}
+      if(affected.has(id)){color=abilityFor(u!,this.selected as AbilityId)?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;priority=6;}
       if(valveVents.has(id)&&!affected.has(id)){color=0x4bada7;alpha=.25;stroke=0x9ae4cc;width=2;priority=6;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
@@ -644,7 +647,7 @@ export class Adventure extends Phaser.Scene {
       if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
       if(b.vents.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffc07a,.95);for(const dx of [-10,0,10]){this.grid.lineBetween(p.x+dx-3,p.y+16,p.x+dx+3,p.y+8);this.grid.lineBetween(p.x+dx+3,p.y+8,p.x+dx,p.y+3);}}
     }
-    if(canAct&&aimed&&this.selected!=='move'&&['push','shove'].includes(ABILITIES[this.selected].effect??'')&&legalAim(b,u!,this.selected,aimed)){
+    if(canAct&&aimed&&this.selected!=='move'&&['push','shove'].includes(abilityFor(u!,this.selected).effect??'')&&legalAim(b,u!,this.selected,aimed)){
       for(const target of targets(b,u!,this.selected,aimed)){const destination=target.hp>damage(u!,target,this.selected)?pushDestination(b,u!,target):undefined;if(destination){fill(destination,0x557179,.3);outlines.push({hex:destination,color:0x9bab6c,width:2,priority:8});}}
     }
     // Draw the collected edge network after every fill. Same-style segments
@@ -657,10 +660,10 @@ export class Adventure extends Phaser.Scene {
       for(const {a,b}of edges){this.grid.moveTo(a.x+phase,a.y+phase);this.grid.lineTo(b.x+phase,b.y+phase);}
       this.grid.strokePath();
     }
-    if(canAct&&aimed&&this.selected!=='move'&&ABILITIES[this.selected].shape==='bounce'&&legalAim(b,u!,this.selected,aimed)){
+    if(canAct&&aimed&&this.selected!=='move'&&abilityFor(u!,this.selected).shape==='bounce'&&legalAim(b,u!,this.selected,aimed)){
       const points=shape(b,u!,this.selected,aimed).map(toPixel);if(points.length===2)this.grid.lineStyle(4,0xf4d49c,.9).lineBetween(points[0].x,points[0].y-20,points[1].x,points[1].y-20);
     }
-    if(canAct&&aimed&&this.selected!=='move'&&ABILITIES[this.selected].shape==='diagonal'&&legalAim(b,u!,this.selected,aimed)){
+    if(canAct&&aimed&&this.selected!=='move'&&abilityFor(u!,this.selected).shape==='diagonal'&&legalAim(b,u!,this.selected,aimed)){
       const ray=shape(b,u!,this.selected,aimed),first=ray[0],last=ray.at(-1);if(first&&last){const start=diagonalStart(u!.hex,first),end=toPixel(last);this.grid.lineStyle(2,0xf4d49c,.9).lineBetween(start.x,start.y,end.x,end.y);}
     }
     if(this.plan?.action==='move'&&u){const path=movement(b,u).get(key(this.plan.hex))?.path??[];this.grid.lineStyle(3,0xe8d6a2,.9);this.grid.beginPath();const start=toPixel(u.hex);this.grid.moveTo(start.x,start.y);for(const h of path){const p=toPixel(h);this.grid.lineTo(p.x,p.y);}this.grid.strokePath();}
@@ -688,9 +691,9 @@ export class Adventure extends Phaser.Scene {
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },
     });
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>({label:ABILITIES[id].name+(ABILITIES[id].bonus?' · Extra':ABILITIES[id].team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||u.focus<ABILITIES[id].cost||!!(ABILITIES[id].bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,title:teamStatus(b,u,id).reason??ABILITIES[id].description})),
+    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>({label:abilityFor(u,id).name+(abilityFor(u,id).bonus?' · Extra':abilityFor(u,id).team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||u.focus<abilityFor(u,id).cost||!!(abilityFor(u,id).bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,badge:abilityFor(u,id).rank?String(abilityFor(u,id).rank):undefined,title:teamStatus(b,u,id).reason??`${abilityFor(u,id).rank?`Skill ${abilityFor(u,id).rank}. `:''}${abilityFor(u,id).description}`})),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]);
-    this.ui.status.textContent=player?(u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&ABILITIES[this.selected].range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
+    this.ui.status.textContent=player?(u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
     this.ui.controls.querySelector('.command-list')!.scrollTop=commandScroll;
     if(this.selected!=='move')this.ui.controls.querySelector('.actions button.selected')?.scrollIntoView({block:'nearest',inline:'nearest'});
@@ -700,11 +703,12 @@ export class Adventure extends Phaser.Scene {
     const hint=document.getElementById('battle-hint'),confirm=document.getElementById('confirmation');if(!hint||!confirm)return;
     const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
-    hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):ABILITIES[this.selected].description;
+    hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected).description;
+    if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
-    if(this.selected!=='move'&&ABILITIES[this.selected].team&&teamStatus(b,u,this.selected).reason){hint.textContent=teamStatus(b,u,this.selected).reason!;return;}
+    if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){hint.textContent=teamStatus(b,u,this.selected).reason!;return;}
     if(!aimed)return;
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
@@ -713,20 +717,20 @@ export class Adventure extends Phaser.Scene {
       }
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
-      const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);
+      const ability=abilityFor(u!,this.selected),hits=targets(b,u,this.selected,aimed);
       const team=teamStatus(b,u,this.selected).partner,footprint=shape(b,u,this.selected,aimed);
       const fixtures=damagingAbility(this.selected)?b.fixtures?.filter(f=>f.hp>0&&footprint.some(h=>equal(f.hex,h)))??[]:[];
       const descriptions=hits.map(v=>ability.effect==='shove'?`${v.name}: ${pushDestination(b,u,v)?'push one hex':'push blocked'} · no damage`:ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} guard`:ability.effect==='focus'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} focus`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId,team)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId,team)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`);
       descriptions.push(...fixtures.map(f=>`${f.name}: ${f.kind==='valve'?`steam ${f.active?'off':'on'} on marked hexes`:`${f.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`));
       const description=ability.effect==='taunt'?`All ${hits.length} enemies target ${u.name} until ${u.name}’s next turn.`:descriptions.join(' · ')||'Empty ground';
       if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='guard'||ability.effect==='weaken'||ability.effect==='focus'||ability.effect==='taunt'||ability.effect==='shove'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
-      const text=document.createElement('span');text.className='prediction';text.textContent=(team?`${u.name} + ${team.name} · both turns · ${ability.team!.cost} focus each. `:'')+description+(this.selected==='daybreak'?` · each ally also gains up to ${daybreakGuard(u)} guard`:'');confirm.append(text);
+      const text=document.createElement('span');text.className='prediction';text.textContent=(team?`${u.name} + ${team.name} · both turns · ${ability.team!.cost} focus each. `:'')+description+(ability.ward?` · ${ability.ward.party?'All allies':u.name}: up to ${ability.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5)} guard`:'')+(this.selected==='daybreak'?` · each ally also gains up to ${daybreakGuard(u,team)} guard`:'');confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
   }
   private selectAction(action: Action) {
-    const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||ABILITIES[action].bonus&&u.bonusUsed)))return;
+    const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||abilityFor(u!,action).bonus&&u.bonusUsed)))return;
     this.selected=action;this.plan=undefined;
-    if(action!=='move'&&ABILITIES[action].range===0&&legalAim(this.battle!,u,action,u.hex)){
+    if(action!=='move'&&abilityFor(u!,action).range===0&&legalAim(this.battle!,u,action,u.hex)){
       this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
       this.revealHex(u.hex,HEX_SIZE*5); // Include adjacent hexes and knockback landings.
     }
@@ -734,7 +738,7 @@ export class Adventure extends Phaser.Scene {
   }
   private chooseHex(hex: Hex) {
     const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||b.result)return;
-    if(this.selected!=='move'&&ABILITIES[this.selected].range===0)return;
+    if(this.selected!=='move'&&abilityFor(u!,this.selected).range===0)return;
     this.hover=hex;this.battleCursor=hex;
     const valid=this.selected==='move'?!!movement(b,u).get(key(hex))?.path.length:legalAim(b,u,this.selected,hex);
     if(valid){this.plan={action:this.selected,hex};this.audio.effect('click');}
@@ -767,7 +771,7 @@ export class Adventure extends Phaser.Scene {
     const preview=this.battlePresentation;
     const timing=actor&&action?.ability?preview?.attackTiming?.(actor):undefined;
     const enemyAttack=actor?.side==='enemy'&&!!action?.ability;
-    const rich=!!action?.ability&&(['axis','diagonal','bounce'].includes(ABILITIES[action.ability].shape)||!!ABILITIES[action.ability].team);
+    const rich=!!action?.ability&&(['axis','diagonal','bounce'].includes(abilityFor(actor!,action.ability).shape)||!!abilityFor(actor!,action.ability).team);
     const contact=timing?.contact??(enemyAttack&&!animatedHero(hero??'')?220:ATTACK_CONTACT_MS);
     const path=action?.path,stepMs=reduced?0:95,travel=path?path.length*stepMs:0,impact=travel+(action?.ability&&!reduced?contact:0);
     const duration=path&&!action?.ability?Math.max(80,travel+40):travel+(reduced?(enemyAttack?220:100):(timing?.duration??(rich?900:enemyAttack?560:ATTACK_DURATION_MS)));
@@ -779,11 +783,15 @@ export class Adventure extends Phaser.Scene {
         if(enemyAttack&&action?.ability){
           this.enemyAttack={battle,actorId:actor.id,ability:action.ability,cells:action.affected??[],impact:false};
           this.revealHex(action.aim);this.drawGrid();
-          this.ui.status.textContent=`${actor.name} · ${ABILITIES[action.ability].name}`;
+          const partner=battle.units.find(v=>v.id===action.partnerId);this.ui.status.textContent=`${actor.name}${partner?` + ${partner.name}`:''} · ${abilityFor(actor!,action.ability).name}`;
         }
         if(action?.partnerId){
           const partner=battle.units.find(u=>u.id===action.partnerId),partnerImage=this.actorImages.get(action.partnerId);
-          if(partner&&partnerImage){teamWindup(this,this.layer!,image,partnerImage,!!ABILITIES[action!.ability!].heal);const p=toPixel(partner.hex),target=toPixel(action.aim),face=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);if(animatedHero(partner.kind)){this.battleFaces.set(partner.id,face);this.motion.attack(partnerImage,face);} }
+          if(partner&&partnerImage){
+            teamWindup(this,this.layer!,image,partnerImage,!!abilityFor(actor!,action!.ability!).heal);
+            if(animatedHero(partner.kind)){const p=toPixel(partner.hex),target=toPixel(action.aim),face=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);this.battleFaces.set(partner.id,face);this.motion.attack(partnerImage,face);}
+            else{const x=partnerImage.x,y=partnerImage.y;this.tweens.addCounter({from:0,to:1,duration:reduced?0:contact,onUpdate:t=>{if(partnerImage.active)partnerImage.setPosition(x-2*Math.round(Math.sin((t.getValue()??0)*Math.PI)*2),y);},onComplete:()=>{if(partnerImage.active)partnerImage.setPosition(x,y);}});}
+          }
         }
         if(!reduced&&!animatedHero(hero??'')&&!timing){const x=image.x,y=image.y;this.tweens.addCounter({from:0,to:1,duration:contact,onUpdate:t=>{if(image.active){const p=t.getValue()??0;image.setPosition(x-2*Math.round(p*2),y-2*Math.round(Math.sin(p*Math.PI)*2));}}});}
         if(!reduced&&timing)preview?.attack?.(this,image,actor,0);
@@ -817,8 +825,8 @@ export class Adventure extends Phaser.Scene {
         if(action.partnerId){const partner=battle.units.find(u=>u.id===action.partnerId),other=this.actorImages.get(action.partnerId);if(partner&&other&&animatedHero(partner.kind)){const p=toPixel(partner.hex),target=toPixel(action.aim),f=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);this.motion.attack(other,f,impact-travel);}}
         if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'?'bash':'attack');
         this.revealHex(action.aim);
-        this.audio.effect(preview?.attackSound?.(actor,action.ability)??ABILITIES[action.ability].sound??action.ability as import('./synth').Effect,this.state.location.map);
-        if((actor.side==='enemy'||face||ABILITIES[action.ability].shape==='pattern')&&!preview?.attackEffect?.(this,this.layer!,image,actor,action.ability,action.affected??[]))battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'',actor.hex);
+        this.audio.effect(preview?.attackSound?.(actor,action.ability)??abilityFor(actor!,action.ability).sound??action.ability as import('./synth').Effect,this.state.location.map);
+        if((actor.side==='enemy'||face||abilityFor(actor!,action.ability).shape==='pattern')&&!preview?.attackEffect?.(this,this.layer!,image,actor,action.ability,action.affected??[]))battleEffect(this,this.layer!,image,action.aim,action.ability,action.affected??[],face??'',actor.hex,abilityFor(actor,action.ability));
       }
       for(const u of battle.units){
         const old=before.get(u.id),image=this.actorImages.get(u.id);if(!old||!image)continue;
@@ -887,7 +895,7 @@ export class Adventure extends Phaser.Scene {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
-    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase. Each companion gains an upgrade point per level.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[...(pendingSkillPoints(this.state)?[{label:'Upgrade skills',action:()=>openSkills(this.ui,this.state,()=>this.autosave())}]:[]),{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
   }
 
   inventory() {
@@ -906,7 +914,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Lantern burst affects the target and its six neighbors, including allies. Steam lance fires along one of six hex axes, hits every unit on that line, and stops at the first rock. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Skills have their own levels. Lantern burst starts as four slanted hexes, grows to seven, then halves damage to allies. Steam lance upgrades from a straight ray to a spaced hex-diagonal ray. Read the highlighted footprint before confirming. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Skill upgrades</h3><p>Each character level gained grants one upgrade point to every companion, including reserves. Spend it on any skill whose next rank meets your character level, or save it for later. Open Upgrade skills after a victory or Skills inside Equipment. Upgrades are saved with each character. Team skills use both turns and both focus costs from anywhere on the board; their power averages the two skill ranks.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');
   }
   async toggleSound() { try {if(this.soundPreferences)await this.soundPreferences.toggle();else this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {

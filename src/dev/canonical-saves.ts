@@ -1,3 +1,6 @@
+import {presetSkills} from '../rules/skills';
+import {level,type GameState} from '../rules/state';
+const canonicalSkills=(s:GameState)=>{for(const h of s.party)s.skills[h.id]=presetSkills(h.id,level(s));return s;};
 import {ENCOUNTERS as SEVEN_ENCOUNTERS} from '../content/chapter-seven/encounters';
 import { ENCOUNTERS as SIX_ENCOUNTERS } from '../content/chapter-six/encounters';
 import { ENCOUNTERS as FINALE_ENCOUNTERS } from '../content/chapter-six/capital/encounters';
@@ -26,7 +29,7 @@ export function chapterTwoStart(){
   receiveItem(state.inventory,'brass-reflector');equipItem(state.inventory,'nell','brass-reflector');
   state.journal=['home','blessing','raid','escape','orrin','workshop','village','collector','freed','pass','captain','departure'];
   state.boundary=NEXT_CHAPTER;beginChapterTwo(state);restoreParty(state);
-  return decodeSave(JSON.stringify(state));
+  return decodeSave(JSON.stringify(canonicalSkills(state)));
 }
 
 /** Loading-gate raid, all passengers evacuated; Petra has refused Alban but not joined. */
@@ -41,7 +44,7 @@ export function chapterThreeStart(){
   equipItem(state.inventory,'kit','courier-sight');equipItem(state.inventory,'orrin','work-coat');
   state.journal.push('coast','kit','trainRaid','prisoners','ward','settlement','coastCollector','evacuation','recapture','capitalDeparture');
   state.boundary=THIRD_CHAPTER;beginChapterThree(state);restoreParty(state);
-  return decodeSave(JSON.stringify(state));
+  return decodeSave(JSON.stringify(canonicalSkills(state)));
 }
 
 /** Tomas and all passengers rescued; the chosen three arrive with Petra in reserve. */
@@ -55,7 +58,7 @@ export function chapterFourStart(){
   equipItem(state.inventory,'nell','silver-reflector');equipItem(state.inventory,'petra','saber-hilt');equipItem(state.inventory,'orrin','insulated-coat');
   state.journal.push('capital','refusal','petra','works','warden','tomas','intake','conduit','heart','extraction','brokenDeparture');
   state.boundary=FOURTH_CHAPTER;beginChapterFour(state);restoreParty(state);
-  return decodeSave(JSON.stringify(state));
+  return decodeSave(JSON.stringify(canonicalSkills(state)));
 }
 
 /** Open coast, intact anchors; the working survey ship has not been acquired. */
@@ -66,7 +69,7 @@ export function chapterFiveStart(){
  for(const id of ['works-dry','sanctuary-road','sanctuary-warden']){const e=FOUR_ENCOUNTERS[id];state.xp+=e.xp;state.coins+=e.coins;if(e.item)receiveItem(state.inventory,e.item);}
  equipItem(state.inventory,'nell','sun-prism');equipItem(state.inventory,'orrin','return-valve');equipItem(state.inventory,'petra','rescue-coat');
  state.journal.push('refugeSeen','worksArrival','worksClear','harborOpened','sanctuaryEntered','roadClear','signalCut','wardenFallen','anchorsKnown','anchorsDeparture');
- state.boundary=FIFTH_CHAPTER;beginChapterFive(state);restoreParty(state);return decodeSave(JSON.stringify(state));
+ state.boundary=FIFTH_CHAPTER;beginChapterFive(state);restoreParty(state);return decodeSave(JSON.stringify(canonicalSkills(state)));
 }
 
 /** Authored Acts I–III completion. No live saves or workshop settings are read. */
@@ -89,7 +92,7 @@ export function chapterFiveFinaleStart(){
  // Seven ordinary purchases at the existing eight-mark price, then a free rest.
  s.coins-=56;s.bandages=12;s.activeParty=['nell','orrin','petra'];
  s.location=arrival('airship','start');restoreParty(s);
- return decodeSave(JSON.stringify(s));
+ return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** Chapter Five's actual completion, including the hunters and Nell's illness. */
@@ -100,14 +103,14 @@ export function chapterSixStart(){
  sickenNell(s);equipItem(s.inventory,'kit','fleet-sight');
  s.journal.push('flagshipApproachSeen','flagshipFallen','benefactorClaimSeen','retaliationSeen','retaliationFallen','fiveDeparture');
  s.boundary=SIXTH_CHAPTER;beginChapterSix(s);restoreParty(s);
- return decodeSave(JSON.stringify(s));
+ return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** Shared briefing complete, no desert progress: replay Iria's river arrival. */
 export function chapterSixJungleStart(){
  const s=chapterSixStart();
  for(const flag of ['capitalSealed','sixRoutesKnown','jungleLeadKnown']){s.flags[flag]=true;s.journal.push(flag);}
- s.location=arrival('riverhaven','start');return decodeSave(JSON.stringify(s));
+ s.location=arrival('riverhaven','start');return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** Authored jungle completion before the first desert visit; no live data. */
@@ -120,20 +123,20 @@ export function chapterSixRecoveredStart(){
  for(const flag of ['riverRestSeen','riverThanksSeen','riverReported']){s.flags[flag]=true;s.journal.push(flag);}
  // An authored review formation, selected after the cure, independent of saves.
  s.activeParty=['nell','kit','celia'];s.location=arrival('outermooring','namar');restoreParty(s);
- return decodeSave(JSON.stringify(s));
+ return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** Fresh northern landing, independently reviewable in either Nell state. */
 export function chapterSixNorthStart(recovered=false){
  const s=recovered?chapterSixRecoveredStart():chapterSixJungleStart();
- s.location=arrival('bellharbor','start');return decodeSave(JSON.stringify(s));
+ s.location=arrival('bellharbor','start');return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 /** Authored expedition approach, before dragon rewards or either pact release. */
 export function chapterSixDragonStart(recovered=false){
  const s=chapterSixNorthStart(recovered);
  for(const flag of ['northSeen','northWatchSeen','northWatchConfronted','northWatchWon','northPassOpened','northLogRead','northHuntersConfronted','northHuntersWon']){s.flags[flag]=true;s.journal.push(flag);}
  for(const id of ['north-watch','north-hunters']){const e=NORTH_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
- s.location=arrival('wintershrine','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+ s.location=arrival('wintershrine','start');restoreParty(s);return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** Both foreign seals released; the allied quay arrival still plays. */
@@ -143,7 +146,7 @@ export function chapterSixCapitalStart(recovered=false){
  s.flags.palaceWaterRoute=false;
  for(const id of ['north-watch','north-hunters','winter-dragon','palace-gallery','desert-ascent','sun-serpent']){const e=SIX_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
  for(const [hero,item]of [['kit','winter-sight'],['orrin','ice-valve'],['petra','pact-guard'],['petra','stormlining-coat']]as const)equipItem(s.inventory,hero,item);
- s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+ s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 /** Capital street and palace cleared; morning completed only on the recovered route. */
 export function chapterSixFinaleStart(recovered=false){
@@ -151,7 +154,7 @@ export function chapterSixFinaleStart(recovered=false){
  for(const flag of ['capitalQuaySeen','capitalStreetSeen','capitalProcessionConfronted','capitalProcessionWon','capitalStreetFreed','capitalPalaceSeen','capitalCommandConfronted','capitalCommandWon','capitalHallOpened']){s.flags[flag]=true;s.journal.push(flag);}
  for(const id of ['capital-procession','palace-command']){const e=FINALE_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
  if(recovered)for(const flag of ['capitalAudienceSeen','capitalMorningSeen','capitalMorningQuestion','capitalMorningLeft']){s.flags[flag]=true;s.journal.push(flag);}
- s.location=arrival('lastpalace','memory');restoreParty(s);return decodeSave(JSON.stringify(s));
+ s.location=arrival('lastpalace','memory');restoreParty(s);return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 
 /** A fresh authored completion of the recovered capital, never a live save. */
@@ -160,14 +163,14 @@ export function chapterSevenDeparture(){
  for(const flag of ['capitalWarningSeen','capitalAssaultCommitted','emperorSeen','emperorConfronted','emperorWon','emperorFallen','capitalReleased','capitalLandingSeen','chapterSixComplete']){s.flags[flag]=true;s.journal.push(flag);}
  s.flags.capitalRiskAccepted=false;
  const e=FINALE_ENCOUNTERS['imperial-vessel'];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);
- s.boundary='chapter-seven:hollow-sun';s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+ s.boundary='chapter-seven:hollow-sun';s.location=arrival('capitalquay','start');restoreParty(s);return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 export function chapterSevenStart(){
- const s=chapterSevenDeparture();s.chapter='chapter-seven';s.boundary=null;s.location=arrival('hollowsill','start');return decodeSave(JSON.stringify(s));
+ const s=chapterSevenDeparture();s.chapter='chapter-seven';s.boundary=null;s.location=arrival('hollowsill','start');return decodeSave(JSON.stringify(canonicalSkills(s)));
 }
 export function chapterSevenRefugeStart(){
  const s=chapterSevenStart();
  for(const flag of ['domainEntered','domainWaterSeen','domainHoundsConfronted','domainHoundsWon','domainCollectorConfronted','domainCollectorWon','takenPeopleFreed','firstHarvestSeen','domainFurnaceConfronted','domainFurnaceWon','harvestFreed','firstHospiceSeen','domainWardConfronted','domainWardWon','wardPeopleFreed','seasonStreetSeen','domainDragonConfronted','domainDragonWon','seasonsFreed']){s.flags[flag]=true;s.journal.push(flag);}
  for(const id of ['domain-hounds','domain-collector','domain-furnace','domain-ward','domain-dragon']){const e=SEVEN_ENCOUNTERS[id];s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
- s.bandages=12;s.location=arrival('lastrefuge','start');restoreParty(s);return decodeSave(JSON.stringify(s));
+ s.bandages=12;s.location=arrival('lastrefuge','start');restoreParty(s);return decodeSave(JSON.stringify(canonicalSkills(s)));
 }

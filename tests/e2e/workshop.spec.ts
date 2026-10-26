@@ -3,7 +3,7 @@ import { capture, clickHex, inspect } from './controls';
 import { blast, HEX_SIZE, offset, toPixel } from '../../src/rules/hex';
 import { MAX_LEVEL } from '../../src/rules/progression';
 
-const characterStorage = 'borrowed-tomorrow:character-workshop:v1';
+const characterStorage = 'borrowed-tomorrow:character-workshop:v3';
 async function setLevel(page: Page, hero: string, level: number) {
   const input = page.getByRole('spinbutton', { name: `${hero} level`, exact: true });
   await input.fill(String(level)); await input.press('Tab');
@@ -23,10 +23,10 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await page.setViewportSize(viewport); await page.goto('/?dev=workshop');
     await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
     await expect(page.getByRole('region', { name: 'Character workshop', exact: true })).toBeVisible();
-    await expect(page.locator('[data-ability="beacon"]')).toContainText('Lv 5 · Locked');
+    await expect(page.locator('[data-ability="mend"]')).toContainText('Skill 0 / 3');
     await capture(page, `workshop-${device}`);
     await setLevel(page, 'Nell', 5);
-    await expect(page.locator('[data-ability="beacon"]')).toContainText('Lv 5 · Known');
+    await expect(page.locator('[data-ability="mend"]')).toContainText('Skill 2 / 3');
     for (const [stat, value] of [['Max HP', 120], ['Attack', 30], ['Armor', 3], ['Speed', 12], ['Movement', 5], ['Starting focus', 2]] as const) {
       await page.getByRole('spinbutton', { name: `Nell ${stat}`, exact: true }).fill(String(value));
     }
@@ -39,8 +39,8 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await selectHero(page, 'Orrin'); await selectTab(page, 'Character'); await setLevel(page, 'Orrin', 3);
     await page.getByRole('spinbutton', { name: 'Orrin Speed', exact: true }).fill('15');
     await page.getByRole('button', { name: 'Apply base stats', exact: true }).click();
-    await expect(page.locator('[data-ability="guard"]')).toContainText('Lv 3 · Known');
-    await expect(page.locator('[data-ability="repulse"]')).toContainText('Lv 5 · Locked');
+    await expect(page.locator('[data-ability="guard"]')).toContainText('Skill 1 / 3');
+    await expect(page.locator('[data-ability="repulse"]')).toContainText('Skill 0 / 3');
     await page.reload();
     await expect(page.getByRole('spinbutton', { name: 'Nell level', exact: true })).toHaveValue('5');
     await expect(page.getByRole('spinbutton', { name: 'Nell Attack', exact: true })).toHaveValue('30');
@@ -51,7 +51,7 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     const units = (await inspect(page)).battle!.units;
     expect(units.find(u => u.id === 'nell')).toMatchObject({ hp: 120, bonus: 22, armor: 3, speed: 12, movement: 5, focus: 2, level: 5 });
     expect(units.find(u => u.id === 'orrin')).toMatchObject({ hp: 66, bonus: 6, speed: 15, level: 3 });
-    expect(units.find(u => u.id === 'nell')!.abilities).toContain('beacon');
+    expect(units.find(u => u.id === 'nell')!.skills!.mend).toBe(2);
     await page.keyboard.press('6'); await clickHex(page, units.find(u => u.id === 'nell')!.hex);
     await expect(page.locator('.prediction')).toContainText('13 guard');
     await expect(page.getByRole('button', { name: 'Confirm ability', exact: true })).toBeInViewport();
@@ -60,12 +60,12 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.guard).toBe(13);
     await page.getByRole('button', { name: 'Workshop', exact: true }).click();
     await setLevel(page, 'Nell', 1);
-    await expect(page.locator('[data-ability="beacon"]')).toContainText('Lv 5 · Locked');
+    await expect(page.locator('[data-ability="mend"]')).toContainText('Skill 0 / 3');
     await expect(page.getByRole('spinbutton', { name: 'Nell Attack', exact: true })).toHaveValue('11');
     await expect(page.getByRole('region', { name: 'Nell equipment' })).toContainText('Brass reflector');
     await page.getByRole('button', { name: 'Test battle', exact: true }).click();
     await expect.poll(async () => (await inspect(page)).mode).toBe('battle');
-    expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.abilities).not.toContain('beacon');
+    expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.skills!.mend).toBe(0);
     await page.keyboard.press('Escape');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true); expect(errors).toEqual([]);
   });
@@ -116,13 +116,13 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
     expect((await inspect(page)).battle!.units.find(u => u.kind === 'hound')!.dazzledAttacks).toBe(2);
     await expect(page.locator('.actions').getByRole('button', { name: /^F\s+Defend$/ })).toBeEnabled();
     await page.locator('.actions').getByRole('button', { name: /^F\s+Defend$/ }).click();
-    await expect(page.locator('.actions').getByRole('button', { name: /^7\s+Beacon$/ })).toBeEnabled();
+    await expect(page.locator('.actions').getByRole('button', { name: /^5\s+Mend$/ })).toBeEnabled();
     const before = (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp;
     expect(before).toBeLessThan(999);
-    await page.keyboard.press('7'); await clickHex(page, (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hex);
+    await page.keyboard.press('5'); await clickHex(page, (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hex);
     await expect(page.getByRole('button', { name: 'Confirm healing', exact: true })).toBeInViewport();
     await capture(page, `workshop-beacon-${device}`); await page.getByRole('button', { name: 'Confirm healing', exact: true }).click();
-    await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(Math.min(999, before + 14));
+    await expect.poll(async () => (await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(Math.min(999, before + 30));
     await page.getByRole('button', { name: 'Workshop', exact: true }).click();
     expect(errors).toEqual([]);
   });

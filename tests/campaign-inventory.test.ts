@@ -12,7 +12,7 @@ it('rejects invalid inventory and unsupported save versions',()=>{
     {...s,inventory:undefined},{...s,inventory:{...s.inventory,bag:{'work-coat':100}}},
     {...s,inventory:{...s.inventory,characters:{...s.inventory.characters,nell:{coat:'lance-nozzle',fitting:null}}}},
   ])expect(()=>decodeSave(JSON.stringify(bad))).toThrow();
-  for(const version of [1,2,3,4,5,6,7,8,9,11])expect(()=>decodeSave(JSON.stringify({...s,version}))).toThrow('Unsupported save format');
+  for(const version of [1,2,3,4,5,6,7,8,9,10,12])expect(()=>decodeSave(JSON.stringify({...s,version}))).toThrow('Unsupported save format');
 });
 it('buys individual copies into the bag and never charges for unavailable purchases',()=>{
   const s=newGame();s.coins=100;

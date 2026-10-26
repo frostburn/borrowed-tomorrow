@@ -10,9 +10,10 @@ import { configureDawnwatch,prepareDawnwatch,orderShields,spotterTurn,SPOTTER_ID
 import { configureFurnace,prepareFurnace,furnaceTurn } from './furnace';
 import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS } from '../content/encounters';
-import { BASE_STATS, learnedAbilities } from './progression';
+import { BASE_STATS } from './progression';
+import {abilityFor,skillAbilities,type SkillRanks} from './skills';
 import { CHARACTERS } from '../content/characters';
-import { blast, cells, diagonalRay, distance, equal, inside, key, offset, ray, reachable, visible, type Hex } from './hex';
+import { blast, cells, diagonalRay, distance, equal, inside, key, offset, quad, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
 import type { CharacterProfile, CompanionId } from './characters';
@@ -29,7 +30,7 @@ export interface Unit {
   id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
-  guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
+  skills?:SkillRanks;guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
   linkedTo?:string;pinned?:boolean;teamSpentRound?:number;
   footprint?:Hex[]; anchored?:boolean; passive?:boolean; flying?:boolean;
   intent?:{cycle?:number;round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex;via?:string};
@@ -66,7 +67,7 @@ export function createPartyUnit(state:GameState,id:CompanionId,index=0,count=1,e
       speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
       armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
       bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
-      abilities: profile ? [...profile.abilities] : [...new Set([...(id === 'nell' ? ['strike', 'burst', 'mend', 'bandage'] as const : []), ...learnedAbilities(id, level(state))])], level: profile?.level??level(state),
+      abilities: profile ? [...profile.abilities] : skillAbilities(id,state.skills[id]), skills:structuredClone(profile?.skills??state.skills[id]), level: profile?.level??level(state),
       moved: false, defending: false, retaliated: false, waited: false };
 }
 
@@ -112,6 +113,10 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
+function reviveTarget(b:Battle,u:Unit,id:AbilityId,aim:Hex){
+ const a=abilityFor(u,id);if(!(a.reviveFraction||id==='revive')||unitAt(b,aim)||b.obstacles.has(key(aim))||distance(u.hex,aim)>a.range||!visible(u.hex,aim,b.obstacles))return;
+ return b.units.filter(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim)).sort((a,z)=>a.id.localeCompare(z.id))[0];
+}
 const terrainCost=(b:Battle,u:Unit,h:Hex)=>!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(p=>b.water.has(key(p))||brokenIce(b,p))?2:1;
 export function movement(b: Battle, u: Unit) {
   const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).flatMap(v => occupiedHexes(v).map(key))]);
@@ -119,28 +124,30 @@ export function movement(b: Battle, u: Unit) {
   return reachable(u.hex, u.moved||u.anchored ? 0 : u.pinned?Math.min(1,u.movement):u.movement, anchors, h=>terrainCost(b,u,h));
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
-  const a = ABILITIES[id];
+  const a = abilityFor(u,id);
   if(a.shape==='axis')return axisHexes(a.axis!,aim);
   if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
-  if(a.shape==='bounce')return ricochetHexes(b,u,aim);
+  if(a.shape==='bounce')return ricochetHexes(b,u,aim,id);
   if(a.shape==='party')return alive(b).filter(v=>v.side===u.side).flatMap(v=>occupiedHexes(v));
   if (a.shape === 'pattern') return u.intent?.cells??[];
   if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).flatMap(v => occupiedHexes(v));
   if (a.shape === 'blast') return blast(aim);
+  if (a.shape === 'quad') return quad(aim);
   if (a.shape === 'line') return ray(occupiedHexes(u).sort((x,y)=>distance(x,aim)-distance(y,aim))[0], aim, a.range, b.obstacles);
   return [aim];
 }
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
-  const a = ABILITIES[id],hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
-  if(id==='revive')return b.units.filter(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim)).sort((a,z)=>a.id.localeCompare(z.id)).slice(0,1);
+  const a = abilityFor(u,id),hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
+  if(id==='revive'){const fallen=reviveTarget(b,u,id,aim);return fallen?[fallen]:[];}
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
-  return alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
+  const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
+  const fallen=a.heal?reviveTarget(b,u,id,aim):undefined;return fallen?[...living,fallen]:living;
 }
 export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
   return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
 }
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
-  const a = ABILITIES[id];
+  const a = abilityFor(u,id);
   if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id) return false;
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
@@ -151,15 +158,16 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if(id==='relay'&&(b.round%2!==0||!u.intent?.cells.length||u.intent.round!==b.round||u.teamSpentRound===b.round))return false;
   if(a.shape==='pattern')return equal(aim,u.hex)&&!!u.intent;
   if (a.shape === 'line'||a.shape==='diagonal') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
-  if(id==='revive')return b.units.some(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim))&&!unitAt(b,aim)&&!b.obstacles.has(key(aim))&&distance(u.hex,aim)<=a.range&&visible(u.hex,aim,b.obstacles);
-  if(a.shape==='bounce'&&!ricochetHexes(b,u,aim).length)return false;
+  if(id==='revive')return !!reviveTarget(b,u,id,aim);
+  if(a.shape==='bounce'&&!ricochetHexes(b,u,aim,id).length)return false;
   if (a.shape==='single'&&damagingAbility(id)&&fixtureAt(b,aim))return a.unrestricted||distance(u.hex,aim)<=a.range&&visible(u.hex,aim,new Set([...b.obstacles].filter(h=>h!==key(aim))));
   if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
   const v = unitAt(b, aim);
   if(a.effect==='weaken')return targets(b,u,id,aim).some(t=>!t.dazzledAttacks);
-  if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&t.hp<t.maxHp);
+  if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&(t.hp<t.maxHp||a.cleanse&&(t.dazzledAttacks||t.pinned)));
   if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<supportPower(u,id));
-  if (a.effect==='focus') return !!v && v.id!==u.id && v.side===u.side && v.focus<6;
+  if (a.effect==='focus') return targets(b,u,id,aim).some(v=>v.focus<6);
+  if(a.effect==='shove'&&a.shape==='blast')return targets(b,u,id,aim).length>0;
   if (a.shape === 'single') {
     if (!v || v.side === u.side) return false;
     if (id === 'peck' && alive(b).some(t => t.side !== u.side && bodyDistance(t, u) === 1)) return false;
@@ -167,19 +175,19 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   return true;
 }
 export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
-  const a = ABILITIES[id];
-  if (a.heal) return Math.min(v.maxHp-v.hp,id==='revive'?Math.max(1,Math.ceil(v.maxHp*.35)):supportPower(u,id));
+  const a = abilityFor(u,id);
+  if (a.heal) return Math.min(v.maxHp-v.hp,v.hp<=0&&(a.reviveFraction||id==='revive')?Math.max(1,Math.ceil(v.maxHp*(a.reviveFraction??.35))):supportPower(u,id,partner));
   if (a.effect==='guard') return Math.max(0,supportPower(u,id)-(v.guard??0));
   if (a.effect==='focus') return Math.min(6-v.focus,a.power);
   if (a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id,partner)-(v.guard??0));
 }
-function attackDamage(u: Unit, v: Pick<Unit,'armor'|'defending'>, id: AbilityId,partner?:Unit) {
-  const a = ABILITIES[id];
+function attackDamage(u: Unit, v: Pick<Unit,'armor'|'defending'>&Partial<Pick<Unit,'side'>>, id: AbilityId,partner?:Unit) {
+  const a = abilityFor(u,id);
   const armor = Math.max(0, v.armor - (a.pierce ?? 0));
-  const power=a.shape==='pattern'?(u.intent?.power??a.power):a.power;
-  return Math.max(1, Math.round((power + (partner?(u.bonus+partner.bonus)/2:u.bonus) - armor) * (v.defending ? .6 : 1) * (partner?((u.dazzledAttacks?.6:1)+(partner.dazzledAttacks?.6:1))/2:(u.dazzledAttacks ? .6 : 1))));
+  const power=a.shape==='pattern'?(u.intent?.power??a.power):partner?(a.power+abilityFor(partner,id).power)/2:a.power;
+  return Math.max(1, Math.round((power + (partner?(u.bonus+partner.bonus)/2:u.bonus) - armor) * (v.defending ? .6 : 1) * (partner?((u.dazzledAttacks?.6:1)+(partner.dazzledAttacks?.6:1))/2:(u.dazzledAttacks ? .6 : 1))*(v.side===u.side?(a.friendlyFire??1):1)));
 }
 export const fixtureDamage=(u:Unit,id:AbilityId,partner?:Unit)=>attackDamage(u,{armor:0,defending:false},id,partner);
 function consumeDazzle(u: Unit) { if (u.dazzledAttacks) u.dazzledAttacks--; }
@@ -258,7 +266,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
 }
 export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?:(defenderId:string)=>void): boolean {
   if (!legalAim(b, u, id, aim)) return false;
-  const a = ABILITIES[id];
+  const a = abilityFor(u,id);
   const partner=teamStatus(b,u,id).partner,footprint=shape(b,u,id,aim),hit=targets(b,u,id,aim);
   u.focus -= a.cost;
   const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
@@ -270,7 +278,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     else if(a.effect==='weaken'){if(v.dazzledAttacks)continue;v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,supportPower(u,id));log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
     else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(6,v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
-    else if(a.heal){const amount=damage(u,v,id);v.hp=Math.min(v.maxHp,v.hp+amount);if(id==='revive'){b.queue=b.queue.filter(id=>id!==v.id);v.retaliated=true;}if(id==='daybreak')v.guard=Math.max(v.guard??0,daybreakGuard(u));log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
+    else if(a.heal){const fallen=v.hp<=0,amount=damage(u,v,id,partner);v.hp=Math.min(v.maxHp,v.hp+amount);if(a.cleanse){delete v.dazzledAttacks;delete v.pinned;}if(fallen){b.queue=b.queue.filter(id=>id!==v.id);v.retaliated=true;}if(id==='daybreak')v.guard=Math.max(v.guard??0,daybreakGuard(u,partner));log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id,partner);
       if(a.effect==='pin'&&v.hp>0&&!v.anchored)v.pinned=true;
@@ -278,6 +286,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     }
     if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
+  if(a.ward)for(const ally of alive(b).filter(v=>v.side===u.side&&(a.ward!.party||v.id===u.id)))ally.guard=Math.max(ally.guard??0,a.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5));
   if(damagingAbility(id))for(const message of damageFixtures(b,footprint,fixtureDamage(u,id,partner)))log(b,message);
   if (!hit.length&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {

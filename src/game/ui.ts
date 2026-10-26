@@ -4,7 +4,7 @@ import { portraitAsset, speakerPortrait } from '../content/characters';
 import { artPath } from '../content/art-assets';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export const art = (name: string) => `${import.meta.env.BASE_URL}${artPath(name)}`;
-export interface Button { label: string; action: () => void; disabled?: boolean; selected?: boolean; key?: string; title?: string }
+export interface Button { label: string; action: () => void; disabled?: boolean; selected?: boolean; key?: string; title?: string; badge?:string }
 export class UI {
   readonly canvas: HTMLElement;
   readonly controls: HTMLElement;
@@ -48,6 +48,7 @@ export class UI {
   button(b: Button): HTMLButtonElement {
     const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
     button.disabled = !!b.disabled; button.className = b.selected ? 'selected' : ''; if (b.title) button.setAttribute('aria-description', b.title);
+    if(b.badge){const badge=document.createElement('span');badge.className='skill-badge';badge.setAttribute('aria-hidden','true');badge.textContent=b.badge;button.append(badge);}
     button.onclick = () => { b.action(); }; return button;
   }
   actionRow(target: HTMLElement, buttons: Button[]) { for (const b of buttons) target.append(this.button(b)); }

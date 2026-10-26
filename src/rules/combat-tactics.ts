@@ -1,5 +1,6 @@
 import {ABILITIES,type AbilityId} from './abilities';
 import type {Battle,Unit} from './combat';
+import {abilityFor} from './skills';
 import {blast,cells,distance,equal,key,visible,type Hex} from './hex';
 import {bodyDistance,occupiedHexes} from './footprint';
 
@@ -7,12 +8,12 @@ export interface BattleFixture {id:string;name:string;kind:'barricade'|'drum'|'v
 export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['kind'];col:number;row:number;hp?:number;active?:boolean;vents?:[number,number][];power?:number}
 export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex,h));
 /** Support follows caster level, independent of attack edits and offensive gear. */
-export function supportPower(u:Unit,id:AbilityId):number{
- const a=ABILITIES[id],growth=Math.max(0,(u.level??1)-1);
+export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
+ const a=abilityFor(u,id),growth=Math.max(0,(partner?((u.level??1)+(partner.level??1))/2:(u.level??1))-1),power=partner?(a.power+abilityFor(partner,id).power)/2:a.power;
  if(id==='bandage'||a.effect==='focus')return a.power;
- return a.power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
+ return power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
 }
-export const daybreakGuard=(u:Unit)=>8+Math.floor(Math.max(0,(u.level??1)-1)*1.5);
+export const daybreakGuard=(u:Unit,partner?:Unit)=>8+Math.floor(Math.max(0,(partner?((u.level??1)+(partner.level??1))/2:(u.level??1))-1)*1.5);
 /** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
  const team=ABILITIES[id].team;
@@ -28,11 +29,12 @@ export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:
  if(!future&&(u.focus<team.cost||partner.focus<team.cost))return {reason:`Both fighters need ${team.cost} focus.`};
  return {partner};
 }
-export function ricochetHexes(b:Battle,u:Unit,aim:Hex):Hex[]{
+export function ricochetHexes(b:Battle,u:Unit,aim:Hex,id:AbilityId='ricochet'):Hex[]{
+ const reach=abilityFor(u,id).bounceRange??3;
  const first=b.units.find(v=>v.hp>0&&v.side!==u.side&&occupiedHexes(v).some(h=>equal(h,aim)));
  if(!first)return [];
  const choices=b.units.filter(v=>v.hp>0&&v.side!==u.side&&v.id!==first.id).flatMap(v=>{
-  const links=occupiedHexes(first).flatMap(a=>occupiedHexes(v).filter(z=>distance(a,z)<=3&&visible(a,z,b.obstacles)).map(z=>({hex:z,d:distance(a,z)}))).sort((a,z)=>a.d-z.d||a.hex.q-z.hex.q||a.hex.r-z.hex.r);
+  const links=occupiedHexes(first).flatMap(a=>occupiedHexes(v).filter(z=>distance(a,z)<=reach&&visible(a,z,b.obstacles)).map(z=>({hex:z,d:distance(a,z)}))).sort((a,z)=>a.d-z.d||a.hex.q-z.hex.q||a.hex.r-z.hex.r);
   return links[0]?[{id:v.id,...links[0]}]:[];
  }).sort((a,z)=>a.d-z.d||a.id.localeCompare(z.id));
  return [aim,...choices[0]?[choices[0].hex]:[]];

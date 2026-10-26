@@ -1,3 +1,5 @@
+import {skillCards} from '../game/skills';
+import {startingSkills,upgradeSkill,type SkillId} from '../rules/skills';
 import {richCombatPreview,type CombatPreset} from './rich-combat';
 import {benefactorCampaignPreview} from './benefactor-campaign-preview';
 import { createImperialPreview,IMPERIAL_PREVIEW_ASSETS,IMPERIAL_PRESENTATIONS } from './imperial-preview';
@@ -24,13 +26,13 @@ import { art, type UI } from '../game/ui';
 import { ABILITIES, createBattle, type Unit } from '../rules/combat';
 import { newGame, recruitOrrin } from '../rules/state';
 import { ITEMS, SLOTS, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, ownedCopies, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
-import { COMPANION_IDS, COMPANIONS, LEARNING, STAT_LIMITS, setPartyMember, type CompanionId, characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings, validStat, type CharacterStat } from '../rules/characters';
+import { COMPANION_IDS, COMPANIONS, STAT_LIMITS, setPartyMember, type CompanionId, characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings, validStat, type CharacterStat } from '../rules/characters';
 import { CHARACTERS } from '../content/characters';
 import { MAX_PARTY_SIZE } from '../rules/party';
 import './workshop.css';
 
 const STORAGE = 'borrowed-tomorrow:inventory-workshop:v1';
-const CHARACTER_STORAGE = 'borrowed-tomorrow:character-workshop:v1';
+const CHARACTER_STORAGE = 'borrowed-tomorrow:character-workshop:v3';
 const names = Object.fromEntries(COMPANION_IDS.map(id=>[id,CHARACTERS[id].name])) as Record<CompanionId,string>;
 function stock(): Inventory {
   const inventory = newInventory();
@@ -85,14 +87,14 @@ class Workshop {
       const [min,max]=STAT_LIMITS[stat];
       return `<div class="workshop-stat-field"><label for="stat-${stat}">${labels[stat]}</label><button type="button" data-step="${stat}" data-delta="-1" aria-label="Decrease ${names[hero]} ${labels[stat]}">−</button><input id="stat-${stat}" aria-label="${names[hero]} ${labels[stat]}" name="${stat}" type="number" min="${min}" max="${max}" step="1" value="${build[stat]}" required/><button type="button" data-step="${stat}" data-delta="1" aria-label="Increase ${names[hero]} ${labels[stat]}">+</button></div>`;
     }).join('');
-    return `<section class="workshop-build" aria-label="Character settings"><h2>Character settings</h2><div class="workshop-level"><label for="character-level">Level</label><button data-level="-1" aria-label="Decrease ${names[hero]} level" ${build.level===1?'disabled':''}>−</button><input id="character-level" type="number" min="1" max="${MAX_LEVEL}" step="1" value="${build.level}" aria-label="${names[hero]} level"/><button data-level="1" aria-label="Increase ${names[hero]} level" ${build.level===MAX_LEVEL?'disabled':''}>+</button></div><p class="inv-note">Changing level restores base stats. Equipment stays equipped.</p><form id="character-stats" novalidate><h3>Base stats</h3>${fields}<button type="submit">Apply base stats</button><button type="button" id="level-defaults">Level defaults</button></form><p class="inv-note">Equipment bonuses are added to these values. Starting focus regenerates on a character’s turn.</p></section><section class="workshop-abilities" aria-label="Level abilities"><h2>Abilities</h2>${LEARNING[hero].map(entry=>{
-      const ability=ABILITIES[entry.ability],known=entry.level<=build.level;
-      return `<article class="workshop-ability ${known?'known':'locked'}" data-ability="${ability.id}"><div><h3>${ability.name}</h3><small>Lv ${entry.level} · ${known?'Known':'Locked'} · ${ability.cost} focus</small></div><p>${ability.description}</p></article>`;
-    }).join('')}</section>`;
+    return `<section class="workshop-build" aria-label="Character settings"><h2>Character settings</h2><div class="workshop-level"><label for="character-level">Level</label><button data-level="-1" aria-label="Decrease ${names[hero]} level" ${build.level===1?'disabled':''}>−</button><input id="character-level" type="number" min="1" max="${MAX_LEVEL}" step="1" value="${build.level}" aria-label="${names[hero]} level"/><button data-level="1" aria-label="Increase ${names[hero]} level" ${build.level===MAX_LEVEL?'disabled':''}>+</button></div><p class="inv-note">Changing level restores base stats and a balanced skill build. Reset skill choices to allocate points manually. Equipment stays equipped.</p><form id="character-stats" novalidate><h3>Base stats</h3>${fields}<button type="submit">Apply base stats</button><button type="button" id="level-defaults">Level defaults</button></form><p class="inv-note">Equipment bonuses are added to these values. Starting focus regenerates on a character’s turn.</p></section><section class="workshop-abilities" aria-label="Level abilities"><h2>Abilities</h2>${skillCards(hero,build.level,build.skills,this.ui.escape)}<button id="reset-skills">Reset skill choices</button></section>`;
   }
   private bindCharacterPanel() {
     if(this.tab!=='character')return;
-    const hero=this.hero,levelInput=this.ui.sceneLayer.querySelector<HTMLInputElement>('#character-level')!;
+    const hero=this.hero;
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-skill]'))button.onclick=()=>{const build=this.settings.characters[hero];if(upgradeSkill(hero,build.level,build.skills,button.dataset.skill as SkillId))this.save('Skill upgraded.');};
+    this.ui.sceneLayer.querySelector<HTMLButtonElement>('#reset-skills')!.onclick=()=>{this.settings.characters[hero].skills=startingSkills(hero);this.save('Skill choices reset.');};
+    const levelInput=this.ui.sceneLayer.querySelector<HTMLInputElement>('#character-level')!;
     const changeLevel=(level:number)=>{
       if(!Number.isInteger(level)||level<1||level>MAX_LEVEL){this.message=`Level must be a whole number from 1 to ${MAX_LEVEL}.`;this.show();return;}
       this.settings.characters[hero]=defaultBuild(hero,level);this.save(`${names[hero]} set to level ${level}.`);

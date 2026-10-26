@@ -14,7 +14,7 @@ it('all nineteen occupied hexes belong to one anchored boss and block movement',
 
 it('melee reaches a perimeter hex, retaliates once, and anchored shield bash preserves its extra-action rules',()=>{
   const b=createBossBattle(),boss=bossUnit(b),petra=b.units.find(u=>u.id==='petra')!;
-  b.queue=['petra','nell'];petra.hex=offset(5,5);
+  b.queue=['petra','nell'];petra.skills!.bash=1;petra.hex=offset(5,5);
   const edge=occupiedHexes(boss).find(h=>distance(petra.hex,h)===1)!;
   expect(distance(petra.hex,boss.hex)).toBeGreaterThan(1);expect(bodyDistance(petra,boss)).toBe(1);
   expect(legalAim(b,petra,'bash',edge)).toBe(true);expect(pushDestination(b,petra,boss)).toBeUndefined();

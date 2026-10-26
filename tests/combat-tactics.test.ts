@@ -1,3 +1,4 @@
+import {SKILLS} from '../src/rules/skills';
 import {describe,it,expect} from 'vitest';
 import {ABILITIES,active,cast,createBattle,damage,damagingAbility,defend,enemyTurn,legalAim,movement,shape,targets,wait,type Encounter} from '../src/rules/combat';
 import {axisHexes,battleAbilities,daybreakGuard,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
@@ -113,7 +114,7 @@ describe('geometry and progression',()=>{
  });
  it('offers a useful choice after level five for every companion and removes locked moves when lowering levels',()=>{
   for(const id of ['nell','orrin','kit','celia','petra']as const){
-   const low=learnedAbilities(id,5),high=learnedAbilities(id,15);expect(high.length).toBeGreaterThan(low.length);expect(learnedAbilities(id,7).length).toBeGreaterThan(low.length);
+   const low=learnedAbilities(id,5),high=learnedAbilities(id,15);expect(high.length).toBeGreaterThan(low.length);expect(SKILLS[id].some(s=>s.levels.some(l=>l>5))).toBe(true);
    for(const skill of high)expect(ABILITIES[skill]).toBeDefined();
   }
   expect(learnedAbilities('nell',12)).not.toContain('daybreak');expect(learnedAbilities('celia',13)).toContain('daybreak');
@@ -129,19 +130,19 @@ describe('geometry and progression',()=>{
 describe('support at campaign levels',()=>{
  it('Dazzle cannot target allies while a halo only affects enemies',()=>{const {b,u,partner,enemy}=yard();expect(legalAim(b,u,'dazzle',partner.hex)).toBe(false);expect(targets(b,u,'dazzle',partner.hex)).toEqual([]);u.hex=offset(6,3);expect(targets(b,u,'dimhalo',enemy.hex).every(v=>v.side==='enemy')).toBe(true);});
  it('scales healing and guard by caster level rather than weapon damage or target stat edits',()=>{
-  const {u,partner}=yard();u.level=1;expect(supportPower(u,'mend')).toBe(18);expect(supportPower(u,'guard')).toBe(10);
+  const {u,partner}=yard();u.skills!.mend=1;u.level=1;expect(supportPower(u,'mend')).toBe(18);expect(supportPower(u,'guard')).toBe(10);
   u.level=15;expect(supportPower(u,'mend')).toBe(46);expect(supportPower(u,'beacon')).toBe(42);expect(supportPower(u,'guard')).toBe(31);expect(supportPower(u,'sanctuary')).toBe(29);
   const value=damage(u,{...partner,hp:1},'mend');u.bonus=999;expect(damage(u,{...partner,hp:1},'mend')).toBe(value);expect(supportPower(u,'bandage')).toBe(24);
  });
  it('revives exactly one ally on a clear hex with no extra turn or retaliation that round',()=>{
   const {b,u,partner}=yard(['celia','nell','orrin']);partner.hp=0;b.queue=[u.id,'orrin',...b.queue.filter(id=>!['celia','nell','orrin'].includes(id))];
-  expect(legalAim(b,u,'revive',partner.hex)).toBe(true);cast(b,u,'revive',partner.hex);
+  expect(legalAim(b,u,'mend',partner.hex)).toBe(true);cast(b,u,'mend',partner.hex);
   expect(partner.hp).toBe(Math.ceil(partner.maxHp*.35));expect(b.queue).not.toContain(partner.id);expect(partner.retaliated).toBe(true);expect(u.focus).toBe(2);
  });
  it('rejects revival onto an occupied or blocked hex, or on a living or opposing fighter',()=>{
   const {b,u,partner,third,enemy}=yard(['celia','nell','orrin']);partner.hp=0;third.hex={...partner.hex};
-  expect(legalAim(b,u,'revive',partner.hex)).toBe(false);third.hex=offset(1,0);b.obstacles.add(key(partner.hex));expect(legalAim(b,u,'revive',partner.hex)).toBe(false);
-  b.obstacles.clear();partner.hp=1;expect(legalAim(b,u,'revive',partner.hex)).toBe(false);enemy.hp=0;expect(legalAim(b,u,'revive',enemy.hex)).toBe(false);
+  expect(legalAim(b,u,'mend',partner.hex)).toBe(false);third.hex=offset(1,0);b.obstacles.add(key(partner.hex));expect(legalAim(b,u,'mend',partner.hex)).toBe(false);
+  b.obstacles.clear();partner.hp=1;expect(legalAim(b,u,'mend',partner.hex)).toBe(true);enemy.hp=0;expect(legalAim(b,u,'mend',enemy.hex)).toBe(false);
  });
 });
 
@@ -173,8 +174,8 @@ describe('disruptible enemy links and battlefield objects',()=>{
   b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(b.vents.has(key(enemy.hex))).toBe(true);
  });
  it('ranged and area attacks toggle valves, while support and zero-damage actions cannot',()=>{
-  for(const ability of ['quickshot','volley']as const){
-   const {b,u}=yard(['kit','petra','celia'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:5,row:3,active:true,vents:[[6,3]]}]});
+  for(const [ability,hero] of [['quickshot','kit'],['burst','nell']]as const){
+   const {b,u}=yard([hero,'petra','celia'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:5,row:3,active:true,vents:[[6,3]]}]});
    expect(cast(b,u,ability,offset(5,3))).toBe(true);expect(b.fixtures![0].active).toBe(false);expect(b.vents.size).toBe(0);
   }
   const {b,u}=yard(['petra','celia','nell'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:true,vents:[[6,3]]}]});

@@ -16,7 +16,7 @@ Choose Nell, Orrin, Kit, Celia or Petra, then **Character** or **Equipment**. Ea
 
 ## Canonical Chapter Two start
 
-On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-10 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
+On the Vite dev title screen, choose **Begin Chapter Two (canonical)**. It creates a fresh version-11 campaign save at the Iron Coast: Chapter One complete, Nell and Orrin at level 3 with full HP/focus, five bandages, the Chapter One combat rewards, and Nell’s brass reflector equipped. Kit is introduced and recruited normally. It uses no workshop builds or storage. If a journey already exists, the in-game confirmation explains that the autosave will be replaced; manual slots remain available. Continue, equipment, export and ordinary progression work normally afterward. The factory, button and confirmation are absent from production.
 
 
 ## Canonical Chapter Three start
@@ -79,7 +79,7 @@ Tools work during enemy turns and animations. Each action replaces the battle ob
 
 **Test battle** runs the existing hex engine with the selected party’s builds, learned abilities and equipped items. **Workshop** or Escape returns to the workshop. Completing or abandoning practice gives no campaign rewards and never writes campaign saves. Re-entering practice restores HP, starting focus and bandages.
 
-Equipment uses local-storage key `borrowed-tomorrow:inventory-workshop:v1`; character settings use `borrowed-tomorrow:character-workshop:v1`. Both accept only version-2 records containing the current five companions. Retired version-1 records and replaced-character aliases are not migrated; invalid records use the existing reset behavior. Current loadouts and stat edits remain supported. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-10 saves carry their own inventory and active formation. Workshop storage never feeds campaign equipment.
+Equipment uses local-storage key `borrowed-tomorrow:inventory-workshop:v1`; character settings use `borrowed-tomorrow:character-workshop:v3`. Inventory accepts version-2 records; character settings accept version-3 records with per-character skill choices. Both contain the current five companions. Retired version-1 records and replaced-character aliases are not migrated; invalid records use the existing reset behavior. Current loadouts and stat edits remain supported. **Reset workshop** restores all five characters to level 1, selects Nell and Orrin, and returns the equipment stock to the bag. Campaign version-11 saves carry their own inventory and active formation. Workshop storage never feeds campaign equipment.
 
 ## Implementation boundary
 
@@ -207,7 +207,7 @@ Maps → Chapter 5 adds Dawnwatch, gun terraces, signal wall, observation cabin 
 Complete any two regional anchors to open the observation-cabin projection through the aft hatch. Its completion returns to the shared deck scene. Reload during the uncommitted projection replays it; skip commits normally. Windmere is available from the flight chart. After all three regions, the ship stages the capital blockade; the flagship approach opens once the Emperor offer is recorded and told. Detailed journey, motion, music and production checks stay outside default CI.
 
 
-Chapter Five Act III: choose Windmere at the flight chart after the shared opening, or continue a version-10 Act I/II save. Maps → Chapter 5 adds `windmere`, `dispensary`, `mirrorward` and the three `wind-` arenas. Sprites includes Iven, Sera, Teren, the mirrored engine and its reflector. Music → Ch 5 adds the five Windmere arrangements (ward/lift 3/4; gallery/battles 4/4), all 32 bars in 31-EDO. The campaign boss uses real resources and an anchored three-contact core: break the lit projection to interrupt its beam and expose it. Dev Win/Lose/Refill/Restart use the usual shared battle tools. Exact continuation and rewards are in `docs/story/chapter-five-act-three.md`.
+Chapter Five Act III: choose Windmere at the flight chart after the shared opening, or continue a version-11 Act I/II save. Maps → Chapter 5 adds `windmere`, `dispensary`, `mirrorward` and the three `wind-` arenas. Sprites includes Iven, Sera, Teren, the mirrored engine and its reflector. Music → Ch 5 adds the five Windmere arrangements (ward/lift 3/4; gallery/battles 4/4), all 32 bars in 31-EDO. The campaign boss uses real resources and an anchored three-contact core: break the lit projection to interrupt its beam and expose it. Dev Win/Lose/Refill/Restart use the usual shared battle tools. Exact continuation and rewards are in `docs/story/chapter-five-act-three.md`.
 
 ## Chapter Five — Act IV review start
 
