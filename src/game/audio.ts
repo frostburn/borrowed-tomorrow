@@ -46,11 +46,11 @@ export class Audio {
   }
   async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[],performance:PerformanceOptions={}){
     if(!Number.isInteger(bar)||bar<0)throw new Error('Invalid score bar.');
-    const generation=++this.generation;
+    const generation=++this.generation;this.pending=mode;
     if(!this.context)this.initialize();const c=this.context!;
     const [score]=await Promise.all([import('./music-runtime'),c.resume()]);
     if(generation!==this.generation)return;this.score=score;
-    this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;this.performance={...performance};
+    this.music!.release(c.currentTime);this.mode=this.pending;this.bar=this.mode===mode?bar:0;this.instruments=instruments;this.performance={...performance};
     this.history=[];this.next=c.currentTime+.045;this.enabled=true;this.reverb!.setRoom(this.roomId);
     this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
