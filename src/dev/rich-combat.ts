@@ -24,6 +24,7 @@ export function richCombatPreview(preset:CombatPreset|'workshop',settings?:Chara
  }
  const state=newGame(),battle=createBattle(TACTICS_ENCOUNTER,state,equipmentBonuses(preset==='workshop'?inventory!:newInventory()),characterProfiles(builds),builds.party);
  builds.party.forEach((id,i)=>{const unit=battle.units.find(u=>u.id===id)!;unit.hex=offset(2,[3,4,1][i]);if(preset==='daybreak')unit.hp=Math.ceil(unit.maxHp*.35);});
+ if(preset==='lantern')battle.units.find(u=>u.id==='kit')!.hex=offset(3,2);
  if(preset==='recovery'){const fallen=battle.units.find(u=>u.id==='orrin')!;fallen.hp=0;battle.queue=battle.queue.filter(id=>id!==fallen.id);}
  for(const u of battle.units.filter(u=>u.abilities.includes('relay')))delete u.intent;prepareRelay(battle);
  const presentation:BattlePresentation={tactical:true,encounter:TACTICS_ENCOUNTER,background:(scene,world)=>{drawTileMap(scene,world,BATTLE_MAPS.workshop,state);},facing:u=>u.side==='party'?facingAsset(u.kind as CompanionId,1,0):undefined};

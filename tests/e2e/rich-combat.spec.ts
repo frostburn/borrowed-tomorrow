@@ -31,7 +31,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    const after=(await inspect(page)).battle!;for(const kind of ['guardian','crow'])expect(after.units.find(u=>u.kind===kind)!.hp).toBeLessThan(before.units.find(u=>u.kind===kind)!.hp);
    expect(after.queue).not.toContain('kit');expect(after.queue).not.toContain('petra');
-   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await expect(page.getByRole('button',{name:/Daybreak · Team|Falling stars · Team/})).toHaveCount(0);await page.keyboard.press('Escape');
+   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await expect(page.getByRole('button',{name:/Falling stars · Team/})).toHaveCount(0);await expect(page.getByRole('button',{name:/Daybreak · Team/})).toHaveClass(/unavailable/);await page.getByRole('button',{name:/Daybreak · Team/}).click();await expect(page.locator('#confirmation')).toContainText('Petra has already used their action');await page.keyboard.press('Escape');
    await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();await expect(page.getByRole('button',{name:/Turn valve/})).toHaveCount(0);await page.getByRole('button',{name:/^2\s+Strike$/}).click();await clickHex(page,offset(3,3));
    await expect(page.locator('#confirmation')).toContainText('steam off');await capture(page,`strike-valve-${device}`);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    expect((await inspect(page)).battle!.vents).toHaveLength(0);await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');
