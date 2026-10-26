@@ -1,3 +1,4 @@
+import {richCombatPreview,type CombatPreset} from './rich-combat';
 import {benefactorCampaignPreview} from './benefactor-campaign-preview';
 import { createImperialPreview,IMPERIAL_PREVIEW_ASSETS,IMPERIAL_PRESENTATIONS } from './imperial-preview';
 import { imperialPortrait } from '../game/imperial-presentation';
@@ -46,7 +47,7 @@ class Workshop {
   private sprites = new SpriteWorkshop();
   private animation = new AnimationWorkshop();
   private maps = new MapWorkshop(message=>this.ui.toast(message));
-  private tab: 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
+  private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private hero: CompanionId = 'nell';
   private boss: 'emperor'|'lightbearer'|'dragon'|'benefactor'|'conduit'|'flagship'|'serpent'=new URLSearchParams(location.search).get('boss')==='emperor'?'emperor':new URLSearchParams(location.search).get('boss')==='lightbearer'?'lightbearer':new URLSearchParams(location.search).get('boss')==='dragon'?'dragon':new URLSearchParams(location.search).get('boss')==='serpent'?'serpent':new URLSearchParams(location.search).get('boss')==='flagship'?'flagship':new URLSearchParams(location.search).get('boss')==='conduit'?'conduit':'benefactor';
   private conduitRoute:ConduitRoute=new URLSearchParams(location.search).get('route')==='pressure'?'pressure':'feeds';
@@ -114,6 +115,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector<HTMLButtonElement>('#level-defaults')!.onclick=()=>{this.settings.characters[hero]=defaultBuild(hero,this.settings.characters[hero].level);this.save(`${names[hero]} restored to level defaults.`);};
   }
   show() {
+    if(this.tab==='combat'){this.showCombat();return;}
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
@@ -171,9 +173,24 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','combat','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.show();};}
+  private showCombat(){
+    this.music.hide();this.sprites.hide();this.animation.hide();this.maps.hide();this.scene.closePreview();
+    document.querySelector('.game-shell')!.classList.add('inventory-open');
+    this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<h2>Combat review</h2><p>New skills, shared turns and battlefield mechanisms use the campaign rules. Each preset changes only this practice battle.</p><p>Team moves need two living partners with turns left, enough focus, and a clear link. They consume both turns. Red X locks the guardian–crow relay one round before its even-round shot: separate the machines or defeat either one to cancel it.</p><p>Break timber to open a route. Burst the pressure drum to hurt nearby fighters on either side. Turn the brass valve from an adjacent hex to toggle the orange steam vents.</p><div id="combat-start" class="panel-actions"></div><p>The level-10 presets include all three axial lines, Ricochet, barriers and Revive. Daybreak uses level 13 and an injured party. The workshop option uses your current levels, equipment and formation.</p></section>`;
+    this.bindTabs();this.ui.actionRow(this.ui.sceneLayer.querySelector('#combat-start')!,[
+      ...(['prism','crossfire','daybreak']as CombatPreset[]).map(preset=>({label:`Practice ${preset==='prism'?'Prism lance':preset==='crossfire'?'Crossfire':'Daybreak'}`,action:()=>this.combatBattle(preset)})),
+      {label:'Practice current workshop party',action:()=>this.combatBattle('workshop')},
+    ]);this.ui.initiative.textContent='Combat review / shared campaign rules';
+  }
+  private combatBattle(preset:CombatPreset|'workshop'){
+    document.querySelector('.game-shell')!.classList.remove('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=true;
+    this.scene.state=practiceState();const {battle,presentation}=richCombatPreview(preset,this.settings,this.inventory);
+    this.scene.previewBattle(battle,()=>this.show(),presentation);
+  }
   private showMusic(){
     this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
@@ -240,6 +257,7 @@ class Workshop {
   toggleSound(){if(this.music.active)this.music.toggle();else void this.scene.toggleSound();}
   battle() {
     if(this.tab==='bosses'){this.bossBattle(true);return;}
+    if(this.tab==='combat'){this.combatBattle('workshop');return;}
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();

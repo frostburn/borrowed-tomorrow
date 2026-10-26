@@ -7,6 +7,7 @@ import type { SceneIllumination } from './world-light';
 /** Optional encounter presentation shared by campaign and workshop battles. */
 export interface BattlePresentation {
   encounter:Encounter;
+  tactical?:boolean;
   /** Passive motion must keep the visible framebuffer refreshing between inputs. */
   animating?:(battle:Battle)=>boolean;
   prepare?:(battle:Battle)=>void;

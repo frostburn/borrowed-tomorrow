@@ -5,14 +5,36 @@ import { toPixel, type Hex } from '../rules/hex';
 /** Short native-world effects from a tool, or from above for celestial attacks. */
 export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string){
   const g=scene.add.graphics();world.add(g);
-  const steam=ability==='steam'||ability==='repulse',healing=ABILITIES[ability].heal||ability==='guard';
+  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=ABILITIES[ability].heal||ABILITIES[ability].effect==='guard';
+  const definition=ABILITIES[ability],rich=definition.shape==='axis'||definition.shape==='bounce'||!!definition.team;
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
   const hand={x:source.x+(face.endsWith('-left')?-26:face.endsWith('-right')?26:face.endsWith('-back')?18:-18),y:source.y-30};
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  scene.tweens.addCounter({from:0,to:1,duration:reduced?100:240,onUpdate:tween=>{
+  scene.tweens.addCounter({from:0,to:1,duration:reduced?100:rich?580:300,onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
-    if(ability==='barrage'){
+    if(definition.shape==='axis'){
+      const points=affected.map(toPixel),first=points[0],last=points.at(-1);
+      if(first&&last){
+        const progress=reduced?1:Math.min(1,p*2),x=Math.round((first.x+(last.x-first.x)*progress)/2)*2,y=Math.round((first.y+(last.y-first.y)*progress)/2)*2-24;
+        g.lineStyle(14,steam?0x6babb3:0xd8b66e,.35).lineBetween(first.x,first.y-24,x,y);
+        g.lineStyle(6,color,.9).lineBetween(first.x,first.y-24,x,y);g.lineStyle(2,0xf3f1d0,1).lineBetween(first.x,first.y-24,x,y);
+        for(const [i,at]of points.entries())if(reduced||p*2>=i/points.length){const r=6+Math.round(p*8)*2;g.lineStyle(2,color,.7).strokeEllipse(at.x,at.y-20,r*2,r);if(steam)g.fillStyle(0xd0ece5,.35).fillCircle(at.x,at.y-32,r);}
+      }
+    }else if(definition.shape==='bounce'){
+      const points=[hand,...affected.map(h=>{const p=toPixel(h);return {x:p.x,y:p.y-24};})],segment=reduced?points.length-2:Math.min(points.length-2,Math.floor(p*points.length)),travel=reduced?1:Math.min(1,(p*points.length)%1);
+      for(let i=0;i<=segment;i++){
+        const from=points[i],to=points[i+1];if(!from||!to)continue;const t=i<segment?1:travel;
+        const x=Math.round((from.x+(to.x-from.x)*t)/2)*2,y=Math.round((from.y+(to.y-from.y)*t)/2)*2;
+        g.lineStyle(i?4:2,i?0xe6e6b1:0xd5a568,.9).lineBetween(from.x,from.y,x,y);g.fillStyle(0xffe1a2).fillRect(x-4,y-2,8,4);
+        if(i<segment||reduced){g.lineStyle(2,0xf2dca1,.9).strokeCircle(to.x,to.y,8+Math.round(p*6)*2);for(const dx of [-1,1])g.lineBetween(to.x,to.y,to.x+dx*14,to.y-12);}
+      }
+    }else if(ability==='relay'){
+      for(const hex of affected){const at=toPixel(hex),r=8+Math.round(p*12)*2;g.fillStyle(0x9dc8ce,.2).fillRect(at.x-8,at.y-90,16,70);g.lineStyle(4,0xd0e9df,.85).lineBetween(at.x,at.y-90,at.x,at.y-20);g.strokeEllipse(at.x,at.y-12,r*2,r);}
+    }else if(ability==='operate'){
+      g.lineStyle(3,0xc3b287,.9).strokeCircle(target.x,target.y-24,12);g.lineBetween(target.x-12,target.y-24,target.x+12,target.y-24);
+      for(const hex of affected.slice(1)){const at=toPixel(hex);g.fillStyle(0xcee9df,.3).fillCircle(at.x,at.y-10-p*20,6+p*10);}
+    }else if(ability==='barrage'){
       for(const hex of affected){
         const at=toPixel(hex),hit=reduced?1:Math.min(1,p*2),tip={x:Math.round(at.x-40*(1-hit)),y:Math.round(at.y-100*(1-hit))};
         if(!reduced&&p<.5){g.lineStyle(3,0xd9bb7f,.9);g.lineBetween(tip.x-10,tip.y-25,tip.x,tip.y);}
@@ -34,6 +56,7 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
     }else if(ability==='strike'){
       g.lineStyle(3,color,1);g.lineBetween(target.x-12,target.y-39,target.x+12,target.y-17);
       g.lineBetween(target.x-8,target.y-15,target.x+8,target.y-41);
+      for(const dx of [-1,1]){g.lineStyle(2,0xf1d6b0,.8).lineBetween(target.x,target.y-26,target.x+dx*(10+p*16),target.y-38-p*10);}
     }else if(ability==='repulse'){
       g.lineStyle(3,color,.8);g.strokeCircle(source.x,source.y-18,16+(reduced?30:p*65));
     }else if(ability==='taunt'){
@@ -54,4 +77,27 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
       }
     }
   },onComplete:()=>{if(g.active)g.destroy();}});
+}
+
+/** A short linked wind-up makes both participating tools readable before contact. */
+export function teamWindup(scene:Phaser.Scene,world:Phaser.GameObjects.Container,a:{x:number;y:number},b:{x:number;y:number},healing:boolean){
+ const g=scene.add.graphics();world.add(g);
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ scene.tweens.addCounter({from:0,to:1,duration:reduced?80:140,onUpdate:t=>{
+  if(!g.active)return;const p=t.getValue()??0,c=healing?0xa4d6ba:0xe5c27d;
+  g.clear().lineStyle(2,c,.6);g.lineBetween(a.x,a.y-24,b.x,b.y-24);
+  for(const source of [a,b]){const r=6+Math.round(p*4)*2;g.lineStyle(2,c,.9).strokeEllipse(source.x,source.y-24,r*2,r);g.fillStyle(c,.6).fillRect(source.x-2,source.y-34,4,20);}
+ },onComplete:()=>{if(g.active)g.destroy();}});
+}
+export function fixtureBurst(scene:Phaser.Scene,world:Phaser.GameObjects.Container,hex:Hex,drum:boolean){
+ const g=scene.add.graphics(),at=toPixel(hex);world.add(g);const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ scene.tweens.addCounter({from:0,to:1,duration:reduced?100:420,onUpdate:t=>{
+  if(!g.active)return;const p=t.getValue()??0;g.clear().setAlpha(1-p);
+  for(let i=0;i<8;i++){
+   const angle=i*Math.PI/4,r=reduced?16:12+p*44,x=at.x+Math.round(Math.cos(angle)*r/2)*2,y=at.y-18+Math.round(Math.sin(angle)*r/4)*2;
+   if(drum)g.fillStyle(i%2?0xc2e5db:0x89b5bb,.7).fillCircle(x,y,6+Math.round(p*5)*2);
+   else g.fillStyle(i%2?0xa98051:0xd0a36b).fillRect(x,y,12,4);
+  }
+  if(drum)g.lineStyle(4,0xe6d8ac,.8).strokeEllipse(at.x,at.y-10,24+p*90,12+p*44);
+ },onComplete:()=>{if(g.active)g.destroy();}});
 }

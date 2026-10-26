@@ -22,3 +22,5 @@ node scripts/export-enemy-variants.mjs
 The exporter replaces only literal color values in the accepted base SVGs. It preserves all geometry, transparency, 80 × 80 frames, contour widths and the row-68 ground anchor. No raster resampling, filters, generated imagery or extra dependency is involved. `node scripts/export-chapter-one-art.mjs` also refreshes the recolors after exporting their base models. Keep each SVG under the existing 128 KiB upload budget.
 
 `tests/enemy-progression.test.ts` covers reachable attacks despite lethal retaliation or barriers, unreachable pursuit, fixed profiles, role compatibility and tier progression. The detailed Sprites/device checks stay outside the default CI browser gate. Use canonical chapter starts for combat review with the expected party and earned equipment.
+
+Opt-in guardian–crow links in Hammerplain/Windmere add an announced, disruptible shared-turn blast. Authoring and interruption rules are in [Rich combat](combat-upgrade.md#battlefield-objects-and-enemy-relay); the fixed recolor profiles remain unchanged.

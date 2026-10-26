@@ -7,7 +7,7 @@ export const ENCOUNTERS: Record<string, Encounter> = {
     rocks: [[4, 4], [7, 1]], victory: 'The western road is open. Find Orrin in his workshop.',
   },
   workshop: {
-    id: 'workshop', music:'battle', name: 'The spare engine shed', flag: 'workshopWon', xp: 25, coins: 24, journal: 'workshop', item: 'brass-reflector',
+    id: 'workshop', fixtures:[{id:'shed-crates',name:'Timber barricade',kind:'barricade',col:5,row:4,hp:20}], music:'battle', name: 'The spare engine shed', flag: 'workshopWon', xp: 25, coins: 24, journal: 'workshop', item: 'brass-reflector',
     enemies: [{ kind: 'hound', col: 6, row: 3 }, { kind: 'crow', col: 8, row: 1 }, { kind: 'crow', col: 8, row: 5 }],
     rocks: [[5, 2], [5, 4], [8, 3]], victory: 'A brass reflector is added to the bag. Equip it to improve Nell’s lantern.',
   },

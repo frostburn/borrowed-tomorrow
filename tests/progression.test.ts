@@ -119,19 +119,19 @@ it('Beacon can target an empty center, heals only allies, and clamps at maximum 
   nell.hp -= 20; orrin.hp -= 5; enemy.hp = 10;
   expect(targets(b, nell, 'beacon', center).map(u => u.id)).toEqual(['nell', 'orrin']);
   expect(cast(b, nell, 'beacon', center)).toBe(true);
-  expect(nell.hp).toBe(nell.maxHp - 6); expect(orrin.hp).toBe(orrin.maxHp); expect(enemy.hp).toBe(10);
+  expect(nell.hp).toBe(nell.maxHp); expect(orrin.hp).toBe(orrin.maxHp); expect(enemy.hp).toBe(10);
   expect(nell.focus).toBe(3);
 });
 
 it('Safety guard absorbs real attacks, does not stack, and is consumed before HP', () => {
   const { b, nell, orrin, enemy } = practice(); b.queue = [orrin.id, enemy.id, nell.id];
-  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(10);
+  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(16);
   b.queue = [orrin.id, enemy.id, nell.id]; expect(legalAim(b, orrin, 'guard', nell.hex)).toBe(false);
   b.queue = [enemy.id, nell.id, orrin.id]; const hp = nell.hp;
   expect(cast(b, enemy, 'strike', nell.hex)).toBe(true);
-  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(2);
+  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(8);
   expect(cast(b, nell, 'strike', enemy.hex)).toBe(true);
-  expect(nell.guard).toBe(0); expect(nell.hp).toBe(hp - 6);
+  expect(nell.guard).toBe(0); expect(nell.hp).toBe(hp);
 });
 
 it('Rivet shot ignores two armor but still obeys line of sight and focus', () => {

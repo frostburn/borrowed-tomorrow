@@ -1,5 +1,5 @@
 import type { Instrument } from './score';
-export type Effect = 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
+export type Effect = 'drum' | 'rivet' | 'lightline' | 'pressure' | 'stars' | 'ricochet' | 'bolt' | 'barrier' | 'revive' | 'shield' | 'prism' | 'crossfire' | 'relay' | 'valve' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
 import { isBass, isPercussion, pitchFrequency, type Pitch } from './tuning';
 import type { ControlCurve,NoteExpression } from './expression';
 
@@ -164,6 +164,20 @@ export class Synth {
     const tone=(hz:number,offset:number,duration:number,volume:number,type:OscillatorType='sine',endHz=hz)=>this.tone(hz,when+offset,duration,volume,type,0,endHz);
     const noise=(offset:number,duration:number,volume:number,hz:number,endHz=hz)=>this.noise(when+offset,duration,volume,hz,endHz);
     switch(kind){
+      case 'drum':noise(0,.3,.28,700,3200);tone(90,0,.3,.18,'triangle',40);noise(.1,.25,.15,2400,600);break;
+      case 'rivet':tone(340,0,.045,.12,'triangle',180);noise(.03,.055,.15,2600,600);tone(1220,.08,.17,.07);break;
+      case 'valve':noise(0,.12,.15,1200,500);tone(240,.03,.12,.1,'triangle',150);noise(.12,.28,.18,600,2000);break;
+      case 'bolt':noise(0,.04,.12,2500,900);tone(1800,.02,.08,.14,'triangle',420);noise(.09,.06,.18,800);break;
+      case 'ricochet':case 'crossfire':
+        noise(0,.045,.17,2200,800);tone(1700,.03,.09,.12,'triangle',640);tone(2300,.18,.1,.1,'sine',1000);noise(.3,.08,.18,1200,500);if(kind==='crossfire')tone(180,.02,.28,.12,'triangle',70);break;
+      case 'shield':noise(0,.08,.18,900,300);tone(160,0,.16,.17,'triangle',60);tone(780,.02,.2,.08);break;
+      case 'barrier':[260,520,780].forEach((hz,i)=>tone(hz,i*.04,.35,.055,'sine',hz*1.08));noise(0,.08,.08,1200);break;
+      case 'revive':(['D4','A4','D5','F5','A5']as Pitch[]).forEach((p,i)=>this.note('bell',p,when+i*.07,.48,.14));break;
+      case 'lightline':case 'stars':
+        [900,1350,1800].forEach((hz,i)=>tone(hz,i*.045,.24,.055,'sine',hz*.75));noise(.02,.24,.12,1700,3700);break;
+      case 'pressure':case 'prism':case 'relay':
+        tone(120,0,.25,.12,'triangle',65);noise(.03,.4,.22,700,3600);noise(.2,.15,.14,2600,500);
+        if(kind!=='pressure')[880,1320].forEach(hz=>tone(hz,.13,.35,.065));break;
       case 'resonance':
         tone(146.8,0,1.6,.1);tone(149.1,.04,1.5,.08);tone(440.4,.02,1.2,.025);break;
       case 'punch':

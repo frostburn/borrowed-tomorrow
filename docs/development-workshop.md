@@ -41,11 +41,11 @@ Celestial bolt is available at level 1: a weak attack on any enemy, 1 focus, ign
 
 ## Levels and base stats
 
-Levels range from 1 to 15. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
+Levels range from 1 to 15. Changing level restores that level's base stats and recomputes learned abilities; equipment stays equipped. Each level adds 6 max HP and 2 attack. Speed, armor, movement and starting focus keep their character defaults. Levels 7, 8, 10 and 13 add the skills and team moves described in [Rich combat](combat-upgrade.md). Workshop → Combat supplies isolated level-10/13 practice presets. Petra’s default movement is three. Existing saved stat edits stay intact; use Level defaults to apply updated defaults to an existing build.
 
 Edit Max HP (1–999), Attack (1–199), Armor (0–99), Speed (1–30), Movement (1–10), or Starting focus (0–6), then choose **Apply base stats**. Plus and minus buttons edit the same fields. Only whole numbers in the shown ranges are accepted; an invalid field prevents the entire build from being applied. **Level defaults** restores the selected character's base stats without changing their level or equipment.
 
-Starting focus is the value before normal turn regeneration. A character gains one focus at the start of their turn, up to six. Higher speed acts earlier; armor reduces damage; movement determines reachable hexes. Base Attack is Strike's damage before armor, defense and equipment. Other attacks use the same bonus relative to their own power. Healing and support strength do not scale with Attack.
+Starting focus is the value before normal turn regeneration. A character gains one focus at the start of their turn, up to six. Higher speed acts earlier; armor reduces damage; movement determines reachable hexes. Base Attack is Strike's damage before armor, defense and equipment. Other attacks use the same bonus relative to their own power. Healing and barriers scale with caster level, independently of Attack; bandages remain fixed at 24 HP. Exact values appear in the battle preview. See [Rich combat](combat-upgrade.md#support-scaling).
 
 | Level | Nell | Orrin |
 | --- | --- | --- |

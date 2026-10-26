@@ -50,3 +50,5 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 
 /* Music review uses the same compact controls on desktop and phone. */
 .music-rooms{margin:8px 0}.music-rooms summary{color:#f4e5be;background:#182b32;border:1px solid #8b805e;padding:6px;cursor:pointer}.music-rooms .music-parts{margin-top:6px}
+/* Keep confirmation reachable when later levels unlock more commands. */
+.command-panel{display:flex;flex-direction:column;overflow:hidden}.command-list{flex:1;min-height:0;overflow:auto}.confirmation{flex:0 0 auto;max-height:96px;overflow:auto;background:#101d28}.actions button{white-space:normal;text-align:left}
