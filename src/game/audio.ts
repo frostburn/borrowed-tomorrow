@@ -1,13 +1,14 @@
 import {RoomReverb} from './room-reverb';
 import {MAP_ROOMS,type RoomId} from '../content/rooms';
 import type { MapId } from '../rules/state';
-import { ARRANGEMENTS, type Instrument, type MusicMode } from './score';
+import type { Instrument, MusicMode } from './score';
 import { Synth, type Effect } from './synth';
-import { performanceBar,scoreTime,scoreBeat,type PerformanceOptions } from './score-performance';
+import type { PerformanceOptions } from './score-performance';
 
 /** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
 export class Audio {
   private context?:AudioContext;
+  private score?:typeof import('./music-runtime');
   private master?:GainNode;
   private reverb?:RoomReverb;
   private roomId:RoomId=MAP_ROOMS.station;
@@ -45,9 +46,11 @@ export class Audio {
   }
   async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[],performance:PerformanceOptions={}){
     if(!Number.isInteger(bar)||bar<0)throw new Error('Invalid score bar.');
-    const generation=++this.generation;
-    if(!this.context)this.initialize();const c=this.context!;await c.resume();if(generation!==this.generation)return;
-    this.music!.release(c.currentTime);this.mode=this.pending=mode;this.bar=bar;this.instruments=instruments;this.performance={...performance};
+    const generation=++this.generation;this.pending=mode;
+    if(!this.context)this.initialize();const c=this.context!;
+    const [score]=await Promise.all([import('./music-runtime'),c.resume()]);
+    if(generation!==this.generation)return;this.score=score;
+    this.music!.release(c.currentTime);this.mode=this.pending;this.bar=this.mode===mode?bar:0;this.instruments=instruments;this.performance={...performance};
     this.history=[];this.next=c.currentTime+.045;this.enabled=true;this.reverb!.setRoom(this.roomId);
     this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
@@ -63,7 +66,7 @@ export class Audio {
   }
   position(){
     const now=this.context?.currentTime??0,entry=[...this.history].reverse().find(e=>e.start<=now)??this.history[0];
-    const beat=entry?scoreBeat(entry.mode,scoreTime(entry.mode,entry.bar*entry.beats,entry.rubato)+Math.max(0,now-entry.start),entry.rubato)-entry.bar*entry.beats:0;
+    const beat=entry?this.score!.scoreBeat(entry.mode,this.score!.scoreTime(entry.mode,entry.bar*entry.beats,entry.rubato)+Math.max(0,now-entry.start),entry.rubato)-entry.bar*entry.beats:0;
     return {mode:entry?.mode??this.pending,bar:entry?.bar??0,beat:entry?Math.max(0,Math.min(entry.beats-.001,beat)):0,playing:this.enabled};
   }
   cinematicMix(level:number){
@@ -74,14 +77,14 @@ export class Audio {
     // An explicit selection starts a fanfare immediately, including battle restarts.
     // Ordinary location/arrangement changes retain their bar-aligned transition.
     this.pending=mode;if(!this.enabled)this.mode=mode;
-    else if(ARRANGEMENTS[mode].introBars)void this.play(mode);
+    else if(this.score!.ARRANGEMENTS[mode].introBars)void this.play(mode);
   }
   private schedule(){
     const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
       if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
-      const {beats}=ARRANGEMENTS[this.mode],performed=performanceBar(this.mode,this.bar,this.performance);
+      const {beats}=this.score!.ARRANGEMENTS[this.mode],performed=this.score!.performanceBar(this.mode,this.bar,this.performance);
       this.history.push({mode:this.mode,bar:this.bar,start:this.next,beats,rubato:this.performance.rubato});if(this.history.length>3)this.history.shift();
       for(const n of performed.notes)if(!this.instruments||this.instruments.includes(n.instrument))this.music!.note(n.instrument,n.pitch,this.next+n.time,n.seconds,n.velocity,n.pan,n.expression);
       this.next+=performed.duration;this.bar++;

@@ -3,6 +3,34 @@ import { brokenCheckpoint, coastCheckpoint } from '../support/progress';
 import { approach, importSave, travel } from './navigation';
 import { capture, dialogue, inspect } from './controls';
 
+for(const action of ['travel','pause']as const){
+ test(`first sound load respects ${action} while the score chunk is pending`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
+  await page.evaluate(async()=>{
+   // @ts-expect-error Observe the real mixer without a production debug API.
+   const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');
+   const play=Audio.prototype.play;
+   Audio.prototype.play=async function(...args){
+    (window as unknown as {pendingMusic:InstanceType<typeof Audio>}).pendingMusic=this;
+    await play.apply(this,args);
+    (window as unknown as {pendingMusicReady:boolean}).pendingMusicReady=true;
+   };
+  });
+  let release!:()=>void,held=false;
+  const gate=new Promise<void>(resolve=>{release=resolve;});
+  await page.route(/\/src\/game\/music-runtime\.ts(?:\?.*)?$/,async route=>{held=true;await gate;await route.continue();});
+  try{
+   await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect.poll(()=>held).toBe(true);
+   if(action==='travel')await importSave(page,coastCheckpoint('wardSeen'));
+   else await page.evaluate(()=>(window as unknown as {pendingMusic:{pause:()=>void}}).pendingMusic.pause());
+   release();
+   await expect.poll(()=>page.evaluate(()=>(window as unknown as {pendingMusicReady:boolean}).pendingMusicReady)).toBe(true);
+   await expect.poll(()=>page.evaluate(()=>(window as unknown as {pendingMusic:{position:()=>unknown}}).pendingMusic.position())).toMatchObject(action==='travel'?{mode:'infirmary',playing:true}:{playing:false});
+   await expect(page.getByRole('button',{name:action==='travel'?'Sound on':'Sound off',exact:true})).toBeVisible();expect(errors).toEqual([]);
+  }finally{release();}
+ });
+}
+
 test('piano notes decay while sustained arrangements release cleanly at a transition', async ({ page }) => {
   await page.goto('/');
   const levels = await page.evaluate(async () => {

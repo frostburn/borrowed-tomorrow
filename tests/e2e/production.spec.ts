@@ -7,6 +7,42 @@ import { importSave, approach } from './navigation';
 import { capture, inspect, dialogue, clickWorld, battle } from './controls';
 import { travel } from './navigation';
 import {sampleRegulator} from './conduit-controls';
+import {chapterTwoStart,chapterThreeStart,chapterFourStart,chapterFiveStart,chapterSixStart,chapterSevenStart} from '../../src/dev/canonical-saves';
+
+for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+ test.describe(`packed distribution on ${device}`,()=>{
+  test.use({viewport,deviceScaleFactor});
+  test('packed chapter data restores all seven chapters and loads scores only when sound is enabled',async({page})=>{
+   const errors:string[]=[],scores:string[]=[];
+   page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
+   page.on('request',request=>{if(/\/music-runtime-[^/]+\.js$/.test(request.url()))scores.push(request.url());});
+   await page.addInitScript(()=>{
+    const original=AudioContext.prototype.createOscillator;
+    (window as unknown as {scheduledNotes:number}).scheduledNotes=0;
+    AudioContext.prototype.createOscillator=function(){(window as unknown as {scheduledNotes:number}).scheduledNotes++;return original.call(this);};
+   });
+   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+   await expect(page).toHaveTitle('Borrowed Tomorrow');await expect(page.getByRole('button',{name:'Begin Chapter One',exact:true})).toBeVisible();
+   expect(scores).toHaveLength(0);
+   await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();
+   expect(scores).toHaveLength(1);await expect.poll(()=>page.evaluate(()=>(window as unknown as {scheduledNotes:number}).scheduledNotes)).toBeGreaterThan(0);
+   await page.getByRole('button',{name:'Begin Chapter One',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+   expect((await inspect(page)).state.flags.festivalSeen).toBe(true);await capture(page,`packed-station-${device}`);
+   for(const start of [chapterTwoStart,chapterThreeStart,chapterFourStart,chapterFiveStart,chapterSixStart,chapterSevenStart]){
+    const state=start();await importSave(page,state);
+    expect((await inspect(page)).state.chapter).toBe(state.chapter);
+    expect((await inspect(page)).state.location.map).toBe(state.location.map);
+    while(await page.getByRole('button',{name:'Skip scene',exact:true}).isVisible())await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+    if(state.chapter==='chapter-three')await capture(page,`packed-northglass-${device}`);
+   }
+   await capture(page,`packed-domain-${device}`);
+   await page.getByRole('button',{name:'Sound on',exact:true}).click();await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();
+   await page.getByRole('button',{name:'Sound off',exact:true}).click();await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();expect(scores).toHaveLength(1);
+   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.chapter).toBe('chapter-seven');
+   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+  });
+ });
+}
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
