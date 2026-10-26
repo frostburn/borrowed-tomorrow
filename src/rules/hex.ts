@@ -74,12 +74,26 @@ export function reachable(start: Hex, movement: number, blocked: Set<string>, co
   return result;
 }
 
-export const HEX_SIZE = 35;
+/** Near-regular pointy hexes on the shared 2px display lattice. */
+export const HEX_SIZE = 36;
+export const HEX_WIDTH = 60;
+export const HEX_ROW = 54;
 export const ORIGIN = { x: 160, y: 104 };
 export function toPixel(h: Hex): { x: number; y: number } {
-  return { x: ORIGIN.x + Math.sqrt(3) * HEX_SIZE * (h.q + h.r / 2), y: ORIGIN.y + HEX_SIZE * 1.5 * h.r };
+  return { x: ORIGIN.x + HEX_WIDTH * (h.q + h.r / 2), y: ORIGIN.y + HEX_ROW * h.r };
+}
+/** Insets and vertices stay on complete 2x2 display pixels. */
+export function hexVertices(h:Hex,inset=0):{x:number;y:number}[]{
+ const p=toPixel(h),i=Math.round(inset/2)*2,w=HEX_WIDTH/2-i,tip=HEX_SIZE-i,shoulder=18-Math.round(i/4)*2;
+ return [[w,-shoulder],[w,shoulder],[0,tip],[-w,shoulder],[-w,-shoulder],[0,-tip]].map(([x,y])=>({x:p.x+x,y:p.y+y}));
 }
 export function fromPixel(x: number, y: number): Hex {
-  x -= ORIGIN.x; y -= ORIGIN.y;
-  return roundHex((Math.sqrt(3) / 3 * x - y / 3) / HEX_SIZE, (2 / 3 * y) / HEX_SIZE);
+ const r=(y-ORIGIN.y)/HEX_ROW,q=(x-ORIGIN.x)/HEX_WIDTH-r/2,nearest=roundHex(q,r);
+ // Cube rounding alone assumes regular hexagons. Check the actual sloped
+ // edges of nearby cells so targeting follows the drawn shape at the tips.
+ for(const h of [nearest,...DIRECTIONS.map(d=>add(nearest,d))]){
+  const p=toPixel(h),dx=Math.abs(x-p.x),dy=Math.abs(y-p.y);
+  if(dx<=HEX_WIDTH/2+1e-8&&dy<=HEX_SIZE-dx*.6+1e-8)return h;
+ }
+ return nearest;
 }
