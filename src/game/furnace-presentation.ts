@@ -8,11 +8,11 @@ import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { furnaceUnit,prepareFurnace } from '../rules/furnace';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { drawTileMap } from './tilemap';
-import { nativeTexture,bossLabel,pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture,bossLabel,pickBossBody } from './boss-display';
 import { newGame } from '../rules/state';
 const textureKey='furnace-carrier-battle';
 export const FURNACE_ASSETS=[{key:textureKey,url:'art/vector/chapter-five/furnace-carrier-battle.svg'}];
-let mask:Uint8Array|undefined;
+const masks=new BossMaskCache<Uint8Array>();
 const placement=(u:Unit,hex:Hex=u.hex)=>({x:Math.round(toPixel(hex).x),y:Math.round(Math.max(...occupiedHexes(u,hex).map(h=>toPixel(h).y))+24)});
 export function furnacePresentation(encounter:Encounter):BattlePresentation{
  return {
@@ -26,7 +26,7 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
   actor(scene,u,_hp,hex){
    if(u.id!==FURNACE_ID)return;
    const texture=nativeTexture(scene,textureKey),surface=texture.getSourceImage() as HTMLCanvasElement;
-   if(!mask){const rgba=surface.getContext('2d')!.getImageData(0,0,224,168).data;mask=Uint8Array.from({length:224*168},(_,p)=>rgba[p*4+3]);}
+   if(!masks.has(textureKey)){const rgba=surface.getContext('2d')!.getImageData(0,0,224,168).data;masks.set(textureKey,Uint8Array.from({length:224*168},(_,p)=>rgba[p*4+3]));}
    const p=placement(u,hex);return scene.add.image(p.x,p.y,textureKey).setOrigin(.5,1);
   },
   attackTiming:u=>u.id===FURNACE_ID?{contact:320,duration:720}:undefined,
@@ -44,6 +44,6 @@ export function furnacePresentation(encounter:Encounter):BattlePresentation{
    const g=scene.add.graphics();world.add(g);g.fillStyle(0x18252b,.97).fillRect(359,29,306,10).fillStyle(0xc87a49).fillRect(362,32,Math.floor(300*u.hp/u.maxHp),4);
    bossLabel(scene,world,512,49,u.hp>0?'Mobile · three contacts · hot tracks':'Carrier stopped',1);
   },
-  pick:(b,action,x,y)=>pickBossBody(b,action,x,y,furnaceUnit(b)!,224,168,mask),
+  pick:(b,action,x,y)=>pickBossBody(b,action,x,y,furnaceUnit(b)!,224,168,masks.get(textureKey)),
  };
 }

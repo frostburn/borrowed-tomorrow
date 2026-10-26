@@ -24,7 +24,7 @@ export function sceneLight(id:string,pieces:readonly {x:number;y:number;url:stri
   const profile=registry.profiles[id];
   const lamps=[...profile.lamps];
   for(const piece of pieces){
-    const name=piece.url.split('/').pop()!.replace(/\.svg$/,'');
+    const name=piece.url.split('/').pop()!.replace(/\.(svg|png)$/,'');
     for(const light of registry.props[name]??[])lamps.push({...light,strength:light.strength*(profile.propStrength??1),x:piece.x+light.x,y:piece.y+light.y});
   }
   return {ambient:profile.ambient,lamps,shadowOpacity:profile.shadowOpacity};

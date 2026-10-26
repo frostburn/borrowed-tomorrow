@@ -46,9 +46,9 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
     const image=new Image();if(!tiles){image.src=`/art/${name}.webp`;await image.decode();}
     const pages=tiles?await Promise.all(tileset.pages.map(async p=>{const img=new Image();img.src=`/${p.url}`;await img.decode();return img;})):[];
     const scenery=document.createElement('canvas');scenery.width=tiles?tiles.width*24:image.width;scenery.height=tiles?tiles.height*24:image.height;
-    const ctx=scenery.getContext('2d')!;
+    const ctx=scenery.getContext('2d')!;ctx.imageSmoothingEnabled=false;
     if(pieces){
-      for(const piece of [...pieces].sort((a,b)=>a.depth-b.depth)){const img=new Image();img.src=`/${piece.url}`;await img.decode();const native=document.createElement('canvas');native.width=img.naturalWidth;native.height=img.naturalHeight;native.getContext('2d')!.drawImage(img,0,0);ctx.drawImage(native,piece.x,piece.y);}
+      for(const piece of [...pieces].sort((a,b)=>a.depth-b.depth)){const img=new Image();img.src=`/${piece.url}`;await img.decode();const native=document.createElement('canvas');native.width=img.naturalWidth;native.height=img.naturalHeight;native.getContext('2d')!.drawImage(img,0,0);ctx.drawImage(native,piece.x,piece.y,piece.width,piece.height);}
     }else if(tiles){
       const props:{gid:number;x:number;y:number;depth:number}[]=[];
       const draw=(gid:number,x:number,y:number)=>{const i=tileset.pages.findIndex(p=>gid>=p.firstgid&&gid<p.firstgid+p.tilecount),p=tileset.pages[i],id=gid-p.firstgid;ctx.drawImage(pages[i],id%p.columns*24,Math.floor(id/p.columns)*24,24,24,x,y,24,24);};

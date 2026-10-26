@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
 import { enemyTurn,type Encounter } from '../rules/combat';
-import { nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
 import { bossMotionEnabled } from './boss-motion';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
@@ -12,7 +12,7 @@ import { drawTileMap } from './tilemap';
 import { newGame } from '../rules/state';
 export const IMPERIAL_ASSETS=['imperial-idle','imperial-charge','imperial-cast','imperial-fallen','imperial-support','imperial-support-broken','lightbearer-idle','lightbearer-rise','lightbearer-cast','lightbearer-resist'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
 export const imperialPortrait=(light=false)=>`${import.meta.env.BASE_URL}art/vector/chapter-six/${light?'lightbearer':'imperial'}-portrait.svg`;
-const masks=new Map<string,Uint8Array>();
+const masks=new BossMaskCache<Uint8Array>();
 export function imperialPresentation(encounter:Encounter):BattlePresentation{
  const light=encounter.boss==='lightbearer',base=light?'lightbearer-idle':'imperial-idle';let texture=base,pattern=0;
  return {

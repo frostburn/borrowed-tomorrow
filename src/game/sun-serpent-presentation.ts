@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
-import { nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture,bossLabel,bossPlacement,pickBossBody } from './boss-display';
 import { bossMotionEnabled } from './boss-motion';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
@@ -12,7 +12,7 @@ import { drawTileMap } from './tilemap';
 import { newGame } from '../rules/state';
 export const SERPENT_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/chapter-six/serpent-portrait.svg`;
 export const SERPENT_ASSETS=['serpent-head','serpent-inhale','serpent-fire','serpent-west','serpent-east'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
-const masks=new Map<string,Uint8Array>();
+const masks=new BossMaskCache<Uint8Array>();
 export function serpentPresentation(encounter:Encounter):BattlePresentation{
  let headTexture='serpent-head';
  return {

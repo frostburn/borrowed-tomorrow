@@ -45,7 +45,8 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
     }
     for(const piece of pieces){
       if(cached.has(piece))continue;
-      const image=new NativeTile(scene,x+piece.x,y+piece.y,piece.key).setOrigin(0).setDepth(y+piece.depth).setData('scene-piece',piece);
+      scene.textures.get(piece.key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      const image=new NativeTile(scene,x+piece.x,y+piece.y,piece.key).setOrigin(0).setDisplaySize(piece.width,piece.height).setDepth(y+piece.depth).setData('scene-piece',piece);
       scene.add.existing(image);world.add(image);
     }
     world.sort('depth');return;

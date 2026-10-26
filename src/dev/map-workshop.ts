@@ -1,3 +1,5 @@
+import {mapArtSkin,setMapArtSkin} from '../content/map-art-skin';
+import {actorArtUrl} from '../content/actor-art-skin';
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
 import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
@@ -65,12 +67,13 @@ export class MapWorkshop {
     const view=keepView&&old?{x:old.scrollLeft/this.zoom,y:old.scrollTop/this.zoom}:this.initialView;this.initialView=undefined;
     const opened=[...host.querySelectorAll('details[open] summary')].map(s=>s.textContent);
     const sideScroll=host.querySelector('.map-sidebar')?.scrollTop??0,outer=host.closest('.inventory-panel')!,outerScroll=outer.scrollTop;
-    const e=this.entry;
+    const e=this.entry,pieces=e.tiles&&sceneArt(e.tiles);
+    const medium=pieces?.some(p=>p.url.endsWith('.png'))?'Indexed raster scene':pieces?'Traced SVG scene':undefined;
     host.innerHTML=`<section class="map-review" aria-label="Map review"><header><h2>Maps</h2><p>Click a cell to identify its art. Copy reference includes coordinates, layers and a link to this view.</p></header>
       <div class="map-toolbar" role="group" aria-label="Map chapters">${[...new Set(MAP_REVIEWS.map(m=>m.chapter))].sort((a,b)=>a-b).map(ch=>`<button data-map-chapter="${ch}" aria-pressed="${ch===e.chapter}">Chapter ${ch}</button>`).join('')}<span class="map-divider"></span>${['World','Battle'].map(kind=>`<button data-map-kind="${kind}" aria-pressed="${kind===e.kind}" ${MAP_REVIEWS.some(m=>m.chapter===e.chapter&&m.kind===kind)?'':'disabled'}>${kind}</button>`).join('')}</div>
       <div class="map-library" role="group" aria-label="Maps in chapter">${MAP_REVIEWS.filter(m=>m.chapter===e.chapter&&m.kind===e.kind).map(m=>`<button data-map="${m.id}" aria-pressed="${m.id===e.id}">${esc(m.id)}</button>`).join('')}</div>
-      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?sceneArt(e.tiles)?'Traced SVG scene / 24px navigation':'24px tiles':'Native painting'}</p>
-      <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
+      <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?medium?`${medium} / 24px navigation`:'24px tiles':'Native painting'}</p>
+      <div class="map-toolbar" role="group" aria-label="Map skin">${(['vector','raster'] as const).map(s=>`<button data-map-skin="${s}" aria-pressed="${mapArtSkin()===s}">${s==='vector'?'Vector':'Raster'}</button>`).join('')}</div><div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
       <aside class="map-sidebar"><h3>Layers</h3><p>Toggle layers or use Only to isolate one.</p><div class="map-layers" role="group" aria-label="Map layers">${this.layers.map(l=>`<div><button data-map-layer="${l.id}" aria-label="Show ${esc(l.name)}" aria-pressed="${!this.hidden.has(l.id)}">${esc(l.name)}${layerVisible(l,{flags:this.flags})?'':' (story hidden)'}</button><button data-map-only="${l.id}" aria-label="Only ${esc(l.name)}">Only</button></div>`).join('')||'<p>Single scene; no tile layers.</p>'}</div>
@@ -81,6 +84,7 @@ export class MapWorkshop {
       const focus=attribute?`[${attribute}="${CSS.escape(b.getAttribute(attribute)!)}"]`:`#${b.id}`;
       action(b);if(!b.isConnected)host.querySelector<HTMLButtonElement>(focus)?.focus({preventScroll:true});
     };};
+    bind('[data-map-skin]',b=>{setMapArtSkin(b.dataset.mapSkin as 'vector'|'raster');this.render();});
     bind('[data-map]',b=>this.changeMap(b.dataset.map!));
     bind('[data-map-chapter]',b=>this.changeMap(MAP_REVIEWS.find(m=>m.chapter===Number(b.dataset.mapChapter)&&m.kind===e.kind)?.id??MAP_REVIEWS.find(m=>m.chapter===Number(b.dataset.mapChapter))!.id));
     bind('[data-map-kind]',b=>this.changeMap(MAP_REVIEWS.find(m=>m.chapter===e.chapter&&m.kind===b.dataset.mapKind)!.id));
@@ -128,7 +132,7 @@ export class MapWorkshop {
     const rig=sceneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
     if(pieces){
       for(const piece of pieces){
-        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y);};
+        const image=this.image(`${import.meta.env.BASE_URL}${actorArtUrl(piece.url)}`),draw=()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorSurface(image),piece.x,piece.y,piece.width,piece.height);};
         if(piece.depth>=0)sorted.push({depth:piece.depth,draw});else draw();
       }
     }else if(e.tiles){

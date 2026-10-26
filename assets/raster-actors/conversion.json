@@ -1,0 +1,2460 @@
+{
+  "grid": 2,
+  "colors": 255,
+  "transparentIndex": 255,
+  "assets": [
+    {
+      "source": "alban-command.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1510,
+      "sha256": "ee54b977183f39fb398db13d788e082a76b365f12b46b89c4f440f7e68a7f449"
+    },
+    {
+      "source": "alban.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1539,
+      "sha256": "e956abc8e7f37f533d63e78339d9b2889e1c1725c7cc4e9fdb1063c1a03cd987"
+    },
+    {
+      "source": "alda.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1546,
+      "sha256": "4d1101996da4e3f93c95ea786cfc1f856aaf521622e1cf43825aca43c5c57ce4"
+    },
+    {
+      "source": "amal.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1586,
+      "sha256": "7314223f26704ed9355eeb11cd40cf598bfa0d4e3af0bde411e6bf878d85542e"
+    },
+    {
+      "source": "animation/celia-back.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2837,
+      "sha256": "2c25e8e260de050497c04d666801049b833fc2666087945ce04dfb6b855f834c"
+    },
+    {
+      "source": "animation/celia-front.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 3064,
+      "sha256": "41b24cd2aac3be629d80619823af74911c27a59d2ff9234adfc44bc283b2852a"
+    },
+    {
+      "source": "animation/celia-left.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2639,
+      "sha256": "a3561ae1c5b5eccc8fda096397a9d6144d6af25fff06b0c2d98b25b01ffd9d78"
+    },
+    {
+      "source": "animation/celia-right.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2732,
+      "sha256": "21670c74011495a416176d972776c42563cc6d52f853d02030dc9d3586e86a45"
+    },
+    {
+      "source": "animation/kit-back.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2760,
+      "sha256": "b10a855e622c8d7ee2e0198ab168d00c729f915be0569153886e59dc65b5ff50"
+    },
+    {
+      "source": "animation/kit-front.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2777,
+      "sha256": "9fb8b877a168abd49b0f43346bba6f25d6a7694974608ad73b1cc3c7e995cf62"
+    },
+    {
+      "source": "animation/kit-left.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2729,
+      "sha256": "dbd0755e73faf8de43d396ac21efa5d424077fc361c065a61b5c9148cb6208dd"
+    },
+    {
+      "source": "animation/kit-right.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2782,
+      "sha256": "c8d38b9d4330dfcbac32889b72b8c8d3795eddb9c6a44c398428735c2ad63a70"
+    },
+    {
+      "source": "animation/nell-back.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 2941,
+      "sha256": "59a73d8a4a9566d28e1875b1600535b8892d5f3baa80540ad6bc8a3202d5c532"
+    },
+    {
+      "source": "animation/nell-front.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 3089,
+      "sha256": "870694011b54de73b89d98c0a60fafb47bf0ee787c33568ec7f74855483b39ba"
+    },
+    {
+      "source": "animation/nell-left.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 2876,
+      "sha256": "578e0d57c4267574efd4d085253aa263a14c81f82afebc686a8a1fbf56c0655d"
+    },
+    {
+      "source": "animation/nell-right.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 2876,
+      "sha256": "8770494029958c276535da307af00cb6e4726591491b8c026b0f5cdfd1e297a2"
+    },
+    {
+      "source": "animation/orrin-back.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2989,
+      "sha256": "7a045a222e9021c8e8303e8d4b732a25d13e5f73d04416a4b64cc9a30395894d"
+    },
+    {
+      "source": "animation/orrin-front.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 3001,
+      "sha256": "c0a12887b08f82408fe3b3f03c76a32e03cd8c80b7cac80f7aad97437ea1f720"
+    },
+    {
+      "source": "animation/orrin-left.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2777,
+      "sha256": "daa37f82cc17152455e76494ebce331e6cf7dae54b6a41d08d6ccec920afa323"
+    },
+    {
+      "source": "animation/orrin-right.svg",
+      "method": "rig",
+      "native": [
+        80,
+        160
+      ],
+      "logical": [
+        160,
+        320
+      ],
+      "bytes": 2697,
+      "sha256": "1cceb260d4dba611de8fd52cfbd72727d7c1990f291bec71a283e2dce39a19c3"
+    },
+    {
+      "source": "animation/petra-back.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 4112,
+      "sha256": "854e42b7f61baf0395b3babc2248271e112fb036d4c3f4922fd84d102a191a7d"
+    },
+    {
+      "source": "animation/petra-front.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 4330,
+      "sha256": "4cfcb08853f4169453bab012eeef77168e8d00049887447073cfde64c29a70df"
+    },
+    {
+      "source": "animation/petra-left.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 3674,
+      "sha256": "200d9b937696a38e3cd3eaed924c57a962e2941e1586301cbecfa343b7272e47"
+    },
+    {
+      "source": "animation/petra-right.svg",
+      "method": "rig",
+      "native": [
+        80,
+        200
+      ],
+      "logical": [
+        160,
+        400
+      ],
+      "bytes": 3788,
+      "sha256": "fbc62a31b78fc2bae561a08eacb4a2e91830cb206b58e3152548844bbaf9e2bb"
+    },
+    {
+      "source": "aurel.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1596,
+      "sha256": "b44f1b1336c8fa6a040bf6d2691e90fe4b6eaaa183c84bf4445cae63ebd4e1c2"
+    },
+    {
+      "source": "benefactor.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1894,
+      "sha256": "d4bec65a053257e1c3952948f616e29a9452d036b4b08051b8b6bc180e5ba0ae"
+    },
+    {
+      "source": "benefactor/benefactor-heart-motion.svg",
+      "method": "painted-boss",
+      "native": [
+        360,
+        288
+      ],
+      "logical": [
+        720,
+        1728
+      ],
+      "bytes": 10549,
+      "sha256": "b61e87fb35cfcd553f6e1301323ea06200c476fd24eea63f891a2543c55859d2",
+      "pages": [
+        {
+          "url": "art/raster-actors/benefactor/benefactor-heart-motion.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 10549,
+          "sha256": "b61e87fb35cfcd553f6e1301323ea06200c476fd24eea63f891a2543c55859d2"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-heart-motion-1.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 10606,
+          "sha256": "803ecdd54c9b177528a6f2803954b346ebdddbc35e5fdcd552d340355bab37e0"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-heart-motion-2.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 12414,
+          "sha256": "aabffdf6b1c47dbfe15e0aff9023244b30c8b008608b029ffc71b62d6fbc3198"
+        }
+      ]
+    },
+    {
+      "source": "benefactor/benefactor-motion.svg",
+      "method": "painted-boss",
+      "native": [
+        360,
+        288
+      ],
+      "logical": [
+        720,
+        1728
+      ],
+      "bytes": 46072,
+      "sha256": "db1e0c354139d079552cd2adf3e1967e6f8eb99e85ab76a398d08464355a0fa5",
+      "pages": [
+        {
+          "url": "art/raster-actors/benefactor/benefactor-motion.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 46072,
+          "sha256": "db1e0c354139d079552cd2adf3e1967e6f8eb99e85ab76a398d08464355a0fa5"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-motion-1.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 46990,
+          "sha256": "9f4142886c9d0d038003e60ccdc2370cbf382013882a9ccc696d010cea34a672"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-motion-2.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 38583,
+          "sha256": "6a17eab8fec92358a1c562d0f4fa244da8ead9d9d9aed7ec99e272c3b7e31795"
+        }
+      ]
+    },
+    {
+      "source": "benefactor/benefactor-sun-motion.svg",
+      "method": "painted-boss",
+      "native": [
+        360,
+        288
+      ],
+      "logical": [
+        720,
+        1728
+      ],
+      "bytes": 18228,
+      "sha256": "67d928a6f1bdd1f4d7ff97800d65cf99cca8ba46757deb2c33fbb0086726e3df",
+      "pages": [
+        {
+          "url": "art/raster-actors/benefactor/benefactor-sun-motion.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 18228,
+          "sha256": "67d928a6f1bdd1f4d7ff97800d65cf99cca8ba46757deb2c33fbb0086726e3df"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-sun-motion-1.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 18533,
+          "sha256": "3e88181b708fe348a83add41234602b7c831785cf792a89049ca5379cd51263f"
+        },
+        {
+          "url": "art/raster-actors/benefactor/benefactor-sun-motion-2.png",
+          "native": [
+            360,
+            288
+          ],
+          "bytes": 24813,
+          "sha256": "f71971d7e5a2e8f234ffe794472bed9d13d7f294fe13dacbbb5fbd398922a8bc"
+        }
+      ]
+    },
+    {
+      "source": "boiler-keeper.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1624,
+      "sha256": "280e0deac86c5301ec361f42bfbf5d6c118f2ea4f8380216f8725b8578d0715e"
+    },
+    {
+      "source": "bosses/conduit-regulator-motion.svg",
+      "method": "vector",
+      "native": [
+        256,
+        720
+      ],
+      "logical": [
+        512,
+        1440
+      ],
+      "bytes": 8748,
+      "sha256": "caa6bca21f90c1612a1ffa016ceee44127c0ade0036c5e83894239e05b69d662"
+    },
+    {
+      "source": "bosses/conduit-regulator.svg",
+      "method": "vector",
+      "native": [
+        128,
+        120
+      ],
+      "logical": [
+        256,
+        240
+      ],
+      "bytes": 3309,
+      "sha256": "8210adb218f73748ee268d66005cc8bcbab0bee9ecf29d800dbbfc1467f19062"
+    },
+    {
+      "source": "bosses/flagship-bridge-fire.svg",
+      "method": "vector",
+      "native": [
+        112,
+        116
+      ],
+      "logical": [
+        224,
+        232
+      ],
+      "bytes": 2278,
+      "sha256": "e885b4829d852d803552e45bb9deaab33791baa0fb26b40dfcb24e5eee3f1d7a"
+    },
+    {
+      "source": "bosses/flagship-bridge.svg",
+      "method": "vector",
+      "native": [
+        112,
+        116
+      ],
+      "logical": [
+        224,
+        232
+      ],
+      "bytes": 2277,
+      "sha256": "3a54833f9a2b33d5d06547166b1efd46e9ddbf3d29ac818e1bb891fa93934562"
+    },
+    {
+      "source": "bosses/flagship-hull.svg",
+      "method": "vector",
+      "native": [
+        476,
+        128
+      ],
+      "logical": [
+        952,
+        256
+      ],
+      "bytes": 4873,
+      "sha256": "fa7d19b3cdaeaa52f34fddb9da89d77f6d4e6c876bd6fd2d3f02bc3e3e010f63"
+    },
+    {
+      "source": "bosses/flagship-port-fire.svg",
+      "method": "vector",
+      "native": [
+        96,
+        92
+      ],
+      "logical": [
+        192,
+        184
+      ],
+      "bytes": 2110,
+      "sha256": "f3ffeb212d1fb489662dfaadcef8f25c477c74b305d58cf5c87ceae835990fbb"
+    },
+    {
+      "source": "bosses/flagship-port.svg",
+      "method": "vector",
+      "native": [
+        96,
+        92
+      ],
+      "logical": [
+        192,
+        184
+      ],
+      "bytes": 2108,
+      "sha256": "322fd431c161697deed312f985a27bec0c81d1e072fd126b59722266062fe582"
+    },
+    {
+      "source": "bosses/flagship-starboard-fire.svg",
+      "method": "vector",
+      "native": [
+        96,
+        92
+      ],
+      "logical": [
+        192,
+        184
+      ],
+      "bytes": 2049,
+      "sha256": "17acbd858080745b3fc6fa092e4b1b0bd58709a88309079ad79861e9d494d3d7"
+    },
+    {
+      "source": "bosses/flagship-starboard.svg",
+      "method": "vector",
+      "native": [
+        96,
+        92
+      ],
+      "logical": [
+        192,
+        184
+      ],
+      "bytes": 2054,
+      "sha256": "6e571d623f60b82c40687c4df4e291080397a2d01fbbb6612b2afd677343a401"
+    },
+    {
+      "source": "bram.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1586,
+      "sha256": "e7e4fbe019eafbe37e8177c194ca968673f1f9ad3df55595e529cf017604e6b8"
+    },
+    {
+      "source": "celia-back.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1502,
+      "sha256": "4981c21cb4fde06e9bb314de78d2ec173048ab2bdc83ddffb5c8cbda3eafae1a"
+    },
+    {
+      "source": "celia-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1464,
+      "sha256": "0a7730332e253092ea287f702e166e9d97f1e5af486fcc2b831e02306960f017"
+    },
+    {
+      "source": "celia-right.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1445,
+      "sha256": "91d35886f327da98751940ffba564f9a2f2a7eb56b6c29fde43c49d028964d2f"
+    },
+    {
+      "source": "celia.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1563,
+      "sha256": "c812498216a8e90c40c77f9f50f653e9f49081d09d811764ec4e0850a7b34562"
+    },
+    {
+      "source": "chapter-five/furnace-carrier-battle.svg",
+      "method": "vector",
+      "native": [
+        112,
+        84
+      ],
+      "logical": [
+        224,
+        168
+      ],
+      "bytes": 2478,
+      "sha256": "1c0fe6d10f8ba923c66cb916da16fd9fc1645b725839b5eb7f96a61af92c5f8a"
+    },
+    {
+      "source": "chapter-five/gantry-carrier.svg",
+      "method": "vector",
+      "native": [
+        140,
+        105
+      ],
+      "logical": [
+        280,
+        210
+      ],
+      "bytes": 3149,
+      "sha256": "ce7a7c001c9390050e5cae141272df49611692c3dab4ded09454dbde29fb9222"
+    },
+    {
+      "source": "chapter-five/ward-engine-battle.svg",
+      "method": "vector",
+      "native": [
+        128,
+        120
+      ],
+      "logical": [
+        256,
+        240
+      ],
+      "bytes": 3112,
+      "sha256": "1c5ea1d2235f64c0e2da7a609d63875b66c20eb8f0f20cf938f47161a768d685"
+    },
+    {
+      "source": "chapter-six/dragon-breath.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5474,
+      "sha256": "60d4cd2ec24e03f85fd28d6f420dadace96f93eaf754457afe838dde51e15d25"
+    },
+    {
+      "source": "chapter-six/dragon-inhale.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5511,
+      "sha256": "e53e17acb76b7e38a1631e7e8f898ce8d2235d2c866c297240c8b795cf8d88a7"
+    },
+    {
+      "source": "chapter-six/dragon-shatter.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5496,
+      "sha256": "1ba90d501a0691cd3339aa80a81ec36c6984b4ab37f855284796bac484bbebf2"
+    },
+    {
+      "source": "chapter-six/imperial-cast.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5979,
+      "sha256": "26fc5e42c0f30c38417ecdea92653b7347509536f8776b9ed433b8be463ea878"
+    },
+    {
+      "source": "chapter-six/imperial-charge.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5770,
+      "sha256": "de2bb1c1fd6e5761ca7e3e9df7a0f476aa8baa9da241b4329edb253206b527b3"
+    },
+    {
+      "source": "chapter-six/imperial-fallen.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5794,
+      "sha256": "e1d6e4df903368b5a83502cc55a043fc5c3b2b4504a9e2f1d3427abd8bd2e94c"
+    },
+    {
+      "source": "chapter-six/imperial-idle.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5776,
+      "sha256": "7133ede2ddb78a1ee88389cb7fae7278c9944fb240c3f70ad7c1568206922a1b"
+    },
+    {
+      "source": "chapter-six/imperial-support-broken.svg",
+      "method": "vector",
+      "native": [
+        48,
+        80
+      ],
+      "logical": [
+        96,
+        160
+      ],
+      "bytes": 1319,
+      "sha256": "2851abf049b8de17b8407a048fb64b51a2487b4ba28b1bc1e17623ed453957d0"
+    },
+    {
+      "source": "chapter-six/imperial-support.svg",
+      "method": "vector",
+      "native": [
+        48,
+        80
+      ],
+      "logical": [
+        96,
+        160
+      ],
+      "bytes": 1540,
+      "sha256": "a53cb95ac6b25a58fcc91120d54c1621ba274bd4a7ad68aff2e17f16b0417451"
+    },
+    {
+      "source": "chapter-six/lightbearer-cast.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 4205,
+      "sha256": "689425a5f8a1142e7bdfde08ea570a93fb6eb178c7e68c67144714ad2fae0cbc"
+    },
+    {
+      "source": "chapter-six/lightbearer-idle.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 4093,
+      "sha256": "105f99c126926c56eeb3964bc07dd975a50a31592bf42a435bf3729927439b7a"
+    },
+    {
+      "source": "chapter-six/lightbearer-resist.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 4182,
+      "sha256": "0156453816813e0fffb49b932f47806451813da0840b1328518319343de45bef"
+    },
+    {
+      "source": "chapter-six/lightbearer-rise.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 4100,
+      "sha256": "39ffc0bb79affd392cf992fd0e02e2c40acc3ee0bc43e1a0f6f48a3489e4ea7e"
+    },
+    {
+      "source": "chapter-six/serpent-east.svg",
+      "method": "vector",
+      "native": [
+        64,
+        56
+      ],
+      "logical": [
+        128,
+        112
+      ],
+      "bytes": 1740,
+      "sha256": "8f627ece54ec6a3e36cd059b97e370df0fddaf3b4595a951bdb7987069c82f30"
+    },
+    {
+      "source": "chapter-six/serpent-fire.svg",
+      "method": "vector",
+      "native": [
+        148,
+        122
+      ],
+      "logical": [
+        296,
+        244
+      ],
+      "bytes": 3332,
+      "sha256": "89bb3b9f2fdf5cb1675b178da74eab71714bb59ca39b7ae2d7c5c30d9addacd7"
+    },
+    {
+      "source": "chapter-six/serpent-head.svg",
+      "method": "vector",
+      "native": [
+        148,
+        122
+      ],
+      "logical": [
+        296,
+        244
+      ],
+      "bytes": 3318,
+      "sha256": "ad316c89176f304f9c9b641bcd0058e7e47f8704c44dec5312f83788759b8cde"
+    },
+    {
+      "source": "chapter-six/serpent-inhale.svg",
+      "method": "vector",
+      "native": [
+        148,
+        122
+      ],
+      "logical": [
+        296,
+        244
+      ],
+      "bytes": 3342,
+      "sha256": "9873cf36a8e6d4597d97fddd7d009c66186774e00f3be1d3e73bb745ae94a741"
+    },
+    {
+      "source": "chapter-six/serpent-west.svg",
+      "method": "vector",
+      "native": [
+        64,
+        56
+      ],
+      "logical": [
+        128,
+        112
+      ],
+      "bytes": 1744,
+      "sha256": "c001fd1ba17ba929b1d9f1020d5c3da296e8746736a24b558ab368b37cd37a6b"
+    },
+    {
+      "source": "chapter-six/winter-dragon.svg",
+      "method": "vector",
+      "native": [
+        264,
+        140
+      ],
+      "logical": [
+        528,
+        280
+      ],
+      "bytes": 5450,
+      "sha256": "f117f03f9be581534c4fd08c6ce1db793ca40985a6a77156b8086bf68a45a1f2"
+    },
+    {
+      "source": "civilian-dockhand-rust.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1531,
+      "sha256": "148662da8eb92893e63e33755d771467ee3410969205104fb5b2e0cc7e09e2ca"
+    },
+    {
+      "source": "civilian-dockhand.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1534,
+      "sha256": "3e2c519613416d843085dc85df50712166f74bb470bd3ef9f94fb0ac9654eda0"
+    },
+    {
+      "source": "civilian-family-blue.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1594,
+      "sha256": "afaf91e5a084ee7f031273a16d4bfdbedb652a48d4ef7751019ec9add5f4a77e"
+    },
+    {
+      "source": "civilian-family-plum.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1571,
+      "sha256": "d6b42d55a91b44ef55ac2ecd273eef5ef88d3db3de7f3b3bafcb51c1ea5e0d47"
+    },
+    {
+      "source": "civilian-family.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1578,
+      "sha256": "7ce55e3b3296ce9a41b67d816ee7fd528f60049aae2dce4fe9855af7bd90780c"
+    },
+    {
+      "source": "civilian-patient-green.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1526,
+      "sha256": "00b6b0fef9656bf8a7ab6a604d017337fd4f9d8861562f2fad630bdca80cde2e"
+    },
+    {
+      "source": "civilian-patient.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1521,
+      "sha256": "14770fb10c6075a6fbf78cc8193386a00ac6c369b4b8d5aff76a53fc8d267dab"
+    },
+    {
+      "source": "civilian-traveler-blue.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1505,
+      "sha256": "9c6310e45204ca9320656c555692c25f83f825c9c59267482312473d96ba1298"
+    },
+    {
+      "source": "civilian-traveler.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1498,
+      "sha256": "857ebf39f6415a9c18e16059c742504b5eaca3c4d81939c696c0be7ba0b416d8"
+    },
+    {
+      "source": "clerk.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1515,
+      "sha256": "68f4b597ecba29ab155972eed673f9654d1cd53b9cb60f99dc16911918b1739f"
+    },
+    {
+      "source": "crow-copper.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1369,
+      "sha256": "e938302d42d84a1c2142dff02f162102c5d9d499b5b5c33b180ca99fcda2c7f9"
+    },
+    {
+      "source": "crow-crown.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1381,
+      "sha256": "3078f80634ab9221343b9f9f0e4c662415a681fa243cda05717371234b65d071"
+    },
+    {
+      "source": "crow-dusk.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1359,
+      "sha256": "b791cf862de2cc774cbda02bfa97a7b6d8277dfcc1d82f27369e1e8b37040e57"
+    },
+    {
+      "source": "crow-fern.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1371,
+      "sha256": "cf384d44b6d9e98aa7202b14c2963dd0b8da75c238e806b3a424f6806ac4785d"
+    },
+    {
+      "source": "crow-forge.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1366,
+      "sha256": "39c2151c3e1fd5b080b1405add9476823724c406f174ba8d96da2b708b6187ab"
+    },
+    {
+      "source": "crow-frost.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1375,
+      "sha256": "eb2496e418dafac63a70f492cc34f4a682b5d2fdffa039df02fc224296ae5d85"
+    },
+    {
+      "source": "crow-gilded.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1387,
+      "sha256": "78cc8816e70bb18cc0f198034f50c200463a02e6bff0ee6822831bed4247779c"
+    },
+    {
+      "source": "crow-solar.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1377,
+      "sha256": "ca594d96c14807ef66ff803445582fe0c94908853faeb40135b831d226cd05d9"
+    },
+    {
+      "source": "crow-sun.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1373,
+      "sha256": "5e59cd6bdc068397ef2b22883e85d229b8e6b59ffaed7e2811cae47db1a207e8"
+    },
+    {
+      "source": "crow.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1379,
+      "sha256": "44962d38487a0b6c51c20fa0fea23ad7ad32c56397397b9d3fcc42495b9cf67e"
+    },
+    {
+      "source": "dawn-gunner.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1582,
+      "sha256": "ebc8dadce284850dde97736ec7fdfc419e796e16d9061c1d78838ca4e45f08f1"
+    },
+    {
+      "source": "dawn-soldier.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1647,
+      "sha256": "a3cd4d8edcf6f0a218857934fb8ee99807051b086bd12533c8dd3e19ef5eebb7"
+    },
+    {
+      "source": "dena.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1529,
+      "sha256": "c980b69cb061f9acc7f2def287070a8fa28b1262f7fd71f4991035b0eaab6e28"
+    },
+    {
+      "source": "durn.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1542,
+      "sha256": "430689288d57f09d892622553252eb338e439123c48827790501b1e5bf1a221f"
+    },
+    {
+      "source": "edric.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1647,
+      "sha256": "062ec7386fb8a90a3760ad71b54ff3db04fed1dba81231fb14903c64358eb1b1"
+    },
+    {
+      "source": "egil.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1593,
+      "sha256": "39309bad70af10bdbaec776ee92c9da568b4376ee704720f7e5255a17b800901"
+    },
+    {
+      "source": "elspeth.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1714,
+      "sha256": "affac3f66d87ecc7f8183f708c2f19698b25815260297f192edba425a2dbcf26"
+    },
+    {
+      "source": "emperor-left-step-0.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1580,
+      "sha256": "434fc2b95a774ddc06045d0db6807591c61dba86f4582c00bd0158b57c0c883c"
+    },
+    {
+      "source": "emperor-left-step-1.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1562,
+      "sha256": "0b90ee65f5ef9c3347a89829e5b43c5a8d0a1f436874ea39694f374585f1359c"
+    },
+    {
+      "source": "emperor-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1567,
+      "sha256": "e786091ad09e40f1b8304ffcaf863faafc68498df5c585f0b4cf36ed409eedf4"
+    },
+    {
+      "source": "emperor-reach.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1589,
+      "sha256": "a90ac51ecfa20722740205ae0e2c956a189c55c169bb4b0e460b61424b03ae1d"
+    },
+    {
+      "source": "emperor.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1686,
+      "sha256": "fcd310cc7bae3688207447906aeb76d1e7bf0b13d5c1db117bc69d5ec89f2214"
+    },
+    {
+      "source": "enna.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1624,
+      "sha256": "97c0d6806dbdf97d0afd687a59c1ce0de00b8962fd7d48ac01ebe3af1fd55a17"
+    },
+    {
+      "source": "flagship-crew.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1569,
+      "sha256": "2f2eec141c8a1f2edbcb58395b4eebcd3e3d8e8939fcf33669aa49ab488c7d95"
+    },
+    {
+      "source": "flagship-marine.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1653,
+      "sha256": "8d03ea90fbb2763e770be705a940a1062ff2f546a8f8961c32e79193080ea3d1"
+    },
+    {
+      "source": "furnace-carrier.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1690,
+      "sha256": "5ec088d9e9b59c03d74cc6d8715cd39b333b4146f94507396c14f8c1699186eb"
+    },
+    {
+      "source": "glasswing.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1721,
+      "sha256": "9c0440345a2db1acb5e9f85eea5645b8329f2a437b4324e21de7e6094cf9dace"
+    },
+    {
+      "source": "guardian-crown.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1690,
+      "sha256": "2e27920512980074f7686cad2325617691789d0cd2c6d664fd70736c7ccd43bc"
+    },
+    {
+      "source": "guardian-dusk.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1672,
+      "sha256": "f42d396105d14697ad73edc97dcf635c16396065ca869768d5a21d94a997bcc5"
+    },
+    {
+      "source": "guardian-fern.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1724,
+      "sha256": "b8dc5730095102ff16f0883aac5707bdf3f34b403a0db3912ac36b9afdf58afd"
+    },
+    {
+      "source": "guardian-forge.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1591,
+      "sha256": "6f2cfa5bf7de86792edfd0cbd187da08308a5222d40cc29b34a5c170538d8bdb"
+    },
+    {
+      "source": "guardian-frost.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1709,
+      "sha256": "b0cada147264ca6601b9a02a8beb8006b5b973bffd7a03b20e2cbb6196e60d9b"
+    },
+    {
+      "source": "guardian-gilded.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1705,
+      "sha256": "8dc587fdf7d3b5e81d0f44b0627fb72053005163fdf5e596f70c079c749ea602"
+    },
+    {
+      "source": "guardian-iron.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1716,
+      "sha256": "b3011bd863338c004867c7619ef302a115b35b1df4c5934ccd0f425de311d381"
+    },
+    {
+      "source": "guardian-solar.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1692,
+      "sha256": "36132aea62a0c18307f53826c751dbadee15a4e7927de280e5c869d69b6fc7a3"
+    },
+    {
+      "source": "guardian-sun.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1658,
+      "sha256": "a6b1b3f2ff7d9208024b883ac7ea46f03c465317450838341dee4740a66f099b"
+    },
+    {
+      "source": "guardian.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1618,
+      "sha256": "ce2f1c644b8cc07301cb5daa3e0bf8b25afcffcaa45aad8c5d4472e50d80b76f"
+    },
+    {
+      "source": "herald.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1634,
+      "sha256": "d79cd1f3303ce10633231aade529d76849321e36b8478b96f5610c37c60227f0"
+    },
+    {
+      "source": "hester.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1550,
+      "sha256": "d5daf4acaeffea95341fb398b55abbe49b2d8ade97543483f028d9eff80ddd7d"
+    },
+    {
+      "source": "hound-crown.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1475,
+      "sha256": "85beecc7a59daaa06e67a286c6127dd0226e1e024a0e8e922a94cfc4cf56f97c"
+    },
+    {
+      "source": "hound-dusk.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1472,
+      "sha256": "5ffe06b45cc7016ecf3286c2fdc1a9ba3875e9eaec6bf352cb85125d339172d0"
+    },
+    {
+      "source": "hound-fern.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1502,
+      "sha256": "46278efe80a12f495a454160da779cc825d5f005ceac5504d78d50b08cfebd37"
+    },
+    {
+      "source": "hound-forge.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1419,
+      "sha256": "ec24cbb9de80f1924333ed2a57fbbffa302e42e1203fc011d626c5dc80219d10"
+    },
+    {
+      "source": "hound-frost.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1492,
+      "sha256": "b00d38631843b199b0cc61c1fac58b963f4d1e91b3ddc26f83e9f3d90e6d4003"
+    },
+    {
+      "source": "hound-gilded.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1462,
+      "sha256": "7d8fab46740ea7aba0e1cdd6dcdb129affddac4f48becde31e82f51dc81033e0"
+    },
+    {
+      "source": "hound-solar.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1490,
+      "sha256": "92a92917c1b5787d8829f25e0aa66930caf4da48b47a31acafa85c6c805bbaa1"
+    },
+    {
+      "source": "hound-steel.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1500,
+      "sha256": "de37ef39fb5327abebd2abe7ff1ab4da01065633a45442be173ee58dfe4d4087"
+    },
+    {
+      "source": "hound-sun.svg",
+      "method": "recolor",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1462,
+      "sha256": "a9e8aef0fefc0c5b6e685e22496a51f1bab211e5eaff0dc344733a328c2cb61b"
+    },
+    {
+      "source": "hound.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1438,
+      "sha256": "8c85d84bc6af742c02047f3af6519b934cf340cd792b9938e784fef54e56e0a1"
+    },
+    {
+      "source": "ines.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1592,
+      "sha256": "a43a6d95e563eb46a90dfb65f8a6094430a736d9844cfe3ee5faee9745b7385d"
+    },
+    {
+      "source": "inspector.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1576,
+      "sha256": "9a18bea39d29d7180d0192607aa84f8a954589ff85dfdc0b7e51acc88c950855"
+    },
+    {
+      "source": "iven.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1581,
+      "sha256": "9863b9d2c5b7eeeee12f0f3594ee9a35f66d2333807e9b3f94c1ec7e96c470ce"
+    },
+    {
+      "source": "kit-back.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1499,
+      "sha256": "754af9a3192eff5c714eacdd66befbb31c0e7b78e6358a0dc21f046b9995625e"
+    },
+    {
+      "source": "kit-carry.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1469,
+      "sha256": "52c4852600df42550a47ee10b9aa4c1799c145b3e18d6285465d96b902c0f924"
+    },
+    {
+      "source": "kit-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1464,
+      "sha256": "d071e578770fb632f467868c8a2ffbd6c359fc1d5dc7ad344fd137874f70932f"
+    },
+    {
+      "source": "kit-rest.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1474,
+      "sha256": "d08bdde51303f284bf5a5ee1f6b7ab034b55969272de08af1e00ee04c34509a8"
+    },
+    {
+      "source": "kit-right.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1466,
+      "sha256": "96a44e2bb0469b18a5d1d8f9b0d37bdd23d9eced6e06e57f8c270e6df1ced135"
+    },
+    {
+      "source": "kit.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1511,
+      "sha256": "620930f1e885adeb9bddb72b6fd698a97631b8d9a170edaee13136b83bc451c9"
+    },
+    {
+      "source": "master.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1534,
+      "sha256": "8a19e8e83831defa756917dfdffd896524a78a946e8a905470112b3c1f355ea9"
+    },
+    {
+      "source": "namar-watch.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1618,
+      "sha256": "06758b6b14031f0d4e0a954e31c79220ab0b23a2c418b0767a8390a7b9ae02b4"
+    },
+    {
+      "source": "nell-back.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1430,
+      "sha256": "e0285b6f1bb0c817db5d12486ac9e693026e322a517af7c43245256738894310"
+    },
+    {
+      "source": "nell-bed.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1646,
+      "sha256": "d94a156f2d73bfb636d71f90f1721d7debcd69b3286d935a51fb3df6435bd11b"
+    },
+    {
+      "source": "nell-faint.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1492,
+      "sha256": "d49964f679a3a580db35aa14c8770d730ce9261ba9c8de02d41f4ab3941403c8"
+    },
+    {
+      "source": "nell-ill.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1483,
+      "sha256": "65d0617c2c826399d8edb552f38b7acaf07f298154f658a0eb4d742af83c6a03"
+    },
+    {
+      "source": "nell-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1396,
+      "sha256": "f7f06edbdd40986d52bddc88672d3a86651747c1b64a307803e9cd8d895df53c"
+    },
+    {
+      "source": "nell-rest.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1518,
+      "sha256": "6ab44620228131c6998bb233fcfd7df915c839a24481a53b05e4a219c1c7e241"
+    },
+    {
+      "source": "nell-right.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1389,
+      "sha256": "2b1b8db16179f0884b092fdc542c89ee3e957796bf9f2c8a23796271a51b5b51"
+    },
+    {
+      "source": "nell.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1466,
+      "sha256": "08ed181282fd34062f96b34d77636d77c3132b9e835e4ee17f9e65483bed3b81"
+    },
+    {
+      "source": "orrin-back.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1555,
+      "sha256": "45f343fd1ba07d4ffe52109735484b2bea27aed1477cc756de8343b0d1e295b2"
+    },
+    {
+      "source": "orrin-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1475,
+      "sha256": "e79c78e5176b073cf8a35717a90b6b7c0a22fcf2dc625100fa0ab8bd2a9091ba"
+    },
+    {
+      "source": "orrin-right.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1486,
+      "sha256": "e4239bbb903c0f971eb7dec107baee357531a97052834a02f9d9cdc1028a2961"
+    },
+    {
+      "source": "orrin.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1553,
+      "sha256": "24a39ccfb2c53e2f0948f119a385cb15e4edba1ca6b6c1820def99f4dfa1a253"
+    },
+    {
+      "source": "pair-hands.svg",
+      "method": "paint",
+      "native": [
+        64,
+        40
+      ],
+      "logical": [
+        128,
+        80
+      ],
+      "bytes": 1804,
+      "sha256": "147bc2b8132a59e0af85909ab20f2775233824a3b3d80e3e7a72c359626b2305"
+    },
+    {
+      "source": "pair-hug.svg",
+      "method": "paint",
+      "native": [
+        52,
+        40
+      ],
+      "logical": [
+        104,
+        80
+      ],
+      "bytes": 1636,
+      "sha256": "b34e5b3b65463300d7e0539476d793cdccdb911b627593e3b3537ae9ac3c8a7b"
+    },
+    {
+      "source": "petra-back.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1569,
+      "sha256": "c35b9c6436aa83bdfff7e2a2c3fb9e1ff3d3352d695a43e86b2b48d1f08fb95c"
+    },
+    {
+      "source": "petra-carry.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1475,
+      "sha256": "59a6fad04d0b06225b021b72ca8ddac9b6c2cfd194e815d76e9b58f637543b00"
+    },
+    {
+      "source": "petra-left.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1481,
+      "sha256": "efaf579ae63fb30544e47db2de3293c1dabb6f3dcfa96ddac77036945b53829f"
+    },
+    {
+      "source": "petra-right.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1480,
+      "sha256": "9ef89e57b6ac1e6170599241c986f5a0df536280c7a2f2f3aa53825f31a59046"
+    },
+    {
+      "source": "petra.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1579,
+      "sha256": "39761b85a653a307b838cb177605664f972977e13c18caf1e80bc360a5224131"
+    },
+    {
+      "source": "relay-keeper.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1667,
+      "sha256": "23bd07d2fea60b5dbc85241baef32846085d4bd6b48ed0523bb4a6725e9e7da5"
+    },
+    {
+      "source": "rock.svg",
+      "method": "vector",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1232,
+      "sha256": "df064da9fbf26f2574c33cd5d599a37f0fa052856931094316002fe9068ef39b"
+    },
+    {
+      "source": "sahir.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1565,
+      "sha256": "6d4040ffd5267d3a18dd98ea6878a253985a7dd60d13a348e6d60093da89aff9"
+    },
+    {
+      "source": "samira.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1605,
+      "sha256": "a4cf5bb19159a8db8297e797a635a1db816aad429cfaac88d20f5a6a6ddf21e0"
+    },
+    {
+      "source": "sera.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1578,
+      "sha256": "dcd48b8b9b828e3f8862fa22c23681d76e43ea714e66dd8b539cdd874585ffe7"
+    },
+    {
+      "source": "signe.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1599,
+      "sha256": "522a18d6b845b28aac6e277be48556a3d7362651a5cbb84ca980f35c56e36956"
+    },
+    {
+      "source": "sluice-keeper.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1792,
+      "sha256": "36bfc6579bd4922d3a4b7ff554e38b2d985918339486c19d769a7353f1c4060b"
+    },
+    {
+      "source": "tavi.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1500,
+      "sha256": "724d9265151b80837308ac2f156078af9a460561b65ac04a86a113d3255b19fe"
+    },
+    {
+      "source": "teren.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1481,
+      "sha256": "3f71fb2dbc8afe253e96cb927427f3b4be6ad2a8c04ec771617b8bcb5544cbc2"
+    },
+    {
+      "source": "tilda.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1504,
+      "sha256": "39c5e2d38c85a2a337abc0f772394c3841bd7cdd6e6f8746dd815f0905bda558"
+    },
+    {
+      "source": "tomas.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1484,
+      "sha256": "be8d103b8b45a06b51fb7904cbc115af0dc869e4beb5fafc440f13de861af1e8"
+    },
+    {
+      "source": "treatment-cot.svg",
+      "method": "vector",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1253,
+      "sha256": "64b3585e2019cfc638ee5490bbaf22a1fe728873a4a27b21f310cbda8c5cc4bd"
+    },
+    {
+      "source": "ward-engine.svg",
+      "method": "paint",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1741,
+      "sha256": "17926edb5a24366837fdbeba81856f52420e7746bab1808c8e4139ef6f62ac38"
+    },
+    {
+      "source": "ward-reflector.svg",
+      "method": "vector",
+      "native": [
+        40,
+        40
+      ],
+      "logical": [
+        80,
+        80
+      ],
+      "bytes": 1397,
+      "sha256": "c928cd88492990174146d8440eb31eb3fa6ba94335ace21f9890d97134287756"
+    }
+  ]
+}

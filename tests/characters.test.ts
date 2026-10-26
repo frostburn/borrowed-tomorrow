@@ -8,7 +8,7 @@ import { ACTOR_DIRECTIONS, actorAsset, facingAsset, PLAYABLE_ACTORS } from '../s
 import { COMPANION_IDS } from '../src/rules/party';
 import { ATTACK_CONTACT_FRAME, ATTACK_WINDUP_FRAME, motionFrame, MOTION_PAGES, WALK_CYCLE_MS, WALK_FRAME_MS, WALK_FRAMES, walkingHero } from '../src/content/actor-motion';
 
-const imageBytes=(name:string)=>readFileSync(new URL(`../public/${artPath(name)}`,import.meta.url));
+const imageBytes=(name:string)=>readFileSync(new URL(`../public/${artPath(name,'vector')}`,import.meta.url));
 const dimensions=(bytes:Buffer)=>bytes.toString('utf8',0,4)==='<svg'?[Number(bytes.toString().match(/width="(\d+)"/)![1]),Number(bytes.toString().match(/height="(\d+)"/)![1])]:[bytes.readUInt32BE(16),bytes.readUInt32BE(20)];
 
 it('every named character has a distinct native sprite and portrait',()=>{

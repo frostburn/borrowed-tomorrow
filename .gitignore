@@ -5,6 +5,4 @@ playwright-report/
 *.local
 
 # Authoring interpreter cache.
-assets/tiles/__pycache__/
-assets/characters/vector/__pycache__/
-assets/vector/__pycache__/
+__pycache__/

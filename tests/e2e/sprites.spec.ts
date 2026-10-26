@@ -8,6 +8,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
  test.describe(`sprites on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('reviews native cast, directions and integer zoom without changing storage',async({page})=>{
+    await page.addInitScript(()=>localStorage.setItem('borrowed-tomorrow-actor-art','vector'));
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.goto('/?dev=sprites');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
     const review=page.getByRole('region',{name:'Sprite review',exact:true});await expect(review).toBeVisible();
@@ -39,7 +40,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         }
         all.push({hero,suffix,top,bottom,components,width:image.naturalWidth,height:image.naturalHeight});
       }return all;
-    },Object.fromEntries([...PLAYABLE_ACTORS,...SPRITE_CATALOG.map(e=>e.sprite)].map(name=>[name,`/${artPath(name)}`])));
+    },Object.fromEntries([...PLAYABLE_ACTORS,...SPRITE_CATALOG.map(e=>e.sprite)].map(name=>[name,`/${artPath(name,'vector')}`])));
     for(const actor of feet){
       expect(actor.width).toBe(80);expect(actor.height).toBe(80);
       expect(actor.bottom,`${actor.hero}${actor.suffix} ground`).toBe(67);
@@ -84,13 +85,13 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     await review.getByRole('button',{name:'Inspect Stationmaster Ansel',exact:true}).click();
     await expect(review.getByRole('img',{name:'Stationmaster Ansel portrait',exact:true})).toHaveAttribute('src',/portrait-master\.svg$/);
     await expect(review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true})).toBeDisabled();
-    await expect(review.locator('.sprite-file')).toContainText(artPath('master'));
+    await expect(review.locator('.sprite-file')).toContainText(artPath('master','vector'));
     const npcLineup=review.getByRole('img',{name:'NPCs at native size',exact:true});
     expect(await npcLineup.evaluate(canvas=>{const c=canvas as HTMLCanvasElement;return [c.width,c.height,Math.round(c.getBoundingClientRect().height/window.borrowedTomorrowPixels.inspect().cssScale)];})).toEqual([960,...Array(2).fill(Math.ceil(SPRITE_CATALOG.filter(e=>e.group==='NPCs').length/10)*112)]);
     await capture(page,`sprite-npcs-${device}`);
     await review.getByRole('button',{name:'Inspect The Emperor',exact:true}).click();
     await review.getByRole('group',{name:'Facing',exact:true}).getByRole('button',{name:'Left',exact:true}).click();
-    await expect(review.locator('.sprite-file')).toContainText(artPath('emperor-left'));
+    await expect(review.locator('.sprite-file')).toContainText(artPath('emperor-left','vector'));
     const poses=review.getByRole('group',{name:'Cutscene poses',exact:true});
     const emperor=SPRITE_CATALOG.find(entry=>entry.id==='emperor')!;
     const pixels=new Set<string>();
@@ -98,7 +99,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     for(const pose of emperor.poses!){
       await poses.getByRole('button',{name:pose.name,exact:true}).click();
       await expect(poses.getByRole('button',{name:pose.name,exact:true})).toHaveAttribute('aria-pressed','true');
-      await expect(review.locator('.sprite-file')).toContainText(artPath(pose.sprite));
+      await expect(review.locator('.sprite-file')).toContainText(artPath(pose.sprite,'vector'));
       // Wait for the selected native campaign file to finish painting, rather
       // than accepting a filename update with the old or blank preview.
       await expect.poll(()=>emperorDetail.evaluate(async(element,url)=>{
@@ -111,7 +112,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
         ctx.drawImage(native,0,0,240,240);
         const expected=ctx.getImageData(0,0,240,240).data,actual=(element as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,240,240).data;
         return actual.every((value,index)=>value===expected[index]);
-      },`/${artPath(pose.sprite)}`)).toBe(true);
+      },`/${artPath(pose.sprite,'vector')}`)).toBe(true);
       pixels.add(await emperorDetail.evaluate(canvas=>(canvas as HTMLCanvasElement).toDataURL()));
     }
     expect(pixels.size).toBe(emperor.poses!.length);
@@ -125,7 +126,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     expect(await page.locator('.inventory-panel').evaluate(p=>p.scrollWidth<=p.clientWidth)).toBe(true);
     for(const entry of SPRITE_CATALOG.filter(e=>e.group==='Enemies'&&e.id.includes('-'))){
       await review.getByRole('button',{name:`Inspect ${entry.name}`,exact:true}).click();
-      await expect(review.locator('.sprite-file')).toContainText(artPath(entry.sprite));
+      await expect(review.locator('.sprite-file')).toContainText(artPath(entry.sprite,'vector'));
       const image=review.getByRole('img',{name:`${entry.name} actor`,exact:true});
       expect(await image.evaluate(async node=>{const i=node as HTMLImageElement;await i.decode();return [i.naturalWidth,i.naturalHeight];})).toEqual([80,80]);
     }

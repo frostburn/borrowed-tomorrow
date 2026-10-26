@@ -1,5 +1,11 @@
 # Native vector bosses
 
+The optional raster actor skin replaces the three Benefactor battle models with
+the painted kit documented in `../raster-benefactor/README.md`. Its shared arena
+follows the independent map skin. Vector originals, dimensions, motion clocks,
+footprints and picking rules remain intact; the SVG guidance below describes
+the retained vector skin.
+
 Campaign encounters and the Vite Bosses workshop use the same SVG artwork, native decode, animation and body-picking masks. All bosses share the party's polygonal visual language: connected silhouettes, broad lighting planes, readable material detail and the final common 2px framebuffer. Each keeps its own shape, palette and scale.
 
 ## Material treatment

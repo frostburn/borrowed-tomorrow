@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { BattlePresentation } from './battle-presentation';
-import { nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
+import {BossMaskCache, nativeTexture, bossLabel, bossPlacement, pickBossBody } from './boss-display';
 import { bossMotionEnabled, BOSS_ATTACK_CONTACT, BOSS_ATTACK_DURATION } from './boss-motion';
 import { actorAsset } from '../content/actors';
 import type { CompanionId } from '../rules/party';
@@ -9,7 +9,7 @@ import type { Encounter } from '../rules/combat';
 import { FLAGSHIP_PARTS,flagshipPart,isFlagshipPart,prepareFlagship } from '../rules/flagship';
 export const FLAGSHIP_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/bosses/flagship-portrait.svg`;
 export const FLAGSHIP_ASSETS=['deck','hull','port','port-fire','starboard','starboard-fire','bridge','bridge-fire'].map(part=>({key:`flagship-${part}`,url:`art/vector/bosses/flagship-${part}.svg`}));
-const masks=new Map<string,Uint8Array>();
+const masks=new BossMaskCache<Uint8Array>();
 let shipOffset={x:0,y:0};
 const sway=(scene:Phaser.Scene)=>shipOffset=bossMotionEnabled()?{x:2*Math.sin(scene.time.now*2*Math.PI/11000),y:3*Math.sin(scene.time.now*2*Math.PI/8000)}:{x:0,y:0};
 /** The same clock displacement holds every rigid ship part together across redraws. */

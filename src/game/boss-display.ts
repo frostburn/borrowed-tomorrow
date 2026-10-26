@@ -3,15 +3,23 @@ import { bitmapText } from './pixel-font';
 import { ABILITIES, active, legalAim, targets, unitAt, type AbilityId, type Battle, type Unit } from '../rules/combat';
 import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, toPixel } from '../rules/hex';
-import { vectorSurface } from './vector-image';
+import { prepareArtTexture } from './vector-image';
+import {prepareRasterAtlas} from './raster-atlas';
+import {actorArtSkin} from '../content/actor-art-skin';
+
+/** Picking silhouettes must change with the visible skin, including reprises. */
+export class BossMaskCache<T> extends Map<string,T>{
+  private skin=actorArtSkin();
+  private sync(){if(this.skin!==actorArtSkin()){this.clear();this.skin=actorArtSkin();}}
+  override has(key:string){this.sync();return super.has(key);}
+  override get(key:string){this.sync();return super.get(key);}
+}
 
 let labelId=0;
 export function nativeTexture(scene:Phaser.Scene,key:string){
   const texture=scene.textures.get(key);
-  for(const source of texture.source)if(source.image instanceof HTMLImageElement){
-    source.source=source.image=vectorSurface(source.image);source.isCanvas=true;source.update();
-  }
-  texture.setFilter(Phaser.Textures.FilterMode.NEAREST);return texture;
+  prepareRasterAtlas(scene,texture);
+  return prepareArtTexture(texture);
 }
 export function bossLabel(scene:Phaser.Scene,world:Phaser.GameObjects.Container,x:number,y:number,value:string,scale=1,color='#f4d9aa'){
   const canvas=document.createElement('canvas');canvas.width=value.length*(scale===1?8:6*scale);canvas.height=scale===1?12:9*scale;

@@ -18,6 +18,8 @@ All eight Tiled maps declare `artStyle: rotoscope` and a `sceneArt` manifest key
 
 ## Shared rasterization
 
+Station (Chapter One) and Stillcity (Chapter Six) now have authorized native raster art pilots. Their indexed PNGs replace only those two scene selections; dynamic actor lighting and shadows remain active. See [the raster map workflow](../raster-maps/README.md) for curated sources, foreground masks, reproducible exports and the narrowly raised 256 KiB image budget.
+
 SVGs decode once at their declared dimensions into in-memory canvas textures; the repo ships no pre-rasterized replacements. `src/game/pixel-display.ts` composes the entire scene and UI, then `raster.ts` samples it onto a 2 × 2 logical-pixel grid. Nearest-neighbor expansion gives art, portraits, text and borders the same pixel weight. It does not change input coordinates, camera geometry or save positions. Integer physical scaling avoids CSS smoothing at fractional DPR; very narrow views may crop the final coarse block.
 
 Body text uses the existing 5 × 7 face at two-pixel stems. Small metadata uses the authored 3 × 5 uppercase face in `src/game/small-font.json`, also at two-pixel stems, rather than shrinking body text until it breaks. `python3 scripts/build-small-font.py` rebuilds its matching DOM metrics font with task-environment fontTools; it adds no production dependency. Larger labels retain the main face.

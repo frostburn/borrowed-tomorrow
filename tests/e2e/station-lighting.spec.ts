@@ -15,13 +15,13 @@ async function renderedLight(page:Page){
     const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();return image;};
     const native=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!,ctx=native.getContext('2d')!,view=window.borrowedTomorrow.inspect().view;
     const image=await decode(url),sprite=document.createElement('canvas');sprite.width=sprite.height=80;
-    const s=sprite.getContext('2d')!;s.drawImage(image,0,0);const source=s.getImageData(0,0,80,80),lit=s.createImageData(80,80),rig=stationLight(pieces!);
+    const s=sprite.getContext('2d')!;s.imageSmoothingEnabled=false;s.drawImage(image,0,0,80,80);const source=s.getImageData(0,0,80,80),lit=s.createImageData(80,80),rig=stationLight(pieces!);
     lightPixels(source,lit,rig,actor.x,actor.y,40,68);
     const left=Math.round(actor.x-40-view.scrollX),top=Math.round(actor.y-68-view.scrollY),actual=ctx.getImageData(left,top,80,80).data;
     let compared=0,wrong=0,red=0,blue=0;
     for(let i=0;i<actual.length;i+=4){if(source.data[i+3]<254)continue;compared++;red+=actual[i];blue+=actual[i+2];if([0,1,2].some(c=>Math.abs(actual[i+c]-lit.data[i+c])>3))wrong++;}
-    const floor=document.createElement('canvas');floor.width=1008;floor.height=624;const f=floor.getContext('2d')!;
-    for(const p of [...pieces!].sort((a,b)=>a.depth-b.depth))f.drawImage(await decode(`/${p.url}`),p.x,p.y);
+    const floor=document.createElement('canvas');floor.width=1008;floor.height=624;const f=floor.getContext('2d')!;f.imageSmoothingEnabled=false;
+    for(const p of [...pieces!].sort((a,b)=>a.depth-b.depth))f.drawImage(await decode(`/${p.url}`),p.x,p.y,p.width,p.height);
     const cast=castShadows(rig,actor.x,actor.y)[0];let shadowPixels=0;
     if(cast){
       for(let sy=5;sy<60;sy++)for(let sx=20;sx<60;sx++){

@@ -250,6 +250,13 @@ Under **Canonical saves**, **Begin Chapter Seven (canonical)** starts beyond the
 
 Bosses → **The Benefactor** adds **Campaign · the Benefactor**, **Campaign · hollow sun** and **Campaign · exposed heart**. These use the actual Chapter Seven rules, 19/19/7-contact bodies, native motion, targeting and dedicated scores with a prepared refuge party. They grant no campaign rewards or progress. The older phase fixture remains separately available.
 
+The three forms now share the optional painted raster treatment with the cast.
+The actor skin selects their models and all idle/attack poses; the independent
+map skin selects the painted arena. Help keeps both vector alternatives
+available. Sources, bounded atlas pages and offline reproduction are documented
+in `assets/raster-benefactor/README.md`; `npm run art:raster-benefactor` rebuilds
+only this kit, and the full actor export also includes it.
+
 Maps → **Ch 7** includes nine exploration/epilogue scenes and nine tactical arenas. Music → **Ch 7** exposes sixteen complete cues, their meters and final two-bar intros, expression and quieter rubato; **Organ** isolates the new harmonic instrument. Run `npm run art:seven` to reproduce native vector art and Tiled layouts. See [the exact route](story/chapter-seven-continuation.md), [music direction](music-direction.md) and `tests/e2e/chapter-seven*.spec.ts` for detailed review. Full journeys, ordinary boss combat and full-form audio renders remain outside default CI.
 
 ### Chunky camera scrolling
@@ -267,3 +274,12 @@ restored review links, dragging, centering and the bottom/right edges.
 a stationary face through the screen raster; it also covers cinematic pans and
 workshop scrolling on desktop and an odd-width phone at fractional DPR. These
 rendered checks stay outside the default CI gate.
+
+### Actor skins
+
+Sprites → Actor skin preview compares the vector originals and raster actors
+locally, including directional walks, attacks, shield bash, NPCs, recolors and
+the Emperor’s escape poses. It does not change the campaign preference. The
+production Help menu switches Vector actors / Raster actors while idle,
+independently of map art and saves. See `assets/raster-actors/README.md` for
+registered sources and `npm run art:raster-actors`.

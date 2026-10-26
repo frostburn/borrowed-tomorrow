@@ -1,0 +1,44 @@
+{
+  "tool": "built-in image_gen",
+  "palettePurpose": "File compression only; runtime lighting stays RGB.",
+  "reduction": "Nearest-neighbor to half world size; Pillow 12.3.0 MEDIANCUT 255 colors, no dithering.",
+  "station": {
+    "prompt": "Use case: style-transfer. Asset type: production overhead JRPG map background for Borrowed Tomorrow, Chapter One Larkspur Station. Image 1 is the exact level layout to repaint; image 2 is reference only for the game's actors, their chunky readable shapes, scale, and warm muted colors. Do NOT paint any characters, lettering, UI, labels or icons into the map. Repaint image 1 as exquisite low-resolution 16-bit SNES-era anime JRPG pixel art, with the material richness of hand-built adventure environments. Preserve the EXACT camera, outer framing, every footprint and position: squat crooked slate-roof station house upper-left with three warm windows and centered door, green passenger railway coach beside it, TWO horizontal railway tracks spanning the entire width in the upper third, stone retaining arcade across upper-right, its short stairs at x=.74 y=.40, open broad plaza in the middle, red/cream market stall at x=.74 y=.65, three thin lamps at x=.405 y=.34, x=.595 y=.77, x=.885 y=.57, lantern bunting at x=.56 y=.39, trees framing corners and two low planters. Keep open walking paths clear, especially middle plaza and leftward exit at y=.44. The right upper track is empty; do not add a second train or locomotive. Keep architecture's silhouette and arrangement very close to the supplied layout for foreground cutout alignment, but replace plain vector surfaces with tasteful clustered pixel shading: individually suggested slate shingles, stone courses, timber, copper fittings, restrained flowers, leafy tree masses, cobblestone patches with broad quiet spaces. Consistent oblique top-down JRPG projection, no new horizon, no camera tilt, no fisheye. Cozy blue-hour festival, warm amber windows and lanterns in cool desaturated blue and teal surroundings, soft readable shadows. Genuine chunky square-pixel aesthetics as if a 504x312 native map enlarged 4x; clean pixel clusters, no thin vector strokes, no brush smudges, no painterly microtexture, no fake CRT or scanlines, no decorative frame. Full image artwork to the edges. Preserve exact aspect ratio of image 1 if possible. Aim for a 2016x1248 output representing a 4x enlargement of a 504x312 pixel map.",
+    "references": [
+      "station layout composite, without conditional coach/aftermath",
+      "actor cast scale/color reference"
+    ],
+    "generationSha256": "ea10cecf302212c08dc1bfb53dad63131b8c2b659da400eb210873e1a2bd27f8"
+  },
+  "stillcity": {
+    "prompt": "Use case: style-transfer. Asset type: production low-resolution JRPG map background for Borrowed Tomorrow, Chapter Six Stillwater Avenue (Stillcity). Image 1 is the EXACT existing level-layout reference to repaint. Image 2 is the approved Larkspur Station render: match its SNES-era anime JRPG pixel-art medium, chunky material clusters, lighting quality, restrained texture density, and oblique top-down camera. Image 2 supplies STYLE ONLY; no station, train, bunting or market stall in the new image. Do not include characters, text, symbols, UI or markers. Preserve the exact framing and screen-space positions in image 1: royal WHITE MARBLE palace arcade spans the upper portion, five deep shadowed arches; large triangular classical pediment with a gold inner lip and impressive decorated central sun relief; a pale marble central approach/stair starts at x=.39 to .62, y=.38 to .58 and connects down to a broad lower plaza from x=.16 to .85, y=.58 to .87. Keep this entire T-shaped traversable surface clear and connected at its existing boundary. White and pale blue-gray marble with warm ivory highlights, blue-gray joint shadows, tasteful gold trim. Give the huge empty pediment area beautiful royal architectural substance, carved blocks, cornices, sun motifs and subtle weathering; visually rich without overscaled bricks. The four side arches are recessed, not new walkable passages. Keep the two low diamond-shaped garden planters at x=.27 and .80 y=.63, their silhouettes exactly as reference but filled with restrained clipped shrubs. Keep only the single small wooden handcart with dropped white cloth at x=.69 y=.64, two slender brass opal globe lamps at x=.30 y=.71 and x=.74 y=.71. No gate or barrier across the avenue (the game adds a removable one separately). Outer nonwalkable lower margins are darker cobbled embankment or shadowed city courts, not a void or sea. Upper background is a cool overcast sky and distant imperial rooftops. Daytime under a hollow sun, solemn royal capital, beautiful but faintly uncanny deserted streets. Deliberately understated marble paving: fine small joints and worn patches, no enormous checkerboard, no busy carpet. Palette compatible with station render while brighter and cooler; no pure black contour around every stone. Hand-authored-looking clustered low-resolution pixel graphics, as if 768x504 native pixels enlarged 2x. Output 1536x1008 if possible, full bleed, no border, exact same perspective and layout as image 1.",
+    "references": [
+      "Stillcity layout composite, without conditional street return",
+      "approved Station generation"
+    ],
+    "generationSha256": "9b20d3fcb6cc93a94c452643ef7b83101fea1a6d39f73e932e02e3f019ea07d3"
+  },
+  "stillcityStairs": {
+    "prompt": "Use case: precise-object-edit. Asset type: final playable SNES-style JRPG capital map. Use the supplied image as edit target. Preserve its exact composition, every building edge, plaza boundary, planters, cart, lamps, colors, pixel art style and camera. Change ONLY the pale central rectangular approach in the middle of the image, between approximately x=595..950 and y=367..565 (in a 1536x1008 coordinate system). Currently it looks like a vertical wall cutting off the central arch. It must be a broad, visibly climbable marble staircase leading upward into that CENTRAL open arch, with 10-14 clear horizontal stair treads and narrow blue-gray riser shadows, gently widening towards the plaza at the bottom. Its uppermost landing must visually connect into the central arch at the same height as the rear arcade's lower floor. Keep the same exact outer footprint and connection to the lower plaza. No wall at the top, no parapet blocking access. Do not move or change anything else. No actors, UI, lettering or icons. Retain the same aspect ratio and full canvas.",
+    "generationSha256": "de2b018acd874f7e04f9dd8568f2842772ed7ddb2dd0c21520ee1544e66325d3"
+  },
+  "prisonCoach": {
+    "prompt": "Use case: style-transfer. Asset type: transparent raster game prop, the prison coach for the Larkspur Station map. Image 1 is the exact prop silhouette and side-facing camera to preserve. Image 2 shows the approved map art style. Repaint ONLY the single dark green prison railway carriage in image 1, matching the chunky low-resolution SNES JRPG pixel graphics, ironwork, teal-green panels, gold trim and warm amber windows of the green passenger coach in image 2. Five barred windows and the plain end door, dark wheels and visible bogies. Completely side-facing, slightly visible roof top, no locomotive, no tracks, no ground, no scene, no people, no words. Keep the short squat 264:168 frame proportions with the coach filling it like image 1; do not lengthen it. Warm windows visibly behind dark vertical metal bars. Clean game sprite silhouette on a genuine transparent background with no shadow outside the wheels, no halo. As if a 132x84 native pixel-art prop enlarged for production. Keep fine detail sparse enough to survive reduction to 132x84.",
+    "references": [
+      "existing transparent prison coach prop",
+      "approved Station generation"
+    ],
+    "generationSha256": "51728d6096a639961a099afd39823ac81ee86636ce07d0cfb1015809703c2989"
+  },
+  "nativeSourcesSha256": {
+    "stillcity/painting-384-252.png": "aee562104fd25ba8e9df6db430be2fcb63a86a81db1ff978b9f3e9d5a2c4886a",
+    "stillcity/painting-0-252.png": "fa53019643f8782eafa5484014332d660a801648b3da07e145575d529aff9a5c",
+    "stillcity/painting-0-0.png": "f84c1df4302c51a528a86cc737a2d595c532bda68fce48704c49929bf07151ef",
+    "stillcity/painting-384-0.png": "ed85bfd8f2ead5dc7ff41c1864cdaf49d410281b73a3ef277f3d5f3869e5fc3f",
+    "station/painting-0-156.png": "6327024e24e37efe1ba2670c83cd3c50705435f44845631e12c05c181f20fa52",
+    "station/painting-252-156.png": "fd247df1e4ac91dae857f655c5da4b6b0014a72962241ee8bbc2d87f8c180de1",
+    "station/painting-252-0.png": "470bc0aef3a12d3c42564a64d233b76b7df2cef4845e7b16977dad310c178dca",
+    "station/painting-0-0.png": "2470741d61ec34f2dabbb2c34b7a454f40ec4c0cac9ad2b1277842845612a5f6",
+    "station/prison-coach.png": "e41dfdddf80cbd45668d2ea22c16c2d88047b0be8e6fedf4a997ccbfb26126ae"
+  }
+}
