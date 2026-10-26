@@ -37,7 +37,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(10,0));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
    await page.getByRole('button',{name:/Prism lance · Team/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Nell + Orrin');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    await expect.poll(async()=>(await inspect(page)).actors.filter(a=>['nell','orrin'].includes(a.hero)&&a.motion==='attack').length,{intervals:[20,30,50]}).toBe(2);await capture(page,`distant-team-${device}`);
-   const b=(await inspect(page)).battle!;expect(b.queue).not.toContain('nell');expect(b.queue).not.toContain('orrin');expect(b.units.find(u=>u.id==='orrin')!.focus).toBe(3);
+   const b=(await inspect(page)).battle!;expect(b.queue).not.toContain('nell');expect(b.queue).toContain('orrin');expect(b.units.find(u=>u.id==='orrin')!.focus).toBe(3);
   });
  });
 }

@@ -22,6 +22,7 @@ export function daybreakProtection(u:Unit,partner?:Unit){
 }
 /** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
+ if(u.teamSpentRound===b.round)return false;
  const team=ABILITIES[id].team;
  return !team||team.pair.includes(u.kind)&&b.units.some(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind)&&(!u.linkedTo||u.linkedTo===v.id));
 });
@@ -34,7 +35,7 @@ export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:
   if(fighter.hp<=0)return {reason:`${fighter.name} is down and cannot team up.`};
   const solo=teamSolo(fighter.kind,id)!;
   if(!fighter.abilities.includes(solo))return {reason:`${fighter.name} needs to learn ${ABILITIES[solo].name}.`};
-  if(!future&&!b.queue.includes(fighter.id))return {reason:`${fighter.name} has already used their action this round.`};
+  if(fighter.teamSpentRound===b.round||!future&&!b.queue.includes(fighter.id))return {reason:`${fighter.name} has already used their action this round.`};
   if(!future&&fighter.focus<team.cost)return {reason:`${fighter.name} needs ${team.cost} focus (has ${fighter.focus}).`};
  }
  return {partner};

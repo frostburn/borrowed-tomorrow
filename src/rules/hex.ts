@@ -44,6 +44,13 @@ export function visible(a: Hex, b: Hex, obstacles: Set<string>): boolean {
 export function blast(center: Hex): Hex[] { return [center, ...neighbors(center)]; }
 /** Four touching hexes in the requested down-right slanted square. */
 export const quad=(aim:Hex):Hex[]=>[aim,add(aim,{q:1,r:0}),add(aim,{q:0,r:1}),add(aim,{q:1,r:1})].filter(inside);
+/** Fixed screen-facing volley: rows of 3, 4 (including aim), 3, 2 hexes. */
+export const lanternVolley=(aim:Hex):Hex[]=>[
+ {q:0,r:-1},{q:1,r:-1},{q:2,r:-1},
+ {q:-1,r:0},{q:0,r:0},{q:1,r:0},{q:2,r:0},
+ {q:-1,r:1},{q:0,r:1},{q:1,r:1},
+ {q:-1,r:2},{q:0,r:2},
+].map(h=>add(aim,h)).filter(inside);
 
 /** Aim snaps to one of the six hex axes; a ray stops at the first obstacle. */
 export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>): Hex[] {

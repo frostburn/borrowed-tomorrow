@@ -14,7 +14,7 @@ import { BASE_STATS } from './progression';
 import {abilityFor,skillAbilities,type SkillRanks} from './skills';
 import {teamSolo} from './abilities';
 import { CHARACTERS } from '../content/characters';
-import { blast, cells, diagonalRay, distance, equal, inside, key, offset, quad, ray, reachable, visible, type Hex } from './hex';
+import { blast, cells, diagonalRay, distance, equal, inside, key, lanternVolley, offset, quad, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
 import type { CharacterProfile, CompanionId } from './characters';
@@ -113,6 +113,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
 }
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
+export const movementOnly=(b:Battle,u:Unit)=>u.teamSpentRound===b.round;
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
 function reviveTarget(b:Battle,u:Unit,id:AbilityId,aim:Hex){
  const a=abilityFor(u,id);if(!(a.reviveFraction||id==='revive')||unitAt(b,aim)||b.obstacles.has(key(aim))||distance(u.hex,aim)>a.range||!visible(u.hex,aim,b.obstacles))return;
@@ -130,6 +131,7 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
   if(a.shape==='bounce')return ricochetHexes(b,u,aim,id);
   if(a.shape==='party')return alive(b).filter(v=>v.side===u.side).flatMap(v=>occupiedHexes(v));
+  if(a.shape==='spread')return lanternVolley(aim);
   if (a.shape === 'pattern') return u.intent?.cells??[];
   if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).flatMap(v => occupiedHexes(v));
   if (a.shape === 'blast') return blast(aim);
@@ -149,7 +151,7 @@ export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
 }
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = abilityFor(u,id,teamStatus(b,u,id).partner);
-  if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id) return false;
+  if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id || movementOnly(b,u)) return false;
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
   if (id === 'bandage' && b.bandages <= 0) return false;
@@ -212,13 +214,15 @@ export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {
   const u = active(b);
-  for (const v of b.units) if (v.tauntedBy === u?.id) delete v.tauntedBy;
-  if (u) { u.defending = false; u.moved = false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1); }
+  if (u&&!movementOnly(b,u)) {
+    for (const v of b.units) if (v.tauntedBy === u.id) delete v.tauntedBy;
+    u.defending = false; u.moved=false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1);
+  }
   prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);prepareRelay(b);
 }
 function nextRound(b: Battle) {
   b.round++;
-  for (const u of alive(b)) { u.retaliated = false; u.waited = false; }
+  for (const u of alive(b)) { u.retaliated = false; u.waited = false; u.moved=false; u.bonusUsed=false; }
   b.queue = alive(b).filter(u=>!u.passive).sort((a, z) => z.speed - a.speed || a.id.localeCompare(z.id)).map(u => u.id);
   beginTurn(b);
 }
@@ -267,6 +271,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   u.hex = { ...destination }; u.moved = true;
   checkGrounding(b);
   log(b, `${u.name} moves ${visit.path.length} hexes (${visit.cost} movement).`);
+  if(movementOnly(b,u))finishTurn(b);
   return visit.path;
 }
 export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?:(defenderId:string)=>void): boolean {
@@ -276,7 +281,12 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   u.focus -= a.cost;
   const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
   if (id === 'bandage') b.bandages--;
-  if(partner){partner.focus-=a.team!.cost;partner.defending=false;delete partner.pinned;u.teamSpentRound=partner.teamSpentRound=b.round;b.queue=b.queue.filter(id=>id!==partner.id);for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;log(b,`${u.name} + ${partner.name}: ${a.name} consumes both turns and ${a.team!.cost} focus each.`);}
+  if(partner){
+    partner.focus-=a.team!.cost;partner.defending=false;u.teamSpentRound=partner.teamSpentRound=b.round;
+    if(partner.moved||partner.anchored||partner.movement<=0){delete partner.pinned;b.queue=b.queue.filter(id=>id!==partner.id);}
+    for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;
+    log(b,`${u.name} + ${partner.name}: ${a.name} consumes both actions and ${a.team!.cost} focus each.`);
+  }
   for (const v of hit) {
     if(a.effect==='taunt'){v.tauntedBy=u.id;log(b,`${v.name} targets ${u.name} until ${u.name}’s next turn.`);}
     else if(a.effect==='shove'){log(b,`${u.name}: ${a.name} deals no damage.`);}
@@ -319,12 +329,17 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   return true;
 }
 export function defend(b: Battle): boolean {
-  const u = active(b); if (!u || b.result) return false;
+  const u = active(b); if (!u || b.result || movementOnly(b,u)) return false;
   u.defending = true; u.focus = Math.min(6, u.focus + 1);
   log(b, `${u.name} defends: 40% less damage until their next turn.`); finishTurn(b); return true;
 }
+/** Finish an assisting fighter's movement without granting Defend or extra focus. */
+export function endTurn(b:Battle):boolean{
+  const u=active(b);if(!u||b.result||!movementOnly(b,u))return false;
+  log(b,`${u.name} ends their remaining movement.`);finishTurn(b);return true;
+}
 export function wait(b: Battle): boolean {
-  const u = active(b); if (!u || u.waited || u.moved || u.bonusUsed || b.result) return false;
+  const u = active(b); if (!u || u.waited || u.moved || u.bonusUsed || b.result || movementOnly(b,u)) return false;
   u.waited = true;
   b.queue.shift(); b.queue.push(u.id);
   log(b, `${u.name} waits until the end of the round.`);
@@ -334,6 +349,7 @@ export function wait(b: Battle): boolean {
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
 export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
+  if(movementOnly(b,u)){approachEnemy(b,u);if(active(b)?.id===u.id)endTurn(b);return;}
   if(isFlagshipPart(u)){
     prepareFlagship(b);if(b.result)return;const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
@@ -405,14 +421,17 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     onAction?.(best.ability,{...best.aim});
     return best.ability;
   } else {
-    const visits = [...movement(b, u).values()];
-    const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>terrainCost(b,u,h)):undefined;
-    const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(!u.flying&&u.kind!=='crow'&&b.vents.has(key(h))?4:0);
-    visits.sort((a, z) => approach(a.hex)-approach(z.hex)||a.cost-z.cost);
-    if (visits[0] && !equal(original, visits[0].hex)) move(b, u, visits[0].hex);
+    approachEnemy(b,u);
     defend(b);
     return 'defend';
   }
+}
+function approachEnemy(b:Battle,u:Unit){
+  const forced=tauntTarget(b,u),enemies=forced?[forced]:alive(b).filter(v=>v.side!==u.side),visits=[...movement(b,u).values()];
+  const pursuit=forced?reachable(forced.hex,99,new Set([...b.obstacles,...alive(b).filter(v=>v.id!==u.id&&v.id!==forced.id).flatMap(v=>occupiedHexes(v).map(key))]),h=>terrainCost(b,u,h)):undefined;
+  const approach=(h:Hex)=>(pursuit?(pursuit.get(key(h))?.cost??Infinity):Math.min(...(b.evacuation?b.evacuation.route:enemies.flatMap(v=>occupiedHexes(v))).map(goal=>distance(h,goal))))+(!u.flying&&u.kind!=='crow'&&b.vents.has(key(h))?4:0);
+  visits.sort((a,z)=>approach(a.hex)-approach(z.hex)||a.cost-z.cost);
+  if(visits[0]&&!equal(u.hex,visits[0].hex))move(b,u,visits[0].hex);
 }
 
 export function awardVictory(b: Battle, s: GameState) {

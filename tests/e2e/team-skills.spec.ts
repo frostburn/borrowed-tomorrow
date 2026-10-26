@@ -25,11 +25,26 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
     await page.getByRole('button',{name:`Practice ${name}`,exact:true}).click();await page.getByRole('button',{name:new RegExp(`${name} · Team`)}).click();
     if(short!=='daybreak')await clickHex(page,offset(7,3));
     await expect(page.locator('#confirmation')).toContainText(short==='stars'?'Celestial bolt':short==='prism'?'Lantern burst':short==='crossfire'?'Ricochet':short==='lantern'?'Lantern burst':'Heal');
+    if(short==='lantern')await capture(page,`lantern-footprint-${device}`);
     await page.getByRole('button',{name:short==='daybreak'?'Confirm healing':'Confirm attack',exact:true}).click();
     // Capture real running frames, including the falling phase and the landing flare.
     await page.waitForTimeout(short==='stars'?160:80);await capture(page,`team-${short}-flight-${device}`);
     if(short==='stars'){await page.waitForTimeout(260);await capture(page,`team-${short}-impact-${device}`);}
     await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await capture(page,`team-${short}-after-${device}`);await page.keyboard.press('Escape');
+   }
+   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+  });
+  test('the assisting fighter can move or end their turn after their team attack was spent',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');
+   for(const choice of ['move','end']as const){
+    await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();await page.getByRole('button',{name:/Prism lance · Team/}).click();await clickHex(page,offset(7,3));await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+    await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('celia');await page.getByRole('button',{name:/^F\s+Defend$/}).click();
+    await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
+    const before=(await inspect(page)).battle!,orrin=before.units.find(u=>u.id==='orrin')!;expect(orrin.focus).toBe(3);expect(orrin.teamSpentRound).toBe(before.round);
+    await expect(page.locator('.actions button')).toHaveCount(2);await expect(page.getByRole('button',{name:/^F\s+End turn$/})).toBeInViewport();await expect(page.locator('#status')).toContainText('Attack spent');await page.keyboard.press('2');await expect(page.locator('.actions button')).toHaveCount(2);await capture(page,`remaining-move-${choice}-${device}`);
+    if(choice==='move'){await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(3,4));await page.getByRole('button',{name:/Confirm move/}).click();}else await page.keyboard.press('f');
+    const after=(await inspect(page)).battle!,helper=after.units.find(u=>u.id==='orrin')!;expect(after.queue).not.toContain('orrin');expect(helper.focus).toBe(orrin.focus);expect(helper.defending).toBe(false);expect(helper.hex).toEqual(choice==='move'?offset(3,4):orrin.hex);
+    await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');
    }
    await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });

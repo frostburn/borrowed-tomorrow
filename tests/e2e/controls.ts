@@ -3,7 +3,7 @@ import {teamStatus} from '../../src/rules/combat-tactics';
 import {expressivePortrait,type PortraitExpression} from '../../src/content/portrait-expressions';
 import { artPath } from '../../src/content/art-assets';
 import { expect, type Page } from '@playwright/test';
-import { active, damage, legalAim, movement, targets, type Battle, type AbilityId } from '../../src/rules/combat';
+import { active, damage, legalAim, movement, movementOnly, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
 import { MAPS } from '../../src/content/maps';
@@ -118,6 +118,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
   const danger=new Set(b.units.filter(v=>v.side==='enemy'&&v.hp>0).flatMap(v=>v.intent?.cells.map(keyFor)??[]));
+  if(movementOnly(b,u)){const safe=danger.has(keyFor(u.hex))||b.vents.has(keyFor(u.hex))?[...movement(b,u).values()].find(v=>v.path.length&&!danger.has(keyFor(v.hex))&&!b.vents.has(keyFor(v.hex))):undefined;return safe?{action:'move',hex:safe.hex}:{action:'defend'};}
   for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend','heal','daybreak'] as AbilityId[])
     if(legalAim(b,u,id,abilityFor(u,id).range===0?u.hex:ally.hex))return {action:id,hex:abilityFor(u,id).range===0?u.hex:ally.hex};
   if(b.grounding&&!b.grounding.open){
@@ -157,7 +158,7 @@ export async function battle(page: Page, screenshot?: string, practice=false) {
     if(u.side!=='party'){await page.waitForTimeout(250);continue;}
     const decision=playerPlan(b);
     const definition=decision.action==='move'||decision.action==='defend'?undefined:abilityFor(u,decision.action);
-    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?/^F\s+Defend$/:new RegExp(`^\\d\\s+${definition!.name}${definition!.bonus?' · Extra':definition!.team?' · Team':''}$`);
+    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?(movementOnly(b,u)?/^F\s+End turn$/:/^F\s+Defend$/):new RegExp(`^\\d\\s+${definition!.name}${definition!.bonus?' · Extra':definition!.team?' · Team':''}$`);
     const action=page.locator('.actions').getByRole('button',{name:label});
     await expect(action).toBeEnabled();await action.click();
     if(decision.hex && decision.action!=='defend'){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:definition!.heal?/^Confirm healing$/:definition!.effect && !['push','pin'].includes(definition!.effect)?/^Confirm ability$/:/^Confirm attack$/}).click();}

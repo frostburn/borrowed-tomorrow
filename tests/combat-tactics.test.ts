@@ -1,6 +1,6 @@
 import {SKILLS} from '../src/rules/skills';
 import {describe,it,expect} from 'vitest';
-import {ABILITIES,active,cast,createBattle,damage,damagingAbility,defend,enemyTurn,legalAim,movement,shape,targets,wait,type Encounter} from '../src/rules/combat';
+import {ABILITIES,active,cast,createBattle,damage,damagingAbility,defend,endTurn,enemyTurn,legalAim,movement,movementOnly,shape,targets,wait,type Encounter} from '../src/rules/combat';
 import {axisHexes,battleAbilities,daybreakProtection,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
 import {add,cells,diagonalRay,diagonalStart,DIAGONALS,hexVertices,inside,key,offset,distance,scale} from '../src/rules/hex';
 import {newGame} from '../src/rules/state';
@@ -35,13 +35,13 @@ describe('shared-turn moves',()=>{
   const {b,u,partner,third,enemy}=yard(['celia','orrin','petra'],7);partner.hex=offset(3,2);enemy.hex=offset(4,2);u.hex=offset(3,3);third.hex=offset(4,1);
   const aim=enemy.hex,axis=axisHexes('s',aim),hp=[u.hp,partner.hp,enemy.hp];expect(shape(b,u,'starline',aim)).toEqual(axis);
   expect(teamStatus(b,u,'starline').partner).toBe(partner);expect(cast(b,u,'starline',aim)).toBe(true);
-  expect([u.hp,partner.hp]).toEqual(hp.slice(0,2));expect(enemy.hp).toBeLessThan(hp[2]);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);
+  expect([u.hp,partner.hp]).toEqual(hp.slice(0,2));expect(enemy.hp).toBeLessThan(hp[2]);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);expect(movementOnly(b,partner)).toBe(true);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);
  });
  it('spends two pending turns and both focus costs; the preview equals the applied damage',()=>{
   const {b,u,partner,enemy}=yard();u.focus=partner.focus=6;
   const predicted=damage(u,enemy,'prism',partner),hp=enemy.hp;
   expect(teamStatus(b,u,'prism').partner).toBe(partner);expect(cast(b,u,'prism',enemy.hex)).toBe(true);
-  expect(enemy.hp).toBe(hp-predicted);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);expect(active(b)?.id).toBe('celia');
+  expect(enemy.hp).toBe(hp-predicted);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);expect(active(b)?.id).toBe('orrin');expect(movementOnly(b,partner)).toBe(true);
  });
  for(const initiator of ['nell','orrin']as const)for(const focus of [3,4,5])it(`keeps both Prism operators safe when ${initiator} starts with ${focus} focus`,()=>{
   const {b,u,partner,third,enemy}=yard();partner.hex=offset(3,3);third.hex=offset(4,3);const caster=initiator==='nell'?u:partner,other=caster===u?partner:u;b.queue=[caster.id,other.id,third.id,...b.queue.filter(id=>!['nell','orrin','celia'].includes(id))];caster.focus=focus;
@@ -57,9 +57,9 @@ describe('shared-turn moves',()=>{
   if(reason==='unlearned')partner.abilities=partner.abilities.filter(id=>id!=='steam');
   const before=structuredClone(b);expect(teamStatus(b,u,'prism').reason).toBeTruthy();expect(cast(b,u,'prism',enemy.hex)).toBe(false);expect(b).toEqual(before);
  });
- it('allows waiting partners but clears the consumed partner’s pin, defense and taunt duration',()=>{
+ it('allows waiting partners and preserves pin for their remaining move, while clearing defense and old taunt',()=>{
   const {b,u,partner,enemy}=yard(['kit','petra','celia']);partner.waited=true;partner.pinned=true;partner.defending=true;enemy.tauntedBy=partner.id;
-  expect(cast(b,u,'crossfire',enemy.hex)).toBe(true);expect(partner.pinned).toBeUndefined();expect(partner.defending).toBe(false);expect(enemy.tauntedBy).toBeUndefined();
+  expect(cast(b,u,'crossfire',enemy.hex)).toBe(true);expect(partner.pinned).toBe(true);expect(partner.defending).toBe(false);expect(enemy.tauntedBy).toBeUndefined();expect(endTurn(b)).toBe(true);expect(partner.pinned).toBeUndefined();
  });
  it('consumes a Dazzle attack from each participant, weakening their contribution once across all targets',()=>{
   const {b,u,partner,enemy,crow}=yard(['kit','petra','celia']);u.dazzledAttacks=3;partner.dazzledAttacks=2;
@@ -67,14 +67,14 @@ describe('shared-turn moves',()=>{
   expect(hit).toEqual([enemy,crow]);cast(b,u,'crossfire',enemy.hex);
   hit.forEach((v,i)=>expect(before.get(v.id)!-v.hp).toBe(prediction[i]));expect(u.dazzledAttacks).toBe(2);expect(partner.dazzledAttacks).toBe(1);
  });
- it('rolls into the next round once when a team move consumes the last two turns',()=>{
+ it('rolls into the next round once after the last team partner finishes their movement',()=>{
   const {b,u,partner,enemy}=yard();b.queue=[u.id,partner.id];const round=b.round;
-  expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.round).toBe(round+1);expect(b.queue.filter(id=>id===u.id)).toHaveLength(1);expect(b.queue.filter(id=>id===partner.id)).toHaveLength(1);
+  expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.round).toBe(round);expect(endTurn(b)).toBe(true);expect(b.round).toBe(round+1);expect(b.queue.filter(id=>id===u.id)).toHaveLength(1);expect(b.queue.filter(id=>id===partner.id)).toHaveLength(1);
  });
  it('Daybreak heals the living formation, applies Petra’s Taunt and preserves stronger barriers',()=>{
   const {b,u,partner,third,enemy}=yard(['celia','petra','orrin']);for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;third.guard=60;
   const hp=u.hp,healing=supportPower(u,'heal');expect(teamStatus(b,u,'daybreak').partner).toBe(partner);cast(b,u,'daybreak',u.hex);
-  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(30);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).not.toContain(partner.id);
+  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(30);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).toContain(partner.id);
  });
 });
 
@@ -149,7 +149,7 @@ describe('disruptible enemy links and battlefield objects',()=>{
   const {b,u,enemy,crow}=yard(undefined,13,{...encounter,coordinated:true});b.round=2;b.queue=[crow.id,enemy.id,u.id];prepareRelay(b);
   expect(crow.intent?.cells.length).toBeGreaterThan(0);const announced=structuredClone(crow.intent!.cells);u.hex=offset(0,0);prepareRelay(b);expect(crow.intent?.cells).toEqual(announced);
   let captured:unknown;expect(enemyTurn(b,undefined,(id,aim)=>{captured={id,cells:shape(b,crow,id,aim)};})).toBe('relay');
-  expect(captured).toEqual({id:'relay',cells:announced});expect(b.queue).not.toContain(enemy.id);expect(b.queue).not.toContain(crow.id);expect(crow.focus).toBe(4);expect(enemy.focus).toBe(4);
+  expect(captured).toEqual({id:'relay',cells:announced});expect(b.queue).toContain(enemy.id);expect(movementOnly(b,enemy)).toBe(true);expect(b.queue).not.toContain(crow.id);expect(crow.focus).toBe(4);expect(enemy.focus).toBe(4);
  });
  it('shows one shared charging warning for a whole round before a fast enemy can fire',()=>{
   const {b,u,enemy,crow}=yard(undefined,13,{...encounter,coordinated:true});expect(b.round).toBe(1);expect(crow.intent!.cells.length).toBeGreaterThan(0);expect(crow.intent!.cells).toEqual(enemy.intent!.cells);const warned=structuredClone(crow.intent!.cells);

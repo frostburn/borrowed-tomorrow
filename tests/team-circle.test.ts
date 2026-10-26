@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {ABILITIES,cast,createBattle,damage,defend,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
+import {ABILITIES,cast,createBattle,damage,defend,endTurn,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
 import {battleAbilities,daybreakProtection,teamStatus} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {abilityFor,decodeSkillBook,newSkillBook,skillAbilities,startingSkills,upgradeSkill} from '../src/rules/skills';
@@ -31,8 +31,8 @@ describe('a circle of team partners',()=>{
  for(const first of ['nell','kit']as const)it(`Lantern volley works from ${first}, spends both turns, and never hits an ally`,()=>{
   const {b,u,partner,enemy}=yard([first,first==='nell'?'kit':'nell','celia']),third=b.units[2];u.hex=offset(3,3);partner.hex=offset(4,3);enemy.hex=offset(6,3);third.hex=offset(6,2);
   const hp=enemy.hp,allyHp=third.hp,predicted=damage(u,enemy,'lanternvolley',partner),area=shape(b,u,'lanternvolley',enemy.hex);
-  expect(area).toHaveLength(7);expect(targets(b,u,'lanternvolley',enemy.hex)).toEqual([enemy]);expect(cast(b,u,'lanternvolley',enemy.hex)).toBe(true);
-  expect(enemy.hp).toBe(hp-predicted);expect(third.hp).toBe(allyHp);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);
+  expect(area).toHaveLength(12);expect(targets(b,u,'lanternvolley',enemy.hex)).toEqual([enemy]);expect(cast(b,u,'lanternvolley',enemy.hex)).toBe(true);
+  expect(enemy.hp).toBe(hp-predicted);expect(third.hp).toBe(allyHp);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);expect(u.focus).toBe(3);expect(partner.focus).toBe(3);
  });
 });
 describe('distinct healing progression and caster-originating Steam lance',()=>{
@@ -59,11 +59,11 @@ describe('Celia and Petra’s Daybreak',()=>{
   petra.skills!.taunt=rank;celia.skills!.heal=2;for(const ally of b.units.filter(u=>u.side==='party'))ally.hp-=60;
   const hp=celia.hp,predicted=damage(u,celia,'daybreak',partner);expect(predicted).toBe(damage(celia,celia,'heal'));expect(cast(b,u,'daybreak',u.hex)).toBe(true);
   expect(celia.hp).toBe(hp+predicted);expect(enemy.tauntedBy).toBe(petra.id);expect(petra.guard??0).toBe(rank===1?0:rank===2?31:33);expect(celia.guard??0).toBe(rank===3?33:0);
-  expect(daybreakProtection(u,partner)!.vanguard).toBe(petra);expect(b.queue).not.toContain(u.id);expect(b.queue).not.toContain(partner.id);
+  expect(daybreakProtection(u,partner)!.vanguard).toBe(petra);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);
  });
  it('can protect a full-health party and Taunt ends at Petra’s next turn',()=>{
   const {b,u,partner,enemy}=yard(['celia','petra','orrin']);partner.skills!.taunt=1;
   expect(legalAim(b,u,'daybreak',u.hex)).toBe(true);expect(cast(b,u,'daybreak',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(partner.id);
-  b.queue=['orrin',partner.id,enemy.id,u.id];defend(b);expect(enemy.tauntedBy).toBeUndefined();
+  b.queue=['orrin',partner.id];defend(b);expect(enemy.tauntedBy).toBe(partner.id);expect(endTurn(b)).toBe(true);defend(b);defend(b);expect(enemy.tauntedBy).toBeUndefined();
  });
 });

@@ -1,0 +1,72 @@
+import {describe,it,expect} from 'vitest';
+import {active,cast,createBattle,damage,defend,endTurn,enemyTurn,legalAim,move,movement,movementOnly,shape,targets,wait,type Encounter} from '../src/rules/combat';
+import {battleAbilities,prepareRelay,teamStatus} from '../src/rules/combat-tactics';
+import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
+import {newGame} from '../src/rules/state';
+import {add,cells,distance,inside,key,lanternVolley,offset,toPixel} from '../src/rules/hex';
+import type {CompanionId} from '../src/rules/party';
+
+const encounter:Encounter={id:'movement-test',name:'Movement',music:'battle',flag:'test',xp:0,coins:0,rocks:[],coordinated:true,enemies:[{kind:'guardian',col:7,row:3,hp:500},{kind:'crow',col:8,row:1,hp:500}]};
+function yard(party:CompanionId[]=['nell','orrin','celia']){
+ const settings=newCharacterSettings();settings.party=party;for(const id of party)settings.characters[id]=defaultBuild(id,15);
+ const b=createBattle(encounter,newGame(),undefined,characterProfiles(settings),party);b.queue=b.units.map(u=>u.id);party.forEach((id,i)=>b.units.find(u=>u.id===id)!.hex=offset(2,[3,4,1][i]));
+ return {b,u:b.units[0],partner:b.units[1],third:b.units[2],enemy:b.units.find(u=>u.kind==='guardian')!};
+}
+describe('remaining movement after a team action',()=>{
+ it('keeps the partner at their initiative position without allowing another team attack',()=>{
+  const {b,u,partner,third,enemy}=yard();b.queue=[u.id,third.id,partner.id,enemy.id];
+  expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.queue).toEqual([third.id,partner.id,enemy.id]);
+  expect(teamStatus(b,third,'starline').reason).toBe('Orrin has already used their action this round.');expect(legalAim(b,third,'starline',enemy.hex)).toBe(false);
+ });
+ it('allows a pinned partner one move, with no second attack, bonus action, Defend, Wait or focus refill',()=>{
+  const {b,u,partner,third,enemy}=yard(['kit','petra','celia']);partner.focus=4;partner.pinned=true;partner.retaliated=true;partner.defending=true;
+  expect(cast(b,u,'crossfire',enemy.hex)).toBe(true);expect(active(b)).toBe(partner);expect(partner.focus).toBe(1);expect(partner.pinned).toBe(true);expect(partner.retaliated).toBe(true);expect(partner.defending).toBe(false);expect(battleAbilities(b,partner)).toEqual([]);
+  for(const id of partner.abilities)expect(legalAim(b,partner,id,enemy.hex),id).toBe(false);
+  expect(defend(b)).toBe(false);expect(wait(b)).toBe(false);expect([...movement(b,partner).values()].every(v=>v.cost<=1)).toBe(true);
+  const destination=[...movement(b,partner).values()].find(v=>v.path.length)!.hex;
+  expect(move(b,partner,destination)).not.toBeNull();expect(partner.hex).toEqual(destination);expect(active(b)).toBe(third);expect(partner.focus).toBe(1);expect(partner.pinned).toBeUndefined();expect(b.queue).not.toContain(partner.id);expect(move(b,partner,u.hex)).toBeNull();
+ });
+ it('can skip remaining movement without receiving Defend or focus',()=>{
+  const {b,u,partner,third,enemy}=yard();expect(cast(b,u,'prism',enemy.hex)).toBe(true);const hex={...partner.hex},focus=partner.focus;
+  expect(endTurn(b)).toBe(true);expect(active(b)).toBe(third);expect(partner.hex).toEqual(hex);expect(partner.focus).toBe(focus);expect(partner.defending).toBe(false);
+ });
+ for(const state of ['moved','anchored','zero']as const)it(`does not grant another move to a ${state} partner`,()=>{
+  const {b,u,partner,enemy}=yard();if(state==='moved')partner.moved=true;if(state==='anchored')partner.anchored=true;if(state==='zero')partner.movement=0;
+  expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.queue).not.toContain(partner.id);
+ });
+ it('refreshes movement across rounds even when the partner has not reached their new main turn',()=>{
+  const {b,u,partner,enemy}=yard();u.moved=partner.moved=true;b.queue=[enemy.id];defend(b);expect(active(b)).toBe(u);expect(partner.moved).toBe(false);
+  expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.queue).toContain(partner.id);expect(movementOnly(b,partner)).toBe(true);
+ });
+ it('waits for the last remaining move before round-end hazards, then restores normal actions next round',()=>{
+  const {b,u,partner,enemy}=yard();b.queue=[u.id,partner.id];const round=b.round;expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.round).toBe(round);
+  const destination=offset(3,4),hp=partner.hp;b.vents.add(key(destination));expect(move(b,partner,destination)).not.toBeNull();expect(b.round).toBe(round+1);expect(partner.hp).toBe(hp-6);expect(movementOnly(b,partner)).toBe(false);expect(partner.moved).toBe(false);expect(teamStatus(b,u,'prism').partner).toBe(partner);
+ });
+ it('lets an enemy relay partner reposition without firing or defending again',()=>{
+  const {b,u,enemy}=yard(),crow=b.units.find(u=>u.kind==='crow')!;b.round=2;b.queue=[crow.id,enemy.id,u.id];prepareRelay(b);expect(cast(b,crow,'relay',crow.hex)).toBe(true);expect(active(b)).toBe(enemy);
+  const hp=u.hp,focus=enemy.focus,start=distance(enemy.hex,u.hex),calls:string[]=[];expect(enemyTurn(b,undefined,id=>calls.push(id))).toBeUndefined();
+  expect(distance(enemy.hex,u.hex)).toBeLessThan(start);expect(u.hp).toBe(hp);expect(enemy.focus).toBe(focus);expect(enemy.defending).toBe(false);expect(calls).toEqual([]);expect(active(b)).toBe(u);
+ });
+ it('does not defer victory for unused partner movement',()=>{
+  const {b,u,partner,enemy}=yard();b.units=b.units.filter(v=>v.side==='party'||v===enemy);enemy.hp=1;expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.result).toBe('victory');expect(move(b,partner,offset(3,4))).toBeNull();
+ });
+});
+describe('Lantern volley stencil',()=>{
+ it('matches the supplied 3/4/3/2 rows relative to the cursor on either row parity',()=>{
+  for(const aim of [offset(4,2),offset(4,3)]){
+   const origin=toPixel(aim),area=lanternVolley(aim);expect(area).toHaveLength(12);
+   const rows=[-1,0,1,2].map(dy=>area.map(toPixel).filter(p=>(p.y-origin.y)/54===dy).map(p=>(p.x-origin.x)/60).sort((a,z)=>a-z));
+   expect(rows).toEqual([[-.5,.5,1.5],[-1,0,1,2],[-.5,.5,1.5],[0,1]]);expect(area).toContainEqual(aim);
+  }
+ });
+ it('clips at the board edges without duplicating contacts or changing its anchor',()=>{
+  for(const aim of cells()){const area=lanternVolley(aim);expect(area.every(inside)).toBe(true);expect(new Set(area.map(key)).size).toBe(area.length);expect(area).toContainEqual(aim);expect(area.length).toBeLessThanOrEqual(12);}
+ });
+ it('hits the newly covered outer hexes and multi-contact enemies once, while leaving allies unharmed',()=>{
+  const {b,u,partner,third,enemy}=yard(['nell','kit','celia']),aim=offset(5,3),crow=b.units.find(u=>u.kind==='crow')!;enemy.hex=aim;enemy.footprint=[{q:0,r:0},{q:1,r:0}];crow.hex=add(aim,{q:0,r:2});third.hex=add(aim,{q:2,r:0});
+  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:2,r:-1}),hp:999,maxHp:999,active:false,vents:[offset(0,0)]}];
+  const hits=targets(b,u,'lanternvolley',aim),hp=[enemy.hp,crow.hp,third.hp],predicted=[damage(u,enemy,'lanternvolley',partner),damage(u,crow,'lanternvolley',partner)];
+  expect(shape(b,u,'lanternvolley',aim)).toEqual(lanternVolley(aim));expect(hits).toEqual([enemy,crow]);expect(cast(b,u,'lanternvolley',aim)).toBe(true);
+  expect([hp[0]-enemy.hp,hp[1]-crow.hp]).toEqual(predicted);expect(third.hp).toBe(hp[2]);expect(b.fixtures[0].active).toBe(true);expect(b.vents.has(key(offset(0,0)))).toBe(true);
+ });
+});
