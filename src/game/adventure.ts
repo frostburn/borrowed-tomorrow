@@ -1,3 +1,4 @@
+import {gridEdges,type HexOutline} from './hex-grid';
 import {MAP_ROOMS,TRACK_ROOMS} from '../content/rooms';
 import { alignCameraScroll } from './raster-camera';
 import { WorldMechanisms } from './world-mechanisms';
@@ -603,25 +604,27 @@ export class Adventure extends Phaser.Scene {
     const attackCells=new Set(attack?.cells.map(key));
     const danger=new Set(b.units.filter(v=>v.hp>0&&!(v.id===attack?.actorId&&ABILITIES[attack.ability].shape==='pattern')).flatMap(v=>v.intent?.cells.map(key)??[]));
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
+    const outlines:HexOutline[]=[];
+    const fill=(h:Hex,color:number,alpha:number)=>this.grid!.fillStyle(color,alpha).fillPoints(hexVertices(h).map(p=>new Phaser.Math.Vector2(p.x,p.y)),true);
     for(const h of cells()){
-      const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1;
+      const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1,priority=0;
       const reachable=!!reachableHexes?.get(id)?.path.length;
-      if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;}
-      if(b.grounding?.plates.some(p=>equal(p,h))){color=b.grounding.open?0x4b9787:0x3b7bba;alpha=.48;stroke=0x9be8e4;width=3;}
-      if(b.vents.has(id)){color=0xb95025;alpha=.4;stroke=0xffbf6a;}
-      if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;}
-      else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;}
-      if(occupied.has(id)){color=0x29233b;alpha=.5;stroke=0xbe965d;width=2;}
+      if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;priority=1;}
+      if(b.grounding?.plates.some(p=>equal(p,h))){color=b.grounding.open?0x4b9787:0x3b7bba;alpha=.48;stroke=0x9be8e4;width=3;priority=2;}
+      if(b.vents.has(id)){color=0xb95025;alpha=.4;stroke=0xffbf6a;priority=2;}
+      if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;priority=1;}
+      else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;priority=3;}
+      if(occupied.has(id)){color=0x29233b;alpha=.5;stroke=0xbe965d;width=2;priority=4;}
       if(danger.has(id)){
         if(reachable){color=0x568d99;alpha=.32;}else{color=0xad4937;alpha=.4;}
-        stroke=0xf7ae73;width=2;
+        stroke=0xf7ae73;width=2;priority=5;
       }
-      if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;}
-      if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;}
-      if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;}
-      if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);if(alpha===.12){color=0xd7a548;alpha=.22;}}
-      if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;}
-      this.hexPolygon(h,color,alpha,stroke,width);
+      if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;priority=6;}
+      if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
+      if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
+      if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);priority=8;if(alpha===.12){color=0xd7a548;alpha=.22;}}
+      if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;priority=10;}
+      fill(h,color,alpha);outlines.push({hex:h,color:stroke,width,priority});
       if(danger.has(id)){
         if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,6);
         const p=toPixel(h),x=Math.round(p.x/2)*2,y=Math.round((p.y-20)/2)*2;
@@ -633,7 +636,17 @@ export class Adventure extends Phaser.Scene {
       if(b.vents.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffc07a,.95);for(const dx of [-10,0,10]){this.grid.lineBetween(p.x+dx-3,p.y+16,p.x+dx+3,p.y+8);this.grid.lineBetween(p.x+dx+3,p.y+8,p.x+dx,p.y+3);}}
     }
     if(canAct&&aimed&&this.selected!=='move'&&['push','shove'].includes(ABILITIES[this.selected].effect??'')&&legalAim(b,u!,this.selected,aimed)){
-      for(const target of targets(b,u!,this.selected,aimed)){const destination=target.hp>damage(u!,target,this.selected)?pushDestination(b,u!,target):undefined;if(destination){this.hexPolygon(destination,0x557179,.3,0x9bab6c,2);}}
+      for(const target of targets(b,u!,this.selected,aimed)){const destination=target.hp>damage(u!,target,this.selected)?pushDestination(b,u!,target):undefined;if(destination){fill(destination,0x557179,.3);outlines.push({hex:destination,color:0x9bab6c,width:2,priority:8});}}
+    }
+    // Draw the collected edge network after every fill. Same-style segments
+    // share a single path, so joins do not accumulate translucent strokes.
+    const batches=new Map<string,ReturnType<typeof gridEdges>>();
+    for(const edge of gridEdges(outlines)){const id=`${edge.color}:${edge.width}`,batch=batches.get(id)??[];batch.push(edge);batches.set(id,batch);}
+    for(const edges of batches.values()){
+      const {color,width}=edges[0],phase=(width/2)%2;
+      this.grid.lineStyle(width,color,.78).beginPath();
+      for(const {a,b}of edges){this.grid.moveTo(a.x+phase,a.y+phase);this.grid.lineTo(b.x+phase,b.y+phase);}
+      this.grid.strokePath();
     }
     if(this.plan?.action==='move'&&u){const path=movement(b,u).get(key(this.plan.hex))?.path??[];this.grid.lineStyle(3,0xe8d6a2,.9);this.grid.beginPath();const start=toPixel(u.hex);this.grid.moveTo(start.x,start.y);for(const h of path){const p=toPixel(h);this.grid.lineTo(p.x,p.y);}this.grid.strokePath();}
   }

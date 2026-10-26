@@ -12,7 +12,9 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    await page.mouse.move(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
    await expect.poll(()=>page.evaluate(p=>{
     const view=window.borrowedTomorrow.inspect().view,c=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!,ctx=c.getContext('2d')!;
-    const data=ctx.getImageData(p.x-view.scrollX+28,p.y-view.scrollY-10,2,20).data;
+    const data=ctx.getImageData(p.x-view.scrollX+30,p.y-view.scrollY-10,2,20).data;
+    const outer=ctx.getImageData(p.x-view.scrollX-30,p.y-view.scrollY-10,2,20).data;
+    for(let i=0;i<outer.length;i+=4)if(outer[i]<=190||outer[i+1]<=190||outer[i+2]<=190)return -1;
     let solid=0;for(let i=0;i<data.length;i+=4)if(data[i]>190&&data[i+1]>190&&data[i+2]>190)solid++;return solid;
    },p)).toBe(40);
   }

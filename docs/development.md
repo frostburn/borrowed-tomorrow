@@ -76,8 +76,12 @@ The Chapter Six capital finale is playable: free Stillwater Avenue, clear the pa
 `rules/hex.ts` defines a near-regular 60 x 72 pointy hex with 54px row
 spacing, instead of irrational regular-hex spacing. Centers and vertices
 (including border insets) sit on the 2px display lattice. The shared
-`hexVertices` shape drives filled border strips; minimum border width is
-one chunky pixel. `fromPixel` checks those same polygon edges after its
+`hexVertices` shape supplies `game/hex-grid.ts`, which collects the 266
+unique battlefield edges. Draw this network after cell fills, batching
+same-style segments into paths so shared edges and joins do not accumulate
+alpha. Tactical priority resolves contested edge colors independently of
+cell order. Stroke phase and even widths preserve complete chunky columns,
+with the same weight at the board boundary. `fromPixel` checks those same polygon edges after its
 axial estimate. Combat adjacency, distance and footprints stay axial.
 
 When changing this lattice, check all arena floors and boss anchors. The
