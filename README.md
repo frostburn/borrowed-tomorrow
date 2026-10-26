@@ -25,7 +25,7 @@ npm ci
 npm run dev
 ```
 
-`npm run build` creates a static `dist/` directory. Serve it on any static host; relative asset paths support hosting in a subdirectory. Phaser has a separate bundle. No account, API key or live story service is needed at runtime.
+`npm run build` creates a static `dist/` directory. Serve it on any static host; relative asset paths support hosting in a subdirectory. Phaser, chapter maps, dialogue and optional music have separate bundles. `npm run build:size` reports distribution sizes and startup versus deferred JavaScript; see [production build notes](docs/production-build.md). No account, API key or live story service is needed at runtime.
 
 ## Play
 
