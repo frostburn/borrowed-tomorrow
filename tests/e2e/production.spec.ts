@@ -8,6 +8,8 @@ import { capture, inspect, dialogue, clickWorld, battle } from './controls';
 import { travel } from './navigation';
 import {sampleRegulator} from './conduit-controls';
 import {chapterTwoStart,chapterThreeStart,chapterFourStart,chapterFiveStart,chapterSixStart,chapterSevenStart} from '../../src/dev/canonical-saves';
+import { economyFlows } from './economy-flow';
+economyFlows(true);
 
 for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
  test.describe(`packed distribution on ${device}`,()=>{

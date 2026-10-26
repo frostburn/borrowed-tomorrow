@@ -12,6 +12,7 @@ Start with the file that owns the behavior. The Phaser scene connects the system
 | Register an encounter | The chapter's `encounters.ts`, then `src/content/encounters.ts` for a new chapter |
 | Combat resolution, targeting, movement or enemy choices | `src/rules/combat.ts`, `hex.ts`, `footprint.ts`; boss rules have their own modules |
 | Character state, recruitment, recovery or chapter transition | `src/rules/state.ts`; illness/availability lives in `availability.ts` |
+| Supply counters, purchases, spare-gear sales or consumable effects | `rules/supplies.ts`, `consumables.ts`, `game/shop.ts`; see `economy.md` |
 | Save format, accepted checkpoints or import validation | `src/rules/save.ts` |
 | IndexedDB, pending checkpoints or JSON export | `src/game/saves.ts` |
 | Region scenery loading and SVG texture preparation | `src/game/region-assets.ts` |

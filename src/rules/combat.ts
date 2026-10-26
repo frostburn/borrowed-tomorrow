@@ -1,3 +1,4 @@
+import { PACKED_CONSUMABLES, type PackedConsumableId, type ConsumableId } from './consumables';
 import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
 import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
@@ -38,7 +39,7 @@ export interface Unit {
 }
 export interface Battle {
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
-  grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; result: 'victory' | 'defeat' | null;
+  grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; supplies: Record<PackedConsumableId, number>; result: 'victory' | 'defeat' | null;
   fixtures?:BattleFixture[];
   imperial?:{openedRound?:number};
   benefactor?:{form:0|1|2};
@@ -68,7 +69,7 @@ export function createPartyUnit(state:GameState,id:CompanionId,index=0,count=1,e
       speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
       armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
       bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
-      abilities: profile ? [...profile.abilities] : skillAbilities(id,state.skills[id]), skills:structuredClone(profile?.skills??state.skills[id]), level: profile?.level??level(state),
+      abilities: [...(profile ? profile.abilities : skillAbilities(id,state.skills[id])), ...PACKED_CONSUMABLES.filter(item => (state.inventory.bag[item] ?? 0) > 0)], skills:structuredClone(profile?.skills??state.skills[id]), level: profile?.level??level(state),
       moved: false, defending: false, retaliated: false, waited: false };
 }
 
@@ -93,7 +94,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
     vents:new Set((e.vents??[]).map(([c,r])=>key(offset(c,r)))),
     grounding:e.grounding?{plates:e.grounding.map(([c,r])=>offset(c,r)),open:false}:undefined,
     evacuation:e.evacuation?{route:e.evacuation.route.map(([c,r])=>offset(c,r)),boarded:0,groups:e.evacuation.groups}:undefined,
-    queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, result: null };
+    queue: [], round: 0, log: [e.name + '.'], bandages: state.bandages, supplies: { 'field-bandage': state.inventory.bag['field-bandage'] ?? 0, 'focus-tonic': state.inventory.bag['focus-tonic'] ?? 0 }, result: null };
   if(e.boss==='benefactor')configureBenefactor(battle,e.benefactorForm??0);
   if(e.boss==='conduit')configureConduit(battle);
   if(e.boss==='furnace')configureFurnace(battle);
@@ -143,18 +144,19 @@ export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const a = abilityFor(u,id),hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
   if(id==='revive'){const fallen=reviveTarget(b,u,id,aim);return fallen?[fallen]:[];}
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
-  const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
+  const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||a.item||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
   const fallen=a.heal?reviveTarget(b,u,id,aim):undefined;return fallen?[...living,fallen]:living;
 }
 export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
   return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
 }
+export const battleItemCount = (b: Battle, id: ConsumableId) => id === 'bandage' ? b.bandages : b.supplies[id];
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = abilityFor(u,id,teamStatus(b,u,id).partner);
   if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id || movementOnly(b,u)) return false;
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
-  if (id === 'bandage' && b.bandages <= 0) return false;
+  if (a.item && battleItemCount(b, a.item) <= 0) return false;
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
   if (forced && (a.shape!=='pattern'||!!u.intent?.cells.length) && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='diagonal' || a.shape==='axis' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
@@ -280,7 +282,8 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   const partner=teamStatus(b,u,id).partner,footprint=shape(b,u,id,aim),hit=targets(b,u,id,aim);
   u.focus -= a.cost;
   const attackName=a.shape==='pattern'?(u.intent?.name??a.name):a.name;
-  if (id === 'bandage') b.bandages--;
+  if (a.item === 'bandage') b.bandages--;
+  else if (a.item) b.supplies[a.item]--;
   if(partner){
     partner.focus-=a.team!.cost;partner.defending=false;u.teamSpentRound=partner.teamSpentRound=b.round;
     if(partner.moved||partner.anchored||partner.movement<=0){delete partner.pinned;b.queue=b.queue.filter(id=>id!==partner.id);}
@@ -440,6 +443,7 @@ export function awardVictory(b: Battle, s: GameState) {
   if (e.item) receiveItem(s.inventory, e.item);
   const oldLevel = level(s);
   s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
+  for (const id of PACKED_CONSUMABLES) if (b.supplies[id] || s.inventory.bag[id] !== undefined) s.inventory.bag[id] = b.supplies[id];
   for (const hero of s.party) {
     if(!heroAvailable(s,hero.id))continue;
     const unit = b.units.find(u => u.id === hero.id as HeroId);

@@ -4,7 +4,7 @@ Chapters One–Three are playable canon. This document records Chapter Three’s
 
 ## Exact save
 
-Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-two`, boundary **`chapter-three:capital`**. The final scene leaves Nell at `cinderbank` `(49,26)`; later exploration can change the coordinates. Only the boundary identifies the departure.
+Version **11**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-two`, boundary **`chapter-three:capital`**. The final scene leaves Nell at `cinderbank` `(49,26)`; later exploration can change the coordinates. Only the boundary identifies the departure.
 
 The complete Chapter One flag chain remains set. Chapter Two requires `coastSeen`, `kitJoined`, `raidPlanned`, `raidConfronted`, `trainRaidWon`, `prisonersFreed`, `wardSeen`, `settlementSeen`, `coastCollectorWon`, `evacuationReady`, `recaptureConfronted`, `recaptureWon`, `chapterTwoComplete`. Preserve `raidDiversion` (true for signal walk, false for loading gate), optional Chapter One flags, resources, XP, HP/focus, all inventory copies and loadouts, journals and play time.
 
@@ -35,3 +35,5 @@ The three exploration maps and five battle floors use native tile layers. Intera
 The heart regulator now uses the accepted upward-facing mechanical boss presentation in both campaign routes. Its anchored triangular base occupies three hexes; pressure attacks announce fixed red cells before firing. The feeds route keeps two simultaneous earth contacts (at least two active companions); pressure walk keeps crows and hot vents. The original encounter IDs, route flag, 135 XP, 80 marks, insulated-coat reward and feed-console/Emperor continuation are unchanged. Campaign resources come from the actual save, while workshop presets stay isolated. Whole boss SVGs load with the conduit region before travel or deep restore succeeds; missing art preserves the preceding checkpoint for retry. The mechanical encounter is unrelated to the separate final god preview.
 
 The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter Three memory of his wife, the bounded promise to Nell and the repeated household in the final palace. His private grief does not excuse the collection or revive his family; he remains dead and silent after vessel victory.
+
+Early supplies now include focus tonics, Chapter Two field bandages and coastal equipment. Iona, the coastal engine, Dena’s ward and Cinderbank’s medical coaches offer the shared spare-gear sale counter. Preserve purchased and remaining medical stacks in the inventory bag across this boundary; do not refill them. See [economy.md](../economy.md).

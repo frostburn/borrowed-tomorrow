@@ -1,25 +1,50 @@
+import { CONSUMABLES, consumableCount, isConsumable, type ConsumableId } from './consumables';
 import { ITEMS, ownedCopies, receiveItem, type ItemId } from './inventory';
 import type { GameState } from './state';
 
-export const SUPPLIES = [
-  { id: 'bandage', cost: 8 },
-  { id: 'brass-reflector', cost: 30 },
-  { id: 'lance-nozzle', cost: 30 },
-  { id: 'work-coat', cost: 15 },
-  { id: 'heavy-coat', cost: 25 },
-] as const satisfies readonly { id: ItemId | 'bandage'; cost: number }[];
-export type SupplyId = typeof SUPPLIES[number]['id'];
-export function canBuy(state: GameState, id: SupplyId) {
-  const supply = SUPPLIES.find(s => s.id === id);
-  if (!supply || state.coins < supply.cost) return false;
-  if (id === 'bandage') return state.bandages < 999;
+export type ShopId = 'station' | 'coast' | 'ward';
+const STARTER_GEAR = [
+  { id: 'brass-reflector', cost: 30 }, { id: 'lance-nozzle', cost: 30 },
+  { id: 'work-coat', cost: 15 }, { id: 'heavy-coat', cost: 25 },
+] as const;
+const COAST_GEAR = [
+  { id: 'coastal-reflector', cost: 46 }, { id: 'sealed-nozzle', cost: 46 },
+  { id: 'steady-stock', cost: 44 }, { id: 'travel-coat', cost: 32 },
+] as const;
+const medicine = (id: ConsumableId) => ({ id, cost: CONSUMABLES[id].cost });
+export const shopStock = (shop: ShopId) => shop === 'station'
+  ? [medicine('bandage'), medicine('focus-tonic'), ...STARTER_GEAR]
+  : [medicine('bandage'), medicine('field-bandage'), medicine('focus-tonic'), ...COAST_GEAR, ...STARTER_GEAR];
+export type SupplyId = ItemId | ConsumableId;
+export const supplyCount = (state: GameState, id: SupplyId) => isConsumable(id) ? consumableCount(state, id) : ownedCopies(state.inventory, id);
+export function canBuy(state: GameState, id: SupplyId, shop: ShopId = 'station') {
+  const supply = shopStock(shop).find(s => s.id === id);
+  if (!supply || state.coins < supply.cost || shop !== 'station' && state.chapter === 'chapter-one') return false;
+  if (isConsumable(id)) return supplyCount(state, id) < (id === 'bandage' ? 999 : 99);
   return ITEMS[id].heroes.some(h => state.party.some(p => p.id === h)) &&
     ownedCopies(state.inventory, id) < (ITEMS[id].slot === 'fitting' ? 1 : 99);
 }
-export function buySupply(state: GameState, id: SupplyId): boolean {
-  if (!canBuy(state, id)) return false;
+export function buySupply(state: GameState, id: SupplyId, shop: ShopId = 'station'): boolean {
+  if (!canBuy(state, id, shop)) return false;
   if (id === 'bandage') state.bandages++;
+  else if (isConsumable(id)) state.inventory.bag[id] = (state.inventory.bag[id] ?? 0) + 1;
   else if (!receiveItem(state.inventory, id)) return false;
-  state.coins -= SUPPLIES.find(s => s.id === id)!.cost;
+  state.coins -= shopStock(shop).find(s => s.id === id)!.cost;
+  return true;
+}
+/** Only spare equipment is sold. Story objects are not equipment. */
+export function sellPrice(id: ItemId): number {
+  const purchase = [...STARTER_GEAR, ...COAST_GEAR].find(s => s.id === id);
+  if (purchase) return Math.floor(purchase.cost / 2);
+  const b = ITEMS[id].bonuses;
+  return Math.max(4, b.attack * 4 + b.armor * 4 + Math.max(0, b.speed) * 2);
+}
+export function canSell(state: GameState, id: ItemId): boolean {
+  return Object.hasOwn(ITEMS, id) && (state.inventory.bag[id] ?? 0) > 0 && state.coins + sellPrice(id) <= 1e7;
+}
+export function sellEquipment(state: GameState, id: ItemId): boolean {
+  if (!canSell(state, id)) return false;
+  state.inventory.bag[id]!--;
+  state.coins += sellPrice(id);
   return true;
 }

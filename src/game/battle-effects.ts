@@ -6,7 +6,7 @@ import {drawTeamEffect,TEAM_ANIMATION,type TeamSource} from './battle-team-effec
 /** Short native-world effects from a tool, or from above for celestial attacks. */
 export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability],teamSources:TeamSource[]=[]){
   const g=scene.add.graphics();world.add(g);
-  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard';
+  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard'||definition.effect==='focus';
   const rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);

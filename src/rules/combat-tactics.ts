@@ -11,7 +11,7 @@ export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex
 export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
  if(partner&&ABILITIES[id].team)return supportPower(u,teamSolo(u.kind,id)!)+supportPower(partner,teamSolo(partner.kind,id)!);
  const a=abilityFor(u,id),growth=Math.max(0,(u.level??1)-1),power=a.power;
- if(id==='bandage'||a.effect==='focus')return a.power;
+ if(a.item||a.effect==='focus')return a.power;
  return power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
 }
 /** Daybreak adds Petra's actual Taunt and its current self/party ward to Celia's Heal. */
