@@ -4,7 +4,7 @@ import { portraitAsset, speakerPortrait } from '../content/characters';
 import { artPath } from '../content/art-assets';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export const art = (name: string) => `${import.meta.env.BASE_URL}${artPath(name)}`;
-export interface Button { label: string; action: () => void; disabled?: boolean; selected?: boolean; key?: string; title?: string; badge?:string }
+export interface Button { label: string; action: () => void; disabled?: boolean; unavailable?:boolean; selected?: boolean; key?: string; title?: string; badge?:string }
 export class UI {
   readonly canvas: HTMLElement;
   readonly controls: HTMLElement;
@@ -47,7 +47,7 @@ export class UI {
   sound(enabled: boolean) { const button = document.getElementById('sound-button')!; button.textContent = enabled ? 'Sound on' : 'Sound off'; button.setAttribute('aria-pressed', String(enabled)); }
   button(b: Button): HTMLButtonElement {
     const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
-    button.disabled = !!b.disabled; button.className = b.selected ? 'selected' : ''; if (b.title) button.setAttribute('aria-description', b.title);
+    button.disabled = !!b.disabled; button.className = [b.selected?'selected':'',b.unavailable?'unavailable':''].filter(Boolean).join(' '); if (b.title) {button.setAttribute('aria-description', b.title);button.title=b.title;}
     if(b.badge){const badge=document.createElement('span');badge.className='skill-badge';badge.setAttribute('aria-hidden','true');badge.textContent=b.badge;button.append(badge);}
     button.onclick = () => { b.action(); }; return button;
   }

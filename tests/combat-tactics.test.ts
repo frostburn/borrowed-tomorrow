@@ -28,7 +28,7 @@ describe('shared-turn moves',()=>{
   const {b,u,partner,third,enemy}=yard();b.units=b.units.filter(v=>v.id!==third.id);
   expect(battleAbilities(b,u)).not.toContain('daybreak');expect(battleAbilities(b,u)).toContain('prism');
   partner.hex=offset(10,6);expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').partner).toBe(partner);
-  partner.hp=0;expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('alive');
+  partner.hp=0;expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('Orrin is down');
   b.units=b.units.filter(v=>v.id!==partner.id);enemy.kind='orrin';expect(battleAbilities(b,u)).not.toContain('prism');
  });
  it('Celia and Orrin share Falling stars, protecting both operators and consuming both turns',()=>{
@@ -54,7 +54,7 @@ describe('shared-turn moves',()=>{
   if(reason==='focus')partner.focus=2;
   if(reason==='spent')b.queue=b.queue.filter(id=>id!==partner.id);
   if(reason==='dead')partner.hp=0;
-  if(reason==='unlearned')partner.abilities=partner.abilities.filter(id=>id!=='prism');
+  if(reason==='unlearned')partner.abilities=partner.abilities.filter(id=>id!=='steam');
   const before=structuredClone(b);expect(teamStatus(b,u,'prism').reason).toBeTruthy();expect(cast(b,u,'prism',enemy.hex)).toBe(false);expect(b).toEqual(before);
  });
  it('allows waiting partners but clears the consumed partner’s pin, defense and taunt duration',()=>{
@@ -114,10 +114,10 @@ describe('geometry and progression',()=>{
  });
  it('offers a useful choice after level five for every companion and removes locked moves when lowering levels',()=>{
   for(const id of ['nell','orrin','kit','celia','petra']as const){
-   const low=learnedAbilities(id,5),high=learnedAbilities(id,15);expect(high.length).toBeGreaterThan(low.length);expect(SKILLS[id].some(s=>s.levels.some(l=>l>5))).toBe(true);
+   const low=defaultBuild(id,5),high=learnedAbilities(id,15);expect(SKILLS[id].some(s=>(defaultBuild(id,15).skills[s.id]??0)>(low.skills[s.id]??0))).toBe(true);expect(SKILLS[id].some(s=>s.levels.some(l=>l>5))).toBe(true);
    for(const skill of high)expect(ABILITIES[skill]).toBeDefined();
   }
-  expect(learnedAbilities('nell',12)).not.toContain('daybreak');expect(learnedAbilities('celia',13)).toContain('daybreak');
+  expect(learnedAbilities('nell',1)).not.toContain('daybreak');expect(learnedAbilities('celia',1)).toContain('daybreak');
   expect(learnedAbilities('celia',15).filter(id=>damagingAbility(id)&&!ABILITIES[id].team)).toEqual(['strike','celestialbolt']);
  });
  it('pin limits the next turn’s movement without taking away its attack or extending through wait',()=>{

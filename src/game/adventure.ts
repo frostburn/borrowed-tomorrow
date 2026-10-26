@@ -691,7 +691,10 @@ export class Adventure extends Phaser.Scene {
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },
     });
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>({label:abilityFor(u,id).name+(abilityFor(u,id).bonus?' · Extra':abilityFor(u,id).team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||u.focus<abilityFor(u,id).cost||!!(abilityFor(u,id).bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),selected:this.selected===id,badge:abilityFor(u,id).rank?String(abilityFor(u,id).rank):undefined,title:teamStatus(b,u,id).reason??`${abilityFor(u,id).rank?`Skill ${abilityFor(u,id).rank}. `:''}${abilityFor(u,id).description}`})),
+    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>{
+      const team=teamStatus(b,u,id),a=abilityFor(u,id,team.partner);
+      return {label:a.name+(a.bonus?' · Extra':a.team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),unavailable:!!team.reason,selected:this.selected===id,badge:a.rank?String(a.rank):undefined,title:team.reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
+    }),
       {label:'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]);
     this.ui.status.textContent=player?(u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
@@ -703,7 +706,7 @@ export class Adventure extends Phaser.Scene {
     const hint=document.getElementById('battle-hint'),confirm=document.getElementById('confirmation');if(!hint||!confirm)return;
     const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
-    hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected).description;
+    hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected,teamStatus(b,u,this.selected).partner).description;
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
@@ -717,8 +720,7 @@ export class Adventure extends Phaser.Scene {
       }
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
-      const ability=abilityFor(u!,this.selected),hits=targets(b,u,this.selected,aimed);
-      const team=teamStatus(b,u,this.selected).partner,footprint=shape(b,u,this.selected,aimed);
+      const team=teamStatus(b,u,this.selected).partner,ability=abilityFor(u!,this.selected,team),hits=targets(b,u,this.selected,aimed),footprint=shape(b,u,this.selected,aimed);
       const fixtures=damagingAbility(this.selected)?b.fixtures?.filter(f=>f.hp>0&&footprint.some(h=>equal(f.hex,h)))??[]:[];
       const descriptions=hits.map(v=>ability.effect==='shove'?`${v.name}: ${pushDestination(b,u,v)?'push one hex':'push blocked'} · no damage`:ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} guard`:ability.effect==='focus'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} focus`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId,team)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId,team)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`);
       descriptions.push(...fixtures.map(f=>`${f.name}: ${f.kind==='valve'?`steam ${f.active?'off':'on'} on marked hexes`:`${f.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`));

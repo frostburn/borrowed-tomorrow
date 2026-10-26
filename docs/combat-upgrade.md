@@ -10,13 +10,13 @@ Choose **Upgrade skills** on the victory panel, the available-points button whil
 
 | Character | Compact skill lines |
 | --- | --- |
-| Nell | Lantern burst, Mend, Dazzle, Horizon light, Prism lance, Daybreak |
-| Orrin | Steam lance, Rivet shot, Safety guard, Pressure wave, Falling stars, Prism lance |
-| Kit | Quick shot, Feint, Ricochet, Pinning shot, Crossfire |
-| Celia | Celestial bolt, Mend, Rally, Sanctuary, Falling stars, Daybreak |
-| Petra | Shield bash, Taunt, Saber sweep, Crushing blow, Crossfire |
+| Nell | Lantern burst, Mend, Dazzle, Horizon light |
+| Orrin | Steam lance, Rivet shot, Safety guard, Pressure wave |
+| Kit | Quick shot, Feint, Ricochet, Pinning shot |
+| Celia | Celestial bolt, Mend, Rally, Sanctuary |
+| Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
 
-Strike and Bandage stay separate. Most skills have three ranks; Daybreak has two. The longest character list has eight abilities, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
+Strike and Bandage stay separate. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character list has eight abilities, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
 
 The themed merges are functional: Beacon becomes area Mend; Celia’s final Mend includes revival. Dimming halo becomes area Dazzle. Pressure seam becomes upgraded Steam lance; Field bracing becomes upgraded Safety guard. Piercing bolt becomes upgraded Quick shot; Volley gives way to the Ricochet line. Driving blow becomes final Crushing blow, while Hold the line becomes final Taunt’s party barrier.
 
@@ -32,16 +32,20 @@ All three cost two focus and aim within five hexes. The first footprint is `aim`
 
 ## Team moves
 
-| Move | Partners | First rank at character level | Effect |
-| --- | --- | ---: | --- |
-| Falling stars | Celia + Orrin | 7 | Full down-left axis |
-| Prism lance | Nell + Orrin | 8 | Full horizontal axis |
-| Crossfire | Kit + Petra | 8 | Shot and two-enemy ricochet |
-| Daybreak | Nell + Celia | 13 | Party healing and barriers |
+| Move | Partners | Solo skills | Effect |
+| --- | --- | --- | --- |
+| Falling stars | Celia + Orrin | Celestial bolt + Rivet shot | Stars fall onto a full down-left axis |
+| Prism lance | Nell + Orrin | Lantern burst + Steam lance | Full horizontal prismatic steam lance |
+| Crossfire | Kit + Petra | Ricochet + Crushing blow | Shot and saber strike, bouncing to a second enemy |
+| Daybreak | Nell + Celia | Mend + Mend | Party healing and barriers |
 
-Either partner may initiate. Both must be alive in the current battle, know the skill, have an unspent main action and have three focus. **There is no distance or line-of-sight requirement between teammates.** The attack itself still follows its targeting rules. Confirmation spends both turns and three focus each; waiting preserves eligibility, while an already spent turn does not. Both return normally next round. A consumed partner’s defense, pin and Taunt duration end with that turn.
+Team moves are derived from their solo skills, never purchased or upgraded separately. Both corresponding solo skills must be learned; rank one suffices. Upgrading either solo improves its contribution. Either partner may initiate. Both must be alive in the current battle, have an unspent main action and have three focus. **There is no distance or line-of-sight requirement between teammates.** The attack itself still follows its targeting rules. Confirmation spends both turns and three focus each; waiting preserves eligibility, while an already spent turn does not. Both return normally next round. A consumed partner’s defense, pin and Taunt duration end with that turn.
 
-Team power averages both characters’ ranked power and attack bonuses. Dazzle weakens each character’s contribution and consumes one Dazzle attack from each, once per cast. Support averages both contributors’ ranked healing power and character level. Full-width attacks exclude both operators, can hit another ally and damage multi-contact enemies once. Team commands disappear when a same-side partner is absent; fallen or spent partners remain visible with the readiness reason. Shortcuts follow the filtered list. A shared wind-up, both actors’ attack poses and effects show the cooperation.
+Team damage sums the actual solo attack contributions. Each contribution retains its own ranked power, attack bonus, armor piercing, Dazzle, friendly-fire reduction, defense calculation and rounding; the target's barrier absorbs the total once. Solo targeting restrictions and bonus effects do not become additional team requirements or effects. Daybreak sums each caster's Mend healing at their own rank and character level, retaining its existing non-stacking party barrier; it does not revive. Crossfire inherits Kit's current Ricochet range and bounce reach for either initiator. Preview and resolution share these calculations.
+
+Full-width attacks exclude both operators, can hit another ally and damage multi-contact enemies once. Team commands disappear when a same-side partner is absent. Commands remain gray and inspectable when a partner has acted, is down, lacks focus or has not learned their required solo skill. Selecting one names the unavailable fighter and reason; it never offers confirmation. Shortcuts follow the filtered list. The skill-upgrade screen only describes combinations with **already recruited** characters, so later party members remain unspoiled.
+
+A shared wind-up and both actors' attack poses show cooperation. `game/battle-effects.ts` renders the actual affected footprint; team effects must retain each move's identity rather than falling through to a generic beam.
 
 ## Other geometry and support
 
@@ -59,7 +63,7 @@ Timber barricades block movement and sight until broken. Pressure drums explode 
 
 Strike or shoot a brass valve with an ordinary damaging attack to toggle its connected steam vents. Area attacks trigger it once per cast. There is no separate valve command. The resilient wheel remains usable for later hits. Support and zero-damage Shield bash do not toggle it. Confirmation names the change, mint outlines mark connected vents separately from the orange damage footprint, and the wheel animates at impact. Toggling does not itself damage distant vent occupants. Existing round-end vent damage and flying immunity remain.
 
-The Chapter One shed introduces cover; Chapter Two’s loading gate has a valve; Hammerplain’s freight lift/store add pressure drums and more terrain. The freight lift and Windmere water lift also contain coordinated enemies. One guardian/crow pair warns for an entire odd round before firing its shared barrage on the even round, consuming both pending actions and two focus each. **Enemy teams also have no spacing or sight requirement between partners.** Defeating either operator interrupts the barrage. Ordinary boss patterns remain independent.
+The Chapter One shed introduces cover; Chapter Two’s loading gate has a valve; Hammerplain’s freight lift/store add pressure drums and more terrain. The freight lift and Windmere water lift also contain coordinated enemies. One guardian/crow pair warns for an entire odd round before firing its shared barrage on the even round, using the sum of Steam lance and Cinder peck damage and consuming both pending actions and two focus each. **Enemy teams also have no spacing or sight requirement between partners.** Defeating either operator interrupts the barrage. Ordinary boss patterns remain independent.
 
 ## Persistence and review
 

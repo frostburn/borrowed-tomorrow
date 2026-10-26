@@ -12,6 +12,7 @@ import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS } from '../content/encounters';
 import { BASE_STATS } from './progression';
 import {abilityFor,skillAbilities,type SkillRanks} from './skills';
+import {teamSolo} from './abilities';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, diagonalRay, distance, equal, inside, key, offset, quad, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
@@ -147,7 +148,7 @@ export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
   return alive(b).find(v => v.id === u.tauntedBy && v.side !== u.side);
 }
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
-  const a = abilityFor(u,id);
+  const a = abilityFor(u,id,teamStatus(b,u,id).partner);
   if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id) return false;
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
@@ -183,11 +184,12 @@ export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id,partner)-(v.guard??0));
 }
-function attackDamage(u: Unit, v: Pick<Unit,'armor'|'defending'>&Partial<Pick<Unit,'side'>>, id: AbilityId,partner?:Unit) {
+function attackDamage(u: Unit, v: Pick<Unit,'armor'|'defending'>&Partial<Pick<Unit,'side'>>, id: AbilityId,partner?:Unit):number {
   const a = abilityFor(u,id);
+  if(a.team&&partner)return attackDamage(u,v,teamSolo(u.kind,id)!)+attackDamage(partner,v,teamSolo(partner.kind,id)!);
   const armor = Math.max(0, v.armor - (a.pierce ?? 0));
-  const power=a.shape==='pattern'?(u.intent?.power??a.power):partner?(a.power+abilityFor(partner,id).power)/2:a.power;
-  return Math.max(1, Math.round((power + (partner?(u.bonus+partner.bonus)/2:u.bonus) - armor) * (v.defending ? .6 : 1) * (partner?((u.dazzledAttacks?.6:1)+(partner.dazzledAttacks?.6:1))/2:(u.dazzledAttacks ? .6 : 1))*(v.side===u.side?(a.friendlyFire??1):1)));
+  const power=a.shape==='pattern'?(u.intent?.power??a.power):a.power;
+  return Math.max(1, Math.round((power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.dazzledAttacks ? .6 : 1)*(v.side===u.side?(a.friendlyFire??1):1)));
 }
 export const fixtureDamage=(u:Unit,id:AbilityId,partner?:Unit)=>attackDamage(u,{armor:0,defending:false},id,partner);
 function consumeDazzle(u: Unit) { if (u.dazzledAttacks) u.dazzledAttacks--; }

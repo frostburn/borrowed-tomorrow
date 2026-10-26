@@ -1,4 +1,4 @@
-import {ABILITIES,type AbilityId} from './abilities';
+import {ABILITIES,teamSolo,type AbilityId} from './abilities';
 import type {Battle,Unit} from './combat';
 import {abilityFor} from './skills';
 import {blast,cells,distance,equal,key,visible,type Hex} from './hex';
@@ -9,7 +9,8 @@ export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['ki
 export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex,h));
 /** Support follows caster level, independent of attack edits and offensive gear. */
 export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
- const a=abilityFor(u,id),growth=Math.max(0,(partner?((u.level??1)+(partner.level??1))/2:(u.level??1))-1),power=partner?(a.power+abilityFor(partner,id).power)/2:a.power;
+ if(partner&&ABILITIES[id].team)return supportPower(u,teamSolo(u.kind,id)!)+supportPower(partner,teamSolo(partner.kind,id)!);
+ const a=abilityFor(u,id),growth=Math.max(0,(u.level??1)-1),power=a.power;
  if(id==='bandage'||a.effect==='focus')return a.power;
  return power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
 }
@@ -22,15 +23,19 @@ export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
 export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:Unit;reason?:string}{
  const team=ABILITIES[id].team;if(!team)return {};
  const other=team.pair.find(kind=>kind!==u.kind);
- const partner=team.pair.includes(u.kind)?b.units.find(v=>v.side===u.side&&v.kind===other&&v.hp>0&&(!u.linkedTo||v.id===u.linkedTo)):undefined;
- if(!partner)return {reason:`Requires ${team.pair.join(' + ')} alive in this formation.`};
- if(!partner.abilities.includes(id))return {reason:`${partner.name} has not learned this team ability.`};
- if(!future&&(!b.queue.includes(u.id)||!b.queue.includes(partner.id)))return {reason:`Both fighters need an unspent turn this round.`};
- if(!future&&(u.focus<team.cost||partner.focus<team.cost))return {reason:`Both fighters need ${team.cost} focus.`};
+ const partner=team.pair.includes(u.kind)?b.units.find(v=>v.side===u.side&&v.kind===other&&(!u.linkedTo||v.id===u.linkedTo)):undefined;
+ if(!partner)return {reason:'Requires a teammate in this formation.'};
+ for(const fighter of [partner,u]){
+  if(fighter.hp<=0)return {reason:`${fighter.name} is down and cannot team up.`};
+  const solo=teamSolo(fighter.kind,id)!;
+  if(!fighter.abilities.includes(solo))return {reason:`${fighter.name} needs to learn ${ABILITIES[solo].name}.`};
+  if(!future&&!b.queue.includes(fighter.id))return {reason:`${fighter.name} has already used their action this round.`};
+  if(!future&&fighter.focus<team.cost)return {reason:`${fighter.name} needs ${team.cost} focus (has ${fighter.focus}).`};
+ }
  return {partner};
 }
 export function ricochetHexes(b:Battle,u:Unit,aim:Hex,id:AbilityId='ricochet'):Hex[]{
- const reach=abilityFor(u,id).bounceRange??3;
+ const reach=abilityFor(u,id,teamStatus(b,u,id).partner).bounceRange??3;
  const first=b.units.find(v=>v.hp>0&&v.side!==u.side&&occupiedHexes(v).some(h=>equal(h,aim)));
  if(!first)return [];
  const choices=b.units.filter(v=>v.hp>0&&v.side!==u.side&&v.id!==first.id).flatMap(v=>{

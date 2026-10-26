@@ -25,7 +25,7 @@ describe('chosen skill progression',()=>{
  it('stores choices in the campaign and validates skill ownership, rank gates and point budgets',()=>{
   const s=newGame();s.xp=50;upgradeSkill('nell',2,s.skills.nell,'burst');expect(decodeSave(JSON.stringify(s))).toEqual(s);
   for(const bad of [null,{}, {...s.skills,nell:{...s.skills.nell,burst:4}},{...s.skills,nell:{...s.skills.nell,prism:1}},{...s.skills,nell:{...s.skills.nell,burst:1.5}}])expect(()=>decodeSkillBook(bad,2)).toThrow();
-  const excessive=structuredClone(s.skills);excessive.nell={burst:3,mend:3,dazzle:2,sunline:2,prism:1,daybreak:0};expect(()=>decodeSkillBook(excessive,10)).toThrow('Too many');
+  const excessive=structuredClone(s.skills);excessive.nell={burst:2,mend:1,dazzle:1,sunline:0};expect(()=>decodeSkillBook(excessive,3)).toThrow('Too many');
  });
  it('keeps themed upgrades under a single command and all authored builds within their point budgets',()=>{
   for(const hero of ['nell','orrin','kit','celia','petra']as const)for(let lv=1;lv<=15;lv++){
@@ -69,8 +69,10 @@ describe('ranked combat resolution',()=>{
  it('maximal Taunt combines the old party barrier with enemy targeting',()=>{
   const {b,u,ally,enemy}=battle(['petra','nell']);u.skills!.taunt=3;expect(cast(b,u,'taunt',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(u.id);expect(u.guard).toBe(33);expect(ally.guard).toBe(33);
  });
- it('team power averages both skill ranks and is identical from either initiator',()=>{
-  const {u,ally,enemy}=battle();u.skills!.prism=1;ally.skills!.prism=3;u.bonus=ally.bonus=0;enemy.armor=0;
-  expect(abilityFor(u,'prism').power).toBe(26);expect(abilityFor(ally,'prism').power).toBe(40);expect(damage(u,enemy,'prism',ally)).toBe(33);expect(damage(ally,enemy,'prism',u)).toBe(33);
+ it('team damage sums the solo skills and grows with either upgrade, identically from either initiator',()=>{
+  const {u,ally,enemy}=battle();u.skills!.burst=1;ally.skills!.steam=1;u.bonus=ally.bonus=0;enemy.armor=0;
+  expect(damage(u,enemy,'prism',ally)).toBe(24);expect(damage(ally,enemy,'prism',u)).toBe(24);
+  u.skills!.burst=2;expect(damage(u,enemy,'prism',ally)).toBe(29);
+  ally.skills!.steam=3;expect(damage(u,enemy,'prism',ally)).toBe(41);expect(abilityFor(u,'prism',ally).power).toBe(41);
  });
 });
