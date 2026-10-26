@@ -581,8 +581,8 @@ export class Adventure extends Phaser.Scene {
     this.drawGrid();this.drawInitiative();
     this.battlePresentation?.overlay?.(this,this.layer,b);
   }
-  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1) {
-    const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+HEX_SIZE*Math.cos(a),p.y+HEX_SIZE*Math.sin(a));});
+  private hexPolygon(h: Hex, color: number, alpha: number, stroke: number, width=1,radius=HEX_SIZE) {
+    const p=toPixel(h),g=this.grid!;const points=Array.from({length:6},(_,i)=>{const a=(i*60-30)*Math.PI/180;return new Phaser.Math.Vector2(p.x+radius*Math.cos(a),p.y+radius*Math.sin(a));});
     if(alpha>0)g.fillStyle(color,alpha).fillPoints(points,true);
     g.lineStyle(width,stroke,.78).strokePoints(points,true);
   }
@@ -598,20 +598,28 @@ export class Adventure extends Phaser.Scene {
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     for(const h of cells()){
       const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1;
+      const reachable=!!reachableHexes?.get(id)?.path.length;
       if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;}
       if(b.grounding?.plates.some(p=>equal(p,h))){color=b.grounding.open?0x4b9787:0x3b7bba;alpha=.48;stroke=0x9be8e4;width=3;}
       if(b.vents.has(id)){color=0xb95025;alpha=.4;stroke=0xffbf6a;}
       if(b.obstacles.has(id)){color=0x17201e;alpha=.45;stroke=0x686753;}
       else if(reachableHexes?.has(id)&&!equal(h,u!.hex)){color=0x568d99;alpha=.21;stroke=0x91b5b2;}
       if(occupied.has(id)){color=0x29233b;alpha=.5;stroke=0xbe965d;width=2;}
-      if(danger.has(id)){color=0xad4937;alpha=.4;stroke=0xf7ae73;width=2;}
+      if(danger.has(id)){
+        if(reachable){color=0x568d99;alpha=.32;}else{color=0xad4937;alpha=.4;}
+        stroke=0xf7ae73;width=2;
+      }
       if(affected.has(id)){color=ABILITIES[this.selected as AbilityId]?.heal?0x72b89c:0xe5a742;alpha=.45;stroke=0xf2c778;width=2;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);if(alpha===.12){color=0xd7a548;alpha=.22;}}
       if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;}
       this.hexPolygon(h,color,alpha,stroke,width);
-      if(danger.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(p.x-6,p.y-6,p.x+6,p.y+6);this.grid.lineBetween(p.x-6,p.y+6,p.x+6,p.y-6);}
+      if(danger.has(id)){
+        if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,HEX_SIZE-5);
+        const p=toPixel(h),x=Math.round(p.x/2)*2,y=Math.round((p.y-20)/2)*2;
+        this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(x-4,y-4,x+4,y+4);this.grid.lineBetween(x-4,y+4,x+4,y-4);
+      }
       if(b.evacuation?.route.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(2,0xf4cc72,.95);this.grid.lineBetween(p.x-9,p.y+15,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+10,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+20,p.x+9,p.y+15);}
       if(b.grounding?.plates.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(3,0xb7f0df,1);this.grid.lineBetween(p.x,p.y-9,p.x,p.y+7);for(let row=0;row<3;row++)this.grid.lineBetween(p.x-10+row*3,p.y+7+row*5,p.x+10-row*3,p.y+7+row*5);}
       if(b.water.has(id)){const p=toPixel(h);this.grid.lineStyle(2,0xa1d4dc,.9);this.grid.lineBetween(p.x-12,p.y+10,p.x+2,p.y+10);this.grid.lineBetween(p.x-2,p.y+14,p.x+12,p.y+14);}
@@ -655,11 +663,14 @@ export class Adventure extends Phaser.Scene {
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):ABILITIES[this.selected].description;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
+    if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(!aimed)return;
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
-      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}}
+      if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}
+        if(b.units.some(v=>v.hp>0&&v.intent?.cells.some(h=>equal(h,aimed)))){const warning=document.createElement('span');warning.className='prediction';warning.textContent='Threatened destination · an enemy has marked this hex.';confirm.append(warning);}
+      }
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
       const ability=ABILITIES[this.selected],hits=targets(b,u,this.selected,aimed);

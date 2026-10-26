@@ -3,6 +3,7 @@ import type { GameState,MapId } from '../rules/state';
 /** Boss victories flow straight into the scene previously blocked by the fight.
  * Keep the interaction as a replay/recovery entry, but do not mark it twice. */
 export const BOSS_AFTERMATHS:readonly {map:MapId;won:string;done:string;interaction:string}[]=[
+ {map:'rillbridge',won:'collectorDefeated',done:'villageFreed',interaction:'release'},
  {map:'relayhall',won:'worksWardenWon',done:'tomasRescued',interaction:'works-tomas'},
  {map:'conduit',won:'conduitGuardWon',done:'extractionStopped',interaction:'heart-release'},
  {map:'breakwater',won:'worksGateWon',done:'harborOpened',interaction:'works-wheel'},

@@ -1,9 +1,26 @@
 import {test,expect} from '@playwright/test';
 import {chapterSixCapitalStart} from '../../src/dev/canonical-saves';
 import {arrival} from '../../src/content/maps';
-import {palaceCheckpoint} from '../support/progress';
+import {checkpoint,palaceCheckpoint} from '../support/progress';
 import {importSave,approach} from './navigation';
 import {inspect,capture} from './controls';
+
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Rillbridge releases automatically after collector victory on ${device}`,async({browser})=>{
+ const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
+ try{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');await importSave(page,checkpoint('collectorConfronted'));await approach(page,'collector');
+  await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-release');
+  const won=(await inspect(page)).state;expect(won.flags.collectorDefeated).toBe(true);expect(won.flags.villageFreed).toBeUndefined();
+  await capture(page,`rillbridge-automatic-release-${device}`);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-release');
+  expect((await inspect(page)).state.inventory).toEqual(won.inventory);expect((await inspect(page)).state.xp).toBe(won.xp);
+  await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.villageFreed).toBe(true);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('world');
+  expect((await inspect(page)).cinematic).toBeNull();expect((await inspect(page)).state.xp).toBe(won.xp);expect(errors).toEqual([]);
+ }finally{await context.close();}
+});
 
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`guardian victory starts its aftermath automatically on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
