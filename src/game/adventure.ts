@@ -698,7 +698,7 @@ export class Adventure extends Phaser.Scene {
       return {label:a.name+(a.bonus?' · Extra':a.team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),unavailable:!!team.reason,selected:this.selected===id,badge:a.rank?String(a.rank):undefined,title:team.reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
     }),
       {label:movementOnly(b,u)?'End turn':'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},...movementOnly(b,u)?[]:[{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]]);
-    this.ui.status.textContent=player?(movementOnly(b,u)?'Attack spent on teaming. Move once, or end your turn.':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
+    this.ui.status.textContent=player?(movementOnly(b,u)?'Attack spent. Move or End turn (F).':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
     this.ui.controls.querySelector('.command-list')!.scrollTop=commandScroll;
     if(this.selected!=='move')this.ui.controls.querySelector('.actions button.selected')?.scrollIntoView({block:'nearest',inline:'nearest'});
@@ -711,7 +711,7 @@ export class Adventure extends Phaser.Scene {
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected,teamStatus(b,u,this.selected).partner).description;
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
-    if(movementOnly(b,u))hint.textContent='Your attack was used in the team move. Choose a destination, or End turn (F). Moving finishes this turn.';
+    if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){
