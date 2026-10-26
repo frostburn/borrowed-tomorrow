@@ -1,28 +1,28 @@
 import {ABILITIES,teamSolo,type Ability,type AbilityId} from './abilities';
 import {COMPANION_IDS,type CompanionId} from './party';
 
-export type SkillId='burst'|'mend'|'dazzle'|'sunline'|'steam'|'rivet'|'guard'|'repulse'|'quickshot'|'ricochet'|'feint'|'pin'|'celestialbolt'|'rally'|'sanctuary'|'bash'|'taunt'|'sweep'|'crush';
+export type SkillId='burst'|'mend'|'heal'|'dazzle'|'sunline'|'steam'|'rivet'|'guard'|'repulse'|'quickshot'|'ricochet'|'feint'|'pin'|'celestialbolt'|'rally'|'sanctuary'|'bash'|'taunt'|'sweep'|'crush';
 export type SkillRanks=Partial<Record<SkillId,number>>;
 export type SkillBook=Record<CompanionId,SkillRanks>;
 export interface Skill {id:SkillId;levels:readonly number[];ranks:readonly Partial<Ability>[]}
 const skill=(id:SkillId,levels:readonly number[],ranks:readonly Partial<Ability>[]):Skill=>({id,levels,ranks});
-const mend=(levels:readonly number[],revive=false)=>skill('mend',levels,[
+const restoration=(id:'mend'|'heal',levels:readonly number[])=>{const revive=id==='heal';return skill(id,levels,[
  {power:18,description:'Heal one ally. Range 4. 2 focus.'},
  {power:22,shape:'blast',cost:3,description:'Heal allies in a seven-hex area. Range 4. 3 focus.'},
  {power:28,shape:'blast',cost:revive?4:3,cleanse:true,...(revive?{reviveFraction:.35,sound:'revive' as const}:{}),description:revive?'Heal allies in seven hexes and clear Dazzle/pin. A fallen ally at the clear center revives at 35% HP and acts next round. Range 4. 4 focus.':'Heal allies in a seven-hex area and clear Dazzle and pin. Range 4. 3 focus.'},
-]);
+]);};
 export const SKILLS:Record<CompanionId,readonly Skill[]>={
  nell:[
   skill('burst',[1,2,6],[
    {shape:'quad',power:8,description:'A slanted four-hex burst extending right and down-right from the aim. Hits allies. Range 5. 2 focus.'},
    {shape:'blast',power:13,description:'A seven-hex burst. Hits allies. Range 5. 2 focus.'},
    {shape:'blast',power:19,friendlyFire:.5,description:'A stronger seven-hex burst. Allies take half damage. Range 5. 2 focus.'},
-  ]),mend([2,5,10]),
+  ]),restoration('mend',[2,5,10]),
   skill('dazzle',[3,7,11],[{}, {shape:'blast',cost:3,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 3 focus.'},{shape:'blast',cost:2,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 2 focus.'}]),
   skill('sunline',[7,10,13],[{range:4,power:12,cost:3,description:'A short hex-diagonal ray: two spaced contacts from Nell. Stops at cover, hits allies. 3 focus.'},{range:6,power:17},{range:6,power:24}]),
  ],
  orrin:[
-  skill('steam',[1,4,9],[{power:16},{shape:'diagonal',range:6,power:21,description:'A hex-diagonal steam ray from Orrin. Three contacts, two steps apart. Stops at cover and hits allies. 2 focus.'},{shape:'diagonal',range:6,power:28,description:'A stronger hex-diagonal steam ray. Three spaced contacts. Stops at cover and hits allies. 2 focus.'}]),
+  skill('steam',[1,4,9],[{power:16},{power:21},{power:28}]),
   skill('rivet',[2,6,11],[{power:10,pierce:2},{power:15,pierce:4,description:'One enemy within 5 hexes. Ignores 4 armor. 1 focus.'},{power:21,pierce:6,description:'One enemy within 5 hexes. Ignores 6 armor. 1 focus.'}]),
   skill('guard',[2,5,10],[{power:10},{shape:'blast',range:0,power:16,cost:3,description:'Grant a barrier to Orrin and adjacent allies. Level-scaled; does not stack. 3 focus.'},{shape:'blast',range:0,power:25,cost:3,description:'Grant a stronger barrier to Orrin and adjacent allies. Level-scaled; does not stack. 3 focus.'}]),
   skill('repulse',[5,8,12],[{power:8},{power:13},{power:19,friendlyFire:.5,description:'A strong pressure wave around Orrin. Allies take half damage. Push survivors one clear hex. 3 focus.'}]),
@@ -34,7 +34,7 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
   skill('pin',[7,10,13],[{power:8},{power:14},{power:21}]),
  ],
  celia:[
-  skill('celestialbolt',[1,6,11],[{power:8},{power:10},{power:12}]),mend([1,3,10],true),
+  skill('celestialbolt',[1,6,11],[{power:8},{power:10},{power:12}]),restoration('heal',[1,3,10]),
   skill('rally',[2,6,10],[{}, {shape:'party',range:0,power:2,cost:3,description:'Restore up to 2 focus to every other living ally. 3 focus.'},{shape:'party',range:0,power:3,cost:4,description:'Restore up to 3 focus to every other living ally. 4 focus.'}]),
   skill('sanctuary',[5,9,12],[{power:8},{power:16},{shape:'party',range:0,power:20,cost:4,description:'Grant a barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
  ],
@@ -68,7 +68,8 @@ export function abilityFor(u:{kind:string;skills?:SkillRanks},id:AbilityId,partn
  if(ABILITIES[id].team){
   const solo=teamSolo(u.kind,id),other=partner&&teamSolo(partner.kind,id),a=ABILITIES[id];
   const shot=id==='crossfire'?(u.kind==='kit'?abilityFor(u,'ricochet'):partner?.kind==='kit'?abilityFor(partner,'ricochet'):undefined):undefined;
-  return {...a,...(solo&&other?{power:abilityFor(u,solo).power+abilityFor(partner!,other).power}:{}),...(shot?{range:shot.range,bounceRange:shot.bounceRange}: {})};
+  const vanguard=id==='daybreak'?[u,partner].find(v=>v?.kind==='petra'):undefined,ward=vanguard?abilityFor(vanguard,'taunt').ward:undefined;
+  return {...a,...(solo&&other?{power:abilityFor(u,solo).power+abilityFor(partner!,other).power}:{}),...(shot?{range:shot.range,bounceRange:shot.bounceRange}: {}),...(ward?{ward}:{})};
  }
  const s=u.skills&&SKILLS[u.kind as CompanionId]?.find(s=>s.id===id);if(!s)return ABILITIES[id];
  const rank=u.skills![s.id]??0;

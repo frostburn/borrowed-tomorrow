@@ -10,7 +10,7 @@ import type {BattlePresentation} from '../game/battle-presentation';
 import {facingAsset} from '../content/actors';
 import type {CompanionId} from '../rules/party';
 
-export type CombatPreset='prism'|'crossfire'|'stars'|'daybreak'|'recovery';
+export type CombatPreset='prism'|'crossfire'|'stars'|'daybreak'|'lantern'|'recovery';
 export const TACTICS_ENCOUNTER:Encounter={
  id:'workshop',name:'Combat review · the pressure yard',music:'battle',flag:'practice',xp:0,coins:0,coordinated:true,
  enemies:[{kind:'guardian',col:7,row:3,hp:240,bonus:6},{kind:'crow',col:8,row:1,hp:150,bonus:8},{kind:'hound',col:8,row:5,hp:180,bonus:9}],rocks:[],
@@ -19,7 +19,7 @@ export const TACTICS_ENCOUNTER:Encounter={
 export function richCombatPreview(preset:CombatPreset|'workshop',settings?:CharacterSettings,inventory?:Inventory){
  const builds=preset==='workshop'?structuredClone(settings!):newCharacterSettings();
  if(preset!=='workshop'){
-  builds.party=preset==='crossfire'?['kit','petra','celia']:preset==='recovery'||preset==='stars'?['celia','orrin','petra']:['nell','orrin','celia'];
+  builds.party=preset==='crossfire'?['kit','petra','celia']:preset==='lantern'?['nell','kit','orrin']:preset==='daybreak'?['celia','petra','orrin']:preset==='recovery'||preset==='stars'?['celia','orrin','petra']:['nell','orrin','celia'];
   for(const hero of builds.party)builds.characters[hero]=defaultBuild(hero,preset==='daybreak'?13:10);
  }
  const state=newGame(),battle=createBattle(TACTICS_ENCOUNTER,state,equipmentBonuses(preset==='workshop'?inventory!:newInventory()),characterProfiles(builds),builds.party);

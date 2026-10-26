@@ -50,17 +50,17 @@ describe('ranked combat resolution',()=>{
   }
   expect(results).toEqual([[8,8],[13,13],[19,10]]);
  });
- it('upgraded Mend heals only allies and its final rank clears Dazzle and pin',()=>{
-  const {b,u,ally,enemy}=battle(['celia','nell']);u.skills!.mend=3;u.hex=offset(4,3);ally.hex=offset(5,3);enemy.hex=offset(5,2);u.hp-=30;ally.hp-=40;enemy.hp=10;ally.dazzledAttacks=3;ally.pinned=true;
-  const hp=ally.hp,predicted=damage(u,ally,'mend');expect(targets(b,u,'mend',ally.hex)).not.toContain(enemy);expect(cast(b,u,'mend',ally.hex)).toBe(true);expect(ally.hp).toBe(hp+predicted);expect(ally.dazzledAttacks).toBeUndefined();expect(ally.pinned).toBeUndefined();expect(enemy.hp).toBe(10);
+ it('upgraded Heal heals only allies and its final rank clears Dazzle and pin',()=>{
+  const {b,u,ally,enemy}=battle(['celia','nell']);u.skills!.heal=3;u.hex=offset(4,3);ally.hex=offset(5,3);enemy.hex=offset(5,2);u.hp-=30;ally.hp-=40;enemy.hp=10;ally.dazzledAttacks=3;ally.pinned=true;
+  const hp=ally.hp,predicted=damage(u,ally,'heal');expect(targets(b,u,'heal',ally.hex)).not.toContain(enemy);expect(cast(b,u,'heal',ally.hex)).toBe(true);expect(ally.hp).toBe(hp+predicted);expect(ally.dazzledAttacks).toBeUndefined();expect(ally.pinned).toBeUndefined();expect(enemy.hp).toBe(10);
  });
  it('party Rally excludes its caster and restores the previewed focus',()=>{
   const {b,u,ally}=battle(['celia','nell']);u.skills!.rally=2;ally.focus=1;b.queue=[u.id,b.units.at(-1)!.id,ally.id];const own=u.focus;
   expect(targets(b,u,'rally',u.hex)).toEqual([ally]);expect(cast(b,u,'rally',u.hex)).toBe(true);expect(ally.focus).toBe(3);expect(u.focus).toBe(own-3);
  });
- it('final Mend can cleanse an ally whose HP is already full',()=>{
-  const {b,u,ally}=battle(['celia','nell']);u.skills!.mend=3;u.hex=offset(3,3);ally.hex=offset(4,3);ally.dazzledAttacks=3;ally.pinned=true;
-  expect(legalAim(b,u,'mend',ally.hex)).toBe(true);expect(cast(b,u,'mend',ally.hex)).toBe(true);expect(ally.dazzledAttacks).toBeUndefined();expect(ally.pinned).toBeUndefined();expect(ally.hp).toBe(ally.maxHp);
+ it('final Heal can cleanse an ally whose HP is already full',()=>{
+  const {b,u,ally}=battle(['celia','nell']);u.skills!.heal=3;u.hex=offset(3,3);ally.hex=offset(4,3);ally.dazzledAttacks=3;ally.pinned=true;
+  expect(legalAim(b,u,'heal',ally.hex)).toBe(true);expect(cast(b,u,'heal',ally.hex)).toBe(true);expect(ally.dazzledAttacks).toBeUndefined();expect(ally.pinned).toBeUndefined();expect(ally.hp).toBe(ally.maxHp);
  });
  it('final Shield bash pushes adjacent enemies without damage or consuming the main action',()=>{
   const {b,u,ally,enemy}=battle(['petra','nell']);u.skills!.bash=3;u.focus=0;u.hex=offset(4,3);ally.hex=offset(3,3);enemy.hex=offset(5,3);const hp=enemy.hp,friend={...ally.hex};

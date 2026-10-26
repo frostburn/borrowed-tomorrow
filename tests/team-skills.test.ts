@@ -29,7 +29,7 @@ describe('teams inherit solo skills',()=>{
   const ranks=startingSkills('kit');expect(skillAbilities('kit',ranks)).not.toContain('crossfire');
   expect(upgradeSkill('kit',5,ranks,'ricochet')).toBe(true);expect(skillAbilities('kit',ranks)).toContain('crossfire');expect(skillPoints('kit',5,ranks)).toBe(3);
  });
- for(const id of ['prism','starline','crossfire']as const)it(`${id} sums the actual solo damage including separate armor, piercing, defense and Dazzle`,()=>{
+ for(const id of ['prism','starline','crossfire','lanternvolley']as const)it(`${id} sums the actual solo damage including separate armor, piercing, defense and Dazzle`,()=>{
   const {b,u,partner,enemy}=yard([...ABILITIES[id].team!.pair]as CompanionId[]);
   u.hex=offset(3,3);partner.hex=offset(2,4);u.bonus=7;partner.bonus=13;u.dazzledAttacks=3;partner.dazzledAttacks=1;enemy.armor=6;enemy.defending=true;
   const first=teamSolo(u.kind,id)!,second=teamSolo(partner.kind,id)!;
@@ -48,9 +48,9 @@ describe('teams inherit solo skills',()=>{
   const {b,u,enemy}=yard(['nell','orrin']),crow=b.units.find(u=>u.kind==='crow')!;
   const sum=damage(enemy,u,'steam')+damage(crow,u,'peck');expect(damage(enemy,u,'relay',crow)).toBe(sum);expect(damage(crow,u,'relay',enemy)).toBe(sum);
  });
- it('Daybreak adds each Mend with its own rank and level, without turning weapon power into healing or reviving',()=>{
-  const {b,u,partner}=yard(['nell','celia']);u.skills!.mend=1;u.level=3;partner.skills!.mend=3;partner.level=11;u.hp=1;partner.hp=1;
-  const sum=supportPower(u,'mend')+supportPower(partner,'mend');expect(sum).toBe(70);expect(supportPower(u,'daybreak',partner)).toBe(sum);expect(supportPower(partner,'daybreak',u)).toBe(sum);
+ it('Daybreak uses Celia’s Heal at her own rank and level, without turning weapon power into healing or reviving',()=>{
+  const {b,u,partner}=yard(['celia','petra']);u.skills!.heal=3;u.level=11;partner.level=3;u.hp=1;partner.hp=1;
+  const sum=supportPower(u,'heal');expect(sum).toBe(48);expect(supportPower(u,'daybreak',partner)).toBe(sum);expect(supportPower(partner,'daybreak',u)).toBe(sum);
   u.bonus=partner.bonus=999;expect(damage(u,u,'daybreak',partner)).toBe(sum);
   expect(cast(b,u,'daybreak',u.hex)).toBe(true);expect(u.hp).toBe(1+sum);
  });

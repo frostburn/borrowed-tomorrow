@@ -1,13 +1,14 @@
 import type Phaser from 'phaser';
-import type {AbilityId} from '../rules/abilities';
-import {toPixel,type Hex} from '../rules/hex';
+import type {Ability,AbilityId} from '../rules/abilities';
+import {equal,toPixel,type Hex} from '../rules/hex';
 
 /** Contact is shared by the effect and the HP/terrain reveal in Adventure. */
 export const TEAM_ANIMATION:Partial<Record<AbilityId,{duration:number;contact:number}>>={
  starline:{duration:780,contact:440},prism:{duration:640,contact:210},
  crossfire:{duration:680,contact:380},daybreak:{duration:800,contact:360},relay:{duration:640,contact:340},
+ lanternvolley:{duration:720,contact:360},
 };
-export interface TeamSource {kind:string;x:number;y:number}
+export interface TeamSource {kind:string;x:number;y:number;hex?:Hex}
 const snap=(n:number)=>Math.round(n/2)*2;
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
 const star=(g:Phaser.GameObjects.Graphics,x:number,y:number,r:number,color:number)=>{
@@ -21,7 +22,7 @@ const slash=(g:Phaser.GameObjects.Graphics,x:number,y:number,p:number)=>{
 };
 
 /** Distinct team silhouettes, drawn on the same chunky grid as actors and hexes. */
-export function drawTeamEffect(g:Phaser.GameObjects.Graphics,id:AbilityId,p:number,affected:Hex[],sources:TeamSource[],reduced:boolean):boolean{
+export function drawTeamEffect(g:Phaser.GameObjects.Graphics,id:AbilityId,p:number,affected:Hex[],sources:TeamSource[],reduced:boolean,definition?:Ability):boolean{
  const timing=TEAM_ANIMATION[id];if(!timing)return false;
  const contact=timing.contact/timing.duration,points=affected.map(toPixel),phase=reduced?1:p;
  g.setAlpha(reduced?.85:1-clamp((p-.7)/.3));
@@ -62,17 +63,28 @@ export function drawTeamEffect(g:Phaser.GameObjects.Graphics,id:AbilityId,p:numb
    if(t===1){slash(g,b.x,b.y,phase);g.lineStyle(2,0xe6b77d,.8).lineBetween(b.x-22,b.y-20,b.x+20,b.y+16);}
   }
   if(guard){slash(g,guard.x,guard.y,phase);g.lineStyle(4,0xbea779,.8).strokeEllipse(guard.x,guard.y+4,24,36);}
+ }else if(id==='lanternvolley'){
+  const lantern=sources.find(s=>s.kind==='nell'),courier=sources.find(s=>s.kind==='kit')??sources[0];if(!courier)return true;
+  if(lantern){const r=snap(8+clamp(phase/contact)*12);g.fillStyle(0xf0c16b,.3).fillCircle(lantern.x,lantern.y,r);star(g,lantern.x,lantern.y,8,0xffe6a8);}
+  for(const [i,at]of points.entries()){
+   const delay=(i%3)*.025,travel=clamp((phase-delay)/(contact-delay));if(phase<delay)continue;
+   const x=snap(courier.x+(at.x-courier.x)*travel),y=snap(courier.y+(at.y-24-courier.y)*travel-Math.sin(travel*Math.PI)*32);
+   if(phase<contact){g.lineStyle(2,0xe8ae65,.8).lineBetween(x-12,y-6,x,y);g.fillStyle(0xffedbe).fillRect(x-4,y-2,8,4);}
+   else{const r=snap(8+(phase-contact)*28);g.fillStyle(0xefae58,.2).fillCircle(at.x,at.y-24,r);star(g,at.x,at.y-24,10,0xffe3a3);g.lineStyle(2,0xf7cc8c,.8).strokeEllipse(at.x,at.y,r*2,r);}
+  }
  }else if(id==='daybreak'){
   const centers=sources.length?sources:points,center={x:snap(centers.reduce((n,s)=>n+s.x,0)/Math.max(1,centers.length)),y:snap(centers.reduce((n,s)=>n+s.y,0)/Math.max(1,centers.length))};
   const dawn=clamp(phase/contact),radius=snap(20+dawn*260);
   g.fillStyle(0xefc88c,.12).fillEllipse(center.x,center.y,radius*2,radius);
   g.lineStyle(4,0xf1ce8f,.7).strokeEllipse(center.x,center.y,radius*2,radius);
   g.fillStyle(0xffe3a6,.85).fillCircle(center.x,center.y-snap(dawn*36),16);
-  for(const at of points){
+  const vanguard=sources.find(s=>s.kind==='petra');
+  for(const [i,at]of points.entries()){
    const r=snap(12+dawn*16);g.lineStyle(2,0xb5dcc0,.8).strokeEllipse(at.x,at.y,r*2,r);
-   g.lineStyle(4,0xf7dcac,.8).beginPath().arc(at.x,at.y-24,22,Math.PI,Math.PI*2).strokePath();
+   if(definition?.ward&&(definition.ward.party||vanguard?.hex&&equal(vanguard.hex,affected[i])))g.lineStyle(4,0xf7dcac,.8).beginPath().arc(at.x,at.y-24,22,Math.PI,Math.PI*2).strokePath();
    if(phase>=contact){star(g,at.x,at.y-40-snap((phase-contact)*28),6,0xffebbd);g.fillStyle(0xbcdec0,.85).fillRect(at.x-2,at.y-32,4,16).fillRect(at.x-8,at.y-26,16,4);}
   }
+  if(vanguard){g.lineStyle(4,0xf3c981,.9).strokeEllipse(vanguard.x,vanguard.y+6,28,40);for(const dx of [-1,1])g.lineStyle(2,0xf3c981,.7).lineBetween(vanguard.x+dx*18,vanguard.y-10,vanguard.x+dx*(22+snap(dawn*20)),vanguard.y-24);}
  }else if(id==='relay'){
   const travel=clamp(phase/contact);
   for(const [i,at]of points.entries()){

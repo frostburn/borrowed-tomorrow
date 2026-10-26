@@ -14,7 +14,7 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:TEAM_ANIMATION[ability]?.duration??(rich?580:300),onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
-    if(drawTeamEffect(g,ability,p,affected,teamSources,reduced))return;
+    if(drawTeamEffect(g,ability,p,affected,teamSources,reduced,definition))return;
     if(definition.shape==='diagonal'&&origin&&affected.length){
       const start=diagonalStart(origin,affected[0]),points=affected.map(toPixel),last=points.at(-1)!,progress=reduced?1:Math.min(1,p*2);
       const tip={x:Math.round((start.x+(last.x-start.x)*progress)/2)*2,y:Math.round((start.y+(last.y-start.y)*progress)/2)*2};

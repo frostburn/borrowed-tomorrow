@@ -14,7 +14,12 @@ export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
  if(id==='bandage'||a.effect==='focus')return a.power;
  return power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
 }
-export const daybreakGuard=(u:Unit,partner?:Unit)=>8+Math.floor(Math.max(0,(partner?((u.level??1)+(partner.level??1))/2:(u.level??1))-1)*1.5);
+/** Daybreak adds Petra's actual Taunt and its current self/party ward to Celia's Heal. */
+export function daybreakProtection(u:Unit,partner?:Unit){
+ const vanguard=[u,partner].find(v=>v?.kind==='petra');if(!vanguard)return;
+ const ward=abilityFor(vanguard,'taunt').ward;
+ return {vanguard,power:ward?ward.power+Math.floor(Math.max(0,(vanguard.level??1)-1)*1.5):0,party:!!ward?.party};
+}
 /** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
  const team=ABILITIES[id].team;

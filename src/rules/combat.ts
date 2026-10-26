@@ -1,4 +1,4 @@
-import {supportPower,daybreakGuard,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
+import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
 import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
 import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
@@ -165,7 +165,10 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
   const v = unitAt(b, aim);
   if(a.effect==='weaken')return targets(b,u,id,aim).some(t=>!t.dazzledAttacks);
-  if (a.heal) return targets(b,u,id,aim).some(t=>t.side===u.side&&(t.hp<t.maxHp||a.cleanse&&(t.dazzledAttacks||t.pinned)));
+  if (a.heal) {
+    const protection=id==='daybreak'?daybreakProtection(u,teamStatus(b,u,id).partner):undefined;
+    return targets(b,u,id,aim).some(t=>t.side===u.side&&(t.hp<t.maxHp||a.cleanse&&(t.dazzledAttacks||t.pinned)))||!!protection&&(alive(b).some(t=>t.side!==u.side&&t.tauntedBy!==protection.vanguard.id)||alive(b).some(t=>t.side===u.side&&(protection.party||t.id===protection.vanguard.id)&&(t.guard??0)<protection.power));
+  }
   if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<supportPower(u,id));
   if (a.effect==='focus') return targets(b,u,id,aim).some(v=>v.focus<6);
   if(a.effect==='shove'&&a.shape==='blast')return targets(b,u,id,aim).length>0;
@@ -280,7 +283,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     else if(a.effect==='weaken'){if(v.dazzledAttacks)continue;v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,supportPower(u,id));log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
     else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(6,v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
-    else if(a.heal){const fallen=v.hp<=0,amount=damage(u,v,id,partner);v.hp=Math.min(v.maxHp,v.hp+amount);if(a.cleanse){delete v.dazzledAttacks;delete v.pinned;}if(fallen){b.queue=b.queue.filter(id=>id!==v.id);v.retaliated=true;}if(id==='daybreak')v.guard=Math.max(v.guard??0,daybreakGuard(u,partner));log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
+    else if(a.heal){const fallen=v.hp<=0,amount=damage(u,v,id,partner);v.hp=Math.min(v.maxHp,v.hp+amount);if(a.cleanse){delete v.dazzledAttacks;delete v.pinned;}if(fallen){b.queue=b.queue.filter(id=>id!==v.id);v.retaliated=true;}log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id,partner);
       if(a.effect==='pin'&&v.hp>0&&!v.anchored)v.pinned=true;
@@ -288,7 +291,12 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     }
     if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
-  if(a.ward)for(const ally of alive(b).filter(v=>v.side===u.side&&(a.ward!.party||v.id===u.id)))ally.guard=Math.max(ally.guard??0,a.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5));
+  if(id==='daybreak'){
+    const protection=daybreakProtection(u,partner)!;
+    for(const enemy of alive(b).filter(v=>v.side!==u.side)){enemy.tauntedBy=protection.vanguard.id;log(b,`${enemy.name} targets ${protection.vanguard.name} until ${protection.vanguard.name}’s next turn.`);}
+    for(const ally of alive(b).filter(v=>v.side===u.side&&(protection.party||v.id===protection.vanguard.id)))ally.guard=Math.max(ally.guard??0,protection.power);
+  }
+  if(a.ward&&id!=='daybreak')for(const ally of alive(b).filter(v=>v.side===u.side&&(a.ward!.party||v.id===u.id)))ally.guard=Math.max(ally.guard??0,a.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5));
   if(damagingAbility(id))for(const message of damageFixtures(b,footprint,fixtureDamage(u,id,partner)))log(b,message);
   if (!hit.length&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {

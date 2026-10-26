@@ -118,7 +118,7 @@ export async function nativeActor(page:Page,sprite:string,at:{x:number;y:number}
 function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   const u=active(b)!;
   const danger=new Set(b.units.filter(v=>v.side==='enemy'&&v.hp>0).flatMap(v=>v.intent?.cells.map(keyFor)??[]));
-  for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend','daybreak'] as AbilityId[])
+  for(const ally of b.units.filter(v=>v.side==='party'&&v.hp>0&&v.hp<v.maxHp*.45))for(const id of ['bandage','mend','heal','daybreak'] as AbilityId[])
     if(legalAim(b,u,id,abilityFor(u,id).range===0?u.hex:ally.hex))return {action:id,hex:abilityFor(u,id).range===0?u.hex:ally.hex};
   if(b.grounding&&!b.grounding.open){
     const plate=b.grounding.plates[u.id==='nell'?0:1];

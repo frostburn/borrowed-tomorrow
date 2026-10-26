@@ -1,5 +1,5 @@
 import type { Instrument } from './score';
-export type Effect = 'drum' | 'rivet' | 'lightline' | 'pressure' | 'stars' | 'ricochet' | 'bolt' | 'barrier' | 'revive' | 'shield' | 'prism' | 'crossfire' | 'relay' | 'valve' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
+export type Effect = 'lanternvolley' | 'drum' | 'rivet' | 'lightline' | 'pressure' | 'stars' | 'ricochet' | 'bolt' | 'barrier' | 'revive' | 'shield' | 'prism' | 'crossfire' | 'relay' | 'valve' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
 import { isBass, isPercussion, pitchFrequency, type Pitch } from './tuning';
 import type { ControlCurve,NoteExpression } from './expression';
 
@@ -168,6 +168,8 @@ export class Synth {
       case 'rivet':tone(340,0,.045,.12,'triangle',180);noise(.03,.055,.15,2600,600);tone(1220,.08,.17,.07);break;
       case 'valve':noise(0,.12,.15,1200,500);tone(240,.03,.12,.1,'triangle',150);noise(.12,.28,.18,600,2000);break;
       case 'bolt':noise(0,.04,.12,2500,900);tone(1800,.02,.08,.14,'triangle',420);noise(.09,.06,.18,800);break;
+      case 'lanternvolley':
+        [0,.045,.09].forEach(t=>{noise(t,.035,.08,2300,800);tone(1700,t,.12,.065,'triangle',500);});noise(.36,.16,.12,1800,500);tone(480,.36,.22,.07,'sine',240);break;
       case 'ricochet':case 'crossfire':
         noise(0,.045,.17,2200,800);tone(1700,.03,.09,.12,'triangle',640);tone(2300,.18,.1,.1,'sine',1000);noise(.3,.08,.18,1200,500);if(kind==='crossfire')tone(180,.02,.28,.12,'triangle',70);break;
       case 'shield':noise(0,.08,.18,900,300);tone(160,0,.16,.17,'triangle',60);tone(780,.02,.2,.08);break;

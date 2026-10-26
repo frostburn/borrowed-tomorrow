@@ -1,7 +1,7 @@
 import {SKILLS} from '../src/rules/skills';
 import {describe,it,expect} from 'vitest';
 import {ABILITIES,active,cast,createBattle,damage,damagingAbility,defend,enemyTurn,legalAim,movement,shape,targets,wait,type Encounter} from '../src/rules/combat';
-import {axisHexes,battleAbilities,daybreakGuard,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
+import {axisHexes,battleAbilities,daybreakProtection,fixtureAt,prepareRelay,supportPower,teamStatus} from '../src/rules/combat-tactics';
 import {add,cells,diagonalRay,diagonalStart,DIAGONALS,hexVertices,inside,key,offset,distance,scale} from '../src/rules/hex';
 import {newGame} from '../src/rules/state';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
@@ -26,7 +26,7 @@ describe('shared-turn moves',()=>{
  });
  it('hides team commands only when their same-side partner is absent, retaining readiness explanations for fallen partners',()=>{
   const {b,u,partner,third,enemy}=yard();b.units=b.units.filter(v=>v.id!==third.id);
-  expect(battleAbilities(b,u)).not.toContain('daybreak');expect(battleAbilities(b,u)).toContain('prism');
+  expect(battleAbilities(b,u)).not.toContain('lanternvolley');expect(battleAbilities(b,u)).toContain('prism');
   partner.hex=offset(10,6);expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').partner).toBe(partner);
   partner.hp=0;expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toContain('Orrin is down');
   b.units=b.units.filter(v=>v.id!==partner.id);enemy.kind='orrin';expect(battleAbilities(b,u)).not.toContain('prism');
@@ -71,10 +71,10 @@ describe('shared-turn moves',()=>{
   const {b,u,partner,enemy}=yard();b.queue=[u.id,partner.id];const round=b.round;
   expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.round).toBe(round+1);expect(b.queue.filter(id=>id===u.id)).toHaveLength(1);expect(b.queue.filter(id=>id===partner.id)).toHaveLength(1);
  });
- it('Daybreak heals the living formation and adds non-stacking scaled barriers',()=>{
-  const {b,u,third}=yard();for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;
-  const hp=u.hp;expect(teamStatus(b,u,'daybreak').partner).toBe(third);cast(b,u,'daybreak',u.hex);
-  expect(u.hp).toBe(Math.min(u.maxHp,hp+62));expect(u.guard).toBe(26);expect(third.guard).toBe(daybreakGuard(u));expect(b.queue).not.toContain(third.id);
+ it('Daybreak heals the living formation, applies Petra’s Taunt and preserves stronger barriers',()=>{
+  const {b,u,partner,third,enemy}=yard(['celia','petra','orrin']);for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;third.guard=60;
+  const hp=u.hp,healing=supportPower(u,'heal');expect(teamStatus(b,u,'daybreak').partner).toBe(partner);cast(b,u,'daybreak',u.hex);
+  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(30);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).not.toContain(partner.id);
  });
 });
 
@@ -102,8 +102,6 @@ describe('geometry and progression',()=>{
   expect(shape(b,u,'sunline',enemy.hex)).toEqual([offset(4,2),offset(5,3),offset(7,4)]);
   const hit=targets(b,u,'sunline',enemy.hex),hp=enemy.hp,predicted=damage(u,enemy,'sunline');expect(hit.filter(v=>v===enemy)).toHaveLength(1);expect(hit).toContain(partner);expect(hit).not.toContain(u);
   cast(b,u,'sunline',enemy.hex);expect(enemy.hp).toBe(hp-predicted);
-  const {b:other,u:orrin}=yard(['orrin','kit','petra']);orrin.hex=offset(2,1);other.obstacles.add(key(offset(5,3)));expect(shape(other,orrin,'pressureline',offset(5,3))).toEqual([offset(4,2),offset(5,3)]);
-  orrin.hex=offset(3,1);expect(shape(other,orrin,'pressureline',offset(6,3))[0]).toEqual(offset(5,2));
  });
  it('bounces only to a distinct enemy, chooses nearest with stable ties, and obeys cover',()=>{
   const {b,u,enemy,crow,partner}=yard(['kit','petra','celia']);partner.hex=offset(7,2);
@@ -136,13 +134,13 @@ describe('support at campaign levels',()=>{
  });
  it('revives exactly one ally on a clear hex with no extra turn or retaliation that round',()=>{
   const {b,u,partner}=yard(['celia','nell','orrin']);partner.hp=0;b.queue=[u.id,'orrin',...b.queue.filter(id=>!['celia','nell','orrin'].includes(id))];
-  expect(legalAim(b,u,'mend',partner.hex)).toBe(true);cast(b,u,'mend',partner.hex);
+  expect(legalAim(b,u,'heal',partner.hex)).toBe(true);cast(b,u,'heal',partner.hex);
   expect(partner.hp).toBe(Math.ceil(partner.maxHp*.35));expect(b.queue).not.toContain(partner.id);expect(partner.retaliated).toBe(true);expect(u.focus).toBe(2);
  });
  it('rejects revival onto an occupied or blocked hex, or on a living or opposing fighter',()=>{
   const {b,u,partner,third,enemy}=yard(['celia','nell','orrin']);partner.hp=0;third.hex={...partner.hex};
-  expect(legalAim(b,u,'mend',partner.hex)).toBe(false);third.hex=offset(1,0);b.obstacles.add(key(partner.hex));expect(legalAim(b,u,'mend',partner.hex)).toBe(false);
-  b.obstacles.clear();partner.hp=1;expect(legalAim(b,u,'mend',partner.hex)).toBe(true);enemy.hp=0;expect(legalAim(b,u,'mend',enemy.hex)).toBe(false);
+  expect(legalAim(b,u,'heal',partner.hex)).toBe(false);third.hex=offset(1,0);b.obstacles.add(key(partner.hex));expect(legalAim(b,u,'heal',partner.hex)).toBe(false);
+  b.obstacles.clear();partner.hp=1;expect(legalAim(b,u,'heal',partner.hex)).toBe(true);enemy.hp=0;expect(legalAim(b,u,'heal',enemy.hex)).toBe(false);
  });
 });
 

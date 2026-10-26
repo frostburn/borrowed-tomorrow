@@ -13,12 +13,12 @@ Choose **Upgrade skills** on the victory panel, the available-points button whil
 | Nell | Lantern burst, Mend, Dazzle, Horizon light |
 | Orrin | Steam lance, Rivet shot, Safety guard, Pressure wave |
 | Kit | Quick shot, Feint, Ricochet, Pinning shot |
-| Celia | Celestial bolt, Mend, Rally, Sanctuary |
+| Celia | Celestial bolt, Heal, Rally, Sanctuary |
 | Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
 
 Strike and Bandage stay separate. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character list has eight abilities, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
 
-The themed merges are functional: Beacon becomes area Mend; Celia’s final Mend includes revival. Dimming halo becomes area Dazzle. Pressure seam becomes upgraded Steam lance; Field bracing becomes upgraded Safety guard. Piercing bolt becomes upgraded Quick shot; Volley gives way to the Ricochet line. Driving blow becomes final Crushing blow, while Hold the line becomes final Taunt’s party barrier.
+The themed merges are functional: Nell’s Mend and Celia’s Heal each gain area healing; Celia’s final Heal includes revival. Dimming halo becomes area Dazzle. Steam lance retains its original contiguous four-hex ray at every rank, with increasing damage; Field bracing becomes upgraded Safety guard. Piercing bolt becomes upgraded Quick shot; Volley gives way to the Ricochet line. Driving blow becomes final Crushing blow, while Hold the line becomes final Taunt’s party barrier.
 
 ### Lantern burst
 
@@ -32,30 +32,33 @@ All three cost two focus and aim within five hexes. The first footprint is `aim`
 
 ## Team moves
 
+The pairings form **Nell → Orrin → Celia → Petra → Kit → Nell**. Every companion has exactly two partners, and every three-character formation contains at least one pairing.
+
 | Move | Partners | Solo skills | Effect |
 | --- | --- | --- | --- |
-| Falling stars | Celia + Orrin | Celestial bolt + Rivet shot | Stars fall onto a full down-left axis |
 | Prism lance | Nell + Orrin | Lantern burst + Steam lance | Full horizontal prismatic steam lance |
-| Crossfire | Kit + Petra | Ricochet + Crushing blow | Shot and saber strike, bouncing to a second enemy |
-| Daybreak | Nell + Celia | Mend + Mend | Party healing and barriers |
+| Falling stars | Orrin + Celia | Rivet shot + Celestial bolt | Stars fall onto a full down-left axis |
+| Daybreak | Celia + Petra | Heal + Taunt | Party healing while Petra draws enemy attacks and applies Taunt’s current barriers |
+| Crossfire | Petra + Kit | Crushing blow + Ricochet | Shot and saber strike, bouncing to a second enemy |
+| Lantern volley | Kit + Nell | Quick shot + Lantern burst | Seven-hex burst of lantern-lit bolts; enemies only |
 
 Team moves are derived from their solo skills, never purchased or upgraded separately. Both corresponding solo skills must be learned; rank one suffices. Upgrading either solo improves its contribution. Either partner may initiate. Both must be alive in the current battle, have an unspent main action and have three focus. **There is no distance or line-of-sight requirement between teammates.** The attack itself still follows its targeting rules. Confirmation spends both turns and three focus each; waiting preserves eligibility, while an already spent turn does not. Both return normally next round. A consumed partner’s defense, pin and Taunt duration end with that turn.
 
-Team damage sums the actual solo attack contributions. Each contribution retains its own ranked power, attack bonus, armor piercing, Dazzle, friendly-fire reduction, defense calculation and rounding; the target's barrier absorbs the total once. Solo targeting restrictions and bonus effects do not become additional team requirements or effects. Daybreak sums each caster's Mend healing at their own rank and character level, retaining its existing non-stacking party barrier; it does not revive. Crossfire inherits Kit's current Ricochet range and bounce reach for either initiator. Preview and resolution share these calculations.
+Team damage sums the actual solo attack contributions. Each contribution retains its own ranked power, attack bonus, armor piercing, Dazzle, friendly-fire reduction, defense calculation and rounding; the target's barrier absorbs the total once. Solo targeting restrictions and bonus effects do not become additional team requirements or effects. Daybreak uses Celia’s Heal strength at her own rank and character level, and Petra’s actual Taunt: every living enemy targets Petra until her next turn. Taunt rank one has no barrier; rank two wards Petra; rank three wards the living party. Barriers scale with Petra’s level and preserve stronger existing wards. Daybreak can be useful at full HP because of Taunt/guard; it does not revive. Lantern volley adds both solo damage contributions but targets enemies only. Crossfire inherits Kit's current Ricochet range and bounce reach for either initiator. Preview and resolution share these calculations.
 
 Full-width attacks exclude both operators, can hit another ally and damage multi-contact enemies once. Team commands disappear when a same-side partner is absent. Commands remain gray and inspectable when a partner has acted, is down, lacks focus or has not learned their required solo skill. Selecting one names the unavailable fighter and reason in the fixed confirmation area, where it stays visible even with a scrolled menu; it never offers confirmation. Shortcuts follow the filtered list. The skill-upgrade screen only describes combinations with **already recruited** characters, so later party members remain unspoiled.
 
-A shared wind-up and both actors' attack poses show cooperation. `game/battle-team-effects.ts` gives each move its own effect on the actual affected footprint: Falling stars descends from above into landing flares; Prism lance uses separated prismatic planes and steam; Crossfire combines bolt bounces with crossing saber strokes; Daybreak spreads dawn light and healing shields. Enemy relays fire arcing shots from both operators. Shared animation timings align the HP/terrain reveal with contact. The effect container survives the impact redraw, is cleaned up with the battle and respects reduced motion. Falling stars has its own falling/landing sound.
+A shared wind-up and both actors' attack poses show cooperation. `game/battle-team-effects.ts` gives each move its own effect on the actual affected footprint: Falling stars descends from above into landing flares; Prism lance uses separated prismatic planes and steam; Crossfire combines bolt bounces with crossing saber strokes; Daybreak spreads dawn light while Petra raises her shield, showing barriers only where her Taunt rank grants them; Lantern volley sends lantern-lit bolts into the selected seven-hex area. Enemy relays fire arcing shots from both operators. Shared animation timings align the HP/terrain reveal with contact. The effect container survives the impact redraw, is cleaned up with the battle and respects reduced motion. Falling stars has its own falling/landing sound.
 
 ## Other geometry and support
 
-Horizon light and upgraded Steam lance are caster-originating hex-diagonal rays, between the ordinary hex axes. Their center contacts are two hex-steps apart; the ray starts at a vertex adjoining the caster’s hex and stops at the first cover contact. That contact can damage breakable cover. Cells beside the ray are not affected. Full-width axes belong only to teams.
+Steam lance is a contiguous four-hex ray from Orrin in one of six directions at every rank; it stops before cover and can hit allies. Its powers are 16/21/28 at character-level gates 1/4/9. Caster-originating straight rays remain valid solo attacks. Nell’s Horizon light follows spaced hex diagonals between those axes: center contacts are two steps apart, starting at a vertex adjoining her hex and stopping at the first cover contact. That contact can damage breakable cover. Full-width axes through freely selected distant rows remain exclusive to teams.
 
 Ricochets select the nearest distinct visible second enemy; ties resolve by enemy ID. Rank controls reach and power. They never bounce into another part of the same boss. Pinning shot limits mobile enemies to one movement for their next main action; anchored bosses resist pin. Shield bash stays a zero-damage optional extra action, once per turn. Its later ranks remove the focus cost and then push all adjacent enemies. Dazzle remains a three-attack effect and is never refreshed while active.
 
 Healing adds `2 × (character level − 1)` to ranked base power. Barriers add `floor(1.5 × (character level − 1))`. Weapon damage never inflates support. Barriers keep the strongest value instead of stacking. Bandages remain fixed at 24 HP; ranked Rally restores focus only to other allies.
 
-Celia’s rank-three Mend requires character level ten. It heals living allies in the area, clears Dazzle/pin, and can restore **one fallen ally at the clear center** to 35% maximum HP. The revived character acts next round and cannot retaliate immediately. A blocked or occupied center cannot revive anyone. This affects only units already in that battle, never reserves, story illness or permanent story deaths. Nell’s Mend does not revive. Final Taunt combines enemy targeting with level-scaled party barriers.
+Celia’s rank-three Heal requires character level ten. It heals living allies in the area, clears Dazzle/pin, and can restore **one fallen ally at the clear center** to 35% maximum HP. The revived character acts next round and cannot retaliate immediately. A blocked or occupied center cannot revive anyone. This affects only units already in that battle, never reserves, story illness or permanent story deaths. Nell’s Mend does not revive. Heal has its own skill ID and level gates (1/3/10), distinct from Nell’s Mend (2/5/10). Final Taunt combines enemy targeting with level-scaled party barriers.
 
 ## Battlefield objects and enemy teams
 
@@ -69,4 +72,4 @@ The Chapter One shed introduces cover; Chapter Two’s loading gate has a valve;
 
 Campaign saves are now **version 11**, storing every character’s skill ranks. Workshop character records are **version 3**, under `borrowed-tomorrow:character-workshop:v3`; inventory records remain version 2. Only current formats are read, in accordance with the repository policy. Version-10 campaign saves and previous workshop character records are not migrated. Canonical dev starts contain validated authored skill allocations; they never read a workshop build.
 
-Changing a workshop character’s level installs a balanced authored build. **Reset skill choices** retains level, stats and equipment while returning that character’s points for manual allocation. Practice never changes campaign choices. Combat presets exercise the shared rules; **Practice Revive** demonstrates Celia’s final Mend. Detailed desktop/phone journeys and skill checks remain outside the small default CI gate. Browser plugin not available in the task environment; local QA uses Playwright.
+Changing a workshop character’s level installs a balanced authored build. **Reset skill choices** retains level, stats and equipment while returning that character’s points for manual allocation. Practice never changes campaign choices. Combat presets exercise the shared rules; **Practice Revive** demonstrates Celia’s final Heal. Detailed desktop/phone journeys and skill checks remain outside the small default CI gate. Browser plugin not available in the task environment; local QA uses Playwright.
