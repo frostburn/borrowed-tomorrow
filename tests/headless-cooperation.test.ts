@@ -1,10 +1,13 @@
-import {it,expect} from 'vitest';
+import {it,expect,vi} from 'vitest';
 import {createBattle,active,cast,move,endTurn,type Battle} from '../src/rules/combat';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {newGame} from '../src/rules/state';
 import {offset} from '../src/rules/hex';
 import {decideCooperatively,cooperativeForecast} from '../src/headless/cooperative';
 import {decideDefensively} from '../src/headless/defensive';
+import {playBattle} from '../src/headless/battle';
+import {baselineAgent} from '../src/headless/campaign';
+import * as tactics from '../src/headless/tactics';
 
 // Stationary firing lanes isolate support/action economy from pathfinding.
 function arena(){
@@ -100,4 +103,12 @@ it('preserves legal movement-only decisions and a common round boundary',()=>{
  const last=focusLane();last.queue=['celia'];cast(last,active(last)!,'celestialbolt',offset(5,3));
  expect(last.round).toBe(2);const future=cooperativeForecast(last,3);
  expect(future.round).toBeLessThanOrEqual(3);
+});
+it('retains completed turns when a later agent decision fails',()=>{
+ const b=focusLane(),recorded:Record<string,unknown>[]=[];
+ const spy=vi.spyOn(tactics,'decideBattle').mockReturnValueOnce({kind:'defend'}).mockImplementationOnce(()=>{throw Error('Planning failed');});
+ try{
+  expect(()=>playBattle(b,baselineAgent,turn=>recorded.push(turn))).toThrow('Planning failed');
+  expect(recorded).toHaveLength(1);expect(recorded[0]).toMatchObject({actor:'celia',decision:{kind:'defend'}});
+ }finally{spy.mockRestore();}
 });

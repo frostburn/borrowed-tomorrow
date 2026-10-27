@@ -1,0 +1,1536 @@
+{
+  "version": 1,
+  "baseCommit": "b11fae7cbbc5cfb7702587faeceda9d565f5dab8",
+  "sourceFiles": {
+    "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
+    "src/headless/campaign.ts": "51abcf0871360a10b7146814ebfdb57c0030c80f7dd39871cec263d5903dfe1d",
+    "src/headless/continue.ts": "cbdfee2d39a9fcebc8c081edf03f0e50f7702674f3d279ef21afefb93b476bf7",
+    "src/headless/cooperative.ts": "038710f8d7cfcfc13fec889c7e3ec363d96546b430b7cc56563f5485d5c3a491",
+    "src/headless/defensive.ts": "5e9bbd7d1bbf903ed36d723609f2d036c348e356d48603a8c2ce96147a6283a2",
+    "src/headless/middle.ts": "cc1e2e67dc81f87e3b59eb1dec36791145a279a64e446ebab956b87e2a3d1860",
+    "src/headless/run.ts": "2879d118624ba00e3b50de375e4c7570ac77c9db74d082fa86605ffe74113835",
+    "src/headless/support-probe.ts": "7842ed6bb9b00790910fc5f11a3d1fa526b7a62711db2a2397ac73eaa3cf1e95",
+    "src/headless/tactics.ts": "2594201c28037da8e22361911719517b4dd525a4781cfd001568caadfe854e51",
+    "src/rules/combat.ts": "649306e163c18de42541dc0212d74d34ac46aeab462bb57c630089f7471f10ad",
+    "src/rules/abilities.ts": "1af9874160e2ff8ae071a1bf5797ef33308463120f71b5b8654f81ad7e693c17",
+    "src/rules/skills.ts": "9982a18eb8a22d267c440fdb5e54c918e0da723aaa78cdaad8fff7d950194f2c",
+    "src/content/chapter-four/encounters.ts": "e804c0a3ad9fdbe4c21a01f5f006b762d1066215f07e4f9958389d2bb22afa4b"
+  },
+  "earlyReportSha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+  "commands": [
+    "BT_HEADLESS_REPORT=/tmp/early.json npm run simulate:early",
+    "npm run simulate:compare -- --from /tmp/early.json",
+    "npm run simulate:support -- --from /tmp/early.json --output /tmp/support-probe.json",
+    "npm run test:headless",
+    "npm run check"
+  ],
+  "routeComparisons": [
+    {
+      "name": "legacy-offense-baseline",
+      "status": "complete",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "baseline"
+      },
+      "coins": 692,
+      "spent": 66,
+      "damage": 542,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 19,
+        "steam": 1,
+        "bandage": 3,
+        "mend": 4,
+        "rivet": 5,
+        "crossfire": 6,
+        "quickshot": 4,
+        "feint": 1,
+        "crush": 2,
+        "strike": 4,
+        "prism": 3,
+        "celestialbolt": 1,
+        "sanctuary": 1,
+        "starline": 3,
+        "heal": 4,
+        "field-bandage": 2,
+        "sweep": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 11,
+          "damage": 72,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 44,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 55,
+          "damage": 33,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 14,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 88,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 4,
+          "minHp": 15,
+          "damage": 133,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "legacy-offense-prepared",
+      "status": "complete",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "coins": 394,
+      "spent": 364,
+      "damage": 614,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 5,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 22,
+        "steam": 1,
+        "bandage": 5,
+        "mend": 4,
+        "rivet": 6,
+        "crossfire": 6,
+        "quickshot": 3,
+        "feint": 1,
+        "crush": 3,
+        "strike": 3,
+        "starline": 5,
+        "heal": 6,
+        "prism": 1,
+        "celestialbolt": 1,
+        "field-bandage": 2,
+        "sweep": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 13,
+          "damage": 50,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 46,
+          "damage": 22,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 56,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 66,
+          "damage": 38,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 99,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 42,
+          "damage": 197,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 1,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "defensive-offense-prepared",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "coins": 402,
+      "spent": 356,
+      "damage": 450,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "burst": 21,
+        "steam": 3,
+        "quickshot": 6,
+        "mend": 2,
+        "bandage": 4,
+        "crossfire": 5,
+        "taunt": 2,
+        "crush": 2,
+        "strike": 6,
+        "starline": 5,
+        "celestialbolt": 1,
+        "prism": 1,
+        "field-bandage": 1,
+        "rivet": 4,
+        "heal": 4,
+        "daybreak": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 55,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 44,
+          "damage": 49,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 16,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 50,
+          "damage": 46,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 25,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 84,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 58,
+          "damage": 119,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "defensive-support-prepared",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "prepared"
+      },
+      "coins": 394,
+      "spent": 364,
+      "damage": 643,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 6,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "burst": 23,
+        "steam": 10,
+        "quickshot": 1,
+        "mend": 2,
+        "bandage": 6,
+        "strike": 9,
+        "taunt": 3,
+        "rivet": 1,
+        "guard": 1,
+        "crush": 5,
+        "celestialbolt": 9,
+        "daybreak": 5,
+        "field-bandage": 2,
+        "heal": 2,
+        "sweep": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 55,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 5,
+          "minHp": 43,
+          "damage": 104,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 60,
+          "damage": 26,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 56,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 54,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 5,
+          "minHp": 58,
+          "damage": 148,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 3,
+          "minHp": 48,
+          "damage": 83,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 36,
+          "damage": 174,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "defensive-offense-frugal",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 524,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 20,
+        "bandage": 3,
+        "strike": 9,
+        "quickshot": 7,
+        "mend": 4,
+        "steam": 1,
+        "crossfire": 5,
+        "feint": 1,
+        "taunt": 2,
+        "crush": 2,
+        "prism": 2,
+        "celestialbolt": 3,
+        "sanctuary": 1,
+        "starline": 4,
+        "rivet": 2,
+        "field-bandage": 1,
+        "daybreak": 1,
+        "heal": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 43,
+          "damage": 51,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 50,
+          "damage": 18,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 49,
+          "damage": 36,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 14,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 100,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 54,
+          "damage": 139,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 1,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "name": "defensive-support-frugal",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 811,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 22,
+        "bandage": 4,
+        "strike": 9,
+        "quickshot": 2,
+        "mend": 6,
+        "steam": 6,
+        "crush": 7,
+        "rivet": 3,
+        "sweep": 4,
+        "taunt": 2,
+        "guard": 1,
+        "celestialbolt": 9,
+        "daybreak": 4,
+        "field-bandage": 1,
+        "heal": 3,
+        "bash": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 52,
+          "damage": 81,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 59,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 55,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 57,
+          "damage": 46,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 6,
+          "minHp": 38,
+          "damage": 172,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 126,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 28,
+          "damage": 217,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "name": "cooperative-offense-prepared",
+      "status": "complete",
+      "agent": {
+        "tactics": "cooperative",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "coins": 402,
+      "spent": 356,
+      "damage": 515,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 18,
+        "steam": 1,
+        "mend": 3,
+        "rivet": 4,
+        "quickshot": 5,
+        "strike": 7,
+        "crossfire": 3,
+        "crush": 2,
+        "taunt": 3,
+        "bandage": 3,
+        "sweep": 3,
+        "starline": 4,
+        "heal": 5,
+        "dazzle": 1,
+        "celestialbolt": 2,
+        "prism": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 10,
+          "damage": 77,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 34,
+          "damage": 65,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 46,
+          "damage": 22,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 56,
+          "damage": 16,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 60,
+          "damage": 51,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 43,
+          "damage": 99,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 56,
+          "damage": 95,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 4,
+          "minHp": 58,
+          "damage": 90,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 2,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "cooperative-support-prepared",
+      "status": "complete",
+      "agent": {
+        "tactics": "cooperative",
+        "build": "support",
+        "spending": "prepared"
+      },
+      "coins": 402,
+      "spent": 356,
+      "damage": 571,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 23,
+        "steam": 3,
+        "mend": 3,
+        "rivet": 6,
+        "quickshot": 1,
+        "strike": 6,
+        "crush": 7,
+        "guard": 1,
+        "bandage": 4,
+        "celestialbolt": 4,
+        "sweep": 3,
+        "daybreak": 3,
+        "rally": 4,
+        "taunt": 1,
+        "heal": 1,
+        "field-bandage": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 10,
+          "damage": 77,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 35,
+          "damage": 84,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 42,
+          "damage": 44,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 56,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 54,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 5,
+          "minHp": 46,
+          "damage": 153,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 50,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 110,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      }
+    },
+    {
+      "name": "cooperative-offense-frugal",
+      "status": "complete",
+      "agent": {
+        "tactics": "cooperative",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 503,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 2,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 15,
+        "steam": 3,
+        "feint": 2,
+        "bandage": 2,
+        "rivet": 2,
+        "quickshot": 5,
+        "crossfire": 3,
+        "strike": 10,
+        "mend": 4,
+        "crush": 2,
+        "taunt": 3,
+        "prism": 3,
+        "celestialbolt": 5,
+        "starline": 3,
+        "field-bandage": 1,
+        "heal": 2,
+        "rally": 1,
+        "sanctuary": 1,
+        "sweep": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 40,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 33,
+          "damage": 67,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 44,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 55,
+          "damage": 17,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 57,
+          "damage": 31,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 30,
+          "damage": 139,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 54,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 48,
+          "damage": 115,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "name": "cooperative-support-frugal",
+      "status": "complete",
+      "agent": {
+        "tactics": "cooperative",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 734,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 17,
+        "steam": 7,
+        "feint": 1,
+        "bandage": 4,
+        "rivet": 4,
+        "quickshot": 1,
+        "strike": 10,
+        "mend": 6,
+        "crush": 5,
+        "sweep": 7,
+        "taunt": 1,
+        "guard": 1,
+        "celestialbolt": 5,
+        "heal": 5,
+        "daybreak": 2,
+        "dazzle": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 40,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 5,
+          "minHp": 34,
+          "damage": 145,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 4,
+          "minHp": 59,
+          "damage": 38,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 55,
+          "damage": 42,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 42,
+          "damage": 61,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 6,
+          "minHp": 33,
+          "damage": 199,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 49,
+          "damage": 74,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 4,
+          "minHp": 40,
+          "damage": 119,
+          "knockouts": 0
+        }
+      ],
+      "remainingSupplies": {
+        "bandages": 0,
+        "field-bandage": 1,
+        "focus-tonic": 0
+      }
+    }
+  ],
+  "controlledEncounters": {
+    "policy": "support-probe-v1",
+    "source": {
+      "sha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560"
+    },
+    "route": {
+      "conduit": "feeds",
+      "harbor": "dry",
+      "optional": true,
+      "through": 4
+    },
+    "agent": {
+      "tactics": "defensive",
+      "build": "support",
+      "spending": "prepared"
+    },
+    "comparisons": [
+      {
+        "id": "capital-arrest",
+        "inputSha256": "cb34e1c788df3217aa54d27f8eaec7398cd4b12ad518d5b8210f993964d7fdcd",
+        "formation": [
+          {
+            "id": "nell",
+            "level": 5,
+            "skills": {
+              "burst": 2,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "hp": 66,
+            "focus": 6,
+            "bonus": 12,
+            "armor": 2,
+            "hex": {
+              "q": 1,
+              "r": 1
+            }
+          },
+          {
+            "id": "orrin",
+            "level": 5,
+            "skills": {
+              "steam": 2,
+              "rivet": 1,
+              "guard": 2,
+              "repulse": 0
+            },
+            "hp": 78,
+            "focus": 6,
+            "bonus": 14,
+            "armor": 2,
+            "hex": {
+              "q": 0,
+              "r": 3
+            }
+          },
+          {
+            "id": "kit",
+            "level": 5,
+            "skills": {
+              "quickshot": 2,
+              "feint": 2,
+              "ricochet": 1,
+              "pin": 0
+            },
+            "hp": 55,
+            "focus": 6,
+            "bonus": 10,
+            "armor": 0,
+            "hex": {
+              "q": -1,
+              "r": 5
+            }
+          }
+        ],
+        "results": [
+          {
+            "mode": "defensive",
+            "result": "victory",
+            "rounds": 3,
+            "hpLost": 55,
+            "healed": 55,
+            "knockouts": 0,
+            "minHp": 52,
+            "abilities": {
+              "burst": 2,
+              "steam": 3,
+              "quickshot": 1,
+              "mend": 1,
+              "bandage": 1
+            },
+            "items": {
+              "bandage": 1
+            },
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 0,
+              "focus-tonic": 0
+            }
+          },
+          {
+            "mode": "cooperative",
+            "result": "victory",
+            "rounds": 3,
+            "hpLost": 77,
+            "healed": 46,
+            "knockouts": 0,
+            "minHp": 10,
+            "abilities": {
+              "ricochet": 1,
+              "burst": 1,
+              "steam": 1,
+              "mend": 1,
+              "rivet": 1,
+              "quickshot": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 3,
+              "field-bandage": 0,
+              "focus-tonic": 0
+            }
+          },
+          {
+            "mode": "without-utilities",
+            "result": "victory",
+            "rounds": 3,
+            "hpLost": 77,
+            "healed": 46,
+            "knockouts": 0,
+            "minHp": 10,
+            "abilities": {
+              "ricochet": 1,
+              "burst": 1,
+              "steam": 1,
+              "mend": 1,
+              "rivet": 1,
+              "quickshot": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 3,
+              "field-bandage": 0,
+              "focus-tonic": 0
+            }
+          },
+          {
+            "mode": "without-teams",
+            "result": "victory",
+            "rounds": 3,
+            "hpLost": 77,
+            "healed": 46,
+            "knockouts": 0,
+            "minHp": 10,
+            "abilities": {
+              "ricochet": 1,
+              "burst": 1,
+              "steam": 1,
+              "mend": 1,
+              "rivet": 1,
+              "quickshot": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 3,
+              "field-bandage": 0,
+              "focus-tonic": 0
+            }
+          }
+        ]
+      },
+      {
+        "id": "works-dry",
+        "inputSha256": "29a7eec5368b34d261471bf55361abf1a6dfbad42b25309f3648b1a79d864eb3",
+        "formation": [
+          {
+            "id": "nell",
+            "level": 7,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 2,
+              "sunline": 0
+            },
+            "hp": 78,
+            "focus": 6,
+            "bonus": 16,
+            "armor": 3,
+            "hex": {
+              "q": 1,
+              "r": 1
+            }
+          },
+          {
+            "id": "petra",
+            "level": 7,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 2,
+              "crush": 1
+            },
+            "hp": 98,
+            "focus": 6,
+            "bonus": 18,
+            "armor": 4,
+            "hex": {
+              "q": 0,
+              "r": 3
+            }
+          },
+          {
+            "id": "celia",
+            "level": 7,
+            "skills": {
+              "celestialbolt": 2,
+              "heal": 2,
+              "rally": 2,
+              "sanctuary": 1
+            },
+            "hp": 76,
+            "focus": 6,
+            "bonus": 9,
+            "armor": 3,
+            "hex": {
+              "q": -1,
+              "r": 5
+            }
+          }
+        ],
+        "results": [
+          {
+            "mode": "defensive",
+            "result": "victory",
+            "rounds": 5,
+            "hpLost": 148,
+            "healed": 116,
+            "knockouts": 0,
+            "minHp": 58,
+            "abilities": {
+              "daybreak": 2,
+              "burst": 5,
+              "celestialbolt": 3,
+              "field-bandage": 1,
+              "bandage": 1,
+              "strike": 1
+            },
+            "items": {
+              "field-bandage": 1,
+              "bandage": 1
+            },
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 1,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "cooperative",
+            "result": "victory",
+            "rounds": 5,
+            "hpLost": 153,
+            "healed": 153,
+            "knockouts": 0,
+            "minHp": 46,
+            "abilities": {
+              "celestialbolt": 1,
+              "burst": 4,
+              "bandage": 1,
+              "daybreak": 1,
+              "rally": 2,
+              "crush": 2,
+              "mend": 1,
+              "strike": 1
+            },
+            "items": {
+              "bandage": 1
+            },
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 2,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "without-utilities",
+            "result": "victory",
+            "rounds": 4,
+            "hpLost": 151,
+            "healed": 107,
+            "knockouts": 0,
+            "minHp": 46,
+            "abilities": {
+              "celestialbolt": 2,
+              "burst": 3,
+              "bandage": 2,
+              "heal": 1,
+              "crush": 2
+            },
+            "items": {
+              "bandage": 2
+            },
+            "remaining": {
+              "bandages": 1,
+              "field-bandage": 2,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "without-teams",
+            "result": "victory",
+            "rounds": 4,
+            "hpLost": 151,
+            "healed": 127,
+            "knockouts": 0,
+            "minHp": 38,
+            "abilities": {
+              "celestialbolt": 1,
+              "burst": 4,
+              "bandage": 1,
+              "heal": 1,
+              "crush": 2,
+              "rally": 1,
+              "field-bandage": 1
+            },
+            "items": {
+              "bandage": 1,
+              "field-bandage": 1
+            },
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 1,
+              "focus-tonic": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "sanctuary-warden",
+        "inputSha256": "58e57129d6c592f5529a10c4ec421dc4b992318c62863607a93e761bce20be6f",
+        "formation": [
+          {
+            "id": "nell",
+            "level": 8,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 2,
+              "sunline": 1
+            },
+            "hp": 84,
+            "focus": 6,
+            "bonus": 18,
+            "armor": 4,
+            "hex": {
+              "q": 1,
+              "r": 1
+            }
+          },
+          {
+            "id": "petra",
+            "level": 8,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 2,
+              "crush": 2
+            },
+            "hp": 104,
+            "focus": 6,
+            "bonus": 20,
+            "armor": 4,
+            "hex": {
+              "q": 0,
+              "r": 3
+            }
+          },
+          {
+            "id": "celia",
+            "level": 8,
+            "skills": {
+              "celestialbolt": 2,
+              "heal": 2,
+              "rally": 2,
+              "sanctuary": 1
+            },
+            "hp": 82,
+            "focus": 6,
+            "bonus": 14,
+            "armor": 3,
+            "hex": {
+              "q": -1,
+              "r": 5
+            }
+          }
+        ],
+        "results": [
+          {
+            "mode": "defensive",
+            "result": "victory",
+            "rounds": 6,
+            "hpLost": 174,
+            "healed": 140,
+            "knockouts": 0,
+            "minHp": 36,
+            "abilities": {
+              "daybreak": 1,
+              "burst": 4,
+              "celestialbolt": 2,
+              "crush": 1,
+              "heal": 2,
+              "strike": 3,
+              "sweep": 2,
+              "bandage": 2
+            },
+            "items": {
+              "bandage": 2
+            },
+            "remaining": {
+              "bandages": 0,
+              "field-bandage": 0,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "cooperative",
+            "result": "victory",
+            "rounds": 4,
+            "hpLost": 102,
+            "healed": 102,
+            "knockouts": 0,
+            "minHp": 46,
+            "abilities": {
+              "burst": 3,
+              "sweep": 2,
+              "heal": 2,
+              "crush": 1,
+              "dazzle": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 0,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "without-utilities",
+            "result": "victory",
+            "rounds": 5,
+            "hpLost": 132,
+            "healed": 132,
+            "knockouts": 0,
+            "minHp": 46,
+            "abilities": {
+              "burst": 3,
+              "sweep": 2,
+              "heal": 2,
+              "crush": 1,
+              "celestialbolt": 1,
+              "mend": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 0,
+              "focus-tonic": 1
+            }
+          },
+          {
+            "mode": "without-teams",
+            "result": "victory",
+            "rounds": 4,
+            "hpLost": 102,
+            "healed": 102,
+            "knockouts": 0,
+            "minHp": 46,
+            "abilities": {
+              "burst": 3,
+              "sweep": 2,
+              "heal": 2,
+              "crush": 1,
+              "dazzle": 1,
+              "strike": 1
+            },
+            "items": {},
+            "remaining": {
+              "bandages": 2,
+              "field-bandage": 0,
+              "focus-tonic": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "unitTests": 704,
+    "headlessRouteChecks": 8,
+    "routePolicies": 10,
+    "controlledFights": 12,
+    "knockouts": 0,
+    "allCompleted": true
+  },
+  "limits": [
+    "Chapter Five onward remains unsupported.",
+    "Route comparisons must be paired within build and spending policy; exact encounter probes remove inventory and earlier-fight confounds.",
+    "Two-round lookahead uses greedy allied continuations, not optimal combat play.",
+    "Utility/team suppression applies only to disposable controlled probe inputs; no campaign balance changes."
+  ]
+}

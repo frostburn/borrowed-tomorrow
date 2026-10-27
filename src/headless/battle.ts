@@ -5,7 +5,7 @@ import {decideCooperatively} from './cooperative';
 import type {AgentOptions} from './campaign';
 
 /** Both campaign journeys and controlled probes commit through this resolver. */
-export function playBattle(b:Battle,agent:AgentOptions){
+export function playBattle(b:Battle,agent:AgentOptions,onTurn?:(turn:Record<string,unknown>)=>void){
  const turns=[];
  for(let n=0;!b.result&&n<600;n++){
   const u=active(b);if(!u)throw Error(`No active fighter in ${b.encounter}`);
@@ -18,6 +18,7 @@ export function playBattle(b:Battle,agent:AgentOptions){
   else accepted=decision.kind==='end'?endTurn(b):defend(b);
   if(!accepted)throw Error(`Rejected ${decision.kind} by ${u.id} in ${b.encounter}`);
   turns.push({actor:u.id,round,decision:decision.kind==='enemy'?{...decision,ability:enemyAction}:decision,before,after:fighterSnapshot(b.units),bandages:b.bandages,supplies:{...b.supplies},groundingOpened:!grounded&&!!b.grounding?.open});
+  onTurn?.(turns[turns.length-1]);
  }
  return turns;
 }
