@@ -73,8 +73,8 @@ describe('shared-turn moves',()=>{
  });
  it('Daybreak heals the living formation, applies Petra’s Taunt and preserves stronger barriers',()=>{
   const {b,u,partner,third,enemy}=yard(['celia','petra','orrin']);for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;third.guard=60;
-  const hp=u.hp,healing=supportPower(u,'heal');expect(teamStatus(b,u,'daybreak').partner).toBe(partner);cast(b,u,'daybreak',u.hex);
-  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(30);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).toContain(partner.id);
+  const hp=u.hp,healing=supportPower(u,'daybreak',partner);expect(teamStatus(b,u,'daybreak').partner).toBe(partner);cast(b,u,'daybreak',u.hex);
+  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(27);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).toContain(partner.id);
  });
 });
 

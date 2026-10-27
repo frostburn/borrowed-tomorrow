@@ -4,23 +4,14 @@
   "status": "complete",
   "stage": "five-regions",
   "source": {
-    "baseCommit": "14afa1126e614a1575c171b3637e1deb65585a9d",
+    "baseCommit": "80a5cceb0190011ab456b386f3c5591b516cfc3b",
     "files": {
-      "src/rules/combat.ts": "58df4c9360ef24ba84c34c069ed9db5056191c536c2c3768ba4ad31cda593afb",
-      "src/rules/abilities.ts": "4ea48fdff42c075fd957bcd448d48710b9d1efbed322d5d4b179072f2e39239f",
-      "src/dev/canonical-saves.ts": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228",
-      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149",
-      "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
-      "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
-      "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
-      "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13",
-      "scripts/compare-late-bosses.mjs": "50b406a15108f1ae7abdc0ed2ab39d6a3c6ab0fec31ddb32f9c287f42dc25339",
-      "scripts/compare-chapter-five-bosses.mjs": "78fc4bd47ba2a9fdcdeaa74689c231fde18b54611124b4d27b4d9b03ee4f2e52"
-    },
-    "inputsSha256": "ceb76d31df667934ba9004fd60e6f04bde1b161d9e989a765d44083659704c36",
-    "freshEarlySha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
-    "freshMiddleSha256": "1194df7dcfd0fe6f24c22162d541e619abab1aaec4e8ce03e1cf7158afdf9bce",
-    "freshFiveSha256": "a315915f62c0d2b83f56391415a009e3707a1d6aa53d1e5736411fc80ad21ef4"
+      "src/rules/abilities.ts": "650a78c11e2bb14764f72647bf56571d2dcb4982da22c93c22d07a2ac42a8e15",
+      "src/rules/combat.ts": "1b1ac521da5ca0edbb63bc138b3e0ae0786ea9d238bd4295f211c2e92949404e",
+      "src/rules/skills.ts": "39d28e8d3ffc2b97b667151aa10e494ec4b5328328d3b4b712d8a780b36dc5a7",
+      "src/rules/combat-tactics.ts": "eb00280f823578963cb6de0f28624b7e4824a95e6b9f5e2393cf82a8bf94f21d",
+      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149"
+    }
   },
   "agent": {
     "tactics": "defensive",
@@ -51,12 +42,12 @@
     "party": [
       {
         "id": "nell",
-        "hp": 96,
+        "hp": 93,
         "focus": 6
       },
       {
         "id": "orrin",
-        "hp": 108,
+        "hp": 87,
         "focus": 6
       },
       {
@@ -71,7 +62,7 @@
       },
       {
         "id": "celia",
-        "hp": 84,
+        "hp": 80,
         "focus": 6
       }
     ],
@@ -188,8 +179,8 @@
       "windmereComplete": true,
       "allAnchorsSeen": true
     },
-    "coins": 1253,
-    "bandages": 2,
+    "coins": 1235,
+    "bandages": 3,
     "xp": 2945,
     "inventory": {
       "version": 2,
@@ -203,7 +194,7 @@
         "saber-hilt": 1,
         "silver-reflector": 1,
         "ratchet-sight": 1,
-        "field-bandage": 0,
+        "field-bandage": 1,
         "focus-tonic": 1,
         "medic-clasp": 1,
         "folding-sight": 0,

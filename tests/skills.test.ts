@@ -80,10 +80,10 @@ describe('ranked combat resolution',()=>{
  it('maximal Taunt combines the old party barrier with enemy targeting',()=>{
   const {b,u,ally,enemy}=battle(['petra','nell']);u.skills!.taunt=3;expect(cast(b,u,'taunt',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(u.id);expect(u.guard).toBe(33);expect(ally.guard).toBe(33);
  });
- it('team damage sums the solo skills and grows with either upgrade, identically from either initiator',()=>{
+ it('team damage discounts the solo skills and grows with either upgrade, identically from either initiator',()=>{
   const {u,ally,enemy}=battle();u.skills!.sunline=1;ally.skills!.steam=1;u.bonus=ally.bonus=0;enemy.armor=0;
-  expect(damage(u,enemy,'prism',ally)).toBe(28);expect(damage(ally,enemy,'prism',u)).toBe(28);
-  u.skills!.sunline=2;expect(damage(u,enemy,'prism',ally)).toBe(33);
-  ally.skills!.steam=3;expect(damage(u,enemy,'prism',ally)).toBe(45);expect(abilityFor(u,'prism',ally).power).toBe(45);
+  expect(damage(u,enemy,'prism',ally)).toBe(25);expect(damage(ally,enemy,'prism',u)).toBe(25);
+  u.skills!.sunline=2;expect(damage(u,enemy,'prism',ally)).toBe(29);
+  ally.skills!.steam=3;expect(damage(u,enemy,'prism',ally)).toBe(40);expect(abilityFor(u,'prism',ally).power).toBe(40);
  });
 });
