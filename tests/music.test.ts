@@ -1,4 +1,4 @@
-import { isBass, semitones } from '../src/game/tuning';
+import { isBass, isPercussion, semitones } from '../src/game/tuning';
 import { expect, it } from 'vitest';
 import { ARRANGEMENTS, scoreBar,type Note } from '../src/game/score';
 import { ENCOUNTERS } from '../src/content/encounters';
@@ -147,21 +147,22 @@ it('Iron Coast restores its original two opening bars, including the quiet accom
   }
 });
 
-it('the train raid develops paired calls and answers, opens its middle, and keeps its major-key shape with a Mixolydian closing colour',()=>{
+it('the train raid develops its coastal call in one consistent Mixolydian mode, with a broader middle and a returning answer',()=>{
   const lead=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='reed');
   const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
   for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
   for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
   expect(lead(0).map(n=>n.pitch)).toEqual(['E5','G5','F5','E5','D5']);
-  expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','Eb5','D5','C5']);
-  expect(scoreBar('coast-battle',14).find(n=>isBass(n.instrument))!.pitch).toBe('G2');
-  expect(scoreBar('coast-battle',15).find(n=>isBass(n.instrument))!.pitch).toBe('C2');
-  expect(lead(15).map(n=>n.pitch)).toEqual(['Bb4','A4','G4']);
+  // E stays natural; Bb belongs to the first answer as well as the close.
+  expect(lead(1).at(-1)!.pitch).toBe('Bb4');
+  expect(scoreBar('coast-battle',1).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch)).toEqual(['Bb2','D3','F3']);
+  expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','E5','D5','C5']);
+  expect(lead(15).at(-1)!.pitch).toBe('D5');
   expect(lead(15).some(n=>n.pitch==='C5'&&n.duration>=2)).toBe(false);
-  expect(scoreBar('coast-battle',14).some(n=>n.instrument==='keys'&&n.pitch==='Bb2')).toBe(true);
-  expect(scoreBar('coast-battle',15).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch)).toEqual(['Bb2','D3','E3','G3']);
+  expect(scoreBar('coast-battle',15).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch)).toEqual(['Bb2','D3','F3']);
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
+    for(const n of notes.filter(n=>!isPercussion(n.instrument)))expect(n.pitch.replace(/-?\d+$/,'')).toMatch(/^(C|D|E|F|G|A|Bb)$/);
     expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
     expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.05).map(n=>n.beat)).toEqual(middle?[2]:[1,3]);
     expect(notes.some(n=>n.instrument==='strings')).toBe(middle);
@@ -199,7 +200,7 @@ it('Chapter Two battle variations develop regional motifs with their own phrasin
       for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);}
       line.push(...notes.filter(n=>n.instrument===lead&&n.velocity>=.2).map(n=>({...n,beat:bar*4+n.beat})));
     }
-    expect(scoreBar(variation,0).filter(n=>n.instrument===lead&&n.velocity>=.2).slice(0,2).map(n=>n.pitch[0])).toEqual(scoreBar(source,0).filter(n=>n.instrument==='reed').slice(0,2).map(n=>n.pitch[0]));
+    expect(scoreBar(variation,0).filter(n=>n.instrument===lead&&n.velocity>=.2).slice(0,2).map(n=>n.pitch)).toEqual(scoreBar(source,0).filter(n=>n.instrument==='reed').slice(0,2).map(n=>n.pitch));
     for(let i=1;i<line.length;i++)expect(line[i-1].beat+line[i-1].duration).toBeLessThanOrEqual(line[i].beat);
     expect(scoreBar(variation,16)).toEqual(scoreBar(variation,0));expect(scoreBar(variation,-1)).toEqual(scoreBar(variation,15));
     expect(scoreBar(variation,0)).not.toEqual(scoreBar(source,0));
