@@ -103,6 +103,9 @@ export class Synth {
     const r=this.route(when,duration,volume,pan,instrument==='square-bass'?.008:strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
     filter.frequency.setValueAtTime(instrument==='square-bass'?1100:isBass(instrument)?650:instrument==='tritaver'?7000:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
+    // Square-bass attacks retain bite; sustained notes shed upper harmonics
+    // on a real-time clock, while keeping the written fundamental intact.
+    if(instrument==='square-bass')filter.frequency.setTargetAtTime(Math.max(180,hz*1.4),when+.02,.22);
     if(bell)filter.frequency.setTargetAtTime(Math.min(7000,Math.max(700,hz*1.8)),when+.02,.8);
     if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));

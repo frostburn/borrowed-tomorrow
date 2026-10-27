@@ -71,7 +71,12 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
  if(a.intro&&bar<2){
   const register=bar===0?-1:0;
   for(const [j,d]of [0,4,6].entries())add('organ',pitch(d,register),j*.5,beats-j*.5,.11,j%2?.3:-.3).expression={release:.8,...phrasing(.8+bar*.3,true)};
-  add('timpani',pitch(0,-2),0,1.4,.11);if(bar===1){add('brass',pitch(2),beats-1,.75,.19);add('cymbal','C3',0,2,.04);}return notes;
+  add('timpani',pitch(0,-2),0,1.4,.16);
+  if(bar===1){
+   add('brass',pitch(2),beats-1,.75,.19);add('cymbal','C3',0,2,.04);
+   for(const [j,at]of [beats-1,beats-.75,beats-.5,beats-.25].entries())add('snare','D2',at,.08,.04+j*.018,.12);
+  }
+  return notes;
  }
  const i=((bar-(a.intro?2:0))%32+32)%32,phrase=Math.floor(i/4),within=i%4,root=a.roots[phrase];
  const strength=[.78,.88,.94,.82,1.04,1.12,.98,.78][phrase]*(within===3?.89:1),t=beats===5?a.rhythm:a.rhythm.map(n=>n*beats/4),melody=a.lines[phrase];
@@ -82,13 +87,25 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
   n.expression=a.lead==='bell'?{...phrasing(strength),release:1.6}:a.lead==='wood'||a.lead==='lute'||a.lead==='keys'?phrasing(strength):singing(a.human?'warm':'clear',strength,hold,within===3);
  }
  if(a.battle){
-  const bassBeats=beats===5?[0,1,2.5,4]:beats===3?[0,1,2]:within===2?[0,1,2.5,3]:[0,1.5,2,3];
-  for(const [j,at]of bassBeats.entries())add('bass',pitch(root+(j===2?4:j===3?7:0),-2),at,j===0?.8:.45,.13*strength,-.1);
-  for(const at of beats===5?[0,2.5]:[0])add('kick','C2',at,.16,.1);
-  for(const at of beats===3?[1,2]:beats===5?[1,3,4]:[1,3])add('snare','D2',at,.14,.07,.12);
-  for(let at=.5;at<beats;at+=1)add('hat','F#2',at,.09,.022,.45);
+  const boss=mode!=='domain-battle',heart=mode==='unborrowed',hollow=mode==='hollow-sun',god=mode==='benefactor',seasons=mode==='seasons-battle';
+  // Distinct engines: the harvest's straight drive, the hospice's three-beat
+  // tread, the city's broken five, then march / ten eighths / exposed sprint.
+  const bassBeats=!boss?within===2?[0,1,2.5,3]:[0,1.5,2,3]:
+   hollow?[0,.5,1,1.5,2,2.5,3,3.5,4,4.5]:seasons?[0,.5,1.5,2,3,3.5,4.5]:
+   beats===3?[0,.5,1,1.5,2,2.5]:god?[0,.5,1,2,2.5,3]:
+   heart&&i>=16&&i<20?[0,1,2,3]:[0,.5,1,1.5,2,2.5,3,3.5];
+  for(const [j,at]of bassBeats.entries())add(boss?'square-bass':'bass',pitch(root+(boss?(j%4===3?4:0):j===2?4:j===3?7:0),-2),at,boss?.3:j===0?.8:.45,(boss?(at%1?.1:.16):.13)*strength,-.1);
+  const kicks=!boss?[0]:hollow?[0,1,2.5,4]:seasons?[0,1.5,3]:beats===3?[0,1.5]:
+   heart&&!(i>=16&&i<20)?[0,.5,1.5,2,2.5,3.5]:[0,1.5,2,2.5];
+  for(const at of kicks)add('kick','C2',at,.16,boss?.155:.1);
+  const snares=beats===3?[1,2]:hollow?[1.5,3.5]:seasons?[1,2.5,4]:[1,3];
+  for(const at of snares)add('snare','D2',at,.14,boss?.11:.07,.12);
+  for(let at=.5;at<beats;at+=boss?.5:1)add('hat','F#2',at,boss?.075:.09,boss?(at%1?.027:.017):.022,.45);
+  if(god&&within%2===0)for(const at of [0,2])for(const d of [root,root+4])add('brass',pitch(d,-1),at,.35,.045*strength,-.25);
+  if(boss&&within===0)add('timpani',pitch(root,-2),0,.9,.13,-.3);
+  if(boss&&within===3)for(const [j,at]of [beats-.75,beats-.5,beats-.25].entries())add('snare','D2',at,.08,.04+j*.012,.12);
   if(within===3){add('timpani',pitch(root,-2),beats-1,.55,.1,-.3);add('timpani',pitch(root+4,-2),beats-.5,.45,.08,.3);}
-  if(i%8===0)add('cymbal','C3',0,2,.035,.3);
+  if(i%8===0)add('cymbal','C3',0,2,boss?.05:.035,.3);
  }else if(within%2===0)add('round-bass',pitch(root,-2),0,beats*2-.15,.1*strength,-.1).expression=singing('warm',strength,beats*2-.15);
  if(within===0)for(const [j,d]of [root,root+3,root+4].entries())add(a.human?'strings':'organ',pitch(d,-1),0,beats*4-.2,.022*strength,j%2?.4:-.4).expression=singing('warm',strength,beats*4-.2);
  // Answers occupy actual gaps, with held releases rather than a new chord at each bar.
