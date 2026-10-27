@@ -1,3 +1,5 @@
+import {skillEquipmentFlows} from './skill-equipment-flow';
+skillEquipmentFlows(true);
 import { arrival } from '../../src/content/maps';
 import { expect, test } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';

@@ -144,7 +144,8 @@ class Workshop {
     }).join('');
     const items = (Object.keys(ITEMS) as ItemId[]).map(id => {
       const item = ITEMS[id], holders = COMPANION_IDS.filter(h => Object.values(this.inventory.characters[h]).includes(id));
-      return `<button class="inv-item${id === this.selected ? ' selected' : ''}" data-item="${id}" aria-pressed="${id === this.selected}"><span>${esc(item.name)}</span><small>${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}</small></button>`;
+      const compatible=canEquip(hero,id);
+      return `<button class="inv-item${id === this.selected ? ' selected' : ''}${compatible?'':' incompatible'}" data-item="${id}" aria-pressed="${id === this.selected}" ${compatible?'':`aria-description="${names[hero]} cannot use this item."`}><span>${esc(item.name)}</span><small>${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}</small></button>`;
     }).join('');
     this.ui.sceneLayer.innerHTML = `<section class="inventory-panel" aria-label="Character workshop">
       <div class="inv-characters" role="group" aria-label="Character">${COMPANION_IDS.map(id=>`<button data-hero="${id}" aria-label="${names[id]}" aria-pressed="${hero===id}" class="${hero===id?'selected':''}">${names[id]}<small>${this.settings.party.includes(id)?'Party':'Reserve'}</small></button>`).join('')}</div>

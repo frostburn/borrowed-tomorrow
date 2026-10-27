@@ -936,7 +936,18 @@ export class Adventure extends Phaser.Scene {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
-    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase. Each companion gains an upgrade point per level.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[...(pendingSkillPoints(this.state)?[{label:'Upgrade skills',action:()=>openSkills(this.ui,this.state,()=>this.autosave())}]:[]),{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase. Each companion gains an upgrade point per level.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    if(pendingSkillPoints(this.state)){
+      const upgrade=this.ui.button({label:'Upgrade skills',action:()=>openSkills(this.ui,this.state,()=>{
+        this.autosave();this.refreshVictorySkills();
+      })});
+      upgrade.dataset.victorySkills='';
+      this.ui.sceneLayer.querySelector('.panel-actions')!.prepend(upgrade);
+    }
+  }
+
+  private refreshVictorySkills(){
+    if(!pendingSkillPoints(this.state))this.ui.sceneLayer.querySelector('[data-victory-skills]')?.remove();
   }
 
   inventory() {
@@ -945,6 +956,7 @@ export class Adventure extends Phaser.Scene {
     openInventory(this.ui,this.state,()=>{
       this.autosave();
       if(this.mode==='world'){this.showWorld();}
+      else this.refreshVictorySkills();
     });
   }
 

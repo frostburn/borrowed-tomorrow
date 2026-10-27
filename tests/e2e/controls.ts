@@ -142,13 +142,14 @@ function playerPlan(b: Battle): { action:'move'|AbilityId|'defend';hex?:Hex } {
   if(!best){const safe=danger.has(keyFor(original))?[...movement(b,u).values()].find(p=>p.path.length&&!danger.has(keyFor(p.hex))&&!b.vents.has(keyFor(p.hex))):undefined;return safe?{action:'move',hex:safe.hex}:{action:'defend'};}
   return equal(best.pos,original)?{action:best.action,hex:best.hex}:{action:'move',hex:best.pos};
 }
-export async function battle(page: Page, screenshot?: string, practice=false) {
+export async function battle(page: Page, screenshot?: string, practice=false, options:{pauseOnVictory?:boolean}={}) {
   await expect.poll(async()=> (await inspect(page)).mode).toBe('battle');
   if(screenshot)await capture(page,screenshot);
   for(let turns=0;turns<260;turns++){
     if(await page.getByRole('heading',{name:practice?'Practice complete':'The line is clear',exact:true}).isVisible()){
       const snapshot=await inspect(page);
       if(snapshot.battle?.grounding){expect(snapshot.battle.grounding.open).toBe(true);expect(snapshot.battle.units.some(u=>u.sealed)).toBe(false);await capture(page,'northglass-shield-released');}
+      if(options.pauseOnVictory)return;
       await page.getByRole('button',{name:practice?'Back to workshop':'Continue the journey'}).click();return;
     }
     if(await page.getByRole('heading',{name:practice?'Practice defeated':'The line can wait'}).isVisible())throw new Error('The party was defeated during the browser playthrough.');

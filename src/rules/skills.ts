@@ -29,7 +29,7 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
  ],
  kit:[
   skill('quickshot',[1,4,9],[{power:10},{power:14,pierce:2,description:'A quick shot within 5 hexes. Ignores 2 armor. No focus cost.'},{power:19,pierce:4,description:'A quick shot within 5 hexes. Ignores 4 armor. No focus cost.'}]),
-  skill('feint',[2,6,10],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:0,description:'Dazzle one enemy for its next three attacks. Range 4. No focus cost.'}]),
+  skill('feint',[2,3,10],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:0,description:'Dazzle one enemy for its next three attacks. Range 4. No focus cost.'}]),
   skill('ricochet',[5,8,12],[{power:9,range:4,bounceRange:2,description:'Hit one enemy within 4 hexes, then another within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit one enemy within 6 hexes, then another within 4 of it. 3 focus.'}]),
   skill('pin',[7,10,13],[{power:8},{power:14},{power:21}]),
  ],

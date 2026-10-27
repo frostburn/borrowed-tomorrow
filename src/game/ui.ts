@@ -108,7 +108,11 @@ export class UI {
     this.actionRow(this.modal.querySelector('.modal-actions')!, buttons);
     this.modal.querySelector<HTMLElement>('button')?.focus();
   }
-  closeModal() { this.modal.hidden = true; this.modal.innerHTML = ''; this.modalReturn?.focus(); }
+  closeModal() {
+    this.modal.hidden = true; this.modal.innerHTML = '';
+    const target=this.modalReturn?.isConnected?this.modalReturn:this.sceneLayer.querySelector<HTMLElement>('.panel-actions button:not(:disabled)');
+    target?.focus();
+  }
   toast(message: string) {
     const node = document.getElementById('toast')!; node.textContent = message; node.hidden = false;
     window.clearTimeout(this.toastTimer); this.toastTimer = window.setTimeout(() => { node.hidden = true; }, 4000);
