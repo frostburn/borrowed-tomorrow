@@ -37,7 +37,9 @@ export class Audio {
     this.master=master;this.musicGain=music;master.gain.value=0;music.gain.value=.52*this.cinematicLevel;fx.gain.value=.58;
     compressor.threshold.value=-12;compressor.knee.value=9;compressor.ratio.value=4;compressor.attack.value=.005;compressor.release.value=.2;
     const mix=c.createGain();music.connect(mix);fx.connect(mix);
-    this.reverb=new RoomReverb(c,mix,compressor);compressor.connect(master);master.connect(c.destination);
+    // Control the excitation, then let the room decay independently. A
+    // compressor on the return would duck existing tails and swell them back.
+    mix.connect(compressor);this.reverb=new RoomReverb(c,compressor,master);master.connect(c.destination);
     this.music=new Synth(c,music);this.effects=new Synth(c,fx);
   }
   async toggle():Promise<boolean>{
