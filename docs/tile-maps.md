@@ -103,3 +103,11 @@ Patients and families remain beside the medical coaches until the escape; the ga
 The airfield, survey deck, Hammerplain casting floor, cooling works and anchor gantry use 64 × 42 Tiled layouts and continuous native SVG scenery, plus five clear tactical arenas. `assets/vector/chapter-five.py` owns floors, collisions, painted control hit rectangles, safe arrivals, casts and civilians alongside the native prop geometry. Run `node scripts/export-chapter-five-art.mjs`; see [the source notes](../assets/vector/chapter-five.md). Maps now derives chapter selectors from its actual catalog and exposes Chapter 5 directly.
 
 The manual wheel, chart, gangway and anchor breaker have painted hit areas and connected approaches. Cutscene completions resume at authored crew/junction/stand/engine arrivals rather than returning Nell to an entrance. Residential windows and families change when the anchor is released; Hester moves to the running engine, fitters appear aboard and the imperial fleet appears after its scene. The full SVG kit and local arenas load before entry/deep restore can replace the previous checkpoint.
+
+### Actor shadows and raised terrain
+
+A Tiled scenery layer may declare `shadowOccluder: true` when its painted surface is raised rock or another foreground plane baked into the static ground cache. Chapter One's tunnel marks its cave rock, walls and ledges this way. Normal sorted props already cover the shadow pass.
+
+`lightGround` subtracts the visible native alpha silhouette of these planes from walkable shadow ground. Later ground surfaces erase hidden parts of the occluder mask; transparent openings remain open. Ground-light overlays do not change the mask. Campaign and Maps share this calculation. Campaign rebuilds it on map/flag refresh; Maps caches it until the selected map, flags, layer visibility or image readiness changes. Moving actors reuse the path, including contact and multiple projected shadows. Source artwork stays unchanged.
+
+Opt-in rendered regression: `npm run test:e2e -- tests/e2e/shadow-occlusion.spec.ts`. It checks native floor/rock exclusion and transparent openings, movement on desktop/phone, and hiding/restoring the workshop's cave ledge layer. Station lighting regressions remain in `tests/e2e/station-lighting.spec.ts`.

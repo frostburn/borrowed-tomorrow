@@ -137,13 +137,20 @@ export class MapWorkshop {
     const frame=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===frame.key)!;const img=this.image(`${import.meta.env.BASE_URL}${page.url}`);
     if(img.complete&&img.naturalWidth)ctx.drawImage(img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
   }
+  private shadowFloor?:{key:string;path:Path2D};
   private paint(){
     const host=this.host!,e=this.entry,canvas=host.querySelector<HTMLCanvasElement>('#map-preview')!,ctx=canvas.getContext('2d')!;
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
     const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
     const time=this.motionActive?performance.now():undefined;
-    const rig=sceneLight(e.id,pieces??[]),ground=rig&&e.tiles?lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags}):undefined;
+    const rig=sceneLight(e.id,pieces??[]);
+    let ground:Path2D|undefined;
+    if(rig&&e.tiles){
+      const key=JSON.stringify([e.id,this.flags,[...this.hidden],pieces?.map(p=>this.image(`${import.meta.env.BASE_URL}${p.url}`).complete)]);
+      if(this.shadowFloor?.key!==key)this.shadowFloor={key,path:lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags},p=>{const img=this.image(`${import.meta.env.BASE_URL}${p.url}`);return img.complete&&img.naturalWidth?vectorSurface(img):undefined;})};
+      ground=this.shadowFloor.path;
+    }
     if(pieces){
       for(const piece of pieces){
         const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(!image.complete||!image.naturalWidth)return;ctx.save();const angle=sceneryAngle(piece,time);if(angle){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(angle);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);ctx.drawImage(vectorSurface(image),0,0);ctx.restore();};
