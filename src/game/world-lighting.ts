@@ -21,7 +21,7 @@ export class WorldLighting {
     this.clear();if(!map&&!illumination)return;
     this.rig=sceneLight(illumination?.scene??String(properties(map!).sceneArt),map?visibleSceneArt(map,state)??[]:[]);if(!this.rig)return;
     // One ground pass, clipped to real floor cells, beneath every sorted prop.
-    this.ground=illumination?new Path2D(illumination.ground):lightGround(map!,state);
+    this.ground=illumination?new Path2D(illumination.ground):lightGround(map!,state,p=>this.scene.textures.getFrame(p.key).source.image as CanvasImageSource);
     world.add(this.scene.add.existing(new GroundShadows(this.scene,this)).setDepth(-900));
     world.sort('depth');
   }
