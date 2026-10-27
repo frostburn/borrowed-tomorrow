@@ -13,7 +13,7 @@ import { FURNACE_ID } from '../content/chapter-five/furnace';
 import { ENCOUNTERS } from '../content/encounters';
 import { BASE_STATS } from './progression';
 import {abilityFor,skillAbilities,type SkillRanks} from './skills';
-import {teamSolo} from './abilities';
+import {teamOutput,teamSolo} from './abilities';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, diagonalRay, distance, equal, inside, key, lanternVolley, offset, quad, ray, reachable, visible, type Hex } from './hex';
 import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
@@ -200,7 +200,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
 }
 function attackDamage(u: Unit, v: Pick<Unit,'armor'|'defending'>&Partial<Pick<Unit,'side'>>, id: AbilityId,partner?:Unit):number {
   const a = abilityFor(u,id);
-  if(a.team&&partner)return attackDamage(u,v,teamSolo(u.kind,id)!)+attackDamage(partner,v,teamSolo(partner.kind,id)!);
+  if(a.team&&partner)return teamOutput(attackDamage(u,v,teamSolo(u.kind,id)!)+attackDamage(partner,v,teamSolo(partner.kind,id)!));
   const armor = Math.max(0, v.armor - (a.pierce ?? 0));
   const power=a.shape==='pattern'?(u.intent?.power??a.power):a.power;
   return Math.max(1, Math.round((power + u.bonus - armor) * (v.defending ? .6 : 1) * (u.dazzledAttacks ? .6 : 1)*(v.side===u.side?(a.friendlyFire??1):1)));

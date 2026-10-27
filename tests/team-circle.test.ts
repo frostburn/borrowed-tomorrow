@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {ABILITIES,cast,createBattle,damage,defend,endTurn,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
 import {teamSolo} from '../src/rules/abilities';
-import {battleAbilities,daybreakProtection,teamStatus} from '../src/rules/combat-tactics';
+import {supportPower,battleAbilities,daybreakProtection,teamStatus} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {abilityFor,decodeSkillBook,newSkillBook,skillAbilities,startingSkills,upgradeSkill} from '../src/rules/skills';
 import {COMPANION_IDS,type CompanionId} from '../src/rules/party';
@@ -61,8 +61,8 @@ describe('Celia and Petra’s Daybreak',()=>{
  for(const first of ['celia','petra']as const)for(const rank of [1,2,3])it(`uses Taunt rank ${rank} and Heal when ${first} initiates`,()=>{
   const {b,u,partner,enemy}=yard([first,first==='celia'?'petra':'celia','orrin']),celia=b.units.find(u=>u.kind==='celia')!,petra=b.units.find(u=>u.kind==='petra')!;
   petra.skills!.taunt=rank;celia.skills!.heal=2;for(const ally of b.units.filter(u=>u.side==='party'))ally.hp-=60;
-  const hp=celia.hp,predicted=damage(u,celia,'daybreak',partner);expect(predicted).toBe(damage(celia,celia,'heal'));expect(cast(b,u,'daybreak',u.hex)).toBe(true);
-  expect(celia.hp).toBe(hp+predicted);expect(enemy.tauntedBy).toBe(petra.id);expect(petra.guard??0).toBe(rank===1?0:rank===2?31:33);expect(celia.guard??0).toBe(rank===3?33:0);
+  const hp=celia.hp,predicted=damage(u,celia,'daybreak',partner);expect(predicted).toBe(Math.floor(supportPower(celia,'heal')*9/10));expect(cast(b,u,'daybreak',u.hex)).toBe(true);
+  expect(celia.hp).toBe(hp+predicted);expect(enemy.tauntedBy).toBe(petra.id);expect(petra.guard??0).toBe(rank===1?0:rank===2?27:29);expect(celia.guard??0).toBe(rank===3?29:0);
   expect(daybreakProtection(u,partner)!.vanguard).toBe(petra);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);
  });
  it('can protect a full-health party and Taunt ends at Petra’s next turn',()=>{

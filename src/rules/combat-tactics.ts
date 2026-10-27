@@ -1,4 +1,4 @@
-import {ABILITIES,teamSolo,type AbilityId} from './abilities';
+import {ABILITIES,teamOutput,teamSolo,type AbilityId} from './abilities';
 import type {Battle,Unit} from './combat';
 import {abilityFor} from './skills';
 import {blast,cells,distance,equal,key,visible,type Hex} from './hex';
@@ -9,7 +9,7 @@ export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['ki
 export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex,h));
 /** Support follows caster level, independent of attack edits and offensive gear. */
 export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
- if(partner&&ABILITIES[id].team)return supportPower(u,teamSolo(u.kind,id)!)+supportPower(partner,teamSolo(partner.kind,id)!);
+ if(partner&&ABILITIES[id].team)return teamOutput(supportPower(u,teamSolo(u.kind,id)!)+supportPower(partner,teamSolo(partner.kind,id)!));
  const a=abilityFor(u,id),growth=Math.max(0,(u.level??1)-1),power=a.power;
  if(a.item||a.effect==='focus')return a.power;
  return power+(a.heal?growth*2:a.effect==='guard'?Math.floor(growth*1.5):0);
@@ -18,7 +18,7 @@ export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
 export function daybreakProtection(u:Unit,partner?:Unit){
  const vanguard=[u,partner].find(v=>v?.kind==='petra');if(!vanguard)return;
  const ward=abilityFor(vanguard,'taunt').ward;
- return {vanguard,power:ward?ward.power+Math.floor(Math.max(0,(vanguard.level??1)-1)*1.5):0,party:!!ward?.party};
+ return {vanguard,power:ward?teamOutput(ward.power+Math.floor(Math.max(0,(vanguard.level??1)-1)*1.5)):0,party:!!ward?.party};
 }
 /** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
