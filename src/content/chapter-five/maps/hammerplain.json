@@ -844,6 +844,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "hammerplainFreed"
+            },
+            {
+              "name": "motionAfter",
+              "type": "string",
+              "value": "hammerplainFreed"
             }
           ],
           "id": 13

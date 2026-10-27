@@ -26,7 +26,7 @@ for(const [i,group] of battles.entries())for(const [id,tiles] of Object.entries(
 export function reviewFlags(entry:MapReview){
   const names=new Set<string>();
   const add=(p:Record<string,unknown>)=>{
-    for(const key of ['requiredFlag','hiddenFlag','spriteHiddenFlag','doneFlag','openFlag','storyUntil','accessFlag'])if(p[key])names.add(String(p[key]));
+    for(const key of ['requiredFlag','hiddenFlag','spriteHiddenFlag','doneFlag','openFlag','storyUntil','accessFlag','motionAfter'])if(p[key])names.add(String(p[key]));
     for(const key of ['markerFlags','markerBlockFlags'])if(p[key])for(const flag of String(p[key]).split(','))names.add(flag.trim().replace(/^!/,''));
   };
   for(const l of entry.tiles?.layers??[]){add(properties(l));for(const o of l.objects??[])add(properties(o));}

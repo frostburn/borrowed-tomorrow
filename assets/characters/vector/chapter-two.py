@@ -142,7 +142,7 @@ def dena():
 def inspector():
     d=Drawing();legs(d,'front','orrin');d.poly([(13,24),(26,24),(28,36),(27,54),(22,57),(17,54),(11,56),(12,36)],'navy');d.line([(16,24),(21,33),(26,26)],'gold',2);d.line([(25,29),(16,44)],'brown',3);d.rect((18,37,21,41),'gold');sleeve(d,(13,27),(10,36),(10,46),'navy');sleeve(d,(26,27),(29,36),(28,46),'navy');d.poly([(16,10),(23,9),(26,14),(25,22),(21,25),(17,22),(14,17)],'silver');d.rect((16,14,24,18),'ink');d.rect((17,15,19,17),'gold');d.rect((22,15,24,17),'copper');d.poly([(13,10),(15,5),(22,3),(27,7),(27,12),(15,13)],'navy');d.line([(13,12),(27,12)],'gold',2);d.line([(28,44),(29,21)],'brown',2);d.oval((26,17,32,24),'gold');d.oval((28,19,30,22),'copper');return d
 
-def resident(role,variant=''):
+def resident(role,variant='',walk=None,gesture=None):
     d=Drawing();coat={'dockhand':'teal','traveler':'plum','family':'green','patient':'cream'}[role]
     if variant:coat={'rust':'copper','blue':'blue','plum':'plum','green':'green'}[variant]
     if role=='family':
@@ -152,15 +152,32 @@ def resident(role,variant=''):
             for x in (cx-2,cx+2):d.poly([(x-1,hip),(x+1,hip),(x+1,foot-3),(x+2,foot),(x-2,foot),(x-2,foot-4)],'navy');d.rect((x-2,foot-2,x+2,67),'brown')
             d.rect((cx-1,top+12,cx+1,top+17),'skin');d.oval((cx-3,top+2,cx+3,top+13),'skin',None);d.poly([(cx-4,top+6),(cx-3,top+1),(cx,top-1),(cx+4,top+2),(cx+4,top+7),(cx+1,top+4),(cx-2,top+6)],'hair');d.rect((cx+1,top+7,cx+2,top+8),'ink')
         d.line([(19,29),(21,41),(24,48)],'green' if not variant else coat,3);d.line([(24,48),(25,43)],'gold',2);d.oval((22,44,25,48),'skin',None)
+        if gesture is not None:
+            hand=(32,40-gesture*4);d.line([(30,45),hand],'gold',2);d.oval((hand[0]-1,hand[1]-1,hand[0]+1,hand[1]+1),'skin',None)
     else:
-        legs(d,'front','nell');d.cloth([(14,25),(24,24),(27,34),(26,47),(16,48),(12,39)],coat)
+        legs(d,'front','nell',walk);d.cloth([(14,25),(24,24),(27,34),(26,47),(16,48),(12,39)],coat)
         if role=='patient':d.poly([(15,28),(23,28),(27,59),(23,62),(13,59)],coat);d.line([(17,32),(22,32)],'white');d.line([(19,34),(19,55)],'white')
-        sleeve(d,(14,27),(12,35),(13,44),coat);sleeve(d,(25,27),(27,35),(26,44),coat)
+        swing=0 if walk is None else math.sin(walk*math.pi/3)
+        sleeve(d,(14,27),(12,35),(13,44+swing),coat)
+        if gesture is None:sleeve(d,(25,27),(27,35),(26,44-swing),coat)
+        else:sleeve(d,(25,27),(28,33),(24,39-gesture*3),coat)
         d.rect((19,20,21,26),'skin');d.oval((16,9,24,22),'skin',None);d.rect((18,15,19,16),'ink');d.rect((22,15,23,16),'ink')
         if role=='dockhand':d.poly([(15,12),(15,7),(20,4),(25,7),(26,13)],'navy');d.line([(14,13),(26,13)],'gold');d.line([(16,26),(16,44)],'brown',2);d.line([(23,26),(23,44)],'brown',2)
         elif role=='traveler':d.poly([(15,13),(16,7),(21,5),(25,9),(25,14),(21,10),(17,14)],'hair');d.poly([(15,23),(23,23),(26,27),(20,30),(14,27)],'gold');d.poly([(24,39),(29,39),(29,48),(23,48)],'leather')
         else:d.poly([(15,14),(16,7),(21,5),(25,9),(25,14),(22,10),(17,12)],'silver')
     return d
+
+
+RESIDENT_VARIANTS=('dockhand','traveler','family','patient','dockhand-rust','traveler-blue','family-blue','family-plum','patient-green')
+def export_resident_motion():
+    out=ROOT/'public/art/vector/animation';out.mkdir(exist_ok=True)
+    for name in RESIDENT_VARIANTS:
+        role,_,variant=name.partition('-')
+        frames=([resident(role,variant,walk=i) for i in range(6)] if role in ('dockhand','traveler') else [])
+        frames += [resident(role,variant,gesture=i) for i in range(2)]
+        page=f'<svg xmlns="http://www.w3.org/2000/svg" width="160" height="{len(frames)//2*80}" viewBox="0 0 160 {len(frames)//2*80}">\n'
+        for i,f in enumerate(frames):page+=f.svg().replace('<svg ',f'<svg x="{i%2*80}" y="{i//2*80}" ',1)
+        (out/f'civilian-{name}-ambient.svg').write_text(page+'</svg>\n')
 
 def export():
     out=ROOT/'public/art/vector';(out/'animation').mkdir(exist_ok=True)
@@ -178,5 +195,12 @@ def export():
     (out/'dena.svg').write_text(dena().svg());(out/'inspector.svg').write_text(inspector().svg())
     for name in ('dockhand','traveler','family','patient','dockhand-rust','traveler-blue','family-blue','family-plum','patient-green'):
         role,_,variant=name.partition('-');(out/f'civilian-{name}.svg').write_text(resident(role,variant).svg())
+    export_resident_motion()
     print('Exported Chapter Two vector cast, motion and nine civilian variants')
-if __name__=='__main__':export()
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--residents-only',action='store_true',help='Export just the silent civilian motion pages')
+    args=parser.parse_args()
+    if args.residents_only:export_resident_motion()
+    else:export()

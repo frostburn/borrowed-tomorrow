@@ -1593,6 +1593,55 @@
           ]
         }
       ]
+    },
+    {
+      "id": 30,
+      "name": "People",
+      "type": "objectgroup",
+      "x": 0,
+      "y": 0,
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 21,
+          "name": "bridge-traveler",
+          "type": "",
+          "point": true,
+          "x": 444.0,
+          "y": 324.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler-blue"
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "market-family",
+          "type": "",
+          "point": true,
+          "x": 708.0,
+          "y": 372.0,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family-blue"
+            }
+          ]
+        }
+      ]
     }
   ],
   "nextlayerid": 30,

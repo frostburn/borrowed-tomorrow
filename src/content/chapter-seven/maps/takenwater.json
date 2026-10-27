@@ -822,6 +822,11 @@
               "name": "hiddenFlag",
               "type": "string",
               "value": "takenPeopleFreed"
+            },
+            {
+              "name": "motionAfter",
+              "type": "string",
+              "value": "takenPeopleFreed"
             }
           ],
           "id": 9
@@ -839,6 +844,11 @@
             },
             {
               "name": "hiddenFlag",
+              "type": "string",
+              "value": "takenPeopleFreed"
+            },
+            {
+              "name": "motionAfter",
               "type": "string",
               "value": "takenPeopleFreed"
             }

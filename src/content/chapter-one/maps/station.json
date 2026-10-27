@@ -1461,6 +1461,65 @@
           ]
         }
       ]
+    },
+    {
+      "id": 27,
+      "name": "People",
+      "type": "objectgroup",
+      "x": 0,
+      "y": 0,
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 20,
+          "name": "festival-traveler",
+          "type": "",
+          "point": true,
+          "x": 444,
+          "y": 444,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-traveler"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "raidSeen"
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "name": "festival-family",
+          "type": "",
+          "point": true,
+          "x": 636,
+          "y": 444,
+          "width": 0,
+          "height": 0,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "civilian-family-plum"
+            },
+            {
+              "name": "hiddenFlag",
+              "type": "string",
+              "value": "raidSeen"
+            }
+          ]
+        }
+      ]
     }
   ],
   "nextlayerid": 27,
