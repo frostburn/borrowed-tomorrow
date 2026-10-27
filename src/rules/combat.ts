@@ -127,12 +127,15 @@ export function movement(b: Battle, u: Unit) {
   return reachable(u.hex, u.moved||u.anchored ? 0 : u.pinned?Math.min(1,u.movement):u.movement, anchors, h=>terrainCost(b,u,h));
 }
 export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
-  const a = abilityFor(u,id);
+  // Shape remains tied to the actual contributors even after their shared
+  // action is spent, when teamStatus no longer returns an available partner.
+  const team=ABILITIES[id].team,partner=team&&b.units.find(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind));
+  const a = abilityFor(u,id,partner);
   if(a.shape==='axis')return axisHexes(a.axis!,aim);
   if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
   if(a.shape==='bounce')return ricochetHexes(b,u,aim,id);
   if(a.shape==='party')return alive(b).filter(v=>v.side===u.side).flatMap(v=>occupiedHexes(v));
-  if(a.shape==='spread')return lanternVolley(aim);
+  if(a.shape==='spread')return lanternVolley(aim,a.volleyRank??1);
   if (a.shape === 'pattern') return u.intent?.cells??[];
   if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).flatMap(v => occupiedHexes(v));
   if (a.shape === 'blast') return blast(aim);

@@ -2,8 +2,9 @@ import {describe,it,expect} from 'vitest';
 import {active,cast,createBattle,damage,defend,endTurn,enemyTurn,legalAim,move,movement,movementOnly,shape,targets,wait,type Encounter} from '../src/rules/combat';
 import {battleAbilities,prepareRelay,teamStatus} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
+import {abilityFor} from '../src/rules/skills';
 import {newGame} from '../src/rules/state';
-import {add,cells,distance,inside,key,lanternVolley,offset,toPixel} from '../src/rules/hex';
+import {add,blast,cells,distance,inside,key,lanternVolley,offset,toPixel} from '../src/rules/hex';
 import type {CompanionId} from '../src/rules/party';
 
 const encounter:Encounter={id:'movement-test',name:'Movement',music:'battle',flag:'test',xp:0,coins:0,rocks:[],coordinated:true,enemies:[{kind:'guardian',col:7,row:3,hp:500},{kind:'crow',col:8,row:1,hp:500}]};
@@ -52,21 +53,35 @@ describe('remaining movement after a team action',()=>{
  });
 });
 describe('Lantern volley stencil',()=>{
+ for(const first of ['nell','kit']as const)for(const rank of [1,2,3])it(`uses Pinning shot rank ${rank} for preview, hits and fixtures when ${first} initiates`,()=>{
+  const {b,u,partner,third,enemy}=yard([first,first==='nell'?'kit':'nell','celia']),aim=offset(5,3),crow=b.units.find(u=>u.kind==='crow')!;
+  const kit=b.units.find(u=>u.kind==='kit')!,nell=b.units.find(u=>u.kind==='nell')!;kit.skills!.pin=rank;u.hex=offset(3,3);partner.hex=offset(0,6);enemy.hex=aim;crow.hex=add(aim,{q:2,r:-1});third.hex=add(aim,{q:-1,r:0});
+  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:0,r:2}),hp:999,maxHp:999,active:false,vents:[offset(0,0)]}];
+  const area=shape(b,u,'lanternvolley',aim);expect(area).toHaveLength([7,10,12][rank-1]);
+  if(rank===1)expect(area).toEqual(blast(aim));
+  for(const burst of [1,3]){nell.skills!.burst=burst;expect(shape(b,u,'lanternvolley',aim)).toEqual(area);}
+  expect(abilityFor(u,'lanternvolley',partner).description).toContain(`${area.length} hexes`);
+  expect(targets(b,u,'lanternvolley',aim)).toEqual(rank===1?[enemy]:[enemy,crow]);
+  const hp=[enemy.hp,crow.hp,third.hp],predicted=damage(u,enemy,'lanternvolley',partner);
+  expect(cast(b,u,'lanternvolley',aim)).toBe(true);expect(hp[0]-enemy.hp).toBe(predicted);expect(third.hp).toBe(hp[2]);expect(crow.hp<hp[1]).toBe(rank>=2);expect(crow.pinned).toBeUndefined();
+  expect(b.fixtures[0].active).toBe(rank===3);expect(b.vents.has(key(offset(0,0)))).toBe(rank===3);
+  expect(teamStatus(b,u,'lanternvolley').partner).toBeUndefined();expect(shape(b,u,'lanternvolley',aim)).toEqual(area);
+ });
  it('matches the supplied 3/4/3/2 rows relative to the cursor on either row parity',()=>{
   for(const aim of [offset(4,2),offset(4,3)]){
-   const origin=toPixel(aim),area=lanternVolley(aim);expect(area).toHaveLength(12);
+   const origin=toPixel(aim),area=lanternVolley(aim,3);expect(area).toHaveLength(12);
    const rows=[-1,0,1,2].map(dy=>area.map(toPixel).filter(p=>(p.y-origin.y)/54===dy).map(p=>(p.x-origin.x)/60).sort((a,z)=>a-z));
    expect(rows).toEqual([[-.5,.5,1.5],[-1,0,1,2],[-.5,.5,1.5],[0,1]]);expect(area).toContainEqual(aim);
   }
  });
  it('clips at the board edges without duplicating contacts or changing its anchor',()=>{
-  for(const aim of cells()){const area=lanternVolley(aim);expect(area.every(inside)).toBe(true);expect(new Set(area.map(key)).size).toBe(area.length);expect(area).toContainEqual(aim);expect(area.length).toBeLessThanOrEqual(12);}
+  for(const aim of cells())for(const rank of [1,2,3]){const area=lanternVolley(aim,rank);expect(area.every(inside)).toBe(true);expect(new Set(area.map(key)).size).toBe(area.length);expect(area).toContainEqual(aim);expect(area.length).toBeLessThanOrEqual([7,10,12][rank-1]);if(rank>1)expect(area).toEqual(expect.arrayContaining(lanternVolley(aim,rank-1)));}
  });
  it('hits the newly covered outer hexes and multi-contact enemies once, while leaving allies unharmed',()=>{
   const {b,u,partner,third,enemy}=yard(['nell','kit','celia']),aim=offset(5,3),crow=b.units.find(u=>u.kind==='crow')!;enemy.hex=aim;enemy.footprint=[{q:0,r:0},{q:1,r:0}];crow.hex=add(aim,{q:0,r:2});third.hex=add(aim,{q:2,r:0});
   b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:2,r:-1}),hp:999,maxHp:999,active:false,vents:[offset(0,0)]}];
   const hits=targets(b,u,'lanternvolley',aim),hp=[enemy.hp,crow.hp,third.hp],predicted=[damage(u,enemy,'lanternvolley',partner),damage(u,crow,'lanternvolley',partner)];
-  expect(shape(b,u,'lanternvolley',aim)).toEqual(lanternVolley(aim));expect(hits).toEqual([enemy,crow]);expect(cast(b,u,'lanternvolley',aim)).toBe(true);
+  expect(shape(b,u,'lanternvolley',aim)).toEqual(lanternVolley(aim,3));expect(hits).toEqual([enemy,crow]);expect(cast(b,u,'lanternvolley',aim)).toBe(true);
   expect([hp[0]-enemy.hp,hp[1]-crow.hp]).toEqual(predicted);expect(third.hp).toBe(hp[2]);expect(b.fixtures[0].active).toBe(true);expect(b.vents.has(key(offset(0,0)))).toBe(true);
  });
 });

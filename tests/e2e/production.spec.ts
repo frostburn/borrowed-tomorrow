@@ -305,6 +305,9 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   const {anchorCheckpoint}=await import('../support/anchors');const {clickHex}=await import('./controls');const {offset}=await import('../../src/rules/hex');
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const saved=anchorCheckpoint('coolingSeen');saved.activeParty=['nell','orrin','celia'];saved.xp=1490;await importSave(page,saved);
+  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();
+  const skills=page.getByRole('dialog',{name:'Character skills'});await skills.getByRole('button',{name:'Learn Horizon light',exact:true}).click();await expect(skills.getByRole('status')).toContainText('skill 1');
+  await skills.getByRole('button',{name:'Close',exact:true}).click();
   await approach(page,'cooling-route');await page.getByRole('button',{name:'Take the freight lift · ranged crows',exact:true}).click();
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
   expect((await inspect(page)).battle!.fixtures).toHaveLength(2);
