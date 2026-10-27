@@ -962,7 +962,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Eastern lamp \u00b7 take the sea train with Tomas"
+              "value": "Eastern lamp · take the sea train with Tomas"
             },
             {
               "name": "kind",
@@ -973,6 +973,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "capitalMorningSeen"
             }
           ],
           "id": 3

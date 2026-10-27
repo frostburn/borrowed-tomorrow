@@ -733,7 +733,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Evening exchange \u00b7 palace gate"
+              "value": "Evening exchange · palace gate"
             },
             {
               "name": "kind",
@@ -744,6 +744,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerBlockFlags",
+              "type": "string",
+              "value": "palaceCoup,!palaceEscaped"
             }
           ],
           "id": 4
@@ -757,7 +762,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Postal stair \u00b7 the observatory terraces"
+              "value": "Postal stair · the observatory terraces"
             },
             {
               "name": "kind",
@@ -773,6 +778,11 @@
               "name": "sign",
               "type": "bool",
               "value": true
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "palaceEscaped"
             }
           ],
           "id": 5

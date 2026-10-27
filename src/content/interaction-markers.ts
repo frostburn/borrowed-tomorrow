@@ -24,6 +24,7 @@ export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>
  if(BOSS_AFTERMATHS.some(scene=>scene.interaction===object.id&&!state.flags[scene.done]))return;
  const marker=INTERACTION_MARKERS[interactionKind(object,state)];
  // Marker-only prerequisites keep useful blocked-route dialogue available.
- const blocked=(object.accessFlag&&!state.flags[object.accessFlag])||object.markerFlags?.split(',').some(flag=>!state.flags[flag.trim()])||(object.id==='ship-cabin'&&completedAnchors(state)<2)||((object.id==='loading-gate'||object.id==='signal-walk')&&trainApproachBlock(state,object.id==='signal-walk'));
+ const blockWhile=object.markerBlockFlags?.split(',').every(term=>{const flag=term.trim();return flag.startsWith('!')?!state.flags[flag.slice(1)]:!!state.flags[flag];});
+ const blocked=blockWhile||(object.accessFlag&&!state.flags[object.accessFlag])||object.markerFlags?.split(',').some(flag=>!state.flags[flag.trim()])||(object.id==='ship-cabin'&&completedAnchors(state)<2)||((object.id==='loading-gate'||object.id==='signal-walk')&&trainApproachBlock(state,object.id==='signal-walk'));
  return {...marker,color:blocked?BLOCKED_MARKER_COLOR:marker.color};
 }

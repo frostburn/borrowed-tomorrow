@@ -151,3 +151,34 @@ it('marks Alda’s final crossing as a main quest only when it is ready',()=>{
  s.flags.capitalLandingSeen=true;expect(alda()).toHaveLength(1);expect(interactionMarker(alda()[0],s)?.glyph).toBe('!');
  s.flags.chapterSixComplete=true;expect(interactionKind(alda()[0],s)).toBe('talk');
 });
+
+it('dims all Chapter One forward exits until their actual story gates open',()=>{
+ for(const [map,id,flags]of [
+  ['station','west-yard',['raidSeen','escapeWon']],['yard','branch',['orrinJoined']],
+  ['rillbridge','east-pass',['villageFreed']],['tunnel','departure',['captainDefeated']],
+ ]as const){
+  const s=newGame(),object=MAPS[map].objects.find(o=>o.id===id)!;
+  expect(object.accessFlag).toBeUndefined(); // Keep blocked-route explanations clickable.
+  for(const flag of flags){expect(interactionMarker(object,s)).toMatchObject({glyph:'→',color:BLOCKED_MARKER_COLOR});s.flags[flag]=true;}
+  expect(interactionMarker(object,s)).toMatchObject(INTERACTION_MARKERS.exit);
+  for(const flag of flags){s.flags[flag]=false;expect(interactionMarker(object,s)?.color).toBe(BLOCKED_MARKER_COLOR);s.flags[flag]=true;}
+ }
+ const s=newGame();s.flags.collectorDefeated=true;
+ expect(interactionMarker(MAPS.rillbridge.objects.find(o=>o.id==='east-pass')!,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+});
+it('dims the desert gate only during the coup without affecting the capital gate of the same name',()=>{
+ const s=newGame(),desert=MAPS.sunpalace.objects.find(o=>o.id==='palace-city')!,capital=MAPS.lastpalace.objects.find(o=>o.id==='palace-city')!;
+ for(const coup of [false,true])for(const escaped of [false,true]){
+  s.flags.palaceCoup=coup;s.flags.palaceEscaped=escaped;
+  expect(interactionMarker(desert,s)?.color).toBe(coup&&!escaped?BLOCKED_MARKER_COLOR:INTERACTION_MARKERS.exit.color);
+  expect(interactionMarker(capital,s)?.color).toBe(INTERACTION_MARKERS.exit.color);
+ }
+ const flags=reviewFlags(MAP_REVIEWS.find(m=>m.id==='sunpalace')!);expect(flags).toContain('palaceCoup');expect(flags).toContain('palaceEscaped');expect(flags).not.toContain('!palaceEscaped');
+});
+it('dims remaining scene-gated exits until their release scene finishes',()=>{
+ const s=newGame();s.flags.palaceEscapeWon=true;
+ for(const [map,id,flag]of [['sunpalace','palace-roofs','palaceEscaped'],['lastmorning','morning-leave','capitalMorningSeen']]as const){
+  const object=MAPS[map].objects.find(o=>o.id===id)!;expect(interactionMarker(object,s)?.color).toBe(BLOCKED_MARKER_COLOR);
+  s.flags[flag]=true;expect(interactionMarker(object,s)).toMatchObject(INTERACTION_MARKERS.exit);
+ }
+});
