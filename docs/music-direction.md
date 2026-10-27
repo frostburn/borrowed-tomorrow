@@ -44,7 +44,7 @@ Railway Ward is a C-major piano waltz in **3/4 at 78 BPM**. Its sixteen bars are
 
 | Encounter | Cue | Source and treatment |
 | --- | --- | --- |
-| Signal walk / loading gate | `coast-battle` · Iron Coast — train raid | The coastal call darkened to Eb–G in C minor at 124 BPM; four-bar call/answer, a broader high-register middle with a half-time backbeat, then Ab–C–D–F# (French sixth) and an unresolved G7(b9) loop turn. The last bar suspends C before B, ending its melody on D instead of a long tonic C. Steady quarter-note bass and a full backbeat frame the middle |
+| Signal walk / loading gate | `coast-battle` · Iron Coast — train raid | The original major-key E–G call at 124 BPM; four-bar call/answer, its borrowed-chord response, a broader high-register middle with a half-time backbeat, then the rhythmic return. Only bars 15–16 borrow Mixolydian colour: Gm7 to C9, with a Bb–A–G closing melody instead of the long tonic C. Bars 1–14 retain the original raid melody and harmony. Steady quarter-note bass and a full backbeat frame the middle |
 | Collector / boarding defense | `shunting` · Cinderbank — loading walk | Cinderbank's E-minor melody at 126 BPM; shorter articulation, moving round bass, chord replies and a broader middle |
 | Petra's crossing | `petra-battle` · The last crossing | Petra's F-minor C–Db–C–G refusal cell at 132 BPM, grounded by quarter-note landings and clear half-bar answers, with one brief triplet pickup; straight eighth-note hats, kick on one/three and snare on two/four, with straight sixteenth-note fills. This replaces her former Cinderbank-derived B–E theme |
 

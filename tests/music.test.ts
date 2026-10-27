@@ -147,17 +147,19 @@ it('Iron Coast restores its original two opening bars, including the quiet accom
   }
 });
 
-it('the train raid develops paired calls and answers, opens its middle, and leaves its minor-key raid unresolved',()=>{
+it('the train raid develops paired calls and answers, opens its middle, and keeps its major-key shape with a Mixolydian closing colour',()=>{
   const lead=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='reed');
   const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
   for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
   for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
-  expect(lead(0).map(n=>n.pitch)).toEqual(['Eb5','G5','F5','Eb5','D5']);
+  expect(lead(0).map(n=>n.pitch)).toEqual(['E5','G5','F5','E5','D5']);
   expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','Eb5','D5','C5']);
-  expect(scoreBar('coast-battle',14).find(n=>isBass(n.instrument))!.pitch).toBe('Ab1');
-  expect(scoreBar('coast-battle',15).find(n=>isBass(n.instrument))!.pitch).toBe('G2');
-  expect(lead(15).at(-1)!.pitch).toBe('D5');
+  expect(scoreBar('coast-battle',14).find(n=>isBass(n.instrument))!.pitch).toBe('G2');
+  expect(scoreBar('coast-battle',15).find(n=>isBass(n.instrument))!.pitch).toBe('C2');
+  expect(lead(15).map(n=>n.pitch)).toEqual(['Bb4','A4','G4']);
   expect(lead(15).some(n=>n.pitch==='C5'&&n.duration>=2)).toBe(false);
+  expect(scoreBar('coast-battle',14).some(n=>n.instrument==='keys'&&n.pitch==='Bb2')).toBe(true);
+  expect(scoreBar('coast-battle',15).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch)).toEqual(['Bb2','D3','E3','G3']);
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
     expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
