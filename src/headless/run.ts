@@ -46,7 +46,7 @@ export async function run(){
   const destinations=[o,{x:o.x-1,y:o.y},{x:o.x+1,y:o.y},{x:o.x,y:o.y-1},{x:o.x,y:o.y+1}];
   const paths=destinations.map(to=>({to,path:worldPath(map,state.location,to,state)})).filter(v=>v.path.length||v.to.x===state.location.x&&v.to.y===state.location.y).sort((a,b)=>a.path.length-b.path.length);
   if(!paths.length)throw Error(`Unreachable ${map.id}:${id}`);const path=paths[0];for(const p of path.path)state.location={map:map.id,...p};report.push({visit:id,steps:path.path.length,coins:state.coins,level:level(state)});
-  interactChapter(host,id);settle();if(choice){const c=dialogue?.choices?.find(c=>c.label===choice&&!c.disabled);if(!c)throw Error(`Missing choice ${choice}`);dialogue=undefined;c.action();settle();}fight();
+  interactChapter(host,id);settle();if(choice){const c=(dialogue as Dialogue|undefined)?.choices?.find(c=>c.label===choice&&!c.disabled);if(!c)throw Error(`Missing choice ${choice}`);dialogue=undefined;c.action();settle();}fight();
  };
  try{
   resumeChapter(host);settle();visit('tomas');visit('pursuit');visit('west-yard');visit('orrin');visit('workshop-cache','Clear the shed');visit('branch');visit('collector');visit('release');visit('east-pass');visit('shelter','Rest · restore HP and focus');visit('captain');visit('departure');
