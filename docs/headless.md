@@ -223,7 +223,7 @@ The default visits Hammerplain → Dawnwatch → Windmere, takes the freight lif
 
 The first complete run clears all twelve fights without knockouts. Nell becomes ill through the normal story callback, leaves the formation, and stays at 1 HP/0 focus despite resting before the hunters. The remaining three fight and reach the real Chapter Six boundary. The longer Chapter Five route checks remain opt-in; no complete journeys are added to normal CI.
 
-### Earned results and next checkpoint
+### Initial Chapter Five audit (before boss pressure changes)
 
 A fresh `newGame()` → early → middle → five run wins **27 battles** through the end of Chapter Five, without defeats, knockouts, retries or granted resources. Its newly earned Chapter Four state exactly matches the recorded input. All six regional orders pass the opt-in route suite. Both the Hammerplain return and pre-finale checkpoints resume to the same final save without replaying rewards. A focused regression also covers completing all three regions before visiting the Emperor's cabin.
 
@@ -249,3 +249,31 @@ Potential follow-ups:
 3. **Skill progression pauses through most of the chapter.** The default reaches level ten after the optional safety store, then stays there for the remaining ten fights. It ends only 25 XP short of level eleven. The three regions still award equipment, but the long skill-point plateau may merit an XP-threshold review.
 
 All **708 unit tests**, **17 opt-in headless route checks**, TypeScript and production build pass. Detailed route permutations remain outside default CI. These runs do not cover rendering, animations, audio, other early-campaign choices, selling, exhaustive builds or any Chapter Six expedition.
+
+## Chapter Five boss pressure correction
+
+The exposed ward lens previously covered only row four; the flagship's exposed bridge covered only row five. Once the early threats were removed, a party could park closer to either core and attack from permanently safe cells. Those low-pressure wins were reproducible across several formations, not evidence that every late-game fight is easy.
+
+Windmere now has two staggered, ordinary Slag crows. Breaking the lit projection still interrupts that round's beam, and stopping the core also shuts down its screen. With both projections gone, the weaker crossbeam sights a living hero at each round announcement and crosses two axes. The separate Chapter Seven ward profile retains its old pattern.
+
+Flagship batteries sight the nearest living hero when announcing their raking axis/bombardment. The bridge rotates its target; its exposed broadside crosses two axes through that round's sighted position. The two marines start on different rows and have 98 rather than 58 HP, matching Dawnwatch's shield troops. The guns and cores keep their existing HP and damage. Warnings remain fixed during the round, with the existing Taunt redirect; Dazzle, barriers, healing, single-hit boss contacts and permanent component destruction retain their normal rules. Both crow guards are present from the start; stopping the core or bridge ends the fight as before.
+
+| Same earned state / formation | Before (rounds / HP lost) | After (rounds / HP lost) |
+| --- | ---: | ---: |
+| Default ward · Nell/Orrin/Celia | 4 / 6 | 6 / 108 |
+| Default flagship · Nell/Orrin/Celia | 5 / 0 | 5 / 76 |
+
+All sixteen matched scenarios still win without knockouts. Ward losses range from 14–115 HP and flagship losses from 32–106, across offensive/support parties, prepared/frugal inputs and Windmere-first equipment. The default lens itself now causes 38 HP of damage and the flagship bridge 47; pressure persists after the guard/gun opening. A second, greedy controller also wins all sixteen replays without knockouts. Fast Kit/Petra formations clear the ward screen efficiently and still win with little damage. These are bounded agent comparisons, not a human difficulty score.
+
+[chapter-five-boss-inputs.json](headless/chapter-five-boss-inputs.json) contains six actual pre-battle saves captured from three complete runs on base `26661a9e6d1aee6b2a123d8d516d2060a88569c5`. Replays change formation through the normal rules and preserve each input's HP, focus, learned ranks, worn gear and stock. [chapter-five-boss-pressure.json](headless/chapter-five-boss-pressure.json) records matched input hashes, before/after metrics, enemy damage, greedy replays, source hashes and the fresh full run. Reproduce the comparison, including the original rules, with:
+
+```sh
+git worktree add --detach /tmp/bt-before 26661a9e6d1aee6b2a123d8d516d2060a88569c5
+node scripts/compare-chapter-five-bosses.mjs --root /tmp/bt-before --output /tmp/before.json
+node scripts/compare-chapter-five-bosses.mjs --output /tmp/after.json
+node scripts/compare-chapter-five-bosses.mjs --tactics legacy --output /tmp/greedy.json
+```
+
+A fresh run from zero still wins all 27 battles through Chapter Five without knockouts. Chapter Five now loses 706 HP, spends 146 marks and ends with **1,549 marks**, the same three bandages/two field bandages/one tonic, and seven useful rests. XP, rewards, Nell's illness and the Chapter Six boundary are unchanged. Both [chapter-five-earned.json](headless/chapter-five-earned.json) and [chapter-five-regions-earned.json](headless/chapter-five-regions-earned.json) are regenerated from this run; they are the current continuation/finale-review inputs. The initial Chapter Five audit above remains historical.
+
+All 715 unit tests, seventeen opt-in route checks and build pass. Focused rule tests prove that standing in the old upper safe rows takes damage, legal movement escapes an announced warning, moving does not make it home in, and the next round re-sights. Desktop 1280×800 and phone 390×844 Playwright checks cover both encounters, the visible guard/warning layouts, panning, Defend and initiative; no framework overlays or app console errors were seen. The Browser plugin was unavailable, so local Chromium was used. Full chapter journeys remain outside the default CI gate.

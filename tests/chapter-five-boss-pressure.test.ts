@@ -1,7 +1,7 @@
 import {it,expect} from 'vitest';
-import {createBattle,enemyTurn,active,move,movement,defend,shape,type Battle} from '../src/rules/combat';
+import {createBattle,enemyTurn,active,move,movement,defend,shape,targets,type Battle} from '../src/rules/combat';
 import {newGame} from '../src/rules/state';
-import {equal,offset,key} from '../src/rules/hex';
+import {equal,offset,key,cells} from '../src/rules/hex';
 import {prepareWard,wardUnit,wardMirrors} from '../src/rules/ward';
 import {prepareFlagship,flagshipPart,FLAGSHIP_PARTS} from '../src/rules/flagship';
 import {chapterFiveFinaleStart} from '../src/dev/canonical-saves';
@@ -59,7 +59,9 @@ it('re-aims after a round boundary and staggers the reinforced boarders',()=>{
  prepareFlagship(b);expect(gun.intent!.cells).toEqual(previous);
  b.round++;prepareFlagship(b);expect(gun.intent!.cells).not.toEqual(previous);
  const marines=b.units.filter(u=>u.id.startsWith('flagship-marine'));
- expect(marines).toHaveLength(2);expect(marines.every(u=>u.hp===98)).toBe(true);
+ expect(marines).toHaveLength(2);
+ const nell=b.units.find(u=>u.id==='nell')!;b.queue=[nell.id,'orrin',...FLAGSHIP_PARTS];
+ for(const aim of cells())expect(targets(b,nell,'prism',aim).filter(u=>marines.includes(u))).toHaveLength(aim.r===marines[0].hex.r||aim.r===marines[1].hex.r?1:0);
  expect(new Set(marines.map(u=>u.hex.r)).size).toBe(2);
  expect(new Set(b.units.map(u=>key(u.hex))).size).toBe(b.units.length);
 });
