@@ -35,6 +35,7 @@ import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
 import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, endTurn, enemyTurn, legalAim, move, movement, movementOnly, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle, type Unit } from '../rules/combat';
+import {bossDirectHint} from '../rules/boss-direct';
 import { ENCOUNTERS } from '../content/encounters';
 import { HEX_SIZE, hexVertices, cells, diagonalStart, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { partyLeader, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
@@ -715,6 +716,7 @@ export class Adventure extends Phaser.Scene {
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected,teamStatus(b,u,this.selected).partner).description;
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
+    const directHint=this.selected==='move'&&bossDirectHint(b);if(directHint)hint.textContent=directHint+' '+hint.textContent;
     if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
@@ -722,7 +724,10 @@ export class Adventure extends Phaser.Scene {
       const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;
       const note=document.createElement('span');note.className='prediction invalid-target team-unavailable';note.setAttribute('role','status');note.textContent=reason;confirm.append(note);return;
     }
-    if(!aimed)return;
+    if(!aimed){
+      if(directHint){const note=document.createElement('span');note.className='prediction';note.textContent=bossDirectHint(b,true);confirm.append(note);}
+      return;
+    }
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}

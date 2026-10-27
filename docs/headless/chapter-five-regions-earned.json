@@ -2,21 +2,25 @@
   "version": 1,
   "policy": "five-v1",
   "status": "complete",
-  "stage": "regions",
+  "stage": "five-regions",
   "source": {
-    "baseCommit": "26661a9e6d1aee6b2a123d8d516d2060a88569c5",
+    "baseCommit": "14afa1126e614a1575c171b3637e1deb65585a9d",
     "files": {
-      "src/rules/combat.ts": "6be6ed4e1baf4b42f8fc11bf11948285d52c6445a8461d132a29eab2dad83c84",
+      "src/rules/combat.ts": "58df4c9360ef24ba84c34c069ed9db5056191c536c2c3768ba4ad31cda593afb",
+      "src/rules/abilities.ts": "4ea48fdff42c075fd957bcd448d48710b9d1efbed322d5d4b179072f2e39239f",
+      "src/dev/canonical-saves.ts": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228",
+      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149",
       "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
       "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
       "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
       "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13",
-      "scripts/compare-chapter-five-bosses.mjs": "ad8c1e59fb1d67e68ee8b69cfde8f0372c34c177fe243ec613a8a6f7b76343cc"
+      "scripts/compare-late-bosses.mjs": "50b406a15108f1ae7abdc0ed2ab39d6a3c6ab0fec31ddb32f9c287f42dc25339",
+      "scripts/compare-chapter-five-bosses.mjs": "78fc4bd47ba2a9fdcdeaa74689c231fde18b54611124b4d27b4d9b03ee4f2e52"
     },
     "inputsSha256": "ceb76d31df667934ba9004fd60e6f04bde1b161d9e989a765d44083659704c36",
     "freshEarlySha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
-    "freshMiddleSha256": "9485650a3e7ef791570976a6b74b2c9daa5cb6231c1d712ad67b01e54d745d07",
-    "freshFiveSha256": "e42ce94195d74a5c801dccba71160171731e443d6528b921743254ae1c3db75e"
+    "freshMiddleSha256": "1194df7dcfd0fe6f24c22162d541e619abab1aaec4e8ce03e1cf7158afdf9bce",
+    "freshFiveSha256": "a315915f62c0d2b83f56391415a009e3707a1d6aa53d1e5736411fc80ad21ef4"
   },
   "agent": {
     "tactics": "defensive",
@@ -32,7 +36,7 @@
     "forge": "lift",
     "firstGun": "mortar",
     "optional": true,
-    "through": "regions"
+    "through": "5"
   },
   "state": {
     "format": "borrowed-tomorrow",
@@ -67,7 +71,7 @@
       },
       {
         "id": "celia",
-        "hp": 91,
+        "hp": 84,
         "focus": 6
       }
     ],
@@ -184,7 +188,7 @@
       "windmereComplete": true,
       "allAnchorsSeen": true
     },
-    "coins": 1263,
+    "coins": 1253,
     "bandages": 2,
     "xp": 2945,
     "inventory": {

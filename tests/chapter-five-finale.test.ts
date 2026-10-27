@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { chapterFiveFinaleStart } from '../src/dev/canonical-saves';
 import { maxHp, remember, SIXTH_CHAPTER, restoreParty, setActive, partyLeader } from '../src/rules/state';
@@ -90,7 +91,7 @@ it('prepares campaign warnings, drops the shield on the second gun and ends on t
  hero.hex=offset(3,3);b.queue=[hero.id,port.id,starboard.id,bridge.id];port.hp=1;
  expect(targets(b,hero,'burst',port.hex).filter(u=>u.id===port.id)).toHaveLength(1);expect(cast(b,hero,'burst',port.hex)).toBe(true);expect(port.intent).toBeUndefined();expect(bridge.sealed).toBe(true);
  starboard.hp=0;prepareFlagship(b);expect(bridge.sealed).toBe(false);b.round++;prepareFlagship(b);expect(bridge.intent?.name).toBe('Emergency broadside');
- const victim=b.units.find(u=>u.side==='party')!;bridge.tauntedBy=victim.id;bridge.dazzledAttacks=3;prepareFlagship(b);expect(bridge.intent!.cells).toEqual([victim.hex]);b.queue=[bridge.id,hero.id];const hp=victim.hp,amount=damage(bridge,victim,'judgment');expect(enemyTurn(b)).toBe('judgment');expect(victim.hp).toBe(hp-amount);expect(bridge.dazzledAttacks).toBe(2);
+ const victim=b.units.find(u=>u.side==='party')!;bridge.tauntedBy=victim.id;bridge.dazzledAttacks=3;prepareFlagship(b);expect(bridge.intent!.cells).toEqual([victim.hex]);b.queue=[bridge.id,hero.id];fireBossDirect(b);const hp=victim.hp,amount=damage(bridge,victim,'judgment');expect(enemyTurn(b)).toBe('judgment');expect(victim.hp).toBe(hp-amount);expect(bridge.dazzledAttacks).toBe(1);
  bridge.hp=0;b.queue=[hero.id,bridge.id];defend(b);expect(b.result).toBe('victory');expect(b.units.filter(u=>u.side==='enemy').every(u=>u.hp===0)).toBe(true);
 });
 it('keeps the full cast on connected deck floor and visibly clears the fleet after victory',()=>{

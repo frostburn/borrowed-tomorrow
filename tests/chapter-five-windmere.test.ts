@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { anchorCheckpoint,windmereCheckpoint,windmereOrder } from './support/anchors';
 import { active,awardVictory,cast,createBattle,damage,defend,enemyTurn,shape,targets } from '../src/rules/combat';
@@ -75,13 +76,13 @@ it('only the lit projection interrupts this round, and a new surviving mirror re
  b.units[0].hex=offset(10,6);prepareWard(b);expect(core.intent).toEqual(warning);
  const lit=mirrors.find(m=>m.id===core.intent!.via)!,other=mirrors.find(m=>m!==lit)!;other.hp=0;prepareWard(b);expect(core.sealed).toBe(true);expect(core.intent!.cells.length).toBeGreaterThan(0);
  other.hp=70;lit.hp=0;core.tauntedBy=b.units[0].id;prepareWard(b);expect(core.sealed).toBe(false);expect(core.intent!.cells).toEqual([]);
- b.queue=[core.id,b.units[0].id];expect(enemyTurn(b)).toBe('refraction');expect(active(b)?.id).not.toBe(core.id);expect(core.intent!.cells).toEqual([]);
+ b.queue=[core.id,b.units[0].id];expect(enemyTurn(b)).toBeUndefined();expect(active(b)?.id).not.toBe(core.id);expect(core.intent!.cells).toEqual([]);
  b.round++;prepareWard(b);expect(core.sealed).toBe(true);expect(core.intent!.via).toBe(other.id);other.hp=0;prepareWard(b);expect(core.sealed).toBe(false);b.round++;prepareWard(b);expect(core.intent!.via).toBeUndefined();expect(core.sealed).toBe(false);expect(core.intent!.power).toBe(14);expect(core.intent!.cells.length).toBeGreaterThan(0);
 });
 it('areas hit a whole core once, Taunt redirects the announced beam, Dazzle and guard apply, core death ends projections',()=>{
  const b=battle(),core=wardUnit(b)!,hero=b.units[0];wardMirrors(b).forEach(m=>{m.hp=0;});prepareWard(b);hero.hex=offset(5,4);b.queue=[hero.id,core.id];
  expect(targets(b,hero,'burst',offset(5,2)).filter(u=>u.id===core.id)).toHaveLength(1);const hp=core.hp,expected=damage(hero,core,'burst');expect(cast(b,hero,'burst',offset(5,2))).toBe(true);expect(core.hp).toBe(hp-expected);
- core.tauntedBy=hero.id;core.dazzledAttacks=3;hero.guard=10;b.round++;prepareWard(b);expect(shape(b,core,'refraction',core.hex)).toEqual([hero.hex]);const before=hero.hp;b.queue=[core.id,hero.id];expect(enemyTurn(b)).toBe('refraction');expect(core.dazzledAttacks).toBe(2);expect(before-hero.hp).toBeLessThan(14);
+ core.tauntedBy=hero.id;core.dazzledAttacks=3;hero.guard=10;b.round++;prepareWard(b);expect(shape(b,core,'refraction',core.hex)).toEqual([hero.hex]);const before=hero.hp;b.queue=[core.id,hero.id];fireBossDirect(b);expect(enemyTurn(b)).toBe('refraction');expect(core.dazzledAttacks).toBe(1);expect(before-hero.hp).toBeLessThan(14);
  const c=battle(),boss=wardUnit(c)!,attacker=c.units[0];boss.hp=0;c.queue=[attacker.id,boss.id];defend(c);expect(c.result).toBe('victory');expect(wardMirrors(c).every(m=>m.hp===0)).toBe(true);
 });
 it('a deferred Emperor offer remains available after all three anchors without repeating the alliance scene',()=>{

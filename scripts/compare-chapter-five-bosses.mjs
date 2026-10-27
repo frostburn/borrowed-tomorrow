@@ -11,7 +11,7 @@ if(input===output)throw Error('Preserve the earned inputs');
 const raw=readFileSync(input,'utf8'),packet=JSON.parse(raw);
 if(packet.version!==1||!Array.isArray(packet.starts)||packet.starts.length!==6)throw Error('Expected the six earned Chapter Five boss starts');
 const hash=s=>createHash('sha256').update(s).digest('hex');
-const server=await createServer({root,configFile:false,server:{middlewareMode:true},appType:'custom'});
+const server=await createServer({root,configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
 try{
  const {CampaignSession}=await server.ssrLoadModule('/src/headless/campaign.ts');
  const {createBattle}=await server.ssrLoadModule('/src/rules/combat.ts');
@@ -31,7 +31,8 @@ try{
    if(row.result!=='victory')process.exitCode=1;
   }
  }
- const files=['src/rules/combat.ts','src/rules/ward.ts','src/rules/flagship.ts','src/content/chapter-five/encounters.ts','src/content/chapter-five/flagship.ts'];
+ const files=['src/rules/combat.ts','src/rules/abilities.ts','src/rules/ward.ts','src/rules/flagship.ts','src/content/chapter-five/encounters.ts','src/content/chapter-five/flagship.ts'];
+ try{readFileSync(join(root,'src/rules/boss-direct.ts'));files.push('src/rules/boss-direct.ts');}catch{}
  writeFileSync(output,JSON.stringify({version:1,source:{commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),inputsSha256:hash(raw),files:Object.fromEntries(files.map(p=>[p,hash(readFileSync(join(root,p)))]))},results},null,2)+'\n');
  console.log(output);
 }finally{await server.close();}

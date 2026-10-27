@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import {it,expect} from 'vitest';
 import {createBattle,enemyTurn,active,move,movement,defend,shape,targets,type Battle} from '../src/rules/combat';
 import {newGame} from '../src/rules/state';
@@ -21,7 +22,7 @@ function dodge(b:Battle,enemy:string){
  const gun=b.units.find(u=>u.id===enemy)!,hero=b.units.find(u=>u.side==='party'&&gun.intent!.cells.some(h=>equal(h,u.hex)))!;
  expect(hero).toBeDefined();
  const held=structuredClone(b),victim=held.units.find(u=>u.id===hero.id)!;
- held.queue=[enemy,hero.id];const hp=victim.hp;
+ held.queue=[enemy,hero.id];fireBossDirect(held);const hp=victim.hp;
  expect(enemyTurn(held)).toMatch(/judgment|refraction/);expect(victim.hp).toBeLessThan(hp);
  b.queue=[hero.id,enemy];hero.moved=false;
  const warning=structuredClone(gun.intent!.cells),safe=[...movement(b,hero).values()].find(v=>!warning.some(h=>equal(h,v.hex)));
@@ -29,7 +30,7 @@ function dodge(b:Battle,enemy:string){
  // A warning follows the announced snapshot, never the player mid-turn.
  expect(gun.intent!.cells).toEqual(warning);expect(defend(b)).toBe(true);expect(active(b)).toBe(gun);
  expect(shape(b,gun,gun.abilities[0],gun.hex)).toEqual(warning);
- const dodgedHp=hero.hp;enemyTurn(b);expect(hero.hp).toBe(dodgedHp);
+ fireBossDirect(b);const dodgedHp=hero.hp;enemyTurn(b);expect(hero.hp).toBe(dodgedHp);
 }
 it('the exposed ward lens threatens the old safe upper rows but can be dodged',()=>{
  const b=nearWard(),core=wardUnit(b)!;

@@ -2,6 +2,7 @@ import type Phaser from 'phaser';
 import { ABILITIES, type AbilityId,type Ability } from '../rules/combat';
 import { diagonalStart, toPixel, type Hex } from '../rules/hex';
 import {drawTeamEffect,TEAM_ANIMATION,type TeamSource} from './battle-team-effects';
+import {drawBossDirect} from './boss-direct-effect';
 
 /** Short native-world effects from a tool, or from above for celestial attacks. */
 export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability],teamSources:TeamSource[]=[]){
@@ -15,6 +16,7 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   scene.tweens.addCounter({from:0,to:1,duration:reduced?100:TEAM_ANIMATION[ability]?.duration??(rich?580:300),onUpdate:tween=>{
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
     if(drawTeamEffect(g,ability,p,affected,teamSources,reduced,definition))return;
+    if(drawBossDirect(g,ability,p,affected,source,reduced))return;
     if(definition.shape==='diagonal'&&origin&&affected.length){
       const start=diagonalStart(origin,affected[0]),points=affected.map(toPixel),last=points.at(-1)!,progress=reduced?1:Math.min(1,p*2);
       const tip={x:Math.round((start.x+(last.x-start.x)*progress)/2)*2,y:Math.round((start.y+(last.y-start.y)*progress)/2)*2};

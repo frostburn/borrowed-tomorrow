@@ -250,7 +250,7 @@ Potential follow-ups:
 
 All **708 unit tests**, **17 opt-in headless route checks**, TypeScript and production build pass. Detailed route permutations remain outside default CI. These runs do not cover rendering, animations, audio, other early-campaign choices, selling, exhaustive builds or any Chapter Six expedition.
 
-## Chapter Five boss pressure correction
+## Chapter Five boss pressure correction (before direct attacks)
 
 The exposed ward lens previously covered only row four; the flagship's exposed bridge covered only row five. Once the early threats were removed, a party could park closer to either core and attack from permanently safe cells. Those low-pressure wins were reproducible across several formations, not evidence that every late-game fight is easy.
 
@@ -277,3 +277,36 @@ node scripts/compare-chapter-five-bosses.mjs --tactics legacy --output /tmp/gree
 A fresh run from zero still wins all 27 battles through Chapter Five without knockouts. Chapter Five now loses 706 HP, spends 146 marks and ends with **1,549 marks**, the same three bandages/two field bandages/one tonic, and seven useful rests. XP, rewards, Nell's illness and the Chapter Six boundary are unchanged. Both [chapter-five-earned.json](headless/chapter-five-earned.json) and [chapter-five-regions-earned.json](headless/chapter-five-regions-earned.json) are regenerated from this run; they are the current continuation/finale-review inputs. The initial Chapter Five audit above remains historical.
 
 All 715 unit tests, seventeen opt-in route checks and build pass. Focused rule tests prove that standing in the old upper safe rows takes damage, legal movement escapes an announced warning, moving does not make it home in, and the next round re-sights. Desktop 1280×800 and phone 390×844 Playwright checks cover both encounters, the visible guard/warning layouts, panning, Defend and initiative; no framework overlays or app console errors were seen. The Browser plugin was unavailable, so local Chromium was used. Full chapter journeys remain outside the default CI gate.
+
+## Direct attacks from later bosses (#137)
+
+Large bosses from Chapter Five onward now fire one lighter direct shot before their marked main attack. Only the flagship bridge gets the extra action. Targets rotate between living fighters and obey Taunt; armor, Defend, barriers and Dazzle apply normally. A broken lit ward projection cancels both attacks without consuming Dazzle, and the vessel/Lightbearer/Benefactor fourth-round pauses remain completely quiet. See [combat-upgrade.md](combat-upgrade.md#later-bosses-direct-attacks-137) for the attacks and counters.
+
+[boss-direct-pressure.json](headless/boss-direct-pressure.json) records **16 matched earned Chapter Five cases**, **42 authored late-boss cases before/after**, **42 additional current-rule greedy replays**, source/input hashes and reproduction commands. The defensive controller wins all 58 current cases without knockouts. The greedy controller also wins all 42, with one knockout against the domain furnace in the Nell/Celia/Petra fixture. Three parties play all final forms consecutively, carrying actual HP, focus and supplies forward with normal victory recovery and no intervening refill or rest.
+
+These Chapter Six/Seven probes use **authored canonical inputs**; they do not claim an earned playthrough of those chapters. The regional fixtures exercise ill and recovered Nell. Domain reprises start from the authored Chapter Seven opening, before the intervening rewards. Isolated cases and each party's first final form have identical before/after input hashes; the later forms' starts can differ because they carry forward the earlier fight's results.
+
+| Canonical Nell/Orrin/Celia | Before (rounds / HP lost) | After (rounds / HP lost) |
+| --- | ---: | ---: |
+| Imperial vessel | 11 / 86 | 11 / 174 |
+| Domain furnace | 7 / 196 | 7 / 294 |
+| Benefactor body | 7 / 132 | 7 / 206 |
+| Hollow sun, continuing from the body | 6 / 88 | 7 / 208 |
+| Exposed heart, continuing from the sun | 4 / 11 | 4 / 46 |
+
+Support remains an effective answer. Losses do not rise in every composition: in the matched earned default flagship, the controller spends an action on Sanctuary and loses only **3 HP**, versus 76 before. The added shot does not bypass that investment. Across all late canonical defensive cases, observed loss rises from 4,136 to 6,466 HP, with no current-rule knockouts; these are controller outcomes, not a human difficulty score. Party powers, boss HP, rewards and prices are unchanged.
+
+Reproduce the comparisons from the same working tree with:
+
+```sh
+git worktree add --detach /tmp/bt-before-direct 14afa1126e614a1575c171b3637e1deb65585a9d
+node scripts/compare-late-bosses.mjs --root /tmp/bt-before-direct --output /tmp/late-before.json
+node scripts/compare-late-bosses.mjs --output /tmp/late-after.json
+node scripts/compare-late-bosses.mjs --tactics legacy --output /tmp/late-greedy.json
+node scripts/compare-chapter-five-bosses.mjs --root /tmp/bt-before-direct --output /tmp/five-before.json
+node scripts/compare-chapter-five-bosses.mjs --output /tmp/five-after.json
+```
+
+A fresh run from zero still wins all **27 battles through Chapter Five**, without knockouts, retries or granted resources. The Chapter Four checkpoint matches the existing earned record exactly. Chapter Five loses **691 HP**, spends **156 marks**, uses six useful rests and ends with **1,539 marks**, three bandages, two field bandages and one tonic. Nell's illness, 3,475 XP and the real Chapter Six boundary are preserved. The two earned Chapter Five save artifacts are refreshed from this run; the earlier audit sections remain historical. The surplus stock/spending and level-ten plateau concerns remain open.
+
+All **740 unit tests**, **17 opt-in headless checks**, TypeScript and build pass. Six local browser flows cover Benefactor/serpent/flagship shots on desktop 1280×800 and phone 390×844 at DPR 1/1.25, using real Defend commands. Each verifies one aimed hex, retained boss initiative and the unchanged marked main attack. The phone's compact target cue stays in the fixed confirmation area. Screenshots were inspected; there were no framework overlays or app console errors. The Browser plugin was unavailable, so installed Playwright/Chromium was used. No detailed journeys were added to default CI.

@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { chapterSixStart } from '../src/dev/canonical-saves';
@@ -116,12 +117,12 @@ it('glass comes from the actual breath, reflects only in the next announcement a
  expect(head.intent!.name).toContain('reflections');const reflected=key(offset(1,6));expect(shape(b,head,'judgment',head.hex).some(h=>key(h)===reflected)).toBe(true);
  serpentCoils(b)[0].hp=0;prepareSerpent(b);expect(shape(b,head,'judgment',head.hex).some(h=>key(h)===reflected)).toBe(false);
  b.round++;prepareSerpent(b);expect(head.intent!.name).not.toContain('reflections');
- const c=serpent(),h=serpentHead(c)!,hero=c.units[0];h.tauntedBy=hero.id;prepareSerpent(c);c.queue=[h.id,hero.id];expect(enemyTurn(c)).toBe('judgment');expect(c.sunGlass!.cells).toEqual([hero.hex]);
+ const c=serpent(),h=serpentHead(c)!,hero=c.units[0];h.tauntedBy=hero.id;prepareSerpent(c);c.queue=[h.id,hero.id];fireBossDirect(c);expect(enemyTurn(c)).toBe('judgment');expect(c.sunGlass!.cells).toEqual([hero.hex]);
 });
 it('areas hit one whole head, Taunt redirects all lanes, Dazzle/guard work and head death ends the encounter',()=>{
  const b=serpent(),head=serpentHead(b)!,hero=b.units[0];hero.hex=offset(5,4);b.queue=[hero.id,head.id];hero.abilities.push('burst');
  expect(targets(b,hero,'burst',offset(5,2)).filter(u=>u.id===head.id)).toHaveLength(1);const hp=head.hp,expected=damage(hero,head,'burst');expect(cast(b,hero,'burst',offset(5,2))).toBe(true);expect(head.hp).toBe(hp-expected);
- head.tauntedBy=hero.id;head.dazzledAttacks=3;hero.guard=10;prepareSerpent(b);expect(shape(b,head,'judgment',head.hex)).toEqual([hero.hex]);const before=hero.hp;b.queue=[head.id,hero.id];enemyTurn(b);expect(head.dazzledAttacks).toBe(2);expect(before-hero.hp).toBeLessThan(15);
+ head.tauntedBy=hero.id;head.dazzledAttacks=3;hero.guard=10;prepareSerpent(b);expect(shape(b,head,'judgment',head.hex)).toEqual([hero.hex]);b.queue=[head.id,hero.id];fireBossDirect(b);const before=hero.hp,breath=damage(head,hero,'judgment');enemyTurn(b);expect(head.dazzledAttacks).toBe(1);expect(before-hero.hp).toBe(breath);
  const c=serpent(),h=serpentHead(c)!;h.hp=0;c.queue=[c.units[0].id,h.id];defend(c);expect(c.result).toBe('victory');expect(serpentCoils(c).every(u=>u.hp===0)).toBe(true);
 });
 it('all available companion formations can enter without Nell, including a solo courier',()=>{

@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { readFileSync,statSync } from 'node:fs';
 import { chapterSixNorthStart,chapterSixDragonStart } from '../src/dev/canonical-saves';
@@ -128,7 +129,7 @@ it('shattered ice costs movement and cold damage, stays traversable, and clears 
  u.hp=0;b.queue=[hero.id];defend(b);expect(b.result).toBe('victory');expect(b.winterIce).toEqual([]);
 });
 it('the actual cast applies a pull and shelf before round rollover, while normal guard and three-attack dazzle reduce damage',()=>{
- const {b,u}=dragon(),hero=b.units[0];b.queue=[u.id];hero.hex=offset(5,5);hero.guard=10;u.dazzledAttacks=3;const hp=hero.hp;expect(enemyTurn(b)).toBe('judgment');expect(hp-hero.hp).toBeLessThan(15);expect(u.dazzledAttacks).toBe(2);expect(b.round).toBe(2);expect(hero.hex).not.toEqual(offset(5,5));
+ const {b,u}=dragon(),hero=b.units[0];b.queue=[u.id];hero.hex=offset(5,5);hero.guard=10;u.dazzledAttacks=3;fireBossDirect(b);const hp=hero.hp;expect(enemyTurn(b)).toBe('judgment');expect(hp-hero.hp).toBeLessThan(15);expect(u.dazzledAttacks).toBe(1);expect(b.round).toBe(2);expect(hero.hex).not.toEqual(offset(5,5));
  b.round=2;prepareWinterDragon(b);b.queue=[u.id];const shelf=structuredClone(u.intent!.cells);expect(cast(b,u,'judgment',u.hex)).toBe(true);expect(b.round).toBe(3);expect(b.winterIce).toEqual(shelf);expect(shape(b,u,'judgment',u.hex)).not.toEqual(shelf);expect(active(b)?.side).toBe('party');
 });
 const modes:MusicMode[]=['bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon'];
