@@ -27,7 +27,7 @@ export function reviewFlags(entry:MapReview){
   const names=new Set<string>();
   const add=(p:Record<string,unknown>)=>{
     for(const key of ['requiredFlag','hiddenFlag','spriteHiddenFlag','doneFlag','openFlag','storyUntil','accessFlag'])if(p[key])names.add(String(p[key]));
-    if(p.markerFlags)for(const flag of String(p.markerFlags).split(','))names.add(flag.trim());
+    for(const key of ['markerFlags','markerBlockFlags'])if(p[key])for(const flag of String(p[key]).split(','))names.add(flag.trim().replace(/^!/,''));
   };
   for(const l of entry.tiles?.layers??[]){add(properties(l));for(const o of l.objects??[])add(properties(o));}
   for(const o of [...entry.world?.objects??[],...entry.world?.people??[],...entry.world?.gates??[]])add(o as unknown as Record<string,unknown>);

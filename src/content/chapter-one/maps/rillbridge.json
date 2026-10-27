@@ -1334,6 +1334,11 @@
               "name": "kind",
               "type": "string",
               "value": "exit"
+            },
+            {
+              "name": "markerFlags",
+              "type": "string",
+              "value": "villageFreed"
             }
           ]
         },
