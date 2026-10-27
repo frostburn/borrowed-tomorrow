@@ -27,7 +27,9 @@
     "art:seven": "node scripts/export-chapter-seven-art.mjs",
     "art:six": "node scripts/export-chapter-six-art.mjs",
     "check:art-upload": "node scripts/check-art-upload.mjs",
-    "simulate:early": "node scripts/headless.mjs"
+    "simulate:early": "node scripts/headless.mjs",
+    "simulate:middle": "node scripts/headless.mjs middle",
+    "test:headless": "vitest run --config scripts/headless.vitest.config.ts"
   },
   "dependencies": {
     "phaser": "4.2.1"
