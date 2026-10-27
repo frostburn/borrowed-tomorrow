@@ -8,7 +8,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
    await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');const stored=await page.evaluate(()=>JSON.stringify(localStorage));
    await page.getByRole('button',{name:'Ch 5',exact:true}).click();await page.locator('[data-cue="flagship"]').click();
-   await expect(page.getByRole('region',{name:'Music review'})).toContainText('140 BPM / 10/8 / 34 bars / 2-bar intro, then 32-bar loop / 2+2+3+3');
+   await expect(page.getByRole('region',{name:'Music review'})).toContainText('132 BPM / 10/8 / 34 bars / 2-bar intro, then 32-bar loop / 2+2+3+3');
    await expect(page.locator('#music-notes thead')).toContainText('Eighth');
    const parts=page.getByRole('group',{name:'Instrument audition'}),bar=page.getByRole('spinbutton',{name:'Bar',exact:true});
    for(const instrument of ['Brass','Timpani']){await parts.getByRole('button',{name:instrument,exact:true}).click();await expect(page.locator('#music-notes tbody')).toContainText(instrument.toLowerCase());}

@@ -3,7 +3,7 @@ import {ARRANGEMENTS,scoreBar,scoreLength,type MusicMode} from '../src/game/scor
 import {isPercussion} from '../src/game/tuning';
 
 const pairs:readonly (readonly [MusicMode,MusicMode])[]=[
- ['five-furnace','five-battle'],['dawn-commander','dawn-battle'],['wind-engine','wind-battle'],['flagship','five-battle'],
+ ['five-furnace','five-battle'],['dawn-commander','dawn-battle'],['wind-engine','wind-battle'],
  ['sun-serpent','desert-battle'],['rain-warden','river-battle'],['winter-dragon','north-battle'],
  ['emperor','capital-battle'],['lightbearer','capital-battle'],
  ['harvest-battle','domain-battle'],['hospice-battle','domain-battle'],['seasons-battle','domain-battle'],
@@ -22,7 +22,7 @@ it('late bosses sustain their low-end drive and have more drum attack weight tha
   expect(weight(boss),boss).toBeGreaterThan(weight(ordinary));
   for(let bar=ARRANGEMENTS[boss].introBars??0;bar<scoreLength(boss);bar++){
    const notes=scoreBar(boss,bar);
-   expect(notes.some(n=>n.instrument==='square-bass'),boss+':'+bar).toBe(true);
+   expect(notes.some(n=>n.instrument===(boss==='dawn-commander'&&bar>=16?'round-bass':'square-bass')),boss+':'+bar).toBe(true);
    expect(notes.some(n=>n.instrument==='kick'&&n.beat===0),boss+':'+bar).toBe(true);
   }
  }

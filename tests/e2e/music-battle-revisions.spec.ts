@@ -79,3 +79,23 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  });
 });
+
+test('square bass loses upper colour gradually during held notes without changing its fundamental',async({page})=>{
+ await page.goto('/');
+ const result=await page.evaluate(async()=>{
+  // @ts-expect-error Exercise the real shared rack.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const out=[];
+  for(const duration of [2,4]){
+   const rate=48000,c=new OfflineAudioContext(2,(duration+1)*rate,rate),bus=c.createGain(),hp=c.createBiquadFilter(),merger=c.createChannelMerger(2);
+   hp.type='highpass';hp.frequency.value=400;hp.Q.value=.707;bus.connect(merger,0,0);bus.connect(hp);hp.connect(merger,0,1);merger.connect(c.destination);
+   new Synth(c,bus).note('square-bass','G2',.03,duration,.2);
+   const b=await c.startRendering(),rms=(ch:number,from:number,to:number)=>{const d=b.getChannelData(ch);let sum=0;for(let i=Math.ceil(from*rate);i<Math.floor(to*rate);i++)sum+=d[i]**2;return Math.sqrt(sum/((to-from)*rate));};
+   const brightness=(from:number,to:number)=>rms(1,from,to)/rms(0,from,to);
+   out.push({early:brightness(.06,.12),middle:brightness(.3,.4),late:brightness(1,1.1),body:rms(0,1,1.1),tail:rms(0,duration+.8,duration+.95)});
+  }
+  return out;
+ });
+ for(const r of result){expect(r.middle).toBeLessThan(r.early);expect(r.late).toBeLessThan(r.middle);expect(r.body).toBeGreaterThan(.01);expect(r.tail).toBe(0);}
+ expect(result[1].late/result[0].late).toBeCloseTo(1,1);
+});

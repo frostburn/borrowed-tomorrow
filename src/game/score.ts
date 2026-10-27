@@ -85,7 +85,7 @@ export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   anchorforge:{beats:4,bpm:84,lead:'keys',leadGain:.12,keys:.035,strings:.015,bass:.08,percussion:0},
   'five-battle':{beats:4,bpm:132,lead:'keys',leadGain:.21,keys:.032,strings:.017,bass:.145,percussion:.1},
   'five-furnace':{beats:4,bpm:136,lead:'brass',leadGain:.21,keys:0,strings:.013,bass:.15,percussion:.14},
-  flagship:{beats:5,meter:[10,8],pulses:[2,2,3,3],introBars:2,bpm:140,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.17,percussion:.15},
+  flagship:{beats:5,meter:[10,8],pulses:[2,2,3,3],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
   sanctuary:{beats:4,bpm:66,lead:'bell',leadGain:.12,keys:.06,strings:.023,bass:.1,percussion:0},

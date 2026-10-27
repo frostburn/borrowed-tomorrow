@@ -97,7 +97,7 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  }
  // Soldiers keep a straight pulse; the tune decides when to resist it.
  const pulses=boss?middle?[0,1,2,3]:[0,.5,1,2,2.5,3]:fight?[0,1,2,3]:guns?[0,2]:i%3===2?[0]:[0,2];
- for(const beat of pulses)add(boss?'square-bass':'round-bass',beat===2?octave(chord[0],-1):bass,beat,boss?.32:fight?.65:1.6,boss?(beat%1?.1:.15):fight?.135:.095,-.08);
+ for(const beat of pulses)add(boss&&i<16?'square-bass':'round-bass',beat===2?octave(chord[0],-1):bass,beat,boss?(i>=16?.6:.32):fight?.65:1.6,boss?(i>=16?.105:beat%1?.1:.15):fight?.135:.095,-.08);
  for(const beat of fight?[.5,2.5]:guns?[1,3]:[0])for(const p of chord.slice(0,3))add('keys',p,beat,fight?.45:guns?.65:2.6,fight?.03:.023,.3);
  if(!guns&&(middle||i%3===2))for(const [n,p]of chord.entries())add('strings',p,0,3.5,.016,n%2?.4:-.4);
  if([2,5,10,18,26].includes(i))add(boss?'reed':'keys',i===18?'Gb4':'Ab4',3,.65,.055,.4);

@@ -72,7 +72,7 @@ The shared keys instrument has a struck attack and a two-stage decay, with quiet
 
 ## Chapter Five flagship — Iron Above the Clouds
 
-`score-flagship.ts` writes a short two-bar fanfare followed by a 32-bar battle loop at **quarter = 140, 10/8**. The pulse is **2+2+3+3 eighths**: two crisp marching steps open the bar, then two longer groups let the ship float. Square-bass attacks at quarter positions 0, 1, 2 and 3.5; kick at 0/2 and snare at 1/3.5 keep the original grouping. Reserve short sixteenth-note rolls for the eight-bar cadences.
+`score-flagship.ts` writes a short two-bar fanfare followed by a 32-bar battle loop at **quarter = 132, 10/8**. The pulse is **2+2+3+3 eighths**: two crisp marching steps open the bar, then two longer groups let the ship float. Bass attacks at quarter positions 0, 1, 2 and 3.5; kick at 0/2 and snare at 1/3.5 keep the original grouping. Reserve short sixteenth-note rolls for the eight-bar cadences.
 
 A D-minor brass call opens into an answering eight bars, a broader string-led middle through F major, Db major and Eb, and a varied brass return. A7 keeps its C# spelling; the Db/Ab middle retains its flats. The last A7 pickup returns to D minor. Sustained inner voices and rests support the line without constant arpeggios. Newly synthesized brass uses paired saws, a quiet lower triangle and an opening/closing filter. Tuned timpani combines decaying membrane partials with a short settling attack; cymbals use a decaying high-passed wash and quiet inharmonic metal. None requires sampled audio or new dependencies.
 
@@ -90,7 +90,7 @@ The chapter's former rising calls, triadic answers and repeated root–fifth bac
 | Kit · Iron Coast (`coast`, 88) | The coastal E–G call and its moving answers | The accepted sixteen-bar courier journey: steady half-note support, a broader middle and the Bm7b5/D inversion in bar 2. The train-raid variation develops the same identity. No new melody replaces the accepted Iron Coast. |
 | Petra · The Open Gate (`dawnwatch`, 92) | C–Db–C–G: resistance before a decision | F minor, Db-major inversions, Bbm and a Gb turn; C7 uses E natural. Three-bar calls answer in three, with two bars for resolution. Firm strings and a quiet straight march yield to a low middle without drums. Her Chapter Two crossing establishes this identity with firm beat landings over the retained straight backbeat. |
 | Celia · The Garden Walk (`windmere`, 76, 3/4) | Ab–Gb–F–Eb, then Db–C–Ab–Bb: a long exhale | Db major with Bbm9, Gb6, borrowed Cbmaj7 and Ab7sus/Ab7. A ten-bar opening sustains across two bar lines; its six-bar answer precedes a low eight-bar middle and compressed return. The reed sings above held bass and inner strings rather than three identical piano hits every bar. |
-| Alban · Iron Above the Clouds (`flagship`, 140, 10/8) | D–A–D–F: a plunging fourth, a return and a rising third | The brass command expands into four eight-bar arcs. Captain Alban (`inspector`, 136, 4/4) preserves its opening, then adds an eight-bar flagship-contour extension after the original sixteen bars without importing its meter. |
+| Alban · Iron Above the Clouds (`flagship`, 132, 10/8) | D–A–D–F: a plunging fourth, a return and a rising third | The brass command expands into four eight-bar arcs. Captain Alban (`inspector`, 136, 4/4) preserves its opening, then adds an eight-bar flagship-contour extension after the original sixteen bars without importing its meter. |
 
 The motifs describe people: Nell’s remembered home, Orrin’s patient work, Kit’s determination to keep moving, Petra’s stubborn refusal, Celia’s care continuing after the miracle, and Alban’s command. They are compositional anchors, not literal notes to force into every scene. Prefer new answers, register changes, silence, different phrase lengths and bass movement to another rising triad followed by a higher copy. Preserve independent counter-lines and the distinction between tension and a falsely triumphant cadence.
 
@@ -295,7 +295,7 @@ Every form has an opening, answers, a lifted contrasting middle and a changed re
 
 The shared bell loses upper colour after the strike on an absolute clock, independently of its written hold length. FM depth approaches its quiet floor with a 0.35-second time constant; the octave partial decays with 0.45 seconds; the low-pass gradually settles toward 1.8 times the fundamental (bounded 700–7000 Hz) with 0.8 seconds. Held fundamentals, authored dynamics, quiet-bar holds and soft releases remain audible. This applies to the Mirrored Ward and other bell cues, including held chamber arpeggios, without replacing their scores. Offline checks compare normalized high-frequency energy at different note ages and hold lengths, as well as release silence/cancellation.
 
-The `square-bass` voice is a band-limited Web Audio square at the exact written 31-EDO fundamental, with no sub-octave, detune or pitch rounding. A short eight-millisecond attack and 1.1 kHz low-pass retain coarse odd harmonics while keeping note edges smooth. The workshop's Bass group includes it and **Square bass** isolates it. This changes The Pouring Lane's voice only; the accepted Iron Coast round bass keeps its existing sound.
+The `square-bass` voice is a band-limited Web Audio square at the exact written 31-EDO fundamental, with no sub-octave, detune or pitch rounding. An eight-millisecond attack and initially 1.1 kHz low-pass retain coarse odd harmonics. After 20 ms the cutoff approaches max(180 Hz, 1.4 times the fundamental) with a 0.22-second time constant, gradually softening held notes independently of their written duration. The workshop's Bass group includes it and **Square bass** isolates it. This voice is used by the later boss arrangements; the accepted Iron Coast round bass keeps its existing sound.
 
 
 ## Boss impact from Chapter Five onward
@@ -305,9 +305,9 @@ Boss arrangements have their own rhythm-section weight and phrase turns. Short s
 | Boss cue | Quarter BPM | Rhythm-section character |
 | --- | --- | --- |
 | The Pouring Lane (`five-furnace`) | 136 | Retain the recently revised straight mechanical eighths, square bass, brass and driving backbeat. |
-| Orders Worth Refusing (`dawn-commander`) | 140 | Clipped square-bass answers between the march beats, heavier kicks, firmer snare and four-bar rolls; quarters make room for Petra's middle answer. |
+| Orders Worth Refusing (`dawn-commander`) | 140 | Clipped square-bass answers between the march beats, heavier kicks, firmer snare and four-bar rolls; round bass at a lower level softens the entire second half, starting with Petra's middle answer. |
 | The Light We Keep (`wind-engine`) | 136 | Relentless repeated square-bass eighths under the reversed bell cell; quarter-note middle and half-time snare, then a full return. |
-| Iron Above the Clouds (`flagship`) | 140 | Square bass, stronger drums and growing cadence rolls. Retain the exact 2+2+3+3 bass/kick/snare attack positions, brass command and string middle. |
+| Iron Above the Clouds (`flagship`) | 132 | Restored in full to its earlier round bass, drum levels and cadence rolls; unchanged 10/8 march. |
 | Coils around the Sun (`sun-serpent`) | 132 | Six dry bass eighths under the 6/8 hand-drum cycle, with low kick on the two compound accents; held bass leaves the hunters' bell incursion exposed. No rock snare. |
 | Wings on the Landing (`rain-warden`) | 140 | Square bass interlocks with the 3+3+2 wood layer, larger low hand-drum strokes and kicks, and sparse metal crashes. The reed middle stays broad; no rock snare. |
 | Wings over the Winter Bell (`winter-dragon`) | 132 | Square-bass tread, doubled kicks within the heavy 3+2 gait, snare on beats three/five and a short octave bass pickup. Preserve the softened tritaver and Orwell tetrad. |
