@@ -25,6 +25,6 @@ export async function run(five=false){
  catch(error){report.status='failed';report.error=error instanceof Error?error.message:String(error);throw error;}
  finally{
   await writeFile(output,JSON.stringify(report,null,2)+'\n');
-  console.log(JSON.stringify({status:report.status,error:report.error,output,chapter:session.state.chapter,level:resources(session.state).level,coins:session.state.coins,bandages:session.state.bandages,battles:session.events.filter(e=>e.event==='battle').map(e=>({id:e.id,result:e.result,rounds:e.rounds})),rests:session.events.filter(e=>e.event==='rest').length},null,2));
+  console.log(JSON.stringify({status:report.status,error:report.error,output,chapter:session.state.chapter,boundary:session.state.boundary,level:resources(session.state).level,coins:session.state.coins,bandages:session.state.bandages,battles:session.events.filter(e=>e.event==='battle').map(e=>({id:e.id,result:e.result,rounds:e.rounds})),rests:session.events.filter(e=>e.event==='rest').length},null,2));
  }
 }

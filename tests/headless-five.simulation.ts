@@ -29,11 +29,16 @@ for(const order of orders)it(`earns Chapter Five in ${order.join(' / ')} order`,
  expect(s.events.some(e=>e.event==='equip'&&e.item==='fleet-sight')).toBe(true);
 },90000);
 
-it('resumes the earned pre-finale save without replaying rewards',()=>{
+it('resumes earned regional and pre-finale saves without replaying rewards',()=>{
  const uninterrupted=new CampaignSession(earned,defaultAgent);playFive(uninterrupted);
- const input=readFiveDeparture(JSON.stringify({status:'complete',state:uninterrupted.checkpoints['five-regions']}));
- const split=new CampaignSession(input,defaultAgent);playFive(split);
- expect(split.state).toEqual(uninterrupted.state);expect(split.events.filter(e=>e.event==='battle').map(e=>e.id)).toEqual(['alban-flagship','benefactor-retaliation']);
+ for(const name of ['five-hammerplain','five-regions']){
+  const input=readFiveDeparture(JSON.stringify({status:'complete',state:uninterrupted.checkpoints[name]}));
+  const split=new CampaignSession(input,defaultAgent);playFive(split);
+  expect(split.state).toEqual(uninterrupted.state);
+  const ids=split.events.filter(e=>e.event==='battle').map(e=>e.id);
+  expect(ids).toHaveLength(name==='five-regions'?2:8);
+  if(name==='five-regions')expect(ids).toEqual(['alban-flagship','benefactor-retaliation']);
+ }
 },90000);
 
 it('finishes the race/repeater alternatives without optional loot on a support/frugal policy',()=>{

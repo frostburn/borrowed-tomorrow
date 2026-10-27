@@ -24,7 +24,7 @@ Select the alternate fights with `--conduit pressure` and `--harbor wet`; defaul
 
 Continuation reports include the source file’s SHA-256, policy version, options, initial resources, final `state`, earned departure `checkpoints` and chronological `events`. Events record paths, choices, dialogue, purchases, skill upgrades, equipment/formation changes and resource snapshots. Battle traces record each decision and enemy ability, all fighters’ HP/focus/positions before and after, remaining items and the earth-plate release. Once a session begins, a failure writes its partial trace with `status: "failed"` and exits unsuccessfully. The campaign state in a failed battle remains the prebattle save; the last turn snapshots describe the failure. A 600-decision battle limit and a scene-continuation limit catch stalls.
 
-`src/headless/campaign.ts` is the story/rules adapter; `tactics.ts` chooses legal moves and actions; `middle.ts` contains the route and deliberate player choices; `continue.ts` owns the CLI/report file. `run.ts` keeps the original early policy stable and exposes `playEarly` so route tests can earn their starting state from `newGame()`.
+`src/headless/campaign.ts` is the story/rules adapter; `tactics.ts` chooses legal moves and actions; `middle.ts` and `five.ts` contain the routes and deliberate player choices; `continue.ts` owns the CLI/report file. `run.ts` keeps the original early policy stable and exposes `playEarly` so route tests can earn their starting state from `newGame()`.
 
 The original `middle-v1` behavior remains available with `--tactics legacy --build offense --spending baseline`. Programmatic sessions default to that baseline so existing route tests remain comparable.
 
@@ -84,7 +84,7 @@ npm run check
 
 The opt-in simulation suite earns the early checkpoint once, tests the four route combinations, compares split versus uninterrupted continuation and clears the route without optional rewards. Its `.simulation.ts` files stay outside the small default CI gate. Default tests cover input validation, inaccessible interactions, rejected formation changes, isolated tactical planning and team-helper turns.
 
-These runs do not test rendering, hit areas, animation, asset loading or audio. The scripted routes currently stop after Chapter Four. Later chapters need their own route, checkpoint-prompt and trigger handling before they are supported; a successful run is not evidence about those chapters. The earned Chapter Four `state`/checkpoint is available for that next continuation.
+These runs do not test rendering, hit areas, animation, asset loading or audio. The scripted routes currently stop after Chapter Five. Chapter Six onward needs its own route and checkpoint-prompt handling before it is supported; a successful run is not evidence about those later chapters. The earned Chapter Five checkpoint records the actual Chapter Six departure.
 
 ## Defensive and spending comparison (middle-v2)
 
@@ -222,3 +222,30 @@ The default visits Hammerplain → Dawnwatch → Windmere, takes the freight lif
 `--through regions` stops at the earned pre-finale ship checkpoint. The report's `state` can be passed back to the same command to finish; named regional checkpoints and `five-regions` are also recorded. Restoring uses the normal story dispatcher. Only the Chapter Four departure and ship checkpoints between completed regions/before flagship victory are accepted; partial regional routes and post-flagship scenes are not resumable through this command. `--through regions` is not a completed-chapter claim. Failed reports still cannot resume.
 
 The first complete run clears all twelve fights without knockouts. Nell becomes ill through the normal story callback, leaves the formation, and stays at 1 HP/0 focus despite resting before the hunters. The remaining three fight and reach the real Chapter Six boundary. The longer Chapter Five route checks remain opt-in; no complete journeys are added to normal CI.
+
+### Earned results and next checkpoint
+
+A fresh `newGame()` → early → middle → five run wins **27 battles** through the end of Chapter Five, without defeats, knockouts, retries or granted resources. Its newly earned Chapter Four state exactly matches the recorded input. All six regional orders pass the opt-in route suite. Both the Hammerplain return and pre-finale checkpoints resume to the same final save without replaying rewards. A focused regression also covers completing all three regions before visiting the Emperor's cabin.
+
+| Chapter Five run | Battles | HP lost | Marks spent | Final marks | Rests | Knockouts |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Default offense / prepared | 12 | 528 | 120 | 1,575 | 6 | 0 |
+| Reverse order / race / repeater / no optional loot | 11 | 474 | 86 | 1,564 | 6 | 0 |
+| Support / frugal | 12 | 606 | 70 | 1,625 | 5 | 0 |
+| Offense / frugal | 12 | 517 | 32 | 1,663 | 6 | 0 |
+
+The default finishes at **level 10 / 3,475 XP**, with three bandages, two field bandages and one focus tonic. Kit/Orrin/Celia are active for the hunters; Nell remains recruited, equipped and unavailable at 1 HP/0 focus. The new coat, valve, shield brace, reflector, medical focus and fleet sight are earned and manually fitted, including Kit's new sight before the final defense. Alternate policies inherit the checkpoint's earlier skill purchases; they do not reset ranks or constitute a fresh support build from level one.
+
+- [chapter-five-earned.json](headless/chapter-five-earned.json) is the **current earned continuation checkpoint**, at the real `chapter-six:capital-approach` boundary.
+- [chapter-five-regions-earned.json](headless/chapter-five-regions-earned.json) records Acts I–III and the Emperor offer/alliance, before entering Alban's cordon. Continue it with `npm run simulate:five -- --from docs/headless/chapter-five-regions-earned.json --output /tmp/finale.json`.
+- [chapter-five-audit.json](headless/chapter-five-audit.json) records source/report hashes, the fresh prefix, four detailed policy/route summaries and reproduction commands. Full turn traces stay outside the repository.
+
+No blocking campaign issue was observed. The deferred-offer resume problem was in the new headless adapter and is corrected; it does not require changing campaign story code. No combat, equipment, reward, price, save-format or map rule changes were needed.
+
+Potential follow-ups:
+
+1. **Late bosses permit low-pressure wins.** Default ward-engine and flagship losses are six and zero HP respectively; the alternate recorded runs lose zero–sixteen on the ward and up to twenty-two on the flagship. The engine's projection interruption and fixed, avoidable cannon warnings are working. Before changing them, compare formations and human-style play: this agent forecasts actual enemy decisions, so these figures do not establish human difficulty.
+2. **Useful spending falls further behind income.** The default earns 1,293 marks and spends 120, entirely on medicine. The field counters offer no equipment upgrade that this prepared party buys; regional loot supplies its upgrades. Six useful free rests and victory/level-up recovery limit attrition. Later useful stock is a stronger candidate than charging for rest or indiscriminately reducing rewards. No selling policy is used.
+3. **Skill progression pauses through most of the chapter.** The default reaches level ten after the optional safety store, then stays there for the remaining ten fights. It ends only 25 XP short of level eleven. The three regions still award equipment, but the long skill-point plateau may merit an XP-threshold review.
+
+All **708 unit tests**, **17 opt-in headless route checks**, TypeScript and production build pass. Detailed route permutations remain outside default CI. These runs do not cover rendering, animations, audio, other early-campaign choices, selling, exhaustive builds or any Chapter Six expedition.

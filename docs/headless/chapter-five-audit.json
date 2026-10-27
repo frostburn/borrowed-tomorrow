@@ -1,0 +1,1447 @@
+{
+  "version": 1,
+  "source": {
+    "baseCommit": "a56f96efbe2b5a38ed50a1228eb853210ffdf1e4",
+    "files": {
+      "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
+      "src/headless/campaign.ts": "503e7fcb1bfa71f32dae28a480baf4c5febdf611c6add05d09b778f8fa97d22b",
+      "src/headless/continue.ts": "a7e6ee9668123c4a83f500781da1e5810f98557ca4262fe6c6f8127d2431c903",
+      "src/headless/cooperative.ts": "038710f8d7cfcfc13fec889c7e3ec363d96546b430b7cc56563f5485d5c3a491",
+      "src/headless/defensive.ts": "5e9bbd7d1bbf903ed36d723609f2d036c348e356d48603a8c2ce96147a6283a2",
+      "src/headless/five.ts": "cd04cc44e5b5e746c6ef42dc781f90b1fee058d2febc5acc27c25f099f881708",
+      "src/headless/middle.ts": "e17eeab40fcee05c6f3380e4c7a49fe72321b9d0aa775490c3ff1b7abf9125fe",
+      "src/headless/run.ts": "2879d118624ba00e3b50de375e4c7570ac77c9db74d082fa86605ffe74113835",
+      "src/headless/support-probe.ts": "7842ed6bb9b00790910fc5f11a3d1fa526b7a62711db2a2397ac73eaa3cf1e95",
+      "src/headless/tactics.ts": "2594201c28037da8e22361911719517b4dd525a4781cfd001568caadfe854e51",
+      "scripts/headless.mjs": "461e0afdf4eed5d6965c261da4798e64aa224ea77ebb3c98990d4231f22f21cc",
+      "tests/headless-five.simulation.ts": "93a286b1adce37785ff670aea382d737ed0bfea946aa23ef86ba43849f3c0ca6",
+      "tests/headless-five.test.ts": "8804929fe49b173c0c33c288e75c690b74be5a21112245e567fa88de2d6a299a"
+    },
+    "earlyReportSha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "middleReportSha256": "34efe3aad17bac56a57601b936a7b433ccaec716a2c87c32fe62a24baa100c96",
+    "fiveReportSha256": "956af917d36a43880921991b2bf002845700df62a0469b8d7dd29ba8dcc6d9e2"
+  },
+  "scope": "Earned newGame -> Chapters One-Five; normal Chapter Six departure only.",
+  "freshPrefix": {
+    "inputMatchesRecordedChapterFour": true,
+    "earlyVictories": 7,
+    "middleVictories": 8,
+    "chapterFiveVictories": 12,
+    "totalVictories": 27,
+    "earlyKnockouts": 0,
+    "middleKnockouts": 0
+  },
+  "runs": {
+    "default": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "hammerplain",
+          "dawnwatch",
+          "windmere"
+        ],
+        "forge": "lift",
+        "firstGun": "mortar",
+        "optional": true,
+        "through": "5"
+      },
+      "xp": 3475,
+      "income": 1293,
+      "spent": 120,
+      "finalMarks": 1575,
+      "rests": 6,
+      "hpLost": 528,
+      "healed": 289,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 3
+      },
+      "abilities": {
+        "daybreak": 2,
+        "burst": 20,
+        "strike": 15,
+        "prism": 9,
+        "crush": 4,
+        "rivet": 10,
+        "steam": 1,
+        "bandage": 4,
+        "field-bandage": 3,
+        "sweep": 1,
+        "crossfire": 4,
+        "lanternvolley": 2,
+        "quickshot": 3,
+        "starline": 5,
+        "heal": 1,
+        "celestialbolt": 7,
+        "sanctuary": 1,
+        "ricochet": 1
+      },
+      "remainingSupplies": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          },
+          "enemyActions": {
+            "peck": 2,
+            "defend": 1,
+            "flare": 3,
+            "strike": 1
+          }
+        },
+        {
+          "id": "hammer-stores",
+          "rounds": 3,
+          "hpLost": 62,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 68,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "strike": 2,
+            "crush": 1,
+            "burst": 1,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "defend": 2,
+            "steam": 2
+          }
+        },
+        {
+          "id": "hammer-lift",
+          "rounds": 4,
+          "hpLost": 87,
+          "healed": 61,
+          "knockouts": 0,
+          "minHp": 77,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "burst": 3,
+            "steam": 1,
+            "bandage": 2,
+            "rivet": 1,
+            "field-bandage": 1,
+            "prism": 1
+          },
+          "enemyActions": {
+            "peck": 5,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 5,
+          "hpLost": 67,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 80,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "crush": 2,
+            "burst": 2,
+            "rivet": 3,
+            "sweep": 1,
+            "bandage": 1,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "judgment": 4
+          }
+        },
+        {
+          "id": "dawn-mortar-first",
+          "rounds": 3,
+          "hpLost": 20,
+          "healed": 20,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 1,
+            "burst": 1,
+            "lanternvolley": 1,
+            "bandage": 1,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "steam": 1,
+            "defend": 1,
+            "barrage": 2
+          }
+        },
+        {
+          "id": "dawn-repeater-last",
+          "rounds": 2,
+          "hpLost": 20,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "lanternvolley": 1,
+            "crush": 1,
+            "crossfire": 1,
+            "burst": 1
+          },
+          "enemyActions": {
+            "steam": 1,
+            "defend": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 3,
+          "hpLost": 45,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 81,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 2,
+            "quickshot": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "defend": 1,
+            "strike": 2,
+            "crush": 1
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 3,
+          "hpLost": 77,
+          "healed": 74,
+          "knockouts": 0,
+          "minHp": 47,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "starline": 1,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 4,
+          "hpLost": 52,
+          "healed": 32,
+          "knockouts": 0,
+          "minHp": 76,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "strike": 1,
+            "starline": 2,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "strike": 1,
+            "defend": 2,
+            "steam": 1
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 4,
+          "hpLost": 6,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 78,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "burst": 1,
+            "rivet": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "refraction": 3
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 0,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 94,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "burst": 1,
+            "celestialbolt": 1,
+            "rivet": 2,
+            "strike": 4
+          },
+          "enemyActions": {
+            "strike": 2,
+            "judgment": 6
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 2,
+          "hpLost": 41,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 62,
+          "formation": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "ricochet": 1,
+            "starline": 2,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "splinter": 2,
+            "sunbeam": 1
+          }
+        }
+      ]
+    },
+    "reverse-race-repeater-no-optionals": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "windmere",
+          "dawnwatch",
+          "hammerplain"
+        ],
+        "forge": "race",
+        "firstGun": "repeater",
+        "optional": false,
+        "through": "5"
+      },
+      "xp": 3400,
+      "income": 1248,
+      "spent": 86,
+      "finalMarks": 1564,
+      "rests": 6,
+      "hpLost": 474,
+      "healed": 243,
+      "knockouts": 0,
+      "itemsUsed": {
+        "field-bandage": 3,
+        "bandage": 2
+      },
+      "abilities": {
+        "daybreak": 2,
+        "burst": 25,
+        "strike": 11,
+        "starline": 10,
+        "mend": 1,
+        "rivet": 10,
+        "field-bandage": 3,
+        "celestialbolt": 5,
+        "crossfire": 6,
+        "quickshot": 2,
+        "taunt": 1,
+        "steam": 2,
+        "bandage": 2,
+        "prism": 2,
+        "crush": 2,
+        "sweep": 1,
+        "ricochet": 1
+      },
+      "remainingSupplies": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          },
+          "enemyActions": {
+            "peck": 2,
+            "defend": 1,
+            "flare": 3,
+            "strike": 1
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 2,
+          "hpLost": 48,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 70,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 4,
+          "hpLost": 76,
+          "healed": 76,
+          "knockouts": 0,
+          "minHp": 62,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 3,
+            "strike": 1,
+            "mend": 1,
+            "rivet": 2,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "strike": 1,
+            "defend": 1,
+            "steam": 2
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 5,
+          "hpLost": 16,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 80,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 5,
+            "celestialbolt": 3,
+            "rivet": 2,
+            "strike": 1
+          },
+          "enemyActions": {
+            "refraction": 4
+          }
+        },
+        {
+          "id": "dawn-repeater-first",
+          "rounds": 2,
+          "hpLost": 23,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 69,
+          "formation": [
+            "nell",
+            "kit",
+            "petra"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "steam": 1,
+            "defend": 1
+          }
+        },
+        {
+          "id": "dawn-mortar-last",
+          "rounds": 2,
+          "hpLost": 23,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 54,
+          "formation": [
+            "nell",
+            "kit",
+            "petra"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 1
+          },
+          "enemyActions": {
+            "steam": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 3,
+          "hpLost": 62,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 48,
+          "formation": [
+            "nell",
+            "kit",
+            "petra"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 2,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "crush": 2,
+            "strike": 1,
+            "defend": 1
+          }
+        },
+        {
+          "id": "hammer-race",
+          "rounds": 4,
+          "hpLost": 22,
+          "healed": 22,
+          "knockouts": 0,
+          "minHp": 86,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "burst": 4,
+            "rivet": 1,
+            "taunt": 1,
+            "steam": 2,
+            "strike": 1,
+            "bandage": 1
+          },
+          "enemyActions": {
+            "defend": 4,
+            "steam": 2,
+            "strike": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 5,
+          "hpLost": 67,
+          "healed": 50,
+          "knockouts": 0,
+          "minHp": 79,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "crush": 2,
+            "burst": 2,
+            "rivet": 3,
+            "sweep": 1,
+            "bandage": 1,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "judgment": 4
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 22,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 72,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 3,
+            "strike": 2,
+            "celestialbolt": 2,
+            "rivet": 2
+          },
+          "enemyActions": {
+            "strike": 1,
+            "judgment": 6
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 3,
+          "hpLost": 64,
+          "healed": 44,
+          "knockouts": 0,
+          "minHp": 48,
+          "formation": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "ricochet": 1,
+            "starline": 2,
+            "field-bandage": 1,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "splinter": 2,
+            "sunbeam": 2
+          }
+        }
+      ]
+    },
+    "support-frugal": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "order": [
+          "hammerplain",
+          "dawnwatch",
+          "windmere"
+        ],
+        "forge": "lift",
+        "firstGun": "mortar",
+        "optional": true,
+        "through": "5"
+      },
+      "xp": 3475,
+      "income": 1293,
+      "spent": 70,
+      "finalMarks": 1625,
+      "rests": 5,
+      "hpLost": 606,
+      "healed": 441,
+      "knockouts": 0,
+      "itemsUsed": {
+        "field-bandage": 3,
+        "bandage": 1
+      },
+      "abilities": {
+        "daybreak": 7,
+        "burst": 39,
+        "strike": 18,
+        "starline": 5,
+        "field-bandage": 3,
+        "mend": 1,
+        "celestialbolt": 25,
+        "heal": 2,
+        "repulse": 1,
+        "steam": 1,
+        "rivet": 2,
+        "crush": 10,
+        "taunt": 1,
+        "sweep": 2,
+        "sunline": 2,
+        "bandage": 1,
+        "sanctuary": 1,
+        "crossfire": 2
+      },
+      "remainingSupplies": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          },
+          "enemyActions": {
+            "peck": 2,
+            "defend": 1,
+            "flare": 3,
+            "strike": 1
+          }
+        },
+        {
+          "id": "hammer-stores",
+          "rounds": 3,
+          "hpLost": 44,
+          "healed": 44,
+          "knockouts": 0,
+          "minHp": 44,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 3,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "defend": 1,
+            "steam": 2
+          }
+        },
+        {
+          "id": "hammer-lift",
+          "rounds": 3,
+          "hpLost": 74,
+          "healed": 60,
+          "knockouts": 0,
+          "minHp": 77,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 2,
+            "burst": 2,
+            "mend": 1,
+            "celestialbolt": 1
+          },
+          "enemyActions": {
+            "peck": 4,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 6,
+          "hpLost": 92,
+          "healed": 42,
+          "knockouts": 0,
+          "minHp": 64,
+          "formation": [
+            "nell",
+            "celia",
+            "orrin"
+          ],
+          "abilities": {
+            "starline": 1,
+            "burst": 5,
+            "heal": 1,
+            "repulse": 1,
+            "celestialbolt": 3,
+            "steam": 1,
+            "rivet": 2,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 3,
+            "judgment": 5
+          }
+        },
+        {
+          "id": "dawn-mortar-first",
+          "rounds": 5,
+          "hpLost": 83,
+          "healed": 62,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "celestialbolt": 3,
+            "burst": 4,
+            "crush": 1,
+            "daybreak": 1,
+            "strike": 2,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "steam": 4,
+            "defend": 1,
+            "barrage": 4,
+            "strike": 1
+          }
+        },
+        {
+          "id": "dawn-repeater-last",
+          "rounds": 4,
+          "hpLost": 15,
+          "healed": 13,
+          "knockouts": 0,
+          "minHp": 94,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 1,
+            "burst": 4,
+            "strike": 3,
+            "taunt": 1,
+            "sweep": 1,
+            "celestialbolt": 1
+          },
+          "enemyActions": {
+            "defend": 4,
+            "strike": 1,
+            "steam": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 5,
+          "hpLost": 87,
+          "healed": 74,
+          "knockouts": 0,
+          "minHp": 81,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "celestialbolt": 2,
+            "burst": 3,
+            "strike": 2,
+            "daybreak": 1,
+            "sunline": 1,
+            "crush": 1,
+            "bandage": 1,
+            "sweep": 1,
+            "heal": 1
+          },
+          "enemyActions": {
+            "defend": 2,
+            "strike": 3,
+            "sweep": 1,
+            "crush": 2
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 4,
+          "hpLost": 65,
+          "healed": 65,
+          "knockouts": 0,
+          "minHp": 47,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "celestialbolt": 3,
+            "burst": 4,
+            "field-bandage": 1,
+            "crush": 1,
+            "daybreak": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "steam": 3
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 4,
+          "hpLost": 41,
+          "healed": 30,
+          "knockouts": 0,
+          "minHp": 64,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "celestialbolt": 3,
+            "burst": 4,
+            "strike": 1,
+            "daybreak": 1,
+            "crush": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "strike": 1,
+            "defend": 1,
+            "steam": 2
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 5,
+          "hpLost": 0,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 94,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "strike": 3,
+            "burst": 4,
+            "crush": 3,
+            "celestialbolt": 4
+          },
+          "enemyActions": {
+            "refraction": 4
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 22,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 72,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "sanctuary": 1,
+            "burst": 3,
+            "crush": 3,
+            "celestialbolt": 4,
+            "sunline": 1,
+            "strike": 3
+          },
+          "enemyActions": {
+            "strike": 3,
+            "judgment": 7
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 2,
+          "hpLost": 32,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 60,
+          "formation": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          },
+          "enemyActions": {
+            "splinter": 1,
+            "sunbeam": 1
+          }
+        }
+      ]
+    },
+    "offense-frugal": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "options": {
+        "order": [
+          "hammerplain",
+          "dawnwatch",
+          "windmere"
+        ],
+        "forge": "lift",
+        "firstGun": "mortar",
+        "optional": true,
+        "through": "5"
+      },
+      "xp": 3475,
+      "income": 1293,
+      "spent": 32,
+      "finalMarks": 1663,
+      "rests": 6,
+      "hpLost": 517,
+      "healed": 220,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3
+      },
+      "abilities": {
+        "daybreak": 2,
+        "burst": 20,
+        "strike": 17,
+        "prism": 9,
+        "crush": 4,
+        "rivet": 9,
+        "steam": 1,
+        "bandage": 3,
+        "taunt": 1,
+        "sweep": 1,
+        "crossfire": 4,
+        "lanternvolley": 2,
+        "quickshot": 3,
+        "starline": 5,
+        "heal": 1,
+        "celestialbolt": 7,
+        "mend": 1,
+        "sanctuary": 1,
+        "ricochet": 1
+      },
+      "remainingSupplies": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          },
+          "enemyActions": {
+            "peck": 2,
+            "defend": 1,
+            "flare": 3,
+            "strike": 1
+          }
+        },
+        {
+          "id": "hammer-stores",
+          "rounds": 3,
+          "hpLost": 62,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 68,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "strike": 2,
+            "crush": 1,
+            "burst": 1,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "defend": 2,
+            "steam": 2
+          }
+        },
+        {
+          "id": "hammer-lift",
+          "rounds": 4,
+          "hpLost": 59,
+          "healed": 43,
+          "knockouts": 0,
+          "minHp": 77,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "burst": 3,
+            "steam": 1,
+            "bandage": 2,
+            "rivet": 1,
+            "taunt": 1,
+            "prism": 1
+          },
+          "enemyActions": {
+            "peck": 5,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 5,
+          "hpLost": 82,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 65,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "crush": 2,
+            "burst": 2,
+            "rivet": 2,
+            "sweep": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "peck": 2,
+            "judgment": 4
+          }
+        },
+        {
+          "id": "dawn-mortar-first",
+          "rounds": 3,
+          "hpLost": 20,
+          "healed": 20,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 1,
+            "burst": 1,
+            "lanternvolley": 1,
+            "bandage": 1,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "steam": 1,
+            "defend": 1,
+            "barrage": 2
+          }
+        },
+        {
+          "id": "dawn-repeater-last",
+          "rounds": 2,
+          "hpLost": 20,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "lanternvolley": 1,
+            "crush": 1,
+            "crossfire": 1,
+            "burst": 1
+          },
+          "enemyActions": {
+            "steam": 1,
+            "defend": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 3,
+          "hpLost": 45,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 81,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 2,
+            "quickshot": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "defend": 1,
+            "strike": 2,
+            "crush": 1
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 3,
+          "hpLost": 77,
+          "healed": 74,
+          "knockouts": 0,
+          "minHp": 47,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "starline": 1,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "peck": 2,
+            "steam": 1,
+            "relay": 1
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 5,
+          "hpLost": 54,
+          "healed": 32,
+          "knockouts": 0,
+          "minHp": 72,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 2,
+            "strike": 2,
+            "mend": 1,
+            "starline": 2,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "strike": 1,
+            "defend": 3,
+            "steam": 1
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 4,
+          "hpLost": 6,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 80,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "burst": 1,
+            "rivet": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "refraction": 3
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 0,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 94,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "burst": 1,
+            "celestialbolt": 1,
+            "rivet": 2,
+            "strike": 4
+          },
+          "enemyActions": {
+            "strike": 2,
+            "judgment": 6
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 2,
+          "hpLost": 41,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 62,
+          "formation": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "ricochet": 1,
+            "starline": 2,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "splinter": 2,
+            "sunbeam": 1
+          }
+        }
+      ]
+    }
+  },
+  "validation": {
+    "unitTests": 708,
+    "optInRouteChecks": 17,
+    "allSixRegionOrders": true,
+    "splitResume": [
+      "five-hammerplain",
+      "five-regions"
+    ],
+    "alternateForgeAndGunOrder": true,
+    "noGameplayBlockersObserved": true
+  },
+  "commands": [
+    "BT_HEADLESS_REPORT=/tmp/early.json npm run simulate:early",
+    "npm run simulate:middle -- --from /tmp/early.json --output /tmp/four.json",
+    "npm run simulate:five -- --from /tmp/four.json --output /tmp/five.json",
+    "npm run simulate:five -- --from /tmp/four.json --order windmere,dawnwatch,hammerplain --forge race --first-gun repeater --skip-optional --output /tmp/reverse.json",
+    "npm run simulate:five -- --from /tmp/four.json --build support --spending frugal --output /tmp/support.json",
+    "npm run simulate:five -- --from /tmp/four.json --spending frugal --output /tmp/frugal.json",
+    "npm run test:headless",
+    "npm run check"
+  ],
+  "potentialIssues": [
+    "Static boss warnings and readily defeated support targets permit very low damage in the ward and flagship fights; the agent forecasts enemy actions and this is not proof of low human difficulty.",
+    "Default income 1293 versus 120 spent leaves 1575 marks; field counters sell no meaningful later equipment upgrades for this party, which obtains its upgrades as loot.",
+    "All default fights after the optional safety store occur at level ten, ending at 3475 XP just below level eleven (3500); skill-point progression largely pauses across the three regions."
+  ],
+  "limits": [
+    "No rendering, animation, audio or click-target coverage.",
+    "No Chapter Six route, cure quest, capital assault or ending is simulated.",
+    "Alternate policies inherit the earned checkpoint ranks; no full build search from level one.",
+    "No sale policy, exhaustive formation search or optimal play claim."
+  ]
+}

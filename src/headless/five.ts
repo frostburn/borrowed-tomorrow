@@ -64,6 +64,8 @@ export function playFive(s:CampaignSession,o:FiveOptions=defaultFive){
   if(o.order.filter(r=>s.state.flags[`${r}Complete`]).length>=2&&!s.state.flags.emperorOfferTold)s.visit('ship-cabin');
   s.checkpoint('five-'+region);
  }
+ // A ship save may have all three anchors done with the cabin still unvisited.
+ if(!s.state.flags.emperorOfferTold)s.visit('ship-cabin');
  if(!s.state.flags.allAnchorsSeen||!s.state.flags.emperorOfferTold)throw Error('Missing alliance or Emperor offer');
  s.checkpoint('five-regions');if(o.through==='regions')return;
  s.formation(s.agent.build==='support'?['nell','celia','petra']:['nell','orrin','celia']);s.prepare();supplies(s,'ship-supply');

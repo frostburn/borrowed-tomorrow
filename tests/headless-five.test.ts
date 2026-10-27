@@ -4,6 +4,7 @@ import {defaultFive,playFive,readFiveDeparture} from '../src/headless/five';
 import {anchorCheckpoint,anchorDeparture} from './support/anchors';
 import {arrival} from '../src/content/maps';
 import {newGame} from '../src/rules/state';
+import {chapterFiveFinaleStart} from '../src/dev/canonical-saves';
 
 it('accepts earned Chapter Four departures without replacing their resources',()=>{
  const s=anchorDeparture();s.coins=41;s.bandages=1;s.party[0].hp=18;
@@ -19,4 +20,14 @@ it('rejects a repeated or missing regional order before changing the campaign',(
  const s=new CampaignSession(anchorDeparture(),defaultAgent),before=structuredClone(s.state);
  expect(()=>playFive(s,{...defaultFive,order:['hammerplain','hammerplain','windmere']})).toThrow('exactly once');
  expect(s.state).toEqual(before);expect(s.events).toEqual([]);
+});
+it('visits a deferred cabin after loading a ship save with all three anchors done',()=>{
+ const save=chapterFiveFinaleStart();delete save.flags.emperorOfferSeen;delete save.flags.emperorOfferTold;
+ save.journal=save.journal.filter(e=>e!=='emperorOfferSeen'&&e!=='emperorOfferTold');
+ const s=new CampaignSession(readFiveDeparture(JSON.stringify(save)),defaultAgent);
+ playFive(s,{...defaultFive,through:'regions'});
+ expect(s.state.flags).toMatchObject({emperorOfferSeen:true,emperorOfferTold:true,allAnchorsSeen:true});
+ expect(s.events.filter(e=>e.event==='battle')).toEqual([]);
+ for(const key of ['xp','coins','bandages','party','inventory']as const)expect(s.state[key]).toEqual(save[key]);
+ expect(s.state.flags.flagshipWon).toBeUndefined();expect(s.state.boundary).toBeNull();
 });
