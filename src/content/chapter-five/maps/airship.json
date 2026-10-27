@@ -714,27 +714,27 @@
           "x": 444,
           "y": 684,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Aft stores \u00b7 rest and bandages"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "optional"
-            },
-            {
-              "name": "rest",
-              "type": "bool",
-              "value": true
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Aft stores · rest and bandages"
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "optional"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "id": 3
         },
         {

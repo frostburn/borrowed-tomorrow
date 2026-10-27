@@ -10,9 +10,9 @@ import './shop.css';
 export function openShop(ui: UI, state: GameState, shop: ShopId, changed: () => void, rest: () => void, equipment: () => void) {
   let selling = false, selected: ItemId | undefined, message = '';
   const esc = ui.escape, host = shop === 'station' ? CHARACTERS.iona : shop === 'ward' ? CHARACTERS.dena : undefined;
-  const title = shop === 'station' ? 'Iona’s supplies' : shop === 'ward' ? 'Ward supplies' : 'Coastal supplies';
+  const title = shop === 'station' ? 'Iona’s supplies' : shop === 'ward' ? 'Ward supplies' : shop === 'field' ? 'Medical supplies' : 'Coastal supplies';
   const greeting = shop === 'station' ? (state.flags.raidSeen ? '“I’ll keep the station open. You find Tomas. And eat something before you go.”' : '“Your brother’s home. You can stop checking every train now.”')
-    : shop === 'ward' ? '“Take what you need for the crossing. Leave the spare fittings here; we can use them.”' : 'Spare fittings and sealed medical packs are stowed beside Orrin’s engine.';
+    : shop === 'ward' ? '“Take what you need for the crossing. Leave the spare fittings here; we can use them.”' : shop === 'field' ? '“Fresh dressings and tonics. Let me know what you need.”' : '“Coats and spare fittings here. I can take your old gear in trade.”';
   ui.showModal(title, `<div class="supply-shop"><div class="shopkeeper">${host ? `<img src="${art(host.portrait)}" alt="${host.name}"/>` : ''}<p>${greeting}</p></div><p class="shop-wallet"></p><div class="shop-tabs" role="group" aria-label="Trading"><button data-tab="buy">Buy supplies</button><button data-tab="sell">Sell spare gear</button></div><div class="shop-status" role="status" aria-live="polite"></div><div class="shop-list"></div></div>`, [
     { label: 'Rest · free', action: rest }, { label: 'Equipment', action: equipment },
   ]);

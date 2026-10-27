@@ -51,7 +51,8 @@ export function interactCapital(h:StoryHost,id:string):boolean{
   h.talk({lines:[SAY('Alda','The route through the hollow sun is marked. We can sail when you’re ready, or keep the ship here while you finish your visits.')],choices:[{label:'Prepare the final crossing',action:()=>{f.chapterSixComplete=true;s.boundary=SEVENTH_CHAPTER;remember(s,'sixDeparture');h.save();h.boundary();}},{label:'Stay · visit allies and fit equipment',action:()=>{}}]});return true;
  }
  if(id==='palace-rest'||id==='crown-rest'){
-  h.talk({lines:[SAY('Celia','There’s clean water and room to sit. Let me check everyone before we move.')],choices:[{label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},{label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.save();h.refresh();h.toast('Bandage added.');}},{label:'Keep going',action:()=>{}}]});return true;
+  h.talk({lines:[SAY('Celia','There’s clean water and room to sit. Let me check everyone before we move.')],choices:[{label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},{label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.save();h.refresh();h.toast('Bandage added.');}},
+   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},{label:'Keep going',action:()=>{}}]});return true;
  }
  switch(id){
   case 'city-quay':go(h,'capitalquay');break;

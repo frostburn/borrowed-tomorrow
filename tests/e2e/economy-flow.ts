@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
-import { checkpoint, coastCheckpoint } from '../support/progress';
+import { checkpoint, coastCheckpoint, brokenCheckpoint } from '../support/progress';
 import { approach, importSave, travel } from './navigation';
 import { battle, capture, clickHex, inspect } from './controls';
 
@@ -15,36 +15,41 @@ export function economyFlows(production = false) {
         const s = checkpoint('orrinJoined'); s.location = { map: 'station', x: 27, y: 18 }; s.coins = 80;
         receiveItem(s.inventory, 'work-coat'); equipItem(s.inventory, 'nell', 'work-coat');
         await importSave(page, s); await approach(page, 'iona');
-        const shop = page.getByRole('dialog', { name: 'Iona’s supplies' }); await expect(shop).toBeVisible(); await expect(shop).not.toContainText('Celia');
+        const shop = page.getByRole('dialog', { name: 'Iona’s supplies' }); await expect(shop).toBeVisible(); const portrait=shop.getByRole('img',{name:'Iona',exact:true});
+        const size=await portrait.evaluate(img=>{const r=img.getBoundingClientRect();return {width:r.width,height:r.height,fit:getComputedStyle(img).objectFit};});
+        expect(size.width).toBe(size.height);expect(size.fit).toBe('contain');
+        await expect(shop).not.toContainText('Field bandage');await expect(shop).not.toContainText('Focus tonic'); await expect(shop).not.toContainText('Celia');
         await shop.getByRole('button', { name: 'Sell spare gear', exact: true }).click(); await expect(shop).toContainText('No spare gear to sell.');
         await shop.getByRole('button', { name: 'Buy supplies', exact: true }).click();
         await shop.getByRole('group', { name: 'Reinforced work coat', exact: true }).getByRole('button', { name: /^Buy/ }).click();
-        await shop.getByRole('group', { name: 'Focus tonic', exact: true }).getByRole('button', { name: /^Buy/ }).click();
-        expect((await inspect(page)).state.coins).toBe(51); await expect(shop.getByRole('group', { name: 'Focus tonic', exact: true }).getByRole('button')).toBeFocused(); await capture(page, `economy-station-${production ? 'production-' : ''}${device}`);
+        await shop.getByRole('group', { name: 'Bandage', exact: true }).getByRole('button', { name: /^Buy/ }).click();
+        expect((await inspect(page)).state.coins).toBe(57); await expect(shop.getByRole('group', { name: 'Bandage', exact: true }).getByRole('button')).toBeFocused(); await capture(page, `economy-station-${production ? 'production-' : ''}${device}`);
         await shop.getByRole('button', { name: 'Sell spare gear', exact: true }).click();
         await shop.getByRole('group', { name: 'Reinforced work coat', exact: true }).getByRole('button', { name: 'Sell · 7 marks', exact: true }).click();
         await expect(shop.getByRole('button', { name: 'Confirm sale', exact: true })).toBeInViewport();
         await expect(shop.getByRole('button', { name: 'Confirm sale', exact: true })).toBeFocused();
         await capture(page, `economy-sale-${production ? 'production-' : ''}${device}`);
-        expect((await inspect(page)).state.coins).toBe(51);
+        expect((await inspect(page)).state.coins).toBe(57);
         await shop.getByRole('button', { name: 'Cancel sale', exact: true }).click(); expect((await inspect(page)).state.inventory.bag['work-coat']).toBe(1);
         await expect(shop.getByRole('group', { name: 'Reinforced work coat', exact: true }).getByRole('button')).toBeFocused();
         await shop.getByRole('group', { name: 'Reinforced work coat', exact: true }).getByRole('button', { name: /^Sell/ }).click();
         await page.keyboard.press('Enter');
         await expect(shop.getByRole('button', { name: 'Sell spare gear', exact: true })).toBeFocused();
-        const saved = (await inspect(page)).state; expect(saved.coins).toBe(58); expect(saved.inventory.characters.nell.coat).toBe('work-coat'); expect(saved.inventory.bag).toMatchObject({ 'work-coat': 0, 'focus-tonic': 1 });
+        const saved = (await inspect(page)).state; expect(saved.coins).toBe(64); expect(saved.inventory.characters.nell.coat).toBe('work-coat'); expect(saved.inventory.bag).toMatchObject({ 'work-coat': 0 });
         await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
-        await expect.poll(async () => (await inspect(page)).state.inventory).toEqual(saved.inventory); expect((await inspect(page)).state.coins).toBe(58);
+        await expect.poll(async () => (await inspect(page)).state.inventory).toEqual(saved.inventory); expect((await inspect(page)).state.coins).toBe(64);
         await expect(page.locator('vite-error-overlay')).toHaveCount(0); expect(errors).toEqual([]);
       });
       test('coastal purchases equip manually and medical items spend only on confirmed combat actions', async ({ page }) => {
         const errors: string[] = []; page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
         await page.emulateMedia({ reducedMotion: 'reduce' }); await page.goto('/');
         const s = coastCheckpoint('raidConfronted'); s.party.find(h => h.id === 'nell')!.hp = 5; s.party.find(h => h.id === 'kit')!.focus = 0;
+        // Previously purchased supplies remain usable when loading an existing save.
+        s.inventory.bag['field-bandage']=2;s.inventory.bag['focus-tonic']=1;
         await importSave(page, s); await approach(page, 'coast-engine'); await page.getByRole('button', { name: 'Browse supplies and trade gear', exact: true }).click();
         const shop = page.getByRole('dialog', { name: 'Coastal supplies' }); await expect(shop).toBeVisible();
-        for (const name of ['Field bandage', 'Field bandage', 'Focus tonic', 'Coastal reflector']) await shop.getByRole('group', { name, exact: true }).getByRole('button', { name: /^Buy/ }).click();
-        expect((await inspect(page)).state.coins).toBe(6); await expect(shop.getByRole('group', { name: 'Lined travel coat', exact: true }).getByRole('button')).toBeDisabled();
+        for (const name of ['Coastal reflector']) await shop.getByRole('group', { name, exact: true }).getByRole('button', { name: /^Buy/ }).click();
+        expect((await inspect(page)).state.coins).toBe(56); await expect(shop).not.toContainText('Field bandage'); await expect(shop).not.toContainText('Focus tonic');
         await capture(page, `economy-coast-${production ? 'production-' : ''}${device}`);
         await shop.getByRole('button', { name: 'Equipment', exact: true }).click();
         const inventory = page.getByRole('dialog', { name: 'Character inventory' }); await expect(inventory).toContainText('Field bandage × 2');
@@ -68,9 +73,16 @@ export function economyFlows(production = false) {
         await page.getByRole('button', { name: 'Confirm healing', exact: true }).click();
         b = (await inspect(page)).battle!; expect(b.supplies['field-bandage']).toBe(1); expect(b.units.find(u => u.id === 'nell')!.hp).toBe(53);
         await battle(page);
-        const saved = (await inspect(page)).state; expect(saved.coins).toBe(38); expect(saved.inventory.characters.nell.fitting).toBe('coastal-reflector'); expect(saved.inventory.bag).toMatchObject({ 'field-bandage': 1, 'focus-tonic': 0 });
+        const saved = (await inspect(page)).state; expect(saved.coins).toBe(88); expect(saved.inventory.characters.nell.fitting).toBe('coastal-reflector'); expect(saved.inventory.bag).toMatchObject({ 'field-bandage': 1, 'focus-tonic': 0 });
         await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click(); await expect.poll(async () => (await inspect(page)).state.inventory).toEqual(saved.inventory);
         await expect(page.locator('vite-error-overlay')).toHaveCount(0); expect(errors).toEqual([]);
+      });
+      test('Chapter Four introduces the new medicines at a medical supplier',async({page})=>{
+        await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,brokenCheckpoint('refugeSeen'));
+        await approach(page,'refuge-rest');await page.getByRole('button',{name:'Browse medical supplies and trade gear',exact:true}).click();
+        const shop=page.getByRole('dialog',{name:'Medical supplies'}),before=(await inspect(page)).state.coins;
+        for(const name of ['Field bandage','Focus tonic'])await shop.getByRole('group',{name,exact:true}).getByRole('button',{name:/^Buy/}).click();
+        expect((await inspect(page)).state.coins).toBe(before-32);expect((await inspect(page)).state.inventory.bag).toMatchObject({'field-bandage':1,'focus-tonic':1});
       });
       test('ward stock and spare sales remain reachable at the final crossing', async ({ page }) => {
         const errors: string[] = []; page.on('pageerror', e => errors.push(e.message)); await page.emulateMedia({ reducedMotion: 'reduce' }); await page.goto('/');
@@ -81,7 +93,7 @@ export function economyFlows(production = false) {
         await shop.getByRole('button', { name: 'Confirm sale', exact: true }).click(); expect((await inspect(page)).state.coins).toBe(s.coins - 44 + 14);
         await page.getByRole('button', { name: 'Close', exact: true }).click(); await travel(page, 'siding-ward', 'infirmary'); await approach(page, 'ward-rest');
         await page.getByRole('button', { name: 'Browse supplies and trade gear', exact: true }).click(); await expect(shop).toBeVisible();
-        await shop.getByRole('group', { name: 'Field bandage', exact: true }).getByRole('button', { name: /^Buy/ }).click(); await capture(page, `economy-ward-${production ? 'production-' : ''}${device}`);
+        await shop.getByRole('group', { name: 'Bandage', exact: true }).getByRole('button', { name: /^Buy/ }).click(); await capture(page, `economy-ward-${production ? 'production-' : ''}${device}`);
         await expect(shop).not.toContainText('Celia'); await expect(page.locator('vite-error-overlay')).toHaveCount(0); expect(errors).toEqual([]);
       });
     });

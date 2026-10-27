@@ -720,27 +720,27 @@
           "x": 444,
           "y": 756,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Service shelter \u00b7 rest and supplies"
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "optional"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "rest",
-              "type": "bool",
-              "value": true
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Service shelter · rest and supplies"
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "optional"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "id": 4
         },
         {

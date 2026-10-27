@@ -2,7 +2,7 @@ import { CONSUMABLES, consumableCount, isConsumable, type ConsumableId } from '.
 import { ITEMS, ownedCopies, receiveItem, type ItemId } from './inventory';
 import type { GameState } from './state';
 
-export type ShopId = 'station' | 'coast' | 'ward';
+export type ShopId = 'station' | 'coast' | 'ward' | 'field';
 const STARTER_GEAR = [
   { id: 'brass-reflector', cost: 30 }, { id: 'lance-nozzle', cost: 30 },
   { id: 'work-coat', cost: 15 }, { id: 'heavy-coat', cost: 25 },
@@ -13,12 +13,14 @@ const COAST_GEAR = [
 ] as const;
 const medicine = (id: ConsumableId) => ({ id, cost: CONSUMABLES[id].cost });
 export const shopStock = (shop: ShopId) => shop === 'station'
-  ? [medicine('bandage'), medicine('focus-tonic'), ...STARTER_GEAR]
-  : [medicine('bandage'), medicine('field-bandage'), medicine('focus-tonic'), ...COAST_GEAR, ...STARTER_GEAR];
+  ? [medicine('bandage'), ...STARTER_GEAR]
+  : shop === 'field' ? [medicine('bandage'), medicine('field-bandage'), medicine('focus-tonic')]
+  : [medicine('bandage'), ...COAST_GEAR, ...STARTER_GEAR];
 export type SupplyId = ItemId | ConsumableId;
 export const supplyCount = (state: GameState, id: SupplyId) => isConsumable(id) ? consumableCount(state, id) : ownedCopies(state.inventory, id);
 export function canBuy(state: GameState, id: SupplyId, shop: ShopId = 'station') {
   const supply = shopStock(shop).find(s => s.id === id);
+  if (shop === 'field' && !['chapter-four','chapter-five','chapter-six','chapter-seven'].includes(state.chapter)) return false;
   if (!supply || state.coins < supply.cost || shop !== 'station' && state.chapter === 'chapter-one') return false;
   if (isConsumable(id)) return supplyCount(state, id) < (id === 'bandage' ? 999 : 99);
   return ITEMS[id].heroes.some(h => state.party.some(p => p.id === h)) &&

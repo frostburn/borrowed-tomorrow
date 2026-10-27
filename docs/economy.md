@@ -1,16 +1,16 @@
 # Early campaign economy — issue #106
 
-Chapters One and Two have useful purchases, stronger medical supplies and a shared spare-gear trade counter. Later chapters retain their existing supply interactions; extending their shop progression remains follow-up work on #106.
+Chapters One and Two have useful purchases and a shared spare-gear trade counter. Stronger medicine enters shops in Chapter Four. Later chapters offer the medical counter through their existing rest interactions; further equipment progression remains follow-up work on #106.
 
 ## Counters and stock
 
-Iona's counter at Larkspur sells starter equipment, bandages and focus tonics. Chapter Two offers **Browse supplies and trade gear** beside Orrin's coastal engine, at Dena's ward and at the Cinderbank medical coaches before Petra's crossing. All three coastal stops share prices and inventory rules. Free rest remains available and never refills items. There are no repeatable encounter payouts.
+Iona's counter at Larkspur sells starter equipment and ordinary bandages. Field bandages and focus tonics first appear at medical counters in Chapter Four; Chapters One–Three do not sell them. Chapter Two offers **Browse supplies and trade gear** beside Orrin's coastal engine, at Dena's ward and at the Cinderbank medical coaches before Petra's crossing. All three coastal stops share prices and inventory rules. Unattended supply stops now have an unnamed clerk; existing attendants such as Dena remain in place. Free rest remains available and never refills items. There are no repeatable encounter payouts.
 
 | Purchase | Marks | Effect |
 | --- | ---: | --- |
 | Bandage | 8 | 24 HP to one living fighter |
-| Focus tonic | 14 | 3 focus to the user or one living ally |
-| Field bandage (Chapter Two) | 18 | 48 HP to one living fighter |
+| Focus tonic (Chapter Four onward) | 14 | 3 focus to the user or one living ally |
+| Field bandage (Chapter Four onward) | 18 | 48 HP to one living fighter |
 | Brass reflector / pressure nozzle | 30 each | +3 Attack to Nell / Orrin |
 | Reinforced work coat | 15 | +1 Armor |
 | Heavy work coat | 25 | +2 Armor, −2 Speed |
@@ -38,7 +38,7 @@ These are maximum earned balances **before purchases**, not grants or required s
 | Cinderbank families boarded | 176 | 200 |
 | Petra defeated / Chapter Two complete | 226 | 250 |
 
-The free shed reflector, raid sight and collector coat stay useful loot. Starter spending reduces later balances; players choose whose fitting to improve, how many coats to fit and how much emergency medicine to carry. For example, buying Orrin's 30-mark nozzle after escape leaves six marks. Main-route rewards then fund Nell's coastal reflector at arrival, and the raid/collector payouts fund Orrin's coastal nozzle plus one field bandage and tonic, leaving 22 marks before Petra. No optional fight or grinding is needed for that path.
+The free shed reflector, raid sight and collector coat stay useful loot. Starter spending reduces later balances; players choose whose fitting to improve, how many coats to fit and how much emergency medicine to carry. For example, buying Orrin's 30-mark nozzle after escape leaves six marks. Main-route rewards then fund Nell's coastal reflector at arrival, and the raid/collector payouts fund Orrin's coastal nozzle plus two ordinary bandages, leaving 38 marks before Petra. No optional fight or grinding is needed for that path.
 
 ## Selling and persistence
 

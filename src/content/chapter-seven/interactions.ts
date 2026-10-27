@@ -49,6 +49,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
  if(id.endsWith('-rest'))return h.talk({lines:[SAY('Supplies','Clean water, folded blankets and a field kit are under cover.')],choices:[
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
   {label:'Buy a bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
+   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
   {label:'Keep moving',action:()=>{}},
  ]});
  switch(id){

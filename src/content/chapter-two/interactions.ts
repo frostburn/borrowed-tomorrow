@@ -50,7 +50,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       if (!f.prisonersFreed) return host.toast('Open the prison coach before leaving.');
       travel('infirmary','from-coast'); return;
     case 'coast-engine':
-      host.talk({ lines: [SAY('Orrin', 'Still here. Coal in the bunker, pressure down. There’s a flask in the cab if you need a moment.')], choices: [
+      host.talk({ lines: [SAY('Supply clerk', 'There’s hot water in the cab. Coats and spare fittings here, if you need them.')], choices: [
         { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
         { label: 'Browse supplies and trade gear', action: () => host.shop('coast') },
         { label: 'Keep moving', action: () => {} },

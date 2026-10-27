@@ -6,7 +6,7 @@ import { buySupply, canBuy, sellEquipment, sellPrice, shopStock } from '../src/r
 import { decodeSave } from '../src/rules/save';
 import { newGame, restoreParty } from '../src/rules/state';
 import { offset } from '../src/rules/hex';
-import { checkpoint, coastCheckpoint } from './support/progress';
+import { checkpoint, coastCheckpoint, brokenCheckpoint } from './support/progress';
 import { interactChapterTwo } from '../src/content/chapter-two/interactions';
 import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
@@ -14,15 +14,15 @@ import type { Dialogue } from '../src/content/dialogue';
 describe('early shops and gear sales', () => {
   it('offers starter supplies at Larkspur and upgraded stock before the first coast battle', () => {
     const s = newGame(); s.coins = 300;
-    expect(buySupply(s, 'focus-tonic')).toBe(true);
+    expect(buySupply(s, 'focus-tonic')).toBe(false);
     expect(buySupply(s, 'field-bandage')).toBe(false);
     expect(buySupply(s, 'coastal-reflector', 'coast')).toBe(false);
     const coast = coastCheckpoint('kitJoined');
     expect(buySupply(coast, 'coastal-reflector', 'coast')).toBe(true);
     expect(coast.inventory.characters.nell.fitting).toBeNull();
     expect(coast.inventory.bag['coastal-reflector']).toBe(1);
-    expect(buySupply(coast, 'field-bandage', 'coast')).toBe(true);
-    expect(buySupply(coast, 'focus-tonic', 'coast')).toBe(true);
+    expect(buySupply(coast, 'field-bandage', 'coast')).toBe(false);
+    expect(buySupply(coast, 'focus-tonic', 'coast')).toBe(false);
     expect(decodeSave(JSON.stringify(coast))).toEqual(coast);
   });
   it('hides future companions from purchases, allows coats for each wearer and rejects unavailable stock', () => {
@@ -36,11 +36,11 @@ describe('early shops and gear sales', () => {
     expect(s.inventory.bag['travel-coat']).toBe(3);
   });
   it('rejects unaffordable or full purchases atomically', () => {
-    const s = coastCheckpoint('wardSeen'); s.coins = 17;
-    let before = structuredClone(s); expect(buySupply(s, 'field-bandage', 'ward')).toBe(false); expect(s).toEqual(before);
+    const s = brokenCheckpoint('refugeSeen'); s.coins = 17;
+    let before = structuredClone(s); expect(buySupply(s, 'field-bandage', 'field')).toBe(false); expect(s).toEqual(before);
     s.coins = 100; s.inventory.bag['field-bandage'] = 99; s.inventory.bag['focus-tonic'] = 99;
     before = structuredClone(s);
-    expect(buySupply(s, 'field-bandage', 'ward')).toBe(false); expect(buySupply(s, 'focus-tonic', 'ward')).toBe(false); expect(s).toEqual(before);
+    expect(buySupply(s, 'field-bandage', 'field')).toBe(false); expect(buySupply(s, 'focus-tonic', 'field')).toBe(false); expect(s).toEqual(before);
   });
   it('sells exactly one spare, preserves worn copies, and permits buying a sold fitting again', () => {
     const s = checkpoint('orrinJoined'); s.coins = 100;
@@ -77,8 +77,8 @@ describe('early shops and gear sales', () => {
     for (const id of ['coast-loading', 'coast-collector']) { const b = createBattle(id, coast); b.result = 'victory'; awardVictory(b, coast); }
     expect(coast.coins).toBe(100);
     expect(buySupply(coast, 'sealed-nozzle', 'ward')).toBe(true);
-    expect(buySupply(coast, 'field-bandage', 'ward')).toBe(true); expect(buySupply(coast, 'focus-tonic', 'ward')).toBe(true);
-    expect(coast.coins).toBe(22);
+    expect(buySupply(coast, 'bandage', 'ward')).toBe(true); expect(buySupply(coast, 'bandage', 'ward')).toBe(true);
+    expect(coast.coins).toBe(38);
     expect(ITEMS['silver-reflector'].bonuses.armor).toBeGreaterThan(ITEMS['coastal-reflector'].bonuses.armor);
     expect(ITEMS['baffled-nozzle'].bonuses.speed).toBeGreaterThan(ITEMS['sealed-nozzle'].bonuses.speed);
     expect(ITEMS['ratchet-sight'].bonuses.speed).toBeGreaterThan(ITEMS['steady-stock'].bonuses.speed);
@@ -90,6 +90,14 @@ describe('early shops and gear sales', () => {
       interactChapterTwo(h, interaction); d!.choices!.find(c => c.label === 'Browse supplies and trade gear')!.action(); expect(opened.at(-1)).toBe(shop);
     }
   });
+});
+
+it('introduces stronger medicine at Chapter Four medical counters, not early shops', () => {
+  const early=coastCheckpoint('wardSeen'); early.coins=300;
+  for(const shop of ['station','coast','ward','field'] as const) for(const id of ['field-bandage','focus-tonic'] as const) expect(buySupply(early,id,shop)).toBe(false);
+  const later=brokenCheckpoint('refugeSeen'); later.coins=100;
+  expect(buySupply(later,'field-bandage','field')).toBe(true); expect(buySupply(later,'focus-tonic','field')).toBe(true);
+  expect(later.coins).toBe(68); expect(decodeSave(JSON.stringify(later))).toEqual(later);
 });
 
 describe('shared medical supplies', () => {

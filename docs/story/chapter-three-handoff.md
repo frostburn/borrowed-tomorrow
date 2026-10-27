@@ -36,4 +36,4 @@ The heart regulator now uses the accepted upward-facing mechanical boss presenta
 
 The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter Three memory of his wife, the bounded promise to Nell and the repeated household in the final palace. His private grief does not excuse the collection or revive his family; he remains dead and silent after vessel victory.
 
-Early supplies now include focus tonics, Chapter Two field bandages and coastal equipment. Iona, the coastal engine, Dena’s ward and Cinderbank’s medical coaches offer the shared spare-gear sale counter. Preserve purchased and remaining medical stacks in the inventory bag across this boundary; do not refill them. See [economy.md](../economy.md).
+Early supplies offer ordinary bandages and coastal equipment. Stronger field bandages and focus tonics are saved for Chapter Four medical suppliers. Iona, the coastal engine, Dena’s ward and Cinderbank’s medical coaches offer the shared spare-gear sale counter. Preserve purchased and remaining medical stacks in the inventory bag across this boundary; do not refill them. See [economy.md](../economy.md).
