@@ -121,12 +121,12 @@ export class Adventure extends Phaser.Scene {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
     for(const asset of CHAPTER_ONE_SCENE_ASSETS)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
-    for(const page of [...MOTION_PAGES,...PERSON_MOTION_PAGES])this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
+    for(const page of [...MOTION_PAGES,...PERSON_MOTION_PAGES,{key:'hound-arrival',asset:'animation/hound-arrival'}])this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
     alignCameraScroll(this.cameras.main);
-    this.regionAssets.prepareVectors([...textures,...[...MOTION_PAGES,...PERSON_MOTION_PAGES].map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
+    this.regionAssets.prepareVectors([...textures,...[...MOTION_PAGES,...PERSON_MOTION_PAGES,{key:'hound-arrival',asset:'animation/hound-arrival'}].map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));

@@ -107,13 +107,15 @@ def person(name,weapon='saber'):
     return d
 
 
-def enemy(name):
+def enemy(name,walk=None):
     d=Drawing()
     if name=='hound':
-        for x in (13,27):
+        for i,x in enumerate((13,27)):
+            start=len(d.shapes)
             d.poly([(x-2,47),(x+2,47),(x+1,57),(x+3,66),(x-1,66),(x-3,57)],'copper',None)
             d.poly([(x,47),(x+2,47),(x+1,57),(x+3,66),(x+1,66),(x-1,57)],'copper-shadow',None)
             d.poly([(x-1,64),(x+3,64),(x+4,68),(x-2,68)],'brown')
+            if walk is not None:d.transform(start,1,1,0,0,-3 if i==walk else 0)
         d.poly([(13,32),(29,33),(31,43),(27,50),(14,48),(10,40)],'brown')
         d.oval((17,33,27,48),'copper');d.oval((19,36,25,45),'gold');d.line([(21,37),(21,44)],'brown')
         d.poly([(11,43),(7,39),(6,30),(3,30),(4,24),(8,23),(8,16),(11,20),(14,15),(14,28),(17,34)],'copper')
@@ -155,6 +157,22 @@ def export(root):
         (out/f'{name}.svg').write_text(person(name).svg())
     (out/'alban-command.svg').write_text(person('alban','rod').svg())
     for name in ('hound','crow','guardian','rock'):(out/f'{name}.svg').write_text(enemy(name).svg())
+    export_hound_arrival()
     print('Exported chapter-one supporting cast and enemies as SVG')
 
-if __name__=='__main__':export(Path(__file__).resolve().parents[3])
+
+# Isolated export for the first raid's mechanical gait; idle art stays intact.
+def export_hound_arrival():
+    out=Path(__file__).resolve().parents[3]/'public/art/vector/animation/hound-arrival.svg'
+    out.parent.mkdir(exist_ok=True)
+    page='<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 0 160 80">\n'
+    for i in range(2):page+=enemy('hound',i).svg().replace('<svg ',f'<svg x="{i*80}" y="0" ',1)
+    out.write_text(page+'</svg>\n')
+
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--hound-arrival-only',action='store_true')
+    args=parser.parse_args()
+    if args.hound_arrival_only:export_hound_arrival()
+    else:export(Path(__file__).resolve().parents[3])

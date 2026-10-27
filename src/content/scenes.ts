@@ -16,7 +16,7 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
   line('Tomas', 'You kept the lantern. I thought Ansel would have given you a crystal one by now.', {expression:'happy', focus: { x: 25, y: 14 }, cut: true }),
   line('Nell', 'You kept finding reasons to stay in the capital. Are we going to the sea or aren’t we?'),
   line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.',{expression:'worried'}),
-  line('Captain Alban', 'Tomas. Step away from the girl.', { cue: 'punch', focus: { x: 29, y: 13 }, actors: { alban: { visible: true, to: { x: 29, y: 13 } } } }),
+  line('Captain Alban', 'Tomas. Step away from the girl.', { effect:'raid-clear', cue: 'punch', focus: { x: 27, y: 15 }, actors: { alban: { visible: true, to: { x: 29, y: 13 } } } }),
   line('Nell', 'What’s he supposed to have done?',{expression:'worried'}),
   line('Captain Alban', 'Stolen property from the palace engine. Your brother knows what I want.'),
   line('Tomas', 'Take me. Leave her out of it.', {expression:'angry', actors: { tomas: { to: { x: 27, y: 13 } } } }),
@@ -27,7 +27,7 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
   line('The platform', 'A whistle cuts through the noise. Soldiers drag Tomas up the steps. The prison coach rolls east.', { cue: 'punch', focus: { x: 29, y: 12 }, actors: { tomas: { to: { x: 31, y: 11 } }, alban: { to: { x: 33, y: 11 } } } }),
   line('Tomas', 'Nell! Find Orrin. The old branch!', {expression:'worried', actors: { tomas: { visible: false }, alban: { visible: false } } }),
   line('Stationmaster Ansel', 'West gate. Iona’s got the key. Go on, Nell. Go.', { focus: { x: 27, y: 14 }, silence: true }),
-  line('The square', 'His hand slips from hers. Nell closes his eyes and takes the lantern. The hounds are coming down the steps.'),
+  line('The square', 'His hand slips from hers. Nell closes his eyes and takes the lantern. The hounds are coming down the steps.', {effect:'raid-hound',focus:{x:24,y:14},duration:900}),
   line('Nell', 'I’m bringing him home. Iona, stay with Ansel.'),
 ]);
 
