@@ -29,7 +29,8 @@
     "check:art-upload": "node scripts/check-art-upload.mjs",
     "simulate:early": "node scripts/headless.mjs",
     "simulate:middle": "node scripts/headless.mjs middle",
-    "test:headless": "vitest run --config scripts/headless.vitest.config.ts"
+    "test:headless": "vitest run --config scripts/headless.vitest.config.ts",
+    "simulate:compare": "node scripts/compare-headless.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"
