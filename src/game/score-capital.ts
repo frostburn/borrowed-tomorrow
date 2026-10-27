@@ -55,7 +55,9 @@ export function capitalBar(mode:CapitalMode,bar:number):Note[]{
  if(bar<intro){
   if(light){add('bell',bar?'E5':'D5',0,3.7,.14,-.15).expression={...phrasing(.75),release:1.3};add('tritaver',bar?'Ft3':'C3',1,2.5,.065,.25).expression=singing('clear',.8,2.5);}
   else{for(const [j,p]of (bar?['Db4','C4','Ab3']:['C4','F3','Ab3']).entries())add('brass',p as Pitch,j,.9,.14,-.2+j*.2).expression=phrasing(.85);add('timpani','F2',0,1.3,.14);}
-  add('round-bass',light?'C2':'F2',0,beats-.1,.14).expression=phrasing(.8,true);return out;
+  add('round-bass',light?'C2':'F2',0,beats-.1,.14).expression=phrasing(.8,true);
+  if(emperor&&bar===1)for(const [j,at]of [2,2.5,2.75].entries())add('snare','D2',at,.09,.055+j*.02,.08);
+  return out;
  }
  const i=((bar-intro)%32+32)%32,phrase=Math.floor(i/4),within=i%4,section=Math.floor(i/8),strength=dyn[i];
  const form=light||empty?lantern:returning?home:palace?imperial:street;
@@ -69,11 +71,17 @@ export function capitalBar(mode:CapitalMode,bar:number):Note[]{
  const root=light?(['C2','A#1','Ft2','D2','E2','Ad1','B1','G1']as const)[phrase]:palace?(['F2','Db2','Ab1','C2','F2','Db2','G1','C2']as const)[phrase]:roots[phrase];
  const third=light?(['E3','B3','A#3','Ft3','G3','D3','Ad3','E3']as const)[phrase]:palace?(['Ab3','F3','C3','E3','Ab3','F3','B2','E3']as const)[phrase]:thirds[phrase];
  if(battle){
-  for(const at of palace?[0,1,2]:[0,1.5,2,3])add('bass',root,at,at===0?.9:.45,.14*strength,-.08);
-  add('kick','C2',0,.18,.1);for(const at of palace?[1,2]:[1,3])add('snare','D2',at,.18,.065,.08);
-  for(let at=.5;at<beats;at++)add('hat','F#2',at,.09,.022,.4);
+  // The emperor drives six eighths through the waltz. Nell's bell keeps its
+  // exposed long line over a nervous bass and a heavy half-time snare.
+  const pulses=emperor?[0,.5,1,1.5,2,2.5]:light?[0,.5,1.5,2,2.5,3.5]:[0,1.5,2,3];
+  for(const at of pulses)add(emperor||light?'square-bass':'bass',root,at,emperor||light?.32:at===0?.9:.45,(emperor||light?(at%1?.105:.17):.14)*strength,-.08);
+  for(const at of emperor?[0,1.5]:light?[0,1.5,3]:[0])add('kick','C2',at,.18,emperor||light?.15:.1);
+  for(const at of palace?[1,2]:light?[2]:[1,3])add('snare','D2',at,emperor||light?.16:.18,emperor||light?.11:.065,.08);
+  for(let at=.5;at<beats;at+=emperor||light?.5:1)add('hat','F#2',at,emperor||light?.08:.09,emperor||light?(at%1?.028:.018):.022,.4);
   if(within===3){add('timpani',root,beats-1,.5,.095,-.25);add('timpani',octave(root,1),beats-.5,.4,.075,.25);}
-  if(i%8===0)add('cymbal','C3',0,1.6,.035,.3);
+  if((emperor||light)&&within===3)for(const at of [beats-.75,beats-.25])add('snare','D2',at,.09,.055,.08);
+  if((emperor||light)&&within===0)add('timpani',root,0,.8,.12,-.25);
+  if(i%8===0)add('cymbal','C3',0,1.6,emperor||light?.05:.035,.3);
  }else if(within%2===0)add('round-bass',root,0,beats*2-.15,empty?.095:.12,-.1).expression=phrasing(strength,true);
  if(within===0)for(const [j,p]of [octave(root,1),third].entries())add('strings',p,0,beats*4-.2,empty?.018:.028,j?-.4:.4).expression=singing('warm',strength,beats*4-.2);
  if(light&&within===2)add('tritaver',third,1,2.5,.055,.3).expression=singing('clear',strength,2.5);

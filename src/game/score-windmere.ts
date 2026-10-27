@@ -90,7 +90,7 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
  const lead=quiet||boss&&!middle?'bell':fight?'strings':round?'keys':'reed';
  for(const [n,[beat,pitch,duration]]of tune[i].entries()){
   const hold=quiet&&tune[(i+1)%32].length===0?7.5-beat:duration;
-  const voice=add(lead,pitch,beat,hold,quiet?.11:lead==='bell'?.13:.18,-.17);
+  const voice=add(lead,pitch,beat,hold,quiet?.11:lead==='bell'?(boss?.16:.13):.18,-.17);
   if(mode==='windmere')voice.expression=singing('warm',dynamics[i]*(1-n*.07),duration,[9,15,23,31].includes(i));
  }
  if(quiet){
@@ -111,15 +111,17 @@ export function windmereBar(mode:WindmereMode,bar:number):Note[]{
   if(round&&[3,11,27].includes(i))add('reed',i===11?'Eb4':'Ab4',2,.7,.045,.35);
   return out;
  }
- const pulses=boss?[0,.75,2,2.75]:middle?[0,2]:[0,1.5,3];
- for(const beat of pulses)add('round-bass',boss?bass:beat===1.5?octave(chord[0],-1):bass,beat,boss?.45:middle?1.3:.7,boss?.135:.125);
+ // The engine locks to straight eighths; its low middle opens to quarters.
+ const pulses=boss?middle?[0,1,2,3]:[0,.5,1,1.5,2,2.5,3,3.5]:middle?[0,2]:[0,1.5,3];
+ for(const beat of pulses)add(boss?'square-bass':'round-bass',boss?bass:beat===1.5?octave(chord[0],-1):bass,beat,boss?.3:middle?1.3:.7,boss?(beat%1?.09:.145):.125);
  for(const beat of middle?[0]:boss?[1,3]:[.5,2.5])for(const p of chord.slice(0,3))add('keys',p,beat,middle?2.6:.5,.028,.3);
  if(!boss||middle)for(const [n,p]of chord.entries())add('strings',p,0,3.6,.016,n%2?.4:-.4);
  if(boss&&[3,7,27].includes(i))add('keys','Bb4',3.25,.5,.05,.4);
- for(const beat of [0,2])add('kick','C2',beat,.15,.1);
- for(const beat of [1,3])add('snare','D2',beat,.13,.068,-.2);
+ for(const beat of boss&&!middle?[0,1.5,2,2.5]:[0,2])add('kick','C2',beat,.15,boss?.145:.1);
+ for(const beat of boss&&middle?[2]:[1,3])add('snare','D2',beat,.13,boss?.105:.068,-.2);
  for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.065,beat%1?.018:.011,.4);
  if([9,15,31].includes(i))for(const beat of [2.5,3.5])add('snare','D2',beat,.1,.03,-.2);
- if(boss&&[0,8,24].includes(i))add('timpani',bass,0,1,.065);
+ if(boss&&i%4===3)for(const beat of [3.25,3.75])add('snare','D2',beat,.09,.045,-.2);
+ if(boss&&[0,8,24].includes(i)){add('timpani',bass,0,1,.12);add('cymbal','C3',0,.9,.035,.3);}
  return out;
 }

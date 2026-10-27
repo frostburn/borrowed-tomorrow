@@ -81,6 +81,7 @@ export function northBar(mode:NorthMode,bar:number):Note[]{
   add('timpani','C2',0,1.8,.16);add('bass',bar?'D#2':'C2',0,4.8,.15);
   for(const [j,p]of (bar?['Ab3','Ft3','D#3']:['C3','D#3','Ft3','Ab3']).entries())add('tritaver',p as Pitch,j,2.2,.11,-.22+j*.13).expression=singing('clear',.85,2.2);
   add('bell',bar?'D#5':'C5',4,2.5,.1,.32).expression={...phrasing(.8),release:1.1};
+  if(bar===1)for(const [j,beat]of [4,4.25,4.5,4.75].entries())add('snare','D2',beat,.09,.04+j*.018,.06);
   return out;
  }
  const i=((bar-(boss?2:0))%32+32)%32,phrase=Math.floor(i/4),within=i%4,strength=gains[i];
@@ -95,10 +96,12 @@ export function northBar(mode:NorthMode,bar:number):Note[]{
  const rootIndex=[0,6,2,0,4,6,1,0][phrase],root=mode==='glacier'?tones[[0,3,5,2,4,1,5,0][phrase]]:tones[rootIndex];
  const rootBass=octave(root,-2);
  if(battle){
-  for(const beat of boss?[0,2,3,4]:[0,1.5,2,3])add('bass',rootBass,beat,beat===0?1.25:.65,.145*strength,-.1);
-  for(const beat of boss?[0,3]:[0,2])add('kick','C2',beat,.22,.11);
-  for(const beat of boss?[2,4]:[1,3])add('snare','D2',beat,.22,.08, .06);
-  for(let beat=.5;beat<beats;beat++)add('hat','F#2',beat,.1,.026,.4);
+  for(const beat of boss?[0,1,2,3,4,4.5]:[0,1.5,2,3])add(boss?'square-bass':'bass',boss&&beat===4.5?octave(rootBass,1):rootBass,beat,boss?(beat===4.5?.28:.55):beat===0?1.25:.65,(boss?.17:.145)*strength,-.1);
+  for(const beat of boss?[0,1.5,3,3.5]:[0,2])add('kick','C2',beat,.22,boss?.15:.11);
+  for(const beat of boss?[2,4]:[1,3])add('snare','D2',beat,boss?.18:.22,boss?.115:.08, .06);
+  for(let beat=.5;beat<beats;beat+=boss?.5:1)add('hat','F#2',beat,boss?.08:.1,boss?(beat%1?.026:.018):.026,.4);
+  if(boss&&within===0)add('timpani',rootBass,0,.9,.13,-.25);
+  if(boss&&within===3)for(const beat of [4.25,4.75])add('snare','D2',beat,.09,.055,.06);
   if(within===3){add('timpani','C2',beats-1,.5,.1,-.25);add('timpani','G2',beats-.5,.4,.085,.2);}
   if(i%8===0)add('cymbal','C3',0,2,.045,.2);
   const chord=boss?['C3','D#3','Ft3','Ab3']as const:[octave(root,-1),octave(tones[(rootIndex+2)%9],-1),octave(tones[(rootIndex+5)%9],-1)];

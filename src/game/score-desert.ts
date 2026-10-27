@@ -190,8 +190,10 @@ export function desertBar(mode:DesertMode,bar:number):Note[]{
    if(!(mode==='observatory'&&section===1))for(const [k,d]of [root,root+4].entries())add('strings',octave(tone(d),-1),0,hold,.023,k?.4:-.4);
   }
  }else{
-  const pattern=boss?[[0,1.25],[1.5,1.1]]:fight?[[0,.8],[1.5,.35],[2,.8],[3.5,.35]]:i%4===3?[[0,3.3]]:[[0,1.65],[2.5,1]];
-  for(const [k,[beat,hold]]of pattern.entries())add('round-bass',k%2?fifth:bass,beat,hold,fight?.15:.12);
+  // Six dry eighths keep the coils moving under the two compound accents.
+  // The hunters' bell incursion still has room in the low middle.
+  const pattern=boss?section===2?[[0,1.1],[1.5,1.1]]:[[0,.32],[.5,.32],[1,.32],[1.5,.32],[2,.32],[2.5,.32]]:fight?[[0,.8],[1.5,.35],[2,.8],[3.5,.35]]:i%4===3?[[0,3.3]]:[[0,1.65],[2.5,1]];
+  for(const [k,[beat,hold]]of pattern.entries())add(boss?'square-bass':'round-bass',boss?(k%3===2?fifth:bass):k%2?fifth:bass,beat,hold,boss?(beat===0||beat===1.5?.17:.1):fight?.15:.12);
   if(section===2||i%4===0)for(const [k,d]of [root,root+4].entries())add('strings',octave(tone(d),-1),0,beats-.3,.02,k?.4:-.4);
  }
  // Single-note oud-like punctuation answers the singer, without block strums.
@@ -207,18 +209,19 @@ export function desertBar(mode:DesertMode,bar:number):Note[]{
  }
  if((mode==='observatory'||boss)&&i===17)add('bell','A4',boss?.5:1,boss?2:2.5,.08,.25).expression!.release=.9;
  const rhythm=court?rhythms.darij:boss?rhythms.compound:mode==='skywalk'?rhythms.malfuf:rhythms.maqsum;
- const level=mode==='observatory'?.016:court?.035:fight?.11:.07;
+ const level=mode==='observatory'?.016:court?.035:boss?.155:fight?.11:.07;
  for(const [beat,p,accent]of rhythm){
   // Observatory has only distant cycle markers; cadences shed decoration.
   if(mode==='observatory'&&!(i%2===0&&beat===0)||i%8===7&&p==='G2'&&beat%1!==0)continue;
   add('hand-drum',p,beat,.16,level*accent,p==='G2'?.2:-.1);
  }
  if(!quiet){
-  for(let beat=.5;beat<beats;beat+=.5)add('shaker','F#2',beat,.065,fight?.014:.009,.4);
+  for(let beat=.5;beat<beats;beat+=.5)add('shaker','F#2',beat,.065,boss?.028:fight?.014:.009,.4);
   // Keep the battle's large pulse; the hand drum carries the regional pattern.
-  if(fight)for(const beat of boss?[0,1.5]:[0,2])add('kick','C2',beat,.14,.07);
-  if(fight&&[0,8,24].includes(i)){add('timpani',bass,0,1,.065);add('cymbal','C2',0,1,.02,.3);}
+  if(fight)for(const beat of boss?[0,1.5]:[0,2])add('kick','C2',beat,.14,boss?.12:.07);
+  if(fight&&[0,8,24].includes(i)){add('timpani',bass,0,1,boss?.11:.065);add('cymbal','C2',0,1,boss?.04:.02,.3);}
   if(i%8===6)for(const beat of boss?[2.25,2.5]:[3.25,3.5])add('hand-drum','G2',beat,.08,level*.45,.2);
+  if(boss&&i%8===7)for(const beat of [2.25,2.5,2.75])add('hand-drum','G2',beat,.08,level*.55,.2);
  }
  return out;
 }

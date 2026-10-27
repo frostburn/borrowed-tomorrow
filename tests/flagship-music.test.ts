@@ -5,7 +5,7 @@ import { FLAGSHIP_ENCOUNTER } from '../src/dev/flagship-battle';
 
 it('starts with two intro bars, then repeats only the 32-bar 10/8 battle',()=>{
  expect(FLAGSHIP_ENCOUNTER.music).toBe('flagship');expect(scoreMeter('flagship')).toBe('10/8');
- expect(ARRANGEMENTS.flagship).toMatchObject({beats:5,bpm:132,introBars:2});expect(scoreLength('flagship')).toBe(34);
+ expect(ARRANGEMENTS.flagship).toMatchObject({beats:5,bpm:140,introBars:2});expect(scoreLength('flagship')).toBe(34);
  expect([0,1,2,33,34,35,65,66].map(b=>scorePosition('flagship',b))).toEqual([0,1,2,33,2,3,33,2]);
  expect(scoreBar('flagship',34)).toEqual(scoreBar('flagship',2));expect(scoreBar('flagship',66)).toEqual(scoreBar('flagship',2));
  for(let b=2;b<100;b++)expect(scorePosition('flagship',b)).toBeGreaterThanOrEqual(2);
@@ -28,7 +28,7 @@ it('writes a single articulated lead with distinct answers, a string middle and 
 });
 it('shares a 2+2+3+3 pulse between bass and drums, with restrained phrase-ending fills',()=>{
  const opening=scoreBar('flagship',2),last=scoreBar('flagship',9);
- expect(opening.filter(n=>n.instrument==='round-bass').map(n=>n.beat)).toEqual([0,1,2,3.5]);
+ expect(opening.filter(n=>n.instrument==='square-bass').map(n=>n.beat)).toEqual([0,1,2,3.5]);
  expect(opening.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
  expect(opening.filter(n=>n.instrument==='snare').map(n=>n.beat)).toEqual([1,3.5]);
  expect(last.filter(n=>n.instrument==='snare').map(n=>n.beat)).toEqual([1,3.5,4,4.25,4.5,4.75]);

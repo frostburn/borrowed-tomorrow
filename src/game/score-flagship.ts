@@ -86,16 +86,16 @@ export function flagshipBar(bar:number):Note[]{
   for(const [i,pitch]of chord.entries())add('strings',pitch,0,4.6,(middle?.034:.022)/Math.sqrt(chord.length),i%2?.44:-.42);
   // The bass shares 2+2+3+3 instead of forcing an extra 4/4 backbeat into the bar.
   const fifth=transpose(root,'P5');
-  for(const [beat,pitch,length]of [[0,root,.8],[1,fifth,.65],[2,root,1.2],[3.5,b%4===3?transpose(root,'m7'):fifth,last?.8:1.1]] as [number,Pitch,number][])add('round-bass',pitch,beat,length,middle?.12:.16,-.05);
+  for(const [beat,pitch,length]of [[0,root,.8],[1,fifth,.65],[2,root,1.2],[3.5,b%4===3?transpose(root,'m7'):fifth,last?.8:1.1]] as [number,Pitch,number][])add('square-bass',pitch,beat,length,middle?.12:.17,-.05);
   for(const beat of middle?[0,3.5]:last?[0,1]:[0,1,3.5])for(const [i,pitch]of chord.entries())add('keys',octave(pitch,0),beat,beat>=2?.8:.3,.025/Math.sqrt(chord.length),i%2?.32:-.3);
   if(middle&&b%2===1){add('brass',octave(root,1),2,.7,.065,-.3);add('brass',octave(fifth,1),3.5,.7,.055,.2);}
-  for(const beat of [0,2])add('kick','C2',beat,.15,middle?.065:.1);
-  for(const beat of [1,3.5])add('snare','D2',beat,.13,middle?.05:.095,-.18);
-  for(let beat=0;beat<5;beat+=.5)add('hat','F#2',beat,.07,[0,1,2,3.5].includes(beat)?.025:.014,.4);
+  for(const beat of [0,2])add('kick','C2',beat,.15,middle?.09:.15);
+  for(const beat of [1,3.5])add('snare','D2',beat,.13,middle?.075:.12,-.18);
+  for(let beat=0;beat<5;beat+=.5)add('hat','F#2',beat,.07,[0,1,2,3.5].includes(beat)?.032:.02,.4);
   if(b%4===0)add('timpani',root,0,1.2,middle?.09:.15,-.25);
   if(b%8===0)add('cymbal','F#2',0,.9,middle?.035:.055,.38);
   if(last){
-    for(const [i,beat]of [4,4.25,4.5,4.75].entries())add('snare','D2',beat,.09,.025+i*.012,-.18);
+    for(const [i,beat]of [4,4.25,4.5,4.75].entries())add('snare','D2',beat,.09,.04+i*.016,-.18);
     add('timpani',root,4,.35,.1,-.2);add('timpani',fifth,4.5,.35,.12,-.2);
   }
   return notes;

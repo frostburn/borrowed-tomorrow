@@ -106,8 +106,10 @@ export function jungleBar(mode:JungleMode,bar:number):Note[]{
   const rhythm=within===3?[[0,2.7],[3.5,.35]]:section===2?[[0,1.75],[2.5,1]]:[[0,.8],[1.5,.4],[2.5,.8]];
   for(const [k,[beat,hold]]of rhythm.entries()){
    const pitch=beat===3.5?next:k===1?octave(degrees[(phrase+3)%5],-1):root;
-   add('round-bass',octave(pitch,-1),beat,hold,k===0?.17:.13);
+   add(boss?'square-bass':'round-bass',octave(pitch,-1),beat,boss&&section!==2?Math.min(hold,within===3?1.1:.5):hold,k===0?.17:.13);
   }
+  // Short offbeat answers interlock with the wood; keep the reed middle broad.
+  if(boss&&section!==2&&within!==3)for(const beat of [.5,2,3])add('square-bass',octave(root,-1),beat,.28,.09);
   if(within!==3){
    // The 3+3+2 eighth-note wood layer answers the steady four-beat hand drums.
    const beats=section===2?[.5,2.5]:i%2?[.5,2,3.5]:[0,1.5,3];
@@ -124,7 +126,7 @@ export function jungleBar(mode:JungleMode,bar:number):Note[]{
 
  // Low open strokes and higher rim strokes form a conversation, not a rock
  // snare backbeat. Dry shaker eighths keep the pulse audible under the wood.
- const drum=quiet?.073:fight?.17:.13;
+ const drum=quiet?.073:boss?.2:fight?.17:.13;
  const strokes:readonly (readonly [number,boolean,number])[]=quiet?
   [[0,false,1],[2.5,true,.6]]:within===3?
   [[0,false,1],[1.5,true,.7],[2,false,.8],[3,true,.65]]:
@@ -135,6 +137,10 @@ export function jungleBar(mode:JungleMode,bar:number):Note[]{
   add('shaker','C2',beat,.065,(quiet?.026:fight?.065:.05)*(beat%1?.85:.55),.42);
  }
  if(fight&&within===3&&section!==2)for(const beat of [3.25,3.75])add('hand-drum','G2',beat,.09,drum*.55,.16);
- if(boss&&[0,8,24].includes(i))add('timpani',octave(root,-1),0,1.5,.1);
+ if(boss){
+  for(const beat of [0,2])add('kick','C2',beat,.16,section===2?.085:.12);
+  if(within===3&&section!==2)add('hand-drum','C2',3.5,.12,.14,-.18);
+  if([0,8,24].includes(i)){add('timpani',octave(root,-1),0,1.5,.13);add('cymbal','C3',0,.9,.03,.3);}
+ }
  return out;
 }

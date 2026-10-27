@@ -84,7 +84,7 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  const out:Note[]=[],add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};if(quiet)note.expression=phrasing(wheelDynamics[i],instrument==='strings');out.push(note);return note;};
  const tune=quiet?wall:boss?command:guns?terrace:fight?battle:town;
  const lead=quiet?'bell':boss&&!middle||guns?'brass':'strings';
- for(const [beat,pitch,duration]of tune[i])add(lead,pitch,beat,duration,quiet?.1:lead==='brass'?.15:.17,-.15);
+ for(const [beat,pitch,duration]of tune[i])add(lead,pitch,beat,duration,quiet?.1:boss&&lead==='brass'?.19:lead==='brass'?.15:.17,-.15);
  if(quiet){
   if(i%2===0){
    const from=chords[changes[(i+30)%32]].bass,hold=tune[(i+1)%32].length===0?7.5:3.5;
@@ -96,18 +96,19 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
   return out;
  }
  // Soldiers keep a straight pulse; the tune decides when to resist it.
- const pulses=fight?[0,1,2,3]:guns?[0,2]:i%3===2?[0]:[0,2];
- for(const beat of pulses)add('round-bass',beat===2?octave(chord[0],-1):bass,beat,fight?.65:1.6,fight?.135:.095,-.08);
+ const pulses=boss?middle?[0,1,2,3]:[0,.5,1,2,2.5,3]:fight?[0,1,2,3]:guns?[0,2]:i%3===2?[0]:[0,2];
+ for(const beat of pulses)add(boss?'square-bass':'round-bass',beat===2?octave(chord[0],-1):bass,beat,boss?.32:fight?.65:1.6,boss?(beat%1?.1:.15):fight?.135:.095,-.08);
  for(const beat of fight?[.5,2.5]:guns?[1,3]:[0])for(const p of chord.slice(0,3))add('keys',p,beat,fight?.45:guns?.65:2.6,fight?.03:.023,.3);
  if(!guns&&(middle||i%3===2))for(const [n,p]of chord.entries())add('strings',p,0,3.5,.016,n%2?.4:-.4);
  if([2,5,10,18,26].includes(i))add(boss?'reed':'keys',i===18?'Gb4':'Ab4',3,.65,.055,.4);
  if(middle&&!fight&&!guns)return out;
- const drums=fight?.105:guns?.043:.022;
- for(const beat of boss?[0,1.5,2]:[0,2])add('kick','C2',beat,.15,drums);
- for(const beat of [1,3])add('snare','D2',beat,.12,drums*.68,-.2);
+ const drums=boss?.15:fight?.105:guns?.043:.022;
+ for(const beat of boss&&!middle?[0,.5,1.5,2,2.5]:[0,2])add('kick','C2',beat,.15,drums);
+ for(const beat of [1,3])add('snare','D2',beat,.12,drums*(boss?.73:.68),-.2);
  for(const beat of fight||guns?[0,.5,1,1.5,2,2.5,3,3.5]:[.5,1.5,2.5,3.5])add('hat','F#2',beat,.07,drums*.16,.4);
  if(fight&&[7,15,31].includes(i))for(const beat of [2.5,3.5])add('snare','D2',beat,.1,drums*.3,-.2);
- if(boss&&[0,8,24].includes(i))add('timpani',bass,0,1,.065);
+ if(boss&&i%4===3)for(const beat of [3.25,3.75])add('snare','D2',beat,.09,.05,-.2);
+ if(boss&&[0,8,24].includes(i)){add('timpani',bass,0,1,.12);add('cymbal','C3',0,.8,.035,.3);}
  return out;
 }
 // Chapter Two is the same person before her refusal. Strong-beat landings give
