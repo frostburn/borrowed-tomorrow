@@ -7,7 +7,10 @@ const effects=['click','move','strike','burst','flare','steam','mend','bandage',
 
 test('art and text share chunky square pixels at fractional DPR',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1170,height:780},deviceScaleFactor:2.5});
-  const page=await context.newPage();await page.goto('/');await expect(page.getByRole('button',{name:'Begin Chapter One'})).toBeVisible({timeout:15000});
+  const page=await context.newPage();
+  // Screenshot and backing-store reads happen at different times; freeze the
+  // title trees so this checks display sampling rather than animation timing.
+  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page.getByRole('button',{name:'Begin Chapter One'})).toBeVisible({timeout:15000});
   await expect.poll(()=>page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,ctx=canvas.getContext('2d')!;
     return ctx.getImageData(0,0,canvas.width,canvas.height).data.some((v,i)=>i%4!==3&&v>100);

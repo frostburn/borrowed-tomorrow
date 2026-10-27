@@ -61,6 +61,54 @@ Chapter One–Five's lit maps blend consecutive static planes below depth −900
 
 To profile, record a Chromium CPU profile while walking right for 2.2 seconds and left for 2.2 seconds with Nell/Orrin/Kit in each Chapter Two map. Keep viewport, checkpoint, motion settings and sample interval the same. In headless Chromium at 1280 × 800 with 500µs sampling, these changes reduced sampled busy time from 75% to 24% in the harbor, 51% to 25% in the ward and 89% to 24% in Cinderbank. Both runs already met the environment's 60Hz frame cadence; the improvement is CPU headroom, not a claimed frame-rate multiplier. Native scene/actor checks, collector visibility and the boarding animation should accompany performance changes. Detailed profiling stays outside default CI.
 
+### Walking and framebuffer cost (#133)
+
+`PixelDisplay` samples the stable lower/upper UI planes once per UI rebuild,
+then composites the live scene directly on the shared 2px raster. When only the
+scene changes, it redraws and presents the world rectangle; controls and
+letterboxing retain their previous pixels. UI mutations, image loads, focus,
+scrolling, overlays and resize still invalidate the complete presentation. This
+removes the per-frame full-size UI/world/UI composite and its final downsample,
+without changing the display cadence, input timing or movement/footstep rules.
+
+Actor lighting takes an ambient-only path outside all lamp bounds. Lit actors
+reuse transform signs and use a direct three-component distance calculation.
+The exhaustive lighting oracle still compares exact bytes at lamp/beam edges,
+including mirrored/rotated frames and distant ambient-only poses. The browser
+compositor oracle compares the displayed output with the former full-size
+pipeline while walking, opening/closing Equipment and resizing, on desktop and
+phone at fractional DPR. Keep these detailed checks outside normal CI.
+
+For repeatable profiles, use an installed Chromium and run:
+
+```sh
+PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium npm run profile:walking -- /tmp/bt-walk-after 4
+```
+
+The optional last argument is CDP CPU throttling (1 by default). The command
+starts its own Vite server and clean browser contexts, imports authored test
+checkpoints through Save, enables sound, then walks right and left for 2.2s each
+in Larkspur, Iron Coast and Cinderbank at 1280 × 800. It writes CPU profiles,
+frame/footstep intervals, long tasks and presentation timings to the selected
+directory. No output is included in the game build. With no directory it creates
+a temporary one. Use the same script/settings on each revision, run profiles
+without concurrent builds/tests, and compare several runs before drawing timing
+conclusions.
+
+An isolated before/after comparison in headless Chromium with 4× CPU throttling
+and 500µs profiler sampling gave these median display-paint costs:
+
+| Map | Before | After |
+| --- | ---: | ---: |
+| Larkspur | 10.6ms | 8.3ms |
+| Iron Coast | 10.4ms | 8.3ms |
+| Cinderbank | 11.3ms | 9.4ms |
+
+This is about 17–22% less presentation time in that run, reducing main-thread
+work that can delay walking callbacks. It is not a universal frame-rate or
+footstep-jitter guarantee; CPU throttling, warmup, browser and device affect
+results. The profiling command records those timings for further investigation.
+
 ## Adding the next chapter
 
 1. Add chapter-local scenes, interactions, journals/objectives, encounters, Tiled maps and vector source. Keep map IDs and story checkpoints deliberate; use named arrivals/casts rather than copying world coordinates into new scenes.

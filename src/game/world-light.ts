@@ -65,17 +65,27 @@ function frameLamps(rig:WorldLight,w:number,h:number,x:number,y:number,ox:number
 
 /** A small material-neutral light field; original alpha and geometry survive. */
 export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:number,y:number,originX:number,originY:number,scaleX=1,scaleY=1,rotation=0){
-  const a=source.data,b=output.data,w=source.width,cos=Math.cos(rotation),sin=Math.sin(rotation),planes=actorPlanes(source);
+  const a=source.data,b=output.data,w=source.width,cos=Math.cos(rotation),sin=Math.sin(rotation);
   const lamps=frameLamps(rig,w,source.height,x,y,originX,originY,scaleX,scaleY,cos,sin);
+  // Outside all lamp bounds, motion and surface normals cannot change ambient
+  // illumination. Keep transparent RGB identical to the full lighting path.
+  if(!lamps.length){
+    for(let i=0;i<a.length;i+=4){
+      b[i+3]=a[i+3];
+      b[i]=a[i+3]?a[i]*rig.ambient[0]:0;b[i+1]=a[i+3]?a[i+1]*rig.ambient[1]:0;b[i+2]=a[i+3]?a[i+2]*rig.ambient[2]:0;
+    }
+    return;
+  }
+  const planes=actorPlanes(source),signX=Math.sign(scaleX),signY=Math.sign(scaleY);
   for(let i=0;i<a.length;i+=4){
     b[i+3]=a[i+3];if(!a[i+3]){b[i]=b[i+1]=b[i+2]=0;continue;}
     const sx=(i/4%w-originX)*scaleX,sy=(Math.floor(i/4/w)-originY)*scaleY;
     const wx=x+sx*cos-sy*sin,height=Math.max(0,-sx*sin-sy*cos);
     const at=i/4*3,nx=planes[at]/100,ny=planes[at+1]/100,nz=planes[at+2]/100;
-    const normalX=nx*Math.sign(scaleX)*cos+ny*Math.sign(scaleY)*sin,normalY=ny*Math.sign(scaleY)*cos-nx*Math.sign(scaleX)*sin;
+    const normalX=nx*signX*cos+ny*signY*sin,normalY=ny*signY*cos-nx*signX*sin;
     let strength=0,red=0,green=0,blue=0;
     for(const lamp of lamps){
-      const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,distance=Math.hypot(lx,ly,lz);
+      const lx=lamp.x-wx,ly=lamp.height-height,lz=(lamp.y-y)*1.35,distance=Math.sqrt(lx*lx+ly*ly+lz*lz);
       const power=attenuation(lamp,wx,y,distance);if(!power)continue;
       const length=Math.max(1,distance);
       const dot=(normalX*lx+normalY*ly+nz*lz)/length;
