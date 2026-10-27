@@ -66,10 +66,29 @@ it('does not refresh existing Dazzle or Rally a full-focus party',()=>{
 });
 it('forecasts a spent team helper without giving them another main action',()=>{
  const b=focusLane();for(const u of b.units)u.focus=6;
+ b.units.find(u=>u.id==='nell')!.abilities=[];
  // Falling stars spends Orrin's action before his turn-entry focus tick.
  expect(cast(b,active(b)!,'starline',offset(6,3))).toBe(true);
  expect(active(b)!.id).toBe('nell'); // Orrin has no movement in this fixture.
- const before=structuredClone(b);cooperativeForecast(b,2);expect(b).toEqual(before);
+ const before=structuredClone(b),future=cooperativeForecast(b,2);expect(b).toEqual(before);
+ expect(future.units.filter(u=>u.side==='enemy').map(u=>u.hp)).toEqual(before.units.filter(u=>u.side==='enemy').map(u=>u.hp));
+});
+it('avoids spending a partner action when a cheap solo attack ends the battle',()=>{
+ const b=focusLane();b.units=b.units.filter(u=>u.side==='party'||u.kind==='guardian');
+ b.queue=['celia','orrin','nell','guardian-0'];
+ b.units.find(u=>u.side==='enemy')!.hp=1;
+ expect(commit(b)).toMatchObject({ability:'celestialbolt'});
+ expect(b.units.find(u=>u.id==='orrin')!.teamSpentRound).toBeUndefined();
+});
+it('evaluates the main action remaining after a bonus Shield bash',()=>{
+ const s=newCharacterSettings();s.party=['petra'];s.characters.petra=defaultBuild('petra',7);
+ const b=createBattle('sanctuary-warden',newGame(),undefined,characterProfiles(s),s.party);
+ b.units=b.units.filter(u=>u.side==='party'||u.kind==='guardian');b.obstacles.clear();b.water.clear();
+ const petra=b.units.find(u=>u.id==='petra')!,enemy=b.units.find(u=>u.side==='enemy')!;
+ petra.hex=offset(3,3);enemy.hex=offset(4,3);b.queue=['petra',enemy.id];
+ expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(active(b)).toBe(petra);
+ const before=structuredClone(b),future=cooperativeForecast(b,2);
+ expect(b).toEqual(before);expect(future.units.find(u=>u.side==='enemy')!.hp).toBeLessThan(enemy.hp);
 });
 it('preserves legal movement-only decisions and a common round boundary',()=>{
  const b=focusLane(),orrin=b.units.find(u=>u.id==='orrin')!;

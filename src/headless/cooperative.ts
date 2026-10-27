@@ -56,7 +56,9 @@ export function decideCooperatively(source:Battle,frugal=false):Decision{
  for(const {plan,trial}of bySkill.values()){
   // Use a common round boundary even when casting itself finishes a round.
   const future=trial.result?trial:cooperativeForecast(trial,source.round+2);
-  const score=value(source,future,frugal)-distance(u.hex,plan.pos)*.15;
+  // Prefer earlier progress when projected endpoints are otherwise similar.
+  // In particular, never wait for a later ally to win merely to bank focus.
+  const score=value(source,future,frugal)+value(source,trial,frugal)*.05-distance(u.hex,plan.pos)*.15;
   if(score>bestScore){bestScore=score;best=plan;}
  }
  if(!best)return decideDefensively(source,frugal);
