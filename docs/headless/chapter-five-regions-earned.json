@@ -4,13 +4,19 @@
   "status": "complete",
   "stage": "five-regions",
   "source": {
-    "baseCommit": "80a5cceb0190011ab456b386f3c5591b516cfc3b",
+    "baseCommit": "bf92565605c6769d69d85d94d52bd7c4b513a575",
     "files": {
-      "src/rules/abilities.ts": "650a78c11e2bb14764f72647bf56571d2dcb4982da22c93c22d07a2ac42a8e15",
-      "src/rules/combat.ts": "1b1ac521da5ca0edbb63bc138b3e0ae0786ea9d238bd4295f211c2e92949404e",
-      "src/rules/skills.ts": "39d28e8d3ffc2b97b667151aa10e494ec4b5328328d3b4b712d8a780b36dc5a7",
+      "src/rules/abilities.ts": "7b2c3bbd52937a0970010af57bd683859ab1ad358537176711880d06435da876",
+      "src/rules/combat.ts": "e27e69c994e9520ecc2be92a9ae637eb0993e3cae66ef21a464226bbbf312186",
+      "src/rules/skills.ts": "294f9263fd01590fa063d9b512d8641914a7ef355d3a6caa94f8c703e30cd7b5",
       "src/rules/combat-tactics.ts": "eb00280f823578963cb6de0f28624b7e4824a95e6b9f5e2393cf82a8bf94f21d",
-      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149"
+      "src/rules/rally.ts": "b444c654fd480a4e1734be3400298c4fae9175091e0c35c8bdb0c7d9995566ab",
+      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149",
+      "src/content/chapter-three/regulator.ts": "5de457407b25a32116e19104807ecd3fc320349ba14f225cdcd1a42738c85575",
+      "src/headless/rally-value.ts": "82ceef508626f6837683188e85623b54b8770fe68fdbe87c7fbef53c2a4a30b2",
+      "src/headless/tactics.ts": "3e5f4e20c202635539cfb217fc73b543c0b0f105be1b077e7fd833e19936c921",
+      "src/headless/defensive.ts": "d2a33fb65ff598742bef4cdd2727c5a944cc28e3b9355ff941defa54545c3947",
+      "src/headless/cooperative.ts": "038710f8d7cfcfc13fec889c7e3ec363d96546b430b7cc56563f5485d5c3a491"
     }
   },
   "agent": {
@@ -42,12 +48,12 @@
     "party": [
       {
         "id": "nell",
-        "hp": 93,
+        "hp": 72,
         "focus": 6
       },
       {
         "id": "orrin",
-        "hp": 87,
+        "hp": 108,
         "focus": 6
       },
       {
@@ -62,7 +68,7 @@
       },
       {
         "id": "celia",
-        "hp": 80,
+        "hp": 45,
         "focus": 6
       }
     ],
@@ -179,7 +185,7 @@
       "windmereComplete": true,
       "allAnchorsSeen": true
     },
-    "coins": 1235,
+    "coins": 1201,
     "bandages": 3,
     "xp": 2945,
     "inventory": {
@@ -194,7 +200,7 @@
         "saber-hilt": 1,
         "silver-reflector": 1,
         "ratchet-sight": 1,
-        "field-bandage": 1,
+        "field-bandage": 0,
         "focus-tonic": 1,
         "medic-clasp": 1,
         "folding-sight": 0,

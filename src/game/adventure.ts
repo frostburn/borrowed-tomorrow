@@ -679,7 +679,7 @@ export class Adventure extends Phaser.Scene {
   }
   private drawInitiative() {
     const b=this.battle!,u=active(b),esc=this.ui.escape;
-    this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${rallySources(b).map(source=>`<span class="round">Cry ${rallyRemaining(b,source)} rounds</span>`).join('')}${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
+    this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${rallySources(b).map(source=>`<span class="round">Cry ${rallyRemaining(b,source)}r</span>`).join('')}${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
   }
   private commandAbilities(b:Battle,u:Unit){return battleAbilities(b,u).filter(id=>!isConsumable(id)||id==='bandage');}
   private renderBattleControls() {

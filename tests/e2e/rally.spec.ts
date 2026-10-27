@@ -17,7 +17,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];},{timeout:15000}).toBe('kit');
    const b=(await inspect(page)).battle!,celia=b.units.find(u=>u.id==='celia')!,kit=b.units.find(u=>u.id==='kit')!;
    expect(celia.focus).toBe(3);expect(kit.focus).toBe(3);expect(celia.rally).toEqual({rank,expiresRound:4});
-   await expect(page.locator('.initiative')).toContainText('Cry 3 rounds');await expect(page.locator('.identity .role')).toContainText('Focus regen +1');
+   await expect(page.locator('.initiative')).toContainText('Cry 3r');await expect(page.locator('.identity .role')).toContainText('Focus regen +1');
    await capture(page,`rally-${rank}-active-${device}`);
    await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(4,2));await page.getByRole('button',{name:/Confirm move/}).click();
    await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
@@ -31,7 +31,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    }
    const next=(await inspect(page)).battle!,source=next.units.find(u=>u.id==='celia')!;
    expect(next.round).toBe(2);expect(next.queue[0]).toBe('celia');expect(source.focus).toBe(rank===1?4:5);
-   await expect(page.locator('.initiative')).toContainText('Cry 2 rounds');await capture(page,`rally-${rank}-next-${device}`);
+   await expect(page.locator('.initiative')).toContainText('Cry 2r');await expect(page.locator('.initiative .turn.active')).toBeInViewport();await capture(page,`rally-${rank}-next-${device}`);
    await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   });
  });
