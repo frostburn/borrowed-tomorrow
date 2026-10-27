@@ -1,5 +1,5 @@
 import type { Note } from './score';
-import { octave,type Pitch } from './tuning';
+import { octave,transpose,type Pitch } from './tuning';
 import { fretless,phrasing } from './expression';
 export type DawnwatchMode='dawnwatch'|'watchbarracks'|'signalwall'|'dawn-battle'|'dawn-commander';
 type Line=[number,Pitch,number][];
@@ -113,24 +113,28 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
 // Chapter Two is the same person before her refusal. Strong-beat landings give
 // the cell its footing; the occasional triplet pickup always returns to a beat.
 const crossing:Line[]=[
- [[0,'C5',.75],[1,'Db5',.5],[2,'C5',.75],[3,'G4',.75]],[[0,'Ab4',1.5],[2,'G4',.5],[3,'F4',.75]],
- [[0,'C5',.75],[1.5,'Eb5',.4],[2,'Db5',1.5]],[[0,'C5',1.75],[2,'Ab4',1.5]],
+ [[0,'C5',.6],[1,'Db5',.4],[2,'C5',.6],[3,'G4',.6]],[[0,'Ab4',1.5],[2,'G4',.5],[3,'F4',.75]],
+ [[0,'C5',.75],[1,'Eb5',.4],[2,'Db5',1.5]],[[0,'C5',1.75],[2,'Ab4',1.5]],
  [[0,'Db5',.75],[1,'C5',.75],[2,'Bb4',.75],[3+2/3,'Ab4',1/3]],[[0,'G4',1.25],[2,'F4',.5],[3,'E4',.75]],
- [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',3]],
+ [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',1.25],[2,'F5',.6],[3,'C5',.6]],
  [[0,'Ab5',1.75],[2,'G5',1.5]],[[0,'Eb5',1.75],[2,'C5',1.5]],
  [[0,'Db5',1.25],[2,'Bb4',1.5]],[[0,'G4',.75],[1,'Ab4',.75],[2,'E4',1.5]],
- [[0,'C5',.75],[1,'Db5',.5],[2,'C5',.75],[3,'G4',.75]],[[0,'Ab4',1.5],[2,'G4',1.5]],
- [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',3.5]],
+ [[0,'C5',.6],[1,'Db5',.4],[2,'C5',.6],[3,'G4',.6]],[[0,'Ab4',1.5],[2,'G4',1.5]],
+ [[0,'E5',1.5],[2,'Db5',.5],[3,'C5',.75]],[[0,'F5',1.5],[2,'C5',.6],[3,'G4',.6]],
 ];
 export function petraCrossingBar(bar:number):Note[]{
  const i=((bar%16)+16)%16,{bass,notes:chord}=chords[changes[i]],out:Note[]=[];
  const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
- for(const [beat,pitch,duration]of crossing[i])add('strings',pitch,beat,duration,.22,-.15);
- for(const beat of i%4===3?[0]:[0,2]){add('round-bass',bass,beat,4/3,beat===0?.16:.11,-.1);for(const p of chord)add('keys',p,beat,2/3,beat===0?.04:.027,.25);}
+ for(const [beat,pitch,duration]of crossing[i]){
+  add('strings',pitch,beat,duration,beat===0?.245:.22,-.15);
+  if([0,4,12].includes(i)&&Number.isInteger(beat))add('brass',octave(pitch,-1),beat,.35,.04,.15);
+ }
+ for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('round-bass',beat===2.5?transpose(bass,'P5'):bass,beat,.34,beat%1?.095:beat===0?.17:.13,-.1);
+ for(const beat of [0,1,2,3])for(const p of chord)add('keys',p,beat,.28,beat%2?.024:.038,.25);
  if(i>=8&&i<12)for(const p of chord)add('strings',p,0,10/3,.016,.3);
- for(const beat of [0,2])add('kick','C2',beat,.18,.1);
- for(const beat of [1,3])add('snare','D2',beat,.16,.075,-.15);
- for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.07,beat%1?.022:.012,.4);
+ for(const beat of [0,2])add('kick','C2',beat,.18,.12);
+ for(const beat of [1,3])add('snare','D2',beat,.16,.085,-.15);
+ for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.07,beat%1?.027:.016,.4);
  if(i===6||i===14)for(const beat of [3.25,3.75])add('snare','D2',beat,.1,.04,-.15);
  return out;
 }

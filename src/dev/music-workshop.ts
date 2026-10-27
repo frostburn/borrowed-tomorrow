@@ -64,7 +64,7 @@ const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
  flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };
-const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Organ:['organ'],Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Sine:['sine'],Tritaver:['tritaver'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
+const parts:Record<string,readonly Instrument[]|undefined>={All:undefined,Organ:['organ'],Wood:['wood'],'Hand drum':['hand-drum'],Shaker:['shaker'],Lute:['lute'],Sine:['sine'],Tritaver:['tritaver'],Reed:['reed'],Piano:['keys'],Bell:['bell'],Strings:['strings'],Brass:['brass'],Timpani:['timpani'],Bass:['bass','round-bass','square-bass'],'Square bass':['square-bass'],Drums:['hand-drum','shaker','kick','snare','hat','cymbal','timpani']};
 const pc=(pitch:Pitch)=>((pitchSteps(pitch)%31)+31)%31;
 const displayBeat=(beat:number)=>{
   const whole=Math.floor(beat),third=Math.round((beat-whole)*3);
