@@ -17,7 +17,7 @@ import { scoreD } from './score-d';
 import { scoreC } from './score-c';
 import type { NoteExpression } from './expression';
 export type MusicMode = SevenMode | 'stillcity'|'lastpalace'|'lastmorning'|'crown'|'laststation'|'capital-battle'|'emperor'|'lightbearer'|'capital-return'|'bellharbor'|'frostwatch'|'glacier'|'wintershrine'|'north-battle'|'winter-dragon'|'riverhaven'|'canopy'|'rainhouse'|'rainhouse-rest'|'river-battle'|'rain-warden'|'outermooring'|'namar'|'sunpalace'|'skywalk'|'observatory'|'desert-battle'|'sun-serpent'|'claim'|'windmere'|'dispensary'|'mirrorward'|'wind-battle'|'wind-engine'|'dawnwatch'|'watchbarracks'|'signalwall'|'observation'|'dawn-battle'|'dawn-commander'|'airfield'|'airship'|'hammerplain'|'coolingworks'|'anchorforge'|'five-battle'|'five-furnace'|'flagship'|'refuge'|'breakwater'|'sanctuary'|'four-battle'|'four-warden'|'conduit' | 'coast' | 'coast-battle' | 'petra-battle' | 'station' | 'yard' | 'tunnel' | 'battle' | 'inspector' | 'ending' | 'rillbridge' | 'sluice' | 'flood' | 'cinderbank' | 'infirmary' | 'shunting' | 'northglass' | 'relayhall' | 'switching';
-export type Instrument = 'organ' | 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'kick' | 'snare' | 'hat';
+export type Instrument = 'organ' | 'wood' | 'hand-drum' | 'shaker' | 'lute' | 'brass' | 'timpani' | 'cymbal' | 'sine' | 'tritaver' | 'reed' | 'bell' | 'keys' | 'strings' | 'bass' | 'round-bass' | 'square-bass' | 'kick' | 'snare' | 'hat';
 export interface Note { instrument:Instrument; pitch:Pitch; beat:number; duration:number; velocity:number; pan:number; expression?:NoteExpression }
 interface Arrangement { pulses?:readonly number[]; beats:3|4|5; meter?:readonly [number,number]; introBars?:number; bpm:number; lead:Instrument; leadGain:number; keys:number; strings:number; bass:number; percussion:number }
 export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
@@ -84,7 +84,7 @@ export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   coolingworks:{beats:4,bpm:102,lead:'keys',leadGain:.21,keys:.025,strings:.017,bass:.105,percussion:.033},
   anchorforge:{beats:4,bpm:84,lead:'keys',leadGain:.12,keys:.035,strings:.015,bass:.08,percussion:0},
   'five-battle':{beats:4,bpm:132,lead:'keys',leadGain:.21,keys:.032,strings:.017,bass:.145,percussion:.1},
-  'five-furnace':{beats:4,bpm:120,lead:'brass',leadGain:.15,keys:.032,strings:.017,bass:.145,percussion:.1},
+  'five-furnace':{beats:4,bpm:136,lead:'brass',leadGain:.21,keys:0,strings:.013,bass:.15,percussion:.14},
   flagship:{beats:5,meter:[10,8],pulses:[2,2,3,3],introBars:2,bpm:132,lead:'brass',leadGain:.21,keys:.025,strings:.022,bass:.16,percussion:.1},
   refuge:{beats:4,bpm:78,lead:'reed',leadGain:.2,keys:.042,strings:.017,bass:.13,percussion:0},
   breakwater:{beats:4,bpm:104,lead:'keys',leadGain:.23,keys:.036,strings:.017,bass:.12,percussion:.042},
@@ -93,7 +93,7 @@ export const ARRANGEMENTS:Record<MusicMode,Arrangement>={
   'four-warden':{beats:4,bpm:120,lead:'reed',leadGain:.24,keys:.05,strings:.022,bass:.17,percussion:.12},
   conduit:{beats:4,bpm:68,lead:'bell',leadGain:.11,keys:.045,strings:.018,bass:.11,percussion:0},
   'coast-battle':{beats:4,bpm:124,lead:'reed',leadGain:.23,keys:.04,strings:.016,bass:.16,percussion:.09},
-  'petra-battle':{beats:4,bpm:116,lead:'strings',leadGain:.22,keys:.045,strings:.016,bass:.17,percussion:.1},
+  'petra-battle':{beats:4,bpm:132,lead:'strings',leadGain:.245,keys:.038,strings:.016,bass:.17,percussion:.12},
   coast:{beats:4,bpm:88,lead:'reed',leadGain:.2,keys:.038,strings:.014,bass:.14,percussion:.018},
   northglass:{beats:4,bpm:92,lead:'keys',leadGain:.23,keys:.035,strings:0,bass:.14,percussion:.035},
   relayhall:{beats:4,bpm:74,lead:'reed',leadGain:.17,keys:.045,strings:.023,bass:.11,percussion:0},

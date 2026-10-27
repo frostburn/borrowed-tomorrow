@@ -147,14 +147,17 @@ it('Iron Coast restores its original two opening bars, including the quiet accom
   }
 });
 
-it('the train raid develops paired calls and answers, opens its middle, and returns to a full groove',()=>{
+it('the train raid develops paired calls and answers, opens its middle, and leaves its minor-key raid unresolved',()=>{
   const lead=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='reed');
   const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
   for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
   for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
-  expect(lead(0).map(n=>n.pitch)).toEqual(['E5','G5','F5','E5','D5']);
+  expect(lead(0).map(n=>n.pitch)).toEqual(['Eb5','G5','F5','Eb5','D5']);
   expect(lead(4).map(n=>n.pitch)).toEqual(['D5','F5','Eb5','D5','C5']);
-  expect(lead(15).map(n=>[n.pitch,n.duration])).toEqual([['C5',3]]);
+  expect(scoreBar('coast-battle',14).find(n=>isBass(n.instrument))!.pitch).toBe('Ab1');
+  expect(scoreBar('coast-battle',15).find(n=>isBass(n.instrument))!.pitch).toBe('G2');
+  expect(lead(15).at(-1)!.pitch).toBe('D5');
+  expect(lead(15).some(n=>n.pitch==='C5'&&n.duration>=2)).toBe(false);
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
     expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
@@ -184,17 +187,17 @@ it('Petra’s melody lands on the pulse, with a brief triplet pickup over the st
   expect(melody.some(n=>Math.abs(n.beat%1-2/3)<1e-9)).toBe(true);
 });
 
-it('Chapter Two battle variations keep their regional harmony and motifs with their own phrasing and rhythm sections',()=>{
+it('Chapter Two battle variations develop regional motifs with their own phrasing and rhythm sections',()=>{
   for(const [source,variation,lead] of [['coast','coast-battle','reed'],['cinderbank','shunting','reed']] as const){
     const line:Note[]=[];
     for(let bar=0;bar<16;bar++){
       const notes=scoreBar(variation,bar),original=scoreBar(source,bar);
-      expect(notes.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch).toBe(original.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch);
+      if(source==='cinderbank')expect(notes.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch).toBe(original.find(n=>isBass(n.instrument)&&n.beat===0)!.pitch);
       expect(notes.some(n=>n.instrument==='kick')).toBe(true);
       for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);expect(n.velocity).toBeLessThan(.3);}
       line.push(...notes.filter(n=>n.instrument===lead&&n.velocity>=.2).map(n=>({...n,beat:bar*4+n.beat})));
     }
-    expect(scoreBar(variation,0).filter(n=>n.instrument===lead&&n.velocity>=.2).slice(0,2).map(n=>n.pitch)).toEqual(scoreBar(source,0).filter(n=>n.instrument==='reed').slice(0,2).map(n=>n.pitch));
+    expect(scoreBar(variation,0).filter(n=>n.instrument===lead&&n.velocity>=.2).slice(0,2).map(n=>n.pitch[0])).toEqual(scoreBar(source,0).filter(n=>n.instrument==='reed').slice(0,2).map(n=>n.pitch[0]));
     for(let i=1;i<line.length;i++)expect(line[i-1].beat+line[i-1].duration).toBeLessThanOrEqual(line[i].beat);
     expect(scoreBar(variation,16)).toEqual(scoreBar(variation,0));expect(scoreBar(variation,-1)).toEqual(scoreBar(variation,15));
     expect(scoreBar(variation,0)).not.toEqual(scoreBar(source,0));

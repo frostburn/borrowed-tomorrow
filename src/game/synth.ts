@@ -100,9 +100,10 @@ export class Synth {
     const c=this.context,hz=pitchFrequency(pitch),nodes:AudioNode[]=[];
     const bell=instrument==='bell',plucked=instrument==='keys'||instrument==='lute'||instrument==='wood',strings=instrument==='strings',brass=instrument==='brass',timpani=instrument==='timpani';
     const release=expression?.release??(bell?.65:strings?.35:timpani?.25:brass?.22:.16);
-    const r=this.route(when,duration,volume,pan,strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
+    const r=this.route(when,duration,volume,pan,instrument==='square-bass'?.008:strings?.12:bell||timpani?.003:plucked?.004:brass?.018:.025,release,plucked||timpani);
     const filter=c.createBiquadFilter();filter.type='lowpass';filter.Q.value=.5;
-    filter.frequency.setValueAtTime(isBass(instrument)?650:instrument==='tritaver'?7000:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
+    filter.frequency.setValueAtTime(instrument==='square-bass'?1100:isBass(instrument)?650:instrument==='tritaver'?7000:bell?7000:plucked?2800:strings?1700:brass?700:timpani?2200:2400,when);
+    if(bell)filter.frequency.setTargetAtTime(Math.min(7000,Math.max(700,hz*1.8)),when+.02,.8);
     if(brass){filter.Q.value=.7;filter.frequency.exponentialRampToValueAtTime(Math.min(4800,hz*7),when+.045);filter.frequency.exponentialRampToValueAtTime(Math.max(600,hz*3),when+Math.max(.05,duration));}
     if(plucked)filter.frequency.exponentialRampToValueAtTime(650,when+Math.min(.3,duration));
     nodes.push(filter);
@@ -116,14 +117,18 @@ export class Synth {
       filter.connect(swell);swell.connect(r.gain);nodes.push(swell);
     }else filter.connect(r.gain);
     const voices:OscillatorNode[]=[];
-    const osc=(type:OscillatorType,detune=0,relative=1,mix=1)=>{
+    const osc=(type:OscillatorType,detune=0,relative=1,mix=1,decay?:number)=>{
       const o=this.track(c.createOscillator()),g=c.createGain();if(type==='custom')o.setPeriodicWave(this.tritaver());else o.type=type;o.frequency.value=hz*relative;o.detune.value=detune;g.gain.value=mix;
+      if(decay)g.gain.setTargetAtTime(.00001,when,decay);
       o.connect(g);g.connect(filter);o.start(when);o.stop(r.end);voices.push(o);nodes.push(o,g);return o;
     };
     if(bell){
       const carrier=osc('sine'),mod=this.track(c.createOscillator()),index=c.createGain();
-      mod.frequency.value=hz*2.76;index.gain.setValueAtTime(hz*.65,when);index.gain.exponentialRampToValueAtTime(.1,when+duration+.4);
-      mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);voices.push(mod);nodes.push(mod,index);osc('sine',0,2,.1);
+      // A struck bell loses its upper colour in real time, independently of
+      // the written hold. Long notes retain a warm fundamental, not a frozen
+      // metallic attack. Release/expression and cancellation still wrap it all.
+      mod.frequency.value=hz*2.76;index.gain.setValueAtTime(hz*.65,when);index.gain.setTargetAtTime(.1,when+.015,.35);
+      mod.connect(index);index.connect(carrier.frequency);mod.start(when);mod.stop(r.end);voices.push(mod);nodes.push(mod,index);osc('sine',0,2,.1,.45);
     }else if(brass){osc('sawtooth',-2,1,.43);osc('sawtooth',2,1,.43);osc('triangle',0,.5,.12);}
     else if(timpani){
       for(const [ratio,mix]of [[1,.75],[1.48,.19],[2.15,.09],[2.9,.035]]){const o=osc('sine',0,ratio,mix);o.frequency.setValueAtTime(hz*ratio*1.025,when);o.frequency.exponentialRampToValueAtTime(hz*ratio,when+.065);}
@@ -132,6 +137,7 @@ export class Synth {
     else if(instrument==='sine'){osc('sine');}
     else if(instrument==='tritaver'){osc('custom');}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
+    else if(instrument==='square-bass'){osc('square',0,1,.7);}
     else if(instrument==='bass'){osc('triangle',0,1,.8);osc('sine',0,.5,.2);}
     else if(instrument==='wood'){osc('sine',0,1,.84);osc('sine',0,2,.12);osc('sine',0,4,.035);}
     else if(instrument==='lute'){osc('triangle',0,1,.68);osc('sine',0,2,.2);osc('sine',0,3,.08);osc('sine',0,4,.035);}

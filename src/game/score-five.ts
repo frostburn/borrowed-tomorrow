@@ -62,9 +62,9 @@ const combat:Tune=[
  ...work.slice(24,30),[[0,'C5',.75],[1,'Bb4',.5],[2,'A4',.75],[3,'F#4',.6]],[[0,'G4',1.5],[3.5,'D5',.4]],
 ];
 const furnace:Tune=[
- [[0,'D4',.6],[1,'D4',.6],[2,'Eb4',.6],[3,'D4',.6]],[[0,'A3',1.5],[2,'Bb3',1]],
+ [[0,'D4',.35],[.5,'D4',.35],[1,'Eb4',.7],[2,'D4',.7],[3,'A3',.35],[3.5,'D4',.35]],[[0,'A3',.7],[1,'A3',.35],[2,'Bb3',.7],[3,'D4',.7]],
  [[0,'E4',.75],[1.5,'D4',.5],[2.5,'C4',1]],[[0,'G4',1.5],[2,'E4',1]],
- [[0,'D4',.6],[1,'D4',.6],[2,'F4',.6],[3,'Eb4',.6]],[[0,'D4',1],[1.5,'C4',.5],[2.5,'Bb3',1]],
+ [[0,'D4',.35],[.5,'D4',.35],[1,'F4',.7],[2,'Eb4',.7],[3,'D4',.7]],[[0,'D4',.7],[1,'C4',.7],[2,'Bb3',1],[3.5,'C4',.35]],
  [[0,'A3',1.5],[2,'F#3',1]],[[0,'G3',2.5]],
  ...combat.slice(8,16),
  [[0,'Bb4',2]],[[1,'G4',1.5]],[[0,'F4',2]],[[1,'Eb4',1.5]],
@@ -89,7 +89,7 @@ export function anchorBar(mode:AnchorMode,bar:number):Note[]{
  const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};if(quiet)note.expression=phrasing(gantryDynamics[i],instrument==='strings');out.push(note);return note;};
  const tune=quiet?gantry:boss?furnace:fight?combat:race?water:work;
  for(const [beat,pitch,duration]of tune[i]){
-  const voice=add(boss?'brass':'keys',pitch,beat,duration,quiet?.12:boss?.15:.21,-.16);
+  const voice=add(boss?'brass':'keys',pitch,beat,duration,quiet?.12:boss&&breakdown?.18:.21,-.16);
   if(quiet&&duration>=1.5)voice.expression!.bend=[[0,-1200/31],[.12,0],[.8,0],[1,0]];
  }
  if(quiet){
@@ -101,18 +101,30 @@ export function anchorBar(mode:AnchorMode,bar:number):Note[]{
   if(!tune[i].length)add('keys',chord[1],2,.8,.035,.3);
   return out;
  }
+ if(boss){
+  // Straight mechanical subdivisions replace the work tune's syncopated groove.
+  // The low middle keeps its drive; a wider brass answer supplies the contrast.
+  for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('square-bass',beat===3.5&&i%4===3?octave(bass,1):bass,beat,.32,beat%1?.105:.15);
+  for(const beat of [0,2])for(const p of chord.slice(0,3))add('brass',octave(p,-1),beat,.3,.024,.25);
+  if(i>=8&&i<16||i>=24)for(const [n,p]of chord.entries())add('strings',p,0,3.5,.013,n%2?.4:-.4);
+  for(const beat of [0,2])add('kick','C2',beat,.16,.14);
+  for(const beat of [1,3])add('snare','D2',beat,.14,.095,-.2);
+  for(const beat of [0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.065,beat%1?.024:.015,.4);
+  if(i%4===3)for(const beat of [2.5,3.5])add('snare','D2',beat,.1,.045,-.2);
+  if([0,8,16,24].includes(i)){add('timpani',bass,0,.6,.1);add('cymbal','C2',0,.9,.035,.3);}
+  return out;
+ }
  // A bass riff carries the work rhythm; the middle gives it the foreground.
  const rhythm:[number,Pitch,number][]=breakdown?[[0,bass,1.25],[1.5,bass,.45],[2.5,octave(chord[0],-1),.65]]:race?[[0,bass,.9],[1.5,octave(chord[0],-1),.45],[2.5,bass,.9]]:[[0,bass,.65],[.75,bass,.4],[2,octave(chord[0],-1),.65],[3,bass,.6]];
  for(const [beat,p,d]of rhythm)add('bass',p,beat,d,fight?.145:.105);
- for(const beat of breakdown?[0]:i%4===3?[.5]:race?[1,3]:[1.5,3])for(const p of chord.slice(0,boss?4:3))add('keys',p,beat,breakdown?2.5:.4,fight?.032:.025,.3);
- if(boss||i>=20&&i<24)for(const [n,p]of chord.entries())add('strings',p,0,3.6,.017,n%2?.4:-.4);
+ for(const beat of breakdown?[0]:i%4===3?[.5]:race?[1,3]:[1.5,3])for(const p of chord.slice(0,3))add('keys',p,beat,breakdown?2.5:.4,fight?.032:.025,.3);
+ if(i>=20&&i<24)for(const [n,p]of chord.entries())add('strings',p,0,3.6,.017,n%2?.4:-.4);
  if([3,11,19,27].includes(i))add(race?'reed':'bell',i===19?'G4':'D5',2.5,.7,.055,.35);
  if(breakdown&&!fight)return out;
  const drum=fight?.1:.033;
- for(const beat of boss?[0,1.5,2.5]:[0,2])add('kick','C2',beat,.14,drum);
+ for(const beat of [0,2])add('kick','C2',beat,.14,drum);
  for(const beat of [1,3])add('snare','D2',beat,.12,drum*.66,-.2);
  for(const beat of breakdown?[.5,1.5,2.5,3.5]:[0,.5,1,1.5,2,2.5,3,3.5])add('hat','F#2',beat,.07,drum*(beat%1?.19:.1),.4);
  if(fight&&[7,15,31].includes(i))for(const beat of [2.5,3.5])add('snare','D2',beat,.1,.028,-.2);
- if(boss&&[0,8,24].includes(i)){add('timpani',bass,0,1,.075);add('cymbal','C2',0,1.4,.03,.3);}
  return out;
 }

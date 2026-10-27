@@ -37,3 +37,14 @@ it('the four character themes have different interval/rhythm identities and thei
  expect(sung.duration).toBeGreaterThan(ARRANGEMENTS.windmere.beats);
  expect(scoreBar('windmere',1).some(n=>n.instrument==='reed'||isBass(n.instrument))).toBe(false);
 });
+
+it('the furnace carrier drives straight square-bass eighths with a harder, piano-free ensemble',()=>{
+ expect(ARRANGEMENTS['five-furnace'].bpm).toBe(136);expect(isBass('square-bass')).toBe(true);
+ for(let bar=0;bar<32;bar++){
+  const notes=scoreBar('five-furnace',bar);
+  expect(notes.filter(n=>n.instrument==='square-bass').map(n=>n.beat)).toEqual([0,.5,1,1.5,2,2.5,3,3.5]);
+  expect(notes.some(n=>n.instrument==='keys'||n.instrument==='bell'||n.instrument==='bass')).toBe(false);
+  expect(notes.filter(n=>n.instrument==='kick').map(n=>n.beat)).toEqual([0,2]);
+  expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>.07).map(n=>n.beat)).toEqual([1,3]);
+ }
+});
