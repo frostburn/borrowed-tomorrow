@@ -1,0 +1,754 @@
+{
+  "baseCommit": "e91692d9f190181a1b067607e34c0d24f5b40816",
+  "change": "heart-feeds regulator HP 210 -> 170; pressure route unchanged",
+  "sourceFiles": {
+    "src/content/chapter-three/regulator.ts": "ba49c4751b4b565aac1c1a5b38cc2c81ea9daaadfe9d78da41a718bd82f6eaff",
+    "src/rules/conduit.ts": "a94dba7ff6d2bc7acb0ba61e4792d107893cbecfd9b605a6fa352ece12e726a6",
+    "scripts/compare-conduit.mjs": "dab1f15ea83b092edae70ad98cb6d696dadd0f2ed5e5144d2f1835c567ff916a"
+  },
+  "before": [
+    {
+      "build": "offense",
+      "spending": "prepared",
+      "route": "feeds",
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 46,
+      "healed": 16,
+      "knockouts": 0,
+      "minHp": 50,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 3,
+        "bandage": 1,
+        "taunt": 1,
+        "quickshot": 3,
+        "crush": 1,
+        "strike": 2
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "offense",
+      "spending": "prepared",
+      "route": "pressure",
+      "result": "victory",
+      "rounds": 3,
+      "hpLost": 26,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 57,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 3,
+        "quickshot": 2,
+        "crush": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "offense",
+      "spending": "frugal",
+      "route": "feeds",
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 36,
+      "healed": 17,
+      "knockouts": 0,
+      "minHp": 49,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 3,
+        "feint": 1,
+        "mend": 1,
+        "taunt": 1,
+        "quickshot": 3,
+        "crush": 1,
+        "strike": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "offense",
+      "spending": "frugal",
+      "route": "pressure",
+      "result": "victory",
+      "rounds": 3,
+      "hpLost": 28,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 56,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 3,
+        "quickshot": 2,
+        "crush": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "support",
+      "spending": "prepared",
+      "route": "feeds",
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 29,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 56,
+      "abilities": {
+        "burst": 3,
+        "guard": 1,
+        "taunt": 1,
+        "steam": 2,
+        "crush": 2,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "support",
+      "spending": "prepared",
+      "route": "pressure",
+      "result": "victory",
+      "rounds": 3,
+      "hpLost": 65,
+      "healed": 65,
+      "knockouts": 0,
+      "minHp": 57,
+      "abilities": {
+        "burst": 2,
+        "steam": 3,
+        "crush": 1,
+        "strike": 2,
+        "mend": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "support",
+      "spending": "frugal",
+      "route": "feeds",
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 32,
+      "healed": 32,
+      "knockouts": 0,
+      "minHp": 55,
+      "abilities": {
+        "burst": 3,
+        "guard": 1,
+        "taunt": 1,
+        "steam": 2,
+        "crush": 2,
+        "mend": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    },
+    {
+      "build": "support",
+      "spending": "frugal",
+      "route": "pressure",
+      "result": "victory",
+      "rounds": 3,
+      "hpLost": 76,
+      "healed": 48,
+      "knockouts": 0,
+      "minHp": 24,
+      "abilities": {
+        "burst": 2,
+        "steam": 3,
+        "crush": 1,
+        "strike": 2,
+        "mend": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      }
+    }
+  ],
+  "after": {
+    "sourceSha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "results": [
+      {
+        "build": "offense",
+        "spending": "prepared",
+        "conduit": "feeds",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 3
+          },
+          {
+            "id": "kit",
+            "hp": 68,
+            "focus": 6,
+            "skills": {
+              "quickshot": 2,
+              "feint": 2,
+              "ricochet": 1,
+              "pin": 0
+            },
+            "bonus": 13,
+            "armor": 1
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 16,
+        "healed": 16,
+        "knockouts": 0,
+        "minHp": 56,
+        "abilities": {
+          "crossfire": 1,
+          "burst": 3,
+          "bandage": 1,
+          "taunt": 1,
+          "quickshot": 2,
+          "crush": 1,
+          "strike": 1
+        },
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 1,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "offense",
+        "spending": "prepared",
+        "conduit": "pressure",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 3
+          },
+          {
+            "id": "kit",
+            "hp": 68,
+            "focus": 6,
+            "skills": {
+              "quickshot": 2,
+              "feint": 2,
+              "ricochet": 1,
+              "pin": 0
+            },
+            "bonus": 13,
+            "armor": 1
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 26,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 57,
+        "abilities": {
+          "crossfire": 1,
+          "burst": 3,
+          "quickshot": 2,
+          "crush": 1,
+          "strike": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "offense",
+        "spending": "frugal",
+        "conduit": "feeds",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 2
+          },
+          {
+            "id": "kit",
+            "hp": 68,
+            "focus": 6,
+            "skills": {
+              "quickshot": 2,
+              "feint": 2,
+              "ricochet": 1,
+              "pin": 0
+            },
+            "bonus": 13,
+            "armor": 0
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 17,
+        "healed": 17,
+        "knockouts": 0,
+        "minHp": 55,
+        "abilities": {
+          "crossfire": 1,
+          "burst": 3,
+          "feint": 1,
+          "mend": 1,
+          "taunt": 1,
+          "quickshot": 2,
+          "crush": 1,
+          "strike": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "offense",
+        "spending": "frugal",
+        "conduit": "pressure",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 2
+          },
+          {
+            "id": "kit",
+            "hp": 68,
+            "focus": 6,
+            "skills": {
+              "quickshot": 2,
+              "feint": 2,
+              "ricochet": 1,
+              "pin": 0
+            },
+            "bonus": 13,
+            "armor": 0
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 28,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 56,
+        "abilities": {
+          "crossfire": 1,
+          "burst": 3,
+          "quickshot": 2,
+          "crush": 1,
+          "strike": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "support",
+        "spending": "prepared",
+        "conduit": "feeds",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 3
+          },
+          {
+            "id": "orrin",
+            "hp": 84,
+            "focus": 6,
+            "skills": {
+              "steam": 2,
+              "rivet": 2,
+              "guard": 2,
+              "repulse": 0
+            },
+            "bonus": 16,
+            "armor": 2
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 29,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 56,
+        "abilities": {
+          "burst": 3,
+          "guard": 1,
+          "taunt": 1,
+          "steam": 2,
+          "crush": 1,
+          "strike": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "support",
+        "spending": "prepared",
+        "conduit": "pressure",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 3
+          },
+          {
+            "id": "orrin",
+            "hp": 84,
+            "focus": 6,
+            "skills": {
+              "steam": 2,
+              "rivet": 2,
+              "guard": 2,
+              "repulse": 0
+            },
+            "bonus": 16,
+            "armor": 2
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 65,
+        "healed": 65,
+        "knockouts": 0,
+        "minHp": 57,
+        "abilities": {
+          "burst": 2,
+          "steam": 3,
+          "crush": 1,
+          "strike": 2,
+          "mend": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "support",
+        "spending": "frugal",
+        "conduit": "feeds",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 2
+          },
+          {
+            "id": "orrin",
+            "hp": 84,
+            "focus": 6,
+            "skills": {
+              "steam": 2,
+              "rivet": 2,
+              "guard": 2,
+              "repulse": 0
+            },
+            "bonus": 16,
+            "armor": 0
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 32,
+        "healed": 32,
+        "knockouts": 0,
+        "minHp": 55,
+        "abilities": {
+          "burst": 2,
+          "guard": 1,
+          "taunt": 1,
+          "steam": 2,
+          "crush": 2,
+          "mend": 1,
+          "strike": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      },
+      {
+        "build": "support",
+        "spending": "frugal",
+        "conduit": "pressure",
+        "initial": [
+          {
+            "id": "nell",
+            "hp": 72,
+            "focus": 6,
+            "skills": {
+              "burst": 3,
+              "mend": 2,
+              "dazzle": 1,
+              "sunline": 0
+            },
+            "bonus": 14,
+            "armor": 2
+          },
+          {
+            "id": "orrin",
+            "hp": 84,
+            "focus": 6,
+            "skills": {
+              "steam": 2,
+              "rivet": 2,
+              "guard": 2,
+              "repulse": 0
+            },
+            "bonus": 16,
+            "armor": 0
+          },
+          {
+            "id": "petra",
+            "hp": 92,
+            "focus": 6,
+            "skills": {
+              "bash": 2,
+              "taunt": 2,
+              "sweep": 1,
+              "crush": 1
+            },
+            "bonus": 16,
+            "armor": 2
+          }
+        ],
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 76,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 24,
+        "abilities": {
+          "burst": 2,
+          "steam": 3,
+          "crush": 1,
+          "strike": 2,
+          "mend": 1
+        },
+        "items": {},
+        "remaining": {
+          "bandages": 0,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        }
+      }
+    ]
+  },
+  "commands": [
+    "node scripts/compare-conduit.mjs --from /tmp/early.json --output /tmp/conduit.json",
+    "npm run test:headless",
+    "npm run check"
+  ],
+  "finalSaveIdenticalTo": "docs/headless/chapter-four-engaged-warden.json"
+}

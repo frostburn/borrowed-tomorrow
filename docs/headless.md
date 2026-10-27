@@ -193,3 +193,22 @@ A fresh `newGame()` run reproduces the earned Chapter Two input (SHA-256 `25bb12
 Cooperative prepared support uses Rally four times and spends 356 rather than 364 marks; cooperative prepared offense uses Dazzle once and several different teams. Frugal cooperative offense also uses Feint and Rally. Support remains a viable, slower formation rather than universally matching the offensive formation. The new policy performs worse on prepared offense, which is another reason to retain the defensive default and compare multiple policies.
 
 [support-comparison.json](headless/support-comparison.json) records all ten route summaries, twelve controlled results, remaining supplies, source hashes and reproduction commands. Full turn traces are generated in the temporary directory printed by `simulate:compare`; they now include Dazzle, pin, Taunt and team-action state. The current earned continuation checkpoint remains [chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json), since the default policy and gameplay are unchanged. All 704 unit tests, eight opt-in route checks, TypeScript and production build pass. Only the focused tactical tests join the small default test gate; the longer comparisons are opt-in.
+
+## Conduit route balance
+
+The sealed feeds regulator now has **170 HP instead of 210**. Cutting its supply earns a shorter cleanup after occupying the two earth plates. The pressure route is unchanged at 190 HP: no shield setup, two crows and live vents. Damage bonuses, warnings, plate positions, enemy counts, rewards, prices and route requirements are unchanged. Both routes still award 135 XP, 80 marks and the insulated coat; pressure still supports solo formations.
+
+The original offensive comparison favored pressure in both time and HP lost. Support formations already found pressure more dangerous, so strengthening that route would overcorrect. Reducing only the sealed core preserves a useful choice: take the exposed approach for speed and freedom of deployment, or solve the plates for a weaker core and safer fight.
+
+`node scripts/compare-conduit.mjs --from /tmp/early.json --output /tmp/conduit.json` earns both Chapter Three branches from the same early checkpoint for defensive offense/support × prepared/frugal policies. Each pair enters with identical hero HP, focus, skills and equipment bonuses. It uses actual campaign turns, normal rewards and no retries or granted resources. The detailed comparison stays outside default CI.
+
+| Build / spending | Feeds before → after (rounds / HP lost) | Pressure unchanged (rounds / HP lost) |
+| --- | ---: | ---: |
+| Offense / prepared | 5 / 46 → 4 / 16 | 3 / 26 |
+| Offense / frugal | 5 / 36 → 4 / 17 | 3 / 28 |
+| Support / prepared | 4 / 29 → 3 / 29 | 3 / 65 |
+| Support / frugal | 4 / 32 → 4 / 32 | 3 / 76 |
+
+All eight routes complete without knockouts. [conduit-routes.json](headless/conduit-routes.json) records before/after metrics, initial builds and source hashes. These are bounded agent comparisons, not claims that a human will solve the plates immediately. The opt-in regression requires the prepared offensive plate route to take at most one extra round while losing less HP than pressure. Existing tests preserve the normal plate release, three-contact targeting, fixed warnings, solo pressure option and once-only rewards.
+
+The default full run still wins all fifteen battles through Chapter Four and produces **exactly the same final save** as [chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json); that remains the current earned continuation checkpoint. Older audits and support-comparison records describe the former 210-HP sealed core and remain historical evidence.
