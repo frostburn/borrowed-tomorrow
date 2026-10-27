@@ -38,6 +38,8 @@ export interface Unit {
   intent?:{cycle?:number;round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex;via?:string};
 }
 export interface Battle {
+  /** Windmere re-sights its exposed lens; domain reprises opt in separately. */
+  wardTracking?:boolean;
   encounter: string; units: Unit[]; obstacles: Set<string>; water: Set<string>; vents:Set<string>; queue: string[]; round: number;
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; supplies: Record<PackedConsumableId, number>; result: 'victory' | 'defeat' | null;
   fixtures?:BattleFixture[];
@@ -48,7 +50,7 @@ export interface Battle {
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
-export interface Encounter { fixtures?:FixtureDefinition[];coordinated?:boolean; benefactorForm?:0|1|2; boss?:'benefactor'|'emperor'|'lightbearer'|'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
+export interface Encounter { wardTracking?:boolean; fixtures?:FixtureDefinition[];coordinated?:boolean; benefactorForm?:0|1|2; boss?:'benefactor'|'emperor'|'lightbearer'|'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
 const ENEMY_STATS = {
   herald:{name:'Sun herald',hp:138,speed:4,movement:3,armor:2,abilities:['sunbeam','strike']as AbilityId[],bonus:7},
   glasswing:{name:'Glass wing',hp:66,speed:8,movement:4,armor:1,flying:true,abilities:['splinter','strike']as AbilityId[],bonus:5},
@@ -99,7 +101,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.boss==='conduit')configureConduit(battle);
   if(e.boss==='furnace')configureFurnace(battle);
   configureDawnwatch(battle,e);
-  if(e.boss==='ward')configureWard(battle);
+  if(e.boss==='ward')configureWard(battle,e.wardTracking);
   if(e.boss==='flagship')configureFlagship(battle);
   if(e.boss==='serpent')configureSerpent(battle);
   if(e.boss==='dragon')configureWinterDragon(battle);

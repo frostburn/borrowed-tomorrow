@@ -7,7 +7,7 @@ export const FLAGSHIP_ENCOUNTER:Encounter={
     {kind:'guardian',col:2,row:2,hp:100,bonus:0,name:'Port battery'},
     {kind:'guardian',col:8,row:2,hp:100,bonus:0,name:'Starboard battery'},
     {kind:'guardian',col:5,row:1,hp:240,bonus:0,name:'Command bridge',sealed:true},
-    {kind:'knight',col:2,row:4,hp:58,bonus:5,name:'Boarding marine'},
-    {kind:'knight',col:8,row:4,hp:58,bonus:5,name:'Boarding marine'},
+    {kind:'knight',col:2,row:4,hp:98,bonus:5,name:'Boarding marine'},
+    {kind:'knight',col:8,row:5,hp:98,bonus:5,name:'Boarding marine'},
   ],
 };

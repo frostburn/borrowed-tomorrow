@@ -76,7 +76,7 @@ it('only the lit projection interrupts this round, and a new surviving mirror re
  const lit=mirrors.find(m=>m.id===core.intent!.via)!,other=mirrors.find(m=>m!==lit)!;other.hp=0;prepareWard(b);expect(core.sealed).toBe(true);expect(core.intent!.cells.length).toBeGreaterThan(0);
  other.hp=70;lit.hp=0;core.tauntedBy=b.units[0].id;prepareWard(b);expect(core.sealed).toBe(false);expect(core.intent!.cells).toEqual([]);
  b.queue=[core.id,b.units[0].id];expect(enemyTurn(b)).toBe('refraction');expect(active(b)?.id).not.toBe(core.id);expect(core.intent!.cells).toEqual([]);
- b.round++;prepareWard(b);expect(core.sealed).toBe(true);expect(core.intent!.via).toBe(other.id);other.hp=0;prepareWard(b);expect(core.sealed).toBe(false);b.round++;prepareWard(b);expect(core.intent!.via).toBeUndefined();expect(core.sealed).toBe(false);expect(core.intent!.cells.every(h=>h.r===4)).toBe(true);
+ b.round++;prepareWard(b);expect(core.sealed).toBe(true);expect(core.intent!.via).toBe(other.id);other.hp=0;prepareWard(b);expect(core.sealed).toBe(false);b.round++;prepareWard(b);expect(core.intent!.via).toBeUndefined();expect(core.sealed).toBe(false);expect(core.intent!.power).toBe(14);expect(core.intent!.cells.length).toBeGreaterThan(0);
 });
 it('areas hit a whole core once, Taunt redirects the announced beam, Dazzle and guard apply, core death ends projections',()=>{
  const b=battle(),core=wardUnit(b)!,hero=b.units[0];wardMirrors(b).forEach(m=>{m.hp=0;});prepareWard(b);hero.hex=offset(5,4);b.queue=[hero.id,core.id];

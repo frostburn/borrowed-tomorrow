@@ -5,23 +5,25 @@ export const WARD_ID='wind-ward-engine';
 export const wardUnit=(b:Battle)=>b.units.find(u=>u.id===WARD_ID);
 export const wardMirrors=(b:Battle)=>b.units.filter(u=>u.kind==='ward-projection');
 type Intent=NonNullable<Unit['intent']>&{baseCells:Hex[];baseName:string};
-export function configureWard(b:Battle){
+export function configureWard(b:Battle,tracking=false){
+ b.wardTracking=tracking;
  const core=b.units.find(u=>u.appearance==='ward-engine')!;
  Object.assign(core,{id:WARD_ID,kind:WARD_ID,role:'Break the lit projection to open the core',anchored:true,movement:0,armor:3,speed:2,abilities:['refraction'],footprint:[{q:0,r:0},{q:-1,r:1},{q:0,r:1}]});
  for(const mirror of b.units.filter(u=>u.appearance==='ward-reflector'))Object.assign(mirror,{kind:'ward-projection',role:'Fixed projection · no turns or retaliation',anchored:true,passive:true,movement:0,armor:1,abilities:[]});
  const heroes=b.units.filter(u=>u.side==='party');heroes.forEach((u,i)=>{u.hex=offset(heroes.length===3?[3,5,7][i]:heroes.length===2?[4,6][i]:5,6);});
 }
 /** Fixed-round optical circuit. A broken live source cannot be revived by Taunt.
- * All projections stop with the core, including when an area hits several contacts. */
+ * Projections and the crow screen stop with the core, including on area hits. */
 export function prepareWard(b:Battle){
  const core=wardUnit(b);if(!core||b.result)return;
  const mirrors=wardMirrors(b);
- if(core.hp<=0){for(const u of mirrors)u.hp=0;return;}
+ if(core.hp<=0){for(const u of b.units.filter(u=>u.side==='enemy'))u.hp=0;return;}
  let intent=core.intent as Intent|undefined;
  if(intent?.round!==b.round){
   const living=mirrors.filter(u=>u.hp>0),source=living.length?living[(b.round-1)%living.length]:undefined;
   const left=source&&column(source.hex)<5;
-  const warning=source?cells().filter(h=>h.r>=4&&Math.abs(column(h)-(left?2:8))<=h.r-3):cells().filter(h=>h.r===4);
+  const heroes=b.units.filter(u=>u.side==='party'&&u.hp>0),aim=heroes[(b.round-1)%heroes.length]?.hex??offset(5,5);
+  const warning=source?cells().filter(h=>h.r>=4&&Math.abs(column(h)-(left?2:8))<=h.r-3):b.wardTracking?cells().filter(h=>h.r===aim.r||(b.round%2?h.q===aim.q:h.q+h.r===aim.q+aim.r)):cells().filter(h=>h.r===4);
   const name=source?`${left?'West':'East'} mirror · reflected fan`:'Unshielded lens · crossbeam';
   intent={round:b.round,name,baseName:name,phase:source?'Reflected light':'Exposed core',via:source?.id,cells:warning,baseCells:warning,power:source?21:14};core.intent=intent;
  }
