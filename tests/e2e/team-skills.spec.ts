@@ -24,7 +24,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    for(const [name,short]of [['Falling stars','stars'],['Prism lance','prism'],['Crossfire','crossfire'],['Daybreak','daybreak'],['Lantern volley','lantern']]as const){
     await page.getByRole('button',{name:`Practice ${name}`,exact:true}).click();await page.getByRole('button',{name:new RegExp(`${name} · Team`)}).click();
     if(short!=='daybreak')await clickHex(page,offset(7,3));
-    await expect(page.locator('#confirmation')).toContainText(short==='stars'?'Celestial bolt':short==='prism'?'Lantern burst':short==='crossfire'?'Ricochet':short==='lantern'?'Lantern burst':'Heal');
+    await expect(page.locator('#confirmation')).toContainText(short==='stars'?'Celestial bolt':short==='prism'?'Horizon light':short==='crossfire'?'Ricochet':short==='lantern'?'Lantern burst':'Heal');
     if(short==='lantern')await capture(page,`lantern-footprint-${device}`);
     await page.getByRole('button',{name:short==='daybreak'?'Confirm healing':'Confirm attack',exact:true}).click();
     // Capture real running frames, including the falling phase and the landing flare.

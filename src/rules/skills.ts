@@ -69,7 +69,9 @@ export function abilityFor(u:{kind:string;skills?:SkillRanks},id:AbilityId,partn
   const solo=teamSolo(u.kind,id),other=partner&&teamSolo(partner.kind,id),a=ABILITIES[id];
   const shot=id==='crossfire'?(u.kind==='kit'?abilityFor(u,'ricochet'):partner?.kind==='kit'?abilityFor(partner,'ricochet'):undefined):undefined;
   const vanguard=id==='daybreak'?[u,partner].find(v=>v?.kind==='petra'):undefined,ward=vanguard?abilityFor(vanguard,'taunt').ward:undefined;
-  return {...a,...(solo&&other?{power:abilityFor(u,solo).power+abilityFor(partner!,other).power}:{}),...(shot?{range:shot.range,bounceRange:shot.bounceRange}: {}),...(ward?{ward}:{})};
+  const courier=id==='lanternvolley'?[u,partner].find(v=>v?.kind==='kit'):undefined;
+  const volleyRank=id==='lanternvolley'?Math.max(1,Math.min(3,courier?.skills?.pin??1)):undefined;
+  return {...a,...(solo&&other?{power:abilityFor(u,solo).power+abilityFor(partner!,other).power}:{}),...(shot?{range:shot.range,bounceRange:shot.bounceRange}: {}),...(ward?{ward}:{}),...(volleyRank?{volleyRank,description:`Lantern burst + Pinning shot: lantern-lit bolts cover ${[7,10,12][volleyRank-1]} hexes, hitting enemies only. Coverage follows Kit’s Pinning shot skill (7 / 10 / 12 hexes). Range 5; rocks block the aim. Both fighters spend their action and 3 focus.`}:{})};
  }
  const s=u.skills&&SKILLS[u.kind as CompanionId]?.find(s=>s.id===id);if(!s)return ABILITIES[id];
  const rank=u.skills![s.id]??0;

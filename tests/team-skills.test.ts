@@ -39,10 +39,26 @@ describe('teams inherit solo skills',()=>{
   const expected=damage(u,enemy,id,partner),hp=enemy.hp;expect(cast(b,u,id,enemy.hex)).toBe(true);expect(hp-enemy.hp).toBe(expected);expect(enemy.guard).toBe(Math.max(0,11-sum));
   expect(u.dazzledAttacks).toBe(2);expect(partner.dazzledAttacks).toBe(0);
  });
- it('inherits half-friendly Burst damage for its contribution without weakening the other fighter',()=>{
-  const {u,partner,enemy}=yard(['nell','orrin']);u.skills!.burst=3;enemy.side=u.side;
-  expect(damage(u,enemy,'prism',partner)).toBe(damage(u,enemy,'burst')+damage(partner,enemy,'steam'));
-  expect(fixtureDamage(u,'prism',partner)).toBe(fixtureDamage(u,'burst')+fixtureDamage(partner,'steam'));
+ it('Prism uses Horizon light for enemies, friendly fire and fixtures, independently of Burst upgrades',()=>{
+  const {u,partner,enemy}=yard(['nell','orrin']);u.skills!.burst=1;enemy.side=u.side;
+  const expected=damage(u,enemy,'sunline')+damage(partner,enemy,'steam');
+  expect(damage(u,enemy,'prism',partner)).toBe(expected);
+  u.skills!.burst=3;expect(damage(u,enemy,'prism',partner)).toBe(expected);
+  expect(fixtureDamage(u,'prism',partner)).toBe(fixtureDamage(u,'sunline')+fixtureDamage(partner,'steam'));
+ });
+ for(const [id,first,second,learn]of [['prism','nell','orrin','sunline'],['lanternvolley','kit','nell','pin']]as const)it(`${id} waits for the later solo skill, then works at rank one without another gate`,()=>{
+  const {b,u,partner,enemy}=yard([first,second]);u.hex=offset(3,3);
+  for(const fighter of [u,partner]){fighter.skills=startingSkills(fighter.kind as CompanionId);fighter.level=6;}
+  const nell=[u,partner].find(v=>v.kind==='nell')!;upgradeSkill('nell',6,nell.skills!,'burst');upgradeSkill('nell',6,nell.skills!,'burst');
+  if(first==='kit')upgradeSkill('kit',6,u.skills!,'quickshot');
+  const refresh=()=>{for(const fighter of [u,partner])fighter.abilities=skillAbilities(fighter.kind as CompanionId,fighter.skills!);};refresh();
+  expect(battleAbilities(b,u)).not.toContain(id);expect(battleAbilities(b,partner)).toContain(id);
+  expect(teamStatus(b,partner,id).reason).toBe(`${u.name} needs to learn ${ABILITIES[learn].name}.`);
+  const before=structuredClone(b);expect(cast(b,u,id,enemy.hex)).toBe(false);expect(b).toEqual(before);
+  expect(upgradeSkill(first,6,u.skills!,learn)).toBe(false);
+  expect(upgradeSkill(first,7,u.skills!,learn)).toBe(true);refresh();
+  expect(u.skills![learn]).toBe(1);expect(teamStatus(b,u,id).partner).toBe(partner);expect(teamStatus(b,partner,id).partner).toBe(u);
+  expect(cast(b,u,id,enemy.hex)).toBe(true);
  });
  it('enemy relay power is also the sum of its two attacks and independent of the starting operator',()=>{
   const {b,u,enemy}=yard(['nell','orrin']),crow=b.units.find(u=>u.kind==='crow')!;

@@ -22,9 +22,9 @@ function practice() {
 
 it('derives independent ability unlocks from level, and removes them again when lowering level', () => {
   const settings = newCharacterSettings();
-  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'prism', 'lanternvolley']);
+  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'lanternvolley']);
   settings.characters.nell = defaultBuild('nell', 5);
-  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'mend', 'dazzle', 'prism', 'lanternvolley']);
+  expect(characterProfiles(settings).nell.abilities).toEqual(['strike', 'burst', 'bandage', 'mend', 'dazzle', 'lanternvolley']);
   expect(characterProfiles(settings).orrin.abilities).toEqual(['strike', 'steam', 'bandage', 'prism']);
   settings.characters.orrin = defaultBuild('orrin', 3);
   expect(characterProfiles(settings).orrin.abilities).toContain('guard');

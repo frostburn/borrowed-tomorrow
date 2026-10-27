@@ -1,5 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {ABILITIES,cast,createBattle,damage,defend,endTurn,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
+import {teamSolo} from '../src/rules/abilities';
 import {battleAbilities,daybreakProtection,teamStatus} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {abilityFor,decodeSkillBook,newSkillBook,skillAbilities,startingSkills,upgradeSkill} from '../src/rules/skills';
@@ -18,7 +19,10 @@ describe('a circle of team partners',()=>{
   const teams=Object.values(ABILITIES).filter(a=>a.team?.pair.every(id=>COMPANION_IDS.includes(id as CompanionId)));
   expect(teams).toHaveLength(5);
   const partners=(hero:string)=>teams.filter(a=>a.team!.pair.includes(hero)).map(a=>a.team!.pair.find(id=>id!==hero)!);
-  for(const hero of COMPANION_IDS)expect(new Set(partners(hero)).size).toBe(2);
+  for(const hero of COMPANION_IDS){
+   expect(new Set(partners(hero)).size).toBe(2);
+   expect(new Set(teams.filter(a=>a.team!.pair.includes(hero)).map(a=>teamSolo(hero,a.id))).size).toBe(2);
+  }
   const reached=new Set<string>(),visit=(hero:string)=>{if(reached.has(hero))return;reached.add(hero);partners(hero).forEach(visit);};visit('nell');expect(reached.size).toBe(5);
   expect(partners('nell').sort()).toEqual(['kit','orrin']);expect(partners('celia').sort()).toEqual(['orrin','petra']);
  });
