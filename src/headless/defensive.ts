@@ -1,4 +1,5 @@
 import {active,cast,damage,defend,enemyTurn,legalAim,move,movement,movementOnly,targets,type Battle,type AbilityId} from '../rules/combat';
+import {rallyValue} from './rally-value';
 import {abilityFor} from '../rules/skills';
 import {teamStatus} from '../rules/combat-tactics';
 import {cells,distance,equal,type Hex} from '../rules/hex';
@@ -31,9 +32,10 @@ export function candidatePlans(source:Battle,alternatives=1):Plan[]{
   for(const ability of u.abilities)for(const aim of cells()){
    if(!legalAim(b,u,ability,aim))continue;
    const partner=teamStatus(b,u,ability).partner,a=abilityFor(u,ability,partner);
-   let merit=0;
+   let merit=a.effect==='rally'?rallyValue(b,u)*2:0;
    for(const v of targets(b,u,ability,aim)){
     const amount=damage(u,v,ability,partner);
+    if(a.effect==='rally')continue;
     if(a.heal||a.effect==='guard'||a.effect==='focus')merit+=amount;
     else if(a.effect==='taunt'||a.effect==='shove')merit+=1;
     else if(a.effect==='weaken')merit+=v.dazzledAttacks?0:10;
@@ -81,6 +83,7 @@ export function decideDefensively(source:Battle,frugal=false):Decision{
   const trial=structuredClone(source),actor=active(trial)!;
   if(!equal(plan.pos,actor.hex)&&!move(trial,actor,plan.pos))continue;
   const partner=plan.ability?teamStatus(trial,actor,plan.ability).partner:undefined;
+  const preparation=plan.ability==='rally'?rallyValue(trial,actor):0;
   if(plan.ability?!cast(trial,actor,plan.ability,plan.aim!):!defend(trial))continue;
   const future=enemyForecast(trial);
   let offense=0;
@@ -93,7 +96,7 @@ export function decideDefensively(source:Battle,frugal=false):Decision{
   // A team move costs a second main action. A bonus bash leaves the main
   // action available; avoid free shoves that achieve no tactical improvement.
   const focusGain=trial.units.filter(v=>v.side==='party').reduce((sum,v)=>sum+Math.max(0,v.focus-source.units.find(w=>w.id===v.id)!.focus),0);
-  let score=offense*(partner?.65:1)+protection*.8+healing*.2-focusSpent*.8-itemCost+focusGain*1.5-distance(original.hex,plan.pos)*.15;
+  let score=offense*(partner?.65:1)+protection*.8+healing*.2-focusSpent*.8-itemCost+focusGain*1.5+preparation*2-distance(original.hex,plan.pos)*.15;
   if(a&&a.bonus&&protection<=0)score-=10;
   if(trial.result==='victory')score+=1000;
   if(score>bestScore){bestScore=score;best=plan;}

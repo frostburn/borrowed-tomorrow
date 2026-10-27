@@ -13,7 +13,7 @@ export function probeInput(source:Battle,mode:string){
  const b=structuredClone(source);
  if(mode==='without-utilities'||mode==='without-teams')for(const u of b.units.filter(u=>u.side==='party'))u.abilities=u.abilities.filter(id=>{
   const a=ABILITIES[id];
-  return mode==='without-teams'?!a.team:a.item||id!=='daybreak'&&!['weaken','guard','taunt','focus','shove','pin'].includes(a.effect??'');
+  return mode==='without-teams'?!a.team:a.item||id!=='daybreak'&&!['weaken','guard','taunt','focus','rally','shove','pin'].includes(a.effect??'');
  });
  return b;
 }

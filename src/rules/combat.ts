@@ -23,6 +23,7 @@ import { validParty } from './party';
 import type { MusicMode } from '../game/score';
 import { occupiedHexes, bodyDistance } from './footprint';
 import { configureConduit, prepareConduit } from './conduit';
+import {canRally,cleanRallies,rallyArea,rallyBonus,startRally,type RallyAura} from './rally';
 import {configureBossDirect,bossDirectTurn} from './boss-direct';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
@@ -34,6 +35,7 @@ export interface Unit {
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
   skills?:SkillRanks;guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
+  rally?:RallyAura;
   linkedTo?:string;pinned?:boolean;teamSpentRound?:number;
   footprint?:Hex[]; anchored?:boolean; passive?:boolean; flying?:boolean;
   intent?:{cycle?:number;round:number;name:string;cells:Hex[];power:number;phase:string;destination?:Hex;via?:string};
@@ -135,6 +137,7 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   // action is spent, when teamStatus no longer returns an available partner.
   const team=ABILITIES[id].team,partner=team&&b.units.find(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind));
   const a = abilityFor(u,id,partner);
+  if(a.effect==='rally')return rallyArea(b,u,a.rank??1);
   if(a.shape==='axis')return axisHexes(a.axis!,aim);
   if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
   if(a.shape==='bounce')return ricochetHexes(b,u,aim,id);
@@ -150,7 +153,7 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const a = abilityFor(u,id),hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
   if(id==='revive'){const fallen=reviveTarget(b,u,id,aim);return fallen?[fallen]:[];}
-  const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus';
+  const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus' || a.effect==='rally';
   const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||a.item||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
   const fallen=a.heal?reviveTarget(b,u,id,aim):undefined;return fallen?[...living,fallen]:living;
 }
@@ -164,6 +167,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
   if (a.item && battleItemCount(b, a.item) <= 0) return false;
+  if(a.effect==='rally')return canRally(b,u,aim);
   if (a.effect === 'taunt') return equal(u.hex, aim) && alive(b).some(v => v.side !== u.side);
   const forced = tauntTarget(b, u);
   if (forced && (a.shape!=='pattern'||!!u.intent?.cells.length) && !a.heal && a.effect !== 'guard' && a.effect !== 'focus' && (a.shape === 'line' || a.shape==='diagonal' || a.shape==='axis' || a.shape==='pattern' || (a.shape === 'blast' && a.range === 0) ? !shape(b,u,id,aim).some(h => occupiedHexes(forced).some(part=>equal(h,part))) : !occupiedHexes(forced).some(h=>equal(aim,h)))) return false;
@@ -194,7 +198,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
   if (a.heal) return Math.min(v.maxHp-v.hp,v.hp<=0&&(a.reviveFraction||id==='revive')?Math.max(1,Math.ceil(v.maxHp*(a.reviveFraction??.35))):supportPower(u,id,partner));
   if (a.effect==='guard') return Math.max(0,supportPower(u,id)-(v.guard??0));
   if (a.effect==='focus') return Math.min(6-v.focus,a.power);
-  if (a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
+  if (a.effect==='rally' || a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id,partner)-(v.guard??0));
 }
@@ -222,10 +226,11 @@ export function pushDestination(b: Battle, u: Unit, v: Unit): Hex | undefined {
 }
 function log(b: Battle, message: string) { b.log.push(message); if (b.log.length > 80) b.log.shift(); }
 function beginTurn(b: Battle) {
+  cleanRallies(b);
   const u = active(b);
   if (u&&!movementOnly(b,u)) {
     for (const v of b.units) if (v.tauntedBy === u.id) delete v.tauntedBy;
-    u.defending = false; u.moved=false; u.bonusUsed = false; if (!u.waited) u.focus = Math.min(6, u.focus + 1);
+    u.defending = false; u.moved=false; u.bonusUsed = false; if (!u.waited) {const bonus=rallyBonus(b,u);u.focus = Math.min(6, u.focus + 1+bonus);if(bonus)log(b,`${u.name}: Rallying cry adds 1 focus regeneration.`);}
   }
   prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);prepareRelay(b);
 }
@@ -236,6 +241,7 @@ function nextRound(b: Battle) {
   beginTurn(b);
 }
 function ended(b:Battle){
+  cleanRallies(b);
   prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);
   if(b.result)return true;
   const sides = new Set(alive(b).map(u => u.side));
@@ -297,7 +303,9 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;
     log(b,`${u.name} + ${partner.name}: ${a.name} consumes both actions and ${a.team!.cost} focus each.`);
   }
+  if(a.effect==='rally'){startRally(b,u);log(b,`${u.name}: Rallying cry grants +1 focus regeneration for 3 rounds, including this round.`);}
   for (const v of hit) {
+    if(a.effect==='rally')continue;
     if(a.effect==='taunt'){v.tauntedBy=u.id;log(b,`${v.name} targets ${u.name} until ${u.name}’s next turn.`);}
     else if(a.effect==='shove'){log(b,`${u.name}: ${a.name} deals no damage.`);}
     else if(a.effect==='weaken'){if(v.dazzledAttacks)continue;v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
@@ -318,7 +326,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   }
   if(a.ward&&id!=='daybreak')for(const ally of alive(b).filter(v=>v.side===u.side&&(a.ward!.party||v.id===u.id)))ally.guard=Math.max(ally.guard??0,a.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5));
   if(damagingAbility(id))for(const message of damageFixtures(b,footprint,fixtureDamage(u,id,partner)))log(b,message);
-  if (!hit.length&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
+  if (a.effect!=='rally'&&!hit.length&&!footprint.some(h=>b.fixtures?.some(f=>equal(f.hex,h)))) log(b, `${u.name}'s ${attackName} strikes empty ground.`);
   if (id === 'strike') {
     const defender = hit[0];
     if (defender && !defender.passive && defender.hp > 0 && !defender.retaliated && (!tauntTarget(b,defender) || tauntTarget(b,defender)!.id===u.id) && bodyDistance(u, defender) === 1) {

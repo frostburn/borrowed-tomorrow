@@ -7,7 +7,7 @@ import {drawBossDirect} from './boss-direct-effect';
 /** Short native-world effects from a tool, or from above for celestial attacks. */
 export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Container,source:{x:number;y:number},aim:Hex,ability:AbilityId,affected:Hex[],face:string,origin?:Hex,definition:Ability=ABILITIES[ability],teamSources:TeamSource[]=[]){
   const g=scene.add.graphics();world.add(g);
-  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard'||definition.effect==='focus';
+  const steam=['steam','repulse','pressureline','prism','relay'].includes(ability),healing=definition.heal||definition.effect==='guard'||definition.effect==='focus'||definition.effect==='rally';
   const rich=['axis','diagonal','bounce'].includes(definition.shape)||!!definition.team;
   const color=healing?0x9bcfb0:steam?0xc0e8ee:0xf6c667;
   const target=toPixel((ability==='steam'||ability==='sunbeam')&&affected.length?affected[affected.length-1]:aim);
@@ -17,7 +17,10 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
     if(!g.active)return;const p=tween.getValue()??0;g.clear();g.setAlpha(1-p);
     if(drawTeamEffect(g,ability,p,affected,teamSources,reduced,definition))return;
     if(drawBossDirect(g,ability,p,affected,source,reduced))return;
-    if(definition.shape==='diagonal'&&origin&&affected.length){
+    if(definition.effect==='rally'){
+      const radius=16+Math.round(p*22)*2;g.lineStyle(2,0xb1bdf5,.8).strokeEllipse(source.x,source.y-20,radius*2,radius);
+      for(const h of affected){const at=toPixel(h);g.lineStyle(2,0xb1bdf5,.85);for(const dx of [-6,6]){g.lineBetween(at.x+dx,at.y-12,at.x+dx,at.y-26);g.lineBetween(at.x+dx-4,at.y-22,at.x+dx,at.y-26);g.lineBetween(at.x+dx,at.y-26,at.x+dx+4,at.y-22);}}
+    }else if(definition.shape==='diagonal'&&origin&&affected.length){
       const start=diagonalStart(origin,affected[0]),points=affected.map(toPixel),last=points.at(-1)!,progress=reduced?1:Math.min(1,p*2);
       const tip={x:Math.round((start.x+(last.x-start.x)*progress)/2)*2,y:Math.round((start.y+(last.y-start.y)*progress)/2)*2};
       g.lineStyle(10,steam?0x6babb3:0xd8b66e,.3).lineBetween(start.x,start.y,tip.x,tip.y);
