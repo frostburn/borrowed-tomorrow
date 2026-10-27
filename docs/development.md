@@ -14,6 +14,7 @@ Start with the file that owns the behavior. The Phaser scene connects the system
 | Character state, recruitment, recovery or chapter transition | `src/rules/state.ts`; illness/availability lives in `availability.ts` |
 | Supply counters, purchases, spare-gear sales or consumable effects | `rules/supplies.ts`, `consumables.ts`, `game/shop.ts`; see `economy.md` |
 | Save format, accepted checkpoints or import validation | `src/rules/save.ts` |
+| Headless campaign routes, tactical agent and earned checkpoints | `src/headless/`; see `headless.md` |
 | IndexedDB, pending checkpoints or JSON export | `src/game/saves.ts` |
 | Region scenery loading and SVG texture preparation | `src/game/region-assets.ts` |
 | World/battle rendering, input or scene orchestration | `src/game/adventure.ts` and its presentation helpers |
@@ -35,6 +36,8 @@ npm run dev
 ```
 
 Use `npm run dev:workshop` instead to open the existing Vite-only tools directly. Direct review URLs include `/?dev=maps`, `/?dev=music`, `/?dev=sprites`, `/?dev=animation` and `/?dev=boss`. The dev title also has canonical starts through Chapter Seven. These tools use their own fixtures/storage; preserve their production exclusion.
+
+To play through shared rules without a browser, run `npm run simulate:early`, then `npm run simulate:middle -- --from /tmp/borrowed-tomorrow-headless.json`. The latter carries the earned resources through Chapters Three/Four and writes a separate report/checkpoint. `npm run test:headless` exercises the longer route matrix outside default CI. See [headless.md](headless.md) for routes, results and limitations.
 
 For a focused change:
 

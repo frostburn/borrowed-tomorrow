@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "policy": "middle-v1",
+  "status": "complete",
+  "source": {
+    "gameCommit": "179f573f32f65a0619e26b32b9cf66ded4f16502",
+    "earlyReportSha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534",
+    "earlyCommand": "npm run simulate:early",
+    "continuationCommand": "npm run simulate:middle -- --from /tmp/borrowed-tomorrow-headless.json"
+  },
+  "options": {
+    "conduit": "feeds",
+    "harbor": "dry",
+    "optional": true,
+    "through": 4
+  },
+  "summary": {
+    "level": 9,
+    "xp": 1355,
+    "coins": 692,
+    "purchasedMarks": 66,
+    "explicitRests": 4,
+    "partyKnockouts": 0,
+    "battles": [
+      {
+        "id": "capital-arrest",
+        "rounds": 4,
+        "result": "victory"
+      },
+      {
+        "id": "works-warden",
+        "rounds": 4,
+        "result": "victory"
+      },
+      {
+        "id": "palace-stores",
+        "rounds": 2,
+        "result": "victory"
+      },
+      {
+        "id": "heart-feeds",
+        "rounds": 5,
+        "result": "victory"
+      },
+      {
+        "id": "works-survey",
+        "rounds": 1,
+        "result": "victory"
+      },
+      {
+        "id": "works-dry",
+        "rounds": 3,
+        "result": "victory"
+      },
+      {
+        "id": "sanctuary-road",
+        "rounds": 4,
+        "result": "victory"
+      },
+      {
+        "id": "sanctuary-warden",
+        "rounds": 6,
+        "result": "victory"
+      }
+    ]
+  },
+  "state": {
+    "format": "borrowed-tomorrow",
+    "version": 11,
+    "campaign": "imperial-debt",
+    "chapter": "chapter-four",
+    "location": {
+      "map": "refuge",
+      "x": 12,
+      "y": 28
+    },
+    "party": [
+      {
+        "id": "nell",
+        "hp": 77,
+        "focus": 6
+      },
+      {
+        "id": "orrin",
+        "hp": 102,
+        "focus": 6
+      },
+      {
+        "id": "kit",
+        "hp": 86,
+        "focus": 6
+      },
+      {
+        "id": "petra",
+        "hp": 110,
+        "focus": 6
+      },
+      {
+        "id": "celia",
+        "hp": 53,
+        "focus": 6
+      }
+    ],
+    "activeParty": [
+      "nell",
+      "celia",
+      "petra"
+    ],
+    "flags": {
+      "festivalSeen": true,
+      "raidSeen": true,
+      "escapeWon": true,
+      "orrinJoined": true,
+      "workshopWon": true,
+      "villageSeen": true,
+      "collectorConfronted": true,
+      "collectorDefeated": true,
+      "villageFreed": true,
+      "passSeen": true,
+      "shelterSupplies": true,
+      "captainConfronted": true,
+      "captainDefeated": true,
+      "chapterOneComplete": true,
+      "coastSeen": true,
+      "kitJoined": true,
+      "raidDiversion": false,
+      "raidPlanned": true,
+      "raidConfronted": true,
+      "trainRaidWon": true,
+      "prisonersFreed": true,
+      "wardSeen": true,
+      "settlementSeen": true,
+      "coastCollectorWon": true,
+      "evacuationReady": true,
+      "recaptureConfronted": true,
+      "recaptureWon": true,
+      "chapterTwoComplete": true,
+      "capitalSeen": true,
+      "capitalCache": true,
+      "capitalConfronted": true,
+      "capitalGateWon": true,
+      "petraJoined": true,
+      "worksSeen": true,
+      "worksWardenWon": true,
+      "tomasRescued": true,
+      "palaceStoresWon": true,
+      "pressureRoute": false,
+      "intakePlanned": true,
+      "conduitSeen": true,
+      "conduitGuardWon": true,
+      "extractionStopped": true,
+      "emperorMerged": true,
+      "chapterThreeComplete": true,
+      "refugeSeen": true,
+      "celiaJoined": true,
+      "worksArrival": true,
+      "worksStoresWon": true,
+      "worksRouteSet": true,
+      "worksFlooded": false,
+      "worksGateWon": true,
+      "harborOpened": true,
+      "sanctuaryEntered": true,
+      "sanctuaryCache": true,
+      "roadGuardWon": true,
+      "signalCut": true,
+      "sanctuaryWardenWon": true,
+      "anchorsKnown": true,
+      "seaWalkSeen": true,
+      "chapterFourComplete": true
+    },
+    "coins": 692,
+    "bandages": 0,
+    "xp": 1355,
+    "inventory": {
+      "version": 2,
+      "bag": {
+        "brass-reflector": 1,
+        "courier-sight": 1,
+        "work-coat": 0,
+        "baffled-nozzle": 1,
+        "saber-hilt": 0,
+        "silver-reflector": 1,
+        "ratchet-sight": 1,
+        "insulated-coat": 0,
+        "field-bandage": 0,
+        "focus-tonic": 0,
+        "folding-sight": 0,
+        "return-valve": 0,
+        "field-clasp": 0,
+        "rescue-coat": 0,
+        "sun-prism": 0
+      },
+      "characters": {
+        "nell": {
+          "fitting": "sun-prism",
+          "coat": "rescue-coat"
+        },
+        "orrin": {
+          "fitting": "return-valve",
+          "coat": "insulated-coat"
+        },
+        "kit": {
+          "fitting": "folding-sight",
+          "coat": "work-coat"
+        },
+        "celia": {
+          "fitting": "field-clasp",
+          "coat": null
+        },
+        "petra": {
+          "fitting": "saber-hilt",
+          "coat": null
+        }
+      }
+    },
+    "skills": {
+      "nell": {
+        "burst": 3,
+        "mend": 2,
+        "dazzle": 2,
+        "sunline": 1
+      },
+      "orrin": {
+        "steam": 3,
+        "rivet": 2,
+        "guard": 2,
+        "repulse": 2
+      },
+      "kit": {
+        "quickshot": 3,
+        "feint": 2,
+        "ricochet": 2,
+        "pin": 1
+      },
+      "celia": {
+        "celestialbolt": 2,
+        "heal": 2,
+        "rally": 2,
+        "sanctuary": 2
+      },
+      "petra": {
+        "bash": 3,
+        "taunt": 2,
+        "sweep": 2,
+        "crush": 2
+      }
+    },
+    "journal": [
+      "home",
+      "raid",
+      "orrin",
+      "village",
+      "freed",
+      "pass",
+      "departure",
+      "coast",
+      "kit",
+      "prisoners",
+      "ward",
+      "settlement",
+      "evacuation",
+      "capitalDeparture",
+      "capital",
+      "defection",
+      "warden",
+      "reunion",
+      "intake",
+      "heart",
+      "heartGuard",
+      "rupture",
+      "brokenDeparture",
+      "refugeSeen",
+      "worksArrival",
+      "worksClear",
+      "harborOpened",
+      "sanctuaryEntered",
+      "roadClear",
+      "signalCut",
+      "wardenFallen",
+      "anchorsKnown",
+      "anchorsDeparture"
+    ],
+    "boundary": "chapter-five:anchors",
+    "playSeconds": 0
+  }
+}
