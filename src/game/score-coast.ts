@@ -28,37 +28,36 @@ const melody: [number,Pitch,number][][] = [
   [[0,'D5',1],[1.5,'C5',.5],[2,'B4',1.5]],
   [[0,'C5',3]],
 ];
-// One C-Mixolydian sentence throughout: E keeps the major coastal identity,
-// while Bb/D and Gm establish the lowered seventh from the first answer.
-// Call/answer, a lower answer, a broader middle, then a return that leads into
-// the loop. No major dominant or held melodic tonic at phrase endings.
+// C Lydian: C remains home while D/C exposes F# from the first answer.
+// The raised fourth opens the middle; Em7 leaves a step into the next call.
+// Keep the paired rhythms and half-time middle without a dominant cadence.
 const raidChords:Pitch[][]=[
- ['C2','C4','E4','G4'],['D2','Bb3','D4','F4'],['G2','Bb3','D4','G4'],['C2','C4','E4','G4'],
- ['Bb1','Bb3','D4','F4'],['G2','Bb3','D4','G4'],['F2','C4','F4','A4'],['G2','C4','E4','G4'],
- ['D2','C4','F4','A4'],['Bb1','Bb3','D4','F4'],['C2','C4','E4','G4'],['G2','Bb3','D4','F4'],
- ['F2','C4','F4','A4'],['D2','C4','F4','A4'],['Bb1','Bb3','D4','F4'],['G2','Bb3','D4','F4'],
+ ['C2','C4','E4','G4'],['C2','A3','D4','F#4'],['E2','B3','E4','G4'],['C2','C4','E4','G4'],
+ ['D2','A3','D4','F#4'],['E2','B3','E4','G4'],['A2','C4','E4','A4'],['G2','C4','E4','G4'],
+ ['D2','A3','D4','F#4'],['C2','A3','D4','F#4'],['C2','C4','E4','G4'],['E2','B3','D4','G4'],
+ ['A2','C4','E4','A4'],['D2','A3','D4','F#4'],['C2','A3','D4','F#4'],['E2','B3','D4','G4'],
 ];
 const raid: [number,Pitch,number][][] = [
   // Call and answer.
-  [[0,'E5',.5],[1,'G5',.5],[2,'F5',.5],[2.5,'E5',.5],[3,'D5',.75]],
-  [[0,'D5',1.5],[2,'F5',.5],[3,'Bb4',.75]],
-  [[0,'Bb4',.5],[1,'D5',.5],[2,'C5',.5],[2.5,'Bb4',.5],[3,'G4',.75]],
+  [[0,'E5',.5],[1,'G5',.5],[2,'F#5',.5],[2.5,'E5',.5],[3,'D5',.75]],
+  [[0,'D5',1.5],[2,'F#5',.5],[3,'B4',.75]],
+  [[0,'B4',.5],[1,'D5',.5],[2,'C5',.5],[2.5,'B4',.5],[3,'G4',.75]],
   [[0,'G4',1],[1.5,'E5',.5],[2,'D5',1.5]],
-  // The same rhythm, answering over Bb–Gm–F–C/G.
-  [[0,'D5',.5],[1,'F5',.5],[2,'E5',.5],[2.5,'D5',.5],[3,'C5',.75]],
-  [[0,'G5',1.5],[2,'D5',.5],[3,'Bb4',.75]],
-  [[0,'A4',.5],[1,'C5',.5],[2,'Bb4',.5],[2.5,'A4',.5],[3,'G4',.75]],
+  // The same rhythm, answering over D–Em–Am–C/G.
+  [[0,'D5',.5],[1,'F#5',.5],[2,'E5',.5],[2.5,'D5',.5],[3,'C5',.75]],
+  [[0,'G5',1.5],[2,'D5',.5],[3,'B4',.75]],
+  [[0,'A4',.5],[1,'C5',.5],[2,'B4',.5],[2.5,'A4',.5],[3,'G4',.75]],
   [[0,'G4',1],[1.5,'E5',.5],[2,'D5',1.5]],
   // Open the register and let the melody breathe over a half-time backbeat.
-  [[0,'F5',2],[2.5,'A5',1.5]],
-  [[0,'G5',1.5],[2,'D5',.5],[3,'Bb4',.75]],
+  [[0,'F#5',2],[2.5,'A5',1.5]],
+  [[0,'F#5',1.5],[2,'D5',.5],[3,'B4',.75]],
   [[0,'E5',2],[2.5,'G5',1.5]],
-  [[0,'Bb4',2],[2.5,'D5',.5],[3,'F5',.75]],
-  // Return to the call; the Gm7 answer ends a step below the next opening E.
-  [[0,'A4',.5],[1,'C5',.5],[2,'Bb4',.5],[2.5,'A4',.5],[3,'G4',.75]],
-  [[0,'A4',1.5],[2,'F5',.5],[3,'D5',.75]],
-  [[0,'D5',.5],[1,'G5',.5],[2,'F5',.5],[2.5,'D5',.5],[3,'Bb4',.75]],
-  [[0,'Bb4',1],[1.5,'G4',.5],[2,'F4',.5],[3,'D5',.75]],
+  [[0,'B4',2],[2.5,'D5',.5],[3,'F#5',.75]],
+  // Return to the call; the Em7 answer ends a step below the next opening E.
+  [[0,'A4',.5],[1,'C5',.5],[2,'B4',.5],[2.5,'A4',.5],[3,'G4',.75]],
+  [[0,'A4',1.5],[2,'F#5',.5],[3,'D5',.75]],
+  [[0,'D5',.5],[1,'G5',.5],[2,'F#5',.5],[2.5,'D5',.5],[3,'B4',.75]],
+  [[0,'B4',1],[1.5,'G4',.5],[2,'F#4',.5],[3,'D5',.75]],
 ];
 export function coastBar(bar: number, battle:boolean): Note[] {
   const i=((bar%16)+16)%16, [root,...voicing]=(battle?raidChords:chords)[i], notes:Note[]=[];
