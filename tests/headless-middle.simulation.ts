@@ -42,6 +42,9 @@ for(const build of ['offense','support']as const)it(`defensive ${build} policy e
  playMiddle(s,{...defaultMiddle,conduit:build==='support'?'pressure':'feeds',harbor:build==='support'?'wet':'dry'});
  expect(s.state.flags.chapterFourComplete).toBe(true);expect(decodeSave(JSON.stringify(s.state))).toEqual(s.state);
  const battles=s.events.filter(e=>e.event==='battle');expect(battles.every(e=>e.result==='victory')).toBe(true);
+ const warden=battles.find(b=>b.id==='sanctuary-warden')!;
+ const attacks=(warden.turns as {actor:string;round:number;decision:{ability?:string}}[]).filter(t=>t.actor==='guardian-0'&&t.decision.ability==='steam');
+ expect(attacks.length).toBeGreaterThan(0);expect(attacks[0].round).toBeLessThanOrEqual(2);
  const casts=battles.flatMap(e=>(e.turns as {actor:string;decision:{ability?:string}}[]).filter(t=>s.state.party.some(p=>p.id===t.actor)).map(t=>t.decision.ability));
  expect(casts.some(a=>a==='taunt'||a==='daybreak'||a==='guard'||a==='sanctuary')).toBe(true);
  if(build==='offense')expect(s.events.some(e=>e.event==='purchase'&&e.item==='insulated-coat')).toBe(true);
