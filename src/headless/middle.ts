@@ -4,12 +4,14 @@ import {FOURTH_CHAPTER,THIRD_CHAPTER,type GameState} from '../rules/state';
 
 export interface MiddleOptions {conduit:'feeds'|'pressure';harbor:'dry'|'wet';optional:boolean;through:3|4}
 export const defaultMiddle:MiddleOptions={conduit:'feeds',harbor:'dry',optional:true,through:4};
-/** Accept the original early report, a later report or a normal exported save.
- * Only genuine chapter departures are supported; never fill in missing flags. */
-export function readDeparture(raw:string):GameState{
+/** Decode a completed report or normal exported save without filling flags. */
+export function readReportState(raw:string):GameState{
  const value:unknown=JSON.parse(raw);
  if(value&&typeof value==='object'&&'status' in value&&value.status!=='complete')throw Error('Cannot resume a failed simulation as a completed checkpoint');
- const state=decodeSave(JSON.stringify(value&&typeof value==='object'&&'state'in value?value.state:value));
+ return decodeSave(JSON.stringify(value&&typeof value==='object'&&'state'in value?value.state:value));
+}
+export function readDeparture(raw:string):GameState{
+ const state=readReportState(raw);
  if(!(state.chapter==='chapter-two'&&state.boundary===THIRD_CHAPTER&&state.flags.chapterTwoComplete)&&!(state.chapter==='chapter-three'&&state.boundary===FOURTH_CHAPTER&&state.flags.chapterThreeComplete))throw Error('Expected a completed Chapter Two or Three departure');
  return state;
 }
