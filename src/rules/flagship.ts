@@ -1,6 +1,6 @@
 import { tauntTarget,type Battle,type Unit } from './combat';
-import { blast,cells,column,offset,type Hex } from './hex';
-import { occupiedHexes } from './footprint';
+import { blast,cells,offset,type Hex } from './hex';
+import { bodyDistance,occupiedHexes } from './footprint';
 
 export const FLAGSHIP_PARTS=['flagship-port','flagship-starboard','flagship-bridge'] as const;
 export type FlagshipPart=typeof FLAGSHIP_PARTS[number];
@@ -37,12 +37,14 @@ export function prepareFlagship(b:Battle){
     let intent=u.intent as Intent|undefined;
     if(intent?.round!==b.round){
       let warning:Hex[],name:string,power:number;
+      const heroes=b.units.filter(v=>v.side==='party'&&v.hp>0);
+      const target=id==='flagship-bridge'?heroes[(b.round-1)%heroes.length]:[...heroes].sort((a,z)=>bodyDistance(u,a)-bodyDistance(u,z)||a.id.localeCompare(z.id))[0];
+      const aim=target?.hex??offset(5,5);
       if(id==='flagship-bridge'){
-        warning=sealed?blast(offset(5,5)):cells().filter(h=>h.r===5);
+        warning=sealed?blast(aim):cells().filter(h=>h.r===aim.r||(b.round%2?h.q===aim.q:h.q+h.r===aim.q+aim.r));
         name=sealed?'Command mortar':'Emergency broadside';power=sealed?14:23;
       }else{
-        const col=id==='flagship-port'?3:7;
-        warning=b.round%2===1?cells().filter(h=>h.r>=4&&column(h)===col):blast(offset(col,5));
+        warning=b.round%2===1?cells().filter(h=>id==='flagship-port'?h.q===aim.q:h.q+h.r===aim.q+aim.r):blast(aim);
         name=b.round%2===1?'Raking cannon':'Deck bombardment';power=19;
       }
       intent={round:b.round,name,cells:warning,power,phase:sealed?'Batteries active':'Bridge exposed',baseCells:warning,baseName:name};u.intent=intent;

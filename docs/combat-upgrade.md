@@ -75,3 +75,11 @@ The Chapter One shed introduces cover; Chapter Two’s loading gate has a valve;
 Campaign saves are now **version 11**, storing every character’s skill ranks. Workshop character records are **version 3**, under `borrowed-tomorrow:character-workshop:v3`; inventory records remain version 2. Only current formats are read, in accordance with the repository policy. Version-10 campaign saves and previous workshop character records are not migrated. Canonical dev starts contain validated authored skill allocations; they never read a workshop build.
 
 Changing a workshop character’s level installs a balanced authored build. **Reset skill choices** retains level, stats and equipment while returning that character’s points for manual allocation. Practice never changes campaign choices. Combat presets exercise the shared rules; **Practice Revive** demonstrates Celia’s final Heal. Lantern volley presets at character levels 7 / 10 / 13 demonstrate Pinning shot ranks 1 / 2 / 3 and coverage of 7 / 10 / 12 hexes. Detailed desktop/phone journeys and skill checks remain outside the small default CI gate. Browser plugin not available in the task environment; local QA uses Playwright.
+
+## Chapter Five boss pressure
+
+Windmere's ward engine has two ordinary Slag crow guards in staggered lanes. Its lit projection still cancels the current beam and exposes the core; projections remain passive, and destroying the core stops the guards too. Once both projections are gone, the weaker crossbeam sights a living hero at the next round boundary and crosses two hex axes. The Chapter Seven reprise keeps its separate pattern; `wardTracking` is explicit encounter data.
+
+Alban's two boarders have 98 HP, matching the earlier shield troops, and start on different rows. Each battery sights its nearest living hero when announcing the next raking axis or bombardment. The bridge rotates its target; after both batteries fall its broadside crosses two axes through that target. All announced cells remain fixed until the next round. Gun destruction stays permanent, and bridge destruction ends boarding.
+
+The cores/batteries, their attack power, rewards and party abilities are unchanged. Ordinary Taunt, Dazzle, guard, movement and healing remain counters; Taunt still concentrates a warning on Petra rather than being bypassed by the targeting change.

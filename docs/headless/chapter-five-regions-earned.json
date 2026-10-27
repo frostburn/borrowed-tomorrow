@@ -4,25 +4,19 @@
   "status": "complete",
   "stage": "regions",
   "source": {
-    "baseCommit": "a56f96efbe2b5a38ed50a1228eb853210ffdf1e4",
+    "baseCommit": "26661a9e6d1aee6b2a123d8d516d2060a88569c5",
     "files": {
-      "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
-      "src/headless/campaign.ts": "503e7fcb1bfa71f32dae28a480baf4c5febdf611c6add05d09b778f8fa97d22b",
-      "src/headless/continue.ts": "a7e6ee9668123c4a83f500781da1e5810f98557ca4262fe6c6f8127d2431c903",
-      "src/headless/cooperative.ts": "038710f8d7cfcfc13fec889c7e3ec363d96546b430b7cc56563f5485d5c3a491",
-      "src/headless/defensive.ts": "5e9bbd7d1bbf903ed36d723609f2d036c348e356d48603a8c2ce96147a6283a2",
-      "src/headless/five.ts": "cd04cc44e5b5e746c6ef42dc781f90b1fee058d2febc5acc27c25f099f881708",
-      "src/headless/middle.ts": "e17eeab40fcee05c6f3380e4c7a49fe72321b9d0aa775490c3ff1b7abf9125fe",
-      "src/headless/run.ts": "2879d118624ba00e3b50de375e4c7570ac77c9db74d082fa86605ffe74113835",
-      "src/headless/support-probe.ts": "7842ed6bb9b00790910fc5f11a3d1fa526b7a62711db2a2397ac73eaa3cf1e95",
-      "src/headless/tactics.ts": "2594201c28037da8e22361911719517b4dd525a4781cfd001568caadfe854e51",
-      "scripts/headless.mjs": "461e0afdf4eed5d6965c261da4798e64aa224ea77ebb3c98990d4231f22f21cc",
-      "tests/headless-five.simulation.ts": "93a286b1adce37785ff670aea382d737ed0bfea946aa23ef86ba43849f3c0ca6",
-      "tests/headless-five.test.ts": "8804929fe49b173c0c33c288e75c690b74be5a21112245e567fa88de2d6a299a"
+      "src/rules/combat.ts": "6be6ed4e1baf4b42f8fc11bf11948285d52c6445a8461d132a29eab2dad83c84",
+      "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
+      "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
+      "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
+      "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13",
+      "scripts/compare-chapter-five-bosses.mjs": "ad8c1e59fb1d67e68ee8b69cfde8f0372c34c177fe243ec613a8a6f7b76343cc"
     },
-    "earlyReportSha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
-    "middleReportSha256": "34efe3aad17bac56a57601b936a7b433ccaec716a2c87c32fe62a24baa100c96",
-    "fiveReportSha256": "956af917d36a43880921991b2bf002845700df62a0469b8d7dd29ba8dcc6d9e2"
+    "inputsSha256": "ceb76d31df667934ba9004fd60e6f04bde1b161d9e989a765d44083659704c36",
+    "freshEarlySha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "freshMiddleSha256": "9485650a3e7ef791570976a6b74b2c9daa5cb6231c1d712ad67b01e54d745d07",
+    "freshFiveSha256": "e42ce94195d74a5c801dccba71160171731e443d6528b921743254ae1c3db75e"
   },
   "agent": {
     "tactics": "defensive",
@@ -53,7 +47,7 @@
     "party": [
       {
         "id": "nell",
-        "hp": 86,
+        "hp": 96,
         "focus": 6
       },
       {
@@ -73,7 +67,7 @@
       },
       {
         "id": "celia",
-        "hp": 94,
+        "hp": 91,
         "focus": 6
       }
     ],
@@ -191,7 +185,7 @@
       "allAnchorsSeen": true
     },
     "coins": 1263,
-    "bandages": 3,
+    "bandages": 2,
     "xp": 2945,
     "inventory": {
       "version": 2,
@@ -205,7 +199,7 @@
         "saber-hilt": 1,
         "silver-reflector": 1,
         "ratchet-sight": 1,
-        "field-bandage": 1,
+        "field-bandage": 0,
         "focus-tonic": 1,
         "medic-clasp": 1,
         "folding-sight": 0,

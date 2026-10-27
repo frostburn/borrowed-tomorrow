@@ -14,9 +14,9 @@ Windmere is available immediately after the shared flight, alongside Hammerplain
 
 ## Mirrored ward engine
 
-The native 256 × 240 optical engine faces the party from a fixed triangle of three adjacent contacts. Its two 70-HP side projections are anchored, passive targets: they block space, but receive no turns and never retaliate.
+The native 256 × 240 optical engine faces the party from a fixed triangle of three adjacent contacts. Its two 70-HP side projections are anchored, passive targets: they block space, but receive no turns and never retaliate. Two staggered Slag crows screen the engine and attack normally; stopping the core also shuts down this screen.
 
-Each round lights one surviving projection and fixes a reflected fan warning. Breaking that projection interrupts the current beam and opens the core for the rest of that round. Breaking the unlit projection removes a future source but leaves the current beam intact. At the next announcement a surviving projection reseals the core. Once both are broken, the core stays exposed and announces a weaker direct crossbeam. Defeating the core shuts down all remaining projections and ends the fight.
+Each round lights one surviving projection and fixes a reflected fan warning. Breaking that projection interrupts the current beam and opens the core for the rest of that round. Breaking the unlit projection removes a future source but leaves the current beam intact. At the next announcement a surviving projection reseals the core. Once both are broken, the core stays exposed and announces a weaker direct crossbeam through a living hero’s position. It re-sights at the next round announcement; moving never changes the cells already marked. Defeating the core shuts down all remaining projections and ends the fight.
 
 Areas hit each whole unit once. Taunt redirects a live beam, but cannot revive an interrupted one; Dazzle, guard and defense retain their ordinary effects. The presentation captures the fired source before round rollover, so the impact travels through the mirror that actually fired. Native alpha picking targets legal body contacts without redirecting valid grid areas. This machine has an optical firing flash, no breathing animation.
 

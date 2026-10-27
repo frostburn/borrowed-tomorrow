@@ -1,0 +1,2361 @@
+{
+  "version": 1,
+  "source": {
+    "baseCommit": "26661a9e6d1aee6b2a123d8d516d2060a88569c5",
+    "files": {
+      "src/rules/combat.ts": "6be6ed4e1baf4b42f8fc11bf11948285d52c6445a8461d132a29eab2dad83c84",
+      "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
+      "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
+      "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
+      "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13",
+      "scripts/compare-chapter-five-bosses.mjs": "ad8c1e59fb1d67e68ee8b69cfde8f0372c34c177fe243ec613a8a6f7b76343cc"
+    },
+    "inputsSha256": "ceb76d31df667934ba9004fd60e6f04bde1b161d9e989a765d44083659704c36",
+    "freshEarlySha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "freshMiddleSha256": "9485650a3e7ef791570976a6b74b2c9daa5cb6231c1d712ad67b01e54d745d07",
+    "freshFiveSha256": "e42ce94195d74a5c801dccba71160171731e443d6528b921743254ae1c3db75e"
+  },
+  "beforeRuleFiles": {
+    "src/rules/combat.ts": "649306e163c18de42541dc0212d74d34ac46aeab462bb57c630089f7471f10ad",
+    "src/rules/ward.ts": "73ad0e312fac05d3b9e6f9b6c9155027b8064e94b4947242e674e8d4819c541b",
+    "src/rules/flagship.ts": "5ceca00742e4a750fbbef8b9328868d0135b21fae0df4d86cd8f36868eac2bb7",
+    "src/content/chapter-five/encounters.ts": "e2047bed01a0a9d92ea3d83f647ef00189fca82a4ee356a02308c18c0d073d3c",
+    "src/content/chapter-five/flagship.ts": "15a3b23cbcb685ba553e2230713bf7055f01ed1bc9a66335ce39327b0ff9cf58"
+  },
+  "afterRuleFiles": {
+    "src/rules/combat.ts": "6be6ed4e1baf4b42f8fc11bf11948285d52c6445a8461d132a29eab2dad83c84",
+    "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
+    "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
+    "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
+    "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13"
+  },
+  "matchedBefore": [
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "d31629c3e09566d7754900a89ca3e3cb8d845595e19eb94bad60addf1205e80f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 6,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 78,
+      "abilities": {
+        "prism": 2,
+        "celestialbolt": 4,
+        "burst": 1,
+        "rivet": 1,
+        "strike": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "2fe4df681ff1033b59dd27e41e86e8eda1776eb48f10fbb555fa39447fbc0bfb",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 15,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 69,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 2,
+        "quickshot": 3,
+        "crush": 1,
+        "lanternvolley": 1,
+        "sweep": 1,
+        "strike": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 9
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "31b5a378efbabb45922357ce37053f768cc3b0ea72b57031d45a5e7e3d1f0f27",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 0,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 84,
+      "abilities": {
+        "burst": 5,
+        "strike": 3,
+        "crush": 3,
+        "celestialbolt": 3
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "406895665e821340892289cf2e65f86cea89754e9a34e3952c192c5c2d01eb29",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 0,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 94,
+      "abilities": {
+        "prism": 2,
+        "sanctuary": 1,
+        "burst": 1,
+        "celestialbolt": 1,
+        "rivet": 2,
+        "strike": 4
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 0,
+        "flagship-marine-2": 0,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "45556972beb9b5d5570907e410cf1fc082ea040d030406e26b4af15d6f580cdf",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 29,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 81,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 5,
+        "strike": 1,
+        "bandage": 2,
+        "quickshot": 2
+      },
+      "items": {
+        "bandage": 2
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-bridge": 18,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "5d4019e1ac8d9453d861810730995a85cc970daedda43099f701f9595938e33b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 28,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 72,
+      "abilities": {
+        "burst": 3,
+        "celestialbolt": 1,
+        "crush": 1,
+        "sunline": 1,
+        "daybreak": 1,
+        "strike": 8,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-2": 12,
+        "flagship-bridge": 10,
+        "flagship-port": 0,
+        "flagship-starboard": 6
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "orrin"
+      ],
+      "inputSha256": "e8bff4cc03b986eb8e58ce37245c5f530539358b720422761f42bc70e1003c14",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 16,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 80,
+      "abilities": {
+        "starline": 2,
+        "burst": 5,
+        "celestialbolt": 3,
+        "rivet": 2,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 16
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "d7b1cf3ebb3288081c15a468b4b4a6ac647244fee546e74617d96d491894861f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 7,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 92,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "quickshot": 4,
+        "crush": 1,
+        "sweep": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "8dbc8a3328e6c6e3eca0a2b8bb4ae33225e9b61da98d14c94a3128d356507e68",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 23,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 80,
+      "abilities": {
+        "strike": 3,
+        "burst": 5,
+        "crush": 2,
+        "celestialbolt": 3,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 16
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "527f538be2cd13586ba2b30cf2c1d01455f6b67e49631ea7e27d220497855a9b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 22,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 72,
+      "abilities": {
+        "starline": 2,
+        "burst": 3,
+        "strike": 2,
+        "celestialbolt": 2,
+        "rivet": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-2": 12,
+        "flagship-bridge": 10,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "f2b14e157fccb406a27cb7354f631fef9cf0d8f2486f06d1ce3182523fdf5635",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 31,
+      "healed": 23,
+      "knockouts": 0,
+      "minHp": 80,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 5,
+        "strike": 1,
+        "bandage": 2,
+        "quickshot": 2
+      },
+      "items": {
+        "bandage": 2
+      },
+      "remaining": {
+        "bandages": 0,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-bridge": 20,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "919d91450b97f92952455782655f1a2205212f6aa540ab1052fed692ca0a2e51",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 27,
+      "healed": 27,
+      "knockouts": 0,
+      "minHp": 67,
+      "abilities": {
+        "sanctuary": 1,
+        "burst": 3,
+        "crush": 1,
+        "celestialbolt": 1,
+        "sunline": 1,
+        "strike": 7,
+        "daybreak": 1,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 0,
+        "flagship-marine-2": 12,
+        "flagship-bridge": 15,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "42381de26858fa027fb59683b0b4f03a8c5fdcd9a2bf08b9e7cd5b20b0675206",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 0,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 94,
+      "abilities": {
+        "strike": 3,
+        "burst": 4,
+        "crush": 3,
+        "celestialbolt": 4
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "759a171c1e426ac0b98447880046d179b19590d5775ce5d9e7f9ad31fe8edf20",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 15,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 81,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 2,
+        "quickshot": 3,
+        "crush": 1,
+        "lanternvolley": 1,
+        "sweep": 1,
+        "strike": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "wind-ward-engine": 9
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "ae79771175f6579b10ece1e88da35744497a1fe8d288bd888a30f33461707c97",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 22,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 72,
+      "abilities": {
+        "sanctuary": 1,
+        "burst": 3,
+        "crush": 3,
+        "celestialbolt": 4,
+        "sunline": 1,
+        "strike": 3
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 0,
+        "flagship-marine-2": 11,
+        "flagship-bridge": 11,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "229e24add699dc82820f40946ce4aba228dad54375d2ba50215a216117080134",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 39,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 68,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 4,
+        "quickshot": 3,
+        "strike": 1,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-bridge": 24,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    }
+  ],
+  "matchedAfter": [
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "d31629c3e09566d7754900a89ca3e3cb8d845595e19eb94bad60addf1205e80f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 108,
+      "healed": 106,
+      "knockouts": 0,
+      "minHp": 66,
+      "abilities": {
+        "prism": 1,
+        "heal": 1,
+        "burst": 3,
+        "starline": 1,
+        "field-bandage": 1,
+        "rivet": 3,
+        "celestialbolt": 2,
+        "bandage": 1,
+        "strike": 1
+      },
+      "items": {
+        "field-bandage": 1,
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 42,
+        "crow-4": 28,
+        "wind-ward-engine": 38
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "2fe4df681ff1033b59dd27e41e86e8eda1776eb48f10fbb555fa39447fbc0bfb",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 14,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 78,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "crush": 1,
+        "quickshot": 2,
+        "sweep": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-4": 14,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "31b5a378efbabb45922357ce37053f768cc3b0ea72b57031d45a5e7e3d1f0f27",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 70,
+      "healed": 82,
+      "knockouts": 0,
+      "minHp": 38,
+      "abilities": {
+        "burst": 4,
+        "strike": 8,
+        "sweep": 1,
+        "mend": 1,
+        "celestialbolt": 1,
+        "crush": 1,
+        "daybreak": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 28,
+        "crow-4": 42,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "406895665e821340892289cf2e65f86cea89754e9a34e3952c192c5c2d01eb29",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 76,
+      "healed": 32,
+      "knockouts": 0,
+      "minHp": 72,
+      "abilities": {
+        "prism": 1,
+        "celestialbolt": 2,
+        "burst": 3,
+        "starline": 1,
+        "rivet": 2,
+        "heal": 1,
+        "strike": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 12,
+        "flagship-bridge": 47,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "45556972beb9b5d5570907e410cf1fc082ea040d030406e26b4af15d6f580cdf",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 55,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 74,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 2,
+        "lanternvolley": 1,
+        "bandage": 1,
+        "quickshot": 3,
+        "crush": 2,
+        "strike": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 11,
+        "flagship-bridge": 27,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "5d4019e1ac8d9453d861810730995a85cc970daedda43099f701f9595938e33b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 106,
+      "healed": 87,
+      "knockouts": 0,
+      "minHp": 72,
+      "abilities": {
+        "burst": 3,
+        "celestialbolt": 3,
+        "sweep": 2,
+        "strike": 4,
+        "crush": 2,
+        "mend": 1,
+        "heal": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 12,
+        "flagship-bridge": 61,
+        "flagship-port": 0,
+        "flagship-starboard": 12
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "orrin"
+      ],
+      "inputSha256": "e8bff4cc03b986eb8e58ce37245c5f530539358b720422761f42bc70e1003c14",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 115,
+      "healed": 62,
+      "knockouts": 0,
+      "minHp": 38,
+      "abilities": {
+        "starline": 1,
+        "burst": 4,
+        "heal": 1,
+        "steam": 3,
+        "strike": 3,
+        "celestialbolt": 3,
+        "rivet": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 42,
+        "crow-4": 28,
+        "wind-ward-engine": 45
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "d7b1cf3ebb3288081c15a468b4b4a6ac647244fee546e74617d96d491894861f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 43,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 65,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "crush": 1,
+        "quickshot": 3,
+        "sweep": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-4": 15,
+        "wind-ward-engine": 21
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "8dbc8a3328e6c6e3eca0a2b8bb4ae33225e9b61da98d14c94a3128d356507e68",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 7,
+      "hpLost": 53,
+      "healed": 46,
+      "knockouts": 0,
+      "minHp": 66,
+      "abilities": {
+        "daybreak": 1,
+        "burst": 4,
+        "strike": 7,
+        "sweep": 1,
+        "mend": 1,
+        "crush": 2,
+        "celestialbolt": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 19,
+        "crow-4": 27,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "527f538be2cd13586ba2b30cf2c1d01455f6b67e49631ea7e27d220497855a9b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 66,
+      "healed": 51,
+      "knockouts": 0,
+      "minHp": 63,
+      "abilities": {
+        "starline": 2,
+        "burst": 3,
+        "celestialbolt": 3,
+        "rivet": 3,
+        "mend": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-2": 12,
+        "flagship-bridge": 48,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "f2b14e157fccb406a27cb7354f631fef9cf0d8f2486f06d1ce3182523fdf5635",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 57,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 74,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 2,
+        "lanternvolley": 1,
+        "bandage": 1,
+        "quickshot": 3,
+        "crush": 2,
+        "strike": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 11,
+        "flagship-bridge": 29,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "919d91450b97f92952455782655f1a2205212f6aa540ab1052fed692ca0a2e51",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 42,
+      "healed": 28,
+      "knockouts": 0,
+      "minHp": 77,
+      "abilities": {
+        "sanctuary": 1,
+        "burst": 3,
+        "sweep": 1,
+        "celestialbolt": 2,
+        "sunline": 1,
+        "strike": 7,
+        "crush": 1,
+        "daybreak": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 0,
+        "flagship-marine-2": 7,
+        "flagship-bridge": 35,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "42381de26858fa027fb59683b0b4f03a8c5fdcd9a2bf08b9e7cd5b20b0675206",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 61,
+      "healed": 45,
+      "knockouts": 0,
+      "minHp": 68,
+      "abilities": {
+        "celestialbolt": 2,
+        "burst": 5,
+        "sweep": 3,
+        "daybreak": 1,
+        "strike": 6
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 13,
+        "crow-4": 23,
+        "wind-ward-engine": 25
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "759a171c1e426ac0b98447880046d179b19590d5775ce5d9e7f9ad31fe8edf20",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 40,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 65,
+      "abilities": {
+        "lanternvolley": 1,
+        "crush": 1,
+        "crossfire": 1,
+        "burst": 3,
+        "quickshot": 2,
+        "strike": 1,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-4": 15,
+        "wind-ward-engine": 21
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "ae79771175f6579b10ece1e88da35744497a1fe8d288bd888a30f33461707c97",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 32,
+      "healed": 21,
+      "knockouts": 0,
+      "minHp": 92,
+      "abilities": {
+        "sanctuary": 1,
+        "burst": 3,
+        "sweep": 1,
+        "celestialbolt": 2,
+        "sunline": 1,
+        "strike": 6,
+        "crush": 1,
+        "daybreak": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 0,
+        "flagship-marine-2": 9,
+        "flagship-bridge": 23,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "229e24add699dc82820f40946ce4aba228dad54375d2ba50215a216117080134",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 59,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 57,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 2,
+        "strike": 2,
+        "quickshot": 2,
+        "lanternvolley": 1,
+        "sweep": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 14,
+        "flagship-bridge": 30,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    }
+  ],
+  "greedyControllerAfter": [
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "d31629c3e09566d7754900a89ca3e3cb8d845595e19eb94bad60addf1205e80f",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 102,
+      "healed": 100,
+      "knockouts": 0,
+      "minHp": 66,
+      "abilities": {
+        "prism": 2,
+        "heal": 2,
+        "strike": 5,
+        "burst": 2,
+        "rivet": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 28,
+        "crow-4": 42,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "2fe4df681ff1033b59dd27e41e86e8eda1776eb48f10fbb555fa39447fbc0bfb",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 14,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 78,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "crush": 1,
+        "quickshot": 2,
+        "sweep": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-4": 14,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "31b5a378efbabb45922357ce37053f768cc3b0ea72b57031d45a5e7e3d1f0f27",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 77,
+      "healed": 54,
+      "knockouts": 0,
+      "minHp": 52,
+      "abilities": {
+        "burst": 3,
+        "celestialbolt": 2,
+        "sweep": 2,
+        "mend": 1,
+        "strike": 6,
+        "crush": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 14,
+        "crow-4": 42,
+        "wind-ward-engine": 7
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "406895665e821340892289cf2e65f86cea89754e9a34e3952c192c5c2d01eb29",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 38,
+      "healed": 38,
+      "knockouts": 0,
+      "minHp": 82,
+      "abilities": {
+        "prism": 1,
+        "strike": 3,
+        "sunline": 1,
+        "celestialbolt": 3,
+        "field-bandage": 1,
+        "sanctuary": 1,
+        "rivet": 1,
+        "burst": 2,
+        "starline": 1,
+        "bandage": 1,
+        "steam": 1
+      },
+      "items": {
+        "field-bandage": 1,
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 13,
+        "flagship-marine-2": 13,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "45556972beb9b5d5570907e410cf1fc082ea040d030406e26b4af15d6f580cdf",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 26,
+      "healed": 26,
+      "knockouts": 0,
+      "minHp": 66,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 4,
+        "lanternvolley": 1,
+        "field-bandage": 1,
+        "quickshot": 2,
+        "focus-tonic": 1
+      },
+      "items": {
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 1,
+        "focus-tonic": 0
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 13,
+        "flagship-marine-2": 13,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "5d4019e1ac8d9453d861810730995a85cc970daedda43099f701f9595938e33b",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 47,
+      "healed": 41,
+      "knockouts": 0,
+      "minHp": 74,
+      "abilities": {
+        "burst": 3,
+        "strike": 4,
+        "crush": 2,
+        "sunline": 1,
+        "celestialbolt": 2,
+        "heal": 1,
+        "sweep": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 23,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "orrin"
+      ],
+      "inputSha256": "e8bff4cc03b986eb8e58ce37245c5f530539358b720422761f42bc70e1003c14",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 134,
+      "healed": 106,
+      "knockouts": 0,
+      "minHp": 24,
+      "abilities": {
+        "starline": 2,
+        "burst": 4,
+        "bandage": 1,
+        "mend": 1,
+        "rivet": 4,
+        "strike": 3,
+        "heal": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 84,
+        "crow-4": 28,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "d7b1cf3ebb3288081c15a468b4b4a6ac647244fee546e74617d96d491894861f",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 22,
+      "healed": 15,
+      "knockouts": 0,
+      "minHp": 77,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "crush": 1,
+        "quickshot": 2,
+        "sweep": 1,
+        "strike": 2,
+        "bandage": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-4": 15,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "8dbc8a3328e6c6e3eca0a2b8bb4ae33225e9b61da98d14c94a3128d356507e68",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 90,
+      "healed": 82,
+      "knockouts": 0,
+      "minHp": 34,
+      "abilities": {
+        "strike": 5,
+        "burst": 5,
+        "sweep": 2,
+        "heal": 2,
+        "celestialbolt": 1,
+        "crush": 2
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 14,
+        "crow-4": 42,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "527f538be2cd13586ba2b30cf2c1d01455f6b67e49631ea7e27d220497855a9b",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 33,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 61,
+      "abilities": {
+        "starline": 2,
+        "burst": 5,
+        "strike": 3,
+        "rivet": 3
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-2": 12,
+        "flagship-bridge": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "f2b14e157fccb406a27cb7354f631fef9cf0d8f2486f06d1ce3182523fdf5635",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 28,
+      "healed": 28,
+      "knockouts": 0,
+      "minHp": 64,
+      "abilities": {
+        "crossfire": 2,
+        "burst": 4,
+        "lanternvolley": 1,
+        "field-bandage": 1,
+        "quickshot": 2,
+        "focus-tonic": 1
+      },
+      "items": {
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 0,
+        "focus-tonic": 0
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 14,
+        "flagship-marine-2": 14,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "919d91450b97f92952455782655f1a2205212f6aa540ab1052fed692ca0a2e51",
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 7,
+      "hpLost": 66,
+      "healed": 48,
+      "knockouts": 0,
+      "minHp": 68,
+      "abilities": {
+        "strike": 7,
+        "burst": 3,
+        "sweep": 1,
+        "sunline": 1,
+        "crush": 3,
+        "heal": 1,
+        "bandage": 1,
+        "sanctuary": 1,
+        "focus-tonic": 1
+      },
+      "items": {
+        "bandage": 1,
+        "focus-tonic": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 0
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 23,
+        "flagship-bridge": 18,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "42381de26858fa027fb59683b0b4f03a8c5fdcd9a2bf08b9e7cd5b20b0675206",
+      "agent": {
+        "tactics": "legacy",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 70,
+      "healed": 59,
+      "knockouts": 0,
+      "minHp": 51,
+      "abilities": {
+        "strike": 5,
+        "burst": 5,
+        "heal": 1,
+        "bandage": 1,
+        "celestialbolt": 2,
+        "crush": 2,
+        "sweep": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 26,
+        "crow-4": 13,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "759a171c1e426ac0b98447880046d179b19590d5775ce5d9e7f9ad31fe8edf20",
+      "agent": {
+        "tactics": "legacy",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 4,
+      "hpLost": 15,
+      "healed": 0,
+      "knockouts": 0,
+      "minHp": 77,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "crush": 1,
+        "quickshot": 2,
+        "sweep": 1,
+        "strike": 1
+      },
+      "items": {},
+      "remaining": {
+        "bandages": 2,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "crow-3": 15,
+        "wind-ward-engine": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "ae79771175f6579b10ece1e88da35744497a1fe8d288bd888a30f33461707c97",
+      "agent": {
+        "tactics": "legacy",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 6,
+      "hpLost": 45,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 71,
+      "abilities": {
+        "strike": 3,
+        "burst": 3,
+        "sweep": 2,
+        "sunline": 1,
+        "crush": 2,
+        "celestialbolt": 4,
+        "bandage": 1
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 22,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "229e24add699dc82820f40946ce4aba228dad54375d2ba50215a216117080134",
+      "agent": {
+        "tactics": "legacy",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "result": "victory",
+      "rounds": 5,
+      "hpLost": 36,
+      "healed": 22,
+      "knockouts": 0,
+      "minHp": 74,
+      "abilities": {
+        "crossfire": 1,
+        "burst": 4,
+        "ricochet": 1,
+        "bandage": 1,
+        "strike": 1,
+        "crush": 2,
+        "quickshot": 2
+      },
+      "items": {
+        "bandage": 1
+      },
+      "remaining": {
+        "bandages": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1
+      },
+      "enemyDamage": {
+        "flagship-marine-1": 11,
+        "flagship-marine-2": 25,
+        "flagship-bridge": 0,
+        "flagship-port": 0,
+        "flagship-starboard": 0
+      }
+    }
+  ],
+  "freshRun": {
+    "totalVictories": 27,
+    "knockouts": 0,
+    "chapterFive": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "hammerplain",
+          "dawnwatch",
+          "windmere"
+        ],
+        "forge": "lift",
+        "firstGun": "mortar",
+        "optional": true,
+        "through": "5"
+      },
+      "xp": 3475,
+      "income": 1293,
+      "spent": 146,
+      "finalMarks": 1549,
+      "rests": 7,
+      "hpLost": 706,
+      "healed": 427,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 5,
+        "field-bandage": 4
+      },
+      "abilities": {
+        "daybreak": 2,
+        "burst": 24,
+        "strike": 12,
+        "prism": 7,
+        "crush": 4,
+        "rivet": 12,
+        "steam": 1,
+        "bandage": 5,
+        "field-bandage": 4,
+        "sweep": 1,
+        "crossfire": 4,
+        "lanternvolley": 2,
+        "quickshot": 3,
+        "starline": 7,
+        "heal": 3,
+        "celestialbolt": 6,
+        "ricochet": 1
+      },
+      "remainingSupplies": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          }
+        },
+        {
+          "id": "hammer-stores",
+          "rounds": 3,
+          "hpLost": 62,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 68,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "strike": 2,
+            "crush": 1,
+            "burst": 1,
+            "rivet": 1
+          }
+        },
+        {
+          "id": "hammer-lift",
+          "rounds": 4,
+          "hpLost": 87,
+          "healed": 61,
+          "knockouts": 0,
+          "minHp": 77,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "burst": 3,
+            "steam": 1,
+            "bandage": 2,
+            "rivet": 1,
+            "field-bandage": 1,
+            "prism": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 5,
+          "hpLost": 67,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 80,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "crush": 2,
+            "burst": 2,
+            "rivet": 3,
+            "sweep": 1,
+            "bandage": 1,
+            "field-bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "dawn-mortar-first",
+          "rounds": 3,
+          "hpLost": 20,
+          "healed": 20,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 1,
+            "burst": 1,
+            "lanternvolley": 1,
+            "bandage": 1,
+            "quickshot": 1
+          }
+        },
+        {
+          "id": "dawn-repeater-last",
+          "rounds": 2,
+          "hpLost": 20,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "lanternvolley": 1,
+            "crush": 1,
+            "crossfire": 1,
+            "burst": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 3,
+          "hpLost": 45,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 81,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 2,
+            "quickshot": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 3,
+          "hpLost": 77,
+          "healed": 74,
+          "knockouts": 0,
+          "minHp": 47,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "starline": 1,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 4,
+          "hpLost": 52,
+          "healed": 32,
+          "knockouts": 0,
+          "minHp": 76,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "strike": 1,
+            "starline": 2,
+            "rivet": 1
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 6,
+          "hpLost": 108,
+          "healed": 106,
+          "knockouts": 0,
+          "minHp": 66,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 1,
+            "heal": 1,
+            "burst": 3,
+            "starline": 1,
+            "field-bandage": 1,
+            "rivet": 3,
+            "celestialbolt": 2,
+            "bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 76,
+          "healed": 32,
+          "knockouts": 0,
+          "minHp": 72,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 1,
+            "celestialbolt": 2,
+            "burst": 3,
+            "starline": 1,
+            "rivet": 2,
+            "heal": 1,
+            "strike": 2
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 2,
+          "hpLost": 41,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 62,
+          "formation": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "ricochet": 1,
+            "starline": 2,
+            "quickshot": 1
+          }
+        }
+      ]
+    }
+  },
+  "validation": {
+    "unitTests": 715,
+    "optInRouteChecks": 17,
+    "matchedScenarios": 16,
+    "additionalGreedyReplays": 16,
+    "allWonWithoutKnockouts": true,
+    "domainWardProfileUnchanged": true
+  },
+  "commands": [
+    "git worktree add --detach /tmp/bt-before 26661a9e6d1aee6b2a123d8d516d2060a88569c5",
+    "node scripts/compare-chapter-five-bosses.mjs --root /tmp/bt-before --output /tmp/before.json",
+    "node scripts/compare-chapter-five-bosses.mjs --output /tmp/after.json",
+    "node scripts/compare-chapter-five-bosses.mjs --tactics legacy --output /tmp/greedy.json",
+    "BT_HEADLESS_REPORT=/tmp/early.json npm run simulate:early",
+    "npm run simulate:middle -- --from /tmp/early.json --output /tmp/four.json",
+    "npm run simulate:five -- --from /tmp/four.json --output /tmp/five.json",
+    "npm run test:headless",
+    "npm run check"
+  ],
+  "limits": [
+    "Agent comparisons are reproducible balance probes, not a human difficulty score.",
+    "No Chapter Six/Seven playthrough or ability/economy changes."
+  ]
+}
