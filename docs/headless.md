@@ -135,3 +135,14 @@ Potential follow-up issues, rather than confirmed blockers:
 - **Conduit alternatives may be uneven for a prepared party:** the default feeds fight takes five rounds / 46 observed HP loss; pressure takes three / 26, with the same rewards and eight fewer marks spent on supplies across the route. Earth-plate setup explains some of the difference. Compare human puzzle difficulty and additional formations before changing either path.
 
 This audit does not cover Chapter Five onward, the other Chapter Two approach, selling, or alternate purchases/builds from level one. The early no-purchase route is still the fixed baseline; all middle comparisons inherit its earned skills and loot. Headless success does not verify presentation or prove that a new human player will find the fights easy.
+
+
+## Sanctuary Warden engagement correction
+
+The guardian now starts in the open central lane at column 5, three columns ahead of its former rear deployment. The two crows, rocks, shallow water, movement, attacks, HP, damage bonuses, rewards and shared enemy AI are unchanged. A party holding its initial ground is within a legal first-turn Steam approach. Taunt can still force an approach turn when Petra is farther away; it does not allow the guardian to ignore her and hit a nearer target instead.
+
+A new zero-start default run still clears all fifteen encounters and reaches the Chapter Five departure without knockouts. The guardian's opening changes from three Defends to one approach/Defend followed by Steam in rounds 2, 3 and 4. The fight takes five rounds instead of seven, with 119 observed HP lost instead of 114; earlier pressure replaces the long idle opening rather than increasing its stats. All six policy runs complete without knockouts, and all make the guardian attack by round 1 or 2. Across those policies the fight takes four to seven rounds.
+
+[chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json) is the **current earned continuation checkpoint**: level 9 / 1,355 XP, 402 marks, one ordinary bandage, one field bandage and one focus tonic. It includes the accepted deployment's source hash and the six before/after boss summaries. The earlier defensive checkpoint and fresh audit remain historical results for the former deployment.
+
+All eight opt-in route simulations pass, including alternate conduit/harbor paths, optional-patrol omission and split-save continuation. The defensive earned-route tests now require a Steam attack by the second round, while a focused rule test checks opening pressure against a stationary starting party. The 695 unit tests, TypeScript and production build pass. No new CI jobs or default chapter-playthrough tests are added.

@@ -1,0 +1,481 @@
+{
+  "version": 1,
+  "policy": "middle-v2",
+  "agent": {
+    "tactics": "defensive",
+    "build": "offense",
+    "spending": "prepared"
+  },
+  "options": {
+    "conduit": "feeds",
+    "harbor": "dry",
+    "optional": true,
+    "through": 4
+  },
+  "status": "complete",
+  "state": {
+    "format": "borrowed-tomorrow",
+    "version": 11,
+    "campaign": "imperial-debt",
+    "chapter": "chapter-four",
+    "location": {
+      "map": "refuge",
+      "x": 12,
+      "y": 28
+    },
+    "party": [
+      {
+        "id": "nell",
+        "hp": 90,
+        "focus": 6
+      },
+      {
+        "id": "orrin",
+        "hp": 102,
+        "focus": 6
+      },
+      {
+        "id": "kit",
+        "hp": 86,
+        "focus": 6
+      },
+      {
+        "id": "petra",
+        "hp": 110,
+        "focus": 6
+      },
+      {
+        "id": "celia",
+        "hp": 88,
+        "focus": 6
+      }
+    ],
+    "activeParty": [
+      "nell",
+      "celia",
+      "petra"
+    ],
+    "flags": {
+      "festivalSeen": true,
+      "raidSeen": true,
+      "escapeWon": true,
+      "orrinJoined": true,
+      "workshopWon": true,
+      "villageSeen": true,
+      "collectorConfronted": true,
+      "collectorDefeated": true,
+      "villageFreed": true,
+      "passSeen": true,
+      "shelterSupplies": true,
+      "captainConfronted": true,
+      "captainDefeated": true,
+      "chapterOneComplete": true,
+      "coastSeen": true,
+      "kitJoined": true,
+      "raidDiversion": false,
+      "raidPlanned": true,
+      "raidConfronted": true,
+      "trainRaidWon": true,
+      "prisonersFreed": true,
+      "wardSeen": true,
+      "settlementSeen": true,
+      "coastCollectorWon": true,
+      "evacuationReady": true,
+      "recaptureConfronted": true,
+      "recaptureWon": true,
+      "chapterTwoComplete": true,
+      "capitalSeen": true,
+      "capitalCache": true,
+      "capitalConfronted": true,
+      "capitalGateWon": true,
+      "petraJoined": true,
+      "worksSeen": true,
+      "worksWardenWon": true,
+      "tomasRescued": true,
+      "palaceStoresWon": true,
+      "pressureRoute": false,
+      "intakePlanned": true,
+      "conduitSeen": true,
+      "conduitGuardWon": true,
+      "extractionStopped": true,
+      "emperorMerged": true,
+      "chapterThreeComplete": true,
+      "refugeSeen": true,
+      "celiaJoined": true,
+      "worksArrival": true,
+      "worksStoresWon": true,
+      "worksRouteSet": true,
+      "worksFlooded": false,
+      "worksGateWon": true,
+      "harborOpened": true,
+      "sanctuaryEntered": true,
+      "sanctuaryCache": true,
+      "roadGuardWon": true,
+      "signalCut": true,
+      "sanctuaryWardenWon": true,
+      "anchorsKnown": true,
+      "seaWalkSeen": true,
+      "chapterFourComplete": true
+    },
+    "coins": 402,
+    "bandages": 1,
+    "xp": 1355,
+    "inventory": {
+      "version": 2,
+      "bag": {
+        "brass-reflector": 1,
+        "courier-sight": 1,
+        "work-coat": 1,
+        "baffled-nozzle": 1,
+        "coastal-reflector": 1,
+        "insulated-coat": 1,
+        "saber-hilt": 0,
+        "silver-reflector": 1,
+        "ratchet-sight": 1,
+        "field-bandage": 1,
+        "focus-tonic": 1,
+        "medic-clasp": 1,
+        "folding-sight": 0,
+        "return-valve": 0,
+        "field-clasp": 0,
+        "rescue-coat": 0,
+        "sun-prism": 0
+      },
+      "characters": {
+        "nell": {
+          "fitting": "sun-prism",
+          "coat": "rescue-coat"
+        },
+        "orrin": {
+          "fitting": "return-valve",
+          "coat": "insulated-coat"
+        },
+        "kit": {
+          "fitting": "folding-sight",
+          "coat": "insulated-coat"
+        },
+        "celia": {
+          "fitting": "field-clasp",
+          "coat": "insulated-coat"
+        },
+        "petra": {
+          "fitting": "saber-hilt",
+          "coat": "insulated-coat"
+        }
+      }
+    },
+    "skills": {
+      "nell": {
+        "burst": 3,
+        "mend": 2,
+        "dazzle": 2,
+        "sunline": 1
+      },
+      "orrin": {
+        "steam": 3,
+        "rivet": 2,
+        "guard": 2,
+        "repulse": 2
+      },
+      "kit": {
+        "quickshot": 3,
+        "feint": 2,
+        "ricochet": 2,
+        "pin": 1
+      },
+      "celia": {
+        "celestialbolt": 2,
+        "heal": 2,
+        "rally": 2,
+        "sanctuary": 2
+      },
+      "petra": {
+        "bash": 3,
+        "taunt": 2,
+        "sweep": 2,
+        "crush": 2
+      }
+    },
+    "journal": [
+      "home",
+      "raid",
+      "orrin",
+      "village",
+      "freed",
+      "pass",
+      "departure",
+      "coast",
+      "kit",
+      "prisoners",
+      "ward",
+      "settlement",
+      "evacuation",
+      "capitalDeparture",
+      "capital",
+      "defection",
+      "warden",
+      "reunion",
+      "intake",
+      "heart",
+      "heartGuard",
+      "rupture",
+      "brokenDeparture",
+      "refugeSeen",
+      "worksArrival",
+      "worksClear",
+      "harborOpened",
+      "sanctuaryEntered",
+      "roadClear",
+      "signalCut",
+      "wardenFallen",
+      "anchorsKnown",
+      "anchorsDeparture"
+    ],
+    "boundary": "chapter-five:anchors",
+    "playSeconds": 0
+  },
+  "source": {
+    "earlyReportSha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "reportSha256": "5e4ad1d66b309af5c0d387c9c69a9cbcb84c1278607e7aaaac645bf58759ba63",
+    "baseCommit": "e65ca87b1c2241eac228e12fb7607efd2495b8cf",
+    "encounterSourceSha256": "e804c0a3ad9fdbe4c21a01f5f006b762d1066215f07e4f9958389d2bb22afa4b",
+    "change": "Sanctuary guardian starts at column 5 instead of 8; other encounter settings unchanged."
+  },
+  "recipe": [
+    "BT_HEADLESS_REPORT=/tmp/fresh-early.json npm run simulate:early",
+    "npm run simulate:middle -- --from /tmp/fresh-early.json --output /tmp/fresh-four.json"
+  ],
+  "verification": {
+    "freshCampaignVictories": 15,
+    "unitTestsPassed": 695,
+    "simulationTestsPassed": 8,
+    "policies": [
+      {
+        "policy": "legacy-offense-baseline",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 15,
+          "damage": 234,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 4,
+          "minHp": 15,
+          "damage": 133,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "steam"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 1,
+        "campaignKnockouts": 0
+      },
+      {
+        "policy": "legacy-offense-prepared",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 42,
+          "damage": 276,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 42,
+          "damage": 197,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "steam"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          },
+          {
+            "round": 4,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 1,
+        "campaignKnockouts": 0
+      },
+      {
+        "policy": "defensive-offense-prepared",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 38,
+          "damage": 114,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 58,
+          "damage": 119,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "defend"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          },
+          {
+            "round": 4,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 2,
+        "campaignKnockouts": 0
+      },
+      {
+        "policy": "defensive-support-prepared",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 42,
+          "damage": 151,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 36,
+          "damage": 174,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "defend"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          },
+          {
+            "round": 4,
+            "ability": "steam"
+          },
+          {
+            "round": 5,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 2,
+        "campaignKnockouts": 0
+      },
+      {
+        "policy": "defensive-offense-frugal",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 42,
+          "damage": 123,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 5,
+          "minHp": 54,
+          "damage": 139,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "defend"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          },
+          {
+            "round": 4,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 2,
+        "campaignKnockouts": 0
+      },
+      {
+        "policy": "defensive-support-frugal",
+        "before": {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 16,
+          "damage": 157,
+          "knockouts": 0
+        },
+        "after": {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 28,
+          "damage": 217,
+          "knockouts": 0
+        },
+        "guardianTurns": [
+          {
+            "round": 1,
+            "ability": "defend"
+          },
+          {
+            "round": 2,
+            "ability": "steam"
+          },
+          {
+            "round": 3,
+            "ability": "steam"
+          },
+          {
+            "round": 4,
+            "ability": "steam"
+          },
+          {
+            "round": 5,
+            "ability": "steam"
+          }
+        ],
+        "firstGuardianAttackRound": 2,
+        "campaignKnockouts": 0
+      }
+    ]
+  }
+}

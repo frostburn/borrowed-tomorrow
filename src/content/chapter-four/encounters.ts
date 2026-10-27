@@ -12,6 +12,7 @@ export const ENCOUNTERS:Record<string,Encounter>={
   enemies:[{kind:'guardian',variant:'guardian-dusk',col:7,row:3},{kind:'hound',variant:'hound-dusk',col:6,row:1},{kind:'hound',variant:'hound-dusk',col:7,row:5}],rocks:[[4,1],[5,3],[4,5]],
   victory:'The bridge is clear. A braced rescue coat goes into the bag. Disconnect the return cable at the copper clamp.'},
  'sanctuary-warden':{id:'sanctuary-warden', music:'four-warden',name:'The bronze ring · the Sanctuary Warden',flag:'sanctuaryWardenWon',xp:210,coins:108,item:'sun-prism',journal:'wardenFallen',backdrop:{map:'sanctuary',y:-350},
-  enemies:[{kind:'guardian',name:'The Sanctuary Warden',appearance:'sluice-keeper',col:8,row:3,hp:245,bonus:9},{kind:'crow',variant:'crow-dusk',col:7,row:1},{kind:'crow',variant:'crow-dusk',col:7,row:5}],rocks:[[4,2],[4,4],[7,3]],shallow:[[5,1],[5,5]],
+  // Lead the crow screen from the central lane, within an opening Steam approach.
+  enemies:[{kind:'guardian',name:'The Sanctuary Warden',appearance:'sluice-keeper',col:5,row:3,hp:245,bonus:9},{kind:'crow',variant:'crow-dusk',col:7,row:1},{kind:'crow',variant:'crow-dusk',col:7,row:5}],rocks:[[4,2],[4,4],[7,3]],shallow:[[5,1],[5,5]],
   victory:'The coastal arrest ends. A guardian prism goes into the bag for Nell. Examine the covered chart beneath the bronze ring.'},
 };
