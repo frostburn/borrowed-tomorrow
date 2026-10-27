@@ -1644,8 +1644,8 @@
       ]
     }
   ],
-  "nextlayerid": 30,
-  "nextobjectid": 21,
+  "nextlayerid": 31,
+  "nextobjectid": 23,
   "orientation": "orthogonal",
   "properties": [
     {"name":"sceneArt","type":"string","value":"rillbridge"},
