@@ -1,9 +1,10 @@
 import {describe,it,expect} from 'vitest';
 import {SKILLS,abilityFor,decodeSkillBook,presetSkills,skillAbilities,skillPoints,startingSkills,upgradeReason,upgradeSkill} from '../src/rules/skills';
-import {newGame,level,recruitOrrin} from '../src/rules/state';
+import {newGame,level,recruitOrrin,recruit} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {cast,createBattle,damage,awardVictory,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
+import {chapterTwoStart} from '../src/dev/canonical-saves';
 import {offset,quad} from '../src/rules/hex';
 
 const yard:Encounter={id:'skills-test',name:'Skills',music:'battle',flag:'skillsTest',xp:0,coins:0,rocks:[],enemies:[{kind:'hound',col:6,row:3,hp:500}]};
@@ -34,6 +35,16 @@ describe('chosen skill progression',()=>{
    for(const obsolete of ['beacon','dimhalo','pressureline','brace','bolt','volley','driving','bulwark'])expect(commands).not.toContain(obsolete);
    expect(SKILLS[hero].every(s=>(ranks[s.id]??0)<=s.ranks.length)).toBe(true);
   }
+ });
+ it('lets Kit spend both points at the canonical Chapter Two loading-gate victory',()=>{
+  const s=chapterTwoStart();s.flags.coastSeen=true;recruit(s,'kit');s.flags.raidPlanned=s.flags.raidConfronted=true;s.flags.raidDiversion=false;
+  const b=createBattle('coast-loading',s);b.result='victory';awardVictory(b,s);
+  expect(level(s)).toBe(3);expect(skillPoints('kit',level(s),s.skills.kit)).toBe(2);
+  expect(upgradeSkill('kit',level(s),s.skills.kit,'feint')).toBe(true);
+  expect(upgradeSkill('kit',level(s),s.skills.kit,'feint')).toBe(true);
+  expect(skillPoints('kit',level(s),s.skills.kit)).toBe(0);expect(abilityFor({kind:'kit',skills:s.skills.kit},'feint').cost).toBe(1);
+  expect(skillAbilities('kit',s.skills.kit)).not.toContain('ricochet');expect(skillAbilities('kit',s.skills.kit)).not.toContain('lanternvolley');
+  expect(decodeSave(JSON.stringify(s))).toEqual(s);
  });
  it('grants reserve characters the same earned points and does not silently spend them at battle victory',()=>{
   const s=newGame();recruitOrrin(s);s.xp=49;const before=structuredClone(s.skills),b=createBattle('workshop',s);b.result='victory';awardVictory(b,s);

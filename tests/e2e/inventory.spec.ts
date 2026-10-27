@@ -29,7 +29,7 @@ for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phon
     await page.getByRole('button',{name:/^Heavy work coat/}).click();await equip().click();
     await character.getByRole('button',{name:'Orrin',exact:true}).click();
     await expect(equip()).toBeDisabled();
-    await page.getByRole('button',{name:/^Brass reflector/}).click();await expect(equip()).toBeDisabled();
+    const wrong=page.getByRole('button',{name:/^Brass reflector/});await expect(wrong).toHaveClass(/incompatible/);await expect(wrong).toHaveCSS('opacity','0.45');await wrong.click();await expect(equip()).toBeDisabled();await expect(page.getByRole('button',{name:/^Pressure nozzle/})).not.toHaveClass(/incompatible/);await capture(page,`inventory-incompatible-${device}`);
     await page.getByRole('button',{name:/^Pressure nozzle/}).click();await equip().click();
     await page.getByRole('button',{name:/^Reinforced work coat/}).click();await equip().click();
     await capture(page,`inventory-equipped-${device}`);

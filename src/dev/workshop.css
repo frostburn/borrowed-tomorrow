@@ -68,3 +68,4 @@
 .boss-library{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px}.boss-library [aria-pressed="true"]{border-color:#f4c77a;background:#234047}.boss-route{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 16px;font-size:12px}.boss-route [aria-pressed="true"]{border-color:#f4c77a;background:#234047}
 
 .workshop-abilities .skill-cards{grid-template-columns:1fr}
+.inv-item.incompatible{opacity:.45}

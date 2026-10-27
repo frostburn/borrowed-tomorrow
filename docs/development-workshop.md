@@ -271,3 +271,5 @@ restored review links, dragging, centering and the bottom/right edges.
 a stationary face through the screen raster; it also covers cinematic pans and
 workshop scrolling on desktop and an odd-width phone at fractional DPR. These
 rendered checks stay outside the default CI gate.
+
+Character-specific equipment entries dim when they do not fit the selected character, in both the workshop and campaign bag. They remain selectable for inspection; the Equip button stays disabled for an incompatible item. Shared coats remain available to every character.

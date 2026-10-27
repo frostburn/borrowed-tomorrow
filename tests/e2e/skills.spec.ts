@@ -13,9 +13,9 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,checkpoint('collectorConfronted'));
    await approach(page,'collector');await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'The line is clear',exact:true})).toBeVisible();await page.getByRole('button',{name:'Upgrade skills',exact:true}).click();
    const panel=page.getByRole('dialog',{name:'Character skills'});await expect(panel).toContainText('Character level 2');await expect(panel).toContainText('1 upgrade point');await expect(panel.getByRole('button',{name:'Learn Prism lance',exact:true})).toHaveCount(0);await expect(panel).not.toContainText('Celia');await expect(panel).not.toContainText('Kit');await expect(panel).not.toContainText('Petra');await expect(panel).toContainText('Orrin’s Steam lance');
-   await panel.getByRole('button',{name:'Upgrade Lantern burst to 2',exact:true}).click();await expect(panel.getByRole('status')).toContainText('skill 2');await expect(panel.getByRole('button',{name:'Learn Mend',exact:true})).toBeDisabled();expect((await inspect(page)).state.skills.nell.burst).toBe(2);
+   await panel.getByRole('button',{name:'Upgrade Lantern burst to 2',exact:true}).click();await expect(panel.getByRole('status')).toContainText('skill 2');await expect(panel.getByRole('button',{name:'Learn Mend',exact:true})).toBeDisabled();expect((await inspect(page)).state.skills.nell.burst).toBe(2);await expect(page.locator('[data-victory-skills]')).toHaveCount(1);
    await panel.getByRole('button',{name:'Orrin · 1',exact:true}).click();await expect(panel).not.toContainText('Celia');await expect(panel).not.toContainText('Kit');await expect(panel).not.toContainText('Petra');await panel.getByRole('button',{name:'Learn Safety guard',exact:true}).click();expect((await inspect(page)).state.skills.orrin.guard).toBe(1);await capture(page,`skills-level-up-${device}`);
-   await page.getByRole('button',{name:'Close',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();await expect(page.getByRole('dialog',{name:'Character skills'})).toContainText('Skill 2 / 3');
+   await page.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:'Upgrade skills',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Continue the journey',exact:true})).toBeFocused();await capture(page,`skills-points-spent-${device}`);await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();await expect(page.getByRole('dialog',{name:'Character skills'})).toContainText('Skill 2 / 3');
    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.nell.burst).toBe(2);expect((await inspect(page)).state.skills.orrin.guard).toBe(1);expect(errors).toEqual([]);await expect(page.locator('vite-error-overlay')).toHaveCount(0);
   });
   test('workshop ranks change the real Burst footprint and halve friendly damage at the final rank',async({page})=>{
@@ -39,5 +39,19 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await expect.poll(async()=>(await inspect(page)).actors.filter(a=>['nell','orrin'].includes(a.hero)&&a.motion==='attack').length,{intervals:[20,30,50]}).toBe(2);await capture(page,`distant-team-${device}`);
    const b=(await inspect(page)).battle!;expect(b.queue).not.toContain('nell');expect(b.queue).toContain('orrin');expect(b.units.find(u=>u.id==='orrin')!.focus).toBe(3);
   });
+ });
+}
+
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+ test(`Kit spends both canonical loading-gate points on ${device}`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+  await page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+  await approach(page,'kit-contact');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await approach(page,'loading-gate');await page.getByRole('button',{name:'Breach the loading gate',exact:true}).click();
+  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.getByRole('button',{name:'Win battle',exact:true}).click();
+  await page.getByRole('button',{name:'Upgrade skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});
+  await skills.getByRole('button',{name:'Kit · 2',exact:true}).click();await expect(skills).toContainText('Character level 3');
+  await skills.getByRole('button',{name:'Learn Feint',exact:true}).click();await skills.getByRole('button',{name:'Upgrade Feint to 2',exact:true}).click();await expect(skills.getByRole('button',{name:'Kit · 0',exact:true})).toBeVisible();await capture(page,`kit-spent-points-${device}`);
+  expect((await inspect(page)).state.skills.kit.feint).toBe(2);expect((await inspect(page)).state.skills.kit.pin).toBe(0);expect((await inspect(page)).state.skills.kit.ricochet).toBe(0);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.kit.feint).toBe(2);expect(errors).toEqual([]);
  });
 }
