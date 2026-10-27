@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import {expect,it} from 'vitest';
 import {chapterSevenRefugeStart} from '../src/dev/canonical-saves';
 import {createBattle,active,cast,damage,enemyTurn,legalAim,movement,shape,targets,unitAt} from '../src/rules/combat';
@@ -24,7 +25,7 @@ it('does not consume Dazzle during the empty-source pause and still respects bar
  const b=createBattle('benefactor-body',chapterSevenRefugeStart()),core=benefactorUnit(b)!,hero=b.units[0];
  b.round=4;core.dazzledAttacks=3;prepareBenefactor(b);expect(core.intent!.power).toBe(0);b.queue=[core.id,hero.id];enemyTurn(b);expect(core.dazzledAttacks).toBe(3);
  b.round=5;prepareBenefactor(b);core.tauntedBy=hero.id;prepareBenefactor(b);hero.guard=10;b.queue=[core.id,hero.id];const hp=hero.hp;
- enemyTurn(b);expect(core.dazzledAttacks).toBe(2);expect(hero.guard).toBe(0);expect(hero.hp).toBeLessThan(hp);
+ fireBossDirect(b);enemyTurn(b);expect(core.dazzledAttacks).toBe(1);expect(hero.guard).toBe(0);expect(hero.hp).toBeLessThan(hp);
 });
 it('hits overlapping contacts once and ends the final fight through ordinary damage',()=>{
  const s=chapterSevenRefugeStart();s.activeParty=['nell'];const b=createBattle('benefactor-heart',s),core=benefactorUnit(b)!,u=active(b)!;

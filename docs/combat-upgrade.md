@@ -83,3 +83,25 @@ Windmere's ward engine has two ordinary Slag crow guards in staggered lanes. Its
 Alban's two boarders have 98 HP, matching the earlier shield troops, and start on different rows. Each battery sights its nearest living hero when announcing the next raking axis or bombardment. The bridge rotates its target; after both batteries fall its broadside crosses two axes through that target. All announced cells remain fixed until the next round. Gun destruction stays permanent, and bridge destruction ends boarding.
 
 The cores/batteries, their attack power, rewards and party abilities are unchanged. Ordinary Taunt, Dazzle, guard, movement and healing remain counters; Taunt still concentrates a warning on Petra rather than being bypassed by the targeting change.
+
+## Later bosses: direct attacks (#137)
+
+From Chapter Five onward, the large patterned bosses also fire one lighter single-target attack before their marked main attack. Only the flagship's bridge gets the extra shot; its batteries and boarding marines keep their existing actions. Chapter Seven's four machine/dragon reprises and all three Benefactor forms share the same rule. Earlier chapters and passive components keep their existing actions.
+
+The direct attack chooses a living fighter at firing time, rotating in party order each round rather than seeking the lowest HP. It reaches its target regardless of movement or cover. The movement hint names the expected target and shot; Taunt overrides that choice. Dodging still avoids the heavier area attack. Defend, barriers, Dazzle, healing and Taunt answer the lighter shot. Each shot and main attack independently uses armor, absorbs guard and consumes one of Dazzle's three attacks.
+
+| Boss | Direct attack | Base power, before the boss's existing bonus and defenses |
+| --- | --- | ---: |
+| Furnace carrier / harvest keeper | Slag shot | 9 |
+| Ward engines | Needle ray | 10 |
+| Flagship bridge | Covering shot | 11 |
+| Sun serpent | Sun shard | 10 |
+| Winter dragons | Ice shard | 12 |
+| Imperial vessel | Crown bolt | 12 |
+| Lightbearer | Lantern splinter | 11 |
+| First collector | Pressure bolt | 9 |
+| Benefactor, all forms | Claimed light | 14 |
+
+The extra cast uses the existing once-per-turn bonus allowance and leaves the same fighter queued for its main action, with separate animations and one affected hex. It never replaces, re-aims or widens a fixed warning, or creates glass, ice or hot-metal floor damage. The carrier still follows its legal movement path before pouring. Breaking the ward's lit projection interrupts **both** attacks without spending Dazzle. Imperial/Lightbearer/Benefactor fourth-round pauses stay completely quiet. Boss death and normal victory conditions remain unchanged.
+
+`rules/boss-direct.ts` owns assignment, rotating targets and the bonus turn. `game/boss-direct-effect.ts` draws small aimed projectiles and the lens ray, separately from the main area effect. The opt-in `scripts/compare-late-bosses.mjs` compares authored late-game fixtures and three consecutive final forms using ordinary combat/victory recovery; these probes do not claim an earned Chapter Six/Seven playthrough.

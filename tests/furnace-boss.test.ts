@@ -1,3 +1,4 @@
+import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { active,cast,createBattle,damage,defend,enemyTurn,legalAim,movement,pushDestination,shape,targets,unitAt } from '../src/rules/combat';
 import { chapterFiveStart } from '../src/dev/canonical-saves';
@@ -14,7 +15,7 @@ it('the mobile carrier occupies three adjacent contacts above the actual chosen 
 });
 it('a lane move uses a legal body path and leaves temporary hot metal outside its new base',()=>{
  const {b,boss}=setup(),before={...boss.hex};b.queue=[boss.id,'nell'];const path=movement(b,boss).get(key(boss.intent!.destination!))!.path;
- expect(enemyTurn(b)).toBe('judgment');expect(boss.hex).not.toEqual(before);expect(boss.hex).toEqual(offset(7,2));expect(path.length).toBeGreaterThan(0);
+ fireBossDirect(b);expect(enemyTurn(b)).toBe('judgment');expect(boss.hex).not.toEqual(before);expect(boss.hex).toEqual(offset(7,2));expect(path.length).toBeGreaterThan(0);
  expect(b.furnaceHeat!.length).toBeGreaterThan(0);expect(b.vents).toEqual(new Set(b.furnaceHeat!.map(h=>key(h.hex))));
  const body=new Set(occupiedHexes(boss).map(key));expect(b.furnaceHeat!.every(h=>inside(h.hex)&&!body.has(key(h.hex)))).toBe(true);
  b.round=2;prepareFurnace(b);expect(b.vents.size).toBeGreaterThan(0);b.round=3;prepareFurnace(b);expect(b.vents.size).toBe(0);
@@ -27,14 +28,14 @@ it('blocked destination tracks cannot pass through an occupied cell or push off 
 });
 it('announced pours stay fixed across moves and round rollover; Taunt redirects the actual hit',()=>{
  const {b,boss}=setup(),petra=b.units.find(u=>u.id==='petra')!,warning=structuredClone(boss.intent!.cells);b.units[0].hex=offset(1,6);prepareFurnace(b);expect(boss.intent!.cells).toEqual(warning);
- boss.tauntedBy=petra.id;prepareFurnace(b);expect(boss.intent!.cells).toEqual([petra.hex]);const hp=petra.hp;b.queue=[boss.id,'nell'];expect(enemyTurn(b)).toBe('judgment');expect(petra.hp).toBe(hp-damage(boss,petra,'judgment'));expect(b.log.some(t=>t.includes('Pour on Petra hits Petra'))).toBe(true);
+ boss.tauntedBy=petra.id;prepareFurnace(b);expect(boss.intent!.cells).toEqual([petra.hex]);b.queue=[boss.id,'nell'];fireBossDirect(b);const hp=petra.hp;expect(enemyTurn(b)).toBe('judgment');expect(petra.hp).toBe(hp-damage(boss,petra,'judgment'));expect(b.log.some(t=>t.includes('Pour on Petra hits Petra'))).toBe(true);
  delete boss.tauntedBy;b.queue=[boss.id];boss.moved=false;const old=structuredClone(boss.intent!.cells);enemyTurn(b);expect(b.round).toBe(2);expect(boss.intent!.round).toBe(2);expect(boss.intent!.cells).not.toEqual(old);expect(boss.intent!.destination).toEqual(offset(3,2));
 });
 it('area attacks hit the carrier once through overlapping contacts, while Dazzle lasts three attacks',()=>{
  const {b,boss}=setup(),nell=b.units[0];nell.hex=offset(6,5);b.queue=[nell.id,boss.id];nell.focus=6;
  const occupied=new Set(occupiedHexes(boss).map(key)),aim=cells().find(h=>legalAim(b,nell,'burst',h)&&shape(b,nell,'burst',h).filter(p=>occupied.has(key(p))).length>1)!;
  expect(aim).toBeTruthy();expect(targets(b,nell,'burst',aim).filter(u=>u.id===boss.id)).toHaveLength(1);const hp=boss.hp,amount=damage(nell,boss,'burst');expect(cast(b,nell,'burst',aim)).toBe(true);expect(boss.hp).toBe(hp-amount);
- boss.dazzledAttacks=3;b.queue=[boss.id,nell.id];boss.intent!.cells=[nell.hex];const reduced=damage(boss,nell,'judgment');boss.dazzledAttacks=0;expect(reduced).toBeLessThan(damage(boss,nell,'judgment'));boss.dazzledAttacks=3;enemyTurn(b);expect(boss.dazzledAttacks).toBe(2);
+ boss.dazzledAttacks=3;b.queue=[boss.id,nell.id];boss.intent!.cells=[nell.hex];const reduced=damage(boss,nell,'judgment');boss.dazzledAttacks=0;expect(reduced).toBeLessThan(damage(boss,nell,'judgment'));boss.dazzledAttacks=3;fireBossDirect(b);enemyTurn(b);expect(boss.dazzledAttacks).toBe(1);
 });
 it('hot metal damages ground units once per round and flying crows ignore it',()=>{
  const {b,boss}=setup(),nell=b.units[0],crow=b.units.find(u=>u.kind==='crow')!;b.furnaceHeat=[{hex:nell.hex,untilRound:2},{hex:crow.hex,untilRound:2},{hex:boss.hex,untilRound:2}];prepareFurnace(b);b.queue=[nell.id];const nhp=nell.hp,chp=crow.hp,bhp=boss.hp;

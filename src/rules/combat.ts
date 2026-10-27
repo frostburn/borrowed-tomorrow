@@ -23,6 +23,7 @@ import { validParty } from './party';
 import type { MusicMode } from '../game/score';
 import { occupiedHexes, bodyDistance } from './footprint';
 import { configureConduit, prepareConduit } from './conduit';
+import {configureBossDirect,bossDirectTurn} from './boss-direct';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
 import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
 
@@ -106,6 +107,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.boss==='serpent')configureSerpent(battle);
   if(e.boss==='dragon')configureWinterDragon(battle);
   if(e.boss==='emperor'||e.boss==='lightbearer')configureImperial(battle,e.boss==='lightbearer');
+  configureBossDirect(battle,e);
   if(e.coordinated&&!e.boss){const guardian=battle.units.find(u=>u.side==='enemy'&&u.kind==='guardian'),crow=battle.units.find(u=>u.side==='enemy'&&u.kind==='crow');if(guardian&&crow)for(const [unit,partner]of [[guardian,crow],[crow,guardian]]){unit.abilities=[...unit.abilities,'relay'];unit.linkedTo=partner.id;}}
   if(e.fixtures?.length){
     battle.fixtures=e.fixtures.map(f=>({...f,hex:offset(f.col,f.row),hp:f.hp??30,maxHp:f.hp??30,vents:f.vents?.map(h=>offset(...h))}));
@@ -359,31 +361,37 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   if(movementOnly(b,u)){approachEnemy(b,u);if(active(b)?.id===u.id)endTurn(b);return;}
   if(isFlagshipPart(u)){
-    prepareFlagship(b);if(b.result)return;const aim={...u.hex};
+    prepareFlagship(b);if(b.result)return;const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===EMPEROR_ID||u.id===LIGHTBEARER_ID){
-    prepareImperial(b);if(u.intent?.power===0){log(b,u.id===LIGHTBEARER_ID?'Nell holds the lantern shut.':'The crown pauses over the unwritten hour.');finishTurn(b);return;}const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+    prepareImperial(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    if(u.intent?.power===0){log(b,u.id===LIGHTBEARER_ID?'Nell holds the lantern shut.':'The crown pauses over the unwritten hour.');finishTurn(b);return;}const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===WINTER_DRAGON_ID){
-    prepareWinterDragon(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+    prepareWinterDragon(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===SUN_SERPENT_ID){
-    prepareSerpent(b);const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
+    prepareSerpent(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===BENEFACTOR_ID&&b.benefactor){
-    prepareBenefactor(b);if(u.intent?.power===0){log(b,'The broken source draws no more light.');finishTurn(b);return;}
+    prepareBenefactor(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    if(u.intent?.power===0){log(b,'The broken source draws no more light.');finishTurn(b);return;}
     const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===WARD_ID){
-    prepareWard(b);const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;
+    prepareWard(b);if(!u.intent?.cells.length){log(b,'The broken projection interrupts the optical circuit.');finishTurn(b);return;}
+    const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    const aim={...u.hex};if(cast(b,u,'refraction',aim,onRetaliation)){onAction?.('refraction',aim);return 'refraction';}return;
   }
-  if(u.id===FURNACE_ID)return furnaceTurn(b,onRetaliation,onAction);
+  if(u.id===FURNACE_ID){prepareFurnace(b);return bossDirectTurn(b,u,onAction)??furnaceTurn(b,onRetaliation,onAction);}
   if(u.id===SPOTTER_ID)return spotterTurn(b,onRetaliation,onAction);
   if(u.abilities.includes('relay')){prepareRelay(b);if(u.intent?.cells.length&&legalAim(b,u,'relay',u.hex)){const aim={...u.hex};onAction?.('relay',aim);cast(b,u,'relay',aim,onRetaliation);return 'relay';}}
   orderShields(b,u);
   if(u.id===REGULATOR_ID){
-    prepareConduit(b);const aim={...u.hex};
+    prepareConduit(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;const aim={...u.hex};
     if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}
     return;
   }
