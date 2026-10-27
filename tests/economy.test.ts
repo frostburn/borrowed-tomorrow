@@ -6,7 +6,7 @@ import { buySupply, canBuy, sellEquipment, sellPrice, shopStock } from '../src/r
 import { decodeSave } from '../src/rules/save';
 import { newGame, restoreParty } from '../src/rules/state';
 import { offset } from '../src/rules/hex';
-import { checkpoint, coastCheckpoint, brokenCheckpoint } from './support/progress';
+import { checkpoint, coastCheckpoint, palaceCheckpoint, brokenCheckpoint } from './support/progress';
 import { interactChapterTwo } from '../src/content/chapter-two/interactions';
 import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
@@ -161,3 +161,16 @@ describe('shared medical supplies', () => {
     expect(Object.keys(CONSUMABLES)).toHaveLength(3);
   });
 });
+
+ it('sells midgame protection without leaking stronger medicine or unrecruited fittings',()=>{
+  const early=coastCheckpoint('chapterTwoComplete');early.coins=500;
+  expect(buySupply(early,'insulated-coat','conduit')).toBe(false);
+  const s=palaceCheckpoint('capitalSeen');s.coins=500;
+  expect(buySupply(s,'insulated-coat','conduit')).toBe(true);expect(s.coins).toBe(452);
+  expect(s.inventory.bag['insulated-coat']).toBe(1);expect(s.inventory.characters.nell.coat).not.toBe('insulated-coat');
+  expect(buySupply(s,'saber-hilt','conduit')).toBe(false);expect(buySupply(s,'field-bandage','conduit')).toBe(false);
+  const later=brokenCheckpoint('worksArrival');later.coins=500;
+  expect(buySupply(later,'medic-clasp','field')).toBe(true);expect(buySupply(later,'insulated-coat','field')).toBe(true);
+  expect(decodeSave(JSON.stringify(later))).toEqual(later);
+  for(const shop of ['conduit','field']as const)for(const supply of shopStock(shop))if(!isConsumable(supply.id))expect(sellPrice(supply.id)).toBeLessThan(supply.cost);
+ });

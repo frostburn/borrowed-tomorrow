@@ -7,7 +7,7 @@ export const ENCOUNTERS:Record<string,Encounter>={
   enemies:[{kind:'guardian',variant:'guardian-dusk',col:7,row:3},{kind:'hound',variant:'hound-dusk',col:6,row:1},{kind:'hound',variant:'hound-dusk',col:6,row:5}],rocks:[[4,1],[4,5]],shallow:[[4,2],[4,3],[4,4],[5,2],[5,3],[5,4]],
   victory:'The pump floor is clear. A counterweighted return valve goes into the bag for Orrin. Turn the winding wheel on the middle pier.'},
  'works-survey':{id:'works-survey', music:'four-battle',name:'Breakwater · the survey cart',flag:'worksStoresWon',xp:65,coins:38,item:'folding-sight',backdrop:{map:'breakwater',y:-300},
-  enemies:[{kind:'crow',variant:'crow-dusk',col:7,row:1},{kind:'hound',variant:'hound-dusk',col:6,row:4}],rocks:[[4,2],[6,5],[8,3]],victory:'The survey cart is open. A folding range sight goes into the bag for Kit.'},
+  enemies:[{kind:'crow',variant:'crow-dusk',col:9,row:1},{kind:'hound',variant:'hound-dusk',col:8,row:5}],rocks:[[4,2],[6,3],[6,5],[8,3]],victory:'The survey cart is open. A folding range sight goes into the bag for Kit.'},
  'sanctuary-road':{id:'sanctuary-road', music:'four-battle',name:'The sanctuary · the return-line bridge',flag:'roadGuardWon',xp:145,coins:72,item:'rescue-coat',journal:'roadClear',backdrop:{map:'sanctuary',y:-350},
   enemies:[{kind:'guardian',variant:'guardian-dusk',col:7,row:3},{kind:'hound',variant:'hound-dusk',col:6,row:1},{kind:'hound',variant:'hound-dusk',col:7,row:5}],rocks:[[4,1],[5,3],[4,5]],
   victory:'The bridge is clear. A braced rescue coat goes into the bag. Disconnect the return cable at the copper clamp.'},

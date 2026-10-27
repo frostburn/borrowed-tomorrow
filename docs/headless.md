@@ -7,7 +7,7 @@ npm run simulate:early
 npm run simulate:middle -- --from /tmp/borrowed-tomorrow-headless.json
 ```
 
-The second command continues through Chapters Three and Four from the actual save earned by the first. If that report already exists, reuse it directly. It preserves the party, injuries, skills, equipment, money and supplies; it does not load a canonical fixture or grant resources. Default output is `/tmp/borrowed-tomorrow-middle.json`, leaving the input intact.
+The second command continues through Chapters Three and Four from the actual save earned by the first. If that report already exists, reuse it directly. It preserves the party, injuries, skills, equipment, money and supplies; it does not load a canonical fixture or grant resources. The CLI defaults to the defensive agent, offensive formation/upgrade priorities and prepared spending (see the comparison below). Default output is `/tmp/borrowed-tomorrow-middle.json`, leaving the input intact.
 
 ## Continuing and reviewing a run
 
@@ -26,7 +26,9 @@ Continuation reports include the source file’s SHA-256, policy version, option
 
 `src/headless/campaign.ts` is the story/rules adapter; `tactics.ts` chooses legal moves and actions; `middle.ts` contains the route and deliberate player choices; `continue.ts` owns the CLI/report file. `run.ts` keeps the original early policy stable and exposes `playEarly` so route tests can earn their starting state from `newGame()`.
 
-The adapter checks visible interactions, access flags and real map paths, completes story callbacks and uses the shared combat, enemy AI, rewards, shopping, inventory and formation APIs. It accounts for multihex enemies, dangerous telegraphs/vents, simultaneous earth plates, team costs and a helper’s remaining movement. It never forces victories or retries defeats. The policy ignores some tactical possibilities (notably proactive Taunt, Shield bash and Wait), and its greedy healing is not optimized for conserving supplies.
+The original `middle-v1` behavior remains available with `--tactics legacy --build offense --spending baseline`. Programmatic sessions default to that baseline so existing route tests remain comparable.
+
+The adapter checks visible interactions, access flags and real map paths, completes story callbacks and uses the shared combat, enemy AI, rewards, shopping, inventory and formation APIs. It accounts for multihex enemies, dangerous telegraphs/vents, simultaneous earth plates, team costs and a helper’s remaining movement. It never forces victories or retries defeats. The legacy policy ignores proactive Taunt, Shield bash and Wait. The defensive policy evaluates the former two; neither policy plans Wait.
 
 ## Early baseline
 
@@ -83,3 +85,34 @@ npm run check
 The opt-in simulation suite earns the early checkpoint once, tests the four route combinations, compares split versus uninterrupted continuation and clears the route without optional rewards. Its `.simulation.ts` files stay outside the small default CI gate. Default tests cover input validation, inaccessible interactions, rejected formation changes, isolated tactical planning and team-helper turns.
 
 These runs do not test rendering, hit areas, animation, asset loading or audio. The scripted routes currently stop after Chapter Four. Later chapters need their own route, checkpoint-prompt and trigger handling before they are supported; a successful run is not evidence about those chapters. The earned Chapter Four `state`/checkpoint is available for that next continuation.
+
+## Defensive and spending comparison (middle-v2)
+
+Run `npm run simulate:compare -- --from /tmp/borrowed-tomorrow-headless.json` for six policies using identical earned inputs and routes. Optional `--conduit pressure`, `--harbor wet` and `--skip-optional` select route variants. Each run writes a full trace in a new temporary directory; its `summary.json` records spending, actual HP lost (including retaliation and hazards), knockouts, ability/item use and rounds/minimum HP for each battle. Failed runs remain failures and produce a nonzero exit. The CLI reports the directory. These comparisons remain outside default CI.
+
+`--tactics defensive` shortlists a stationary and moving target per legal ability plus reachable Defend positions, then resolves each candidate on a copy using the real cast/move rules. Retaliation, friendly fire, barriers, Dazzle, Taunt, Daybreak, bonus shoves, team costs and items therefore affect the evaluation. A bounded forecast lets pending enemies act without intervening allied attacks; ordinary movement, cover and enemy targeting now matter alongside boss telegraphs. It penalizes low HP/knockouts, focus spending and consumables. A spent helper can relocate to reduce exposure or end its movement. Earth-plate assignments keep their existing policy until the shield opens.
+
+This is a conservative heuristic, not a complete search: the shortlist can miss a better position, the forecast omits future allied actions and later rounds, and Shield bash is evaluated without a full follow-up combo search. No planning copy is committed as a real turn.
+
+`--build support` prioritizes healing/control upgrades and uses Nell/Orrin/Petra in Chapter Three and Nell/Petra/Celia in Chapter Four. The offensive rotation uses Nell/Kit/Petra, then Nell/Orrin/Celia; both finish with Nell/Celia/Petra. Existing purchased skill ranks are never reset. Upgrade priorities often converge at these levels, so the formation difference is the meaningful distinction in this checkpoint comparison.
+
+`--spending frugal` tops up to two bandages and one field bandage, preserves at least 32 marks and penalizes item use more strongly. `prepared` targets three bandages, two field bandages and one tonic, and buys/equips strictly better available gear for recruited characters while retaining 80 marks for gear purchases. It visits the pump-house supplier after Celia joins. Both buy through actual open shops and respect stock/ownership; neither sells loot. The baseline policy retains the original fixed purchases.
+
+The six policies completed both before and after the targeted stock/deployment changes, with no party knockouts. [balance-comparison.json](headless/balance-comparison.json) retains source hashes and detailed summaries. These are the feeds/dry routes with optional patrols:
+
+| Policy | HP lost before → after | Marks spent before → after | Final marks after | Survey rounds after |
+| --- | ---: | ---: | ---: | ---: |
+| Legacy / offense / baseline | 644 → 643 | 66 → 66 | 692 | 2 |
+| Legacy / offense / prepared | 663 → 693 | 90 → 364 | 394 | 3 |
+| Defensive / offense / prepared | 514 → 445 | 90 → 356 | 402 | 2 |
+| Defensive / support / prepared | 757 → 620 | 90 → 364 | 394 | 3 |
+| Defensive / offense / frugal | 509 → 508 | 42 → 42 | 716 | 2 |
+| Defensive / support / frugal | 731 → 751 | 42 → 42 | 716 | 2 |
+
+Before changing the game, defensive offense reduced HP lost from 663 to 514 with the same prepared purchases/formation. This supports fixing the agent before weakening enemies. The support formation takes longer and can lose more total HP despite using protection; it is not universally stronger. The later stock/deployment changes further reduce damage for the prepared defensive runs, but not for every policy. Cumulative HP loss is not a difficulty score on its own.
+
+The survey patrol now approaches from separated upper/lower lanes with central cover. Its two enemies and their stats/rewards are unchanged; it lasts two or three rounds across these policies. No ability range, damage, enemy targeting rule or boss statistic changed.
+
+Conduit counters now sell coastal fittings and insulated coats; medical counters also offer coats and Celia’s medic clasp. Prepared agents spend 356–364 marks, with 394–402 left. Frugal agents still complete with only 42 marks spent. Useful spending is available without making it mandatory or removing free rest. Later equipment stock and wider party/build searches remain follow-up work.
+
+[chapter-four-defensive.json](headless/chapter-four-defensive.json) is the new default earned checkpoint (level 9, 402 marks). The original `chapter-four-earned.json` is retained as the historical middle-v1 result, not silently relabeled as a current run.

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
-import { checkpoint, coastCheckpoint, brokenCheckpoint } from '../support/progress';
+import { checkpoint, coastCheckpoint, palaceCheckpoint, brokenCheckpoint } from '../support/progress';
 import { approach, importSave, travel } from './navigation';
 import { battle, capture, clickHex, inspect } from './controls';
 
@@ -76,6 +76,15 @@ export function economyFlows(production = false) {
         const saved = (await inspect(page)).state; expect(saved.coins).toBe(88); expect(saved.inventory.characters.nell.fitting).toBe('coastal-reflector'); expect(saved.inventory.bag).toMatchObject({ 'field-bandage': 1, 'focus-tonic': 0 });
         await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click(); await expect.poll(async () => (await inspect(page)).state.inventory).toEqual(saved.inventory);
         await expect(page.locator('vite-error-overlay')).toHaveCount(0); expect(errors).toEqual([]);
+      });
+      test('conduit counter offers manual protection purchases',async({page})=>{
+        await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});const state=palaceCheckpoint('capitalSeen');state.coins=200;await importSave(page,state);
+        await approach(page,'capital-engine');await capture(page,`conduit-supplier-${production?'production-':''}${device}`);
+        await page.getByRole('button',{name:'Browse supplies and trade gear',exact:true}).click();
+        const shop=page.getByRole('dialog',{name:'Conduit supplies'});await expect(shop).toBeVisible();await expect(shop).not.toContainText('Field bandage');
+        await shop.getByRole('group',{name:'Insulated work coat',exact:true}).getByRole('button',{name:/^Buy/}).click();
+        const saved=(await inspect(page)).state;expect(saved.coins).toBe(152);expect(saved.inventory.bag['insulated-coat']).toBe(1);expect(saved.inventory.characters.nell.coat).not.toBe('insulated-coat');
+        await capture(page,`conduit-shop-${production?'production-':''}${device}`);
       });
       test('Chapter Four introduces the new medicines at a medical supplier',async({page})=>{
         await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,brokenCheckpoint('refugeSeen'));

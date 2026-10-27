@@ -1,12 +1,12 @@
 import {describe,it,expect} from 'vitest';
-import {CampaignSession} from '../src/headless/campaign';
+import {CampaignSession,defaultAgent} from '../src/headless/campaign';
 import {readDeparture} from '../src/headless/middle';
 import {decideBattle} from '../src/headless/tactics';
 import {newGame} from '../src/rules/state';
 import {createBattle,cast,active,move,endTurn} from '../src/rules/combat';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {offset} from '../src/rules/hex';
-import {coastCheckpoint,palaceCheckpoint} from './support/progress';
+import {coastCheckpoint,palaceCheckpoint,brokenCheckpoint} from './support/progress';
 
 describe('headless continuation boundaries',()=>{
  it('preserves every resource and choice in either a report or an exported departure',()=>{
@@ -38,4 +38,11 @@ describe('headless continuation boundaries',()=>{
   if(decision.kind==='move')expect(move(b,orrin,decision.hex)).not.toBeNull();else expect(endTurn(b)).toBe(true);
   expect(b.queue).not.toContain('orrin');expect(orrin.focus).toBe(focus);
  });
+});
+
+it('keeps the medical budget reserve and cannot buy for an unrecruited companion',()=>{
+ const state=brokenCheckpoint('refugeSeen');state.coins=73;
+ const session=new CampaignSession(state,defaultAgent);session.visit('refuge-rest','Browse medical supplies and trade gear');
+ session.stockUp();session.closeShop();expect(session.state.coins).toBeGreaterThanOrEqual(32);expect(session.state.coins).toBeLessThan(73);
+ expect(session.state.inventory.bag['medic-clasp']??0).toBe(0);expect(state.coins).toBe(73);
 });

@@ -8,12 +8,18 @@ import {level,remember,setActive,type GameState} from '../rules/state';
 import {decodeSave} from '../rules/save';
 import {active,awardVictory,cast,createBattle,defend,endTurn,enemyTurn,move} from '../rules/combat';
 import {equipItem,ITEMS,type ItemId} from '../rules/inventory';
-import {buySupply,type ShopId,type SupplyId} from '../rules/supplies';
+import {buySupply,canBuy,shopStock,type ShopId,type SupplyId} from '../rules/supplies';
 import {upgradeSkill,type SkillId} from '../rules/skills';
 import type {CompanionId} from '../rules/party';
 import {decideBattle,fighterSnapshot} from './tactics';
+import {decideDefensively} from './defensive';
+
+export interface AgentOptions {tactics:'legacy'|'defensive';build:'offense'|'support';spending:'baseline'|'frugal'|'prepared'}
+export const baselineAgent:AgentOptions={tactics:'legacy',build:'offense',spending:'baseline'};
+export const defaultAgent:AgentOptions={tactics:'defensive',build:'offense',spending:'prepared'};
 
 const priorities:Record<CompanionId,SkillId[]>={nell:['burst','sunline','mend','dazzle'],orrin:['steam','rivet','guard','repulse'],kit:['quickshot','pin','ricochet','feint'],petra:['crush','sweep','taunt','bash'],celia:['heal','celestialbolt','rally','sanctuary']};
+const support:Record<CompanionId,SkillId[]>={nell:['mend','dazzle','burst','sunline'],orrin:['guard','rivet','steam','repulse'],kit:['feint','pin','quickshot','ricochet'],petra:['taunt','bash','crush','sweep'],celia:['heal','sanctuary','rally','celestialbolt']};
 export const resources=(s:GameState)=>structuredClone({chapter:s.chapter,location:s.location,level:level(s),xp:s.xp,coins:s.coins,bandages:s.bandages,party:s.party,activeParty:s.activeParty,inventory:s.inventory,skills:s.skills});
 export class CampaignSession{
  readonly state:GameState;
@@ -23,7 +29,7 @@ export class CampaignSession{
  private pendingBattle?:string;
  private shop?:ShopId;
  private readonly host:StoryHost;
- constructor(state:GameState){
+ constructor(state:GameState,readonly agent:AgentOptions=baselineAgent){
   this.state=decodeSave(JSON.stringify(state));
   this.host={state:this.state,talk:d=>{if(this.dialogue)throw Error('Overlapping dialogue');this.dialogue=d;this.events.push({event:'dialogue',scene:d.scene?.id,lines:d.lines.map(l=>({who:l.who,text:l.text}))});},commit:(f,j)=>{this.state.flags[f]=true;if(j)remember(this.state,j);},refresh(){},save(){},checkpoint:async()=>{throw Error('Checkpoint prompt not supported in this route');},travel:(map,x,y)=>{this.state.location={map,x,y};resumeChapter(this.host);},battle:id=>{if(this.pendingBattle)throw Error('Overlapping battles');this.pendingBattle=id;},shop:id=>{this.shop=id??'station';},boundary(){},toast:message=>this.events.push({event:'message',message}),endingMusic(){}};
  }
@@ -69,7 +75,7 @@ export class CampaignSession{
  }
  prepare(){
   this.world();const s=this.state;
-  for(const p of s.party)for(const skill of priorities[p.id])while(upgradeSkill(p.id,level(s),s.skills[p.id],skill))this.events.push({event:'skill',hero:p.id,skill,rank:s.skills[p.id][skill]});
+  for(const p of s.party)for(const skill of (this.agent.build==='support'?support:priorities)[p.id])while(upgradeSkill(p.id,level(s),s.skills[p.id],skill))this.events.push({event:'skill',hero:p.id,skill,rank:s.skills[p.id][skill]});
   // Prefer better bag items without taking gear away from another fighter.
   const rating=(id:ItemId|null)=>id?ITEMS[id].bonuses.attack*3+ITEMS[id].bonuses.armor*2+ITEMS[id].bonuses.speed:0;
   const heroes=[...s.activeParty,...s.party.map(p=>p.id).filter(id=>!s.activeParty.includes(id))];
@@ -82,6 +88,28 @@ export class CampaignSession{
   if(!this.shop||!Number.isInteger(count)||count<1)throw Error('Open a shop before buying');
   for(let n=0;n<count;n++)this.observed('purchase',{shop:this.shop,item},()=>{if(!buySupply(this.state,item,this.shop))throw Error(`Cannot buy ${item}`);});
  }
+ stockUp(){
+  if(!this.shop)throw Error('Open a shop before stocking up');
+  const prepared=this.agent.spending==='prepared';
+  for(const [item,wanted] of [['bandage',prepared?3:2],['field-bandage',prepared?2:1],['focus-tonic',prepared?1:0]]as const){
+   const count=()=>item==='bandage'?this.state.bandages:this.state.inventory.bag[item]??0;
+   const price=shopStock(this.shop).find(s=>s.id===item)?.cost??Infinity;
+   while(count()<wanted&&this.state.coins-price>=32&&canBuy(this.state,item,this.shop))this.buy(item,1);
+  }
+  if(!prepared)return;
+  // Buy only strict improvements for recruited companions, with an emergency
+  // purse left over. Equipment remains an ordinary manual inventory action.
+  for(const hero of [...this.state.activeParty,...this.state.party.map(p=>p.id).filter(id=>!this.state.activeParty.includes(id))]){
+   const rating=(id:ItemId|null)=>id?ITEMS[id].bonuses.attack*3+ITEMS[id].bonuses.armor*5+ITEMS[id].bonuses.speed:0;
+   const choices=shopStock(this.shop).filter(s=>s.id in ITEMS).map(s=>({...s,id:s.id as ItemId})).filter(s=>(ITEMS[s.id].heroes as readonly string[]).includes(hero)).sort((a,b)=>rating(b.id)-rating(a.id));
+   for(const choice of choices){
+    const old=this.state.inventory.characters[hero][ITEMS[choice.id].slot];
+    if(rating(choice.id)<=rating(old)||this.state.coins-choice.cost<80||!canBuy(this.state,choice.id,this.shop))continue;
+    this.buy(choice.id,1);if(!equipItem(this.state.inventory,hero,choice.id))throw Error('Purchased gear could not be equipped');
+    this.events.push({event:'equip',hero,item:choice.id,previous:old});
+   }
+  }
+ }
  closeShop(){if(!this.shop)throw Error('No shop is open');this.shop=undefined;}
  private fight(id:string){
   const definition=ENCOUNTERS[id];if(this.state.flags[definition.flag])throw Error(`Already won: ${id}`);
@@ -91,7 +119,7 @@ export class CampaignSession{
   for(let n=0;!b.result&&n<600;n++){
    const u=active(b);if(!u)throw Error(`No active fighter in ${id}`);
    const start=fighterSnapshot(b.units),round=b.round,grounded=b.grounding?.open??false;
-   const decision=u.side==='enemy'?{kind:'enemy' as const}:decideBattle(b);
+   const decision=u.side==='enemy'?{kind:'enemy' as const}:this.agent.tactics==='legacy'?decideBattle(b):decideDefensively(b,this.agent.spending==='frugal');
    let accepted=true,enemyAction:ReturnType<typeof enemyTurn>;
    if(decision.kind==='enemy')enemyAction=enemyTurn(b);
    else if(decision.kind==='move')accepted=!!move(b,u,decision.hex);

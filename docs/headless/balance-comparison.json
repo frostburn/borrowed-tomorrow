@@ -1,0 +1,1249 @@
+{
+  "policy": "middle-v2",
+  "before": [
+    {
+      "name": "legacy-offense-baseline",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "baseline"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 692,
+      "spent": 66,
+      "damage": 644,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 21,
+        "steam": 1,
+        "bandage": 3,
+        "mend": 4,
+        "rivet": 5,
+        "crossfire": 6,
+        "quickshot": 4,
+        "feint": 1,
+        "crush": 3,
+        "strike": 3,
+        "starline": 4,
+        "prism": 1,
+        "heal": 5,
+        "field-bandage": 2,
+        "focus-tonic": 1,
+        "celestialbolt": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 11,
+          "damage": 72,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 44,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 55,
+          "damage": 33,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 1,
+          "minHp": 75,
+          "damage": 15,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 88,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 15,
+          "damage": 234,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "legacy-offense-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 668,
+      "spent": 90,
+      "damage": 663,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "focus-tonic": 1,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 20,
+        "steam": 1,
+        "bandage": 4,
+        "mend": 5,
+        "rivet": 5,
+        "crossfire": 6,
+        "quickshot": 4,
+        "feint": 1,
+        "crush": 3,
+        "strike": 5,
+        "starline": 4,
+        "prism": 1,
+        "heal": 5,
+        "focus-tonic": 1,
+        "field-bandage": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 11,
+          "damage": 72,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 44,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 55,
+          "damage": 33,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 1,
+          "minHp": 75,
+          "damage": 15,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 88,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 39,
+          "damage": 253,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-offense-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 668,
+      "spent": 90,
+      "damage": 514,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 6,
+        "focus-tonic": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 23,
+        "bandage": 6,
+        "strike": 8,
+        "mend": 4,
+        "steam": 1,
+        "quickshot": 6,
+        "crossfire": 5,
+        "feint": 1,
+        "taunt": 3,
+        "crush": 1,
+        "starline": 5,
+        "rivet": 3,
+        "celestialbolt": 2,
+        "heal": 3,
+        "focus-tonic": 1,
+        "daybreak": 1,
+        "sweep": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 43,
+          "damage": 51,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 50,
+          "damage": 18,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 49,
+          "damage": 36,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 1,
+          "minHp": 75,
+          "damage": 15,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 100,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 8,
+          "minHp": 54,
+          "damage": 128,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-support-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 668,
+      "spent": 90,
+      "damage": 757,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 6,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 25,
+        "bandage": 6,
+        "strike": 10,
+        "mend": 4,
+        "steam": 6,
+        "quickshot": 1,
+        "crush": 6,
+        "rivet": 3,
+        "sweep": 3,
+        "taunt": 2,
+        "guard": 1,
+        "daybreak": 5,
+        "celestialbolt": 7,
+        "field-bandage": 2,
+        "heal": 3
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 52,
+          "damage": 81,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 59,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 55,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 61,
+          "damage": 26,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 6,
+          "minHp": 38,
+          "damage": 172,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 114,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 38,
+          "damage": 195,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-offense-frugal",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 509,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 21,
+        "bandage": 3,
+        "strike": 7,
+        "quickshot": 7,
+        "mend": 4,
+        "steam": 1,
+        "crossfire": 5,
+        "feint": 1,
+        "taunt": 2,
+        "crush": 1,
+        "starline": 5,
+        "rivet": 2,
+        "celestialbolt": 5,
+        "field-bandage": 1,
+        "heal": 1,
+        "daybreak": 1,
+        "sweep": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 43,
+          "damage": 51,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 50,
+          "damage": 18,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 49,
+          "damage": 36,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 1,
+          "minHp": 75,
+          "damage": 15,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 100,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 42,
+          "damage": 123,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-support-frugal",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 731,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 24,
+        "bandage": 4,
+        "strike": 10,
+        "quickshot": 2,
+        "mend": 4,
+        "steam": 6,
+        "crush": 6,
+        "rivet": 3,
+        "sweep": 2,
+        "taunt": 2,
+        "guard": 1,
+        "daybreak": 5,
+        "celestialbolt": 8,
+        "field-bandage": 1,
+        "heal": 2,
+        "bash": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 52,
+          "damage": 81,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 59,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 55,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 61,
+          "damage": 26,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 6,
+          "minHp": 38,
+          "damage": 172,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 126,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 16,
+          "damage": 157,
+          "knockouts": 0
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "name": "legacy-offense-baseline",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "baseline"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 692,
+      "spent": 66,
+      "damage": 643,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 20,
+        "steam": 1,
+        "bandage": 3,
+        "mend": 4,
+        "rivet": 5,
+        "crossfire": 6,
+        "quickshot": 4,
+        "feint": 1,
+        "crush": 3,
+        "strike": 3,
+        "prism": 3,
+        "celestialbolt": 2,
+        "sanctuary": 1,
+        "starline": 3,
+        "heal": 5,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 11,
+          "damage": 72,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 44,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 55,
+          "damage": 33,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 14,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 88,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 15,
+          "damage": 234,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "legacy-offense-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "legacy",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 394,
+      "spent": 364,
+      "damage": 693,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 6,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 23,
+        "steam": 1,
+        "bandage": 6,
+        "mend": 5,
+        "rivet": 6,
+        "crossfire": 6,
+        "quickshot": 3,
+        "feint": 1,
+        "crush": 3,
+        "strike": 4,
+        "starline": 5,
+        "heal": 6,
+        "prism": 1,
+        "celestialbolt": 1,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 10,
+          "damage": 120,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 13,
+          "damage": 50,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 2,
+          "minHp": 46,
+          "damage": 22,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 56,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 66,
+          "damage": 38,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 99,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 42,
+          "damage": 276,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-offense-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 402,
+      "spent": 356,
+      "damage": 445,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 5,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "burst": 22,
+        "steam": 3,
+        "quickshot": 6,
+        "mend": 2,
+        "bandage": 5,
+        "crossfire": 5,
+        "taunt": 2,
+        "crush": 2,
+        "strike": 4,
+        "starline": 5,
+        "celestialbolt": 4,
+        "prism": 1,
+        "field-bandage": 2,
+        "rivet": 4,
+        "heal": 3,
+        "daybreak": 1,
+        "sweep": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 55,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 44,
+          "damage": 49,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 16,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 50,
+          "damage": 46,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 25,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 84,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 64,
+          "damage": 56,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 38,
+          "damage": 114,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-support-prepared",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "prepared"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 394,
+      "spent": 364,
+      "damage": 620,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 6,
+        "field-bandage": 2
+      },
+      "abilities": {
+        "burst": 24,
+        "steam": 10,
+        "quickshot": 1,
+        "mend": 2,
+        "bandage": 6,
+        "strike": 9,
+        "taunt": 3,
+        "rivet": 1,
+        "guard": 1,
+        "crush": 5,
+        "celestialbolt": 12,
+        "daybreak": 5,
+        "field-bandage": 2,
+        "sweep": 1,
+        "heal": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 3,
+          "minHp": 52,
+          "damage": 55,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 5,
+          "minHp": 43,
+          "damage": 104,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 60,
+          "damage": 26,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 56,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 3,
+          "minHp": 54,
+          "damage": 24,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 5,
+          "minHp": 58,
+          "damage": 148,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 3,
+          "minHp": 48,
+          "damage": 83,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 7,
+          "minHp": 42,
+          "damage": 151,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-offense-frugal",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 508,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 3,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 20,
+        "bandage": 3,
+        "strike": 7,
+        "quickshot": 7,
+        "mend": 4,
+        "steam": 1,
+        "crossfire": 5,
+        "feint": 1,
+        "taunt": 2,
+        "crush": 1,
+        "prism": 2,
+        "celestialbolt": 6,
+        "sanctuary": 1,
+        "starline": 4,
+        "rivet": 2,
+        "field-bandage": 1,
+        "heal": 1,
+        "daybreak": 1,
+        "sweep": 2
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 3,
+          "minHp": 43,
+          "damage": 51,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 50,
+          "damage": 18,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 5,
+          "minHp": 49,
+          "damage": 36,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 66,
+          "damage": 14,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 4,
+          "minHp": 46,
+          "damage": 100,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 58,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 42,
+          "damage": 123,
+          "knockouts": 0
+        }
+      ]
+    },
+    {
+      "name": "defensive-support-frugal",
+      "status": "complete",
+      "source": {
+        "sha256": "44de48e15857b27b259aa06070fe985232e64c7be2b67f59e1f9b94251a00534"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "conduit": "feeds",
+        "harbor": "dry",
+        "optional": true,
+        "through": 4
+      },
+      "coins": 716,
+      "spent": 42,
+      "damage": 751,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 1
+      },
+      "abilities": {
+        "ricochet": 1,
+        "burst": 23,
+        "bandage": 4,
+        "strike": 10,
+        "quickshot": 2,
+        "mend": 5,
+        "steam": 6,
+        "crush": 7,
+        "rivet": 3,
+        "sweep": 3,
+        "taunt": 2,
+        "guard": 1,
+        "celestialbolt": 10,
+        "daybreak": 4,
+        "field-bandage": 1,
+        "heal": 2,
+        "bash": 1
+      },
+      "battles": [
+        {
+          "id": "capital-arrest",
+          "rounds": 4,
+          "minHp": 28,
+          "damage": 108,
+          "knockouts": 0
+        },
+        {
+          "id": "works-warden",
+          "rounds": 4,
+          "minHp": 52,
+          "damage": 81,
+          "knockouts": 0
+        },
+        {
+          "id": "palace-stores",
+          "rounds": 3,
+          "minHp": 59,
+          "damage": 29,
+          "knockouts": 0
+        },
+        {
+          "id": "heart-feeds",
+          "rounds": 4,
+          "minHp": 55,
+          "damage": 32,
+          "knockouts": 0
+        },
+        {
+          "id": "works-survey",
+          "rounds": 2,
+          "minHp": 57,
+          "damage": 46,
+          "knockouts": 0
+        },
+        {
+          "id": "works-dry",
+          "rounds": 6,
+          "minHp": 38,
+          "damage": 172,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-road",
+          "rounds": 4,
+          "minHp": 48,
+          "damage": 126,
+          "knockouts": 0
+        },
+        {
+          "id": "sanctuary-warden",
+          "rounds": 6,
+          "minHp": 16,
+          "damage": 157,
+          "knockouts": 0
+        }
+      ]
+    }
+  ]
+}
