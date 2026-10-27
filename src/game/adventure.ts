@@ -1,3 +1,5 @@
+import {PeopleMotion} from './people-motion';
+import {PERSON_MOTION_PAGES} from '../content/people-motion';
 import {abilityFor} from '../rules/skills';
 import {openSkills,pendingSkillPoints} from './skills';
 import {teamStatus,battleAbilities,daybreakProtection} from '../rules/combat-tactics';
@@ -82,6 +84,7 @@ export class Adventure extends Phaser.Scene {
   private followers: Phaser.GameObjects.Image[] = [];
   private actorImages = new Map<string, Phaser.GameObjects.Image>();
   private motion=new ActorAnimator(this);
+  private peopleMotion=new PeopleMotion();
   private lighting=new WorldLighting(this);
   private battleFaces=new Map<string,string>();
   private boarding=new BoardingPresentation();
@@ -118,12 +121,12 @@ export class Adventure extends Phaser.Scene {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
     for(const asset of CHAPTER_ONE_SCENE_ASSETS)this.load.image(asset.key,`${import.meta.env.BASE_URL}${asset.url}`);
-    for(const page of MOTION_PAGES)this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
+    for(const page of [...MOTION_PAGES,...PERSON_MOTION_PAGES,{key:'hound-arrival',asset:'animation/hound-arrival'}])this.load.spritesheet(page.key,art(page.asset),{frameWidth:80,frameHeight:80});
     this.load.on('loaderror', () => this.ui.toast('An art asset could not load. Try refreshing the page.'));
   }
   create() {
     alignCameraScroll(this.cameras.main);
-    this.regionAssets.prepareVectors([...textures,...MOTION_PAGES.map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
+    this.regionAssets.prepareVectors([...textures,...[...MOTION_PAGES,...PERSON_MOTION_PAGES,{key:'hound-arrival',asset:'animation/hound-arrival'}].map(page=>page.key),...CHAPTER_ONE_SCENE_ASSETS.map(asset=>asset.key)]);
     this.arrowKeys = this.input.keyboard!.createCursorKeys();
     this.letters = this.input.keyboard!.addKeys('W,A,S,D') as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.on('keydown', (e: KeyboardEvent) => this.keydown(e));
@@ -134,7 +137,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -168,7 +171,7 @@ export class Adventure extends Phaser.Scene {
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
     return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
   }
-  get sceneryChanged(){return this.mapLife?.takeFrame()??false;}
+  get sceneryChanged(){const people=this.peopleMotion.takeFrame(),scenery=this.mapLife?.takeFrame()??false;return people||scenery;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
     const pixelAligned=this.mode==='battle',padding=outline?1:0,canvas=document.createElement('canvas');
     canvas.width=text.length*(scale===1?8:6*scale)+padding*2;
@@ -190,7 +193,7 @@ export class Adventure extends Phaser.Scene {
     this.boarding.clear();
     this.ui.canvas.removeAttribute('aria-description');
     this.lighting.clear();
-    this.motion.clear();
+    this.motion.clear();this.peopleMotion.clear();
     this.enemyAttack=undefined;
     this.cinematic?.close();this.cinematic=undefined;
     this.path = []; this.pendingObject = undefined; this.near = undefined; this.moving = false;
@@ -328,7 +331,8 @@ export class Adventure extends Phaser.Scene {
     this.mechanisms=new WorldMechanisms(this,this.layer!);
     this.mapLife=new MapLife(this,this.layer!,map,this.state);
     for(const person of visiblePeople(map,this.state)){
-      this.lighting.actor(this.layer!,(person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setAlpha(person.projection?.72:1).setData('projection',!!person.projection).setData('world-actor',true).setData('person',person.id);
+      const image=this.lighting.actor(this.layer!,(person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setAlpha(person.projection?.72:1).setData('projection',!!person.projection).setData('world-actor',true).setData('person',person.id);
+      this.peopleMotion.add(image,person,map,this.state);
     }
     for (const object of visibleObjects(map, this.state)) {
       const x = (object.x + .5) * TILE, y = (object.y + .5) * TILE;
@@ -395,7 +399,8 @@ export class Adventure extends Phaser.Scene {
     return visibleObjects(MAPS[p.map], this.state).filter(o=>(!o.accessFlag||this.state.flags[o.accessFlag])).filter(o => Math.abs(o.x-p.x) + Math.abs(o.y-p.y) <= 3)
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
-  update(time: number) {
+  update(time: number,delta:number) {
+    this.peopleMotion.update(delta,this.mode!=='world'||this.blocked||this.busy||!!this.cinematic);
     this.motion.update();
     this.sortWorld();
     if (this.mode !== 'title' && time - this.lastSecond > 1000) { this.lastSecond = time; this.state.playSeconds++; }
@@ -576,7 +581,7 @@ export class Adventure extends Phaser.Scene {
     this.boarding.settle(this);
     this.battlePresentation?.prepare?.(this.battle!);
     if(!this.busy&&this.battlePresentation?.facing)for(const unit of this.battle!.units){const facing=this.battlePresentation.facing(unit);if(facing)this.battleFaces.set(unit.id,facing);}
-    this.motion.clear();
+    this.motion.clear();this.peopleMotion.clear();
     this.lighting.clear();
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
     const backdrop=this.battleDefinition.backdrop??{map:'yard' as const,y:0};

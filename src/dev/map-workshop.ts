@@ -1,3 +1,4 @@
+import {animatedPerson,personPose,personStill,stepClear,type PersonPose} from '../content/people-motion';
 import { MAP_REVIEWS, reviewFlags } from './map-catalog';
 import { CHARACTERS } from '../content/characters';
 import { mapPoints, gridPoint, layerVisible, properties, tilePages, tileFrame, tileProperties, mapTilePages, TILESET, type TileLayer } from '../content/tilemaps';
@@ -29,7 +30,7 @@ export class MapWorkshop {
   private host?:HTMLElement;
   private images=new Map<string,HTMLImageElement>();
   private failed=new Set<string>();
-  private actorSurfaces=new WeakMap<HTMLImageElement,{pixels:ImageData;shadow:HTMLCanvasElement}>();
+  private actorSurfaces=new Map<string,{pixels:ImageData;shadow:HTMLCanvasElement}>();
   private raf?:number;
   private motion=new URLSearchParams(location.search).get('mapMotion')==='1';
   private motionRaf?:number;
@@ -79,7 +80,7 @@ export class MapWorkshop {
       <div class="map-toolbar" role="group" aria-label="Map chapters">${[...new Set(MAP_REVIEWS.map(m=>m.chapter))].sort((a,b)=>a-b).map(ch=>`<button data-map-chapter="${ch}" aria-pressed="${ch===e.chapter}">Chapter ${ch}</button>`).join('')}<span class="map-divider"></span>${['World','Battle'].map(kind=>`<button data-map-kind="${kind}" aria-pressed="${kind===e.kind}" ${MAP_REVIEWS.some(m=>m.chapter===e.chapter&&m.kind===kind)?'':'disabled'}>${kind}</button>`).join('')}</div>
       <div class="map-library" role="group" aria-label="Maps in chapter">${MAP_REVIEWS.filter(m=>m.chapter===e.chapter&&m.kind===e.kind).map(m=>`<button data-map="${m.id}" aria-pressed="${m.id===e.id}">${esc(m.id)}</button>`).join('')}</div>
       <h3>${esc(e.name)}</h3><p class="map-meta">${esc(e.id)} / ${e.width} x ${e.height} / ${e.tiles?sceneArt(e.tiles)?'Traced SVG scene / 24px navigation':'24px tiles':'Native painting'}</p>
-      <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-motion" aria-pressed="${this.motion}">Scenery motion</button><button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
+      <div class="map-toolbar" role="group" aria-label="Map view">${[1,2].map(z=>`<button data-map-zoom="${z}" aria-pressed="${z===this.zoom}">${z}x</button>`).join('')}${['actors','grid','collision','markers'].map(o=>`<button data-map-overlay="${o}" aria-pressed="${this.overlays.has(o)}">${o[0].toUpperCase()+o.slice(1)}</button>`).join('')}<button id="map-motion" title="Preview scenery and background people; collected residents stay still" aria-pressed="${this.motion}">Scenery motion</button><button id="map-reset">Reset layers</button><button id="map-download">Download view PNG</button><button id="map-copy">Copy reference</button></div>
       <div class="map-layout"><div class="map-main"><form class="map-coordinates" aria-label="Map coordinates"><label>X <input id="map-x" aria-label="Map X" type="number" min="0" max="${Math.floor(e.width/24)-1}" step="1" value="${this.selected.x}" required/></label><label>Y <input id="map-y" aria-label="Map Y" type="number" min="0" max="${Math.floor(e.height/24)-1}" step="1" value="${this.selected.y}" required/></label><button type="submit">Go to cell</button><button type="button" id="map-arrival" ${e.tiles&&mapPoints(e.tiles,'Arrivals').length?'':'disabled'}>Arrival</button></form>
       <div class="map-viewport" aria-label="Scrollable map"><canvas id="map-preview" role="img" tabindex="0" aria-label="${esc(e.id)} map preview" width="${e.width*this.zoom}" height="${e.height*this.zoom}"></canvas></div><p id="map-load" role="status"></p><section class="map-inspector" aria-label="Selected map cell"></section></div>
       <aside class="map-sidebar"><h3>Layers</h3><p>Toggle layers or use Only to isolate one.</p><div class="map-layers" role="group" aria-label="Map layers">${this.layers.map(l=>`<div><button data-map-layer="${l.id}" aria-label="Show ${esc(l.name)}" aria-pressed="${!this.hidden.has(l.id)}">${esc(l.name)}${layerVisible(l,{flags:this.flags})?'':' (story hidden)'}</button><button data-map-only="${l.id}" aria-label="Only ${esc(l.name)}">Only</button></div>`).join('')||'<p>Single scene; no tile layers.</p>'}</div>
@@ -122,7 +123,7 @@ export class MapWorkshop {
     if(view){viewport.scrollLeft=view.x*this.zoom;viewport.scrollTop=view.y*this.zoom;}else this.center();
     viewport.onscroll=()=>{this.alignView(viewport);if(this.urlTimer!==undefined)clearTimeout(this.urlTimer);this.urlTimer=setTimeout(()=>{this.urlTimer=undefined;this.syncUrl();},150);};this.alignView(viewport);this.paint();this.syncUrl();this.startMotion();
   }
-  private get motionActive(){return this.motion&&!this.reduced.matches&&!lifePaused(this.entry.id,this.flags);}
+  private get motionActive(){return this.motion&&!this.reduced.matches&&(!lifePaused(this.entry.id,this.flags)||this.entry.world?.people?.some(p=>animatedPerson(p.sprite)&&!personStill(this.entry.id,p,this.flags)));}
   private startMotion(){
     if(this.motionRaf!==undefined)cancelAnimationFrame(this.motionRaf);this.motionRaf=undefined;this.motionStep=-1;
     if(!this.host||!this.motionActive)return;
@@ -143,7 +144,8 @@ export class MapWorkshop {
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
     const sorted:{depth:number;draw:()=>void}[]=[];
     const pieces=e.tiles?visibleSceneArt(e.tiles,{flags:this.flags},this.hidden):undefined;
-    const time=this.motionActive?performance.now():undefined;
+    const personTime=this.motionActive?performance.now():undefined;
+    const time=lifePaused(e.id,this.flags)?undefined:personTime;
     const rig=sceneLight(e.id,pieces??[]);
     let ground:Path2D|undefined;
     if(rig&&e.tiles){
@@ -177,24 +179,29 @@ export class MapWorkshop {
     if(this.overlays.has('actors')){
       const cast=e.tiles?mapPoints(e.tiles,this.scene):[],castSprites=new Set<string>(cast.map(o=>CHARACTERS[o.name as keyof typeof CHARACTERS]?.sprite));
       const visible=(o:{hiddenFlag?:string;requiredFlag?:string})=>(!o.hiddenFlag||!this.flags[o.hiddenFlag])&&(!o.requiredFlag||this.flags[o.requiredFlag]);
-      const actor=(sprite:string,p:Point)=>{
-        const image=this.image(art(sprite)),x=(p.x+.5)*24,y=(p.y+.5)*24+7,sy=worldActorScaleY(sprite);
+      const actor=(sprite:string,p:Point,pose?:PersonPose)=>{
+        const frame=pose?.frame,image=this.image(art(frame===undefined?sprite:`animation/${sprite}-ambient`)),x=(p.x+.5)*24,y=(p.y+.5)*24+7+(pose?.dy??0),sy=worldActorScaleY(sprite),surfaceKey=`${sprite}:${frame??'idle'}`;
+        const source=()=>{if(frame===undefined)return vectorSurface(image);const c=document.createElement('canvas');c.width=c.height=80;const s=c.getContext('2d')!;s.imageSmoothingEnabled=false;s.drawImage(vectorSurface(image),frame%2*80,Math.floor(frame/2)*80,80,80,0,0,80,80);return c;};
         if(rig&&ground&&image.complete&&image.naturalWidth){
-          let surface=this.actorSurfaces.get(image);
+          let surface=this.actorSurfaces.get(surfaceKey);
           if(!surface){
             const shadow=document.createElement('canvas');shadow.width=shadow.height=80;const s=shadow.getContext('2d',{willReadFrequently:true})!;
-            s.drawImage(vectorSurface(image),0,0);const pixels=s.getImageData(0,0,80,80);s.globalCompositeOperation='source-in';s.fillStyle='#172038';s.fillRect(0,0,80,80);
-            surface={pixels,shadow};this.actorSurfaces.set(image,surface);
+            s.drawImage(source(),0,0);const pixels=s.getImageData(0,0,80,80);s.globalCompositeOperation='source-in';s.fillStyle='#172038';s.fillRect(0,0,80,80);
+            surface={pixels,shadow};this.actorSurfaces.set(surfaceKey,surface);
           }
           const native=document.createElement('canvas');native.width=native.height=80;const s=native.getContext('2d')!,lit=s.createImageData(80,80);
           lightPixels(surface.pixels,lit,rig,x,y,40,68,1,sy);s.putImageData(lit,0,0);
           const shadow=surface.shadow;
           sorted.push({depth:-900,draw:()=>{ctx.save();ctx.clip(ground);paintActorShadow(ctx,rig,{x,y,originX:40,originY:68,scaleX:1,scaleY:sy,rotation:0,alpha:1,image:shadow});ctx.restore();}});
           sorted.push({depth:y,draw:()=>ctx.drawImage(native,x-40,y-68*sy,80,80*sy)});
-        }else sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?vectorSurface(image):image,x-40,y-68*sy,80,80*sy);}});
+        }else sorted.push({depth:y,draw:()=>{if(image.complete&&image.naturalWidth)ctx.drawImage(vectorAsset(sprite)?source():image,x-40,y-68*sy,80,80*sy);}});
       };
       for(const o of e.world?.objects??[])if(o.sprite&&visible(o)&&(!o.spriteHiddenFlag||!this.flags[o.spriteHiddenFlag])&&!castSprites.has(o.sprite))actor(o.sprite,o);
-      for(const p of e.world?.people??[])if(visible(p))actor(p.sprite,p);
+      const people=(e.world?.people??[]).filter(visible),moving=people.filter(p=>animatedPerson(p.sprite)&&!personStill(e.id,p,this.flags));
+      for(const p of people){
+        const slot=moving.indexOf(p),pose=personTime===undefined||slot<0?undefined:personPose(p,personTime,slot,moving.length,stepClear(p,(x,y)=>!!e.world&&walkable(e.world,x,y,{flags:this.flags})));
+        actor(p.sprite,p,pose);
+      }
       for(const o of cast){const character=CHARACTERS[o.name as keyof typeof CHARACTERS];if(character&&!properties(o).hidden)actor(character.sprite,gridPoint(o));}
     }
     if(ground&&this.shadowFloor?.foreground){const foreground=this.shadowFloor.foreground;sorted.push({depth:19000,draw:()=>ctx.drawImage(foreground,0,0)});}
