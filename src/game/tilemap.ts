@@ -3,6 +3,7 @@ import { layerVisible, properties, TILESET, tilePages, tileFrame, tileProperties
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
 import { sceneLight } from './world-light';
+import {foregroundSurface} from './light-canvas';
 import {swayingScenery} from '../content/map-life';
 
 let groundId=0;
@@ -48,6 +49,13 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
       if(cached.has(piece))continue;
       const image=new NativeTile(scene,x+piece.x,y+piece.y,piece.key).setOrigin(0).setDepth(y+piece.depth).setData('scene-piece',piece);
       scene.add.existing(image);world.add(image);
+    }
+    const foreground=foregroundSurface(data,state,p=>scene.textures.getFrame(p.key).source.image as CanvasImageSource);
+    if(foreground){
+      const key=`foreground-cache-${groundId++}`,texture=scene.textures.addCanvas(key,foreground)!;
+      texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+      const image=new NativeTile(scene,x,y,key).setOrigin(0).setDepth(19000).setData('raised-foreground',true);
+      scene.add.existing(image);world.add(image);world.once('destroy',()=>scene.textures.remove(key));
     }
     world.sort('depth');return;
   }

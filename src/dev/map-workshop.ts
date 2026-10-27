@@ -9,7 +9,7 @@ import { vectorSurface } from '../game/vector-image';
 import { vectorAsset } from '../content/art-assets';
 import { sceneArt, visibleSceneArt } from '../content/scene-art';
 import { sceneLight, lightPixels } from '../game/world-light';
-import { lightGround, paintActorShadow } from '../game/light-canvas';
+import { foregroundSurface, lightGround, paintActorShadow } from '../game/light-canvas';
 import { snapRasterWithin } from '../game/raster';
 import {lifePaused,lifeStep,sceneryAngle,swayingScenery} from '../content/map-life';
 import {lifeMasks,paintMapLife,type LifeMasks} from '../game/life-canvas';
@@ -137,7 +137,7 @@ export class MapWorkshop {
     const frame=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===frame.key)!;const img=this.image(`${import.meta.env.BASE_URL}${page.url}`);
     if(img.complete&&img.naturalWidth)ctx.drawImage(img,frame.frame%page.columns*24,Math.floor(frame.frame/page.columns)*24,24,24,x,y,24,24);
   }
-  private shadowFloor?:{key:string;path:Path2D};
+  private shadowFloor?:{key:string;path:Path2D;foreground?:HTMLCanvasElement};
   private paint(){
     const host=this.host!,e=this.entry,canvas=host.querySelector<HTMLCanvasElement>('#map-preview')!,ctx=canvas.getContext('2d')!;
     ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.scale(this.zoom,this.zoom);ctx.fillStyle='#080f19';ctx.fillRect(0,0,e.width,e.height);
@@ -148,7 +148,11 @@ export class MapWorkshop {
     let ground:Path2D|undefined;
     if(rig&&e.tiles){
       const key=JSON.stringify([e.id,this.flags,[...this.hidden],pieces?.map(p=>this.image(`${import.meta.env.BASE_URL}${p.url}`).complete)]);
-      if(this.shadowFloor?.key!==key)this.shadowFloor={key,path:lightGround({...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},{flags:this.flags},p=>{const img=this.image(`${import.meta.env.BASE_URL}${p.url}`);return img.complete&&img.naturalWidth?vectorSurface(img):undefined;})};
+      if(this.shadowFloor?.key!==key){
+        const tiles={...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))},state={flags:this.flags};
+        const image=(p:import('../content/scene-art').ScenePiece)=>{const img=this.image(`${import.meta.env.BASE_URL}${p.url}`);return img.complete&&img.naturalWidth?vectorSurface(img):undefined;};
+        this.shadowFloor={key,path:lightGround(tiles,state,image),foreground:foregroundSurface(tiles,state,image)};
+      }
       ground=this.shadowFloor.path;
     }
     if(pieces){
@@ -193,6 +197,7 @@ export class MapWorkshop {
       for(const p of e.world?.people??[])if(visible(p))actor(p.sprite,p);
       for(const o of cast){const character=CHARACTERS[o.name as keyof typeof CHARACTERS];if(character&&!properties(o).hidden)actor(character.sprite,gridPoint(o));}
     }
+    if(ground&&this.shadowFloor?.foreground){const foreground=this.shadowFloor.foreground;sorted.push({depth:19000,draw:()=>ctx.drawImage(foreground,0,0)});}
     sorted.sort((a,b)=>a.depth-b.depth).forEach(p=>p.draw());
     if(this.overlays.has('collision')&&!e.image){
       const world=e.world?{...e.world,tiles:e.tiles?{...e.tiles,layers:e.tiles.layers.filter(l=>!this.hidden.has(l.id))}:undefined}:undefined;
