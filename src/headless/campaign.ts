@@ -62,6 +62,8 @@ export class CampaignSession{
  beginNext(){
   this.world();this.observed('chapter-entry',{},()=>{if(!nextChapter(this.state)?.entry?.begin(this.state))throw Error('No chapter departure available');resumeChapter(this.host);});this.settle();
  }
+ /** Re-enter the normal story dispatcher when loading an earned checkpoint. */
+ resume(){this.world();resumeChapter(this.host);this.settle();}
  checkpoint(name:string){this.world();this.checkpoints[name]=decodeSave(JSON.stringify(this.state));}
  formation(ids:CompanionId[]){
   this.world();const before=structuredClone(this.state.activeParty);
