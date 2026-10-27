@@ -40,7 +40,7 @@ it('honors Taunt, defense, guard and three attacks of Dazzle, independently for 
  const b=createBattle('benefactor-body',s),u=shooter(b),petra=b.units.find(u=>u.id==='petra')!;
  u.tauntedBy=petra.id;u.dazzledAttacks=3;petra.defending=true;petra.guard=8;prepareBenefactor(b);
  b.queue=[u.id,'nell'];const hp=petra.hp,expected=damage(u,petra,'claim');
- expect(bossDirectHint(b)).toContain('targets Petra directly');expect(enemyTurn(b)).toBe('claim');
+  expect(bossDirectHint(b)).toContain('targets Petra directly');expect(bossDirectHint(b,true)).toBe('Claimed light: Petra (direct).');expect(enemyTurn(b)).toBe('claim');
  expect(petra.hp).toBe(hp-expected);expect(petra.guard).toBeLessThan(8);expect(u.dazzledAttacks).toBe(2);
  const afterShot=petra.hp,marked=damage(u,petra,'judgment');expect(enemyTurn(b)).toBe('judgment');
  expect(petra.hp).toBe(afterShot-marked);expect(u.dazzledAttacks).toBe(1);

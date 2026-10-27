@@ -26,9 +26,11 @@ export function bossDirectTarget(b:Battle,u:Unit){
 function ready(b:Battle,u:Unit){
  return !b.result&&u.hp>0&&!u.passive&&!u.bonusUsed&&u.intent?.round===b.round&&u.intent.power>0&&u.intent.cells.length>0;
 }
-export function bossDirectHint(b:Battle){
+export function bossDirectHint(b:Battle,compact=false){
  const core=b.units.find(u=>bossDirectAbility(u)&&ready(b,u)),target=core&&bossDirectTarget(b,core);
- return core&&target?`${ABILITIES[bossDirectAbility(core)!].name} targets ${target.name} directly before the marked attack.`:'';
+ if(!core||!target)return '';
+ const name=ABILITIES[bossDirectAbility(core)!].name;
+ return compact?`${name}: ${target.name} (direct).`:`${name} targets ${target.name} directly before the marked attack.`;
 }
 
 /** One ordinary, animated bonus cast. The marked main action stays queued. */

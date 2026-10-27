@@ -724,7 +724,10 @@ export class Adventure extends Phaser.Scene {
       const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;
       const note=document.createElement('span');note.className='prediction invalid-target team-unavailable';note.setAttribute('role','status');note.textContent=reason;confirm.append(note);return;
     }
-    if(!aimed)return;
+    if(!aimed){
+      if(directHint){const note=document.createElement('span');note.className='prediction';note.textContent=bossDirectHint(b,true);confirm.append(note);}
+      return;
+    }
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}

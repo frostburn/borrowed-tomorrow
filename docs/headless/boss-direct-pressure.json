@@ -1,0 +1,4404 @@
+{
+  "version": 1,
+  "issue": 137,
+  "source": {
+    "baseCommit": "14afa1126e614a1575c171b3637e1deb65585a9d",
+    "files": {
+      "src/rules/combat.ts": "58df4c9360ef24ba84c34c069ed9db5056191c536c2c3768ba4ad31cda593afb",
+      "src/rules/abilities.ts": "4ea48fdff42c075fd957bcd448d48710b9d1efbed322d5d4b179072f2e39239f",
+      "src/dev/canonical-saves.ts": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228",
+      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149",
+      "src/rules/ward.ts": "781d37b2bc6b8f899bc79685127dc61b3b953f5fd0d4d9d969841641c0f87b45",
+      "src/rules/flagship.ts": "2b9e64b3e31231f144dea1dd4a01f99c7554fab32dbb707f4659a74ddc1ca24d",
+      "src/content/chapter-five/encounters.ts": "997fefbb6e3340bae441153eff616a240a0e17b9cd588e501a470c76f2a366f7",
+      "src/content/chapter-five/flagship.ts": "0dd63aec2cd037ff99ddfbabc54982163ba353714205386b1b6b9f6ef5d6ad13",
+      "scripts/compare-late-bosses.mjs": "50b406a15108f1ae7abdc0ed2ab39d6a3c6ab0fec31ddb32f9c287f42dc25339",
+      "scripts/compare-chapter-five-bosses.mjs": "78fc4bd47ba2a9fdcdeaa74689c231fde18b54611124b4d27b4d9b03ee4f2e52"
+    },
+    "inputsSha256": "ceb76d31df667934ba9004fd60e6f04bde1b161d9e989a765d44083659704c36",
+    "freshEarlySha256": "25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560",
+    "freshMiddleSha256": "1194df7dcfd0fe6f24c22162d541e619abab1aaec4e8ce03e1cf7158afdf9bce",
+    "freshFiveSha256": "a315915f62c0d2b83f56391415a009e3707a1d6aa53d1e5736411fc80ad21ef4"
+  },
+  "beforeRuleFiles": {
+    "src/rules/combat.ts": "6be6ed4e1baf4b42f8fc11bf11948285d52c6445a8461d132a29eab2dad83c84",
+    "src/rules/abilities.ts": "1af9874160e2ff8ae071a1bf5797ef33308463120f71b5b8654f81ad7e693c17",
+    "src/dev/canonical-saves.ts": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228"
+  },
+  "fixtureComparisons": [
+    {
+      "id": "hammer-carrier",
+      "sequence": "isolated",
+      "nell": "well",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 9,
+      "beforeInputSha256": "95f63da2bc016b131b471076e95756a1ac709f217ff84f3febdf942b5e0dac82",
+      "afterInputSha256": "95f63da2bc016b131b471076e95756a1ac709f217ff84f3febdf942b5e0dac82",
+      "greedyInputSha256": "95f63da2bc016b131b471076e95756a1ac709f217ff84f3febdf942b5e0dac82",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 134,
+        "healed": 96,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 207,
+        "healed": 172,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 3
+        },
+        "enemyActions": {
+          "peck": 2,
+          "slagshot": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "crow-1": 17,
+          "crow-2": 17,
+          "furnace-carrier": 160
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 158,
+        "healed": 120,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 4,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 3
+        }
+      }
+    },
+    {
+      "id": "hammer-carrier",
+      "sequence": "isolated",
+      "nell": "well",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 9,
+      "beforeInputSha256": "428af363d620a010bdb567cbb00834fb5a52df15afeaa3d4568e5f2227f59558",
+      "afterInputSha256": "428af363d620a010bdb567cbb00834fb5a52df15afeaa3d4568e5f2227f59558",
+      "greedyInputSha256": "428af363d620a010bdb567cbb00834fb5a52df15afeaa3d4568e5f2227f59558",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 89,
+        "healed": 59,
+        "knockouts": 0,
+        "minHp": 64,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 4,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 179,
+        "healed": 118,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "peck": 1,
+          "slagshot": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "crow-2": 17,
+          "furnace-carrier": 162
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 81,
+        "healed": 65,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 1,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "hammer-carrier",
+      "sequence": "isolated",
+      "nell": "well",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 9,
+      "beforeInputSha256": "2eeb2afc3e6de42960126cf89302e6e2e5a49c47d6b80dd265e27bffb86c0c35",
+      "afterInputSha256": "2eeb2afc3e6de42960126cf89302e6e2e5a49c47d6b80dd265e27bffb86c0c35",
+      "greedyInputSha256": "2eeb2afc3e6de42960126cf89302e6e2e5a49c47d6b80dd265e27bffb86c0c35",
+      "before": {
+        "result": "victory",
+        "rounds": 9,
+        "hpLost": 167,
+        "healed": 161,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 2,
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 9,
+        "hpLost": 250,
+        "healed": 186,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 2,
+          "mend": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "peck": 6,
+          "slagshot": 8,
+          "judgment": 8
+        },
+        "enemyDamage": {
+          "crow-1": 41,
+          "crow-2": 41,
+          "furnace-carrier": 135
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 138,
+        "healed": 109,
+        "knockouts": 0,
+        "minHp": 54,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 2,
+          "sanctuary": 1
+        }
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "celia"
+      ],
+      "level": 11,
+      "beforeInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "afterInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "greedyInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 76,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 110,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "sunshard": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "sun-serpent": 110
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 34,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 84,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "petra"
+      ],
+      "level": 11,
+      "beforeInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "afterInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "greedyInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 48,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 80,
+        "healed": 11,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "sunshard": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "sun-serpent": 80
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 32,
+        "healed": 14,
+        "knockouts": 0,
+        "minHp": 84,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "level": 11,
+      "beforeInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "afterInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "greedyInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 42,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 101,
+        "healed": 42,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "sunshard": 4,
+          "judgment": 4
+        },
+        "enemyDamage": {
+          "sun-serpent": 101
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 44,
+        "healed": 23,
+        "knockouts": 0,
+        "minHp": 84,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "celia"
+      ],
+      "level": 11,
+      "beforeInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "afterInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "greedyInputSha256": "dc0b36090fa102dfd76182f54278bd5a4c7082ad6cd9fbe2c911610db8921f3c",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 66,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 67,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 186,
+        "healed": 82,
+        "knockouts": 0,
+        "minHp": 51,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        },
+        "enemyActions": {
+          "iceshard": 5,
+          "judgment": 5
+        },
+        "enemyDamage": {
+          "winter-dragon": 186
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 100,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 52,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "petra"
+      ],
+      "level": 11,
+      "beforeInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "afterInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "greedyInputSha256": "ebe2154bc23fb0f0e798170d3b8849e64ecc87f10f742ed17e1d8fdd3f70f13b",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 108,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 67,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 148,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "iceshard": 4,
+          "judgment": 4
+        },
+        "enemyDamage": {
+          "winter-dragon": 148
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 161,
+        "healed": 142,
+        "knockouts": 0,
+        "minHp": 52,
+        "items": {
+          "bandage": 6
+        },
+        "remaining": {
+          "bandages": 6,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "guard": 1
+        }
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "level": 11,
+      "beforeInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "afterInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "greedyInputSha256": "772bd8cdf7426375b2587cdb75e1b1bcfbfc8c8a8eb980d7c9ab7e0ff8911284",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 124,
+        "healed": 86,
+        "knockouts": 0,
+        "minHp": 57,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 179,
+        "healed": 85,
+        "knockouts": 0,
+        "minHp": 45,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "iceshard": 5,
+          "judgment": 5
+        },
+        "enemyDamage": {
+          "winter-dragon": 164
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 134,
+        "healed": 49,
+        "knockouts": 0,
+        "minHp": 52,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 12,
+      "beforeInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "afterInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "greedyInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 14,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 103,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 38,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 90,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "sunshard": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "sun-serpent": 24
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 47,
+        "healed": 36,
+        "knockouts": 0,
+        "minHp": 81,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 12,
+      "beforeInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "afterInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "greedyInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 55,
+        "healed": 24,
+        "knockouts": 0,
+        "minHp": 76,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 108,
+        "healed": 82,
+        "knockouts": 0,
+        "minHp": 62,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "sunshard": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "sun-serpent": 108
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 34,
+        "healed": 13,
+        "knockouts": 0,
+        "minHp": 90,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "sun-serpent",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 12,
+      "beforeInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "afterInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "greedyInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 41,
+        "healed": 27,
+        "knockouts": 0,
+        "minHp": 81,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 80,
+        "healed": 40,
+        "knockouts": 0,
+        "minHp": 68,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1
+        },
+        "enemyActions": {
+          "sunshard": 4,
+          "judgment": 4
+        },
+        "enemyDamage": {
+          "sun-serpent": 80
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 50,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 95,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 12,
+      "beforeInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "afterInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "greedyInputSha256": "cc599ca779ed9cf03e24c5c8cdf9892240448db8b0f264ba45fb93cc63be9d96",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 102,
+        "healed": 65,
+        "knockouts": 0,
+        "minHp": 73,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 93,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 77,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "iceshard": 5,
+          "judgment": 5
+        },
+        "enemyDamage": {
+          "winter-dragon": 93
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 169,
+        "healed": 148,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1,
+          "sanctuary": 1
+        }
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 12,
+      "beforeInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "afterInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "greedyInputSha256": "441ee7c477b635477e25926a28895e070c382ac8d57192b8ac71b469f73f6629",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 171,
+        "healed": 92,
+        "knockouts": 0,
+        "minHp": 51,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 249,
+        "healed": 131,
+        "knockouts": 0,
+        "minHp": 47,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "iceshard": 5,
+          "judgment": 5
+        },
+        "enemyDamage": {
+          "winter-dragon": 234
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 170,
+        "healed": 159,
+        "knockouts": 0,
+        "minHp": 43,
+        "items": {
+          "bandage": 5
+        },
+        "remaining": {
+          "bandages": 7,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "winter-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 12,
+      "beforeInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "afterInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "greedyInputSha256": "89f052084993a1d52436364734cf51d190f74f0ab5bacdac2ba85fdf611d74e3",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 141,
+        "healed": 85,
+        "knockouts": 0,
+        "minHp": 63,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 38,
+        "healed": 19,
+        "knockouts": 0,
+        "minHp": 87,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1,
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "iceshard": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "winter-dragon": 35
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 93,
+        "healed": 40,
+        "knockouts": 0,
+        "minHp": 86,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "imperial-vessel",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "633424f1eed3e40c9a7ebb1e42222056334842f1736bd4a86d610e73d0e6c187",
+      "afterInputSha256": "633424f1eed3e40c9a7ebb1e42222056334842f1736bd4a86d610e73d0e6c187",
+      "greedyInputSha256": "633424f1eed3e40c9a7ebb1e42222056334842f1736bd4a86d610e73d0e6c187",
+      "before": {
+        "result": "victory",
+        "rounds": 11,
+        "hpLost": 86,
+        "healed": 24,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 11,
+        "hpLost": 174,
+        "healed": 174,
+        "knockouts": 0,
+        "minHp": 51,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "mend": 2
+        },
+        "enemyActions": {
+          "crownbolt": 8,
+          "judgment": 8,
+          "pause": 2
+        },
+        "enemyDamage": {
+          "imperial-vessel": 154
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 11,
+        "hpLost": 58,
+        "healed": 58,
+        "knockouts": 0,
+        "minHp": 69,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "imperial-vessel",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "cf89215fbb81d6421a93d5543f31fb82ac61f05e928cd1dc384f57238742bc08",
+      "afterInputSha256": "cf89215fbb81d6421a93d5543f31fb82ac61f05e928cd1dc384f57238742bc08",
+      "greedyInputSha256": "cf89215fbb81d6421a93d5543f31fb82ac61f05e928cd1dc384f57238742bc08",
+      "before": {
+        "result": "victory",
+        "rounds": 10,
+        "hpLost": 149,
+        "healed": 96,
+        "knockouts": 0,
+        "minHp": 58,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 10,
+        "hpLost": 131,
+        "healed": 117,
+        "knockouts": 0,
+        "minHp": 63,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "taunt": 1
+        },
+        "enemyActions": {
+          "crownbolt": 7,
+          "judgment": 7,
+          "pause": 2
+        },
+        "enemyDamage": {
+          "imperial-vessel": 105
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 12,
+        "hpLost": 264,
+        "healed": 240,
+        "knockouts": 0,
+        "minHp": 33,
+        "items": {
+          "bandage": 8
+        },
+        "remaining": {
+          "bandages": 4,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "imperial-vessel",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "91cde2868d5c4af2998c233cf1ad0054671af1dc8b7f679d2b30219a9bfe03de",
+      "afterInputSha256": "91cde2868d5c4af2998c233cf1ad0054671af1dc8b7f679d2b30219a9bfe03de",
+      "greedyInputSha256": "91cde2868d5c4af2998c233cf1ad0054671af1dc8b7f679d2b30219a9bfe03de",
+      "before": {
+        "result": "victory",
+        "rounds": 10,
+        "hpLost": 138,
+        "healed": 83,
+        "knockouts": 0,
+        "minHp": 84,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 11,
+        "hpLost": 189,
+        "healed": 154,
+        "knockouts": 0,
+        "minHp": 63,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "taunt": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "crownbolt": 8,
+          "judgment": 8,
+          "pause": 2
+        },
+        "enemyDamage": {
+          "imperial-vessel": 163
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 11,
+        "hpLost": 212,
+        "healed": 96,
+        "knockouts": 0,
+        "minHp": 32,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "lightbearer",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "44570897b87b66e524718a0f57f538720cfc362d6d872dafc0435972e9c02f12",
+      "afterInputSha256": "44570897b87b66e524718a0f57f538720cfc362d6d872dafc0435972e9c02f12",
+      "greedyInputSha256": "44570897b87b66e524718a0f57f538720cfc362d6d872dafc0435972e9c02f12",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 51,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 82,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 101,
+        "healed": 71,
+        "knockouts": 0,
+        "minHp": 62,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        },
+        "enemyActions": {
+          "lanternshard": 3,
+          "judgment": 3,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "lightbearer": 101
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 73,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 88,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "lightbearer",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "orrin",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "01e2f2161bf5b8b936925cacf10d140239ec7c6c16316ab97f4fd63f78e01452",
+      "afterInputSha256": "01e2f2161bf5b8b936925cacf10d140239ec7c6c16316ab97f4fd63f78e01452",
+      "greedyInputSha256": "01e2f2161bf5b8b936925cacf10d140239ec7c6c16316ab97f4fd63f78e01452",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 63,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 82,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 110,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 62,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "lanternshard": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "lightbearer": 98
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 82,
+        "healed": 82,
+        "knockouts": 0,
+        "minHp": 88,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "guard": 1
+        }
+      }
+    },
+    {
+      "id": "lightbearer",
+      "sequence": "isolated",
+      "nell": "ill",
+      "party": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "dd6dff81bc6cca92649b6a0263848767f4a3b05cd6d22388e4afcee7321ad347",
+      "afterInputSha256": "dd6dff81bc6cca92649b6a0263848767f4a3b05cd6d22388e4afcee7321ad347",
+      "greedyInputSha256": "dd6dff81bc6cca92649b6a0263848767f4a3b05cd6d22388e4afcee7321ad347",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 0,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 110,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 16,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 100,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "lanternshard": 3,
+          "judgment": 3,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "lightbearer": 16
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 59,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 90,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "domain-collector",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "afterInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "greedyInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 71,
+        "healed": 68,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 123,
+        "healed": 68,
+        "knockouts": 0,
+        "minHp": 67,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        },
+        "enemyActions": {
+          "peck": 2,
+          "pressurebolt": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "crow-1": 22,
+          "crow-2": 22,
+          "conduit-regulator": 79
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 118,
+        "healed": 68,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-collector",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "afterInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "greedyInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 65,
+        "healed": 50,
+        "knockouts": 0,
+        "minHp": 87,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 119,
+        "healed": 91,
+        "knockouts": 0,
+        "minHp": 67,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "peck": 1,
+          "pressurebolt": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "crow-2": 23,
+          "conduit-regulator": 81
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 3,
+        "hpLost": 64,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "domain-collector",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "afterInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "greedyInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 176,
+        "healed": 44,
+        "knockouts": 1,
+        "minHp": 0,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 295,
+        "healed": 188,
+        "knockouts": 0,
+        "minHp": 23,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1,
+          "mend": 2
+        },
+        "enemyActions": {
+          "peck": 8,
+          "pressurebolt": 4,
+          "judgment": 4
+        },
+        "enemyDamage": {
+          "crow-1": 110,
+          "crow-2": 66,
+          "conduit-regulator": 119
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 269,
+        "healed": 269,
+        "knockouts": 0,
+        "minHp": 6,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 2,
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "domain-furnace",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "afterInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "greedyInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 196,
+        "healed": 92,
+        "knockouts": 0,
+        "minHp": 64,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 294,
+        "healed": 92,
+        "knockouts": 0,
+        "minHp": 34,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        },
+        "enemyActions": {
+          "peck": 2,
+          "slagshot": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "crow-1": 22,
+          "crow-2": 22,
+          "furnace-carrier": 250
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 169,
+        "healed": 44,
+        "knockouts": 0,
+        "minHp": 34,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-furnace",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "afterInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "greedyInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 80,
+        "healed": 47,
+        "knockouts": 0,
+        "minHp": 81,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 150,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 62,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "peck": 1,
+          "slagshot": 4,
+          "judgment": 4
+        },
+        "enemyDamage": {
+          "crow-2": 23,
+          "furnace-carrier": 127
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 134,
+        "healed": 91,
+        "knockouts": 0,
+        "minHp": 55,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "domain-furnace",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "afterInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "greedyInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 275,
+        "healed": 255,
+        "knockouts": 0,
+        "minHp": 36,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 2,
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 8,
+        "hpLost": 364,
+        "healed": 256,
+        "knockouts": 0,
+        "minHp": 36,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1,
+          "mend": 2
+        },
+        "enemyActions": {
+          "peck": 6,
+          "slagshot": 7,
+          "judgment": 7
+        },
+        "enemyDamage": {
+          "crow-1": 88,
+          "crow-2": 44,
+          "furnace-carrier": 218
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 238,
+        "healed": 68,
+        "knockouts": 1,
+        "minHp": 0,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-ward",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "afterInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "greedyInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 39,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 75,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 43,
+        "healed": 13,
+        "knockouts": 0,
+        "minHp": 97,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "pause": 1,
+          "lensshot": 3,
+          "refraction": 3
+        },
+        "enemyDamage": {
+          "wind-ward-engine": 43
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 61,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 79,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-ward",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "afterInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "greedyInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 39,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 75,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 56,
+        "healed": 10,
+        "knockouts": 0,
+        "minHp": 92,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {},
+        "enemyActions": {
+          "pause": 2,
+          "lensshot": 3,
+          "refraction": 3
+        },
+        "enemyDamage": {
+          "wind-ward-engine": 45
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 45,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 79,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "domain-ward",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "afterInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "greedyInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 81,
+        "healed": 28,
+        "knockouts": 0,
+        "minHp": 63,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 86,
+        "healed": 78,
+        "knockouts": 0,
+        "minHp": 69,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "taunt": 1
+        },
+        "enemyActions": {
+          "lensshot": 5,
+          "refraction": 5,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "wind-ward-engine": 64
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 93,
+        "healed": 52,
+        "knockouts": 0,
+        "minHp": 62,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 13,
+      "beforeInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "afterInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "greedyInputSha256": "69e5446ec78eef0b2a4be3e07f69592256fdbd25f801cec721cc6adc801256da",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 106,
+        "healed": 67,
+        "knockouts": 0,
+        "minHp": 79,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 113,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 84,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "iceshard": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "winter-dragon": 113
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 179,
+        "healed": 80,
+        "knockouts": 0,
+        "minHp": 61,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "domain-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "afterInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "greedyInputSha256": "77756dafeda8b045ac91eff0574d51bbebfc741b144486be364528bae15fdbf6",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 164,
+        "healed": 24,
+        "knockouts": 0,
+        "minHp": 53,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 343,
+        "healed": 113,
+        "knockouts": 0,
+        "minHp": 28,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "iceshard": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "winter-dragon": 311
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 176,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 43,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "domain-dragon",
+      "sequence": "isolated",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 13,
+      "beforeInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "afterInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "greedyInputSha256": "1840a65bf99c06ffaf66db0906615324970d05a50ff1ea72bba9ad436940ffde",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 112,
+        "healed": 112,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 163,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "iceshard": 6,
+          "judgment": 6
+        },
+        "enemyDamage": {
+          "winter-dragon": 147
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 170,
+        "healed": 84,
+        "knockouts": 0,
+        "minHp": 67,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 15,
+      "beforeInputSha256": "398a1886233be9f406a9fe034d6925b95142383b1af26efdf41a645d573cfd37",
+      "afterInputSha256": "398a1886233be9f406a9fe034d6925b95142383b1af26efdf41a645d573cfd37",
+      "greedyInputSha256": "398a1886233be9f406a9fe034d6925b95142383b1af26efdf41a645d573cfd37",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 132,
+        "healed": 90,
+        "knockouts": 0,
+        "minHp": 91,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 206,
+        "healed": 104,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        },
+        "enemyActions": {
+          "claim": 5,
+          "judgment": 5,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 206
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 215,
+        "healed": 77,
+        "knockouts": 0,
+        "minHp": 51,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-sun",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 15,
+      "beforeInputSha256": "b8bcb6cfbce2414f4a3c276aaac1e39fb0b01738915707b33ccc54b8a1d8cad1",
+      "afterInputSha256": "ad5f3a214cab4906a7bb571bd4d625d7687b4a935ffaeed413b85d192cdf0864",
+      "greedyInputSha256": "1da129bce0d1fe7ee44e196b7f097c34106f4739f559c29c12fbadf08b66d0e7",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 88,
+        "healed": 56,
+        "knockouts": 0,
+        "minHp": 82,
+        "items": {},
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 208,
+        "healed": 209,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "claim": 5,
+          "judgment": 5,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 208
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 132,
+        "healed": 182,
+        "knockouts": 0,
+        "minHp": 59,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-heart",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "level": 15,
+      "beforeInputSha256": "76faa885e8b54d76fa48f0b36d51d9affd5140a57a623fc3e2e79ff51240e36f",
+      "afterInputSha256": "b2e84e75aa206c75fe898609b12e4662b760235dfe8a45e7127b0e904280880a",
+      "greedyInputSha256": "db14252597083a055e6c425ec7a936ce1256ac011cf818aace7afb84d69faffa",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 11,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 98,
+        "items": {},
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 46,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 75,
+        "items": {},
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "claim": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "benefactor": 26
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 81,
+        "healed": 71,
+        "knockouts": 0,
+        "minHp": 89,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "f9eba7cbb693d3846cd89ca6334295112dbbf73149d4f091bba35982991cae55",
+      "afterInputSha256": "f9eba7cbb693d3846cd89ca6334295112dbbf73149d4f091bba35982991cae55",
+      "greedyInputSha256": "f9eba7cbb693d3846cd89ca6334295112dbbf73149d4f091bba35982991cae55",
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 164,
+        "healed": 48,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 8,
+        "hpLost": 282,
+        "healed": 152,
+        "knockouts": 0,
+        "minHp": 58,
+        "items": {
+          "bandage": 4
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "claim": 6,
+          "judgment": 6,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 237
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 175,
+        "healed": 24,
+        "knockouts": 0,
+        "minHp": 70,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "id": "benefactor-sun",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "9902ccdbaff05f2441d03d8cb23accda927b879047f2b35d25fea34222b1ecef",
+      "afterInputSha256": "8d1601e2a0ac52a7ed5e6e1ed442dbb63f7253651849d7637981304002a2887b",
+      "greedyInputSha256": "a06fd825123b1f523879723e1a177e034e2f7b99e2e718c286fdc9e46073fd1f",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 127,
+        "healed": 134,
+        "knockouts": 0,
+        "minHp": 64,
+        "items": {
+          "bandage": 2
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 215,
+        "healed": 178,
+        "knockouts": 0,
+        "minHp": 58,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 5,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        },
+        "enemyActions": {
+          "claim": 4,
+          "judgment": 4,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 200
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 113,
+        "healed": 127,
+        "knockouts": 0,
+        "minHp": 57,
+        "items": {},
+        "remaining": {
+          "bandages": 11,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-heart",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "50344a206589c83ae944f72c828c7a3fb5044e86a85e09a49b467b0a2726f983",
+      "afterInputSha256": "4f2c1652e38509d12274442bcd124bd7b08be769157aa402eaeb58b8e5d3d2e1",
+      "greedyInputSha256": "0477eefec3b455bfb33902a06820b5730d998f018a01b814d9f98412693f3354",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 85,
+        "healed": 126,
+        "knockouts": 0,
+        "minHp": 89,
+        "items": {},
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 2
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 179,
+        "healed": 231,
+        "knockouts": 0,
+        "minHp": 71,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 4,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 2
+        },
+        "enemyActions": {
+          "claim": 3,
+          "judgment": 3
+        },
+        "enemyDamage": {
+          "benefactor": 128
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 83,
+        "healed": 98,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 10,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "b344ca76eeb4282cc90cb9a4d3bded80c12c15f478d02def6944ea078dbaa868",
+      "afterInputSha256": "b344ca76eeb4282cc90cb9a4d3bded80c12c15f478d02def6944ea078dbaa868",
+      "greedyInputSha256": "b344ca76eeb4282cc90cb9a4d3bded80c12c15f478d02def6944ea078dbaa868",
+      "before": {
+        "result": "victory",
+        "rounds": 8,
+        "hpLost": 172,
+        "healed": 113,
+        "knockouts": 0,
+        "minHp": 80,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 8,
+        "hpLost": 280,
+        "healed": 166,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {
+          "bandage": 3
+        },
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "heal": 1
+        },
+        "enemyActions": {
+          "claim": 6,
+          "judgment": 6,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 250
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 147,
+        "healed": 46,
+        "knockouts": 0,
+        "minHp": 82,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-sun",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "715be47460e76709ebc85e640f052113063258c65f1a5db9a1ba199ba892fac6",
+      "afterInputSha256": "33fb50d229cbb7bf99830fc14645ea3d92fb436018fdfe4286fbc9c8a137e278",
+      "greedyInputSha256": "f429a0ff740f6cae8e5237342e0fad86f80be003b308de8fb5217bddc99c5f26",
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 88,
+        "healed": 76,
+        "knockouts": 0,
+        "minHp": 68,
+        "items": {},
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 114,
+        "healed": 115,
+        "knockouts": 0,
+        "minHp": 93,
+        "items": {},
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "daybreak": 1
+        },
+        "enemyActions": {
+          "claim": 4,
+          "judgment": 4,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 79
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 144,
+        "healed": 145,
+        "knockouts": 0,
+        "minHp": 79,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "heal": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-heart",
+      "sequence": "consecutive final forms",
+      "nell": "recovered",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "level": 15,
+      "beforeInputSha256": "7370f0d136c220508728aef8469be2add85a9bce02bd752531b60115ec45ede7",
+      "afterInputSha256": "5ab4a6144600bfca3579f735d4b48958137a93fdbddf3840dda1ff49f7862dd9",
+      "greedyInputSha256": "40d3656c288ae5743e5db1501414b7c54848e1d91c852b755142700a18d7be36",
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 0,
+        "healed": 39,
+        "knockouts": 0,
+        "minHp": 99,
+        "items": {},
+        "remaining": {
+          "bandages": 9,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 20,
+        "healed": 79,
+        "knockouts": 0,
+        "minHp": 106,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 8,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "mend": 1,
+          "sanctuary": 1
+        },
+        "enemyActions": {
+          "claim": 3,
+          "judgment": 3,
+          "pause": 1
+        },
+        "enemyDamage": {
+          "benefactor": 20
+        }
+      },
+      "greedyAfter": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 78,
+        "healed": 52,
+        "knockouts": 0,
+        "minHp": 83,
+        "items": {},
+        "remaining": {
+          "bandages": 12,
+          "field-bandage": 0,
+          "focus-tonic": 0
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    }
+  ],
+  "earnedChapterFiveComparisons": [
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "d31629c3e09566d7754900a89ca3e3cb8d845595e19eb94bad60addf1205e80f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 108,
+        "healed": 106,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {
+          "field-bandage": 1,
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 134,
+        "healed": 112,
+        "knockouts": 0,
+        "minHp": 59,
+        "items": {
+          "field-bandage": 1,
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "2fe4df681ff1033b59dd27e41e86e8eda1776eb48f10fbb555fa39447fbc0bfb",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 14,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 78,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 17,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 78,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "name": "default",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "31b5a378efbabb45922357ce37053f768cc3b0ea72b57031d45a5e7e3d1f0f27",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 70,
+        "healed": 82,
+        "knockouts": 0,
+        "minHp": 38,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "mend": 1,
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 75,
+        "healed": 82,
+        "knockouts": 0,
+        "minHp": 38,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1,
+          "daybreak": 1
+        }
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "406895665e821340892289cf2e65f86cea89754e9a34e3952c192c5c2d01eb29",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 76,
+        "healed": 32,
+        "knockouts": 0,
+        "minHp": 72,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 2,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 3,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 93,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 2,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "45556972beb9b5d5570907e410cf1fc082ea040d030406e26b4af15d6f580cdf",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 55,
+        "healed": 22,
+        "knockouts": 0,
+        "minHp": 74,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 2,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 79,
+        "healed": 28,
+        "knockouts": 0,
+        "minHp": 68,
+        "items": {
+          "field-bandage": 1
+        },
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "name": "default",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "5d4019e1ac8d9453d861810730995a85cc970daedda43099f701f9595938e33b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 106,
+        "healed": 87,
+        "knockouts": 0,
+        "minHp": 72,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 2,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "mend": 1,
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 32,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 75,
+        "items": {},
+        "remaining": {
+          "bandages": 3,
+          "field-bandage": 2,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1
+        }
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "orrin"
+      ],
+      "inputSha256": "e8bff4cc03b986eb8e58ce37245c5f530539358b720422761f42bc70e1003c14",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 115,
+        "healed": 62,
+        "knockouts": 0,
+        "minHp": 38,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 132,
+        "healed": 67,
+        "knockouts": 0,
+        "minHp": 38,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "heal": 1
+        }
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "d7b1cf3ebb3288081c15a468b4b4a6ac647244fee546e74617d96d491894861f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 43,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 54,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "8dbc8a3328e6c6e3eca0a2b8bb4ae33225e9b61da98d14c94a3128d356507e68",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 53,
+        "healed": 46,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "daybreak": 1,
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 7,
+        "hpLost": 70,
+        "healed": 52,
+        "knockouts": 0,
+        "minHp": 66,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 0,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "daybreak": 1,
+          "mend": 1
+        }
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "527f538be2cd13586ba2b30cf2c1d01455f6b67e49631ea7e27d220497855a9b",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 66,
+        "healed": 51,
+        "knockouts": 0,
+        "minHp": 63,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 87,
+        "healed": 87,
+        "knockouts": 0,
+        "minHp": 56,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 1,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "mend": 1
+        }
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "kit",
+        "petra"
+      ],
+      "inputSha256": "f2b14e157fccb406a27cb7354f631fef9cf0d8f2486f06d1ce3182523fdf5635",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 57,
+        "healed": 22,
+        "knockouts": 0,
+        "minHp": 74,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 1,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 83,
+        "healed": 24,
+        "knockouts": 0,
+        "minHp": 68,
+        "items": {
+          "bandage": 1
+        },
+        "remaining": {
+          "bandages": 1,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "name": "wind-first-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "919d91450b97f92952455782655f1a2205212f6aa540ab1052fed692ca0a2e51",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 42,
+        "healed": 28,
+        "knockouts": 0,
+        "minHp": 77,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 39,
+        "healed": 32,
+        "knockouts": 0,
+        "minHp": 76,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "daybreak": 1
+        }
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "42381de26858fa027fb59683b0b4f03a8c5fdcd9a2bf08b9e7cd5b20b0675206",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 61,
+        "healed": 45,
+        "knockouts": 0,
+        "minHp": 68,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 22,
+        "healed": 3,
+        "knockouts": 0,
+        "minHp": 94,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "daybreak": 1
+        }
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "wind-engine",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "759a171c1e426ac0b98447880046d179b19590d5775ce5d9e7f9ad31fe8edf20",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 40,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 65,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 4,
+        "hpLost": 48,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 57,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "ae79771175f6579b10ece1e88da35744497a1fe8d288bd888a30f33461707c97",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 32,
+        "healed": 21,
+        "knockouts": 0,
+        "minHp": 92,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "daybreak": 1
+        }
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 6,
+        "hpLost": 30,
+        "healed": 28,
+        "knockouts": 0,
+        "minHp": 76,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {
+          "sanctuary": 1,
+          "daybreak": 1
+        }
+      }
+    },
+    {
+      "name": "support-frugal",
+      "id": "alban-flagship",
+      "party": [
+        "nell",
+        "petra",
+        "kit"
+      ],
+      "inputSha256": "229e24add699dc82820f40946ce4aba228dad54375d2ba50215a216117080134",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "before": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 59,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 57,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      },
+      "after": {
+        "result": "victory",
+        "rounds": 5,
+        "hpLost": 84,
+        "healed": 0,
+        "knockouts": 0,
+        "minHp": 48,
+        "items": {},
+        "remaining": {
+          "bandages": 2,
+          "field-bandage": 1,
+          "focus-tonic": 1
+        },
+        "supportActions": {}
+      }
+    }
+  ],
+  "freshRun": {
+    "prefix": "newGame -> early -> middle -> five; 27 victories, no retries, grants or knockouts",
+    "boundary": "chapter-six:capital-approach",
+    "chapterFive": {
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "hammerplain",
+          "dawnwatch",
+          "windmere"
+        ],
+        "forge": "lift",
+        "firstGun": "mortar",
+        "optional": true,
+        "through": "5"
+      },
+      "xp": 3475,
+      "income": 1293,
+      "spent": 156,
+      "finalMarks": 1539,
+      "rests": 6,
+      "hpLost": 691,
+      "healed": 419,
+      "knockouts": 0,
+      "itemsUsed": {
+        "bandage": 4,
+        "field-bandage": 5
+      },
+      "abilities": {
+        "daybreak": 2,
+        "burst": 23,
+        "strike": 13,
+        "prism": 8,
+        "crush": 4,
+        "rivet": 12,
+        "steam": 1,
+        "bandage": 4,
+        "field-bandage": 5,
+        "sweep": 1,
+        "crossfire": 4,
+        "lanternvolley": 2,
+        "quickshot": 3,
+        "starline": 6,
+        "heal": 2,
+        "celestialbolt": 6,
+        "sanctuary": 1,
+        "ricochet": 1
+      },
+      "remainingSupplies": {
+        "bandages": 3,
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "battles": [
+        {
+          "id": "airfield-guard",
+          "rounds": 4,
+          "hpLost": 51,
+          "healed": 51,
+          "knockouts": 0,
+          "minHp": 73,
+          "formation": [
+            "nell",
+            "celia",
+            "petra"
+          ],
+          "abilities": {
+            "daybreak": 2,
+            "burst": 3,
+            "strike": 3
+          }
+        },
+        {
+          "id": "hammer-stores",
+          "rounds": 3,
+          "hpLost": 62,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 68,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "strike": 2,
+            "crush": 1,
+            "burst": 1,
+            "rivet": 1
+          }
+        },
+        {
+          "id": "hammer-lift",
+          "rounds": 4,
+          "hpLost": 87,
+          "healed": 61,
+          "knockouts": 0,
+          "minHp": 77,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "burst": 3,
+            "steam": 1,
+            "bandage": 2,
+            "rivet": 1,
+            "field-bandage": 1,
+            "prism": 1
+          }
+        },
+        {
+          "id": "hammer-carrier",
+          "rounds": 5,
+          "hpLost": 99,
+          "healed": 69,
+          "knockouts": 0,
+          "minHp": 66,
+          "formation": [
+            "nell",
+            "petra",
+            "orrin"
+          ],
+          "abilities": {
+            "prism": 2,
+            "crush": 2,
+            "burst": 2,
+            "rivet": 3,
+            "sweep": 1,
+            "field-bandage": 2,
+            "strike": 1
+          }
+        },
+        {
+          "id": "dawn-mortar-first",
+          "rounds": 3,
+          "hpLost": 20,
+          "healed": 20,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 1,
+            "burst": 1,
+            "lanternvolley": 1,
+            "bandage": 1,
+            "quickshot": 1
+          }
+        },
+        {
+          "id": "dawn-repeater-last",
+          "rounds": 2,
+          "hpLost": 20,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 92,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "lanternvolley": 1,
+            "crush": 1,
+            "crossfire": 1,
+            "burst": 1
+          }
+        },
+        {
+          "id": "dawn-commander",
+          "rounds": 3,
+          "hpLost": 45,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 81,
+          "formation": [
+            "nell",
+            "petra",
+            "kit"
+          ],
+          "abilities": {
+            "crossfire": 2,
+            "burst": 2,
+            "quickshot": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "wind-lift",
+          "rounds": 3,
+          "hpLost": 77,
+          "healed": 74,
+          "knockouts": 0,
+          "minHp": 47,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "starline": 1,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "wind-gallery",
+          "rounds": 4,
+          "hpLost": 52,
+          "healed": 32,
+          "knockouts": 0,
+          "minHp": 76,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "strike": 1,
+            "starline": 2,
+            "rivet": 1
+          }
+        },
+        {
+          "id": "wind-engine",
+          "rounds": 6,
+          "hpLost": 134,
+          "healed": 112,
+          "knockouts": 0,
+          "minHp": 59,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 1,
+            "heal": 1,
+            "burst": 3,
+            "starline": 1,
+            "field-bandage": 1,
+            "rivet": 3,
+            "celestialbolt": 2,
+            "bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "alban-flagship",
+          "rounds": 5,
+          "hpLost": 3,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 93,
+          "formation": [
+            "nell",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "strike": 3,
+            "celestialbolt": 2,
+            "rivet": 2,
+            "burst": 2
+          }
+        },
+        {
+          "id": "benefactor-retaliation",
+          "rounds": 2,
+          "hpLost": 41,
+          "healed": 0,
+          "knockouts": 0,
+          "minHp": 62,
+          "formation": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "abilities": {
+            "ricochet": 1,
+            "starline": 2,
+            "quickshot": 1
+          }
+        }
+      ]
+    }
+  },
+  "validation": {
+    "unitTests": 740,
+    "optInRouteChecks": 17,
+    "earnedChapterFiveCases": 16,
+    "lateFixtureCases": 42,
+    "additionalGreedyLateCases": 42,
+    "defensiveVictories": 58,
+    "defensiveKnockouts": 0,
+    "greedyVictories": 42,
+    "greedyKnockouts": 1,
+    "browserPlugin": "not available; installed Playwright/Chromium used",
+    "browserFlows": [
+      {
+        "boss": "benefactor",
+        "device": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "dpr": 1,
+        "shot": "claim",
+        "shotCells": 1,
+        "markedCells": 17,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      },
+      {
+        "boss": "serpent",
+        "device": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "dpr": 1,
+        "shot": "sunshard",
+        "shotCells": 1,
+        "markedCells": 16,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      },
+      {
+        "boss": "flagship",
+        "device": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "dpr": 1,
+        "shot": "coveringshot",
+        "shotCells": 1,
+        "markedCells": 17,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      },
+      {
+        "boss": "benefactor",
+        "device": "phone",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1.25,
+        "shot": "claim",
+        "shotCells": 1,
+        "markedCells": 17,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      },
+      {
+        "boss": "serpent",
+        "device": "phone",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1.25,
+        "shot": "sunshard",
+        "shotCells": 1,
+        "markedCells": 16,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      },
+      {
+        "boss": "flagship",
+        "device": "phone",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "dpr": 1.25,
+        "shot": "coveringshot",
+        "shotCells": 1,
+        "markedCells": 17,
+        "consoleErrors": [],
+        "interaction": "Real Defend commands; one direct shot retained boss initiative, followed by the original marked attack"
+      }
+    ],
+    "earnedPreFinaleResumeMatchesFullRun": true
+  },
+  "commands": [
+    "git worktree add --detach /tmp/bt-before-direct 14afa1126e614a1575c171b3637e1deb65585a9d",
+    "node scripts/compare-late-bosses.mjs --root /tmp/bt-before-direct --output /tmp/late-before.json",
+    "node scripts/compare-late-bosses.mjs --output /tmp/late-after.json",
+    "node scripts/compare-late-bosses.mjs --tactics legacy --output /tmp/late-greedy.json",
+    "node scripts/compare-chapter-five-bosses.mjs --root /tmp/bt-before-direct --output /tmp/five-before.json",
+    "node scripts/compare-chapter-five-bosses.mjs --output /tmp/five-after.json",
+    "BT_HEADLESS_REPORT=/tmp/early.json npm run simulate:early",
+    "npm run simulate:middle -- --from /tmp/early.json --output /tmp/four.json",
+    "npm run simulate:five -- --from /tmp/four.json --output /tmp/five.json",
+    "npm run test:headless"
+  ],
+  "limits": [
+    "Chapter Six/Seven inputs are authored canonical probes, not earned full late-game journeys. The serpent fixture uses the same level/gear as the canonical northern approach, with either Nell state. Domain reprise fixtures start from the canonical Chapter Seven opening, before the intervening rewards.",
+    "Isolated fixtures and the first final form have identical before/after starts. The second and third forms deliberately carry actual HP/focus/stock and ordinary victory recovery forward; their input hashes can differ between controllers and rules.",
+    "The greedy controller wins every case but suffers one knockout against the domain furnace in the Nell/Celia/Petra fixture. Defensive support can reduce losses even when attacks are added; HP loss need not rise in every formation. The earned default flagship falls from 76 to 3 HP loss when the controller spends a Sanctuary action.",
+    "Bounded agents do not establish a human difficulty score; other builds, spending, one/two-person parties and later full campaign economy remain unmeasured."
+  ]
+}
