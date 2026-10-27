@@ -18,7 +18,8 @@ export function interactChapterThree(h:StoryHost,id:string){
   const say=(who:string,text:string)=>h.talk({lines:[SAY(who,text)]});
   const rest=()=>h.talk({lines:[SAY(s.location.map==='relayhall'?'Maintenance bench':'The medical train',s.location.map==='relayhall'?'Tomas left a flask and the ward’s field supplies on the bench.':'The ward staff have hot water and field supplies. Orrin’s engine is under steam.')],choices:[
     {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone restored.');}},
-    {label:'Buy a field bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
+    {label:'Buy a bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
+    {label:'Browse supplies and trade gear',action:()=>h.shop('conduit')},
     {label:'Keep moving',action:()=>{}},
   ]});
   switch(id){

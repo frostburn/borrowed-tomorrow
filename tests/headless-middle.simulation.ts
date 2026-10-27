@@ -2,7 +2,7 @@ import {beforeAll,it,expect} from 'vitest';
 import {newGame,type GameState} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {playEarly} from '../src/headless/run';
-import {CampaignSession,resources} from '../src/headless/campaign';
+import {CampaignSession,resources,defaultAgent} from '../src/headless/campaign';
 import {defaultMiddle,playMiddle,readDeparture} from '../src/headless/middle';
 
 let earned:GameState;
@@ -36,3 +36,13 @@ it('can finish without the optional Chapter Three/Four patrol rewards',()=>{
  expect(s.state.flags.chapterFourComplete).toBe(true);expect(s.state.flags.palaceStoresWon).toBeUndefined();expect(s.state.flags.worksStoresWon).toBeUndefined();
  expect(s.events.filter(e=>e.event==='battle')).toHaveLength(6);
 },30000);
+
+for(const build of ['offense','support']as const)it(`defensive ${build} policy earns the departure using its budget and formation`,()=>{
+ const s=new CampaignSession(earned,{...defaultAgent,build,spending:build==='support'?'frugal':'prepared'});
+ playMiddle(s,{...defaultMiddle,conduit:build==='support'?'pressure':'feeds',harbor:build==='support'?'wet':'dry'});
+ expect(s.state.flags.chapterFourComplete).toBe(true);expect(decodeSave(JSON.stringify(s.state))).toEqual(s.state);
+ const battles=s.events.filter(e=>e.event==='battle');expect(battles.every(e=>e.result==='victory')).toBe(true);
+ const casts=battles.flatMap(e=>(e.turns as {actor:string;decision:{ability?:string}}[]).filter(t=>s.state.party.some(p=>p.id===t.actor)).map(t=>t.decision.ability));
+ expect(casts.some(a=>a==='taunt'||a==='daybreak'||a==='guard'||a==='sanctuary')).toBe(true);
+ if(build==='offense')expect(s.events.some(e=>e.event==='purchase'&&e.item==='insulated-coat')).toBe(true);
+},60000);

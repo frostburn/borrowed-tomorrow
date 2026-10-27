@@ -17,7 +17,8 @@ export function playMiddle(s:CampaignSession,options:MiddleOptions=defaultMiddle
  if(s.state.chapter==='chapter-two'){
   s.beginNext();s.visit('capital-cache');s.prepare();
   const target=s.agent.spending==='frugal'?2:3;
-  while(s.state.bandages<target&&s.state.coins>=8)s.visit('capital-engine','Buy a field bandage · 8 marks');
+  while(s.state.bandages<target&&s.state.coins>=8)s.visit('capital-engine','Buy a bandage · 8 marks');
+  if(s.agent.spending!=='baseline'){s.visit('capital-engine','Browse supplies and trade gear');s.stockUp();s.closeShop();}
   s.visit('capital-petra');s.prepare();s.formation(s.agent.build==='support'?['nell','orrin','petra']:['nell','kit','petra']);
   s.visit('capital-works');s.prepare();
   if(options.optional){s.visit('works-locker','Open the stores · fight the lock patrol');s.prepare();}
@@ -30,6 +31,7 @@ export function playMiddle(s:CampaignSession,options:MiddleOptions=defaultMiddle
  if(options.through===3)return;
  s.beginNext();s.visit('refuge-rest','Browse medical supplies and trade gear');if(s.agent.spending==='baseline'){s.buy('field-bandage',2);s.buy('focus-tonic',1);}else s.stockUp();s.closeShop();
  s.visit('refuge-works');s.prepare();s.formation(s.agent.build==='support'?['nell','petra','celia']:['nell','orrin','celia']);
+ if(s.agent.spending==='prepared'){s.visit('works-bench','Browse medical supplies and trade gear');s.stockUp();s.closeShop();}
  if(options.optional){s.visit('works-cart','Open the survey cart · fight its patrol');s.prepare();}
  s.visit('works-bench','Rest · restore everyone’s HP and focus');
  s.visit('works-approach',options.harbor==='dry'?'Take the dry chain walk · ranged crows':'Cross the pump floor · shallow water');s.prepare();

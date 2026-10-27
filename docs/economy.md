@@ -1,6 +1,6 @@
 # Early campaign economy — issue #106
 
-Chapters One and Two have useful purchases and a shared spare-gear trade counter. Stronger medicine enters shops in Chapter Four. Later chapters offer the medical counter through their existing rest interactions; further equipment progression remains follow-up work on #106.
+Chapters One and Two have useful purchases and a shared spare-gear trade counter. Stronger medicine enters shops in Chapter Four. Chapter Three adds conduit counters; Chapter Four and later medical counters also stock modest protective equipment. Further late-game equipment progression remains follow-up work on #106.
 
 ## Counters and stock
 
@@ -47,3 +47,11 @@ The free shed reflector, raid sight and collector coat stay useful loot. Starter
 Transactions and fitting changes autosave. The current version-11 campaign and version-2 inventory retain their existing shapes: basic bandages stay in `bandages`; field-bandage/tonic counts use validated bag entries (0–99). They cannot be put in an equipment slot. No retired save migrations or aliases were added. Dev workshop resources remain isolated.
 
 `rules/consumables.ts` owns fixed item effects and prices, `rules/supplies.ts` owns stock and atomic transactions, and `game/shop.ts` owns the shared counter. `tests/economy.test.ts` checks affordability, sales, capacities, targeting, support strength, action restrictions, save validation and retry/victory persistence. The detailed desktop/phone flow in `tests/e2e/economy-flow.ts` runs in development and production outside the small default CI selection.
+
+## Conduit and medical counter extension
+
+Chapter Three’s medical engine and maintenance bench offer **Browse supplies and trade gear** with the coastal fittings/coats, insulated work coats (48 marks) and balanced saber hilts (58 marks, visible only after Petra joins). The direct 8-mark purchase is correctly labeled ordinary **Bandage**; stronger medicine still starts in Chapter Four. Both counters have the established unnamed supply clerk, preserved by the map exporter.
+
+Medical counters retain bandages, field bandages and tonics and add insulated coats (48), lined travel coats (32) and medic clasps (36, visible only after Celia joins). These are existing stat-only items; loot, manual fitting, ownership limits and free resting retain their behavior. Listed equipment sells for half its purchase price. The clerk’s list and battle costs use the same shared shop rules.
+
+See [headless.md](headless.md) for controlled before/after comparisons: prepared policies now use several hundred marks on actual equipment, while frugal routes still complete. Prices/payouts were not globally raised or cut to force spending.

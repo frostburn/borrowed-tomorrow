@@ -93,7 +93,8 @@ export class CampaignSession{
   const prepared=this.agent.spending==='prepared';
   for(const [item,wanted] of [['bandage',prepared?3:2],['field-bandage',prepared?2:1],['focus-tonic',prepared?1:0]]as const){
    const count=()=>item==='bandage'?this.state.bandages:this.state.inventory.bag[item]??0;
-   while(count()<wanted&&this.state.coins>=32&&canBuy(this.state,item,this.shop))this.buy(item,1);
+   const price=shopStock(this.shop).find(s=>s.id===item)?.cost??Infinity;
+   while(count()<wanted&&this.state.coins-price>=32&&canBuy(this.state,item,this.shop))this.buy(item,1);
   }
   if(!prepared)return;
   // Buy only strict improvements for recruited companions, with an emergency
