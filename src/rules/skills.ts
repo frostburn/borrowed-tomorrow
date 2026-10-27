@@ -36,7 +36,7 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
  celia:[
   skill('celestialbolt',[1,6,11],[{power:8},{power:10},{power:12}]),restoration('heal',[1,3,10]),
   skill('rally',[2,6,10],[{}, {shape:'blast',description:'A moving aura on Celia and her six surrounding hexes. +1 focus regeneration at normal turn start. Lasts 3 rounds, including this round. No immediate focus; ends if Celia falls. Refreshes without stacking. 3 focus.'},{shape:'party',description:'The whole active party gains +1 focus regeneration at normal turn start, wherever they stand. Lasts 3 rounds, including this round. No immediate focus; ends if Celia falls. Refreshes without stacking. 3 focus.'}]),
-  skill('sanctuary',[5,9,12],[{power:8},{power:16},{shape:'party',range:0,power:20,cost:4,description:'Grant a barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
+  skill('sanctuary',[5,9,12],[{power:8},{power:24,description:'Grant a stronger barrier to allies in seven hexes. Level-scaled; does not stack. Range 4. 3 focus.'},{shape:'party',range:0,power:32,cost:4,description:'Grant a strong barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
  ],
  petra:[
   skill('bash',[1,5,9],[{}, {cost:0,description:'Optional extra action: push an adjacent enemy one hex. No damage or focus cost; once per turn.'},{shape:'blast',range:0,cost:0,enemyOnly:true,description:'Optional extra action: push every adjacent enemy one hex. No damage or focus cost; once per turn.'}]),
