@@ -19,11 +19,12 @@ export class PixelDisplay {
   readonly world: HTMLCanvasElement;
   readonly host: HTMLDivElement;
   private ctx:CanvasRenderingContext2D;
-  private frame=document.createElement('canvas');
   private raster=document.createElement('canvas');
   private presentCtx:CanvasRenderingContext2D;
   private lower=document.createElement('canvas');
   private upper=document.createElement('canvas');
+  private lowerRaster=document.createElement('canvas');
+  private upperRaster=document.createElement('canvas');
   private worldRect={x:0,y:0,w:0,h:0};
   private width=1024;
   private height=DISPLAY_HEIGHT;
@@ -41,7 +42,7 @@ export class PixelDisplay {
     this.source=document.createElement('div');this.source.className='pixel-source';
     while(root.firstChild)this.source.append(root.firstChild);root.append(this.source);
     this.output=document.createElement('canvas');this.output.className='pixel-output';this.output.setAttribute('aria-hidden','true');this.output.style.imageRendering='pixelated';root.append(this.output);
-    this.ctx=this.frame.getContext('2d',{willReadFrequently:true})!;
+    this.ctx=this.raster.getContext('2d',{willReadFrequently:true})!;
     this.presentCtx=this.output.getContext('2d',{willReadFrequently:true})!;
     this.host=document.createElement('div');this.host.className='phaser-host';document.body.append(this.host);
     this.world=document.createElement('canvas');this.world.className='world-input';document.getElementById('canvas')!.append(this.world);
@@ -61,7 +62,7 @@ export class PixelDisplay {
     this.cssScale=scale.css;this.physicalScale=scale.physical;
     const left=Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
     this.source.style.width=this.width+'px';this.source.style.height=this.height+'px';this.source.style.left=left+'px';this.source.style.top=top+'px';this.source.style.transform=`scale(${this.cssScale})`;
-    this.frame.width=this.width;this.frame.height=this.height;
+    this.raster.width=Math.ceil(this.width/RASTER_UNIT);this.raster.height=Math.ceil(this.height/RASTER_UNIT);
     // The visible canvas starts at the device origin; center the console inside
     // its bitmap to avoid fractional CSS edges antialiasing the outer border.
     this.physicalLeft=Math.round(left*dpr);this.physicalTop=Math.round(top*dpr);
@@ -91,18 +92,29 @@ export class PixelDisplay {
     if(!resized&&!this.dirty&&!sceneChanged&&(!animated||now-this.lastPaint<50))return;
     this.lastPaint=now;
     this.fitWorld();
+    const full=this.dirty||resized;
     if(this.dirty){this.rebuild();this.dirty=false;}
-    const ctx=this.ctx;ctx.imageSmoothingEnabled=false;ctx.globalAlpha=1;ctx.fillStyle=PALETTE[0];ctx.fillRect(0,0,this.width,this.height);
-    ctx.drawImage(this.lower,0,0);
-    const r=this.worldRect;ctx.drawImage(this.native,r.x,r.y,r.w,r.h);
-    ctx.drawImage(this.upper,0,0);
-    rasterize(this.frame,this.raster);
+    // Stable controls and letterboxing do not need another physical-screen
+    // copy when only the world changes. Round outward on the sampling grid.
+    const r=this.worldRect,u=RASTER_UNIT;
+    const left=full?0:Math.max(0,Math.floor(r.x/u)),top=full?0:Math.max(0,Math.floor(r.y/u));
+    const right=full?this.raster.width:Math.min(this.raster.width,Math.ceil((r.x+r.w)/u));
+    const bottom=full?this.raster.height:Math.min(this.raster.height,Math.ceil((r.y+r.h)/u));
+    const w=right-left,h=bottom-top;if(w<=0||h<=0)return;
+    const ctx=this.ctx;ctx.imageSmoothingEnabled=false;ctx.globalAlpha=1;ctx.fillStyle=PALETTE[0];
+    ctx.save();ctx.beginPath();ctx.rect(left,top,w,h);ctx.clip();ctx.fillRect(left,top,w,h);
+    ctx.drawImage(this.lowerRaster,0,0);
+    // Nearest sampling commutes with source-over: composite on the final grid
+    // instead of copying a full-size UI/world/UI screen and shrinking it again.
+    ctx.drawImage(this.native,r.x/RASTER_UNIT,r.y/RASTER_UNIT,r.w/RASTER_UNIT,r.h/RASTER_UNIT);
+    ctx.drawImage(this.upperRaster,0,0);ctx.restore();
     // Expand in the bitmap itself. CSS fractional sizing can otherwise smooth pixels
     // at fractional DPR even when the final device scale is an integer.
     this.presentCtx.imageSmoothingEnabled=false;
-    this.presentCtx.fillStyle=PALETTE[0];this.presentCtx.fillRect(0,0,this.output.width,this.output.height);
+    if(full){this.presentCtx.fillStyle=PALETTE[0];this.presentCtx.fillRect(0,0,this.output.width,this.output.height);}
     this.presentCtx.save();this.presentCtx.beginPath();this.presentCtx.rect(this.physicalLeft,this.physicalTop,this.width*this.physicalScale,this.height*this.physicalScale);this.presentCtx.clip();
-    this.presentCtx.drawImage(this.raster,this.physicalLeft,this.physicalTop,this.raster.width*RASTER_UNIT*this.physicalScale,this.raster.height*RASTER_UNIT*this.physicalScale);this.presentCtx.restore();
+    const scale=RASTER_UNIT*this.physicalScale;
+    this.presentCtx.drawImage(this.raster,left,top,w,h,this.physicalLeft+left*scale,this.physicalTop+top*scale,w*scale,h*scale);this.presentCtx.restore();
   }
   /** Measure the DOM only after changes; the world canvas still updates each frame. */
   private rebuild(){
@@ -171,5 +183,6 @@ export class PixelDisplay {
       if(passed)command.draw(upper);
       else{command.draw(lower);if(command.state)command.draw(upper);}
     }
+    rasterize(this.lower,this.lowerRaster);rasterize(this.upper,this.upperRaster);
   }
 }

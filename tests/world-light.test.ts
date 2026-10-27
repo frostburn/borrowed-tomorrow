@@ -188,7 +188,7 @@ it('matches exhaustive lighting at radius/beam edges, including rotated and mirr
   for(let i=0;i<w*h;i++)data.set([110+i%50,75+i%25,80,i%7?255:0],i*4);
   const source={data,width:w,height:h,colorSpace:'srgb'} as ImageData,planes=actorPlanes(source);
   const lights:WorldLight={ambient:NIGHT_AMBIENT,lamps:[...[-100,18,45,100,900].flatMap(x=>[32,65,140].map(y=>({x,y,height:90,radius:125,strength:1.2}))),{x:35,y:60,height:80,radius:160,strength:.8,fill:.2,beam:{reach:70,width:8,spread:.38}}]};
-  for(const [x,y,sx,sy,r]of [[28,90,1,1,0],[28,90,-1,1,0],[70,61,1.7,-1,.7],[31,130,-1.5,1.4,-.8],[33,59,1,1,0],[140,90,1,1,2.3]]){
+  for(const [x,y,sx,sy,r]of [[28,90,1,1,0],[28,90,-1,1,0],[70,61,1.7,-1,.7],[31,130,-1.5,1.4,-.8],[33,59,1,1,0],[140,90,1,1,2.3],[600,600,1.2,-1,.5]]){
     const expected=new Uint8ClampedArray(data.length),actual={...source,data:new Uint8ClampedArray(data.length)},cos=Math.cos(r),sin=Math.sin(r);
     for(let i=0;i<data.length;i+=4){
       expected[i+3]=data[i+3];if(!data[i+3])continue;
