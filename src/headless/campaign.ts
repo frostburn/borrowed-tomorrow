@@ -6,15 +6,14 @@ import type {Dialogue} from '../content/dialogue';
 import type {StoryHost} from '../content/story-host';
 import {level,remember,setActive,type GameState} from '../rules/state';
 import {decodeSave} from '../rules/save';
-import {active,awardVictory,cast,createBattle,defend,endTurn,enemyTurn,move} from '../rules/combat';
+import {awardVictory,createBattle,type Battle} from '../rules/combat';
 import {equipItem,ITEMS,type ItemId} from '../rules/inventory';
 import {buySupply,canBuy,shopStock,type ShopId,type SupplyId} from '../rules/supplies';
 import {upgradeSkill,type SkillId} from '../rules/skills';
 import type {CompanionId} from '../rules/party';
-import {decideBattle,fighterSnapshot} from './tactics';
-import {decideDefensively} from './defensive';
+import {playBattle} from './battle';
 
-export interface AgentOptions {tactics:'legacy'|'defensive';build:'offense'|'support';spending:'baseline'|'frugal'|'prepared'}
+export interface AgentOptions {tactics:'legacy'|'defensive'|'cooperative';build:'offense'|'support';spending:'baseline'|'frugal'|'prepared'}
 export const baselineAgent:AgentOptions={tactics:'legacy',build:'offense',spending:'baseline'};
 export const defaultAgent:AgentOptions={tactics:'defensive',build:'offense',spending:'prepared'};
 
@@ -25,6 +24,8 @@ export class CampaignSession{
  readonly state:GameState;
  readonly events:Record<string,unknown>[]=[];
  readonly checkpoints:Record<string,GameState>={};
+ /** Exact earned inputs for controlled encounter comparisons; not save data. */
+ readonly battleStarts=new Map<string,Battle>();
  private dialogue?:Dialogue;
  private pendingBattle?:string;
  private shop?:ShopId;
@@ -116,18 +117,8 @@ export class CampaignSession{
   if(definition.grounding&&this.state.activeParty.length<2)throw Error('Sealed intake needs two active companions');
   const before=resources(this.state),b=createBattle(id,this.state),turns:Record<string,unknown>[]=[];
   const entry={event:'battle',id,before,turns,result:'running',rounds:0,after:before,groundingOpened:false};this.events.push(entry);
-  for(let n=0;!b.result&&n<600;n++){
-   const u=active(b);if(!u)throw Error(`No active fighter in ${id}`);
-   const start=fighterSnapshot(b.units),round=b.round,grounded=b.grounding?.open??false;
-   const decision=u.side==='enemy'?{kind:'enemy' as const}:this.agent.tactics==='legacy'?decideBattle(b):decideDefensively(b,this.agent.spending==='frugal');
-   let accepted=true,enemyAction:ReturnType<typeof enemyTurn>;
-   if(decision.kind==='enemy')enemyAction=enemyTurn(b);
-   else if(decision.kind==='move')accepted=!!move(b,u,decision.hex);
-   else if(decision.kind==='cast')accepted=cast(b,u,decision.ability,decision.hex);
-   else accepted=decision.kind==='end'?endTurn(b):defend(b);
-   if(!accepted)throw Error(`Rejected ${decision.kind} by ${u.id} in ${id}`);
-   turns.push({actor:u.id,round,decision:decision.kind==='enemy'?{...decision,ability:enemyAction}:decision,before:start,after:fighterSnapshot(b.units),bandages:b.bandages,supplies:{...b.supplies},groundingOpened:!grounded&&!!b.grounding?.open});
-  }
+  this.battleStarts.set(id,structuredClone(b));
+  turns.push(...playBattle(b,this.agent));
   entry.result=b.result??'stalled';entry.rounds=b.round;entry.groundingOpened=b.grounding?.open??false;
   this.events.push({event:'battle-supplies',id,bandagesUsed:this.state.bandages-b.bandages,suppliesLeft:{...b.supplies}});
   if(b.result!=='victory')throw Error(`${id}: ${entry.result}`);

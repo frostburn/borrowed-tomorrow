@@ -1,5 +1,4 @@
 import {createServer} from 'vite';
-const middle=process.argv[2]==='middle';
-if(middle)process.argv.splice(2,1);
+const mode=['middle','support'].includes(process.argv[2])?process.argv.splice(2,1)[0]:'early';
 const server=await createServer({configFile:false,server:{middlewareMode:true},appType:'custom'});
-try{const {run}=await server.ssrLoadModule(middle?'/src/headless/continue.ts':'/src/headless/run.ts');await run();}finally{await server.close();}
+try{const {run}=await server.ssrLoadModule(mode==='middle'?'/src/headless/continue.ts':mode==='support'?'/src/headless/support-probe.ts':'/src/headless/run.ts');await run();}finally{await server.close();}

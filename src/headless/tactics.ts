@@ -65,4 +65,4 @@ export function decideBattle(source:Battle):Decision{
  if(step&&nearest(step.hex)<nearest(original)&&risk(step.hex)<=risk(original))return {kind:'move',hex:step.hex};
  return {kind:'defend'};
 }
-export const fighterSnapshot=(units:Unit[])=>units.map(u=>({id:u.id,hp:u.hp,focus:u.focus,hex:{...u.hex},guard:u.guard??0,defending:u.defending}));
+export const fighterSnapshot=(units:Unit[])=>units.map(u=>({id:u.id,hp:u.hp,focus:u.focus,hex:{...u.hex},guard:u.guard??0,defending:u.defending,dazzledAttacks:u.dazzledAttacks??0,pinned:u.pinned??false,tauntedBy:u.tauntedBy,teamSpentRound:u.teamSpentRound}));

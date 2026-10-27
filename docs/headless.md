@@ -146,3 +146,19 @@ A new zero-start default run still clears all fifteen encounters and reaches the
 [chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json) is the **current earned continuation checkpoint**: level 9 / 1,355 XP, 402 marks, one ordinary bandage, one field bandage and one focus tonic. It includes the accepted deployment's source hash and the six before/after boss summaries. The earlier defensive checkpoint and fresh audit remain historical results for the former deployment.
 
 All eight opt-in route simulations pass, including alternate conduit/harbor paths, optional-patrol omission and split-save continuation. The defensive earned-route tests now require a Steam attack by the second round, while a focused rule test checks opening pressure against a stationary starting party. The 695 unit tests, TypeScript and production build pass. No new CI jobs or default chapter-playthrough tests are added.
+
+## Cooperative support probe
+
+`--tactics cooperative` adds a bounded lookahead alongside the unchanged `legacy` and `defensive` controls. It shortlists distinct affected groups per skill, keeps a finalist for every available command, and resolves the actual initiative through the end of the following round. Allies use the fixed greedy policy; enemies use the campaign AI. Rally can enable a later ally's attack, Dazzle can reduce multiple attacks/retaliations, and bonus Shield bash receives a main-action followup. Team moves really spend both actions and focus costs; the cooperative evaluation does not apply a fixed partner discount. All planning uses disposable copies; movement and attack remain separate committed decisions.
+
+```sh
+npm run simulate:compare -- --from /tmp/borrowed-tomorrow-headless.json
+npm run simulate:support -- --from /tmp/borrowed-tomorrow-headless.json --output /tmp/support-probe.json
+npx vitest run tests/headless-cooperation.test.ts
+```
+
+The route comparison includes four cooperative policies paired with the existing defensive offense/support and prepared/frugal policies. Compare tactics **within the same build and spending policy**; comparing offense against support still changes the formation and skill priorities.
+
+The support probe earns the defensive/support/prepared route once, then replays the exact starting battles for the capital arrest, dry harbor approach and Sanctuary Warden. It compares defensive, cooperative, cooperative without class utilities, and cooperative without team commands. Only commands on probe copies are suppressed: no HP, focus, equipment, learned rank, terrain, enemy or initiative changes. Utilities here mean Dazzle/Feint, barriers, Taunt, Rally, Shield bash, Pinning shot and Daybreak; healing and items remain available. Each encounter records its input hash, formation/build/stats, actual HP lost/healed, knockouts, minimum HP, rounds, command use and remaining supplies. The campaign earns victory normally; replay probes grant no rewards or retry resources.
+
+Focused stationary-lane tests isolate sustained pressure, a focus-starved Steam formation, an immediate kill and spent helpers. They are deliberate tactical fixtures, not evidence about campaign difficulty. The lookahead is bounded, uses greedy allied continuations and does not search formations, equipment, Wait or all future control combinations. The default remains the faster defensive policy; the more expensive cooperative policy and full comparisons stay opt-in and add no CI jobs.
