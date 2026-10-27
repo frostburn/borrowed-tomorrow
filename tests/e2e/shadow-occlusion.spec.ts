@@ -22,6 +22,8 @@ for(const [name,viewport]of [['desktop',{width:1280,height:800}],['phone',{width
    mask.getContext('2d')!.fillRect(455,390,4,4);
    const synthetic=lightGround(map,flags,(p:any)=>p.layerId===27?mask:undefined);
    const foreground=foregroundSurface(map,flags,(p:any)=>images.get(p.key)),fc=foreground.getContext('2d');
+   const rear=foregroundSurface(map,flags,(p:any)=>p.layerId===26?mask:undefined),rearShadow=foregroundSurface(map,flags,(p:any)=>p.layerId===26?mask:undefined,true);
+   const rearAlpha=rear.getContext('2d').getImageData(456,391,1,1).data[3],rearShadowAlpha=rearShadow.getContext('2d').getImageData(456,391,1,1).data[3];
    const actual=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!.getContext('2d')!,snap=window.borrowedTomorrow.inspect();
    const assets='/src/content/art-assets.ts',{artPath}=await import(/* @vite-ignore */assets);let covered=0,wrong=0;
    for(const a of snap.actors){
@@ -34,9 +36,9 @@ for(const [name,viewport]of [['desktop',{width:1280,height:800}],['phone',{width
      const rendered=actual.getImageData(vx,vy,1,1).data;if([0,1,2].some(k=>Math.abs(f[k]-rendered[k])>1))wrong++;
     }
    }
-   return {hidden,floor,covered,wrong,solid:c.isPointInPath(synthetic,456,391),opening:c.isPointInPath(synthetic,462,391)};
+   return {hidden,floor,covered,wrong,rearAlpha,rearShadowAlpha,solid:c.isPointInPath(synthetic,456,391),opening:c.isPointInPath(synthetic,462,391)};
   });
-  expect(result.covered).toBeGreaterThan(5);expect(result.wrong).toBe(0);expect(result.hidden).toBeGreaterThan(20);expect(result.floor).toBeGreaterThan(10000);expect(result.solid).toBe(false);expect(result.opening).toBe(true);
+  expect(result.rearAlpha).toBe(0);expect(result.rearShadowAlpha).toBe(255);expect(result.covered).toBeGreaterThan(5);expect(result.wrong).toBe(0);expect(result.hidden).toBeGreaterThan(20);expect(result.floor).toBeGreaterThan(10000);expect(result.solid).toBe(false);expect(result.opening).toBe(true);
   await capture(page,`cave-shadow-occlusion-${name}`);
   await page.locator('#canvas').focus();await page.keyboard.press('ArrowRight',{delay:60});
   await expect.poll(async()=>{const s=await inspect(page);return !s.moving&&s.state.location.x===19;}).toBe(true);
