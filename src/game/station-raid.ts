@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import {MAPS,worldPath} from '../content/maps';
-import {steppingPerson} from '../content/people-motion';
 import type {WorldLighting} from './world-lighting';
 const pixel=(p:{x:number;y:number})=>({x:(p.x+.5)*24,y:(p.y+.5)*24+7});
 /** First-screen continuity. State still commits only on scene completion/skip. */
@@ -46,7 +45,6 @@ export class StationRaid {
     image.setPosition(Math.round(image.x/2)*2,Math.round((image.y-1)/2)*2+1);
     const d=distance+Math.hypot(image.x-start.x,image.y-start.y);
     if(key==='hound')image.setTexture('hound-arrival',Math.floor(d/7)%2);
-    else if(steppingPerson(key))image.setTexture(`${key}-ambient`,Math.floor(d/4)%6);
    },onComplete:()=>{distance+=Math.hypot(image.x-start.x,image.y-start.y);next(index+1);}}));
   };next(0);
  }

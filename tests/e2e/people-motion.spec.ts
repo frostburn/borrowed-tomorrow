@@ -17,7 +17,7 @@ for(const [name,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',
   await expect.poll(()=>signature(page),{timeout:8000}).not.toBe(still);
   await expect.poll(()=>bitmap(page),{timeout:8000}).not.toBe(native);await expect.poll(()=>bitmap(page,'.pixel-output'),{timeout:8000}).not.toBe(output);
   const moving=(await inspect(page)).people;
-  for(const p of moving){expect(p.depth).toBe(p.y);expect([p.sourceWidth,p.sourceHeight]).toEqual([80,80]);expect(p.filter).toBe(1);}
+  for(const p of moving){if(p.motion==='move'){expect(p.texture).not.toContain('-ambient');expect(p.frame).toBe('__BASE');}expect(p.depth).toBe(p.y);expect([p.sourceWidth,p.sourceHeight]).toEqual([80,80]);expect(p.filter).toBe(1);}
   expect((await inspect(page)).state).toEqual({...before,playSeconds:expect.any(Number)});await capture(page,`people-live-${name}`);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();const paused=await signature(page);await page.waitForTimeout(500);expect(await signature(page)).toBe(paused);
   await page.keyboard.press('Escape');

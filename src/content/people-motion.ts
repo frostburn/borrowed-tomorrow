@@ -7,7 +7,7 @@ export function personStill(map:string,person:MapPerson,flags:Record<string,bool
  return !!person.projection||!!person.motionAfter&&!flags[person.motionAfter]||map==='rillbridge'&&!flags.villageFreed||map==='cinderbank'&&!flags.coastCollectorWon;
 }
 export const animatedPerson=(sprite:string)=>PERSON_MOTION_SPRITES.some(id=>id===sprite);
-export interface PersonPose {dy:number;frame?:number;motion:'idle'|'step'|'gesture'}
+export interface PersonPose {dy:number;frame?:number;motion:'idle'|'move'|'gesture'}
 const idle:PersonPose={dy:0,motion:'idle'};
 /** Brief, staggered actions separated by long rests. Small forward/back
  * adjustments use the original facing and preserve physical handedness. */
@@ -19,8 +19,7 @@ export function personPose(person:Pick<MapPerson,'sprite'>,time:number,slot:numb
   const travel=local<1400?local/1400:local<2800?1:(4200-local)/1400;
   const dy=Math.round(travel*8/2)*2;
   if(local>=1400&&local<2800)return {dy,motion:'idle'};
-  const walked=travel*8;
-  return {dy,frame:Math.floor(walked/4)%6,motion:'step'};
+  return {dy,motion:'move'};
  }
  if(local>=1800)return idle;
  return {dy:0,frame:(steppingPerson(person.sprite)?6:0)+(local<450||local>=1350?0:1),motion:'gesture'};

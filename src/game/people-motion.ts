@@ -22,8 +22,9 @@ export class PeopleMotion {
    if(!a.image.active)continue;
    const pose=this.reduced.matches?{dy:0,motion:'idle',frame:undefined}:personPose(a.person,this.time,a.slot,this.actors.length,a.step);
    const key=pose.frame===undefined?a.person.sprite:`${a.person.sprite}-ambient`,frame=pose.frame??'__BASE';
+   a.image.setData('person-motion',pose.motion);
    if(a.image.x===a.x&&a.image.y===a.y+pose.dy&&a.image.texture.key===key&&String(a.image.frame.name)===String(frame))continue;
-   a.image.setPosition(a.x,a.y+pose.dy).setTexture(key,frame).setData('person-motion',pose.motion);this.dirty=true;
+   a.image.setPosition(a.x,a.y+pose.dy).setTexture(key,frame);this.dirty=true;
   }
  }
 }

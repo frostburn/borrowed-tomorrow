@@ -11,6 +11,7 @@ for(const [name,viewport]of [['desktop',{width:1280,height:800}],['phone',{width
  for(let i=0;i<3;i++)await page.locator('.dialogue-actions button').first().click();
  const first=(await inspect(page)).people.find(p=>p.id==='festival-traveler')!;
  await expect.poll(async()=>(await inspect(page)).people.find(p=>p.id==='festival-traveler')?.x).not.toBe(first.x);
+ expect((await inspect(page)).people.find(p=>p.id==='festival-traveler')?.texture).toBe('civilian-traveler');
  await capture(page,`raid-guests-leaving-${name}`);
  await expect.poll(async()=>(await inspect(page)).people.filter(p=>p.id.startsWith('festival-')).every(p=>p.alpha===0),{timeout:8000}).toBe(true);
  while(!(await page.locator('.dialogue-copy p').textContent())?.includes('hounds are coming'))await page.locator('.dialogue-actions button').first().click();

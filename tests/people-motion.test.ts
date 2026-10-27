@@ -20,7 +20,7 @@ it('keeps collected towns, bound people and projections still without freezing a
  expect(personStill('hammerplain',MAPS.hammerplain.people!.find(p=>p.id==='home-family')!,state.flags)).toBe(false);
  for(const person of MAPS.takenwater.people!)expect(personStill('takenwater',person,{})).toBe(true);
 });
-it('stages at most two brief actions with long rests, native-pixel steps and exact returns',()=>{
+it('stages at most two brief actions with long rests, native-pixel movement and exact returns',()=>{
  const people=[traveler,{...traveler,sprite:'civilian-family' as const},{...traveler,sprite:'civilian-patient' as const},traveler];
  let steps=0,gestures=0,idles=0;
  for(let t=0;t<60000;t+=40){
@@ -29,7 +29,7 @@ it('stages at most two brief actions with long rests, native-pixel steps and exa
   for(const [i,pose]of poses.entries()){
    expect(pose.dy%2).toBe(0);expect(pose.dy).toBeGreaterThanOrEqual(0);expect(pose.dy).toBeLessThanOrEqual(8);
    if(i===1||i===2)expect(pose.dy).toBe(0);
-   if(pose.motion==='step')steps++;else if(pose.motion==='gesture')gestures++;else idles++;
+   if(pose.motion==='move'){steps++;expect(pose.frame).toBeUndefined();}else if(pose.motion==='gesture')gestures++;else idles++;
   }
  }
  expect(steps).toBeGreaterThan(0);expect(gestures).toBeGreaterThan(0);expect(idles).toBeGreaterThan(steps+gestures);
@@ -65,7 +65,7 @@ it('pauses its clock for dialogue and settles reduced motion to the authored sta
  const image={active:true,x:100,y:100,texture:{key:person.sprite as string},frame:{name:'__BASE' as string|number},setPosition(x:number,y:number){this.x=x;this.y=y;return this;},setTexture(key:string,frame:string|number){this.texture.key=key;this.frame.name=frame;return this;},setData(){return this;}};
  const motion=new PeopleMotion();motion.add(image as unknown as Phaser.GameObjects.Image,person,map,{flags:{}});
  for(let i=0;i<20;i++)motion.update(120,false);
- expect(image.y).toBeGreaterThan(100);expect(motion.takeFrame()).toBe(true);
+ expect(image.y).toBeGreaterThan(100);expect(image.texture.key).toBe(person.sprite);expect(image.frame.name).toBe('__BASE');expect(motion.takeFrame()).toBe(true);
  const before=structuredClone({x:image.x,y:image.y,key:image.texture.key,frame:image.frame.name});
  for(let i=0;i<30;i++)motion.update(120,true);
  expect({x:image.x,y:image.y,key:image.texture.key,frame:image.frame.name}).toEqual(before);expect(motion.takeFrame()).toBe(false);
