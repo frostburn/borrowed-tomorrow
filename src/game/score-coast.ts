@@ -48,8 +48,8 @@ const raid: [number,Pitch,number][][] = [
   [[0,'G5',1.5],[2,'D5',.5],[3,'B4',.75]],
   [[0,'A4',.5],[1,'C5',.5],[2,'B4',.5],[2.5,'A4',.5],[3,'G4',.75]],
   [[0,'G4',1],[1.5,'E5',.5],[2,'D5',1.5]],
-  // Open the register and let the melody breathe over a half-time backbeat.
-  [[0,'F#5',2],[2.5,'A5',1.5]],
+  // Open with F–A, then raise F to F# in the answer over the half-time backbeat.
+  [[0,'F5',2],[2.5,'A5',1.5]],
   [[0,'F#5',1.5],[2,'D5',.5],[3,'B4',.75]],
   [[0,'E5',2],[2.5,'G5',1.5]],
   [[0,'B4',2],[2.5,'D5',.5],[3,'F#5',.75]],
