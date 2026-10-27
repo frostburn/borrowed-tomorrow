@@ -23,6 +23,7 @@ export function interactChapterFour(h:StoryHost,id:string){
   case 'refuge-rest':case 'works-bench':case 'sanctuary-bench':return h.talk({lines:[SAY('Supplies','There’s a sheltered place to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
+   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    {label:'Leave',action:()=>{}},
   ]});
   case 'refuge-tomas':

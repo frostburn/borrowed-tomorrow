@@ -602,27 +602,27 @@
           "x": 276,
           "y": 756,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Town infirmary \u00b7 rest and bandages"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "optional"
-            },
-            {
-              "name": "rest",
-              "type": "bool",
-              "value": true
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Town infirmary · rest and bandages"
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "optional"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "id": 1
         },
         {

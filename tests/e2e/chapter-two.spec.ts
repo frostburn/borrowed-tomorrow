@@ -160,10 +160,10 @@ test('failed region artwork keeps the original departure available for retry',as
 
 test('loading-gate route, ward supplies and the escape work on a phone',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,coastCheckpoint('kitJoined'));
-  await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
+  await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier · Lv 3');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
   await visit(page,'prison-coach');await travel(page,'coast-ward','infirmary');await dialogue(page);await nativeScene(page,'infirmary');await capture(page,'railway-ward-phone');
   const before=(await inspect(page)).state;await approach(page,'ward-rest');await expect(page.locator('.dialogue')).toBeVisible();await capture(page,'ward-care-menu-phone');
-  await page.getByRole('button',{name:'Buy a field bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
+  await page.getByRole('button',{name:'Buy a bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
   await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toBeVisible();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await visit(page,'siding-release');await approach(page,'siding-alban');await dialogue(page);await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await visit(page,'capital-engine');
   await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);

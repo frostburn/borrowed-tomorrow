@@ -1,3 +1,4 @@
+import {isConsumable} from '../../src/rules/consumables';
 import {abilityFor} from '../../src/rules/skills';
 import {teamStatus} from '../../src/rules/combat-tactics';
 import {expressivePortrait,type PortraitExpression} from '../../src/content/portrait-expressions';
@@ -159,8 +160,10 @@ export async function battle(page: Page, screenshot?: string, practice=false) {
     const decision=playerPlan(b);
     const definition=decision.action==='move'||decision.action==='defend'?undefined:abilityFor(u,decision.action);
     const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?(movementOnly(b,u)?/^F\s+End turn$/:/^F\s+Defend$/):new RegExp(`^\\d\\s+${definition!.name}${definition!.bonus?' · Extra':definition!.team?' · Team':''}$`);
-    const action=page.locator('.actions').getByRole('button',{name:label});
+    const item=decision.action!=='move'&&decision.action!=='defend'&&isConsumable(decision.action);
+    const action=page.locator('.actions').getByRole('button',{name:item?/^\d\s+Items$/:label});
     await expect(action).toBeEnabled();await action.click();
+    if(item)await page.getByRole('dialog',{name:'Battle items'}).getByRole('group',{name:definition!.name,exact:true}).getByRole('button',{name:'Select',exact:true}).click();
     if(decision.hex && decision.action!=='defend'){await clickHex(page,decision.hex);if(screenshot&&decision.action==='burst'){await capture(page,'aoe-preview');screenshot=undefined;}await page.getByRole('button',{name:decision.action==='move'?/^Confirm move/:definition!.heal?/^Confirm healing$/:definition!.effect && !['push','pin'].includes(definition!.effect)?/^Confirm ability$/:/^Confirm attack$/}).click();}
     await page.waitForTimeout(420);
   }

@@ -50,14 +50,16 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       if (!f.prisonersFreed) return host.toast('Open the prison coach before leaving.');
       travel('infirmary','from-coast'); return;
     case 'coast-engine':
-      host.talk({ lines: [SAY('Orrin', 'Still here. Coal in the bunker, pressure down. There’s a flask in the cab if you need a moment.')], choices: [
+      host.talk({ lines: [SAY('Supply clerk', 'There’s hot water in the cab. Coats and spare fittings here, if you need them.')], choices: [
         { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
+        { label: 'Browse supplies and trade gear', action: () => host.shop('coast') },
         { label: 'Keep moving', action: () => {} },
       ] }); return;
     case 'ward-rest':
       host.talk({ lines: [SAY('Dena', 'Soup is warming by the stove. Clean bandages are stacked on the supply bench.')], choices: [
         { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
-        { label: 'Buy a field bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
+        { label: 'Buy a bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
+        { label: 'Browse supplies and trade gear', action: () => host.shop('ward') },
         { label: 'Keep moving', action: () => {} },
       ] }); return;
     case 'ward-kit': say('Kit', f.chapterTwoComplete ? 'No one from the exchange is missing. I checked twice.' : 'The little boy in the first coach wants to deliver post on the engine. I told him to ask Orrin.'); return;
@@ -74,7 +76,11 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       if (f.evacuationReady) return say('The broken collector', 'The casing is open. Dena has everyone aboard the medical train.');
       host.talk({ ...scenes.evacuation(), done: () => { s.location = arrival('cinderbank','evacuated'); restoreParty(s); host.commit('evacuationReady', 'evacuation'); } }); return;
     case 'siding-coaches':
-      say('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. That letter is for the family at the green door. We still need to reach them.'); return;
+      host.talk({lines:[SAY('Kit', f.evacuationReady ? 'The families are aboard. The ward staff are staying with the injured. We still need to get Orrin to the engine.' : 'The prisoners are safe in the coaches. That letter is for the family at the green door. We still need to reach them.')],choices:[
+        {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);host.refresh();host.save();host.toast('Everyone restored.');}},
+        {label:'Browse supplies and trade gear',action:()=>host.shop('ward')},
+        {label:'Keep moving',action:()=>{}},
+      ]});return;
     case 'siding-captain':
     case 'siding-alban':
       if (!f.evacuationReady) return host.toast('Free the families at the collector before clearing the crossing.');

@@ -16,7 +16,7 @@ Choose **Upgrade skills** on the victory panel, the available-points button whil
 | Celia | Celestial bolt, Heal, Rally, Sanctuary |
 | Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
 
-Strike and Bandage stay separate. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character list has eight abilities, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
+Strike and Items stay separate from skill upgrades. Items opens one shared bag menu for bandages, field bandages and focus tonics, with quantities and effects; each uses a main action after targeting and confirmation. See [economy.md](economy.md) for the early supply counters. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character command list has eight entries, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
 
 The themed merges are functional: Nell’s Mend and Celia’s Heal each gain area healing; Celia’s final Heal includes revival. Dimming halo becomes area Dazzle. Steam lance retains its original contiguous four-hex ray at every rank, with increasing damage; Field bracing becomes upgraded Safety guard. Piercing bolt becomes upgraded Quick shot; Volley gives way to the Ricochet line. Driving blow becomes final Crushing blow, while Hold the line becomes final Taunt’s party barrier.
 

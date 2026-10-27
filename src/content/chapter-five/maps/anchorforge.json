@@ -736,37 +736,37 @@
           "width": 192,
           "height": 96,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Crew rest bench \u00b7 rest and bandages"
-            },
-            {
-              "name": "approachX",
-              "type": "int",
-              "value": 16
-            },
-            {
-              "name": "approachY",
-              "type": "int",
-              "value": 30
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "optional"
-            },
-            {
-              "name": "rest",
-              "type": "bool",
-              "value": true
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Crew rest bench · rest and bandages"
+  },
+  {
+    "name": "approachX",
+    "type": "int",
+    "value": 16
+  },
+  {
+    "name": "approachY",
+    "type": "int",
+    "value": 30
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "optional"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "id": 5
         }
       ],

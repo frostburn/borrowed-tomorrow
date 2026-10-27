@@ -34,7 +34,7 @@ import type { StoryHost } from '../content/story-host';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
-import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, endTurn, enemyTurn, legalAim, move, movement, movementOnly, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle } from '../rules/combat';
+import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, endTurn, enemyTurn, legalAim, move, movement, movementOnly, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle, type Unit } from '../rules/combat';
 import { ENCOUNTERS } from '../content/encounters';
 import { HEX_SIZE, hexVertices, cells, diagonalStart, equal, fromPixel, inside, key, neighbors, offset, toPixel, type Hex } from '../rules/hex';
 import { partyLeader, level, maxHp, newGame, remember, restoreParty, type GameState, type HeroId, type MapId } from '../rules/state';
@@ -46,8 +46,11 @@ import { CHAPTER_ONE_SCENE_ASSETS } from '../content/scene-art';
 import { BATTLE_MAPS } from '../content/battle-maps';
 import { checkpoint, exportSave, listSaves, save } from './saves';
 import { art, UI } from './ui';
-import { ITEMS, ownedCopies } from '../rules/inventory';
-import { SUPPLIES, buySupply, canBuy } from '../rules/supplies';
+import { ITEMS } from '../rules/inventory';
+import { type ShopId } from '../rules/supplies';
+import { CONSUMABLES, isConsumable } from '../rules/consumables';
+import { battleItemCount } from '../rules/combat';
+import { openShop } from './shop';
 import { openInventory } from './inventory';
 import { bitmapText } from './pixel-font';
 import { PixelLabel } from './pixel-label';
@@ -488,7 +491,7 @@ export class Adventure extends Phaser.Scene {
     if (this.mode==='battle' && active(this.battle!)?.side==='party') {
       const u=active(this.battle!)!;
       if (e.key==='1') this.selectAction('move');
-      else if (/^[2-9]$/.test(e.key)) { const id=battleAbilities(this.battle!,u)[Number(e.key)-2];if(id)this.selectAction(id); }
+      else if (/^[2-9]$/.test(e.key)) { const id=this.commandAbilities(this.battle!,u)[Number(e.key)-2];if(id)this.selectAction(id); }
       else if (e.key.toLowerCase()==='f') this.doDefend();
       else if (e.key.toLowerCase()==='w') this.doWait();
       else if (e.key==='Enter' || e.key===' ') { if(this.plan)this.commitPlan();else this.chooseHex(this.battleCursor); }
@@ -517,7 +520,7 @@ export class Adventure extends Phaser.Scene {
         finally{this.busy=false;}
       },
       travel: (map, x, y) => { void this.changeMap(map, x, y); }, battle: id => this.startBattle(id),
-      shop: () => this.shop(), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
+      shop: shop => this.shop(shop), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
       endingMusic: () => this.audio.setMode('ending'),
     };
   }
@@ -674,6 +677,7 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle!,u=active(b),esc=this.ui.escape;
     this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
   }
+  private commandAbilities(b:Battle,u:Unit){return battleAbilities(b,u).filter(id=>!isConsumable(id)||id==='bandage');}
   private renderBattleControls() {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
@@ -693,9 +697,9 @@ export class Adventure extends Phaser.Scene {
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },
     });
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...abilities.map((id,i)=>{
+    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...this.commandAbilities(b,u).map((id,i)=>{
       const team=teamStatus(b,u,id),a=abilityFor(u,id,team.partner);
-      return {label:a.name+(a.bonus?' · Extra':a.team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!b.bandages),unavailable:!!team.reason,selected:this.selected===id,badge:a.rank?String(a.rank):undefined,title:team.reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
+      return {label:(id==='bandage'?'Items':a.name)+(a.bonus?' · Extra':a.team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!Object.keys(CONSUMABLES).some(item=>battleItemCount(b,item as keyof typeof CONSUMABLES)>0)),unavailable:!!team.reason,selected:this.selected===id||id==='bandage'&&isConsumable(this.selected),badge:a.rank?String(a.rank):undefined,title:team.reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
     }),
       {label:movementOnly(b,u)?'End turn':'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},...movementOnly(b,u)?[]:[{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]]);
     this.ui.status.textContent=player?(movementOnly(b,u)?'Attack spent. Move or End turn (F).':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
@@ -737,14 +741,25 @@ export class Adventure extends Phaser.Scene {
       const text=document.createElement('span');text.className='prediction';text.textContent=(team?`${u.name} + ${team.name} · both actions · ${ability.team!.cost} focus each. ${contributions}. `:'')+description+(ability.ward&&!protection?` · ${ability.ward.party?'All allies':u.name}: up to ${ability.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5)} guard`:'')+(protection?` · all enemies target ${protection.vanguard.name}${protection.power?` · ${protection.party?'All allies':protection.vanguard.name}: up to ${protection.power} guard`:''}`:'');confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
   }
-  private selectAction(action: Action) {
+  private selectAction(action: Action, fromItems=false) {
     const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||abilityFor(u!,action).bonus&&u.bonusUsed)))return;
+    if(action==='bandage'&&!fromItems){this.openBattleItems();return;}
     this.selected=action;this.plan=undefined;
     if(action!=='move'&&abilityFor(u!,action).range===0&&legalAim(this.battle!,u,action,u.hex)){
       this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
       this.revealHex(u.hex,HEX_SIZE*5); // Include adjacent hexes and knockback landings.
     }
     this.drawGrid();this.renderBattleControls();
+  }
+  private openBattleItems() {
+    const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||movementOnly(b,u))return;
+    this.ui.showModal('Battle items','<div class="shop-items"><p>Use one item and your action. Then choose an ally and confirm.</p><div class="item-list"></div></div>');
+    const list=this.ui.modal.querySelector('.item-list')!;
+    for(const [id,item]of Object.entries(CONSUMABLES)){
+      const itemId=id as keyof typeof CONSUMABLES,count=battleItemCount(b,itemId),row=document.createElement('div');row.className='equipment-row';row.setAttribute('role','group');row.setAttribute('aria-label',item.name);
+      row.innerHTML=`<div><h3>${item.name} × ${count}</h3><p>${item.description}</p></div>`;
+      row.append(this.ui.button({label:'Select',disabled:count<=0||!u.abilities.includes(itemId),action:()=>{this.ui.closeModal();this.selectAction(itemId,true);}}));list.append(row);
+    }
   }
   private chooseHex(hex: Hex) {
     const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||b.result)return;
@@ -807,7 +822,7 @@ export class Adventure extends Phaser.Scene {
         }
         if(!reduced&&!animatedHero(hero??'')&&!timing){const x=image.x,y=image.y;this.tweens.addCounter({from:0,to:1,duration:contact,onUpdate:t=>{if(image.active){const p=t.getValue()??0;image.setPosition(x-2*Math.round(p*2),y-2*Math.round(Math.sin(p*Math.PI)*2));}}});}
         if(!reduced&&timing)preview?.attack?.(this,image,actor,0);
-        if(face&&action?.ability&&action.ability!=='bandage'){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');}
+        if(face&&action?.ability&&!isConsumable(action.ability)){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');}
         if(teamTiming&&action?.ability){
           const sources:TeamSource[]=[actor,...action.partnerId?battle.units.filter(u=>u.id===action.partnerId):[]].map(u=>{
             const img=this.actorImages.get(u.id)!,f=this.battleFaces.get(u.id)??'',x=img.x+(f.endsWith('-left')?-26:f.endsWith('-right')?26:f.endsWith('-back')?18:-18);
@@ -847,7 +862,7 @@ export class Adventure extends Phaser.Scene {
         const image=this.actorImages.get(actor.id)!;
         if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
         if(action.partnerId){const partner=battle.units.find(u=>u.id===action.partnerId),other=this.actorImages.get(action.partnerId);if(partner&&other&&animatedHero(partner.kind)){const p=toPixel(partner.hex),target=toPixel(action.aim),f=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);this.motion.attack(other,f,impact-travel,action.ability==='daybreak'&&partner.kind==='petra'?'bash':'attack');}}
-        if(face&&action.ability!=='bandage')this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');
+        if(face&&!isConsumable(action.ability))this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');
         this.revealHex(action.aim);
         if(!teamTiming){
           this.audio.effect(preview?.attackSound?.(actor,action.ability)??abilityFor(actor!,action.ability).sound??action.ability as import('./synth').Effect,this.state.location.map);
@@ -940,7 +955,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
-    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Skills have their own levels. Lantern burst starts as four slanted hexes, grows to seven, then halves damage to allies. Steam lance remains a contiguous four-hex ray from Orrin at every skill level. Horizon light follows spaced hex diagonals from Nell. Read the highlighted footprint before confirming. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend, Heal and Bandage use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Bandages are shared. Defeat offers a retry.</p></article><article><h3>Skill upgrades</h3><p>Each character level gained grants one upgrade point to every companion, including reserves. Spend it on any skill whose next rank meets your character level, or save it for later. Open Upgrade skills after a victory or Skills inside Equipment. Upgrades are saved with each character. Team moves unlock from their solo skills and spend both main actions and both focus costs from anywhere on the board. Damage adds the two solo attacks. The assisting fighter keeps any unused movement at their initiative position; move once or use End turn (F), without another attack or free Defend. Each companion has two team partners in a circle; only recruited partners appear in upgrade descriptions.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');
+    this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Skills have their own levels. Lantern burst starts as four slanted hexes, grows to seven, then halves damage to allies. Steam lance remains a contiguous four-hex ray from Orrin at every skill level. Horizon light follows spaced hex diagonals from Nell. Read the highlighted footprint before confirming. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend, Heal and items use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Items opens the shared medical bag: bandages restore HP and tonics restore focus. Each uses one main action. Defeat offers a retry.</p></article><article><h3>Skill upgrades</h3><p>Each character level gained grants one upgrade point to every companion, including reserves. Spend it on any skill whose next rank meets your character level, or save it for later. Open Upgrade skills after a victory or Skills inside Equipment. Upgrades are saved with each character. Team moves unlock from their solo skills and spend both main actions and both focus costs from anywhere on the board. Damage adds the two solo attacks. The assisting fighter keeps any unused movement at their initiative position; move once or use End turn (F), without another attack or free Defend. Each companion has two team partners in a circle; only recruited partners appear in upgrade descriptions.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');
   }
   async toggleSound() { try {if(this.soundPreferences)await this.soundPreferences.toggle();else this.ui.sound(await this.audio.toggle());}catch{this.ui.toast('Audio could not start in this browser.');} }
   private autosave() {
@@ -971,21 +986,9 @@ export class Adventure extends Phaser.Scene {
       }
     }catch{this.ui.showModal('Save files','<p>Browser storage is unavailable. You can still export and import JSON saves.</p>',[{label:'Export current save',disabled:this.mode==='title',action:()=>exportSave(this.state)},{label:'Close',action:()=>this.ui.closeModal()}]);}
   }
-  private shop() {
-    const s=this.state;
-    this.ui.showModal('Iona’s supplies',`<div class="shopkeeper"><img src="${art(CHARACTERS.iona.portrait)}" alt="Iona"/><p>${s.flags.raidSeen?"“I’ll keep the station open. You find Tomas. And eat something before you go.”":"“Your brother’s home. You can stop checking every train now.”"}</p></div><p>${s.coins} marks · ${s.bandages} bandages</p><div id="shop-items"></div>`,[{label:'Rest · free',action:()=>{restoreParty(s);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');}}]);
-    const target=this.ui.modal.querySelector('#shop-items')!;
-    for(const supply of SUPPLIES){
-      const id=supply.id,item=id==='bandage'?undefined:ITEMS[id];
-      if(item&&!item.heroes.some(h=>s.party.some(p=>p.id===h)))continue;
-      const name=item?.name??'Bandage',description=item?.description??'Restore 24 HP during battle.';
-      const owned=id==='bandage'?s.bandages:ownedCopies(s.inventory,id);
-      const row=document.createElement('div');row.className='equipment-row';row.setAttribute('role','group');row.setAttribute('aria-label',name);
-      row.innerHTML=`<div><h3>${name}</h3><p>${description}</p><small>${owned} owned${id==='bandage'?'':` · ${s.inventory.bag[id]??0} in bag`}</small></div>`;
-      row.append(this.ui.button({label:item?.slot==='fitting'&&owned?'Owned':`Buy · ${supply.cost} marks`,disabled:!canBuy(s,id),action:()=>{
-        if(!buySupply(s,id))return;
-        this.autosave();this.renderWorldControls();this.shop();if(item)this.ui.toast(`${name} added to the bag.`);
-      }}));target.append(row);
-    }
+  private shop(shop:ShopId='station') {
+    openShop(this.ui,this.state,shop,()=>{this.autosave();this.renderWorldControls();},()=>{
+      restoreParty(this.state);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');
+    },()=>openInventory(this.ui,this.state,()=>{this.showWorld();this.autosave();}));
   }
 }

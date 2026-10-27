@@ -2195,27 +2195,27 @@
           "rotation": 0,
           "visible": true,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Orrin’s engine · coal siding"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "optional"
-            },
-            {
-              "name": "rest",
-              "type": "bool",
-              "value": true
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Orrin’s engine · rest and supplies"
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "optional"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "x": 324,
           "y": 780,
           "width": 0,

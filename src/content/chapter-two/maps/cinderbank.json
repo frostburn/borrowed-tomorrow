@@ -2434,22 +2434,27 @@
           "rotation": 0,
           "visible": true,
           "properties": [
-            {
-              "name": "label",
-              "type": "string",
-              "value": "Medical coaches · rescued prisoners"
-            },
-            {
-              "name": "sign",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "kind",
-              "type": "string",
-              "value": "talk"
-            }
-          ],
+  {
+    "name": "label",
+    "type": "string",
+    "value": "Medical coaches · rest and supplies"
+  },
+  {
+    "name": "kind",
+    "type": "string",
+    "value": "talk"
+  },
+  {
+    "name": "rest",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "sprite",
+    "type": "string",
+    "value": "supply-clerk"
+  }
+],
           "x": 684,
           "y": 396,
           "width": 0,

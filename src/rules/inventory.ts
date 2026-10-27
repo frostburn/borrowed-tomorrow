@@ -1,10 +1,15 @@
 import { COMPANION_IDS, type CompanionId } from './party';
+import { PACKED_CONSUMABLES, type PackedConsumableId } from './consumables';
 
 export const SLOTS = ['fitting', 'coat'] as const;
 export type EquipmentSlot = typeof SLOTS[number];
 export interface EquipmentBonuses { attack: number; armor: number; speed: number }
 interface ItemDefinition { name: string; slot: EquipmentSlot; heroes: readonly CompanionId[]; description: string; bonuses: EquipmentBonuses }
 export const ITEMS = {
+  'coastal-reflector': { name: 'Coastal reflector', slot: 'fitting', heroes: ['nell'], description: 'A saltproof lantern reflector with a clean, bright beam.', bonuses: { attack: 4, armor: 0, speed: 0 } },
+  'sealed-nozzle': { name: 'Sealed pressure nozzle', slot: 'fitting', heroes: ['orrin'], description: 'A marine pressure fitting that keeps the steam jet steady.', bonuses: { attack: 4, armor: 0, speed: 0 } },
+  'steady-stock': { name: 'Steady crossbow stock', slot: 'fitting', heroes: ['kit'], description: 'A balanced replacement stock for Kit’s crossbow.', bonuses: { attack: 4, armor: 0, speed: 0 } },
+  'travel-coat': { name: 'Lined travel coat', slot: 'coat', heroes: COMPANION_IDS, description: 'Light dockside canvas, lined for protection and cut for easy movement.', bonuses: { attack: 0, armor: 1, speed: 1 } },
  'crossing-coat':{name:'Crossing coat',slot:'coat',heroes:COMPANION_IDS,description:'A strong lining from the first collector’s store, cut to leave room at the shoulders.',bonuses:{attack:0,armor:6,speed:1}},
  'morning-reflector':{name:'Morning-glass reflector',slot:'fitting',heroes:['nell'],description:'The first keeper’s lamp glass, cleaned and fitted to Ansel’s lantern.',bonuses:{attack:11,armor:2,speed:2}},
  'first-valve':{name:'Original expansion valve',slot:'fitting',heroes:['orrin'],description:'A sound return valve from the harvest machine, adapted to the steam lance.',bonuses:{attack:11,armor:3,speed:1}},
@@ -56,7 +61,7 @@ export const ITEMS = {
 export type ItemId = keyof typeof ITEMS;
 export interface Inventory {
   version: 2;
-  bag: Partial<Record<ItemId, number>>;
+  bag: Partial<Record<ItemId | PackedConsumableId, number>>;
   characters: Record<CompanionId, Record<EquipmentSlot, ItemId | null>>;
 }
 export function newInventory(): Inventory {
@@ -99,8 +104,8 @@ export function decodeInventory(text: string): Inventory {
   if (typeof raw.characters !== 'object' || Array.isArray(raw.characters) || Object.keys(raw.characters).length !== COMPANION_IDS.length) throw new Error('Invalid inventory roster.');
   const inventory = newInventory();
   for (const [item, count] of Object.entries(raw.bag)) {
-    if (!Object.hasOwn(ITEMS, item) || !Number.isInteger(count) || (count as number) < 0 || (count as number) > 99) throw new Error('Invalid item count.');
-    inventory.bag[item as ItemId] = count as number;
+    if ((!Object.hasOwn(ITEMS, item) && !(PACKED_CONSUMABLES as readonly string[]).includes(item)) || !Number.isInteger(count) || (count as number) < 0 || (count as number) > 99) throw new Error('Invalid item count.');
+    inventory.bag[item as keyof Inventory['bag']] = count as number;
   }
   for (const hero of COMPANION_IDS) for (const slot of SLOTS) {
     const slots = raw.characters[hero];

@@ -29,6 +29,7 @@ export function interactNorth(h:StoryHost,id:string):boolean{
   h.talk({lines:[SAY('Celia','There’s water under cover. Sit down and let me check the dressings.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
+   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    {label:'Keep going',action:()=>{}},
   ]});return true;
  }

@@ -4,7 +4,7 @@ This records the preserved Chapter One departure. Chapter Two now implements thi
 
 ## Exact save
 
-Current save version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
+Current save version **11**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-one`, boundary **`chapter-two:iron-coast`**. The completion scene leaves Nell at `tunnel` `(37,14)`; later exploration may change her location. Never infer chapter boundaries from coordinates.
 
 Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`, `villageSeen`, `collectorConfronted`, `collectorDefeated`, `villageFreed`, `passSeen`, `captainConfronted`, `captainDefeated`, `chapterOneComplete`. Preserve optional `blessingRead`, `farewellSeen`, `waterSeen`, `workshopWon`, `muralRead` and `shelterSupplies`, plus every resource, equipped item, party HP/focus, journal entry and play-time value. Nell and Orrin are the two combatants. Preserve the complete `inventory` bag and loadouts.
 
@@ -21,3 +21,5 @@ Introduce Kit, a registered courier and Nell’s peer, while he attempts an hone
 Ansel is dead, Iona keeps Larkspur open, Rillbridge’s remaining residents are awake and still feel the cost of the collection; Elspeth and Tilda are searching for those still missing. The three days are the collector’s recorded charge, not elapsed time in the train pursuit. Alban survived his defeat, but lost the crossing. Tomas is captive and has not joined the party. Nell's fragment is in Ansel's lantern; it is not an equipment purchase that may be sold or removed. The optional brass reflector improves that lantern without being the fragment itself.
 
 Nell and Orrin know about local repayment but not the whole bargain. They have heard no divine voice and seen no palace cutaway. The lantern hums and its handle feels cold; neither character knows what the crystal can do or why they could move in Rillbridge. The temple, imperial conduit and original bargain require later discoveries. Foreshadow the Benefactor's own domain before the emperor's defeat; the separate final chapter must feel like the culmination of known danger.
+
+Early supplies offer ordinary bandages and coastal equipment. Stronger field bandages and focus tonics are saved for Chapter Four medical suppliers. Iona, the coastal engine, Dena’s ward and Cinderbank’s medical coaches offer the shared spare-gear sale counter. Preserve purchased and remaining medical stacks in the inventory bag across this boundary; do not refill them. See [economy.md](../economy.md).
