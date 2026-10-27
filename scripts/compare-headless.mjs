@@ -6,11 +6,11 @@ import {spawnSync} from 'node:child_process';
 const {values}=parseArgs({options:{from:{type:'string'},conduit:{type:'string',default:'feeds'},harbor:{type:'string',default:'dry'},'skip-optional':{type:'boolean',default:false}}});
 if(!values.from)throw Error('Pass --from <earned-early-report.json>');
 const directory=mkdtempSync(join(tmpdir(),'bt-comparison-')),results=[];
-const policies=[['legacy','offense','baseline'],['legacy','offense','prepared'],['defensive','offense','prepared'],['defensive','support','prepared'],['defensive','offense','frugal'],['defensive','support','frugal']];
+const policies=[['legacy','offense','baseline'],['legacy','offense','prepared'],['defensive','offense','prepared'],['defensive','support','prepared'],['defensive','offense','frugal'],['defensive','support','frugal'],['cooperative','offense','prepared'],['cooperative','support','prepared'],['cooperative','offense','frugal'],['cooperative','support','frugal']];
 for(const [tactics,build,spending]of policies){
  const name=[tactics,build,spending].join('-'),output=join(directory,name+'.json');
  console.log(`Running ${name}`);
- const child=spawnSync(process.execPath,['scripts/headless.mjs','middle','--from',resolve(values.from),'--output',output,'--tactics',tactics,'--build',build,'--spending',spending,'--conduit',values.conduit,'--harbor',values.harbor,...values['skip-optional']?['--skip-optional']:[]],{encoding:'utf8',timeout:120000,maxBuffer:2**20});
+ const child=spawnSync(process.execPath,['scripts/headless.mjs','middle','--from',resolve(values.from),'--output',output,'--tactics',tactics,'--build',build,'--spending',spending,'--conduit',values.conduit,'--harbor',values.harbor,...values['skip-optional']?['--skip-optional']:[]],{encoding:'utf8',timeout:180000,maxBuffer:2**20});
  let report;try{report=JSON.parse(readFileSync(output,'utf8'));}catch{throw Error(`${name}: no report (${child.error?.message??child.stderr})`);}
  const battles=report.events.filter(e=>e.event==='battle');
  const summary={name,status:report.status,error:report.error,source:report.source,agent:report.agent,options:report.options,coins:report.state.coins,spent:0,damage:0,knockouts:0,itemsUsed:{},abilities:{},battles:[]};

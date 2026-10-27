@@ -146,3 +146,50 @@ A new zero-start default run still clears all fifteen encounters and reaches the
 [chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json) is the **current earned continuation checkpoint**: level 9 / 1,355 XP, 402 marks, one ordinary bandage, one field bandage and one focus tonic. It includes the accepted deployment's source hash and the six before/after boss summaries. The earlier defensive checkpoint and fresh audit remain historical results for the former deployment.
 
 All eight opt-in route simulations pass, including alternate conduit/harbor paths, optional-patrol omission and split-save continuation. The defensive earned-route tests now require a Steam attack by the second round, while a focused rule test checks opening pressure against a stationary starting party. The 695 unit tests, TypeScript and production build pass. No new CI jobs or default chapter-playthrough tests are added.
+
+## Cooperative support probe
+
+`--tactics cooperative` adds a bounded lookahead alongside the unchanged `legacy` and `defensive` controls. It shortlists distinct affected groups per skill, keeps a finalist for every available command, and resolves the actual initiative through the end of the following round. Allies use the fixed greedy policy; enemies use the campaign AI. Rally can enable a later ally's attack, Dazzle can reduce multiple attacks/retaliations, and bonus Shield bash receives a main-action followup. Team moves really spend both actions and focus costs; the cooperative evaluation does not apply a fixed partner discount. All planning uses disposable copies; movement and attack remain separate committed decisions.
+
+```sh
+npm run simulate:compare -- --from /tmp/borrowed-tomorrow-headless.json
+npm run simulate:support -- --from /tmp/borrowed-tomorrow-headless.json --output /tmp/support-probe.json
+npx vitest run tests/headless-cooperation.test.ts
+```
+
+The route comparison includes four cooperative policies paired with the existing defensive offense/support and prepared/frugal policies. Compare tactics **within the same build and spending policy**; comparing offense against support still changes the formation and skill priorities.
+
+The support probe earns the defensive/support/prepared route once, then replays the exact starting battles for the capital arrest, dry harbor approach and Sanctuary Warden. It compares defensive, cooperative, cooperative without class utilities, and cooperative without team commands. Only commands on probe copies are suppressed: no HP, focus, equipment, learned rank, terrain, enemy or initiative changes. Utilities here mean Dazzle/Feint, barriers, Taunt, Rally, Shield bash, Pinning shot and Daybreak; healing and items remain available. Each encounter records its input hash, formation/build/stats, actual HP lost/healed, knockouts, minimum HP, rounds, command use and remaining supplies. The campaign earns victory normally; replay probes grant no rewards or retry resources.
+
+Focused stationary-lane tests isolate sustained pressure, a focus-starved Steam formation, an immediate kill and spent helpers. They are deliberate tactical fixtures, not evidence about campaign difficulty. The lookahead is bounded, uses greedy allied continuations and does not search formations, equipment, Wait or all future control combinations. The default remains the faster defensive policy; the more expensive cooperative policy and full comparisons stay opt-in and add no CI jobs.
+
+### Controlled encounter findings
+
+The exact-start support/prepared probes give these **HP lost / rounds** results (zero knockouts in all twelve fights):
+
+| Encounter | Defensive | Cooperative | Without utilities | Without teams |
+| --- | ---: | ---: | ---: | ---: |
+| Capital arrest | 55 / 3 | 77 / 3 | 77 / 3 | 77 / 3 |
+| Dry harbor | 148 / 5 | 153 / 5 | 151 / 4 | 151 / 4 |
+| Sanctuary Warden | 174 / 6 | 102 / 4 | 132 / 5 | 102 / 4 |
+
+At the warden, the cooperative agent applies Dazzle once and wins in four rounds. Suppressing utilities removes that cast and costs thirty more HP and a fifth round; suppressing team commands has no effect because the agent does not use them there. At the harbor, the cooperative agent uses Rally twice and Daybreak once, but this does not dominate the alternatives: without teams it wins a round sooner at a lower minimum HP (38 versus 46) and uses a field bandage. Different healing and remaining supplies matter alongside total HP lost. The arrest is a counterexample where the faster defensive agent does better. The longer forecast is a useful additional probe, not a universally stronger player.
+
+The deliberate lane fixtures also check that Rally enables a three-target Steam lance after the normal focus tick, Dazzle is not refreshed, a cheap immediate kill beats waiting/teaming, and a spent helper cannot attack again. Another fixture checks the real main-action followup after bonus Bash. Forecasts share the same ending-round boundary even when a candidate starts the next round. Completed real turns remain in failure reports if a later planning action throws.
+
+These results justify withdrawing the inference that unused support implies weak support. No ability/enemy/item stats, prices, rewards, free rests or campaign formations are changed. Better allied continuation policies, Wait and broader formation/build searches remain possible future probes, not reasons to rebalance from this sample.
+
+### Fresh route comparison
+
+A fresh `newGame()` run reproduces the earned Chapter Two input (SHA-256 `25bb12165861d1157e4e68c8b46eafa2855ba2ffb89d33ef813abdb57b100560`). All ten route policies then reach the Chapter Five departure without defeats or knockouts. The original six controls reproduce their previous results exactly. Paired HP-loss totals are:
+
+| Build / spending | Defensive | Cooperative |
+| --- | ---: | ---: |
+| Offense / prepared | 450 | 515 |
+| Support / prepared | 643 | 571 |
+| Offense / frugal | 524 | 503 |
+| Support / frugal | 811 | 734 |
+
+Cooperative prepared support uses Rally four times and spends 356 rather than 364 marks; cooperative prepared offense uses Dazzle once and several different teams. Frugal cooperative offense also uses Feint and Rally. Support remains a viable, slower formation rather than universally matching the offensive formation. The new policy performs worse on prepared offense, which is another reason to retain the defensive default and compare multiple policies.
+
+[support-comparison.json](headless/support-comparison.json) records all ten route summaries, twelve controlled results, remaining supplies, source hashes and reproduction commands. Full turn traces are generated in the temporary directory printed by `simulate:compare`; they now include Dazzle, pin, Taunt and team-action state. The current earned continuation checkpoint remains [chapter-four-engaged-warden.json](headless/chapter-four-engaged-warden.json), since the default policy and gameplay are unchanged. All 704 unit tests, eight opt-in route checks, TypeScript and production build pass. Only the focused tactical tests join the small default test gate; the longer comparisons are opt-in.
