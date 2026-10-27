@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "issue": 135,
+  "baselineCommit": "c9145f2cb529925e0cc06eeb97baea9cdff19819",
+  "sources": {
+    "before": {
+      "commit": "c9145f2cb529925e0cc06eeb97baea9cdff19819",
+      "files": {
+        "src/rules/skills.ts": "294f9263fd01590fa063d9b512d8641914a7ef355d3a6caa94f8c703e30cd7b5",
+        "src/rules/combat.ts": "e27e69c994e9520ecc2be92a9ae637eb0993e3cae66ef21a464226bbbf312186",
+        "src/rules/combat-tactics.ts": "eb00280f823578963cb6de0f28624b7e4824a95e6b9f5e2393cf82a8bf94f21d",
+        "src/headless/defensive.ts": "d2a33fb65ff598742bef4cdd2727c5a944cc28e3b9355ff941defa54545c3947",
+        "src/headless/rally-value.ts": "82ceef508626f6837683188e85623b54b8770fe68fdbe87c7fbef53c2a4a30b2"
+      },
+      "fixturesSha256": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228"
+    },
+    "after": {
+      "commit": "c9145f2cb529925e0cc06eeb97baea9cdff19819",
+      "files": {
+        "src/rules/skills.ts": "9cd7a6e02a3ef0c6168664a79edebab5b3cca09f0a5eb2fed8f5d44c11acbaa0",
+        "src/rules/combat.ts": "e27e69c994e9520ecc2be92a9ae637eb0993e3cae66ef21a464226bbbf312186",
+        "src/rules/combat-tactics.ts": "eb00280f823578963cb6de0f28624b7e4824a95e6b9f5e2393cf82a8bf94f21d",
+        "src/headless/defensive.ts": "d2a33fb65ff598742bef4cdd2727c5a944cc28e3b9355ff941defa54545c3947",
+        "src/headless/rally-value.ts": "82ceef508626f6837683188e85623b54b8770fe68fdbe87c7fbef53c2a4a30b2"
+      },
+      "fixturesSha256": "e75f22badf8641ca73b5af7eac8d65e742089d8606e605445798f21b2454e228"
+    }
+  },
+  "reproduce": [
+    "git worktree add --detach /tmp/bt-celia-before c9145f2cb529925e0cc06eeb97baea9cdff19819",
+    "node scripts/compare-party-balance.mjs --root /tmp/bt-celia-before --output /tmp/party-before.json",
+    "node scripts/compare-party-balance.mjs --output /tmp/party-after.json"
+  ],
+  "rawReportSha256": {
+    "before": "f27d9077879e57de86f54d14b58f2ad1fe1342a2dd119cc42394abf6f16b5ee6",
+    "after": "c2e1bf6a6ff104ad85e49d6634ac95048ba145551a7c553cfbe9d2dd4dffacf0"
+  },
+  "summary": {
+    "matchedCases": 40,
+    "identicalInputHashes": 40,
+    "victoriesBefore": 40,
+    "victoriesAfter": 40,
+    "knockoutsBefore": 0,
+    "knockoutsAfter": 0,
+    "unchangedWithoutCelia": 16,
+    "unchangedWithCelia": 18,
+    "changedWithCelia": 6,
+    "roundsChanged": 0,
+    "celiaCohort": {
+      "cases": 24,
+      "hpLostBefore": 5061,
+      "hpLostAfter": 4819,
+      "bandagesBefore": 47,
+      "bandagesAfter": 44,
+      "sanctuaryCastsBefore": 3,
+      "sanctuaryCastsAfter": 6
+    }
+  },
+  "changedCases": [
+    {
+      "id": "hammer-carrier",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "2eeb2afc3e6de42960126cf89302e6e2e5a49c47d6b80dd265e27bffb86c0c35",
+      "before": {
+        "rounds": 9,
+        "hpLost": 206,
+        "healed": 175,
+        "minHp": 54,
+        "items": {
+          "bandage": 5
+        },
+        "abilities": {
+          "sunline": 2,
+          "daybreak": 2,
+          "burst": 4,
+          "bandage": 5,
+          "strike": 4,
+          "celestialbolt": 4,
+          "sweep": 3,
+          "sanctuary": 1
+        }
+      },
+      "after": {
+        "rounds": 9,
+        "hpLost": 190,
+        "healed": 158,
+        "minHp": 54,
+        "items": {
+          "bandage": 4
+        },
+        "abilities": {
+          "sunline": 2,
+          "daybreak": 2,
+          "burst": 4,
+          "bandage": 4,
+          "strike": 4,
+          "celestialbolt": 4,
+          "sweep": 3,
+          "sanctuary": 1
+        }
+      }
+    },
+    {
+      "id": "hammer-carrier",
+      "party": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "6056b0f5e236bf45d24a8cfb66b12ab94dbba2467e28a6d9ee71240ef3ae5019",
+      "before": {
+        "rounds": 9,
+        "hpLost": 162,
+        "healed": 95,
+        "minHp": 57,
+        "items": {
+          "bandage": 2
+        },
+        "abilities": {
+          "crossfire": 2,
+          "celestialbolt": 4,
+          "heal": 2,
+          "quickshot": 7,
+          "bandage": 2,
+          "taunt": 1,
+          "sanctuary": 1,
+          "sweep": 2,
+          "strike": 1
+        }
+      },
+      "after": {
+        "rounds": 9,
+        "hpLost": 146,
+        "healed": 95,
+        "minHp": 64,
+        "items": {
+          "bandage": 2
+        },
+        "abilities": {
+          "crossfire": 2,
+          "celestialbolt": 4,
+          "heal": 2,
+          "quickshot": 7,
+          "bandage": 2,
+          "taunt": 1,
+          "sanctuary": 1,
+          "sweep": 2,
+          "strike": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "party": [
+        "nell",
+        "orrin",
+        "celia"
+      ],
+      "inputSha256": "398a1886233be9f406a9fe034d6925b95142383b1af26efdf41a645d573cfd37",
+      "before": {
+        "rounds": 7,
+        "hpLost": 206,
+        "healed": 104,
+        "minHp": 66,
+        "items": {
+          "bandage": 2
+        },
+        "abilities": {
+          "prism": 2,
+          "celestialbolt": 6,
+          "heal": 1,
+          "burst": 3,
+          "rivet": 4,
+          "bandage": 2,
+          "strike": 1
+        }
+      },
+      "after": {
+        "rounds": 7,
+        "hpLost": 135,
+        "healed": 24,
+        "minHp": 62,
+        "items": {
+          "bandage": 1
+        },
+        "abilities": {
+          "prism": 2,
+          "sanctuary": 1,
+          "celestialbolt": 5,
+          "burst": 3,
+          "rivet": 4,
+          "strike": 2,
+          "bandage": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "party": [
+        "nell",
+        "kit",
+        "celia"
+      ],
+      "inputSha256": "ae7fd3aed0546c127a5c86408a018a6542aaca18df2f50980915ae2df42fa0db",
+      "before": {
+        "rounds": 8,
+        "hpLost": 140,
+        "healed": 48,
+        "minHp": 61,
+        "items": {
+          "bandage": 2
+        },
+        "abilities": {
+          "lanternvolley": 2,
+          "celestialbolt": 6,
+          "sanctuary": 1,
+          "pin": 3,
+          "strike": 2,
+          "quickshot": 3,
+          "burst": 2,
+          "bandage": 2
+        }
+      },
+      "after": {
+        "rounds": 8,
+        "hpLost": 105,
+        "healed": 48,
+        "minHp": 73,
+        "items": {
+          "bandage": 2
+        },
+        "abilities": {
+          "lanternvolley": 2,
+          "celestialbolt": 6,
+          "sanctuary": 1,
+          "pin": 3,
+          "strike": 2,
+          "quickshot": 3,
+          "burst": 2,
+          "bandage": 2
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "party": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "b344ca76eeb4282cc90cb9a4d3bded80c12c15f478d02def6944ea078dbaa868",
+      "before": {
+        "rounds": 7,
+        "hpLost": 185,
+        "healed": 74,
+        "minHp": 66,
+        "items": {
+          "bandage": 1
+        },
+        "abilities": {
+          "sunline": 2,
+          "crush": 1,
+          "celestialbolt": 5,
+          "daybreak": 1,
+          "burst": 3,
+          "sweep": 3,
+          "strike": 4,
+          "bandage": 1
+        }
+      },
+      "after": {
+        "rounds": 7,
+        "hpLost": 138,
+        "healed": 24,
+        "minHp": 62,
+        "items": {
+          "bandage": 1
+        },
+        "abilities": {
+          "sunline": 2,
+          "crush": 2,
+          "sanctuary": 1,
+          "celestialbolt": 5,
+          "burst": 3,
+          "sweep": 2,
+          "strike": 4,
+          "bandage": 1
+        }
+      }
+    },
+    {
+      "id": "benefactor-body",
+      "party": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "inputSha256": "944032106d03e74bcb5b787f68f735707b6ca9f2ad21624ff1ae3d9a5abe0557",
+      "before": {
+        "rounds": 7,
+        "hpLost": 219,
+        "healed": 77,
+        "minHp": 60,
+        "items": {
+          "bandage": 1
+        },
+        "abilities": {
+          "crossfire": 2,
+          "celestialbolt": 5,
+          "heal": 1,
+          "pin": 3,
+          "bandage": 1,
+          "quickshot": 2,
+          "sweep": 2,
+          "strike": 2
+        }
+      },
+      "after": {
+        "rounds": 7,
+        "hpLost": 162,
+        "healed": 0,
+        "minHp": 49,
+        "items": {},
+        "abilities": {
+          "crossfire": 2,
+          "sanctuary": 1,
+          "celestialbolt": 5,
+          "pin": 2,
+          "strike": 2,
+          "quickshot": 3,
+          "sweep": 2
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Authored canonical fixtures at levels 9/10/13/15, not an earned campaign.",
+    "Fixed preset ranks, worn gear, stock and starting slots per formation; no build/gear optimization or deployment permutations.",
+    "One defensive controller; it does not use Rallying cry in these probes.",
+    "Every fight starts independently; consumable totals are across fixtures, not campaign spending.",
+    "Existing earned checkpoints retain their earlier rules hashes; they were not regenerated by these isolated comparisons."
+  ]
+}
