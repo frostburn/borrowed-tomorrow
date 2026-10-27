@@ -1,3 +1,6 @@
+import {icon} from '../game/item-icons';
+import {itemIcon} from '../content/ui-art';
+import '../game/item-icons.css';
 import {skillCards} from '../game/skills';
 import {startingSkills,upgradeSkill,type SkillId} from '../rules/skills';
 import {richCombatPreview,type CombatPreset} from './rich-combat';
@@ -145,7 +148,7 @@ class Workshop {
     const items = (Object.keys(ITEMS) as ItemId[]).map(id => {
       const item = ITEMS[id], holders = COMPANION_IDS.filter(h => Object.values(this.inventory.characters[h]).includes(id));
       const compatible=canEquip(hero,id);
-      return `<button class="inv-item${id === this.selected ? ' selected' : ''}${compatible?'':' incompatible'}" data-item="${id}" aria-pressed="${id === this.selected}" ${compatible?'':`aria-description="${names[hero]} cannot use this item."`}><span>${esc(item.name)}</span><small>${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}</small></button>`;
+      return `<button class="inv-item${id === this.selected ? ' selected' : ''}${compatible?'':' incompatible'}" data-item="${id}" aria-pressed="${id === this.selected}" ${compatible?'':`aria-description="${names[hero]} cannot use this item."`}><span class="icon-label">${icon(itemIcon(id))}<span>${esc(item.name)}</span></span><small>${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}</small></button>`;
     }).join('');
     this.ui.sceneLayer.innerHTML = `<section class="inventory-panel" aria-label="Character workshop">
       <div class="inv-characters" role="group" aria-label="Character">${COMPANION_IDS.map(id=>`<button data-hero="${id}" aria-label="${names[id]}" aria-pressed="${hero===id}" class="${hero===id?'selected':''}">${names[id]}<small>${this.settings.party.includes(id)?'Party':'Reserve'}</small></button>`).join('')}</div>
@@ -153,9 +156,9 @@ class Workshop {
       <div class="inv-columns ${this.tab === 'character' ? 'character-columns' : ''}"><section class="inv-character" aria-label="${names[hero]} equipment">
         <div class="inv-identity"><img src="${art(CHARACTERS[hero].portrait)}" alt="${names[hero]}"/><div><h2>${names[hero]} · Lv ${this.settings.characters[hero].level}</h2><small>${COMPANIONS[hero].tool}</small><p class="inv-biography">${COMPANIONS[hero].role} · Chapter ${COMPANIONS[hero].chapter}<br/>${esc(COMPANIONS[hero].description)}</p><p class="inv-hp">HP ${current.maxHp} · Move ${current.movement}</p></div></div>
         <div class="inv-current-stats">${stats.map(([label, value]) => `<div><small>${label}</small><p>${value(current)}</p></div>`).join('')}</div>
-        <h3>Equipped</h3>${SLOTS.map(slot => `<div class="inv-slot"><small>${slot === 'fitting' ? 'Tool fitting' : 'Coat'}</small><p>${equipped[slot] ? esc(ITEMS[equipped[slot]!].name) : 'None'}</p><button data-unequip="${slot}" ${!equipped[slot] ? 'disabled' : ''}>Unequip ${slot === 'fitting' ? 'fitting' : 'coat'}</button></div>`).join('')}
+        <h3>Equipped</h3>${SLOTS.map(slot => `<div class="inv-slot"><small>${slot === 'fitting' ? 'Tool fitting' : 'Coat'}</small><p>${equipped[slot] ? `<span class="icon-label">${icon(itemIcon(equipped[slot]!))}<span>${esc(ITEMS[equipped[slot]!].name)}</span></span>` : 'None'}</p><button data-unequip="${slot}" ${!equipped[slot] ? 'disabled' : ''}>Unequip ${slot === 'fitting' ? 'fitting' : 'coat'}</button></div>`).join('')}
       </section>${this.tab === 'character' ? this.characterPanel() : `<section class="inv-bag" aria-label="Shared bag"><h2>Shared bag</h2><div class="inv-items">${items}</div><p class="inv-note">An item stays in the bag until you equip it.</p></section>
-      <section class="inv-details" aria-label="Item details"><small>${selected.slot === 'fitting' ? 'Tool fitting' : 'Coat'} · ${selected.heroes.map(h => names[h]).join(' / ')}</small><h2>${esc(selected.name)}</h2><p>${esc(selected.description)}</p><div class="inv-comparison" aria-label="Stat comparison">${comparison}</div><div id="inv-equip"></div><p class="inv-note">${!canEquip(hero, this.selected) ? `${names[hero]} cannot use this fitting.` : equipped[selected.slot] === this.selected ? 'Already equipped.' : !(this.inventory.bag[this.selected] ?? 0) ? 'No spare copy. Unequip it from its wearer first.' : equipped[selected.slot] ? `Replaces ${esc(ITEMS[equipped[selected.slot]!].name)}.` : ''}</p><div id="inv-receive"></div></section>`}</div>
+      <section class="inv-details" aria-label="Item details"><small>${selected.slot === 'fitting' ? 'Tool fitting' : 'Coat'} · ${selected.heroes.map(h => names[h]).join(' / ')}</small><h2>${icon(itemIcon(this.selected))}${esc(selected.name)}</h2><p>${esc(selected.description)}</p><div class="inv-comparison" aria-label="Stat comparison">${comparison}</div><div id="inv-equip"></div><p class="inv-note">${!canEquip(hero, this.selected) ? `${names[hero]} cannot use this fitting.` : equipped[selected.slot] === this.selected ? 'Already equipped.' : !(this.inventory.bag[this.selected] ?? 0) ? 'No spare copy. Unequip it from its wearer first.' : equipped[selected.slot] ? `Replaces ${esc(ITEMS[equipped[selected.slot]!].name)}.` : ''}</p><div id="inv-receive"></div></section>`}</div>
       <div class="inv-footer"><div id="inv-tools"></div><p role="status">${esc(this.message)}</p></div>
     </section>`;
     this.bindCharacterPanel();

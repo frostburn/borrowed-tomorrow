@@ -1,0 +1,10 @@
+.item-icon{display:inline-block;width:32px;height:32px;min-width:32px;flex:0 0 32px;vertical-align:middle;image-rendering:pixelated;object-fit:contain}
+.icon-label{display:inline-flex;align-items:center;gap:8px;max-width:100%;vertical-align:middle}.icon-label>span{min-width:0}
+button:has(>.item-icon){display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.reward-list{list-style:none;display:flex;flex-wrap:wrap;gap:8px 20px;margin:8px 0;padding:0}.reward-list li{display:flex;align-items:center;gap:8px;min-width:0}.reward-list span{min-width:0}
+.ci-items .icon-label,.inv-item .icon-label{display:flex}.ci-items button>small{display:block}.ci-details h3,.inv-details h2{display:flex;align-items:center;gap:8px}
+.campaign-inventory .ci-supplies{display:flex;flex-wrap:wrap;gap:8px 16px}.shop-status:has(.item-icon){display:flex;align-items:center;gap:8px}
+.game-shell footer .item-icon{width:16px;height:16px;min-width:16px}.game-shell footer #status{display:flex;align-items:center;gap:4px}
+.toast .reward-list{justify-content:center;margin:0}.toast .reward-list:not(:first-child){margin-top:8px}
+
+.toast:has(.reward-list){width:max-content}.toast p{font:inherit;line-height:inherit;margin:0}

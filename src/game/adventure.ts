@@ -1,3 +1,6 @@
+import {icon} from './item-icons';
+import {itemIcon} from '../content/ui-art';
+import {resourceSnapshot,resourceGains,rewardList} from './rewards';
 import {PeopleMotion} from './people-motion';
 import {PERSON_MOTION_PAGES} from '../content/people-motion';
 import {abilityFor} from '../rules/skills';
@@ -370,7 +373,8 @@ export class Adventure extends Phaser.Scene {
     const finish=(action?:()=>void)=>{
       if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
       if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
-      action?.();if(this.mode==='world'){this.renderWorldControls();this.autosave();}
+      const resources=resourceSnapshot(this.state),notice=this.ui.toastSerial;
+      action?.();this.ui.received(resourceGains(resources,this.state),this.ui.toastSerial!==notice);if(this.mode==='world'){this.renderWorldControls();this.autosave();}
     };
     this.ui.showDialogue({...dialogue,choices:dialogue.choices?.map(c=>({...c,action:()=>finish(c.action)})),done:()=>finish(dialogue.done)},index=>director?.shot(dialogue.lines[index].shot));
   }
@@ -392,7 +396,7 @@ export class Adventure extends Phaser.Scene {
     for (const [label, dx, dy] of [['↑',0,-1],['←',-1,0],['↓',0,1],['→',1,0]] as const) pad.append(this.ui.button({ label, action: () => { if (!this.blocked && !this.moving) this.stepWorld(dx,dy); } }));
     this.ui.controls.querySelector('.interact-action')!.append(this.ui.button({ label: this.near ? 'Interact' : 'Journal', key: this.near ? 'E' : 'J', action: () => this.near ? this.interact(this.near) : this.journal() }));
     const points=pendingSkillPoints(s);if(points)this.ui.controls.querySelector('.world-actions')!.append(this.ui.button({label:`Upgrade skills · ${points}`,action:()=>openSkills(this.ui,s,()=>{this.autosave();this.renderWorldControls();})}));
-    this.ui.status.textContent = `${s.coins} marks · ${s.bandages} bandages · click to walk · E interact · J journal`;
+    this.ui.status.innerHTML = `${icon('marks')}${s.coins} marks · ${icon('bandage')}${s.bandages} bandages · click to walk · E interact · J journal`;
   }
   private closestObject(): MapObject | undefined {
     const p = this.state.location;
@@ -771,7 +775,7 @@ export class Adventure extends Phaser.Scene {
     const list=this.ui.modal.querySelector('.item-list')!;
     for(const [id,item]of Object.entries(CONSUMABLES)){
       const itemId=id as keyof typeof CONSUMABLES,count=battleItemCount(b,itemId),row=document.createElement('div');row.className='equipment-row';row.setAttribute('role','group');row.setAttribute('aria-label',item.name);
-      row.innerHTML=`<div><h3>${item.name} × ${count}</h3><p>${item.description}</p></div>`;
+      row.innerHTML=`<div><h3 class="icon-label">${icon(itemIcon(itemId))}<span>${item.name} × ${count}</span></h3><p>${item.description}</p></div>`;
       row.append(this.ui.button({label:'Select',disabled:count<=0||!u.abilities.includes(itemId),action:()=>{this.ui.closeModal();this.selectAction(itemId,true);}}));list.append(row);
     }
   }
@@ -946,11 +950,11 @@ export class Adventure extends Phaser.Scene {
         {label:this.state.chapter!=='chapter-one'?'Retreat to the checkpoint':'Return to Larkspur',action:()=>{restoreParty(this.state);this.ui.clearPanel();if(this.state.chapter!=='chapter-one'){this.showWorld();this.autosave();}else{const p=arrival('station','retreat');void this.changeMap(p.map,p.x,p.y);}}},
       ]);return;
     }
-    const previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
+    const resources=resourceSnapshot(this.state),previousLevel=level(this.state);awardVictory(b,this.state);const e=ENCOUNTERS[b.encounter];
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
-    this.ui.panel('The line is clear',`<p>${e.xp} experience · ${e.coins} marks</p><p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase. Each companion gains an upgrade point per level.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    this.ui.panel('The line is clear',`<p>${e.xp} experience</p>${rewardList(resourceGains(resources,this.state))}<p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase. Each companion gains an upgrade point per level.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
     if(pendingSkillPoints(this.state)){
       const upgrade=this.ui.button({label:'Upgrade skills',action:()=>openSkills(this.ui,this.state,()=>{
         this.autosave();this.refreshVictorySkills();
@@ -978,7 +982,7 @@ export class Adventure extends Phaser.Scene {
     if(this.mode==='title'){this.help();return;}
     const s=this.state,esc=this.ui.escape;
     const entries=s.journal.map(id=>JOURNAL[id]).filter(Boolean);
-    this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${s.coins} marks · ${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
+    this.ui.showModal('Travel journal',`<article><h3>Next stop</h3><p>${esc(objective(s))}</p><p>Level ${level(s)} · ${s.xp} experience · ${icon('marks')}${s.coins} marks · ${icon('bandage')}${s.bandages} bandages</p><p>Equipment: ${s.party.map(h=>`${CHARACTERS[h.id].name}: ${Object.values(s.inventory.characters[h.id]).filter(id=>id!==null).map(id=>ITEMS[id].name).join(', ')||'Station issue'}`).join(' · ')}</p></article>${entries.map(e=>`<article><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`).join('')}`);
   }
   help() {
     this.ui.showModal('On the line', '<article><h3>Exploration</h3><p>WASD or arrow keys move. Click a destination to walk there, or click a person or marked object to approach and interact. E / Enter / Space interacts. J opens the journal. I opens Equipment. Escape closes menus.</p><p>The supply clerk at Larkspur provides free rest and sells supplies and equipment. Bought and found equipment stays in the shared bag until you equip it on a character. Markers use both shape and colour: gold ! for story actions, green ◇ for one-time rewards and optional encounters, pale blue ⌂ for repeatable rest and supplies, grey … for conversations or observations, and blue → for exits. Actions and routes that are not ready yet keep their shape but turn grey.</p></article><article><h3>Hex battles</h3><p>Each character acts in initiative order. Move once, then act or defend. Select an action, choose a hex, read the preview, and confirm. You can change your target before committing.</p><p>Skills have their own levels. Lantern burst starts as four slanted hexes, grows to seven, then halves damage to allies. Steam lance remains a contiguous four-hex ray from Orrin at every skill level. Horizon light follows spaced hex diagonals from Nell. Read the highlighted footprint before confirming. Rocks also block ranged shots and the aim of a blast.</p><p>Melee provokes one retaliation per defender per round. Defend reduces damage by 40% until the next turn. Wait delays your turn to the end of the round and is available before moving. Focus restores by one each turn; defend restores one extra.</p><p>At the eastern pass, orange steam outlets deal six HP to ground units at the end of each round. Keep clear of those lanes and the captain’s sun flare. Mend, Heal and items use Confirm healing.</p><p>On narrow screens, use the battlefield view arrows to pan without shrinking the board. Keyboard: 1 Move; 2–9 abilities; arrows move the target cursor; Enter selects and confirms; F Defend; W Wait. Items opens the shared medical bag: bandages restore HP and tonics restore focus. Each uses one main action. Defeat offers a retry.</p></article><article><h3>Skill upgrades</h3><p>Each character level gained grants one upgrade point to every companion, including reserves. Spend it on any skill whose next rank meets your character level, or save it for later. Open Upgrade skills after a victory or Skills inside Equipment. Upgrades are saved with each character. Team moves unlock from their solo skills and spend both main actions and both focus costs from anywhere on the board. Damage adds the two solo attacks. The assisting fighter keeps any unused movement at their initiative position; move once or use End turn (F), without another attack or free Defend. Each companion has two team partners in a circle; only recruited partners appear in upgrade descriptions.</p></article><article><h3>Keeping the journey</h3><p>Autosaves occur at story checkpoints and before battles. Manual saves and JSON export/import are in the Save menu. Browser saves belong to this browser and site; exported saves can move between devices.</p><p>Chapter One continues into Chapter Two at the saved Iron Coast departure. Equipment lets you choose up to three active fighters; reserves keep their gear and gain experience. Chapter Two continues at the saved capital departure. Chapter Three rescues Tomas and ends at the saved coastal departure. Chapter Four opens the harbor and releases the sanctuary signal. Celia joins the traveling roster; Equipment can change your three active fighters throughout. The chapter ends at the saved anchor counterattack departure. Only current-format saves can be loaded.</p></article>');

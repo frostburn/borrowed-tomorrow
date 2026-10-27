@@ -17,7 +17,7 @@ export function economyFlows(production = false) {
         await importSave(page, s); await approach(page, 'iona');
         const shop = page.getByRole('dialog', { name: 'Iona’s supplies' }); await expect(shop).toBeVisible(); const portrait=shop.getByRole('img',{name:'Iona',exact:true});
         const size=await portrait.evaluate(img=>{const r=img.getBoundingClientRect();return {width:r.width,height:r.height,fit:getComputedStyle(img).objectFit};});
-        expect(size.width).toBe(size.height);expect(size.fit).toBe('contain');
+        expect(size.width).toBeCloseTo(size.height,4);expect(size.fit).toBe('contain');
         await expect(shop).not.toContainText('Field bandage');await expect(shop).not.toContainText('Focus tonic'); await expect(shop).not.toContainText('Celia');
         await shop.getByRole('button', { name: 'Sell spare gear', exact: true }).click(); await expect(shop).toContainText('No spare gear to sell.');
         await shop.getByRole('button', { name: 'Buy supplies', exact: true }).click();

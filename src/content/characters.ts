@@ -40,6 +40,7 @@ export const CHARACTERS = {
 export type CharacterId = keyof typeof CHARACTERS;
 const speakers: Record<string, CharacterId> = Object.fromEntries(Object.entries(CHARACTERS).map(([id, c]) => [c.name, id as CharacterId]));
 speakers.Stationmaster = 'ansel';
+speakers.Ansel = 'ansel';
 export function speakerPortrait(name: string): string | undefined {
   const id = Object.hasOwn(speakers, name) ? speakers[name] : undefined;
   return id ? CHARACTERS[id].portrait : undefined;
