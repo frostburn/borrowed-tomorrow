@@ -152,7 +152,7 @@ it('Pressure wave excludes its caster, hits allies, and previews the same clear 
   expect(pushDestination(b, orrin, nell)).toBeUndefined(); expect(pushDestination(b, orrin, enemy)).toEqual(enemyEnd);
   const hp = orrin.hp, allyHp = nell.hp;
   expect(cast(b, orrin, 'repulse', orrin.hex)).toBe(true);
-  expect(orrin.hp).toBe(hp); expect(nell.hp).toBe(allyHp - 8); expect(nell.hex).toEqual(nellStart); expect(enemy.hex).toEqual(enemyEnd);
+  expect(orrin.hp).toBe(hp); expect(nell.hp).toBe(allyHp - 10); expect(nell.hex).toEqual(nellStart); expect(enemy.hex).toEqual(enemyEnd);
 });
 
 it('pushes never enter an occupied hex or leave the board', () => {

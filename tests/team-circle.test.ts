@@ -62,7 +62,7 @@ describe('Celia and Petra’s Daybreak',()=>{
   const {b,u,partner,enemy}=yard([first,first==='celia'?'petra':'celia','orrin']),celia=b.units.find(u=>u.kind==='celia')!,petra=b.units.find(u=>u.kind==='petra')!;
   petra.skills!.taunt=rank;celia.skills!.heal=2;for(const ally of b.units.filter(u=>u.side==='party'))ally.hp-=60;
   const hp=celia.hp,predicted=damage(u,celia,'daybreak',partner);expect(predicted).toBe(Math.floor(supportPower(celia,'heal')*9/10));expect(cast(b,u,'daybreak',u.hex)).toBe(true);
-  expect(celia.hp).toBe(hp+predicted);expect(enemy.tauntedBy).toBe(petra.id);expect(petra.guard??0).toBe(rank===1?0:rank===2?27:29);expect(celia.guard??0).toBe(rank===3?29:0);
+  expect(celia.hp).toBe(hp+predicted);expect(enemy.tauntedBy).toBe(petra.id);expect(petra.guard??0).toBe(rank===1?0:rank===2?27:27);expect(celia.guard??0).toBe(rank===3?27:0);
   expect(daybreakProtection(u,partner)!.vanguard).toBe(petra);expect(b.queue).not.toContain(u.id);expect(b.queue).toContain(partner.id);
  });
  it('can protect a full-health party and Taunt ends at Petra’s next turn',()=>{

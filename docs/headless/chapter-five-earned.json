@@ -4,13 +4,19 @@
   "status": "complete",
   "stage": "chapter-five",
   "source": {
-    "baseCommit": "80a5cceb0190011ab456b386f3c5591b516cfc3b",
+    "baseCommit": "bf92565605c6769d69d85d94d52bd7c4b513a575",
     "files": {
-      "src/rules/abilities.ts": "650a78c11e2bb14764f72647bf56571d2dcb4982da22c93c22d07a2ac42a8e15",
-      "src/rules/combat.ts": "1b1ac521da5ca0edbb63bc138b3e0ae0786ea9d238bd4295f211c2e92949404e",
-      "src/rules/skills.ts": "39d28e8d3ffc2b97b667151aa10e494ec4b5328328d3b4b712d8a780b36dc5a7",
+      "src/rules/abilities.ts": "7b2c3bbd52937a0970010af57bd683859ab1ad358537176711880d06435da876",
+      "src/rules/combat.ts": "e27e69c994e9520ecc2be92a9ae637eb0993e3cae66ef21a464226bbbf312186",
+      "src/rules/skills.ts": "294f9263fd01590fa063d9b512d8641914a7ef355d3a6caa94f8c703e30cd7b5",
       "src/rules/combat-tactics.ts": "eb00280f823578963cb6de0f28624b7e4824a95e6b9f5e2393cf82a8bf94f21d",
-      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149"
+      "src/rules/rally.ts": "b444c654fd480a4e1734be3400298c4fae9175091e0c35c8bdb0c7d9995566ab",
+      "src/rules/boss-direct.ts": "8f049b6df515b83877c3f9faf210a04b5fa3cda96e693468b5f21f20e564b149",
+      "src/content/chapter-three/regulator.ts": "5de457407b25a32116e19104807ecd3fc320349ba14f225cdcd1a42738c85575",
+      "src/headless/rally-value.ts": "82ceef508626f6837683188e85623b54b8770fe68fdbe87c7fbef53c2a4a30b2",
+      "src/headless/tactics.ts": "3e5f4e20c202635539cfb217fc73b543c0b0f105be1b077e7fd833e19936c921",
+      "src/headless/defensive.ts": "d2a33fb65ff598742bef4cdd2727c5a944cc28e3b9355ff941defa54545c3947",
+      "src/headless/cooperative.ts": "038710f8d7cfcfc13fec889c7e3ec363d96546b430b7cc56563f5485d5c3a491"
     }
   },
   "agent": {
@@ -189,7 +195,7 @@
       "retaliationWon": true,
       "chapterFiveComplete": true
     },
-    "coins": 1547,
+    "coins": 1487,
     "bandages": 3,
     "xp": 3475,
     "inventory": {
@@ -374,34 +380,35 @@
     },
     "xp": 3475,
     "income": 1293,
-    "spent": 148,
-    "finalMarks": 1547,
+    "spent": 192,
+    "finalMarks": 1487,
     "rests": 8,
-    "hpLost": 892,
-    "healed": 492,
+    "hpLost": 798,
+    "healed": 425,
     "knockouts": 0,
     "itemsUsed": {
-      "bandage": 2,
-      "field-bandage": 5
+      "bandage": 3,
+      "field-bandage": 6
     },
     "abilities": {
       "daybreak": 2,
-      "burst": 22,
-      "strike": 15,
-      "prism": 7,
-      "rivet": 10,
+      "burst": 18,
+      "strike": 10,
+      "sunline": 4,
+      "prism": 9,
       "crush": 3,
-      "steam": 4,
-      "bandage": 2,
-      "field-bandage": 5,
+      "rivet": 14,
+      "steam": 1,
+      "bandage": 3,
+      "field-bandage": 6,
       "sweep": 2,
       "crossfire": 4,
       "quickshot": 4,
       "lanternvolley": 2,
-      "starline": 6,
-      "celestialbolt": 5,
-      "heal": 4,
-      "mend": 1,
+      "starline": 5,
+      "heal": 3,
+      "celestialbolt": 7,
+      "sanctuary": 1,
       "ricochet": 2
     },
     "remainingSupplies": {
@@ -424,14 +431,15 @@
         ],
         "abilities": {
           "daybreak": 2,
-          "burst": 3,
-          "strike": 3
+          "burst": 2,
+          "strike": 3,
+          "sunline": 1
         }
       },
       {
         "id": "hammer-stores",
         "rounds": 3,
-        "hpLost": 64,
+        "hpLost": 62,
         "healed": 0,
         "knockouts": 0,
         "minHp": 68,
@@ -443,9 +451,9 @@
         "abilities": {
           "prism": 2,
           "strike": 2,
+          "crush": 1,
           "burst": 1,
-          "rivet": 1,
-          "crush": 1
+          "rivet": 1
         }
       },
       {
@@ -505,7 +513,8 @@
         ],
         "abilities": {
           "crossfire": 2,
-          "burst": 2,
+          "burst": 1,
+          "sunline": 1,
           "quickshot": 1
         }
       },
@@ -564,17 +573,16 @@
         ],
         "abilities": {
           "starline": 2,
-          "burst": 1,
-          "strike": 1
+          "burst": 2
         }
       },
       {
         "id": "wind-gallery",
         "rounds": 4,
-        "hpLost": 52,
-        "healed": 32,
+        "hpLost": 50,
+        "healed": 28,
         "knockouts": 0,
-        "minHp": 76,
+        "minHp": 80,
         "formation": [
           "nell",
           "orrin",
@@ -582,20 +590,20 @@
         ],
         "abilities": {
           "burst": 3,
-          "celestialbolt": 2,
-          "field-bandage": 1,
-          "strike": 1,
-          "starline": 2,
-          "rivet": 1
+          "starline": 1,
+          "heal": 1,
+          "rivet": 2,
+          "prism": 1,
+          "celestialbolt": 2
         }
       },
       {
         "id": "wind-engine",
         "rounds": 6,
-        "hpLost": 203,
-        "healed": 153,
+        "hpLost": 201,
+        "healed": 119,
         "knockouts": 0,
-        "minHp": 48,
+        "minHp": 37,
         "formation": [
           "nell",
           "orrin",
@@ -603,35 +611,36 @@
         ],
         "abilities": {
           "prism": 1,
-          "heal": 2,
+          "heal": 1,
+          "sunline": 1,
+          "starline": 1,
           "burst": 2,
+          "field-bandage": 2,
+          "rivet": 3,
           "celestialbolt": 2,
-          "steam": 3,
-          "mend": 1,
-          "strike": 4,
-          "rivet": 1
+          "strike": 1
         }
       },
       {
         "id": "alban-flagship",
         "rounds": 5,
-        "hpLost": 109,
-        "healed": 50,
+        "hpLost": 21,
+        "healed": 21,
         "knockouts": 0,
-        "minHp": 70,
+        "minHp": 75,
         "formation": [
           "nell",
           "orrin",
           "celia"
         ],
         "abilities": {
-          "prism": 1,
+          "prism": 2,
+          "sanctuary": 1,
           "strike": 2,
-          "burst": 3,
-          "starline": 1,
-          "heal": 1,
-          "rivet": 2,
-          "celestialbolt": 1
+          "celestialbolt": 3,
+          "rivet": 3,
+          "sunline": 1,
+          "bandage": 1
         }
       },
       {

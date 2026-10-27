@@ -29,8 +29,8 @@ function pressure(){
 }
 function focusLane(){
  const b=arena(),orrin=b.units.find(u=>u.id==='orrin')!,celia=b.units.find(u=>u.id==='celia')!,nell=b.units.find(u=>u.id==='nell')!;
- orrin.hex=offset(3,3);orrin.focus=0;celia.hex=offset(1,3);nell.hex=offset(1,6);
- b.units.filter(u=>u.side==='enemy').forEach((u,i)=>{u.hex=offset(5+i,3);u.hp=u.maxHp=85;});
+ orrin.hex=offset(2,3);orrin.focus=0;celia.hex=offset(1,3);nell.hex=offset(1,6);
+ b.units.filter(u=>u.side==='enemy').forEach((u,i)=>{u.hex=offset(4+i,3);u.hp=u.maxHp=85;});
  b.queue=['celia','orrin','nell',...b.units.filter(u=>u.side==='enemy').map(u=>u.id)];return b;
 }
 function commit(b:Battle){
@@ -47,11 +47,11 @@ it('recognizes Dazzle before repeated heavy attacks without mutating live state'
  const future=cooperativeForecast(b,3);
  expect(future.units.find(u=>u.side==='enemy')!.dazzledAttacks).toBeLessThan(3);
 });
-it('uses Rally for an actual following attack, not merely its restored-focus count',()=>{
+it('uses Rallying cry for a following attack through actual turn-entry regeneration',()=>{
  const b=focusLane(),before=structuredClone(b);
  expect(decideCooperatively(b)).toMatchObject({kind:'cast',ability:'rally'});expect(b).toEqual(before);
  commit(b);const orrin=active(b)!;expect(orrin.id).toBe('orrin');
- expect(orrin.focus).toBe(3); // Two restored, then the normal turn-entry tick.
+ expect(orrin.focus).toBe(2); // Normal regeneration plus one from the moving aura.
  expect(cast(b,orrin,'steam',offset(4,3))).toBe(true);
  expect(b.units.filter(u=>u.side==='enemy'&&u.hp<u.maxHp)).toHaveLength(3);
  const unavailable=structuredClone(before);unavailable.units.find(u=>u.id==='celia')!.abilities=['strike','celestialbolt'];
@@ -61,10 +61,10 @@ it('takes the immediate kill instead of applying unnecessary control',()=>{
  const b=pressure();b.units.find(u=>u.side==='enemy')!.hp=1;
  expect(commit(b)).not.toMatchObject({ability:'dazzle'});expect(b.result).toBe('victory');
 });
-it('does not refresh existing Dazzle or Rally a full-focus party',()=>{
+it('does not refresh existing Dazzle or a full-duration Rallying cry',()=>{
  const b=pressure();b.units.find(u=>u.side==='enemy')!.dazzledAttacks=3;
  expect(decideCooperatively(b)).not.toMatchObject({ability:'dazzle'});
- const full=focusLane();for(const u of full.units)u.focus=6;
+ const full=focusLane();for(const u of full.units)u.focus=6;full.units.find(u=>u.id==='celia')!.rally={rank:2,expiresRound:full.round+3};
  expect(decideCooperatively(full)).not.toMatchObject({ability:'rally'});
 });
 it('forecasts a spent team helper without giving them another main action',()=>{

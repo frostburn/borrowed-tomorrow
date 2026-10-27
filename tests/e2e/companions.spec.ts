@@ -91,9 +91,9 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     expect(party.map(u=>u.id)).toEqual(['kit','celia','petra']);expect(new Set(party.map(u=>`${u.hex.q},${u.hex.r}`)).size).toBe(3);
     expect(party[0]).toMatchObject({bonus:10,speed:10,focus:1});expect(party[1]).toMatchObject({armor:1,speed:31});expect(party[2]).toMatchObject({armor:1,level:3});
     await capture(page,`companions-trio-${device}`);
-    await page.locator('.actions').getByRole('button',{name:/^6\s+Rally$/}).click();await clickHex(page,party[0].hex);
-    await expect(page.locator('.prediction')).toContainText('Kit: +2 focus');await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
-    await expect.poll(async()=>(await inspect(page)).battle!.units.find(u=>u.id==='kit')!.focus).toBe(3);
+    await page.locator('.actions').getByRole('button',{name:/Rallying cry/}).click();
+    await expect(page.locator('.prediction')).toContainText('No immediate focus');await page.getByRole('button',{name:'Confirm ability',exact:true}).click();
+    await expect.poll(async()=>(await inspect(page)).battle!.units.find(u=>u.id==='kit')!.focus).toBe(1);
     await expect(page.locator('.actions').getByRole('button',{name:/^1\s+Move$/})).toBeEnabled();await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(5,3));
     await page.getByRole('button',{name:/^Confirm move/}).click();await expect(page.locator('.actions').getByRole('button',{name:/^6\s+Saber sweep$/})).toBeEnabled();
     await page.locator('.actions').getByRole('button',{name:/^6\s+Saber sweep$/}).click();await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();

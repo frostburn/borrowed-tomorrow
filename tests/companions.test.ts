@@ -75,12 +75,12 @@ it('makes each companion’s level-five skill usable only after its level unlock
     }
   }
 });
-it('Rally restores the previewed focus, pays its cost and refuses self, enemies or full focus',()=>{
-  const {b,celia,kit,enemy,petra}=trio();b.queue=[celia.id,petra.id,kit.id,enemy.id];kit.focus=5;
-  expect(legalAim(b,celia,'rally',celia.hex)).toBe(false);expect(legalAim(b,celia,'rally',enemy.hex)).toBe(false);
-  expect(damage(celia,kit,'rally')).toBe(1);expect(cast(b,celia,'rally',kit.hex)).toBe(true);
-  expect(kit.focus).toBe(6);expect(celia.focus).toBe(3);
-  b.queue=[celia.id,petra.id,kit.id,enemy.id];expect(legalAim(b,celia,'rally',kit.hex)).toBe(false);
+it('Rallying cry prepares a self-centered field, pays focus once and rejects enemy aims',()=>{
+  const {b,celia,kit,enemy,petra}=trio();b.queue=[celia.id,petra.id,kit.id,enemy.id];kit.hex=offset(4,3);celia.hex=offset(3,3);kit.focus=5;
+  expect(legalAim(b,celia,'rally',celia.hex)).toBe(true);expect(legalAim(b,celia,'rally',enemy.hex)).toBe(false);
+  expect(damage(celia,kit,'rally')).toBe(0);expect(cast(b,celia,'rally',celia.hex)).toBe(true);
+  expect(kit.focus).toBe(5);expect(celia.focus).toBe(3);expect(celia.rally?.rank).toBe(1);
+  b.queue=[celia.id,petra.id,kit.id,enemy.id];expect(legalAim(b,celia,'rally',celia.hex)).toBe(false);
 });
 it('Sanctuary protects allies around an empty center without replacing a stronger barrier',()=>{
   const {b,celia,kit,petra,enemy}=trio(),center=offset(5,3);

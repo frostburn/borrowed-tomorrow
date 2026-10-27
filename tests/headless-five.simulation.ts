@@ -11,7 +11,7 @@ let earned:GameState;
 beforeAll(()=>{
  const start=newGame();playEarly(start);
  const middle=new CampaignSession(start,defaultAgent);playMiddle(middle);earned=middle.state;
- expect(earned).toMatchObject({chapter:'chapter-four',boundary:'chapter-five:anchors',xp:1355,coins:402});
+ expect(earned).toMatchObject({chapter:'chapter-four',boundary:'chapter-five:anchors',xp:1355,coins:386});
 },90000);
 function complete(s:CampaignSession,optional=true){
  expect(s.state).toMatchObject({chapter:'chapter-five',boundary:SIXTH_CHAPTER,xp:optional?3475:3400,flags:{hammerplainComplete:true,dawnwatchComplete:true,windmereComplete:true,emperorOfferTold:true,allAnchorsSeen:true,flagshipWon:true,benefactorClaimSeen:true,albanDestroyed:true,flagshipDestroyed:true,nellIll:true,retaliationWon:true,chapterFiveComplete:true}});

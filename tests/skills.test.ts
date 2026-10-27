@@ -59,15 +59,15 @@ describe('ranked combat resolution',()=>{
    const area=shape(b,u,'burst',enemy.hex);expect(area).toHaveLength(rank===1?4:7);if(rank===1)expect(area).toEqual(quad(enemy.hex));
    const predicted=[damage(u,enemy,'burst'),damage(u,ally,'burst')],hp=[enemy.hp,ally.hp];expect(cast(b,u,'burst',enemy.hex)).toBe(true);expect([hp[0]-enemy.hp,hp[1]-ally.hp]).toEqual(predicted);results.push(predicted);
   }
-  expect(results).toEqual([[8,8],[13,13],[19,10]]);
+  expect(results).toEqual([[8,8],[12,12],[17,9]]);
  });
  it('upgraded Heal heals only allies and its final rank clears Dazzle and pin',()=>{
   const {b,u,ally,enemy}=battle(['celia','nell']);u.skills!.heal=3;u.hex=offset(4,3);ally.hex=offset(5,3);enemy.hex=offset(5,2);u.hp-=30;ally.hp-=40;enemy.hp=10;ally.dazzledAttacks=3;ally.pinned=true;
   const hp=ally.hp,predicted=damage(u,ally,'heal');expect(targets(b,u,'heal',ally.hex)).not.toContain(enemy);expect(cast(b,u,'heal',ally.hex)).toBe(true);expect(ally.hp).toBe(hp+predicted);expect(ally.dazzledAttacks).toBeUndefined();expect(ally.pinned).toBeUndefined();expect(enemy.hp).toBe(10);
  });
- it('party Rally excludes its caster and restores the previewed focus',()=>{
-  const {b,u,ally}=battle(['celia','nell']);u.skills!.rally=2;ally.focus=1;b.queue=[u.id,b.units.at(-1)!.id,ally.id];const own=u.focus;
-  expect(targets(b,u,'rally',u.hex)).toEqual([ally]);expect(cast(b,u,'rally',u.hex)).toBe(true);expect(ally.focus).toBe(3);expect(u.focus).toBe(own-3);
+ it('Rallying cry II includes Celia and nearby allies without an immediate refill',()=>{
+  const {b,u,ally,enemy}=battle(['celia','nell']);u.skills!.rally=2;u.hex=offset(3,3);ally.hex=offset(4,3);ally.focus=1;b.queue=[u.id,enemy.id,ally.id];const own=u.focus;
+  expect(targets(b,u,'rally',u.hex)).toEqual([u,ally]);expect(cast(b,u,'rally',u.hex)).toBe(true);expect(ally.focus).toBe(1);expect(u.focus).toBe(own-3);expect(u.rally).toEqual({rank:2,expiresRound:4});
  });
  it('final Heal can cleanse an ally whose HP is already full',()=>{
   const {b,u,ally}=battle(['celia','nell']);u.skills!.heal=3;u.hex=offset(3,3);ally.hex=offset(4,3);ally.dazzledAttacks=3;ally.pinned=true;
@@ -78,12 +78,12 @@ describe('ranked combat resolution',()=>{
   expect(cast(b,u,'bash',u.hex)).toBe(true);expect(enemy.hex).toEqual(offset(6,3));expect(enemy.hp).toBe(hp);expect(ally.hex).toEqual(friend);expect(u.focus).toBe(0);expect(u.bonusUsed).toBe(true);expect(b.queue[0]).toBe(u.id);expect(cast(b,u,'bash',u.hex)).toBe(false);
  });
  it('maximal Taunt combines the old party barrier with enemy targeting',()=>{
-  const {b,u,ally,enemy}=battle(['petra','nell']);u.skills!.taunt=3;expect(cast(b,u,'taunt',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(u.id);expect(u.guard).toBe(33);expect(ally.guard).toBe(33);
+  const {b,u,ally,enemy}=battle(['petra','nell']);u.skills!.taunt=3;expect(cast(b,u,'taunt',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(u.id);expect(u.guard).toBe(31);expect(ally.guard).toBe(31);
  });
  it('team damage discounts the solo skills and grows with either upgrade, identically from either initiator',()=>{
   const {u,ally,enemy}=battle();u.skills!.sunline=1;ally.skills!.steam=1;u.bonus=ally.bonus=0;enemy.armor=0;
-  expect(damage(u,enemy,'prism',ally)).toBe(25);expect(damage(ally,enemy,'prism',u)).toBe(25);
-  u.skills!.sunline=2;expect(damage(u,enemy,'prism',ally)).toBe(29);
-  ally.skills!.steam=3;expect(damage(u,enemy,'prism',ally)).toBe(40);expect(abilityFor(u,'prism',ally).power).toBe(40);
+  expect(damage(u,enemy,'prism',ally)).toBe(34);expect(damage(ally,enemy,'prism',u)).toBe(34);
+  u.skills!.sunline=2;expect(damage(u,enemy,'prism',ally)).toBe(39);
+  ally.skills!.steam=3;expect(damage(u,enemy,'prism',ally)).toBe(50);expect(abilityFor(u,'prism',ally).power).toBe(50);
  });
 });

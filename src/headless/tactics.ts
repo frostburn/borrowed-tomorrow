@@ -1,4 +1,5 @@
 import {active,damage,legalAim,movement,movementOnly,targets,type AbilityId,type Battle,type Unit} from '../rules/combat';
+import {rallyValue} from './rally-value';
 import {teamStatus} from '../rules/combat-tactics';
 import {abilityFor} from '../rules/skills';
 import {occupiedHexes} from '../rules/footprint';
@@ -41,9 +42,10 @@ export function decideBattle(source:Battle):Decision{
   for(const ability of u.abilities)for(const aim of cells()){
    if(!legalAim(b,u,ability,aim))continue;
    const partner=teamStatus(b,u,ability).partner,a=abilityFor(u,ability,partner);
-   let benefit=0;
+   let benefit=a.effect==='rally'?rallyValue(b,u)*2:0;
    for(const v of targets(b,u,ability,aim)){
     const amount=damage(u,v,ability,partner);
+    if(a.effect==='rally')continue;
     if(a.heal)benefit+=amount*(v.hp<v.maxHp*.4?1.3:.85);
     else if(a.effect==='guard')benefit+=amount*.25;
     else if(a.effect==='focus')benefit+=amount*(v.focus<=1?3:1);
@@ -65,4 +67,4 @@ export function decideBattle(source:Battle):Decision{
  if(step&&nearest(step.hex)<nearest(original)&&risk(step.hex)<=risk(original))return {kind:'move',hex:step.hex};
  return {kind:'defend'};
 }
-export const fighterSnapshot=(units:Unit[])=>units.map(u=>({id:u.id,hp:u.hp,focus:u.focus,hex:{...u.hex},guard:u.guard??0,defending:u.defending,dazzledAttacks:u.dazzledAttacks??0,pinned:u.pinned??false,tauntedBy:u.tauntedBy,teamSpentRound:u.teamSpentRound}));
+export const fighterSnapshot=(units:Unit[])=>units.map(u=>({id:u.id,hp:u.hp,focus:u.focus,hex:{...u.hex},guard:u.guard??0,defending:u.defending,dazzledAttacks:u.dazzledAttacks??0,pinned:u.pinned??false,tauntedBy:u.tauntedBy,teamSpentRound:u.teamSpentRound,rally:u.rally?{...u.rally}:undefined}));

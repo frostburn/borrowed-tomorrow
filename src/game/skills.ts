@@ -7,7 +7,7 @@ import type {CompanionId} from '../rules/party';
 import {art,type UI} from './ui';
 import './skills.css';
 
-const shapes={single:'One target',blast:'Seven-hex area',spread:'Growing lantern volley',quad:'Slanted four-hex area',line:'Straight ray',diagonal:'Spaced hex-diagonal ray',axis:'Full-width team axis',party:'Living party',bounce:'Two-enemy ricochet',pattern:'Announced area'};
+const shapes={ring:'Six surrounding hexes',single:'One target',blast:'Seven-hex area',spread:'Growing lantern volley',quad:'Slanted four-hex area',line:'Straight ray',diagonal:'Spaced hex-diagonal ray',axis:'Full-width team axis',party:'Living party',bounce:'Two-enemy ricochet',pattern:'Announced area'};
 export function skillCards(hero:CompanionId,characterLevel:number,ranks:SkillRanks,esc:(s:unknown)=>string,disabled=false,known:readonly CompanionId[]=[hero]){
  return `<div class="skill-summary"><strong>${skillPoints(hero,characterLevel,ranks)} upgrade point${skillPoints(hero,characterLevel,ranks)===1?'':'s'}</strong><span>One point per character level gained. You may save points.</span></div><div class="skill-cards">${SKILLS[hero].map(s=>{
   const rank=ranks[s.id]??0,current=abilityFor({kind:hero,skills:ranks},s.id),next=rank<s.ranks.length?abilityFor({kind:hero,skills:{...ranks,[s.id]:rank+1}},s.id):undefined;

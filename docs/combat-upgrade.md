@@ -13,7 +13,7 @@ Choose **Upgrade skills** on the victory panel, the available-points button whil
 | Nell | Lantern burst, Mend, Dazzle, Horizon light |
 | Orrin | Steam lance, Rivet shot, Safety guard, Pressure wave |
 | Kit | Quick shot, Feint, Ricochet, Pinning shot |
-| Celia | Celestial bolt, Heal, Rally, Sanctuary |
+| Celia | Celestial bolt, Heal, Rallying cry, Sanctuary |
 | Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
 
 Strike and Items stay separate from skill upgrades. Items opens one shared bag menu for bandages, field bandages and focus tonics, with quantities and effects; each uses a main action after targeting and confirmation. See [economy.md](economy.md) for the early supply counters. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character command list has eight entries, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
@@ -27,8 +27,8 @@ The themed merges are functional: Nell’s Mend and Celia’s Heal each gain are
 | Skill rank | Character level required | Base power | Footprint | Friendly damage |
 | --- | ---: | ---: | --- | --- |
 | 1 | 1 | 8 | Four touching hexes in a down-right slanted square | Full |
-| 2 | 2 | 13 | Target plus six neighbors | Full |
-| 3 | 6 | 19 | Target plus six neighbors | Half |
+| 2 | 2 | 12 | Target plus six neighbors | Full |
+| 3 | 6 | 17 | Target plus six neighbors | Half |
 
 All three cost two focus and aim within five hexes. The first footprint is `aim`, `aim + (1,0)`, `aim + (0,1)`, `aim + (1,1)` in axial coordinates, clipped to the board. Friendly reduction applies after attack, armor, Defend and Dazzle calculations, before barrier absorption. The preview uses the same rounded damage as resolution.
 
@@ -60,7 +60,7 @@ Steam lance is a contiguous four-hex ray from Orrin in one of six directions at 
 
 Ricochets select the nearest distinct visible second enemy; ties resolve by enemy ID. Rank controls reach and power. They never bounce into another part of the same boss. Pinning shot limits mobile enemies to one movement for their next main action; anchored bosses resist pin. Shield bash stays a zero-damage optional extra action, once per turn. Its later ranks remove the focus cost and then push all adjacent enemies. Dazzle remains a three-attack effect and is never refreshed while active.
 
-Healing adds `2 × (character level − 1)` to ranked base power. Barriers add `floor(1.5 × (character level − 1))`. Weapon damage never inflates support. Barriers keep the strongest value instead of stacking. Bandages remain fixed at 24 HP; ranked Rally restores focus only to other allies.
+Healing adds `2 × (character level − 1)` to ranked base power. Barriers add `floor(1.5 × (character level − 1))`. Weapon damage never inflates support. Barriers keep the strongest value instead of stacking. Bandages remain fixed at 24 HP; Rallying cry increases normal turn-start focus regeneration instead of restoring focus immediately.
 
 Celia’s rank-three Heal requires character level ten. It heals living allies in the area, clears Dazzle/pin, and can restore **one fallen ally at the clear center** to 35% maximum HP. The revived character acts next round and cannot retaliate immediately. A blocked or occupied center cannot revive anyone. This affects only units already in that battle, never reserves, story illness or permanent story deaths. Nell’s Mend does not revive. Heal has its own skill ID and level gates (1/3/10), distinct from Nell’s Mend (2/5/10). Final Taunt combines enemy targeting with level-scaled party barriers.
 
@@ -107,3 +107,26 @@ The direct attack chooses a living fighter at firing time, rotating in party ord
 The extra cast uses the existing once-per-turn bonus allowance and leaves the same fighter queued for its main action, with separate animations and one affected hex. It never replaces, re-aims or widens a fixed warning, or creates glass, ice or hot-metal floor damage. The carrier still follows its legal movement path before pouring. Breaking the ward's lit projection interrupts **both** attacks without spending Dazzle. Imperial/Lightbearer/Benefactor fourth-round pauses stay completely quiet. Boss death and normal victory conditions remain unchanged.
 
 `rules/boss-direct.ts` owns assignment, rotating targets and the bonus turn. `game/boss-direct-effect.ts` draws small aimed projectiles and the lens ray, separately from the main area effect. The opt-in `scripts/compare-late-bosses.mjs` compares authored late-game fixtures and three consecutive final forms using ordinary combat/victory recovery; these probes do not claim an earned Chapter Six/Seven playthrough.
+
+
+## Rallying cry and skill balance pass
+
+Rallying cry costs three focus and one main action at every rank. Rank I (level 2) covers the six hexes around Celia, excluding her. Rank II (level 6) includes Celia. Rank III (level 10) covers the entire active party. The field follows its living source; check eligibility when each fighter's normal turn begins. It grants **+1 focus regeneration**, capped at six, with no immediate refill. Wait resumes and movement-only team continuations never grant another tick.
+
+The cry lasts three combat rounds **including the casting round**: cast in round R, expire before any turn in R+3. This keeps duration independent of initiative, waiting and borrowed actions; Celia's own first boosted regeneration is on a later normal turn. Recasting after a round has elapsed refreshes the duration, without stacking. A full-duration cry cannot be refreshed. Celia's fall removes it permanently; revival does not restore the field. It is battle-local and affects no reserve or unavailable character. The blue-violet field, shared grid boundary, regeneration status and round counter use the same eligibility rules. Selecting the self-centered command previews its field and asks only for confirmation, including when no ally is currently in the ring but one could move into it.
+
+| Skill | Previous ranked power / cost | New ranked power / cost | Purpose |
+| --- | --- | --- | --- |
+| Lantern burst | 8 / 13 / 19; 2 focus | 8 / 12 / 17; 2 focus | Trim the broadly useful area attack without changing its footprint/friendly-fire progression. |
+| Horizon light | 12 / 17 / 24; 3 / 4 / 4 focus | 22 / 28 / 35; 3 focus | A more powerful narrow ray at each of its level 7/10/13 gates. |
+| Pressure wave | 8 / 13 / 19; 3 focus | 10 / 16 / 23; 2 focus | Pay for positioning and push without overpricing its weaker individual contact. |
+| Quick shot | 10 / 14 / 19; pierces 0 / 2 / 4 | 10 / 13 / 17; pierces 0 / 1 / 2 | Free sustained fire leaves room for Kit's paid skills. |
+| Pinning shot | 8 / 14 / 21; 2 focus | 11 / 17 / 24; 2 focus | A smaller early damage sacrifice for control, then a late damage advantage over Quick shot. |
+| Feint III | Free; range 4 | 1 focus; range 6 | Improve safe reach instead of making boss control free. |
+| Taunt III | Base party ward 12; 3 focus | Base party ward 10; 4 focus | Preserve Taunt while giving dedicated protection a clearer advantage. Daybreak inherits the weaker ward at its existing 90% output. |
+
+Learning gates, purchased ranks and current save formats are unchanged. The same solo contributions feed team damage at 90%, so these changes also update the appropriate combinations. Heal/Mend, Steam lance, Rivet shot, Celestial bolt, Sanctuary and Shield bash retain their established roles. This pass does not add ranks or resolve the surplus of upgrade points after all four skill lines are mastered.
+
+Workshop → Combat adds dedicated **Rallying cry I / II / III** practices with low-focus allies. The headless players shortlist useful placements and value the incremental future focus of a refresh; the cooperative forecast resolves the actual future regeneration. The controlled utility probe suppresses the new aura alongside other support abilities. No forecast grants an immediate refill.
+
+The sealed Chapter Three regulator has 155 HP rather than 170. The reduced Burst otherwise added two rounds to the feed-grounding route compared with pressure walk. Across matched offensive/support and prepared/frugal inputs, grounding now takes three–four rounds versus three for pressure walk, with less HP lost in each pair. Plates, shield release, enemy power and rewards are unchanged.
