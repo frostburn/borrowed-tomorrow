@@ -1,10 +1,14 @@
+import {icon} from './item-icons';
+import {objectPortrait,type UIIcon} from '../content/ui-art';
+import {rewardList,type ResourceGain} from './rewards';
+import './item-icons.css';
 import {expressivePortrait} from '../content/portrait-expressions';
 import type { Choice, Dialogue } from '../content/dialogue';
 import { portraitAsset, speakerPortrait } from '../content/characters';
 import { artPath } from '../content/art-assets';
 const esc = (v: unknown) => String(v).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export const art = (name: string) => `${import.meta.env.BASE_URL}${artPath(name)}`;
-export interface Button { label: string; action: () => void; disabled?: boolean; unavailable?:boolean; selected?: boolean; key?: string; title?: string; badge?:string }
+export interface Button { label: string; action: () => void; disabled?: boolean; unavailable?:boolean; selected?: boolean; key?: string; title?: string; badge?:string; icon?:UIIcon }
 export class UI {
   readonly canvas: HTMLElement;
   readonly controls: HTMLElement;
@@ -18,6 +22,7 @@ export class UI {
   private onLine?: (index:number)=>void;
   private modalReturn?: HTMLElement;
   private toastTimer?: number;
+  toastSerial=0;
   constructor(root: HTMLElement, callbacks: { inventory: () => void; journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
     root.innerHTML = `<main class="game-shell">
       <header class="topbar"><div class="brand"><h1>Borrowed Tomorrow</h1><span id="location">The Wrong Platform</span></div>
@@ -47,6 +52,7 @@ export class UI {
   sound(enabled: boolean) { const button = document.getElementById('sound-button')!; button.textContent = enabled ? 'Sound on' : 'Sound off'; button.setAttribute('aria-pressed', String(enabled)); }
   button(b: Button): HTMLButtonElement {
     const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
+    if(b.icon)button.insertAdjacentHTML('afterbegin',icon(b.icon));
     button.disabled = !!b.disabled; button.className = [b.selected?'selected':'',b.unavailable?'unavailable':''].filter(Boolean).join(' '); if (b.title) {button.setAttribute('aria-description', b.title);button.title=b.title;}
     if(b.badge){const badge=document.createElement('span');badge.className='skill-badge';badge.setAttribute('aria-hidden','true');badge.textContent=b.badge;button.append(badge);}
     button.onclick = () => { b.action(); }; return button;
@@ -63,7 +69,7 @@ export class UI {
     const d = this.dialogue!; const line = d.lines[this.lineIndex];
     const last = this.lineIndex === d.lines.length - 1;
     this.onLine?.(this.lineIndex);this.sceneLayer.classList.toggle('cinematic',!!d.scene);
-    const portrait=expressivePortrait(line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who),line.expression);
+    const portrait=expressivePortrait(line.portrait?portraitAsset(line.portrait):speakerPortrait(line.who)??objectPortrait(line.who),line.expression);
     this.sceneLayer.innerHTML = `<section class="dialogue${last&&d.choices?'':' dialogue-linear'}" aria-label="Dialogue"><div class="dialogue-portrait">${portrait ? `<img src="${art(portrait)}" alt="${esc(line.who)}" data-expression="${line.expression??'neutral'}"/>` : '<span class="ticket-mark">BT</span>'}</div><div class="dialogue-copy"><h2>${esc(line.who)}</h2><p>${esc(line.text)}</p><div class="dialogue-actions"></div></div><span class="dialogue-page">${this.lineIndex + 1} / ${d.lines.length}</span></section>`;
     const buttons = this.sceneLayer.querySelector<HTMLElement>('.dialogue-actions')!;
     if(d.scene){
@@ -114,8 +120,15 @@ export class UI {
     target?.focus();
   }
   toast(message: string) {
+    this.toastSerial++;
     const node = document.getElementById('toast')!; node.textContent = message; node.hidden = false;
     window.clearTimeout(this.toastTimer); this.toastTimer = window.setTimeout(() => { node.hidden = true; }, 4000);
+  }
+  received(gains:ResourceGain[],keepMessage=false){
+    if(!gains.length)return;
+    const message=keepMessage?document.getElementById('toast')!.textContent:'';
+    const described=message&&gains.length===1&&message.toLowerCase().includes(gains[0].name.toLowerCase())&&(gains[0].quantity===1||message.includes(String(gains[0].quantity)));
+    this.toast('');document.getElementById('toast')!.innerHTML=described?`<ul class="reward-list" aria-label="Received"><li>${icon(gains[0].icon)}<span>${esc(message)}</span></li></ul>`:(message?`<p>${esc(message)}</p>`:'')+rewardList(gains);
   }
   escape = esc;
 }

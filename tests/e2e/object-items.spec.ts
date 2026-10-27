@@ -1,0 +1,35 @@
+import {expect,test,type Locator} from '@playwright/test';
+import {checkpoint,coastCheckpoint,palaceCheckpoint} from '../support/progress';
+import {approach,importSave} from './navigation';
+import {capture,inspect} from './controls';
+const loaded=async(images:Locator)=>{await expect.poll(()=>images.evaluateAll(nodes=>nodes.every(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0))).toBe(true);};
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test.describe(`objects and equipment art on ${device}`,()=>{
+ test.use({viewport,deviceScaleFactor:dpr});
+ test('reading cards, purchases, equipped items, optional finds and victory rewards',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+  const coast=coastCheckpoint('trainRaidWon');await importSave(page,coast);await approach(page,'prison-coach');
+  for(let i=0;i<4;i++)await page.locator('.dialogue-actions button').first().click();
+  await expect(page.locator('.dialogue-copy h2')).toHaveText('Transfer slip');
+  const letter=page.locator('.dialogue-portrait img');await expect(letter).toHaveAttribute('src',/ui\/portrait-letter\.svg$/);await loaded(letter);
+  expect(await letter.evaluate(i=>(i as HTMLImageElement).naturalWidth)).toBe(128);await expect(page.locator('.ticket-mark')).toHaveCount(0);await capture(page,`object-letter-${device}`);
+  await page.locator('.dialogue-actions button').first().click();await expect(letter).toHaveAttribute('src',/portrait-nell-happy\.svg$/);
+  const s=checkpoint('orrinJoined');s.location={map:'station',x:27,y:18};s.coins=140;await importSave(page,s);await approach(page,'iona');
+  const shop=page.getByRole('dialog',{name:'Iona’s supplies'}),coat=shop.getByRole('group',{name:'Reinforced work coat',exact:true});
+  await expect(coat.locator('h3 [data-icon="coat"]')).toHaveCount(1);await expect(shop.locator('.shop-wallet [data-icon="marks"]')).toHaveCount(1);
+  await coat.getByRole('button',{name:/^Buy/}).click();await expect(shop.locator('.shop-status')).toContainText('Reinforced work coat added');await expect(shop.locator('.shop-status [data-icon="coat"]')).toHaveCount(1);
+  await expect(page.locator('#toast [data-icon="coat"]')).toHaveCount(1);await loaded(shop.locator('.item-icon'));await capture(page,`item-purchase-${device}`);
+  await shop.getByRole('button',{name:'Equipment',exact:true}).click();const inventory=page.getByRole('dialog',{name:'Character inventory'});
+  await inventory.locator('[data-item="work-coat"]').click();await inventory.getByRole('button',{name:'Equip on Nell',exact:true}).click();
+  await expect(inventory.locator('.ci-slot [data-icon="coat"]')).toHaveCount(1);await expect(inventory.locator('.ci-supplies [data-icon="bandage"]')).toHaveCount(1);
+  await loaded(inventory.locator('.item-icon'));expect(await inventory.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);await capture(page,`item-equipment-${device}`);
+  await page.getByRole('button',{name:'Close',exact:true}).click();
+  const find=palaceCheckpoint('capitalSeen');find.location={map:'northglass',x:19,y:31};await importSave(page,find);await approach(page,'capital-cache');
+  await page.locator('.dialogue-actions button').first().click();await expect(page.locator('#toast .reward-list')).toContainText('Baffled pressure nozzle added to the bag');await expect(page.locator('#toast [data-icon="nozzle"]')).toHaveCount(1);await loaded(page.locator('#toast img'));expect(await page.locator('#toast').evaluate(e=>e.getBoundingClientRect().height/window.borrowedTomorrowPixels.inspect().cssScale)).toBeLessThan(90);await capture(page,`item-found-${device}`);
+  expect((await inspect(page)).state.inventory.bag['baffled-nozzle']).toBe(1);
+  await importSave(page,checkpoint('orrinJoined'));await approach(page,'workshop-cache');await page.getByRole('button',{name:'Clear the shed',exact:true}).click();
+  await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'The line is clear',exact:true})).toBeVisible();
+  await expect(page.locator('.reward-list')).toContainText('24 marks');await expect(page.locator('.reward-list')).toContainText('Brass reflector × 1');await loaded(page.locator('.reward-list img'));await capture(page,`item-victory-${device}`);
+  await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+ });
+});

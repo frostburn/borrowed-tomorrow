@@ -1,3 +1,4 @@
+import {objectPortrait} from './ui-art';
 import { portraitAsset, speakerPortrait } from './characters';
 import type { Cinematic, Shot } from './cinematics';
 import type {PortraitExpression} from './portrait-expressions';
@@ -9,7 +10,7 @@ export type PortraitCue={portrait?:string;expression?:PortraitExpression};
 export type StageCue=Shot&PortraitCue;
 export const SAY = (who:string,text:string,cue?:string|PortraitCue):Line => {
  const {portrait,expression}=typeof cue==='string'?{portrait:cue}:cue??{};
- return {who,text,portrait:portrait?portraitAsset(portrait):speakerPortrait(who),...(expression?{expression}:{})};
+ return {who,text,portrait:portrait?portraitAsset(portrait):speakerPortrait(who)??objectPortrait(who),...(expression?{expression}:{})};
 };
 /** Expression and camera direction share one authoring cue, but stay separate at runtime. */
 export const STAGED=(who:string,text:string,cue?:StageCue):Line=>{
