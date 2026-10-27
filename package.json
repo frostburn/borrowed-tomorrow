@@ -26,7 +26,8 @@
     "art:five": "node scripts/export-chapter-five-art.mjs",
     "art:seven": "node scripts/export-chapter-seven-art.mjs",
     "art:six": "node scripts/export-chapter-six-art.mjs",
-    "check:art-upload": "node scripts/check-art-upload.mjs"
+    "check:art-upload": "node scripts/check-art-upload.mjs",
+    "simulate:early": "node scripts/headless.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"
