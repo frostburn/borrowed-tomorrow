@@ -13,9 +13,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  check:
+  build:
+    name: Tests and build
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ inputs.full_journey && 20 || 5 }}
+    timeout-minutes: 5
+    outputs:
+      playwright_image: ${{ steps.playwright.outputs.image }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,11 +27,44 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - uses: actions/cache@v4
+      - name: Select matching Playwright image
+        id: playwright
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const packages = require('./package-lock.json').packages;
+          const version = packages['node_modules/playwright-core'].version;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `image=mcr.microsoft.com/playwright:v${version}-noble\n`);
+          NODE
+      - uses: actions/upload-artifact@v4
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-chromium-shell-${{ hashFiles('package-lock.json') }}
-      - run: npx playwright install --with-deps --only-shell chromium
+          name: production-build
+          path: dist/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 3
+  browser:
+    name: Browser checks
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.full_journey && 20 || 8 }}
+    container:
+      image: ${{ needs.build.outputs.playwright_image }}
+      options: --user 1001 --ipc=host
+    env:
+      CI: 'true'
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: dist/
       - name: Critical development browser checks
         if: ${{ !inputs.full_journey }}
         run: npm run test:e2e:ci
@@ -43,3 +79,17 @@ jobs:
       - name: Complete production checks
         if: ${{ inputs.full_journey }}
         run: npm run test:e2e:production
+  # Preserve the existing required status, including when an upstream job fails.
+  check:
+    if: ${{ always() }}
+    needs: [build, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Require tests, build and browser checks
+        env:
+          BUILD_RESULT: ${{ needs.build.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: |
+          test "$BUILD_RESULT" = success
+          test "$BROWSER_RESULT" = success
