@@ -316,6 +316,16 @@ parallax, train wheels/steam, shallow waves and a passing fishing boat.
 `ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
 deterministic shot timeline. No workshop playback writes campaign state.
 
+`ending-cast.ts` authors the six travelers' cinematic poses against the accepted
+actor/portrait SVGs in `public/art/vector/`. Preserve Nell's red cap, braids and
+navy bib; Orrin's goggled cap, brown beard, cream shirt and overalls; Kit's copper
+spikes, gold scarf and left-hip satchel; Celia's silver bob, teal spectacles and
+left-hand book; Petra's short dark bob and gold-edged silver armor over green;
+and Tomas's taller build, green eyes, navy jacket and red scarf. Heads are drawn
+individually. Rear views retain the same clothes, and Nell's jacket covers her
+back. Station/picnic staging leaves room to read the complete cast through the
+final chunky raster, including at fractional DPR.
+
 Campaign completion is committed and saved before the film opens. Finish, skip
 and replay return to the existing completion panel; **Replay ending cinematic**
 is also available there. Reloading a completion save opens that panel rather

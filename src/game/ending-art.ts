@@ -1,5 +1,6 @@
 import {endingFrame} from '../content/ending-film';
 import {bitmapText} from './pixel-font';
+import {paintEndingPerson as person} from './ending-cast';
 
 type C=CanvasRenderingContext2D;
 type Point=readonly [number,number];
@@ -24,55 +25,6 @@ function lantern(c:C,x:number,y:number,s=1){
  line(c,'#947d53',3,[[-5,0],[-5,-9],[4,-12],[10,-7],[10,0]]);
  poly(c,'#8b7652',[[-10,0],[13,0],[16,30],[-12,30]]);poly(c,'#b6bfa7',[[-5,5],[7,5],[9,24],[-7,24]]);
  poly(c,'#e1d6a9',[[-3,5],[1,5],[-1,24],[-7,24]]);rect(c,'#695d48',-12,28,28,4);c.restore();
-}
-type Person='nell'|'kit'|'tomas'|'orrin'|'celia'|'petra';
-/** Character-specific heads, coats and resting stances; no weapons at the picnic. */
-function person(c:C,who:Person,x:number,y:number,s=1,back=false){
- c.save();c.translate(x,y);c.scale(s,s);
- const coat={nell:'#ad6549',kit:'#647d89',tomas:'#61736c',orrin:'#577178',celia:'#638379',petra:'#7d7980'}[who];
- const skin=who==='celia'?'#d1af91':who==='orrin'?'#c59d7d':'#d9af8a';
- const hair=who==='celia'?'#bcc8bf':who==='orrin'?'#c9c3ab':who==='petra'?'#6b4e41':who==='kit'?'#62463b':who==='tomas'?'#674d40':'#a05b3e';
- const wide=who==='orrin'?4:0;
- poly(c,'#344b59',[[-9-wide,-23],[8+wide,-23],[10+wide,0],[3,1],[0,-15],[-2,1],[-11-wide,1]]);
- poly(c,coat,[[-12-wide,-49],[8+wide,-49],[14+wide,-21],[3,-18],[-11-wide,-22],[-15-wide,-37]]);
- poly(c,'#45616a',[[8+wide,-46],[14+wide,-21],[7,-20],[3,-44]]);
- poly(c,who==='nell'?'#cb8c57':'#90a098',[[-11-wide,-46],[-5,-47],[-3,-24],[-11-wide,-22]]);
- poly(c,skin,[[-10,-64],[-5,-69],[6,-67],[11,-57],[6,-49],[-5,-50],[-11,-57]]);
- poly(c,hair,[[-12,-62],[-8,-71],[6,-72],[13,-62],[10,-53],[6,-61],[-3,-64],[-10,-55]]);
- if(back)poly(c,hair,[[-11,-63],[9,-64],[10,-52],[-5,-50],[-12,-55]]);
- else{
-  rect(c,'#455456',-6,-59,2,2);rect(c,who==='tomas'?'#47674e':'#455456',4,-59,2,2);
-  poly(c,'#bc8b6c',[[0,-58],[2,-54],[-1,-53]]);line(c,'#a57660',1,[[-3,-51],[3,-51]]);
- }
- if(who==='nell'){
-  poly(c,'#9b5d43',[[-13,-66],[-7,-76],[8,-74],[14,-65],[4,-63]]);
-  poly(c,'#c58551',[[-12,-66],[6,-68],[17,-65],[16,-62],[-12,-62]]);
-  poly(c,hair,[[-10,-54],[-7,-48],[-8,-33],[-12,-27],[-14,-31],[-11,-43]]);
-  poly(c,hair,[[9,-54],[12,-48],[12,-36],[15,-29],[11,-26],[8,-39]]);
- }else if(who==='kit'){
-  poly(c,hair,[[-13,-66],[-8,-73],[-3,-71],[3,-76],[7,-70],[13,-69],[10,-61]]);
-  poly(c,'#c5a267',[[-8,-49],[3,-44],[9,-49],[8,-41],[1,-38],[-8,-44]]);
-  line(c,'#8a7150',3,[[8,-42],[-8,-21]]);poly(c,'#8a7150',[[-15,-26],[-6,-28],[-4,-16],[-14,-15]]);
- }else if(who==='orrin'){
-  poly(c,hair,[[-12,-57],[-7,-51],[9,-54],[9,-44],[3,-38],[-8,-42],[-14,-50]]);
-  poly(c,'#dcd3b4',[[-8,-51],[-2,-48],[6,-50],[2,-43],[-5,-43]]);
- }else if(who==='celia'){
-  poly(c,hair,[[-13,-60],[-9,-50],[-9,-45],[-16,-50],[-16,-64],[-7,-73],[8,-71],[15,-60],[13,-48],[7,-46],[10,-56],[6,-63]]);
-  if(!back){line(c,'#617578',2,[[-10,-60],[-3,-60],[-3,-55],[-10,-55],[-10,-60],[2,-60],[10,-60],[10,-55],[2,-55],[2,-60]]);}
-  poly(c,'#c2baa0',[[-6,-49],[0,-43],[6,-50],[4,-39],[-2,-37]]);
- }else if(who==='petra'){
-  poly(c,hair,[[8,-66],[17,-64],[19,-44],[13,-34],[10,-38],[13,-52]]);
-  poly(c,'#d0c3a5',[[-10,-49],[-2,-45],[8,-49],[7,-42],[-2,-39]]);
- }else{
-  poly(c,'#cfb992',[[-7,-49],[0,-45],[8,-48],[3,-39],[-5,-40]]);
-  if(!back)line(c,'#6c5243',2,[[-9,-56],[-6,-52]]);
- }
- poly(c,coat,[[-13-wide,-44],[-19-wide,-29],[-15-wide,-15],[-11-wide,-16],[-13-wide,-29],[-6,-40]]);
- poly(c,skin,[[-16-wide,-16],[-10-wide,-16],[-9-wide,-11],[-14-wide,-9]]);
- poly(c,coat,[[9+wide,-44],[19+wide,-29],[15+wide,-17],[11+wide,-18],[12+wide,-30],[5,-39]]);
- poly(c,skin,[[11+wide,-18],[16+wide,-17],[16+wide,-11],[11+wide,-10]]);
- poly(c,'#655447',[[-11-wide,-1],[-3,-2],[-1,4],[-13-wide,4]]);
- poly(c,'#655447',[[3,-2],[10+wide,-1],[14+wide,4],[3,4]]);c.restore();
 }
 function coast(c:C,t:number){
  rect(c,P.sky,0,0,512,288);cloud(c,42-t*4,24,1.4);cloud(c,330-t*2,44,.85);
@@ -143,8 +95,11 @@ function station(c:C,p:number,t:number){
  }
  locomotive(c,engine,225);
  for(let i=0;i<4;i++){const smoke=(t*.045+i*.21)%1;c.globalAlpha=(1-smoke)*.35;poly(c,'#e5e4ce',[[engine+15+smoke*21,160-smoke*46],[engine+29+smoke*23,147-smoke*49],[engine+54+smoke*34,153-smoke*44],[engine+47+smoke*28,171-smoke*42]]);}c.globalAlpha=1;
- person(c,'tomas',277,243,.58);person(c,'nell',302,247,.52);person(c,'kit',327,241,.5);
- person(c,'celia',356,235,.48);person(c,'petra',378,239,.52);person(c,'orrin',402,242,.55);
+ // Bring the whole travelling cast onto the front apron, with breathing room
+ // for their individual silhouettes instead of hiding six tiny heads by the train.
+ for(const [x,y]of [[125,263],[179,267],[235,265],[292,260],[351,263],[413,264]])oval(c,'#879482',x,y+2,15,3);
+ person(c,'tomas',125,263,.72);person(c,'nell',179,267,.70);person(c,'kit',235,265,.70);
+ person(c,'celia',292,260,.70);person(c,'petra',351,263,.74);person(c,'orrin',413,264,.73);
  // Foreground canopy and cool shadow create depth without dark outlines.
  poly(c,'#576c70',[[0,0],[72,0],[81,288],[55,288],[46,70],[0,76]]);
  poly(c,'#7e958a',[[0,0],[212,0],[187,11],[108,9],[65,27],[0,39]]);
@@ -163,11 +118,13 @@ function windowSeat(c:C,p:number,t:number){
  poly(c,'#354f5c',[[0,214],[125,220],[145,288],[0,288]]);
  poly(c,'#506873',[[352,220],[484,206],[512,230],[512,288],[341,288]]);
  // Close framing gives the siblings ordinary window seats, not a heroic tableau.
- person(c,'nell',196,287,1.8,true);person(c,'tomas',307,286,1.95,true);
- poly(c,'#a27853',[[154,244],[164,236],[195,237],[202,270],[153,270]]);
- line(c,'#d1b67f',2,[[160,241],[165,229],[183,230],[187,238]]);
+ person(c,'nell',190,353,2.3,true);person(c,'tomas',310,365,2.5,true);
+ // Luggage rests on the opposite seat, clear of Nell's closer back silhouette.
+ poly(c,'#a27853',[[89,259],[99,251],[130,252],[137,285],[88,285]]);
+ line(c,'#d1b67f',2,[[95,256],[100,244],[118,245],[122,253]]);
  // Orrin's folded coat and a loose timetable rest on the opposite bench.
- poly(c,'#75827b',[[33,251],[78,240],[108,251],[113,278],[36,280]]);
+ poly(c,'#d8c59b',[[33,251],[78,240],[108,251],[113,278],[36,280]]);
+ poly(c,'#385368',[[44,251],[65,246],[81,251],[76,277],[53,278]]);
  poly(c,'#d8c9a1',[[66,256],[99,252],[107,270],[72,274]]);line(c,'#9b9478',1,[[73,260],[98,257],[102,264],[77,267]]);
 }
 function shore(c:C,p:number,t:number){
@@ -184,14 +141,18 @@ function shore(c:C,p:number,t:number){
  // The picnic includes the other four travelers. Their work can wait.
  poly(c,'#8e6e60',[[295,215],[365,211],[391,239],[315,246]]);
  line(c,'#c1ac8d',3,[[307,220],[376,231]]);line(c,'#c1ac8d',2,[[330,215],[349,242]]);
- person(c,'orrin',308,226,.4);person(c,'celia',343,216,.36);person(c,'petra',376,227,.4);person(c,'tomas',352,246,.4);
+ person(c,'celia',342,219,.62);person(c,'orrin',302,232,.65);
+ person(c,'petra',386,232,.66);person(c,'tomas',352,254,.62);
  oval(c,'#d6c7a4',340,233,7,3);poly(c,'#c2a16b',[[324,232],[329,225],[337,228],[334,234]]);
  // A closer, sheltered plane: two young people watching fishing boats.
- person(c,'nell',206,253,.86,true);person(c,'kit',246,253,.91,true);
+ person(c,'nell',206,253,.86,true,'right');person(c,'kit',246,253,.91,true,'left');
  const reach=ease((p-.18)/.28);
- line(c,'#b97550',5,[[216,218],[223,231],[225+reach*2,239]]);
- line(c,'#687f89',5,[[235,219],[233,232],[229-reach*2,239]]);
- if(reach>.6)oval(c,'#d4ad88',227,239,4,2);
+ line(c,'#a95243',6,[[217,202],[222,218],[224+reach*3,230]]);
+ line(c,'#c27054',2,[[216,203],[220,218],[224+reach*3,230]]);
+ line(c,'#263e53',6,[[234,200],[234,218],[231-reach*4,230]]);
+ line(c,'#385368',2,[[234,202],[232,218],[231-reach*4,230]]);
+ oval(c,'#d49c70',225+reach*2,232,3,2);
+ if(reach<.8)oval(c,'#d49c70',231-reach*4,232,3,2);
  oval(c,'#6c7464',147,266,23,6);lantern(c,148,235,.82);
  // Angled foreground pines frame the open sea, with a slight breeze at the tips.
  poly(c,'#49665d',[[0,0],[16,0],[33,161],[60,288],[31,288],[13,187]]);
