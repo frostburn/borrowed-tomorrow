@@ -56,7 +56,7 @@ describe('Lantern volley stencil',()=>{
  for(const first of ['nell','kit']as const)for(const rank of [1,2,3])it(`uses Pinning shot rank ${rank} for preview, hits and fixtures when ${first} initiates`,()=>{
   const {b,u,partner,third,enemy}=yard([first,first==='nell'?'kit':'nell','celia']),aim=offset(5,3),crow=b.units.find(u=>u.kind==='crow')!;
   const kit=b.units.find(u=>u.kind==='kit')!,nell=b.units.find(u=>u.kind==='nell')!;kit.skills!.pin=rank;u.hex=offset(3,3);partner.hex=offset(0,6);enemy.hex=aim;crow.hex=add(aim,{q:2,r:-1});third.hex=add(aim,{q:-1,r:0});
-  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:0,r:2}),hp:999,maxHp:999,active:false,vents:[offset(0,0)]}];
+  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:0,r:2}),hp:999,maxHp:999,vents:[offset(0,0)]}];b.vents.add(key(offset(0,0)));
   const area=shape(b,u,'lanternvolley',aim);expect(area).toHaveLength([7,10,12][rank-1]);
   if(rank===1)expect(area).toEqual(blast(aim));
   for(const burst of [1,3]){nell.skills!.burst=burst;expect(shape(b,u,'lanternvolley',aim)).toEqual(area);}
@@ -64,7 +64,7 @@ describe('Lantern volley stencil',()=>{
   expect(targets(b,u,'lanternvolley',aim)).toEqual(rank===1?[enemy]:[enemy,crow]);
   const hp=[enemy.hp,crow.hp,third.hp],predicted=damage(u,enemy,'lanternvolley',partner);
   expect(cast(b,u,'lanternvolley',aim)).toBe(true);expect(hp[0]-enemy.hp).toBe(predicted);expect(third.hp).toBe(hp[2]);expect(crow.hp<hp[1]).toBe(rank>=2);expect(crow.pinned).toBeUndefined();
-  expect(b.fixtures[0].active).toBe(rank===3);expect(b.vents.has(key(offset(0,0)))).toBe(rank===3);
+  expect(b.fixtures[0].bursts??0).toBe(rank===3?1:0);expect(b.vents.has(key(offset(0,0)))).toBe(true);
   expect(teamStatus(b,u,'lanternvolley').partner).toBeUndefined();expect(shape(b,u,'lanternvolley',aim)).toEqual(area);
  });
  it('matches the supplied 3/4/3/2 rows relative to the cursor on either row parity',()=>{
@@ -79,9 +79,9 @@ describe('Lantern volley stencil',()=>{
  });
  it('hits the newly covered outer hexes and multi-contact enemies once, while leaving allies unharmed',()=>{
   const {b,u,partner,third,enemy}=yard(['nell','kit','celia']),aim=offset(5,3),crow=b.units.find(u=>u.kind==='crow')!;enemy.hex=aim;enemy.footprint=[{q:0,r:0},{q:1,r:0}];crow.hex=add(aim,{q:0,r:2});third.hex=add(aim,{q:2,r:0});
-  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:2,r:-1}),hp:999,maxHp:999,active:false,vents:[offset(0,0)]}];
+  b.fixtures=[{id:'valve',name:'Valve',kind:'valve',hex:add(aim,{q:2,r:-1}),hp:999,maxHp:999,vents:[offset(0,0)]}];b.vents.add(key(offset(0,0)));
   const hits=targets(b,u,'lanternvolley',aim),hp=[enemy.hp,crow.hp,third.hp],predicted=[damage(u,enemy,'lanternvolley',partner),damage(u,crow,'lanternvolley',partner)];
   expect(shape(b,u,'lanternvolley',aim)).toEqual(lanternVolley(aim,3));expect(hits).toEqual([enemy,crow]);expect(cast(b,u,'lanternvolley',aim)).toBe(true);
-  expect([hp[0]-enemy.hp,hp[1]-crow.hp]).toEqual(predicted);expect(third.hp).toBe(hp[2]);expect(b.fixtures[0].active).toBe(true);expect(b.vents.has(key(offset(0,0)))).toBe(true);
+  expect([hp[0]-enemy.hp,hp[1]-crow.hp]).toEqual(predicted);expect(third.hp).toBe(hp[2]);expect(b.fixtures[0].bursts).toBe(1);expect(b.vents.has(key(offset(0,0)))).toBe(true);
  });
 });

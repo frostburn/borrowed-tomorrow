@@ -14,7 +14,7 @@ export type CombatPreset='rally-ring'|'rally-self'|'rally-party'|'prism'|'crossf
 export const TACTICS_ENCOUNTER:Encounter={
  id:'workshop',name:'Combat review · the pressure yard',music:'battle',flag:'practice',xp:0,coins:0,coordinated:true,
  enemies:[{kind:'guardian',col:7,row:3,hp:240,bonus:6},{kind:'crow',col:8,row:1,hp:150,bonus:8},{kind:'hound',col:8,row:5,hp:180,bonus:9}],rocks:[],
- fixtures:[{id:'review-crates',name:'Timber barricade',kind:'barricade',col:5,row:4,hp:32},{id:'review-drum',name:'Pressure drum',kind:'drum',col:7,row:4,hp:24,power:24},{id:'review-valve',name:'Yard steam valve',kind:'valve',col:3,row:3,active:false,vents:[[5,2],[5,3],[5,4]]}],
+ fixtures:[{id:'review-crates',name:'Timber barricade',kind:'barricade',col:5,row:4,hp:32},{id:'review-drum',name:'Pressure drum',kind:'drum',col:7,row:4,hp:24,power:24},{id:'review-valve',name:'Yard steam valve',kind:'valve',col:3,row:3,vents:[[5,2],[5,3],[5,4]]}],
 };
 export function richCombatPreview(preset:CombatPreset|'workshop',settings?:CharacterSettings,inventory?:Inventory){
  const lantern=preset.startsWith('lantern'),rally=preset.startsWith('rally-');

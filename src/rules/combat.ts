@@ -101,7 +101,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if(e.coordinated&&!e.boss){const guardian=battle.units.find(u=>u.side==='enemy'&&u.kind==='guardian'),crow=battle.units.find(u=>u.side==='enemy'&&u.kind==='crow');if(guardian&&crow)for(const [unit,partner]of [[guardian,crow],[crow,guardian]]){unit.abilities=[...unit.abilities,'relay'];unit.linkedTo=partner.id;}}
   if(e.fixtures?.length){
     battle.fixtures=e.fixtures.map(f=>({...f,hex:offset(f.col,f.row),hp:f.hp??30,maxHp:f.hp??30,vents:f.vents?.map(h=>offset(...h))}));
-    for(const f of battle.fixtures){if(f.kind!=='valve')battle.obstacles.add(key(f.hex));else if(f.active)for(const h of f.vents??[])battle.vents.add(key(h));}
+    for(const f of battle.fixtures){if(f.kind!=='valve')battle.obstacles.add(key(f.hex));else for(const h of f.vents??[])battle.vents.add(key(h));}
   }
   nextRound(battle);
   return battle;

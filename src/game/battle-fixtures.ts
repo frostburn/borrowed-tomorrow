@@ -2,9 +2,9 @@ import type Phaser from 'phaser';
 import type {Battle} from '../rules/combat';
 import {toPixel} from '../rules/hex';
 /** Small native vector props with broad material planes, drawn at their hex's feet. */
-export function drawBattleFixtures(scene:Phaser.Scene,world:Phaser.GameObjects.Container,b:Battle,before?:ReadonlyMap<string,{hp:number;active?:boolean}>){
+export function drawBattleFixtures(scene:Phaser.Scene,world:Phaser.GameObjects.Container,b:Battle,before?:ReadonlyMap<string,{hp:number}>){
  for(const actual of b.fixtures??[]){
-  const old=before?.get(`fixture:${actual.id}`),f={...actual,hp:old?.hp??actual.hp,active:old?.active??actual.active};
+  const old=before?.get(`fixture:${actual.id}`),f={...actual,hp:old?.hp??actual.hp};
   const {x,y}=toPixel(f.hex),g=scene.add.graphics();world.add(g);
   if(f.hp<=0){g.fillStyle(0x695c49,.8).fillRect(x-18,y+4,28,4).fillRect(x-8,y-2,24,4);continue;}
   g.fillStyle(0x1b2827,.25).fillEllipse(x,y+6,52,18);
@@ -18,10 +18,10 @@ export function drawBattleFixtures(scene:Phaser.Scene,world:Phaser.GameObjects.C
    g.fillStyle(0xd7b27a).fillTriangle(x,y-24,x-8,y-10,x+8,y-10);
   }else{
    g.fillStyle(0x526d68).fillRect(x-8,y-18,16,24);g.fillStyle(0x8eaaa0).fillRect(x-6,y-18,6,22);
-   const cy=y-24;g.lineStyle(4,f.active?0xcb8954:0x8dbfa7).strokeCircle(x,cy,16);
+   const cy=y-24;g.lineStyle(4,0xcb8954).strokeCircle(x,cy,16);
    for(const dx of [-1,1])g.lineBetween(x-10,cy+dx*10,x+10,cy-dx*10);
    g.fillStyle(0xe1bf82).fillRect(x-4,cy-4,8,8);
   }
-  g.fillStyle(0x203330).fillRect(x-20,y+10,40,4);g.fillStyle(f.kind==='valve'?(f.active?0xd99a59:0x92bea9):0xc4a070).fillRect(x-20,y+10,40*(f.kind==='valve'?1:f.hp/f.maxHp),4);
+  g.fillStyle(0x203330).fillRect(x-20,y+10,40,4);g.fillStyle(f.kind==='valve'?0xd99a59:0xc4a070).fillRect(x-20,y+10,40*(f.kind==='valve'?1:f.hp/f.maxHp),4);
  }
 }

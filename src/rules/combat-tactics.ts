@@ -5,8 +5,8 @@ import {blast,cells,distance,equal,key,visible,type Hex} from './hex';
 import {bodyDistance,occupiedHexes} from './footprint';
 import {FURNACE_ID} from '../content/chapter-five/furnace';
 
-export interface BattleFixture {id:string;name:string;kind:'barricade'|'drum'|'valve';hex:Hex;hp:number;maxHp:number;active?:boolean;vents?:Hex[];power?:number}
-export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['kind'];col:number;row:number;hp?:number;active?:boolean;vents?:[number,number][];power?:number}
+export interface BattleFixture {id:string;name:string;kind:'barricade'|'drum'|'valve';hex:Hex;hp:number;maxHp:number;bursts?:number;vents?:Hex[];power?:number}
+export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['kind'];col:number;row:number;hp?:number;vents?:[number,number][];power?:number}
 export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex,h));
 export const VENT_DAMAGE=6;
 /** A floor hazard hits grounded units once, even across several body contacts. */
@@ -72,10 +72,9 @@ export function prepareRelay(b:Battle){
  }
 }
 function operateValve(b:Battle,aim:Hex):string[]{
- const f=fixtureAt(b,aim)!;f.active=!f.active;
- for(const h of f.vents??[])if(f.active)b.vents.add(key(h));else b.vents.delete(key(h));
- const messages=[`${f.name}: steam ${f.active?'on':'off'}.`];
- if(f.active)for(const u of steamVentTargets(b,new Set(f.vents?.map(key)))){
+ const f=fixtureAt(b,aim)!;f.bursts=(f.bursts??0)+1;
+ const messages=[`${f.name}: extra steam burst.`];
+ for(const u of steamVentTargets(b,new Set(f.vents?.map(key)))){
   u.hp=Math.max(0,u.hp-VENT_DAMAGE);messages.push(`Steam burst hits ${u.name} for ${VENT_DAMAGE}${u.hp?'.':' — down.'}`);
  }
  return messages;
