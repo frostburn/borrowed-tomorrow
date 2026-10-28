@@ -293,3 +293,30 @@ The additional campaign previews are:
 Each offers a chapter-level preset or **Use workshop party**. Share selections with `?dev=boss&boss=furnace`, `boss=ward`, `boss=aurel` or a domain ID such as `boss=domain-ward`. `src/dev/boss-catalog.ts` owns metadata and independent encounter copies; `campaign-boss-preview.ts` uses the production presentations for large bosses and the original tactical maps for other fights. Authored encounter IDs stay intact so domain rules, original maps and their floor masks match. Rewards are removed and the normal isolated practice host handles outcomes; campaign saves and story flags are never advanced.
 
 Only the selected arena is loaded when starting a new catalogue preview. Missing assets leave the catalogue available for retry; changing the selection or tab during loading cancels entry into that fight. Earlier bosses retain their authored lighting, and the furnace/ward/domain previews show the same lighting as the campaign. Ordinary tactical previews also use their actual map’s actor-lighting profile.
+
+
+## Good-ending cinematic
+
+Open **Cinematics** or use `?dev=cinematics`. The four-shot, 44-second film uses the same
+vector player as campaign completion: the days returning at the crossing,
+Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.
+Nell and Kit hold hands while Tomas, Orrin, Celia and Petra share the picnic.
+
+**Play good ending** starts from the beginning; **Play selected shot** starts from
+the chosen poster. Space pauses, left/right changes shots, Replay returns to the
+opening, and Escape returns to the workshop. Sound follows the existing sound
+preference. Reduced motion starts paused with static compositions; Next shot
+still works. Hiding the browser pauses playback.
+
+`ending-art.ts` paints editable polygons directly into a native-size scene
+surface, then the game's shared 2px framebuffer samples the artwork and UI
+together. There are no movie files, prerendered sprite sheets, new textures to
+download or dependencies. The four shots use rigid layer motion, coastal
+parallax, train wheels/steam, shallow waves and a passing fishing boat.
+`ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
+deterministic shot timeline. No workshop playback writes campaign state.
+
+Campaign completion is committed and saved before the film opens. Finish, skip
+and replay return to the existing completion panel; **Replay ending cinematic**
+is also available there. Reloading a completion save opens that panel rather
+than forcing the film again. The Lightbearer ending has no good-ending replay.

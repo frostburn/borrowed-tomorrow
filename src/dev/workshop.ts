@@ -1,3 +1,5 @@
+import {GOOD_ENDING_SHOTS,endingShotStart} from '../content/ending-film';
+import {paintGoodEnding} from '../game/ending-art';
 import {BOSS_CHOICES,campaignBoss,createCampaignBoss,workshopBoss,type WorkshopBoss} from './boss-catalog';
 import {campaignBossPortrait,campaignBossPresentation,loadCampaignBoss} from './campaign-boss-preview';
 import {icon} from '../game/item-icons';
@@ -54,7 +56,8 @@ class Workshop {
   private sprites = new SpriteWorkshop();
   private animation = new AnimationWorkshop();
   private maps = new MapWorkshop(message=>this.ui.toast(message));
-  private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' = new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
+  private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' | 'cinematics' = new URLSearchParams(location.search).get('dev') === 'cinematics' ? 'cinematics' : new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
+  private endingShot=0;
   private hero: CompanionId = 'nell';
   private boss:WorkshopBoss=workshopBoss(new URLSearchParams(location.search).get('boss'));
   private loadingBoss=false;
@@ -128,6 +131,7 @@ class Workshop {
     this.sprites.hide();
     this.animation.hide();
     this.maps.hide();
+    if(this.tab==='cinematics'){this.showCinematics();return;}
     if(this.tab==='bosses'){this.showBosses();return;}
     if(this.tab==='maps'){this.showMaps();return;}
     if(this.tab==='animation'){this.showAnimation();return;}
@@ -183,7 +187,7 @@ class Workshop {
     this.ui.sceneLayer.querySelector('.inventory-panel')!.scrollTop = scroll;
   }
   private tabs(){
-    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','combat','equipment','music','sprites','animation','maps','bosses'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
+    return `<nav class="workshop-tabs" aria-label="Workshop panels">${(['character','combat','equipment','music','sprites','animation','maps','bosses','cinematics'] as const).map(tab=>`<button data-tab="${tab}" class="${this.tab===tab?'selected':''}" aria-pressed="${this.tab===tab}">${tab[0].toUpperCase()+tab.slice(1)}</button>`).join('')}</nav>`;
   }
   private bindTabs(){for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-tab]'))button.onclick=()=>{this.tab=button.dataset.tab as typeof this.tab;this.bossRequest++;this.show();};}
   private showCombat(){
@@ -224,6 +228,22 @@ class Workshop {
     this.ui.sceneLayer.innerHTML=`<section class="inventory-panel" aria-label="Character workshop">${this.tabs()}<div id="animation-workshop"></div></section>`;
     this.bindTabs();this.animation.show(this.ui.sceneLayer.querySelector('#animation-workshop')!);
     this.ui.status.textContent='Vite development / Animation reference does not change saves or character art';
+  }
+  private showCinematics(){
+    this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
+    (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
+    this.ui.initiative.textContent='Cinematics / Good ending';
+    this.ui.sceneLayer.innerHTML='<section class="inventory-panel" aria-label="Character workshop">'+this.tabs()+'<section class="ending-workshop" aria-label="Ending cinematic preview"><div><h2>The days return</h2><canvas id="ending-poster" width="512" height="288" aria-label="Selected ending shot"></canvas><p>A short, wordless epilogue: the released crossing, Larkspur, window seats and the real sea. The good-ending cast and outcome are fixed.</p><div id="ending-start" class="panel-actions"></div></div><div><h3>Shots</h3><nav class="ending-shot-list" aria-label="Cinematic shots">'+GOOD_ENDING_SHOTS.map((s,index)=>'<button data-ending-select="'+index+'" aria-pressed="'+(index===this.endingShot)+'">'+(index+1)+'. '+s.title+'</button>').join('')+'<p>Space pauses; arrows change shots. The accessibility setting starts a still review. Playback changes no saves, equipment or workshop builds.</p></div></section></section>';
+    this.bindTabs();
+    const canvas=this.ui.sceneLayer.querySelector<HTMLCanvasElement>('#ending-poster')!;
+    paintGoodEnding(canvas.getContext('2d')!,endingShotStart(this.endingShot)+GOOD_ENDING_SHOTS[this.endingShot].duration*.55,true);
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-select]'))button.onclick=()=>{this.endingShot=Number(button.dataset.endingSelect);this.show();};
+    const start=(shot:number)=>{this.music.hide();document.querySelector('.game-shell')!.classList.remove('inventory-open');this.scene.previewEndingFilm(()=>this.show(),shot);};
+    this.ui.actionRow(this.ui.sceneLayer.querySelector('#ending-start')!,[
+      {label:'Play good ending',action:()=>start(0)},
+      {label:'Play selected shot',action:()=>start(this.endingShot)},
+    ]);
+    this.ui.status.textContent='Cinematic review / Shares the campaign player';
   }
   private showMaps(){
     this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
