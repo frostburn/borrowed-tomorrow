@@ -43,13 +43,12 @@ def hollow_sun(i,cx,cy):
 HEART_BEATS=[0,1,.2,.6,.1,0,0,0]
 def exposed_heart(i):
  beat=HEART_BEATS[i] if i<8 else [.3,1.3,1,.2][i-8]
- def facet(points,color):
-  # The tips stay anchored; the middle facets bulge and the fracture opens.
-  def deform(x,y):
-   belly=max(0,1-abs(y-140)/70)
-   return (round(x+(x-177)*.14*beat*belly,1),round(y+(y-140)*.025*beat*belly,1))
-  return poly([deform(x,y)for x,y in points],color)
- return [facet([(177,71),(214,99),(226,139),(207,183),(177,210),(143,174),(132,129),(151,92)],BLUE),facet([(177,71),(186,130),(177,210),(143,174),(132,129),(151,92)],TEAL),facet([(177,71),(214,99),(186,130)],PALE),facet([(186,130),(226,139),(207,183),(177,210)],'#476a7b'),facet([(177,80),(184,127),(170,144),(186,161),(178,204),(171,160),(156,140),(171,124)],INK)]
+ # Each half keeps its exact facet geometry and rocks about the lower crack tip.
+ # Opposite rotations open the fracture without stretching crystalline material.
+ angle=round(4.5*beat,3)
+ left=[poly([(177,71),(151,92),(132,129),(143,174),(177,210),(178,204),(171,160),(156,140),(171,124),(177,80)],TEAL),poly([(177,80),(171,124),(156,140),(171,160),(178,204),(173,163),(161,140),(175,124)],'#385b6c')]
+ right=[poly([(177,71),(214,99),(226,139),(207,183),(177,210),(178,204),(186,161),(170,144),(184,127),(177,80)],BLUE),poly([(177,71),(214,99),(184,127),(177,80)],PALE),poly([(184,127),(226,139),(207,183),(177,210),(178,204),(186,161),(170,144)],'#476a7b')]
+ return [f'<g data-heart-half="left" transform="rotate({-angle:g} 177 210)">'+''.join(left)+'</g>',f'<g data-heart-half="right" transform="rotate({angle:g} 177 210)">'+''.join(right)+'</g>']
 
 for form in ['sun','heart']:
  frames=[]

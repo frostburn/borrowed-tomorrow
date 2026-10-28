@@ -34,7 +34,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
  }finally{await context.close();}
 });
 
-test('native beat reshapes the heart facets while its surrounding rays stay fixed',async({page})=>{
+test('native beat rotates rigid crystal halves while its surrounding rays stay fixed',async({page})=>{
  await page.goto('/?dev=boss');
  const result=await page.evaluate(async()=>{
   const image=new Image();image.src='/art/vector/benefactor/benefactor-heart-motion.svg';await image.decode();const c=document.createElement('canvas');c.width=720;c.height=1728;const ctx=c.getContext('2d')!;ctx.drawImage(image,0,0);
@@ -43,7 +43,14 @@ test('native beat reshapes the heart facets while its surrounding rays stay fixe
   for(let i=1;i<8;i++)for(let y=0;y<288;y++)for(let x=0;x<360;x++){
    const p=(y*360+x)*4;if(x<120||x>240||y<68||y>214){if([0,1,2,3].some(k=>frames[0][p+k]!==frames[i][p+k]))rays++;}else if(frames[0][p+3]!==frames[i][p+3])changed++;
   }
-  return {rays,changed,widths};
+  const svg=new DOMParser().parseFromString(await (await fetch(image.src)).text(),'image/svg+xml'),poses=[...svg.documentElement.children].filter(e=>e.tagName==='svg');
+  const halves=['left','right'].map(side=>poses.map(p=>{
+   const group=p.querySelector(`[data-heart-half="${side}"]`)!;
+   return {geometry:group.innerHTML,angle:Number(group.getAttribute('transform')!.match(/rotate\(([-\d.]+)/)![1])};
+  }));
+  return {rays,changed,widths,halves};
  });
+ for(const half of result.halves){expect(new Set(half.map(p=>p.geometry)).size).toBe(1);expect(half).toHaveLength(12);}
+ for(let i=0;i<12;i++)expect(result.halves[0][i].angle+result.halves[1][i].angle).toBe(0);
  expect(result.rays).toBe(0);expect(result.changed).toBeGreaterThan(100);expect(result.widths[1]).toBeGreaterThan(result.widths[3]);expect(result.widths[3]).toBeGreaterThan(result.widths[0]);expect(result.widths.slice(5)).toEqual([result.widths[0],result.widths[0],result.widths[0]]);
 });
