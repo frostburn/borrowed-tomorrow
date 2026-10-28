@@ -78,7 +78,7 @@ export function interactChapterSix(h:StoryHost,id:string){
   case 'palace-route':
    if(!f.palaceCoup)return;
    if(f.palaceEscapeWon)return resumeChapterSix(h);
-   return h.talk({lines:[SAY('Petra','His guards hold the gallery. The service channel has hounds and shallow water. Choose the ground before we move the queen.')],choices:[
+   return h.talk({lines:[SAY('Petra','His guards hold the dry gallery. A guardian, a hound and a crow watch the shallow channel. Choose the ground before we move the queen.')],choices:[
     {label:'Break the gallery cordon · dry floor',action:()=>{f.palaceRouteChosen=true;f.palaceWaterRoute=false;h.save();h.battle('palace-gallery');}},
     {label:'Take the service channel · shallow water',action:()=>{f.palaceRouteChosen=true;f.palaceWaterRoute=true;h.save();h.battle('palace-channel');}},
     {label:'Rest and prepare first',action:()=>{}},

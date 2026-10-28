@@ -8,6 +8,8 @@ The incoming save remains Chapter Five with `chapterFiveComplete`, journal `five
 
 Entry changes only chapter, boundary and location: Chapter Six, null boundary, `outermooring` (32,29). Preserve the actual recruited roster, legal formation, HP/focus, inventory, XP, marks, bandages, journal and playtime. Nell stays ill and equipped; there is no automatic cure or formation reset. The Vite canonical start is authored from the actual prior chapter completion at 3270 XP, with twelve bandages and Kit/Orrin/Petra active. Manual save slots remain separate.
 
+The mooring supply crew retains the earned Hammerplain, Dawnwatch and Windmere specialties under **Training → Specialist improvements**, using the allied crews’ fittings and drill notes. Prices and purchase flags are shared with the original specialists. These services continue at the allied quay and Chapter Seven training counters; neither ordinary training nor purchasing a specialty cures Nell.
+
 ## Checkpoints
 
 | Flag | Completion and continuation |
@@ -42,7 +44,7 @@ The public exchange and berth report read `desertMailSent` without changing it. 
 | `riverCrossingSeen` | First `canopy` arrival completes `six-river-crossing`. |
 | `riverPatrolConfronted`, `riverPatrolWon` | Choose and win the lower crossing; 160 XP, 100 marks, reedweave coat. |
 | `riverChainOpen` | Physically wind the capstan; `six-river-chain` completes and hides both chain art and collision. |
-| `riverCacheWon` | Optional two-crow survey locker; 90 XP, 75 marks, river range sight. |
+| `riverCacheWon` | Optional survey locker guarded by two separated crows and a patrolling hound; 90 XP, 75 marks, river range sight. |
 | `rainhouseSeen` | First rain-house arrival completes `six-rainhouse`; patients remain below the bend. |
 | `rainhouseConfronted`, `rainhouseWon` | Choose and win the treatment terrace; 260 XP, 140 marks, rainhouse field focus. |
 | `riverCareArrived`, `nellRecovered` | One atomic completion of `six-river-treatment`. 120 XP, riverglass reflector, only Nell restored to current-level HP/6 focus; selected formation and equipped items unchanged. |

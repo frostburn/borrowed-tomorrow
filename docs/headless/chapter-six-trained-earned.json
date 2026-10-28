@@ -11,7 +11,7 @@
   "party": [
     {
       "id": "nell",
-      "hp": 116,
+      "hp": 89,
       "focus": 6
     },
     {
@@ -162,6 +162,7 @@
     "jungleLeadKnown": true,
     "improved-hp-celia": true,
     "improved-focus-celia": true,
+    "improved-orrin-counterbalance": true,
     "riverSeen": true,
     "riverCrossingSeen": true,
     "riverPatrolConfronted": true,
@@ -238,8 +239,8 @@
     "capitalLandingSeen": true,
     "chapterSixComplete": true
   },
-  "coins": 1870,
-  "bandages": 2,
+  "coins": 1370,
+  "bandages": 3,
   "xp": 7005,
   "inventory": {
     "version": 2,
@@ -253,7 +254,7 @@
       "saber-hilt": 1,
       "silver-reflector": 1,
       "ratchet-sight": 1,
-      "field-bandage": 2,
+      "field-bandage": 1,
       "focus-tonic": 1,
       "medic-clasp": 1,
       "folding-sight": 1,

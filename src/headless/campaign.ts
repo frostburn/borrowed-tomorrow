@@ -27,6 +27,7 @@ export class CampaignSession{
  readonly checkpoints:Record<string,GameState>={};
  /** Exact earned inputs for controlled encounter comparisons; not save data. */
  readonly battleStarts=new Map<string,Battle>();
+ readonly battleSaves=new Map<string,GameState>();
  private dialogue?:Dialogue;
  private pendingBattle?:string;
  private pendingCheckpoint?:{name:string;resolve:(accepted:boolean)=>void};
@@ -132,6 +133,7 @@ export class CampaignSession{
   const before=resources(this.state),b=createBattle(id,this.state),turns:Record<string,unknown>[]=[];
   const entry={event:'battle',id,before,turns,result:'running',rounds:0,after:before,groundingOpened:false};this.events.push(entry);
   this.battleStarts.set(id,structuredClone(b));
+  this.battleSaves.set(id,structuredClone(this.state));
   // Retain completed turns even if a later planning action throws.
   playBattle(b,this.agent,turn=>turns.push(turn));
   entry.result=b.result??'stalled';entry.rounds=b.round;entry.groundingOpened=b.grounding?.open??false;

@@ -31,7 +31,7 @@
     },
     {
       "id": "celia",
-      "hp": 112,
+      "hp": 118,
       "focus": 6
     }
   ],
@@ -235,7 +235,7 @@
     "chapterSixComplete": true
   },
   "coins": 3452,
-  "bandages": 2,
+  "bandages": 3,
   "xp": 7005,
   "inventory": {
     "version": 2,

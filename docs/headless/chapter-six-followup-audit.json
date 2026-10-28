@@ -1,0 +1,1203 @@
+{
+  "version": 1,
+  "source": {
+    "baseCommit": "da013c144f1d7166464322e74c567fc5ad8285aa",
+    "input": {
+      "path": "docs/headless/chapter-five-earned.json",
+      "sha256": "b606e6967276d96b6f6ea2a63b3944125004975f75713566a84a4846b4f72eca"
+    },
+    "files": {
+      "src/headless/campaign.ts": "e97bc1a3b2e70bf695f66ace17003afba8fc9896b645bcda44b4957cb1cdd870",
+      "src/headless/six.ts": "d231078f975e3a50840bfae490e9f3d14987c848ce295d5f5dbd19eb7780c6dd",
+      "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
+      "src/headless/defensive.ts": "6c95ac0ce77e9a2e4356dc70344109973b4f386d996f587050547d009bd91fda",
+      "src/headless/cooperative.ts": "7a933360957f21389555bd900414e281ca094a532401d910ad8bba4115d6935a",
+      "src/headless/imperial-objectives.ts": "5a6fa8bd04e881e8e502045902d9cc0329cd8f041b35ca41939483a9faa1062c",
+      "src/rules/improvements.ts": "2700fce9ce67ac793bf30e74f94cc2bd0afc6193ee6b50f31fc3670d8549c330",
+      "src/content/improvements.ts": "3590c419439561ec5eb8da1a4e5db39923159d389506e6ecf5b168c43119bd34",
+      "src/content/chapter-six/encounters.ts": "73515be8c361171c70950c234ae23275610a48dacbf86b2f2ed2dd412c1f2d3f",
+      "src/content/chapter-six/jungle/encounters.ts": "ac820f862eeebf381ef0b72b95e02b07bd2122076bc25fd2f4fbdeb6a009dd13",
+      "src/rules/imperial-vessel.ts": "4474ebc3b18bb4edaeb92ecaadfc5edf809f964ba30df57ae011034a92bb38f6",
+      "scripts/probe-six.mjs": "f341a1f1a3321b12a8ec1efbf73a43d8662f25cf912b66c41f9efecfe4f5f42d",
+      "tests/headless-six.simulation.ts": "977f7247e43c689d78c27edd602ba2797d2a03a0997c1edcf41d6bc32d921a70"
+    }
+  },
+  "scope": "Continuation of the existing earned Chapter Five save. Five exact earned pre-battle saves captured under unchanged main rules before tuning. Legacy remains unchanged; defensive/cooperative learn support occupancy. No forced victories, retries or granted resources. No fresh Chapters One–Five or Chapter Seven run.",
+  "commands": [
+    "BT_HEADLESS_SIX_REPORTS=/tmp/bt-six-followups npx vitest run --config scripts/headless.vitest.config.ts tests/headless-six.simulation.ts",
+    "node scripts/probe-six.mjs --from docs/headless/chapter-six-probe-inputs.json --output /tmp/six-probe.json",
+    "node scripts/probe-six.mjs --root <before-checkout> --tactics legacy --from docs/headless/chapter-six-probe-inputs.json --output /tmp/six-before.json"
+  ],
+  "matchedInputs": {
+    "path": "docs/headless/chapter-six-probe-inputs.json",
+    "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8"
+  },
+  "comparisons": {
+    "defensive": {
+      "before": {
+        "source": {
+          "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8",
+          "commit": "cb804ca8f538879715ae55118f2aa0a198855962",
+          "dirty": false
+        },
+        "tactics": "defensive",
+        "rows": [
+          {
+            "id": "early-river-cache",
+            "result": "victory",
+            "rounds": 1,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-palace-gallery",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-imperial-vessel",
+            "result": "victory",
+            "rounds": 11,
+            "damage": 117,
+            "knockouts": 0,
+            "rebuilds": 4
+          },
+          {
+            "id": "late-palace-channel",
+            "result": "victory",
+            "rounds": 3,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-imperial-vessel",
+            "result": "victory",
+            "rounds": 10,
+            "damage": 220,
+            "knockouts": 0,
+            "rebuilds": 1
+          }
+        ]
+      },
+      "after": {
+        "source": {
+          "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8",
+          "commit": "da013c144f1d7166464322e74c567fc5ad8285aa",
+          "dirty": true
+        },
+        "tactics": "defensive",
+        "rows": [
+          {
+            "id": "early-river-cache",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 32,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-palace-gallery",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-imperial-vessel",
+            "result": "victory",
+            "rounds": 8,
+            "damage": 108,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-palace-channel",
+            "result": "victory",
+            "rounds": 4,
+            "damage": 17,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-imperial-vessel",
+            "result": "victory",
+            "rounds": 9,
+            "damage": 192,
+            "knockouts": 0,
+            "rebuilds": 0
+          }
+        ]
+      }
+    },
+    "legacy": {
+      "before": {
+        "source": {
+          "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8",
+          "commit": "cb804ca8f538879715ae55118f2aa0a198855962",
+          "dirty": false
+        },
+        "tactics": "legacy",
+        "rows": [
+          {
+            "id": "early-river-cache",
+            "result": "victory",
+            "rounds": 1,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-palace-gallery",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-imperial-vessel",
+            "result": "victory",
+            "rounds": 10,
+            "damage": 12,
+            "knockouts": 0,
+            "rebuilds": 4
+          },
+          {
+            "id": "late-palace-channel",
+            "result": "victory",
+            "rounds": 4,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-imperial-vessel",
+            "result": "victory",
+            "rounds": 8,
+            "damage": 27,
+            "knockouts": 0,
+            "rebuilds": 1
+          }
+        ]
+      },
+      "after": {
+        "source": {
+          "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8",
+          "commit": "da013c144f1d7166464322e74c567fc5ad8285aa",
+          "dirty": true
+        },
+        "tactics": "legacy",
+        "rows": [
+          {
+            "id": "early-river-cache",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 32,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-palace-gallery",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-imperial-vessel",
+            "result": "victory",
+            "rounds": 10,
+            "damage": 12,
+            "knockouts": 0,
+            "rebuilds": 4
+          },
+          {
+            "id": "late-palace-channel",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-imperial-vessel",
+            "result": "victory",
+            "rounds": 8,
+            "damage": 27,
+            "knockouts": 0,
+            "rebuilds": 1
+          }
+        ]
+      }
+    },
+    "cooperative": {
+      "after": {
+        "source": {
+          "sha256": "00f246e1cb7cc3a24dc65e53f30ebe4a51d4011faf6e188eb344267a22e823f8",
+          "commit": "da013c144f1d7166464322e74c567fc5ad8285aa",
+          "dirty": true
+        },
+        "tactics": "cooperative",
+        "rows": [
+          {
+            "id": "early-river-cache",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 47,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-palace-gallery",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 16,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "early-imperial-vessel",
+            "result": "victory",
+            "rounds": 7,
+            "damage": 79,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-palace-channel",
+            "result": "victory",
+            "rounds": 2,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "late-imperial-vessel",
+            "result": "victory",
+            "rounds": 9,
+            "damage": 71,
+            "knockouts": 0,
+            "rebuilds": 0
+          }
+        ]
+      }
+    }
+  },
+  "runs": [
+    {
+      "name": "early-cure",
+      "status": "complete",
+      "reportSha256": "1812f5ee076782faad601ee8c468b9df5757a80014c1af581a22188725cde90f",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "jungle",
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": true,
+        "through": "6"
+      },
+      "battles": [
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 69,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "river-cache",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 32,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          }
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 34,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 16,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "starline": 2,
+            "burst": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 38,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 1,
+            "steam": 1,
+            "strike": 1,
+            "prism": 1
+          }
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "rounds": 4,
+          "damage": 36,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 2,
+            "sanctuary": 1,
+            "burst": 1,
+            "rivet": 2,
+            "strike": 1
+          }
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 22,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 1,
+            "crush": 2,
+            "sunline": 1,
+            "sanctuary": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 56,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 2,
+            "bandage": 2,
+            "sunline": 1
+          }
+        },
+        {
+          "id": "north-cache",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 39,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "sunline": 1,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "burst": 1
+          }
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 30,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "sunline": 2,
+            "sanctuary": 1,
+            "crush": 2,
+            "celestialbolt": 3,
+            "burst": 2,
+            "sweep": 1,
+            "strike": 3
+          }
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 61,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 1,
+            "starline": 1,
+            "sunline": 1,
+            "rivet": 2,
+            "celestialbolt": 1,
+            "mend": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "rounds": 4,
+          "damage": 67,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 3,
+            "starline": 2,
+            "celestialbolt": 1,
+            "field-bandage": 1,
+            "sunline": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "capital-hunters",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 35,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 2
+          }
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "rounds": 8,
+          "damage": 108,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "prism": 1,
+            "strike": 3,
+            "mend": 1,
+            "celestialbolt": 5,
+            "steam": 3,
+            "burst": 3,
+            "field-bandage": 2,
+            "rivet": 3,
+            "sanctuary": 1
+          }
+        }
+      ],
+      "damage": 643,
+      "knockouts": 0,
+      "rests": 11,
+      "spent": 70,
+      "spending": {
+        "field-bandage": 54,
+        "bandage": 16
+      },
+      "final": {
+        "xp": 7005,
+        "coins": 3452,
+        "bandages": 3,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "boundary": "chapter-seven:hollow-sun",
+        "improvements": []
+      }
+    },
+    {
+      "name": "late-cure",
+      "status": "complete",
+      "reportSha256": "2f54dddf810e271c9b4f41db0552a110b3b756b080a5bc4468db12f9227480dc",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "order": [
+          "north",
+          "desert",
+          "jungle"
+        ],
+        "palace": "channel",
+        "optional": false,
+        "through": "6"
+      },
+      "battles": [
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 69,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 27,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          }
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "rounds": 7,
+          "damage": 184,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 3,
+            "quickshot": 5,
+            "strike": 2,
+            "heal": 1,
+            "sweep": 2,
+            "field-bandage": 1
+          }
+        },
+        {
+          "id": "palace-channel",
+          "result": "victory",
+          "rounds": 4,
+          "damage": 17,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 3,
+            "quickshot": 2,
+            "daybreak": 1,
+            "pin": 1
+          }
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 25,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          }
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "rounds": 4,
+          "damage": 38,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 2,
+            "sanctuary": 1,
+            "quickshot": 2,
+            "strike": 2
+          }
+        },
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 21,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          }
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 33,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          }
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 60,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 1,
+            "celestialbolt": 3,
+            "crush": 1,
+            "sunline": 2,
+            "daybreak": 1,
+            "strike": 2,
+            "bandage": 1
+          }
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 25,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 5,
+            "taunt": 2,
+            "sunline": 1,
+            "bandage": 1,
+            "strike": 2
+          }
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "rounds": 9,
+          "damage": 192,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "sunline": 2,
+            "celestialbolt": 6,
+            "crush": 1,
+            "daybreak": 1,
+            "burst": 4,
+            "strike": 6,
+            "sweep": 3,
+            "field-bandage": 1,
+            "heal": 1
+          }
+        }
+      ],
+      "damage": 691,
+      "knockouts": 0,
+      "rests": 10,
+      "spent": 26,
+      "spending": {
+        "field-bandage": 18,
+        "bandage": 8
+      },
+      "final": {
+        "xp": 6695,
+        "coins": 3241,
+        "bandages": 2,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "boundary": "chapter-seven:hollow-sun",
+        "improvements": []
+      }
+    },
+    {
+      "name": "uncured",
+      "status": "complete",
+      "reportSha256": "d6d08d929dfcfbc1f3196a097ef7b6d082422b2925cf950dd5086654e4297a83",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": false,
+        "through": "6"
+      },
+      "battles": [
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 85,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "ricochet": 2,
+            "starline": 1,
+            "pin": 1,
+            "heal": 1,
+            "rivet": 1,
+            "celestialbolt": 1
+          }
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 38,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "ricochet": 2,
+            "starline": 2,
+            "quickshot": 1
+          }
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 96,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "ricochet": 2,
+            "sanctuary": 1,
+            "rivet": 1,
+            "starline": 1,
+            "quickshot": 3,
+            "celestialbolt": 2,
+            "steam": 2
+          }
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 24,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          }
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 25,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          }
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "damage": 80,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 4,
+            "quickshot": 4,
+            "strike": 2,
+            "sweep": 1
+          }
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 59,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1,
+            "quickshot": 1
+          }
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 150,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "heal": 1,
+            "field-bandage": 1,
+            "bandage": 2,
+            "ricochet": 1,
+            "quickshot": 1
+          }
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "rounds": 9,
+          "damage": 220,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 5,
+            "pin": 3,
+            "heal": 2,
+            "strike": 3,
+            "quickshot": 4,
+            "field-bandage": 1,
+            "sweep": 3
+          }
+        },
+        {
+          "id": "lightbearer",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 0,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 3,
+            "pin": 2,
+            "strike": 2,
+            "quickshot": 1,
+            "sweep": 1
+          }
+        }
+      ],
+      "damage": 777,
+      "knockouts": 0,
+      "rests": 10,
+      "spent": 52,
+      "spending": {
+        "bandage": 16,
+        "field-bandage": 36
+      },
+      "final": {
+        "xp": 6155,
+        "coins": 2975,
+        "bandages": 3,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "boundary": null,
+        "improvements": []
+      }
+    },
+    {
+      "name": "trained",
+      "status": "complete",
+      "reportSha256": "d3dce4c8e20674b38b2aa154167e7fa36fd5d01a8fe5084a42d9308f939f227e",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "order": [
+          "jungle",
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": true,
+        "through": "6",
+        "improvements": true
+      },
+      "battles": [
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 69,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "river-cache",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 32,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          }
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 34,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 16,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "starline": 2,
+            "burst": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 38,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 1,
+            "steam": 1,
+            "strike": 1,
+            "prism": 1
+          }
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "rounds": 4,
+          "damage": 93,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 2,
+            "burst": 1,
+            "rivet": 2,
+            "heal": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 22,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 1,
+            "crush": 2,
+            "sunline": 1,
+            "sanctuary": 1,
+            "strike": 1
+          }
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 56,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 2,
+            "bandage": 2,
+            "sunline": 1
+          }
+        },
+        {
+          "id": "north-cache",
+          "result": "victory",
+          "rounds": 2,
+          "damage": 39,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "sunline": 1,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "burst": 1
+          }
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "rounds": 5,
+          "damage": 30,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "sunline": 2,
+            "sanctuary": 1,
+            "crush": 2,
+            "celestialbolt": 3,
+            "burst": 2,
+            "sweep": 1,
+            "strike": 3
+          }
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 55,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 1,
+            "starline": 1,
+            "prism": 1,
+            "celestialbolt": 1,
+            "strike": 2
+          }
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 59,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 2,
+            "sunline": 1
+          }
+        },
+        {
+          "id": "capital-hunters",
+          "result": "victory",
+          "rounds": 3,
+          "damage": 53,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 1,
+            "prism": 1,
+            "heal": 1
+          }
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "rounds": 8,
+          "damage": 115,
+          "knockouts": 0,
+          "rebuilds": 0,
+          "abilities": {
+            "prism": 1,
+            "strike": 3,
+            "mend": 1,
+            "celestialbolt": 5,
+            "steam": 3,
+            "burst": 3,
+            "field-bandage": 1,
+            "rivet": 3,
+            "sanctuary": 1
+          }
+        }
+      ],
+      "damage": 711,
+      "knockouts": 0,
+      "rests": 11,
+      "spent": 2152,
+      "spending": {
+        "Confirm · 300 marks": 300,
+        "Confirm · 450 marks": 900,
+        "Confirm · 500 marks": 500,
+        "field-bandage": 36,
+        "bandage": 16,
+        "Confirm · 400 marks": 400
+      },
+      "final": {
+        "xp": 7005,
+        "coins": 1370,
+        "bandages": 3,
+        "fieldBandages": 1,
+        "focusTonics": 1,
+        "boundary": "chapter-seven:hollow-sun",
+        "improvements": [
+          "hp-celia",
+          "focus-celia",
+          "orrin-counterbalance",
+          "kit-footing",
+          "nell-housing"
+        ]
+      }
+    }
+  ],
+  "checkpoints": {
+    "chapter-six-earned.json": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811",
+    "chapter-six-trained-earned.json": "b033651e7f58c61086bd7c7b065510ea1469f9bdfd9b2426ad3f5ef257bb7f2b",
+    "chapter-six-regions-earned.json": "167708e72e7d825720ba89f68864a2fa1a416ff4f4b64066d50223bf116be5b7"
+  },
+  "validation": {
+    "unitTests": 805,
+    "fullRouteTests": 5,
+    "browserTests": 6,
+    "build": "passed",
+    "baselineSourceEquivalentToMain": true
+  },
+  "traceNote": "Raw route traces precede final wording-only edits to the channel warning and crew introductions. Recorded battle results and checkpoint states are unchanged; source hashes describe the final implementation."
+}

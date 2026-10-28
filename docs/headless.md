@@ -378,7 +378,7 @@ All four routes finish without defeats, retries, forced victories or granted res
 - [chapter-six-trained-earned.json](headless/chapter-six-trained-earned.json) is an alternative earned departure with the four permanent purchases, for future economy comparisons.
 - [chapter-six-audit.json](headless/chapter-six-audit.json) records input/source/report hashes, commands, battle metrics, actual abilities used, gear changes, spending and ending resources. Multi-megabyte raw turn traces stay outside the repository.
 
-### Issues to investigate next
+### Findings from the initial audit
 
 1. **Ordinary encounter pressure is uneven.** The default river-cache fight ends in one round without HP loss; the late-cure channel escape loses zero HP, and many other ordinary fights finish in two or three rounds. The default serpent and dragon lose only 36 and 30 HP, but the north-first ill-Nell dragon loses 184. Compare order-equivalent formations and a less predictive controller before changing stats; this agent forecasts actual enemy decisions. Optional cache guards or wave/position layouts may deserve attention before a broad difficulty increase.
 2. **The Emperor is lengthy, and the agent does not deliberately hold the support mountings.** Recovered routes take 10–11 rounds and lose 117–220 HP. In the default run both supports rebuild twice; the support-policy run allows one western rebuild. Occupying a mounting already counters rebuilding. Improve the headless agent's objective handling and compare that result before concluding that the boss itself needs less HP or fewer rebuilds.
@@ -387,3 +387,56 @@ All four routes finish without defeats, retries, forced victories or granted res
 The economy result is more encouraging than the earlier medicine-only audit: the new plan spends **1,600 marks on permanent improvements plus 52 on medicine**, leaving 1,870 for other courses. It still has many unpurchased courses and performs no selling, so its remaining purse is not evidence that the game has nothing useful left to buy. The controller never casts Rallying cry in these routes, so these results also cannot establish that skill's player-facing utility.
 
 Validation: `npm run check` covers the normal rule/content suite, TypeScript and build. The opt-in `tests/headless-six.simulation.ts` covers the complete routes, money conservation, Nell's illness/recovery/death, return checkpoints, real purchases, and split-run equivalence. `tests/headless-six.test.ts` covers reader rejection and explicit checkpoint cancellation/acceptance. Detailed routes remain outside default CI. These headless runs do not test rendering, animation, audio or an earned Chapter Seven playthrough.
+
+## Chapter Six follow-up: encounter pressure, crown mountings and retained specialties
+
+The three findings above are addressed without changing boss stats, enemy variant stats, rewards or prices. The survey locker now has two separated crows and a ground-patrolling hound; one Crossfire can no longer remove the entire encounter. The service channel keeps its shallow middle and guardian, but replaces one hound with a crow and places the remaining hound on the dry flank. Its enemies can apply pressure without all waiting to cross the same slow water. Both introductions describe the actual guards before commitment.
+
+The defensive and cooperative planners now value holding broken imperial support contacts, assigning distinct living heroes to the two mountings. Their attack shortlists preserve useful positions there, and a spent team helper may use its remaining movement to take a mounting. Damage, survival and winning blows still compete with that objective. This changes only the headless agent: players retain full movement control, and the Emperor’s HP, attacks, shield and rebuild rule are unchanged. The legacy policy remains unchanged as a comparison.
+
+### Matched earned inputs
+
+[chapter-six-probe-inputs.json](headless/chapter-six-probe-inputs.json) contains five exact campaign saves captured immediately before these fights under the initial audit’s rules, using the existing earned Chapter Five departure. Capture added observation only. The input’s `dirty` flag records the uncommitted observation/script additions; its rules were still main at `da013c1`. The before checkout is PR #154’s `cb804ca`, whose `src` tree matches that main commit. No canonical levels, fresh supplies or replacement equipment were supplied.
+
+| Fight / policy | Rounds before → after | HP lost before → after | Support rebuilds before → after |
+| --- | ---: | ---: | ---: |
+| Survey locker / defensive | 1 → 2 | 0 → 32 | — |
+| Survey locker / legacy | 1 → 2 | 0 → 32 | — |
+| Service channel / defensive | 3 → 4 | 0 → 17 | — |
+| Service channel / legacy | 4 → 2 | 0 → 16 | — |
+| Emperor, early-cure party / defensive | 11 → 8 | 117 → 108 | 4 → 0 |
+| Emperor, late-cure party / defensive | 10 → 9 | 220 → 192 | 1 → 0 |
+
+All twenty before/after cases win without knockouts. The unchanged gallery control stays at two rounds / 16 HP with both policies. The legacy Emperor results also stay unchanged. Five additional cooperative replays win without knockouts and prevent both Emperor rebuilds; that predictive controller still clears the channel without HP loss. The intent is to give ordinary enemies a useful formation, not to force unavoidable damage for every policy.
+
+Reproduce a matched comparison with the same input file, changing only `--root` to a checkout of the rules/agent being compared. The script lives in the current checkout; the old checkout needs its usual development dependencies but does not need the new script.
+
+```sh
+node scripts/probe-six.mjs --from docs/headless/chapter-six-probe-inputs.json --output /tmp/six-after.json
+node scripts/probe-six.mjs --root /path/to/before-checkout --from docs/headless/chapter-six-probe-inputs.json --output /tmp/six-before.json
+```
+
+Add `--tactics legacy` or `--tactics cooperative` to select a policy. `--capture --from docs/headless/chapter-five-earned.json --output /tmp/new-six-inputs.json` captures new battle saves by playing both complete routes under the selected checkout’s current rules. It requires the `CampaignSession.battleSaves` observation support. Preserve the supplied baseline inputs when testing a new change.
+
+### Continued access and full-route results
+
+**Training → Specialist improvements** retains the earned Hammerplain, Dawnwatch and Windmere services at every travelling training counter through Chapter Seven. The allied crew uses shared fittings and drill notes; the original specialists remain in their communities. Quest/recruitment gates, exact prices, confirmation, cancellation, disabled completed offers and purchase flags are shared with local providers. Ordinary training choices still dim after both generic courses are complete. Nell’s illness and later quest services retain their existing rules.
+
+The opt-in `--improvements` plan now also purchases Orrin’s 500-mark counterbalance from the mooring crew, after Celia’s two courses. It still retains the 80-mark medicine reserve and uses real dialogue confirmations. Together with Kit’s river training and Nell’s housing, this spends **2,100 marks on five permanent improvements**.
+
+| Full route after changes | Fights | HP lost | Knockouts | Useful rests | Marks spent | Final marks |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Early cure / offense / prepared / optional loot | 14 | 643 | 0 | 11 | 70 | 3,452 |
+| Late cure / support / frugal / channel / no optional loot | 11 | 691 | 0 | 10 | 26 | 3,241 |
+| Uncured / offense / prepared / no optional loot | 10 | 777 | 0 | 10 | 52 | 2,975 |
+| Early cure plus five permanent improvements | 14 | 711 | 0 | 11 | 2,152 | 1,370 |
+
+All four routes complete without defeats, retries, grants or forced victories. No Emperor support rebuilds in any route. The default and trained checkpoints remain at 7,005 XP / level 14, late cure at 6,695 XP / level 14, and the uncured ending at 6,155 XP / level 13. Split runs from the jungle and pre-capital mooring still produce the same default final state. The three current earned checkpoint files are refreshed; [the original audit](headless/chapter-six-audit.json) remains historical. [chapter-six-followup-audit.json](headless/chapter-six-followup-audit.json) records source hashes, matched cases, full-route results, purchases and checkpoint hashes.
+
+The trained route takes more damage than the untrained route, especially at the serpent (93 vs 36 HP): extra movement changes the planner’s chosen positions. Purchasing upgrades is therefore not evidence that this controller always uses them better. All runs remain viable; further controller work should compare positions and threats before treating that as a reason to weaken a movement upgrade. These results still do not establish human difficulty, Rally usage or an earned Chapter Seven balance result.
+
+Validation: 805 normal tests, TypeScript and production build; five opt-in Chapter Six tests covering all four routes and checkpoint resumes; six desktop/phone browser tests covering local and travelling purchases, cancellation, illness, equipment effects and reloads. Browser console/page errors and Vite overlays were absent, and the new menus were visually checked at both sizes. Detailed journeys remain outside default CI. To retain raw audit reports while running the same simulation tests once:
+
+```sh
+BT_HEADLESS_SIX_REPORTS=/tmp/bt-six-followups npx vitest run --config scripts/headless.vitest.config.ts tests/headless-six.simulation.ts
+```

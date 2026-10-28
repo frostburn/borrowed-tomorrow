@@ -20,16 +20,20 @@ function supplies(s:CampaignSession,id:string){
  s.visit(id,'Browse medical supplies and trade gear');s.stockUp();s.closeShop();
 }
 /** Opt-in money sinks go through the actual clerk, course selection and confirmation. */
-function improvement(s:CampaignSession,o:SixOptions,id:string,object:string,choice?:string){
+function improvement(s:CampaignSession,o:SixOptions,id:string,object:string,choice?:string,crew=false){
  const i=IMPROVEMENTS.find(i=>i.id===id)!;
  if(!o.improvements||s.agent.spending!=='prepared'||improvementProblem(s.state,i)||s.state.coins-i.cost<80)return;
  s.visit(object,choice);
  if(i.service==='training')s.choose('Train Celia');
+ if(crew)s.choose('Specialist improvements');
  s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);
- if(i.service==='training'){s.choose('Choose another character');s.choose('Leave training');}else s.choose('Leave');
+ if(crew)s.choose('Back to training');
+ if(i.service==='training')s.choose('Choose another character');
+ s.choose(i.service==='training'||crew?'Leave training':'Leave');
 }
 function training(s:CampaignSession,o:SixOptions){
  for(const id of ['hp-celia','focus-celia'])improvement(s,o,id,'six-supplies','Training · permanent improvements');
+ improvement(s,o,'orrin-counterbalance','six-supplies','Training · permanent improvements',true);
 }
 function jungle(s:CampaignSession,o:SixOptions){
  supplies(s,'river-stores');s.visit('river-canopy');

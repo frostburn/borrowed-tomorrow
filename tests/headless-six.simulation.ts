@@ -1,12 +1,19 @@
 import {beforeAll,it,expect} from 'vitest';
-import {readFileSync} from 'node:fs';
+import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {CampaignSession,defaultAgent} from '../src/headless/campaign';
-import {defaultSix,playSix,readSixDeparture} from '../src/headless/six';
+import {defaultSix,playSix,readSixDeparture,type SixOptions} from '../src/headless/six';
 import {decodeSave} from '../src/rules/save';
 import {ENCOUNTERS} from '../src/content/encounters';
 import {improved} from '../src/rules/improvements';
 
 const earned=readSixDeparture(readFileSync('docs/headless/chapter-five-earned.json','utf8'));
+/** Optional audit artifacts reuse these tested journeys instead of running them twice. */
+function record(name:string,s:CampaignSession,options:SixOptions=defaultSix){
+ const dir=process.env.BT_HEADLESS_SIX_REPORTS;if(!dir)return;
+ mkdirSync(dir,{recursive:true});const input='docs/headless/chapter-five-earned.json';
+ writeFileSync(`${dir}/${name}.json`,JSON.stringify({status:'complete',source:{path:input,sha256:createHash('sha256').update(readFileSync(input)).digest('hex')},agent:s.agent,options,state:s.state,checkpoints:s.checkpoints,events:s.events},null,2)+'\n');
+}
 let completed:CampaignSession;
 beforeAll(async()=>{completed=new CampaignSession(earned,defaultAgent);await playSix(completed);},120000);
 
@@ -37,6 +44,8 @@ it('earns all optional loot, recovers Nell before the desert, and reaches Chapte
  const desert=completed.events.findIndex(e=>e.event==='battle'&&e.id==='palace-gallery');
  expect(treatment).toBeGreaterThan(-1);expect(treatment).toBeLessThan(desert);
  expect(completed.events.some(e=>e.event==='equip'&&e.item==='palace-focus')).toBe(true);
+ const cache=completed.events.find(e=>e.event==='battle'&&e.id==='river-cache')!;expect(cache.rounds).toBeGreaterThan(1);
+ record('early-cure',completed);
 });
 it('resumes earned jungle and pre-capital checkpoints without replaying rewards',async()=>{
  for(const name of ['six-jungle','six-regions']){
@@ -50,15 +59,18 @@ it('keeps Nell ill through north and desert, then cures her before the recovered
  await playSix(s,{...defaultSix,order:['north','desert','jungle'],palace:'channel',optional:false});verified(s,11);
  for(const name of ['six-north','six-desert']){expect(s.checkpoints[name].flags.nellRecovered).toBeFalsy();expect(s.checkpoints[name].party.find(p=>p.id==='nell')).toMatchObject({hp:1,focus:0});}
  expect(s.state.flags.palaceWaterRoute).toBe(true);expect(s.state.flags.riverCacheWon).toBeFalsy();expect(s.state.flags.northCacheWon).toBeFalsy();expect(s.state.flags.capitalHuntersWon).toBeFalsy();
+ record('late-cure',s,{...defaultSix,order:['north','desert','jungle'],palace:'channel',optional:false});
 },120000);
 it('reaches the terminal uncured ending without a vision, resurrection or Chapter Seven departure',async()=>{
  const s=new CampaignSession(earned,defaultAgent);await playSix(s,{...defaultSix,order:['desert','north'],optional:false});verified(s,10,false);
  expect(s.state.location.map).toBe('laststation');expect(s.state.activeParty).not.toContain('nell');
+ record('uncured',s,{...defaultSix,order:['desert','north'],optional:false});
 },120000);
 it('buys useful permanent improvements through real clerk confirmations with earned money',async()=>{
  const s=new CampaignSession(earned,defaultAgent);await playSix(s,{...defaultSix,improvements:true});verified(s,14);
- for(const id of ['hp-celia','focus-celia','kit-footing','nell-housing'])expect(improved(s.state,id)).toBe(true);
+ for(const id of ['hp-celia','focus-celia','orrin-counterbalance','kit-footing','nell-housing'])expect(improved(s.state,id)).toBe(true);
  const confirmations=s.events.filter(e=>e.event==='choice'&&String(e.label).startsWith('Confirm ·'));
- expect(confirmations).toHaveLength(4);expect(s.state.coins).toBeGreaterThanOrEqual(80);
+ expect(confirmations).toHaveLength(5);expect(s.state.coins).toBeGreaterThanOrEqual(80);
  expect(s.events.some(e=>e.event==='choice'&&e.label==='Bring Nell and begin the treatment'&&(e.before as {coins:number}).coins===(e.after as {coins:number}).coins)).toBe(true);
+ record('trained',s,{...defaultSix,improvements:true});
 },120000);
