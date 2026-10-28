@@ -88,3 +88,7 @@ The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter T
 Orrin’s [crew-trust thread](orrin-arc.md) pays off Hammerplain at the capital patient hoist: he leaves Hester’s fitters to complete their own repair, sees it support the evacuation, and later hands the gate watch to the porter. The sea trip lets him rest while someone else runs the train.
 
 The party’s [relationships while traveling](party-relationships.md) develop through shared work, disagreements, mutual care and a seaside card game. The optional deck talks adapt to regional progress; existing individual arcs and Nell’s recovery gates remain intact.
+
+## Optional paid improvements
+
+The survey deck offers endurance/focus training through its supply counter. After their local resolutions, Hester offers Orrin a counterbalanced lance, Enna offers Petra a shield-recovery drill, and Sera offers Celia a longer-range focus calibration. Prices and mechanics are in [economy.md](../economy.md). These services do not gate departure or replace free quest rewards.

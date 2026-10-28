@@ -1,3 +1,4 @@
+import {IMPROVEMENTS,improved,improvementProblem,maxFocus} from '../rules/improvements';
 import {CampaignSession} from './campaign';
 import {readReportState} from './middle';
 import {FIFTH_CHAPTER,SIXTH_CHAPTER,maxHp,type GameState} from '../rules/state';
@@ -5,7 +6,7 @@ import {heroAvailable} from '../rules/availability';
 
 export const REGIONS=['hammerplain','dawnwatch','windmere']as const;
 export type Region=typeof REGIONS[number];
-export interface FiveOptions {order:readonly Region[];forge:'lift'|'race';firstGun:'mortar'|'repeater';optional:boolean;through:'regions'|'5'}
+export interface FiveOptions {order:readonly Region[];forge:'lift'|'race';firstGun:'mortar'|'repeater';optional:boolean;through:'regions'|'5';improvements?:boolean}
 export const defaultFive:FiveOptions={order:REGIONS,forge:'lift',firstGun:'mortar',optional:true,through:'5'};
 export function readFiveDeparture(raw:string):GameState{
  const s=readReportState(raw);
@@ -15,8 +16,22 @@ export function readFiveDeparture(raw:string):GameState{
 }
 function supplies(s:CampaignSession,id:string){
  const state=s.state;
- if(state.party.some(u=>heroAvailable(state,u.id)&&(u.hp<maxHp(u.id,state)||u.focus<6)))s.visit(id,'Rest · restore everyone’s HP and focus');
+ if(state.party.some(u=>heroAvailable(state,u.id)&&(u.hp<maxHp(u.id,state)||u.focus<maxFocus(state,u.id))))s.visit(id,'Rest · restore everyone’s HP and focus');
  s.visit(id,'Browse medical supplies and trade gear');s.stockUp();s.closeShop();
+}
+/** Opt-in purchases use the same offers and confirmations as the player. */
+function localImprovement(s:CampaignSession,o:FiveOptions,id:string,object:string){
+ const i=IMPROVEMENTS.find(i=>i.id===id)!;
+ if(!o.improvements||s.agent.spending!=='prepared'||improvementProblem(s.state,i)||s.state.coins-i.cost<80)return;
+ s.visit(object);s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);s.choose('Leave');
+}
+function training(s:CampaignSession,o:FiveOptions){
+ if(!o.improvements||s.agent.spending!=='prepared'||!improved(s.state,'orrin-counterbalance'))return;
+ for(const id of ['hp-celia','focus-celia']){
+  const i=IMPROVEMENTS.find(i=>i.id===id)!;
+  if(improvementProblem(s.state,i)||s.state.coins-i.cost<80)continue;
+  s.visit('ship-supply','Training · permanent improvements');s.choose('Train Celia');s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);s.choose('Choose another character');s.choose('Leave training');
+ }
 }
 function hammerplain(s:CampaignSession,o:FiveOptions){
  if(o.optional){s.visit('hammer-coat','Open the safety store · fight its guards');s.prepare();}
@@ -25,7 +40,7 @@ function hammerplain(s:CampaignSession,o:FiveOptions){
  s.visit('cooling-wheel');s.visit('cooling-forge');supplies(s,'forge-supply');
  s.visit('forge-carrier','Hold off the furnace carrier');s.prepare();
  if(!s.state.flags.hammerplainFreed)throw Error('Furnace victory did not release the anchor');
- s.visit('forge-cooling');s.visit('cooling-return');s.visit('hammer-ship');
+ s.visit('forge-cooling');s.visit('cooling-return');localImprovement(s,o,'orrin-counterbalance','hammer-hester-after');s.visit('hammer-ship');
 }
 function dawnwatch(s:CampaignSession,o:FiveOptions){
  s.visit('dawn-gate');supplies(s,'dawn-supply');s.visit('dawn-barracks');
@@ -57,7 +72,7 @@ export function playFive(s:CampaignSession,o:FiveOptions=defaultFive){
  for(const region of o.order){
   if(s.state.flags[`${region}Complete`])continue;
   s.formation(region==='hammerplain'?['nell','orrin',s.agent.build==='support'?'celia':'petra']:region==='dawnwatch'?['nell',s.agent.build==='support'?'celia':'kit','petra']:s.agent.build==='support'?['nell','celia','petra']:['nell','orrin','celia']);
-  s.prepare();supplies(s,'ship-supply');
+  s.prepare();supplies(s,'ship-supply');training(s,o);
   s.visit('ship-chart',region==='hammerplain'?'Hammerplain · casting works':region==='dawnwatch'?'Dawnwatch · the lower town':'Windmere · the lakeside hospital');
   ({hammerplain,dawnwatch,windmere})[region](s,o);
   if(!s.state.flags[`${region}Complete`])throw Error(`${region} incomplete`);
@@ -67,11 +82,15 @@ export function playFive(s:CampaignSession,o:FiveOptions=defaultFive){
  // A ship save may have all three anchors done with the cabin still unvisited.
  if(!s.state.flags.emperorOfferTold)s.visit('ship-cabin');
  if(!s.state.flags.allAnchorsSeen||!s.state.flags.emperorOfferTold)throw Error('Missing alliance or Emperor offer');
+ if(o.improvements&&s.agent.spending==='prepared'&&!improved(s.state,'orrin-counterbalance')&&s.state.coins>=580){
+  s.visit('ship-chart','Revisit Hammerplain · anchor disconnected');localImprovement(s,o,'orrin-counterbalance','hammer-hester-after');s.visit('hammer-ship');
+ }
+ training(s,o);
  s.checkpoint('five-regions');if(o.through==='regions')return;
- s.formation(s.agent.build==='support'?['nell','celia','petra']:['nell','orrin','celia']);s.prepare();supplies(s,'ship-supply');
+ s.formation(s.agent.build==='support'?['nell','celia','petra']:['nell','orrin','celia']);s.prepare();supplies(s,'ship-supply');training(s,o);
  s.visit('ship-chart','Capital approach · Alban’s flagship');s.choose(s.state.flags.flagshipApproachSeen?'Face Alban’s flagship':'Enter the capital crossing');s.prepare();
  if(!s.state.flags.nellIll||!s.state.flags.albanDestroyed||s.state.activeParty.includes('nell'))throw Error('Missing divine intervention');
  supplies(s,'ship-supply');s.visit('ship-herald','Defend the survey ship');s.prepare();
  if(!s.state.flags.chapterFiveComplete||!s.state.flags.retaliationWon||s.state.boundary!==SIXTH_CHAPTER)throw Error('Chapter Five incomplete');
- s.checkpoint('chapter-five');
+ training(s,o);s.checkpoint('chapter-five');
 }

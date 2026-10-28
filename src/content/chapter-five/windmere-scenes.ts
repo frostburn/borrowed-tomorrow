@@ -94,6 +94,7 @@ export const night=()=>scene('windmere','five-wind-night','The first night shift
  line('Sera','Move your book. There’s room for both of us.'),
  line('The canopy','Celia closes the book and takes her bowl. Sera stays beside her.'),
  line('The morning handover','The book lies open beside Iven’s ledger. Celia reads the missing words to the ward staff; Sera shows them the village entries.'),
+ line('Sera','Come back to the ward before you leave. I can calibrate your focus over the longer beds for four-fifty.'),
  line('Celia','Sera’s sending a medical crew and copies of the release sequence. We’ve tested it with people still on support.'),
  line('Kit','I’ll send Dena their supply list. Tomas can keep the railway copies at his desk.'),
  line('Sera','Take my spare focus, Celia. You’ll need a steady lens up there. It’s in your bag.'),

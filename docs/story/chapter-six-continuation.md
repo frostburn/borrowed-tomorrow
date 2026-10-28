@@ -134,3 +134,7 @@ The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter T
 Orrin’s [crew-trust thread](orrin-arc.md) pays off Hammerplain at the capital patient hoist: he leaves Hester’s fitters to complete their own repair, sees it support the evacuation, and later hands the gate watch to the porter. The sea trip lets him rest while someone else runs the train.
 
 The party’s [relationships while traveling](party-relationships.md) develop through shared work, disagreements, mutual care and a seaside card game. The optional deck talks adapt to regional progress; existing individual arcs and Nell’s recovery gates remain intact.
+
+## Optional paid improvements
+
+After treatment and `riverRestSeen`, Tavi offers Kit river-courier footing training in Iria; the desert's completion/order is irrelevant. Nell's cure and personal scenes remain free. Once the capital opens, recovered Nell can buy reinforced lantern housing from Orrin at the allied quay or palace preparation rests. Ill/deceased Nell cannot train. Airship training continues through the outer mooring and allied quay; see [economy.md](../economy.md).

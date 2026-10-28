@@ -1,3 +1,4 @@
+import {focusCapacity} from '../rules/improvements';
 import './testing-tools.css';
 import type { Battle } from '../rules/combat';
 import type { UI } from '../game/ui';
@@ -34,7 +35,7 @@ export function renderTestingTools(ui: UI, target: HTMLElement, host: BattleTool
       b.result = 'defeat'; b.log.push('Development tools: battle lost.');
     }) },
     { label: 'Refill party', disabled, action: () => run(b => {
-      for (const unit of b.units) if (unit.side === 'party') { unit.hp = unit.maxHp; unit.focus = 6; }
+      for (const unit of b.units) if (unit.side === 'party') { unit.hp = unit.maxHp; unit.focus = focusCapacity(unit); }
       b.log.push('Development tools: party HP and focus refilled.');
     }) },
     { label: 'Restart battle', disabled: disabled || !host.initial(), action: () => {

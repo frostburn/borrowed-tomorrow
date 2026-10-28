@@ -1,3 +1,4 @@
+import {trainingChoice} from '../improvements';
 import type {StoryHost} from '../story-host';
 import type {Dialogue} from '../dialogue';
 import {SAY} from '../dialogue';
@@ -50,6 +51,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
   {label:'Buy a bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
+   ...(['hollowsill','lastrefuge'].includes(s.location.map)?[trainingChoice(h)]:[]),
   {label:'Keep moving',action:()=>{}},
  ]});
  switch(id){

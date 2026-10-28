@@ -1,3 +1,4 @@
+import {offerImprovements} from '../../improvements';
 import type { StoryHost } from '../../story-host';
 import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
@@ -35,12 +36,13 @@ export function interactJungle(h:StoryHost,id:string):boolean{
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
+   ...(f.riverRestSeen?[{label:'River courier training · Kit · 450 marks',action:()=>offerImprovements(h,'iria')}]:[]),
    {label:'Keep going',action:()=>{}},
   ]});return true;
  }
  switch(id){
   case 'river-ines':say('Ines',f.nellRecovered?'Leave Celia’s notes on my table. I’ll put them with the treatment record before Tavi takes the next post.':'The equipment is packed. Open the boat chain first, then check the rain house landing. We’ll keep Nell on your ship until the passage is safe.');break;
-  case 'river-tavi':say('Tavi',f.nellRecovered?'We’re taking the regular patients upriver again. There’s always room for you on the launch.':f.riverChainOpen?'Ines is preparing the treatment boat. Check the upper landing before we bring Nell.':'The chain is on the middle bridge. The eastern path gets us to its capstan.');break;
+  case 'river-tavi':if(f.riverRestSeen){offerImprovements(h,'iria');return true;}say('Tavi',f.nellRecovered?'We’re taking the regular patients upriver again. There’s always room for you on the launch.':f.riverChainOpen?'Ines is preparing the treatment boat. Check the upper landing before we bring Nell.':'The chain is on the middle bridge. The eastern path gets us to its capstan.');break;
   case 'river-notice':say('Kit','The baskets have destinations tied to them. Ines has put our ship on her list beside the regular calls.');break;
   case 'river-canopy':go(h,'canopy');break;
   case 'river-ship':go(h,'outermooring','namar');break;

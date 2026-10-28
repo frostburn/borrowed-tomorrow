@@ -64,7 +64,7 @@ export function presetSkills(hero:CompanionId,level:number,priority:readonly Ski
  return ranks;
 }
 export const skillAbilities=(hero:CompanionId,ranks:SkillRanks):AbilityId[]=>['strike',...SKILLS[hero].filter(s=>s.levels[0]===1&&(ranks[s.id]??0)>0).map(s=>s.id),'bandage',...SKILLS[hero].filter(s=>s.levels[0]!==1&&(ranks[s.id]??0)>0).map(s=>s.id),...Object.values(ABILITIES).filter(a=>{const solo=teamSolo(hero,a.id);return solo&&(ranks[solo as SkillId]??0)>0;}).map(a=>a.id)];
-export function abilityFor(u:{kind:string;skills?:SkillRanks},id:AbilityId,partner?:{kind:string;skills?:SkillRanks}):Ability{
+export function abilityFor(u:{kind:string;skills?:SkillRanks;improvements?:{heal?:boolean;bash?:boolean}},id:AbilityId,partner?:{kind:string;skills?:SkillRanks;improvements?:{heal?:boolean;bash?:boolean}}):Ability{
  if(ABILITIES[id].team){
   const solo=teamSolo(u.kind,id),other=partner&&teamSolo(partner.kind,id),a=ABILITIES[id];
   const shot=id==='crossfire'?(u.kind==='kit'?abilityFor(u,'ricochet'):partner?.kind==='kit'?abilityFor(partner,'ricochet'):undefined):undefined;
@@ -75,7 +75,10 @@ export function abilityFor(u:{kind:string;skills?:SkillRanks},id:AbilityId,partn
  }
  const s=u.skills&&SKILLS[u.kind as CompanionId]?.find(s=>s.id===id);if(!s)return ABILITIES[id];
  const rank=u.skills![s.id]??0;
- return {...ABILITIES[id],...s.ranks[Math.max(0,rank-1)],rank};
+ const a={...ABILITIES[id],...s.ranks[Math.max(0,rank-1)],rank};
+ if(id==='heal'&&u.improvements?.heal){a.range++;a.description=a.description.replace(/Range \d+\./,`Range ${a.range}.`)+` Calibrated focus: range ${a.range}.`;}
+ if(id==='bash'&&u.improvements?.bash)a.description+=' Recovery drill: grants 4 Guard without stacking.';
+ return a;
 }
 export function decodeSkillRanks(raw:unknown,hero:CompanionId,level:number):SkillRanks{
  if(!raw||typeof raw!=='object'||Array.isArray(raw)||Object.keys(raw).length!==SKILLS[hero].length)throw new Error('Invalid character skills.');
