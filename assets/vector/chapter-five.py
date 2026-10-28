@@ -3,14 +3,16 @@ No bitmap inputs or resampling. Navigation, markers and scene casts share 24px c
 """
 import json, math, re
 from pathlib import Path
-from map_metadata import retain_interaction_roles
+from map_metadata import retain_interaction_roles,preserve_map_format
 from anchor_engines import carrier
+from gangway import gangway
 from chapter_five_style import OUTLINES,FIXTURES,cells as polygon_cells,floor_shapes,treatment,work_lamp,arena_fixtures,mechanisms,spill_layer
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-five'; MAP=ROOT/'src/content/chapter-five/maps'
 ART.mkdir(parents=True,exist_ok=True);MAP.mkdir(parents=True,exist_ok=True)
 manifest={}
+preserve_map_format(MAP)
 def rect(x,y,w,h,c):return f'<path d="M{x:g} {y:g}h{w:g}v{h:g}h{-w:g}Z" fill="{c}"/>'
 def poly(pts,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}' for x,y in pts)+f'" fill="{c}"/>'
 def line(pts,c,w=3):return '<polyline points="'+' '.join(f'{x:g},{y:g}' for x,y in pts)+f'" fill="none" stroke="{c}" stroke-width="{w}"/>'
@@ -49,13 +51,7 @@ def docked_ship():
  # Same survey hull as the airfield, moored beside the western landing.
  return ['<g transform="translate(6 4) scale(.45)">',*ship(),'</g>',line([(78,158),(90,198)],'#bca574',3),line([(272,150),(302,197)],'#bca574',3),rect(79,198,23,7,'#253f4b'),rect(291,197,24,7,'#253f4b'),line([(81,198),(101,198)],'#d1b884',3),line([(293,197),(313,197)],'#d1b884',3)]
 def dock_gangway():
- out=[poly([(0,38),(18,26),(160,88),(142,102)],'#b59b6c'),poly([(0,38),(142,102),(142,108),(0,44)],'#3a555c')]
- for i in range(1,8):
-  t=i/8;out.append(line([(142*t,38+64*t),(18+142*t,26+62*t)],'#675f4d',2))
- for x,y,xx,yy in [(0,38,142,102),(18,26,160,88)]:
-  out.append(line([(x,y-22),(xx,yy-22)],'#d0b982',3))
-  for t in (0,.5,1):out.append(line([(x+(xx-x)*t,y+(yy-y)*t-22),(x+(xx-x)*t,y+(yy-y)*t)],'#526b6b',3))
- return out
+ return gangway((14,34),(148,96),width=24)
 def rest_bench():
  return [rect(0,0,157,59,'#324c55'),rect(5,5,147,7,'#81958a'),rect(15,24,101,26,'#947c57'),rect(11,48,113,11,'#bc9d6d'),poly([(11,59),(124,59),(124,65),(11,65)],'#5f5948'),rect(20,59,7,20,'#304a53'),rect(108,59,7,20,'#304a53'),rect(119,42,42,28,'#617c75'),rect(125,47,28,5,'#d5c8a1'),rect(136,41,6,20,'#d5c8a1'),ellipse(142,27,12,8,'#aec4b2'),rect(130,17,24,12,'#789b93'),ellipse(142,17,12,6,'#bdd0ba'),rect(137,8,10,6,'#3b5961')]
 
@@ -109,7 +105,7 @@ def world(id,name,subtitle,outline,blocks,objects,arrivals,casts,people,decor,ba
  if id in ('dawnwatch','windmere'):
   blocks=blocks+[(0,24,14,6),(3,30,9,1)]
   decor=decor+[(id+'-survey-mooring',docked_ship(),342,208,0,574,-997,{}),
-   (id+'-boarding-plank',[poly([(141,780),(157,791),(242,739),(224,729)],'#ae9870'),line([(149,783),(234,732)],'#d1bc89',3)]+[line([(150+i*10,775-i*6),(160+i*10,784-i*6)],'#766b54',2)for i in range(8)],250,800,0,0,-996,{})]
+   (id+'-boarding-plank',gangway((170,714),(230,790)),250,810,0,0,-996,{})]
   # Board from the gangway, leaving the infirmary's approach outside its hit area.
   for o in objects:
    if o['name']in ('dawn-ship','wind-ship'):
@@ -134,7 +130,8 @@ def world(id,name,subtitle,outline,blocks,objects,arrivals,casts,people,decor,ba
  # cached; the command deck's individual pieces must still fade in the strike.
  if id=='airfield':
   lid=len(layers)+1;layers.append(group(lid,'Survey launch motion',live=True))
-  next(e for e in entries if e['key']=='scene-five-survey-ship')['layerId']=lid
+  for e in entries:
+   if e['key'] in ('scene-five-survey-ship','scene-five-airfield-gangway'):e['layerId']=lid
  if id=='flagship':
   for l in layers:l.setdefault('properties',[]).extend(prop(live=True))
  for lid in sorted({e['layerId']for e in entries}):
@@ -149,7 +146,7 @@ world('airfield','Western airfield','The survey crew is loading beside the north
  obj('airfield-supply',10,27,'Crew supplies · rest and bandages',sign=True),obj('airfield-seizure',35,26,'The mooring · imperial seizure party',sprite='inspector',spriteHiddenFlag='airfieldGuardWon',doneFlag='airfieldGuardWon'),control('airfield-board',32,23,(25,16,15,8),'Survey ship · boarding gangway',sign=True,markerFlags='airfieldGuardWon'),obj('airfield-alda',29,26,'Alda · survey captain',sprite='alda')],
  {'start':(24,30),'ship':(31,25),'cabin':(32,19)}, {'five-airfield':air_cast,'five-launch':{**air_cast,'alda':(31,22),'durn':(55,29)}},
  [point('rigging-hand',42,25,sprite='civilian-dockhand'),point('loading-hand',16,26,sprite='civilian-dockhand-rust'),point('crew-passenger',19,30,sprite='civilian-traveler-blue')],
- [('airfield-stores',[poly([(0,18),(30,0),(73,0),(96,18),(96,75),(0,75)],'#a78d62'),poly([(0,18),(96,18),(96,75),(0,75)],'#776b53'),rect(9,27,78,6,'#c5ad7a'),rect(9,58,78,6,'#c5ad7a'),rect(44,19,8,56,'#c5ad7a')],100,80,210,590,670,{}),('survey-ship',ship(),744,384,400,126,-997,{}),('hangar',factory(),600,270,56,292,540,{}),('mooring-crane',crane(),312,330,1090,330,660,{}),('airfield-cargo',supply_cargo(),200,140,1140,636,776,{})])
+ [('airfield-stores',[poly([(0,18),(30,0),(73,0),(96,18),(96,75),(0,75)],'#a78d62'),poly([(0,18),(96,18),(96,75),(0,75)],'#776b53'),rect(9,27,78,6,'#c5ad7a'),rect(9,58,78,6,'#c5ad7a'),rect(44,19,8,56,'#c5ad7a')],100,80,210,590,670,{}),('survey-ship',ship(),744,384,400,126,-997,{}),('airfield-gangway',gangway((777,466),(801,566)),1536,1008,0,0,-996,{}),('hangar',factory(),600,270,56,292,540,{}),('mooring-crane',crane(),312,330,1090,330,660,{}),('airfield-cargo',supply_cargo(),200,140,1140,636,776,{})])
 
 # Optional conversations use their own casts; reserves join without changing formation.
 ship_companions={

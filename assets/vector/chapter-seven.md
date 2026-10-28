@@ -26,3 +26,5 @@ npm run check:art-upload
 A second export must be identical. Review all eighteen entries with Maps → Chapter 7, including the god's visibility flags. Detailed Playwright checks cover fractional-DPR desktop/phone actor pixels and movement, the complete route/ending, retreat between forms, parked-cursor withdrawal and skip/reload behavior. They remain outside the small default browser gate. No production dependencies, raster inputs or changed save format are needed. Keep generated SVGs below 128 KiB and QA screenshots outside the repository.
 
 Review corrections: the crossing’s western opal stands clear of both Alda positions. The original hospice engine uses the full 256 × 240 shared ward model and a matching clickable control area, hidden at victory. Camps sort at their actual lowest canvas hem (114px), so the porter at the refuge’s front corner draws in front of the tent.
+
+The crossing ship uses the shared `gangway.py` deck-to-shore geometry. Shelter cargo is a separate ground-sorted chest fully inside the platform, not part of the tent silhouette beyond the cliff edge.

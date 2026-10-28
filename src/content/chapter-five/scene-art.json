@@ -41,6 +41,16 @@
       "layerId": 9
     },
     {
+      "key": "scene-five-airfield-gangway",
+      "url": "art/vector/chapter-five/airfield-gangway.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -996,
+      "layerId": 9
+    },
+    {
       "key": "scene-five-hangar",
       "url": "art/vector/chapter-five/hangar.svg",
       "x": 56,
@@ -736,7 +746,7 @@
       "x": 0,
       "y": 0,
       "width": 250,
-      "height": 800,
+      "height": 810,
       "depth": -996,
       "layerId": 2
     },
@@ -1194,7 +1204,7 @@
       "x": 0,
       "y": 0,
       "width": 250,
-      "height": 800,
+      "height": 810,
       "depth": -996,
       "layerId": 2
     },
@@ -1527,10 +1537,10 @@
     {
       "key": "scene-five-flagship-gangway",
       "url": "art/vector/chapter-five/flagship-gangway.svg",
-      "x": 123,
-      "y": 737,
-      "width": 232,
-      "height": 90,
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 820,
       "depth": -996,
       "layerId": 2
     },

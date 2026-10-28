@@ -61,6 +61,16 @@
       "layerId": 7
     },
     {
+      "key": "scene-seven-hollowsill-chest",
+      "url": "art/vector/chapter-seven/hollowsill-chest.svg",
+      "x": 996,
+      "y": 802,
+      "width": 60,
+      "height": 48,
+      "depth": 850,
+      "layerId": 8
+    },
+    {
       "key": "scene-seven-hollowsill-light-0",
       "url": "art/vector/chapter-seven/hollowsill-light-0.svg",
       "x": 543,
@@ -68,7 +78,7 @@
       "width": 48,
       "height": 148,
       "depth": 822,
-      "layerId": 8
+      "layerId": 9
     },
     {
       "key": "scene-seven-hollowsill-light-0-spill",
@@ -78,7 +88,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 9
+      "layerId": 10
     },
     {
       "key": "scene-seven-hollowsill-light-1",
@@ -88,7 +98,7 @@
       "width": 48,
       "height": 148,
       "depth": 780,
-      "layerId": 10
+      "layerId": 11
     },
     {
       "key": "scene-seven-hollowsill-light-1-spill",
@@ -98,7 +108,7 @@
       "width": 1536,
       "height": 1008,
       "depth": -997,
-      "layerId": 11
+      "layerId": 12
     }
   ],
   "takenwater": [

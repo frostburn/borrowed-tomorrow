@@ -2,6 +2,8 @@
 import runpy,json,re,copy
 from pathlib import Path
 from chapter_six_style import lean
+from map_metadata import preserve_map_format
+preserve_map_format(Path(__file__).resolve().parents[2]/'src/content/chapter-six/maps')
 b=runpy.run_path(str(Path(__file__).with_name('chapter-six-north.py')))
 ROOT=b['ROOT'];world=b['world'];manifest=b['manifest'];rect=b['rect'];poly=b['poly'];line=b['line'];ellipse=b['ellipse'];obj=b['obj'];point=b['point'];control=b['control'];bench=b['bench'];chest=b['chest'];ART=ROOT/'public/art/vector/chapter-six'
 INK='#243943';BLUE='#819aa8';SHADOW='#536f80';WHITE='#e9e6d8';GOLD='#c89b53';TEAL='#527c72';DUSK='#876e76'

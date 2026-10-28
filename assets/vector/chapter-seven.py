@@ -4,10 +4,12 @@ Run: python3 assets/vector/chapter-seven.py. Editable source art remains SVG.
 import json,re,math,copy
 from pathlib import Path
 from xml.sax.saxutils import escape
-from map_metadata import retain_interaction_roles
+from map_metadata import retain_interaction_roles,preserve_map_format
+from gangway import gangway
 from chapter_seven_style import OUTLINES,ARENA,GOD_GROUND,FIXTURES,LIGHTS,cells,floor_art,lean,fixture,spill_art,arena
 ROOT=Path(__file__).resolve().parents[2];ART=ROOT/'public/art/vector/chapter-seven';MAP=ROOT/'src/content/chapter-seven/maps'
 ART.mkdir(parents=True,exist_ok=True);MAP.mkdir(parents=True,exist_ok=True);manifest={}
+preserve_map_format(MAP)
 INK='#172c3b';BLUE='#466578';PALE='#d7dbce';GOLD='#c5a36b';TEAL='#5a9692';RUST='#966450'
 def rect(x,y,w,h,c):return f'<path d="M{x} {y}h{w}v{h}h{-w}Z" fill="{c}"/>'
 def poly(p,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in p)+f'" fill="{c}"/>'
@@ -86,15 +88,16 @@ def cot(name,x,y):
  # Four posts support the same mattress corners; no detached upright panel.
  body=[poly([(8,55),(17,58),(17,89),(8,86)],'#68817d'),poly([(105,45),(113,44),(113,78),(105,81)],'#68817d'),poly([(28,67),(37,66),(37,92),(28,94)],'#78908a'),poly([(120,55),(128,52),(128,80),(120,85)],'#78908a'),poly([(3,42),(104,28),(130,51),(30,70)],'#aaa88a'),poly([(3,42),(30,70),(30,78),(3,51)],'#708782'),poly([(30,70),(130,51),(130,60),(30,78)],'#82988b'),poly([(7,39),(102,25),(124,49),(31,66)],'#d3d6bd'),poly([(9,39),(33,35),(53,56),(31,62)],'#ebe4c8'),poly([(49,33),(100,27),(124,49),(66,60)],'#7a9b8b'),poly([(66,60),(124,49),(124,56),(67,66)],'#587d77')]
  return (name,body,132,96,x,y,y+96,{})
-def camp(name,x,y):
- body=[poly([(0,82),(63,0),(177,17),(220,101),(132,114)],'#bca584'),poly([(63,0),(132,114),(220,101),(177,17)],'#7b8c88'),poly([(63,9),(15,81),(115,106)],'#d6c8a2'),poly([(63,35),(44,88),(98,100)],INK),line([(0,82),(-20,110)],GOLD,3),rect(233,83,45,25,RUST),poly([(233,83),(246,70),(274,74),(278,83)],GOLD)]
+def camp(name,x,y,cargo=True):
+ body=[poly([(0,82),(63,0),(177,17),(220,101),(132,114)],'#bca584'),poly([(63,0),(132,114),(220,101),(177,17)],'#7b8c88'),poly([(63,9),(15,81),(115,106)],'#d6c8a2'),poly([(63,35),(44,88),(98,100)],INK),line([(0,82),(-20,110)],GOLD,3)]
+ if cargo:body += [rect(233,83,45,25,RUST),poly([(233,83),(246,70),(274,74),(278,83)],GOLD)]
  return (name,body,288,120,x,y,y+114,{})
 # A threshold with the familiar airship hull hanging over an impossible sea.
 f=[(16,26,32,11),(28,18,9,9)]
 back=sky()+sun(768,178,92)
 ship=(ROOT/'public/art/vector/chapter-five/survey-ship.svg').read_text().split('>',1)[1].rsplit('</svg>',1)[0]
-ship=['<g transform="translate(56 350) scale(.66)">',ship,'</g>',poly([(497,583),(532,591),(462,666),(430,655)],'#a29d7b'),line([(503,587),(444,650)],'#cec5a0',4),line([(528,590),(460,660)],'#b7b795',4)]
-write_map('hollowsill','Beyond the hollow sun · the crossing','The survey ship holds the mortal end. A path runs beneath the suspended sea.',f,[supplies('sill'),obj('sill-alda',20,29,'Alda · the mooring line',kind='talk',sprite='alda'),obj('sill-cross',32,19,'The suspended pier',kind='exit',accessFlag='domainEntered',sign=True)],casts('seven-crossing',extra={'alda':(24,29)}),[],back,floor_art('hollowsill'),[('survey-ship',ship,1536,1008,0,0,-998.3,{}),body_prop('distant-god',650,370,.65,{'hiddenFlag':'domainEntered'}),camp('crossing-shelter',923,665)])
+ship=['<g transform="translate(56 350) scale(.66)">',ship,'</g>',*gangway((369,565),(456,662))]
+write_map('hollowsill','Beyond the hollow sun · the crossing','The survey ship holds the mortal end. A path runs beneath the suspended sea.',f,[supplies('sill'),obj('sill-alda',20,29,'Alda · the mooring line',kind='talk',sprite='alda'),obj('sill-cross',32,19,'The suspended pier',kind='exit',accessFlag='domainEntered',sign=True)],casts('seven-crossing',extra={'alda':(24,29)}),[],back,floor_art('hollowsill'),[('survey-ship',ship,1536,1008,0,0,-998.3,{}),body_prop('distant-god',650,370,.65,{'hiddenFlag':'domainEntered'}),camp('crossing-shelter',923,665,cargo=False),chest(996,802)])
 f=[(14,27,36,10),(26,18,13,10),(9,33,6,3)]
 back=sky()+[poly([(230,393),(1190,365),(1298,490),(155,513)],'#405c68')]+arch(634,280,260,250)
 ground=floor_art('takenwater')

@@ -359,7 +359,7 @@
       "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
-  "nextlayerid": 16,
+  "nextlayerid": 17,
   "nextobjectid": 12,
   "properties": [
     {
@@ -607,7 +607,7 @@
     {
       "id": 8,
       "type": "objectgroup",
-      "name": "light-0",
+      "name": "chest",
       "visible": true,
       "objects": [],
       "properties": []
@@ -615,7 +615,7 @@
     {
       "id": 9,
       "type": "objectgroup",
-      "name": "light-0-spill",
+      "name": "light-0",
       "visible": true,
       "objects": [],
       "properties": []
@@ -623,7 +623,7 @@
     {
       "id": 10,
       "type": "objectgroup",
-      "name": "light-1",
+      "name": "light-0-spill",
       "visible": true,
       "objects": [],
       "properties": []
@@ -631,13 +631,21 @@
     {
       "id": 11,
       "type": "objectgroup",
-      "name": "light-1-spill",
+      "name": "light-1",
       "visible": true,
       "objects": [],
       "properties": []
     },
     {
       "id": 12,
+      "type": "objectgroup",
+      "name": "light-1-spill",
+      "visible": true,
+      "objects": [],
+      "properties": []
+    },
+    {
+      "id": 13,
       "type": "objectgroup",
       "name": "Interactions",
       "visible": true,
@@ -648,27 +656,27 @@
           "x": 444,
           "y": 804,
           "properties": [
-  {
-    "name": "label",
-    "type": "string",
-    "value": "Shelter · rest and field supplies"
-  },
-  {
-    "name": "kind",
-    "type": "string",
-    "value": "optional"
-  },
-  {
-    "name": "rest",
-    "type": "bool",
-    "value": true
-  },
-  {
-    "name": "sprite",
-    "type": "string",
-    "value": "supply-clerk"
-  }
-],
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Shelter \u00b7 rest and field supplies"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
+            },
+            {
+              "name": "rest",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "supply-clerk"
+            }
+          ],
           "id": 1
         },
         {
@@ -728,7 +736,7 @@
       "properties": []
     },
     {
-      "id": 13,
+      "id": 14,
       "type": "objectgroup",
       "name": "Arrivals",
       "visible": true,
@@ -753,7 +761,7 @@
       "properties": []
     },
     {
-      "id": 14,
+      "id": 15,
       "type": "objectgroup",
       "name": "People",
       "visible": true,
@@ -761,7 +769,7 @@
       "properties": []
     },
     {
-      "id": 15,
+      "id": 16,
       "type": "objectgroup",
       "name": "Scene:seven-crossing",
       "visible": true,

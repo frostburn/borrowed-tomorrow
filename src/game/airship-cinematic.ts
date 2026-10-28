@@ -10,9 +10,13 @@ export class AirshipCinematic {
  private entry:{x:number;y:number};
  private started?:number;
  private closed=false;
+ private ramp?:Phaser.GameObjects.Image;
+ private rampAlpha=1;
  private reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,actors:ReadonlyMap<string,Phaser.GameObjects.Image>,private motion:ActorAnimator){
   const ship=world.list.find(o=>o instanceof Phaser.GameObjects.Image&&o.texture.key==='scene-five-survey-ship') as Phaser.GameObjects.Image|undefined;
+  this.ramp=world.list.find(o=>o instanceof Phaser.GameObjects.Image&&o.texture.key==='scene-five-airfield-gangway') as Phaser.GameObjects.Image|undefined;
+  this.rampAlpha=this.ramp?.alpha??1;
   this.cast=['nell','orrin','kit','petra','celia','alda'].map(id=>actors.get(id)).filter((a):a is Phaser.GameObjects.Image=>!!a);
   const cabin=arrival('airfield','cabin');this.entry={x:(cabin.x+.5)*24,y:(cabin.y+.5)*24+7};
   this.targets=[...(ship?[ship]:[]),...this.cast].map(image=>({image,x:image.x,y:image.y,alpha:image.alpha}));
@@ -35,6 +39,7 @@ export class AirshipCinematic {
  get animating(){return !this.closed&&this.started!==undefined&&!this.reduced&&this.scene.time.now<this.started+1800;}
  play(){
   if(this.started!==undefined)return;
+  this.ramp?.setAlpha(0);
   // Fast advance finishes boarding before departure. Passengers are inside
   // the closed cabin, rather than standing in an overlapping pile on its hull.
   for(const image of this.cast){this.scene.tweens.killTweensOf(image);this.motion.stop(image);image.setPosition(this.entry.x,this.entry.y).setAlpha(0);image.setData('destination',undefined);}
@@ -43,6 +48,7 @@ export class AirshipCinematic {
  }
  close(){
   if(this.closed)return;this.closed=true;this.scene.events.off(Phaser.Scenes.Events.UPDATE,this.update);
+  if(this.ramp?.active)this.ramp.setAlpha(this.rampAlpha);
   for(const {image,x,y,alpha}of this.targets)if(image.active){this.scene.tweens.killTweensOf(image);image.setPosition(x,y).setAlpha(alpha);}
  }
 }
