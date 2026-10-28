@@ -13,22 +13,34 @@ interface FrameSurface { pixels:ImageData; shadow:HTMLCanvasElement }
 export class WorldLighting {
   private rig?:WorldLight;
   private ground?:Path2D;
-  private actors=new Set<LitActor>();
+  private actors=new Set<Phaser.GameObjects.Image>();
+  private sample?:()=>WorldLight;
+  private floorLight=false;
   private frames=new WeakMap<Phaser.Textures.Frame,FrameSurface>();
   constructor(private scene:Phaser.Scene){}
-  clear(){this.rig=undefined;this.ground=undefined;this.actors.clear();this.frames=new WeakMap();}
+  current(){return this.sample?.()??this.rig;}
+  clear(){this.sample=undefined;this.floorLight=false;this.rig=undefined;this.ground=undefined;this.actors.clear();this.frames=new WeakMap();}
   attach(world:Phaser.GameObjects.Container,map:TileMap|undefined,state:Pick<GameState,'flags'>,illumination?:SceneIllumination){
     this.clear();if(!map&&!illumination)return;
-    this.rig=sceneLight(illumination?.scene??String(properties(map!).sceneArt),map?visibleSceneArt(map,state)??[]:[]);if(!this.rig)return;
+    this.sample=illumination?.sample;this.floorLight=!!illumination?.floorLight;
+    this.rig=this.sample?.()??sceneLight(illumination?.scene??String(properties(map!).sceneArt),map?visibleSceneArt(map,state)??[]:[]);if(!this.rig)return;
     // One ground pass, clipped to real floor cells, beneath every sorted prop.
     this.ground=illumination?new Path2D(illumination.ground):lightGround(map!,state,p=>this.scene.textures.getFrame(p.key).source.image as CanvasImageSource);
     world.add(this.scene.add.existing(new GroundShadows(this.scene,this)).setDepth(-900));
     world.sort('depth');
   }
   actor(world:Phaser.GameObjects.Container,x:number,y:number,key:string){
-    const image=this.rig?this.scene.add.existing(new LitActor(this.scene,x,y,key,this,this.rig)):this.scene.add.image(x,y,key);
-    if(image instanceof LitActor){this.actors.add(image);image.once('destroy',()=>this.actors.delete(image));}
+    const image=this.illuminate(this.scene.add.image(x,y,key),true);
     image.setScale(1,worldActorScaleY(key));world.add(image);return image;
+  }
+  /** Keep the original image, animation frames and alpha-picking surface. */
+  illuminate(image:Phaser.GameObjects.Image,shadow=false){
+    if(!this.current())return image;
+    const surface=new LitSurface(this.scene,this);
+    Object.assign(image,{renderCanvas:surface.renderCanvas.bind(surface)});
+    if(shadow)this.actors.add(image);
+    image.once('destroy',()=>{surface.destroy();this.actors.delete(image);});
+    return image;
   }
   surface(frame:Phaser.Textures.Frame){
     let cached=this.frames.get(frame);if(cached)return cached;
@@ -40,39 +52,51 @@ export class WorldLighting {
     cached={pixels,shadow:canvas};this.frames.set(frame,cached);return cached;
   }
   shadows(ctx:CanvasRenderingContext2D){
-    if(!this.rig||!this.ground)return;
+    const rig=this.current();if(!rig||!this.ground)return;
     ctx.save();ctx.clip(this.ground);ctx.imageSmoothingEnabled=false;
+    if(this.floorLight){
+      ctx.globalCompositeOperation='multiply';ctx.fillStyle=`rgb(${rig.ambient.map(n=>Math.round(Math.min(1,n)*255)).join(',')})`;ctx.fillRect(0,0,1024,768);
+      ctx.globalCompositeOperation='screen';
+      for(const light of rig.lamps){
+        const radius=light.radius*.65,color=(light.color??[1,.8,.5]).map(n=>Math.round(Math.min(1,n)*220));
+        ctx.save();ctx.translate(light.x,light.y);ctx.scale(1,.55);
+        const glow=ctx.createRadialGradient(0,0,0,0,0,radius),alpha=Math.min(.38,light.strength*.24);
+        glow.addColorStop(0,`rgba(${color.join(',')},${alpha})`);glow.addColorStop(.45,`rgba(${color.join(',')},${alpha*.28})`);glow.addColorStop(1,`rgba(${color.join(',')},0)`);
+        ctx.fillStyle=glow;ctx.fillRect(-radius,-radius,radius*2,radius*2);ctx.restore();
+      }
+      ctx.globalCompositeOperation='source-over';
+    }
     for(const actor of this.actors){
       if(!actor.active||!actor.visible||!actor.alpha||actor.getData('projection')||actor.getData('fallen'))continue;
-      paintActorShadow(ctx,this.rig,{x:actor.x,y:actor.y,originX:actor.displayOriginX,originY:actor.displayOriginY,scaleX:actor.scaleX*(actor.flipX?-1:1),scaleY:actor.scaleY*(actor.flipY?-1:1),rotation:actor.rotation,alpha:actor.alpha,image:this.surface(actor.frame).shadow});
+      paintActorShadow(ctx,rig,{x:actor.x,y:actor.y,originX:actor.displayOriginX,originY:actor.displayOriginY,scaleX:actor.scaleX*(actor.flipX?-1:1),scaleY:actor.scaleY*(actor.flipY?-1:1),rotation:actor.rotation,alpha:actor.alpha,image:this.surface(actor.frame).shadow});
     }
     ctx.restore();
   }
 }
 
-class LitActor extends Phaser.GameObjects.Image {
+class LitSurface {
   private lit?:Phaser.Textures.CanvasTexture;
   private output?:ImageData;
   private lastFrame?:Phaser.Textures.Frame;
   private lastPose='';
-  constructor(scene:Phaser.Scene,x:number,y:number,key:string,private worldLighting:WorldLighting,private rig:WorldLight){
-    super(scene,x,y,key);
-    this.once('destroy',()=>{if(this.lit){scene.textures.remove(this.lit.key);this.lit=undefined;}this.output=undefined;});
-  }
-  renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:LitActor,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
+  private lastRig?:WorldLight;
+  constructor(private scene:Phaser.Scene,private worldLighting:WorldLighting){}
+  destroy(){if(this.lit){this.scene.textures.remove(this.lit.key);this.lit=undefined;}this.output=undefined;}
+  renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:Phaser.GameObjects.Image,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
     camera.addToRenderList(src);
+    const rig=this.worldLighting.current();if(!rig)return;
     const frame=src.frame,pose=[Math.round(src.x),Math.round(src.y),src.scaleX,src.scaleY,src.rotation,src.originX,src.originY,src.flipX,src.flipY].join(':');
-    if(!src.lit){src.lit=src.scene.textures.createCanvas(`actor-light-${serial++}`,frame.cutWidth,frame.cutHeight)!;src.lit.setFilter(Phaser.Textures.FilterMode.NEAREST);}
-    if(src.lastFrame!==frame||src.lastPose!==pose){
-      const pixels=src.worldLighting.surface(frame).pixels;
-      if(!src.output||src.output.width!==pixels.width||src.output.height!==pixels.height){src.lit.setSize(pixels.width,pixels.height);src.output=src.lit.context.createImageData(pixels.width,pixels.height);}
-      lightPixels(pixels,src.output,src.rig,Math.round(src.x),Math.round(src.y),src.displayOriginX,src.displayOriginY,src.scaleX*(src.flipX?-1:1),src.scaleY*(src.flipY?-1:1),src.rotation);
-      src.lit.context.putImageData(src.output,0,0);src.lastFrame=frame;src.lastPose=pose;
+    if(!this.lit){this.lit=src.scene.textures.createCanvas(`actor-light-${serial++}`,frame.cutWidth,frame.cutHeight)!;this.lit.setFilter(Phaser.Textures.FilterMode.NEAREST);}
+    if(this.lastFrame!==frame||this.lastPose!==pose||this.lastRig!==rig){
+      const pixels=this.worldLighting.surface(frame).pixels;
+      if(!this.output||this.output.width!==pixels.width||this.output.height!==pixels.height){this.lit.setSize(pixels.width,pixels.height);this.output=this.lit.context.createImageData(pixels.width,pixels.height);}
+      lightPixels(pixels,this.output,rig,Math.round(src.x),Math.round(src.y),src.displayOriginX,src.displayOriginY,src.scaleX*(src.flipX?-1:1),src.scaleY*(src.flipY?-1:1),src.rotation);
+      this.lit.context.putImageData(this.output,0,0);this.lastFrame=frame;this.lastPose=pose;this.lastRig=rig;
     }
     // batchSprite accepts a different frame: keep the original animation texture,
     // frame, origin, alpha and handedness on the actor itself.
     const round=camera.roundPixels;camera.roundPixels=false;
-    try{renderer.batchSprite(src,src.lit.get(),camera,parentMatrix);}finally{camera.roundPixels=round;}
+    try{renderer.batchSprite(src,this.lit.get(),camera,parentMatrix);}finally{camera.roundPixels=round;}
   }
 }
 
@@ -80,6 +104,6 @@ class GroundShadows extends Phaser.GameObjects.Image {
   constructor(scene:Phaser.Scene,private worldLighting:WorldLighting){super(scene,0,0,'__WHITE');}
   renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:GroundShadows,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
     camera.addToRenderList(src);const ctx=renderer.currentContext;
-    if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){src.worldLighting.shadows(ctx);ctx.restore();}
+    if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){this.worldLighting.shadows(ctx);ctx.restore();}
   }
 }

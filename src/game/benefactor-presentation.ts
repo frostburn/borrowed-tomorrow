@@ -18,7 +18,7 @@ export function benefactorPresentation(encounter:Encounter):BattlePresentation{
   portrait:u=>u.id===BENEFACTOR_ID?BENEFACTOR_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   hint:b=>`${benefactorUnit(b)?.intent?.name??'Judgment'} · the marked hexes are struck on the god’s turn.${form?' Calls up to two minions every other round; they act the following round. Break the source to disperse them.':''}`,
-  background(scene,world){nativeTexture(scene,'benefactor-domain');world.add(scene.add.image(0,0,'benefactor-domain').setOrigin(0));},
+  background(scene,world){nativeTexture(scene,'benefactor-domain');world.add(scene.add.image(0,0,'benefactor-domain').setOrigin(0).setDepth(-1000));},
   actor(scene,u,hp){
    if(u.id!==BENEFACTOR_ID)return;
    const texture=nativeTexture(scene,key),surface=texture.getSourceImage() as HTMLCanvasElement;

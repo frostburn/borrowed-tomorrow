@@ -53,7 +53,7 @@ Reproduce scenery with `python3 assets/vector/chapter-one.py`, or `--map yard` (
 
 `src/content/chapter-one/lighting.json` registers ambient colors, broad cool bounce, and prop-local emitters for all eight maps. The compiler paints matching floor spill; `sceneLight` builds the runtime rig from the visible props. Spill inherits each emitter's own visibility layer, so the collector's glow disappears with its working casing. Festival lanterns remain lit after the arrest. Light sources use exact ground positions and heights: warm lamps, directional window apertures, a subtle blue fill and the collector's pale turquoise core.
 
-The campaign's `world-lighting.ts` applies the same Canvas actor lighting to exploration, temporary cutscene casts and Chapter One–Four battle units. Cached native pixels and shaded per-actor surfaces retain original alpha, dimensions, handedness and animation frames. Mirrored enemy art is lit in its displayed orientation. Dead battle units cast no shadows. Chapters Five onward keep their current renderer. There is no new production dependency or raster asset. Chapter Two's registry and angular variants are documented in [its guide](chapter-two.md); `scene_lighting.py` shares compiler-painted spill without changing the accepted Chapter One outputs.
+The campaign's `world-lighting.ts` applies the same Canvas actor lighting to exploration, temporary cutscene casts and battle units. Cached native pixels and shaded per-actor surfaces retain original alpha, dimensions, handedness and animation frames. Mirrored enemy art is lit in its displayed orientation. Dead battle units cast no shadows. Custom later bosses now use the same native-frame lighting adapter; see the boss lighting notes below. There is no new production dependency or raster asset. Chapter Two's registry and angular variants are documented in [its guide](chapter-two.md); `scene_lighting.py` shares compiler-painted spill without changing the accepted Chapter One outputs.
 
 `actor-planes.ts` derives cached, stylized relief from contiguous material-color regions: broad slanted left/front/right and exposed upper planes respond to scene lights in three discrete bands. Tiny details stay flat. Festival and regional fill keep action readable without removing the surface planes. These are sprite relief planes, not a 3D mesh.
 
@@ -131,3 +131,14 @@ Rebuild Chapters One–Three with `chapter-one.py` and its `--chapter two` /
 and regional benches with `chapter-six-capital.py`. Chapter Six’s rest furniture
 is described in [its source guide](chapter-six.md); medical beds are separate.
 All results remain native SVGs, with no new raster assets or dependencies.
+
+
+## Later boss lighting
+
+`src/game/boss-lighting.ts` owns opt-in stage moods for the large Chapter Five–Seven bosses and their domain reprises: furnace carrier, mirrored ward engine, flagship, dragon, serpent, Emperor, Lightbearer and all three Benefactor forms. Campaign and Bosses previews use the same runtime field. Early encounters, the royal conduit workshop and ordinary maps keep their authored illumination.
+
+The existing `WorldLight` field lights native boss frames as well as party actors. The adapter retains the original image, atlas frame, scale, alpha and body-picking mask; no SVG or runtime art export is rewritten. `SceneIllumination.sample` supplies a cached scene-clock field, and `floorLight` paints ambient colour and soft source pools through the real floor silhouette, below grid lines and warning cells. Opposed rim light keeps silhouettes readable; party shadows retain the shared bounded multi-source projection. Large bosses do not project stretched actor shadows.
+
+Living boss parts supply the key light. It follows their displayed positions, fades with disabled components and strengthens through the actual attack contact/recovery timeline, including impact redraws. Slow pulses use quantized brightness to reuse shaded surfaces. Reduced motion holds a steady rig and suppresses attack-light pulses. No full-screen flashes, new assets, gameplay writes or delayed lighting callbacks are involved. Per-image textures and native frame caches clear with the world layer; restart, defeat and leaving the preview must not retain a field.
+
+Review Bosses with the pointer parked, each final form, a full enemy turn, reduced motion, restart and painted-body selection. Detailed desktop/phone lighting checks stay outside the small default CI gate.
