@@ -42,6 +42,21 @@ export class WorldLighting {
     image.once('destroy',()=>{surface.destroy();this.actors.delete(image);});
     return image;
   }
+  /** Above scenery/grid, below actors, attack effects and labels. */
+  focus(world:Phaser.GameObjects.Container){
+    if(this.sample)world.add(this.scene.add.existing(new AttackFocus(this.scene,this)));
+  }
+  spotlight(ctx:CanvasRenderingContext2D){
+    const focus=this.current()?.focus;if(!focus)return;
+    const lit=new Path2D();
+    for(const points of focus.polygons){
+      lit.moveTo(points[0].x,points[0].y);for(const p of points.slice(1))lit.lineTo(p.x,p.y);lit.closePath();
+    }
+    const shade=new Path2D();shade.rect(0,0,1024,768);shade.addPath(lit);
+    ctx.save();ctx.fillStyle=`rgba(7,12,24,${focus.strength})`;ctx.fill(shade,'evenodd');
+    // Exact hex-shaped apertures: no glow bleeds into safe neighboring cells.
+    ctx.fillStyle=`rgba(255,225,160,${focus.strength*.18})`;ctx.fill(lit);ctx.restore();
+  }
   surface(frame:Phaser.Textures.Frame){
     let cached=this.frames.get(frame);if(cached)return cached;
     const canvas=document.createElement('canvas');canvas.width=frame.cutWidth;canvas.height=frame.cutHeight;
@@ -105,5 +120,13 @@ class GroundShadows extends Phaser.GameObjects.Image {
   renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:GroundShadows,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
     camera.addToRenderList(src);const ctx=renderer.currentContext;
     if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){this.worldLighting.shadows(ctx);ctx.restore();}
+  }
+}
+
+class AttackFocus extends Phaser.GameObjects.Image {
+  constructor(scene:Phaser.Scene,private worldLighting:WorldLighting){super(scene,0,0,'__WHITE');}
+  renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:AttackFocus,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
+    camera.addToRenderList(src);const ctx=renderer.currentContext;
+    if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){this.worldLighting.spotlight(ctx);ctx.restore();}
   }
 }

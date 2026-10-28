@@ -604,6 +604,7 @@ export class Adventure extends Phaser.Scene {
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
     for(const rock of this.battleDefinition.rocks){if(b.fixtures?.some(f=>equal(f.hex,offset(...rock))))continue;const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
     drawBattleFixtures(this,this.layer,b,before);
+    this.lighting.focus(this.layer);
     const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
     for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){if(before?.size&&!before.has(u.id)&&u.id.startsWith('benefactor-minion-'))continue;const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
       const custom=this.battlePresentation?.actor?.(this,u,hp,old?.hex??u.hex);
@@ -846,7 +847,8 @@ export class Adventure extends Phaser.Scene {
           }
         }
         if(!reduced&&!animatedHero(hero??'')&&!timing){const x=image.x,y=image.y;this.tweens.addCounter({from:0,to:1,duration:contact,onUpdate:t=>{if(image.active){const p=t.getValue()??0;image.setPosition(x-2*Math.round(p*2),y-2*Math.round(Math.sin(p*Math.PI)*2));}}});}
-        if(!reduced&&timing){this.bossLighting?.attack(actor.id,contact,timing.duration);preview?.attack?.(this,image,actor,0);}
+        if(!reduced&&enemyAttack)this.bossLighting?.attack(actor.id,action?.affected??[],contact,duration-travel);
+        if(!reduced&&timing)preview?.attack?.(this,image,actor,0);
         if(face&&action?.ability&&!isConsumable(action.ability)){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');}
         if(teamTiming&&action?.ability){
           const sources:TeamSource[]=[actor,...action.partnerId?battle.units.filter(u=>u.id===action.partnerId):[]].map(u=>{
@@ -886,7 +888,8 @@ export class Adventure extends Phaser.Scene {
       for(const fixture of battle.fixtures??[])if(fixture.kind==='valve'&&before.has(`fixture:${fixture.id}`)&&fixture.active!==before.get(`fixture:${fixture.id}`)?.active){valveTurn(this,this.layer!,fixture.hex,fixture.vents??[],!!fixture.active);this.audio.effect('valve');}
       if(actor&&action?.ability){
         const image=this.actorImages.get(actor.id)!;
-        if(!reduced&&timing){this.bossLighting?.attack(actor.id,contact,timing.duration,impact-travel);preview?.attack?.(this,image,actor,impact-travel);}
+        if(!reduced&&enemyAttack)this.bossLighting?.attack(actor.id,action.affected??[],contact,duration-travel,impact-travel);
+        if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
         if(action.partnerId){const partner=battle.units.find(u=>u.id===action.partnerId),other=this.actorImages.get(action.partnerId);if(partner&&other&&animatedHero(partner.kind)){const p=toPixel(partner.hex),target=toPixel(action.aim),f=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);this.motion.attack(other,f,impact-travel,action.ability==='daybreak'&&partner.kind==='petra'?'bash':'attack');}}
         if(face&&!isConsumable(action.ability))this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');
         this.revealHex(action.aim);

@@ -8,7 +8,8 @@ import chapterSix from '../content/chapter-six/lighting.json' with { type:'json'
 import chapterSeven from '../content/chapter-seven/lighting.json' with { type:'json' };
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
 export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; color?:readonly number[]; beam?:{reach:number;width:number;spread:number} }
-export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[]; shadowOpacity?:number }
+export interface LightFocus { polygons:readonly (readonly {x:number;y:number}[])[]; strength:number }
+export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[]; shadowOpacity?:number; focus?:LightFocus }
 /** Custom whole-image arenas supply their own native floor silhouette. */
 export interface SceneIllumination { scene:string; ground:string; sample?:()=>WorldLight; floorLight?:boolean }
 interface LightRegistry { profiles:Record<string,WorldLight & {propStrength?:number}>; props:Record<string,WorldLamp[]> }
@@ -33,6 +34,19 @@ export function sceneLight(id:string,pieces:readonly {x:number;y:number;url:stri
 export function lampStrength(lamp:WorldLamp,x:number,y:number,height=32){
   const distance=Math.hypot(x-lamp.x,(y-lamp.y)*1.35,lamp.height-height);
   return attenuation(lamp,x,y,distance);
+}
+/** Grounded actors keep their whole silhouette lit inside a focused region. */
+export function focusExposure(focus:LightFocus|undefined,x:number,y:number){
+  if(!focus)return 1;
+  const inside=focus.polygons.some(points=>{
+    let hit=false;
+    for(let i=0,j=points.length-1;i<points.length;j=i++){
+      const a=points[i],b=points[j];
+      if((a.y>y)!==(b.y>y)&&x<(b.x-a.x)*(y-a.y)/(b.y-a.y)+a.x)hit=!hit;
+    }
+    return hit;
+  });
+  return inside?1:1-focus.strength*.7;
 }
 function attenuation(lamp:WorldLamp,x:number,y:number,distance:number){
   if(distance>=lamp.radius)return 0;
@@ -66,13 +80,14 @@ function frameLamps(rig:WorldLight,w:number,h:number,x:number,y:number,ox:number
 /** A small material-neutral light field; original alpha and geometry survive. */
 export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:number,y:number,originX:number,originY:number,scaleX=1,scaleY=1,rotation=0){
   const a=source.data,b=output.data,w=source.width,cos=Math.cos(rotation),sin=Math.sin(rotation);
+  const exposure=focusExposure(rig.focus,x,y);
   const lamps=frameLamps(rig,w,source.height,x,y,originX,originY,scaleX,scaleY,cos,sin);
   // Outside all lamp bounds, motion and surface normals cannot change ambient
   // illumination. Keep transparent RGB identical to the full lighting path.
   if(!lamps.length){
     for(let i=0;i<a.length;i+=4){
       b[i+3]=a[i+3];
-      b[i]=a[i+3]?a[i]*rig.ambient[0]:0;b[i+1]=a[i+3]?a[i+1]*rig.ambient[1]:0;b[i+2]=a[i+3]?a[i+2]*rig.ambient[2]:0;
+      b[i]=a[i+3]?a[i]*rig.ambient[0]*exposure:0;b[i+1]=a[i+3]?a[i+1]*rig.ambient[1]*exposure:0;b[i+2]=a[i+3]?a[i+2]*rig.ambient[2]*exposure:0;
     }
     return;
   }
@@ -96,7 +111,7 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
     const factor=strength?Math.min(.65,strength)/strength:0;
     // Diffuse illumination multiplies reflectance: warm light must not bleach
     // dark eyes, cloth folds or tool details into one flat orange silhouette.
-    b[i]=a[i]*(rig.ambient[0]+factor*red);b[i+1]=a[i+1]*(rig.ambient[1]+factor*green);b[i+2]=a[i+2]*(rig.ambient[2]+factor*blue);
+    b[i]=a[i]*(rig.ambient[0]+factor*red)*exposure;b[i+1]=a[i+1]*(rig.ambient[1]+factor*green)*exposure;b[i+2]=a[i+2]*(rig.ambient[2]+factor*blue)*exposure;
   }
 }
 

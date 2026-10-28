@@ -1,6 +1,7 @@
 import type Phaser from 'phaser';
 import type {Battle,Encounter,Unit} from '../rules/combat';
 import type {WorldLight,WorldLamp} from './world-light';
+import {hexVertices,type Hex} from '../rules/hex';
 
 type Color=readonly number[];
 interface Mood {ambient:Color;key:Color;rim:Color}
@@ -22,7 +23,7 @@ const divine:readonly Mood[]=[
  * It carries no combat writes and dies with the battle drawing that owns it. */
 export class BossLighting {
  private sources=new Map<string,{image:Phaser.GameObjects.Image;alive:boolean}>();
- private attacks=new Map<string,{at:number;contact:number;duration:number}>();
+ private attacks=new Map<string,{at:number;contact:number;duration:number;polygons:{x:number;y:number}[][]}>();
  private cached?:WorldLight;
  private stamp='';
  private get reduced(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
@@ -32,11 +33,12 @@ export class BossLighting {
   return mood?new BossLighting(scene,battle,mood):undefined;
  }
  bind(unit:Unit,image:Phaser.GameObjects.Image,hp:number){this.sources.set(unit.id,{image,alive:hp>0});}
- attack(id:string,contact:number,duration:number,elapsed=0){if(!this.reduced&&this.sources.get(id)?.alive)this.attacks.set(id,{at:this.scene.time.now-elapsed,contact,duration});}
+ attack(id:string,cells:readonly Hex[],contact:number,duration:number,elapsed=0){if(!this.reduced&&this.sources.get(id)?.alive)this.attacks.set(id,{at:this.scene.time.now-elapsed,contact,duration,polygons:cells.map(h=>hexVertices(h))});}
  get animating(){return !this.reduced&&!this.battle.result&&[...this.sources.values()].some(s=>s.alive);}
  sample=():WorldLight=>{
   const phase=this.animating?Math.round((.5+.5*Math.sin(this.scene.time.now*Math.PI/4000))*12)/12:.5;
   const lamps:WorldLamp[]=[],positions:string[]=[];
+  let focus:WorldLight['focus'];
   for(const [id,{image,alive}]of this.sources){
    if(!alive||!image.active)continue;
    const x=Math.round(image.x/2)*2,y=Math.round(image.y/2)*2,height=Math.min(170,image.displayHeight*.52);
@@ -45,12 +47,21 @@ export class BossLighting {
    const power=Math.round((.68+phase*.1+Math.round(Math.min(1,charge)*8)/8*.8)*32)/32;
    positions.push(`${id}:${x}:${y}:${power}`);
    lamps.push({x,y,height,radius:730,strength:power,fill:.62,shadowStrength:.65,color:this.mood.key});
+   if(attack?.polygons.length&&charge>0){
+    // Ease down over the wind-up, hold through contact, then restore the stage.
+    const envelope=elapsed<attack.contact?Math.min(1,elapsed/Math.min(240,attack.contact)):Math.min(1,charge*2);
+    const strength=Math.round(envelope*12)/12*.72;
+    if(strength>0){focus={polygons:attack.polygons,strength};positions.push(`focus:${id}:${attack.at}:${strength}`);}
+   }
   }
   const stamp=positions.join('|');if(this.cached&&this.stamp===stamp)return this.cached;
   this.stamp=stamp;
   const alive=lamps.length>0;
+  // Broad front softboxes cover the entire fighting area and the bosses' faces.
+  // Neutral bounce retains the painted materials beneath each stage's hue.
+  lamps.push(...[300,720].map(x=>({x,y:460,height:160,radius:1050,strength:.76,fill:.9,shadowStrength:.12,color:[1,.98,.94]})));
   // Opposed soft rim lights retain silhouettes and keep the party readable.
   lamps.push(...[80,920].map(x=>({x,y:260,height:180,radius:650,strength:.42,fill:.55,shadowStrength:.35,color:this.mood.rim})));
-  return this.cached={ambient:alive?this.mood.ambient:[.8,.82,.84],lamps,shadowOpacity:.20};
+  return this.cached={ambient:alive?this.mood.ambient.map(n=>Math.min(.9,n+.18)):[.8,.82,.84],lamps,shadowOpacity:.20,focus};
  };
 }
