@@ -1,5 +1,6 @@
-// Opt-in matched-input probe. Capture actual campaign saves before tuning;
-// replay them against another checkout without importing its dependencies.
+// Opt-in matched-input probe. --capture plays Chapter Six; replay accepts
+// captured battle saves from any chapter, including Chapter Seven.
+// Compare another checkout without importing its dependencies into the game.
 import {createServer} from 'vite';
 import {parseArgs} from 'node:util';
 import {readFile,writeFile} from 'node:fs/promises';

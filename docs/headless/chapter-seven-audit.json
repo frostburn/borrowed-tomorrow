@@ -1,0 +1,1804 @@
+{
+  "version": 1,
+  "source": {
+    "baseCommit": "6bf9f404af90c611f86fd6718bf8f5e7f2edf4df",
+    "files": {
+      "src/headless/seven.ts": "c98da417bb89161dce45c681bb9898d2a0422e3c45968564d59fa3e5f22b0851",
+      "src/headless/seven-cli.ts": "a740f1862f0f3bd4cdb2cea3938085ec417feb196b46b0d8bb0fa84005e87c4e",
+      "src/headless/campaign.ts": "e97bc1a3b2e70bf695f66ace17003afba8fc9896b645bcda44b4957cb1cdd870",
+      "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
+      "src/headless/defensive.ts": "6c95ac0ce77e9a2e4356dc70344109973b4f386d996f587050547d009bd91fda",
+      "src/headless/tactics.ts": "3e5f4e20c202635539cfb217fc73b543c0b0f105be1b077e7fd833e19936c921",
+      "src/rules/benefactor.ts": "029629ad329fb1f125c4a32fc7a0987675b2d8e6adcfa0b70fa78623b7dc2a71",
+      "src/rules/skills.ts": "9b0c57581af02ca0843394705aa557356baa230864458bfe882ade52f53b5ab9",
+      "src/rules/improvements.ts": "2700fce9ce67ac793bf30e74f94cc2bd0afc6193ee6b50f31fc3670d8549c330",
+      "src/content/chapter-seven/interactions.ts": "b9a019cbaef6ea6258493b4aa47d676e0a5a38f18d2a703ad8242772499037f5",
+      "src/content/chapter-seven/encounters.ts": "37d5f91214ba6e0b5ca743c9ba84d661bdb94804171ff27c5e888bc989bc44f2",
+      "src/content/chapter-seven/progress.ts": "ea0d7dade8b70aedd74924185b0fe6ada387912c57726057b440f463db3a5ab5",
+      "scripts/headless.mjs": "78a69fe104945d92f2d30ab177a2e8dd556147c730c121ab66eafaaefa88b45d",
+      "scripts/probe-six.mjs": "f015fe1cef3a958a5491dde190edaf22b5afebf21c61e4c373c211dc5051e258",
+      "tests/headless-seven.test.ts": "10c684612c54102701e9c7256025eedfee43a15cc9317b8c06009ad7e1e95296",
+      "tests/headless-seven.simulation.ts": "f2270597eedbcb89a75dd1767cac3418d057c5072ec413ca6f30bbbccca19eb1"
+    },
+    "inputs": {
+      "docs/headless/chapter-six-earned.json": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811",
+      "docs/headless/chapter-six-trained-earned.json": "b033651e7f58c61086bd7c7b065510ea1469f9bdfd9b2426ad3f5ef257bb7f2b"
+    }
+  },
+  "scope": "Continuation of previously earned checkpoints, not a fresh zero-start replay. No production gameplay changes, canonical starts, forced victories, retries, respecs or resource grants. Rendering/audio and player difficulty are outside this audit. Build priorities apply only to unspent skills; purchased ranks stay intact.",
+  "runs": [
+    {
+      "name": "default",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --output /tmp/seven-default.json",
+      "scope": "Complete Chapter Seven from an earned Chapter Six departure",
+      "reportSha256": "58cad823d11e3e45244d08d0b0140a5bfcc5771ab38034063a9dd2530e5601c2",
+      "source": {
+        "path": "docs/headless/chapter-six-earned.json",
+        "sha256": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false
+      },
+      "status": "complete",
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 42,
+          "minimumHp": 78,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 2,
+            "strike": 1,
+            "burst": 1
+          },
+          "enemyActions": {
+            "defend": 2,
+            "strike": 2
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 28,
+          "minimumHp": 105,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 3,
+            "burst": 1,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "pressurebolt": 2,
+            "judgment": 2
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 123,
+          "minimumHp": 87,
+          "knockouts": 0,
+          "healed": 97,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 5,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 4,
+            "bandage": 1,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "slagshot": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 57,
+          "minimumHp": 82,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "burst": 1,
+            "rivet": 2,
+            "strike": 2
+          },
+          "enemyActions": {
+            "lensshot": 3,
+            "refraction": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-patrol",
+          "result": "victory",
+          "rounds": 2,
+          "hpLost": 38,
+          "minimumHp": 58,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 1,
+            "celestialbolt": 1,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "splinter": 1,
+            "sunbeam": 1
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 179,
+          "minimumHp": 80,
+          "knockouts": 0,
+          "healed": 104,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 3,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 3,
+            "strike": 2,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "iceshard": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 189,
+          "minimumHp": 62,
+          "knockouts": 0,
+          "healed": 107,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 5,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 4,
+            "field-bandage": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 29,
+          "minimumHp": 108,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 126,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "sanctuary": 1,
+            "burst": 2,
+            "rivet": 2,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 0,
+          "minimumHp": 124,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 121,
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "celestialbolt": 2,
+            "burst": 1,
+            "rivet": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        }
+      ],
+      "hpLost": 685,
+      "knockouts": 0,
+      "minimumHp": 58,
+      "rests": 7,
+      "spent": 98,
+      "spending": {
+        "field-bandage": 90,
+        "bandage": 8
+      },
+      "abilities": {
+        "prism": 16,
+        "celestialbolt": 29,
+        "strike": 10,
+        "burst": 14,
+        "rivet": 18,
+        "heal": 3,
+        "bandage": 1,
+        "field-bandage": 3,
+        "starline": 1,
+        "sanctuary": 2
+      },
+      "equipment": [
+        {
+          "hero": "celia",
+          "item": "crossing-coat",
+          "previous": "procession-coat"
+        },
+        {
+          "hero": "nell",
+          "item": "procession-coat",
+          "previous": "stormlining-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "stormlining-coat",
+          "previous": "reedweave-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "reedweave-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "first-valve",
+          "previous": "crown-nozzle"
+        },
+        {
+          "hero": "nell",
+          "item": "morning-reflector",
+          "previous": "riverglass-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "first-focus",
+          "previous": "palace-focus"
+        },
+        {
+          "hero": "kit",
+          "item": "farroad-sight",
+          "previous": "winter-sight"
+        },
+        {
+          "hero": "petra",
+          "item": "open-guard",
+          "previous": "unbroken-guard"
+        }
+      ],
+      "final": {
+        "xp": 9935,
+        "coins": 4424,
+        "bandages": 3,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "nell",
+          "orrin"
+        ],
+        "improvements": [],
+        "chapterSevenComplete": true,
+        "location": {
+          "map": "seaholiday",
+          "x": 31,
+          "y": 25
+        },
+        "boundary": null
+      }
+    },
+    {
+      "name": "lean",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --party kit,celia,petra --build support --spending frugal --skip-optional --no-final-rests --output /tmp/seven-lean.json",
+      "scope": "Complete Chapter Seven from an earned Chapter Six departure",
+      "reportSha256": "aff9ab868675bacfd235e535e9f8358eed17aa1202208b6187f45b663712117b",
+      "source": {
+        "path": "docs/headless/chapter-six-earned.json",
+        "sha256": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "optional": false,
+        "restBetweenForms": false,
+        "through": "7",
+        "improvements": false,
+        "party": [
+          "kit",
+          "celia",
+          "petra"
+        ]
+      },
+      "status": "complete",
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 0,
+          "minimumHp": 116,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 2,
+            "pin": 2,
+            "crush": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "defend": 2
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 71,
+          "minimumHp": 84,
+          "knockouts": 0,
+          "healed": 45,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 2,
+            "pin": 1,
+            "heal": 1,
+            "strike": 1,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "pressurebolt": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 122,
+          "minimumHp": 87,
+          "knockouts": 0,
+          "healed": 100,
+          "enemyGuardDamage": 48,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 4,
+            "pin": 2,
+            "heal": 1,
+            "quickshot": 3,
+            "daybreak": 1,
+            "sweep": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "slagshot": 6,
+            "judgment": 6
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 28,
+          "minimumHp": 109,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 5,
+            "pin": 3,
+            "crush": 1,
+            "sweep": 1,
+            "strike": 2,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "lensshot": 2,
+            "refraction": 2
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 198,
+          "minimumHp": 61,
+          "knockouts": 0,
+          "healed": 106,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 4,
+            "pin": 2,
+            "heal": 1,
+            "strike": 2,
+            "quickshot": 2,
+            "sweep": 1,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "iceshard": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 219,
+          "minimumHp": 74,
+          "knockouts": 0,
+          "healed": 109,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 5,
+            "pin": 2,
+            "heal": 1,
+            "strike": 2,
+            "quickshot": 2,
+            "sweep": 2,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "claim": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 142,
+          "minimumHp": 72,
+          "knockouts": 0,
+          "healed": 118,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 2,
+            "heal": 1,
+            "celestialbolt": 4,
+            "pin": 2,
+            "bandage": 1,
+            "quickshot": 1,
+            "sweep": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 4,
+            "judgment": 4
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 94,
+          "minimumHp": 79,
+          "knockouts": 0,
+          "healed": 142,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "crossfire": 2,
+            "heal": 1,
+            "celestialbolt": 3,
+            "pin": 1,
+            "bandage": 2,
+            "quickshot": 2
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "kit",
+            "petra"
+          ],
+          "level": 15
+        }
+      ],
+      "hpLost": 874,
+      "knockouts": 0,
+      "minimumHp": 61,
+      "rests": 4,
+      "spent": 36,
+      "spending": {
+        "field-bandage": 36
+      },
+      "abilities": {
+        "crossfire": 14,
+        "celestialbolt": 29,
+        "pin": 15,
+        "crush": 2,
+        "strike": 10,
+        "heal": 6,
+        "quickshot": 12,
+        "daybreak": 1,
+        "sweep": 6,
+        "field-bandage": 2,
+        "bandage": 3
+      },
+      "equipment": [
+        {
+          "hero": "celia",
+          "item": "crossing-coat",
+          "previous": "procession-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "procession-coat",
+          "previous": "reedweave-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "reedweave-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "first-valve",
+          "previous": "crown-nozzle"
+        },
+        {
+          "hero": "celia",
+          "item": "first-focus",
+          "previous": "palace-focus"
+        },
+        {
+          "hero": "petra",
+          "item": "open-guard",
+          "previous": "unbroken-guard"
+        }
+      ],
+      "final": {
+        "xp": 9755,
+        "coins": 4366,
+        "bandages": 0,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "kit",
+          "petra"
+        ],
+        "improvements": [],
+        "chapterSevenComplete": true,
+        "location": {
+          "map": "seaholiday",
+          "x": 31,
+          "y": 25
+        },
+        "boundary": null
+      }
+    },
+    {
+      "name": "trained",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-trained-earned.json --improvements --output /tmp/seven-trained.json",
+      "scope": "Complete Chapter Seven from an earned Chapter Six departure",
+      "reportSha256": "b6346a778828819b74222ccfed5d05c22d02476ed48b5546af9cd63ccf77dc65",
+      "source": {
+        "path": "docs/headless/chapter-six-trained-earned.json",
+        "sha256": "b033651e7f58c61086bd7c7b065510ea1469f9bdfd9b2426ad3f5ef257bb7f2b"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": true
+      },
+      "status": "complete",
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 19,
+          "minimumHp": 111,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 1,
+            "strike": 2,
+            "sunline": 1
+          },
+          "enemyActions": {
+            "defend": 2,
+            "strike": 1
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 20,
+          "minimumHp": 117,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 8,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 3,
+            "sunline": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "pressurebolt": 2,
+            "judgment": 2
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 115,
+          "minimumHp": 92,
+          "knockouts": 0,
+          "healed": 31,
+          "enemyGuardDamage": 8,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 5,
+            "sunline": 1,
+            "rivet": 3,
+            "field-bandage": 1,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "slagshot": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 25,
+          "minimumHp": 117,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 8,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "sunline": 1,
+            "rivet": 2,
+            "strike": 1
+          },
+          "enemyActions": {
+            "lensshot": 2,
+            "refraction": 2
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-patrol",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 54,
+          "minimumHp": 96,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "burst": 1,
+            "starline": 1,
+            "prism": 1,
+            "celestialbolt": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "splinter": 1,
+            "sunbeam": 2
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 171,
+          "minimumHp": 92,
+          "knockouts": 0,
+          "healed": 111,
+          "enemyGuardDamage": 8,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 3,
+            "sunline": 1,
+            "heal": 2,
+            "rivet": 3,
+            "strike": 2,
+            "burst": 1
+          },
+          "enemyActions": {
+            "iceshard": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 122,
+          "minimumHp": 87,
+          "knockouts": 0,
+          "healed": 122,
+          "enemyGuardDamage": 8,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 4,
+            "sunline": 1,
+            "heal": 2,
+            "steam": 1,
+            "strike": 2,
+            "rivet": 3,
+            "burst": 1
+          },
+          "enemyActions": {
+            "claim": 4,
+            "judgment": 4
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 60,
+          "minimumHp": 94,
+          "knockouts": 0,
+          "healed": 60,
+          "enemyGuardDamage": 129,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 3,
+            "sanctuary": 1,
+            "sunline": 1,
+            "steam": 1,
+            "strike": 2,
+            "heal": 1,
+            "rivet": 1,
+            "burst": 1
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 0,
+          "minimumHp": 136,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 121,
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "celestialbolt": 2,
+            "sunline": 1,
+            "steam": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        }
+      ],
+      "hpLost": 586,
+      "knockouts": 0,
+      "minimumHp": 87,
+      "rests": 6,
+      "spent": 1986,
+      "spending": {
+        "Confirm · 450 marks": 1350,
+        "Confirm · 300 marks": 600,
+        "field-bandage": 36
+      },
+      "abilities": {
+        "prism": 17,
+        "celestialbolt": 26,
+        "strike": 13,
+        "sunline": 8,
+        "rivet": 12,
+        "field-bandage": 1,
+        "burst": 5,
+        "starline": 1,
+        "heal": 5,
+        "steam": 3,
+        "sanctuary": 2
+      },
+      "equipment": [
+        {
+          "hero": "celia",
+          "item": "crossing-coat",
+          "previous": "procession-coat"
+        },
+        {
+          "hero": "nell",
+          "item": "procession-coat",
+          "previous": "stormlining-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "stormlining-coat",
+          "previous": "reedweave-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "reedweave-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "first-valve",
+          "previous": "crown-nozzle"
+        },
+        {
+          "hero": "nell",
+          "item": "morning-reflector",
+          "previous": "riverglass-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "first-focus",
+          "previous": "palace-focus"
+        },
+        {
+          "hero": "kit",
+          "item": "farroad-sight",
+          "previous": "winter-sight"
+        },
+        {
+          "hero": "petra",
+          "item": "open-guard",
+          "previous": "unbroken-guard"
+        }
+      ],
+      "final": {
+        "xp": 9935,
+        "coins": 454,
+        "bandages": 3,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "nell",
+          "orrin"
+        ],
+        "improvements": [
+          "hp-celia",
+          "focus-celia",
+          "orrin-counterbalance",
+          "kit-footing",
+          "nell-housing",
+          "celia-sight",
+          "focus-nell",
+          "hp-nell",
+          "focus-orrin",
+          "hp-orrin"
+        ],
+        "chapterSevenComplete": true,
+        "location": {
+          "map": "seaholiday",
+          "x": 31,
+          "y": 25
+        },
+        "boundary": null
+      }
+    },
+    {
+      "name": "no-celia",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --party nell,orrin,kit --output /tmp/seven-no-celia.json",
+      "scope": "Complete Chapter Seven from an earned Chapter Six departure",
+      "reportSha256": "939536693925f1765abed7dba886cd1a3d349e586b201058a328db5227d89a87",
+      "source": {
+        "path": "/workspace/scratch/fd32f5589a08/borrowed-tomorrow-seven/docs/headless/chapter-six-earned.json",
+        "sha256": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false,
+        "party": [
+          "nell",
+          "orrin",
+          "kit"
+        ]
+      },
+      "status": "complete",
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 38,
+          "minimumHp": 99,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 1,
+            "steam": 1,
+            "ricochet": 1,
+            "prism": 1,
+            "quickshot": 1
+          },
+          "enemyActions": {
+            "peck": 1,
+            "defend": 2,
+            "strike": 1
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 163,
+          "minimumHp": 54,
+          "knockouts": 0,
+          "healed": 66,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 3,
+            "field-bandage": 1,
+            "bandage": 1,
+            "ricochet": 1,
+            "strike": 1,
+            "rivet": 1
+          },
+          "enemyActions": {
+            "peck": 7,
+            "pressurebolt": 3,
+            "judgment": 3
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 133,
+          "minimumHp": 56,
+          "knockouts": 0,
+          "healed": 48,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "ricochet": 1,
+            "prism": 1,
+            "lanternvolley": 1,
+            "steam": 3,
+            "pin": 2,
+            "strike": 2,
+            "quickshot": 1,
+            "burst": 1,
+            "field-bandage": 1
+          },
+          "enemyActions": {
+            "slagshot": 4,
+            "judgment": 4
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 71,
+          "minimumHp": 61,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 1,
+            "rivet": 1,
+            "quickshot": 1,
+            "prism": 1,
+            "pin": 3,
+            "burst": 1,
+            "steam": 2,
+            "strike": 2
+          },
+          "enemyActions": {
+            "lensshot": 3,
+            "refraction": 3
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 14
+        },
+        {
+          "id": "domain-patrol",
+          "result": "victory",
+          "rounds": 2,
+          "hpLost": 40,
+          "minimumHp": 75,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 1
+          },
+          "enemyActions": {
+            "splinter": 1,
+            "sunbeam": 1
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 15
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 142,
+          "minimumHp": 80,
+          "knockouts": 0,
+          "healed": 64,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 5,
+            "pin": 2,
+            "field-bandage": 2,
+            "quickshot": 2,
+            "burst": 1
+          },
+          "enemyActions": {
+            "iceshard": 5,
+            "judgment": 5
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 121,
+          "minimumHp": 91,
+          "knockouts": 0,
+          "healed": 31,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 5,
+            "pin": 2,
+            "field-bandage": 1,
+            "quickshot": 2,
+            "burst": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 4,
+            "judgment": 4
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 150,
+          "minimumHp": 68,
+          "knockouts": 0,
+          "healed": 48,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 4,
+            "pin": 2,
+            "field-bandage": 1,
+            "quickshot": 1,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 73,
+          "minimumHp": 94,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "lanternvolley": 2,
+            "steam": 2,
+            "pin": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 2,
+            "judgment": 2
+          },
+          "party": [
+            "nell",
+            "orrin",
+            "kit"
+          ],
+          "level": 15
+        }
+      ],
+      "hpLost": 931,
+      "knockouts": 0,
+      "minimumHp": 54,
+      "rests": 7,
+      "spent": 152,
+      "spending": {
+        "field-bandage": 144,
+        "bandage": 8
+      },
+      "abilities": {
+        "lanternvolley": 15,
+        "steam": 26,
+        "ricochet": 3,
+        "prism": 3,
+        "quickshot": 8,
+        "field-bandage": 6,
+        "bandage": 1,
+        "strike": 10,
+        "rivet": 2,
+        "pin": 12,
+        "burst": 5
+      },
+      "equipment": [
+        {
+          "hero": "nell",
+          "item": "crossing-coat",
+          "previous": "stormlining-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "stormlining-coat",
+          "previous": "reedweave-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "reedweave-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "first-valve",
+          "previous": "crown-nozzle"
+        },
+        {
+          "hero": "nell",
+          "item": "morning-reflector",
+          "previous": "riverglass-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "first-focus",
+          "previous": "palace-focus"
+        },
+        {
+          "hero": "kit",
+          "item": "farroad-sight",
+          "previous": "winter-sight"
+        },
+        {
+          "hero": "petra",
+          "item": "open-guard",
+          "previous": "unbroken-guard"
+        }
+      ],
+      "final": {
+        "xp": 9935,
+        "coins": 4370,
+        "bandages": 3,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "activeParty": [
+          "nell",
+          "orrin",
+          "kit"
+        ],
+        "improvements": [],
+        "chapterSevenComplete": true,
+        "location": {
+          "map": "seaholiday",
+          "x": 31,
+          "y": 25
+        },
+        "boundary": null
+      }
+    },
+    {
+      "name": "chained",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --no-final-rests --output /tmp/seven-chained.json",
+      "scope": "Finale only from the same earned refuge",
+      "reportSha256": "79548540267eaae4d8a84c8b7f153d49dfb04393c30830131e2b230212ecc71a",
+      "source": {
+        "path": "/tmp/bt-seven-refuge.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": false,
+        "through": "7",
+        "improvements": false
+      },
+      "status": "complete",
+      "battles": [
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 189,
+          "minimumHp": 62,
+          "knockouts": 0,
+          "healed": 107,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 5,
+            "burst": 2,
+            "heal": 1,
+            "rivet": 4,
+            "field-bandage": 1,
+            "strike": 2
+          },
+          "enemyActions": {
+            "claim": 5,
+            "judgment": 5
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 133,
+          "minimumHp": 70,
+          "knockouts": 0,
+          "healed": 114,
+          "enemyGuardDamage": 0,
+          "abilities": {
+            "prism": 2,
+            "heal": 1,
+            "celestialbolt": 4,
+            "burst": 2,
+            "rivet": 3,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "claim": 4,
+            "judgment": 4
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 0,
+          "minimumHp": 98,
+          "knockouts": 0,
+          "healed": 0,
+          "enemyGuardDamage": 121,
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "celestialbolt": 2,
+            "burst": 1,
+            "rivet": 1,
+            "strike": 1
+          },
+          "enemyActions": {
+            "claim": 3,
+            "judgment": 3
+          },
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "level": 15
+        }
+      ],
+      "hpLost": 322,
+      "knockouts": 0,
+      "minimumHp": 62,
+      "rests": 0,
+      "spent": 0,
+      "spending": {},
+      "abilities": {
+        "prism": 6,
+        "celestialbolt": 11,
+        "burst": 5,
+        "heal": 2,
+        "rivet": 8,
+        "field-bandage": 2,
+        "strike": 4,
+        "sanctuary": 1
+      },
+      "equipment": [],
+      "final": {
+        "xp": 9935,
+        "coins": 4442,
+        "bandages": 3,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "nell",
+          "orrin"
+        ],
+        "improvements": [],
+        "chapterSevenComplete": true,
+        "location": {
+          "map": "seaholiday",
+          "x": 31,
+          "y": 25
+        },
+        "boundary": null
+      }
+    }
+  ],
+  "matchedProbes": {
+    "input": "docs/headless/chapter-seven-probe-inputs.json",
+    "sha256": "a71addae8890112475d59afb4537ba2bcdc92407cbbebc3c5e3fa44ec76cfe13",
+    "policies": {
+      "defensive": {
+        "source": {
+          "sha256": "a71addae8890112475d59afb4537ba2bcdc92407cbbebc3c5e3fa44ec76cfe13",
+          "commit": "6bf9f404af90c611f86fd6718bf8f5e7f2edf4df",
+          "dirty": true
+        },
+        "tactics": "defensive",
+        "rows": [
+          {
+            "id": "domain-furnace",
+            "result": "victory",
+            "rounds": 6,
+            "damage": 123,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "domain-dragon",
+            "result": "victory",
+            "rounds": 6,
+            "damage": 179,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-body",
+            "result": "victory",
+            "rounds": 7,
+            "damage": 189,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-sun",
+            "result": "victory",
+            "rounds": 5,
+            "damage": 29,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-heart",
+            "result": "victory",
+            "rounds": 4,
+            "damage": 0,
+            "knockouts": 0,
+            "rebuilds": 0
+          }
+        ]
+      },
+      "legacy": {
+        "source": {
+          "sha256": "a71addae8890112475d59afb4537ba2bcdc92407cbbebc3c5e3fa44ec76cfe13",
+          "commit": "6bf9f404af90c611f86fd6718bf8f5e7f2edf4df",
+          "dirty": true
+        },
+        "tactics": "legacy",
+        "rows": [
+          {
+            "id": "domain-furnace",
+            "result": "victory",
+            "rounds": 5,
+            "damage": 63,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "domain-dragon",
+            "result": "victory",
+            "rounds": 5,
+            "damage": 82,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-body",
+            "result": "victory",
+            "rounds": 7,
+            "damage": 150,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-sun",
+            "result": "victory",
+            "rounds": 5,
+            "damage": 69,
+            "knockouts": 0,
+            "rebuilds": 0
+          },
+          {
+            "id": "benefactor-heart",
+            "result": "victory",
+            "rounds": 3,
+            "damage": 31,
+            "knockouts": 0,
+            "rebuilds": 0
+          }
+        ]
+      }
+    }
+  },
+  "upgradeAccess": {
+    "checkpoint": "docs/headless/chapter-seven-refuge-earned.json",
+    "coins": 4442,
+    "offers": [
+      {
+        "id": "orrin-counterbalance",
+        "hero": "orrin",
+        "cost": 500,
+        "questUnlocked": true,
+        "serviceAvailable": true,
+        "problem": null
+      },
+      {
+        "id": "petra-recovery",
+        "hero": "petra",
+        "cost": 400,
+        "questUnlocked": true,
+        "serviceAvailable": true,
+        "problem": null
+      },
+      {
+        "id": "celia-sight",
+        "hero": "celia",
+        "cost": 450,
+        "questUnlocked": true,
+        "serviceAvailable": true,
+        "problem": null
+      },
+      {
+        "id": "kit-footing",
+        "hero": "kit",
+        "cost": 450,
+        "questUnlocked": true,
+        "serviceAvailable": false,
+        "problem": "Not available yet"
+      },
+      {
+        "id": "nell-housing",
+        "hero": "nell",
+        "cost": 400,
+        "questUnlocked": true,
+        "serviceAvailable": false,
+        "problem": "Not available yet"
+      }
+    ]
+  },
+  "checkpoints": {
+    "chapter-seven-sun-earned.json": "202a2947f3ebe6d9dfe5dd864fec8abca26fcc7e8d29bfe1fe95970faeed6562",
+    "chapter-seven-mantle-earned.json": "2405d2f9ddaa64d53d5f940ff3a5af0bd53555e2c2ff7aa7aadf8f36b9bf481f",
+    "chapter-seven-refuge-earned.json": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd",
+    "chapter-seven-earned.json": "b64dd519089a6c026b89331bfb63a029f3796bf1d68628bd32b3b0c6ad10c7e3"
+  },
+  "checks": {
+    "fullUnitSuite": 809,
+    "finalTargetedUnitTests": 5,
+    "fullRouteAndResumeTests": 4,
+    "build": "passed",
+    "typecheck": "passed",
+    "cliHelp": "passed"
+  },
+  "findings": [
+    {
+      "id": "heart-pressure",
+      "kind": "balance follow-up",
+      "evidence": "Default and trained heart runs lose 0 HP. The default uses one Sanctuary (53 Guard per hero), absorbing 121 enemy damage and evading later areas. Chaining from the identical refuge still loses 0 HP at the heart. Legacy with the exact same heart input loses 31 HP; other parties lose 73–94.",
+      "next": "Review whether the last form should keep climax pressure or serve as a victory lap. Try its attack pattern/pacing against multiple parties before changing global support strength."
+    },
+    {
+      "id": "planner-horizon",
+      "kind": "agent limitation",
+      "evidence": "Matched furnace: defensive 6 rounds/123 HP, legacy 5/63. Dragon: defensive 6/179, legacy 5/82. Body: both 7 rounds, defensive 189 HP versus legacy 150.",
+      "next": "Improve multi-turn kill/position tradeoffs before using this controller alone to tune bosses. Rally remains unused."
+    },
+    {
+      "id": "last-crossing-specialties",
+      "kind": "optional economy UX follow-up",
+      "evidence": "The untrained refuge save has 4,442 marks and both personal quests complete, but Kit river training and Nell housing no longer have reachable providers. Anchor specialties remain available. Nell housing and an invitation to finish visits are already offered at departure.",
+      "next": "Consider making the last-chance cost explicit or carrying those two earned services forward; this is not a progression blocker or a claim that the game lacks purchases."
+    }
+  ]
+}
