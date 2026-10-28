@@ -54,12 +54,14 @@ export function finalLeadHold(mode:string,bar:number,beat:number,hold:number):nu
  return hold;
 }
 export function finalChromaticNotes(mode:string,bar:number,gain:number,strength:number):Note[]{
+ // The first two forms use connected hollow tones without a brass attack.
  // Piano attacks can articulate the heart's 32nds; the broad strings retain
  // their existing slow attack, rather than receiving an unsuitable tiny hold.
- const instrument:Instrument=mode==='benefactor'?'organ':mode==='hollow-sun'?'brass':'keys';
+ const instrument:Instrument=mode==='benefactor'?'tritaver':mode==='hollow-sun'?'organ':'keys';
+ const heart=mode==='unborrowed';
  return plan(mode).filter(r=>r.bar===bar).flatMap(r=>r.pitches.map((pitch,j)=>({
-  instrument,pitch,beat:r.beat+j*r.step,duration:r.step*.8,
+  instrument,pitch,beat:r.beat+j*r.step,duration:r.step*(heart?.8:.96),
   velocity:gain*.88,pan:-.12,
-  expression:{...phrasing(strength*(.74+.26*j/Math.max(1,r.pitches.length-1))),release:.035},
+  expression:{...phrasing(strength*(.74+.26*j/Math.max(1,r.pitches.length-1))),release:heart?.035:.05},
  })));
 }
