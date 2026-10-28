@@ -321,3 +321,10 @@ Boss arrangements have their own rhythm-section weight and phrase turns. Short s
 | Tomorrow (`unborrowed`) | 160 | Fast square-bass eighths and double kicks; four bars of quarter-note bass leave space for the high string sentence before the final surge. |
 
 The final introductions now build into their loops with a short snare crescendo. Fills and crashes mark phrases rather than saturating every bar. Full-form browser renders check every boss, including its introduction, low middle, final return and loop seam, through the actual Synth and performance clock. These audio checks remain outside default CI. Unit checks compare percussion attack weight per beat with regional ordinary battles and protect the distinct regional drum languages; those are structural checks, not a claim that a numeric metric proves musical quality.
+
+
+### Imperial battle counterlines
+
+`score-imperial.ts` adds independent treble voices to The Emperor's Order (`four-warden`), Open the Patient Stair (`capital-battle`) and The Emperor's Last Day (`emperor`). The classically inspired writing uses descending sequences, neighbour-note motion and delayed resolutions against the retained melodies and basses. Four-bar sentences leave a breath at their boundaries; dynamics and modest held-note vibrato shape the upper voice. Strings sit to the right of the main melody; the Emperor's string-led middle hands the counterline to reed. The warden follows its F-minor middle, the capital battle follows its existing changing harmony, and the waltz stays in three with its two-bar one-shot opening left exposed.
+
+Captain Alban and Iron Above the Clouds are unchanged. Quiet imperial exploration, the Lightbearer and the Benefactor keep their existing arrangements. Music → Ch 4 / Ch 6 uses the campaign score; Strings and Reed auditions isolate the relevant instruments, and Expression includes the new warden phrasing. No new samples, tempo changes, room responses or synth patches are involved.
