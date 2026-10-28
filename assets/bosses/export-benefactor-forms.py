@@ -39,16 +39,27 @@ def hollow_sun(i,cx,cy):
  out += [shard([(176,111),(194,122),(202,143),(184,166),(163,149),(161,131)],'#4f7385'),shard([(176,111),(181,137),(163,149),(161,131)],TEAL),shard([(176,111),(194,122),(181,137)],PALE),shard([(181,137),(194,122),(202,143),(184,166)],'#385768'),shard([(181,126),(178,139),(183,145),(180,155),(174,144)],'#294453')]
  return out
 
+# Eight native poses: a strong beat, a smaller answering beat, then rest.
+HEART_BEATS=[0,1,.2,.6,.1,0,0,0]
+def exposed_heart(i):
+ beat=HEART_BEATS[i] if i<8 else [.3,1.3,1,.2][i-8]
+ # Each rigid half rocks subtly about its own center of mass.
+ # Distinct central pivots let the crack shear rather than hinge at one tip.
+ angle=round(2*beat,3)
+ left=[poly([(177,71),(151,92),(132,129),(143,174),(177,210),(178,204),(171,160),(156,140),(171,124),(177,80)],TEAL),poly([(177,80),(171,124),(156,140),(171,160),(178,204),(173,163),(161,140),(175,124)],'#385b6c')]
+ right=[poly([(177,71),(214,99),(226,139),(207,183),(177,210),(178,204),(186,161),(170,144),(184,127),(177,80)],BLUE),poly([(177,71),(214,99),(184,127),(177,80)],PALE),poly([(184,127),(226,139),(207,183),(177,210),(178,204),(186,161),(170,144)],'#476a7b')]
+ return [f'<g data-heart-half="left" transform="rotate({-angle:g} 155 138)">'+''.join(left)+'</g>',f'<g data-heart-half="right" transform="rotate({angle:g} 199 148)">'+''.join(right)+'</g>']
+
 for form in ['sun','heart']:
  frames=[]
  for i in range(12):
-  rise=math.sin(i/8*math.tau)*2 if i<8 else [-3,-6,2,0][i-8];cx=180;cy=139+rise;out=[]
+  rise=math.sin(i/8*math.tau)*2 if i<8 else [-3,-6,2,0][i-8];cx=180;cy=139+(rise if form=='sun' or i>=8 else 0);out=[]
   if form=='sun':
    out += hollow_sun(i,cx,cy)
   else:
    for j in range(8):
     a=j*math.tau/8;x=math.cos(a);y=math.sin(a);out.append(poly([(cx+x*82,cy+y*82),(cx+x*119-y*8,cy+y*119+x*8),(cx+x*126+y*6,cy+y*126-x*6)],GOLD))
-   out += [poly([(177,71),(214,99),(226,139),(207,183),(177,210),(143,174),(132,129),(151,92)],BLUE),poly([(177,71),(186,130),(177,210),(143,174),(132,129),(151,92)],TEAL),poly([(177,71),(214,99),(186,130)],PALE),poly([(186,130),(226,139),(207,183),(177,210)],'#476a7b'),poly([(177,80),(184,127),(170,144),(186,161),(178,204),(171,160),(156,140),(171,124)],INK)]
+   out += exposed_heart(i)
   if i==10:out += [ring(cx,cy,122,4,PALE),ring(cx,cy,134,2,TEAL)]
   frames.append(f'<svg x="{i%2*360}" y="{i//2*288}" width="360" height="288" viewBox="0 0 360 288">'+''.join(out)+'</svg>')
  text='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1728" viewBox="0 0 720 1728"><title>'+escape('The Benefactor '+form)+'</title>'+''.join(frames)+'</svg>\n'

@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 export const BOSS_IDLE_FRAMES=8;
 export const BOSS_BREATH_MS=3200;
+export const BOSS_HEARTBEAT_MS=1200;
 export const BOSS_ATTACK_CONTACT=420;
 export const BOSS_ATTACK_DURATION=920;
 export const BOSS_FRAME_COUNT=12;
@@ -15,7 +16,7 @@ export function bossMotionFrame(now:number,started?:number,cycleMs=BOSS_BREATH_M
 }
 
 /** Each sprite owns its update listener; scene redraws destroy it immediately. */
-export function animateBoss(scene:Phaser.Scene,image:Phaser.GameObjects.Image,alive:boolean,onFrame:(frame:number)=>void,idle:{motion:'breathe'|'mechanical';cycleMs:number}={motion:'breathe',cycleMs:BOSS_BREATH_MS}){
+export function animateBoss(scene:Phaser.Scene,image:Phaser.GameObjects.Image,alive:boolean,onFrame:(frame:number)=>void,idle:{motion:'breathe'|'mechanical'|'heartbeat';cycleMs:number}={motion:'breathe',cycleMs:BOSS_BREATH_MS}){
   const paint=()=>{
     const frame=alive&&!reduced.matches?bossMotionFrame(scene.time.now,attacks.get(image),idle.cycleMs):0;
     image.setFrame(frame).setData('actor-motion',frame>=BOSS_IDLE_FRAMES?'attack':alive&&!reduced.matches?idle.motion:'idle');
