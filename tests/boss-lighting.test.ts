@@ -4,11 +4,12 @@ import type {Battle,Encounter,Unit} from '../src/rules/combat';
 import {offset,hexVertices,toPixel} from '../src/rules/hex';
 import {focusExposure,lampStrength,lightPixels} from '../src/game/world-light';
 import {BossLighting} from '../src/game/boss-lighting';
+import {ENCOUNTERS,encounterChapter} from '../src/content/encounters';
 let reduced=false;
 afterEach(()=>{vi.unstubAllGlobals();reduced=false;});
-function fixture(boss:NonNullable<Encounter['boss']>='benefactor',form:0|1|2=0){
+function fixture(boss:NonNullable<Encounter['boss']>='benefactor',form:0|1|2=0,definition?:Encounter){
  vi.stubGlobal('window',{matchMedia:()=>({matches:reduced})});
- const time={now:0},battle={}as Battle,encounter={boss,benefactorForm:form}as Encounter;
+ const time={now:0},battle={}as Battle,encounter=definition??Object.values(ENCOUNTERS).find(e=>e.boss===boss&&(boss!=='benefactor'||e.benefactorForm===form))!;
  const lighting=BossLighting.create({time}as Phaser.Scene,battle,encounter)!;
  const image={active:true,x:460,y:280,displayHeight:280}as Phaser.GameObjects.Image;
  if(lighting)lighting.bind({id:'source'}as Unit,image,100);
@@ -92,4 +93,22 @@ it('lights the Lightbearer from her right-hand lantern and dims it with the actu
  expect(fixture('emperor').lighting.sample().environmentShade).toBeUndefined();
  expect(fixture('emperor').lighting.sample().flares).toEqual([]);
  lighting.bind({id:'source'}as Unit,image,0);expect(lighting.sample().flares).toEqual([]);
+});
+
+it('ramps attack darkness by the encounter chapter, including dev copies and later reprises',()=>{
+ for(const [id,chapter,peak]of [['hammer-carrier',5,.36],['wind-engine',5,.36],['alban-flagship',5,.36],['winter-dragon',6,.54],['sun-serpent',6,.54],['lightbearer',6,.54],['imperial-vessel',6,.54],['domain-furnace',7,.72],['domain-ward',7,.72],['domain-dragon',7,.72],['benefactor-body',7,.72],['benefactor-sun',7,.72],['benefactor-heart',7,.72]]as const){
+  const source=ENCOUNTERS[id];
+  for(const encounter of [source,{...source,id:'dev-'+id}]){
+   expect(encounterChapter(encounter)).toBe(chapter);
+   const {lighting,time}=fixture(source.boss!,source.benefactorForm??0,encounter);
+   const idle=lighting.sample();expect(idle.focus).toBeUndefined();
+   lighting.attack('source',[offset(4,5)],400,950);time.now=400;
+   const focus=lighting.sample().focus!;expect(focus.strength).toBeCloseTo(peak);
+   const target=toPixel(offset(4,5)),safe=toPixel(offset(7,5));expect(focusExposure(focus,target.x,target.y)).toBe(1);expect(focusExposure(focus,safe.x,safe.y)).toBeCloseTo(1-peak*.7);
+   const redraw=fixture(source.boss!,source.benefactorForm??0,encounter);redraw.time.now=400;redraw.lighting.attack('source',[offset(4,5)],400,950,400);expect(redraw.lighting.sample().focus).toEqual(focus);
+   time.now=950;expect(lighting.sample().focus).toBeUndefined();expect(lighting.sample().ambient).toEqual(idle.ambient);
+  }
+ }
+ expect(encounterChapter(ENCOUNTERS.captain)).toBe(1);expect(encounterChapter(ENCOUNTERS['sanctuary-warden'])).toBe(4);
+ expect(encounterChapter({id:'unknown'})).toBeUndefined();
 });

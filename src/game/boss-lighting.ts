@@ -2,6 +2,7 @@ import type Phaser from 'phaser';
 import type {Battle,Encounter,Unit} from '../rules/combat';
 import type {WorldLight,WorldLamp,LightFlare} from './world-light';
 import {hexVertices,type Hex} from '../rules/hex';
+import {encounterChapter} from '../content/encounters';
 
 type Color=readonly number[];
 interface Mood {ambient:Color;key:Color;rim:Color;environmentShade?:number;lantern?:boolean}
@@ -27,10 +28,11 @@ export class BossLighting {
  private cached?:WorldLight;
  private stamp='';
  private get reduced(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
- private constructor(private scene:Phaser.Scene,private battle:Battle,private mood:Mood){}
+ private constructor(private scene:Phaser.Scene,private battle:Battle,private mood:Mood,private attackDarkness:number){}
  static create(scene:Phaser.Scene,battle:Battle,encounter:Encounter){
   const mood=encounter.boss==='benefactor'?divine[encounter.benefactorForm??0]:moods[encounter.boss!];
-  return mood?new BossLighting(scene,battle,mood):undefined;
+  const chapter=encounterChapter(encounter)??7;
+  return mood?new BossLighting(scene,battle,mood,Math.max(0,Math.min(4,chapter-3))*.18):undefined;
  }
  bind(unit:Unit,image:Phaser.GameObjects.Image,hp:number){this.sources.set(unit.id,{image,alive:hp>0});}
  attack(id:string,cells:readonly Hex[],contact:number,duration:number,elapsed=0){if(!this.reduced&&this.sources.get(id)?.alive)this.attacks.set(id,{at:this.scene.time.now-elapsed,contact,duration,polygons:cells.map(h=>hexVertices(h))});}
@@ -52,7 +54,7 @@ export class BossLighting {
    if(attack?.polygons.length&&charge>0){
     // Ease down over the wind-up, hold through contact, then restore the stage.
     const envelope=elapsed<attack.contact?Math.min(1,elapsed/Math.min(240,attack.contact)):Math.min(1,charge*2);
-    const strength=Math.round(envelope*12)/12*.72;
+    const strength=Math.round(envelope*12)/12*this.attackDarkness;
     if(strength>0){focus={polygons:attack.polygons,strength};positions.push(`focus:${id}:${attack.at}:${strength}`);}
    }
   }
