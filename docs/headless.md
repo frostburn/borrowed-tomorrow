@@ -24,7 +24,7 @@ Select the alternate fights with `--conduit pressure` and `--harbor wet`; defaul
 
 Continuation reports include the source file’s SHA-256, policy version, options, initial resources, final `state`, earned departure `checkpoints` and chronological `events`. Events record paths, choices, dialogue, purchases, skill upgrades, equipment/formation changes and resource snapshots. Battle traces record each decision and enemy ability, all fighters’ HP/focus/positions before and after, remaining items and the earth-plate release. Once a session begins, a failure writes its partial trace with `status: "failed"` and exits unsuccessfully. The campaign state in a failed battle remains the prebattle save; the last turn snapshots describe the failure. A 600-decision battle limit and a scene-continuation limit catch stalls.
 
-`src/headless/campaign.ts` is the story/rules adapter; `tactics.ts` chooses legal moves and actions; `middle.ts` and `five.ts` contain the routes and deliberate player choices; `continue.ts` owns the CLI/report file. `run.ts` keeps the original early policy stable and exposes `playEarly` so route tests can earn their starting state from `newGame()`.
+`src/headless/campaign.ts` is the story/rules adapter; `tactics.ts` chooses legal moves and actions; `middle.ts`, `five.ts` and `six.ts` contain the routes and deliberate player choices; `continue.ts` and `six-cli.ts` own the CLI/report files. `run.ts` keeps the original early policy stable and exposes `playEarly` so route tests can earn their starting state from `newGame()`.
 
 The original `middle-v1` behavior remains available with `--tactics legacy --build offense --spending baseline`. Programmatic sessions default to that baseline so existing route tests remain comparable.
 
@@ -331,3 +331,59 @@ The weaker Burst initially made the sealed regulator take five rounds against pr
 [skill-balance-audit.json](headless/skill-balance-audit.json) records current source hashes, reproduction commands, the earned middle/five summaries, conduit comparisons and the late-fixture aggregate. All **42 authored late-boss cases** win without knockouts, including ill/recovered Nell and three consecutive final forms. These are canonical fixtures, not an earned Chapter Six/Seven journey. The default campaign controller does not cast Rallying cry in this run; dedicated rules and desktop/phone practices verify its real regeneration, moving coverage, expiry and action timing. These results therefore do not establish how often a human should use the cry.
 
 The surplus of upgrade points after mastery is now fixed by the skill-point cap (see [combat progression](combat-upgrade.md#upgrade-choices)). Limited late spending and complete earned Chapter Six/Seven journeys remain follow-ups. Historical tables and comparison files above retain their original rules and hashes.
+
+
+## Chapter Six: earned expeditions and both capital outcomes
+
+Continue the existing earned Chapter Five departure with:
+
+```sh
+npm run simulate:six -- --from docs/headless/chapter-five-earned.json --output /tmp/six.json
+```
+
+The default visits **Iria → Namar → Skeld**, cures Nell before either seal, takes the gallery escape, collects optional loot, and completes the recovered capital route at `chapter-seven:hollow-sun`. It plays fourteen real battles, including the serpent, dragon and Emperor. The previous checkpoint's 3,475 XP, 1,487 marks, skills, injuries, formation, gear and supplies are retained. This extends that earned run; it does not claim a newly replayed Chapters One–Five prefix under current balance rules.
+
+`--order north,desert,jungle --palace channel --build support --spending frugal --skip-optional` tests both seals with ill Nell, then treatment and the recovered capital. Omit `jungle` (`--order desert,north`) to explicitly choose the uncured route: the agent accepts the warning and return-save confirmation, defeats the Emperor and Lightbearer, and reaches the terminal empty-seat ending. Nell remains unavailable until treatment; ordinary rests do not cure her. The bad ending records her death at zero HP and never grants a Chapter Seven departure or the remembered-Larkspur vision.
+
+`--through regions` stops at the outer mooring after the requested expeditions. The reader accepts the Chapter Five departure and Chapter Six outer-mooring saves between **completed, reported** expeditions, before entering the capital streets. It rejects failed reports, partial expeditions, capital-in-progress saves and finished endings. Reuse the same route options when resuming. The recorded `capital-return` save is a normal playable pre-assault save, but this command deliberately does not resume mid-capital saves.
+
+```sh
+npm run simulate:six -- --from docs/headless/chapter-five-earned.json --through regions --output /tmp/six-regions.json
+npm run simulate:six -- --from /tmp/six-regions.json --output /tmp/six-complete.json
+```
+
+The headless adapter now implements the actual asynchronous checkpoint prompt. The route must explicitly answer it; cancellation leaves the assault uncommitted, while acceptance records a validated return save **before** the irreversible choice. Other world actions are blocked while a confirmation is pending. The capital route also approaches the crown-stair interaction to trigger the recovered-Nell vision, rather than assuming that scene starts at cordon victory. These were missing runner operations, not campaign blockers. No production gameplay, map, encounter, reward or price changes were required.
+
+### Spending on permanent improvements
+
+`--improvements` adds a deliberate **prepared-policy** spending plan with an 80-mark emergency reserve: Celia's endurance/focus courses at the mooring, Kit's river training after treatment and his river scene, and Nell's reinforced housing at the allied landing. Every purchase uses the real clerk, course selection and confirmation. Existing purchases are not repeated; training grants no free healing. The ordinary rest afterward fills the increased capacities. Treatment itself remains free. Baseline/frugal policies do not buy these upgrades, even if the flag is supplied.
+
+```sh
+npm run simulate:six -- --from docs/headless/chapter-five-earned.json --improvements --output /tmp/six-trained.json
+```
+
+### Results
+
+| Run | Fights | HP lost | Knockouts | Useful rests | Marks spent | Final marks |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Early cure / offense / prepared / optional loot | 14 | 620 | 0 | 11 | 70 | 3,452 |
+| Late cure / support / frugal / channel / no optional loot | 11 | 702 | 0 | 10 | 26 | 3,241 |
+| Uncured / offense / prepared / no optional loot | 10 | 715 | 0 | 10 | 76 | 2,951 |
+| Early cure plus permanent improvements | 14 | 547 | 0 | 11 | 1,652 | 1,870 |
+
+All four routes finish without defeats, retries, forced victories or granted resources. Default/trained runs finish at **7,005 XP / level 14**; late cure at 6,695 XP / level 14; the uncured ending at 6,155 XP / level 13. Default and late-cure endings have two bandages, no field bandages and one focus tonic. They retain all purchased skills; the mastery cap leaves no permanently useless points. Comparisons between different orders/builds also change gear, earned XP and formations: they are not matched-input boss-difficulty tests.
+
+- [chapter-six-earned.json](headless/chapter-six-earned.json) is the **current earned continuation checkpoint**, at the recovered Chapter Seven departure, using the default medicine-only spending policy.
+- [chapter-six-regions-earned.json](headless/chapter-six-regions-earned.json) is the earned default pre-capital mooring checkpoint. Continuing it produces the same final state as the uninterrupted run.
+- [chapter-six-trained-earned.json](headless/chapter-six-trained-earned.json) is an alternative earned departure with the four permanent purchases, for future economy comparisons.
+- [chapter-six-audit.json](headless/chapter-six-audit.json) records input/source/report hashes, commands, battle metrics, actual abilities used, gear changes, spending and ending resources. Multi-megabyte raw turn traces stay outside the repository.
+
+### Issues to investigate next
+
+1. **Ordinary encounter pressure is uneven.** The default river-cache fight ends in one round without HP loss; the late-cure channel escape loses zero HP, and many other ordinary fights finish in two or three rounds. The default serpent and dragon lose only 36 and 30 HP, but the north-first ill-Nell dragon loses 184. Compare order-equivalent formations and a less predictive controller before changing stats; this agent forecasts actual enemy decisions. Optional cache guards or wave/position layouts may deserve attention before a broad difficulty increase.
+2. **The Emperor is lengthy, and the agent does not deliberately hold the support mountings.** Recovered routes take 10–11 rounds and lose 117–220 HP. In the default run both supports rebuild twice; the support-policy run allows one western rebuild. Occupying a mounting already counters rebuilding. Improve the headless agent's objective handling and compare that result before concluding that the boss itself needs less HP or fewer rebuilds.
+3. **Earlier character-specific upgrades become inaccessible.** The Chapter Six chart offers Namar, Skeld and Iria, with no route back to Hammerplain, Dawnwatch or Windmere. The inherited checkpoint has none of those three specialties, so this continuation cannot buy them. Consider bringing the allied specialists' services aboard or making the last purchasing opportunity clearer.
+
+The economy result is more encouraging than the earlier medicine-only audit: the new plan spends **1,600 marks on permanent improvements plus 52 on medicine**, leaving 1,870 for other courses. It still has many unpurchased courses and performs no selling, so its remaining purse is not evidence that the game has nothing useful left to buy. The controller never casts Rallying cry in these routes, so these results also cannot establish that skill's player-facing utility.
+
+Validation: `npm run check` covers the normal rule/content suite, TypeScript and build. The opt-in `tests/headless-six.simulation.ts` covers the complete routes, money conservation, Nell's illness/recovery/death, return checkpoints, real purchases, and split-run equivalence. `tests/headless-six.test.ts` covers reader rejection and explicit checkpoint cancellation/acceptance. Detailed routes remain outside default CI. These headless runs do not test rendering, animation, audio or an earned Chapter Seven playthrough.

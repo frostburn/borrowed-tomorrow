@@ -29,13 +29,16 @@ export class CampaignSession{
  readonly battleStarts=new Map<string,Battle>();
  private dialogue?:Dialogue;
  private pendingBattle?:string;
+ private pendingCheckpoint?:{name:string;resolve:(accepted:boolean)=>void};
  private shop?:ShopId;
  private readonly host:StoryHost;
  constructor(state:GameState,readonly agent:AgentOptions=baselineAgent){
   this.state=decodeSave(JSON.stringify(state));
-  this.host={state:this.state,talk:d=>{if(this.dialogue)throw Error('Overlapping dialogue');this.dialogue=d;this.events.push({event:'dialogue',scene:d.scene?.id,lines:d.lines.map(l=>({who:l.who,text:l.text}))});},commit:(f,j)=>{this.state.flags[f]=true;if(j)remember(this.state,j);},refresh(){},save(){},checkpoint:async()=>{throw Error('Checkpoint prompt not supported in this route');},travel:(map,x,y)=>{this.state.location={map,x,y};resumeChapter(this.host);},battle:id=>{if(this.pendingBattle)throw Error('Overlapping battles');this.pendingBattle=id;},shop:id=>{this.shop=id??'station';},boundary(){},toast:message=>this.events.push({event:'message',message}),endingMusic(){}};
+  this.host={state:this.state,talk:d=>{if(this.dialogue)throw Error('Overlapping dialogue');this.dialogue=d;this.events.push({event:'dialogue',scene:d.scene?.id,lines:d.lines.map(l=>({who:l.who,text:l.text}))});},commit:(f,j)=>{this.state.flags[f]=true;if(j)remember(this.state,j);},refresh(){},save(){},checkpoint:name=>new Promise<boolean>(resolve=>{
+   this.world();this.pendingCheckpoint={name,resolve};this.events.push({event:'checkpoint-prompt',name});
+  }),travel:(map,x,y)=>{this.state.location={map,x,y};resumeChapter(this.host);},battle:id=>{if(this.pendingBattle)throw Error('Overlapping battles');this.pendingBattle=id;},shop:id=>{this.shop=id??'station';},boundary(){},toast:message=>this.events.push({event:'message',message}),endingMusic(){}};
  }
- private world(){if(this.dialogue||this.pendingBattle||this.shop)throw Error('Finish the pending dialogue, battle or shop first');}
+ private world(){if(this.dialogue||this.pendingBattle||this.shop||this.pendingCheckpoint)throw Error('Finish the pending dialogue, battle, shop or checkpoint first');}
  private observed(event:string,detail:Record<string,unknown>,action:()=>void){const before=resources(this.state);action();this.events.push({event,...detail,before,after:resources(this.state)});}
  /** Complete linear scenes and real battles, stopping at an explicit choice. */
  settle(){
@@ -66,6 +69,14 @@ export class CampaignSession{
  /** Re-enter the normal story dispatcher when loading an earned checkpoint. */
  resume(){this.world();resumeChapter(this.host);this.settle();}
  checkpoint(name:string){this.world();this.checkpoints[name]=decodeSave(JSON.stringify(this.state));}
+ /** Resolve the player's explicit save confirmation before its async story continuation. */
+ async answerCheckpoint(name:string,accepted:boolean){
+  const pending=this.pendingCheckpoint;if(!pending||pending.name!==name)throw Error(`No pending checkpoint: ${name}`);
+  this.pendingCheckpoint=undefined;
+  if(accepted)this.checkpoint(name);
+  this.events.push({event:'checkpoint-answer',name,accepted});pending.resolve(accepted);
+  await Promise.resolve();this.settle();
+ }
  formation(ids:CompanionId[]){
   this.world();const before=structuredClone(this.state.activeParty);
   // Validate on a copy so a rejected formation cannot partially remove fighters.
