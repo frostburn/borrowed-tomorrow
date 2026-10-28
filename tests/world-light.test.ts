@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { castShadows, lightPixels, lampStrength, stationLight, sceneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
+import { castShadows, shadowProjection, lightPixels, lampStrength, stationLight, sceneLight, NIGHT_AMBIENT, type WorldLight } from '../src/game/world-light';
 import { CHAPTER_ONE_MAPS, CHAPTER_ONE_BATTLES } from '../src/content/chapter-one/maps';
 import { CHAPTER_TWO_MAPS, CHAPTER_TWO_BATTLES } from '../src/content/chapter-two/maps';
 import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../src/content/chapter-three/maps';
@@ -206,4 +206,18 @@ it('matches exhaustive lighting at radius/beam edges, including rotated and mirr
     lightPixels(source,actual,lights,x,y,9,19,sx,sy,r);
     expect(actual.data).toEqual(expected);
   }
+});
+
+it('projects a rounded actor with ground width under lateral lights, smoothly across the side-on angle',()=>{
+  for(const sign of [-1,1]){
+    const matrices=[-1,0,1].map(dy=>shadowProjection(sign*80,dy));
+    for(const [a,b,c,d]of matrices){
+      // A 20px torso still covers nine ground-depth pixels under side lighting.
+      expect(Math.abs(b)*20).toBeGreaterThan(8.9);
+      expect(Math.abs(a*d-b*c)*20*58).toBeGreaterThan(700);
+      expect(c*-58).toBe(sign*80);
+    }
+    expect(Math.abs(matrices[0][1]-matrices[2][1])).toBeLessThan(.001);
+  }
+  expect(shadowProjection(0,0).every(Number.isFinite)).toBe(true);
 });
