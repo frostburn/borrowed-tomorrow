@@ -77,6 +77,7 @@ export const town=()=>scene('dawnwatch','five-dawn-freed','The watch stays',[
  line('Enna','Your shield strap’s split.'),
  line('Petra','I’d noticed.'),
  line('Enna','You always waited till it broke. There’s a new brace in your kit. Fit it before you fly.'),
+ line('Enna','If you can spare four hundred marks, stay for a recovery drill. You leave yourself open after a shield shove.'),
 ]);
 export const emperorOffer=():Dialogue=>{const d=scene('observation','five-emperor-offer','A morning in the glass',[
  line('The observation cabin','Festival bunting crosses the glass. Behind it stands Larkspur station, warm in the morning light.',{focus:{x:32,y:20},cut:true,silence:true}),

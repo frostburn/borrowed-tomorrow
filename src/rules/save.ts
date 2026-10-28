@@ -1,3 +1,4 @@
+import {maxFocus,validateImprovements} from './improvements';
 import {SEVEN_MAP_IDS,SEVEN_PREREQUISITES,validateSeven} from '../content/chapter-seven/progress';
 import { SIX_MAP_IDS,SIX_PREREQUISITES,validateSix } from '../content/chapter-six/progress';
 import { heroAvailable } from './availability';
@@ -20,18 +21,19 @@ export function decodeSave(text: string): GameState {
   if (!number(s.xp, 1e7) || !number(s.coins, 1e7) || !number(s.bandages, 999) || !number(s.playSeconds, 1e9)) throw new Error('The save contains invalid progress.');
   if (!['chapter-one','chapter-two','chapter-three','chapter-four','chapter-five','chapter-six','chapter-seven'].includes(s.chapter as string) || (s.boundary !== null && s.boundary !== NEXT_CHAPTER && s.boundary !== THIRD_CHAPTER && s.boundary !== FOURTH_CHAPTER && s.boundary !== FIFTH_CHAPTER && s.boundary !== SIXTH_CHAPTER && s.boundary !== SEVENTH_CHAPTER)) throw new Error('This chapter is not available in this build.');
   if (!Array.isArray(s.party) || s.party.length < 1 || s.party.length > (['chapter-four','chapter-five','chapter-six','chapter-seven'].includes(s.chapter as string) ? 5 : s.chapter === 'chapter-three' ? 4 : 3) || s.party[0]?.id !== 'nell') throw new Error('The party is invalid.');
-  const party: HeroState[] = [];
-  for (const h of s.party) {
-    if (!h || !['nell', 'orrin', 'kit', 'celia', 'petra'].includes(h.id) || party.some(p => p.id === h.id) || !number(h.hp, maxHp(h.id, { xp: s.xp })) || !number(h.focus, 6)) throw new Error('The party is invalid.');
-    party.push({ id: h.id, hp: h.hp, focus: h.focus });
-  }
   if (!s.flags || typeof s.flags !== 'object' || Array.isArray(s.flags) || Object.values(s.flags).some(v => typeof v !== 'boolean')) throw new Error('Invalid story flags.');
   const flags: Record<string, boolean> = Object.create(null);
   for (const [id, value] of Object.entries(s.flags)) {
     if (!/^[a-zA-Z][a-zA-Z0-9_-]{0,80}$/.test(id) || ['constructor', 'prototype', '__proto__'].includes(id)) throw new Error('Invalid story flag.');
     flags[id] = value as boolean;
   }
+  const party: HeroState[] = [];
+  for (const h of s.party) {
+    if (!h || !['nell', 'orrin', 'kit', 'celia', 'petra'].includes(h.id) || party.some(p => p.id === h.id) || !number(h.hp, maxHp(h.id, { xp: s.xp,flags })) || !number(h.focus, maxFocus({flags},h.id))) throw new Error('The party is invalid.');
+    party.push({ id: h.id, hp: h.hp, focus: h.focus });
+  }
   for (const id of ['orrin','kit','celia','petra'] as const) if (Boolean(flags[`${id}Joined`]) !== party.some(h => h.id === id)) throw new Error('The party does not match the story progress.');
+  validateImprovements({party,flags});
   const activeParty = s.activeParty;
   if (!validParty(activeParty, party.filter(h=>heroAvailable({flags},h.id)).map(h => h.id)) || !flags.nellIll&&!activeParty.includes('nell')) throw new Error('The active party is invalid.');
   const prerequisites: Record<string, string> = {

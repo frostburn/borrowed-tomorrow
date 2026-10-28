@@ -1,3 +1,4 @@
+import {offerImprovements} from '../improvements';
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import type { StoryHost } from '../story-host';
@@ -34,12 +35,13 @@ export function interactDawnwatch(h:StoryHost,id:string){
   case 'cabin-deck':return go('airship','cabin');
   case 'dawn-ship':return go('airship','dawnwatch');
   case 'dawn-gate':
+   if(f.dawnwatchComplete)return offerImprovements(h,'dawnwatch');
    if(!f.dawnwatchSeen)return;
    if(f.shelterOpened)return say('Enna',f.dawnwatchComplete?'The wheel key stays by the shelter door. Everybody on watch knows where it is.':'There’s water inside. We’ll keep the door open while you clear the gun terraces.');
    return h.talk({...scenes.shelter(),done:()=>{s.location=arrival('dawnwatch','shelter');h.commit('shelterOpened','shelterOpened');}});
   case 'dawn-barracks':return f.shelterOpened?go('watchbarracks','start'):h.toast('Open the shelter gate first.');
-  case 'dawn-soldier':return say('Enna',f.shelterOpened?'I’ll stay at the gate. Both gun positions are above the barracks stair.':'The lever’s above us. I’ll help Petra lift it.');
-  case 'dawn-soldier-after':return say('Enna','The pilots sent their signals up to Alda. My watch is staying here with the town.');
+  case 'dawn-soldier':if(f.dawnwatchComplete)return offerImprovements(h,'dawnwatch');return say('Enna',f.shelterOpened?'I’ll stay at the gate. Both gun positions are above the barracks stair.':'The lever’s above us. I’ll help Petra lift it.');
+  case 'dawn-soldier-after':return offerImprovements(h,'dawnwatch');
   case 'watch-plan':return h.talk({lines:[SAY('Petra',f.mortarWon&&f.repeaterWon?'Both guns are silent. The signal-wall stair is north.':'Which position? The other gun supports its crew until we defeat the spotter.')],choices:[
    {label:f.mortarWon?'Western mortar · position clear':'Western mortar · repeater lane support',disabled:!!f.mortarWon,action:()=>gun(true)},
    {label:f.repeaterWon?'Eastern repeater · position clear':'Eastern repeater · mortar blast support',disabled:!!f.repeaterWon,action:()=>gun(false)},

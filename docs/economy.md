@@ -55,3 +55,25 @@ Chapter Three’s medical engine and maintenance bench offer **Browse supplies a
 Medical counters retain bandages, field bandages and tonics and add insulated coats (48), lined travel coats (32) and medic clasps (36, visible only after Celia joins). These are existing stat-only items; loot, manual fitting, ownership limits and free resting retain their behavior. Listed equipment sells for half its purchase price. The clerk’s list and battle costs use the same shared shop rules.
 
 See [headless.md](headless.md) for controlled before/after comparisons: prepared policies now use several hundred marks on actual equipment, while frugal routes still complete. Prices/payouts were not globally raised or cut to force spending.
+
+## Permanent improvements
+
+Airship supply counters offer once-only training per recruited, available character: **+12 max HP for 300 marks**, and **+1 max focus for 450 marks**. Training remains available at the outer mooring, allied capital quay and Chapter Seven's mooring/final refuge. Capacity purchases do not heal or refill; free rest fills the new capacity. Equipment lists completed improvements separately from worn gear.
+
+| Specialist | Unlock | Cost | Permanent effect |
+| --- | --- | ---: | --- |
+| Hester, Hammerplain | Replacement engines running | 500 | Orrin: movement 2 → 3 |
+| Enna, Dawnwatch | Town/watch resolution | 400 | Petra: Shield bash grants 4 Guard, without stacking |
+| Sera, Windmere | First night shift complete | 450 | Celia: Heal range +1, including higher ranks |
+| Tavi, Iria | Nell treated and river scene complete | 450 | Kit: shallow water/broken ice movement cost 2 → 1; hazards still hurt |
+| Orrin, capital preparations | Capital open and Nell recovered | 400 | Nell: 8 Guard at battle start |
+
+Training and improvement providers carry a barbell marker; providers that also offer rest combine it with the house. A character’s training choice dims once both courses are complete. Each purchase has an effect preview, exact price, separate confirmation and disabled completed state. Treatment and quest resolutions remain free. Local services require their own completed quest; Kit's offer works before or after the desert. Nell cannot train while ill or deceased. These bonuses neither occupy equipment slots nor unlock skills.
+
+`rules/improvements.ts` owns the catalogue and atomic transactions. Existing version-11 boolean flags persist purchases; save validation checks their character and quest prerequisites. Shared capacity/ability/movement rules apply the bonuses to targeting, regeneration, consumables, recovery and previews. Isolated workshop profiles retain their own stats.
+
+### Earned Chapter Five check
+
+Starting from `docs/headless/chapter-four-engaged-warden.json`, the prepared defensive route completes all twelve battles with or without improvements. Without purchases it ends with 1,537 marks. The optional purchasing policy prioritizes Orrin's counterbalance, then Celia's endurance and focus courses: 1,250 marks spent, 287 left, with medicine still stocked. The focus course becomes affordable near departure. This is one controlled route, not a claim that every party/build is equally balanced.
+
+Reproduce with `npm run simulate:five -- --from docs/headless/chapter-four-engaged-warden.json --improvements --output /tmp/five-improvements.json`. Omit `--improvements` for the control. Default headless spending remains unchanged. `tests/improvements.simulation.ts` checks the real dialogue purchases and full route outside default CI; `tests/improvements.test.ts` checks transactions and combat rules. Desktop/phone flows are in `tests/e2e/improvements.spec.ts`.

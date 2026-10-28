@@ -1,3 +1,4 @@
+import {offerImprovements} from '../improvements';
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import type { StoryHost } from '../story-host';
@@ -51,7 +52,7 @@ export function interactWindmere(h:StoryHost,id:string){
    if(!f.wardEngineWon)return h.toast('Stop the engine before touching the treatment supply.');
    if(f.windmereFreed)return say('Celia','The ward is on its own supply. The upward contact is open.');
    return h.talk({...scenes.release(),done:()=>{s.location=arrival('mirrorward','release');h.commit('windmereFreed','windmereFreed');}});
-  case 'wind-sera':case 'wind-lift-sera':return say('Sera',f.windmereComplete?'The morning clinic’s open. Dena’s next train has the linen we asked for.':f.waterLiftOpened?'The equipment is up. Meet us at the ordinary ward’s bypass valve.':'There are beds in the lower dispensary. We can bring them up together.');
+  case 'wind-sera':case 'wind-lift-sera':if(f.windmereComplete)return offerImprovements(h,'windmere');return say('Sera',f.windmereComplete?'The morning clinic’s open. Dena’s next train has the linen we asked for.':f.waterLiftOpened?'The equipment is up. Meet us at the ordinary ward’s bypass valve.':'There are beds in the lower dispensary. We can bring them up together.');
   case 'wind-teren':return say('Teren','She let me carry my own bag today. Sera still made me stop at the first landing.');
   case 'wind-iven':return say('Director Iven',f.windmereFreed?'I’ve opened the ledger. The village representatives are waiting downstairs.':'I know every bed that light has emptied. I should have counted the ones it filled elsewhere.');
  }

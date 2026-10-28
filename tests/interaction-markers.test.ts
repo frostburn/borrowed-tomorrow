@@ -1,3 +1,6 @@
+import {GYM_GLYPH} from '../src/content/interaction-markers';
+import {glyph} from '../src/game/pixel-font';
+import smallGlyphs from '../src/game/small-font.json';
 import {expect,it} from 'vitest';
 import {MAPS,visibleObjects} from '../src/content/maps';
 import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
@@ -181,4 +184,26 @@ it('dims remaining scene-gated exits until their release scene finishes',()=>{
   const object=MAPS[map].objects.find(o=>o.id===id)!;expect(interactionMarker(object,s)?.color).toBe(BLOCKED_MARKER_COLOR);
   s.flags[flag]=true;expect(interactionMarker(object,s)).toMatchObject(INTERACTION_MARKERS.exit);
  }
+});
+
+
+it('marks training clerks with a barbell, combining rest and story shapes where appropriate',()=>{
+ const s=newGame();
+ for(const [map,id]of [['airship','ship-supply'],['outermooring','six-supplies'],['hollowsill','sill-rest'],['lastrefuge','refuge-seven-rest']]as const){
+  const o=MAPS[map].objects.find(o=>o.id===id)!;
+  s.flags.airshipOwned=false;expect(interactionMarker(o,s)?.glyph).toBe('⌂');
+  s.flags.airshipOwned=true;expect(interactionMarker(o,s)?.glyph).toBe('⌂'+GYM_GLYPH);
+ }
+ const crew=MAPS.capitalquay.objects.find(o=>o.id==='capital-crew')!;
+ expect(interactionMarker(crew,s)?.glyph).toBe(GYM_GLYPH);
+ s.flags.capitalLandingSeen=true;
+ const departure=visibleObjects(MAPS.capitalquay,s).find(o=>o.id==='capital-departure')!;
+ expect(interactionMarker(departure,s)?.glyph).toBe('!'+GYM_GLYPH);
+ for(const [map,id,flag]of [['hammerplain','hammer-hester-after','hammerplainComplete'],['dawnwatch','dawn-soldier-after','dawnwatchComplete'],['windmere','wind-sera','windmereComplete'],['riverhaven','river-tavi','riverRestSeen']]as const){
+  const o=MAPS[map].objects.find(o=>o.id===id)!;
+  s.flags[flag]=false;expect(interactionMarker(o,s)?.glyph).not.toContain(GYM_GLYPH);
+  s.flags[flag]=true;expect(interactionMarker(o,s)?.glyph).toBe(GYM_GLYPH);
+ }
+ expect(glyph(GYM_GLYPH)).not.toEqual(glyph('?'));
+ expect(smallGlyphs[GYM_GLYPH as keyof typeof smallGlyphs]).toBeDefined();
 });

@@ -1,3 +1,4 @@
+import {IMPROVEMENTS,improved} from '../rules/improvements';
 import {interactChapter,resumeChapter} from '../content/story';
 import {nextChapter} from '../content/chapters';
 import {MAPS,visibleObjects,walkable,worldPath} from '../content/maps';
@@ -19,7 +20,7 @@ export const defaultAgent:AgentOptions={tactics:'defensive',build:'offense',spen
 
 const priorities:Record<CompanionId,SkillId[]>={nell:['burst','sunline','mend','dazzle'],orrin:['steam','rivet','guard','repulse'],kit:['quickshot','pin','ricochet','feint'],petra:['crush','sweep','taunt','bash'],celia:['heal','celestialbolt','rally','sanctuary']};
 const support:Record<CompanionId,SkillId[]>={nell:['mend','dazzle','burst','sunline'],orrin:['guard','rivet','steam','repulse'],kit:['feint','pin','quickshot','ricochet'],petra:['taunt','bash','crush','sweep'],celia:['heal','sanctuary','rally','celestialbolt']};
-export const resources=(s:GameState)=>structuredClone({chapter:s.chapter,location:s.location,level:level(s),xp:s.xp,coins:s.coins,bandages:s.bandages,party:s.party,activeParty:s.activeParty,inventory:s.inventory,skills:s.skills});
+export const resources=(s:GameState)=>structuredClone({chapter:s.chapter,location:s.location,level:level(s),xp:s.xp,coins:s.coins,bandages:s.bandages,party:s.party,activeParty:s.activeParty,inventory:s.inventory,skills:s.skills,improvements:IMPROVEMENTS.filter(i=>improved(s,i.id)).map(i=>i.id)});
 export class CampaignSession{
  readonly state:GameState;
  readonly events:Record<string,unknown>[]=[];

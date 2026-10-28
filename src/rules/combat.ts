@@ -1,3 +1,4 @@
+import {focusCapacity,maxFocus,improved} from './improvements';
 import { PACKED_CONSUMABLES, type PackedConsumableId, type ConsumableId } from './consumables';
 import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
 import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
@@ -34,6 +35,7 @@ export interface Unit {
   id: string; name: string; kind: string; role?: string; appearance?: string; sealed?:boolean; side: 'party' | 'enemy'; hex: Hex;
   hp: number; maxHp: number; focus: number; speed: number; movement: number; armor: number; bonus: number;
   abilities: AbilityId[]; moved: boolean; defending: boolean; retaliated: boolean; waited: boolean;
+  maxFocus?:number;improvements?:{bash?:boolean;heal?:boolean;terrain?:boolean};
   skills?:SkillRanks;guard?: number; dazzledAttacks?: number; level?: number; bonusUsed?: boolean; tauntedBy?: string;
   rally?:RallyAura;
   linkedTo?:string;pinned?:boolean;teamSpentRound?:number;
@@ -71,7 +73,8 @@ export function createPartyUnit(state:GameState,id:CompanionId,index=0,count=1,e
     const row = count === 3 ? [1, 3, 5][index] : 2 + index * 2;
     return { id, name: profile?.name ?? CHARACTERS[id].name, kind: id, role: profile?.role, side: 'party',
       hex: offset(1, row), hp: profile?.maxHp ?? Math.max(1, legacy!.hp), maxHp: profile?.maxHp ?? maxHp(legacy!.id, state), focus: profile?.focus ?? legacy!.focus,
-      speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement,
+      speed: Math.max(1, (profile?.speed ?? BASE_STATS[id].speed) + (equipment[id].speed ?? 0)), movement: profile?.movement ?? BASE_STATS[id].movement+(id==='orrin'&&improved(state,'orrin-counterbalance')?1:0),
+      ...(!profile?{maxFocus:maxFocus(state,id),improvements:{bash:id==='petra'&&improved(state,'petra-recovery'),heal:id==='celia'&&improved(state,'celia-sight'),terrain:id==='kit'&&improved(state,'kit-footing')},...(id==='nell'&&improved(state,'nell-housing')?{guard:8}:{})}:{}),
       armor: (profile?.armor ?? BASE_STATS[id].armor) + equipment[id].armor,
       bonus: (profile ? profile.attack - ABILITIES.strike.power : (level(state) - 1) * 2 + BASE_STATS[id].attack - ABILITIES.strike.power) + equipment[id].attack,
       abilities: [...(profile ? profile.abilities : skillAbilities(id,state.skills[id])), ...PACKED_CONSUMABLES.filter(item => (state.inventory.bag[item] ?? 0) > 0)], skills:structuredClone(profile?.skills??state.skills[id]), level: profile?.level??level(state),
@@ -126,7 +129,7 @@ function reviveTarget(b:Battle,u:Unit,id:AbilityId,aim:Hex){
  const a=abilityFor(u,id);if(!(a.reviveFraction||id==='revive')||unitAt(b,aim)||b.obstacles.has(key(aim))||distance(u.hex,aim)>a.range||!visible(u.hex,aim,b.obstacles))return;
  return b.units.filter(v=>v.hp<=0&&v.side===u.side&&equal(v.hex,aim)).sort((a,z)=>a.id.localeCompare(z.id))[0];
 }
-const terrainCost=(b:Battle,u:Unit,h:Hex)=>!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(p=>b.water.has(key(p))||brokenIce(b,p))?2:1;
+const terrainCost=(b:Battle,u:Unit,h:Hex)=>!u.improvements?.terrain&&!u.flying&&u.kind!=='crow'&&occupiedHexes(u,h).some(p=>b.water.has(key(p))||brokenIce(b,p))?2:1;
 export function movement(b: Battle, u: Unit) {
   const blocked = new Set([...b.obstacles, ...alive(b).filter(v => v.id !== u.id).flatMap(v => occupiedHexes(v).map(key))]);
   const anchors=u.footprint?.length?new Set(cells().filter(h=>occupiedHexes(u,h).some(part=>!inside(part)||blocked.has(key(part)))).map(key)):blocked;
@@ -185,7 +188,7 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
     return targets(b,u,id,aim).some(t=>t.side===u.side&&(t.hp<t.maxHp||a.cleanse&&(t.dazzledAttacks||t.pinned)))||!!protection&&(alive(b).some(t=>t.side!==u.side&&t.tauntedBy!==protection.vanguard.id)||alive(b).some(t=>t.side===u.side&&(protection.party||t.id===protection.vanguard.id)&&(t.guard??0)<protection.power));
   }
   if (a.effect==='guard') return targets(b,u,id,aim).some(t=>(t.guard??0)<supportPower(u,id));
-  if (a.effect==='focus') return targets(b,u,id,aim).some(v=>v.focus<6);
+  if (a.effect==='focus') return targets(b,u,id,aim).some(v=>v.focus<focusCapacity(v));
   if(a.effect==='shove'&&a.shape==='blast')return targets(b,u,id,aim).length>0;
   if (a.shape === 'single') {
     if (!v || v.side === u.side) return false;
@@ -197,7 +200,7 @@ export function damage(u: Unit, v: Unit, id: AbilityId,partner?:Unit): number {
   const a = abilityFor(u,id);
   if (a.heal) return Math.min(v.maxHp-v.hp,v.hp<=0&&(a.reviveFraction||id==='revive')?Math.max(1,Math.ceil(v.maxHp*(a.reviveFraction??.35))):supportPower(u,id,partner));
   if (a.effect==='guard') return Math.max(0,supportPower(u,id)-(v.guard??0));
-  if (a.effect==='focus') return Math.min(6-v.focus,a.power);
+  if (a.effect==='focus') return Math.min(focusCapacity(v)-v.focus,a.power);
   if (a.effect==='rally' || a.effect==='weaken' || a.effect==='shove' || a.effect==='taunt') return 0;
   if(v.sealed)return 0;
   return Math.max(0,attackDamage(u,v,id,partner)-(v.guard??0));
@@ -230,7 +233,7 @@ function beginTurn(b: Battle) {
   const u = active(b);
   if (u&&!movementOnly(b,u)) {
     for (const v of b.units) if (v.tauntedBy === u.id) delete v.tauntedBy;
-    u.defending = false; u.moved=false; u.bonusUsed = false; if (!u.waited) {const bonus=rallyBonus(b,u);u.focus = Math.min(6, u.focus + 1+bonus);if(bonus)log(b,`${u.name}: Rallying cry adds 1 focus regeneration.`);}
+    u.defending = false; u.moved=false; u.bonusUsed = false; if (!u.waited) {const bonus=rallyBonus(b,u);u.focus = Math.min(focusCapacity(u), u.focus + 1+bonus);if(bonus)log(b,`${u.name}: Rallying cry adds 1 focus regeneration.`);}
   }
   prepareConduit(b);prepareFurnace(b);prepareDawnwatch(b);prepareWard(b);prepareFlagship(b);prepareSerpent(b);prepareWinterDragon(b);prepareImperial(b);prepareBenefactor(b);prepareRelay(b);
 }
@@ -310,7 +313,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     else if(a.effect==='shove'){log(b,`${u.name}: ${a.name} deals no damage.`);}
     else if(a.effect==='weaken'){if(v.dazzledAttacks)continue;v.dazzledAttacks=3;log(b,`${v.name} is dazzled: their next three attacks deal 40% less damage.`);}
     else if(a.effect==='guard'){const amount=damage(u,v,id);v.guard=Math.max(v.guard??0,supportPower(u,id));log(b,`${u.name} grants ${amount} guard to ${v.name}.`);}
-    else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(6,v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
+    else if(a.effect==='focus'){const amount=damage(u,v,id);v.focus=Math.min(focusCapacity(v),v.focus+amount);log(b,`${u.name} restores ${amount} focus to ${v.name}.`);}
     else if(a.heal){const fallen=v.hp<=0,amount=damage(u,v,id,partner);v.hp=Math.min(v.maxHp,v.hp+amount);if(a.cleanse){delete v.dazzledAttacks;delete v.pinned;}if(fallen){b.queue=b.queue.filter(id=>id!==v.id);v.retaliated=true;}log(b,`${u.name} restores ${amount} HP to ${v.name}.`);}
     else{
       const {amount,absorbed}=hurt(u,v,id,partner);
@@ -319,6 +322,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
     }
     if((a.effect==='push'||a.effect==='shove')&&v.hp>0){const destination=pushDestination(b,u,v);if(destination){v.hex=destination;log(b,`${v.name} is pushed one hex.`);}else log(b,`${v.name} cannot be pushed farther.`);}
   }
+  if(id==='bash'&&u.improvements?.bash){u.guard=Math.max(u.guard??0,4);log(b,`${u.name} recovers behind her shield: 4 Guard.`);}
   if(id==='daybreak'){
     const protection=daybreakProtection(u,partner)!;
     for(const enemy of alive(b).filter(v=>v.side!==u.side)){enemy.tauntedBy=protection.vanguard.id;log(b,`${enemy.name} targets ${protection.vanguard.name} until ${protection.vanguard.name}’s next turn.`);}
@@ -348,7 +352,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
 }
 export function defend(b: Battle): boolean {
   const u = active(b); if (!u || b.result || movementOnly(b,u)) return false;
-  u.defending = true; u.focus = Math.min(6, u.focus + 1);
+  u.defending = true; u.focus = Math.min(focusCapacity(u), u.focus + 1);
   log(b, `${u.name} defends: 40% less damage until their next turn.`); finishTurn(b); return true;
 }
 /** Finish an assisting fighter's movement without granting Defend or extra focus. */
@@ -469,6 +473,6 @@ export function awardVictory(b: Battle, s: GameState) {
     if(!heroAvailable(s,hero.id))continue;
     const unit = b.units.find(u => u.id === hero.id as HeroId);
     hero.hp = Math.min(maxHp(hero.id, s), Math.max(1, unit?.hp ?? hero.hp) + 8 + (level(s) - oldLevel) * 6);
-    hero.focus = 6;
+    hero.focus = maxFocus(s,hero.id);
   }
 }

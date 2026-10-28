@@ -1,3 +1,4 @@
+import {focusCapacity} from '../rules/improvements';
 import {active,cast,damage,defend,enemyTurn,legalAim,move,movement,movementOnly,targets,type Battle,type AbilityId} from '../rules/combat';
 import {rallyValue} from './rally-value';
 import {abilityFor} from '../rules/skills';
@@ -16,7 +17,7 @@ export function enemyForecast(source:Battle):Battle{
  const sentinel=b.units.find(u=>u.side==='party'&&u.hp>0&& !b.units.some(v=>v.tauntedBy===u.id))??b.units.find(u=>u.side==='party'&&u.hp>0);
  if(!sentinel)return b;
  const first=active(b)?.id;b.queue=[...pending,sentinel.id];
- if(pending[0]&&pending[0]!==first){const u=active(b)!;u.moved=false;u.defending=false;u.bonusUsed=false;u.focus=Math.min(6,u.focus+1);}
+ if(pending[0]&&pending[0]!==first){const u=active(b)!;u.moved=false;u.defending=false;u.bonusUsed=false;u.focus=Math.min(focusCapacity(u),u.focus+1);}
  for(let n=0;n<20&&!b.result&&active(b)?.side==='enemy';n++)enemyTurn(b);
  return b;
 }

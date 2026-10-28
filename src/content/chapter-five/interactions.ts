@@ -1,3 +1,4 @@
+import {offerImprovements,trainingChoice} from '../improvements';
 import { beginFlagship,interactFinale,resumeFinale,flagshipReady,beginRetaliation } from './finale';
 import { completedAnchors } from './progress';
 import { resumeDawnwatch,interactDawnwatch } from './dawnwatch';
@@ -40,6 +41,7 @@ export function interactChapterFive(h:StoryHost,id:string){
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
+   ...(id==='ship-supply'?[trainingChoice(h)]:[]),
    {label:'Leave',action:()=>{}},
   ]});
   case 'airfield-seizure':
@@ -60,7 +62,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'ship-kit':if(f.nellIll)return say('Kit','Celia’s notes are packed. I know the Windmere landing; I can get them to Sera.');return say('Kit',f.dawnwatchComplete?'The pilots are in the same book as the railway crews now. If a signal fails, they know where to send a runner.':f.hammerplainComplete?'Hester sent a packing list. Every washer counted. I like her.':'Alda wants the delivery sacks tied on the left. I’ve checked which left this time.');
   case 'ship-petra':if(f.nellIll)return say('Petra','I wanted Alban to stand in front of the people he hurt. That light took his men with him.');if(f.flagshipWon)return say('Petra','Alban’s waiting on the command deck. Keep the gangway clear.');return h.talk(companions.shieldRoom(!!f.dawnwatchComplete));
   case 'ship-celia':if(f.nellIll)return say('Celia','She’s resting. Leave the lantern where I can watch it.');if(f.flagshipWon)return say('Celia','The boarding crew have laid down their weapons. We can cross.');return h.talk(companions.putThingsDown(!!f.windmereComplete));
-  case 'hammer-hester':case 'hammer-hester-after':return say('Hester',f.hammerplainComplete?'Both engines are holding. The street’s put the kettle on for the night shift.':f.hammerplainFreed?'Come over to the starters. I want you to hear this.':f.coolingOpened?'The upper gantry is through the cooling works. My crew’s bringing the starters behind you.':'The cooling race is east of here. Keep clear of the crane load.');
+  case 'hammer-hester':case 'hammer-hester-after':if(f.hammerplainComplete)return offerImprovements(h,'hammerplain');return say('Hester',f.hammerplainComplete?'Both engines are holding. The street’s put the kettle on for the night shift.':f.hammerplainFreed?'Come over to the starters. I want you to hear this.':f.coolingOpened?'The upper gantry is through the cooling works. My crew’s bringing the starters behind you.':'The cooling race is east of here. Keep clear of the crane load.');
   case 'hammer-cooling':return go('coolingworks','start');
   case 'hammer-ship':return go('airship','hammerplain');
   case 'hammer-coat':

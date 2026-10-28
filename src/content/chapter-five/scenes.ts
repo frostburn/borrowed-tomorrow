@@ -36,6 +36,7 @@ export const firstFlight=()=>scene('airship','five-first-flight','The flight cha
  line('Petra','Dawnwatch’s officers know me. I’ll have to give them a reason to listen.'),
  line('Celia','Windmere supplied our crystal medicines. There must be people there who can help us stop the collections.'),
  line('Alda','Put a finger on the flight chart when you’re ready. There’s water and a bunk aft.'),
+ line('Alda','The crew runs training on the survey deck. Ask at the supply counter: three hundred marks for endurance, four-fifty for concentration.'),
 ]);
 export const hammerplain=()=>scene('hammerplain','five-hammer','The stopped shift',[
  line('Hammerplain','A casting crane swings over the works. Beyond the fence, a woman stands motionless with a loaf halfway into her shopping bag.',{focus:{x:32,y:18},cut:true}),
@@ -109,6 +110,7 @@ export const workers=()=>scene('hammerplain','five-workers','The next shift',[
  line('Hester','I’ll send two fitters up, and a spare drive. If you’re cutting more anchors, you’ll need to keep flying.'),
  line('Orrin','I’d like to see that engine once it’s settled.'),
  line('Hester','Next time you’re here. I’ll let somebody else start it.'),
+ line('Hester','Bring that lance to my bench before you fly. Five hundred marks for a counterweight; it won’t drag at your shoulder so much.'),
 ]);
 export const fleet=(region:'hammerplain'|'dawnwatch'|'windmere'='hammerplain')=>scene('airship','five-fleet','Beyond the cloudbank',[
  line('Alda',region==='windmere'?'Windmere’s medical crew has its cases aboard. Sera sent the release order with them.':region==='dawnwatch'?'The Dawnwatch launches are holding off our port side. Their pilots know this cloudbank.':'Hammerplain’s fitters have the spare drive aboard. They’ve already found the rattle I couldn’t.',{focus:{x:32,y:22},cut:true}),
