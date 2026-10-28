@@ -153,7 +153,7 @@ it('the train raid trades its repeated-note call with coastal phrases and return
   const rhythm=(bar:number)=>lead(bar).map(n=>[n.beat,n.duration]);
   const keys=(bar:number)=>scoreBar('coast-battle',bar).filter(n=>n.instrument==='keys'&&n.beat===0).map(n=>n.pitch);
   expect([ARRANGEMENTS['coast-battle'].bpm,ARRANGEMENTS['coast-battle'].beats]).toEqual([124,4]);
-  for(const bar of [2,4,6,12,14])expect(rhythm(bar)).toEqual(rhythm(0));
+  for(const bar of [2,4,6,12])expect(rhythm(bar)).toEqual(rhythm(0));
   for(const bar of [5,13])expect(rhythm(bar)).toEqual(rhythm(1));
   expect(phrase(0)).toEqual([[0,'E5',.5],[1,'E5',.5],[2,'E5',.5],[2.5,'F5',.5],[3,'G5',.75]]);
   expect(phrase(1)).toEqual([[0,'F5',1.5],[2,'E5',.5],[3,'D5',.75]]);
@@ -174,10 +174,10 @@ it('the train raid trades its repeated-note call with coastal phrases and return
   expect(keys(15)).toEqual(['C3','D3','G3']);
   expect(scoreBar('coast-battle',14).filter(n=>isBass(n.instrument)).map(n=>n.pitch)).toEqual(['G2','D3','G2','D3']);
   expect(scoreBar('coast-battle',15).filter(n=>isBass(n.instrument)).map(n=>n.pitch)).toEqual(['C2','G2','C2','G2']);
-  expect(lead(14).map(n=>n.pitch)).toEqual(['D5','D5','D5','E5','F5']);
-  expect(phrase(15)).toEqual(phrase(1));
-  expect(lead(15).at(-1)!.pitch).toBe('D5');
-  expect(lead(15).some(n=>n.pitch==='C5'&&n.duration>=2)).toBe(false);
+  expect(phrase(14)).toEqual([[0,'D5',1],[1.5,'C5',.5],[2,'B4',1.5]]);
+  expect(phrase(15)).toEqual([[0,'C5',3]]);
+  expect(lead(15).at(-1)!.pitch).toBe('C5');
+  expect(lead(15).some(n=>n.pitch==='C5'&&n.duration>=2)).toBe(true);
   for(let bar=0;bar<16;bar++){
     const notes=scoreBar('coast-battle',bar),middle=bar>=8&&bar<12;
     for(const n of notes.filter(n=>!isPercussion(n.instrument)))expect(n.pitch.replace(/-?\d+$/,'')).toMatch(/^(C|D|E|Eb|F|G|A|B|Bb)$/);

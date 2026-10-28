@@ -57,8 +57,8 @@ const raid: [number,Pitch,number][][] = [
   // The old lower phrase gives way to the call and its familiar falling answer.
   [[0,'A4',.5],[1,'C5',.5],[2,'B4',.5],[2.5,'A4',.5],[3,'G4',.75]],
   [[0,'A4',1.5],[2,'F5',.5],[3,'D5',.75]],
-  [[0,'D5',.5],[1,'D5',.5],[2,'D5',.5],[2.5,'E5',.5],[3,'F5',.75]],
-  [[0,'F5',1.5],[2,'E5',.5],[3,'D5',.75]],
+  [[0,'D5',1],[1.5,'C5',.5],[2,'B4',1.5]],
+  [[0,'C5',3]],
 ];
 export function coastBar(bar: number, battle:boolean): Note[] {
   const i=((bar%16)+16)%16, [root,...voicing]=(battle?raidChords:chords)[i], notes:Note[]=[];
