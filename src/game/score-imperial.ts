@@ -37,10 +37,13 @@ const emperor:readonly Sentence[]=[
   [6.5,['F4','Ab4','G4','Bb4','C5']],[9.5,['Bb4','Ab4','G4','F4'],.65]],
  [[.5,['Ab4','Bb4','Ab4','F4','Gb4']],[3.5,['G4','Ab4','Bb4','Ab4']],
   [6.5,['F4','Ab4','Bb4','Ab4','Db5']],[9.5,['C5','Bb4','Ab4','F4'],.65]],
- [[.5,['G4','A4','B4','A4','G4']],[3.5,['G4','A4','C5','B4']],
-  [6.5,['D5','E5','D5','B4','C5']],[9.5,['A4','G4','A4','B4'],.65]],
- [[.5,['G4','E4','F4','D4','C4']],[3.5,['E4','G4','F4','A4']],
-  [6.5,['C5','B4','A4','G4','F4']],[9,['A4','G4','A4','C4'],1.1]],
+ // Displayed bars 27–34 (including the intro): leave the running figure for
+ // a slower answer. F supports Db over G as an altered dominant seventh;
+ // the later C pedal supports the lead's final F without another close second.
+ [[0,['F4'],1.85],[2,['D4'],.7],[3,['B3'],1.85],[5,['D4'],.7],
+  [6,['E4'],.9],[7,['D4'],1.75],[9,['G4'],1.85],[11,['B4'],.7]],
+ [[0,['G4'],1.85],[2,['E4'],.7],[3,['C4'],.9],[4,['E4'],1.7],
+  [6,['G4'],1.85],[8,['D4'],.7],[9,['C4'],2.5]],
 ];
 export function imperialCounterline(mode:MusicMode,bar:number):Note[]{
  let form:readonly Sentence[],beats:number,intro=0,instrument:Instrument='strings';
