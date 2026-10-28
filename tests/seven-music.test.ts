@@ -1,9 +1,10 @@
+import {finalChromaticNotes} from '../src/game/score-final-runs';
 import {expect,it} from 'vitest';
 import {SEVEN_MODES} from '../src/game/score-seven';
 import {ARRANGEMENTS,scoreBar,scoreLength} from '../src/game/score';
 import {hasExpression,hasRubato} from '../src/game/score-performance';
 import {isPercussion,pitchSteps} from '../src/game/tuning';
-it('keeps the domain in its approved exact 31-tone collections with complete varied forms',()=>{
+it('keeps domain harmony in its exact 31-tone collections around authored final chromatic runs',()=>{
  const radiant=[0,5,10,14,18,22,25,28],reflected=[0,3,6,9,13,17,21,26];
  const inverted=['takenwater','quietward','seasonstreet','domain-battle','hospice-battle','seasons-battle','hollow-sun'];
  for(const mode of SEVEN_MODES){
@@ -12,7 +13,11 @@ it('keeps the domain in its approved exact 31-tone collections with complete var
   const phrases=new Set<string>();
   for(let bar=intro;bar<intro+32;bar++){
    const notes=scoreBar(mode,bar);expect(notes.every(n=>n.beat>=0&&n.beat<ARRANGEMENTS[mode].beats&&n.duration>0&&Number.isFinite(n.velocity))).toBe(true);
-   if(!['lastrefuge','homecoming','seaholiday'].includes(mode))for(const n of notes.filter(n=>!isPercussion(n.instrument)))expect(inverted.includes(mode)?reflected:radiant,mode+':'+n.pitch).toContain((pitchSteps(n.pitch)%31+31)%31);
+   const chromatic=finalChromaticNotes(mode,bar-intro,1,1);
+   if(!['lastrefuge','homecoming','seaholiday'].includes(mode))for(const n of notes.filter(n=>!isPercussion(n.instrument))){
+    if(chromatic.some(r=>r.pitch===n.pitch&&r.beat===n.beat&&r.instrument===n.instrument))continue;
+    expect(inverted.includes(mode)?reflected:radiant,mode+':'+n.pitch).toContain((pitchSteps(n.pitch)%31+31)%31);
+   }
    if((bar-intro)%4===0)phrases.add(JSON.stringify(notes));
   }
   expect(phrases.size,mode).toBeGreaterThanOrEqual(6);

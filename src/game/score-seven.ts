@@ -1,3 +1,4 @@
+import {finalLeadHold,finalChromaticNotes} from './score-final-runs';
 import type {Note,Instrument} from './score';
 import {octave,type Pitch} from './tuning';
 import {phrasing,singing} from './expression';
@@ -82,7 +83,8 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
  const strength=[.78,.88,.94,.82,1.04,1.12,.98,.78][phrase]*(within===3?.89:1),t=beats===5?a.rhythm:a.rhythm.map(n=>n*beats/4),melody=a.lines[phrase];
  for(let j=0;j<melody.length;j++){
   const at=t[j],local=at-within*beats;if(local<0||local>=beats)continue;
-  const next=t[j+1]??beats*4,hold=Math.max(.22,(next-at)*(a.battle?.7:.94));
+  const next=t[j+1]??beats*4,hold=finalLeadHold(mode,i,local,Math.max(.22,(next-at)*(a.battle?.7:.94)));
+  if(hold<=0)continue;
   const n=add(a.lead,pitch(melody[j]),local,hold,a.gain*strength,j%2?-.12:.12);
   n.expression=a.lead==='bell'?{...phrasing(strength),release:1.6}:a.lead==='wood'||a.lead==='lute'||a.lead==='keys'?phrasing(strength):singing(a.human?'warm':'clear',strength,hold,within===3);
  }
@@ -112,5 +114,6 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
  if(within===1||within===3){const at=beats-1;add('bell',pitch(root+4),at,2.4,a.battle?.038:.046,.35).expression={release:1.6,...phrasing(strength)};}
  if(mode==='firstfield'||mode==='seasonstreet')for(const at of [0,1.5])if(at<beats)add('wood',pitch(root,-1),at,.18,.045,-.3);
  if(mode==='unborrowed'&&(within===1||within===3))add('brass',pitch(melody[7],-1),0,beats-.2,.09,.3).expression=singing('clear',strength,beats-.2);
+ notes.push(...finalChromaticNotes(mode,i,a.gain,strength));
  return notes;
 }
