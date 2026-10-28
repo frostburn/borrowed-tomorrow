@@ -1,3 +1,4 @@
+import { imperialCounterline } from './score-imperial';
 import {sevenBar,SEVEN_MODES,type SevenMode} from './score-seven';
 import { capitalBar } from './score-capital';
 import { northBar } from './score-north';
@@ -150,6 +151,9 @@ const ALBAN:[number,Pitch,number][][]=[[
 const ALBAN_ROOTS:Pitch[]=['D3','Bb2','G2','A2','F3','Bb2','A2','D3'];
 /** Dispatch complete scores; Alban adds eight bars to the retained home form. */
 export function scoreBar(mode:MusicMode,bar:number):Note[]{
+  return [...baseScoreBar(mode,bar),...imperialCounterline(mode,scorePosition(mode,bar))];
+}
+function baseScoreBar(mode:MusicMode,bar:number):Note[]{
   if(SEVEN_MODES.includes(mode as SevenMode))return sevenBar(mode as SevenMode,scorePosition(mode,bar));
   if(mode==='lastmorning')return scoreBar('station',bar);
   if(mode==='stillcity'||mode==='lastpalace'||mode==='crown'||mode==='laststation'||mode==='capital-return'||mode==='capital-battle'||mode==='emperor'||mode==='lightbearer')return capitalBar(mode,scorePosition(mode,bar));
