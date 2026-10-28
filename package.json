@@ -30,6 +30,7 @@
     "check:art-upload": "node scripts/check-art-upload.mjs",
     "simulate:early": "node scripts/headless.mjs",
     "simulate:five": "node scripts/headless.mjs five",
+    "simulate:six": "node scripts/headless.mjs six",
     "simulate:middle": "node scripts/headless.mjs middle",
     "test:headless": "vitest run --config scripts/headless.vitest.config.ts",
     "simulate:support": "node scripts/headless.mjs support",

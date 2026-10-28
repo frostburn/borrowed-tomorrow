@@ -1,0 +1,1819 @@
+{
+  "version": 1,
+  "source": {
+    "baseCommit": "4543c4820f1ef3dfc06cfe6e8e9597ef7a8f3548",
+    "input": {
+      "path": "docs/headless/chapter-five-earned.json",
+      "sha256": "b606e6967276d96b6f6ea2a63b3944125004975f75713566a84a4846b4f72eca"
+    },
+    "files": {
+      "src/headless/campaign.ts": "5772ca425fefb644cdd56896b8745d20c6277fc1e07873b30bc9725c332eda75",
+      "src/headless/six.ts": "cbd7729640e3bfc616f71d135f3af1a1eb2f383c8a94159bd45ea190be8c34e8",
+      "src/headless/six-cli.ts": "b9f97156b1efd9b100f59a36fbce90dda4c5aab111224b420b9eea13a605e479",
+      "scripts/headless.mjs": "d196ae551fc8e77e8b321de1b7e750f105613f42b2eedb962be9cc72f24e7d51",
+      "src/headless/battle.ts": "c9cec1f298eee15c4225c6d93982075368cf1f2ab13e47409a344844ef7d4320",
+      "src/headless/defensive.ts": "526347c20d98c35fd25fb513e32ac34022ae85d2445e96b15657c72b08c18e12",
+      "src/headless/tactics.ts": "3e5f4e20c202635539cfb217fc73b543c0b0f105be1b077e7fd833e19936c921",
+      "src/rules/skills.ts": "9b0c57581af02ca0843394705aa557356baa230864458bfe882ade52f53b5ab9"
+    }
+  },
+  "scope": "Continuation of the existing earned Chapter Five checkpoint, not a fresh zero-start replay. No canonical starts, retries, forced victories or granted resources. Raw traces remain outside the repository. Route/build comparisons are not matched-input difficulty tests.",
+  "runs": [
+    {
+      "name": "early-cure",
+      "command": "npm run simulate:six -- --from docs/headless/chapter-five-earned.json --output /tmp/bt-six-early-cure.json",
+      "reportSha256": "7b383ab85d97ee871de709355a524753f00ed78e384c9061d1485c75d99e8ea6",
+      "status": "complete",
+      "options": {
+        "order": [
+          "jungle",
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": true,
+        "through": "6",
+        "improvements": false
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "battles": [
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "level": 10,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 69,
+          "healedInBattle": 45,
+          "minimumHp": 47,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "river-cache",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 1,
+          "hpLost": 0,
+          "healedInBattle": 0,
+          "minimumHp": 84,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 34,
+          "healedInBattle": 0,
+          "minimumHp": 79,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 2,
+          "hpLost": 16,
+          "healedInBattle": 0,
+          "minimumHp": 104,
+          "knockouts": 0,
+          "abilities": {
+            "starline": 2,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 2,
+          "hpLost": 38,
+          "healedInBattle": 0,
+          "minimumHp": 82,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 1,
+            "steam": 1,
+            "strike": 1,
+            "prism": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 4,
+          "hpLost": 36,
+          "healedInBattle": 0,
+          "minimumHp": 78,
+          "knockouts": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 2,
+            "sanctuary": 1,
+            "burst": 1,
+            "rivet": 2,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 22,
+          "healedInBattle": 0,
+          "minimumHp": 86,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 1,
+            "crush": 2,
+            "sunline": 1,
+            "sanctuary": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 56,
+          "healedInBattle": 40,
+          "minimumHp": 84,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 2,
+            "bandage": 2,
+            "sunline": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-cache",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 39,
+          "healedInBattle": 34,
+          "minimumHp": 80,
+          "knockouts": 0,
+          "abilities": {
+            "sunline": 1,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "burst": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 5,
+          "hpLost": 30,
+          "healedInBattle": 0,
+          "minimumHp": 90,
+          "knockouts": 0,
+          "abilities": {
+            "sunline": 2,
+            "sanctuary": 1,
+            "crush": 2,
+            "celestialbolt": 3,
+            "burst": 2,
+            "sweep": 1,
+            "strike": 3
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 3,
+          "hpLost": 61,
+          "healedInBattle": 52,
+          "minimumHp": 51,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 1,
+            "starline": 1,
+            "sunline": 1,
+            "rivet": 2,
+            "celestialbolt": 1,
+            "mend": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 4,
+          "hpLost": 67,
+          "healedInBattle": 44,
+          "minimumHp": 70,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 3,
+            "starline": 2,
+            "celestialbolt": 1,
+            "field-bandage": 1,
+            "sunline": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-hunters",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 2,
+          "hpLost": 35,
+          "healedInBattle": 0,
+          "minimumHp": 64,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 2
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 11,
+          "hpLost": 117,
+          "healedInBattle": 103,
+          "minimumHp": 65,
+          "knockouts": 0,
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 1,
+            "celestialbolt": 8,
+            "burst": 4,
+            "rivet": 4,
+            "strike": 7,
+            "steam": 1,
+            "field-bandage": 2,
+            "bandage": 1
+          },
+          "enemyRebuilds": {
+            "imperial-west": 2,
+            "imperial-east": 2
+          }
+        }
+      ],
+      "hpLost": 620,
+      "knockouts": 0,
+      "rests": 11,
+      "spent": 70,
+      "spending": {
+        "field-bandage": 54,
+        "bandage": 16
+      },
+      "abilities": {
+        "crossfire": 5,
+        "celestialbolt": 24,
+        "field-bandage": 5,
+        "strike": 18,
+        "starline": 7,
+        "burst": 20,
+        "steam": 2,
+        "prism": 5,
+        "sanctuary": 4,
+        "rivet": 8,
+        "crush": 4,
+        "sunline": 7,
+        "bandage": 3,
+        "sweep": 1,
+        "mend": 1
+      },
+      "equipment": [
+        {
+          "hero": "kit",
+          "item": "reedweave-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "river-sight",
+          "previous": "fleet-sight"
+        },
+        {
+          "hero": "celia",
+          "item": "rainhouse-focus",
+          "previous": "ward-focus"
+        },
+        {
+          "hero": "nell",
+          "item": "riverglass-reflector",
+          "previous": "opal-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "courier-harness",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "sunmesh-coat",
+          "previous": "courier-harness"
+        },
+        {
+          "hero": "orrin",
+          "item": "courier-harness",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "fine-expansion-ring",
+          "previous": "forge-valve"
+        },
+        {
+          "hero": "celia",
+          "item": "sunstone-focus",
+          "previous": "rainhouse-focus"
+        },
+        {
+          "hero": "petra",
+          "item": "solar-guard",
+          "previous": "shield-brace"
+        },
+        {
+          "hero": "nell",
+          "item": "stormlining-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "heat-coat",
+          "previous": "field-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "ice-valve",
+          "previous": "fine-expansion-ring"
+        },
+        {
+          "hero": "kit",
+          "item": "winter-sight",
+          "previous": "river-sight"
+        },
+        {
+          "hero": "petra",
+          "item": "pact-guard",
+          "previous": "solar-guard"
+        },
+        {
+          "hero": "celia",
+          "item": "procession-coat",
+          "previous": "sunmesh-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "sunmesh-coat",
+          "previous": "courier-harness"
+        },
+        {
+          "hero": "orrin",
+          "item": "crown-nozzle",
+          "previous": "ice-valve"
+        },
+        {
+          "hero": "celia",
+          "item": "palace-focus",
+          "previous": "sunstone-focus"
+        },
+        {
+          "hero": "petra",
+          "item": "unbroken-guard",
+          "previous": "pact-guard"
+        }
+      ],
+      "final": {
+        "chapter": "chapter-six",
+        "boundary": "chapter-seven:hollow-sun",
+        "location": {
+          "map": "capitalquay",
+          "x": 39,
+          "y": 28
+        },
+        "xp": 7005,
+        "coins": 3452,
+        "bandages": 2,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "nell",
+          "orrin"
+        ],
+        "improvements": [],
+        "nellRecovered": true,
+        "nellLost": false,
+        "chapterSixComplete": true
+      }
+    },
+    {
+      "name": "late-cure",
+      "command": "npm run simulate:six -- --from docs/headless/chapter-five-earned.json --order north,desert,jungle --palace channel --build support --spending frugal --skip-optional --output /tmp/bt-six-late-cure.json",
+      "reportSha256": "a803b763822427b3db3254957970841ab9019c38e05a275940d7fbdbd9db9e04",
+      "status": "complete",
+      "options": {
+        "order": [
+          "north",
+          "desert",
+          "jungle"
+        ],
+        "palace": "channel",
+        "optional": false,
+        "through": "6",
+        "improvements": false
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "battles": [
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "level": 10,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 69,
+          "healedInBattle": 45,
+          "minimumHp": 47,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 27,
+          "healedInBattle": 0,
+          "minimumHp": 83,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 7,
+          "hpLost": 184,
+          "healedInBattle": 101,
+          "minimumHp": 68,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 3,
+            "quickshot": 5,
+            "strike": 2,
+            "heal": 1,
+            "sweep": 2,
+            "field-bandage": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-channel",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 0,
+          "healedInBattle": 0,
+          "minimumHp": 104,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "quickshot": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 25,
+          "healedInBattle": 0,
+          "minimumHp": 91,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 4,
+          "hpLost": 38,
+          "healedInBattle": 0,
+          "minimumHp": 70,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 2,
+            "sanctuary": 1,
+            "quickshot": 2,
+            "strike": 2
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 21,
+          "healedInBattle": 0,
+          "minimumHp": 85,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 33,
+          "healedInBattle": 0,
+          "minimumHp": 93,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "petra",
+            "nell"
+          ],
+          "rounds": 5,
+          "hpLost": 60,
+          "healedInBattle": 37,
+          "minimumHp": 91,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 1,
+            "celestialbolt": 3,
+            "crush": 1,
+            "sunline": 2,
+            "daybreak": 1,
+            "strike": 2,
+            "bandage": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "petra",
+            "nell"
+          ],
+          "rounds": 5,
+          "hpLost": 25,
+          "healedInBattle": 14,
+          "minimumHp": 100,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 3,
+            "celestialbolt": 5,
+            "taunt": 2,
+            "sunline": 1,
+            "bandage": 1,
+            "strike": 2
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "petra",
+            "nell"
+          ],
+          "rounds": 10,
+          "hpLost": 220,
+          "healedInBattle": 131,
+          "minimumHp": 61,
+          "knockouts": 0,
+          "abilities": {
+            "sunline": 2,
+            "celestialbolt": 6,
+            "crush": 1,
+            "daybreak": 1,
+            "burst": 4,
+            "strike": 8,
+            "sweep": 3,
+            "field-bandage": 1,
+            "heal": 1
+          },
+          "enemyRebuilds": {
+            "imperial-west": 1
+          }
+        }
+      ],
+      "hpLost": 702,
+      "knockouts": 0,
+      "rests": 10,
+      "spent": 26,
+      "spending": {
+        "field-bandage": 18,
+        "bandage": 8
+      },
+      "abilities": {
+        "crossfire": 15,
+        "celestialbolt": 29,
+        "field-bandage": 3,
+        "strike": 17,
+        "sanctuary": 2,
+        "quickshot": 8,
+        "heal": 2,
+        "sweep": 5,
+        "ricochet": 1,
+        "burst": 8,
+        "crush": 2,
+        "sunline": 5,
+        "daybreak": 2,
+        "bandage": 2,
+        "taunt": 2
+      },
+      "equipment": [
+        {
+          "hero": "kit",
+          "item": "stormlining-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "ice-valve",
+          "previous": "forge-valve"
+        },
+        {
+          "hero": "petra",
+          "item": "pact-guard",
+          "previous": "shield-brace"
+        },
+        {
+          "hero": "celia",
+          "item": "sunmesh-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "reedweave-coat",
+          "previous": "field-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "field-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "rainhouse-focus",
+          "previous": "ward-focus"
+        },
+        {
+          "hero": "nell",
+          "item": "riverglass-reflector",
+          "previous": "opal-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "procession-coat",
+          "previous": "sunmesh-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "sunmesh-coat",
+          "previous": "reedweave-coat"
+        },
+        {
+          "hero": "nell",
+          "item": "reedweave-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "heat-coat",
+          "previous": "field-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "crown-nozzle",
+          "previous": "ice-valve"
+        },
+        {
+          "hero": "petra",
+          "item": "unbroken-guard",
+          "previous": "pact-guard"
+        }
+      ],
+      "final": {
+        "chapter": "chapter-six",
+        "boundary": "chapter-seven:hollow-sun",
+        "location": {
+          "map": "capitalquay",
+          "x": 39,
+          "y": 28
+        },
+        "xp": 6695,
+        "coins": 3241,
+        "bandages": 2,
+        "fieldBandages": 0,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "petra",
+          "nell"
+        ],
+        "improvements": [],
+        "nellRecovered": true,
+        "nellLost": false,
+        "chapterSixComplete": true
+      }
+    },
+    {
+      "name": "uncured",
+      "command": "npm run simulate:six -- --from docs/headless/chapter-five-earned.json --order desert,north --skip-optional --output /tmp/bt-six-uncured.json",
+      "reportSha256": "7177e5cab910f52b6909c658125db9cb817ac7eca5ec1a957d88769bb8d91d88",
+      "status": "complete",
+      "options": {
+        "order": [
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": false,
+        "through": "6",
+        "improvements": false
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "battles": [
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "level": 10,
+          "party": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "rounds": 3,
+          "hpLost": 85,
+          "healedInBattle": 63,
+          "minimumHp": 41,
+          "knockouts": 0,
+          "abilities": {
+            "ricochet": 2,
+            "starline": 1,
+            "pin": 1,
+            "heal": 1,
+            "rivet": 1,
+            "celestialbolt": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "rounds": 3,
+          "hpLost": 38,
+          "healedInBattle": 0,
+          "minimumHp": 76,
+          "knockouts": 0,
+          "abilities": {
+            "ricochet": 2,
+            "starline": 2,
+            "quickshot": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "orrin",
+            "celia"
+          ],
+          "rounds": 5,
+          "hpLost": 96,
+          "healedInBattle": 0,
+          "minimumHp": 55,
+          "knockouts": 0,
+          "abilities": {
+            "ricochet": 2,
+            "sanctuary": 1,
+            "rivet": 1,
+            "starline": 1,
+            "quickshot": 3,
+            "celestialbolt": 2,
+            "steam": 2
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 24,
+          "healedInBattle": 0,
+          "minimumHp": 82,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 25,
+          "healedInBattle": 0,
+          "minimumHp": 90,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 1,
+            "celestialbolt": 1,
+            "ricochet": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 6,
+          "hpLost": 80,
+          "healedInBattle": 0,
+          "minimumHp": 66,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 4,
+            "quickshot": 4,
+            "strike": 2,
+            "sweep": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 59,
+          "healedInBattle": 0,
+          "minimumHp": 47,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1,
+            "quickshot": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 5,
+          "hpLost": 150,
+          "healedInBattle": 126,
+          "minimumHp": 71,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "heal": 1,
+            "field-bandage": 1,
+            "bandage": 2,
+            "ricochet": 1,
+            "quickshot": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 11,
+          "hpLost": 158,
+          "healedInBattle": 123,
+          "minimumHp": 67,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 7,
+            "heal": 1,
+            "quickshot": 3,
+            "strike": 4,
+            "pin": 5,
+            "sweep": 2,
+            "bandage": 3,
+            "sanctuary": 1,
+            "field-bandage": 1,
+            "crush": 1
+          },
+          "enemyRebuilds": {
+            "imperial-west": 2
+          }
+        },
+        {
+          "id": "lightbearer",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 5,
+          "hpLost": 0,
+          "healedInBattle": 0,
+          "minimumHp": 110,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "sanctuary": 1,
+            "celestialbolt": 3,
+            "pin": 2,
+            "strike": 2,
+            "quickshot": 1,
+            "sweep": 1
+          },
+          "enemyRebuilds": {}
+        }
+      ],
+      "hpLost": 715,
+      "knockouts": 0,
+      "rests": 10,
+      "spent": 76,
+      "spending": {
+        "bandage": 40,
+        "field-bandage": 36
+      },
+      "abilities": {
+        "ricochet": 8,
+        "starline": 4,
+        "pin": 8,
+        "heal": 3,
+        "rivet": 2,
+        "celestialbolt": 23,
+        "quickshot": 14,
+        "sanctuary": 4,
+        "steam": 2,
+        "crossfire": 13,
+        "strike": 9,
+        "sweep": 4,
+        "field-bandage": 2,
+        "bandage": 5,
+        "crush": 1
+      },
+      "equipment": [
+        {
+          "hero": "kit",
+          "item": "sunmesh-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "fine-expansion-ring",
+          "previous": "forge-valve"
+        },
+        {
+          "hero": "petra",
+          "item": "solar-guard",
+          "previous": "shield-brace"
+        },
+        {
+          "hero": "celia",
+          "item": "stormlining-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "ice-valve",
+          "previous": "fine-expansion-ring"
+        },
+        {
+          "hero": "petra",
+          "item": "pact-guard",
+          "previous": "solar-guard"
+        },
+        {
+          "hero": "kit",
+          "item": "procession-coat",
+          "previous": "sunmesh-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "sunmesh-coat",
+          "previous": "field-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "field-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "crown-nozzle",
+          "previous": "ice-valve"
+        },
+        {
+          "hero": "petra",
+          "item": "unbroken-guard",
+          "previous": "pact-guard"
+        }
+      ],
+      "final": {
+        "chapter": "chapter-six",
+        "boundary": null,
+        "location": {
+          "map": "laststation",
+          "x": 31,
+          "y": 12
+        },
+        "xp": 6155,
+        "coins": 2951,
+        "bandages": 3,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "activeParty": [
+          "kit",
+          "celia",
+          "petra"
+        ],
+        "improvements": [],
+        "nellRecovered": false,
+        "nellLost": true,
+        "chapterSixComplete": false
+      }
+    },
+    {
+      "name": "trained",
+      "command": "npm run simulate:six -- --from docs/headless/chapter-five-earned.json --improvements --output /tmp/bt-six-trained.json",
+      "reportSha256": "0de6be49ed78d414caf89ab9ec8f1081db863ad3764e4b6dd7eb630fa3be8c9b",
+      "status": "complete",
+      "options": {
+        "order": [
+          "jungle",
+          "desert",
+          "north"
+        ],
+        "palace": "gallery",
+        "optional": true,
+        "through": "6",
+        "improvements": true
+      },
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "battles": [
+        {
+          "id": "river-patrol",
+          "result": "victory",
+          "level": 10,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 69,
+          "healedInBattle": 45,
+          "minimumHp": 47,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 3,
+            "field-bandage": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "river-cache",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 1,
+          "hpLost": 0,
+          "healedInBattle": 0,
+          "minimumHp": 96,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "rainhouse-guard",
+          "result": "victory",
+          "level": 11,
+          "party": [
+            "kit",
+            "celia",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 34,
+          "healedInBattle": 0,
+          "minimumHp": 85,
+          "knockouts": 0,
+          "abilities": {
+            "crossfire": 2,
+            "celestialbolt": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-gallery",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 2,
+          "hpLost": 16,
+          "healedInBattle": 0,
+          "minimumHp": 104,
+          "knockouts": 0,
+          "abilities": {
+            "starline": 2,
+            "burst": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "desert-ascent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 2,
+          "hpLost": 38,
+          "healedInBattle": 0,
+          "minimumHp": 82,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 1,
+            "steam": 1,
+            "strike": 1,
+            "prism": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "sun-serpent",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 4,
+          "hpLost": 36,
+          "healedInBattle": 0,
+          "minimumHp": 90,
+          "knockouts": 0,
+          "abilities": {
+            "prism": 2,
+            "celestialbolt": 2,
+            "sanctuary": 1,
+            "burst": 1,
+            "rivet": 2,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-watch",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 22,
+          "healedInBattle": 0,
+          "minimumHp": 86,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 1,
+            "crush": 2,
+            "sunline": 1,
+            "sanctuary": 1,
+            "strike": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-hunters",
+          "result": "victory",
+          "level": 12,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 3,
+          "hpLost": 56,
+          "healedInBattle": 40,
+          "minimumHp": 84,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "celestialbolt": 2,
+            "bandage": 2,
+            "sunline": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "north-cache",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 2,
+          "hpLost": 39,
+          "healedInBattle": 34,
+          "minimumHp": 80,
+          "knockouts": 0,
+          "abilities": {
+            "sunline": 1,
+            "celestialbolt": 2,
+            "field-bandage": 1,
+            "burst": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "winter-dragon",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "petra"
+          ],
+          "rounds": 5,
+          "hpLost": 30,
+          "healedInBattle": 0,
+          "minimumHp": 90,
+          "knockouts": 0,
+          "abilities": {
+            "sunline": 2,
+            "sanctuary": 1,
+            "crush": 2,
+            "celestialbolt": 3,
+            "burst": 2,
+            "sweep": 1,
+            "strike": 3
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-procession",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 3,
+          "hpLost": 55,
+          "healedInBattle": 0,
+          "minimumHp": 76,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 1,
+            "starline": 1,
+            "prism": 1,
+            "celestialbolt": 1,
+            "strike": 1,
+            "rivet": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "palace-command",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 3,
+          "hpLost": 59,
+          "healedInBattle": 0,
+          "minimumHp": 83,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 2,
+            "sunline": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "capital-hunters",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 3,
+          "hpLost": 53,
+          "healedInBattle": 63,
+          "minimumHp": 84,
+          "knockouts": 0,
+          "abilities": {
+            "burst": 2,
+            "starline": 1,
+            "prism": 1,
+            "heal": 1
+          },
+          "enemyRebuilds": {}
+        },
+        {
+          "id": "imperial-vessel",
+          "result": "victory",
+          "level": 13,
+          "party": [
+            "celia",
+            "nell",
+            "orrin"
+          ],
+          "rounds": 11,
+          "hpLost": 40,
+          "healedInBattle": 24,
+          "minimumHp": 100,
+          "knockouts": 0,
+          "abilities": {
+            "prism": 2,
+            "sanctuary": 2,
+            "celestialbolt": 7,
+            "burst": 4,
+            "rivet": 5,
+            "strike": 7,
+            "steam": 1,
+            "bandage": 1
+          },
+          "enemyRebuilds": {
+            "imperial-west": 2,
+            "imperial-east": 2
+          }
+        }
+      ],
+      "hpLost": 547,
+      "knockouts": 0,
+      "rests": 11,
+      "spent": 1652,
+      "spending": {
+        "Confirm · 300 marks": 300,
+        "Confirm · 450 marks": 900,
+        "field-bandage": 36,
+        "bandage": 16,
+        "Confirm · 400 marks": 400
+      },
+      "abilities": {
+        "crossfire": 5,
+        "celestialbolt": 22,
+        "field-bandage": 2,
+        "strike": 17,
+        "starline": 6,
+        "burst": 19,
+        "steam": 2,
+        "prism": 7,
+        "sanctuary": 5,
+        "rivet": 8,
+        "crush": 4,
+        "sunline": 6,
+        "bandage": 3,
+        "sweep": 1,
+        "heal": 1
+      },
+      "equipment": [
+        {
+          "hero": "kit",
+          "item": "reedweave-coat",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "kit",
+          "item": "river-sight",
+          "previous": "fleet-sight"
+        },
+        {
+          "hero": "celia",
+          "item": "rainhouse-focus",
+          "previous": "ward-focus"
+        },
+        {
+          "hero": "nell",
+          "item": "riverglass-reflector",
+          "previous": "opal-reflector"
+        },
+        {
+          "hero": "celia",
+          "item": "courier-harness",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "rescue-coat",
+          "previous": "insulated-coat"
+        },
+        {
+          "hero": "celia",
+          "item": "sunmesh-coat",
+          "previous": "courier-harness"
+        },
+        {
+          "hero": "orrin",
+          "item": "courier-harness",
+          "previous": "rescue-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "fine-expansion-ring",
+          "previous": "forge-valve"
+        },
+        {
+          "hero": "celia",
+          "item": "sunstone-focus",
+          "previous": "rainhouse-focus"
+        },
+        {
+          "hero": "petra",
+          "item": "solar-guard",
+          "previous": "shield-brace"
+        },
+        {
+          "hero": "nell",
+          "item": "stormlining-coat",
+          "previous": "heat-coat"
+        },
+        {
+          "hero": "petra",
+          "item": "heat-coat",
+          "previous": "field-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "ice-valve",
+          "previous": "fine-expansion-ring"
+        },
+        {
+          "hero": "kit",
+          "item": "winter-sight",
+          "previous": "river-sight"
+        },
+        {
+          "hero": "petra",
+          "item": "pact-guard",
+          "previous": "solar-guard"
+        },
+        {
+          "hero": "celia",
+          "item": "procession-coat",
+          "previous": "sunmesh-coat"
+        },
+        {
+          "hero": "orrin",
+          "item": "sunmesh-coat",
+          "previous": "courier-harness"
+        },
+        {
+          "hero": "orrin",
+          "item": "crown-nozzle",
+          "previous": "ice-valve"
+        },
+        {
+          "hero": "celia",
+          "item": "palace-focus",
+          "previous": "sunstone-focus"
+        },
+        {
+          "hero": "petra",
+          "item": "unbroken-guard",
+          "previous": "pact-guard"
+        }
+      ],
+      "final": {
+        "chapter": "chapter-six",
+        "boundary": "chapter-seven:hollow-sun",
+        "location": {
+          "map": "capitalquay",
+          "x": 39,
+          "y": 28
+        },
+        "xp": 7005,
+        "coins": 1870,
+        "bandages": 2,
+        "fieldBandages": 2,
+        "focusTonics": 1,
+        "activeParty": [
+          "celia",
+          "nell",
+          "orrin"
+        ],
+        "improvements": [
+          "hp-celia",
+          "focus-celia",
+          "kit-footing",
+          "nell-housing"
+        ],
+        "nellRecovered": true,
+        "nellLost": false,
+        "chapterSixComplete": true
+      }
+    }
+  ],
+  "checkpoints": {
+    "chapter-six-earned.json": "16f2421450b42af2814b9f8bd42384ff36ae2b95a5d2f165a96d133f0994403a",
+    "chapter-six-trained-earned.json": "18286e6da095427a7371397aa91df65103515654b9b7f9396f2390cd99ceba74",
+    "chapter-six-regions-earned.json": "167708e72e7d825720ba89f68864a2fa1a416ff4f4b64066d50223bf116be5b7"
+  }
+}
