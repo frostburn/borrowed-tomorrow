@@ -33,7 +33,7 @@ export function offerImprovements(h:StoryHost,service:ImprovementService,hero?:H
  if(!serviceAvailable(s,service))return;
  if(service==='training'&&!hero){
   h.talk({lines:[SAY(who,`${offers[service]} You have ${s.coins} marks.`)],choices:[
-   ...s.party.filter(p=>p.id!=='nell'||!s.flags.nellLost).map(p=>({label:`Train ${CHARACTERS[p.id].name}`,disabled:p.id==='nell'&&!!s.flags.nellIll&&!s.flags.nellRecovered,action:()=>offerImprovements(h,service,p.id)})),
+   ...s.party.filter(p=>p.id!=='nell'||!s.flags.nellLost).map(p=>({label:`Train ${CHARACTERS[p.id].name}`,disabled:improved(s,`hp-${p.id}`)&&improved(s,`focus-${p.id}`)||p.id==='nell'&&!!s.flags.nellIll&&!s.flags.nellRecovered,action:()=>offerImprovements(h,service,p.id)})),
    {label:'Leave training',action:()=>{}},
   ]});return;
  }

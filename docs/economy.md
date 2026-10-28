@@ -68,7 +68,7 @@ Airship supply counters offer once-only training per recruited, available charac
 | Tavi, Iria | Nell treated and river scene complete | 450 | Kit: shallow water/broken ice movement cost 2 → 1; hazards still hurt |
 | Orrin, capital preparations | Capital open and Nell recovered | 400 | Nell: 8 Guard at battle start |
 
-Each purchase has an effect preview, exact price, separate confirmation and disabled completed state. Treatment and quest resolutions remain free. Local services require their own completed quest; Kit's offer works before or after the desert. Nell cannot train while ill or deceased. These bonuses neither occupy equipment slots nor unlock skills.
+Training and improvement providers carry a barbell marker; providers that also offer rest combine it with the house. A character’s training choice dims once both courses are complete. Each purchase has an effect preview, exact price, separate confirmation and disabled completed state. Treatment and quest resolutions remain free. Local services require their own completed quest; Kit's offer works before or after the desert. Nell cannot train while ill or deceased. These bonuses neither occupy equipment slots nor unlock skills.
 
 `rules/improvements.ts` owns the catalogue and atomic transactions. Existing version-11 boolean flags persist purchases; save validation checks their character and quest prerequisites. Shared capacity/ability/movement rules apply the bonuses to targeting, regeneration, consumables, recovery and previews. Isolated workshop profiles retain their own stats.
 

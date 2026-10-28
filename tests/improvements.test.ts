@@ -43,6 +43,9 @@ it('confirms exact prices, cancels freely, shows completed purchases and keeps f
  j.choose('Endurance training · 300 marks');j.choose('Confirm · 300 marks');
  expect(j.saves()).toBe(1);expect(s.coins).toBe(coins-300);expect(s.party.find(p=>p.id==='orrin')!.hp).toBe(hp);
  expect(j.read().choices?.find(c=>c.label==='Endurance training · Completed')?.disabled).toBe(true);
+ offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBeFalsy();
+ purchase(s,'focus-orrin');offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBe(true);
+ expect(j.read().choices?.find(c=>c.label==='Train Celia')?.disabled).toBeFalsy();
  s.party=s.party.filter(p=>p.id!=='kit');offerImprovements(j.h,'training');expect(j.read().choices?.some(c=>c.label.includes('Kit'))).toBe(false);
 });
 it('persists max HP/focus across save, formation and equipment, without changing skill ranks or healing on purchase',()=>{

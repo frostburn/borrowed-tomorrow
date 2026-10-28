@@ -25,14 +25,17 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    // Reveal the last card and inspect its disabled completed choice.
    const next=page.locator('.dialogue-actions').getByRole('button',{name:/Next$/});while(await next.count())await next.click();
    await expect(page.getByRole('button',{name:'Focus training · Completed',exact:true})).toBeDisabled();
-   await choose(page,'Choose another character');await choose(page,'Leave training');
+   await choose(page,'Choose another character');await expect(page.getByRole('button',{name:'Train Orrin',exact:true})).toBeEnabled();
+   await choose(page,'Train Orrin');await choose(page,'Endurance training · 300 marks');await choose(page,'Confirm · 300 marks');
+   await choose(page,'Choose another character');await expect(page.getByRole('button',{name:'Train Orrin',exact:true})).toBeDisabled();
+   await capture(page,`training-completed-${device}`);await choose(page,'Leave training');await capture(page,`training-marker-${device}`);
    await approach(page,'ship-supply');await choose(page,'Rest · restore everyone’s HP and focus');
    expect((await inspect(page)).state.party.find(h=>h.id==='orrin')!.focus).toBe(7);
    await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
    await expect(page.getByRole('dialog')).toContainText('Focus 7 / 7');await expect(page.getByRole('region',{name:'Permanent improvements'})).toContainText('Focus training');
    await capture(page,`training-inventory-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
-   await expect.poll(async()=>(await inspect(page)).state.flags['improved-focus-orrin']).toBe(true);expect((await inspect(page)).state.coins).toBe(1550);expect(errors).toEqual([]);
+   await expect.poll(async()=>(await inspect(page)).state.flags['improved-focus-orrin']).toBe(true);expect((await inspect(page)).state.coins).toBe(1250);expect(errors).toEqual([]);
   });
   test('specialists expose local offers, the jungle follows treatment, and ill Nell cannot train',async({page})=>{
    await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
