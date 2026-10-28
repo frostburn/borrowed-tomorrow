@@ -1,6 +1,6 @@
 import type Phaser from 'phaser';
 import type {Battle,Encounter,Unit} from '../rules/combat';
-import type {WorldLight,WorldLamp} from './world-light';
+import type {WorldLight,WorldLamp,LightFlare} from './world-light';
 import {hexVertices,type Hex} from '../rules/hex';
 
 type Color=readonly number[];
@@ -37,17 +37,18 @@ export class BossLighting {
  get animating(){return !this.reduced&&!this.battle.result&&[...this.sources.values()].some(s=>s.alive);}
  sample=():WorldLight=>{
   const phase=this.animating?Math.round((.5+.5*Math.sin(this.scene.time.now*Math.PI/4000))*12)/12:.5;
-  const lamps:WorldLamp[]=[],positions:string[]=[];
+  const lamps:WorldLamp[]=[],flares:LightFlare[]=[],positions:string[]=[];
   let focus:WorldLight['focus'];
   for(const [id,{image,alive}]of this.sources){
    if(!alive||!image.active)continue;
    const shut=this.mood.lantern&&image.texture?.key==='lightbearer-resist';
-   const x=Math.round((image.x-(this.mood.lantern?27:0))/2)*2,y=Math.round(image.y/2)*2,height=this.mood.lantern?(shut?115:94):Math.min(170,image.displayHeight*.52);
+   const x=Math.round((image.x-(this.mood.lantern?27:0))/2)*2,y=Math.round(image.y/2)*2,height=this.mood.lantern?(shut?118:97):Math.min(170,image.displayHeight*.52);
    const attack=this.attacks.get(id),elapsed=attack?this.scene.time.now-attack.at:Infinity;
    const charge=attack&&!this.reduced?Math.max(0,elapsed<attack.contact?elapsed/attack.contact:1-(elapsed-attack.contact)/Math.max(1,attack.duration-attack.contact)):0;
    const power=Math.round((.68+phase*.1+Math.round(Math.min(1,charge)*8)/8*.8)*(shut?.16:1)*32)/32;
    positions.push(`${id}:${x}:${y}:${height}:${power}`);
    lamps.push({x,y,height,radius:730,strength:power,fill:.62,shadowStrength:.65,color:this.mood.key});
+   if(this.mood.lantern&&!shut)flares.push({x,y:Math.round((y-height)/2)*2,strength:power});
    if(attack?.polygons.length&&charge>0){
     // Ease down over the wind-up, hold through contact, then restore the stage.
     const envelope=elapsed<attack.contact?Math.min(1,elapsed/Math.min(240,attack.contact)):Math.min(1,charge*2);
@@ -63,6 +64,6 @@ export class BossLighting {
   lamps.push(...[300,720].map(x=>({x,y:460,height:160,radius:1050,strength:.5,fill:.9,spill:.1,shadowStrength:.12,color:[1,.98,.94]})));
   // Opposed soft rim lights retain silhouettes and keep the party readable.
   lamps.push(...[80,920].map(x=>({x,y:260,height:180,radius:650,strength:.42,fill:.55,shadowStrength:.35,color:this.mood.rim})));
-  return this.cached={ambient:alive?this.mood.ambient.map(n=>n+.08):[.8,.82,.84],groundAmbient:alive?this.mood.ambient.map(n=>n*.85):undefined,environmentShade:alive?this.mood.environmentShade:undefined,maxGain:1.04,lamps,shadowOpacity:.20,focus};
+  return this.cached={ambient:alive?this.mood.ambient.map(n=>n+.08):[.8,.82,.84],groundAmbient:alive?this.mood.ambient.map(n=>n*.85):undefined,environmentShade:alive?this.mood.environmentShade:undefined,maxGain:1.04,lamps,shadowOpacity:.20,focus,flares};
  };
 }

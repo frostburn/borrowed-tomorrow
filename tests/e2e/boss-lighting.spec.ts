@@ -102,6 +102,8 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   });
   expect(backdrop.luma).toBeGreaterThan(20);
   expect(await brightness(page,backdrop.x,backdrop.y)).toBeLessThan(backdrop.luma*.85);
+  const lightbearer=(await inspect(page)).actors.find(a=>a.hero==='lightbearer')!,flare={x:Math.round((lightbearer.x-27)/2)*2,y:Math.round((lightbearer.y-97)/2)*2};
+  const glare=await brightness(page,flare.x,flare.y);expect(glare).toBeGreaterThan(240);
   await capture(page,`lightbearer-lantern-${device}`);
   const still=await floorHash(page);await page.waitForTimeout(250);expect(await floorHash(page)).toBe(still);
   await page.emulateMedia({reducedMotion:'no-preference'});await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+200));await page.clock.runFor(100);
@@ -110,7 +112,8 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
    const s=await inspect(page),actor=s.actors.find(a=>a.hero==='lightbearer'),current=(await page.locator('#status').textContent())!;
    expect(s.battle!.result).not.toBe('defeat');
    if(!s.busy&&s.battle!.round===4){
-    expect(actor?.texture).toBe('lightbearer-resist');closed=true;await page.clock.runFor(100);await capture(page,`lightbearer-shutter-${device}`);break;
+    expect(actor?.texture).toBe('lightbearer-resist');closed=true;await page.clock.runFor(100);
+    expect(await brightness(page,flare.x,flare.y)).toBeLessThan(glare*.8);await capture(page,`lightbearer-shutter-${device}`);break;
    }
    if(actor?.motion==='attack'){
     if(current!==status){status=current;frames=0;}frames++;

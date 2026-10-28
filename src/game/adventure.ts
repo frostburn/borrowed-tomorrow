@@ -618,6 +618,7 @@ export class Adventure extends Phaser.Scene {
         if(u.guard||u.dazzledAttacks||tauntTarget(b,u))badges.add(this.label(0,35,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
+    this.lighting.glare(this.layer);
     this.boarding.sync(b);
     if(b.evacuation){this.ui.canvas.setAttribute('aria-description',`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Gold arrows mark the loading walk.`);this.layer.add(this.label(worldView().width-80,20,`${b.evacuation.boarded}/${b.evacuation.groups} aboard`,'#f4d598',1).setScrollFactor(0).setDepth(20000));this.layer.add(this.add.image(850,440,'dena').setOrigin(.5,.85));this.layer.add(this.label(850,461,'To coaches','#f4d598',1));}
     this.drawGrid();this.drawInitiative();
