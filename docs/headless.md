@@ -511,7 +511,9 @@ Validation: normal rule/content tests, TypeScript and production build pass. Fiv
 BT_HEADLESS_SEVEN_REPORTS=/tmp/seven-audit npx vitest run --config scripts/headless.vitest.config.ts tests/headless-seven.simulation.ts
 ```
 
-### Follow-up: summoned pressure and continued training access
+### Initial summon prototype and continued training access
+
+The combat measurements in this subsection describe the superseded hound/crow prototype. The final implementation summons Sun heralds and Glass wings; its new validation is recorded below.
 
 The sun and heart now summon up to two living minions every other source turn. The sun uses ranged Sunbound crows; the heart mixes a hound and crow. Arrivals join next round and cannot retaliate immediately. The direct shot and marked attack remain; the fourth-round source respite remains. Killing the source disperses the summons, ending the phase without cleanup or extra rewards. See [combat-upgrade.md](combat-upgrade.md#final-benefactor-summons).
 
@@ -547,3 +549,20 @@ npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json 
 ```
 
 Validation: 817 normal tests, TypeScript and production build; four opt-in Chapter Seven simulations (including the corrected lean-route expectation); six detailed desktop/phone browser cases for both forms' arrivals, impact timing, reduced motion, restart cleanup, specialty confirmation/cancellation and reload persistence. Browser plugin not available; local Playwright used the Vite app at `http://127.0.0.1:5173`, desktop 1280×800 and phone 390×844 at DPR 1.25. Page identity, meaningful rendering, screenshots, interactions, console health and absence of error overlays were verified. An initial browser check timed out during cold startup under concurrent simulation/build load; the ready-state timeout was corrected and that case passed on rerun. No production dependency or artwork changes were needed. Detailed journeys stay outside default CI. These runs establish logic/visual behavior and route viability, not human difficulty.
+
+### Corrected summons: the Benefactor’s divine hunters
+
+Both final forms now call a Sun herald and Glass wing, using the domain patrol's fixed profiles: 205 HP / +15 attack for the herald and 100 HP / +13 for the wing. Later waves replace the missing role. These are the Benefactor's existing divine enemies and artwork. The animal-summon prototype above is superseded; its measurements remain historical.
+
+The two-living cap, odd-round source turns, next-round initiative, arrival-round retaliation protection, safe cells, active Taunt and source-death dispersal are unchanged. No agent or training-access changes were made in this correction.
+
+| Earned continuation | Fights | HP lost | Knockouts | Final marks |
+| --- | ---: | ---: | ---: | ---: |
+| default | 9 | 893 | 0 | 4,406 |
+| lean | 8 | 1,363 | 0 | 4,366 |
+| trained | 9 | 672 | 0 | 454 |
+| without-celia | 3 | 579 | 0 | 4,388 |
+
+All routes complete the real ending without defeats or retries. The full default sun takes six rounds / 148 HP lost and heart five / 89; the mantle remains seven / 189. The four opt-in simulations, including every form-break resume, pass. All 817 normal tests, TypeScript and production build pass; the focused 17 Benefactor tests additionally assert the actual herald/wing profiles and abilities. Four desktop/phone arrival checks pass with the correct rendered models, reduced motion and restart cleanup. The earlier training-purchase checks remain applicable.
+
+[chapter-seven-divine-summons-audit.json](headless/chapter-seven-divine-summons-audit.json) records current commands, report/input hashes, per-battle results and minion actions. Use its results instead of the prototype combat table above.

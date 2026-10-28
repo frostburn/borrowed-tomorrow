@@ -33,9 +33,9 @@ for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,
    if(scene.enemyAttack?.impact!==impact)return false;scene.time.timeScale=0;scene.tweens.timeScale=0;return true;
   },impact);
   const resume=async()=>page.evaluate(()=>{const scene=(window as unknown as {summonScene:{time:{timeScale:number};tweens:{timeScale:number}}}).summonScene;scene.time.timeScale=1;scene.tweens.timeScale=1;});
-  if(!reduced){await hold(false);expect((await inspect(page)).actors.filter(a=>a.hero.endsWith('-solar'))).toHaveLength(0);await capture(page,`summon-${form}-windup-${device}`);await resume();}
+  if(!reduced){await hold(false);expect((await inspect(page)).actors.filter(a=>['herald','glasswing'].includes(a.hero))).toHaveLength(0);await capture(page,`summon-${form}-windup-${device}`);await resume();}
   await hold(true);const seen=await inspect(page),arrivals=seen.battle!.units.filter(u=>u.id.startsWith('benefactor-minion-'));
-  expect(arrivals).toHaveLength(2);expect(seen.actors.filter(a=>a.hero.endsWith('-solar'))).toHaveLength(2);
+  expect(arrivals).toHaveLength(2);expect(seen.actors.filter(a=>['herald','glasswing'].includes(a.hero))).toHaveLength(2);
   expect(arrivals.every(u=>!seen.battle!.queue.includes(u.id))).toBe(true);expect(seen.battle!.queue[0]).toBe('benefactor');
   await capture(page,`summon-${form}-impact-${device}`);await resume();
   await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
@@ -43,7 +43,7 @@ for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,
   await page.getByRole('button',{name:'Restart battle',exact:true}).click();
   expect((await inspect(page)).battle!.units.some(u=>u.id.startsWith('benefactor-minion-'))).toBe(false);
   await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'Practice complete',exact:true})).toBeVisible();
-  await page.waitForTimeout(1100);expect((await inspect(page)).actors.filter(a=>a.hero.endsWith('-solar'))).toHaveLength(0);
+  await page.waitForTimeout(1100);expect((await inspect(page)).actors.filter(a=>['herald','glasswing'].includes(a.hero))).toHaveLength(0);
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  });
  test('the final refuge sells the river training and lantern housing and reloads both purchases',async({page})=>{

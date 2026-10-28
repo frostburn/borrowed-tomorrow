@@ -156,7 +156,7 @@ At level nine, Sanctuary II grants 36 barrier per target instead of 28; at level
 
 ## Final Benefactor summons
 
-The hollow sun and exposed heart call Sunbound minions on the source's turn in rounds 1, 3, 5, and so on. At most two summoned enemies can be alive at once. The sun calls two ranged Sunbound crows; the heart calls a Sunbound hound and crow, replacing whichever role is missing on a later wave. These use the existing fixed Chapter Seven enemy profiles and vectors, with no player-level scaling or extra reward.
+The hollow sun and exposed heart call the Benefactor’s divine minions on the source's turn in rounds 1, 3, 5, and so on. At most two summoned enemies can be alive at once. Both forms call a Sun herald and a Glass wing, replacing whichever role is missing on a later wave. These use the existing divine-hunter vectors and the domain patrol’s fixed profiles (herald: 205 HP / +15 attack; glass wing: 100 HP / +13 attack), with no player-level scaling or extra reward.
 
 A wave accompanies the source's ordinary turn; its direct Claimed light and marked Judgment remain intact. Arrivals appear through short light tears at the attack's contact, join initiative next round, and cannot retaliate during their arrival round. Active Taunt carries onto arrivals; their later attacks use normal movement, targeting, Dazzle, barriers and Defend. Summoning does not heal the source. The source's fourth-round attack respite remains; surviving minions still take their own turns.
 

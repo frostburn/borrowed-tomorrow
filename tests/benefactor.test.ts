@@ -40,7 +40,9 @@ for(const id of ['benefactor-sun','benefactor-heart'])it(`${id} summons at its t
  expect(benefactorMinions(b)).toHaveLength(0);expect(summonBenefactor(b)).toEqual([]);
  b.queue=[core.id,...b.queue.filter(id=>id!==core.id)];const rest=b.queue.slice(1);
  expect(enemyTurn(b)).toBe('claim');expect(active(b)).toBe(core);
- const minions=benefactorMinions(b);expect(minions).toHaveLength(2);expect(b.queue).toEqual([core.id,...rest]);
+ const minions=benefactorMinions(b);expect(minions).toHaveLength(2);
+ expect(minions[0]).toMatchObject({kind:'herald',hp:205,bonus:15,abilities:['sunbeam','strike']});
+ expect(minions[1]).toMatchObject({kind:'glasswing',hp:100,bonus:13,abilities:['splinter','strike']});expect(b.queue).toEqual([core.id,...rest]);
  expect(minions.every(u=>u.retaliated)).toBe(true);expect(core.intent).toEqual(warning);
  expect(enemyTurn(b)).toBe('judgment');expect(benefactorMinions(b)).toHaveLength(2);
  while(b.round===1)defend(b);
@@ -52,9 +54,9 @@ for(const id of ['benefactor-sun','benefactor-heart'])it(`${id} summons at its t
 it('caps waves at two living minions, replaces losses only on later odd rounds and inherits active Taunt',()=>{
  const b=createBattle('benefactor-heart',chapterSevenRefugeStart()),core=benefactorUnit(b)!,hero=b.units.find(u=>u.side==='party')!;
  b.queue=[core.id,hero.id];core.tauntedBy=hero.id;
- const first=summonBenefactor(b);expect(first.map(u=>u.kind)).toEqual(['hound','crow']);expect(first.every(u=>u.tauntedBy===hero.id)).toBe(true);
+ const first=summonBenefactor(b);expect(first.map(u=>u.kind)).toEqual(['herald','glasswing']);expect(first.every(u=>u.tauntedBy===hero.id)).toBe(true);
  first[0].hp=0;expect(summonBenefactor(b)).toEqual([]);b.round=2;expect(summonBenefactor(b)).toEqual([]);
- b.round=3;const replacement=summonBenefactor(b);expect(replacement).toHaveLength(1);expect(replacement[0].kind).toBe('hound');expect(first.map(u=>u.id)).not.toContain(replacement[0].id);
+ b.round=3;const replacement=summonBenefactor(b);expect(replacement).toHaveLength(1);expect(replacement[0].kind).toBe('herald');expect(first.map(u=>u.id)).not.toContain(replacement[0].id);
  b.round=5;expect(summonBenefactor(b)).toEqual([]);expect(benefactorMinions(b).filter(u=>u.hp>0)).toHaveLength(2);
 });
 it('never overlaps bodies, heroes, fallen allies, cover or fixtures; blocked arrivals do not stall a turn',()=>{

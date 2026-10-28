@@ -54,9 +54,9 @@ export function summonBenefactor(b:Battle):Unit[] {
  for(let slot=benefactorMinions(b).filter(u=>u.hp>0).length;slot<2;slot++){
   const col=slot?9:1,hex=[offset(col,4),offset(col,5),offset(col,3),offset(slot?8:2,5)].find(h=>!blocked.has(key(h)));
   if(!hex)continue;
-  const crow=state.form===1||benefactorMinions(b).some(u=>u.hp>0&&u.kind==='hound');
+  const wing=benefactorMinions(b).some(u=>u.hp>0&&u.kind==='herald');
   state.summons=(state.summons??0)+1;
-  const u=createEnemyUnit({kind:crow?'crow':'hound',variant:crow?'crow-solar':'hound-solar',col:column(hex),row:hex.r},`benefactor-minion-${state.summons}`);
+  const u=createEnemyUnit({kind:wing?'glasswing':'herald',hp:wing?100:205,bonus:wing?13:15,col:column(hex),row:hex.r},`benefactor-minion-${state.summons}`);
   u.retaliated=true;u.tauntedBy=core.tauntedBy;
   b.units.push(u);arrivals.push(u);blocked.add(key(hex));
  }
