@@ -4,9 +4,9 @@ Issue #105 shares the campaign resolver with **Workshop → Combat** (`?dev=comb
 
 ## Upgrade choices
 
-Each character level after the first grants **one upgrade point per companion**, including reserves. Points are derived from earned level minus purchased ranks, so they can be saved, cannot be awarded twice on reload, and are available to later recruits. Each skill has its own rank and a character-level gate for each upgrade. Learning a new skill also costs one point; level-one starting skills are free.
+Each character level after the first grants **one upgrade point per companion**, including reserves, until that companion has earned enough to buy every rank (11 points; 10 for Celia, who starts with two free skills). Points are derived from this capped level allowance minus purchased ranks, so they can be saved, cannot be awarded twice on reload, and are available to later recruits. Each skill has its own rank and a character-level gate for each upgrade. Learning a new skill also costs one point; level-one starting skills are free.
 
-Choose **Upgrade skills** on the victory panel, the available-points button while exploring, or **Equipment → Skills**. Each character has separate points and saved choices. The cards show current/next effects, skill rank, character-level requirement and why an upgrade is unavailable. Combat buttons have compact rank badges; preview, legality, damage and animation all resolve the chosen rank. Raising the character level does not silently buy skills.
+Choose **Upgrade skills** on the victory panel, the spendable-points button while exploring, or **Equipment → Skills**. Each character has separate points and saved choices. The cards show current/next effects, skill rank, character-level requirement and why an upgrade is unavailable. Combat buttons have compact rank badges; preview, legality, damage and animation all resolve the chosen rank. Raising the character level does not silently buy skills.
 
 | Character | Compact skill lines |
 | --- | --- |
@@ -17,6 +17,19 @@ Choose **Upgrade skills** on the victory panel, the available-points button whil
 | Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
 
 Strike and Items stay separate from skill upgrades. Items opens one shared bag menu for bandages, field bandages and focus tonics, with quantities and effects; each uses a main action after targeting and confirmation. See [economy.md](economy.md) for the early supply counters. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character command list has eight entries, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
+
+The exploration/victory shortcut appears only when an available companion can buy an upgrade now; its count excludes points waiting behind level gates. Equipment → Skills remains available for review. The shared campaign/workshop cards distinguish banked points, show the next character level that permits an upgrade, and replace surplus counts with **All skills mastered** when finished. Character tabs mark banked points and mastery too. Opening the shortcut selects a companion who can spend; opening Skills from Equipment preserves the selected character.
+
+Current-format saves retain all purchased ranks. Point balances are derived, not stored, so no migration/reset is needed. Canonical builds still spend their available points and may bank one point ahead of a late gate; that is distinct from permanent surplus after mastery.
+
+| Skill | Previous character-level gates | Current gates |
+| --- | --- | --- |
+| Kit — Feint | 2 / 3 / 10 | 2 / 3 / 6 |
+| Kit — Ricochet | 5 / 8 / 12 | 5 / 8 / 11 |
+| Celia — Celestial bolt | 1 / 6 / 11 | 1 / 4 / 7 |
+| Celia — Sanctuary | 5 / 9 / 12 | 5 / 8 / 12 |
+
+These earlier upgrades fill the long blocked stretches without adding ranks or changing their effects. First-learning gates, team unlocks, level-ten revival/party Rally, and level-thirteen Pinning shot remain unchanged. Kit can spend every earned point through level eleven; Celia through level eight. Short waits for later upgrades are still explicit, with banked points preserved.
 
 Kit can learn Feint at character level two and upgrade it to its one-focus second rank at level three. This gives his two earned points an eligible purchase when he joins at the canonical Chapter Two start; Ricochet, Pinning shot and team-move learning gates retain their later levels.
 
@@ -125,7 +138,7 @@ The cry lasts three combat rounds **including the casting round**: cast in round
 | Feint III | Free; range 4 | 1 focus; range 6 | Improve safe reach instead of making boss control free. |
 | Taunt III | Base party ward 12; 3 focus | Base party ward 10; 4 focus | Preserve Taunt while giving dedicated protection a clearer advantage. Daybreak inherits the weaker ward at its existing 90% output. |
 
-Learning gates, purchased ranks and current save formats are unchanged. The same solo contributions feed team damage at 90%, so these changes also update the appropriate combinations. Heal/Mend, Steam lance, Rivet shot, Celestial bolt, Sanctuary and Shield bash retain their established roles. This pass does not add ranks or resolve the surplus of upgrade points after all four skill lines are mastered.
+Learning gates, purchased ranks and current save formats are unchanged. The same solo contributions feed team damage at 90%, so these changes also update the appropriate combinations. Heal/Mend, Steam lance, Rivet shot, Celestial bolt, Sanctuary and Shield bash retain their established roles. This balance pass did not add ranks; the later point-cap and prompt correction is documented under Upgrade choices above.
 
 Workshop → Combat adds dedicated **Rallying cry I / II / III** practices with low-focus allies. The headless players shortlist useful placements and value the incremental future focus of a refresh; the cooperative forecast resolves the actual future regeneration. The controlled utility probe suppresses the new aura alongside other support abilities. No forecast grants an immediate refill.
 

@@ -29,14 +29,14 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
  ],
  kit:[
   skill('quickshot',[1,4,9],[{power:10},{power:13,pierce:1,description:'A quick shot within 5 hexes. Ignores 1 armor. No focus cost.'},{power:17,pierce:2,description:'A quick shot within 5 hexes. Ignores 2 armor. No focus cost.'}]),
-  skill('feint',[2,3,10],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:1,range:6,description:'Dazzle one enemy for its next three attacks. Range 6. 1 focus.'}]),
-  skill('ricochet',[5,8,12],[{power:9,range:4,bounceRange:2,description:'Hit one enemy within 4 hexes, then another within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit one enemy within 6 hexes, then another within 4 of it. 3 focus.'}]),
+  skill('feint',[2,3,6],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:1,range:6,description:'Dazzle one enemy for its next three attacks. Range 6. 1 focus.'}]),
+  skill('ricochet',[5,8,11],[{power:9,range:4,bounceRange:2,description:'Hit one enemy within 4 hexes, then another within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit one enemy within 6 hexes, then another within 4 of it. 3 focus.'}]),
   skill('pin',[7,10,13],[{power:11},{power:17},{power:24}]),
  ],
  celia:[
-  skill('celestialbolt',[1,6,11],[{power:8},{power:10},{power:12}]),restoration('heal',[1,3,10]),
+  skill('celestialbolt',[1,4,7],[{power:8},{power:10},{power:12}]),restoration('heal',[1,3,10]),
   skill('rally',[2,6,10],[{}, {shape:'blast',description:'A moving aura on Celia and her six surrounding hexes. +1 focus regeneration at normal turn start. Lasts 3 rounds, including this round. No immediate focus; ends if Celia falls. Refreshes without stacking. 3 focus.'},{shape:'party',description:'The whole active party gains +1 focus regeneration at normal turn start, wherever they stand. Lasts 3 rounds, including this round. No immediate focus; ends if Celia falls. Refreshes without stacking. 3 focus.'}]),
-  skill('sanctuary',[5,9,12],[{power:8},{power:24,description:'Grant a stronger barrier to allies in seven hexes. Level-scaled; does not stack. Range 4. 3 focus.'},{shape:'party',range:0,power:32,cost:4,description:'Grant a strong barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
+  skill('sanctuary',[5,8,12],[{power:8},{power:24,description:'Grant a stronger barrier to allies in seven hexes. Level-scaled; does not stack. Range 4. 3 focus.'},{shape:'party',range:0,power:32,cost:4,description:'Grant a strong barrier to every living ally. Level-scaled; does not stack. 4 focus.'}]),
  ],
  petra:[
   skill('bash',[1,5,9],[{}, {cost:0,description:'Optional extra action: push an adjacent enemy one hex. No damage or focus cost; once per turn.'},{shape:'blast',range:0,cost:0,enemyOnly:true,description:'Optional extra action: push every adjacent enemy one hex. No damage or focus cost; once per turn.'}]),
@@ -47,7 +47,16 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
 };
 export function startingSkills(hero:CompanionId):SkillRanks{return Object.fromEntries(SKILLS[hero].map(s=>[s.id,s.levels[0]===1?1:0]));}
 export const newSkillBook=():SkillBook=>Object.fromEntries(COMPANION_IDS.map(id=>[id,startingSkills(id)]))as SkillBook;
-export const skillPoints=(hero:CompanionId,level:number,ranks:SkillRanks)=>Math.max(0,level-1-SKILLS[hero].reduce((sum,s)=>sum+Math.max(0,(ranks[s.id]??0)-(s.levels[0]===1?1:0)),0));
+/** Earn only as many points as this character can ever spend; starting ranks are free. */
+export const earnedSkillPoints=(hero:CompanionId,level:number)=>Math.max(0,Math.min(level-1,SKILLS[hero].reduce((sum,s)=>sum+s.ranks.length-(s.levels[0]===1?1:0),0)));
+export const skillPoints=(hero:CompanionId,level:number,ranks:SkillRanks)=>Math.max(0,earnedSkillPoints(hero,level)-SKILLS[hero].reduce((sum,s)=>sum+Math.max(0,(ranks[s.id]??0)-(s.levels[0]===1?1:0)),0));
+/** Available points count purchases possible now, not points waiting behind level gates. */
+export function skillProgress(hero:CompanionId,level:number,ranks:SkillRanks){
+ const points=skillPoints(hero,level,ranks),remaining=SKILLS[hero].flatMap(s=>s.levels.slice(ranks[s.id]??0));
+ const spendable=Math.min(points,remaining.filter(required=>required<=level).length),mastered=remaining.length===0;
+ const nextLevel=!mastered&&!spendable?Math.max(points?level:level+1,Math.min(...remaining)):undefined;
+ return {points,spendable,mastered,nextLevel};
+}
 export function upgradeReason(hero:CompanionId,level:number,ranks:SkillRanks,id:SkillId):string|undefined{
  if(!Number.isInteger(level)||level<1||level>15)return 'Invalid character level.';
  const s=SKILLS[hero].find(s=>s.id===id);if(!s)return 'This character cannot learn this skill.';
@@ -87,7 +96,7 @@ export function decodeSkillRanks(raw:unknown,hero:CompanionId,level:number):Skil
   const r=ranks[s.id];if(typeof r!=='number'||!Number.isInteger(r)||r<0||r>s.ranks.length||s.levels[0]===1&&r<1||r>0&&s.levels[r-1]>level)throw new Error('Invalid skill level.');
   result[s.id]=r;spent+=Math.max(0,r-(s.levels[0]===1?1:0));
  }
- if(spent>level-1)throw new Error('Too many skill upgrades.');return result;
+ if(spent>earnedSkillPoints(hero,level))throw new Error('Too many skill upgrades.');return result;
 }
 export function decodeSkillBook(raw:unknown,level:number):SkillBook{
  if(!raw||typeof raw!=='object'||Array.isArray(raw)||Object.keys(raw).length!==COMPANION_IDS.length)throw new Error('Invalid skill book.');
