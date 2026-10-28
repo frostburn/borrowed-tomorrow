@@ -1,5 +1,5 @@
 import {expect,it} from 'vitest';
-import {chapterFiveFinaleStart,chapterSixCapitalStart,chapterSixStart} from '../src/dev/canonical-saves';
+import {chapterFiveFinaleStart,chapterSixCapitalStart,chapterSixStart,chapterSevenRefugeStart,chapterSevenStart} from '../src/dev/canonical-saves';
 import {jungleCheckpoint} from './support/jungle';
 import {IMPROVEMENTS,buyImprovement,improvementFlag,maxFocus,improvementProblem} from '../src/rules/improvements';
 import {maxHp,newGame,restoreParty,type GameState} from '../src/rules/state';
@@ -11,6 +11,7 @@ import {defaultBuild,characterProfiles,newCharacterSettings} from '../src/rules/
 import {completeRiverTreatment} from '../src/content/chapter-six/jungle/recovery';
 import {offerImprovements} from '../src/content/improvements';
 import {interactChapterFive} from '../src/content/chapter-five/interactions';
+import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
 import {interactChapterSix} from '../src/content/chapter-six/interactions';
 import type {Dialogue} from '../src/content/dialogue';
 import type {StoryHost} from '../src/content/story-host';
@@ -152,4 +153,27 @@ it('the actual supplies and specialist interactions open their earned services',
  }
  const cured=jungleCheckpoint('riverRestSeen'),k=host(cured);cured.location.map='riverhaven';interactChapterSix(k.h,'river-tavi');expect(k.read().choices?.some(c=>c.label.startsWith('River courier training'))).toBe(true);
  const capital=chapterSixCapitalStart(true),n=host(capital);interactChapterSix(n.h,'capital-crew');n.choose('Reinforce Nell’s lantern · 400 marks');expect(n.read().choices?.some(c=>c.label.startsWith('Reinforced lantern housing'))).toBe(true);
+});
+
+it('the Chapter Seven mooring and refuge retain all earned specialties with real confirmation, cancellation and shared flags',()=>{
+ for(const [start,map,object]of [[chapterSevenStart,'hollowsill','sill-rest'],[chapterSevenRefugeStart,'lastrefuge','refuge-seven-rest']]as const){
+  const s=start();s.location.map=map;s.coins=2200;const hp=structuredClone(s.party),skills=structuredClone(s.skills),j=host(s);
+  interactChapterSeven(j.h,object);j.choose('Training · permanent improvements');j.choose('Specialist improvements');
+  j.choose('River courier training · 450 marks');expect(s.coins).toBe(2200);j.choose('Cancel improvement');expect(s.coins).toBe(2200);
+  for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450],['River courier training',450],['Reinforced lantern housing',400]]as const){
+   j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
+   expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+  }
+  expect(j.saves()).toBe(5);expect(s.coins).toBe(0);expect(s.party).toEqual(hp);expect(s.skills).toEqual(skills);expect(decodeSave(JSON.stringify(s))).toEqual(s);
+  s.location.map='riverhaven';expect(buyImprovement(s,'kit-footing')).toBe(false);s.location.map='capitalquay';expect(buyImprovement(s,'nell-housing')).toBe(false);
+  expect(s.coins).toBe(0);
+ }
+});
+it('travelling later specialties still require their original quests, recruitment and Nell’s recovery',()=>{
+ const s=chapterSixStart();s.coins=5000;s.location.map='outermooring';const j=host(s);
+ offerImprovements(j.h,'training');j.choose('Specialist improvements');expect(j.read().choices?.some(c=>c.label.includes('courier')||c.label.includes('housing'))).toBe(false);
+ expect(buyImprovement(s,'kit-footing')).toBe(false);expect(buyImprovement(s,'nell-housing')).toBe(false);
+ s.flags.riverRestSeen=true;expect(buyImprovement(s,'kit-footing')).toBe(true);
+ s.flags.capitalOpened=true;expect(buyImprovement(s,'nell-housing')).toBe(false);s.flags.nellRecovered=true;expect(buyImprovement(s,'nell-housing')).toBe(true);
+ const missing=chapterSevenRefugeStart();missing.coins=5000;missing.party=missing.party.filter(h=>h.id!=='kit');expect(buyImprovement(missing,'kit-footing')).toBe(false);
 });
