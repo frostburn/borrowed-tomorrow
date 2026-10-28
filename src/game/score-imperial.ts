@@ -1,55 +1,62 @@
 import type {MusicMode,Note,Instrument} from './score';
 import type {Pitch} from './tuning';
 import {singing} from './expression';
-type Sentence=readonly (readonly [beat:number,pitch:Pitch,hold:number])[];
-// Independent upper voices: descending sequences, neighbour notes and delayed
-// resolutions. Positions span four bars, with silence between each sentence.
-// These are composed against the actual changes, not transposed chord patterns.
-const order:readonly Sentence[]=[
- [[1,'F6',.75],[2,'E6',.5],[3,'D6',.5],[4,'D6',1],[5,'C6',.5],[6,'Bb5',1],[9,'A5',1],[10,'G5',.5],[11,'F5',.5],[12,'G5',1],[13,'F5',.5],[14,'E5',1]],
- [[1,'Bb5',1],[2,'A5',.5],[3,'G5',.5],[4,'F5',1],[5,'G5',.5],[6,'A5',1],[9,'G5',1],[10,'F5',.5],[11,'E5',.5],[12,'E5',1.5],[14,'C6',.75]],
- [[1,'F6',.75],[2,'E6',.5],[3,'D6',.5],[4,'F6',1],[5,'E6',.5],[6,'D6',1],[9,'C6',1],[10,'Bb5',.5],[11,'A5',.5],[12,'G5',1.5],[14,'E6',.75]],
- [[1,'D6',1],[2,'C6',.5],[3,'Bb5',.5],[4,'Bb5',1],[5,'A5',.5],[6,'F5',1],[9,'E6',1],[10,'D6',.5],[11,'C6',.5],[12,'A5',2]],
- [[1,'C6',1],[2.5,'Bb5',.5],[3,'Ab5',.5],[4,'Ab5',1.5],[6,'F5',1],[9,'C6',1],[10.5,'Bb5',.5],[11,'Ab5',.5],[12,'Bb5',1.5],[14,'G5',1]],
- [[1,'Ab5',1],[2.5,'Gb5',.5],[3,'F5',.5],[4,'G5',1.5],[6,'Eb5',1],[9,'B5',1],[10,'A5',.5],[11,'G#5',.5],[12,'B5',1],[13,'A5',.5],[14,'G#5',1]],
- [[1,'F6',.75],[2,'E6',.5],[3,'D6',.5],[4,'F6',1],[5,'E6',.5],[6,'D6',1],[9,'C6',1],[10,'Bb5',.5],[11,'A5',.5],[12,'G5',1.5],[14,'E6',.75]],
- [[1,'D6',1],[2,'C6',.5],[3,'Bb5',.5],[4,'Bb5',1],[5,'A5',.5],[6,'F5',1],[9,'B5',1],[10,'A5',.5],[11,'G#5',.5],[12,'E6',1.5],[14,'C6',.75]],
-];
+type Figure=readonly [beat:number,pitches:readonly Pitch[],lastHold?:number];
+type Sentence=readonly Figure[];
+// Four-bar sentences in a lower register. Short eighth-note runs move against
+// the broad lead, with a breath between figures and a longer cadence note.
+// Each line follows its actual harmony rather than transposing an arpeggio.
 const capital:readonly Sentence[]=[
- [[1,'F6',1.5],[3,'E6',.5],[4,'D6',2],[7,'C6',.5],[8,'A5',1.5],[10,'G5',1],[12,'F5',2]],
- [[1,'F6',1],[2.5,'E6',.5],[3,'D6',.5],[4,'D6',1.5],[6,'C6',1],[8,'Bb5',2],[11,'A5',.5],[12,'G5',2]],
- [[1,'A5',1.5],[3,'G5',.5],[4,'F5',2],[7,'E5',.5],[8,'C6',1.5],[10,'Bb5',1],[12,'A5',2]],
- [[1,'E6',1.5],[3,'D6',.5],[4,'C#6',2],[7,'B5',.5],[8,'A5',1],[9.5,'G5',.5],[10,'F5',1],[12,'E5',2]],
- [[1,'Bb5',1.5],[3,'A5',.5],[4,'G5',2],[7,'F5',.5],[8,'E5',1],[10,'D5',1],[12,'Bb5',2]],
- [[1,'F6',1.5],[3,'Eb6',.5],[4,'Db6',2],[7,'C6',.5],[8,'Bb5',1],[10,'Ab5',1],[12,'F5',2]],
- [[1,'B5',1],[2.5,'A5',.5],[3,'G5',.5],[4,'G5',1.5],[6,'F5',1],[8,'E5',1.5],[10,'D5',1],[12,'B5',2]],
- [[1,'E6',1.5],[3,'D6',.5],[4,'C#6',2],[7,'B5',.5],[8,'A5',1],[9.5,'G5',.5],[10,'F5',1],[12,'E5',2]],
+ [[1,['F5','E5','D5','C5','D5','E5']],[4.5,['D5','C5','Bb4','A4','Bb4','C5']],
+  [9,['A4','Bb4','C5','D5','C5','Bb4']],[12.5,['A4','G4','F4','E4','F4'],.85]],
+ [[.5,['F5','E5','D5','C5','D5','F5']],[4.5,['D5','C5','Bb4','A4','Bb4','D5']],
+  [8.5,['Bb4','C5','D5','F5','Eb5','D5']],[12,['C5','Bb4','A4','Bb4','G4'],.9]],
+ [[1,['A4','G4','F4','E4','F4','A4']],[4.5,['F4','G4','A4','Bb4','A4','G4']],
+  [9,['C5','D5','C5','Bb4','A4','G4']],[12.5,['A4','G4','F4','E4','F4'],.85]],
+ [[.5,['E5','D5','C#5','B4','C#5','E5']],[4.5,['C#5','D5','E5','G5','F5','E5']],
+  [8.5,['A4','B4','C#5','D5','C#5','B4']],[12,['A4','G4','F4','E4'],1.25]],
+ [[1,['Bb4','A4','G4','F4','G4','Bb4']],[4.5,['G4','A4','Bb4','C5','Bb4','A4']],
+  [9,['D5','Eb5','D5','C5','Bb4','A4']],[12.5,['G4','A4','Bb4','A4','G4'],.85]],
+ [[.5,['F5','Eb5','Db5','C5','Db5','F5']],[4.5,['Db5','C5','Bb4','Ab4','Bb4','Db5']],
+  [8.5,['Bb4','C5','Db5','F5','Eb5','Db5']],[12,['C5','Bb4','Ab4','F4'],1.25]],
+ [[1,['B4','A4','G4','F4','E4','G4']],[4.5,['G4','A4','B4','C5','B4','A4']],
+  [9,['E5','D5','C5','B4','A4','G4']],[12.5,['F4','E4','D4','E4'],1.25]],
+ [[.5,['E5','D5','C#5','B4','C#5','E5']],[4.5,['C#5','B4','A4','G4','A4','C#5']],
+  [8.5,['E5','D5','C#5','B4','A4','G4']],[12,['F4','E4','D4','C#4'],1.25]],
 ];
 const emperor:readonly Sentence[]=[
- [[1,'Ab5',1],[2,'G5',.5],[3,'F5',1.5],[5,'E5',.5],[6,'C6',1],[7.5,'Bb5',.5],[8,'Ab5',.75],[9,'G5',1],[10,'F5',1]],
- [[1,'Ab5',1],[2,'Gb5',.5],[3,'F5',1.5],[5,'Eb5',.5],[6,'Db6',1],[7.5,'C6',.5],[8,'Bb5',.75],[9,'Ab5',2]],
- [[1,'C6',1],[2,'Bb5',.5],[3,'Ab5',1.5],[5,'G5',.5],[6,'Eb6',1],[7.5,'Db6',.5],[8,'C6',.75],[9,'Bb5',2]],
- [[1,'E6',1],[2,'D6',.5],[3,'C6',1.5],[5,'B5',.5],[6,'G5',1],[7.5,'F5',.5],[8,'E5',.75],[9,'D5',1],[10,'C5',1]],
- [[1,'C6',1],[2,'Bb5',.5],[3,'Ab5',1.5],[5,'G5',.5],[6,'F5',1],[7.5,'G5',.5],[8,'Ab5',.75],[9,'C6',2]],
- [[1,'Ab5',1],[2,'Gb5',.5],[3,'F5',1.5],[5,'Eb5',.5],[6,'F5',1],[7.5,'Ab5',.5],[8,'Bb5',.75],[9,'Ab5',2]],
- [[1,'D6',1],[2,'C6',.5],[3,'B5',1.5],[5,'A5',.5],[6,'G5',1],[7.5,'A5',.5],[8,'B5',.75],[9,'D6',2]],
- [[1,'G5',1],[2,'F5',.5],[3,'E5',1.5],[5,'D5',.5],[6,'C6',1],[7.5,'B5',.5],[8,'A5',.75],[9,'G5',1],[10,'E5',1]],
+ [[.5,['Ab4','Bb4','C5','Bb4','Ab4']],[3.5,['F4','G4','Ab4','G4']],
+  [6.5,['C5','Bb4','Ab4','G4','F4']],[9.5,['G4','Ab4','G4','F4'],.65]],
+ [[.5,['Ab4','Gb4','F4','Eb4','F4']],[3.5,['F4','Gb4','Ab4','Bb4']],
+  [6.5,['Db5','C5','Bb4','Ab4','Gb4']],[9.5,['F4','Eb4','F4','Ab4'],.65]],
+ [[.5,['C5','Bb4','Ab4','G4','Ab4']],[3.5,['Ab4','Bb4','C5','Db5']],
+  [6.5,['Eb5','Db5','C5','Bb4','Ab4']],[9.5,['Bb4','C5','Bb4','Ab4'],.65]],
+ [[.5,['E5','D5','C5','B4','C5']],[3.5,['G4','A4','B4','C5']],
+  [6.5,['G4','F4','E4','D4','E4']],[9,['F4','E4','D4','C4'],1.1]],
+ [[.5,['C5','Db5','C5','Bb4','Ab4']],[3.5,['Ab4','G4','F4','E4']],
+  [6.5,['F4','G4','Ab4','Bb4','C5']],[9.5,['Bb4','Ab4','G4','F4'],.65]],
+ [[.5,['Ab4','Bb4','Ab4','Gb4','F4']],[3.5,['F4','Eb4','Db4','Eb4']],
+  [6.5,['F4','Ab4','Bb4','C5','Db5']],[9.5,['C5','Bb4','Ab4','F4'],.65]],
+ [[.5,['D5','C5','B4','A4','G4']],[3.5,['G4','A4','B4','C5']],
+  [6.5,['D5','E5','D5','C5','B4']],[9.5,['A4','G4','A4','B4'],.65]],
+ [[.5,['G4','F4','E4','D4','C4']],[3.5,['E4','F4','G4','A4']],
+  [6.5,['C5','B4','A4','G4','F4']],[9,['E4','F4','G4','E4'],1.1]],
 ];
 export function imperialCounterline(mode:MusicMode,bar:number):Note[]{
- let form:readonly Sentence[],beats:number,intro=0,instrument:Instrument='strings',gain=.105;
+ let form:readonly Sentence[],beats:number,intro=0,instrument:Instrument='strings';
  switch(mode){
-  case 'four-warden':form=order;beats=4;break;
   case 'capital-battle':form=capital;beats=4;break;
   case 'emperor':form=emperor;beats=3;intro=2;break;
   default:return [];
  }
  if(bar<intro)return [];
  const i=bar-intro,phrase=Math.floor(i/4)%form.length,within=i%4;
- // Reeds carry the upper voice when the Emperor melody turns to strings.
+ // Reeds carry the counterline when the Emperor melody turns to strings.
  if(mode==='emperor'&&i>=16&&i<24)instrument='reed';
  const strength=within===3?.75:within===0?.88:1;
- return form[phrase].filter(([at])=>at>=within*beats&&at<(within+1)*beats).map(([at,pitch,duration])=>({
-  instrument,pitch,beat:at-within*beats,duration,velocity:gain,pan:.3,
-  expression:singing('clear',strength,duration,within===3),
- }));
+ return form[phrase].flatMap(([at,pitches,lastHold])=>pitches.map((pitch,j)=>{
+  const duration=j===pitches.length-1?(lastHold??.42):.42;
+  return {instrument,pitch,beat:at+j*.5-within*beats,duration,velocity:.105,pan:.3,
+   expression:singing('clear',strength*(j===0?1:.9),duration,within===3)};
+ })).filter(n=>n.beat>=0&&n.beat<beats);
 }
