@@ -41,7 +41,7 @@ export function flagshipPresentation(encounter:Encounter):BattlePresentation{ret
   hint:b=>flagshipPart(b,'flagship-bridge').sealed?'Destroy both batteries to expose the bridge. Red X hexes mark incoming fire.':'Bridge exposed. Destroy it to end the boarding.',
   background(scene,world){
     for(const key of ['flagship-deck','flagship-hull','flagship-marine'])nativeTexture(scene,key);
-    world.add(scene.add.image(0,0,'flagship-deck').setOrigin(0));
+    world.add(scene.add.image(0,0,'flagship-deck').setOrigin(0).setDepth(-1000));
     const hull=scene.add.image(28,20,'flagship-hull').setOrigin(0);world.add(hull);aboard(scene,hull,28,20);
     propeller(scene,world,132,142);propeller(scene,world,888,142);
   },

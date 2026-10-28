@@ -1,3 +1,4 @@
+import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
 import {icon} from './item-icons';
 import {itemIcon} from '../content/ui-art';
@@ -90,6 +91,7 @@ export class Adventure extends Phaser.Scene {
   private motion=new ActorAnimator(this);
   private peopleMotion=new PeopleMotion();
   private lighting=new WorldLighting(this);
+  private bossLighting?:BossLighting;
   private battleFaces=new Map<string,string>();
   private boarding=new BoardingPresentation();
   private enemyAttack?:{battle:Battle;actorId:string;ability:AbilityId;cells:Hex[];impact:boolean};
@@ -173,7 +175,7 @@ export class Adventure extends Phaser.Scene {
   private mapLife?:MapLife;
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
-    return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview;
+    return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview||!!this.bossLighting?.animating;
   }
   get sceneryChanged(){const people=this.peopleMotion.takeFrame(),scenery=this.mapLife?.takeFrame()??false;return people||scenery;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
@@ -196,7 +198,7 @@ export class Adventure extends Phaser.Scene {
     this.mapLife?.close();this.mapLife=undefined;
     this.boarding.clear();
     this.ui.canvas.removeAttribute('aria-description');
-    this.lighting.clear();
+    this.lighting.clear();this.bossLighting=undefined;
     this.motion.clear();this.peopleMotion.clear();
     this.enemyAttack=undefined;
     this.cinematic?.close();this.cinematic=undefined;
@@ -587,29 +589,36 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation?.prepare?.(this.battle!);
     if(!this.busy&&this.battlePresentation?.facing)for(const unit of this.battle!.units){const facing=this.battlePresentation.facing(unit);if(facing)this.battleFaces.set(unit.id,facing);}
     this.motion.clear();this.peopleMotion.clear();
-    this.lighting.clear();
+    this.lighting.clear();this.bossLighting=undefined;
     this.layer?.destroy(true);this.layer=this.add.container(0,0);this.actorImages.clear();
     const backdrop=this.battleDefinition.backdrop??{map:'yard' as const,y:0};
     if(this.battlePresentation)this.battlePresentation.background(this,this.layer,this.battle!);
     else this.background(backdrop.map,backdrop.y);
-    this.lighting.attach(this.layer,this.battlePresentation?undefined:BATTLE_MAPS[this.battle!.encounter],this.state,this.battlePresentation?.lighting);
+    this.bossLighting=BossLighting.create(this,this.battle!,this.battleDefinition);
+    const illumination=this.battlePresentation?.lighting;
+    const stage=illumination&&this.bossLighting?{...illumination,sample:this.bossLighting.sample,floorLight:true}:illumination;
+    this.lighting.attach(this.layer,this.battlePresentation&&!this.battlePresentation.tactical?undefined:BATTLE_MAPS[this.battle!.encounter],this.state,stage);
+    if(this.bossLighting)for(const object of this.layer.list)if(object instanceof Phaser.GameObjects.Image&&object.texture.key==='flagship-hull')this.lighting.illuminate(object);
+    this.lighting.environment(this.layer);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}
     for(const rock of this.battleDefinition.rocks){if(b.fixtures?.some(f=>equal(f.hex,offset(...rock))))continue;const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
     drawBattleFixtures(this,this.layer,b,before);
+    this.lighting.focus(this.layer);
     const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
     for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){if(before?.size&&!before.has(u.id)&&u.id.startsWith('benefactor-minion-'))continue;const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
       const custom=this.battlePresentation?.actor?.(this,u,hp,old?.hex??u.hex);
       const img=(custom??this.lighting.actor(this.layer,p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind).setData('fallen',hp<=0);
       if(!custom&&u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
-      if(custom)this.layer.add(img);this.actorImages.set(u.id,img);
+      if(custom){this.layer.add(img);if(this.bossLighting){this.lighting.illuminate(img);this.bossLighting.bind(u,img,hp);}}this.actorImages.set(u.id,img);
       if(hp>0&&!custom){const badges=this.add.container(p.x,p.y+9);this.layer.add(badges);img.setData('badges',badges);
         const g=this.add.graphics();g.fillStyle(0x101d24,.95).fillRect(-23,9,46,6);g.fillStyle(u.side==='party'?0x8ab4ab:0xbf7050).fillRect(-22,10,44*hp/u.maxHp,4);badges.add(g);
         badges.add(this.label(0,19,String(hp),'#f4e5be',2));
         if(u.guard||u.dazzledAttacks||tauntTarget(b,u))badges.add(this.label(0,35,[u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',tauntTarget(b,u)?`Taunted: ${tauntTarget(b,u)!.name}`:''].filter(Boolean).join(' · '),'#87a3a2',1));
       }
     }
+    this.lighting.glare(this.layer);
     this.boarding.sync(b);
     if(b.evacuation){this.ui.canvas.setAttribute('aria-description',`Families aboard: ${b.evacuation.boarded}/${b.evacuation.groups}. Gold arrows mark the loading walk.`);this.layer.add(this.label(worldView().width-80,20,`${b.evacuation.boarded}/${b.evacuation.groups} aboard`,'#f4d598',1).setScrollFactor(0).setDepth(20000));this.layer.add(this.add.image(850,440,'dena').setOrigin(.5,.85));this.layer.add(this.label(850,461,'To coaches','#f4d598',1));}
     this.drawGrid();this.drawInitiative();
@@ -840,6 +849,7 @@ export class Adventure extends Phaser.Scene {
           }
         }
         if(!reduced&&!animatedHero(hero??'')&&!timing){const x=image.x,y=image.y;this.tweens.addCounter({from:0,to:1,duration:contact,onUpdate:t=>{if(image.active){const p=t.getValue()??0;image.setPosition(x-2*Math.round(p*2),y-2*Math.round(Math.sin(p*Math.PI)*2));}}});}
+        if(!reduced&&enemyAttack)this.bossLighting?.attack(actor.id,action?.affected??[],contact,duration-travel);
         if(!reduced&&timing)preview?.attack?.(this,image,actor,0);
         if(face&&action?.ability&&!isConsumable(action.ability)){this.battleFaces.set(actor.id,face);this.motion.attack(image,face,0,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');}
         if(teamTiming&&action?.ability){
@@ -880,6 +890,7 @@ export class Adventure extends Phaser.Scene {
       for(const fixture of battle.fixtures??[])if(fixture.kind==='valve'&&before.has(`fixture:${fixture.id}`)&&fixture.active!==before.get(`fixture:${fixture.id}`)?.active){valveTurn(this,this.layer!,fixture.hex,fixture.vents??[],!!fixture.active);this.audio.effect('valve');}
       if(actor&&action?.ability){
         const image=this.actorImages.get(actor.id)!;
+        if(!reduced&&enemyAttack)this.bossLighting?.attack(actor.id,action.affected??[],contact,duration-travel,impact-travel);
         if(!reduced&&timing)preview?.attack?.(this,image,actor,impact-travel);
         if(action.partnerId){const partner=battle.units.find(u=>u.id===action.partnerId),other=this.actorImages.get(action.partnerId);if(partner&&other&&animatedHero(partner.kind)){const p=toPixel(partner.hex),target=toPixel(action.aim),f=facingAsset(partner.kind as CompanionId,target.x-p.x,target.y-p.y);this.motion.attack(other,f,impact-travel,action.ability==='daybreak'&&partner.kind==='petra'?'bash':'attack');}}
         if(face&&!isConsumable(action.ability))this.motion.attack(image,face,impact-travel,action.ability==='bash'||action.ability==='taunt'||action.ability==='daybreak'&&actor.kind==='petra'?'bash':'attack');

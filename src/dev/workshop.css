@@ -69,3 +69,7 @@
 
 .workshop-abilities .skill-cards{grid-template-columns:1fr}
 .inv-item.incompatible{opacity:.45}
+
+.boss-library .boss-chapter{display:flex;align-items:baseline;gap:12px;width:100%}.boss-chapter>strong{font-size:11px;white-space:nowrap;min-width:40px;color:#b5baa3}.boss-chapter>div{display:flex;flex-wrap:wrap;gap:6px}.boss-chapter button{font-size:11px;padding:6px 8px}@media(max-width:1023px){.boss-library .boss-chapter{gap:6px}.boss-chapter>strong{min-width:32px}.boss-chapter button{font-size:10px;min-height:32px}}
+
+.boss-layout{display:grid;grid-template-columns:280px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:24px;flex:1;min-height:0}.boss-layout>.boss-library{margin:0;min-height:0;max-height:100%;overflow-y:auto;align-content:start;flex-shrink:0}.boss-layout>.boss-preview{height:100%;overflow-y:auto;min-height:0}.boss-layout .boss-preview>div{min-width:0}.boss-preview .boss-route{flex-wrap:wrap}@media(max-width:1023px){.boss-layout{display:flex;flex-direction:column;gap:16px;flex:none}.boss-layout>.boss-library{max-height:184px;overflow-y:auto;flex:none}.boss-layout>.boss-preview{height:auto;overflow:visible;flex:none}}

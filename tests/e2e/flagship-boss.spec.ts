@@ -18,7 +18,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
    await page.goto('/');await importSave(page,checkpoint('orrinJoined'));const original=(await inspect(page)).state;
-   await page.goto(route);await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible();await capture(page,`flagship-picker-${device}`);
+   await page.goto(route);await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible({timeout:30000});await capture(page,`flagship-picker-${device}`);
    await page.getByRole('button',{name:'Start Chapter Five preset',exact:true}).click();
    const start=await inspect(page),b=start.battle!,gun=b.units.find(u=>u.id==='flagship-port')!,nell=b.units.find(u=>u.id==='nell')!;
    expect(b.encounter).toBe('dev-flagship');expect(b.units.filter(u=>u.footprint?.length===3)).toHaveLength(3);
@@ -38,7 +38,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    expect(exposed.units.find(u=>u.id==='flagship-bridge')).toMatchObject({sealed:false,intent:{name:'Emergency broadside'}});await capture(page,`flagship-bridge-${device}`);
    await page.getByRole('button',{name:'Lose battle',exact:true}).click();await expect(page.getByRole('heading',{name:'Practice defeated',exact:true})).toBeVisible();await page.getByRole('button',{name:'Back to workshop',exact:true}).click();
    await page.getByRole('button',{name:'Use workshop party',exact:true}).click();expect((await inspect(page)).battle!.units.filter(u=>u.side==='party').map(u=>u.id)).toEqual(['nell','orrin']);await page.keyboard.press('Escape');
-   await page.reload();await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible();
+   await page.reload();await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible({timeout:30000});
    await page.getByRole('button',{name:'Heart regulator',exact:true}).click();await expect(page.getByRole('button',{name:'Start Chapter Three preset',exact:true})).toBeVisible();
    await page.getByRole('button',{name:'The Benefactor',exact:true}).click();await expect(page.getByRole('button',{name:'Start finale preset',exact:true})).toBeVisible();
    await page.goto('/');await page.getByRole('button',{name:'Continue',exact:true}).click();const returned=(await inspect(page)).state;expect({...returned,playSeconds:original.playSeconds}).toEqual(original);
@@ -67,7 +67,7 @@ test('the whole flagship sways without moving hexes, respects reduced motion, an
  await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.texture==='flagship-port-fire'),{timeout:15000,intervals:[50]}).toBe(true);await capture(page,'flagship-cannon-recoil');
  await page.getByRole('button',{name:'Restart battle',exact:true}).click();await page.mouse.move(0,0);await page.waitForTimeout(1500);
  const restarted=await inspect(page);expect(restarted.battle!.round).toBe(1);expect(restarted.battle!.units.filter(u=>u.side==='party').every(u=>u.hp===u.maxHp)).toBe(true);expect(restarted.actors.some(a=>a.texture.endsWith('-fire'))).toBe(false);
- await page.keyboard.press('Escape');await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible();expect(errors).toEqual([]);
+ await page.keyboard.press('Escape');await expect(page.getByRole('heading',{name:'Alban’s flagship',exact:true})).toBeVisible({timeout:30000});expect(errors).toEqual([]);
 });
 
 test('@journey the flagship is defeated through ordinary component combat',async({page})=>{

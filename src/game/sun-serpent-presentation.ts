@@ -16,7 +16,7 @@ const masks=new Map<string,Uint8Array>();
 export function serpentPresentation(encounter:Encounter):BattlePresentation{
  let headTexture='serpent-head';
  return {
-  lighting:encounter.id==='sun-serpent'?{scene:'battle-sun-serpent',ground:'M72 72H888V456H72Z'}:undefined,
+  lighting:{scene:'battle-sun-serpent',ground:'M72 72H888V456H72Z'},
   encounter,prepare:prepareSerpent,focus:offset(5,3),animating:b=>!b.result&&bossMotionEnabled(),
   portrait:u=>u.id===SUN_SERPENT_ID||u.kind==='serpent-coil'?SERPENT_PORTRAIT:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,

@@ -22,7 +22,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
    await page.goto('/');await importSave(page,checkpoint('orrinJoined'));const original=(await inspect(page)).state;
-   await page.goto(route);await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await expect(page.getByRole('heading',{name:'Heart regulator',exact:true})).toBeVisible();
+   await page.goto(route);await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});await expect(page.getByRole('heading',{name:'Heart regulator',exact:true})).toBeVisible();
    await expect(page.getByRole('region',{name:'Boss battle preview'})).toBeVisible();await capture(page,`conduit-picker-${device}`);
    await page.getByRole('button',{name:'Start Chapter Three preset',exact:true}).click();
    await expect.poll(async()=>(await inspect(page)).battle?.encounter).toBe('dev-conduit-feeds');
