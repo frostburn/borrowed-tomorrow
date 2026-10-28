@@ -92,15 +92,15 @@ export function battleEffect(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   },onComplete:()=>{if(g.active)g.destroy();}});
 }
 
-/** A normal attack spins the resilient valve wheel and changes its connected vents. */
-export function valveTurn(scene:Phaser.Scene,world:Phaser.GameObjects.Container,hex:Hex,vents:Hex[],active:boolean){
+/** A normal attack spins the resilient valve wheel and boosts its always-active vents. */
+export function valveTurn(scene:Phaser.Scene,world:Phaser.GameObjects.Container,hex:Hex,vents:Hex[]){
  const g=scene.add.graphics(),at=toPixel(hex);world.add(g);const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  scene.tweens.addCounter({from:0,to:1,duration:reduced?100:360,onUpdate:t=>{
   if(!g.active)return;const p=t.getValue()??0,angle=(reduced?1:p)*Math.PI/2;
   const dx=Math.round(Math.cos(angle)*14/2)*2,dy=Math.round(Math.sin(angle)*14/2)*2;
-  g.clear().setAlpha(1-p).lineStyle(4,active?0xe9ae66:0xa3dac2).strokeCircle(at.x,at.y-24,18);
+  g.clear().setAlpha(1-p).lineStyle(4,0xe9ae66).strokeCircle(at.x,at.y-24,18);
   g.lineBetween(at.x-dx,at.y-24-dy,at.x+dx,at.y-24+dy);
-  for(const h of vents){const v=toPixel(h),r=4+Math.round(p*8)*2;g.lineStyle(2,active?0xedbb75:0xa3dac2,.7).strokeEllipse(v.x,v.y,r*2,r);if(active)g.fillStyle(0xc5e1d7,.3).fillCircle(v.x,v.y-8-Math.round(p*8)*2,r);}
+  for(const h of vents){const v=toPixel(h),r=4+Math.round(p*8)*2;g.lineStyle(2,0xedbb75,.7).strokeEllipse(v.x,v.y,r*2,r);g.fillStyle(0xc5e1d7,.3).fillCircle(v.x,v.y-8-Math.round(p*8)*2,r);}
  },onComplete:()=>{if(g.active)g.destroy();}});
 }
 

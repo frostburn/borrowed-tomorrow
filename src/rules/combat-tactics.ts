@@ -3,10 +3,14 @@ import type {Battle,Unit} from './combat';
 import {abilityFor} from './skills';
 import {blast,cells,distance,equal,key,visible,type Hex} from './hex';
 import {bodyDistance,occupiedHexes} from './footprint';
+import {FURNACE_ID} from '../content/chapter-five/furnace';
 
-export interface BattleFixture {id:string;name:string;kind:'barricade'|'drum'|'valve';hex:Hex;hp:number;maxHp:number;active?:boolean;vents?:Hex[];power?:number}
-export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['kind'];col:number;row:number;hp?:number;active?:boolean;vents?:[number,number][];power?:number}
+export interface BattleFixture {id:string;name:string;kind:'barricade'|'drum'|'valve';hex:Hex;hp:number;maxHp:number;bursts?:number;vents?:Hex[];power?:number}
+export interface FixtureDefinition {id:string;name:string;kind:BattleFixture['kind'];col:number;row:number;hp?:number;vents?:[number,number][];power?:number}
 export const fixtureAt=(b:Battle,h:Hex)=>b.fixtures?.find(f=>f.hp>0&&equal(f.hex,h));
+export const VENT_DAMAGE=6;
+/** A floor hazard hits grounded units once, even across several body contacts. */
+export const steamVentTargets=(b:Battle,vents:ReadonlySet<string>)=>b.units.filter(u=>u.hp>0&&!u.flying&&u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>vents.has(key(h))));
 /** Support follows caster level, independent of attack edits and offensive gear. */
 export function supportPower(u:Unit,id:AbilityId,partner?:Unit):number{
  if(partner&&ABILITIES[id].team)return teamOutput(supportPower(u,teamSolo(u.kind,id)!)+supportPower(partner,teamSolo(partner.kind,id)!));
@@ -67,16 +71,19 @@ export function prepareRelay(b:Battle){
   u.intent.name=linked?(charging?`Relay charging · fires in round ${b.round+1}`:'Linked relay · defeat either machine'):'Relay disconnected · ordinary attacks';
  }
 }
-function operateValve(b:Battle,aim:Hex):string{
- const f=fixtureAt(b,aim)!;f.active=!f.active;
- for(const h of f.vents??[])if(f.active)b.vents.add(key(h));else b.vents.delete(key(h));
- return `${f.name}: steam ${f.active?'on':'off'}.`;
+function operateValve(b:Battle,aim:Hex):string[]{
+ const f=fixtureAt(b,aim)!;f.bursts=(f.bursts??0)+1;
+ const messages=[`${f.name}: extra steam burst.`];
+ for(const u of steamVentTargets(b,new Set(f.vents?.map(key)))){
+  u.hp=Math.max(0,u.hp-VENT_DAMAGE);messages.push(`Steam burst hits ${u.name} for ${VENT_DAMAGE}${u.hp?'.':' — down.'}`);
+ }
+ return messages;
 }
 /** Props use the same affected footprint; a drum may also break nearby props. */
 export function damageFixtures(b:Battle,hexes:Hex[],power:number):string[]{
  if(power<=0)return [];
  const valves=(b.fixtures??[]).filter(f=>f.hp>0&&f.kind==='valve'&&hexes.some(h=>equal(h,f.hex)));
- const messages:string[]=valves.map(f=>operateValve(b,f.hex));
+ const messages:string[]=valves.flatMap(f=>operateValve(b,f.hex));
  const pending=(b.fixtures??[]).filter(f=>f.hp>0&&f.kind!=='valve'&&hexes.some(h=>equal(h,f.hex))).map(f=>({f,power}));
  while(pending.length){
   const {f,power}=pending.shift()!;if(f.hp<=0)continue;
