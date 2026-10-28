@@ -440,3 +440,71 @@ Validation: 805 normal tests, TypeScript and production build; five opt-in Chapt
 ```sh
 BT_HEADLESS_SIX_REPORTS=/tmp/bt-six-followups npx vitest run --config scripts/headless.vitest.config.ts tests/headless-six.simulation.ts
 ```
+
+## Chapter Seven: earned continuation to the ending
+
+```sh
+npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --output /tmp/seven.json
+```
+
+This continues the actual Chapter Six departure through **all nine domain fights, three Benefactor forms, homecoming and the seaside ending**. It retains the earned 7,005 XP, 3,452 marks, injuries, skills, equipment, improvements and active companions. It extends the historical earned campaign; it is not a fresh zero-start replay under today’s rules. No production gameplay changes were needed: **no progression blocker was found** on the tested routes.
+
+The route uses the normal chapter dispatcher, map paths, dialogue choices, battle resolver, victory rewards and manual fitting. It hears the captives’ accounts, takes the optional reflector and courier-stair fight by default, and visits the refuge companions and epilogue conversations. The collector has no earth-plate restriction. Source releases and final transformations run through their actual story callbacks. There are no canonical starts, forced victories, retries, granted resources or respecs in the audited journeys.
+
+By default the agent keeps the inherited formation, rests when recovery is useful, buys medicine and returns to the refuge between final forms. `--party nell,orrin,kit` selects another recruited formation through the ordinary roster rules. `--skip-optional` skips both the reflector and courier patrol; the guarded supplies remain unavailable, so this route walks back to the hospice before the dragon. `--no-final-rests` chains the three forms without retreat. `--build` changes only future spending of skill points, never existing ranks; these late inherited builds already own most ranks.
+
+`--improvements` adds prepared-policy purchases for the active party: available anchor specialties, focus courses, then endurance courses, with an 80-mark reserve. Purchases use the real clerk menus and confirmations; buying a course does not heal. Previously purchased bonuses are retained and never charged again. Local services that no longer have a provider are not silently granted.
+
+### Checkpoints and reproducibility
+
+`--through refuge` stops at the safe final shelter. The reader accepts an earned Chapter Six departure or a Chapter Seven refuge save after completed releases/transformations. It rejects failed reports, incomplete transformations, the uncured route, unrelated maps and completed endings. Returning between forms preserves victory flags and rewards.
+
+```sh
+npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --through refuge --output /tmp/seven-refuge.json
+npm run simulate:seven -- --from /tmp/seven-refuge.json --output /tmp/seven-complete.json
+```
+
+The recorded normal saves are:
+
+- [chapter-seven-refuge-earned.json](headless/chapter-seven-refuge-earned.json): all domain guardians cleared, before the final forms.
+- [chapter-seven-mantle-earned.json](headless/chapter-seven-mantle-earned.json): first form defeated, transformed sun revealed, returned to the shelter.
+- [chapter-seven-sun-earned.json](headless/chapter-seven-sun-earned.json): second form defeated, fragment returned, at the shelter before the heart.
+- [chapter-seven-earned.json](headless/chapter-seven-earned.json): actual seaside completion, `chapterSevenComplete`, null boundary. This is a terminal save, not another headless departure.
+
+All three refuge resumes produce the same final state as the uninterrupted default run, without repeated rewards. CLI reports also retain exact `battleSaves` before every fight, including completed turns if a later operation fails. Large turn traces remain outside the repository. [chapter-seven-audit.json](headless/chapter-seven-audit.json) records source/input hashes, commands, encounter results, equipment changes, spending and checkpoint hashes.
+
+### Results
+
+| Complete Chapter Seven route | Fights | HP lost | Knockouts | Useful rests | Marks spent | Final marks |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Inherited Nell/Orrin/Celia; optional loot and between-form rests | 9 | 685 | 0 | 7 | 98 | 4,424 |
+| Kit/Celia/Petra; frugal, no optional loot or between-form rests | 8 | 874 | 0 | 4 | 36 | 4,366 |
+| Previously trained departure; additional active-party improvements | 9 | 586 | 0 | 6 | 1,986 | 454 |
+| Nell/Orrin/Kit; optional loot and between-form rests | 9 | 931 | 0 | 7 | 152 | 4,370 |
+
+All four finish without a defeat or retry. The lowest observed remaining HP is 54–87 across these runs; Celia is helpful but not required. They finish at level 15: 9,935 XP with optional loot or 9,755 without it. The final fittings are actually equipped through inventory; the coat also displaces older coats into useful reserve loadouts.
+
+The purchasing route begins with the five earned Chapter Six improvements and adds Celia’s range calibration plus Nell’s and Orrin’s HP/focus courses: **1,950 marks on five new upgrades and 36 on medicine**. Its 454-mark remainder is more informative than the medicine-only agent’s large purse. The game has useful late purchases; the default controller simply does not buy optional permanent improvements unless requested.
+
+An additional comparison starts from the **identical untrained refuge save** and chains all three forms: 17 rounds, 322 HP lost, no knockouts, no rests or new purchases. The rested default uses 16 rounds and loses 218 HP across those forms. Chaining adds pressure, mainly during the sun; the heart still loses no HP with this party. These are different decisions from the same earned checkpoint, not different authored character fixtures.
+
+### Findings to consider next
+
+1. **The exposed heart can lose its climax pressure against Celia’s setup.** The default and trained parties take no HP loss there. One level-15 Sanctuary gives each hero 53 Guard; in the default fight it absorbs 121 enemy damage while movement evades the later areas. The three direct attacks still fire: this is mitigation, not a broken boss turn. The matched simpler controller takes 31 HP; the other earned parties take 73–94. Decide whether the last form should be a victory lap or sustain the climax. If more pressure is wanted, test its patterns/pacing against several parties before changing global support strength or adding a large HP sponge.
+2. **The defensive controller is not consistently better at bosses.** From identical earned starts, the simpler legacy policy beats the furnace in 5 rounds / 63 HP versus defensive’s 6 / 123; the dragon in 5 / 82 versus 6 / 179. Both take seven rounds at the body, but legacy loses 150 HP versus 189. The short defensive forecast sometimes postpones useful kills or chooses poorer longer-term positions. Improve that planning horizon before treating one controller’s losses as proof that a boss needs a nerf. Rally remains unused, so this audit cannot establish its player-facing value.
+3. **Two later specialties remain missable after the final crossing.** The untrained refuge save has both personal quest gates and 4,442 marks, but Kit’s river-footing and Nell’s lantern-housing providers are no longer reachable. The three earlier anchor services are available. Nell’s housing is already offered at departure, alongside the invitation to finish visits, so this is a lower-priority clarity/access decision—not a progression blocker. Consider an explicit last-chance reminder or carrying those two earned offers forward.
+
+[chapter-seven-probe-inputs.json](headless/chapter-seven-probe-inputs.json) holds the five exact default pre-boss saves used for the controller comparison. The existing probe’s replay mode accepts any chapter; only its `--capture` mode is specific to Chapter Six:
+
+```sh
+node scripts/probe-six.mjs --from docs/headless/chapter-seven-probe-inputs.json --output /tmp/seven-defensive.json
+node scripts/probe-six.mjs --from docs/headless/chapter-seven-probe-inputs.json --tactics legacy --output /tmp/seven-legacy.json
+```
+
+All ten matched cases win without knockouts. The complete route variations are not matched-input character-balance tests: changing party, loot, purchases and rests changes several conditions.
+
+Validation: normal rule/content tests, TypeScript and production build pass. Five quick reader/option/supply-gate tests cover the new entry point; four opt-in simulations cover the full default route, all three refuge resumes, the lean chained route and real upgrade purchases. The other party and matched finale/probe runs are recorded in the audit. Full journeys remain outside default CI. This tests game logic and map reachability, not rendering, audio, asset loading or human difficulty.
+
+```sh
+BT_HEADLESS_SEVEN_REPORTS=/tmp/seven-audit npx vitest run --config scripts/headless.vitest.config.ts tests/headless-seven.simulation.ts
+```

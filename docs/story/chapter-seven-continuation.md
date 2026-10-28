@@ -1,6 +1,6 @@
 # Chapter Seven — saved route and completed campaign
 
-Entry: a current version-10 Chapter Six save at `chapter-seven:hollow-sun`, with `chapterSixComplete`, `nellRecovered`, the Emperor's defeat and good landing. The loader must finish the native domain/boss kit before `beginChapterSeven` consumes the departure. No migration, new cure, resource reset or forced active formation occurs. The ill Lightbearer ending never enters.
+Entry: a current version-11 Chapter Six save at `chapter-seven:hollow-sun`, with `chapterSixComplete`, `nellRecovered`, the Emperor's defeat and good landing. The loader must finish the native domain/boss kit before `beginChapterSeven` consumes the departure. No migration, new cure, resource reset or forced active formation occurs. The ill Lightbearer ending never enters.
 
 | Location | Required progress and next checkpoint |
 | --- | --- |
