@@ -2,6 +2,7 @@
 def export(e):
  rect,poly,line,ellipse,sky,world,obj,point,control,ship,svg=(e[n] for n in ('rect','poly','line','ellipse','sky','world','obj','point','control','ship','svg'))
  ART=e['ART']
+ gangway=e['gangway']
  OUTLINES=e['OUTLINES']
  # A real view through the breach: the suspended capital is beyond the cordon.
  capital=[poly([(535,215),(680,156),(858,165),(1015,221),(956,276),(772,309),(600,271)],'#334b55'),poly([(535,215),(680,156),(858,165),(1015,221),(823,254),(650,243)],'#8f9f94')]
@@ -49,5 +50,5 @@ def export(e):
   [('flagship-console',[poly([(0,24),(83,0),(290,0),(341,31),(278,88),(60,88)],'#aa9d77'),poly([(0,24),(60,66),(278,66),(341,31),(338,68),(279,109),(60,109),(0,62)],'#334f59'),rect(81,13,178,31,'#1c3543')]+[ellipse(x,27,9,9,'#819b8b') for x in (107,164,221)],344,112,604,374,486,{}),
    ('flagship-rail',[line([(122,610),(122,885),(1412,885),(1412,610)],'#bda772',5)],1536,1008,0,0,-997,{}),
    ('flagship-launch',['<g transform="translate(-42 579) scale(.4)">',*ship(),'</g>'],400,800,0,0,-997,{}),
-   ('flagship-gangway',[poly([(0,0),(26,-13),(222,41),(195,58)],'#b6a078'),poly([(0,0),(195,58),(195,68),(0,10)],'#415b60'),line([(0,-22),(195,36)],'#c9b88b',4)],232,90,123,737,-996,{}),
+   ('flagship-gangway',gangway((166,704),(320,790)),400,820,0,0,-996,{}),
    ('flagship-sparks',[poly([(0,12),(35,0),(50,13),(37,20),(59,30),(23,38)],'#5e6b68'),poly([(40,42),(63,31),(77,50),(53,65)],'#7d8780')],90,90,1120,360,-996,{})],back)

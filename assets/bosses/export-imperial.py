@@ -1,6 +1,9 @@
 """Native polygonal imperial vessel and Nell's Lightbearer manifestation. No raster inputs."""
 from pathlib import Path
-import math
+import math,sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'characters/vector'))
+from draw import Drawing
+from imperial_head import emperor_head
 ROOT=Path(__file__).resolve().parents[2];ART=ROOT/'public/art/vector/chapter-six';ART.mkdir(parents=True,exist_ok=True)
 INK='#203340';SHADOW='#506b80';BLUE='#819aa8';MARBLE='#e4e5d9';WHITE='#fff0c7';GOLD='#c89b53';RUST='#a35c42';LIGHT='#b3dad0'
 def p(points,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in points)+f'" fill="{c}"/>'
@@ -25,10 +28,11 @@ def vessel(pose='idle'):
   out += [p(q([(104,205),(132,211),(141,235),(124,252),(93,251),(73,236),(77,218)]),'#9b783f'),p(q([(105,214),(124,217),(130,234),(120,243),(96,242),(82,232),(86,223)]),GOLD),p(q([(89,221),(100,217),(118,225),(121,236),(99,231)]),WHITE if not flip else '#d2d3ae'),l(q([(88,231),(99,234),(102,243)]),'#9b783f',3),l(q([(102,230),(112,233),(115,244)]),'#9b783f',3),p(q([(125,212),(142,207),(151,214),(144,229),(132,233)]),GOLD)]
  # Recessed human head and a wide collar. Flesh has separate brow, nose and jaw planes.
  out += [p([(177,128),(216,112),(240,128),(286,128),(313,111),(352,128),(364,183),(336,211),(192,211),(164,183)],'#7b959b'),p([(184,134),(215,122),(237,140),(289,140),(315,122),(345,134),(353,180),(329,199),(199,199),(176,180)],MARBLE),p([(315,122),(345,134),(353,180),(329,199),(313,185),(320,151)],'#597585'),p([(184,134),(215,122),(237,140),(224,151),(191,146)],WHITE),l([(190,162),(215,166),(226,153)],GOLD,4),l([(338,162),(313,166),(302,153)],GOLD,4)]
- face=[p([(243,77),(251,68),(276,68),(286,79),(284,106),(274,122),(253,117),(243,103)],'#766759'),p([(247,79),(255,73),(273,73),(281,82),(279,103),(271,115),(255,111),(248,100)],'#b99a78'),p([(265,74),(274,74),(281,82),(279,103),(271,115),(265,109),(268,96)],'#836d5b'),p([(248,80),(257,75),(262,84),(250,89)],'#d3b795'),p([(258,89),(266,87),(270,102),(261,103)],'#d3b795'),l([(255,108),(268,111),(274,106)],'#584f48',3)]
- if fallen:face += [l([(249,92),(258,94)],INK,3),l([(272,94),(279,92)],INK,3)]
- else:face += [p([(248,86),(261,87),(260,91),(249,90)],INK),p([(269,87),(281,84),(280,89),(270,91)],INK),r(252,92,4,3,INK),r(273,92,4,3,INK)]
- out += ['<g transform="translate(0 '+('6'if fallen else '0')+')">',*face,p([(239,78),(239,54),(250,65),(263,45),(276,64),(289,53),(290,77),(273,83),(254,83)],GOLD),p([(244,73),(251,70),(263,56),(275,70),(285,69),(285,75),(272,78),(254,78)],WHITE),'</g>']
+ # Same silver mane, narrow face, pointed beard and restrained diadem as the
+ # human actor. Keep the likeness recessed, instead of replacing it with a crown.
+ face=Drawing();emperor_head(face,fallen)
+ face_svg=face.svg().split('>',1)[1].rsplit('</svg>',1)[0]
+ out += ['<g id="emperor-likeness" transform="translate(204 '+('60'if fallen else '54')+') scale(3 2.5)">',face_svg,'</g>']
  out += [p([(191,178),(214,186),(232,183),(235,199),(199,199),(176,180)],'#a4b3ad'),p([(313,152),(345,164),(353,180),(329,199),(313,185)],'#3b5563')]
  # The imperial sun is a tangible embossed insignia, not the Benefactor's hollow head.
  out += [p([(289,225),(313,190),(307,146),(316,153),(321,194),(294,232),(269,241),(264,235)],'#344b58'),'<g id="imperial-sun-insignia">',p([(221,146),(264,135),(307,146),(313,190),(289,225),(264,235),(239,225),(215,190)],'#806b48'),p([(226,150),(264,141),(302,150),(307,188),(285,218),(264,226),(243,218),(221,188)],'#9b783f')]

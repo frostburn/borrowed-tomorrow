@@ -46,3 +46,5 @@ Use `?dev=boss` for the Benefactor; `&boss=conduit`, `flagship`, `serpent`, `dra
 Inspect native and chunky display sizes, desktop and fractional-DPR phone layouts, painted-body selection, occupied contacts, passive animation, attack/recovery and reduced motion. Campaign progress, rewards, combat footprints, targeting and warnings are independent of this art pass. Keep detailed browser/device checks outside the small default CI gate.
 
 Run the focused exports, `npm run check`, and relevant boss-preview checks. Stage explicit outputs, run `npm run check:art-upload` before publishing, and confirm repeated focused exports produce no diff. Source paintings and old bitmap panels remain historical references, never runtime fallbacks.
+
+The Emperor actor and vessel share `assets/characters/vector/imperial_head.py`: silver hair, narrow face, pointed beard and diadem. All vessel poses use that likeness; the defeated face closes its eyes. `imperial-portrait.svg` remains an editable original. The serpent geometry lives in `assets/vector/sun_serpent.py`, shared by its focused boss exporter and the observatory map prop, including its separate coils.

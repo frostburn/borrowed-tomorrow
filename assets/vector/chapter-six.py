@@ -4,12 +4,14 @@ No raster inputs. Run via npm run art:six. Existing portrait originals are retai
 import json, math, re
 from pathlib import Path
 from xml.sax.saxutils import escape
-from map_metadata import retain_interaction_roles
+from map_metadata import retain_interaction_roles,preserve_map_format
+from sun_serpent import body as serpent_body,spines as serpent_spines,head as serpent_head,coil as serpent_coil
 from chapter_six_style import OUTLINES,FIXTURES,cells as polygon_cells,floor_shapes,lean,fixture_kind,fixture,arena_fixtures,spill_layer
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-six'; MAP=ROOT/'src/content/chapter-six/maps'
 ART.mkdir(parents=True,exist_ok=True); MAP.mkdir(parents=True,exist_ok=True)
 manifest={}
+preserve_map_format(MAP)
 INK='#243943'; NIGHT='#33434f'; STONE='#b38b65'; LIGHT='#e4be86'; DARK='#745b50'; TEAL='#497c7b'; GOLD='#cb9d55'
 def rect(x,y,w,h,c):return f'<path d="M{x:g} {y:g}h{w:g}v{h:g}h{-w:g}Z" fill="{c}"/>'
 def poly(p,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}' for x,y in p)+f'" fill="{c}"/>'
@@ -219,7 +221,7 @@ obsback.extend(astrolabe(768,360,253))
 world('observatory','Namar · the royal observatory','The sun serpent holds the bronze release. Supplies wait under the southern arch.',[(12,23,40,13),(22,18,20,6)],[(27,18,11,4)], [
  obj('sun-serpent',32,24,'The sun serpent · defend the bronze release',doneFlag='sunSerpentWon',sign=True),control('desert-release',32,22,(27,14,11,8),'Bronze release · break the western seal',doneFlag='desertSealBroken',sign=True),obj('observatory-rest',19,31,'Southern arch · rest and bandages',kind='optional',sign=True),obj('observatory-roofs',15,33,'Terrace stair · return to the city',kind='exit',sign=True),obj('observatory-sahir',46,27,'Minister Sahir',kind='talk',sprite='sahir',hiddenFlag='desertReleaseReady')],
  {'start':(32,31),'stand':(32,27),'release':(32,24)}, {'six-serpent':{'kit':(31,27),'orrin':(28,29),'petra':(35,29),'celia':(30,30),'samira':(29,26),'sahir':(44,26),'nell':(33,30)},'six-release':{'kit':(32,27),'orrin':(29,28),'petra':(35,28),'celia':(30,30),'samira':(32,23),'sahir':(44,26),'nell':(33,30)}},
- [],[('observatory-bench',bench(),168,86,366,687,773,{}),('observatory-serpent',[poly([(23,190),(12,142),(49,93),(83,138),(66,203),(148,236),(235,183),(262,116),(302,50),(342,37),(364,59),(352,87),(312,92),(294,140),(283,213),(222,264),(126,279),(52,247)],GOLD),poly([(64,202),(148,236),(235,183),(262,116),(280,136),(263,215),(209,247),(126,261)],LIGHT),poly([(326,52),(353,52),(350,60),(327,60)],INK)],390,292,573,275,550,{'hiddenFlag':'sunSerpentWon'}),('observatory-released',[line([(663,424),(768,360),(872,424)],'#e1d9ab',7)],1000,470,0,0,-997,{'requiredFlag':'desertSealBroken'})],obsback)
+ [],[('observatory-bench',bench(),168,86,366,687,773,{}),('observatory-serpent',['<g transform="translate(47 20)">',serpent_body,serpent_spines,serpent_head,'</g>','<g transform="translate(0 181) scale(.68)">',serpent_coil,'</g>','<g transform="translate(390 181) scale(-.68 .68)">',serpent_coil,'</g>'],390,292,573,275,550,{'hiddenFlag':'sunSerpentWon'}),('observatory-released',[line([(663,424),(768,360),(872,424)],'#e1d9ab',7)],1000,470,0,0,-997,{'requiredFlag':'desertSealBroken'})],obsback)
 
 for id,title in [('palace-gallery','Palace gallery cordon'),('palace-channel','Palace service channel'),('desert-ascent','Above the postal roofs'),('sun-serpent','The royal observatory')]:
  back=[rect(0,0,1008,480,NIGHT),poly([(0,90),(240,48),(500,111),(800,54),(1008,84),(1008,480),(0,480)],'#8b7869')]
