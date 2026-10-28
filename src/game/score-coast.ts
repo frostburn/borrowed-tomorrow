@@ -29,36 +29,36 @@ const melody: [number,Pitch,number][][] = [
   [[0,'C5',3]],
 ];
 // Keep the coast's C-major route, including Bm7b5/D and the borrowed Gm7–C7.
-// Open C/F fifths with added seconds and G7 suspensions replace the plain
-// major triads; minor sevenths keep the other phrase endings moving.
-// G stays in the bass for the last two bars, delaying C until the next call.
+// Open C/F fifths with added seconds and G7 replace the plain major triads;
+// minor sevenths keep the other phrase endings moving. The final G7–C return
+// supports the repeated-note call and its F–E–D answer without a held tonic.
 const raidChords:Pitch[][]=[
  ['C2','C4','D4','G4'],['D2','A3','B3','D4','F4'],['E2','B3','D4','G4'],['A2','C4','E4','G4'],
  ['G2','Bb3','D4','F4'],['C2','Bb3','E4','G4'],['F2','C4','F4','G4'],['E2','B3','D4','G4'],
- ['D2','C4','F4','A4'],['G2','C4','D4','F4'],['C2','C4','D4','G4'],['A2','C4','E4','G4'],
- ['F2','C4','F4','G4'],['D2','C4','F4','A4'],['G2','C4','D4','F4'],['G2','C4','D4','G4'],
+ ['D2','C4','F4','A4'],['G2','B3','D4','F4'],['C2','C4','D4','G4'],['A2','C4','E4','G4'],
+ ['F2','C4','F4','G4'],['D2','C4','F4','A4'],['G2','B3','D4','F4'],['C2','C4','D4','G4'],
 ];
 const raid: [number,Pitch,number][][] = [
-  // Call and answer.
-  [[0,'E5',.5],[1,'G5',.5],[2,'F5',.5],[2.5,'E5',.5],[3,'D5',.75]],
-  [[0,'D5',1.5],[2,'F5',.5],[3,'B4',.75]],
+  // Repeated-note call and falling answer, then the old lower coastal reply.
+  [[0,'E5',.5],[1,'E5',.5],[2,'E5',.5],[2.5,'F5',.5],[3,'G5',.75]],
+  [[0,'F5',1.5],[2,'E5',.5],[3,'D5',.75]],
   [[0,'B4',.5],[1,'D5',.5],[2,'C5',.5],[2.5,'B4',.5],[3,'G4',.75]],
   [[0,'C5',1],[1.5,'E5',.5],[2,'A4',1.5]],
-  // Restore the borrowed-chord response, with its Eb passing note and Bb turn.
-  [[0,'D5',.5],[1,'F5',.5],[2,'Eb5',.5],[2.5,'D5',.5],[3,'C5',.75]],
+  // Trade the repeated call with the old borrowed-chord answers.
+  [[0,'D5',.5],[1,'D5',.5],[2,'D5',.5],[2.5,'Eb5',.5],[3,'F5',.75]],
   [[0,'E5',1.5],[2,'D5',.5],[3,'Bb4',.75]],
   [[0,'A4',.5],[1,'C5',.5],[2,'Bb4',.5],[2.5,'A4',.5],[3,'G4',.75]],
   [[0,'G4',1],[1.5,'B4',.5],[2,'D5',1.5]],
-  // The original F–A–G lift breathes over the half-time backbeat.
+  // The old F–A–G lift opens the middle; the new call returns within it.
   [[0,'F5',2],[2.5,'A5',1.5]],
   [[0,'G5',1.5],[2,'D5',.5],[3,'B4',.75]],
-  [[0,'E5',2],[2.5,'G5',1.5]],
+  [[0,'E5',.5],[1,'E5',.5],[2,'E5',.5],[2.5,'F5',.5],[3,'G5',.75]],
   [[0,'C5',2],[2.5,'E5',.5],[3,'G5',.75]],
-  // Leave the final suspension open; D leads up to the next opening E.
+  // The old lower phrase gives way to the call and its familiar falling answer.
   [[0,'A4',.5],[1,'C5',.5],[2,'B4',.5],[2.5,'A4',.5],[3,'G4',.75]],
   [[0,'A4',1.5],[2,'F5',.5],[3,'D5',.75]],
-  [[0,'D5',.5],[1,'G5',.5],[2,'F5',.5],[2.5,'D5',.5],[3,'C5',.75]],
-  [[0,'A4',1],[1.5,'G4',.5],[2,'F4',.5],[3,'D5',.75]],
+  [[0,'D5',.5],[1,'D5',.5],[2,'D5',.5],[2.5,'E5',.5],[3,'F5',.75]],
+  [[0,'F5',1.5],[2,'E5',.5],[3,'D5',.75]],
 ];
 export function coastBar(bar: number, battle:boolean): Note[] {
   const i=((bar%16)+16)%16, [root,...voicing]=(battle?raidChords:chords)[i], notes:Note[]=[];
