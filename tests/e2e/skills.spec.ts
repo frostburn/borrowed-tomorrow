@@ -5,10 +5,43 @@ import {inspect,clickHex,capture} from './controls';
 import {offset} from '../../src/rules/hex';
 import {damage,type Unit} from '../../src/rules/combat';
 import {newCharacterSettings,defaultBuild} from '../../src/rules/characters';
+import {chapterFiveStart} from '../../src/dev/canonical-saves';
 
 for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
  test.describe(`skill choices ${device}`,()=>{
   test.use({viewport,deviceScaleFactor});
+  test('canonical banked points explain the next level and only spendable points prompt an upgrade',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+   await page.getByRole('button',{name:'Begin Chapter Five (canonical)',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+   await expect(page.getByRole('button',{name:/^Upgrade skills/})).toHaveCount(0);
+   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();
+   const panel=page.getByRole('dialog',{name:'Character skills'});
+   await expect(panel.locator('.skill-summary')).toHaveText('1 banked pointNext upgrade available at character level 10.');
+   await expect(panel.getByRole('button',{name:'Nell · 1 banked',exact:true})).toBeVisible();await capture(page,`skills-banked-${device}`);
+   await page.getByRole('button',{name:'Close',exact:true}).click();
+   // A valid partially allocated current-format save: one available upgrade plus a banked point.
+   const s=chapterFiveStart();s.flags.airfieldSeen=true;s.skills.celia.celestialbolt=2;await importSave(page,s);
+   await page.getByRole('button',{name:'Upgrade skills · 1',exact:true}).click();
+   await expect(panel.locator('.skill-identity')).toContainText('Celia');await expect(panel.locator('.skill-summary')).toContainText('1 can be spent now');
+   await panel.getByRole('button',{name:'Upgrade Celestial bolt to 3',exact:true}).click();
+   await expect(panel.locator('.skill-summary')).toContainText('1 banked point');await expect(panel.locator('.skill-summary')).toContainText('character level 10');
+   await page.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:/^Upgrade skills/})).toHaveCount(0);
+   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+   await expect(page.getByRole('button',{name:'Equipment',exact:true})).toBeEnabled();await expect(page.getByRole('button',{name:/^Upgrade skills/})).toHaveCount(0);
+   expect((await inspect(page)).state.skills.celia.celestialbolt).toBe(3);expect(errors).toEqual([]);await expect(page.locator('vite-error-overlay')).toHaveCount(0);
+  });
+  test('the canonical final refuge shows mastery without a useless upgrade prompt',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+   await page.getByRole('button',{name:'Begin final refuge (canonical)',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect(page.getByRole('button',{name:'Equipment',exact:true})).toBeEnabled();
+   await expect(page.getByRole('button',{name:/^Upgrade skills/})).toHaveCount(0);
+   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();
+   const panel=page.getByRole('dialog',{name:'Character skills'});
+   await expect(panel.locator('.skill-summary')).toContainText('All skills mastered');
+   await panel.getByRole('button',{name:'Celia · Mastered',exact:true}).click();await expect(panel.locator('.skill-summary')).toContainText('All skills mastered');
+   await capture(page,`skills-mastered-${device}`);expect(errors).toEqual([]);await expect(page.locator('vite-error-overlay')).toHaveCount(0);
+  });
   test('a real level-up offers independent character choices and saves the selected rank',async({page})=>{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,checkpoint('collectorConfronted'));
    await approach(page,'collector');await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'The line is clear',exact:true})).toBeVisible();await page.getByRole('button',{name:'Upgrade skills',exact:true}).click();
