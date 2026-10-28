@@ -273,3 +273,23 @@ workshop scrolling on desktop and an odd-width phone at fractional DPR. These
 rendered checks stay outside the default CI gate.
 
 Character-specific equipment entries dim when they do not fit the selected character, in both the workshop and campaign bag. They remain selectable for inspection; the Equip button stays disabled for an incompatible item. Shared coats remain available to every character.
+
+## Complete boss catalogue
+
+**Bosses** groups its encounters by chapter. The chapter list scrolls independently of the review on desktop; on phones it has a bounded height so the selected boss and start controls remain accessible. Existing regulator routes, exposed-bridge shortcut, Benefactor practice fixture and all three campaign final forms remain available.
+
+The additional campaign previews are:
+
+| Chapter | Encounters |
+| --- | --- |
+| 1 | Collector guard; Captain Alban |
+| 2 | Petra |
+| 3 | Engine Warden |
+| 4 | Sanctuary Warden |
+| 5 | Furnace carrier; mirrored ward engine; Commander Aurel |
+| 6 | Rainhouse claimant |
+| 7 | First collector; harvest keeper; original ward lens; seasons gate dragon |
+
+Each offers a chapter-level preset or **Use workshop party**. Share selections with `?dev=boss&boss=furnace`, `boss=ward`, `boss=aurel` or a domain ID such as `boss=domain-ward`. `src/dev/boss-catalog.ts` owns metadata and independent encounter copies; `campaign-boss-preview.ts` uses the production presentations for large bosses and the original tactical maps for other fights. Authored encounter IDs stay intact so domain rules, original maps and their floor masks match. Rewards are removed and the normal isolated practice host handles outcomes; campaign saves and story flags are never advanced.
+
+Only the selected arena is loaded when starting a new catalogue preview. Missing assets leave the catalogue available for retry; changing the selection or tab during loading cancels entry into that fight. Earlier bosses retain their authored lighting, and the furnace/ward/domain previews show the same lighting as the campaign. Ordinary tactical previews also use their actual map’s actor-lighting profile.
