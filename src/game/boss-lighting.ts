@@ -59,9 +59,9 @@ export class BossLighting {
   const alive=lamps.length>0;
   // Broad front softboxes cover the entire fighting area and the bosses' faces.
   // Neutral bounce retains the painted materials beneath each stage's hue.
-  lamps.push(...[300,720].map(x=>({x,y:460,height:160,radius:1050,strength:.76,fill:.9,shadowStrength:.12,color:[1,.98,.94]})));
+  lamps.push(...[300,720].map(x=>({x,y:460,height:160,radius:1050,strength:.5,fill:.9,spill:.1,shadowStrength:.12,color:[1,.98,.94]})));
   // Opposed soft rim lights retain silhouettes and keep the party readable.
   lamps.push(...[80,920].map(x=>({x,y:260,height:180,radius:650,strength:.42,fill:.55,shadowStrength:.35,color:this.mood.rim})));
-  return this.cached={ambient:alive?this.mood.ambient.map(n=>Math.min(.9,n+.18)):[.8,.82,.84],lamps,shadowOpacity:.20,focus};
+  return this.cached={ambient:alive?this.mood.ambient.map(n=>n+.08):[.8,.82,.84],groundAmbient:alive?this.mood.ambient.map(n=>n*.85):undefined,maxGain:1.04,lamps,shadowOpacity:.20,focus};
  };
 }

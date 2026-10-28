@@ -40,10 +40,10 @@ it('fills the party area with broad diffuse front light, rather than a dark wash
  for(const h of [offset(1,5),offset(5,5),offset(9,6)]){
   const p=toPixel(h),fill=rig.lamps.filter(l=>l.fill===.9);
   expect(fill).toHaveLength(2);expect(fill.every(l=>l.y>280&&l.radius>=1000)).toBe(true);
-  expect(fill.reduce((sum,l)=>sum+lampStrength(l,p.x,p.y),0)).toBeGreaterThan(.45);
+  expect(fill.reduce((sum,l)=>sum+lampStrength(l,p.x,p.y),0)).toBeGreaterThan(.30);
   const source={data:new Uint8ClampedArray([140,110,80,255]),width:1,height:1}as ImageData;
   const lit={...source,data:new Uint8ClampedArray(4)};lightPixels(source,lit,rig,p.x,p.y+9,0,20);
-  expect(lit.data[0]).toBeGreaterThanOrEqual(140);expect(lit.data[1]).toBeGreaterThanOrEqual(110);expect(lit.data[2]).toBeGreaterThanOrEqual(80);
+  expect(lit.data[0]).toBeGreaterThanOrEqual(126);expect(lit.data[1]).toBeGreaterThanOrEqual(99);expect(lit.data[2]).toBeGreaterThanOrEqual(72);
  }
 });
 it('focuses actual fired cells through wind-up/contact and releases after recovery, including a redraw',()=>{
@@ -66,4 +66,15 @@ it('never spotlights a disabled source, a non-boss, empty affected area or reduc
  reduced=true;expect(lighting.sample().focus).toBeUndefined();
  reduced=false;lighting.bind({id:'source'}as Unit,{active:true,x:460,y:280,displayHeight:280}as Phaser.GameObjects.Image,0);
  expect(lighting.sample().focus).toBeUndefined();
+});
+
+it('preserves pale material colours even at attack contact, with darker ground around the source',()=>{
+ for(const boss of ['furnace','ward','flagship','dragon','serpent','emperor','lightbearer','benefactor']as const){
+  const {lighting,time}=fixture(boss);lighting.attack('source',[offset(4,5)],400,950);time.now=400;
+  const rig=lighting.sample(),source={data:new Uint8ClampedArray([200,220,240,255]),width:1,height:1}as ImageData,output={...source,data:new Uint8ClampedArray(4)};
+  lightPixels(source,output,rig,460,280,0,120);
+  for(let c=0;c<3;c++){expect(output.data[c]).toBeLessThanOrEqual(Math.round(source.data[c]*1.04));expect(output.data[c]).toBeLessThan(255);expect(rig.groundAmbient![c]).toBeLessThan(rig.ambient[c]-.1);}
+  expect(output.data[3]).toBe(255);
+  expect(rig.lamps.filter(l=>l.fill===.9).every(l=>(l.spill??1)<.2)).toBe(true);
+ }
 });

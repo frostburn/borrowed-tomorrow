@@ -70,12 +70,12 @@ export class WorldLighting {
     const rig=this.current();if(!rig||!this.ground)return;
     ctx.save();ctx.clip(this.ground);ctx.imageSmoothingEnabled=false;
     if(this.floorLight){
-      ctx.globalCompositeOperation='multiply';ctx.fillStyle=`rgb(${rig.ambient.map(n=>Math.round(Math.min(1,n)*255)).join(',')})`;ctx.fillRect(0,0,1024,768);
+      ctx.globalCompositeOperation='multiply';ctx.fillStyle=`rgb(${(rig.groundAmbient??rig.ambient).map(n=>Math.round(Math.min(1,n)*255)).join(',')})`;ctx.fillRect(0,0,1024,768);
       ctx.globalCompositeOperation='screen';
       for(const light of rig.lamps){
         const radius=light.radius*.65,color=(light.color??[1,.8,.5]).map(n=>Math.round(Math.min(1,n)*220));
         ctx.save();ctx.translate(light.x,light.y);ctx.scale(1,.55);
-        const glow=ctx.createRadialGradient(0,0,0,0,0,radius),alpha=Math.min(.38,light.strength*.24);
+        const glow=ctx.createRadialGradient(0,0,0,0,0,radius),alpha=Math.min(.38,light.strength*.24)*(light.spill??1);
         glow.addColorStop(0,`rgba(${color.join(',')},${alpha})`);glow.addColorStop(.45,`rgba(${color.join(',')},${alpha*.28})`);glow.addColorStop(1,`rgba(${color.join(',')},0)`);
         ctx.fillStyle=glow;ctx.fillRect(-radius,-radius,radius*2,radius*2);ctx.restore();
       }
