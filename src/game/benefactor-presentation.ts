@@ -5,7 +5,7 @@ import {offset} from '../rules/hex';
 import {actorAsset} from '../content/actors';
 import type {CompanionId} from '../rules/party';
 import {nativeTexture,bossLabel as label,bossPlacement as placement,pickBossBody} from './boss-display';
-import {animateBoss,bossAttack,bossMotionEnabled,BOSS_FRAME_COUNT,BOSS_ATTACK_CONTACT,BOSS_ATTACK_DURATION} from './boss-motion';
+import {animateBoss,bossAttack,bossMotionEnabled,BOSS_FRAME_COUNT,BOSS_HEARTBEAT_MS,BOSS_ATTACK_CONTACT,BOSS_ATTACK_DURATION} from './boss-motion';
 export const BENEFACTOR_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/benefactor/benefactor-portrait.svg`;
 export const BENEFACTOR_ASSETS=['benefactor-motion','benefactor-sun-motion','benefactor-heart-motion','benefactor-domain'].map(key=>({key,url:`art/vector/benefactor/${key}.svg`}));
 const masks=new Map<string,Uint8Array[]>();
@@ -24,7 +24,7 @@ export function benefactorPresentation(encounter:Encounter):BattlePresentation{
    const texture=nativeTexture(scene,key),surface=texture.getSourceImage() as HTMLCanvasElement;
    if(!texture.has('0'))for(let i=0;i<BOSS_FRAME_COUNT;i++)texture.add(String(i),0,i%2*360,Math.floor(i/2)*288,360,288);
    if(!masks.has(key))masks.set(key,Array.from({length:BOSS_FRAME_COUNT},(_,i)=>{const p=surface.getContext('2d')!.getImageData(i%2*360,Math.floor(i/2)*288,360,288).data;return Uint8Array.from({length:360*288},(_,j)=>p[j*4+3]);}));
-   const p=placement(u),image=scene.add.image(p.x,p.y,key,0).setOrigin(.5,1);animateBoss(scene,image,hp>0,frame=>{currentFrame=frame;});return image;
+   const p=placement(u),image=scene.add.image(p.x,p.y,key,0).setOrigin(.5,1);animateBoss(scene,image,hp>0,frame=>{currentFrame=frame;},form===2?{motion:'heartbeat',cycleMs:BOSS_HEARTBEAT_MS}:undefined);return image;
   },
   attackTiming:u=>u.id===BENEFACTOR_ID?{contact:BOSS_ATTACK_CONTACT,duration:BOSS_ATTACK_DURATION}:undefined,
   attack:(scene,image,u,elapsed)=>{if(u.id===BENEFACTOR_ID)bossAttack(scene,image,elapsed);},

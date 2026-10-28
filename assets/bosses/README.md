@@ -65,3 +65,15 @@ Inspect native and chunky display sizes, desktop and fractional-DPR phone layout
 Run the focused exports, `npm run check`, and relevant boss-preview checks. Stage explicit outputs, run `npm run check:art-upload` before publishing, and confirm repeated focused exports produce no diff. Source paintings and old bitmap panels remain historical references, never runtime fallbacks.
 
 The Emperor actor and vessel share `assets/characters/vector/imperial_head.py`: silver hair, narrow face, pointed beard and diadem. All vessel poses use that likeness; the defeated face closes its eyes. `imperial-portrait.svg` remains an editable original. The serpent geometry lives in `assets/vector/sun_serpent.py`, shared by its focused boss exporter and the observatory map prop, including its separate coils.
+
+
+The exposed heart has an independent 1.2-second double beat: a strong contraction,
+a smaller answering pulse, then a resting interval. Eight authored vector poses
+bulge the middle facets around the anchored tips and open the central fracture;
+the surrounding rays stay still between attacks. `export-benefactor-forms.py`
+reproduces the native atlas; there is no runtime image scaling. Four judgment
+poses retain their existing contact/recovery times. The shared scene-clock player
+reports `heartbeat`, updates alpha picking with each pose, settles at frame zero
+for reduced motion or defeat, and resumes the current beat after an attack or
+redraw. Review Campaign → exposed heart in the Bosses workshop with the cursor
+parked. Campaign and workshop use the same presentation.
