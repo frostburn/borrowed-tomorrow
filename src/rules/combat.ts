@@ -1,6 +1,6 @@
 import {focusCapacity,maxFocus,improved} from './improvements';
 import { PACKED_CONSUMABLES, type PackedConsumableId, type ConsumableId } from './consumables';
-import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
+import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,steamVentTargets,VENT_DAMAGE,type BattleFixture,type FixtureDefinition} from './combat-tactics';
 import {configureBenefactor,prepareBenefactor,summonBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
 import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
@@ -262,7 +262,7 @@ function finishTurn(b: Battle) {
   b.queue.shift();
   b.queue = b.queue.filter(id => b.units.some(u => u.id === id && u.hp > 0));
   if (!b.queue.length){
-    for(const u of alive(b))if(!u.flying&&u.kind!=='crow'&&u.id!==FURNACE_ID&&occupiedHexes(u).some(h=>b.vents.has(key(h)))){u.hp=Math.max(0,u.hp-6);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for 6${u.hp?'.':' — down.'}`);}
+    for(const u of steamVentTargets(b,b.vents)){u.hp=Math.max(0,u.hp-VENT_DAMAGE);log(b,`${b.furnaceHeat?'Hot metal':'Steam vent'} hits ${u.name} for ${VENT_DAMAGE}${u.hp?'.':' — down.'}`);}
     for(const u of alive(b))if(!u.flying&&u.kind!=='crow'&&occupiedHexes(u).some(h=>brokenIce(b,h))){u.hp=Math.max(0,u.hp-6);log(b,`Loose ice chills ${u.name} for 6${u.hp?'.':' — down.'}`);}
     if(!ended(b)){boardFamilies(b);if(!b.result)nextRound(b);}
   }else beginTurn(b);

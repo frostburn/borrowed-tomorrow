@@ -163,21 +163,37 @@ describe('disruptible enemy links and battlefield objects',()=>{
    prepareRelay(b);expect(crow.intent!.cells).toEqual([]);expect(legalAim(b,crow,'relay',crow.hex)).toBe(false);
   }
  });
- it('a normal strike toggles only the valve’s vents, without damaging the wheel or distant occupants',()=>{
-  const e:Encounter={...encounter,vents:[[10,6]],fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:true,vents:[[5,3]]}]};
-  const {b,u,enemy}=yard(undefined,13,e);enemy.hex=offset(5,3);const hp=enemy.hp;expect(b.vents.size).toBe(2);
+ it('the first strike opens the valve with a burst, and the second resets it without damaging the wheel',()=>{
+  const e:Encounter={...encounter,vents:[[10,6]],fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:false,vents:[[5,3]]}]};
+  const {b,u,enemy}=yard(undefined,13,e);enemy.hex=offset(5,3);const hp=enemy.hp;expect(b.vents.size).toBe(1);
   const wheel=fixtureAt(b,offset(3,3))!,wheelHp=wheel.hp;
   expect(targets(b,u,'strike',wheel.hex)).toEqual([]);expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(wheel.hp).toBe(wheelHp);
-  expect(enemy.hp).toBe(hp);expect(b.vents.has(key(enemy.hex))).toBe(false);expect(b.vents.has(key(offset(10,6)))).toBe(true);expect(b.queue).not.toContain(u.id);
-  b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(b.vents.has(key(enemy.hex))).toBe(true);
+  expect(enemy.hp).toBe(hp-6);expect(b.vents.has(key(enemy.hex))).toBe(true);expect(b.vents.has(key(offset(10,6)))).toBe(true);expect(b.queue).not.toContain(u.id);
+  b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(b.vents.has(key(enemy.hex))).toBe(false);expect(enemy.hp).toBe(hp-6);
  });
  it('ranged and area attacks toggle valves, while support and zero-damage actions cannot',()=>{
   for(const [ability,hero] of [['quickshot','kit'],['burst','nell']]as const){
-   const {b,u}=yard([hero,'petra','celia'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:5,row:3,active:true,vents:[[6,3]]}]});
-   expect(cast(b,u,ability,offset(5,3))).toBe(true);expect(b.fixtures![0].active).toBe(false);expect(b.vents.size).toBe(0);
+   const {b,u}=yard([hero,'petra','celia'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:5,row:3,active:false,vents:[[6,3]]}]});
+   expect(cast(b,u,ability,offset(5,3))).toBe(true);expect(b.fixtures![0].active).toBe(true);expect(b.vents.size).toBe(1);
   }
-  const {b,u}=yard(['petra','celia','nell'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:true,vents:[[6,3]]}]});
-  for(const id of ['bash','bandage','taunt']as const)expect(legalAim(b,u,id,offset(3,3))).toBe(false);expect(b.fixtures![0].active).toBe(true);
+  const {b,u}=yard(['petra','celia','nell'],13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:false,vents:[[6,3]]}]});
+  for(const id of ['bash','bandage','taunt']as const)expect(legalAim(b,u,id,offset(3,3))).toBe(false);expect(b.fixtures![0].active).toBe(false);
+ });
+ it('campaign valves start closed, burst on first hit, reset on second and retain round-end steam damage',()=>{
+  for(const id of ['coast-loading','hammer-lift']){
+   const {b,u,enemy}=yard(['nell','orrin','kit'],13,ENCOUNTERS[id]),wheel=b.fixtures!.find(f=>f.kind==='valve')!,hp=enemy.hp;
+   expect(wheel.active).toBe(false);expect(b.vents.size).toBe(0);enemy.hex={...wheel.vents![0]};
+   expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(enemy.hp).toBe(hp-6);expect(wheel.active).toBe(true);
+   b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(enemy.hp).toBe(hp-6);expect(wheel.active).toBe(false);expect(b.vents.size).toBe(0);
+   b.queue=[u.id,'orrin'];expect(cast(b,u,'strike',wheel.hex)).toBe(true);expect(enemy.hp).toBe(hp-12);expect(wheel.active).toBe(true);
+   b.queue=['orrin'];expect(defend(b)).toBe(true);expect(enemy.hp).toBe(hp-18);
+  }
+ });
+ it('steam bursts hit either side once per body, ignore armour and barriers like floor heat, and miss flyers',()=>{
+  const {b,u,enemy,third,crow}=yard(undefined,13,{...encounter,fixtures:[{id:'valve',kind:'valve',name:'Valve',col:3,row:3,active:false,vents:[[5,3],[6,3],[5,4],[6,4]]}]});
+  enemy.hex=offset(5,3);enemy.footprint=[{q:0,r:0},{q:1,r:0}];enemy.armor=999;enemy.guard=99;enemy.defending=true;third.hex=offset(6,4);crow.hex=offset(5,4);
+  const hp=[enemy.hp,third.hp,crow.hp];expect(cast(b,u,'strike',offset(3,3))).toBe(true);
+  expect(enemy.hp).toBe(hp[0]-6);expect(enemy.guard).toBe(99);expect(third.hp).toBe(hp[1]-6);expect(crow.hp).toBe(hp[2]);
  });
  it('breaks real cover, opening movement and sight while retaining enemies and the victory condition',()=>{
   const {b,u,enemy}=yard(['kit','petra','celia'],13,{...encounter,fixtures:[{id:'crate',kind:'barricade',name:'Crate',col:3,row:3,hp:20}]});

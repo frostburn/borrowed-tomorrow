@@ -7,7 +7,7 @@ import {PeopleMotion} from './people-motion';
 import {PERSON_MOTION_PAGES} from '../content/people-motion';
 import {abilityFor,earnedSkillPoints} from '../rules/skills';
 import {openSkills,availableSkillPoints} from './skills';
-import {teamStatus,battleAbilities,daybreakProtection} from '../rules/combat-tactics';
+import {teamStatus,battleAbilities,daybreakProtection,VENT_DAMAGE} from '../rules/combat-tactics';
 import {drawBattleFixtures} from './battle-fixtures';
 import type {installSoundPreferences} from './sound-preferences';
 import {gridEdges,type HexOutline} from './hex-grid';
@@ -640,7 +640,8 @@ export class Adventure extends Phaser.Scene {
     const attackCells=new Set(attack?.cells.map(key));
     const danger=new Set(b.units.filter(v=>v.hp>0&&!(v.id===attack?.actorId&&ABILITIES[attack.ability].shape==='pattern')).flatMap(v=>v.intent?.cells.map(key)??[]));
     const affected=canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
-    const valveVents=new Set(this.selected!=='move'&&damagingAbility(this.selected)?b.fixtures?.filter(f=>f.kind==='valve'&&affected.has(key(f.hex))).flatMap(f=>f.vents?.map(key)??[]):[]);
+    const valves=this.selected!=='move'&&damagingAbility(this.selected)?b.fixtures?.filter(f=>f.kind==='valve'&&affected.has(key(f.hex)))??[]:[];
+    const valveVents=new Set(valves.flatMap(f=>f.vents?.map(key)??[])),openingVents=new Set(valves.filter(f=>!f.active).flatMap(f=>f.vents?.map(key)??[]));
     const auras=rallySources(b),rallyCells=new Set(auras.flatMap(source=>rallyArea(b,source,source.rally!.rank).map(key)));
     const outlines:HexOutline[]=[];
     const fill=(h:Hex,color:number,alpha:number)=>this.grid!.fillStyle(color,alpha).fillPoints(hexVertices(h).map(p=>new Phaser.Math.Vector2(p.x,p.y)),true);
@@ -659,7 +660,7 @@ export class Adventure extends Phaser.Scene {
         stroke=0xf7ae73;width=2;priority=5;
       }
       if(affected.has(id)){const a=abilityFor(u!,this.selected as AbilityId);color=a.effect==='rally'?0x727fca:a.heal?0x72b89c:0xe5a742;alpha=.45;stroke=a.effect==='rally'?0xb1bdf5:0xf2c778;width=2;priority=6;}
-      if(valveVents.has(id)&&!affected.has(id)){color=0x4bada7;alpha=.25;stroke=0x9ae4cc;width=2;priority=6;}
+      if(valveVents.has(id)&&!affected.has(id)){const opening=openingVents.has(id);color=opening?0xe5a742:0x4bada7;alpha=.25;stroke=opening?0xf2c778:0x9ae4cc;width=2;priority=6;}
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);priority=8;if(alpha===.12){color=0xd7a548;alpha=.22;}}
@@ -761,7 +762,7 @@ export class Adventure extends Phaser.Scene {
       const team=teamStatus(b,u,this.selected).partner,ability=abilityFor(u!,this.selected,team),hits=targets(b,u,this.selected,aimed),footprint=shape(b,u,this.selected,aimed);
       const fixtures=damagingAbility(this.selected)?b.fixtures?.filter(f=>f.hp>0&&footprint.some(h=>equal(f.hex,h)))??[]:[];
       const descriptions=hits.map(v=>ability.effect==='shove'?`${v.name}: ${pushDestination(b,u,v)?'push one hex':'push blocked'} · no damage`:ability.effect==='weaken'?`${v.name}: next 3 attacks −40%`:ability.effect==='guard'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} guard`:ability.effect==='focus'?`${v.name}: +${damage(u,v,this.selected as AbilityId,team)} focus`:`${v.name}: ${ability.heal?'+':'−'}${damage(u,v,this.selected as AbilityId,team)} HP${v.side===u.side&&!ability.heal?' (ALLY)':''}${ability.effect==='push'&&v.hp>damage(u,v,this.selected as AbilityId,team)?pushDestination(b,u,v)?' · pushed one hex':' · push blocked':''}`);
-      descriptions.push(...fixtures.map(f=>`${f.name}: ${f.kind==='valve'?`steam ${f.active?'off':'on'} on marked hexes`:`${f.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`));
+      descriptions.push(...fixtures.map(f=>`${f.name}: ${f.kind==='valve'?`steam ${f.active?'off · reset marked vents':`on · ${VENT_DAMAGE} damage to ground units on marked hexes`}`:`${f.hp} HP · takes ${fixtureDamage(u,this.selected as AbilityId,team)} damage`}`));
       const description=ability.effect==='rally'?`Moving aura · +1 focus regeneration for 3 rounds (including this round). ${hits.length?hits.map(v=>v.name).join(', ')+': currently in range.':'No ally currently in range; the aura follows Celia.'} No immediate focus.`:ability.effect==='taunt'?`All ${hits.length} enemies target ${u.name} until ${u.name}’s next turn.`:descriptions.join(' · ')||'Empty ground';
       if(this.plan)confirm.append(this.ui.button({label:ability.heal?'Confirm healing':ability.effect==='rally'||ability.effect==='guard'||ability.effect==='weaken'||ability.effect==='focus'||ability.effect==='taunt'||ability.effect==='shove'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
       const contributions=team?[u,team].map(fighter=>{const solo=abilityFor(fighter,teamSolo(fighter.kind,this.selected as AbilityId)!);return `${solo.name}${solo.rank?` ${solo.rank}`:''}`;}).join(' + '):'';

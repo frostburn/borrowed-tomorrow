@@ -6,7 +6,7 @@ export const ENCOUNTERS: Record<string, Encounter> = {
     rocks: [[4, 2], [5, 4], [8, 3]], victory: 'The signal walk is clear. A courier sight goes into the bag. Open the barred coach.',
   },
   'coast-loading': {
-    id: 'coast-loading', fixtures:[{id:'loading-valve',name:'Loading-walk valve',kind:'valve',col:3,row:3,active:true,vents:[[5,2],[5,3],[5,4]]}], music:'coast-battle', name: 'Prison train · loading gate', flag: 'trainRaidWon', xp: 70, coins: 32, journal: 'trainRaid', item: 'courier-sight', backdrop: { map: 'coast', y: -300 },
+    id: 'coast-loading', fixtures:[{id:'loading-valve',name:'Loading-walk valve',kind:'valve',col:3,row:3,active:false,vents:[[5,2],[5,3],[5,4]]}], music:'coast-battle', name: 'Prison train · loading gate', flag: 'trainRaidWon', xp: 70, coins: 32, journal: 'trainRaid', item: 'courier-sight', backdrop: { map: 'coast', y: -300 },
     enemies: [{ kind:'guardian',variant:'guardian-iron', col: 7, row: 3 }, { kind:'hound',variant:'hound-steel', col: 6, row: 1 }, { kind:'hound',variant:'hound-steel', col: 6, row: 5 }],
     rocks: [[4, 1], [4, 5], [8, 2]], victory: 'The loading gate is clear. A courier sight goes into the bag. Open the barred coach.',
   },
