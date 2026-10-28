@@ -4,7 +4,7 @@ import type {WorldLight,WorldLamp} from './world-light';
 import {hexVertices,type Hex} from '../rules/hex';
 
 type Color=readonly number[];
-interface Mood {ambient:Color;key:Color;rim:Color}
+interface Mood {ambient:Color;key:Color;rim:Color;environmentShade?:number;lantern?:boolean}
 const moods:Partial<Record<NonNullable<Encounter['boss']>,Mood>>={
  furnace:{ambient:[.68,.60,.55],key:[1.25,.65,.28],rim:[.48,.83,1.2]},
  ward:{ambient:[.56,.67,.66],key:[.62,1.2,1.12],rim:[1.1,.85,.5]},
@@ -12,7 +12,7 @@ const moods:Partial<Record<NonNullable<Encounter['boss']>,Mood>>={
  dragon:{ambient:[.49,.64,.77],key:[.6,1.1,1.25],rim:[.7,.82,1.2]},
  serpent:{ambient:[.70,.59,.44],key:[1.25,1.03,.47],rim:[.6,.84,1.2]},
  emperor:{ambient:[.64,.64,.70],key:[1.2,1.06,.68],rim:[.58,.86,1.18]},
- lightbearer:{ambient:[.59,.53,.64],key:[1.25,.78,.48],rim:[.62,.85,1.18]},
+ lightbearer:{ambient:[.36,.41,.51],key:[1.18,1.05,.72],rim:[.62,.85,1.18],environmentShade:.28,lantern:true},
 };
 const divine:readonly Mood[]=[
  {ambient:[.48,.59,.70],key:[.58,1.05,1.25],rim:[1.1,.84,.52]},
@@ -41,11 +41,12 @@ export class BossLighting {
   let focus:WorldLight['focus'];
   for(const [id,{image,alive}]of this.sources){
    if(!alive||!image.active)continue;
-   const x=Math.round(image.x/2)*2,y=Math.round(image.y/2)*2,height=Math.min(170,image.displayHeight*.52);
+   const shut=this.mood.lantern&&image.texture?.key==='lightbearer-resist';
+   const x=Math.round((image.x-(this.mood.lantern?27:0))/2)*2,y=Math.round(image.y/2)*2,height=this.mood.lantern?(shut?115:94):Math.min(170,image.displayHeight*.52);
    const attack=this.attacks.get(id),elapsed=attack?this.scene.time.now-attack.at:Infinity;
    const charge=attack&&!this.reduced?Math.max(0,elapsed<attack.contact?elapsed/attack.contact:1-(elapsed-attack.contact)/Math.max(1,attack.duration-attack.contact)):0;
-   const power=Math.round((.68+phase*.1+Math.round(Math.min(1,charge)*8)/8*.8)*32)/32;
-   positions.push(`${id}:${x}:${y}:${power}`);
+   const power=Math.round((.68+phase*.1+Math.round(Math.min(1,charge)*8)/8*.8)*(shut?.16:1)*32)/32;
+   positions.push(`${id}:${x}:${y}:${height}:${power}`);
    lamps.push({x,y,height,radius:730,strength:power,fill:.62,shadowStrength:.65,color:this.mood.key});
    if(attack?.polygons.length&&charge>0){
     // Ease down over the wind-up, hold through contact, then restore the stage.
@@ -62,6 +63,6 @@ export class BossLighting {
   lamps.push(...[300,720].map(x=>({x,y:460,height:160,radius:1050,strength:.5,fill:.9,spill:.1,shadowStrength:.12,color:[1,.98,.94]})));
   // Opposed soft rim lights retain silhouettes and keep the party readable.
   lamps.push(...[80,920].map(x=>({x,y:260,height:180,radius:650,strength:.42,fill:.55,shadowStrength:.35,color:this.mood.rim})));
-  return this.cached={ambient:alive?this.mood.ambient.map(n=>n+.08):[.8,.82,.84],groundAmbient:alive?this.mood.ambient.map(n=>n*.85):undefined,maxGain:1.04,lamps,shadowOpacity:.20,focus};
+  return this.cached={ambient:alive?this.mood.ambient.map(n=>n+.08):[.8,.82,.84],groundAmbient:alive?this.mood.ambient.map(n=>n*.85):undefined,environmentShade:alive?this.mood.environmentShade:undefined,maxGain:1.04,lamps,shadowOpacity:.20,focus};
  };
 }

@@ -78,3 +78,14 @@ it('preserves pale material colours even at attack contact, with darker ground a
   expect(rig.lamps.filter(l=>l.fill===.9).every(l=>(l.spill??1)<.2)).toBe(true);
  }
 });
+it('lights the Lightbearer from her right-hand lantern and dims it with the actual shutter pose',()=>{
+ const {lighting,image}=fixture('lightbearer');const open=lighting.sample(),lamp=open.lamps[0];
+ expect(open.environmentShade).toBeGreaterThan(.2);expect(Math.max(...open.groundAmbient!)).toBeLessThan(.45);
+ expect(Math.abs(lamp.x-image.x+27)).toBeLessThanOrEqual(1);expect(lamp.height).toBe(94);
+ expect(lamp.color![0]).toBeGreaterThan(lamp.color![2]);
+ Object.assign(image,{texture:{key:'lightbearer-resist'}});const closed=lighting.sample();
+ expect(closed.lamps[0].height).toBe(115);expect(closed.lamps[0].strength).toBeLessThan(lamp.strength*.2);
+ expect(closed.lamps[1]).toEqual(open.lamps[1]); // Front fill still makes the party readable.
+ Object.assign(image,{texture:{key:'lightbearer-idle'}});expect(lighting.sample().lamps[0]).toEqual(lamp);
+ expect(fixture('emperor').lighting.sample().environmentShade).toBeUndefined();
+});

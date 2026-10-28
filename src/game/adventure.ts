@@ -599,6 +599,7 @@ export class Adventure extends Phaser.Scene {
     const stage=illumination&&this.bossLighting?{...illumination,sample:this.bossLighting.sample,floorLight:true}:illumination;
     this.lighting.attach(this.layer,this.battlePresentation?undefined:BATTLE_MAPS[this.battle!.encounter],this.state,stage);
     if(this.bossLighting)for(const object of this.layer.list)if(object instanceof Phaser.GameObjects.Image&&object.texture.key==='flagship-hull')this.lighting.illuminate(object);
+    this.lighting.environment(this.layer);
     this.grid=this.add.graphics();this.layer.add(this.grid);
     const b=this.battle!,turn=active(b);
     if(!this.busy&&turn&&turn.id!==this.shownTurn){this.revealHex(turn.hex);this.shownTurn=turn.id;}

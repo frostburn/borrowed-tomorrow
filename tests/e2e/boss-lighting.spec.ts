@@ -83,3 +83,48 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   expect(errors).toEqual([]);await expect(page.locator('vite-error-overlay')).toHaveCount(0);
  }finally{await context.close();}
 });
+
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Lightbearer lantern lighting follows attacks and the closed shutter on ${device}`,async({browser})=>{
+ const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ try{
+  await page.goto('/?dev=boss&boss=lightbearer');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});
+  await page.getByRole('button',{name:'Start Chapter Six preset',exact:true}).click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await page.mouse.move(1,1);
+  const backdrop=await page.evaluate(async()=>{
+   const mapsURL='/src/content/battle-maps.ts',artURL='/src/content/scene-art.ts';
+   const [{BATTLE_MAPS},{visibleSceneArt}]=await Promise.all([import(/* @vite-ignore */mapsURL),import(/* @vite-ignore */artURL)]);
+   const s=window.borrowedTomorrow.inspect(),x=Math.round((s.view.scrollX+24)/2)*2,y=68;
+   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=768;const ctx=canvas.getContext('2d')!;
+   const pieces=visibleSceneArt(BATTLE_MAPS.lightbearer,s.state).sort((a:{depth:number},b:{depth:number})=>a.depth-b.depth);
+   for(const p of pieces){const image=new Image();image.src=`/${p.url}`;await image.decode();ctx.drawImage(image,p.x,p.y,p.width,p.height);}
+   const rgba=ctx.getImageData(x,y,2,2).data;let luma=0;for(let i=0;i<rgba.length;i+=4)luma+=.2126*rgba[i]+.7152*rgba[i+1]+.0722*rgba[i+2];
+   return {x,y,luma:luma/4};
+  });
+  expect(backdrop.luma).toBeGreaterThan(20);
+  expect(await brightness(page,backdrop.x,backdrop.y)).toBeLessThan(backdrop.luma*.85);
+  await capture(page,`lightbearer-lantern-${device}`);
+  const still=await floorHash(page);await page.waitForTimeout(250);expect(await floorHash(page)).toBe(still);
+  await page.emulateMedia({reducedMotion:'no-preference'});await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+200));await page.clock.runFor(100);
+  let status='',frames=0,area=false,closed=false;
+  for(let i=0;i<300;i++){
+   const s=await inspect(page),actor=s.actors.find(a=>a.hero==='lightbearer'),current=(await page.locator('#status').textContent())!;
+   expect(s.battle!.result).not.toBe('defeat');
+   if(!s.busy&&s.battle!.round===4){
+    expect(actor?.texture).toBe('lightbearer-resist');closed=true;await page.clock.runFor(100);await capture(page,`lightbearer-shutter-${device}`);break;
+   }
+   if(actor?.motion==='attack'){
+    if(current!==status){status=current;frames=0;}frames++;
+    if(!area&&frames===3&&current.endsWith('Judgment')){
+     area=true;expect(await brightness(page,490,386)).toBeGreaterThan((await brightness(page,310,386))*1.5);
+     await capture(page,`lightbearer-attack-${device}`);
+    }
+   }
+   if(!s.busy){const defend=page.getByRole('button',{name:/^F\s+Defend$/});if(await defend.isVisible())await defend.dispatchEvent('click');}
+   await page.clock.runFor(100);
+  }
+  expect(area).toBe(true);expect(closed).toBe(true);
+  await page.getByRole('button',{name:'Restart battle',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
+  expect((await inspect(page)).battle!.round).toBe(1);expect((await inspect(page)).actors.find(a=>a.hero==='lightbearer')?.texture).not.toBe('lightbearer-resist');
+  await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+ }finally{await context.close();}
+});

@@ -9,7 +9,7 @@ import chapterSeven from '../content/chapter-seven/lighting.json' with { type:'j
 /** Screen-ground coordinates, with lamp height in native actor pixels. */
 export interface WorldLamp { x:number; y:number; height:number; radius:number; strength:number; shadowStrength?:number; fill?:number; spill?:number; color?:readonly number[]; beam?:{reach:number;width:number;spread:number} }
 export interface LightFocus { polygons:readonly (readonly {x:number;y:number}[])[]; strength:number }
-export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[]; shadowOpacity?:number; focus?:LightFocus; groundAmbient?:readonly number[]; maxGain?:number }
+export interface WorldLight { ambient:readonly number[]; lamps:readonly WorldLamp[]; shadowOpacity?:number; focus?:LightFocus; groundAmbient?:readonly number[]; maxGain?:number; environmentShade?:number }
 /** Custom whole-image arenas supply their own native floor silhouette. */
 export interface SceneIllumination { scene:string; ground:string; sample?:()=>WorldLight; floorLight?:boolean }
 interface LightRegistry { profiles:Record<string,WorldLight & {propStrength?:number}>; props:Record<string,WorldLamp[]> }

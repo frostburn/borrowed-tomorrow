@@ -46,6 +46,10 @@ export class WorldLighting {
   focus(world:Phaser.GameObjects.Container){
     if(this.sample)world.add(this.scene.add.existing(new AttackFocus(this.scene,this)));
   }
+  /** Shade the backdrop and props before adding tactical indicators or actors. */
+  environment(world:Phaser.GameObjects.Container){
+    if(this.sample)world.add(this.scene.add.existing(new EnvironmentShade(this.scene,this)));
+  }
   spotlight(ctx:CanvasRenderingContext2D){
     const focus=this.current()?.focus;if(!focus)return;
     const lit=new Path2D();
@@ -128,5 +132,16 @@ class AttackFocus extends Phaser.GameObjects.Image {
   renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:AttackFocus,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
     camera.addToRenderList(src);const ctx=renderer.currentContext;
     if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){this.worldLighting.spotlight(ctx);ctx.restore();}
+  }
+}
+
+class EnvironmentShade extends Phaser.GameObjects.Image {
+  constructor(scene:Phaser.Scene,private worldLighting:WorldLighting){super(scene,0,0,'__WHITE');}
+  renderCanvas(renderer:Phaser.Renderer.Canvas.CanvasRenderer,src:EnvironmentShade,camera:Phaser.Cameras.Scene2D.Camera,parentMatrix:Phaser.GameObjects.Components.TransformMatrix){
+    const shade=this.worldLighting.current()?.environmentShade;if(!shade)return;
+    camera.addToRenderList(src);const ctx=renderer.currentContext;
+    if(Phaser.Renderer.Canvas.SetTransform(renderer,ctx,src,camera,parentMatrix)){
+      ctx.fillStyle=`rgba(7,12,24,${shade})`;ctx.fillRect(0,0,1024,768);ctx.restore();
+    }
   }
 }
