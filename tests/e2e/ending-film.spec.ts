@@ -12,9 +12,7 @@ async function filmHash(page:Page){
   return {hash:hash>>>0,colors:colors.size};
  });
 }
-// Temporary @ci tag runs this focused new renderer on GitHub while the local
-// execution environment is unavailable. Remove the tag after validation.
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test((device==='desktop'?'@ci ':'')+'good-ending workshop plays all shots, pauses and cleans up on '+device,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test('good-ending workshop plays all shots, pauses and cleans up on '+device,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
