@@ -185,7 +185,8 @@ it('the train raid trades its repeated-note call with coastal phrases and return
     expect(notes.filter(n=>n.instrument==='snare'&&n.velocity>=.05).map(n=>n.beat)).toEqual(middle?[2]:[1,3]);
     expect(notes.some(n=>n.instrument==='strings')).toBe(middle);
     if(bar===8)expect(lead(bar).every(n=>n.duration>=1.5)).toBe(true);
-    expect(notes.filter(n=>n.instrument==='round-bass').map(n=>n.beat)).toEqual(middle?[0,2]:[0,1,2,3]);
+    expect(notes.filter(n=>n.instrument==='bass').map(n=>n.beat)).toEqual(middle?[0,2]:[0,1,2,3]);
+    expect(notes.some(n=>n.instrument==='round-bass')).toBe(false);
   }
 });
 

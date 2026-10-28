@@ -75,7 +75,7 @@ export function coastBar(bar: number, battle:boolean): Note[] {
     if(!end)for(const beat of [1,3])add('hat','F#2',beat,.08,opening?(beat===1?.018:.015):beat===1?.014:.011,.4);
   }else{
     const broad=i>=8&&i<12;
-    for(const beat of (broad?[0,2]:[0,1,2,3]))add('round-bass',transpose(root,beat%2?'P5':'P1'),beat,broad?1.7:.7,beat===0?.16:beat%2?.1:.13);
+    for(const beat of (broad?[0,2]:[0,1,2,3]))add('bass',transpose(root,beat%2?'P5':'P1'),beat,broad?1.7:.7,beat===0?.16:beat%2?.1:.13);
     for(const beat of (broad?[0]:[0,2]))for(const pitch of voicing)add('keys',octave(pitch,-1),beat,broad?3.2:.55,beat===0?.04:.026,.25);
     for(const beat of [0,2])add('kick','C2',beat,.18,.09);
     for(const beat of (broad?[2]:[1,3]))add('snare','D2',beat,.14,.055,-.1);
