@@ -29,8 +29,8 @@ const locations:Record<ImprovementService,readonly MapId[]>={
  training:['airship','outermooring','capitalquay','hollowsill','lastrefuge'],
  hammerplain:['hammerplain'],dawnwatch:['dawnwatch'],windmere:['windmere','dispensary'],iria:['riverhaven','rainhouse'],capital:['capitalquay','lastpalace','crown'],
 };
-/** Allied crews retain the three anchor-region specialties after departure. */
-export const CREW_SERVICES:readonly ImprovementService[]=['hammerplain','dawnwatch','windmere'];
+/** Travelling counters retain every quest-unlocked specialty after departure. */
+export const CREW_SERVICES:readonly ImprovementService[]=['hammerplain','dawnwatch','windmere','iria','capital'];
 export const serviceAvailable=(s:GameState,service:ImprovementService)=>!!s.flags.airshipOwned&&(locations[service].includes(s.location.map)||CREW_SERVICES.includes(service)&&locations.training.includes(s.location.map));
 export function improvementProblem(s:GameState,i:Improvement):string|undefined {
  if(improved(s,i.id))return 'Completed';

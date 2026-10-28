@@ -1,7 +1,7 @@
 import {focusCapacity,maxFocus,improved} from './improvements';
 import { PACKED_CONSUMABLES, type PackedConsumableId, type ConsumableId } from './consumables';
 import {supportPower,daybreakProtection,teamStatus,ricochetHexes,axisHexes,prepareRelay,fixtureAt,damageFixtures,type BattleFixture,type FixtureDefinition} from './combat-tactics';
-import {configureBenefactor,prepareBenefactor,BENEFACTOR_ID} from './benefactor';
+import {configureBenefactor,prepareBenefactor,summonBenefactor,BENEFACTOR_ID} from './benefactor';
 import { configureImperial,prepareImperial,EMPEROR_ID,LIGHTBEARER_ID } from './imperial-vessel';
 import { configureWinterDragon,prepareWinterDragon,winterDragonAfterAttack,brokenIce,WINTER_DRAGON_ID } from './winter-dragon';
 import { configureSerpent,prepareSerpent,leaveSunGlass,SUN_SERPENT_ID } from './sun-serpent';
@@ -27,7 +27,8 @@ import { configureConduit, prepareConduit } from './conduit';
 import {canRally,cleanRallies,rallyArea,rallyBonus,startRally,type RallyAura} from './rally';
 import {configureBossDirect,bossDirectTurn} from './boss-direct';
 import { REGULATOR_ID } from '../content/chapter-three/regulator';
-import { ENEMY_VARIANTS, type EnemyVariantId } from '../content/enemy-variants';
+import type {EnemyVariantId} from '../content/enemy-variants';
+import {createEnemyUnit} from './enemies';
 
 export {ABILITIES,damagingAbility,type AbilityId,type Ability} from './abilities';
 import {ABILITIES,damagingAbility,type AbilityId} from './abilities';
@@ -49,23 +50,13 @@ export interface Battle {
   grounding?:{plates:Hex[];open:boolean}; log: string[]; bandages: number; supplies: Record<PackedConsumableId, number>; result: 'victory' | 'defeat' | null;
   fixtures?:BattleFixture[];
   imperial?:{openedRound?:number};
-  benefactor?:{form:0|1|2};
+  benefactor?:{form:0|1|2;summonedRound?:number;summons?:number};
   sunGlass?:{round:number;cells:Hex[]};
   winterIce?:Hex[];
   furnaceHeat?:{hex:Hex;untilRound:number}[];
   evacuation?:{route:Hex[];boarded:number;groups:number};
 }
 export interface Encounter { wardTracking?:boolean; fixtures?:FixtureDefinition[];coordinated?:boolean; benefactorForm?:0|1|2; boss?:'benefactor'|'emperor'|'lightbearer'|'dragon'|'serpent'|'conduit'|'furnace'|'dawnwatch'|'ward'|'flagship'; gunSupport?:'mortar'|'repeater'; id: string; name: string; music:MusicMode; flag: string; xp: number; coins: number; backdrop?: { map: MapId; y: number }; enemies: { kind: 'herald' | 'glasswing' | 'hound' | 'crow' | 'guardian' | 'inspector' | 'knight'; variant?:EnemyVariantId; col: number; row: number; hp?:number; bonus?:number; name?:string; appearance?: string; sealed?:boolean }[]; rocks: [number, number][]; shallow?:[number,number][]; vents?:[number,number][]; grounding?:[number,number][]; evacuation?:{route:[number,number][];groups:number}; journal?:string; victory?:string; item?:ItemId }
-const ENEMY_STATS = {
-  herald:{name:'Sun herald',hp:138,speed:4,movement:3,armor:2,abilities:['sunbeam','strike']as AbilityId[],bonus:7},
-  glasswing:{name:'Glass wing',hp:66,speed:8,movement:4,armor:1,flying:true,abilities:['splinter','strike']as AbilityId[],bonus:5},
-  hound: { name: 'Track hound', hp: 26, speed: 4, movement: 3, armor: 0, abilities: ['strike'] as AbilityId[], bonus: -3 },
-  crow: { name: 'Ash crow', hp: 19, speed: 6, movement: 3, armor: 0, abilities: ['peck', 'strike'] as AbilityId[], bonus: -1 },
-  guardian: { name: 'Rail guardian', hp: 68, speed: 2, movement: 2, armor: 2, abilities: ['steam', 'strike'] as AbilityId[], bonus: -6 },
-  inspector: { name: 'Imperial officer', hp: 74, speed: 3, movement: 2, armor: 1, abilities: ['flare', 'strike'] as AbilityId[], bonus: 0 },
-  knight: { name: 'Imperial knight', hp: 142, speed: 5, movement: 3, armor: 3, abilities: ['strike','bash','taunt','sweep'] as AbilityId[], bonus: 2 },
-};
-
 /** Build a character for combat or inventory inspection without starting a turn. */
 export function createPartyUnit(state:GameState,id:CompanionId,index=0,count=1,equipment=equipmentBonuses(state.inventory),profile?:CharacterProfile):Unit{
     const legacy=state.party.find(h=>h.id===id);
@@ -90,13 +81,7 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
   if (!validParty(ids, available)) throw new Error('Choose one to three distinct companions.');
   if(e.boss==='conduit'&&e.grounding&&ids.length<2)throw new Error('The sealed intake needs at least two companions for its earth plates.');
   const units:Unit[]=ids.map((id,index)=>createPartyUnit(state,id,index,ids.length,equipment,characters?.[id]));
-  e.enemies.forEach((enemy, i) => {
-    const variant=enemy.variant?ENEMY_VARIANTS[enemy.variant]:undefined;
-    if(variant&&variant.kind!==enemy.kind)throw new Error('Enemy variant must match its combat role.');
-    const stats = {...ENEMY_STATS[enemy.kind],...(variant?{name:variant.name,hp:variant.hp,bonus:variant.bonus,armor:variant.armor,speed:variant.speed,movement:variant.movement}:{})};
-    units.push({ ...stats, id: `${enemy.kind}-${i}`, kind: enemy.kind, side: 'enemy', hex: offset(enemy.col, enemy.row),
-      appearance:enemy.appearance??enemy.variant,sealed:enemy.sealed,name:enemy.name??stats.name,bonus:enemy.bonus??stats.bonus,maxHp:enemy.hp??stats.hp,hp:enemy.hp??stats.hp,focus: 6, moved: false, defending: false, retaliated: false, waited: false });
-  });
+  e.enemies.forEach((enemy,i)=>units.push(createEnemyUnit(enemy,`${enemy.kind}-${i}`)));
   const battle: Battle = { encounter:e.id, units, obstacles: new Set(e.rocks.map(([c, r]) => key(offset(c, r)))),
     water:new Set((e.shallow??[]).map(([c,r])=>key(offset(c,r)))),
     vents:new Set((e.vents??[]).map(([c,r])=>key(offset(c,r)))),
@@ -389,7 +374,7 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
     const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }
   if(u.id===BENEFACTOR_ID&&b.benefactor){
-    prepareBenefactor(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
+    prepareBenefactor(b);summonBenefactor(b);const direct=bossDirectTurn(b,u,onAction);if(direct)return direct;
     if(u.intent?.power===0){log(b,'The broken source draws no more light.');finishTurn(b);return;}
     const aim={...u.hex};if(cast(b,u,'judgment',aim,onRetaliation)){onAction?.('judgment',aim);return 'judgment';}return;
   }

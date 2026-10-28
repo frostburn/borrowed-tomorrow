@@ -1,0 +1,838 @@
+{
+  "version": 1,
+  "baselineCommit": "9e9adee5a3df464989a5a78547e7d8076cf75a9e",
+  "baselineComparisonCommit": "6326f4e484a76b1db86647277cec11897238af91",
+  "scope": "Earned-save continuation under the added final-form summons and continued specialty access. No forced wins, resource grants, retries, respecs or agent changes. The baseline comparison uses the identical untrained refuge save and controller. Other parties/routes are viability checks, not matched character-balance comparisons. Original audits and checkpoints remain historical.",
+  "runs": [
+    {
+      "name": "baseline-refuge",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --output /tmp/bt-finale-before.json",
+      "source": {
+        "path": "docs/headless/chapter-seven-refuge-earned.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "rawReportSha256": "701d92bc275df54c5fc91ddbf78a56626a1d35ddafb475b0ba130e6ba656ac20",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false
+      },
+      "battles": [
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 189,
+          "knockouts": 0,
+          "minimumHp": 62,
+          "healed": 107,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 29,
+          "knockouts": 0,
+          "minimumHp": 108,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 0,
+          "knockouts": 0,
+          "minimumHp": 124,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 218,
+      "knockouts": 0,
+      "rests": 2,
+      "purchases": [],
+      "finalCoins": 4424,
+      "complete": true
+    },
+    {
+      "name": "summoning-refuge",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --output /tmp/bt-finale-default.json",
+      "source": {
+        "path": "docs/headless/chapter-seven-refuge-earned.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "rawReportSha256": "41489b7a2bc39a5cf515cc244fd500dbb5ee27a5c3fcfc2a8269fe741d26bc6a",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false
+      },
+      "battles": [
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 189,
+          "knockouts": 0,
+          "minimumHp": 62,
+          "healed": 107,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 112,
+          "knockouts": 0,
+          "minimumHp": 75,
+          "healed": 45,
+          "summoned": 4,
+          "minionActions": {
+            "peck": 4
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 38,
+          "knockouts": 0,
+          "minimumHp": 106,
+          "healed": 0,
+          "summoned": 4,
+          "minionActions": {
+            "strike": 2,
+            "peck": 1
+          },
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 339,
+      "knockouts": 0,
+      "rests": 2,
+      "purchases": [],
+      "finalCoins": 4406,
+      "complete": true
+    },
+    {
+      "name": "summoning-without-celia",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --party nell,orrin,kit --output /tmp/bt-finale-no-celia.json",
+      "source": {
+        "path": "docs/headless/chapter-seven-refuge-earned.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "rawReportSha256": "feebc025a780c7c2cd4f9eb078ba4a8ed083791173d624a00e67cd6e625f635e",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false,
+        "party": [
+          "nell",
+          "orrin",
+          "kit"
+        ]
+      },
+      "battles": [
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 123,
+          "knockouts": 0,
+          "minimumHp": 91,
+          "healed": 31,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 333,
+          "knockouts": 0,
+          "minimumHp": 31,
+          "healed": 120,
+          "summoned": 3,
+          "minionActions": {
+            "peck": 7
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 80,
+          "knockouts": 0,
+          "minimumHp": 75,
+          "healed": 0,
+          "summoned": 4,
+          "minionActions": {},
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 536,
+      "knockouts": 0,
+      "rests": 2,
+      "purchases": [],
+      "finalCoins": 4380,
+      "complete": true
+    },
+    {
+      "name": "summoning-chained-refuge",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --party kit,celia,petra --no-final-rests --spending frugal --output /tmp/bt-finale-lean.json",
+      "source": {
+        "path": "docs/headless/chapter-seven-refuge-earned.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "rawReportSha256": "5e17e20c579e8b02c2db848a852d523179043e0d58be8b976fccb05ba2363b48",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "frugal"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": false,
+        "through": "7",
+        "improvements": false,
+        "party": [
+          "kit",
+          "celia",
+          "petra"
+        ]
+      },
+      "battles": [
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 225,
+          "knockouts": 0,
+          "minimumHp": 70,
+          "healed": 111,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 8,
+          "hpLost": 360,
+          "knockouts": 0,
+          "minimumHp": 11,
+          "healed": 266,
+          "summoned": 5,
+          "minionActions": {
+            "peck": 8
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 155,
+          "knockouts": 0,
+          "minimumHp": 11,
+          "healed": 168,
+          "summoned": 4,
+          "minionActions": {
+            "strike": 2,
+            "peck": 1,
+            "defend": 1
+          },
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 740,
+      "knockouts": 0,
+      "rests": 0,
+      "purchases": [],
+      "finalCoins": 4442,
+      "complete": true
+    },
+    {
+      "name": "all-active-specialties",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --through refuge --party nell,kit,celia --improvements --output /tmp/bt-finale-upgrades.json",
+      "source": {
+        "path": "docs/headless/chapter-seven-refuge-earned.json",
+        "sha256": "964d6dd52aff8774e998cf2e435faf1744e62bf44e1b46cba456189e1c111abd"
+      },
+      "rawReportSha256": "f432b94746bf90791caae8f14633c728ddfa7cb73bbb4e553fe5f0ce003719ca",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "refuge",
+        "improvements": true,
+        "party": [
+          "nell",
+          "kit",
+          "celia"
+        ]
+      },
+      "battles": [],
+      "totalHpLost": 0,
+      "knockouts": 0,
+      "rests": 1,
+      "purchases": [
+        {
+          "ids": [
+            "celia-sight"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "kit-footing"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "nell-housing"
+          ],
+          "cost": 400
+        },
+        {
+          "ids": [
+            "focus-nell"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "focus-kit"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "focus-celia"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "hp-nell"
+          ],
+          "cost": 300
+        },
+        {
+          "ids": [
+            "hp-kit"
+          ],
+          "cost": 300
+        },
+        {
+          "ids": [
+            "hp-celia"
+          ],
+          "cost": 300
+        }
+      ],
+      "finalCoins": 892,
+      "complete": false
+    },
+    {
+      "name": "complete-default",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --output /tmp/seven-default.json",
+      "source": {
+        "path": "docs/headless/chapter-six-earned.json",
+        "sha256": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811"
+      },
+      "rawReportSha256": "1ff4eda944bf82814129d243f15f46b80551a89b3553bd47adb85fa796ad8aef",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": false
+      },
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 42,
+          "knockouts": 0,
+          "minimumHp": 78,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 28,
+          "knockouts": 0,
+          "minimumHp": 105,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 123,
+          "knockouts": 0,
+          "minimumHp": 87,
+          "healed": 97,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 57,
+          "knockouts": 0,
+          "minimumHp": 82,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-patrol",
+          "result": "victory",
+          "rounds": 2,
+          "hpLost": 38,
+          "knockouts": 0,
+          "minimumHp": 58,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 179,
+          "knockouts": 0,
+          "minimumHp": 80,
+          "healed": 104,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 189,
+          "knockouts": 0,
+          "minimumHp": 62,
+          "healed": 107,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 112,
+          "knockouts": 0,
+          "minimumHp": 75,
+          "healed": 45,
+          "summoned": 4,
+          "minionActions": {
+            "peck": 4
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 38,
+          "knockouts": 0,
+          "minimumHp": 106,
+          "healed": 0,
+          "summoned": 4,
+          "minionActions": {
+            "strike": 2,
+            "peck": 1
+          },
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 806,
+      "knockouts": 0,
+      "rests": 7,
+      "purchases": [],
+      "finalCoins": 4406,
+      "complete": true
+    },
+    {
+      "name": "complete-lean",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-earned.json --party kit,celia,petra --build support --spending frugal --skip-optional --no-final-rests --output /tmp/seven-lean.json",
+      "source": {
+        "path": "docs/headless/chapter-six-earned.json",
+        "sha256": "cb74494ff010ca098cc242101b9b319d045f236dff801684e7a4641543e86811"
+      },
+      "rawReportSha256": "e74f4ab477d4ff50d6afcca858bf3ac21288da27684569eef8e04a1bb9aee0d1",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "support",
+        "spending": "frugal"
+      },
+      "options": {
+        "optional": false,
+        "restBetweenForms": false,
+        "through": "7",
+        "improvements": false,
+        "party": [
+          "kit",
+          "celia",
+          "petra"
+        ]
+      },
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 0,
+          "knockouts": 0,
+          "minimumHp": 116,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 71,
+          "knockouts": 0,
+          "minimumHp": 84,
+          "healed": 45,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 122,
+          "knockouts": 0,
+          "minimumHp": 87,
+          "healed": 100,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 28,
+          "knockouts": 0,
+          "minimumHp": 109,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 198,
+          "knockouts": 0,
+          "minimumHp": 61,
+          "healed": 106,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 219,
+          "knockouts": 0,
+          "minimumHp": 74,
+          "healed": 109,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 8,
+          "hpLost": 362,
+          "knockouts": 0,
+          "minimumHp": 6,
+          "healed": 238,
+          "summoned": 5,
+          "minionActions": {
+            "peck": 9
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 7,
+          "hpLost": 231,
+          "knockouts": 1,
+          "minimumHp": 0,
+          "healed": 241,
+          "summoned": 5,
+          "minionActions": {
+            "strike": 2,
+            "peck": 3,
+            "defend": 1
+          },
+          "revivals": [
+            {
+              "hero": "kit",
+              "round": 6,
+              "actor": "celia",
+              "ability": "heal",
+              "hp": 43
+            }
+          ]
+        }
+      ],
+      "totalHpLost": 1231,
+      "knockouts": 1,
+      "rests": 4,
+      "purchases": [],
+      "finalCoins": 4366,
+      "complete": true
+    },
+    {
+      "name": "complete-trained",
+      "command": "npm run simulate:seven -- --from docs/headless/chapter-six-trained-earned.json --improvements --output /tmp/seven-trained.json",
+      "source": {
+        "path": "docs/headless/chapter-six-trained-earned.json",
+        "sha256": "b033651e7f58c61086bd7c7b065510ea1469f9bdfd9b2426ad3f5ef257bb7f2b"
+      },
+      "rawReportSha256": "17674296961ade768c17e014072d139f60caee91fde77b63bd392c116fe5af30",
+      "status": "complete",
+      "agent": {
+        "tactics": "defensive",
+        "build": "offense",
+        "spending": "prepared"
+      },
+      "options": {
+        "optional": true,
+        "restBetweenForms": true,
+        "through": "7",
+        "improvements": true
+      },
+      "battles": [
+        {
+          "id": "domain-hounds",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 19,
+          "knockouts": 0,
+          "minimumHp": 111,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-collector",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 20,
+          "knockouts": 0,
+          "minimumHp": 117,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-furnace",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 115,
+          "knockouts": 0,
+          "minimumHp": 92,
+          "healed": 31,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-ward",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 25,
+          "knockouts": 0,
+          "minimumHp": 117,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-patrol",
+          "result": "victory",
+          "rounds": 3,
+          "hpLost": 54,
+          "knockouts": 0,
+          "minimumHp": 96,
+          "healed": 0,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "domain-dragon",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 171,
+          "knockouts": 0,
+          "minimumHp": 92,
+          "healed": 111,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-body",
+          "result": "victory",
+          "rounds": 6,
+          "hpLost": 122,
+          "knockouts": 0,
+          "minimumHp": 87,
+          "healed": 122,
+          "summoned": 0,
+          "minionActions": {},
+          "revivals": []
+        },
+        {
+          "id": "benefactor-sun",
+          "result": "victory",
+          "rounds": 5,
+          "hpLost": 124,
+          "knockouts": 0,
+          "minimumHp": 62,
+          "healed": 72,
+          "summoned": 4,
+          "minionActions": {
+            "peck": 4
+          },
+          "revivals": []
+        },
+        {
+          "id": "benefactor-heart",
+          "result": "victory",
+          "rounds": 4,
+          "hpLost": 38,
+          "knockouts": 0,
+          "minimumHp": 118,
+          "healed": 0,
+          "summoned": 4,
+          "minionActions": {
+            "strike": 2,
+            "peck": 1
+          },
+          "revivals": []
+        }
+      ],
+      "totalHpLost": 688,
+      "knockouts": 0,
+      "rests": 7,
+      "purchases": [
+        {
+          "ids": [
+            "celia-sight"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "focus-nell"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "hp-nell"
+          ],
+          "cost": 300
+        },
+        {
+          "ids": [
+            "focus-orrin"
+          ],
+          "cost": 450
+        },
+        {
+          "ids": [
+            "hp-orrin"
+          ],
+          "cost": 300
+        }
+      ],
+      "finalCoins": 454,
+      "complete": true
+    }
+  ]
+}

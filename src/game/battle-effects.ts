@@ -126,3 +126,14 @@ export function fixtureBurst(scene:Phaser.Scene,world:Phaser.GameObjects.Contain
   if(drum)g.lineStyle(4,0xe6d8ac,.8).strokeEllipse(at.x,at.y-10,24+p*90,12+p*44);
  },onComplete:()=>{if(g.active)g.destroy();}});
 }
+
+/** A short tear of light marks newly summoned bodies without sliding their art. */
+export function summonArrival(scene:Phaser.Scene,world:Phaser.GameObjects.Container,hex:Hex){
+ const g=scene.add.graphics(),at=toPixel(hex);world.add(g);
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ scene.tweens.addCounter({from:0,to:1,duration:reduced?100:420,onUpdate:t=>{
+  if(!g.active)return;const p=t.getValue()??0,r=10+Math.round(p*8)*2;
+  g.clear().setAlpha(1-p).lineStyle(4,0xd4ac67,.8).strokeEllipse(at.x,at.y+4,r*2,r);
+  for(const dx of [-12,0,12]){const height=24+Math.round((1-p)*20)*2;g.lineStyle(2,0xc5d8ce,.9).lineBetween(at.x+dx,at.y+4,at.x+dx,at.y-height);}
+ },onComplete:()=>{if(g.active)g.destroy();}});
+}

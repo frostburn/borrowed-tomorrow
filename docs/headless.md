@@ -453,7 +453,7 @@ The route uses the normal chapter dispatcher, map paths, dialogue choices, battl
 
 By default the agent keeps the inherited formation, rests when recovery is useful, buys medicine and returns to the refuge between final forms. `--party nell,orrin,kit` selects another recruited formation through the ordinary roster rules. `--skip-optional` skips both the reflector and courier patrol; the guarded supplies remain unavailable, so this route walks back to the hospice before the dragon. `--no-final-rests` chains the three forms without retreat. `--build` changes only future spending of skill points, never existing ranks; these late inherited builds already own most ranks.
 
-`--improvements` adds prepared-policy purchases for the active party: available anchor specialties, focus courses, then endurance courses, with an 80-mark reserve. Purchases use the real clerk menus and confirmations; buying a course does not heal. Previously purchased bonuses are retained and never charged again. Local services that no longer have a provider are not silently granted.
+`--improvements` adds prepared-policy purchases for the active party: available quest-unlocked specialties, focus courses, then endurance courses, with an 80-mark reserve. Purchases use the real clerk menus and confirmations; buying a course does not heal. Previously purchased bonuses are retained and never charged again. Local services that no longer have a provider are not silently granted.
 
 ### Checkpoints and reproducibility
 
@@ -473,7 +473,9 @@ The recorded normal saves are:
 
 All three refuge resumes produce the same final state as the uninterrupted default run, without repeated rewards. CLI reports also retain exact `battleSaves` before every fight, including completed turns if a later operation fails. Large turn traces remain outside the repository. [chapter-seven-audit.json](headless/chapter-seven-audit.json) records source/input hashes, commands, encounter results, equipment changes, spending and checkpoint hashes.
 
-### Results
+### Initial audit results (before final-form summons)
+
+These results and the original checkpoints remain a historical baseline. The summon/training follow-up below records the new behavior.
 
 | Complete Chapter Seven route | Fights | HP lost | Knockouts | Useful rests | Marks spent | Final marks |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -488,7 +490,7 @@ The purchasing route begins with the five earned Chapter Six improvements and ad
 
 An additional comparison starts from the **identical untrained refuge save** and chains all three forms: 17 rounds, 322 HP lost, no knockouts, no rests or new purchases. The rested default uses 16 rounds and loses 218 HP across those forms. Chaining adds pressure, mainly during the sun; the heart still loses no HP with this party. These are different decisions from the same earned checkpoint, not different authored character fixtures.
 
-### Findings to consider next
+### Initial findings
 
 1. **The exposed heart can lose its climax pressure against Celia’s setup.** The default and trained parties take no HP loss there. One level-15 Sanctuary gives each hero 53 Guard; in the default fight it absorbs 121 enemy damage while movement evades the later areas. The three direct attacks still fire: this is mitigation, not a broken boss turn. The matched simpler controller takes 31 HP; the other earned parties take 73–94. Decide whether the last form should be a victory lap or sustain the climax. If more pressure is wanted, test its patterns/pacing against several parties before changing global support strength or adding a large HP sponge.
 2. **The defensive controller is not consistently better at bosses.** From identical earned starts, the simpler legacy policy beats the furnace in 5 rounds / 63 HP versus defensive’s 6 / 123; the dragon in 5 / 82 versus 6 / 179. Both take seven rounds at the body, but legacy loses 150 HP versus 189. The short defensive forecast sometimes postpones useful kills or chooses poorer longer-term positions. Improve that planning horizon before treating one controller’s losses as proof that a boss needs a nerf. Rally remains unused, so this audit cannot establish its player-facing value.
@@ -508,3 +510,40 @@ Validation: normal rule/content tests, TypeScript and production build pass. Fiv
 ```sh
 BT_HEADLESS_SEVEN_REPORTS=/tmp/seven-audit npx vitest run --config scripts/headless.vitest.config.ts tests/headless-seven.simulation.ts
 ```
+
+### Follow-up: summoned pressure and continued training access
+
+The sun and heart now summon up to two living minions every other source turn. The sun uses ranged Sunbound crows; the heart mixes a hound and crow. Arrivals join next round and cannot retaliate immediately. The direct shot and marked attack remain; the fourth-round source respite remains. Killing the source disperses the summons, ending the phase without cleanup or extra rewards. See [combat-upgrade.md](combat-upgrade.md#final-benefactor-summons).
+
+A matched replay from the exact same [earned refuge](headless/chapter-seven-refuge-earned.json), with the unchanged defensive controller, formation, equipment, skills and resting policy:
+
+| Form | Before: rounds / HP lost | With summons: rounds / HP lost |
+| --- | ---: | ---: |
+| Mantle | 7 / 189 | 7 / 189 |
+| Hollow sun | 5 / 29 | 6 / 112 |
+| Exposed heart | 4 / 0 | 5 / 38 |
+
+Both complete without knockouts. The mantle is unchanged. The new sun calls four crows over the fight; the heart calls four total minions. Clearing them costs attacks while leaving opportunities for area/team moves. Sanctuary still absorbs damage normally; its strength and the agent were not changed.
+
+Other viability checks from that same refuge finish with no knockouts: Nell/Orrin/Kit loses 333 HP at the sun and 80 at the heart; Kit/Celia/Petra without between-form rests loses 360 and 155, reaching a minimum 11 HP. These are different formations and policies, not matched balance comparisons.
+
+The full Chapter Seven simulations also finish without defeats or retries:
+
+| Complete route from earned Chapter Six departure | Fights | HP lost | Knockouts | Final marks |
+| --- | ---: | ---: | ---: | ---: |
+| Default, optional loot and between-form rests | 9 | 806 | 0 | 4,406 |
+| Kit/Celia/Petra, frugal, no optional loot or final rests | 8 | 1,231 | 1 | 4,366 |
+| Previously trained plus further improvements | 9 | 688 | 0 | 454 |
+
+The lean route's Kit falls to a crow in heart round six and Celia revives him with ordinary Heal during that same round. The simulation now permits knockouts on this deliberately lean route while retaining its requirements for every actual victory, exact reward/spending accounting, no retries, no rests between forms and the real ending. The default/trained routes still assert no knockouts. All three generated final-refuge/form-break resumes match the full default outcome without repeated rewards.
+
+**Training → Specialist improvements** now retains Kit’s and Nell’s earned services alongside the earlier three specialties, at both Chapter Seven training counters and the other travelling counters. Recruitment, original quest gates, Nell's recovery, prices and once-only flags are unchanged. Local providers remain. A real menu-driven purchase check from the earned refuge with Nell/Kit/Celia buys all three active specialties plus their six HP/focus courses for 3,550 marks, leaving 892. The purchases themselves do not heal; the runner's subsequent free rest fills the new capacities.
+
+[chapter-seven-pressure-audit.json](headless/chapter-seven-pressure-audit.json) contains input/report hashes, exact CLI commands, per-fight damage, minion counts/actions, knockout/revival evidence and purchase costs. Original audit files and earned checkpoints are preserved. Reproduce the matched baseline using commit `6326f4e484a76b1db86647277cec11897238af91`; use the current checkout for the summon run:
+
+```sh
+npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --output /tmp/seven-pressure.json
+npm run simulate:seven -- --from docs/headless/chapter-seven-refuge-earned.json --through refuge --party nell,kit,celia --improvements --output /tmp/seven-training.json
+```
+
+Validation: 817 normal tests, TypeScript and production build; four opt-in Chapter Seven simulations (including the corrected lean-route expectation); six detailed desktop/phone browser cases for both forms' arrivals, impact timing, reduced motion, restart cleanup, specialty confirmation/cancellation and reload persistence. Browser plugin not available; local Playwright used the Vite app at `http://127.0.0.1:5173`, desktop 1280×800 and phone 390×844 at DPR 1.25. Page identity, meaningful rendering, screenshots, interactions, console health and absence of error overlays were verified. An initial browser check timed out during cold startup under concurrent simulation/build load; the ready-state timeout was corrected and that case passed on rerun. No production dependency or artwork changes were needed. Detailed journeys stay outside default CI. These runs establish logic/visual behavior and route viability, not human difficulty.

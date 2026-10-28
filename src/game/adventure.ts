@@ -28,7 +28,7 @@ import { facingAsset, PLAYABLE_ACTORS, worldActorScaleY } from '../content/actor
 import { COMPANION_IDS, type CompanionId } from '../rules/party';
 import { MOTION_PAGES, animatedHero, walkingHero, ATTACK_CONTACT_MS, ATTACK_DURATION_MS } from '../content/actor-motion';
 import { ActorAnimator } from './actor-motion';
-import { battleEffect,teamWindup,fixtureBurst,valveTurn } from './battle-effects';
+import { battleEffect,summonArrival,teamWindup,fixtureBurst,valveTurn } from './battle-effects';
 import {TEAM_ANIMATION,type TeamSource} from './battle-team-effects';
 import {teamSolo} from '../rules/abilities';
 import { CHAPTERS,nextChapter,mapsForRestore } from '../content/chapters';
@@ -599,7 +599,7 @@ export class Adventure extends Phaser.Scene {
     for(const rock of this.battleDefinition.rocks){if(b.fixtures?.some(f=>equal(f.hex,offset(...rock))))continue;const p=toPixel(offset(...rock));this.layer.add(this.add.image(p.x,p.y+9,'rock').setOrigin(.5,.8));}
     drawBattleFixtures(this,this.layer,b,before);
     const floor=(u:import('../rules/combat').Unit)=>Math.max(...occupiedHexes(u,before?.get(u.id)?.hex??u.hex).map(h=>toPixel(h).y));
-    for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
+    for(const u of [...b.units].sort((a,z)=>floor(a)-floor(z))){if(before?.size&&!before.has(u.id)&&u.id.startsWith('benefactor-minion-'))continue;const old=before?.get(u.id),p=toPixel(old?.hex??u.hex),hp=old?.hp??u.hp;
       const custom=this.battlePresentation?.actor?.(this,u,hp,old?.hex??u.hex);
       const img=(custom??this.lighting.actor(this.layer,p.x,p.y+9,this.battleFaces.get(u.id)??u.appearance??u.kind).setOrigin(.5,.85)).setAlpha(hp>0?1:.22).setData('hero',u.appearance??u.kind).setData('fallen',hp<=0);
       if(!custom&&u.side==='enemy'&&!COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId))img.setFlipX(true);
@@ -875,6 +875,7 @@ export class Adventure extends Phaser.Scene {
       if(teamEffects?.active)this.layer!.remove(teamEffects);
       this.drawBattle();
       if(teamEffects?.active)this.layer!.add(teamEffects);
+      for(const u of battle.units)if(u.hp>0&&!before.has(u.id)&&u.id.startsWith('benefactor-minion-'))summonArrival(this,this.layer!,u.hex);
       for(const fixture of battle.fixtures??[])if(fixture.hp<=0&&(before.get(`fixture:${fixture.id}`)?.hp??0)>0){fixtureBurst(this,this.layer!,fixture.hex,fixture.kind==='drum');this.audio.effect(fixture.kind==='drum'?'drum':'shield');}
       for(const fixture of battle.fixtures??[])if(fixture.kind==='valve'&&before.has(`fixture:${fixture.id}`)&&fixture.active!==before.get(`fixture:${fixture.id}`)?.active){valveTurn(this,this.layer!,fixture.hex,fixture.vents??[],!!fixture.active);this.audio.effect('valve');}
       if(actor&&action?.ability){
