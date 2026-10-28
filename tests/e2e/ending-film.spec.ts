@@ -27,7 +27,12 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await page.clock.pauseAt(new Date(Date.now()+100));await page.clock.runFor(1000);
   const first=await filmHash(page);expect(first.colors).toBeGreaterThan(20);
   await page.getByRole('button',{name:'Pause',exact:true}).dispatchEvent('click');
-  const paused=await filmHash(page);await page.clock.runFor(1200);expect(await filmHash(page)).toEqual(paused);
+  await page.clock.runFor(100);const paused=await filmHash(page);await page.clock.runFor(1200);expect(await filmHash(page)).toEqual(paused);
+  const other=device==='desktop'?{width:390,height:844}:{width:1280,height:800};
+  await page.setViewportSize(other);await page.clock.runFor(200);
+  expect((await inspect(page)).view.width).toBe(other.width===390?368:1008);
+  expect((await filmHash(page)).colors).toBeGreaterThan(20);
+  await page.setViewportSize(viewport);await page.clock.runFor(200);
   await page.getByRole('button',{name:'Play',exact:true}).dispatchEvent('click');await page.clock.runFor(1000);
   expect((await filmHash(page)).hash).not.toBe(paused.hash);
   for(const shot of ['station','window','shore']){

@@ -149,13 +149,13 @@ export class Adventure extends Phaser.Scene {
     window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.endingFilm?'good-ending-film':this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
-    if(this.endingFilm){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);this.endingFilm.resize();return;}
       this.testingTools=renderTestingTools;
       if(this.mode==='battle')this.renderBattleControls();
     });
   }
   resizeView(){
     if(!this.sys.isActive())return;
+    if(this.endingFilm){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);this.endingFilm.resize();return;}
     if(this.mode==='battle'){
       const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
     }
