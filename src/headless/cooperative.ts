@@ -3,6 +3,7 @@ import {CONSUMABLES} from '../rules/consumables';
 import {distance,equal} from '../rules/hex';
 import {candidatePlans,decideDefensively,enemyForecast,healthValue,type Plan} from './defensive';
 import {decideBattle,type Decision} from './tactics';
+import {imperialMountingValue} from './imperial-objectives';
 
 function apply(b:Battle,p:Plan){
  const u=active(b)!;
@@ -10,7 +11,7 @@ function apply(b:Battle,p:Plan){
  return p.ability?cast(b,u,p.ability,p.aim!):defend(b);
 }
 function value(before:Battle,after:Battle,frugal:boolean){
- let score=(healthValue(after)-healthValue(before))*.9;
+ let score=(healthValue(after)-healthValue(before))*.9+imperialMountingValue(after)-imperialMountingValue(before);
  for(const u of before.units){
   const v=after.units.find(v=>v.id===u.id)!;
   if(u.side==='enemy')score+=u.hp-v.hp+(u.hp>0&&v.hp<=0?15:0);

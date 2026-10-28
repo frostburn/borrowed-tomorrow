@@ -1,6 +1,7 @@
 import {focusCapacity} from '../rules/improvements';
 import {active,cast,damage,defend,enemyTurn,legalAim,move,movement,movementOnly,targets,type Battle,type AbilityId} from '../rules/combat';
 import {rallyValue} from './rally-value';
+import {imperialMountingValue} from './imperial-objectives';
 import {abilityFor} from '../rules/skills';
 import {teamStatus} from '../rules/combat-tactics';
 import {cells,distance,equal,type Hex} from '../rules/hex';
@@ -30,10 +31,11 @@ export function candidatePlans(source:Battle,alternatives=1):Plan[]{
  const b=structuredClone(source),u=active(b)!,plans=new Map<string,(Plan&{signature?:string})[]>();
  for(const visit of movement(b,u).values()){
   u.hex=visit.hex;
+  const mounting=imperialMountingValue(b);
   for(const ability of u.abilities)for(const aim of cells()){
    if(!legalAim(b,u,ability,aim))continue;
    const partner=teamStatus(b,u,ability).partner,a=abilityFor(u,ability,partner);
-   let merit=a.effect==='rally'?rallyValue(b,u)*2:0;
+   let merit=mounting+(a.effect==='rally'?rallyValue(b,u)*2:0);
    for(const v of targets(b,u,ability,aim)){
     const amount=damage(u,v,ability,partner);
     if(a.effect==='rally')continue;
@@ -68,13 +70,13 @@ export function decideDefensively(source:Battle,frugal=false):Decision{
  const fallback=decideBattle(source),original=active(source)!;
  // Earth-plate assignments remain authoritative until the puzzle opens.
  if(source.grounding&&!source.grounding.open)return fallback;
- const baseHealth=healthValue(source),baseExposure=healthValue(enemyForecast(source));
+ const baseHealth=healthValue(source),baseExposure=healthValue(enemyForecast(source)),baseMounting=imperialMountingValue(source);
  if(movementOnly(source,original)){
-  let best:Hex|undefined,value=baseExposure;
+  let best:Hex|undefined,value=baseExposure+baseMounting;
   for(const visit of movement(source,original).values()){
    if(equal(visit.hex,original.hex))continue;
    const b=structuredClone(source);move(b,active(b)!,visit.hex);
-   const score=healthValue(enemyForecast(b))-.1*visit.cost;
+   const score=healthValue(enemyForecast(b))+imperialMountingValue(b)-.1*visit.cost;
    if(score>value){value=score;best=visit.hex;}
   }
   return best?{kind:'move',hex:best}:{kind:'end'};
@@ -98,6 +100,7 @@ export function decideDefensively(source:Battle,frugal=false):Decision{
   // action available; avoid free shoves that achieve no tactical improvement.
   const focusGain=trial.units.filter(v=>v.side==='party').reduce((sum,v)=>sum+Math.max(0,v.focus-source.units.find(w=>w.id===v.id)!.focus),0);
   let score=offense*(partner?.65:1)+protection*.8+healing*.2-focusSpent*.8-itemCost+focusGain*1.5+preparation*2-distance(original.hex,plan.pos)*.15;
+  score+=imperialMountingValue(trial)-baseMounting;
   if(a&&a.bonus&&protection<=0)score-=10;
   if(trial.result==='victory')score+=1000;
   if(score>bestScore){bestScore=score;best=plan;}

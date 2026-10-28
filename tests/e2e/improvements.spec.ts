@@ -52,5 +52,27 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await choose(page,'Reinforce Nell’s lantern · 400 marks');await choose(page,'Reinforced lantern housing · 400 marks');await choose(page,'Confirm · 400 marks');
    expect((await inspect(page)).state.flags['improved-nell-housing']).toBe(true);await capture(page,`lantern-housing-${device}`);
   });
+  test('the mooring crew retains all three anchor specialties after Chapter Five',async({page})=>{
+   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+   await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+   const s=chapterSixStart();s.coins=1500;s.flags.capitalSealed=true;s.flags.sixRoutesKnown=true;s.flags.jungleLeadKnown=true;
+   await importSave(page,s);await approach(page,'six-supplies');await choose(page,'Training · permanent improvements');
+   await expect(page.getByRole('button',{name:'Train Nell',exact:true})).toBeDisabled();await capture(page,`crew-training-${device}`);
+   await choose(page,'Specialist improvements');await choose(page,'Counterbalanced lance · 500 marks');
+   await expect(page.locator('.dialogue')).toContainText('1500 → 1000 marks');await capture(page,`crew-confirm-${device}`);
+   await choose(page,'Cancel improvement');expect((await inspect(page)).state.coins).toBe(1500);
+   for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450]]as const){
+    await choose(page,`${name} · ${cost} marks`);await choose(page,`Confirm · ${cost} marks`);
+   }
+   const next=page.locator('.dialogue-actions').getByRole('button',{name:/Next$/});while(await next.count())await next.click();
+   for(const name of ['Counterbalanced lance','Shield recovery drill','Long-range focus calibration'])await expect(page.getByRole('button',{name:`${name} · Completed`,exact:true})).toBeDisabled();
+   await capture(page,`crew-completed-${device}`);await choose(page,'Back to training');await choose(page,'Leave training');
+   const bought=(await inspect(page)).state;expect(bought.coins).toBe(150);expect(bought.party).toEqual(s.party);expect(bought.flags.nellRecovered).toBeFalsy();
+   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
+   await expect(page.getByRole('dialog')).toContainText('Move 3');await capture(page,`crew-inventory-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
+   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.coins).toBe(150);
+   for(const id of ['orrin-counterbalance','petra-recovery','celia-sight'])expect((await inspect(page)).state.flags[`improved-${id}`]).toBe(true);
+   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+  });
  });
 }

@@ -48,6 +48,41 @@ it('confirms exact prices, cancels freely, shows completed purchases and keeps f
  expect(j.read().choices?.find(c=>c.label==='Train Celia')?.disabled).toBeFalsy();
  s.party=s.party.filter(p=>p.id!=='kit');offerImprovements(j.h,'training');expect(j.read().choices?.some(c=>c.label.includes('Kit'))).toBe(false);
 });
+it('keeps earned anchor specialties available at every travelling training counter',()=>{
+ for(const map of ['airship','outermooring','capitalquay','hollowsill','lastrefuge']as const){
+  const s=ready();s.location.map=map;const hp=structuredClone(s.party),skills=structuredClone(s.skills);
+  for(const id of ['orrin-counterbalance','petra-recovery','celia-sight'])purchase(s,id);
+  expect(s.coins).toBe(3650);expect(s.party).toEqual(hp);expect(s.skills).toEqual(skills);
+  for(const [map,id]of [['hammerplain','orrin-counterbalance'],['dawnwatch','petra-recovery'],['dispensary','celia-sight']]as const){
+   s.location.map=map;expect(buyImprovement(s,id)).toBe(false);
+  }
+  expect(s.coins).toBe(3650);
+ }
+ const s=ready();s.location.map='outermooring';s.flags.hammerplainComplete=false;
+ expect(buyImprovement(s,'orrin-counterbalance')).toBe(false);s.flags.hammerplainComplete=true;
+ s.location.map='riverhaven';expect(buyImprovement(s,'orrin-counterbalance')).toBe(false);
+ s.location.map='outermooring';s.party=s.party.filter(p=>p.id!=='orrin');expect(buyImprovement(s,'orrin-counterbalance')).toBe(false);
+});
+it('crew specialties confirm and persist once without remote trainer dialogue or curing Nell',()=>{
+ const s=chapterSixStart();s.coins=1350;const before=structuredClone(s.party),j=host(s);
+ offerImprovements(j.h,'training');j.choose('Specialist improvements');
+ expect(j.read().lines[0]).toMatchObject({who:'Alda'});
+ j.choose('Counterbalanced lance · 500 marks');expect(s.coins).toBe(1350);j.choose('Cancel improvement');expect(s.coins).toBe(1350);
+ for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450]]as const){
+  j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
+  expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+ }
+ expect(j.saves()).toBe(3);expect(s.coins).toBe(0);expect(s.party).toEqual(before);expect(s.flags.nellRecovered).toBeFalsy();expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ j.choose('Back to training');expect(j.read().choices?.find(c=>c.label==='Train Nell')?.disabled).toBe(true);
+ const local=ready();local.location.map='hammerplain';purchase(local,'orrin-counterbalance');local.location.map='airship';
+ const k=host(local);offerImprovements(k.h,'training');k.choose('Specialist improvements');expect(k.read().choices?.find(c=>c.label==='Counterbalanced lance · Completed')?.disabled).toBe(true);
+ local.flags.dawnwatchComplete=false;local.party=local.party.filter(p=>p.id!=='celia');offerImprovements(k.h,'training');k.choose('Specialist improvements');
+ expect(k.read().choices?.map(c=>c.label)).toEqual(['Counterbalanced lance · Completed','Back to training']);
+ local.flags.hammerplainComplete=false;offerImprovements(k.h,'training');expect(k.read().choices?.some(c=>c.label==='Specialist improvements')).toBe(false);
+ // Alda remains at the mooring; the final refuge uses its own supply crew.
+ s.location.map='lastrefuge';offerImprovements(j.h,'training');expect(j.read().lines[0].who).toBe('Supply crew');expect(j.read().lines[0].text).not.toContain('survey deck');
+ j.choose('Specialist improvements');expect(j.read().lines[0].who).toBe('Supply crew');
+});
 it('persists max HP/focus across save, formation and equipment, without changing skill ranks or healing on purchase',()=>{
  const s=ready(),hp=maxHp('celia',s),skills=structuredClone(s.skills),gear=structuredClone(s.inventory);
  const celia=s.party.find(p=>p.id==='celia')!;celia.hp=2;celia.focus=0;

@@ -56,7 +56,7 @@ export function interactJungle(h:StoryHost,id:string):boolean{
   case 'canopy-rainhouse':
    if(!f.riverChainOpen){h.toast('Open the boat chain at the capstan first.');break;}go(h,'rainhouse');break;
   case 'river-cache':
-   if(!f.riverCacheWon)fight('Kit','There’s a range sight in that survey locker. Two crows are still watching it from the roof.','Open the survey locker','river-cache');break;
+   if(!f.riverCacheWon)fight('Kit','There’s a range sight in that survey locker. Two crows are watching it from the roof, and a hound is patrolling below.','Open the survey locker','river-cache');break;
   case 'rainhouse-guard':
    if(!f.rainhouseWon)fight('Petra','That herald has the landing bell. Keep the wings from getting behind us.','Clear the treatment terrace','rainhouse-guard','rainhouseConfronted');break;
   case 'river-treatment':

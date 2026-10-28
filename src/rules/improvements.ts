@@ -29,7 +29,9 @@ const locations:Record<ImprovementService,readonly MapId[]>={
  training:['airship','outermooring','capitalquay','hollowsill','lastrefuge'],
  hammerplain:['hammerplain'],dawnwatch:['dawnwatch'],windmere:['windmere','dispensary'],iria:['riverhaven','rainhouse'],capital:['capitalquay','lastpalace','crown'],
 };
-export const serviceAvailable=(s:GameState,service:ImprovementService)=>locations[service].includes(s.location.map)&&!!s.flags.airshipOwned;
+/** Allied crews retain the three anchor-region specialties after departure. */
+export const CREW_SERVICES:readonly ImprovementService[]=['hammerplain','dawnwatch','windmere'];
+export const serviceAvailable=(s:GameState,service:ImprovementService)=>!!s.flags.airshipOwned&&(locations[service].includes(s.location.map)||CREW_SERVICES.includes(service)&&locations.training.includes(s.location.map));
 export function improvementProblem(s:GameState,i:Improvement):string|undefined {
  if(improved(s,i.id))return 'Completed';
  if(!serviceAvailable(s,i.service)||!improvementUnlocked(s,i))return 'Not available yet';

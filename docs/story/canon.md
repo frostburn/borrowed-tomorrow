@@ -2,6 +2,8 @@
 
 The old Disks A–D story has been replaced. Its rescues, time-travel railway, registry, receipts and missing-father plot are not part of this campaign. All seven chapters are playable, including both Chapter Six outcomes and the recovered route into the Benefactor’s domain. [grand-outline.md](grand-outline.md) records the complete storyline. The chapter sections below describe knowledge and outcomes at their respective checkpoints.
 
+The allied crews carry the completed anchor regions’ training instructions and fittings aboard. After the chart changes in Chapter Six, their supply counters continue offering Orrin’s counterbalance, Petra’s shield-recovery drill and Celia’s focus calibration. The original specialists remain in their communities; purchases share their existing quest gates, prices and once-only flags. See [the economy rules](../economy.md#permanent-improvements).
+
 The [continuity notes](continuity-notes.md) track the raid witnesses, Rillbridge's missing people and route-dependent knowledge.
 
 - Nell is seventeen, a railway apprentice at Larkspur. Her older brother Tomas, twenty-four, has returned from the capital. They have promised to see the sea together. Nell carries Ansel's oil lantern.
