@@ -1,13 +1,15 @@
 import type { Battle,Unit } from './combat';
-import { cells,column,equal,offset,type Hex } from './hex';
+import { add,cells,column,DIRECTIONS,equal,offset,type Hex } from './hex';
 import { occupiedHexes } from './footprint';
 export const EMPEROR_ID='imperial-vessel',LIGHTBEARER_ID='lightbearer';
 export const imperialCore=(b:Battle)=>b.units.find(u=>u.id===EMPEROR_ID||u.id===LIGHTBEARER_ID);
 export const imperialSupports=(b:Battle)=>b.units.filter(u=>u.id==='imperial-west'||u.id==='imperial-east');
-const body=[{q:-1,r:0},{q:0,r:0},{q:1,r:0},{q:-1,r:1},{q:0,r:1},{q:1,r:1},{q:0,r:2}];
+const body=[{q:0,r:0},...DIRECTIONS];
 type Intent=NonNullable<Unit['intent']>&{baseCells:Hex[];baseName:string;pattern:number};
 export function configureImperial(b:Battle,lightbearer=false){
  const core=b.units.find(u=>u.appearance===(lightbearer?LIGHTBEARER_ID:EMPEROR_ID))!;
+ // Encounter anchors name the top approach row; the body's center is below it.
+ core.hex=add(core.hex,{q:-1,r:1});
  Object.assign(core,{id:lightbearer?LIGHTBEARER_ID:EMPEROR_ID,kind:lightbearer?LIGHTBEARER_ID:EMPEROR_ID,anchored:true,flying:lightbearer,movement:0,speed:3,armor:lightbearer?3:4,abilities:['judgment'],footprint:body});
  if(!lightbearer)for(const [i,part]of b.units.filter(u=>u.appearance==='imperial-support').entries())Object.assign(part,{id:i?'imperial-east':'imperial-west',kind:'imperial-support',anchored:true,passive:true,movement:0,armor:3,abilities:[],footprint:[{q:0,r:0},{q:-1,r:1},{q:0,r:1}]});
  const heroes=b.units.filter(u=>u.side==='party');heroes.forEach((u,i)=>{u.hex=offset(heroes.length===3?[3,5,7][i]:heroes.length===2?[4,6][i]:5,6);});

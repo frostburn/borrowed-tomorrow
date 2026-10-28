@@ -1,5 +1,5 @@
 import type { Battle,Unit } from './combat';
-import { cells,column,distance,equal,inside,key,neighbors,offset,type Hex } from './hex';
+import { add,cells,column,distance,equal,inside,key,neighbors,offset,type Hex } from './hex';
 import { occupiedHexes } from './footprint';
 export const WINTER_DRAGON_ID='winter-dragon';
 export const winterDragon=(b:Battle)=>b.units.find(u=>u.id===WINTER_DRAGON_ID);
@@ -9,8 +9,10 @@ const unique=(hexes:Hex[])=>[...new Map(hexes.map(h=>[key(h),h])).values()];
 export const brokenIce=(b:Battle,h:Hex)=>b.winterIce?.some(p=>equal(p,h))??false;
 export function configureWinterDragon(b:Battle){
  const dragon=b.units.find(u=>u.appearance===WINTER_DRAGON_ID)!;
+ // Center the wing span between the paired head and lower body contacts.
+ dragon.hex=add(dragon.hex,{q:-1,r:1});
  Object.assign(dragon,{id:WINTER_DRAGON_ID,kind:WINTER_DRAGON_ID,anchored:true,flying:true,movement:0,speed:3,armor:3,abilities:['judgment'],
-  footprint:[...Array.from({length:7},(_,i)=>({q:i-3,r:0})),{q:-1,r:1},{q:0,r:1},{q:-1,r:2},{q:0,r:2}]});
+  footprint:[...Array.from({length:7},(_,i)=>({q:i-3,r:0})),{q:0,r:-1},{q:1,r:-1},{q:-1,r:1},{q:0,r:1}]});
  const heroes=b.units.filter(u=>u.side==='party');heroes.forEach((u,i)=>{u.hex=offset(heroes.length===3?[3,5,7][i]:heroes.length===2?[4,6][i]:5,6);});
  b.winterIce=[];
 }

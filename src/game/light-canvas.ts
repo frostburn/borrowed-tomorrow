@@ -1,6 +1,6 @@
 import { properties, tileWalkable, type TileMap } from '../content/tilemaps';
 import { visibleSceneArt, type ScenePiece } from '../content/scene-art';
-import { castShadows, type WorldLight } from './world-light';
+import { castShadows, shadowProjection, type WorldLight } from './world-light';
 
 /** Visible raised planes, with later floor surfaces cut out in paint order. */
 export function foregroundSurface(map:TileMap,state:{flags:Record<string,boolean>},image:(piece:ScenePiece)=>CanvasImageSource|undefined,shadows=false){
@@ -47,7 +47,7 @@ export function paintActorShadow(ctx:CanvasRenderingContext2D,rig:WorldLight,act
       const light=cast.light,b=cast.light.beam,x=light.x-actor.x,y=light.y-actor.y+2,far=b.width+b.reach*b.spread;
       ctx.beginPath();ctx.moveTo(x-b.width,y);ctx.lineTo(x+b.width,y);ctx.lineTo(x+b.reach*.1+far,y+b.reach);ctx.lineTo(x+b.reach*.1-far,y+b.reach);ctx.closePath();ctx.clip();
     }
-    ctx.transform(1,0,-cast.dx/58,-cast.dy/58,0,0);ctx.rotate(actor.rotation);ctx.scale(actor.scaleX,actor.scaleY);
+    ctx.transform(...shadowProjection(cast.dx,cast.dy),0,0);ctx.rotate(actor.rotation);ctx.scale(actor.scaleX,actor.scaleY);
     ctx.drawImage(actor.image,-actor.originX,-actor.originY);ctx.restore();
   }
 }

@@ -116,6 +116,15 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
   }
 }
 
+/** A rounded actor turns its ground cross-section across the light direction.
+ * A fixed screen-horizontal billboard becomes singular under side lighting.
+ * Unproject the ground's depth compression before choosing the cross axis. */
+export function shadowProjection(dx:number,dy:number):[number,number,number,number]{
+  const depth=.45,length=Math.hypot(dx,dy/depth);
+  if(length<1)return [1,0,0,-1/58];
+  return [dy/depth/length,-dx*depth/length,-dx/58,-dy/58];
+}
+
 /** Keep up to three meaningful sources, with a shared opacity budget. */
 export function castShadows(rig:WorldLight,x:number,y:number){
   const candidates=rig.lamps.map(light=>({light,strength:lampStrength(light,x,y)*(light.shadowStrength??1)})).filter(s=>s.strength>=.025).sort((a,b)=>b.strength-a.strength);

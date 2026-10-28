@@ -146,3 +146,15 @@ Living boss parts supply the key light. It follows their displayed positions, fa
 Attacks capture their actual affected cells, including direct shots and Taunt redirects. Over the wind-up, a quantized exposure envelope darkens scenery and the grid outside exact hex-shaped apertures, holds through contact and fades through recovery. Peak dimming rises with the encounter chapter: 36% in Chapter Five, 54% in Chapter Six and 72% in Chapter Seven. `encounterChapter` resolves authored IDs or unambiguous backdrops for dev copies; domain reprises therefore use Chapter Seven’s strength rather than their original model’s chapter. The envelope, attacked-cell exposure, material gain and idle stage are unchanged. `WorldLight.focus` carries the shared native polygons; `WorldLighting.focus` inserts the environment pass after fixtures/grid and before actors/effects/labels. Actor illumination follows the same ground regions, keeping whole attacked silhouettes bright and other actors subdued but visible. The impact redraw resumes the original elapsed time and fired polygons, even if combat has already announced the next round. Light never bleeds into neighboring safe cells; normal visibility returns at recovery, restart and exit. Reduced motion suppresses this dimming too.
 
 Review Bosses with the pointer parked, each final form, a full enemy turn, reduced motion, restart and painted-body selection. Detailed desktop/phone lighting checks stay outside the small default CI gate.
+
+
+### Rounded actor shadow projection
+
+`world-light.ts::shadowProjection` projects an actor's cross-section perpendicular
+to each light's ground direction, with the same 0.45 depth compression as the
+shadow ray. This treats the silhouette as a rounded volume rather than a fixed
+screen-horizontal card, which formerly collapsed to a line under lateral light.
+`paintActorShadow` shares this transform between live scenes and Maps. Native
+alpha, actor handedness/scale/rotation, beam clips, floor/foreground masks,
+contact shadows, the three-source limit and the existing opacity budget remain
+in effect. The projection does not alter actor lighting or source artwork.

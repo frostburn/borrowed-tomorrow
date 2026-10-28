@@ -35,6 +35,23 @@ All exporters use Python's standard library, with no production authoring depend
 
 The Benefactor breathes on the scene clock over 3.2 seconds, with its base anchored. Judgment gathers, releases and recovers through the shared 220/420/660/920ms timeline. Its sun/heart manifestations retain their separate campaign rules and 19/19/7-contact footprints.
 
+The Hollow Sun's corona is three faceted bronze arcs with visible back planes and
+fracture end faces. The opening and breaks are transparent SVG geometry, rather
+than dark strips painted across the aperture. Its suspended fragment, corona and
+rays move together through all twelve native poses. Regenerate only its atlas
+(and the unchanged heart atlas) with `export-benefactor-forms.py`; the shared frame
+remains 360 × 288 and the body/heart originals are independent.
+
+The Emperor and Lightbearer use a centered seven-cell ball (2 / 3 / 2 rows),
+aligned with the middle party position and, for the Emperor, both crown supports.
+The dragon's eleven cells form paired upper contacts, a seven-cell wing span and
+paired lower contacts (2 / 7 / 2). Its domain reprise uses the same corrected
+body. The lower row and native art height remain unchanged. All other multi-hex
+bosses retain their existing shapes. The rules audit checks every campaign
+multi-hex encounter for connected cells, board bounds, cover and unit overlaps;
+body targeting, single-hit areas and anchored behavior continue to use the same
+shared footprint helpers.
+
 The regulator is rigid machinery. Its 1.6-second shoulder crank drives a horizontal side compressor with a fixed-length rod; the needle ticks and exhaust dissipates. The cowl, dial housing, boiler, feet and lower chassis stay fixed. Four discharge poses open its arms and valve. Keep the source groups and solved linkage geometry intact.
 
 The flagship's whole craft sways by at most ±2px horizontally and ±3px vertically on slow scene-clock cycles. Turret recoil leaves mountings fixed. The winter dragon and serpent keep their own inhale, breath and strike poses; the imperial sun goes dark after victory. Every pose retains native alpha picking. Reduced motion settles to the resting pose, and restart/exit must cancel pending callbacks and remove update listeners.

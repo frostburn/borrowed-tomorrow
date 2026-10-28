@@ -11,7 +11,7 @@ test.use({deviceScaleFactor:1.25});
 async function renderedLight(page:Page){
   const snapshot=await inspect(page),actor=snapshot.actors.find(a=>a.hero==='nell')!;
   return page.evaluate(async({actor,pieces,url})=>{
-    const module='/src/game/world-light.ts';const {lightPixels,stationLight,castShadows}=await import(/* @vite-ignore */module);
+    const module='/src/game/world-light.ts';const {lightPixels,stationLight,castShadows,shadowProjection}=await import(/* @vite-ignore */module);
     const decode=async(url:string)=>{const image=new Image();image.src=url;await image.decode();return image;};
     const native=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!,ctx=native.getContext('2d')!,view=window.borrowedTomorrow.inspect().view;
     const image=await decode(url),sprite=document.createElement('canvas');sprite.width=sprite.height=80;
@@ -26,7 +26,7 @@ async function renderedLight(page:Page){
     if(cast){
       for(let sy=5;sy<60;sy++)for(let sx=20;sx<60;sx++){
         if(source.data[(sy*80+sx)*4+3]<250)continue;
-        const x=Math.round(actor.x+sx-40-(sy-68)*cast.dx/58),y=Math.round(actor.y-2-(sy-68)*cast.dy/58);
+        const [xx,xy,yx,yy]=shadowProjection(cast.dx,cast.dy),x=Math.round(actor.x+(sx-40)*xx+(sy-68)*yx),y=Math.round(actor.y-2+(sx-40)*xy+(sy-68)*yy);
         const localX=x-actor.x+40,localY=y-actor.y+68;
         if(localX>=0&&localX<80&&localY>=0&&localY<80&&source.data[(localY*80+localX)*4+3])continue;
         if(x<0||y<0||y>=624||x-view.scrollX<0||y-view.scrollY<0||x-view.scrollX>=native.width||y-view.scrollY>=native.height)continue;
