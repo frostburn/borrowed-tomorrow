@@ -69,9 +69,10 @@ The Emperor actor and vessel share `assets/characters/vector/imperial_head.py`: 
 
 The exposed heart has an independent 1.2-second double beat: a strong opening,
 a smaller answering pulse, then a resting interval. Eight authored vector poses
-rotate the two rigid cracked halves in opposite directions about the lower
-fracture tip; all facet lengths and angles remain fixed. The fracture opens on
-each beat without scaling or deforming either half;
+rotate the two rigid cracked halves in opposite directions about distinct
+central pivots, (155,138) and (199,148). The main beat rocks each half by only
+two degrees; all facet lengths and angles remain fixed. The crack shifts along
+its length without a shared hinge or any scaling or deformation;
 the surrounding rays stay still between attacks. `export-benefactor-forms.py`
 reproduces the native atlas; there is no runtime image scaling. Four judgment
 poses retain their existing contact/recovery times. The shared scene-clock player

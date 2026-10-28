@@ -46,11 +46,15 @@ test('native beat rotates rigid crystal halves while its surrounding rays stay f
   const svg=new DOMParser().parseFromString(await (await fetch(image.src)).text(),'image/svg+xml'),poses=[...svg.documentElement.children].filter(e=>e.tagName==='svg');
   const halves=['left','right'].map(side=>poses.map(p=>{
    const group=p.querySelector(`[data-heart-half="${side}"]`)!;
-   return {geometry:group.innerHTML,angle:Number(group.getAttribute('transform')!.match(/rotate\(([-\d.]+)/)![1])};
+   const rotation=group.getAttribute('transform')!.match(/rotate\(([-\d.]+) ([\d.]+) ([\d.]+)\)/)!;
+   return {geometry:group.innerHTML,angle:Number(rotation[1]),pivot:[Number(rotation[2]),Number(rotation[3])]};
   }));
   return {rays,changed,widths,halves};
  });
  for(const half of result.halves){expect(new Set(half.map(p=>p.geometry)).size).toBe(1);expect(half).toHaveLength(12);}
  for(let i=0;i<12;i++)expect(result.halves[0][i].angle+result.halves[1][i].angle).toBe(0);
- expect(result.rays).toBe(0);expect(result.changed).toBeGreaterThan(100);expect(result.widths[1]).toBeGreaterThan(result.widths[3]);expect(result.widths[3]).toBeGreaterThan(result.widths[0]);expect(result.widths.slice(5)).toEqual([result.widths[0],result.widths[0],result.widths[0]]);
+ for(const half of result.halves)for(const pose of half){expect(pose.pivot[1]).toBeGreaterThan(120);expect(pose.pivot[1]).toBeLessThan(160);expect(Math.abs(pose.angle)).toBeLessThan(3);}
+ expect(result.halves[0][0].pivot[0]).toBeLessThan(177);expect(result.halves[1][0].pivot[0]).toBeGreaterThan(177);
+ expect(Math.abs(result.halves[0][1].angle)).toBeGreaterThan(Math.abs(result.halves[0][3].angle));
+ expect(result.rays).toBe(0);expect(result.changed).toBeGreaterThan(100);expect(result.widths.slice(5)).toEqual([result.widths[0],result.widths[0],result.widths[0]]);
 });
