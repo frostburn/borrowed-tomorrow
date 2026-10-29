@@ -330,11 +330,17 @@ deterministic shot timeline. No workshop playback writes campaign state.
 `ending-shore.ts` owns the final camera, walk, sunset and native-coordinate
 credit lettering; `content/credits.ts` owns the credit data and timings. The
 opening is **Borrowed Tomorrow / A game by / GPT-6.1 Sol / Directed by / Lumi
-Pakkanen**. Conventional creative categories credit GPT-6.1 Sol. **Additional
+Pakkanen**. Game design credits both collaborators; Lumi is also credited for
+combat-system direction, story concepts, art direction and playtesting. Code,
+writing, artwork, animation, sound and automated testing credit GPT-6.1 Sol. **Additional
 musical passages** credits Lumi's contributed bars, including the documented
 Iron Coast phrases. Copyright remains with Lumi under the repository license.
 Tooling acknowledgments close the roll. Line wrapping and pages retain full
 two-pixel text stems on phones.
+
+In the station shot, the cast stands on a raised foreground platform. Its
+sloping edges and sole anchors use the same projection, with the moving train
+and rails behind the platform lip.
 
 `ending-cast.ts` authors the six travelers' cinematic poses against the accepted
 actor/portrait SVGs in `public/art/vector/`. Preserve Nell's red cap, braids and

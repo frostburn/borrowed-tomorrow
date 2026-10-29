@@ -60,6 +60,8 @@ it('opens with the requested author/director billing and leaves tooling until la
  ]);
  expect(ENDING_CREDITS.find(credit=>credit.role==='Music')?.lines).toEqual(['GPT-6.1 Sol']);
  expect(ENDING_CREDITS.find(credit=>credit.role==='Additional musical passages')?.lines).toEqual(['Lumi Pakkanen']);
+ for(const role of ['Combat system direction','Story concepts','Art direction','Playtesting'])expect(ENDING_CREDITS.find(credit=>credit.role===role)?.lines).toEqual(['Lumi Pakkanen']);
+ expect(ENDING_CREDITS.find(credit=>credit.role==='Game design')?.lines).toContain('Lumi Pakkanen');
  const firstTool=ENDING_CREDITS.findIndex(credit=>'tooling' in credit);
  expect(firstTool).toBeGreaterThan(10);
  expect(ENDING_CREDITS.slice(firstTool).every(credit=>'tooling' in credit&&credit.tooling)).toBe(true);

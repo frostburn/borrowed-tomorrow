@@ -82,11 +82,18 @@ function station(c:C,p:number,t:number){
  }
  locomotive(c,engine,225);
  for(let i=0;i<4;i++){const smoke=(t*.045+i*.21)%1;c.globalAlpha=(1-smoke)*.35;poly(c,'#e5e4ce',[[engine+15+smoke*21,160-smoke*46],[engine+29+smoke*23,147-smoke*49],[engine+54+smoke*34,153-smoke*44],[engine+47+smoke*28,171-smoke*42]]);}c.globalAlpha=1;
- // Bring the whole travelling cast onto the front apron, with breathing room
- // for their individual silhouettes instead of hiding six tiny heads by the train.
- for(const [x,y]of [[125,263],[179,267],[235,265],[292,260],[351,263],[413,264]])oval(c,'#879482',x,y+2,15,3);
- person(c,'tomas',125,263,.72);person(c,'nell',179,267,.70);person(c,'kit',235,265,.70);
- person(c,'celia',292,260,.70);person(c,'petra',351,263,.74);person(c,'orrin',413,264,.73);
+ // A raised foreground platform separates the travelers from the moving rails.
+ // Its back edge, front face and sole anchors share the same perspective slope.
+ poly(c,'#b8b69c',[[0,247],[512,231],[512,272],[0,288]]);
+ poly(c,'#8a9389',[[0,288],[512,272],[512,288],[0,304]]);
+ line(c,'#e2d5ac',4,[[0,247],[512,231]]);
+ line(c,'#d0c9a7',2,[[0,286],[512,270]]);
+ for(const x of [108,260,420])line(c,'#a6aa94',1,[[x,249-x/32],[x+8,280-(x+8)/32]]);
+ const cast=[['tomas',125,.72],['nell',179,.70],['kit',235,.70],['celia',292,.70],['petra',351,.74],['orrin',413,.73]] as const;
+ for(const [who,x,scale]of cast){
+  const feet=277-x/32;
+  oval(c,'#879482',x,feet+2,15,3);person(c,who,x,feet,scale);
+ }
  // Foreground canopy and cool shadow create depth without dark outlines.
  poly(c,'#576c70',[[0,0],[72,0],[81,288],[55,288],[46,70],[0,76]]);
  poly(c,'#7e958a',[[0,0],[212,0],[187,11],[108,9],[65,27],[0,39]]);
