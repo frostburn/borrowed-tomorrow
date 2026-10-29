@@ -70,6 +70,11 @@ const changes:Chord[]=[
  'c','c','da','fc','eb','eb','da','gd','c','da','eb','e',
  'am','am','gd','eb','c','fc','e','am',
 ];
+/** Share the opening with the coast-to-airfield film without altering this score. */
+export function mooringOpeningBar(bar:number){
+ const i=((bar%8)+8)%8;
+ return {...chords[changes[i]],melody:mooring[i]};
+}
 export function flightBar(mode:'airfield'|'airship'|'observation',bar:number):Note[]{
  const i=((bar%32)+32)%32,cabin=mode==='observation',ground=mode==='airfield',{bass,notes:chord}=chords[changes[i]],out:Note[]=[];
  const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};if(cabin||ground)note.expression=phrasing((cabin?cabinDynamics:mooringDynamics)[i],instrument==='strings');out.push(note);return note;};

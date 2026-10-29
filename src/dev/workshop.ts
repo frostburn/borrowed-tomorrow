@@ -63,7 +63,7 @@ class Workshop {
   private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' | 'cinematics' = new URLSearchParams(location.search).get('dev') === 'cinematics' ? 'cinematics' : new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private endingShot=0;
   private endingKind:EndingKind='good';
-  private crossingSelected:CrossingKind|undefined=new URLSearchParams(location.search).get('film')==='refuge-crossing'?'refuge':new URLSearchParams(location.search).get('film')==='capital-crossing'?'capital':new URLSearchParams(location.search).get('film')==='crossing'?'coast':undefined;
+  private crossingSelected=Object.entries(CROSSING_FILMS).find(([,film])=>film.music===new URLSearchParams(location.search).get('film'))?.[0] as CrossingKind|undefined;
   private hero: CompanionId = 'nell';
   private boss:WorkshopBoss=workshopBoss(new URLSearchParams(location.search).get('boss'));
   private loadingBoss=false;

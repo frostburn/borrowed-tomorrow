@@ -70,6 +70,15 @@ Delayed string vibrato uses the shared expression controls; the pulse stays
 constant to fit the film. Music/Soundtrack → Ch 3 reviews this arrangement;
 the original refuge retains its quieter expression and rubato.
 
+The Chapter Four departure uses **The westward road** (`airfield-crossing`):
+eight bars of 4/4 at 120 BPM. It shares The Western Mooring's actual opening
+melody and inverted Am9 / D-over-A / Fmaj9-over-C / G-over-D voicings. Reed begins
+the farewell, piano takes the road's middle phrase, and reed returns at the
+mooring. Alternating bass entrances, broken lute voicings and a stronger middle
+backbeat keep the walk moving. The last two bars broaden and soften into the
+original airfield cue. Dynamics and controlled reed vibrato remain active;
+the cinematic has a fixed clock, without rubato. Music/Soundtrack → Ch 4.
+
 The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Audible bell rolls anticipate the even-bar bells by half a beat; their four ascending attacks lead into the main call. Roll velocities rise from .045 to .06. All four notes stay held to beat 3.5 and release together over 1.8 seconds, so the chord supports the call instead of dropping away after its attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
 
 

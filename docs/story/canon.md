@@ -87,6 +87,12 @@ or resources; Chapter Four’s original arrival follows successful scenery loadi
 Level eight begins at 920 XP and nine at 1180 XP. Deep Chapter Four saves preload all three SVG maps and local battles; failed loads retain the previous checkpoint. Version-10 Chapter Three departures remain the supported entry to this rewritten chapter.
 
 
+The earned Chapter Four departure plays a wordless journey to the airfield:
+Tomas stays at the refuge as the ferry crosses the moving harbor, all five
+companions take the coastal road west, and the survey ship waits at its mooring.
+The film grants no boarding, ownership, progress flag or resource change. The
+existing airfield introduction follows successful loading of Chapter Five.
+
 ## Chapter Five — shared opening and Act I: Hammerplain
 
 - The unchanged `chapter-five:anchors` departure opens the western airfield after all twelve native SVG regions and local arenas load. It preserves the actual five-person roster, active formation, gear, HP/focus, resources and playtime. Alda’s survey crew is loading Bram’s ferry stores when Superintendent Durn requisitions the working ship. Clearing the confiscation detail sets `airfieldGuardWon`; boarding and takeoff commit `airshipOwned`. No replacement-parts quest intervenes.

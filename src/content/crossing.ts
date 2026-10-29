@@ -1,5 +1,5 @@
 import type {MusicMode} from '../game/score';
-import type {MapId} from '../rules/state';
+import type {GameState,MapId} from '../rules/state';
 
 /** Presentations of earned departures, without additional save flags. */
 export const CROSSING_SHOTS=[
@@ -17,7 +17,15 @@ export const REFUGE_CROSSING_SHOTS=[
  {id:'together',title:'Still together',duration:6500},
  {id:'refuge',title:'The railway refuge',duration:4500},
 ] as const;
-export type CrossingKind='coast'|'capital'|'refuge';
+export const AIRFIELD_CROSSING_SHOTS=[
+ {id:'farewell',title:'The open harbor',duration:5000},
+ {id:'road',title:'The western road',duration:6500},
+ {id:'mooring',title:'The survey mooring',duration:4500},
+] as const;
+export type CrossingKind='coast'|'capital'|'refuge'|'airfield';
+export const CHAPTER_CROSSINGS:Partial<Record<GameState['chapter'],CrossingKind>>={
+ 'chapter-one':'coast','chapter-two':'capital','chapter-three':'refuge','chapter-four':'airfield',
+};
 interface CrossingFilm {
  id:string;label:string;title:string;from:string;to:string;place:string;returnLabel:string;
  description:string;accessibility:string;music:MusicMode;map:MapId;
@@ -38,6 +46,11 @@ export const CROSSING_FILMS:Record<CrossingKind,CrossingFilm>={
   id:'three-four-crossing',label:'Chapter Three → Four',title:'The coastward run',from:'The Conduit Works',to:'A Light on the Water',place:'the railway refuge',returnLabel:'Return to the platform',music:'refuge-crossing',map:'refuge',shots:REFUGE_CROSSING_SHOTS,
   description:'The medical train clears the broken bridge outside the grounded green conduit works. The white-marble capital hangs above the valley. Nell and Tomas sit together; Kit and Petra stay aboard. The coastal ward appears beside a motionless fishing boat on calm water.',
   accessibility:'The medical train escapes the failing conduit works below the airborne marble capital, with Tomas and all the passengers safe. Nell sits with her brother on the journey to the still harbor. Space pauses. Escape skips to Chapter Four.',
+ },
+ airfield:{
+  id:'four-five-crossing',label:'Chapter Four → Five',title:'The westward road',from:'A Light on the Water',to:'Taking the World Back',place:'the western airfield',returnLabel:'Return to the refuge',music:'airfield-crossing',map:'airfield',shots:AIRFIELD_CROSSING_SHOTS,
+  description:'Tomas waves from the refuge as the ferry crosses the open harbor. Nell, Orrin, Kit, Celia and Petra take the coastal road west. Beyond the headland, the survey ship waits at its mooring, still tied down beside the hangar.',
+  accessibility:'Nell leaves Tomas safe at the railway refuge. All five companions walk along the coast to the western airfield. The survey airship stays moored; the party has not boarded it. Space pauses. Escape skips to Chapter Five.',
  },
 };
 export function crossingDuration(kind:CrossingKind='coast'){return CROSSING_FILMS[kind].shots.reduce((sum,shot)=>sum+shot.duration,0);}

@@ -2,7 +2,7 @@ import {openSoundtrack} from './soundtrack-entry';
 import {showCredits} from './credits';
 import {EndingFilm} from './ending-film';
 import {ChapterCrossing} from './chapter-crossing';
-import type {CrossingKind} from '../content/crossing';
+import {CHAPTER_CROSSINGS,type CrossingKind} from '../content/crossing';
 import {canPlayGoodEnding,canPlayBadEnding,BAD_ENDING_HINT,type EndingKind} from '../content/ending-film';
 import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
@@ -568,8 +568,9 @@ export class Adventure extends Phaser.Scene {
       ]);return;
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
-    if(destination&&(this.state.chapter==='chapter-one'||this.state.chapter==='chapter-two'||this.state.chapter==='chapter-three')){
-      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state),false,0,this.state.chapter==='chapter-three'?'refuge':this.state.chapter==='chapter-two'?'capital':'coast');return;
+    const crossing=CHAPTER_CROSSINGS[this.state.chapter];
+    if(destination&&crossing){
+      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state),false,0,crossing);return;
     }
     this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
       ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm()}]:[]),

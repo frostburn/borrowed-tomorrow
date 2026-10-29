@@ -38,3 +38,15 @@ it('fits the refuge remix to the film while retaining the original refuge call',
  }
  expect(scoreBar('refuge-crossing',8)).toEqual(scoreBar('refuge-crossing',0));
 });
+
+it('fits the westward walk and keeps The Western Mooring melody intact',()=>{
+ expect(scoreLength('airfield-crossing')).toBe(8);
+ expect(8*ARRANGEMENTS['airfield-crossing'].beats*60000/ARRANGEMENTS['airfield-crossing'].bpm).toBe(CROSSING_DURATION);
+ for(let bar=0;bar<8;bar++){
+  const notes=scoreBar('airfield-crossing',bar),source=scoreBar('airfield',bar).filter(n=>n.pan===-.16);
+  expect(notes.filter(n=>n.pan===-.16).map(n=>n.pitch)).toEqual(source.map(n=>n.pitch));
+  expect(notes.some(n=>n.instrument==='bass')).toBe(true);
+  for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
+ }
+ expect(scoreBar('airfield-crossing',8)).toEqual(scoreBar('airfield-crossing',0));
+});
