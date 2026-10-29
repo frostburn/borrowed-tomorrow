@@ -18,7 +18,7 @@ Validation uses native `OfflineAudioContext` impulse/tone renders at 44.1/48 kHz
 
 Large rooms use restrained delay lengths, feedback and return levels to keep held strings and bells from accumulating a long resonance. Regression limits require Captain Alban's canonical Cavern to shed 99.9% of its impulse-tail energy within 1.15 seconds and the longer Hollow domain within 1.9 seconds. `tests/e2e/room-decay.spec.ts` checks normalized tail decay independently of return volume at both device rates, plus the actual Captain Alban phrase after its sources stop. Run it with `npx playwright test room-decay room-reverb` to review decay alongside transition and routing regressions. Scores, instrument releases and tuning are unchanged.
 
-The courtyard used by Letters on the Water has a softer return (0.09), less feedback (0.46) and a 3.2 kHz return setting. Other room profiles retain their authored levels and geometry while sharing the stronger reflection absorption. `tests/e2e/room-absorption.spec.ts` compares 400 Hz and 4 kHz burst tails at 44.1/48 kHz; it requires audible low-frequency room energy and substantially weaker treble tails. Run `npx playwright test room-absorption room-decay room-reverb` for spectral decay, tail duration, dry reference, transition/cleanup and campaign/workshop routing checks.
+The courtyard used by Letters on the Water has a restrained return (0.1125 after #192, previously 0.09), less feedback (0.46) and a 3.2 kHz return setting. Other room profiles keep their distinct levels and geometry while sharing the stronger reflection absorption. The uniform wet-level increase is described below. `tests/e2e/room-absorption.spec.ts` compares 400 Hz and 4 kHz burst tails at 44.1/48 kHz; it requires audible low-frequency room energy and substantially weaker treble tails. Run `npx playwright test room-absorption room-decay room-reverb` for spectral decay, tail duration, dry reference, transition/cleanup and campaign/workshop routing checks.
 
 Isolated treble needs its own decay check: a broadband impulse or a comparison
 with loud bass can hide ringing. `room-absorption.spec.ts` now probes 1.6, 2.5,
@@ -28,4 +28,14 @@ return volume alone cannot pass. A 400 Hz domain reference must retain more
 than a second of room tail. In the 48 kHz 4 kHz probe, 99.9% of the remaining
 tail clears in about 0.35 seconds after the note, versus about 1.01 seconds
 before the stronger absorption. The direct signal, instrument releases,
-score, room delay geometry and return gains are unchanged.
+score and room delay geometry are unchanged; the wet-level adjustment below
+only scales these tails.
+
+## Wet-level adjustment (#192)
+
+With compression confined to the room input, the non-dry profiles now return
+25% more wet signal (about +1.94 dB). Open air remains subtle; enclosed rooms
+retain their relative strengths. Dry gain, delay geometry, feedback, damping
+and transition timing are unchanged, so the adjustment increases space without
+lengthening or brightening the impulse responses. The Dry reference remains
+fully dry. Both campaign and workshop use the same profile values.
