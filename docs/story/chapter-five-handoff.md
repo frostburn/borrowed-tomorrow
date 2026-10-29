@@ -4,11 +4,32 @@ Chapters One–Four and all four Chapter Five acts are playable canon. This docu
 
 ## Exact save
 
-Version **10**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-four`, boundary **`chapter-five:anchors`**. Staging is `refuge` `(12,28)` on the sea wall. Infer completion from the boundary and flags, never coordinates alone. The survey airship has not been acquired.
+Version **11**, format `borrowed-tomorrow`, campaign `imperial-debt`, chapter `chapter-four`, boundary **`chapter-five:anchors`**. Staging is `refuge` `(12,28)` on the sea wall. Infer completion from the boundary and flags, never coordinates alone. The survey airship has not been acquired.
 
 Required Chapter Four flags: `refugeSeen`, `worksArrival`, `celiaJoined`, `worksRouteSet`, `worksGateWon`, `harborOpened`, `sanctuaryEntered`, `roadGuardWon`, `signalCut`, `sanctuaryWardenWon`, `anchorsKnown`, `seaWalkSeen`, `chapterFourComplete`. Preserve boolean `worksFlooded`, optional `worksStoresWon` and `sanctuaryCache`, earlier flags including `tomasRescued`, `pressureRoute` and the train-raid choice, resources, XP, individual HP/focus, gear copies, loadouts, active formation, journal and play time.
 
 The roster is Nell, Orrin, Kit, Petra and Celia. Nell and at most two companions fight. Formation remains the player's choice throughout Chapter Four; there are no temporary viewpoints or reunion fields. Reserve gear remains fitted.
+
+## The westward road
+
+The earned departure plays a sixteen-second wordless vector film before the
+existing airfield introduction. Tomas waves from the refuge while Bram's ferry
+crosses the released harbor. Nell, Orrin, Kit, Celia and Petra walk west along
+the coastal road. A slight camera approach reveals the survey airship still
+tied to its mooring beside the hangar. The party does not board or take off;
+the seizure guards, Alda's introduction and the launch remain Chapter Five play.
+
+The film uses the shared chunky display and cast models. All three shots retain
+their full composition on phones. The westward road is an eight-bar, 120 BPM
+arrangement of The Western Mooring: a reed farewell, piano over brisk walking
+rhythms, then a reed answer at the mooring. The original airfield score is intact.
+
+Automatic arrival and Skip use the existing asset-checked Chapter Five entry.
+Missing art retains the final shot, departure and resources with Retry crossing,
+return and export. Reload replays the journey; it adds no flags or healing.
+Reduced motion shows three stills. Canonical Chapter Five starts still replay
+the original arrival directly. Review in **Cinematics → Chapter Four → Five**
+(`?dev=cinematics&film=airfield-crossing`); Music/Soundtrack → Ch 4 reviews the cue.
 
 ## What happened
 

@@ -47,10 +47,10 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
   // Victory starts the chart aftermath automatically; finish it before Equipment.
   await capture(page,`covered-chart-${device}`);await dialogue(page);await equip(page,'Nell','Guardian prism');await travel(page,'sanctuary-refuge','refuge');await capture(page,`refuge-supplied-${device}`);
   await approach(page,'refuge-tomas');await choices(page);await capture(page,`sea-wall-choice-${device}`);await page.getByRole('button',{name:'Prepare our equipment first',exact:true}).click();expect((await inspect(page)).state.boundary).toBeNull();
-  await approach(page,'refuge-tomas');await choices(page);await page.getByRole('button',{name:'Leave for the western airfield',exact:true}).click();await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();await capture(page,`chapter-four-complete-${device}`);
+  await approach(page,'refuge-tomas');await choices(page);await page.getByRole('button',{name:'Leave for the western airfield',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-five-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,`chapter-four-complete-${device}`);
   const saved=(await inspect(page)).state;expect(saved.flags.tomasRescued).toBe(true);expect(saved.party).toHaveLength(5);expect(saved.activeParty).toEqual(departure.activeParty);expect(saved.inventory.characters.orrin.fitting).toBe('return-valve');expect(saved.inventory.characters.celia.fitting).toBe('field-clasp');
   const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export departure save',exact:true}).click();const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));expect(exported.version).toBe(11);expect(exported.boundary).toBe('chapter-five:anchors');expect(exported.inventory).toEqual(saved.inventory);
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-five-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
  });
 }
 
@@ -69,7 +69,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await capture(page,`sea-wall-visible-${device}`);
    const nell=(await inspect(page)).actors.find(a=>a.hero==='nell')!;await nativeActor(page,nell.texture,{x:8,y:28},.08);await nativeActor(page,'tomas',{x:10,y:28},.08);
    await choices(page);await page.getByRole('button',{name:'Prepare our equipment first',exact:true}).click();expect((await inspect(page)).state.flags.seaWalkSeen).toBe(true);
-   await approach(page,'refuge-tomas');expect((await inspect(page)).cinematic).toBeNull();await expect(page.locator('.dialogue')).toContainText('Ready to go?');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Four complete',exact:true})).toBeVisible();expect(errors).toEqual([]);
+   await approach(page,'refuge-tomas');expect((await inspect(page)).cinematic).toBeNull();await expect(page.locator('.dialogue')).toContainText('Ready to go?');await dialogue(page);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-five-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();expect(errors).toEqual([]);
   });
  });
 }

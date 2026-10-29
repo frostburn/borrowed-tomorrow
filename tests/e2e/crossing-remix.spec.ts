@@ -1,3 +1,4 @@
+import {anchorDeparture} from '../support/anchors';
 import {test,expect} from '@playwright/test';
 import {writeFile} from 'node:fs/promises';
 import {checkpoint,coastCheckpoint,palaceCheckpoint} from '../support/progress';
@@ -23,7 +24,7 @@ test('the crossing plays its workshop remix continuously and the Music tab revie
  await page.locator('[data-cue="crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'crossing-remix-workshop');expect(errors).toEqual([]);
 });
 
-for(const mode of ['crossing','capital-crossing','refuge-crossing'] as const)test(`${mode} athletic arrangement renders with headroom and energy in every bar`,async({page})=>{
+for(const mode of ['crossing','capital-crossing','refuge-crossing','airfield-crossing'] as const)test(`${mode} athletic arrangement renders with headroom and energy in every bar`,async({page})=>{
  await page.goto('/');const stats=await page.evaluate(async(mode)=>{
   // @ts-expect-error Vite serves the production score/rack source.
   const {scoreBar}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
@@ -92,4 +93,23 @@ test('the refuge crossing plays its athletic homeward remix continuously and Mus
  await expect.poll(position,{timeout:5000}).toMatchObject({mode:'refuge',playing:true});
  await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 3',exact:true}).click();
  await page.locator('[data-cue="refuge-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'refuge-remix-workshop');expect(errors).toEqual([]);
+});
+
+test('the airfield crossing plays its western-road remix continuously and Music reviews it',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ await page.evaluate(async()=>{
+  // @ts-expect-error Observe the real mixer in the dev build.
+  const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');const original=Audio.prototype.setMode;
+  Audio.prototype.setMode=function(mode){(window as unknown as {crossingMusic:()=>unknown}).crossingMusic=()=>this.position();original.call(this,mode);};
+ });
+ await page.getByRole('button',{name:'Sound off',exact:true}).click();
+ const position=()=>page.evaluate(()=>(window as unknown as {crossingMusic:()=>{mode:string;bar:number;playing:boolean}}).crossingMusic());
+ await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await importSave(page,anchorDeparture());
+ await page.getByRole('button',{name:'Pause',exact:true}).click();await expect.poll(position).toMatchObject({mode:'airfield-crossing',playing:true});
+ await page.getByRole('button',{name:'Next shot',exact:true}).click();await page.getByRole('button',{name:'Next shot',exact:true}).click();
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'airfield-crossing',bar:1,playing:true});
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-airfield');
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'airfield',playing:true});
+ await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 4',exact:true}).click();
+ await page.locator('[data-cue="airfield-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'airfield-remix-workshop');expect(errors).toEqual([]);
 });

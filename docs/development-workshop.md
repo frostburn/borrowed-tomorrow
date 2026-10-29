@@ -326,6 +326,16 @@ same player handles individual shots, reduced motion, pause, return and export.
 The coastward run, a driving refuge-theme arrangement, is in Music → Ch 3.
 Missing Chapter Four scenery retains the last shot and the earned departure.
 
+The **Chapter Four → Five** selection (`?dev=cinematics&film=airfield-crossing`)
+reviews The westward road: Tomas's farewell at the moving harbor, all five
+companions walking the coastal road, then the survey airship still moored at
+the western airfield. Boarding and takeoff belong to the playable Chapter Five
+opening. All three shots preserve their full composition on phones. The shared
+player provides pause/skip/return/export, reduced-motion stills and missing-art
+retry without changing the departure or resources. The athletic Western Mooring
+arrangement is in Music/Soundtrack → Ch 4. Canonical Chapter Five still starts
+at its original arrival; the Cinematics tab does not change campaign saves.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.
