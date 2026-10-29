@@ -376,7 +376,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.location(map.name);
     this.ui.initiative.textContent = this.state.chapter==='chapter-four'? (this.state.flags.chapterFourComplete?'The western airfield is marked. Tomas keeps the railway talking.':map.id==='sanctuary'&&this.state.flags.sanctuaryWardenWon?'The tide is moving again. The covered chart is open.':map.id==='breakwater'&&this.state.flags.harborOpened?'The ferry is home. The eastern service stair is clear.':map.id==='refuge'&&this.state.flags.harborOpened?'Bram’s ferry is supplying the ward. Tomas keeps the messages moving.':map.subtitle)
       : this.state.chapter==='chapter-three'&&this.state.flags.chapterThreeComplete?'Tomas is aboard. The medical train has escaped.'
-      : map.id==='northglass'&&this.state.flags.emperorMerged?'The capital is rising. Reach the medical engine.'
+      : map.id==='northglass'&&this.state.flags.emperorMerged?'The Emperor has escaped. Reach the medical engine.'
       : map.id==='northglass'&&this.state.flags.petraJoined?'The works entrance is open. Tomas is inside.'
       : map.id==='relayhall'&&this.state.flags.tomasRescued?'Tomas is safe. The intake console is below.'
       : map.id==='conduit'&&this.state.flags.conduitGuardWon?'The regulator is down. Close the feeds.'

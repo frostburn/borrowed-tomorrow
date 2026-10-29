@@ -30,7 +30,7 @@ Keep Kit’s flustered moments brief and occasional. He has work, friends and ob
 
 ## Knowledge at the Chapter Two departure
 
-Nell and Orrin have read Tomas’s transfer slip, freed the exchange prisoners, stopped the Cinderbank collection and seen the emperor’s order enforced by Alban. Tomas is alive in personal custody at the capital’s palace engine works. They have a current medical-train clearance and are pulling the medical coaches there with Orrin’s coal engine. They still cannot explain the lantern’s resonance or why they could move in Rillbridge.
+Nell and Orrin have read Tomas’s transfer slip, freed the exchange prisoners, stopped the Cinderbank collection and seen the emperor’s order enforced by Alban. Tomas is alive in personal custody at the imperial conduit works below the capital. They have a current medical-train clearance and are pulling the medical coaches there with Orrin’s coal engine. They still cannot explain the lantern’s resonance or why they could move in Rillbridge.
 
 Kit knows the exchange and capital siding from his delivery rounds. Alban seized his medicine and letters; the rescue allowed him to complete those deliveries. He knows the families from his book and has chosen to see the passengers safely to the capital. Celia has not met the party; none of the Chapter Two events is part of her established knowledge.
 
@@ -38,11 +38,11 @@ Petra knows Nell carries the sought fragment. She objected to abandoning Cinderb
 
 ## Knowledge at the Chapter Three departure
 
-Nell, Orrin, Kit and Petra freed Tomas and stopped the extraction feeds. Tomas explained that the collectors feed people’s days to the restrained vessel. The party saw the emperor enter it rather than accept the shutdown, the capital rise and time fail in the valley. None has heard the Benefactor speak or learned the complete founding bargain or the source beyond the conduit. Nell’s lantern still supplies sensory clues rather than a confirmed time-power explanation.
+Nell, Orrin, Kit and Petra freed Tomas and stopped the extraction feeds. Tomas explained that the collectors feed people’s days to the restrained vessel. The party saw the still-human Emperor use its transfer chamber to escape to the floating marble palace and order the coastal arrest. None has heard the Benefactor speak or learned the complete founding bargain or the source beyond the conduit. Nell’s lantern still supplies sensory clues rather than a confirmed time-power explanation.
 
 Tomas is alive with the medical passengers. He witnessed Ansel being wounded and now knows that Ansel did not survive. He knows Nell used Orrin’s coal engine to find him. His sabotage made the rescue possible; he remains an active supporting person, not a combat unit or a new kidnapping objective. Petra has openly refused an arrest order, broken Alban’s command rod and joined the party at a real cost. Celia has not met anyone in the party yet.
 
-The Emperor is an older human man with silver hair, gray eyes, a short beard, an ivory/navy coat, brass sun circlet and dark mourning ribbon. His first direct appearance is the extraction chamber. He claims the capital depends on the engines, refuses to release collection and chooses merger only after the feeds close. He has not yet offered Nell her old life or been defeated. His family history and final confrontation remain later story material.
+The Emperor is an older human man with silver hair, gray eyes, a short beard, an ivory/navy coat, brass sun circlet and dark mourning ribbon. His first direct appearance is the extraction chamber. He claims the capital depends on the engines, refuses to release collection and uses the transfer chamber after the feeds close; he remains human until Chapter Six. He has not yet offered Nell her old life or been defeated. His family history and final confrontation remain later story material.
 
 
 ## Knowledge at the Chapter Four departure

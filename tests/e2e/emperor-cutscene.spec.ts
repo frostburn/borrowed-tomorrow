@@ -31,7 +31,7 @@ async function feedPixel(page:Page){
  });
 }
 for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
- test(`Emperor enters the vessel and the party flees with live animation on ${device}`,async({browser})=>{
+ test(`Emperor teleports to the palace and the party flees with live animation on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'no-preference'}),page=await context.newPage();
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const saved=await begin(page);
@@ -40,19 +40,19 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await line(page,'needles fall');await page.mouse.move(0,0);await page.waitForTimeout(1250);
    const feedAfter=await feedPixel(page);
    expect(feedBefore[0]+feedBefore[1]-feedAfter[0]-feedAfter[1],'the live feed layer must fade independently of cached ground').toBeGreaterThan(35);
-   await line(page,'steps onto the vessel');
+   await line(page,'steps onto the conduit');
    const poses=await page.evaluate(()=>new Promise<string[]>(resolve=>{
     const seen=new Set<string>(),start=performance.now();const tick=()=>{const e=window.borrowedTomorrow.inspect().actors.find(a=>a.hero==='emperor');if(e)seen.add(e.texture);if(performance.now()-start>2100)resolve([...seen]);else requestAnimationFrame(tick);};tick();
    }));
    expect(poses).toContain('emperor-left-step-0');expect(poses).toContain('emperor-left-step-1');
    expect((await inspect(page)).actors.find(a=>a.hero==='emperor')!.x).toBe(876);await capture(page,`emperor-approach-${device}`);
-   await line(page,'Pale light runs up');await page.mouse.move(0,0);
+   await line(page,'Brass shutters close');await page.mouse.move(0,0);
    expect((await inspect(page)).actors.some(a=>a.hero==='emperor'&&a.texture==='emperor-reach')).toBe(true);
-   await page.waitForTimeout(800);await capture(page,`emperor-entry-${device}`);
+   await page.waitForTimeout(800);expect((await inspect(page)).actors.find(a=>a.hero==='emperor')?.x).toBe(876);await capture(page,`emperor-entry-${device}`);
    await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
-   await line(page,'restraints pull taut');await page.mouse.move(0,0);await page.waitForTimeout(1700);
+   await line(page,'pipes buckle');await page.mouse.move(0,0);await page.waitForTimeout(1700);
    // Camera shake and its initial tween have ended: parked-cursor pixels must
-   // still advance as the dust rises and the vessel's restraints vibrate.
+   // still advance as the dust falls and the vessel's restraints vibrate.
    expect((await movingPixels(page)).length).toBeGreaterThan(2);await capture(page,`emperor-rupture-${device}`);
    expect((await inspect(page)).state.flags.emperorMerged).toBeUndefined();
    await line(page,'The stairs!');await page.waitForTimeout(1900);await capture(page,`emperor-retreat-${device}`);
@@ -65,12 +65,12 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
   }finally{await context.close();}
  });
 }
-test('skip during absorption cleans effects, while reduced motion settles every shot',async({page})=>{
- const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await begin(page);await line(page,'Pale light runs up');
+test('skip during transfer cleans effects, while reduced motion settles every shot',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await begin(page);await line(page,'Brass shutters close');
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('northglass');
  await page.waitForTimeout(2700);expect((await inspect(page)).cinematic).toBeNull();expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
- await page.emulateMedia({reducedMotion:'reduce'});await begin(page);await line(page,'Pale light runs up');expect((await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
- await line(page,'restraints pull taut');await page.mouse.move(0,0);expect((await movingPixels(page)).length).toBe(1);
+ await page.emulateMedia({reducedMotion:'reduce'});await begin(page);await line(page,'Brass shutters close');expect((await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
+ await line(page,'pipes buckle');await page.mouse.move(0,0);expect((await movingPixels(page)).length).toBe(1);
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.emperorMerged).toBe(true);expect(errors).toEqual([]);
 });
 test('missing Emperor poses preserve a chapter departure and retry normally',async({page})=>{
@@ -79,9 +79,9 @@ test('missing Emperor poses preserve a chapter departure and retry normally',asy
  await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');
  await page.unroute('**/art/vector/emperor-reach.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
-test('reload during absorption replays the checkpoint; fast advance and skip during retreat settle safely',async({page})=>{
+test('reload during transfer replays the checkpoint; fast advance and skip during retreat settle safely',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});
- const saved=await begin(page);await line(page,'Pale light runs up');await page.waitForTimeout(500);await page.reload();
+ const saved=await begin(page);await line(page,'Brass shutters close');await page.waitForTimeout(500);await page.reload();
  await page.getByRole('button',{name:'Continue',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('conduit');
  expect((await inspect(page)).state.flags.emperorMerged).toBeUndefined();expect((await inspect(page)).state.flags.tomasRescued).toBe(true);

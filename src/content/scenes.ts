@@ -18,7 +18,7 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
   line('Tomas', 'We are. Nell, if anyone asks, I only got here tonight.',{expression:'worried'}),
   line('Captain Alban', 'Tomas. Step away from the girl.', { effect:'raid-clear', cue: 'punch', focus: { x: 27, y: 15 }, actors: { alban: { visible: true, to: { x: 29, y: 13 } } } }),
   line('Nell', 'What’s he supposed to have done?',{expression:'worried'}),
-  line('Captain Alban', 'Stolen property from the palace engine. Your brother knows what I want.'),
+  line('Captain Alban', 'Stolen property from the imperial conduit. Your brother knows what I want.'),
   line('Tomas', 'Take me. Leave her out of it.', {expression:'angry', actors: { tomas: { to: { x: 27, y: 13 } } } }),
   line('Stationmaster Ansel', 'You don’t draw a blade in my square. Put it away.', { actors: { ansel: { to: { x: 28, y: 14 } } } }),
   line('The square', 'Ansel catches the captain’s arm. Alban turns his blade. Tomas lunges; the crystal in his hand strikes the paving.', { silence: true, cue: 'strike', actors: { ansel: { fallen: true }, tomas: { to: { x: 28, y: 13 } } } }),

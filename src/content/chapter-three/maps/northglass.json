@@ -1935,7 +1935,7 @@
             {
               "name": "label",
               "type": "string",
-              "value": "Leave the rising capital"
+              "value": "Leave the conduit works"
             },
             {
               "name": "sign",
@@ -2429,7 +2429,7 @@
     {
       "name": "name",
       "type": "string",
-      "value": "Capital \u00b7 south medical siding"
+      "value": "Northglass \u00b7 conduit medical siding"
     },
     {
       "name": "subtitle",

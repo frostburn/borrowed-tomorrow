@@ -2,8 +2,8 @@ import { STAGED as line,type Dialogue,type Line } from '../dialogue';
 import type { MapId } from '../../rules/state';
 import { stage } from '../maps';
 const scene=(map:MapId,id:string,title:string,lines:Line[]):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
-export const arrival=()=>scene('northglass','three-capital','CHAPTER THREE · BENEATH THE PALACE',[
-  line('The south medical siding','The clerk checks the clearance, breaks the platform seal and waves the medical coaches through.',{focus:{x:47,y:6},cut:true,cue:'paper'}),
+export const arrival=()=>scene('northglass','three-capital','CHAPTER THREE · THE CONDUIT WORKS',[
+  line('The conduit medical siding','The clerk checks the clearance, breaks the platform seal and waves the medical coaches through.',{focus:{x:47,y:6},cut:true,cue:'paper'}),
   line('Kit','Same seal. I told you it was the right siding.',{focus:{x:32,y:30},cut:true}),
   line('Dena','Keep this step clear. The man with the sling first.'),
   line('Orrin','I’ll keep the coal engine under steam. We can leave whenever you’re ready.'),
@@ -63,12 +63,12 @@ export const rescue=()=>scene('relayhall','three-reunion','TOMAS',[
   line('Kit','Dena’s at the coaches. I’ll take you and the fitters to her.'),
 ]);
 export const heart=()=>scene('conduit','three-heart','THE VESSEL BELOW',[
-  line('Beneath the palace','Iron restraints bite into a pale vessel above the machines. The hum in Nell’s lantern catches against the hum from the walls.',{focus:{x:32,y:12},cut:true,silence:true,cue:'resonance'}),
+  line('Below the conduit works','Iron restraints bite into a pale vessel above the machines. The hum in Nell’s lantern catches against the hum from the walls.',{focus:{x:32,y:12},cut:true,silence:true,cue:'resonance'}),
   line('The Emperor','I gave orders for your brother to be kept alive.',{focus:{x:41,y:22},cut:true}),
   line('Nell','Your warden was cutting him apart.'),
-  line('The Emperor','Then the warden exceeded its instruction. Return the fragment. I will have the train take you both home.'),
+  line('The Emperor','I came down to recover the fragment, not to have your brother killed. Return it, and I will have the train take you both home.'),
   line('Petra','And the people at Cinderbank? The others still being collected?'),
-  line('The Emperor','This city has hospitals, winter stores, children who have never known a siege. Those engines keep them alive.'),
+  line('The Emperor','The capital has hospitals, winter stores, children who have never known a siege. Those engines keep them alive.'),
   line('Orrin','Our train brought patients here without taking anyone’s days. Yours can stop.'),
   line('The Emperor','You have one engine. I have an empire.'),
   line('Nell','Then you should have built more like his.'),
@@ -84,17 +84,20 @@ export const rupture=()=>scene('conduit','three-rupture','THE FEEDS CLOSE',[
   line('The chamber','He smooths the dark ribbon on his coat.',{focus:{x:47,y:20},duration:700}),
   line('The Emperor','My wife opened the breakfast window, even in winter. She liked to hear the bread cart.'),
   line('The Emperor','I used to move her chair out of the draught. She always moved it back.'),
-  line('Petra','There are still people in that street.',{focus:{x:39,y:27},duration:700}),
-  line('The chamber','He turns away from the console and steps onto the vessel’s service deck.',{focus:{x:47,y:19},cut:true,track:'emperor',duration:2000,cue:'click',actors:{emperor:{face:'emperor-left',to:{x:36,y:19}}}}),
+  line('Petra','There are still people outside your palace.',{focus:{x:39,y:27},duration:700}),
+  line('The chamber','He turns away from the console and steps onto the conduit’s transfer deck.',{focus:{x:47,y:19},cut:true,track:'emperor',duration:2000,cue:'click',actors:{emperor:{face:'emperor-left',to:{x:36,y:19}}}}),
   line('Nell','What are you doing?'),
-  line('The Emperor','If the world will not give us another peaceful day, I will keep this one.'),
-  line('The vessel','The emperor presses his bare hand against the iron collar. Pale light runs up his sleeve and draws him out of sight.',{focus:{x:32,y:13},duration:2400,cue:'resonance',effect:'vessel-entry',actors:{emperor:{face:'emperor-reach'}}}),
-  line('The chamber','The restraints pull taut. A crack runs through the ceiling. Stone dust rises instead of falling.',{cue:'punch',effect:'chamber-rupture'}),
+  line('The Emperor','I am returning to the palace.'),
+  line('The transfer chamber','The emperor presses his palm to the transfer collar. Brass shutters close around him.',{focus:{x:32,y:13},duration:2400,cue:'resonance',effect:'vessel-transfer',actors:{emperor:{face:'emperor-reach'}}}),
+  line('The transfer chamber','Light runs through the frame. The shutters open on an empty chamber.'),
+  line('The palace relay','PALACE COMMAND. COASTAL ARREST. ALL DEPARTURES SUSPENDED.',{cue:'click'}),
+  line('Orrin','He used the last charge to reach the palace. Get away from those pipes.'),
+  line('The chamber','The pipes buckle. A crack runs through the ceiling, and stone dust falls onto the service deck.',{cue:'punch',effect:'chamber-rupture'}),
   line('Kit','The stairs! Nell, now!',{focus:{x:40,y:23},cut:true,track:'nell',duration:1800,actors:{nell:{to:{x:25,y:32}},orrin:{to:{x:24,y:31}},kit:{to:{x:23,y:32}},petra:{to:{x:26,y:31}}}}),
   line('Orrin','Tomas is at our engine. We’re leaving together.',{track:'nell',duration:1200,actors:{nell:{to:{x:25,y:35}},orrin:{to:{x:24,y:34}},kit:{to:{x:23,y:35}},petra:{to:{x:26,y:34}}}}),
 ]);
 export const departure=()=>scene('northglass','three-departure','THE BROTHER WHO CAME HOME',[
-  line('The south siding','The medical coaches are full. Above the roof, the palace rises through a cloud of broken stone.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
+  line('The south siding','The medical coaches are full. Steam pours from the grounded works; far above them, the white capital hangs over the valley.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
   line('Tomas','Nell! Here!',{focus:{x:33,y:31},cut:true}),
   line('Nell','You’re staying where I can see you.'),
   line('Tomas','I can manage that.'),
@@ -104,5 +107,5 @@ export const departure=()=>scene('northglass','three-departure','THE BROTHER WHO
   line('The medical train','The coal engine pulls the coaches out. The last bridge drops away behind the wheels.',{cue:'steam'}),
   line('Tomas','Your hands are shaking.',{expression:'worried'}),
   line('Nell','So are yours.'),
-  line('The valley','Far below the rising capital, a mill wheel stops between splashes. Orrin keeps his eyes on the track.'),
+  line('The valley','Beside the line, a mill wheel stops between splashes. A horn behind them repeats the coastal arrest order. Orrin keeps his eyes on the track.'),
 ]);

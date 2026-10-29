@@ -96,7 +96,7 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Orrin','The crown supports are above this stair. Break them and the vessel loses its shield.'),
  line('Nell','Then we go together. Let me check the lantern first.'),
 ]:[
- line('Celia','I’ve just come from Nell. Her pulse is following the palace engine.',{focus:{x:32,y:23},cut:true}),
+ line('Celia','I’ve just come from Nell. Her pulse is following the palace’s preservation engine.',{focus:{x:32,y:23},cut:true}),
  line('Kit','Even with the lantern here?'),
  line('Celia','Yes. Moving it hasn’t changed her pulse.'),
  line('Orrin','If we break the vessel, the current will need somewhere else to go.'),
@@ -105,7 +105,8 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Kit','Then the launch stays ready. We don’t have to leave her like this.',{expression:'worried'}),
 ]);
 export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Emperor’s last day',[
- line('The crown platform','The palace roof opens around a crowned vessel. Two pale supports turn beneath its arms.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
+ line('The crown platform','The Emperor steps into the crown’s open frame. Plates close around his body.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
+ line('The crown','The frame unfolds into a vast vessel above the palace roof. Two pale supports turn beneath its arms.'),
  line('The Emperor','The window was open. She could hear the carts again.'),
  line('Celia','The lower ward was left without water. We carried your patients out.'),
  line('The Emperor','She hasn’t finished her breakfast. Keep the supports in place.'),

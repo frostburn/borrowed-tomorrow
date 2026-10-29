@@ -151,7 +151,7 @@ function capital(c:C,p:number,t:number){
   poly(c,'#617b6d',[[x,116],[x-2,116-h],[x+9,115-h],[x+10,115]]);line(c,'#9ba386',2,[[x-2,116-h],[x+9,115-h]]);
   for(let i=0;i<3;i++){const u=(t*.15+i/3)%1;c.globalAlpha=(1-u)*.2;oval(c,'#e1dec0',x+5-u*17,111-h-u*29,5+u*12,4+u*7);}c.globalAlpha=1;
  }
- // Broad green pressure dome: the imperial engine works, before the city rises.
+ // Broad green pressure dome: the imperial conduit works outside the capital.
  poly(c,'#334f4d',[[223,121],[227,92],[243,64],[269,46],[297,42],[326,53],[349,77],[360,115],[356,164],[226,169]]);
  poly(c,'#577b67',[[227,112],[232,91],[248,68],[272,52],[297,46],[286,111]]);
  poly(c,'#76927a',[[235,91],[250,70],[273,54],[284,52],[270,80],[262,111],[228,114]]);

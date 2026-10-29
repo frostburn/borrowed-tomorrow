@@ -57,7 +57,7 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
     entry:{from:'chapter-one',boundary:NEXT_CHAPTER,loading:'Loading the Iron Coast…',begin:beginChapterTwo},
     story:{journal:two.JOURNAL,objective:two.objective,resume:resumeChapterTwo,interact:interactChapterTwo},
     ending:{
-      html:'<div class="chapter-name">Next: Chapter Three · Beneath the Palace</div><p>The rescued prisoners and Cinderbank families are traveling with Nell, Orrin and Kit.</p><p>Tomas is alive at the palace engine works. Your medical-train clearance opens a route to him.</p>',
+      html:'<div class="chapter-name">Next: Chapter Three · The Conduit Works</div><p>The rescued prisoners and Cinderbank families are traveling with Nell, Orrin and Kit.</p><p>Tomas is alive at the imperial conduit works. Your medical-train clearance opens a route to him.</p>',
       returnLabel:'Return to the siding',
     },
   },
@@ -66,7 +66,7 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
     entry:{from:'chapter-two',boundary:THIRD_CHAPTER,loading:'Loading the capital…',begin:beginChapterThree},
     story:{journal:three.JOURNAL,objective:three.objective,resume:resumeChapterThree,interact:interactChapterThree},
     ending:{
-      html:'<div class="chapter-name">Next: Chapter Four · A Light on the Water</div><p>Tomas is safe aboard the medical train. The rescued passengers escaped with you. The extraction feeds are shut.</p><p>The emperor has entered the vessel. The capital hangs above the valley, and time is failing beyond it.</p>',
+      html:'<div class="chapter-name">Next: Chapter Four · A Light on the Water</div><p>Tomas is safe aboard the medical train. The rescued passengers escaped with you. The extraction feeds are shut.</p><p>The Emperor has escaped to the marble capital and ordered the coast sealed. The medical train is leaving the conduit works.</p>',
       returnLabel:'Return to the platform',
     },
   },
