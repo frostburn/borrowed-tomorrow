@@ -24,6 +24,7 @@ export class Audio {
   private mode:MusicMode='station';
   private pending:MusicMode='station';
   private generation=0;
+  private starting?:{mode:MusicMode;bar:number;instruments?:readonly Instrument[];performance:PerformanceOptions};
   private instruments?:readonly Instrument[];
   private performance:PerformanceOptions={};
   private volume=.75;
@@ -49,6 +50,8 @@ export class Audio {
   async play(mode:MusicMode,bar=0,instruments?:readonly Instrument[],performance:PerformanceOptions={}){
     if(!Number.isInteger(bar)||bar<0)throw new Error('Invalid score bar.');
     const generation=++this.generation;this.pending=mode;
+    this.starting={mode,bar,instruments,performance:{...performance}};
+    try{
     if(!this.context)this.initialize();const c=this.context!;
     const [score]=await Promise.all([import('./music-runtime'),c.resume()]);
     if(generation!==this.generation)return;this.score=score;
@@ -56,11 +59,41 @@ export class Audio {
     this.history=[];this.next=c.currentTime+.045;this.enabled=true;this.reverb!.setRoom(this.roomId);
     this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
     if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
+    }finally{if(generation===this.generation)this.starting=undefined;}
   }
   pause(){
-    this.generation++;this.enabled=false;this.reverb?.setRoom('dry');
+    this.generation++;this.starting=undefined;this.enabled=false;this.reverb?.setRoom('dry');
     if(this.context){const now=this.context.currentTime;this.master!.gain.setTargetAtTime(0,now,.025);this.music!.stop(now+.08);this.effects!.stop(now+.08);}
     if(this.timer){clearInterval(this.timer);this.timer=undefined;}
+  }
+  /** Freeze the listener's clock and queued notes for an exact transport pause. */
+  async hold(){
+    this.generation++;this.enabled=false;
+    if(this.timer){clearInterval(this.timer);this.timer=undefined;}
+    if(this.context)await this.context.suspend();
+  }
+  async resume(){
+    const generation=++this.generation,c=this.context;
+    if(!c||!this.score)throw new Error('No track is paused.');
+    await c.resume();if(generation!==this.generation)return;
+    this.enabled=true;this.master!.gain.setTargetAtTime(this.volume,c.currentTime,.025);this.schedule();
+    if(!this.timer)this.timer=window.setInterval(()=>this.schedule(),25);
+  }
+  /** Suspend a soundtrack browser's host, including a pending first sound load.
+   * Resume at the saved bar with its filters/performance; honor later scene cues. */
+  suspend(){
+    const position=this.position(),request=this.starting;
+    const enabled=this.enabled||!!request,mode=this.pending;
+    const bar=request?.mode===mode?request.bar:position.mode===mode?position.bar:0;
+    const instruments=request?request.instruments:this.instruments,performance={...(request?.performance??this.performance)};
+    this.pause();let restored=false;
+    return async()=>{if(restored)return;restored=true;if(enabled)await this.play(this.pending,this.pending===mode?bar:0,instruments,performance);};
+  }
+  /** Release an isolated listener instance after its dialog closes. */
+  close(){
+    this.pause();const context=this.context;this.context=undefined;
+    // Let the existing gain/voice release finish before closing the device.
+    if(context)window.setTimeout(()=>{void context.close().catch(()=>{});},100);
   }
   setVolume(volume:number){
     this.volume=Math.max(0,Math.min(1,volume));

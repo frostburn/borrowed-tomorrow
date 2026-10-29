@@ -21,6 +21,7 @@ export class UI {
   private lineIndex = 0;
   private onLine?: (index:number)=>void;
   private modalReturn?: HTMLElement;
+  private modalDispose?:()=>void;
   private toastTimer?: number;
   toastSerial=0;
   constructor(root: HTMLElement, callbacks: { inventory: () => void; journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
@@ -106,7 +107,9 @@ export class UI {
   get dialogueOpen() { return !!this.dialogue; }
   get panelOpen() { return this.sceneLayer.childElementCount > 0; }
   get modalOpen() { return !this.modal.hidden; }
-  showModal(title: string, content: string, buttons: Button[] = []) {
+  showModal(title: string, content: string, buttons: Button[] = [],dispose?:()=>void) {
+    const previous=this.modalDispose;this.modalDispose=undefined;previous?.();
+    this.modalDispose=dispose;
     // Replacing one dialog with another retains the original menu's focus owner.
     if(this.modal.hidden||!this.modal.contains(document.activeElement))this.modalReturn = document.activeElement as HTMLElement;
     this.modal.hidden = false;
@@ -116,6 +119,7 @@ export class UI {
     this.modal.querySelector<HTMLElement>('button')?.focus();
   }
   closeModal() {
+    const dispose=this.modalDispose;this.modalDispose=undefined;dispose?.();
     this.modal.hidden = true; this.modal.innerHTML = '';
     const target=this.modalReturn?.isConnected?this.modalReturn:this.sceneLayer.querySelector<HTMLElement>('.panel-actions button:not(:disabled)');
     target?.focus();
