@@ -53,11 +53,11 @@ function bridge(c:C,p:number,t:number){
  for(const [x,y]of [[91,181],[90,188],[85,192]])poly(c,'#b5c2af',[[x,y],[x+3,y-2],[x+4,y+3],[x+1,y+4]]);
  floatingCapital(c,374,95,.57);
  // The emptied green works sit on a continuous hillside below the royal city.
- poly(c,'#5b7267',[[257,196],[314,185],[375,188],[424,202],[460,215],[247,223]]);
- c.save();c.translate(338,202);c.scale(.3,.3);c.translate(-285,-160);conduitDistrict(c,t);c.restore();
+ poly(c,'#5b7267',[[175,185],[229,172],[286,178],[344,197],[388,211],[177,226]]);
+ c.save();c.translate(257,185);c.scale(.36,.36);c.translate(-285,-160);conduitDistrict(c,t);c.restore();
  // Dust falls around the failing works; neither building nor ground rises.
  for(let i=0;i<7;i++){
-  const u=(p*.55+i/7)%1,x=294+i*13,y=178+u*29;
+  const u=(p*.55+i/7)%1,x=214+i*14,y=164+u*35;
   poly(c,i%2?'#9fa99a':'#718780',[[x,y],[x+2,y-1],[x+3,y+1],[x+1,y+3]]);
  }
  poly(c,'#435d5c',[[0,226],[448,207],[448,241],[0,280]]);

@@ -1,7 +1,7 @@
 import type { GameState } from '../../rules/state';
 export const JOURNAL:Record<string,{title:string;text:string}>={
  refugeSeen:{title:'Blankets for the harbor',text:'Tomas and every medical passenger are safe at the railway refuge. Bram’s ferry crews are stranded behind the harbor gate. Dena sent blankets for Celia at the pump house. Take the eastern harbor path.'},
- worksArrival:{title:'Celia at Breakwater',text:'Celia is treating the ferry crews. The capital’s signal has locked the sea gate and stopped patches of the tide. Celia joined us to stop it. Clear the gate guards by the dry chain walk or the shallow pump floor, then turn the winding wheel on the middle pier. The survey cart holds a sight for Kit.'},
+ worksArrival:{title:'Celia at Breakwater',text:'Celia is treating the ferry crews. The capital’s signal has locked the sea gate and stopped the tide. Celia joined us to stop it. Clear the gate guards by the dry chain walk or the shallow pump floor, then turn the winding wheel on the middle pier. The survey cart holds a sight for Kit.'},
  worksClear:{title:'The winding wheel',text:'The gate guards are down. Orrin’s counterweighted return valve is in the bag. The winding gear is within reach; Bram’s ferry is waiting.'},
  harborOpened:{title:'The ferry comes home',text:'Bram brought the crews to Dena and reopened the supply route. The service stair beyond the sea gate leads to Celia’s old sanctuary hospice. Follow it uphill to find the arrest signal.'},
  sanctuaryEntered:{title:'An order that cannot be amended',text:'An imperial cable feeds the sanctuary’s old bronze ring. Its warden refuses to release the coast. Clear the guards on the eastern bridge, then disconnect the return cable at its copper clamp.'},

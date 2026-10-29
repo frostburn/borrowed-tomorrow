@@ -160,7 +160,7 @@ export function capitalCrossingShot(c:C,index:number,p:number,t:number){
  if(index===0)medicalTrain(c,p,t);else if(index===1)passengers(c,p,t);else capital(c,p,t);
 }
 
-/** The same green-iron works, grounded on arrival and aloft after the rupture. */
+/** The same grounded green-iron works on the approach and the coastward escape. */
 export function conduitDistrict(c:C,t:number){
  // Factory wings, brick piers and brass service pipes belong to the conduit district.
  poly(c,SHADOW,[[105,121],[227,107],[232,173],[103,183]]);
