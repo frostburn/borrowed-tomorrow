@@ -34,6 +34,34 @@ function bench(c:C,x:number,y:number,s=1){
  poly(c,'#b09d76',[[-6,-6],[154,-10],[169,0],[1,6]]);
  poly(c,'#786d57',[[1,6],[169,0],[169,7],[1,13]]);c.restore();
 }
+function locomotive(c:C,travel:number,t:number){
+ c.save();c.translate(12-travel,245);c.scale(.8,.8);
+ // Left-facing coal engine: chimney and smokebox ahead of the raised cab.
+ poly(c,'#324d59',[[0,-48],[14,-53],[92,-50],[112,-32],[112,-10],[5,-7],[-5,-17]]);
+ poly(c,'#607b7d',[[9,-47],[82,-48],[90,-41],[86,-20],[8,-18]]);
+ poly(c,'#a9a27d',[[10,-48],[81,-49],[89,-43],[12,-41]]);
+ poly(c,'#405d68',[[0,-48],[9,-47],[8,-18],[-2,-19],[-5,-28]]);
+ rect(c,'#304a57',12,-80,17,33);
+ poly(c,'#778c87',[[7,-84],[33,-84],[34,-77],[10,-75]]);
+ poly(c,'#526e74',[[80,-73],[120,-74],[122,-14],[80,-14]]);
+ poly(c,'#ada481',[[75,-77],[123,-78],[129,-70],[77,-69]]);
+ poly(c,'#a9c2b6',[[89,-65],[111,-65],[111,-44],[88,-43]]);
+ poly(c,'#7f9d99',[[92,-62],[107,-62],[92,-48]]);
+ line(c,'#b7a16c',3,[[3,-16],[78,-17],[84,-12],[122,-12]]);
+ poly(c,'#566e73',[[-6,-14],[4,-12],[-2,5],[-13,5]]);
+ const phase=travel/8;
+ for(const x of [16,47,77,106]){
+  const y=-x/36;oval(c,'#2b4653',x,y,10,10);oval(c,'#80958c',x,y,6,6);
+ }
+ line(c,'#baa985',3,[16,47,77].map(x=>[x+Math.cos(phase)*5,-x/36+Math.sin(phase)*5] as Point));
+ // The rear coupling meets the first coach and moves with the whole train.
+ line(c,'#718580',3,[[119,-12],[131,-12]]);
+ for(let i=0;i<3;i++){
+  const p=(t*.24+i/3)%1;c.globalAlpha=(1-p)*.22;
+  oval(c,'#c4d0c6',21+p*20,-85-p*39,6+p*10,4+p*7);
+ }
+ c.restore();
+}
 function coach(c:C,x:number,y:number,s=1){
  c.save();c.translate(x,y);c.scale(s,s);
  poly(c,'#4d6970',[[0,-67],[177,-64],[182,0],[1,7]]);
@@ -118,6 +146,7 @@ function station(c:C,stage:ReturnType<typeof badEndingBlocking>){
  line(c,'#a3ab99',3,[[0,248],[512,233]]);line(c,'#3b5763',3,[[0,255],[512,240]]);
  rain(c,t,wet,false);
  const travel=train;
+ locomotive(c,travel,t);
  for(let i=0;i<3;i++)coach(c,116+i*146-travel,235-i*4,.8);
  poly(c,'#929b8e',[[0,258],[512,242],[512,282],[0,298]]);
  poly(c,'#5f7576',[[0,298],[512,282],[512,301],[0,317]]);
