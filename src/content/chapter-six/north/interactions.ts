@@ -2,7 +2,6 @@ import type { StoryHost } from '../../story-host';
 import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
 import { restoreParty,type MapId } from '../../../rules/state';
-import { buySupply } from '../../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
 export function resumeNorth(h:StoryHost,again:()=>void):boolean{
@@ -28,7 +27,6 @@ export function interactNorth(h:StoryHost,id:string):boolean{
  if(['harbor-stores','watch-rest','glacier-rest','shrine-rest','capital-stores'].includes(id)){
   h.talk({lines:[SAY('Celia','There’s water under cover. Sit down and let me check the dressings.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
-   {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    {label:'Keep going',action:()=>{}},
   ]});return true;

@@ -1,4 +1,3 @@
-import { buySupply } from '../../rules/supplies';
 import { SAY } from '../dialogue';
 import type { StoryHost } from '../story-host';
 import { THIRD_CHAPTER, recruit, remember, restoreParty } from '../../rules/state';
@@ -58,7 +57,6 @@ export function interactChapterTwo(host: StoryHost, id: string) {
     case 'ward-rest':
       host.talk({ lines: [SAY('Dena', 'Soup is warming by the stove. Clean bandages are stacked on the supply bench.')], choices: [
         { label: 'Rest · restore everyone’s HP and focus', action: () => { restoreParty(s); host.refresh(); host.save(); host.toast('Everyone restored.'); } },
-        { label: 'Buy a bandage · 8 marks', action: () => { if (buySupply(s,'bandage')) { host.refresh(); host.save(); host.toast('Bandage added to the shared supply.'); } else host.toast('You need 8 marks and room for another bandage.'); } },
         { label: 'Browse supplies and trade gear', action: () => host.shop('ward') },
         { label: 'Keep moving', action: () => {} },
       ] }); return;

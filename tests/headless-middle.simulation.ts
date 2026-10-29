@@ -17,6 +17,7 @@ for(const conduit of ['feeds','pressure']as const)for(const harbor of ['dry','we
  expect(s.state.party).toHaveLength(5);expect(s.state.activeParty).toEqual(['nell','celia','petra']);expect(decodeSave(JSON.stringify(s.state))).toEqual(s.state);
  const battles=s.events.filter(e=>e.event==='battle');expect(battles.map(b=>b.id)).toEqual(['capital-arrest','works-warden','palace-stores',`heart-${conduit}`,'works-survey',`works-${harbor}`,'sanctuary-road','sanctuary-warden']);expect(battles.every(b=>b.result==='victory')).toBe(true);
  if(conduit==='feeds')expect(battles.find(b=>b.id==='heart-feeds')!.groundingOpened).toBe(true);
+ expect(s.events.some(e=>e.event==='purchase'&&e.shop==='conduit'&&e.item==='bandage')).toBe(true);
  expect(s.events.filter(e=>e.event==='rest')).toHaveLength(4);expect(s.events.some(e=>e.event==='purchase')).toBe(true);
  const spent=s.events.filter(e=>e.event==='purchase'||e.event==='choice').reduce((sum,e)=>sum+Math.max(0,(e.before as {coins:number}).coins-(e.after as {coins:number}).coins),0);
  expect(s.state.coins).toBe(earned.coins+Object.values({arrest:48,warden:58,stores:36,heart:80,survey:38,gate:68,road:72,final:108}).reduce((a,z)=>a+z,0)-spent);
