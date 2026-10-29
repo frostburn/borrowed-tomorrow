@@ -61,8 +61,9 @@ test('@ci unsupported save versions cannot resume or import', async ({ page }) =
       };
     });
   }, old);
-  await page.reload(); await expect(page.getByRole('button', { name: 'Continue', exact: true })).toBeDisabled();
-  await page.getByRole('button', { name: 'Save files' }).click();
+  await page.reload(); await expect(page.getByRole('button', { name: 'Continue', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Save files', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
   await expect(page.locator('[data-slot="slot-1"]').getByRole('button', { name: 'Load', exact: true })).toBeDisabled();
   const chooser = page.waitForEvent('filechooser'); await page.getByRole('button', { name: 'Import save file' }).click();
   await (await chooser).setFiles({ name: 'unsupported.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(old)) });
