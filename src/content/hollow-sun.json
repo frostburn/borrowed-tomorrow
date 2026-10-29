@@ -2,6 +2,7 @@
   "reference": "47f59cd:src/dev/art/benefactor-{0..2}-{0..1}.webp",
   "rays": 12,
   "innerRadius": 0.71,
+  "skyInterior": "#101e2b",
   "rayRoot": 0.95,
   "rayTip": 1.3,
   "longRayTip": 1.34,

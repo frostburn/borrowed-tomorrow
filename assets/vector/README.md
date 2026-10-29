@@ -7,7 +7,9 @@ the live capital reveal uses the same geometry. The reference is the archived
 `47f59cd` raster boss: one missing upper-left wedge, a missing ray at that wedge,
 and several smaller closed zigzag fractures across an otherwise continuous rim.
 The primary boss halo and its portrait share this pattern; the body outside the
-halo stays intact. The sun-form boss's suspended shard remains separate.
+halo stays intact. The sun-form boss's suspended shard remains separate. Sky appearances have an
+opaque dark-indigo interior (`skyInterior`); the boss aperture and the main rim
+break retain their native transparency.
 To rebuild the affected art without exporting unrelated actors:
 
 ```sh

@@ -30,7 +30,8 @@ export class ImperialCinematic {
      // and brass, rather than an unrelated thin portal ellipse.
      // Keep the whole corona inside narrow views, above the dialogue panel.
      const radius=Math.min(195,(this.scene.cameras.main.width-32)/(2*hollowSun.longRayTip));
-     const sun=hollowSunPolygons(x,y-72,radius*(105+p*90)/195,.42);
+     const size=radius*(105+p*90)/195,sun=hollowSunPolygons(x,y-72,size,.42);
+     g.fillStyle(Number.parseInt(hollowSun.skyInterior.slice(1),16),1).fillEllipse(x,y-72,size*hollowSun.innerRadius*2,size*hollowSun.innerRadius*.84);
      const polygon=(points:{x:number;y:number}[])=>{g.beginPath().moveTo(points[0].x,points[0].y);for(const p of points.slice(1))g.lineTo(p.x,p.y);g.closePath().fillPath();};
      g.fillStyle(0xc2a16b,.9);for(const ray of sun.rays)polygon(ray);
      for(const [i,band]of sun.bands.entries()){g.fillStyle(i<8?0xe4cf94:0xaa8e5f,.95);polygon(band);}
