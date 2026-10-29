@@ -42,7 +42,7 @@ export class UI {
     this.modal.addEventListener('click', event => { if (event.target === this.modal) this.closeModal(); });
     document.addEventListener('keydown', e => {
       if (this.modal.hidden || e.key !== 'Tab') return;
-      const buttons = [...this.modal.querySelectorAll<HTMLElement>('button:not(:disabled),input,a[href]')];
+      const buttons = [...this.modal.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),a[href],summary')];
       if (!buttons.length) return;
       const first = buttons[0], last = buttons[buttons.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }

@@ -52,3 +52,9 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 .music-rooms{margin:8px 0}.music-rooms summary{color:#f4e5be;background:#182b32;border:1px solid #8b805e;padding:6px;cursor:pointer}.music-rooms .music-parts{margin-top:6px}
 /* Keep confirmation reachable when later levels unlock more commands. */
 .command-panel{display:flex;flex-direction:column;overflow:hidden}.command-list{flex:1;min-height:0;overflow:auto}.confirmation{flex:0 0 auto;max-height:96px;overflow:auto;background:#101d28}.actions button{white-space:normal;text-align:left}
+
+/* Exploration actions share one vertical stack on desktop and phone. */
+.world-actions{flex-direction:column;align-items:stretch;justify-content:center}
+.interact-action{display:flex}
+.interact-action>button,.world-actions>button{width:100%}
+@media(max-width:1023px){.world-actions>.dpad{align-self:center}.world-actions>button{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:12px;min-height:28px;padding:4px 8px}}

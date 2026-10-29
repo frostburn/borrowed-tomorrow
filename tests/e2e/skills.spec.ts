@@ -18,10 +18,22 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();
    const panel=page.getByRole('dialog',{name:'Character skills'});
    await expect(panel.locator('.skill-summary')).toHaveText('1 banked pointNext upgrade available at character level 10.');
+   // The final selector must Tab into summaries even with every purchase disabled.
+   await panel.getByRole('button',{name:'Celia · 1 banked',exact:true}).focus();
+   await page.keyboard.press('Tab');const disclosure=panel.locator('.skill-current summary').first();
+   await expect(disclosure).toBeFocused();await page.keyboard.press('Enter');
+   await expect(panel.locator('.skill-current').first()).toHaveAttribute('open','');
+   await page.keyboard.press('Enter');
+   const last=panel.locator('.skill-current summary').last();await last.focus();await page.keyboard.press('Tab');
+   await expect(page.getByRole('button',{name:'Close',exact:true})).toBeFocused();await page.keyboard.press('Shift+Tab');await expect(last).toBeFocused();
    await expect(panel.getByRole('button',{name:'Nell · 1 banked',exact:true})).toBeVisible();await capture(page,`skills-banked-${device}`);
    await page.getByRole('button',{name:'Close',exact:true}).click();
    // A valid partially allocated current-format save: one available upgrade plus a banked point.
    const s=chapterFiveStart();s.flags.airfieldSeen=true;s.skills.celia.celestialbolt=2;await importSave(page,s);
+   const journal=page.locator('.interact-action button'),upgrade=page.getByRole('button',{name:'Upgrade skills · 1',exact:true});
+   const j=(await journal.boundingBox())!,u=(await upgrade.boundingBox())!;
+   expect(Math.abs(j.x-u.x)).toBeLessThan(1);expect(Math.abs(j.width-u.width)).toBeLessThan(1);expect(u.y).toBeGreaterThanOrEqual(j.y+j.height);
+   await capture(page,`skills-actions-aligned-${device}`);
    await page.getByRole('button',{name:'Upgrade skills · 1',exact:true}).click();
    await expect(panel.locator('.skill-identity')).toContainText('Celia');await expect(panel.locator('.skill-summary')).toContainText('1 can be spent now');
    await panel.getByRole('button',{name:'Upgrade Celestial bolt to 3',exact:true}).click();
