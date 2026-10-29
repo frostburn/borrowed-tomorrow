@@ -18,10 +18,23 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();
    const panel=page.getByRole('dialog',{name:'Character skills'});
    await expect(panel.locator('.skill-summary')).toHaveText('1 banked pointNext upgrade available at character level 10.');
+   // The final selector must Tab into summaries even with every purchase disabled.
+   await panel.getByRole('button',{name:'Celia · 1 banked',exact:true}).focus();
+   await page.keyboard.press('Tab');const disclosure=panel.locator('.skill-current summary').first();
+   await expect(disclosure).toBeFocused();await page.keyboard.press('Enter');
+   await expect(panel.locator('.skill-current').first()).toHaveAttribute('open','');
+   await page.keyboard.press('Enter');
+   const last=panel.locator('.skill-current summary').last();await last.focus();await page.keyboard.press('Tab');
+   await expect(page.getByRole('button',{name:'Close',exact:true})).toBeFocused();await page.keyboard.press('Shift+Tab');await expect(last).toBeFocused();
    await expect(panel.getByRole('button',{name:'Nell · 1 banked',exact:true})).toBeVisible();await capture(page,`skills-banked-${device}`);
    await page.getByRole('button',{name:'Close',exact:true}).click();
    // A valid partially allocated current-format save: one available upgrade plus a banked point.
    const s=chapterFiveStart();s.flags.airfieldSeen=true;s.skills.celia.celestialbolt=2;await importSave(page,s);
+   const journal=page.locator('.interact-action button'),upgrade=page.getByRole('button',{name:'Upgrade skills · 1',exact:true});
+   const j=(await journal.boundingBox())!,u=(await upgrade.boundingBox())!;
+   expect(Math.abs(j.x-u.x)).toBeLessThan(1);expect(Math.abs(j.width-u.width)).toBeLessThan(1);expect(u.y).toBeGreaterThanOrEqual(j.y+j.height);
+   const controls=(await page.locator('#controls').boundingBox())!;expect(u.y+u.height).toBeLessThanOrEqual(controls.y+controls.height);
+   await capture(page,`skills-actions-aligned-${device}`);
    await page.getByRole('button',{name:'Upgrade skills · 1',exact:true}).click();
    await expect(panel.locator('.skill-identity')).toContainText('Celia');await expect(panel.locator('.skill-summary')).toContainText('1 can be spent now');
    await panel.getByRole('button',{name:'Upgrade Celestial bolt to 3',exact:true}).click();
@@ -46,6 +59,10 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,checkpoint('collectorConfronted'));
    await approach(page,'collector');await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'The line is clear',exact:true})).toBeVisible();await page.getByRole('button',{name:'Upgrade skills',exact:true}).click();
    const panel=page.getByRole('dialog',{name:'Character skills'});await expect(panel).toContainText('Character level 2');await expect(panel).toContainText('1 upgrade point');await expect(panel.getByRole('button',{name:'Learn Prism lance',exact:true})).toHaveCount(0);await expect(panel).not.toContainText('Celia');await expect(panel).not.toContainText('Kit');await expect(panel).not.toContainText('Petra');await expect(panel).toContainText('Orrin’s Steam lance');
+   const current=panel.locator('[data-ability="burst"] .skill-current');
+   await current.locator('summary').click();await expect(current).toHaveAttribute('open','');
+   await expect(current.locator('p')).toBeVisible();await current.locator('summary').click();
+   await expect(current).not.toHaveAttribute('open','');
    await panel.getByRole('button',{name:'Upgrade Lantern burst to 2',exact:true}).click();await expect(panel.getByRole('status')).toContainText('skill 2');await expect(panel.getByRole('button',{name:'Learn Mend',exact:true})).toBeDisabled();expect((await inspect(page)).state.skills.nell.burst).toBe(2);await expect(page.locator('[data-victory-skills]')).toHaveCount(1);
    await panel.getByRole('button',{name:'Orrin · 1',exact:true}).click();await expect(panel).not.toContainText('Celia');await expect(panel).not.toContainText('Kit');await expect(panel).not.toContainText('Petra');await panel.getByRole('button',{name:'Learn Safety guard',exact:true}).click();expect((await inspect(page)).state.skills.orrin.guard).toBe(1);await capture(page,`skills-level-up-${device}`);
    await page.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:'Upgrade skills',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Continue the journey',exact:true})).toBeFocused();await capture(page,`skills-points-spent-${device}`);await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();await expect(page.getByRole('dialog',{name:'Character skills'})).toContainText('Skill 2 / 3');
