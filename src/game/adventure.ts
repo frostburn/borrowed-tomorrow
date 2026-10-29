@@ -416,7 +416,10 @@ export class Adventure extends Phaser.Scene {
     const pad = this.ui.controls.querySelector('.dpad')!;
     for (const [label, dx, dy] of [['↑',0,-1],['←',-1,0],['↓',0,1],['→',1,0]] as const) pad.append(this.ui.button({ label, action: () => { if (!this.blocked && !this.moving) this.stepWorld(dx,dy); } }));
     this.ui.controls.querySelector('.interact-action')!.append(this.ui.button({ label: this.near ? 'Interact' : 'Journal', key: this.near ? 'E' : 'J', action: () => this.near ? this.interact(this.near) : this.journal() }));
-    const points=availableSkillPoints(s);if(points)this.ui.controls.querySelector('.world-actions')!.append(this.ui.button({label:`Upgrade skills · ${points}`,action:()=>openSkills(this.ui,s,()=>{this.autosave();this.renderWorldControls();})}));
+    const points=availableSkillPoints(s);if(points){
+      const skills=this.ui.button({label:`Skills · ${points}`,action:()=>openSkills(this.ui,s,()=>{this.autosave();this.renderWorldControls();})});
+      skills.setAttribute('aria-label',`Upgrade skills · ${points}`);this.ui.controls.querySelector('.world-actions')!.append(skills);
+    }
     this.ui.status.innerHTML = `${icon('marks')}${s.coins} marks · ${icon('bandage')}${s.bandages} bandages · click to walk · E interact · J journal`;
   }
   private closestObject(): MapObject | undefined {
@@ -1029,6 +1032,7 @@ export class Adventure extends Phaser.Scene {
       const upgrade=this.ui.button({label:'Upgrade skills',action:()=>openSkills(this.ui,this.state,()=>{
         this.autosave();this.refreshVictorySkills();
       })});
+      upgrade.setAttribute('aria-label','Upgrade skills');upgrade.textContent='Skills';
       upgrade.dataset.victorySkills='';
       this.ui.sceneLayer.querySelector('.panel-actions')!.prepend(upgrade);
     }
