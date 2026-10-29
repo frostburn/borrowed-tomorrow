@@ -100,6 +100,15 @@ The motifs describe people: Nell’s remembered home, Orrin’s patient work, Ki
 
 Orrin’s workshop (`yard`, 94) trades four-bar sentences: his hammer cell, transposed into D minor, occupies bars 1–4 and 9–12; Nell’s actual festival opening answers in bars 5–8, and her resolving sentence closes bars 13–16. The quieter backing leaves the piano foreground audible. Bars 3, 9 and 10 keep the tap rhythm on repeated chord tones rather than chromatic neighbours, so this early scene stays lighter.
 
+The Chapter One crossing uses **Orrin’s workshop — full steam** (`crossing`):
+eight bars of 4/4 at 120 BPM, matching the sixteen-second film. The first four
+bars keep the workshop’s hammer melody in articulated piano and high wood taps;
+strings take Nell’s festival answer in the second four. A short-note bass line,
+offbeat lute chords, eighth-note hats and phrase-ending snare fills provide the
+athletic drive. C# pickups turn back toward D minor. Shared source phrases live
+in `score-home.ts`; the original workshop score is retained. The one cue runs
+across all three shots and is listed under Chapter One in Music and Soundtrack.
+
 `score-five.ts` owns five G-minor compositions. The Cooling Race (`coolingworks`, 102) has its own descending counter-melody and different bass entrances. Under the Gantry (`anchorforge`, 84) breaks the work cell into low fragments with whole-bar rests and sustained low strings. Hold the Floor (`five-battle`, 132) compresses the taps into a fighting question and writes a separate broad reply and low break. The Pouring Lane (`five-furnace`, 136) attacks with low brass hammer taps, opens into that higher answer, drops back to the lower machinery and returns. Its accompaniment uses straight square-bass eighths and clipped brass chords in place of the syncopated bass/piano riff; quarter-note kick/snare weight and phrase-entry timpani supply the industrial drive. Strings appear only in the broader answer and return, with no bell ornaments. Restrained timpani/cymbals mark large entries rather than every four bars. All remain 4/4, with clear kick/snare pulses in combat.
 
 ### Dawnwatch and the crossing retcon

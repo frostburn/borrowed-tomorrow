@@ -45,7 +45,7 @@ export const SOUNDTRACK: readonly SoundtrackTrack[] = [
   {mode:'flagship',title:'Iron Above the Clouds',group:'5'}, {mode:'claim',title:'The Sky Answers',group:'5'},
   {mode:'refuge',title:'A Place to Return',group:'4'}, {mode:'breakwater',title:'The Sea Gate',group:'4'},
   {mode:'sanctuary',title:'Under the Hollow Sun',group:'4'}, {mode:'four-battle',title:'Hold the Line',group:'4'}, {mode:'four-warden',title:"The Emperor's Order",group:'4'},
-  {mode:'station',title:'Larkspur festival',group:'1'}, {mode:'yard',title:"Orrin's workshop",group:'1'}, {mode:'tunnel',title:'After the raid / pass',group:'1'},
+  {mode:'station',title:'Larkspur festival',group:'1'}, {mode:'yard',title:"Orrin's workshop",group:'1'}, {mode:'crossing',title:"Orrin's workshop — full steam",group:'1'}, {mode:'tunnel',title:'After the raid / pass',group:'1'},
   {mode:'rillbridge',title:'Rillbridge freed',group:'1'}, {mode:'battle',title:'Leaving Home battle',group:'1'}, {mode:'inspector',title:'Captain Alban',group:'1'}, {mode:'ending',title:'Departure',group:'1'},
   {mode:'coast',title:'Iron Coast',group:'2'}, {mode:'coast-battle',title:'Iron Coast · train raid',group:'2'}, {mode:'cinderbank',title:'Cinderbank siding',group:'2'}, {mode:'infirmary',title:'Railway ward',group:'2'}, {mode:'shunting',title:'Cinderbank · loading walk',group:'2'}, {mode:'petra-battle',title:'Petra · the last crossing',group:'2'},
   {mode:'northglass',title:'Capital medical siding',group:'3'}, {mode:'relayhall',title:'Control gallery',group:'3'}, {mode:'conduit',title:'Vessel chamber',group:'3'}, {mode:'switching',title:'Beneath the Palace battle',group:'3'},

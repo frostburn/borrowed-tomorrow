@@ -10,6 +10,21 @@ Required completed flags: `festivalSeen`, `raidSeen`, `escapeWon`, `orrinJoined`
 
 Load and validate new region assets before consuming this boundary. An error must leave the departure available. Do not offer a nonworking Begin Chapter Two button before the content exists.
 
+The departure now plays a sixteen-second, wordless vector cinematic: Orrin's coal
+engine leaves the mountain pass, crosses the coastal viaduct and approaches the
+Iron Coast exchange. The exchange structures grow subtly around the rail
+vanishing point as the cab approaches; the foreground remains fixed. A driving
+workshop-theme arrangement accompanies the whole journey. Nell and Orrin look
+down the line from the cab; Ansel's
+lantern hangs beside Nell. The next scene still introduces Kit doing his delivery.
+No new fact about the shard or the Benefactor is revealed.
+
+Playback and Skip use the existing asset-checked Chapter Two entry. Pause, return
+to the pass and departure export remain available. A failed load keeps the last
+shot visible with Retry crossing. Loading this boundary replays the film; the
+cinematic adds no saved flag, reward or reset. Reduced motion uses three still
+shots. The dev Cinematics tab reviews the same player in isolation.
+
 ## Start with the pursuit
 
 Arrive at the Iron Coast prison-train exchange. The player should see a train, a person or a recognizable sign of Tomas's passage promptly. Give Nell a concrete route toward the resistance's train raid. A helpful contact can introduce a conflict, but do not withhold basic information behind unrelated repairs or errands.
