@@ -17,8 +17,8 @@ film instead of the completion card. Three shots show the coal engine pulling
 the full medical coaches away from the coast, Dena tending a passenger while
 Nell and Kit check the clearance, and the grounded green-iron engine works
 coming into view through the cab. A father and child keep reading the delivered
-letter. Petra remains behind; Tomas is still captive. Northglass music carries
-through the film into the existing capital arrival, where the clerk checks the
+letter. Petra remains behind; Tomas is still captive. An athletic Northglass remix, “Capital line — full steam,” carries
+through the film before the original theme returns at the existing capital arrival, where the clerk checks the
 clearance and admits the train.
 
 Automatic arrival and Skip use the unchanged asset-checked Chapter Three entry.

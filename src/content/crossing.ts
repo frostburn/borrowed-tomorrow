@@ -25,7 +25,7 @@ export const CROSSING_FILMS:Record<CrossingKind,CrossingFilm>={
   accessibility:'Nell and Orrin take their coal engine through the cliffs to the Iron Coast. Space pauses. Escape skips to Chapter Two.',
  },
  capital:{
-  id:'two-three-crossing',label:'Chapter Two → Three',title:'The capital line',from:'Prison Trains',to:'Beneath the Palace',place:'the capital',returnLabel:'Return to the siding',music:'northglass',map:'northglass',shots:CAPITAL_CROSSING_SHOTS,
+  id:'two-three-crossing',label:'Chapter Two → Three',title:'The capital line',from:'Prison Trains',to:'Beneath the Palace',place:'the capital',returnLabel:'Return to the siding',music:'capital-crossing',map:'northglass',shots:CAPITAL_CROSSING_SHOTS,
   description:'The coal engine carries the full medical coaches inland. Dena tends the passengers while Nell and Kit check the clearance. The green-iron capital comes into view.',
   accessibility:'Nell, Orrin and Kit take the rescued passengers to the capital aboard the medical train. Space pauses. Escape skips to Chapter Three.',
  },

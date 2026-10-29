@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {writeFile} from 'node:fs/promises';
-import {checkpoint} from '../support/progress';
+import {checkpoint,coastCheckpoint} from '../support/progress';
 import {importSave} from './navigation';
 import {inspect,capture} from './controls';
 
@@ -23,20 +23,20 @@ test('the crossing plays its workshop remix continuously and the Music tab revie
  await page.locator('[data-cue="crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'crossing-remix-workshop');expect(errors).toEqual([]);
 });
 
-test('the full athletic arrangement renders with headroom and energy in every bar',async({page})=>{
- await page.goto('/');const stats=await page.evaluate(async()=>{
+for(const mode of ['crossing','capital-crossing'] as const)test(`${mode} athletic arrangement renders with headroom and energy in every bar`,async({page})=>{
+ await page.goto('/');const stats=await page.evaluate(async(mode)=>{
   // @ts-expect-error Vite serves the production score/rack source.
   const {scoreBar}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
   // @ts-expect-error Vite serves the production score/rack source.
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   const rate=22050,c=new OfflineAudioContext(2,18*rate,rate),gain=c.createGain();gain.gain.value=.52*.8;gain.connect(c.destination);const synth=new Synth(c,gain);
-  for(let bar=0;bar<8;bar++)for(const n of scoreBar('crossing',bar))synth.note(n.instrument,n.pitch,.03+bar*2+n.beat*.5,n.duration*.5,n.velocity,n.pan,n.expression);
+  for(let bar=0;bar<8;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+bar*2+n.beat*.5,n.duration*.5,n.velocity,n.pan,n.expression);
   const rendered=await c.startRendering();return Array.from({length:8},(_,bar)=>{
    let peak=0,sum=0,count=0;for(let channel=0;channel<2;channel++){
     const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+bar*2)*rate);i<Math.floor((.03+(bar+1)*2)*rate);i++){peak=Math.max(peak,Math.abs(data[i]));sum+=data[i]*data[i];count++;}
    }return {peak,rms:Math.sqrt(sum/count)};
   });
- });
+ },mode);
  for(const bar of stats){expect(bar.peak).toBeLessThan(.98);expect(bar.rms).toBeGreaterThan(.008);}console.log('Crossing render',stats);
 });
 
@@ -54,4 +54,23 @@ test('the exchange approaches gradually while Nell, Orrin and their cab stay fix
  });
  expect(result.late.windows).toBeGreaterThan(result.early.windows);expect(result.late.cab).toEqual(result.early.cab);expect(result.late.cast).toEqual(result.early.cast);
  if(process.env.BT_QA_SCREENSHOTS)for(const [name,f]of Object.entries(result))await writeFile(`${process.env.BT_QA_SCREENSHOTS}/exchange-${name}.png`,Buffer.from(f.image.split(',')[1],'base64'));
+});
+
+test('the capital crossing plays its athletic Northglass remix continuously and Music reviews it',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ await page.evaluate(async()=>{
+  // @ts-expect-error Observe the real mixer in the dev build.
+  const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');const original=Audio.prototype.setMode;
+  Audio.prototype.setMode=function(mode){(window as unknown as {crossingMusic:()=>unknown}).crossingMusic=()=>this.position();original.call(this,mode);};
+ });
+ await page.getByRole('button',{name:'Sound off',exact:true}).click();
+ const position=()=>page.evaluate(()=>(window as unknown as {crossingMusic:()=>{mode:string;bar:number;playing:boolean}}).crossingMusic());
+ await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await importSave(page,coastCheckpoint('chapterTwoComplete'));
+ await page.getByRole('button',{name:'Pause',exact:true}).click();await expect.poll(position).toMatchObject({mode:'capital-crossing',playing:true});
+ await page.getByRole('button',{name:'Next shot',exact:true}).click();await page.getByRole('button',{name:'Next shot',exact:true}).click();
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'capital-crossing',bar:1,playing:true});
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'northglass',playing:true});
+ await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 2',exact:true}).click();
+ await page.locator('[data-cue="capital-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'capital-remix-workshop');expect(errors).toEqual([]);
 });

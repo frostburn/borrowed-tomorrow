@@ -311,7 +311,8 @@ reviews the sixteen-second medical-train journey: full coaches leaving the
 coast, the patients and clearance inside, then the green-iron capital approach.
 The same player handles both crossings, including reduced-motion stills, pause
 and shot review; selection stays highlighted after returning from playback.
-The Northglass score continues into the capital arrival. In campaign, the
+An athletic Northglass remix, “Capital line — full steam,” scores the journey;
+the original theme returns at the capital arrival. In campaign, the
 existing `chapter-three:capital` boundary is only consumed after all destination
 assets load; failure keeps the final shot and Retry crossing available.
 
