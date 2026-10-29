@@ -75,7 +75,21 @@ Bram’s brim sits four pixels higher to expose his far eye, and Iona’s far pu
 sits inside its lens opening. The original SVGs remain the neutral sources;
 regenerate expressions with `python3 assets/vector/portrait-expressions.py`.
 
-The Emperor’s entire portrait remains identical to main, including its tall, thin pupils. Tilda’s left
+The Emperor retains the accepted main-branch eyes and face, including the tall, thin pupils. Tilda’s left
 upper eyelid (on the right in-camera) is slightly lowered over that eye; its
 pupil moves two native pixels down beneath that lid. Keep these individual shapes when
 auditing the otherwise square pupils through the chunky raster.
+
+## Mouth and chin cleanup
+
+Nell and Kit’s neutral portraits use a single shallow closed-mouth plane, with
+no bright lip cutout. Keep those neutral mouths simple through all four phases
+of the two-pixel framebuffer. Expression exports still supply their distinct
+smiles, frowns and open mouths.
+
+Isolated chin glints across the cast use 25% opacity over the local face
+material instead of a bright opaque spot. This includes the Emperor’s small
+inner chin-beard facet; broader cheek and beard planes remain structural
+shading. The marked `chin-highlight` paths belong to the editable neutral SVGs
+and pass into expression exports. Regenerate variants with
+`python3 assets/vector/portrait-expressions.py`.

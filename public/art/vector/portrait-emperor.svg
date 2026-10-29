@@ -48,7 +48,7 @@
 <polygon points="69,57 69,66 73,68 74,66" fill="#e6bc91" />
 <polyline points="58,79 71,78 78,80" fill="none" stroke="#794f3d" stroke-width="2" stroke-linejoin="bevel" />
 <polygon points="58,82 65,84 73,82 75,87 68,93 61,91" fill="#b7c1b8" />
-<polygon points="62,84 68,86 72,84 68,91" fill="#e1dfca" />
+<polygon points="62,84 68,86 72,84 68,91" fill="#e1dfca" data-part="chin-highlight" opacity=".25" />
 <polyline points="51,68 54,73" fill="none" stroke="#a96e51" stroke-width="2" stroke-linejoin="bevel" />
 <polyline points="81,71 78,75" fill="none" stroke="#a96e51" stroke-width="2" stroke-linejoin="bevel" />
 </svg>

@@ -27,6 +27,6 @@
 <path d="M50 71L58 72 61 70 61 74H54Z" fill="#825b45"/>
 <path d="M37 65L42 68 44 74 41 73Z M72 66L69 72 69 77 72 72Z" fill="#96674f"/>
 <path d="M46 79L55 78 68 79 72 77 70 82 57 83 47 82Z" fill="#73503d"/>
-<path d="M53 85L60 86 67 84 65 88H56Z" fill="#b5815d"/>
+<path d="M53 85L60 86 67 84 65 88H56Z" fill="#b5815d" data-part="chin-highlight" opacity=".25"/>
 <path d="M39 44L41 42 44 45 42 46Z" fill="#96674f"/>
 </svg>

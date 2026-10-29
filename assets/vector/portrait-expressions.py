@@ -11,11 +11,11 @@ ROOT = Path(__file__).resolve().parents[2]
 ART = ROOT / 'public/art/vector'
 # Local eye/brow anchors follow each independently drawn head, not a new face.
 FACES = {
- 'nell': dict(brows='M43 45', eyes='M46 52', pupils='M52 51', mouth='M54 77', lip='M58 78', near=(46,57,52), far=(72,80,52), brow=(43,59,69,82,45),
+ 'nell': dict(brows='M43 45', eyes='M46 52', pupils='M52 51', mouth='M54 77', lip=None, near=(46,57,52), far=(72,80,52), brow=(43,59,69,82,45),
   mouths=dict(happy='M54 76L63 79 74 75 71 80 64 83 57 81Z', worried='M58 79L65 77 72 79 71 81 64 80 58 81Z', sad='M55 81L63 77 69 78 74 81 70 81 64 80 58 83Z', angry='M55 78L72 76 72 79 56 81Z', surprised='M60 76L66 75 70 79 68 84 62 84 59 80Z', bashful='M55 78L62 80 71 77 69 81 63 83 57 82Z')),
  'orrin': dict(brows='M41 44', eyes='M44 52', pupils='M50 51', mouth='M57 79', lip=None, near=(44,55,52), far=(73,83,53), brow=(41,59,70,87,44),
   mouths=dict(happy='M56 78L63 80 74 77 72 80 64 83 58 81Z', worried='M59 80L65 79 72 80 71 82 59 82Z', sad='M57 81L65 78 72 80 72 82 65 81 58 83Z', angry='M57 79L73 78 73 81 58 82Z', surprised='M61 79L67 78 70 81 68 85 62 84Z')),
- 'kit': dict(brows='M40 45', eyes='M44 52', pupils='M49 50', mouth='M52 77', lip='M57 78', near=(44,55,52), far=(72,81,52), brow=(40,57,69,83,44),
+ 'kit': dict(brows='M40 45', eyes='M44 52', pupils='M49 50', mouth='M52 77', lip=None, near=(44,55,52), far=(72,81,52), brow=(40,57,69,83,44),
   mouths=dict(happy='M52 76L63 79 75 74 72 80 64 83 55 81Z', worried='M56 79L63 77 71 78 72 81 65 80 57 82Z', sad='M53 81L62 77 69 78 75 81 72 82 63 80 56 83Z', angry='M53 78L74 76 73 79 55 81Z', surprised='M59 76L65 75 70 78 69 83 63 85 59 82Z', bashful='M53 79L61 81 72 77 70 81 63 83 56 82Z')),
  'celia': dict(brows='M42 45', eyes='M46 53', pupils='M50 52', mouth='M53 79', lip='M58 80', near=(46,55,54), far=(72,80,54), brow=(42,59,69,84,45),
   mouths=dict(happy='M54 79L63 81 75 77 72 82 64 85 57 83Z', worried='M57 82L64 80 72 81 73 83 64 82 58 84Z', sad='M54 83L63 79 70 80 75 83 71 84 64 82 57 85Z', angry='M54 81L75 79 74 82 56 84Z', surprised='M60 79L66 78 70 82 68 87 62 87 59 83Z')),
