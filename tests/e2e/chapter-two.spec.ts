@@ -79,7 +79,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 test('canonical Chapter Two replaces only the autosave and preserves manual saves',async({page})=>{
   await page.goto('/');const original=checkpoint('chapterOneComplete');original.coins=37;
-  await importSave(page,original);await page.getByRole('button',{name:'Save',exact:true}).first().click();
+  await importSave(page,original);await page.getByRole('button',{name:'Return to the pass',exact:true}).click();await page.getByRole('button',{name:'Save',exact:true}).first().click();
   await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Save',exact:true}).click();
   await expect(page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true})).toBeEnabled();
   await page.reload();await page.getByRole('button',{name:'Begin Chapter Two (canonical)',exact:true}).click();
@@ -90,7 +90,7 @@ test('canonical Chapter Two replaces only the autosave and preserves manual save
   await expect.poll(async()=>(await inspect(page)).state.flags.coastSeen).toBe(true);
   await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();
   await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();
-  await expect(page.getByRole('heading',{name:'Chapter One complete',exact:true})).toBeVisible();
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-two-crossing');
   expect((await inspect(page)).state.coins).toBe(37);expect((await inspect(page)).state.inventory).toEqual(original.inventory);
 });
 
@@ -112,7 +112,7 @@ test('Chapter Two covered saves restore to native tiled floors at fractional DPR
 test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital train',async({page})=>{
   test.setTimeout(240000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,checkpoint('chapterOneComplete'));
-  await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();await dialogue(page);await visit(page,'kit-contact');
+  await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);await visit(page,'kit-contact');
   await approach(page,'signal-walk');await dialogue(page);await battle(page,'kit-raid-battle');
   expect((await inspect(page)).state.inventory.bag['courier-sight']).toBe(1);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();await page.getByRole('button',{name:'Equip on Kit',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
@@ -151,10 +151,10 @@ test('failed region artwork keeps the original departure available for retry',as
   const crane=sceneAssets(CHAPTER_TWO_MAPS.coast.tiles!).find(p=>p.url.endsWith('/coast-crane.svg'))!;
   const url='**/'+crane.url;await page.route(url,route=>route.abort());
   await page.goto('/');const original=checkpoint('chapterOneComplete');await importSave(page,original);
-  await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
+  await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();
   await expect(page.getByRole('status')).toContainText('checkpoint is intact');
   expect((await inspect(page)).state).toMatchObject({chapter:'chapter-one',boundary:'chapter-two:iron-coast',inventory:original.inventory});
-  await page.unroute(url);await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();
+  await page.unroute(url);await page.getByRole('button',{name:'Retry crossing',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-coast');
 });
 

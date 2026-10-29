@@ -1,5 +1,12 @@
 # Borrowed Tomorrow
 
+Chapter One's earned Iron Coast departure plays a sixteen-second vector crossing
+through `content/crossing.ts`, `game/chapter-crossing.ts` and `crossing-art.ts`.
+Keep automatic arrival and Skip on the existing asset-checked chapter entry;
+failure retains the departure with retry, return and export. The film adds no
+saved flags or resource changes. The dev Cinematics tab previews the same player
+with three selectable shots, independently of campaign progress.
+
 The user authorized a complete story reboot. The former Disks A–D campaign has been removed. `docs/story/grand-outline.md` is the seven-chapter plan; Chapters One: Leaving Home, Two: Prison Trains, Three: Beneath the Palace and Four: A Light on the Water, plus all four acts of Chapter Five and all three Chapter Six expeditions and the capital finale, are playable canon with bundled SVG artwork. The final chapter travels into the Benefactor’s own domain and defeats the god permanently. “Borrowed Tomorrow” refers to its demand for repayment of the boons it lent the empire.
 
 Keep canon and continuation notes under `docs/story/` in sync with playable content. Preserve the reboot’s campaign, content IDs and checkpoints. Version-11 saves separate the recruited roster (`party`) from `activeParty` (one to three available fighters; Nell leads until her Act IV illness). Only the current save version is supported; do not add migrations for retired formats. Only consume the Iron Coast or capital boundary after all destination scenery loads. Chapter Three ends at `chapter-four:broken-world`; Tomas’s rescue is permanent. Petra joins in Chapter Three; she begins in reserve if three fighters are active. Celia joins in Chapter Four. Chapters One–Four and Chapter Five’s shared opening/Hammerplain act ship SVG scenes in the source. The dev title’s canonical Chapter Two and Three starts use fresh authored version-11 completions, replay their regional arrivals and keep manual save slots. Chapter Three starts at 420 XP with Nell/Orrin/Kit and their earned equipment; Petra is not recruited until her capital scene. Its factory and controls stay behind `import.meta.env.DEV`.

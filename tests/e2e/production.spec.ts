@@ -110,7 +110,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   test(`production Chapter Two recruits only Kit and preserves equipment and formation on ${device}`,async({page})=>{
 
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');await importSave(page,checkpoint('chapterOneComplete'));
-    await page.getByRole('button',{name:'Begin Chapter Two',exact:true}).click();await dialogue(page);await approach(page,'kit-contact');await dialogue(page);
+    await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);await approach(page,'kit-contact');await dialogue(page);
     expect((await inspect(page)).state.activeParty).toEqual(['nell','orrin','kit']);
     const ward=coastCheckpoint('wardSeen');await page.getByRole('button',{name:'Save',exact:true}).click();
     const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Import save file',exact:true}).click();await(await chooser).setFiles({name:'ward.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(ward))});

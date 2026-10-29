@@ -297,6 +297,15 @@ Only the selected arena is loaded when starting a new catalogue preview. Missing
 
 ## Ending cinematics
 
+The **Chapter One → Two** selection (`?dev=cinematics&film=crossing`) reviews the
+sixteen-second Iron Coast crossing. Its three shots follow Orrin's engine out of
+the pass, along the coastal viaduct and into the exchange from the cab. Select a
+shot or play the whole crossing; review leaves campaign saves and builds intact.
+Campaign playback continues into Chapter Two after its art loads, with pause,
+skip, return and departure export. Reduced motion keeps the campaign's timing
+but shows stills; workshop review starts paused. The existing endings keep their
+own credit controls.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.

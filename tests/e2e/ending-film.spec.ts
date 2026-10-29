@@ -19,7 +19,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
  try{
   await page.clock.install();await page.goto('/?dev=cinematics');
   await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});
-  await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toBeVisible();
+  await expect(page.getByRole('region',{name:'Cinematic preview'})).toBeVisible();
   const stored=await page.evaluate(()=>({...localStorage})),state=(await inspect(page)).state;
   await page.getByRole('button',{name:'Play good ending',exact:true}).click();
   await expect(page.locator('#canvas')).toHaveAttribute('data-ending-shot','release');
@@ -69,14 +69,14 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await expect(page.locator('.ending-credit-copy')).toContainText('Stephen D. Turner');
   await capture(page,'ending-credits-reduced-'+device);
   await page.getByRole('button',{name:'Back to workshop',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
-  await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toBeVisible();
+  await expect(page.getByRole('region',{name:'Cinematic preview'})).toBeVisible();
   expect((await inspect(page)).state).toEqual(state);expect(await page.evaluate(()=>({...localStorage}))).toEqual(stored);
   expect(await page.locator('#canvas').getAttribute('data-ending-shot')).toBeNull();
   await page.getByRole('button',{name:'3. Window seats',exact:true}).dispatchEvent('click');
   await page.getByRole('button',{name:'Play selected shot',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
   await expect(page.locator('#canvas')).toHaveAttribute('data-ending-shot','window');
   await page.keyboard.press('Escape');await page.clock.runFor(100);
-  await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toBeVisible();
+  await expect(page.getByRole('region',{name:'Cinematic preview'})).toBeVisible();
   await page.getByRole('button',{name:'Test battle',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
   expect((await inspect(page)).mode).toBe('battle');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
@@ -93,7 +93,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await expect(page.getByRole('button',{name:'Bad ending',exact:true})).toHaveClass(/selected/);
   await expect(page.getByRole('button',{name:'Good ending',exact:true})).not.toHaveClass(/selected/);
   await capture(page,'bad-ending-selection-'+device);
-  await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toContainText('Nell’s folded coat');
+  await expect(page.getByRole('region',{name:'Cinematic preview'})).toContainText('Nell’s folded coat');
   const stored=await page.evaluate(()=>({...localStorage})),state=(await inspect(page)).state;
   await page.getByRole('button',{name:'Play bad ending',exact:true}).click();
   await expect(page.locator('#canvas')).toHaveAttribute('data-ending-kind','bad');
@@ -137,7 +137,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await page.emulateMedia({reducedMotion:'no-preference'});await page.clock.runFor(100);
   await page.getByRole('button',{name:'Play',exact:true}).dispatchEvent('click');await page.clock.runFor(68000);
   await capture(page,'bad-ending-final-title-'+device);await page.clock.runFor(4500);
-  await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toBeVisible();
+  await expect(page.getByRole('region',{name:'Cinematic preview'})).toBeVisible();
   expect((await inspect(page)).state).toEqual(state);expect(await page.evaluate(()=>({...localStorage}))).toEqual(stored);
   await page.getByRole('button',{name:'Good ending',exact:true}).dispatchEvent('click');
   await page.getByRole('button',{name:'Play good ending',exact:true}).dispatchEvent('click');await page.clock.runFor(100);

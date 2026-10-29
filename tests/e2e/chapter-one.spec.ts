@@ -136,7 +136,7 @@ test('@journey Chapter One: festival, raid, escape, rescue and the Iron Coast de
   await visit(page, 'sun-mural'); await visit(page, 'shelter');
   await visit(page, 'captain'); await battle(page, 'captain-battle');
   expect((await inspect(page)).state.flags.captainDefeated).toBe(true);
-  await visit(page, 'departure'); await expect(page.getByRole('heading', { name: 'Chapter One complete' })).toBeVisible();
+  await visit(page, 'departure'); await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-two-crossing');
   await capture(page, 'chapter-one-complete');
   const final = (await inspect(page)).state;
   expect(final.boundary).toBe('chapter-two:iron-coast'); expect(final.flags.chapterOneComplete).toBe(true); expect(final.journal).toContain('departure');
@@ -145,7 +145,7 @@ test('@journey Chapter One: festival, raid, escape, rescue and the Iron Coast de
   await page.locator('[data-slot="slot-1"]').getByRole('button', { name: 'Save', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Place saved');
   await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Chapter One complete' })).toBeVisible();
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-two-crossing');
   const restored = (await inspect(page)).state; expect(restored.inventory).toEqual(final.inventory); expect(restored.journal).toEqual(final.journal);
   expect(restored.flags.villageFreed).toBe(true); expect(errors).toEqual([]);
 });
