@@ -1,13 +1,23 @@
-/** Creator name/license come from LICENSE; tools and the writing-guide attribution
- * come from package.json / README. Keep names factual rather than inventing roles. */
+/** Creative credits follow the project's requested author/director billing.
+ * Additional musical passages credit Lumi's contributed bars; docs/music-direction.md
+ * records examples. License ownership is retained, with tool acknowledgments last. */
 export const ENDING_CREDITS=[
- {role:'A game by',lines:['Lumi Pakkanen']},
- {role:'Development collaborator',lines:['OpenAI Codex']},
- {role:'Music',lines:['Original procedural score','31-tone equal temperament']},
- {role:'Built with',lines:['Phaser','Vite and TypeScript']},
- {role:'Writing guidance',lines:['Stephen D. Turner','deslop (MIT)']},
- {role:'Special thanks',lines:['Playtesters and reviewers']},
- {role:'Thank you for playing',lines:['Borrowed Tomorrow','(c) 2026 Lumi Pakkanen','MIT licensed']},
+ {role:'Borrowed Tomorrow',lines:[],title:true},
+ {role:'A game by',lines:['GPT-6.1 Sol']},
+ {role:'Directed by',lines:['Lumi Pakkanen']},
+ {role:'Game design',lines:['GPT-6.1 Sol']},
+ {role:'Story and dialogue',lines:['GPT-6.1 Sol']},
+ {role:'Programming',lines:['GPT-6.1 Sol']},
+ {role:'Art direction',lines:['GPT-6.1 Sol']},
+ {role:'Character and environment art',lines:['GPT-6.1 Sol']},
+ {role:'Animation',lines:['GPT-6.1 Sol']},
+ {role:'Music',lines:['GPT-6.1 Sol']},
+ {role:'Additional musical passages',lines:['Lumi Pakkanen']},
+ {role:'Sound design',lines:['GPT-6.1 Sol']},
+ {role:'Quality assurance',lines:['GPT-6.1 Sol']},
+ {role:'Copyright',lines:['(c) 2026 Lumi Pakkanen','MIT licensed']},
+ {role:'Development tools',lines:['OpenAI Codex','Phaser','Vite and TypeScript'],tooling:true},
+ {role:'Writing tools',lines:['deslop','Stephen D. Turner','MIT-licensed adaptation'],tooling:true},
 ] as const;
 /** All offsets are within the shore shot. Arrival/standing finish before the roll. */
 export const ENDING_SHORE_DURATION=60000;

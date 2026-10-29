@@ -126,7 +126,7 @@ function picnicLegs(c:C,wide:number,sit:number){
  * The torso and head stay rigid; no whole-body scaling or vibrating idle pose. */
 function walkingLegs(c:C,phase:number){
  const frame=((Math.floor(phase*6)%6)+6)%6;
- const strides=[-5,-1,5,5,1,-5],lifts=[0,5,2,0,0,0];
+ const strides=[-10,-2,10,10,2,-10],lifts=[0,5,2,0,0,0];
  poly(c,P.navy,[[-12,-41],[12,-41],[13,-29],[-13,-29]]);
  for(const side of [-1,1]){
   const at=(frame+(side===1?3:0))%6,stride=strides[at],lift=lifts[at];

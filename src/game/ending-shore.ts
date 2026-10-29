@@ -13,20 +13,27 @@ function color(a:string,b:string,t:number){
  const channel=(offset:number)=>Math.round(parseInt(a.slice(offset,offset+2),16)*(1-t)+parseInt(b.slice(offset,offset+2),16)*t).toString(16).padStart(2,'0');
  return '#'+channel(1)+channel(3)+channel(5);
 }
+/** All beach figures share one projected ground plane. The camera pans over
+ * that plane; it does not change a person's size relative to the horizon. */
+export const SHORE_HORIZON=-30;
+export const shoreScaleAt=(y:number)=>Math.max(.015,(y-SHORE_HORIZON)/400);
 export const SHORE_COMPANIONS=[
- {who:'celia',x:342,y:219,scale:.62,rise:3.0},
- {who:'orrin',x:302,y:232,scale:.65,rise:2.4},
- {who:'petra',x:386,y:232,scale:.66,rise:4.0},
- {who:'tomas',x:352,y:246,scale:.62,rise:3.5},
+ {who:'celia',x:342,y:219,scale:shoreScaleAt(219),rise:3.0},
+ {who:'orrin',x:302,y:232,scale:shoreScaleAt(232),rise:2.4},
+ {who:'petra',x:386,y:232,scale:shoreScaleAt(232),rise:4.0},
+ {who:'tomas',x:352,y:246,scale:shoreScaleAt(246),rise:3.5},
 ] as const;
 
 /** An upward follow reveals the horizon. The picnic leaves the bottom of the
  * camera naturally; no cast members fade away or vanish beside the couple. */
 export function shoreBlocking(milliseconds:number,reduced=false){
  const t=reduced?54:Math.max(0,Math.min(60,milliseconds/1000)),travel=ease((t-1)/11);
+ const y=253-158*travel,scale=shoreScaleAt(y),centre=226+134*travel;
+ // Integrate ground distance through the changing perspective for the gait.
+ const distance=Math.hypot(134,158)/(158/400)*Math.log(shoreScaleAt(253)/scale);
  return {t,travel,cameraY:-140*ease((t-5)/7),sunset:ease((t-12)/36),
-  nellX:206+136*travel,kitX:246+132*travel,y:253-158*travel,
-  walk:t>1&&t<12?Math.floor(travel*8*6)/6:undefined};
+  nellX:centre-25*scale,kitX:centre+25*scale,y,scale,
+  walk:t>1&&t<12?Math.floor(distance/48*6)/6:undefined};
 }
 function boat(c:C,x:number,y:number,scale:number){
  c.save();c.translate(x,y);c.scale(scale,scale);
@@ -35,18 +42,19 @@ function boat(c:C,x:number,y:number,scale:number){
  line(c,'#c9d5c0',1,[[-27,12],[-7,14],[20,12],[35,12]]);c.restore();
 }
 function couple(c:C,stage:ReturnType<typeof shoreBlocking>){
- const {nellX,kitX,y,walk}=stage;
+ const {nellX,kitX,y,walk,scale}=stage;
  // One shared right/left handhold follows the shoulders, including in motion.
  const mid=(nellX+kitX)/2;
- oval(c,'#987e73',nellX+7,y+3,17,3);oval(c,'#987e73',kitX+7,y+3,18,3);
- person(c,'nell',nellX,y,.86,true,'right',walk===undefined?undefined:{walk});
- person(c,'kit',kitX,y,.91,true,'left',walk===undefined?undefined:{walk:walk+.5});
- const shoulderN:Point=[nellX+13*.86,y-59*.86],shoulderK:Point=[kitX-13*.91,y-59*.91];
- line(c,'#a95243',6,[shoulderN,[mid-5,y-36],[mid,y-23]]);
- line(c,'#c27054',2,[[shoulderN[0]-1,shoulderN[1]],[mid-7,y-36],[mid,y-23]]);
- line(c,'#263e53',6,[shoulderK,[mid+5,y-36],[mid,y-23]]);
- line(c,'#385368',2,[shoulderK,[mid+3,y-36],[mid,y-23]]);
- oval(c,'#d49c70',mid,y-21,3,2);
+ c.save();c.translate(mid,y);c.scale(scale,scale);
+ oval(c,'#987e73',-18,3,17,3);oval(c,'#987e73',32,3,18,3);
+ person(c,'nell',-25,0,.97,true,'right',walk===undefined?undefined:{walk});
+ person(c,'kit',25,0,1.02,true,'left',walk===undefined?undefined:{walk:walk+.5});
+ const shoulderN:Point=[-25+13*.97,-59*.97],shoulderK:Point=[25-13*1.02,-59*1.02];
+ line(c,'#a95243',6,[shoulderN,[-5,-36],[0,-23]]);
+ line(c,'#c27054',2,[[shoulderN[0]-1,shoulderN[1]],[-7,-36],[0,-23]]);
+ line(c,'#263e53',6,[shoulderK,[5,-36],[0,-23]]);
+ line(c,'#385368',2,[shoulderK,[3,-36],[0,-23]]);
+ oval(c,'#d49c70',0,-21,3,2);c.restore();
 }
 
 export function paintEndingShore(c:C,milliseconds:number,reduced:boolean,nativeScale:number){
@@ -64,7 +72,7 @@ export function paintEndingShore(c:C,milliseconds:number,reduced:boolean,nativeS
  poly(c,color('#8ba6a5','#827d8e',sunset),[[0,-41],[76,-57],[129,-42],[191,-49],[267,-33],[344,-42],[437,-34],[512,-38],[512,-24],[0,-24]]);
  rect(c,color('#527c87','#665b78',sunset),0,-30,512,160);
  for(let i=0;i<14;i++){
-  const y=-18+i*9,x=(i*137+23)%410-20+Math.sin(t*.8+i)*3,width=48+i*29%91;
+  const y=-18+i*9,x=(i*137+23)%410-20+Math.sin(t*.8+i)*3,width=(60+i*29%91)*shoreScaleAt(y)*2.5;
   poly(c,color(i%2?'#7da5a7':'#638c94',i%2?'#ab8590':'#806a87',sunset),[[x,y],[x+width*.65,y-1],[x+width,y+1],[x+width*.27,y+3]]);
  }
  c.globalAlpha=sunset*.5;
@@ -72,7 +80,7 @@ export function paintEndingShore(c:C,milliseconds:number,reduced:boolean,nativeS
   const y=-20+i*13,half=7+i*3,shift=Math.sin(t+i)*2;
   poly(c,'#e5b18d',[[380-half+shift,y],[380+half+shift,y],[387+half+shift,y+2],[373-half+shift,y+3]]);
  }c.globalAlpha=1;
- boat(c,106+Math.sin(t*.05)*18,12,.46);boat(c,438-t*.2,45,.27);
+ boat(c,106+Math.sin(t*.05)*18,12,shoreScaleAt(12)*3.6);boat(c,438-t*.2,45,shoreScaleAt(45)*3.6);
  // A deep beach lets the walk pass the picnic before reaching the actual water.
  const shore:Point[]=[[0,120],[110,104],[220,102],[310,90],[410,84],[512,98],[512,420],[0,420]];
  poly(c,color('#d3b889','#c99b83',sunset),shore);
@@ -120,7 +128,7 @@ export function paintEndingCredits(c:C,milliseconds:number,w:number,h:number,red
  };
  const chosen=reduced?[ENDING_CREDITS[endingCreditPage(milliseconds)]]:ENDING_CREDITS;
  for(const credit of chosen){
-  add(credit.role,1,'#dfbda0');height+=8;
+  add(credit.role,'title' in credit&&credit.title&&!small?2:1,'title' in credit?'#f6e1b4':'#dfbda0');height+=8;
   for(const text of credit.lines)add(text,small?1:2,'#f6e1b4');
   height+=34;
  }

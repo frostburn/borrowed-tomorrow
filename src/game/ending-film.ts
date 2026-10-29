@@ -83,9 +83,9 @@ export class EndingFilm {
   const credit=ENDING_CREDITS[this.credit];
   if(changed){this.audio.setMode(f.shot.music);this.ui.location(f.shot.title);}
   this.ui.canvas.dataset.endingShot=f.shot.id;this.ui.canvas.dataset.endingPlaying=String(this.playing);
-  const fullCredits=ENDING_CREDITS.map(entry=>entry.role+': '+entry.lines.join(', ')).join('. ');
+  const fullCredits=ENDING_CREDITS.map(entry=>entry.role+(entry.lines.length?': '+entry.lines.join(', '):'')).join('. ');
   this.ui.canvas.setAttribute('aria-description','Good ending cinematic. Space pauses or plays. Left and right change '+(cards?'credits':'shots')+'. Escape returns.'+(f.shot.id==='shore'?' Credits: '+fullCredits: ''));
-  this.ui.controls.innerHTML='<section class="ending-controls" aria-label="Cinematic controls"><div><h2>Borrowed Tomorrow</h2><p role="status">'+(this.playing?'Playing':'Paused')+' · '+(cards?'Credits '+(this.credit+1)+' / '+ENDING_CREDITS.length:(f.index+1)+' / '+GOOD_ENDING_SHOTS.length+' · '+f.shot.title)+'</p>'+(cards?'<p class="ending-credit-copy">'+credit.role+' · '+credit.lines.join(' · ')+'</p>':'')+'</div><div class="panel-actions" id="ending-actions"></div><p class="ending-keys">Space · play / pause　 Left / right · '+(cards?'credits':'shots')+'　 Escape · return</p></section>';
+  this.ui.controls.innerHTML='<section class="ending-controls" aria-label="Cinematic controls"><div><h2>Borrowed Tomorrow</h2><p role="status">'+(this.playing?'Playing':'Paused')+' · '+(cards?'Credits '+(this.credit+1)+' / '+ENDING_CREDITS.length:(f.index+1)+' / '+GOOD_ENDING_SHOTS.length+' · '+f.shot.title)+'</p>'+(cards?'<p class="ending-credit-copy">'+credit.role+(credit.lines.length?' · '+credit.lines.join(' · '):'')+'</p>':'')+'</div><div class="panel-actions" id="ending-actions"></div><p class="ending-keys">Space · play / pause　 Left / right · '+(cards?'credits':'shots')+'　 Escape · return</p></section>';
   this.ui.actionRow(this.ui.controls.querySelector('#ending-actions')!,[
    {label:this.playing?'Pause':'Play',action:()=>this.toggle()},
    {label:'Replay',action:()=>{this.playing=!this.reduced.matches;this.seek(0);}},

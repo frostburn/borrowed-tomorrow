@@ -1,5 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 import {inspect,capture} from './controls';
+import {ENDING_CREDITS} from '../../src/content/credits';
 
 async function filmHash(page:Page){
  return page.evaluate(()=>{
@@ -53,14 +54,18 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await expect(page.locator('#canvas')).toHaveAttribute('data-ending-playing','false');
   const still=await filmHash(page);await page.clock.runFor(1500);expect(await filmHash(page)).toEqual(still);
   await page.getByRole('button',{name:'Credits',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
-  await expect(page.locator('.ending-credit-copy')).toContainText('Lumi Pakkanen');
+  await expect(page.locator('.ending-credit-copy')).toContainText('Borrowed Tomorrow');
   const firstCard=await filmHash(page);
   await page.getByRole('button',{name:'Next credit',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
-  await expect(page.locator('.ending-credit-copy')).toContainText('OpenAI Codex');
+  await expect(page.locator('.ending-credit-copy')).toContainText('A game by · GPT-6.1 Sol');
   expect((await filmHash(page)).hash).not.toBe(firstCard.hash);
   const card=await filmHash(page);await page.clock.runFor(1500);expect(await filmHash(page)).toEqual(card);
-  for(let i=0;i<5;i++)await page.getByRole('button',{name:'Next credit',exact:true}).dispatchEvent('click');
-  await page.clock.runFor(100);await expect(page.locator('.ending-credit-copy')).toContainText('MIT licensed');
+  for(let i=2;i<ENDING_CREDITS.length;i++){
+   await page.getByRole('button',{name:'Next credit',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
+   await expect(page.locator('.ending-credit-copy')).toContainText(ENDING_CREDITS[i].role);
+   if(i===2)await expect(page.locator('.ending-credit-copy')).toContainText('Directed by · Lumi Pakkanen');
+  }
+  await expect(page.locator('.ending-credit-copy')).toContainText('Stephen D. Turner');
   await capture(page,'ending-credits-reduced-'+device);
   await page.getByRole('button',{name:'Back to workshop',exact:true}).dispatchEvent('click');await page.clock.runFor(100);
   await expect(page.getByRole('region',{name:'Ending cinematic preview'})).toBeVisible();

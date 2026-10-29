@@ -5,7 +5,7 @@ import {newGame} from '../src/rules/state';
 import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
 import type {StoryHost} from '../src/content/story-host';
 import {ENDING_CREDITS,ENDING_CREDITS_START,ENDING_CREDITS_END,ENDING_CREDIT_PAGE,endingCreditPage} from '../src/content/credits';
-import {SHORE_COMPANIONS,shoreBlocking} from '../src/game/ending-shore';
+import {SHORE_COMPANIONS,SHORE_HORIZON,shoreScaleAt,shoreBlocking} from '../src/game/ending-shore';
 
 it('cuts at exact shot boundaries, clamps review positions and ends after the final image',()=>{
  expect(GOOD_ENDING_DURATION).toBe(90000);
@@ -39,6 +39,30 @@ it('gives every credit a readable reduced-motion page inside the roll interval',
  expect(endingCreditPage(-100)).toBe(0);expect(endingCreditPage(NaN)).toBe(0);
  expect(endingCreditPage(60000)).toBe(ENDING_CREDITS.length-1);
  expect(ENDING_CREDITS_END).toBeLessThan(GOOD_ENDING_SHOTS[3].duration);
+});
+
+it('projects stature, spacing and the picnic cast consistently as the couple recedes',()=>{
+ const near=shoreBlocking(0),far=shoreBlocking(12000);
+ expect(far.scale).toBeLessThan(near.scale*.5);
+ expect(far.scale/near.scale).toBeCloseTo((far.y-SHORE_HORIZON)/(near.y-SHORE_HORIZON));
+ expect((far.kitX-far.nellX)/(near.kitX-near.nellX)).toBeCloseTo(far.scale/near.scale);
+ for(const companion of SHORE_COMPANIONS)expect(companion.scale).toBeCloseTo(shoreScaleAt(companion.y));
+ // Moving the camera preserves projected height relative to the horizon.
+ const heightRatio=(stage:ReturnType<typeof shoreBlocking>)=>100*stage.scale/((stage.y-stage.cameraY)-(SHORE_HORIZON-stage.cameraY));
+ expect(heightRatio(far)).toBeCloseTo(heightRatio(near));
+});
+
+it('opens with the requested author/director billing and leaves tooling until last',()=>{
+ expect(ENDING_CREDITS.slice(0,3)).toMatchObject([
+  {role:'Borrowed Tomorrow',lines:[]},
+  {role:'A game by',lines:['GPT-6.1 Sol']},
+  {role:'Directed by',lines:['Lumi Pakkanen']},
+ ]);
+ expect(ENDING_CREDITS.find(credit=>credit.role==='Music')?.lines).toEqual(['GPT-6.1 Sol']);
+ expect(ENDING_CREDITS.find(credit=>credit.role==='Additional musical passages')?.lines).toEqual(['Lumi Pakkanen']);
+ const firstTool=ENDING_CREDITS.findIndex(credit=>'tooling' in credit);
+ expect(firstTool).toBeGreaterThan(10);
+ expect(ENDING_CREDITS.slice(firstTool).every(credit=>'tooling' in credit&&credit.tooling)).toBe(true);
 });
 
 it('only exposes campaign replay for a recovered, completed real-sea ending',()=>{

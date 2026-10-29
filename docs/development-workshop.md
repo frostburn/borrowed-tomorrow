@@ -305,7 +305,11 @@ stand from the picnic as they pass. The camera follows upward until only Nell
 and Kit remain, then the sky turns to sunset while the credits roll. The final
 minute allows twelve seconds for the walk/camera, a credit roll at seconds
 16–52, and a closing title. Walking uses separate six-pose articulated legs and
-arms without scaling or distorting the heads and bodies.
+arms. Figure height, couple spacing, the handhold and contact shadows recede
+together on one ground plane. The scale follows distance below the horizon:
+about 0.71 beside the picnic and 0.31 at the water. Companions, boats and ripple
+sizes use that same projection; the camera pans over it. Heads and bodies keep
+their proportions.
 
 **Play good ending** starts from the beginning; **Play selected shot** starts from
 the chosen poster. Space pauses, left/right changes shots, Replay returns to the
@@ -324,10 +328,13 @@ parallax, train wheels/steam, shallow waves and a passing fishing boat.
 `ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
 deterministic shot timeline. No workshop playback writes campaign state.
 `ending-shore.ts` owns the final camera, walk, sunset and native-coordinate
-credit lettering; `content/credits.ts` owns the factual credit data and timings.
-Credit names come from the repository's license, package list and writing-guide
-attribution. Roles, line wrapping and pages keep their full two-pixel stems on
-phones, rather than scaling text down with the wide scenery.
+credit lettering; `content/credits.ts` owns the credit data and timings. The
+opening is **Borrowed Tomorrow / A game by / GPT-6.1 Sol / Directed by / Lumi
+Pakkanen**. Conventional creative categories credit GPT-6.1 Sol. **Additional
+musical passages** credits Lumi's contributed bars, including the documented
+Iron Coast phrases. Copyright remains with Lumi under the repository license.
+Tooling acknowledgments close the roll. Line wrapping and pages retain full
+two-pixel text stems on phones.
 
 `ending-cast.ts` authors the six travelers' cinematic poses against the accepted
 actor/portrait SVGs in `public/art/vector/`. Preserve Nell's red cap, braids and
