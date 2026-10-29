@@ -16,7 +16,7 @@ export const BAD_ENDING_SHOTS=[
 export const BAD_ENDING_DURATION=BAD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
 export const ENDING_FILMS={
  good:{label:'Good ending',title:'The days return',description:'A journey to the real sea',shots:GOOD_ENDING_SHOTS,duration:GOOD_ENDING_DURATION,creditShot:3,creditStart:ENDING_CREDITS_START,room:'seaholiday'},
- bad:{label:'Bad ending',title:'An unfinished tomorrow',description:'Nell’s place on the sea train is empty',shots:BAD_ENDING_SHOTS,duration:BAD_ENDING_DURATION,creditShot:1,creditStart:4000,room:'laststation'},
+ bad:{label:'Bad ending',title:'An unfinished tomorrow',description:'The empty seat',shots:BAD_ENDING_SHOTS,duration:BAD_ENDING_DURATION,creditShot:1,creditStart:4000,room:'laststation'},
 } as const;
 export type EndingKind=keyof typeof ENDING_FILMS;
 export type EndingShotId=typeof GOOD_ENDING_SHOTS[number]['id']|typeof BAD_ENDING_SHOTS[number]['id'];
