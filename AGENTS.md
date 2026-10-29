@@ -8,14 +8,17 @@ and defenses; defeating the Emperor breaks preservation and lets the crews lower
 
 # Borrowed Tomorrow
 
-Chapters One and Two's earned departures play sixteen-second vector crossings
+Chapters One–Three's earned departures play sixteen-second vector crossings
 through `content/crossing.ts` and the shared `game/chapter-crossing.ts` player.
 `crossing-art.ts` owns the Iron Coast journey; `capital-crossing-art.ts` owns the
-full medical train, passenger coach and grounded green-iron capital approach.
+full medical train, passenger coach and grounded green-iron conduit approach.
+`refuge-crossing-art.ts` reuses that grounded district and those coaches for the
+escape, Nell/Tomas coach scene and arrested coast. The separate white-marble capital
+is already airborne. Keep the calm harbor and boat stationary, without raised waves.
 The locomotive and drawing primitives are shared in `crossing-drawing.ts`.
 Keep automatic arrival and Skip on the existing asset-checked chapter entries;
 failure retains the correct departure with retry, return and export. Films add
-no saved flags or resource changes. The dev Cinematics tab previews both films
+no saved flags or resource changes. The dev Cinematics tab previews all three films
 with three selectable shots, independently of campaign progress.
 
 The user authorized a complete story reboot. The former Disks A–D campaign has been removed. `docs/story/grand-outline.md` is the seven-chapter plan; Chapters One: Leaving Home, Two: Prison Trains, Three: The Conduit Works and Four: A Light on the Water, plus all four acts of Chapter Five and all three Chapter Six expeditions and the capital finale, are playable canon with bundled SVG artwork. The final chapter travels into the Benefactor’s own domain and defeats the god permanently. “Borrowed Tomorrow” refers to its demand for repayment of the boons it lent the empire.
@@ -96,7 +99,7 @@ The campaign's `heart-feeds` and `heart-pressure` encounters now use the accepte
 
 `public/art/vector/bosses/conduit-regulator.svg` and `conduit-chamber.svg` are editable originals. `assets/bosses/export-conduit.py` derives the native portrait/motion page. `game/conduit-presentation.ts`, `boss-display.ts`, `boss-motion.ts` and `BattlePresentation` share native decode, masks, labels, mechanical timing and passive-frame reporting between campaign and workshop. Load the three runtime SVGs with the conduit region before departure/travel or deep restore succeeds, retaining retry on failure. The Benefactor encounter, assets and presets remain dev-only. The machine does not breathe: keep boiler/cowl/dial housing/feet rigid while its 1.6-second shoulder crank drives a horizontal side compressor with a fixed-length rod, needle ticks and exhaust puffs. Keep the lower chassis solid and stationary. The shared clock reports `mechanical`; the Benefactor uses `breathe` at 3.2 seconds. Preserve fixed warnings, whole-body targeting, single-hit areas, actual-hit pattern effects across round rollover, Taunt, reduced motion, defeat/retry and cleanup. Maps reviews the actual whole chamber for both boss arena IDs; legacy tiled floors remain authoring references and are not loaded for this boss. Detailed route/device/motion checks stay outside default CI; the existing production-exclusion smoke still forbids god/workshop assets. See `assets/bosses/README.md`.
 
-Chapter Four vector exports are reproduced with `node scripts/export-chapter-four-art.mjs`. `assets/vector/chapter-four.py` authors its Tiled layouts, whole SVG planes/props and scene manifest together. Floor union removes internal cutaway seams; only outer quay edges receive depth faces. `assets/characters/vector/chapter-four.py` exports Bram and the hollow-ring warden at 80px, leaving their editable 128px portrait originals untouched. Gate/ferry/supply/cable/wave layers follow the actual story flags in both game and Maps. Load all destination SVGs and local battle arenas before consuming departures or deep restores, with retry. No bitmap source chunks, pre-rasterized replacements or production authoring dependencies remain. Every SVG stays below 128 KiB; stage explicit outputs and run the art guard before publication.
+Chapter Four vector exports are reproduced with `node scripts/export-chapter-four-art.mjs`. `assets/vector/chapter-four.py` authors its Tiled layouts, whole SVG planes/props and scene manifest together. Floor union removes internal cutaway seams; only outer quay edges receive depth faces. `assets/characters/vector/chapter-four.py` exports Bram and the hollow-ring warden at 80px, leaving their editable 128px portrait originals untouched. Gate/ferry/supply/cable/arrested-water layers follow the actual story flags in both game and Maps. Load all destination SVGs and local battle arenas before consuming departures or deep restores, with retry. No bitmap source chunks, pre-rasterized replacements or production authoring dependencies remain. Every SVG stays below 128 KiB; stage explicit outputs and run the art guard before publication.
 
 Common Chapter Two–Five enemies use fixed recolored profiles from `src/content/enemy-variants.json`. Encounters select a compatible `variant`; do not override its HP/attack piecemeal or scale enemies to the player's level. Preserve named keepers, Petra and the regulator's own profiles. Reproduce the twelve 80px SVG recolors with `node scripts/export-enemy-variants.mjs`; the Chapter One exporter refreshes them after the base models. Sprites and map markers use those same identities. The generic enemy AI must attack a reachable opposing unit even when retaliation makes its score negative; use risk to rank attacks, and Defend only after no attack can reach an enemy. Preserve Taunt, support actions and fixed boss warnings. See `docs/enemy-progression.md`.
 

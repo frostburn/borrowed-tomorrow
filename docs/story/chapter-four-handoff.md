@@ -10,6 +10,28 @@ Required new flags: `capitalSeen`, `capitalConfronted`, `capitalGateWon`, `petra
 
 `party` contains Nell, Orrin, Kit and Petra; `activeParty` contains Nell and at most two of the others. Reserves keep equipment and share growth/recovery. Tomas is an alive supporting character, not a combatant. Celia has not appeared or joined. Her first introduction and recruitment now take place at the Chapter Four harbor. The three-fighter cap is a game mechanic and needs no story explanation.
 
+## Coastward cinematic
+
+The earned departure now plays a sixteen-second wordless vector film instead of
+the completion card. The full medical train clears the collapsing bridge outside
+the grounded green-iron works. The separate white-marble capital is already aloft
+above the valley. Inside, Nell and Tomas sit together while Kit and Petra remain
+aboard. At the coastal ward, the train continues under steam while the fishing
+boat and its reflection remain still on flat water. Tomas is safe; Celia has
+not appeared. The existing Chapter Four arrival follows the journey.
+
+**The coastward run** is an athletic arrangement of A Place to Return: eight bars
+at 120 BPM, urgent strings opening into piano, moving bass and straight drums
+that soften toward the ward. Its shared source melody and the original refuge
+arrangement remain intact. Review under Music/Soundtrack → Chapter Three.
+
+Automatic arrival and Skip use the existing asset-checked Chapter Four entry.
+Pause, return to the platform and departure export remain available. A missing
+asset holds the final shot with Retry crossing, preserving the complete saved
+boundary and resources. Reload replays the film. Reduced motion uses three stills;
+there is no added saved flag, roster change or healing. Review in **Cinematics →
+Chapter Three → Four**, or `?dev=cinematics&film=refuge-crossing`.
+
 ## What happened
 
 The medical clearance worked. Petra broke with Alban rather than surrender the passengers and joined after the custody battle. Tomas held a valve open to disable the outer alarm, giving the party its opening. The party stopped his execution and freed his restraints. Tomas had seen Ansel wounded; Nell confirmed that he did not survive after Tomas was taken away. Tomas explained the collectors’ connection to the vessel below the conduit works and bypassed the execution circuit before going to the medical train.

@@ -26,3 +26,15 @@ it('fits the capital remix to its film and preserves the Northglass melody ident
  }
  expect(scoreBar('capital-crossing',8)).toEqual(scoreBar('capital-crossing',0));
 });
+
+it('fits the refuge remix to the film while retaining the original refuge call',()=>{
+ expect(scoreLength('refuge-crossing')).toBe(8);
+ expect(8*ARRANGEMENTS['refuge-crossing'].beats*60000/ARRANGEMENTS['refuge-crossing'].bpm).toBe(CROSSING_DURATION);
+ for(let bar=0;bar<8;bar++){
+  const notes=scoreBar('refuge-crossing',bar),source=scoreBar('refuge',bar).filter(n=>n.pan===-.12);
+  expect(notes.filter(n=>n.pan===-.12).map(n=>n.pitch)).toEqual(source.map(n=>n.pitch));
+  expect(notes.filter(n=>n.instrument==='hat')).toHaveLength(8);
+  expect(notes.some(n=>n.instrument==='bass')).toBe(true);
+ }
+ expect(scoreBar('refuge-crossing',8)).toEqual(scoreBar('refuge-crossing',0));
+});

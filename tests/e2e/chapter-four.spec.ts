@@ -27,15 +27,15 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 }
 test('failed sanctuary vectors preserve the exact Chapter Three departure until retry',async({page})=>{
  await page.goto('/');const before=palaceCheckpoint('chapterThreeComplete');await importSave(page,before);await page.route('**/art/vector/chapter-four/sanctuary-ring.svg',route=>route.abort());
- await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');
  expect((await inspect(page)).state).toMatchObject({chapter:'chapter-three',boundary:'chapter-four:broken-world',inventory:before.inventory,party:before.party,activeParty:before.activeParty});
- await page.unroute('**/art/vector/chapter-four/sanctuary-ring.svg');await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-home');
+ await page.unroute('**/art/vector/chapter-four/sanctuary-ring.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-home');
 });
 for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],['wet','phone',{width:390,height:844}]] as const){
  test(`@journey rewritten Chapter Four ${route} route frees the harbor and coast on ${device}`,async({page})=>{
   test.setTimeout(600000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const departure=palaceCheckpoint('chapterThreeComplete');departure.activeParty=['nell','petra','kit'];equipItem(departure.inventory,'nell','silver-reflector');equipItem(departure.inventory,'nell','insulated-coat');equipItem(departure.inventory,'petra','saber-hilt');equipItem(departure.inventory,'kit','courier-sight');
-  await importSave(page,departure);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);await nativeScene(page,'refuge');await capture(page,`refuge-${device}`);
+  await importSave(page,departure);await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);await nativeScene(page,'refuge');await capture(page,`refuge-${device}`);
   await travel(page,'refuge-works','breakwater');await dialogue(page);await nativeScene(page,'breakwater');await capture(page,`breakwater-${device}`);expect((await inspect(page)).state.activeParty).toEqual(departure.activeParty);
   await approach(page,'works-cart');await page.getByRole('button',{name:'Leave the cart sealed',exact:true}).click();expect((await inspect(page)).state.flags.worksStoresWon).toBeUndefined();
   if(route==='dry'){await approach(page,'works-cart');await page.getByRole('button',{name:'Open the survey cart · fight its patrol',exact:true}).click();await battle(page,'survey-cart');await equip(page,'Kit','Folding range sight');}

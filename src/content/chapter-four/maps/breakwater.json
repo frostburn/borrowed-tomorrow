@@ -677,7 +677,7 @@
     },
     {
       "id": 8,
-      "name": "Suspended water",
+      "name": "Arrested water",
       "type": "objectgroup",
       "visible": true,
       "objects": [],

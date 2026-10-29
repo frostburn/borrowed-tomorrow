@@ -3,7 +3,7 @@ import { stage } from '../maps';
 const scene=(map:'refuge'|'breakwater'|'sanctuary',id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
 
 export const home=()=>scene('refuge','four-home','Chapter Four · A Light on the Water',[
- line('The railway refuge','The medical train rests beside the ward. Out on the water, a wave stands above an empty fishing boat.',{focus:{x:46,y:15},cut:true}),
+ line('The railway refuge','The medical train rests beside the ward. An empty fishing boat lies motionless over its own reflection.',{focus:{x:46,y:15},cut:true}),
  line('Tomas','Dena has everyone inside. I checked the coaches twice.',{focus:{x:31,y:27}}),
  line('Nell','You can sit down now. Nobody’s taking you anywhere.'),
  line('Tomas','I was going to say the same to you.',{expression:'happy'}),
@@ -31,7 +31,7 @@ export const harbor=()=>scene('breakwater','four-harbor','The closed harbor',[
  line('Celia','Celia. Tell her the crew can walk, once we have somewhere to walk to.'),
  line('Petra','The palace seal is on that lock. Who gave the order?'),
  line('The gate horn','COASTAL ARREST. ALL DEPARTURES SUSPENDED. BY ORDER OF THE EMPEROR.',{focus:{x:34,y:18},cue:'click'}),
- line('Bram','That order came from the palace after your train left the works. Now it’s stopping the tide in pieces.'),
+ line('Bram','That order came from the palace after your train left the works. Now it’s holding the tide still.'),
  line('Orrin','The gate itself still moves. Its drive chain’s warm. We can wind it open once the guards are down.'),
  line('Celia','The signal comes from the sanctuary above us. I worked in its hospice. There’s a service stair behind the gate.'),
  line('Petra','Will your patients be all right if you leave?'),
@@ -77,7 +77,7 @@ export const cable=()=>scene('sanctuary','four-cable','The return line',[
  line('Celia','Then we empty that reserve.'),
 ]);
 export const record=()=>scene('sanctuary','four-chart','Behind the imperial plate',[
- line('The coast','The ring has stopped. Below the terrace, the suspended wave has fallen. A ferry bell answers from the harbor.',{focus:{x:32,y:13},cut:true,cue:'win'}),
+ line('The coast','The ring has stopped. Below the terrace, the tide begins to turn. A ferry bell answers from the harbor.',{focus:{x:32,y:13},cut:true,cue:'win'}),
  line('Nell','Look. The boat’s moving.',{focus:{x:32,y:21}}),
  line('Celia','Orrin, help me with this plate. They bolted it over the old inscription.'),
  line('The founding pledge','“For harvest, healing and light, we entrust the days of our children, and their children after them.”',{document:{heading:'The founding pledge',lines:['HARVEST · HEALING · LIGHT','THE DAYS OF OUR CHILDREN','AND THEIR CHILDREN AFTER THEM'],stamp:'A DYNASTIC SEAL'}}),
@@ -104,7 +104,7 @@ export const decision=()=>scene('refuge','four-choice','The sea wall',[
  line('Tomas','I’m glad we got here.',{expression:'happy'}),
  line('Nell','Me too.'),
  line('Tomas','You’ve got me home. You can stay, if you want.',{expression:'worried'}),
- line('Nell','That wave stopped while I was looking at it. Next time it could be this ward.'),
+ line('Nell','They stopped the tide. Next time it could be this ward.'),
  line('Nell','I want to go after those anchors. I just wanted us to have this first.'),
  line('Tomas','Then I’ll keep the railway talking to you. We’ve got a lot of people who owe us a letter.'),
  line('Bram','The western airfield has a survey ship. Dry hangar, high ground. I’ve marked the road.',{focus:{x:17,y:28}}),

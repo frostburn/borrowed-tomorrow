@@ -13,7 +13,7 @@ The rewritten chapter continues the version-10 `chapter-four:broken-world` depar
 
 ## Presentation and rules
 
-Three 64 × 42 Tiled maps own connected floors, scenery footprints, named arrivals, interactions, civilian placements and scene casts. Whole SVGs illustrate the ward's coastal apron, working sea gate and cliffside signal sanctuary, with five clear SVG battle arenas. Gate, ferry, supplies, cable and suspended-wave layers visibly follow story flags. Shared party/civilian art, new Bram/warden SVGs and the final 2px framebuffer keep the style consistent.
+Three 64 × 42 Tiled maps own connected floors, scenery footprints, named arrivals, interactions, civilian placements and scene casts. Whole SVGs illustrate the ward's coastal apron, working sea gate and cliffside signal sanctuary, with five clear SVG battle arenas. Gate, ferry, supplies, cable and arrested-water layers visibly follow story flags. Shared party/civilian art, new Bram/warden SVGs and the final 2px framebuffer keep the style consistent.
 
 Five once-only rewards go to the bag: return valve for Orrin, survey sight for Kit, rescue coat for anyone, field clasp for Celia and guardian prism for Nell. Both approaches preserve the same rescue and main reward. Rest is free, bandages cost eight marks, and no real-time civilian countdown runs. Version-10 Chapter Three departures retain health, focus, choices, inventory, loadouts, roster, formation and play time. No temporary-party state remains. All destination SVGs load before a departure or deep restore commits.
 

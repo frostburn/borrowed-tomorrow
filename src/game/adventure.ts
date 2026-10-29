@@ -568,8 +568,8 @@ export class Adventure extends Phaser.Scene {
       ]);return;
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
-    if(destination&&(this.state.chapter==='chapter-one'||this.state.chapter==='chapter-two')){
-      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state),false,0,this.state.chapter==='chapter-two'?'capital':'coast');return;
+    if(destination&&(this.state.chapter==='chapter-one'||this.state.chapter==='chapter-two'||this.state.chapter==='chapter-three')){
+      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state),false,0,this.state.chapter==='chapter-three'?'refuge':this.state.chapter==='chapter-two'?'capital':'coast');return;
     }
     this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
       ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm()}]:[]),

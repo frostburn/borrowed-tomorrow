@@ -101,8 +101,8 @@
       "layerId": 4
     },
     {
-      "key": "scene-four-refuge-wave",
-      "url": "art/vector/chapter-four/refuge-wave.svg",
+      "key": "scene-four-refuge-still-water",
+      "url": "art/vector/chapter-four/refuge-still-water.svg",
       "x": 0,
       "y": 0,
       "width": 1536,
@@ -303,8 +303,8 @@
       "layerId": 5
     },
     {
-      "key": "scene-four-breakwater-wave",
-      "url": "art/vector/chapter-four/breakwater-wave.svg",
+      "key": "scene-four-breakwater-still-water",
+      "url": "art/vector/chapter-four/breakwater-still-water.svg",
       "x": 0,
       "y": 0,
       "width": 1536,

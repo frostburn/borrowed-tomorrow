@@ -135,8 +135,8 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Kit',exact:true}).click();await page.locator('.ci-items').getByRole('button',{name:/^Insulated work coat/}).click();await page.getByRole('button',{name:'Equip on Kit',exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
   expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
   await expect.poll(()=>page.evaluate(()=>document.querySelector('canvas')!==null)).toBe(true);await approach(page,'capital-departure');await dialogue(page);
-  await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();await capture(page,`chapter-three-production-${device}`);const saved=(await inspect(page)).state;
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-four-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,`chapter-three-production-${device}`);const saved=(await inspect(page)).state;
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-four-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);expect(errors).toEqual([]);
  });
 }
 
@@ -173,7 +173,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
   const interact=page.locator('.interact-action').getByRole('button',{name:/Interact$/});await expect(interact).toBeVisible();
   if(device==='desktop')await page.keyboard.press('e');else await interact.click();await dialogue(page);
   let state=(await inspect(page)).state;expect(state.flags.extractionStopped).toBe(true);expect(state.flags.tomasRescued).toBe(true);expect(state.inventory).toEqual(saved.inventory);expect(state.coins).toBe(saved.coins);expect(state.xp).toBe(saved.xp);
-  await approach(page,'capital-departure');await dialogue(page);await expect(page.getByRole('heading',{name:'Chapter Three complete',exact:true})).toBeVisible();
+  await approach(page,'capital-departure');await dialogue(page);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-four-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).state.boundary).toBe('chapter-four:broken-world');state=(await inspect(page)).state;
   expect(state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
@@ -184,7 +184,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  test(`production Chapter Four preserves the roster and completes the new anchor departure on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;equipItem(old.inventory,'nell','silver-reflector');
-  await importSave(page,old);await page.getByRole('button',{name:'Begin Chapter Four',exact:true}).click();await dialogue(page);
+  await importSave(page,old);await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);
   expect((await inspect(page)).state).toMatchObject({inventory:old.inventory,party:old.party,activeParty:old.activeParty});await capture(page,`chapter-four-production-arrival-${device}`);
   await travel(page,'refuge-works','breakwater');await dialogue(page);expect((await inspect(page)).state.activeParty).toEqual(old.activeParty);expect((await inspect(page)).state.party).toHaveLength(5);
   const deep=brokenCheckpoint('signalCut');deep.activeParty=['nell','petra','celia'];deep.bandages=15;equipItem(deep.inventory,'celia','rescue-coat');equipItem(deep.inventory,'nell','silver-reflector');equipItem(deep.inventory,'petra','saber-hilt');await importSave(page,deep);
