@@ -301,6 +301,10 @@ Open **Cinematics** or use `?dev=cinematics`. The four-shot, 44-second film uses
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.
 Nell and Kit hold hands while Tomas, Orrin, Celia and Petra share the picnic.
+The picnic group sits down in staggered, articulated poses during the first
+three seconds of the last shot, then eats bread and drinks before the closing
+title fades in. Upper bodies retain their proportions as the knees fold;
+reduced motion shows the settled, seated composition.
 
 **Play good ending** starts from the beginning; **Play selected shot** starts from
 the chosen poster. Space pauses, left/right changes shots, Replay returns to the

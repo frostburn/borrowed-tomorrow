@@ -53,7 +53,6 @@ function release(c:C,p:number,t:number){
  const walk=ease(p)*18;
  person(c,'celia',156-walk,236,.46);person(c,'orrin',111-walk,251,.48);person(c,'petra',201-walk,233,.5);
  person(c,'kit',73-walk,263,.5);person(c,'nell',50-walk,272,.5);
- for(const [x,y]of [[91,249],[157,230],[222,231]])line(c,'#87b4bb',2,[[x,y-17],[x+2,y-12],[x+7,y-15]]);
  c.globalAlpha=dawn*.7;poly(c,'#d4c89e',[[0,0],[512,0],[512,118],[0,159]]);c.globalAlpha=1;
  void t;
 }
@@ -141,9 +140,15 @@ function shore(c:C,p:number,t:number){
  // The picnic includes the other four travelers. Their work can wait.
  poly(c,'#8e6e60',[[295,215],[365,211],[391,239],[315,246]]);
  line(c,'#c1ac8d',3,[[307,220],[376,231]]);line(c,'#c1ac8d',2,[[330,215],[349,242]]);
- person(c,'celia',342,219,.62);person(c,'orrin',302,232,.65);
- person(c,'petra',386,232,.66);person(c,'tomas',352,254,.62);
  oval(c,'#d6c7a4',340,233,7,3);poly(c,'#c2a16b',[[324,232],[329,225],[337,228],[334,234]]);
+ // Settle onto the blanket in sequence, well before the title. Seated torsos
+ // retain their proportions; only the articulated legs fold beneath them.
+ const picnic=[['celia',342,219,.62,1.1],['orrin',302,232,.65,.5],['petra',386,232,.66,1.5],['tomas',352,246,.62,1.9]] as const;
+ for(let i=0;i<picnic.length;i++){
+  const [who,x,y,scale,delay]=picnic[i],sit=ease((p*14-delay)/1.1);
+  const gesture=ease((p*14-3.2)/.7)*Math.min(1,t/4)*Math.max(0,Math.sin((t-3)*1.2+i*1.8))**2;
+  person(c,who,x,y,scale,false,undefined,{sit,gesture});
+ }
  // A closer, sheltered plane: two young people watching fishing boats.
  person(c,'nell',206,253,.86,true,'right');person(c,'kit',246,253,.91,true,'left');
  const reach=ease((p-.18)/.28);

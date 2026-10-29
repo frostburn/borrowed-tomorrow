@@ -6,6 +6,7 @@
 type C=CanvasRenderingContext2D;
 type Point=readonly [number,number];
 export type EndingPerson='nell'|'orrin'|'kit'|'celia'|'petra'|'tomas';
+export type PicnicPose={sit:number;gesture:number};
 const poly=(c:C,color:string,points:readonly Point[])=>{c.fillStyle=color;c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();};
 const line=(c:C,color:string,width:number,points:readonly Point[])=>{c.strokeStyle=color;c.lineWidth=width;c.lineJoin='bevel';c.lineCap='butt';c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();};
 const oval=(c:C,color:string,x:number,y:number,rx:number,ry:number)=>{c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();};
@@ -64,6 +65,9 @@ function celiaHead(c:C,back:boolean){
  poly(c,P.silver,[[-13,-82],[-11,-91],[-3,-96],[7,-95],[14,-87],[16,-76],[12,-65],[5,-62],[-8,-64],[-15,-72]]);
  poly(c,P.silverShade,[[-12,-82],[-7,-90],[-3,-92],[-6,-82],[-9,-73],[-6,-64],[-11,-65],[-15,-73]]);
  if(back){poly(c,P.silverLight,[[-6,-91],[2,-93],[9,-89],[11,-78],[8,-67],[5,-65],[8,-77],[6,-87]]);return;}
+ // The neck cuts through the rear bob and ends exactly in the collar's V.
+ // Keep the collar in front, rather than painting skin across the clothes.
+ poly(c,P.skin,[[-4,-70],[4,-70],[5,-64],[0,-59],[-5,-64]]);
  poly(c,P.skin,[[-8,-82],[-2,-88],[7,-85],[10,-78],[8,-69],[3,-64],[-2,-64],[-8,-71]]);
  poly(c,P.skinLight,[[-6,-80],[-2,-84],[2,-82],[0,-72],[-4,-71]]);
  poly(c,P.silverLight,[[-11,-85],[-5,-92],[3,-93],[9,-89],[4,-87],[-3,-85],[-8,-77],[-10,-69]]);
@@ -99,10 +103,30 @@ function tomasHead(c:C,back:boolean){
  poly(c,P.hairLight,[[-10,-92],[-6,-95],[3,-97],[11,-94],[4,-94],[-2,-92],[-7,-89]]);
 }
 
+/** Tapered leg segments articulate at knees and hips while the upper body stays
+ * rigid. Crossed shins and grounded boots replace standing legs as they sit. */
+function picnicLegs(c:C,wide:number,sit:number){
+ const mix=(a:number,b:number)=>a+(b-a)*sit,drop=28*sit;
+ const segment=(a:Point,b:Point,width:number,color:string)=>{
+  const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),nx=-dy/length*width,ny=dx/length*width;
+  poly(c,color,[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny]]);
+ };
+ poly(c,P.navy,[[-12-wide,-41+drop],[12+wide,-41+drop],[15+wide,-30+drop],[-14-wide,-30+drop]]);
+ for(const side of [-1,1]){
+  const hip:Point=[side*(7+wide*.5),-35+drop],knee:Point=[side*mix(9+wide,23+wide),mix(-21,-7)],ankle:Point=[side*mix(8+wide,-7),-3+sit];
+  segment(hip,knee,5.5,P.navy);oval(c,P.navy,knee[0],knee[1],5.5,4.5);
+  segment(knee,ankle,4.5,side===1?P.navyShade:P.navyLight);
+  const [x,y]=ankle,toe=side*mix(4,-8);
+  poly(c,P.boot,[[x-4,y-5],[x+4,y-5],[x+4+Math.max(0,toe),y+5],[x-4+Math.min(0,toe),y+5]]);
+  line(c,P.hairLight,1.5,[[x-3,y-2],[x+3,y-2]]);
+ }
+}
+
 /** Foot-anchored figures keep adult proportions, distinct builds and the same
  * clothing in front/back. joinSide is a screen side omitted for the sea handhold. */
-export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,back=false,joinSide?:'left'|'right'){
+export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,back=false,joinSide?:'left'|'right',picnic?:PicnicPose){
  c.save();c.translate(x,y);c.scale(s,s);
+ const sit=Math.max(0,Math.min(1,picnic?.sit??0)),gesture=sit*Math.max(0,Math.min(1,picnic?.gesture??0));
  const wide=who==='orrin'?5:who==='petra'?2:0;
  const coat=who==='nell'?P.red:who==='celia'||who==='petra'?P.green:P.navy;
  const shadow=who==='nell'?P.redShade:who==='celia'||who==='petra'?P.greenShade:P.navyShade;
@@ -111,12 +135,17 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  const sleeveShade=who==='orrin'?P.creamShade:who==='petra'?P.silverShade:shadow;
  const top=who==='tomas'?-69:-64;
  // Joined trousers and separate substantial boots; no floating lower legs.
+ if(picnic)picnicLegs(c,wide,sit);
+ else{
  poly(c,P.navy,[[-11-wide,-41],[11+wide,-41],[12+wide,-19],[10+wide,-3],[3,-3],[1,-24],[-2,-24],[-4,-3],[-12-wide,-3],[-13-wide,-19]]);
  poly(c,P.navyShade,[[1,-26],[6,-26],[7,-4],[3,-3]]);
  poly(c,P.boot,[[-12-wide,-8],[-4,-8],[-3,-1],[0,2],[-15-wide,2],[-15-wide,-2]]);
  poly(c,P.boot,[[3,-8],[11+wide,-8],[13+wide,-2],[17+wide,2],[3,2]]);
  line(c,'#a07854',1.5,[[-13-wide,-5],[-5,-5]]);line(c,'#a07854',1.5,[[4,-5],[11+wide,-5]]);
- const hem=who==='celia'?-15:who==='nell'?-34:-32;
+ }
+ // Lower/lean the torso as one piece; do not squash the head or clothing.
+ c.save();c.translate(0,28*sit-35);c.rotate(Math.sin(sit*Math.PI)*-.09);c.translate(0,35);
+ const hem=who==='celia'?-15-sit*21:who==='nell'?-34:-32;
  poly(c,coat,[[-13-wide,top],[10+wide,top],[18+wide,-52],[15+wide,-37],[who==='celia'?20:12+wide,hem],[4,hem-2],[-1,hem-5],[-7,hem],[-17-wide,hem-2],[-16-wide,-49]]);
  poly(c,shadow,[[8+wide,top+4],[18+wide,-52],[15+wide,-37],[who==='celia'?20:12+wide,hem],[7,hem-1],[8,-43],[4,-55]]);
  poly(c,light,[[-12-wide,top+4],[-7-wide,top+4],[-8,-43],[-9,hem-2],[-15-wide,hem-3],[-14-wide,-48]]);
@@ -132,7 +161,6 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
    poly(c,P.navyLight,[[-8-wide,-51],[0,-51],[-2,-38],[-9-wide,-38]]);
   }else{
    line(c,P.redShade,2,[[0,-59],[0,-39]]);
-   line(c,P.hairShade,2,[[-13,-36],[12,-36]]);
    poly(c,P.redLight,[[-5,-64],[4,-64],[6,-61],[-6,-61]]);
   }
   if(!back){poly(c,P.creamLight,[[-5,top],[5,top],[4,top+7],[0,top+10],[-4,top+7]]);line(c,P.gold,2,[[-3,-40],[4,-40]]);}
@@ -169,6 +197,31 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  for(const side of [-1,1] as const){
   if(joinSide===(side===-1?'left':'right'))continue;
   if(who==='celia'&&!back&&side===1)continue;
+  if(picnic&&sit>0){
+   const active=side===-1,lift=active?gesture:0;
+   const shoulder:Point=[side*(13+wide),top+5];
+   const elbow:Point=[side*(20+wide),-47+sit*4];
+   const mouthLift=who==='orrin'?31:who==='celia'?27:32;
+   const hand:Point=[side*(18+wide)*(1-sit)+side*(7-lift*4)*sit,-29-sit*7-lift*mouthLift];
+   // Fold the elbows onto the lap, then bring a cup or bread to the mouth.
+   const limb=(a:Point,b:Point,width:number,color:string)=>{
+    const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),nx=-dy/length*width,ny=dx/length*width;
+    poly(c,color,[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny]]);
+   };
+   limb(shoulder,elbow,4,sleeve);limb(elbow,hand,3.5,sleeveShade);oval(c,P.skin,hand[0],hand[1],3,2.5);
+   if(who==='petra'){
+    poly(c,P.gold,[[shoulder[0]-6,top+4],[shoulder[0],top],[shoulder[0]+7,top+5],[shoulder[0]+7,top+12],[shoulder[0]-5,top+13]]);
+    poly(c,P.silverLight,[[shoulder[0]-3,top+5],[shoulder[0],top+3],[shoulder[0]+4,top+6],[shoulder[0]+4,top+10],[shoulder[0]-3,top+10]]);
+   }
+   if(active){
+    const [hx,hy]=hand;
+    if(who==='orrin'||who==='celia'){
+     poly(c,P.cream,[[hx-4,hy-4],[hx+3,hy-4],[hx+2,hy+3],[hx-3,hy+3]]);
+     line(c,P.goldShade,1.5,[[hx+3,hy-3],[hx+6,hy-2],[hx+6,hy+1],[hx+2,hy+1]]);
+    }else poly(c,P.goldLight,[[hx-4,hy-3],[hx,hy-6],[hx+4,hy-3],[hx+2,hy+2],[hx-3,hy+2]]);
+   }
+   continue;
+  }
   const shoulder=side*(13+wide),elbow=side*(20+wide),hand=side*(18+wide);
   poly(c,sleeve,[[shoulder-side*3,top+4],[shoulder+side*4,top+6],[elbow+side*3,-47],[hand+side*3,-29],[hand-side*3,-28],[elbow-side*3,-46],[shoulder-side*6,top+13]]);
   poly(c,sleeveShade,[[elbow,-46],[hand+side*3,-29],[hand,-28],[elbow-side*2,-43],[shoulder,top+9]]);
@@ -181,9 +234,10 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  }
  if(who==='celia'&&!back){
   // Her anatomical left arm cradles the book; the free right arm hangs at rest.
-  poly(c,P.green,[[11,-61],[18,-59],[25,-46],[22,-31],[12,-27],[10,-34],[18,-37],[19,-45],[10,-53]]);
-  poly(c,P.greenLight,[[13,-58],[16,-57],[22,-45],[20,-36],[17,-36],[19,-44]]);
-  c.save();c.scale(-1,1);
+  const lap=-sit*7;
+  poly(c,P.green,[[11,-61],[18,-59],[25,-46+lap*.5],[22,-31+lap],[12,-27+lap],[10,-34+lap],[18,-37+lap],[19,-45+lap*.5],[10,-53]]);
+  poly(c,P.greenLight,[[13,-58],[16,-57],[22,-45+lap*.5],[20,-36+lap],[17,-36+lap],[19,-44+lap*.5]]);
+  c.save();c.translate(0,lap);c.scale(-1,1);
   poly(c,P.hair,[[-23,-45],[-8,-47],[-5,-29],[-21,-27]]);
   poly(c,'#b18b62',[[-20,-43],[-10,-44],[-8,-31],[-19,-30]]);
   line(c,P.gold,2,[[-22,-44],[-20,-29]]);poly(c,P.cream,[[-18,-29],[-6,-31],[-6,-28],[-18,-26]]);
@@ -196,5 +250,5 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  else if(who==='celia')celiaHead(c,back);
  else if(who==='petra')petraHead(c,back);
  else tomasHead(c,back);
- c.restore();
+ c.restore();c.restore();
 }
