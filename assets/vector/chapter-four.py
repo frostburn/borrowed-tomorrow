@@ -42,10 +42,11 @@ def cells(rects,w,h,gid=3):
  return a
 
 def capital(x,y,s=1):
- out=[poly([(x-142*s,y),(x-107*s,y-30*s),(x-80*s,y-20*s),(x-50*s,y-56*s),(x+72*s,y-51*s),(x+127*s,y-19*s),(x+148*s,y+4*s),(x+73*s,y+45*s),(x+26*s,y+90*s),(x-20*s,y+53*s),(x-78*s,y+56*s)],'#223949')]
+ # The royal marble city sits on a continuous ridge, never a levitating island.
+ out=[poly([(x-240*s,y+180*s),(x-190*s,y+63*s),(x-115*s,y-6*s),(x+90*s,y-4*s),(x+180*s,y+52*s),(x+240*s,y+180*s)],'#304f60'),poly([(x-190*s,y+63*s),(x-115*s,y-6*s),(x+90*s,y-4*s),(x+147*s,y+43*s),(x+20*s,y+33*s)],'#6c817e')]
+ out.append(poly([(x-130*s,y),(x+130*s,y),(x+125*s,y+23*s),(x-128*s,y+25*s)],'#adb8af'))
  for xx,hh in [(-94,28),(-61,43),(-20,67),(27,54),(65,32)]:
-  out.extend([rect(x+xx*s,y-(hh+39)*s,17*s,hh*s,'#314b57'),poly([(x+(xx-5)*s,y-(hh+39)*s),(x+(xx+8)*s,y-(hh+55)*s),(x+(xx+23)*s,y-(hh+39)*s)],'#566260')])
- out.extend([ring(x+2*s,y-58*s,43*s,32*s,8*s,'#8a8868'),line([(x-29*s,y+43*s),(x-10*s,y+152*s)],'#7d8e87',2*s)])
+  out.extend([rect(x+xx*s,y-hh*s,17*s,hh*s,'#d6d9c9'),poly([(x+(xx-5)*s,y-hh*s),(x+(xx+8)*s,y-(hh+16)*s),(x+(xx+23)*s,y-hh*s)],'#8b9e96')])
  return ''.join(out)
 def seascape(w,h,temple=False):
  out=[rect(0,0,w,h,'#29465c'),rect(0,0,w,135,'#53677d'),rect(0,135,w,100,'#888a88'),rect(0,235,w,100,'#c3a07a'),rect(0,335,w,h-335,'#355b6d')]

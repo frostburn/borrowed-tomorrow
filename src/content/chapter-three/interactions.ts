@@ -58,6 +58,7 @@ export function interactChapterThree(h:StoryHost,id:string){
     case 'heart-regulator':h.battle(f.pressureRoute?'heart-pressure':'heart-feeds');return;
     case 'heart-release':
       if(!f.conduitGuardWon)return;
+      // Keep the current save checkpoint ID: this now records the teleport escape.
       h.talk({...scenes.rupture(),done:()=>{f.extractionStopped=true;f.emperorMerged=true;restoreParty(s);s.location=arrival('northglass','after-rupture');h.commit('emperorMerged','rupture');}});return;
     case 'capital-tomas':say('Tomas',f.emperorMerged?'The patients are aboard. I saved you a place in the cab. Come on.':'I’m safe here with the patients. My bypass is still holding. Close the feeds, then we’ll leave together.');return;
     case 'capital-departure':

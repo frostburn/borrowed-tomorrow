@@ -96,7 +96,7 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Orrin','The crown supports are above this stair. Break them and the vessel loses its shield.'),
  line('Nell','Then we go together. Let me check the lantern first.'),
 ]:[
- line('Celia','I’ve just come from Nell. Her pulse is following the palace engine.',{focus:{x:32,y:23},cut:true}),
+ line('Celia','I’ve just come from Nell. Her pulse is following the palace’s preservation engine.',{focus:{x:32,y:23},cut:true}),
  line('Kit','Even with the lantern here?'),
  line('Celia','Yes. Moving it hasn’t changed her pulse.'),
  line('Orrin','If we break the vessel, the current will need somewhere else to go.'),
@@ -105,7 +105,8 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Kit','Then the launch stays ready. We don’t have to leave her like this.',{expression:'worried'}),
 ]);
 export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Emperor’s last day',[
- line('The crown platform','The palace roof opens around a crowned vessel. Two pale supports turn beneath its arms.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
+ line('The crown platform','The Emperor steps into the crown’s open frame. Plates close around his body.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
+ line('The crown','The frame unfolds into a vast vessel above the palace roof. Two pale supports turn beneath its arms.'),
  line('The Emperor','The window was open. She could hear the carts again.'),
  line('Celia','The lower ward was left without water. We carried your patients out.'),
  line('The Emperor','She hasn’t finished her breakfast. Keep the supports in place.'),
@@ -114,8 +115,8 @@ export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Em
 ]);
 export const fallen=(s:GameState)=>scene(s,'crown','six-imperial-fall','The crown breaks',[
  line('The vessel','The crown splits around the Emperor’s motionless body. Its sun falls dark.',{focus:{x:32,y:20},cut:true,effect:'capital-fall',cue:'burst',duration:1800}),
- line('The crown platform','The broken armrests fall away. Below, the palace terraces settle past the outer walls.',{duration:1100}),
- line('Orrin','The crews have the lowering gear. Take the inside of the stair.'),
+ line('The crown platform','The broken armrests fall away. Below, the light holding the palace streets in their repeated morning goes out.',{duration:1100}),
+ line('Orrin','The crews have the patient hoists. Take the inside of the stair.'),
  ...(s.flags.nellRecovered?[
  line('The lantern','A pale thread catches against Nell’s wrist, then slips loose and breaks.',{effect:'capital-thread',duration:1000,cue:'resonance'}),
  line('Celia','The river collar broke the binding. Nell, stay beside me until that light clears.'),
@@ -144,8 +145,8 @@ export const lost=(s:GameState)=>scene(s,'crown','six-lightbearer-fall','The las
  line('Celia','Kit. Put the lantern down.',{expression:'sad'}),
  line('The platform','He sets it beside her hand. Celia does not ask him to move away.'),
 ]);
-export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city lands',actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
- line('The allied quay','The last terrace settles on its old foundations. Above it, the hollow sun opens across a dark strip of sky.',{focus:{x:32,y:14},cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
+export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city wakes',actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
+ line('The allied quay','Along the quay, the clocks begin advancing together. Above it, the hollow sun opens across a dark strip of sky.',{focus:{x:32,y:14},cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
  line('Alda','The last ward boat’s in. Skeld’s pilots are checking the lower streets.',{focus:{x:34,y:25},cut:true}),
  line('Celia','The man behind the screen is with the medical crew. He asked for breakfast.'),
  line('Orrin','The broken vessel’s still connected to something above it. The old hospice diagram had this same opening.'),
@@ -162,7 +163,7 @@ export const emptySeat=(s:GameState)=>scene(s,'laststation','six-empty-seat','Th
  line('Kit','I brought her coat. The lantern’s wrapped inside.',{expression:'sad'}),
  line('Tomas','Leave it here. Please.',{expression:'sad'}),
  line('The platform','Kit puts the folded coat beside the bag. The station clock advances.'),
- line('Orrin','The capital’s on the ground. The last boats got everyone off the lower terraces.'),
+ line('Orrin','The capital’s clocks are running. The last boats got everyone off the lower terraces.'),
  line('Celia','There was another report from beyond Namar. A whole orchard stopped between one picking and the next.'),
  line('Petra','We’ll send what help we can.'),
  line('The waiting train','The guard walks past the empty seat and closes the next carriage door.'),

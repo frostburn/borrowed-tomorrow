@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { Shot } from '../content/cinematics';
 
-type Effect=Extract<NonNullable<Shot['effect']>,'feeds-close'|'vessel-entry'|'chamber-rupture'>;
+type Effect=Extract<NonNullable<Shot['effect']>,'feeds-close'|'vessel-transfer'|'chamber-rupture'>;
 const clamp=(n:number)=>Phaser.Math.Clamp(n,0,1);
 const smooth=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
 
@@ -15,12 +15,12 @@ export class ConduitCinematic {
   private phase?:Effect;
   private started=0;
   private feeds=false;
-  private merged=false;
+  private transferred=false;
   private broken=false;
   private entry?:{x:number;y:number};
   private reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   private closed=false;
-  private durations:Record<Effect,number>={'feeds-close':1100,'vessel-entry':2400,'chamber-rupture':1600};
+  private durations:Record<Effect,number>={'feeds-close':1100,'vessel-transfer':2400,'chamber-rupture':1600};
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,overlay:Phaser.GameObjects.Container,private emperor?:Phaser.GameObjects.Image){
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image){
       const key=child.getData('scene-piece')?.key;
@@ -36,7 +36,7 @@ export class ConduitCinematic {
   play(effect:Effect){
     if(this.closed)return;
     this.finish();this.phase=effect;this.started=this.scene.time.now;
-    if(effect==='vessel-entry'&&this.emperor){
+    if(effect==='vessel-transfer'&&this.emperor){
       this.entry={x:this.emperor.x,y:this.emperor.y};this.emperor.setTexture('emperor-reach').setVisible(true);
     }
     if(effect==='chamber-rupture'&&!this.reduced)this.scene.cameras.main.shake(1000,.003);
@@ -44,7 +44,7 @@ export class ConduitCinematic {
   }
   private finish(){
     if(this.phase==='feeds-close')this.feeds=true;
-    if(this.phase==='vessel-entry'){this.merged=true;this.emperor?.setAlpha(0).setVisible(false);}
+    if(this.phase==='vessel-transfer'){this.transferred=true;this.emperor?.setAlpha(0).setVisible(false);}
     if(this.phase==='chamber-rupture')this.broken=true;
   }
   private polygon(points:{x:number;y:number}[]){
@@ -56,7 +56,7 @@ export class ConduitCinematic {
     if(this.closed||!this.phase||!this.vessel||!this.controls)return;
     const elapsed=this.scene.time.now-this.started,p=this.reduced?1:clamp(elapsed/this.durations[this.phase]);
     const feeds=this.phase==='feeds-close'?p:this.feeds?1:0;
-    const entry=this.phase==='vessel-entry'?p:this.merged?1:0;
+    const entry=this.phase==='vessel-transfer'?p:this.transferred?1:0;
     const rupture=this.phase==='chamber-rupture'?p:this.broken?1:0;
     const v=this.originals.find(o=>o.image===this.vessel)!,c=this.controls,g=this.graphics;
     g.clear();
@@ -73,27 +73,24 @@ export class ConduitCinematic {
       }
     }
     if(entry&&this.entry&&this.emperor){
-      const pull=smooth((entry-.27)/.65),origin=this.entry;
-      if(!this.merged){
-        this.emperor.setPosition(origin.x+(v.x+108-origin.x)*pull,origin.y+(v.y+156-origin.y)*pull);
-        this.emperor.setAlpha(1-smooth((entry-.32)/.58)).setVisible(entry<.93);
-      }
-      const pulse=this.reduced?0:.5+.5*Math.sin(elapsed/240),strength=entry<1?Math.sin(entry*Math.PI)*.45:.16+pulse*.04;
-      const handX=origin.x-28,handY=origin.y-32;
-      g.fillStyle(0xb1d1c8,strength);this.polygon([{x:handX-7,y:handY},{x:v.x+78,y:v.y+67},{x:v.x+135,y:v.y+73},{x:handX+8,y:handY+10}]);
-      g.lineStyle(3,0xdde4cc,Math.min(1,entry*4)*(entry<1?1-pull:.35));
-      g.lineBetween(handX,handY,v.x+108,v.y+162);
-      if(entry<.9){
-        const climb=smooth(entry/.55);g.fillStyle(0xe6e8cc,.65*(1-pull));
-        for(let i=0;i<5;i++)g.fillRect(origin.x-33+i*10,origin.y-28-climb*40-(i%2)*5,8,3);
-      }
-      // Leave the vessel faceless. Light follows its existing crystal facets.
-      g.fillStyle(0xc8e1d6,strength);this.polygon([{x:v.x+107,y:v.y+5},{x:v.x+130,y:v.y+47},{x:v.x+136,y:v.y+174},{x:v.x+110,y:v.y+210},{x:v.x+77,y:v.y+165},{x:v.x+74,y:v.y+99}]);
+      const origin=this.entry,closed=smooth(entry/.35)*(1-smooth((entry-.7)/.3));
+      // The Emperor stays on the transfer deck; no pull into the vessel's body.
+      if(!this.transferred)this.emperor.setPosition(origin.x,origin.y).setAlpha(1).setVisible(entry<.4);
+      const left=origin.x-39,top=origin.y-84;
+      g.lineStyle(4,0xb99d65,.95).strokeRect(left,top,78,91);
+      // Two rigid brass shutters meet, then reopen on the empty transfer frame.
+      const width=39*closed;
+      g.fillStyle(0x637c73,1).fillRect(left,top,width,91).fillRect(left+78-width,top,width,91);
+      g.lineStyle(2,0xd2b47e,1).lineBetween(left+width,top,left+width,top+91).lineBetween(left+78-width,top,left+78-width,top+91);
+      const flash=entry>.35&&entry<.8?Math.sin((entry-.35)/.45*Math.PI):0;
+      g.fillStyle(0xdce9d4,flash*.8).fillRect(left+4,top+4,70,83);
+      g.lineStyle(3,0xdce9d4,flash*.65).lineBetween(v.x+108,v.y+162,origin.x,origin.y-40);
     }
+
     if(rupture){
       const t=this.reduced?0:this.scene.time.now/1000,shake=this.reduced?0:Math.sin(t*23)*1.5*rupture;
       this.vessel.setPosition(v.x+shake,v.y);
-      // Pull taut against the original cage, with tiny opposing vibrations.
+      // The overloaded pipe cage vibrates while the shut-down works stay grounded.
       for(const side of [-1,1]){
         g.lineStyle(3,0xb99d65,.85).lineBetween(v.x+108+side*46,v.y+57,v.x+108+side*(67+shake),v.y+247);
       }
@@ -101,7 +98,7 @@ export class ConduitCinematic {
       g.lineStyle(4,0x0a1926,.95);
       for(let i=1;i<crack.length;i++)if(rupture>=i/(crack.length-1))g.lineBetween(v.x+108+crack[i-1][0],v.y+crack[i-1][1],v.x+108+crack[i][0],v.y+crack[i][1]);
       if(!this.reduced)for(let i=0;i<26;i++){
-        const cycle=(t*.24+i*.137)%1,x=v.x-115+(i*73)%430+Math.sin(t+i)*5,y=v.y+330-cycle*330;
+        const cycle=(t*.24+i*.137)%1,x=v.x-115+(i*73)%430+Math.sin(t+i)*5,y=v.y+cycle*330;
         g.fillStyle(i%3?0xa9b5a8:0xd2c6a1,.3+Math.sin(cycle*Math.PI)*.4);
         this.polygon([{x,y},{x:x+4+(i%3)*2,y:y-3},{x:x+8,y:y+2},{x:x+2,y:y+5}]);
       }

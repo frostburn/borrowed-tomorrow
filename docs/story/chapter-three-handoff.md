@@ -1,4 +1,4 @@
-# Next: Chapter Three — Beneath the Palace
+# Next: Chapter Three — The Conduit Works
 
 Chapters One–Three are playable canon. This document records Chapter Three’s preserved input; see chapter-four-handoff.md for its implemented ending. Continue the successful evacuation and the specific pursuit of Tomas; do not restart the discarded campaign.
 
@@ -32,9 +32,9 @@ directly in `capital-crossing-art.ts` and use the common chunky framebuffer.
 
 ## Start with the capital route
 
-Orrin’s coal engine is pulling the medical coaches. Rescued prisoners and Cinderbank families are aboard. A current medical-train clearance gives the party a southern siding below the capital. Kit knows the southern medical siding and the path to the engine works gate from his postal rounds. Show that clearance working promptly; do not withhold the known destination behind unrelated chores.
+Orrin’s coal engine is pulling the medical coaches. Rescued prisoners and Cinderbank families are aboard. A current medical-train clearance gives the party a southern siding at the conduit works outside the marble capital. Kit knows the southern medical siding and the path to the engine works gate from his postal rounds. Show that clearance working promptly; do not withhold the known destination behind unrelated chores.
 
-Tomas is alive in personal custody at the palace engine works. A fellow prisoner kept his transfer slip for Nell, including the note that collectors feed the engines. His sabotage should create a real opening for the rescue. Bring him home alive in this chapter and keep that accomplishment permanent.
+Tomas is alive in personal custody at the imperial conduit works. A fellow prisoner kept his transfer slip for Nell, including the note that collectors feed the engines. His sabotage should create a real opening for the rescue. Bring him home alive in this chapter and keep that accomplishment permanent.
 
 Petra defended Alban as Chapter Two’s boss and was disarmed at the crossing. When Alban then ordered fire on the medical coaches, she refused and lost her commission. She witnessed Orrin’s coal engine carry the passengers without a crystal, then stayed to countermand the firing order among her soldiers. She has not joined Nell. In Chapter Three Alban offers to restore her commission if she seals the coaches; she refuses publicly, breaks his command rod and joins deliberately. The active formation remains capped at three after she joins. Alban survived, lost the crossing and failed to recapture the prisoners; do not return these people to captivity to recreate the same objective.
 
@@ -44,7 +44,7 @@ Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature
 
 Celia’s introduction and faith conflict begin at the Chapter Four harbor. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
-The implemented chapter rescues Tomas, disables extraction and makes the emperor choose to merge with the palace conduit. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
+The implemented chapter rescues Tomas, disables extraction and makes the Emperor use the conduit’s last charge to teleport to the marble capital. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
 
 ## Tiled implementation and development start
 
