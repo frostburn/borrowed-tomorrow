@@ -1,3 +1,5 @@
+import {soundtrackFlows} from './soundtrack-flow';
+soundtrackFlows(true);
 import {skillEquipmentFlows} from './skill-equipment-flow';
 skillEquipmentFlows(true);
 import { arrival } from '../../src/content/maps';

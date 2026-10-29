@@ -1,0 +1,16 @@
+.soundtrack-dialog{width:min(960px,100%)}
+.soundtrack{display:grid;grid-template-columns:minmax(240px,.9fr) minmax(0,1.1fr);gap:24px}
+.soundtrack h3{font-size:20px;line-height:24px;color:#f4c77a}
+.soundtrack p,.soundtrack h4,.soundtrack button,.soundtrack label,.soundtrack input,.soundtrack span{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:16px}
+.soundtrack .soundtrack-kicker{color:#b8a780;margin-bottom:16px}.soundtrack #soundtrack-title{margin-bottom:16px}
+.soundtrack-player{border:1px solid #625842;padding:16px;align-self:start;background:#142b29}
+.soundtrack-transport{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 16px}.soundtrack button{min-height:32px;white-space:normal}
+.soundtrack-seek,.soundtrack-volume{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.soundtrack input{width:64px;padding:6px;background:#182b32;color:#f4e5be;border:1px solid #8b805e;line-height:20px}
+.soundtrack-note{color:#87a3a2;margin-top:16px}.soundtrack-error{color:#e5bf88}
+.soundtrack-chapters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}.soundtrack-chapters button{padding:6px 8px}
+.soundtrack-tracks{overflow:auto;max-height:348px;padding-right:8px}.soundtrack-act+ .soundtrack-act{margin-top:20px}
+.soundtrack-act h4{color:#b8a780;margin:0 0 8px}.soundtrack-act button{display:block;text-align:left;width:100%;padding:10px;margin-bottom:8px}
+@media(max-width:1023px){.soundtrack .soundtrack-kicker,.soundtrack .soundtrack-note{display:none}.soundtrack{display:flex;flex-direction:column;gap:20px}.soundtrack-player{align-self:stretch;padding:12px}.soundtrack-tracks{max-height:224px}.soundtrack h3{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:16px}.soundtrack #soundtrack-title{font-family:Switchyard;font-size:20px;line-height:24px}.soundtrack-transport{margin-top:16px}.soundtrack .soundtrack-note{margin-top:12px}}
+
+.soundtrack-autoplay{display:flex;align-items:center;gap:8px;margin-top:16px}.soundtrack .soundtrack-autoplay input{width:20px;height:20px;margin:0;accent-color:#f4c77a}

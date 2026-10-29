@@ -400,3 +400,31 @@ data as both films, with the original billing, shared creative credits and
 tooling last. **Back to help**, Close and Escape retain the current scene,
 formation, equipment, battle and music; opening this page writes no saves.
 `game/credits.ts` authors the artwork directly, with no added images or audio.
+
+## Public soundtrack
+
+**Soundtrack** on the title screen and **? → Soundtrack** in the campaign or
+workshop open the production listening player. Chapters Five and Six separate
+their acts and regional expeditions; **Extras** contains retained themes.
+`content/soundtrack.ts` is the shared catalogue for this player and the dev
+Music workshop. It lists every score once, including short scene cues.
+
+Play, Pause, Stop, Restart, Previous/Next and Previous/Next bar controls use the game's actual
+31-EDO scores and instruments. Pause suspends the listener's audio clock so
+resuming continues at the same beat. The bar field applies changes immediately, without a Seek button.
+Autoplay plays each track once before advancing through the catalogue; unchecked,
+tracks repeat their authored loops. Authored openings still play only once.
+The good and bad ending credits cues are labelled in the catalogue. The player displays meter, tempo and bar position;
+it does not display notes. Its volume is independent of the campaign's setting.
+
+The player, catalogue and CSS load on opening; the score/synth chunk loads only
+on Play. No workshop editing tools ship with it. An isolated dry audio instance
+temporarily replaces the host music. Closing, Escape, Back to help and replacing
+the dialog release it and restore previously audible host music at its saved
+bar. Campaign saves and the remembered sound preference are untouched. Closing
+during a pending import cancels that request's playback.
+
+`tests/soundtrack.test.ts` checks catalogue coverage and host restoration. The
+opt-in `public soundtrack` browser cases cover desktop/phone at fractional DPR,
+real synthesis, transport, intro looping, preferences and loading cancellation
+in both dev and production. They are outside the small default CI browser gate.
