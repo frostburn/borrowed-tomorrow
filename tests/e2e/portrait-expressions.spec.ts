@@ -56,6 +56,11 @@ test('human portrait eyes retain their authored shapes at every chunky sampling 
  const entries=Object.values(CHARACTERS).flatMap(character=>portraitExpressions(character.portrait).flatMap(expression=>{
   const name=expression==='neutral'?character.portrait:`${character.portrait}-${expression}`;
   const svg=readFileSync(new URL(`../../public/art/vector/${name}.svg`,import.meta.url),'utf8');
+  if(name==='portrait-emperor'){
+   const pupils=[...svg.matchAll(/<rect x="(\d+)" y="(\d+)" width="3" height="4" fill="#142a37"/g)];
+   expect(pupils).toHaveLength(2);
+   return [{name,boxes:pupils.map(m=>[+m[1],+m[2],+m[1]+3,+m[2]+4]),colors:['#142a37']}];
+  }
   const match=[...svg.matchAll(/<path d="M(\d+) (\d+)H(\d+)V(\d+)H\d+Z M(\d+) (\d+)H(\d+)V(\d+)H\d+Z" fill="(#[0-9a-f]+)"\/>/g)].find(m=>[3,4].includes(+m[3]-+m[1])&&+m[7]-+m[5]===+m[3]-+m[1]&&+m[2]>=46&&+m[2]<=55);
   if(!match)return [];
   return [{name,boxes:[[+match[1],+match[2],+match[3],+match[4]],[+match[5],+match[6],+match[7],+match[8]]],colors:[match[9],...(name.includes('tomas')?['#25372b']:[])]}];
@@ -76,9 +81,9 @@ test('human portrait eyes retain their authored shapes at every chunky sampling 
      }
      return count;
     });
-    // Tilda's left upper lid deliberately covers one chunky row.
+    // Tilda's lowered left pupil sits under a partly closed upper lid.
     // The Emperor retains paired narrow slits, not the cast's square pupils.
-    const valid=entry.name==='portrait-tilda'?counts[0]===4&&counts[1]===2:counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
+    const valid=entry.name==='portrait-tilda'?counts[0]===4&&counts[1]===(py===0?2:4):counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
     if(!valid)failures.push({name:entry.name,px,py,counts});
    }
   }

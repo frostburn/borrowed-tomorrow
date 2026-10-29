@@ -75,7 +75,7 @@ Bram’s brim sits four pixels higher to expose his far eye, and Iona’s far pu
 sits inside its lens opening. The original SVGs remain the neutral sources;
 regenerate expressions with `python3 assets/vector/portrait-expressions.py`.
 
-The Emperor retains his original tall, thin 3 × 4 native pupils. Tilda’s left
+The Emperor’s entire portrait remains identical to main, including its tall, thin pupils. Tilda’s left
 upper eyelid (on the right in-camera) is slightly lowered over that eye; its
-smaller visible pupil is deliberate. Keep these individual shapes when
+pupil moves one native pixel down beneath that lid. Keep these individual shapes when
 auditing the otherwise square pupils through the chunky raster.
