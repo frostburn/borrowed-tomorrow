@@ -1,10 +1,13 @@
 # Cinematic vector scenery
 
-The recurring hollow sun shares its twelve broad rays and empty aperture through
+The recurring hollow sun shares its twelve broad ray positions and empty aperture through
 `src/content/hollow-sun.json`. `assets/vector/hollow_sun.py` draws the source SVG
 emblems, Chapter Five inlays, imperial breastplate and Chapter Seven sky signs;
-the live capital reveal uses the same geometry. Only damaged versions use the
-accepted sun boss's three fractures. The boss's suspended shard is separate.
+the live capital reveal uses the same geometry. The reference is the archived
+`47f59cd` raster boss: one missing upper-left wedge, a missing ray at that wedge,
+and several smaller closed zigzag fractures across an otherwise continuous rim.
+The primary boss halo and its portrait share this pattern; the body outside the
+halo stays intact. The sun-form boss's suspended shard remains separate.
 To rebuild the affected art without exporting unrelated actors:
 
 ```sh
@@ -18,6 +21,7 @@ python3 assets/vector/chapter-one.py --chapter three --map conduit
 python3 assets/vector/chapter-five.py
 python3 assets/bosses/export-imperial.py
 python3 assets/vector/chapter-six-capital.py
+python3 assets/bosses/export-benefactor.py
 python3 assets/bosses/export-benefactor-forms.py
 python3 assets/vector/chapter-seven.py
 ```

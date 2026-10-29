@@ -39,7 +39,7 @@ def vessel(pose='idle'):
  # The same hollow-sun emblem embossed in brass; its open center exposes the
  # recessed breastplate. This is heraldry, without the god's suspended shard.
  out += [p([(289,225),(313,190),(307,146),(316,153),(321,194),(294,232),(269,241),(264,235)],'#344b58'),'<g id="imperial-sun-insignia">',p([(221,146),(264,135),(307,146),(313,190),(289,225),(264,235),(239,225),(215,190)],'#806b48'),p([(226,150),(264,141),(302,150),(307,188),(285,218),(264,226),(243,218),(221,188)],'#9b783f')]
- out += ['<ellipse cx="264" cy="181" rx="21" ry="21" fill="#506b80"/>',emblem(264,181,29,gold=SHADOW if fallen else GOLD,shade='#806b48',light=BLUE if fallen else WHITE,broken=fallen),'</g>']
+ out += ['<ellipse cx="264" cy="181" rx="30" ry="30" fill="#506b80"/>',emblem(264,181,29,gold=SHADOW if fallen else GOLD,shade='#806b48',light=BLUE if fallen else WHITE),'</g>']
  for y in (250,263):out += [p([(167,y),(214,y-10),(264,y-4),(314,y-10),(361,y),(351,y+8),(306,y+1),(264,y+7),(222,y+1),(177,y+8)],GOLD if not fallen else SHADOW)]
  if fallen:out += [p([(259,144),(266,159),(260,177),(271,187),(260,217),(262,197),(252,183),(260,163)],INK)]
  if pose=='cast':

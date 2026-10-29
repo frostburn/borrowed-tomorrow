@@ -65,7 +65,7 @@ def sky(sea=True):
   out += [poly([(1050,123),(1157,112),(1136,144),(1075,151)],'#b2c5b9'),poly([(1050,123),(1075,151),(1136,144),(1133,152),(1073,160)],'#628f92'),line([(1105,143),(1111,240)],'#a9c1b5',4),poly([(1108,161),(1110,231),(1157,218)],'#83a7a3')]
  return out
 def sun(cx=768,cy=197,r=102):
- return [emblem(cx,cy,r,broken=True)]
+ return [emblem(cx,cy,r)]
 def arch(x,y,w,h):
  # Crooked masonry jambs, separate lit glass and deep colored reveal planes.
  return lean([poly([(x-10,y),(x+w-5,y-6),(x+w+8,y+h),(x,y+h+4)],'#63858b'),poly([(x+w-22,y+4),(x+w-5,y-6),(x+w+8,y+h),(x+w-18,y+h-6)],'#405e6d'),poly([(x-15,y),(x+w*.48,y-54),(x+w+14,y-9),(x+w-4,y+12),(x+w*.48,y-30),(x+1,y+18)],'#c3c9b3'),poly([(x+28,y+h),(x+27,y+62),(x+w*.48,y+10),(x+w-28,y+56),(x+w-21,y+h-5)],'#365865'),poly([(x+40,y+h-8),(x+39,y+68),(x+w*.48,y+28),(x+w-40,y+65),(x+w-34,y+h-12)],'#86a39b'),poly([(x+47,y+73),(x+w*.48,y+40),(x+w*.48,y+h-21),(x+48,y+h-15)],'#b4c3a7'),line([(x+w*.48,y+42),(x+w*.48+3,y+h-16)],'#768f88',5),line([(x+44,y+h*.53),(x+w-36,y+h*.53-5)],'#668982',5),poly([(x+20,y+h-4),(x+w-20,y+h-12),(x+w-11,y+h+1),(x+14,y+h+10)],'#b8bba0')],y+h,.025 if x<768 else -.026)

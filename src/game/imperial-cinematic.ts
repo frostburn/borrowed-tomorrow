@@ -34,6 +34,7 @@ export class ImperialCinematic {
      const polygon=(points:{x:number;y:number}[])=>{g.beginPath().moveTo(points[0].x,points[0].y);for(const p of points.slice(1))g.lineTo(p.x,p.y);g.closePath().fillPath();};
      g.fillStyle(0xc2a16b,.9);for(const ray of sun.rays)polygon(ray);
      for(const [i,band]of sun.bands.entries()){g.fillStyle(i<8?0xe4cf94:0xaa8e5f,.95);polygon(band);}
+     g.lineStyle(Math.max(.8,radius*hollowSun.fractureWidth),0x967e55,.9);for(const crack of sun.cracks){g.beginPath().moveTo(crack[0].x,crack[0].y);for(const p of crack.slice(1))g.lineTo(p.x,p.y);g.strokePath();}
     }else{
      g.lineStyle(8,0xe5ebcd,(1-p)*.35).lineBetween(x,y-210,x+80,y+330);g.lineStyle(2,0xffeab2,1-p).lineBetween(x,y-210,x+80,y+330);
      for(let i=0;i<6;i++)g.fillStyle(0xf2dfb4,1-p).fillRect(x+i*14-40,y+i*28-100+p*30,4,7);

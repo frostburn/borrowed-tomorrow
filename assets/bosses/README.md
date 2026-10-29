@@ -35,9 +35,11 @@ All exporters use Python's standard library, with no production authoring depend
 
 The Benefactor breathes on the scene clock over 3.2 seconds, with its base anchored. Judgment gathers, releases and recovers through the shared 220/420/660/920ms timeline. Its sun/heart manifestations retain their separate campaign rules and 19/19/7-contact footprints.
 
-The Hollow Sun's corona is three faceted bronze arcs with visible back planes and
-fracture end faces. The opening and breaks are transparent SVG geometry, rather
-than dark strips painted across the aperture. Its suspended fragment, corona and
+The Hollow Sun's corona follows the old `47f59cd` raster reference: one missing
+upper-left wedge with irregular fracture faces, and several smaller closed cracks
+across a continuous bronze rim. The aperture and main break are transparent SVG
+geometry; the fine seams sit in the metal. `hollow-sun.json` shares this pattern
+with the primary god halo, portraits and recurring in-world emblems. Its suspended fragment, corona and
 rays move together through all twelve native poses. Regenerate only its atlas
 (and the unchanged heart atlas) with `export-benefactor-forms.py`; the shared frame
 remains 360 × 288 and the body/heart originals are independent.
