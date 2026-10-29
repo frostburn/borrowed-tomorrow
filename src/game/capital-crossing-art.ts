@@ -165,8 +165,11 @@ function capital(c:C,p:number,t:number){
  poly(c,'#2b4945',[[252,171],[252,154],[259,147],[275,147],[284,153],[286,171]]);
  line(c,'#9ba385',2,[[251,170],[251,153],[258,146],[276,146],[285,152],[287,170]]);
  // A small royal crest is architectural decoration, never a divine apparition.
- oval(c,'#c0a367',293,92,11,11);oval(c,'#4a6b5c',293,92,6,6);
- for(let i=0;i<8;i++){const a=i*Math.PI/4;line(c,'#c0a367',2,[[293+Math.cos(a)*13,92+Math.sin(a)*13],[293+Math.cos(a)*16,92+Math.sin(a)*16]]);}
+ // One open upper-left wedge, matching the hollow-sun emblem without fractures.
+ oval(c,'#4a6b5c',293,92,6,6);
+ c.fillStyle='#c0a367';c.beginPath();c.arc(293,92,11,1.42*Math.PI,3.12*Math.PI);
+ c.arc(293,92,6,3.12*Math.PI,1.42*Math.PI,true);c.closePath();c.fill();
+ for(let i=0;i<8;i++){if(i===5)continue;const a=i*Math.PI/4;line(c,'#c0a367',2,[[293+Math.cos(a)*13,92+Math.sin(a)*13],[293+Math.cos(a)*16,92+Math.sin(a)*16]]);}
  // Medical pavilion and a covered platform below the works.
  poly(c,'#829580',[[356,149],[426,143],[456,158],[449,179],[356,179]]);
  poly(c,'#d4ccb0',[[350,148],[386,132],[428,137],[461,154],[453,158],[386,143],[354,154]]);
