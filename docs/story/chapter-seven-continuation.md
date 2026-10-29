@@ -2,6 +2,17 @@
 
 Entry: a current version-11 Chapter Six save at `chapter-seven:hollow-sun`, with `chapterSixComplete`, `nellRecovered`, the Emperor's defeat and good landing. The loader must finish the native domain/boss kit before `beginChapterSeven` consumes the departure. No migration, new cure, resource reset or forced active formation occurs. The ill Lightbearer ending never enters.
 
+The earned Chapter Six departure first plays **Through the broken sun**, a
+sixteen-second, three-shot vector journey: climb above the grounded capital,
+all five companions on deck at the threshold, then a suspended pier beneath
+the sea. Nell is well, keeps the treated lantern in her right hand and appears
+even when in reserve. The ship holds the entrance. There is no god figure or
+voice in the film; `seven-crossing` retains the dramatic upward reveal, warning
+and withdrawal before `domainEntered`. Pause, skip, return, export and reload
+keep the actual departure; missing domain/boss art retains retry. Canonical
+Chapter Seven starts enter the original scene directly. The Lightbearer ending
+remains terminal. Preview at `?dev=cinematics&film=hollow-crossing`.
+
 | Location | Required progress and next checkpoint |
 | --- | --- |
 | `hollowsill` | Upward camera reveal, warning and visible withdrawal → `domainEntered`; the god leaves the stair clear. Supplies and Alda. |

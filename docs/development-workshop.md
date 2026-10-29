@@ -345,6 +345,19 @@ Pause, skip, return, export, replay and missing-art retry use the shared player,
 with Nell's illness and the actual roster/resources intact. The quiet half-time
 airship arrangement is in Music/Soundtrack → Ch 5; Two Seals at the Gate is intact.
 
+The **Chapter Six → Seven** selection (`?dev=cinematics&film=hollow-crossing`)
+reviews the recovered route's final sixteen-second crossing: the ship climbs
+above the landed capital, all five companions face the broken sun on deck,
+and the ship holds a pier beneath the suspended sea. Nell carries the lantern
+in her right hand. The film adds no god body or voice: Chapter Seven's original
+upward reveal, warning and withdrawal follow after the asset-checked arrival.
+**Through the broken sun** develops Under the Hanging Sea at 120 BPM, with
+strings yielding to organ and soft bells over low percussion. Music → Ch 6 and
+the public soundtrack include it. The actual recovered departure, all resources,
+formation and gear persist through pause/skip/return/replay/retry. Canonical
+Chapter Seven starts still open its original arrival; the bad ending has no
+crossing. Narrow screens contain all three compositions.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.

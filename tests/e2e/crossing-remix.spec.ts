@@ -1,3 +1,4 @@
+import {chapterSevenDeparture} from '../../src/dev/canonical-saves';
 import {mooringDeparture} from '../support/mooring';
 import {anchorDeparture} from '../support/anchors';
 import {test,expect} from '@playwright/test';
@@ -25,7 +26,7 @@ test('the crossing plays its workshop remix continuously and the Music tab revie
  await page.locator('[data-cue="crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'crossing-remix-workshop');expect(errors).toEqual([]);
 });
 
-for(const mode of ['crossing','capital-crossing','refuge-crossing','airfield-crossing'] as const)test(`${mode} athletic arrangement renders with headroom and energy in every bar`,async({page})=>{
+for(const mode of ['crossing','capital-crossing','refuge-crossing','airfield-crossing','hollow-crossing'] as const)test(`${mode} athletic arrangement renders with headroom and energy in every bar`,async({page})=>{
  await page.goto('/');const stats=await page.evaluate(async(mode)=>{
   // @ts-expect-error Vite serves the production score/rack source.
   const {scoreBar}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
@@ -149,4 +150,23 @@ for(const mode of ['mooring-crossing'] as const)test(`${mode} quiet arrangement 
   });
  },mode);
  for(const bar of stats){expect(bar.peak).toBeLessThan(.98);expect(bar.rms).toBeGreaterThan(.001);}console.log('Crossing render',stats);
+});
+
+test('the hollow crossing plays its domain arrangement continuously and Music reviews it',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ await page.evaluate(async()=>{
+  // @ts-expect-error Observe the real mixer in the dev build.
+  const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');const original=Audio.prototype.setMode;
+  Audio.prototype.setMode=function(mode){(window as unknown as {crossingMusic:()=>unknown}).crossingMusic=()=>this.position();original.call(this,mode);};
+ });
+ await page.getByRole('button',{name:'Sound off',exact:true}).click();
+ const position=()=>page.evaluate(()=>(window as unknown as {crossingMusic:()=>{mode:string;bar:number;playing:boolean}}).crossingMusic());
+ await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await importSave(page,chapterSevenDeparture());
+ await page.getByRole('button',{name:'Pause',exact:true}).click();await expect.poll(position).toMatchObject({mode:'hollow-crossing',playing:true});
+ await page.getByRole('button',{name:'Next shot',exact:true}).click();await page.getByRole('button',{name:'Next shot',exact:true}).click();
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'hollow-crossing',bar:1,playing:true});
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('seven-crossing');
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'hollowsill',playing:true});
+ await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 6',exact:true}).click();
+ await page.locator('[data-cue="hollow-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'hollow-remix-workshop');expect(errors).toEqual([]);
 });

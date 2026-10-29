@@ -164,3 +164,16 @@ ending panel. There is no Nell actor, recovery or victory over the Benefactor.
 Skip/finish and reload return to the existing ending panel; replay is optional
 and the pre-assault checkpoint is retained. Workshop → Cinematics previews both
 endings without campaign writes.
+
+
+## Final crossing presentation
+
+After Alda's **Prepare the final crossing** choice saves the recovered
+`chapter-seven:hollow-sun` departure, a sixteen-second wordless vector film
+carries the companions above the landed capital, through the broken sun and
+onto a pier beneath the suspended sea. **Stay** still permits allies, training,
+supplies and equipment before commitment. Return, export, reload and retry
+preserve that actual departure; Chapter Seven begins only after its complete
+native kit loads. Its original god reveal, warning and withdrawal follow the
+film. Canonical Chapter Seven starts and the terminal Lightbearer ending retain
+their existing behavior. See [the next handoff](chapter-seven-continuation.md).
