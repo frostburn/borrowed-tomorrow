@@ -55,7 +55,7 @@ function ascent(c:C,p:number,t:number){
 function threshold(c:C,p:number,t:number){
  rect(c,'#344b5b',0,0,512,288);
  poly(c,'#697f83',[[0,147],[107,131],[187,144],[313,119],[401,139],[512,125],[512,248],[0,248]]);
- c.save();c.translate(256,93);c.scale(1+p*.08,1+p*.08);opening(c,0,0,94,t);c.restore();
+ c.save();c.translate(256,108);c.scale(1+p*.08,1+p*.08);opening(c,0,0,74,t);c.restore();
  // The same foredeck, with its far rail behind the cast in camera view.
  poly(c,'#536e66',[[0,247],[243,211],[367,220],[512,251],[512,288],[0,288]]);
  poly(c,'#89947b',[[0,246],[243,208],[369,217],[512,247],[512,254],[367,225],[243,217],[0,254]]);
