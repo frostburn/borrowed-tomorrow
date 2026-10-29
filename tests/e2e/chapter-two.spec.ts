@@ -125,11 +125,11 @@ test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital trai
   await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await battle(page,'cinderbank-collector-battle');
   await visit(page,'siding-release');expect((await inspect(page)).state.flags.evacuationReady).toBe(true);
   await approach(page,'siding-alban');await dialogue(page);await battle(page,'coast-petra-battle');
-  await visit(page,'capital-engine');await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete');
+  await visit(page,'capital-engine');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-three-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,'chapter-two-complete');
   const final=(await inspect(page)).state;expect(final.boundary).toBe('chapter-three:capital');expect(final.flags.villageFreed).toBe(true);expect(final.inventory.characters.kit.fitting).toBe('courier-sight');
   const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export departure save',exact:true}).click();const exported=JSON.parse(await readFile((await(await download).path())!,'utf8'));
   expect(exported.activeParty).toEqual(final.activeParty);expect(exported.party).toEqual(final.party);
-  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();
+  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-three-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();
   expect((await inspect(page)).state.inventory).toEqual(final.inventory);expect(errors).toEqual([]);
 });
 
@@ -166,7 +166,7 @@ test('loading-gate route, ward supplies and the escape work on a phone',async({p
   await page.getByRole('button',{name:'Buy a bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
   await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toBeVisible();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await visit(page,'siding-release');await approach(page,'siding-alban');await dialogue(page);await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await visit(page,'capital-engine');
-  await expect(page.getByRole('heading',{name:'Chapter Two complete',exact:true})).toBeVisible();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);
+  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-three-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {

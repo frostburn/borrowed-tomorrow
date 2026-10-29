@@ -10,6 +10,26 @@ The complete Chapter One flag chain remains set. Chapter Two requires `coastSeen
 
 The recruited `party` contains Nell, Orrin and Kit. Celia has not appeared or joined. `activeParty` contains Nell plus zero to two selected companions. Never discard or reset reserve equipment or health. Petra and Tomas are not roster members or reserves at this departure. Load and validate new scenery before consuming the boundary; leave it intact on failure.
 
+## The capital-line cinematic
+
+Completing the Chapter Two departure now plays a sixteen-second wordless vector
+film instead of the completion card. Three shots show the coal engine pulling
+the full medical coaches away from the coast, Dena tending a passenger while
+Nell and Kit check the clearance, and the grounded green-iron engine works
+coming into view through the cab. A father and child keep reading the delivered
+letter. Petra remains behind; Tomas is still captive. An athletic Northglass remix, “Capital line — full steam,” carries
+through the film before the original theme returns at the existing capital arrival, where the clerk checks the
+clearance and admits the train.
+
+Automatic arrival and Skip use the unchanged asset-checked Chapter Three entry.
+Pause, return to the siding and departure export remain available. Missing
+scenery holds the final shot with Retry crossing and leaves the boundary intact.
+Loading the departure replays the film; no extra completion flag or resource
+change is recorded. Reduced motion shows three still shots. Review in
+**Cinematics → Chapter Two → Three**, or `?dev=cinematics&film=capital-crossing`.
+The shared engine remains in `crossing-drawing.ts`; the new shots are authored
+directly in `capital-crossing-art.ts` and use the common chunky framebuffer.
+
 ## Start with the capital route
 
 Orrin’s coal engine is pulling the medical coaches. Rescued prisoners and Cinderbank families are aboard. A current medical-train clearance gives the party a southern siding below the capital. Kit knows the southern medical siding and the path to the engine works gate from his postal rounds. Show that clearance working promptly; do not withhold the known destination behind unrelated chores.

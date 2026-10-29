@@ -127,7 +127,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  test(`production Chapter Three keeps Tomas safe and equipment through the departure on ${device}`,async({page})=>{
 
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
-  await importSave(page,coastCheckpoint('chapterTwoComplete'));await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await dialogue(page);
+  await importSave(page,coastCheckpoint('chapterTwoComplete'));await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);
   await importSave(page,palaceCheckpoint('worksWardenWon'));await dialogue(page);expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
   await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Nell',exact:true}).click();await page.locator('.ci-items').getByRole('button',{name:/^Silver reflector/}).click();await page.getByRole('button',{name:'Equip on Nell',exact:true}).click();await capture(page,`silver-reflector-production-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
   await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.inventory.characters.nell.fitting).toBe('silver-reflector');
@@ -242,9 +242,9 @@ test('production guardian defeat retries a fresh machine without granting progre
 });
 
 test('production missing regulator SVG keeps the capital departure intact for retry',async({page})=>{
- await page.route('**/art/vector/bosses/conduit-regulator-motion.svg',r=>r.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
+ await page.route('**/art/vector/bosses/conduit-regulator-motion.svg',r=>r.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();
  await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
- await page.unroute('**/art/vector/bosses/conduit-regulator-motion.svg');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.unroute('**/art/vector/bosses/conduit-regulator-motion.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
 
 test('production Chapter Five continues the coast departure and supports deep Act I saves without dev tools',async({page})=>{

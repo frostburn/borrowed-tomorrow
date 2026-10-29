@@ -52,6 +52,15 @@ Each encounter declares its music cue in content. Future chapters must choose th
 
 ## Beneath the Palace
 
+The capital-line cinematic uses **Capital line — full steam** (`capital-crossing`):
+eight bars of 4/4 at 120 BPM, exactly sixteen seconds. It retains Northglass’s
+complete F–Em–Am–Dm–G–Gm7–C7–F sentence and shared opening melody. Short piano
+attacks trade into a broader string answer, with high wood accents, moving
+chord-tone bass, alternating lute dyads, eighth-note hats, backbeat snare and
+brief phrase-ending fills. The last bar opens space before the original
+Northglass arrangement takes over at the siding. Review under Music/Soundtrack
+→ Chapter Two. The original capital and gallery scores retain their notes.
+
 The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Audible bell rolls anticipate the even-bar bells by half a beat; their four ascending attacks lead into the main call. Roll velocities rise from .045 to .06. All four notes stay held to beat 3.5 and release together over 1.8 seconds, so the chord supports the call instead of dropping away after its attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
 
 

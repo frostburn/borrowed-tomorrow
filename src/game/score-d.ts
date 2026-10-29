@@ -10,7 +10,7 @@ export const NORTHGLASS_CHORDS={
   c7:{root:'C2',notes:['E3','Bb3','C4','G4']},
 } satisfies Record<string,{root:Pitch;notes:Pitch[]}>;
 type Tune=[number,Pitch,number][][];
-const yard:Tune=[
+export const NORTHGLASS_MELODY:Tune=[
   [[0,'A4',1.25],[1.5,'C5',.5],[2.5,'E5',.5],[3.25,'C5',.5]],
   [[0,'B4',1],[1.5,'G4',.5],[2.5,'E4',1]],
   [[0,'A4',1.5],[2,'C5',.5],[3,'E5',.75]],
@@ -57,7 +57,7 @@ export function scoreD(mode:'northglass'|'relayhall'|'switching',bar:number):Not
   const {root,notes:chord}=NORTHGLASS_CHORDS[NORTHGLASS_HARMONY[index%8]],out:Note[]=[];
   const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>out.push({instrument,pitch,beat,duration,velocity,pan});
   const middle=index>=16&&index<24;
-  const tune=quiet?(middle?hallBridge[index-16]:hall[index<16?index:index-24]):middle?bridge[index-16]:yard[index<16?index:index-24];
+  const tune=quiet?(middle?hallBridge[index-16]:hall[index<16?index:index-24]):middle?bridge[index-16]:NORTHGLASS_MELODY[index<16?index:index-24];
   const lead=quiet?'reed':battle?'reed':'keys';
   for(const [beat,pitch,duration] of tune){
     const resolved=index===31?'F5':pitch;

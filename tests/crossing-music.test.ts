@@ -13,3 +13,16 @@ it('fits an eight-bar athletic workshop remix to the full cinematic',()=>{
  }
  expect(scoreBar('crossing',8)).toEqual(scoreBar('crossing',0));
 });
+
+it('fits the capital remix to its film and preserves the Northglass melody identity',()=>{
+ expect(scoreLength('capital-crossing')).toBe(8);
+ expect(8*ARRANGEMENTS['capital-crossing'].beats*60000/ARRANGEMENTS['capital-crossing'].bpm).toBe(CROSSING_DURATION);
+ for(let bar=0;bar<8;bar++){
+  const notes=scoreBar('capital-crossing',bar),source=scoreBar('northglass',bar).filter(n=>n.pan===-.12);
+  expect(notes.filter(n=>n.pan===-.12).map(n=>n.pitch)).toEqual(source.map(n=>n.pitch));
+  expect(notes.filter(n=>n.instrument==='hat')).toHaveLength(8);
+  expect(notes.some(n=>n.instrument==='bass')).toBe(true);
+  for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
+ }
+ expect(scoreBar('capital-crossing',8)).toEqual(scoreBar('capital-crossing',0));
+});

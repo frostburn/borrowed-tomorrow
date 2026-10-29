@@ -2,7 +2,7 @@ import {openSoundtrack} from '../game/soundtrack-entry';
 import {showCredits} from '../game/credits';
 import {ENDING_FILMS,endingShotStart,type EndingKind} from '../content/ending-film';
 import {paintEndingFilm} from '../game/ending-art';
-import {CROSSING_SHOTS,crossingShotStart} from '../content/crossing';
+import {CROSSING_FILMS,crossingShotStart,type CrossingKind} from '../content/crossing';
 import {paintChapterCrossing} from '../game/crossing-art';
 import {BOSS_CHOICES,campaignBoss,createCampaignBoss,workshopBoss,type WorkshopBoss} from './boss-catalog';
 import {campaignBossPortrait,campaignBossPresentation,loadCampaignBoss} from './campaign-boss-preview';
@@ -63,7 +63,7 @@ class Workshop {
   private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' | 'cinematics' = new URLSearchParams(location.search).get('dev') === 'cinematics' ? 'cinematics' : new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private endingShot=0;
   private endingKind:EndingKind='good';
-  private crossingSelected=new URLSearchParams(location.search).get('film')==='crossing';
+  private crossingSelected:CrossingKind|undefined=new URLSearchParams(location.search).get('film')==='capital-crossing'?'capital':new URLSearchParams(location.search).get('film')==='crossing'?'coast':undefined;
   private hero: CompanionId = 'nell';
   private boss:WorkshopBoss=workshopBoss(new URLSearchParams(location.search).get('boss'));
   private loadingBoss=false;
@@ -239,18 +239,18 @@ class Workshop {
     this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
     const crossing=this.crossingSelected;
-    const film=crossing?{label:'Chapter One → Two',title:'The Iron Coast crossing',shots:CROSSING_SHOTS}:ENDING_FILMS[this.endingKind];
-    const description=crossing?'Orrin’s coal engine leaves the mountain pass, crosses the coastal viaduct and approaches the exchange.':this.endingKind==='good'?'A wordless epilogue: the released crossing, Larkspur, window seats and the real sea.':'One continuous pullback from Nell’s folded coat at an empty seat reveals the surviving companions and her broken lantern, before the train leaves and rain begins. The Benefactor remains undefeated.';
+    const film=crossing?CROSSING_FILMS[crossing]:ENDING_FILMS[this.endingKind];
+    const description=crossing?CROSSING_FILMS[crossing].description:this.endingKind==='good'?'A wordless epilogue: the released crossing, Larkspur, window seats and the real sea.':'One continuous pullback from Nell’s folded coat at an empty seat reveals the surviving companions and her broken lantern, before the train leaves and rain begins. The Benefactor remains undefeated.';
     this.ui.initiative.textContent='Cinematics / '+film.label;
-    this.ui.sceneLayer.innerHTML='<section class="inventory-panel" aria-label="Character workshop">'+this.tabs()+'<nav class="panel-actions" aria-label="Cinematic selection">'+(Object.keys(ENDING_FILMS) as EndingKind[]).map(kind=>'<button class="'+(!crossing&&kind===this.endingKind?'selected':'')+'" data-ending-kind="'+kind+'" aria-pressed="'+(!crossing&&kind===this.endingKind)+'">'+ENDING_FILMS[kind].label+'</button>').join('')+'<button data-crossing-kind aria-pressed="'+crossing+'" class="'+(crossing?'selected':'')+'">Chapter One → Two</button></nav><section class="ending-workshop" aria-label="Cinematic preview"><div><h2>'+film.title+'</h2><canvas id="ending-poster" width="512" height="288" aria-label="Selected cinematic shot"></canvas><p>'+description+(crossing?'':' Both endings use the same credits.')+'</p><div id="ending-start" class="panel-actions"></div></div><div><h3>Shots</h3><nav class="ending-shot-list" aria-label="Cinematic shots">'+film.shots.map((s,index)=>'<button class="'+(index===this.endingShot?'selected':'')+'" data-ending-select="'+index+'" aria-pressed="'+(index===this.endingShot)+'">'+(index+1)+'. '+s.title+'</button>').join('')+'</nav><p>Space pauses; arrows change shots. The accessibility setting starts a still review. Playback changes no saves, equipment or workshop builds.</p></div></section></section>';
+    this.ui.sceneLayer.innerHTML='<section class="inventory-panel" aria-label="Character workshop">'+this.tabs()+'<nav class="panel-actions" aria-label="Cinematic selection">'+(Object.keys(ENDING_FILMS) as EndingKind[]).map(kind=>'<button class="'+(!crossing&&kind===this.endingKind?'selected':'')+'" data-ending-kind="'+kind+'" aria-pressed="'+(!crossing&&kind===this.endingKind)+'">'+ENDING_FILMS[kind].label+'</button>').join('')+(Object.entries(CROSSING_FILMS) as [CrossingKind,typeof CROSSING_FILMS[CrossingKind]][]).map(([kind,f])=>'<button data-crossing-kind="'+kind+'" aria-pressed="'+(crossing===kind)+'" class="'+(crossing===kind?'selected':'')+'">'+f.label+'</button>').join('')+'</nav><section class="ending-workshop" aria-label="Cinematic preview"><div><h2>'+film.title+'</h2><canvas id="ending-poster" width="512" height="288" aria-label="Selected cinematic shot"></canvas><p>'+description+(crossing?'':' Both endings use the same credits.')+'</p><div id="ending-start" class="panel-actions"></div></div><div><h3>Shots</h3><nav class="ending-shot-list" aria-label="Cinematic shots">'+film.shots.map((s,index)=>'<button class="'+(index===this.endingShot?'selected':'')+'" data-ending-select="'+index+'" aria-pressed="'+(index===this.endingShot)+'">'+(index+1)+'. '+s.title+'</button>').join('')+'</nav><p>Space pauses; arrows change shots. The accessibility setting starts a still review. Playback changes no saves, equipment or workshop builds.</p></div></section></section>';
     this.bindTabs();
     const canvas=this.ui.sceneLayer.querySelector<HTMLCanvasElement>('#ending-poster')!;
-    const poster=crossing?crossingShotStart(this.endingShot)+film.shots[this.endingShot].duration*.55:this.endingKind==='bad'?14000:endingShotStart(this.endingShot,this.endingKind)+film.shots[this.endingShot].duration*.55;
-    if(crossing)paintChapterCrossing(canvas.getContext('2d')!,poster,true);else paintEndingFilm(canvas.getContext('2d')!,poster,this.endingKind!=='bad',this.endingKind);
-    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-kind]'))button.onclick=()=>{this.crossingSelected=false;this.endingKind=button.dataset.endingKind as EndingKind;this.endingShot=0;this.show();};
-    this.ui.sceneLayer.querySelector<HTMLButtonElement>('[data-crossing-kind]')!.onclick=()=>{this.crossingSelected=true;this.endingShot=0;this.show();};
+    const poster=crossing?crossingShotStart(this.endingShot,crossing)+film.shots[this.endingShot].duration*.55:this.endingKind==='bad'?14000:endingShotStart(this.endingShot,this.endingKind)+film.shots[this.endingShot].duration*.55;
+    if(crossing)paintChapterCrossing(canvas.getContext('2d')!,poster,true,crossing);else paintEndingFilm(canvas.getContext('2d')!,poster,this.endingKind!=='bad',this.endingKind);
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-kind]'))button.onclick=()=>{this.crossingSelected=undefined;this.endingKind=button.dataset.endingKind as EndingKind;this.endingShot=0;this.show();};
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-crossing-kind]'))button.onclick=()=>{this.crossingSelected=button.dataset.crossingKind as CrossingKind;this.endingShot=0;this.show();};
     for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-select]'))button.onclick=()=>{this.endingShot=Number(button.dataset.endingSelect);this.show();};
-    const start=(shot:number)=>{this.music.hide();document.querySelector('.game-shell')!.classList.remove('inventory-open');if(crossing)this.scene.previewChapterCrossing(()=>this.show(),shot);else this.scene.previewEndingFilm(()=>this.show(),shot,this.endingKind);};
+    const start=(shot:number)=>{this.music.hide();document.querySelector('.game-shell')!.classList.remove('inventory-open');if(crossing)this.scene.previewChapterCrossing(()=>this.show(),shot,crossing);else this.scene.previewEndingFilm(()=>this.show(),shot,this.endingKind);};
     this.ui.actionRow(this.ui.sceneLayer.querySelector('#ending-start')!,[
       {label:'Play '+film.label.toLowerCase(),action:()=>start(0)},
       {label:'Play selected shot',action:()=>start(this.endingShot)},
