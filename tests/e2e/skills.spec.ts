@@ -33,6 +33,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    const journal=page.locator('.interact-action button'),upgrade=page.getByRole('button',{name:'Upgrade skills · 1',exact:true});
    const j=(await journal.boundingBox())!,u=(await upgrade.boundingBox())!;
    expect(Math.abs(j.x-u.x)).toBeLessThan(1);expect(Math.abs(j.width-u.width)).toBeLessThan(1);expect(u.y).toBeGreaterThanOrEqual(j.y+j.height);
+   const controls=(await page.locator('#controls').boundingBox())!;expect(u.y+u.height).toBeLessThanOrEqual(controls.y+controls.height);
    await capture(page,`skills-actions-aligned-${device}`);
    await page.getByRole('button',{name:'Upgrade skills · 1',exact:true}).click();
    await expect(panel.locator('.skill-identity')).toContainText('Celia');await expect(panel.locator('.skill-summary')).toContainText('1 can be spent now');
