@@ -15,15 +15,18 @@ export function hollowCrossingBar(bar:number):Note[]{
  for(const n of source){
   const melody=n.instrument==='organ'&&Math.abs(n.pan)===.12;
   if(melody){
-   const voice=add(i<4?'strings':'organ',n.pitch,n.beat,n.duration,i<4?.2:.14,-.12);
-   voice.expression=singing(i<4?'warm':'clear',energy,n.duration,false);
+   // The source holds 94% of each gap. Carry through the next attack by
+   // a fifth of a beat (100 ms here), including the strings-to-organ handoff.
+   const duration=n.duration/.94+.2;
+   const voice=add(i<4?'strings':'organ',n.pitch,n.beat,duration,i<4?.2:.14,-.12);
+   voice.expression=singing(i<4?'warm':'clear',energy,duration,false);
    voice.expression.release=.65;
   }else if(n.instrument==='organ'){
    // Long chord planes stay beneath the call and continue across the cuts.
-   const voice=add('strings',n.pitch,n.beat,n.duration,.022,n.pan);
+   const voice=add('strings',n.pitch,n.beat,n.duration+.4,.022,n.pan);
    voice.expression=phrasing(energy,true);voice.expression.release=.8;
   }else if(n.instrument==='round-bass'){
-   const voice=add('round-bass',n.pitch,n.beat,n.duration,.095,-.1);
+   const voice=add('round-bass',n.pitch,n.beat,n.duration+.35,.095,-.1);
    voice.expression=phrasing(energy);voice.expression.release=.5;
   }else if(n.instrument==='bell'){
    add('bell',n.pitch,n.beat,n.duration,.055,.34).expression={...phrasing(energy),release:1.2};

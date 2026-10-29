@@ -95,7 +95,9 @@ The capital and control gallery use the retained 32-bar Evangelion-inspired orig
 The Chapter Six recovered departure uses **Through the broken sun**
 (`hollow-crossing`): eight 4/4 bars at 120 BPM, sixteen seconds on a fixed clock.
 It develops the actual first two sentences of **Under the Hanging Sea**,
-preserving the radiant 31-EDO octatonic pitches, onsets and cross-bar holds.
+preserving the radiant 31-EDO octatonic pitches and onsets. Melodic holds
+overlap the next attack by 100 ms, including the strings-to-organ handoff;
+chord and bass holds also bridge their following attacks.
 Expressive strings lead the ascent; organ takes over at bar five while quiet
 strings sustain underneath. Sparse bells, round bass, measured kicks and a
 short timpani lift support the threshold without turning it into a victory
