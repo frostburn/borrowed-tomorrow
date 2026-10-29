@@ -62,3 +62,19 @@ it('fits the quiet capital approach and halves the airship phrase without changi
  expect(notes.flat().some(n=>['kick','snare','hat','timpani','cymbal'].includes(n.instrument))).toBe(false);
  expect(scoreBar('mooring-crossing',8)).toEqual(scoreBar('mooring-crossing',0));
 });
+
+it('fits the hollow crossing to the film with the actual domain call and held 31-EDO harmony',()=>{
+ expect(scoreLength('hollow-crossing')).toBe(8);
+ expect(8*ARRANGEMENTS['hollow-crossing'].beats*60000/ARRANGEMENTS['hollow-crossing'].bpm).toBe(CROSSING_DURATION);
+ for(let bar=0;bar<8;bar++){
+  const notes=scoreBar('hollow-crossing',bar),source=scoreBar('hollowsill',bar).filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12);
+  expect(notes.filter(n=>n.pan===-.12).map(n=>[n.beat,n.pitch])).toEqual(source.map(n=>[n.beat,n.pitch]));
+ }
+ expect(Array.from({length:8},(_,bar)=>scoreBar('hollow-crossing',bar)).flat().some(n=>n.beat+n.duration>4)).toBe(true);
+ const lead=Array.from({length:8},(_,bar)=>scoreBar('hollow-crossing',bar).filter(n=>n.pan===-.12).map(n=>({...n,beat:bar*4+n.beat}))).flat();
+ for(let i=0;i<lead.length-1;i++){
+  const overlap=lead[i].beat+lead[i].duration-lead[i+1].beat;
+  expect(overlap).toBeGreaterThan(0);expect(overlap).toBeLessThan(.5);
+ }
+ expect(scoreBar('hollow-crossing',8)).toEqual(scoreBar('hollow-crossing',0));
+});

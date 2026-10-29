@@ -21,7 +21,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  test.setTimeout(540000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');const departure=chapterSevenDeparture();if(device==='desktop')departure.activeParty=['orrin','petra','kit'];await importSave(page,departure);
-  await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.activeParty).toEqual(departure.activeParty);await capture(page,`seven-crossing-${device}`);
+  await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.activeParty).toEqual(departure.activeParty);await capture(page,`seven-crossing-${device}`);
   await approach(page,'sill-cross');await at(page,'takenwater');await capture(page,`seven-taken-water-${device}`);
   await fight(page,'water-hounds','Clear the platform');await win(page);await fight(page,'water-collector','Break the first collector');await capture(page,`seven-collector-${device}`);await win(page);
   await approach(page,'water-field');await at(page,'firstfield');await capture(page,`seven-first-harvest-${device}`);await fight(page,'field-furnace','Stop the harvest keeper');await win(page);
@@ -51,8 +51,8 @@ for(const [id,flag]of [['benefactor-body','benefactorBodyWon'],['benefactor-sun'
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,s);await fight(page,'throne-fight',id==='benefactor-body'?'Face the Benefactor':id==='benefactor-sun'?'Face the hollow sun':'Break the exposed heart');await battle(page,`seven-played-${id}`);await drain(page);expect((await inspect(page)).state.flags[flag]).toBe(true);
 });
 test('a missing domain scene preserves the capital departure and retries cleanly',async({page})=>{
- const s=chapterSevenDeparture();await page.goto('/');await importSave(page,s);await page.route('**/art/vector/chapter-seven/takenwater-back.svg',r=>r.abort());await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.chapter).toBe('chapter-six');expect((await inspect(page)).state.inventory).toEqual(s.inventory);
- await page.unroute('**/art/vector/chapter-seven/takenwater-back.svg');await page.getByRole('button',{name:'Begin Chapter Seven',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.chapter).toBe('chapter-seven');
+ const s=chapterSevenDeparture();await page.goto('/');await importSave(page,s);await page.route('**/art/vector/chapter-seven/takenwater-back.svg',r=>r.abort());await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.chapter).toBe('chapter-six');expect((await inspect(page)).state.inventory).toEqual(s.inventory);
+ await page.unroute('**/art/vector/chapter-seven/takenwater-back.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await at(page,'hollowsill');expect((await inspect(page)).state.chapter).toBe('chapter-seven');
 });
 
 test('@journey the first collector loads its own floor and falls without the palace earth plates',async({page})=>{

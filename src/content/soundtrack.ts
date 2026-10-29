@@ -24,6 +24,7 @@ export const SOUNDTRACK: readonly SoundtrackTrack[] = [
   {mode:'lastmorning',title:'Larkspur festival · remembered morning',group:'6'}, {mode:'crown',title:'A Place at the Table · crown',group:'6'},
   {mode:'capital-battle',title:'Open the Patient Stair',group:'6'},{mode:'emperor',title:'The Emperor’s Last Day',group:'6'},
   {mode:'lightbearer',title:'The Hand on the Shutter',group:'6'},{mode:'capital-return',title:'The City Comes Down',group:'6'},
+  {mode:'hollow-crossing',title:'Through the broken sun',group:'6'},
   {mode:'laststation',title:'The Empty Seat · bad ending credits',group:'6'},
   {mode:'bellharbor',title:'Skeld · Answering Bells',group:'6'}, {mode:'frostwatch',title:'The Covered Road',group:'6'},
   {mode:'glacier',title:'The Fleet beneath the Ice',group:'6'}, {mode:'wintershrine',title:'A Bell for the Outer Marker',group:'6'},
@@ -75,7 +76,7 @@ const sections:Record<string,readonly {title:string;modes:readonly MusicMode[]}[
   {title:'Namar · Desert expedition',modes:['namar','sunpalace','skywalk','observatory','desert-battle','sun-serpent']},
   {title:'Iria · River expedition',modes:['riverhaven','canopy','rainhouse','rainhouse-rest','river-battle','rain-warden']},
   {title:'Skeld · Northern expedition',modes:['bellharbor','frostwatch','glacier','wintershrine','north-battle','winter-dragon']},
-  {title:'The capital assault',modes:['stillcity','lastpalace','lastmorning','crown','capital-battle','emperor','lightbearer','capital-return','laststation']},
+  {title:'The capital assault',modes:['stillcity','lastpalace','lastmorning','crown','capital-battle','emperor','lightbearer','capital-return','laststation','hollow-crossing']},
  ],
 };
 export function soundtrackSections(chapter:string):{title:string;tracks:readonly SoundtrackTrack[]}[]{

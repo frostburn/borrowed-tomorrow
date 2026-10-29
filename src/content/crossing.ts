@@ -27,9 +27,14 @@ export const MOORING_CROSSING_SHOTS=[
  {id:'berth',title:'Keeping watch',duration:6500},
  {id:'capital',title:'The outer lights',duration:4500},
 ] as const;
-export type CrossingKind='coast'|'capital'|'refuge'|'airfield'|'mooring';
+export const HOLLOW_CROSSING_SHOTS=[
+ {id:'ascent',title:'Above the landed city',duration:5000},
+ {id:'threshold',title:'Through the broken sun',duration:6500},
+ {id:'hangingsea',title:'Beneath the water',duration:4500},
+] as const;
+export type CrossingKind='coast'|'capital'|'refuge'|'airfield'|'mooring'|'hollow';
 export const CHAPTER_CROSSINGS:Partial<Record<GameState['chapter'],CrossingKind>>={
- 'chapter-one':'coast','chapter-two':'capital','chapter-three':'refuge','chapter-four':'airfield','chapter-five':'mooring',
+ 'chapter-one':'coast','chapter-two':'capital','chapter-three':'refuge','chapter-four':'airfield','chapter-five':'mooring','chapter-six':'hollow',
 };
 interface CrossingFilm {
  id:string;label:string;title:string;from:string;to:string;place:string;returnLabel:string;
@@ -61,6 +66,11 @@ export const CROSSING_FILMS:Record<CrossingKind,CrossingFilm>={
   id:'five-six-crossing',label:'Chapter Five → Six',title:'The long approach',from:'Taking the World Back',to:'The Emperor’s Last Day',place:'the outer mooring',returnLabel:'Return to the flight deck',music:'mooring-crossing',map:'outermooring',shots:MOORING_CROSSING_SHOTS,
   description:'The survey ship leaves the fleet’s last smoke behind. Below deck, Kit keeps watch beside Nell’s berth while Celia stays with her. Orrin and Petra watch the airborne marble capital draw closer. The landing bridge and the Emperor’s pact remain part of Chapter Six’s opening.',
   accessibility:'The survey ship carries the companions toward the capital. Nell remains ill in her berth, with Kit and Celia beside her. Orrin and Petra watch the white-marble city from the bow. Space pauses. Escape skips to Chapter Six.',
+ },
+ hollow:{
+  id:'six-seven-crossing',label:'Chapter Six → Seven',title:'Through the broken sun',from:'The Emperor’s Last Day',to:'The God Who Lent Tomorrow',place:'the hollow sill',returnLabel:'Return to the allied landing',music:'hollow-crossing',map:'hollowsill',shots:HOLLOW_CROSSING_SHOTS,
+  description:'The survey ship climbs above the landed marble capital. Recovered Nell carries the lantern on deck with all four companions as the broken sun fills their view. Beyond it, the ship holds a mooring beside a pier beneath a suspended sea. The Benefactor’s warning belongs to Chapter Seven’s opening.',
+  accessibility:'The companions leave the grounded capital aboard the survey ship. Nell is well and carries the lantern in her right hand. They cross beneath hanging water while the ship keeps their way back open. Space pauses. Escape skips to Chapter Seven.',
  },
 };
 export function crossingDuration(kind:CrossingKind='coast'){return CROSSING_FILMS[kind].shots.reduce((sum,shot)=>sum+shot.duration,0);}

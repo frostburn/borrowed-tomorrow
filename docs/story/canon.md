@@ -196,13 +196,24 @@ Only recovered Nell is drawn into the playable Larkspur morning; she does not ch
 
 Celia checks Nell before the final assault; on the ill route she returns from Nell’s berth to give the warning. The uncured choice explicitly offers treatment in Iria and warns that the binding may take the vessel’s current. A separate return save is required before commitment. The Emperor is dead at victory in both routes. He never speaks or acts deliberately after the vessel is defeated.
 
-Recovered Nell survives the conduit’s break. The capital lands, collection widens beyond imperial territory, and the party retains the fragment for Chapter Seven. Choosing the final crossing saves `chapter-seven:hollow-sun` without implementing that next chapter.
+Recovered Nell survives the conduit’s break. The capital lands, collection widens beyond imperial territory, and the party retains the fragment for Chapter Seven. Choosing the final crossing saves `chapter-seven:hollow-sun` and begins its wordless journey.
 
 Proceeding deliberately uncured forms the Lightbearer around Nell. Her right hand sometimes closes the lantern, interrupting attacks. She never speaks. Kit recognizes her resistance but cannot cure her by affection. The companions destroy the mantle; Nell is lost and the fragment crumbles. Tomas, Kit and the other companions return to Larkspur, where her sea-train seat remains empty. The capital survives and the Benefactor continues collecting. This terminal bad ending grants no Chapter Seven boundary and offers the pre-assault save. It supersedes the earlier author plan promising survival without the optional treatment.
 
 ## Chapter Seven — The God Who Lent Tomorrow
 
 Only the recovered `chapter-seven:hollow-sun` departure enters the domain. The uncured Lightbearer ending remains terminal. Entry preserves the actual roster, formation, loadouts, HP/focus, currency, bandages and all prior choices. Nell opens the crossing with the intact fragment; Alda holds its mortal end. The Benefactor confronts the party at the far stair, orders them back and withdraws through the hanging water. Its figure is gone when exploration begins; the warning does not recur on return visits.
+
+The earned departure plays a sixteen-second wordless film: the survey ship
+climbs above the now-grounded marble capital; recovered Nell and all four
+companions face the broken sun from the foredeck; beyond it they cross a pier
+beneath a suspended sea while the ship holds their return. Nell keeps the
+lantern and its treatment collar. No god form, warning, cure or new promise is
+added. The original domain arrival follows, with its upward reveal, spoken
+confrontation and withdrawal. The saved Chapter Six boundary and actual roster,
+formation, gear, health/focus and supplies remain intact until all Chapter Seven
+art loads. Skip uses the same checked entry; failed loading retains retry,
+return and export. Canonical Chapter Seven starts skip the earlier journey.
 
 The domain contains living captives and days taken from different places, not people resurrected after violent deaths. A Rillbridge porter remembers Elspeth counting the people taken by the collector. A founding-era farmer remembers the first miraculous grain rising through frost while the next valley's summer went dark. The first bargain predates the empire: a prince promised winter days and later generations; the Benefactor deliberately accepted those lives and expanded the taking. The prince's decision to close his granary and the god's decision to imprison people remain separate wrongs.
 
