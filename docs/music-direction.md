@@ -50,7 +50,7 @@ Railway Ward is a C-major piano waltz in **3/4 at 78 BPM**. Its sixteen bars are
 
 Each encounter declares its music cue in content. Future chapters must choose their own regional battle arrangement explicitly; they cannot silently inherit Chapter One's score. Chapter Three keeps its related switching arrangement, and Chapter Four keeps its existing battle and warden themes. All six Chapter Two cues are grouped together in the Music workshop with their tempo and meter. Petra’s melody now lands predominantly on quarter-note beats, with the long answer returning on beat three. A single triplet pickup in bar 5 runs into the next downbeat; pitched accompaniment retains its triplet-length articulation. Percussion keeps straight divisions and its kick/snare backbone through phrase endings and the middle. The inspector still displays the occasional third-beat position as a fraction. Rendered QA audio is never a runtime asset.
 
-## Beneath the Palace
+## The Conduit Works
 
 The capital-line cinematic uses **Capital line — full steam** (`capital-crossing`):
 eight bars of 4/4 at 120 BPM, exactly sixteen seconds. It retains Northglass’s
