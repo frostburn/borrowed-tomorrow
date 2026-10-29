@@ -4,7 +4,6 @@ import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
 import { remember,restoreParty,SEVENTH_CHAPTER,type MapId } from '../../../rules/state';
 import { receiveItem } from '../../../rules/inventory';
-import { buySupply } from '../../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
 const show=(h:StoryHost,d:Dialogue,flag:string,after?:()=>void)=>{h.talk({...d,done:()=>{h.commit(flag,flag);after?.();}});return true;};
@@ -55,7 +54,7 @@ export function interactCapital(h:StoryHost,id:string):boolean{
   h.talk({lines:[SAY('Orrin',f.nellRecovered?'The fitters left a bench by the gangway. I can work on your lantern here.':'Alda’s crew is keeping the survey deck clear for training.')],choices:[trainingChoice(h),...(f.nellRecovered?[lanternChoice(h)]:[]),{label:'Leave',action:()=>{}}]});return true;
  }
  if(id==='palace-rest'||id==='crown-rest'){
-  h.talk({lines:[SAY('Celia','There’s clean water and room to sit. Let me check everyone before we move.')],choices:[{label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},{label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.save();h.refresh();h.toast('Bandage added.');}},
+  h.talk({lines:[SAY('Celia','There’s clean water and room to sit. Let me check everyone before we move.')],choices:[{label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},...(f.nellRecovered?[lanternChoice(h)]:[]),{label:'Keep going',action:()=>{}}]});return true;
  }
  switch(id){

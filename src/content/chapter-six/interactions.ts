@@ -8,7 +8,6 @@ import { SAY,type Dialogue } from '../dialogue';
 import { receiveItem } from '../../rules/inventory';
 import type { MapId } from '../../rules/state';
 import { remember,restoreParty } from '../../rules/state';
-import { buySupply } from '../../rules/supplies';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
 export function resumeChapterSix(h:StoryHost){
@@ -41,7 +40,6 @@ export function interactChapterSix(h:StoryHost,id:string){
   lines:[SAY(id==='six-supplies'?'Alda':'Celia',id==='six-supplies'?'The launches brought fresh water and dressings. Use the berth before we set another course.':'Clean water and a shaded bench. Sit down and let me check those dressings.')],
   choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
-   {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    ...(id==='six-supplies'?[trainingChoice(h)]:[]),
    {label:'Keep going',action:()=>{}},

@@ -77,9 +77,25 @@ export function economyFlows(production = false) {
         await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click(); await expect.poll(async () => (await inspect(page)).state.inventory).toEqual(saved.inventory);
         await expect(page.locator('vite-error-overlay')).toHaveCount(0); expect(errors).toEqual([]);
       });
+      test('ward bandages use the supplies menu and retain rest and saved purchases',async({page})=>{
+        const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+        await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+        const state=coastCheckpoint('wardSeen');state.coins=20;state.party[0].hp=1;await importSave(page,state);
+        await approach(page,'ward-rest');await expect(page.getByRole('button',{name:/Buy a bandage/})).toHaveCount(0);
+        await expect(page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true})).toBeVisible();await capture(page,`ward-supplies-menu-${production?'production-':''}${device}`);
+        await page.getByRole('button',{name:'Browse supplies and trade gear',exact:true}).click();
+        const shop=page.getByRole('dialog',{name:'Ward supplies'});await expect(shop).toBeVisible();
+        await shop.getByRole('group',{name:'Bandage',exact:true}).getByRole('button',{name:/^Buy/}).click();
+        expect((await inspect(page)).state.coins).toBe(12);expect((await inspect(page)).state.bandages).toBe(state.bandages+1);
+        await page.getByRole('button',{name:'Close',exact:true}).click();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
+        await expect.poll(async()=>(await inspect(page)).state.bandages).toBe(state.bandages+1);
+        await approach(page,'ward-rest');await page.getByRole('button',{name:'Rest · restore everyone’s HP and focus',exact:true}).click();expect((await inspect(page)).state.party[0].hp).toBeGreaterThan(1);
+        await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
+      });
       test('conduit counter offers manual protection purchases',async({page})=>{
         await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});const state=palaceCheckpoint('capitalSeen');state.coins=200;await importSave(page,state);
         await approach(page,'capital-engine');await capture(page,`conduit-supplier-${production?'production-':''}${device}`);
+        await expect(page.getByRole('button',{name:/Buy a bandage/})).toHaveCount(0);
         await page.getByRole('button',{name:'Browse supplies and trade gear',exact:true}).click();
         const shop=page.getByRole('dialog',{name:'Conduit supplies'});await expect(shop).toBeVisible();await expect(shop).not.toContainText('Field bandage');
         await shop.getByRole('group',{name:'Insulated work coat',exact:true}).getByRole('button',{name:/^Buy/}).click();
@@ -88,7 +104,7 @@ export function economyFlows(production = false) {
       });
       test('Chapter Four introduces the new medicines at a medical supplier',async({page})=>{
         await page.goto('/');await page.emulateMedia({reducedMotion:'reduce'});await importSave(page,brokenCheckpoint('refugeSeen'));
-        await approach(page,'refuge-rest');await page.getByRole('button',{name:'Browse medical supplies and trade gear',exact:true}).click();
+        await approach(page,'refuge-rest');await expect(page.getByRole('button',{name:/Buy a bandage/})).toHaveCount(0);await page.getByRole('button',{name:'Browse medical supplies and trade gear',exact:true}).click();
         const shop=page.getByRole('dialog',{name:'Medical supplies'}),before=(await inspect(page)).state.coins;
         for(const name of ['Field bandage','Focus tonic'])await shop.getByRole('group',{name,exact:true}).getByRole('button',{name:/^Buy/}).click();
         expect((await inspect(page)).state.coins).toBe(before-32);expect((await inspect(page)).state.inventory.bag).toMatchObject({'field-bandage':1,'focus-tonic':1});

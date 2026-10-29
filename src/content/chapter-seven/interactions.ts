@@ -4,7 +4,6 @@ import type {Dialogue} from '../dialogue';
 import {SAY} from '../dialogue';
 import {arrival} from '../maps';
 import {remember,restoreParty,type MapId} from '../../rules/state';
-import {buySupply} from '../../rules/supplies';
 import {receiveItem} from '../../rules/inventory';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(map,p.x,p.y);};
@@ -49,7 +48,6 @@ export function interactChapterSeven(h:StoryHost,id:string){
  if(id==='season-rest'&&!f.domainPatrolWon)return say('Petra','The hunters have the supplies covered. We need to clear the courier stair.');
  if(id.endsWith('-rest'))return h.talk({lines:[SAY('Supplies','Clean water, folded blankets and a field kit are under cover.')],choices:[
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
-  {label:'Buy a bandage · 8 marks',action:()=>{if(buySupply(s,'bandage')){h.refresh();h.save();h.toast('Bandage added.');}else h.toast('You need 8 marks and room for a bandage.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    ...(['hollowsill','lastrefuge'].includes(s.location.map)?[trainingChoice(h)]:[]),
   {label:'Keep moving',action:()=>{}},

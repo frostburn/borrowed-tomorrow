@@ -163,7 +163,10 @@ test('loading-gate route, ward supplies and the escape work on a phone',async({p
   await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier · Lv 3');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
   await visit(page,'prison-coach');await travel(page,'coast-ward','infirmary');await dialogue(page);await nativeScene(page,'infirmary');await capture(page,'railway-ward-phone');
   const before=(await inspect(page)).state;await approach(page,'ward-rest');await expect(page.locator('.dialogue')).toBeVisible();await capture(page,'ward-care-menu-phone');
-  await page.getByRole('button',{name:'Buy a bandage · 8 marks',exact:true}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
+  await expect(page.getByRole('button',{name:'Buy a bandage · 8 marks',exact:true})).toHaveCount(0);
+  await page.getByRole('button',{name:'Browse supplies and trade gear',exact:true}).click();
+  await page.locator('[data-stock="bandage"]').getByRole('button',{name:/Buy/}).click();expect((await inspect(page)).state.coins).toBe(before.coins-8);expect((await inspect(page)).state.bandages).toBe(before.bandages+1);
+  await page.getByRole('button',{name:'Close',exact:true}).click();
   await travel(page,'ward-siding','cinderbank');await dialogue(page);await approach(page,'siding-collector');await dialogue(page);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toBeVisible();await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await visit(page,'siding-release');await approach(page,'siding-alban');await dialogue(page);await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await visit(page,'capital-engine');
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-three-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);

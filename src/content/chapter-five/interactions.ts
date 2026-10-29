@@ -8,7 +8,6 @@ import { emperorTold } from './dawnwatch-scenes';
 import { SAY } from '../dialogue';
 import { arrival } from '../maps';
 import { restoreParty } from '../../rules/state';
-import { buySupply } from '../../rules/supplies';
 import type { StoryHost } from '../story-host';
 import * as scenes from './scenes';
 import * as companions from './companion-scenes';
@@ -39,7 +38,6 @@ export function interactChapterFive(h:StoryHost,id:string){
  switch(id){
   case 'airfield-supply':case 'ship-supply':case 'hammer-supply':case 'forge-supply':case 'dawn-supply':case 'wind-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
-   {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    ...(id==='ship-supply'?[trainingChoice(h)]:[]),
    {label:'Leave',action:()=>{}},

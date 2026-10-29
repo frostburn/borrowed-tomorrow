@@ -3,7 +3,6 @@ import type { StoryHost } from '../../story-host';
 import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
 import { remember,restoreParty,type MapId } from '../../../rules/state';
-import { buySupply } from '../../../rules/supplies';
 import { completeRiverTreatment } from './recovery';
 import * as scenes from './scenes';
 const go=(h:StoryHost,map:MapId,name='start')=>{const p=arrival(map,name);h.travel(p.map,p.x,p.y);};
@@ -34,7 +33,6 @@ export function interactJungle(h:StoryHost,id:string):boolean{
  if(['river-stores','canopy-stores','rainhouse-rest'].includes(id)){
   h.talk({lines:[SAY('Celia','Clean water and a place to sit. Let me check the dressings before we move on.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
-   {label:'Buy a bandage · 8 marks',action:()=>{if(!buySupply(s,'bandage'))return h.toast(s.bandages>=999?'The bandage bag is full.':'Not enough marks.');h.refresh();h.save();h.toast('Bandage added.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
    ...(f.riverRestSeen&&id!=='canopy-stores'?[{label:'River courier training · Kit · 450 marks',action:()=>offerImprovements(h,'iria')}]:[]),
    {label:'Keep going',action:()=>{}},
