@@ -72,7 +72,7 @@ export class Cutscene {
     if(script.id==='one-raid')this.raid=new StationRaid(scene,world,lighting);
     if(script.id.startsWith('seven-'))this.domain=new DomainCinematic(scene,world,this.actors);
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
-    world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.25);
+    world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.7);
   }
   get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating||!!this.raid?.animating);}
   shot(shot?:Shot){
@@ -109,7 +109,7 @@ export class Cutscene {
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
     if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1,0,-this.dialogueInset);}
-    if(shot.effect==='raid-clear'||shot.effect==='raid-hound')this.raid?.play(shot.effect);
+    if(shot.effect==='raid-clear'||shot.effect==='raid-hound'||shot.effect==='raid-escort'||shot.effect==='raid-board')this.raid?.play(shot.effect,shot.effect==='raid-escort'?duration:undefined);
     else if(shot.effect==='domain-withdraw'||shot.effect==='domain-break'||shot.effect==='domain-fragment'||shot.effect==='domain-release')this.domain?.play(shot.effect,shot.focus??this.focus);
     else if(shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break'||shot.effect==='pact-open')this.pact?.play(shot.effect,shot.focus??this.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
     if(shot.omen){
@@ -135,7 +135,7 @@ export class Cutscene {
         }
       }
     }
-    this.audio.cinematicMix(shot.silence?0:.25);if(shot.cue)this.audio.effect(shot.cue);
+    this.audio.cinematicMix(shot.silence?0:.7);if(shot.cue)this.audio.effect(shot.cue);
   }
   reframe(){const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){

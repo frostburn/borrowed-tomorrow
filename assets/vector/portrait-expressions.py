@@ -47,12 +47,15 @@ def brow_path(face, emotion):
 def eye_paths(face,emotion):
  eyes=[];pupils=[]
  for x,right,y in (face['near'],face['far']):
-  if emotion=='surprised': top,bottom=y-3,y+4
-  elif emotion in ('happy','bashful'): top,bottom=y,y+2
-  else: top,bottom=y-1,y+2
+  y=y//2*2
+  if emotion=='surprised': top,bottom=y-3,y+5
+  elif emotion in ('happy','bashful'): top,bottom=y,y+4
+  else: top,bottom=y-1,y+3
   eyes.append(f'M{x} {top+1}L{right-1} {top} {right} {bottom}H{x+1}Z')
   center=(x+right)//2+(0 if emotion=='bashful' else 1)
-  pupils.append(f'M{center-1} {top}H{center+2}V{bottom+1}H{center-1}Z')
+  # Equal 4x4 pupils remain equal at all four chunky sampling phases.
+  pupil_top=top+2 if emotion=='surprised' else top
+  pupils.append(f'M{center-1} {pupil_top}H{center+3}V{pupil_top+4}H{center-1}Z')
  return ' '.join(eyes),' '.join(pupils)
 
 for hero,face in FACES.items():
@@ -66,8 +69,9 @@ for hero,face in FACES.items():
    detail=[]
    for x,right,y in (face['near'],face['far']):
     center=(x+right)//2+1
-    top,bottom=(y-3,y+4) if emotion=='surprised' else (y,y+2) if emotion=='happy' else (y-1,y+2)
-    detail.append(f'M{center+1} {top+1}H{center+2}V{bottom+1}H{center+1}Z')
+    y=y//2*2
+    top=y-1 if emotion=='surprised' else y if emotion=='happy' else y-1
+    detail.append(f'M{center+1} {top+1}H{center+3}V{top+3}H{center+1}Z')
    out=replace_path(out,face['detail'],' '.join(detail))
   out=replace_path(out,face['mouth'],mouth)
   if face['lip']:out=replace_path(out,face['lip'],'')

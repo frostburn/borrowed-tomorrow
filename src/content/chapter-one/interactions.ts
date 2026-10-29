@@ -29,7 +29,7 @@ export function interactChapterOne(host: StoryHost, id: string) {
       say('Stationmaster Ansel', 'Orrin says his engine doesn’t need the empire’s crystals. I told him he could celebrate when it stopped setting fire to the shed.'); return;
     case 'memorial':
       host.talk({ lines: [
-        SAY('Nell', 'He used to leave this on the desk so I’d think he’d already gone home. He was always on the platform.'),
+        SAY('Nell', 'He used to leave his hat on the desk so I’d think he’d already gone home. He was always on the platform.'),
         SAY('Iona', 'I’ll stay with him. You find your brother.'),
       ], done: () => host.commit('farewellSeen') }); return;
     case 'iona': host.shop(); return;
