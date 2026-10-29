@@ -75,6 +75,11 @@ export function mooringOpeningBar(bar:number){
  const i=((bar%8)+8)%8;
  return {...chords[changes[i]],melody:mooring[i]};
 }
+/** The longer airship question supplies the quieter Chapter Five departure. */
+export function flightOpeningBar(bar:number){
+ const i=((bar%4)+4)%4;
+ return {...chords[changes[i]],melody:flight[i]};
+}
 export function flightBar(mode:'airfield'|'airship'|'observation',bar:number):Note[]{
  const i=((bar%32)+32)%32,cabin=mode==='observation',ground=mode==='airfield',{bass,notes:chord}=chords[changes[i]],out:Note[]=[];
  const add=(instrument:Note['instrument'],pitch:Pitch,beat:number,duration:number,velocity:number,pan=0)=>{const note:Note={instrument,pitch,beat,duration,velocity,pan};if(cabin||ground)note.expression=phrasing((cabin?cabinDynamics:mooringDynamics)[i],instrument==='strings');out.push(note);return note;};

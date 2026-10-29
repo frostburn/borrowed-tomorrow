@@ -336,6 +336,15 @@ retry without changing the departure or resources. The athletic Western Mooring
 arrangement is in Music/Soundtrack → Ch 4. Canonical Chapter Five still starts
 at its original arrival; the Cinematics tab does not change campaign saves.
 
+The **Chapter Five → Six** selection (`?dev=cinematics&film=mooring-crossing`)
+reviews The long approach: the survey ship beyond the fleet's smoke, Kit/Celia
+keeping watch beside ill Nell, then the marble capital seen from the foredeck.
+The bridge does not unfold or seal until the original Chapter Six arrival. All
+three compositions remain visible on phones; reduced motion shows three stills.
+Pause, skip, return, export, replay and missing-art retry use the shared player,
+with Nell's illness and the actual roster/resources intact. The quiet half-time
+airship arrangement is in Music/Soundtrack → Ch 5; Two Seals at the Gate is intact.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.

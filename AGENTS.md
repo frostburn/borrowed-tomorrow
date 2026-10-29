@@ -8,7 +8,7 @@ and defenses; defeating the Emperor breaks preservation and lets the crews lower
 
 # Borrowed Tomorrow
 
-Chapters One–Four's earned departures play sixteen-second vector crossings
+Chapters One–Five's earned departures play sixteen-second vector crossings
 through `content/crossing.ts` and the shared `game/chapter-crossing.ts` player.
 `crossing-art.ts` owns the Iron Coast journey; `capital-crossing-art.ts` owns the
 full medical train, passenger coach and grounded green-iron conduit approach.
@@ -20,9 +20,15 @@ The locomotive and drawing primitives are shared in `crossing-drawing.ts`.
 at the moving harbor, the party walks the coastal road, and the survey ship
 appears still moored. Boarding, the seizure guards and takeoff remain playable
 in Chapter Five. The westward road is an athletic Western Mooring arrangement.
+`mooring-crossing-art.ts` carries the owned survey ship past the fleet's smoke,
+shows Nell still ill in a complete cot with Kit/Celia keeping watch, then reveals
+the airborne marble capital from Orrin/Petra's foredeck. Reuse the ship/capital
+models; no god body, surviving Alban, cure, landing bridge or early pact barrier.
+The long approach is a quiet half-time airship phrase; leave Two Seals at the Gate
+unchanged. Chapter Six's original opening owns the bridge's unfolding and sealing.
 Keep automatic arrival and Skip on the existing asset-checked chapter entries;
 failure retains the correct departure with retry, return and export. Films add
-no saved flags or resource changes. The dev Cinematics tab previews all four films
+no saved flags or resource changes. The dev Cinematics tab previews all five films
 with three selectable shots, independently of campaign progress.
 
 The user authorized a complete story reboot. The former Disks A–D campaign has been removed. `docs/story/grand-outline.md` is the seven-chapter plan; Chapters One: Leaving Home, Two: Prison Trains, Three: The Conduit Works and Four: A Light on the Water, plus all four acts of Chapter Five and all three Chapter Six expeditions and the capital finale, are playable canon with bundled SVG artwork. The final chapter travels into the Benefactor’s own domain and defeats the god permanently. “Borrowed Tomorrow” refers to its demand for repayment of the boons it lent the empire.

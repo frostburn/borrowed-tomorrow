@@ -10,6 +10,18 @@ Entry changes only chapter, boundary and location: Chapter Six, null boundary, `
 
 The mooring supply crew retains the earned Hammerplain, Dawnwatch and Windmere specialties under **Training → Specialist improvements**, using the allied crews’ fittings and drill notes. Prices and purchase flags are shared with the original specialists. These services continue at the allied quay and Chapter Seven training counters; neither ordinary training nor purchasing a specialty cures Nell.
 
+## Incoming cinematic
+
+The earned Chapter Five departure plays The long approach before the original
+`six-sealed` arrival: the survey ship passes the fleet's smoke, Kit and Celia stay
+beside ill Nell's cot, and Orrin/Petra watch the marble capital draw closer.
+The city remains airborne. The bridge's unfolding, the Emperor's pact wall and
+`capitalSealed` still belong to the playable Chapter Six opening. The cinematic
+adds no reply from Nell, cure, flag, resource change or formation reset. It holds
+the saved boundary for the same asset-checked entry, including missing-art retry,
+return/export and replay. The Vite canonical Chapter Six start bypasses this
+presentation of the prior chapter's departure.
+
 ## Checkpoints
 
 | Flag | Completion and continuation |

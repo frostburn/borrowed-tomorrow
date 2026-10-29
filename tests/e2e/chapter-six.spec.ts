@@ -42,8 +42,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
 }
 test('missing serpent art preserves the Chapter Five departure, then loads the same Chapter Six entry on retry',async({page})=>{
  const s=chapterSixStart();s.chapter='chapter-five';s.boundary=SIXTH_CHAPTER;s.location=arrival('airship','start');await page.goto('/');await importSave(page,s);
- await page.route('**/art/vector/chapter-six/serpent-head.svg',r=>r.abort());await page.getByRole('button',{name:'Begin Chapter Six',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-five',boundary:SIXTH_CHAPTER,inventory:s.inventory});
- await page.unroute('**/art/vector/chapter-six/serpent-head.svg');await page.getByRole('button',{name:'Begin Chapter Six',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-sealed');expect((await inspect(page)).state.activeParty).toEqual(s.activeParty);
+ await page.route('**/art/vector/chapter-six/serpent-head.svg',r=>r.abort());await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('button',{name:'Retry crossing',exact:true})).toBeEnabled();expect((await inspect(page)).state).toMatchObject({chapter:'chapter-five',boundary:SIXTH_CHAPTER,inventory:s.inventory});
+ await page.unroute('**/art/vector/chapter-six/serpent-head.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-sealed');expect((await inspect(page)).state.activeParty).toEqual(s.activeParty);
 });
 test('sun serpent workshop uses the real fight and passive time, settles under reduced motion and restarts cleanly',async({page})=>{
  await page.goto('/?dev=boss&boss=serpent');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Start Chapter Six preset',exact:true}).click();await expect.poll(async()=>(await inspect(page)).battle?.encounter).toBe('dev-sun-serpent');

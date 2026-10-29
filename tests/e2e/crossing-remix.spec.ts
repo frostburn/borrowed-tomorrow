@@ -1,3 +1,4 @@
+import {mooringDeparture} from '../support/mooring';
 import {anchorDeparture} from '../support/anchors';
 import {test,expect} from '@playwright/test';
 import {writeFile} from 'node:fs/promises';
@@ -112,4 +113,40 @@ test('the airfield crossing plays its western-road remix continuously and Music 
  await expect.poll(position,{timeout:5000}).toMatchObject({mode:'airfield',playing:true});
  await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 4',exact:true}).click();
  await page.locator('[data-cue="airfield-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'airfield-remix-workshop');expect(errors).toEqual([]);
+});
+
+test('the mooring crossing plays its quiet airship phrase continuously and Music reviews it',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ await page.evaluate(async()=>{
+  // @ts-expect-error Observe the real mixer in the dev build.
+  const {Audio}:typeof import('../../src/game/audio')=await import('/src/game/audio.ts');const original=Audio.prototype.setMode;
+  Audio.prototype.setMode=function(mode){(window as unknown as {crossingMusic:()=>unknown}).crossingMusic=()=>this.position();original.call(this,mode);};
+ });
+ await page.getByRole('button',{name:'Sound off',exact:true}).click();
+ const position=()=>page.evaluate(()=>(window as unknown as {crossingMusic:()=>{mode:string;bar:number;playing:boolean}}).crossingMusic());
+ await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await importSave(page,mooringDeparture());
+ await page.getByRole('button',{name:'Pause',exact:true}).click();await expect.poll(position).toMatchObject({mode:'mooring-crossing',playing:true});
+ await page.getByRole('button',{name:'Next shot',exact:true}).click();await page.getByRole('button',{name:'Next shot',exact:true}).click();
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'mooring-crossing',bar:1,playing:true});
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-sealed');
+ await expect.poll(position,{timeout:5000}).toMatchObject({mode:'outermooring',playing:true});
+ await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');await page.getByRole('button',{name:'Ch 5',exact:true}).click();
+ await page.locator('[data-cue="mooring-crossing"]').click();await expect(page.locator('#music-workshop')).toContainText('120 BPM');await capture(page,'mooring-remix-workshop');expect(errors).toEqual([]);
+});
+
+for(const mode of ['mooring-crossing'] as const)test(`${mode} quiet arrangement renders with headroom and audible holds in every bar`,async({page})=>{
+ await page.goto('/');const stats=await page.evaluate(async(mode)=>{
+  // @ts-expect-error Vite serves the production score/rack source.
+  const {scoreBar}:typeof import('../../src/game/score')=await import('/src/game/score.ts');
+  // @ts-expect-error Vite serves the production score/rack source.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const rate=22050,c=new OfflineAudioContext(2,18*rate,rate),gain=c.createGain();gain.gain.value=.52*.8;gain.connect(c.destination);const synth=new Synth(c,gain);
+  for(let bar=0;bar<8;bar++)for(const n of scoreBar(mode,bar))synth.note(n.instrument,n.pitch,.03+bar*2+n.beat*.5,n.duration*.5,n.velocity,n.pan,n.expression);
+  const rendered=await c.startRendering();return Array.from({length:8},(_,bar)=>{
+   let peak=0,sum=0,count=0;for(let channel=0;channel<2;channel++){
+    const data=rendered.getChannelData(channel);for(let i=Math.ceil((.03+bar*2)*rate);i<Math.floor((.03+(bar+1)*2)*rate);i++){peak=Math.max(peak,Math.abs(data[i]));sum+=data[i]*data[i];count++;}
+   }return {peak,rms:Math.sqrt(sum/count)};
+  });
+ },mode);
+ for(const bar of stats){expect(bar.peak).toBeLessThan(.98);expect(bar.rms).toBeGreaterThan(.001);}console.log('Crossing render',stats);
 });

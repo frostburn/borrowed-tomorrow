@@ -14,7 +14,7 @@ Playable from the flight chart after all three regional completions, `allAnchors
 | `retaliationWon` | Once-only minion victory. Resume stages the conversation beside Nell's berth. |
 | `chapterFiveComplete` | Chapter `chapter-five`, boundary `chapter-six:capital-approach`, journal `fiveDeparture`; committed together. Nell remains ill and unavailable. |
 
-All scenes commit only on completion or Skip. Reloading an unfinished intervention leaves the ship, Alban and Nell's old formation intact until it completes. Reloading after the intervention never fights the flagship again. An interrupted hunters/departure scene replays. The boundary is exportable and restorable; Chapter Six is not implemented yet. No save-version change or migration is introduced.
+All scenes commit only on completion or Skip. Reloading an unfinished intervention leaves the ship, Alban and Nell's old formation intact until it completes. Reloading after the intervention never fights the flagship again. An interrupted hunters/departure scene replays. The boundary is exportable and restorable; the playable Chapter Six continues after the coast-to-capital cinematic. No save-version change or migration is introduced.
 
 ## Story
 
@@ -36,7 +36,31 @@ Kit takes Celia's notes for Sera and stays beside Nell while she is awake. His c
 
 `nellIll` is a story condition, separate from defeat/HP. Nell stays recruited with her equipment; the formation preserves its size and existing companions, adds Kit if necessary, then fills a remaining space from reserve. It never exceeds three. Her HP/focus become 1/0. Ordinary rest, victory recovery and reload do not cure her. Equipment can inspect and refit her but cannot set her active; the combat factory rejects her. Kit usually leads; otherwise the first selected fighter leads. Equipment changes repaint the leader immediately. The last active fighter cannot be removed.
 
-`nellRecovered` is reserved for Chapter Six's optional quest: it unlocks Nell without forcing a formation swap. This chapter provides no recovery shortcut. Regional revisits remain possible after the final conversation, with Nell staying aboard.
+`nellRecovered` belongs to Chapter Six's optional Iria quest: it unlocks Nell without forcing a formation swap. This chapter provides no recovery shortcut. Regional revisits remain possible after the final conversation, with Nell staying aboard.
+
+## The long approach
+
+The earned `chapter-six:capital-approach` departure now plays a sixteen-second
+wordless journey instead of the completion card. The survey ship leaves the
+fleet's last smoke and scattered metal behind. Kit keeps watch beside Nell's
+complete cot while Celia remains with her; the lantern is still separated from
+the patient. Orrin and Petra watch the airborne white-marble capital from the
+foredeck. Nell remains ill, with no cure, new response, or remote conversation.
+There is no surviving Alban, intact flagship, god body or repeated intervention.
+
+The landing bridge has not unfolded and no pact wall appears during the film.
+The existing `six-sealed` opening owns those events after the complete Chapter
+Six kit loads. Skip and automatic arrival use that same entry. Missing art keeps
+the final shot, departure and resources intact with Retry crossing, return and
+export. Pause/reload and reduced-motion stills use the shared player; no saved
+flag, healing or formation change is introduced. Canonical Chapter Six starts
+still open its original arrival directly.
+
+Review **Cinematics → Chapter Five → Six**
+(`?dev=cinematics&film=mooring-crossing`). The long approach is a quiet half-time,
+octave-lowered arrangement of Above the Railway's opening, scored for strings,
+piano and soft bass without percussion. Music/Soundtrack → Ch 5 reviews it.
+The original airship score and Two Seals at the Gate remain unchanged.
 
 ## Canonical review and reproduction
 

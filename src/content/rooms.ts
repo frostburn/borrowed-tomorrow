@@ -32,7 +32,7 @@ export const MAP_ROOMS:Record<MapId,RoomId>={
 // Battle/scene cues have a canonical location for review, but campaign music
 // never chooses the room: a reused score must retain its actual surroundings.
 export const TRACK_ROOMS={...MAP_ROOMS,
- 'airfield-crossing':'open','refuge-crossing':'open','capital-crossing':'court',crossing:'open',battle:'open',inspector:'cave',ending:'open',sluice:'works',flood:'works',
+ 'mooring-crossing':'open','airfield-crossing':'open','refuge-crossing':'open','capital-crossing':'court',crossing:'open',battle:'open',inspector:'cave',ending:'open',sluice:'works',flood:'works',
  'coast-battle':'open','petra-battle':'open',shunting:'open',switching:'works',
  'four-battle':'open','four-warden':'court','five-battle':'works','five-furnace':'works',
  'dawn-battle':'court','dawn-commander':'open','wind-battle':'ward','wind-engine':'hall',claim:'open',

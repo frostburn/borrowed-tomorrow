@@ -140,6 +140,12 @@ Windmere adds 505 XP. All six regional orders, partial returns and older current
 The Benefactor's agency and its minions are now established before the final chapter. The fragment's full function remains unknown. The Emperor is undefeated; Ansel remains dead and Tomas stays safe. Chapter Six plans a sealed capital, two seal-breaking journeys to allied kingdoms in the desert and icy north, and an optional jungle recovery quest through Kit, Celia and Sera’s referral; the main path remains playable without Nell. See [Act IV](chapter-five-act-four.md) for checkpoints and [Chapter Six](chapter-six-plan.md) for the remaining continuation.
 
 
+The earned Chapter Five departure plays a wordless airship approach. The fleet's
+smoke recedes; Kit and Celia keep watch beside ill Nell; Orrin and Petra look
+toward the airborne marble capital. The film changes no progress, resources,
+formation or illness. It ends before the bridge unfolds or the Emperor seals it;
+those events remain in the original Chapter Six arrival.
+
 ## Chapter Six — the sealed capital and Namar
 
 - The unchanged `chapter-six:capital-approach` departure enters the outer mooring after all thirteen world maps, eleven tactical arenas, cinematic poses and both regional boss kits load. The actual roster, chosen active companions, gear and supplies persist. The Emperor invokes an old defense pact and seals the landing bridge while people continue moving inside. `capitalSealed` commits only when the scene finishes/skips. The god’s full form is not revealed.

@@ -99,8 +99,8 @@ function road(c:C,p:number,t:number){
 }
 
 /** Same envelope, rigging, gondola and nacelles as assets/vector/chapter-five.py.
- * Draw vectors directly, at the film's perspective; the ship is not yet owned. */
-function surveyShip(c:C){
+ * Draw vectors directly at each film's perspective; callers stage mooring/flight. */
+export function surveyShip(c:C,propeller?:number){
  poly(c,'#233e4b',[[0,164],[78,80],[208,30],[370,4],[538,27],[674,86],[738,165],[651,225],[495,256],[270,254],[92,226]]);
  poly(c,'#d2c5a3',[[0,164],[78,80],[208,30],[370,4],[538,27],[674,86],[738,165],[568,162],[370,129],[168,158]]);
  poly(c,'#a7a78d',[[0,164],[168,158],[370,129],[568,162],[738,165],[651,225],[495,256],[270,254],[92,226]]);
@@ -111,7 +111,14 @@ function surveyShip(c:C){
  poly(c,'#486668',[[267,319],[483,319],[563,346],[485,371],[268,371],[179,347]]);
  rect(c,'#d3bd86',282,290,185,10);
  for(let x=293;x<465;x+=27){rect(c,'#182d3a',x,330,17,21);rect(c,'#a6b6a2',x+3,331,11,9);}
- for(const x of [112,588]){oval(c,'#1b3441',x,275,30,18);oval(c,'#a9a88b',x,273,22,11);line(c,'#d9bc7d',5,[[x-27,275],[x+27,275]]);}
+ for(const x of [112,588]){
+  oval(c,'#1b3441',x,275,30,18);oval(c,'#a9a88b',x,273,22,11);
+  if(propeller===undefined)line(c,'#d9bc7d',5,[[x-27,275],[x+27,275]]);
+  else for(const angle of [propeller,propeller+Math.PI/2]){
+   const dx=Math.cos(angle)*25,dy=Math.sin(angle)*11;
+   line(c,'#d9bc7d',4,[[x-dx,273-dy],[x+dx,273+dy]]);
+  }
+ }
  rect(c,'#25464b',369,325,24,44);
 }
 function mooring(c:C,p:number){

@@ -79,6 +79,16 @@ backbeat keep the walk moving. The last two bars broaden and soften into the
 original airfield cue. Dynamics and controlled reed vibrato remain active;
 the cinematic has a fixed clock, without rubato. Music/Soundtrack → Ch 4.
 
+The Chapter Five departure uses **The long approach** (`mooring-crossing`):
+eight bars at 120 BPM, with Above the Railway's first four bars doubled in
+length to sound at 60 BPM. The E–D–B / C–A / B–D / C question moves one octave
+lower without changing its spelling; Am9 and D-over-A retain their common A
+pedal. Warm expressive strings give way to piano, over quiet held lower strings
+and round bass. Holds cross bar lines; there is no percussion or rubato. The
+unresolved phrase leads to the existing Two Seals at the Gate at the actual
+mooring. That accepted score and the original airship arrangement are untouched.
+Music/Soundtrack → Ch 5 reviews the new cue.
+
 The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Audible bell rolls anticipate the even-bar bells by half a beat; their four ascending attacks lead into the main call. Roll velocities rise from .045 to .06. All four notes stay held to beat 3.5 and release together over 1.8 seconds, so the chord supports the call instead of dropping away after its attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
 
 
