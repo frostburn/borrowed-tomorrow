@@ -38,6 +38,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
    await page.getByRole('button',{name:'Next shot',exact:true}).dispatchEvent('click');await page.clock.runFor(1200);
    await expect(page.locator('#canvas')).toHaveAttribute('data-ending-shot',shot);
    expect((await filmHash(page)).colors).toBeGreaterThan(20);await capture(page,'ending-'+shot+'-'+device);
+   if(shot==='shore'){await page.clock.runFor(1800);await capture(page,'ending-cast-front-'+device);await page.clock.runFor(2500);await capture(page,'ending-cast-back-'+device);}
   }
   await page.clock.runFor(13000);await capture(page,'ending-shore-arrival-'+device);
   await page.getByRole('button',{name:'Credits',exact:true}).dispatchEvent('click');await page.clock.runFor(1200);
