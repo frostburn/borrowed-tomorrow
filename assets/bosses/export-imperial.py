@@ -4,6 +4,8 @@ import math,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'characters/vector'))
 from draw import Drawing
 from imperial_head import emperor_head
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'vector'))
+from hollow_sun import emblem
 ROOT=Path(__file__).resolve().parents[2];ART=ROOT/'public/art/vector/chapter-six';ART.mkdir(parents=True,exist_ok=True)
 INK='#203340';SHADOW='#506b80';BLUE='#819aa8';MARBLE='#e4e5d9';WHITE='#fff0c7';GOLD='#c89b53';RUST='#a35c42';LIGHT='#b3dad0'
 def p(points,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in points)+f'" fill="{c}"/>'
@@ -34,13 +36,10 @@ def vessel(pose='idle'):
  face_svg=face.svg().split('>',1)[1].rsplit('</svg>',1)[0]
  out += ['<g id="emperor-likeness" transform="translate(204 '+('60'if fallen else '54')+') scale(3 2.5)">',face_svg,'</g>']
  out += [p([(191,178),(214,186),(232,183),(235,199),(199,199),(176,180)],'#a4b3ad'),p([(313,152),(345,164),(353,180),(329,199),(313,185)],'#3b5563')]
- # The imperial sun is a tangible embossed insignia, not the Benefactor's hollow head.
+ # The same hollow-sun emblem embossed in brass; its open center exposes the
+ # recessed breastplate. This is heraldry, without the god's suspended shard.
  out += [p([(289,225),(313,190),(307,146),(316,153),(321,194),(294,232),(269,241),(264,235)],'#344b58'),'<g id="imperial-sun-insignia">',p([(221,146),(264,135),(307,146),(313,190),(289,225),(264,235),(239,225),(215,190)],'#806b48'),p([(226,150),(264,141),(302,150),(307,188),(285,218),(264,226),(243,218),(221,188)],'#9b783f')]
- cx,cy=264,181
- for i in range(12):
-  a=math.radians(i*30-90);ux,uy=math.cos(a),math.sin(a);vx,vy=-uy,ux
-  out += [p([(cx+ux*23+vx*5,cy+uy*23+vy*5),(cx+ux*37+vx*3,cy+uy*37+vy*3),(cx+ux*40-vx*2,cy+uy*40-vy*2),(cx+ux*23-vx*5,cy+uy*23-vy*5)],SHADOW if fallen else GOLD if i%2 else WHITE)]
- out += [p([(243,168),(253,157),(275,157),(285,168),(285,191),(274,203),(253,203),(243,191)],'#927444'),p([(247,170),(256,162),(272,162),(280,170),(280,188),(271,198),(256,198),(247,188)],SHADOW if fallen else GOLD),p([(250,171),(257,166),(271,166),(277,172),(273,182),(261,185),(250,181)],BLUE if fallen else WHITE),p([(257,181),(265,173),(273,181),(265,194)],'#29434d'if fallen else LIGHT if not charged else '#eff4d5'),'</g>']
+ out += ['<ellipse cx="264" cy="181" rx="21" ry="21" fill="#506b80"/>',emblem(264,181,29,gold=SHADOW if fallen else GOLD,shade='#806b48',light=BLUE if fallen else WHITE,broken=fallen),'</g>']
  for y in (250,263):out += [p([(167,y),(214,y-10),(264,y-4),(314,y-10),(361,y),(351,y+8),(306,y+1),(264,y+7),(222,y+1),(177,y+8)],GOLD if not fallen else SHADOW)]
  if fallen:out += [p([(259,144),(266,159),(260,177),(271,187),(260,217),(262,197),(252,183),(260,163)],INK)]
  if pose=='cast':

@@ -46,7 +46,7 @@ export function interactWindmere(h:StoryHost,id:string){
    return h.talk({lines:[SAY('Petra','Keep these machines away from the ward doors. There’s room on the bridge to draw them out.')],choices:[{label:'Clear the gallery bridge',action:()=>h.battle('wind-gallery')},{label:'Prepare first',action:()=>{}}]});
   case 'wind-engine':
    if(!f.windGalleryWon)return h.toast('Clear the gallery bridge before approaching the engine.');
-   if(f.wardEngineWon)return h.toast('The engine is stopped. Use the support-release controls above it.');
+   if(f.wardEngineWon)return h.toast('The engine is stopped. Its support-release controls are exposed.');
    return h.talk({lines:[SAY('Celia','The lit projection directs this round’s beam. Break it to cancel the beam and expose the core until the next round. Both projections gone leaves the core open.')],choices:[{label:'Stop the mirrored ward engine',action:()=>{h.commit('wardEngineConfronted');h.battle('wind-engine');}},{label:'Prepare our equipment first',action:()=>{}}]});
   case 'wind-anchor':
    if(!f.wardEngineWon)return h.toast('Stop the engine before touching the treatment supply.');

@@ -86,7 +86,7 @@ export function interactChapterOne(host: StoryHost, id: string) {
     case 'village-yard': travel('yard','from-village'); return;
     case 'sun-mural':
       host.talk({ scene: { id: 'one-mural', title: 'THE HOLLOW SUN', actors: stage('tunnel','one-mural') }, lines: [
-        { ...SAY('The old mural', 'Harvesters carry sheaves toward a circle. Most of its center has flaked away.'), shot: { focus: { x: 21, y: 8 }, cut: true, silence: true } },
+        { ...SAY('The old mural', 'Harvesters carry sheaves toward a ring with broad rays. Bare stone shows through its center.'), shot: { focus: { x: 21, y: 8 }, cut: true, silence: true } },
         SAY('Nell', 'The lamps in Larkspur have the same rays.'),
         SAY('Orrin', 'This was here before the empire laid the track.'),
       ], done: () => host.commit('muralRead') }); return;

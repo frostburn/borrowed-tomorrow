@@ -36,5 +36,5 @@ export function objective(s:GameState):string{
  if(m==='namar')return f.desertReleaseReady&&!f.desertSealBroken?'Join Samira at the evening exchange.':f.desertSealBroken?'The western seal is broken. Return to Alda at the survey landing.':'Meet Queen Samira at the eastern palace.';
  if(m==='sunpalace')return !f.palaceCoup?'Ask Samira to withdraw the imperial seal.':!f.palaceEscapeWon?'Choose an escape at the postal stair west of the fountain.':!f.palaceEscaped?'Meet Amal at the western postal stair.':'Take the western stair to the observatory terraces.';
  if(m==='skywalk')return !f.desertAscentWon?'Clear the glasswings from the upper terrace.':'Rest at the postal shelter, then take the eastern observatory stair.';
- return !f.sunSerpentWon?'Stop the sun serpent above the bronze release.':!f.desertReleaseReady?'Lift the pact band at the bronze release.':f.desertSealBroken?'The western seal is broken. The terrace stair returns to Namar.':'Return to the evening exchange with Samira.';
+ return !f.sunSerpentWon?'Stop the sun serpent above the bronze release.':!f.desertReleaseReady?'Samira can reach the bronze release.':f.desertSealBroken?'The western seal is broken. The terrace stair returns to Namar.':'Return to the evening exchange with Samira.';
 }

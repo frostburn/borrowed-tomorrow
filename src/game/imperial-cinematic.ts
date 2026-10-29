@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import type { StagePoint } from '../content/cinematics';
+import { hollowSunPolygons } from '../content/hollow-sun';
+import hollowSun from '../content/hollow-sun.json';
 export type ImperialEffect='capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall';
 /** Scene-time effects own no story state; completion/skip commits the checkpoint. */
 export class ImperialCinematic {
@@ -24,7 +26,14 @@ export class ImperialCinematic {
    const draw=(p:number)=>{
     if(!g.active)return;g.clear();
     if(kind==='capital-horizon'){
-     g.lineStyle(10,0x1a2b3f,.9).strokeEllipse(x,y-220,210+p*180,24+p*13);g.lineStyle(3,0xf1d49b,.8).strokeEllipse(x,y-220,210+p*180,24+p*13);
+     // A perspective view of the same open, twelve-ray emblem seen in stone
+     // and brass, rather than an unrelated thin portal ellipse.
+     // Keep the whole corona inside narrow views, above the dialogue panel.
+     const radius=Math.min(195,(this.scene.cameras.main.width-32)/(2*hollowSun.longRayTip));
+     const sun=hollowSunPolygons(x,y-72,radius*(105+p*90)/195,.42);
+     const polygon=(points:{x:number;y:number}[])=>{g.beginPath().moveTo(points[0].x,points[0].y);for(const p of points.slice(1))g.lineTo(p.x,p.y);g.closePath().fillPath();};
+     g.fillStyle(0xc2a16b,.9);for(const ray of sun.rays)polygon(ray);
+     for(const [i,band]of sun.bands.entries()){g.fillStyle(i<8?0xe4cf94:0xaa8e5f,.95);polygon(band);}
     }else{
      g.lineStyle(8,0xe5ebcd,(1-p)*.35).lineBetween(x,y-210,x+80,y+330);g.lineStyle(2,0xffeab2,1-p).lineBetween(x,y-210,x+80,y+330);
      for(let i=0;i<6;i++)g.fillStyle(0xf2dfb4,1-p).fillRect(x+i*14-40,y+i*28-100+p*30,4,7);

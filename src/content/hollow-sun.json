@@ -1,0 +1,10 @@
+{
+  "rays": 12,
+  "innerRadius": 0.71,
+  "rayRoot": 0.95,
+  "rayTip": 1.3,
+  "longRayTip": 1.34,
+  "rayHalfAngle": 7,
+  "rayTipOffset": 2,
+  "fracturedArcs": [[-56, 48], [56, 168], [177, 296]]
+}

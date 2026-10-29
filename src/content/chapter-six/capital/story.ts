@@ -1,7 +1,7 @@
 import type { GameState } from '../../../rules/state';
 export const JOURNAL={
  capitalStreetSeen:{title:'The procession',text:'A handcart and a baker repeat the same work beneath the palace arch. The street return is keeping the residents inside the Emperor’s remembered morning. The allied quay remains open behind us.'},
- capitalProcessionWon:{title:'The avenue machines',text:'The procession machines are stopped. Open the bronze street return to let the residents leave. A lined ceremonial coat is in the bag.'},
+ capitalProcessionWon:{title:'The avenue machines',text:'The procession machines are stopped. The bronze street return is no longer guarded. A lined ceremonial coat is in the bag.'},
  capitalStreetFreed:{title:'The street moves on',text:'The woman stopped to retrieve her cloth. The baker left the burnt loaf behind. Namar’s crews and Skeld’s pilots are taking the residents down to the allied boats.'},
  capitalPalaceSeen:{title:'The private household',text:'The Emperor’s remembered family repeat conversations while living patients go unattended. His private rooms have taken the service ward’s water. A remaining cordon bars the patient stair.'},
  capitalCommandWon:{title:'The last cordon',text:'The commandant lowered his weapon. The palace attendants can open the patient stair. A pressure-crown nozzle for Orrin is in the bag.'},
@@ -32,7 +32,7 @@ export function objective(s:GameState):string|undefined{
  if(m==='lastmorning')return 'Join Tomas at the clock, or take the sea train beneath the eastern lamp.';
  if(m==='lastshore')return 'Walk beside Tomas at the water’s edge.';
  if(m==='crown')return !f.emperorWon?'Break the crown supports and defeat the Emperor.':f.capitalRiskAccepted&&!f.lightbearerWon?'Face the Lightbearer above the broken crown.':'Descend to the allied landing.';
- if(m==='stillcity')return !f.capitalProcessionWon?'Clear the procession machines from the avenue.':!f.capitalStreetFreed?'Open the bronze street return beneath the arch.':'Take the northern palace stair, or return to the allied quay.';
+ if(m==='stillcity')return !f.capitalProcessionWon?'Clear the procession machines from the avenue.':!f.capitalStreetFreed?'The bronze street return is within reach.':'Take the northern palace stair, or return to the allied quay.';
  if(m==='lastpalace')return !f.capitalCommandWon?'Confront the commandant at the patient stair.':'Rest and fit equipment, then review final preparations at the crown stair. Iria remains reachable.';
  if(f.capitalReleased)return 'Review the final crossing with Alda at the allied landing, or revisit the foreign harbors.';
  if(m==='capitalquay')return 'Enter Stillwater Avenue through the northern arch.';

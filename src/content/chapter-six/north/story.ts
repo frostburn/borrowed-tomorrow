@@ -20,6 +20,6 @@ export function objective(s:GameState):string|undefined{
  if(m==='bellharbor')return !f.northSeen?'Meet the king at the northern bell.':f.northSealBroken?!f.northReturned?'Bring the fleet’s dispatches to the harbor bell.':'Return to Alda with Skeld’s pilots, or revisit the expedition route.':'Take the eastern covered road to Frostwatch.';
  if(m==='frostwatch')return !f.northWatchWon?'Clear the imperial winter patrol from the signal post.':!f.northPassOpened?'Lift the passage gate at the windlass.':'Follow the covered passage to the glacier wrecks.';
  if(m==='glacier')return !f.northLogRead?'Open the dispatch cabin beside the lower ice walk.':!f.northHuntersWon?'Clear the divine hunters from the upper ice shelf.':'Climb to the winter sanctuary. Its camp has rest and supplies.';
- if(m==='wintershrine')return !f.winterDragonWon?'Rest at the expedition camp, then face the winter dragon.':!f.northSealBroken?'Release the northern pact at the bell mounting.':'Return with Signe and bring the fleet’s records to Skeld.';
+ if(m==='wintershrine')return !f.winterDragonWon?'Rest at the expedition camp, then face the winter dragon.':!f.northSealBroken?'Signe can reach the northern pact’s release.':'Return with Signe and bring the fleet’s records to Skeld.';
  if(m==='capitalquay')return 'The allied landing is open. The inner capital continues in the next adventure.';
 }

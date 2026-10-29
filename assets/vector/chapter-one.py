@@ -161,7 +161,10 @@ def fittings(kind,cells):
             if kind=='cap':out.extend([polygon([(x+3,y+15),(x+8,y+7),(x+18,y+6),(x+21,y+14),(x+16,y+17)],'#213949'),line([(x+6,y+12),(x+19,y+11)],'#b99862')])
             elif kind=='thread':out.append(line([(x+11,y),(x+12,y+24)],'#c7c9a5',2))
             elif kind=='drops':out.append(polygon([(x+11,y+3),(x+7,y+13),(x+11,y+17),(x+15,y+12)],'#b3c3b2'))
-            elif kind=='motes':out.append(rect(x+11,y+10,2,2,'#e0c791'))
+            elif kind=='motes':
+                # Mounted instrument lights must read as fixtures at the shared
+                # two-pixel framebuffer, rather than isolated bright dust.
+                out.append(f'<g data-fitting="indicator" transform="translate({x+11} {y+10})">'+rect(-3,-3,8,8,'#607576')+rect(-1,-1,4,4,'#8dc7be')+rect(-1,-1,2,2,'#d7dfbf')+'</g>')
             else:raise ValueError(kind)
     return ''.join(out)
 
