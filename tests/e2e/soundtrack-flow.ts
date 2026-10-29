@@ -24,12 +24,12 @@ const playerChunk=/\/(?:src\/game\/soundtrack\.ts(?:\?.*)?|assets\/soundtrack-[^
 const scoreChunk=/\/(?:src\/game\/music-runtime\.ts(?:\?.*)?|assets\/music-runtime-[^/]+\.js)$/;
 
 export function soundtrackFlows(production=false){
- for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`public soundtrack ${production?'production ':''}${device}: browse acts, play, seek, close and restore the host`,async({browser})=>{
+ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`public soundtrack ${production?'production ':''}${device}: browse acts, skip bars, autoplay, close and restore the host`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[],scoreRequests:string[]=[];
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   page.on('request',r=>{if(scoreChunk.test(r.url()))scoreRequests.push(r.url());});
   try{
-   await observeAudio(page);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
+   page.setDefaultTimeout(10000);await observeAudio(page);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
    const storage=await page.evaluate(()=>({...localStorage}));
    await page.getByRole('button',{name:'Soundtrack',exact:true}).click();const dialog=page.getByRole('dialog',{name:'Soundtrack',exact:true});
    await expect(dialog.getByRole('heading',{name:'Larkspur festival',exact:true})).toBeVisible();
@@ -45,8 +45,8 @@ export function soundtrackFlows(production=false){
    await capture(page,`soundtrack-${production?'production-':''}${device}`);
    await dialog.getByRole('button',{name:'Lower soundtrack volume',exact:true}).click();await expect(dialog.locator('#soundtrack-volume')).toHaveText('Volume 70%');
    const bar=dialog.getByRole('spinbutton',{name:'Bar',exact:true});await expect(bar).toHaveAttribute('max','34');
-   await bar.fill('0');await dialog.getByRole('button',{name:'Seek',exact:true}).click();await expect(dialog.getByRole('alert')).toContainText('Choose a bar from 1 to 34.');
-   await bar.fill('34');await dialog.getByRole('button',{name:'Seek',exact:true}).click();await expect(dialog.locator('#soundtrack-status')).toContainText('bar 34');
+   await bar.fill('0');await bar.press('Tab');await expect(dialog.getByRole('alert')).toContainText('Choose a bar from 1 to 34.');
+   await bar.fill('34');await bar.press('Tab');await expect(dialog.locator('#soundtrack-status')).toContainText('bar 34');
    await expect.poll(async()=>Number(await bar.inputValue())).toBeLessThan(8);expect(Number(await bar.inputValue())).toBeGreaterThanOrEqual(3);
    await expect(dialog.locator('#soundtrack-status')).toContainText('Loop');
    await dialog.getByRole('button',{name:'Pause',exact:true}).click();const held=await bar.inputValue();
@@ -57,9 +57,18 @@ export function soundtrackFlows(production=false){
    await dialog.getByRole('button',{name:'Play',exact:true}).click();await expect(dialog.locator('#soundtrack-status')).toContainText('Playing');
    await expect.poll(async()=>(await audioState(page)).contexts[0]).toBe('running');
    await dialog.getByRole('button',{name:'Pause',exact:true}).click();
+   const pausedBar=Number(await bar.inputValue());
+   await dialog.getByRole('button',{name:'Previous bar',exact:true}).click();await expect(bar).toHaveValue(String((pausedBar+32)%34+1));
+   await dialog.getByRole('button',{name:'Next bar',exact:true}).click();await expect(bar).toHaveValue(String(pausedBar));
    await dialog.getByRole('button',{name:'Next',exact:true}).click();await expect(dialog.getByRole('heading',{name:'The Sky Answers',exact:true})).toBeVisible();await expect(dialog.locator('#soundtrack-status')).toContainText('Stopped');
-   await dialog.getByRole('button',{name:/Chapter Six/}).click();await expect(dialog.locator('h4')).toHaveText(['The sealed capital','Namar · Desert expedition','Iria · River expedition','Skeld · Northern expedition','The capital assault']);
-   await dialog.getByRole('button',{name:'The Hand on the Shutter',exact:true}).click();await dialog.getByRole('button',{name:'Play',exact:true}).click();await expect(dialog.locator('#soundtrack-status')).toContainText('Playing');
+   const autoplay=dialog.getByRole('checkbox',{name:'Autoplay',exact:true});await expect(autoplay).not.toBeChecked();await autoplay.check();await capture(page,`soundtrack-autoplay-${production?'production-':''}${device}`);
+   await dialog.getByRole('button',{name:'Play',exact:true}).click();await expect(dialog.locator('#soundtrack-status')).toContainText('Playing');
+   await bar.fill((await bar.getAttribute('max'))!);await bar.press('Tab');
+   await expect(dialog.getByRole('heading',{name:'Two Seals at the Gate',exact:true})).toBeVisible({timeout:10000});
+   await expect(dialog.locator('#soundtrack-status')).toContainText('Playing');await expect(autoplay).toBeChecked();await autoplay.uncheck();
+   await dialog.getByRole('button',{name:/Chapter Seven/}).click();await expect(dialog.getByRole('button',{name:'Until Evening · good ending credits',exact:true})).toBeAttached();
+   await dialog.getByRole('button',{name:/Chapter Six/}).click();await expect(dialog.getByRole('button',{name:'The Empty Seat · bad ending credits',exact:true})).toBeAttached();await expect(dialog.locator('h4')).toHaveText(['The sealed capital','Namar · Desert expedition','Iria · River expedition','Skeld · Northern expedition','The capital assault']);
+   await dialog.getByRole('button',{name:'The Hand on the Shutter',exact:true}).click();await expect(dialog.locator('#soundtrack-status')).toContainText('Playing');
    await dialog.getByRole('button',{name:'Close',exact:true}).click();await expect(dialog).toHaveCount(0);
    await expect.poll(async()=>(await audioState(page)).contexts[0]).toBe('closed');
    await expect(page.getByRole('button',{name:'Sound off',exact:true})).toBeVisible();expect(await page.evaluate(()=>({...localStorage}))).toEqual(storage);

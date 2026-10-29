@@ -32,6 +32,9 @@ export class Audio {
   private steps=0;
   private lastStep=-1;
   enabled=false;
+  /** Listening mode can finish one pass instead of scheduling the loop. */
+  loop=true;
+  get finished(){return !!(this.context&&this.score&&this.bar>=this.score.scoreLength(this.mode)&&this.context.currentTime>=this.next);}
   private initialize(){
     const c=new AudioContext();this.context=c;
     const master=c.createGain(),compressor=c.createDynamicsCompressor(),music=c.createGain(),fx=c.createGain();
@@ -116,8 +119,10 @@ export class Audio {
   }
   private schedule(){
     const c=this.context;if(!c||!this.enabled||c.state!=='running')return;
+    if(!this.loop&&this.bar>=this.score!.scoreLength(this.mode))return;
     if(this.next<c.currentTime)this.next=c.currentTime+.03;
     while(this.next<c.currentTime+.16){
+      if(!this.loop&&this.bar>=this.score!.scoreLength(this.mode))break;
       if(this.mode!==this.pending){this.music!.release(this.next);this.mode=this.pending;this.bar=0;}
       const {beats}=this.score!.ARRANGEMENTS[this.mode],performed=this.score!.performanceBar(this.mode,this.bar,this.performance);
       this.history.push({mode:this.mode,bar:this.bar,start:this.next,beats,rubato:this.performance.rubato});if(this.history.length>3)this.history.shift();

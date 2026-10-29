@@ -42,3 +42,16 @@ it('does not enable an originally silent host',async()=>{
  const audio=new Audio(),play=vi.spyOn(audio,'play').mockResolvedValue();
  await audio.suspend()();expect(play).not.toHaveBeenCalled();
 });
+it('finishes a single pass without scheduling another loop, and can resume looping',()=>{
+ const audio=new Audio(),context={currentTime:0,state:'running'},notes=vi.fn();
+ audio.loop=false;
+ Object.assign(audio,{enabled:true,context,next:0,score:{
+  ARRANGEMENTS:{station:{beats:4}},scoreLength:()=>1,
+  performanceBar:()=>({duration:1,notes:[]}),
+ },music:{note:notes}});
+ const schedule=()=> (audio as unknown as {schedule():void}).schedule();
+ schedule();expect(audio.finished).toBe(false);
+ context.currentTime=1.1;schedule();expect(audio.finished).toBe(true);
+ context.currentTime=2;schedule();expect(audio.finished).toBe(true);
+ audio.loop=true;schedule();expect(audio.finished).toBe(false);
+});

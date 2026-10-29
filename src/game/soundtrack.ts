@@ -26,7 +26,7 @@ class SoundtrackPlayer {
  constructor(private ui:UI,private host:Audio){}
  mount(root:HTMLElement){
   this.root=root;this.restore=this.host.suspend();this.ui.sound(false);this.player.setRoom('dry');
-  root.innerHTML='<section class="soundtrack-player" aria-label="Soundtrack player"><p class="soundtrack-kicker">Borrowed Tomorrow · Original soundtrack</p><h3 id="soundtrack-title"></h3><p id="soundtrack-meta"></p><p id="soundtrack-status" role="status"></p><div class="soundtrack-transport" id="soundtrack-transport"></div><div class="soundtrack-seek"><label for="soundtrack-bar">Bar</label><input id="soundtrack-bar" type="number" min="1" value="1" disabled><button id="soundtrack-seek" disabled>Seek</button><button id="soundtrack-restart">Restart</button></div><div class="soundtrack-volume"><button id="soundtrack-quieter" aria-label="Lower soundtrack volume">−</button><span id="soundtrack-volume">Volume 75%</span><button id="soundtrack-louder" aria-label="Raise soundtrack volume">+</button></div><p class="soundtrack-note">Tracks loop as they do in the game. Choose another track or use Next.</p><p class="soundtrack-error" role="alert" id="soundtrack-error"></p></section><section class="soundtrack-library" aria-label="Soundtrack library"><nav class="soundtrack-chapters" aria-label="Soundtrack chapters"></nav><h3 id="soundtrack-chapter"></h3><div class="soundtrack-tracks" tabindex="0" aria-label="Tracks"></div></section>';
+  root.innerHTML='<section class="soundtrack-player" aria-label="Soundtrack player"><p class="soundtrack-kicker">Borrowed Tomorrow · Original soundtrack</p><h3 id="soundtrack-title"></h3><p id="soundtrack-meta"></p><p id="soundtrack-status" role="status"></p><div class="soundtrack-transport" id="soundtrack-transport"></div><div class="soundtrack-seek"><button id="soundtrack-previous-bar" aria-label="Previous bar" disabled>Previous</button><label for="soundtrack-bar">Bar</label><input id="soundtrack-bar" type="number" min="1" value="1" disabled><button id="soundtrack-next-bar" aria-label="Next bar" disabled>Next</button><button id="soundtrack-restart">Restart</button></div><div class="soundtrack-volume"><button id="soundtrack-quieter" aria-label="Lower soundtrack volume">−</button><span id="soundtrack-volume">Volume 75%</span><button id="soundtrack-louder" aria-label="Raise soundtrack volume">+</button></div><label class="soundtrack-autoplay"><input id="soundtrack-autoplay" type="checkbox"> Autoplay</label><p class="soundtrack-note">Tracks loop unless Autoplay is checked.</p><p class="soundtrack-error" role="alert" id="soundtrack-error"></p></section><section class="soundtrack-library" aria-label="Soundtrack library"><nav class="soundtrack-chapters" aria-label="Soundtrack chapters"></nav><h3 id="soundtrack-chapter"></h3><div class="soundtrack-tracks" tabindex="0" aria-label="Tracks"></div></section>';
   this.ui.actionRow(root.querySelector('#soundtrack-transport')!,[
    {label:'Previous',title:'Previous track',action:()=>this.adjacent(-1)},
    {label:'Play',action:()=>{if(this.state==='playing'||this.state==='loading')this.pause();else void this.play();}},
@@ -35,7 +35,10 @@ class SoundtrackPlayer {
   ]);
   root.querySelectorAll<HTMLButtonElement>('#soundtrack-transport button')[1].id='soundtrack-play';
   root.querySelector<HTMLInputElement>('#soundtrack-bar')!.oninput=()=>{this.editing=true;};
-  root.querySelector<HTMLButtonElement>('#soundtrack-seek')!.onclick=()=>this.seek();
+  root.querySelector<HTMLInputElement>('#soundtrack-bar')!.onchange=()=>this.seek();
+  root.querySelector<HTMLButtonElement>('#soundtrack-previous-bar')!.onclick=()=>this.skipBar(-1);
+  root.querySelector<HTMLButtonElement>('#soundtrack-next-bar')!.onclick=()=>this.skipBar(1);
+  root.querySelector<HTMLInputElement>('#soundtrack-autoplay')!.onchange=event=>{this.player.loop=!(event.target as HTMLInputElement).checked;};
   root.querySelector<HTMLInputElement>('#soundtrack-bar')!.onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();this.seek();}};
   root.querySelector<HTMLButtonElement>('#soundtrack-restart')!.onclick=()=>{this.bar=0;this.editing=false;this.held=false;void this.play();};
   root.querySelector<HTMLButtonElement>('#soundtrack-quieter')!.onclick=()=>this.setVolume(-5);
@@ -83,6 +86,11 @@ class SoundtrackPlayer {
   this.select(SOUNDTRACK_ORDER[(index+delta+SOUNDTRACK_ORDER.length)%SOUNDTRACK_ORDER.length].mode);
   this.root!.querySelector('[aria-current="true"]')?.scrollIntoView({block:'nearest'});
  }
+ private skipBar(delta:number){
+  if(!this.score)return;
+  const length=this.score.scoreLength(this.track.mode);
+  this.root!.querySelector<HTMLInputElement>('#soundtrack-bar')!.value=String((this.bar+delta+length)%length+1);this.seek();
+ }
  private seek(){
   if(!this.score)return;
   const input=this.root!.querySelector<HTMLInputElement>('#soundtrack-bar')!,bar=Number(input.value)-1;
@@ -114,7 +122,10 @@ class SoundtrackPlayer {
  private tick(){
   if(this.disposed||!this.root)return;
   const root=this.root!,score=this.score,position=this.player.position();
-  if(this.state==='playing'&&score)this.bar=score.scorePosition(this.track.mode,position.bar);
+  if(this.state==='playing'&&score){
+   if(!this.player.loop&&(this.player.finished||position.bar>=score.scoreLength(this.track.mode))){this.adjacent(1);return;}
+   this.bar=score.scorePosition(this.track.mode,position.bar);
+  }
   const length=score?.scoreLength(this.track.mode),a=score?.ARRANGEMENTS[this.track.mode];
   const meta=a?`${score!.scoreMeter(this.track.mode)} · ${a.bpm} BPM · ${length} bars${a.introBars?' · '+a.introBars+'-bar opening, then loop':''}`:'31-tone equal temperament · Play to listen';
   if(root.querySelector('#soundtrack-meta')!.textContent!==meta)root.querySelector('#soundtrack-meta')!.textContent=meta;
@@ -124,7 +135,7 @@ class SoundtrackPlayer {
   const input=root.querySelector<HTMLInputElement>('#soundtrack-bar')!;
   if(!this.editing&&document.activeElement!==input)input.value=String(this.bar+1);
   input.disabled=!score;if(length)input.max=String(length);
-  root.querySelector<HTMLButtonElement>('#soundtrack-seek')!.disabled=!score;
+  for(const id of ['soundtrack-previous-bar','soundtrack-next-bar'])root.querySelector<HTMLButtonElement>('#'+id)!.disabled=!score;
  }
  close(){
   if(this.disposed)return;this.disposed=true;this.generation++;

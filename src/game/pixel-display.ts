@@ -133,6 +133,10 @@ export class PixelDisplay {
       if(style.overflowX!=='visible'||style.overflowY!=='visible')add(ctx=>{ctx.beginPath();ctx.rect(r.x,r.y,r.w,r.h);ctx.clip();},true);
       if(element===this.world){this.worldRect=r;add(()=>{},false,true);}
       else if(element instanceof HTMLCanvasElement)add(ctx=>{ctx.drawImage(element,r.x,r.y,r.w,r.h);});
+      else if(element instanceof HTMLInputElement&&element.type==='checkbox'){
+        const checked=element.checked;
+        add(ctx=>{ctx.fillStyle=style.color;ctx.strokeStyle=style.color;ctx.lineWidth=2;ctx.strokeRect(r.x+1,r.y+1,r.w-2,r.h-2);if(checked)ctx.fillRect(r.x+6,r.y+6,r.w-12,r.h-12);});
+      }
       else if(element instanceof HTMLInputElement&&element.type==='number'){
         const value=element.value,scale=Math.max(1,Math.round(parseFloat(style.fontSize)/10));
         add(ctx=>bitmapText(ctx,value,r.x+Math.round(parseFloat(style.paddingLeft)),r.y+Math.round(parseFloat(style.paddingTop))+scale,style.color,scale));

@@ -409,10 +409,12 @@ their acts and regional expeditions; **Extras** contains retained themes.
 `content/soundtrack.ts` is the shared catalogue for this player and the dev
 Music workshop. It lists every score once, including short scene cues.
 
-Play, Pause, Stop, Restart, Previous/Next and bar seeking use the game's actual
+Play, Pause, Stop, Restart, Previous/Next and Previous/Next bar controls use the game's actual
 31-EDO scores and instruments. Pause suspends the listener's audio clock so
-resuming continues at the same beat. Authored openings play once before the
-loop, including after seeking. The player displays meter, tempo and bar position;
+resuming continues at the same beat. The bar field applies changes immediately, without a Seek button.
+Autoplay plays each track once before advancing through the catalogue; unchecked,
+tracks repeat their authored loops. Authored openings still play only once.
+The good and bad ending credits cues are labelled in the catalogue. The player displays meter, tempo and bar position;
 it does not display notes. Its volume is independent of the campaign's setting.
 
 The player, catalogue and CSS load on opening; the score/synth chunk loads only

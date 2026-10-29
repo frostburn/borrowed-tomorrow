@@ -12,3 +12,5 @@
 .soundtrack-tracks{overflow:auto;max-height:348px;padding-right:8px}.soundtrack-act+ .soundtrack-act{margin-top:20px}
 .soundtrack-act h4{color:#b8a780;margin:0 0 8px}.soundtrack-act button{display:block;text-align:left;width:100%;padding:10px;margin-bottom:8px}
 @media(max-width:1023px){.soundtrack .soundtrack-kicker,.soundtrack .soundtrack-note{display:none}.soundtrack{display:flex;flex-direction:column;gap:20px}.soundtrack-player{align-self:stretch;padding:12px}.soundtrack-tracks{max-height:224px}.soundtrack h3{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:16px}.soundtrack #soundtrack-title{font-family:Switchyard;font-size:20px;line-height:24px}.soundtrack-transport{margin-top:16px}.soundtrack .soundtrack-note{margin-top:12px}}
+
+.soundtrack-autoplay{display:flex;align-items:center;gap:8px;margin-top:16px}.soundtrack .soundtrack-autoplay input{width:20px;height:20px;margin:0;accent-color:#f4c77a}
