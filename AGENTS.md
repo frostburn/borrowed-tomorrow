@@ -1,10 +1,10 @@
 Chapter Three geography: Northglass is the imperial conduit works outside the
 royal white-marble capital. After the feeds close, the human Emperor teleports
 through its transfer chamber to the palace and orders the coastal relay closed.
-The works and capital stay grounded. `emperorMerged` is the retained version-11
+The works stay grounded; the separate marble capital is already airborne. `emperorMerged` is the retained version-11
 escape checkpoint name, not an early transformation. The merger happens only
 at the Chapter Six crown confrontation. Anchors supply preservation machinery
-and defenses; defeating the Emperor breaks preservation, never lands a city.
+and defenses; defeating the Emperor breaks preservation and lets the crews lower the capital.
 
 # Borrowed Tomorrow
 
@@ -195,7 +195,7 @@ Chapter Three interiors are well-lit royal workplaces: use uncovered opal work l
 
 Chapter Four extends angular coastal scenery and actor illumination across refuge, Breakwater, sanctuary and five arenas. `assets/vector/chapter_four_style.py` and `chapter-four/lighting.json` own geometry/material treatment and registered emitters. Keep clean straight slanted floor courses, outer-only quay depth faces, colored shadow planes, functional wheel-to-gate linkage, rigid bronze-ring calibration, warm under-awning opal lights and outdoor coastal lamps. Ferry spill inherits its exact story visibility layer; waiting/returning hulls stay in open water, and the suspended skiff sorts behind the quay. The quays’ authored crooked polygons generate their 24px navigation and paint clips together. Keep connected routes, controls, casts, existing layer/object IDs and flag semantics. The sanctuary exit passes through the gate’s real flag-blocked service stair; wheel/clamp scenes automatically follow their guard victories, and the warden stays grey until `signalCut`. Keep detailed journeys/lighting/browser checks outside the default CI gate. See `assets/vector/chapter-four.md`.
 
-Chapter Four route geometry: keep the refuge quay/cutaway above the first ballast bed at y=841, with continuous lower railway ground. Breakwater’s bridge converges onto a far headland without hiding the grounded marble capital. The Sanctuary’s southern return stair continues off-screen; its western refuge route boards the small shoreline launch. Keep the hull in water, its gangway/boat clickable from the shore, registered light and both existing exit IDs/destinations.
+Chapter Four route geometry: keep the refuge quay/cutaway above the first ballast bed at y=841, with continuous lower railway ground. Breakwater’s bridge converges onto a far headland without hiding the floating marble capital. The Sanctuary’s southern return stair continues off-screen; its western refuge route boards the small shoreline launch. Keep the hull in water, its gangway/boat clickable from the shore, registered light and both existing exit IDs/destinations.
 
 Chapter Five now extends the angular/material/actor-lighting treatment across all thirteen exploration maps and fourteen tactical arenas. `assets/vector/chapter_five_style.py` owns crooked perimeters and matching 24px footing, slanted roofs and colored depth planes; `chapter_five_floors.py` gives the regions distinct working materials with short joints, local repairs and inlays rather than a chapter-wide slab grid; `chapter-five/lighting.json` registers actual opal work lamps, furnace/windows, cabin and flag-bound anchor emitters. Use bright diffuse indoor light and faint shadows. Preserve boss bodies, mechanical ports, cast anchors, routes, resources and IDs. Dawnwatch/Windmere survey moorings have real hull collision and boarding planks; covered saves use the existing safe-arrival rule. Keep the appended survey launch layer and all command-deck layers `live`, including destruction-prefixed fixture/spill images, so caching preserves takeoff and the Benefactor strike. Furnace/ward/flagship battle presentations use their actual ground masks; later domain reprises stay independent. Detailed regional/lighting/device/motion checks remain outside default CI. See `assets/vector/chapter-five.md`.
 

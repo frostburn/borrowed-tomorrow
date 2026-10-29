@@ -4,7 +4,7 @@
 
 ## Shape and purpose
 
-A shared opening at the western airfield leads to **four acts**. Hammerplain, Dawnwatch and Windmere are Acts I–III, but those numbers do not prescribe their order. All three destinations are available after takeoff; the player may leave an unfinished region and return. Completing all three opens Act IV, Alban's flagship. The chapter ends with the alliance ready to approach the sealed capital. The Emperor and the Benefactor remain the separate climaxes of Chapters Six and Seven.
+A shared opening at the western airfield leads to **four acts**. Hammerplain, Dawnwatch and Windmere are Acts I–III, but those numbers do not prescribe their order. All three destinations are available after takeoff; the player may leave an unfinished region and return. Completing all three opens Act IV, Alban's flagship. The chapter ends with the alliance ready to approach the floating capital. The Emperor and the Benefactor remain the separate climaxes of Chapters Six and Seven.
 
 The immediate problem is reaching the capital without feeding its engines. Each anchor supplies both a different obstacle and something the assault needs: independent engines, crews who will protect civilians, and a way to release the remaining supports safely. Destroying an anchor stops further collection locally. It does not return days already taken or resurrect anyone.
 

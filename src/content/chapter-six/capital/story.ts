@@ -17,7 +17,7 @@ export const JOURNAL={
  emperorSeen:{title:'The imperial vessel',text:'The Emperor sits inside the crowned vessel. Its two supports shield the core. Broken mountings may rebuild during a later coronation; watch the announced pattern.'},
  emperorWon:{title:'The Emperor falls',text:'The vessel is defeated. An unbroken crown guard is in the bag for Petra. The evacuation crews are lowering the capital onto its old foundations.'},
  emperorFallen:{title:'The broken crown',text:'The Emperor lay dead inside the broken vessel. Its sun went dark, his remembered rooms faded and the conduit opened above the city.'},
- capitalReleased:{title:'The capital wakes',text:'The preservation field has broken. The city’s clocks are running again. Nell’s treated binding did not take the broken conduit’s current. The fragment remains intact.'},
+ capitalReleased:{title:'The capital lands',text:'The capital has returned to its foundations. Nell’s treated binding did not take the broken conduit’s current. The fragment remains intact.'},
  capitalLandingSeen:{title:'Beyond the empire',text:'The last patients reached the boats. Collection has begun beyond the imperial roads. The broken vessel and hospice diagram mark a route through the hollow sun; Alda will keep the ship while the companions prepare.'},
  sixDeparture:{title:'The final crossing',text:'The companions have chosen to prepare the journey through the hollow sun. The capital, supplies and foreign landings remain available before Chapter Seven.'},
  lightbearerSeen:{title:'The Lightbearer',text:'The untreated binding drew Nell from her berth into the broken crown. The Benefactor formed a mantle around her. Her hand sometimes closes the lantern shutter, interrupting its light.'},

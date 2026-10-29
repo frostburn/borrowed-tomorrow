@@ -66,7 +66,7 @@ export const heart=()=>scene('conduit','three-heart','THE VESSEL BELOW',[
   line('Below the conduit works','Iron restraints bite into a pale vessel above the machines. The hum in Nell’s lantern catches against the hum from the walls.',{focus:{x:32,y:12},cut:true,silence:true,cue:'resonance'}),
   line('The Emperor','I gave orders for your brother to be kept alive.',{focus:{x:41,y:22},cut:true}),
   line('Nell','Your warden was cutting him apart.'),
-  line('The Emperor','I came to recover the fragment, not to have your brother killed. Return it, and I will have the train take you both home.'),
+  line('The Emperor','I came down to recover the fragment, not to have your brother killed. Return it, and I will have the train take you both home.'),
   line('Petra','And the people at Cinderbank? The others still being collected?'),
   line('The Emperor','The capital has hospitals, winter stores, children who have never known a siege. Those engines keep them alive.'),
   line('Orrin','Our train brought patients here without taking anyone’s days. Yours can stop.'),
@@ -97,7 +97,7 @@ export const rupture=()=>scene('conduit','three-rupture','THE FEEDS CLOSE',[
   line('Orrin','Tomas is at our engine. We’re leaving together.',{track:'nell',duration:1200,actors:{nell:{to:{x:25,y:35}},orrin:{to:{x:24,y:34}},kit:{to:{x:23,y:35}},petra:{to:{x:26,y:34}}}}),
 ]);
 export const departure=()=>scene('northglass','three-departure','THE BROTHER WHO CAME HOME',[
-  line('The south siding','The medical coaches are full. Steam pours from the conduit works behind the roof.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
+  line('The south siding','The medical coaches are full. Steam pours from the grounded works; far above them, the white capital hangs over the valley.',{focus:{x:47,y:6},cut:true,cue:'steam'}),
   line('Tomas','Nell! Here!',{focus:{x:33,y:31},cut:true}),
   line('Nell','You’re staying where I can see you.'),
   line('Tomas','I can manage that.'),

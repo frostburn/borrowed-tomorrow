@@ -44,7 +44,7 @@ Nell, Orrin and Kit do not know the whole divine bargain, the conduit’s nature
 
 Celia’s introduction and faith conflict begin at the Chapter Four harbor. Do not invent an explanation for the three-fighter cap in this handoff. Kit’s one flustered response to Nell stays an occasional innocent, one-sided hint. Do not develop or resolve it into a romance.
 
-The implemented chapter rescues Tomas, disables extraction and makes the Emperor use the conduit’s last charge to teleport to the marble capital. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
+The implemented chapter rescues Tomas, disables extraction and makes the Emperor use the conduit’s last charge to teleport to the floating marble capital. That reversal does not negate the rescue or make the party’s victories part of a secret master plan. Keep the eventual journey into the god’s separate domain distinct from the emperor’s defeat.
 
 ## Tiled implementation and development start
 

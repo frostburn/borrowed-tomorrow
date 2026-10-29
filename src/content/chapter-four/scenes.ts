@@ -57,7 +57,7 @@ export const openGate=()=>scene('breakwater','four-gate','A way through',[
  line('Celia','The stair’s clear now. Come and see what they connected to my old hospice.'),
 ]);
 export const terrace=()=>scene('sanctuary','four-terrace','The signal sanctuary',[
- line('The sanctuary','An imperial cable climbs the old sea wall and enters a bronze ring. Far inland, the white capital stands on the ridge beyond the valley.',{focus:{x:32,y:13},cut:true}),
+ line('The sanctuary','An imperial cable climbs the old sea wall and enters a bronze ring. Far inland, the white capital hangs above the dark valley.',{focus:{x:32,y:13},cut:true}),
  line('Celia','We used to bring the ward beds onto this terrace in summer. That cable wasn’t here.',{focus:{x:32,y:28}}),
  line('The Sanctuary Warden','The coast is held for its protection. Return to shelter.'),
  line('Petra','People are trapped below. Release the signal.'),
@@ -88,7 +88,7 @@ export const record=()=>scene('sanctuary','four-chart','Behind the imperial plat
  line('Orrin','Hammerplain. Dawnwatch. Windmere. Anchor stations, with the same return circuit we just cut.'),
  line('Petra','Dawnwatch has soldiers who’ll listen to me. Some of them, at least.'),
  line('Nell','If we break these connections, can we get through to him?'),
- line('Orrin','They feed the palace machinery and its defenses. We’ll need to see the stations themselves.'),
+ line('Orrin','They feed the engines keeping the capital aloft and its defenses. We’ll need to see the stations themselves.'),
  line('Celia','There’s another drawing. The palace vessel, and a passage through the hollow sun behind it.'),
  line('The old diagram','The vessel is labeled “conduit.” Beyond the hollow sun, the same hand has written “source.”'),
  line('Nell','So even if we stop the emperor…'),

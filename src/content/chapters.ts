@@ -92,7 +92,7 @@ export const CHAPTERS:Record<GameState['chapter'],ChapterDefinition>={
     title:'Chapter Six',maps:mapIds(CHAPTER_SIX_MAPS),restoreAllMaps:true,
     entry:{from:'chapter-five',boundary:SIXTH_CHAPTER,loading:'Loading the outer mooring…',begin:beginChapterSix},
     story:{journal:six.JOURNAL,objective:six.objective,resume:resumeChapterSix,interact:interactChapterSix},
-    ending:{html:'<div class="chapter-name">Next: Chapter Seven · The God Who Lent Tomorrow</div><p>The Emperor is defeated and the capital’s preservation field is broken. Nell and the fragment are safe. The hollow sun opens onto the Benefactor’s domain.</p><p>The ship, supplies and foreign landings remain available while you prepare the final crossing.</p>',returnLabel:'Return to the allied landing',exportLabel:'Export hollow-sun departure save'},
+    ending:{html:'<div class="chapter-name">Next: Chapter Seven · The God Who Lent Tomorrow</div><p>The Emperor is defeated and the capital has landed. Nell and the fragment are safe. The hollow sun opens onto the Benefactor’s domain.</p><p>The ship, supplies and foreign landings remain available while you prepare the final crossing.</p>',returnLabel:'Return to the allied landing',exportLabel:'Export hollow-sun departure save'},
   },
  'chapter-seven':{
   title:'Chapter Seven',maps:mapIds(CHAPTER_SEVEN_MAPS),restoreAllMaps:true,

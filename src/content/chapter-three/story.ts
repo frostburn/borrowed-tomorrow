@@ -8,7 +8,7 @@ export const JOURNAL:Record<string,{title:string;text:string}>={
   heart:{title:'The emperor’s engine',text:'The emperor refuses to stop collection. The restrained vessel below the conduit works feeds his engines. Stop its regulator, then close the feeds ourselves.'},
   heartGuard:{title:'Close the feeds',text:'The heart regulator is down. We found an insulated coat that any companion can equip. The extraction console is no longer guarded.'},
   rupture:{title:'The Emperor escapes',text:'We stopped extraction at the works. The Emperor used the conduit’s last charge to teleport to his marble palace and ordered the coastal relay closed. Tomas has reached our coal engine. Get to the south platform and leave together.'},
-  brokenDeparture:{title:'Tomas came with us',text:'Tomas escaped alive with the passengers. The Emperor escaped to the marble capital and ordered a coastal arrest. Clocks and signals along the line have begun to fail. Nell, Orrin, Kit and Petra left together. Our rescue stands. Next: Chapter Four — A Light on the Water.'},
+  brokenDeparture:{title:'Tomas came with us',text:'Tomas escaped alive with the passengers. The Emperor teleported from the grounded works to the floating marble capital and ordered a coastal arrest. Clocks and signals along the line have begun to fail. Nell, Orrin, Kit and Petra left together. Our rescue stands. Next: Chapter Four — A Light on the Water.'},
 };
 export function objective(s:GameState):string{
   const f=s.flags;

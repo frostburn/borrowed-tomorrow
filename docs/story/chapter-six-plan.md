@@ -62,7 +62,7 @@ The Emperor’s upward-facing, seven-contact core is shielded by two three-conta
 
 ## The two outcomes
 
-Recovered Nell’s binding does not accept the broken conduit’s current. The capital’s preservation field breaks, the patients reach the boats, and collection widens beyond the empire. The intact fragment and hospice diagram mark a route through the hollow sun. Alda keeps supplies, foreign landings and the final-departure choice available. Chapter Seven itself remains unimplemented.
+Recovered Nell’s binding does not accept the broken conduit’s current. The capital lands, the patients reach the boats, and collection widens beyond the empire. The intact fragment and hospice diagram mark a route through the hollow sun. Alda keeps supplies, foreign landings and the final-departure choice available. Chapter Seven itself remains unimplemented.
 
 On the deliberately committed uncured route, the Benefactor draws Nell from her berth into a Lightbearer mantle above the ruined crown. Her body and right-hand lantern remain recognizable; the god’s true body stays unseen. She does not speak. Closing the shutter interrupts its attacks and exposes the mantle. Kit recognizes the opening and the companions act; affection does not cure her.
 

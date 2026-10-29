@@ -561,7 +561,7 @@ export class Adventure extends Phaser.Scene {
   }
   private boundaryPanel() {
     if(this.state.flags.lightbearerEnding){
-      this.ui.panel('An unfinished tomorrow','<p>The Emperor’s rule has ended. The capital’s preservation field has broken, but the Benefactor still takes days from the world.</p><p>Nell’s place on the sea train is empty.</p><p>'+BAD_ENDING_HINT+' Return before the final assault to seek treatment in Iria.</p>',[
+      this.ui.panel('An unfinished tomorrow','<p>The Emperor’s rule has ended. The capital has landed, but the Benefactor still takes days from the world.</p><p>Nell’s place on the sea train is empty.</p><p>'+BAD_ENDING_HINT+' Return before the final assault to seek treatment in Iria.</p>',[
         ...(canPlayBadEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm('bad')}]:[]),
         {label:'Return before the final assault',action:()=>{void listSaves().then(records=>{const prior=records.find(r=>r.slot==='capital-return');if(prior)void this.loadState(prior.state);else this.ui.toast('The return checkpoint is unavailable in this browser. Import your earlier save from Save files.');}).catch(()=>this.ui.toast('Browser saves are unavailable. Your exported saves can still be imported.'));}},
         {label:'Export ending save',action:()=>exportSave(this.state)},
