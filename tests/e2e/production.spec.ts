@@ -1,3 +1,5 @@
+import {firstScreenFlows} from './first-screen-flow';
+firstScreenFlows(true);
 import {soundtrackFlows} from './soundtrack-flow';
 soundtrackFlows(true);
 import {skillEquipmentFlows} from './skill-equipment-flow';

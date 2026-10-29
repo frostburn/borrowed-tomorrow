@@ -9,7 +9,7 @@ Edric and Samira are the style anchors. Match their broad face scale, modest tur
 - Use the slate `#182e3b` background and the restrained upper-left `#294550` plane. Keep the background quieter than the person. Celia also has this opaque background; do not depend on the enclosing menu's color.
 - Frame a head and shoulders. Leave room for caps, crowns and hair near the top, place eyes around rows 48–56, use roughly 48–60px-wide facial silhouettes, and begin the shoulders around rows 90–105. Allow pose, age, build and headwear to vary within that envelope.
 - Light the forehead and near cheek from above-left. Use broad, connected base/light/shadow planes for skin, hair and clothing. Preserve each person's complexion and material colors; the palette is not a fixed retro limit.
-- Construct eyes from an eyelid plane, muted sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
+- Construct eyes from an eyelid plane, pale ivory sclera and a substantial pupil. Judge the pupil and brow after the shared 2px display sampling. Fine cosmetic lines must not carry an expression on their own. Glasses have actual rims; a dark eye socket is not a substitute.
 - Draw a bridge, tip and underside for the nose. Avoid the old single triangular nose stamp. Fit them to the head's turn and the person's face. Mouth corners, lower lip and chin should support the expression without an outlined cartoon mouth.
 - Use the same detail density, not the same anatomy. Keep differently shaped cheeks, foreheads, noses, jaws, eyelids and mouths, asymmetry, age and direction of gaze. Don't smooth every adult into a youthful face or give every man the same square jaw.
 - Group hair into a few connected clumps and facets. Side-lock and braid roots overlap their scalp masses by several native pixels, so a single missed 2px sample cannot leave a floating lock. Short-haired clean-shaven characters expose skin along the jaw; rear hair must not continue as a dark ring beneath the chin. Braids use a continuous zigzag silhouette; curls are broader locks rather than rings of tiny outlined cells. Preserve recognisable hairstyles without changing the portrait’s detail scale.
@@ -66,3 +66,16 @@ Portrait paint order is rear hair → neck and neck root → clothing/collar →
 The shoulder fabric has a vector neckline cutout; collars and lapels paint above that opening without the cutout. This preserves their authored edges while the throat remains connected beneath them.
 
 Samira uses the same rear-hair → neck → clothing order: her dark rear hair no longer covers the throat. Alban’s pupils are equal 4×4 native rectangles aligned to the two-pixel grid; render checks count four sampled pixels per pupil at all four sampling phases. Spectacle frames must contrast with skin: Celia uses deep teal and cool rim light, Iona dark bronze and gold, Elspeth plum and lavender, and Iven blue with gold accents. Keep the lens openings clear so the eyes remain readable.
+
+The eye pass for #182 keeps all human pupils square and paired through every
+phase of the final two-pixel raster. Neutral originals retain individual eye
+positions and head turns; expression exports use 4 × 4 pupil blocks and more
+open happy eyelids. Sclera colors are pale ivory rather than skin-like ochre.
+Bram’s brim sits four pixels higher to expose his far eye, and Iona’s far pupil
+sits inside its lens opening. The original SVGs remain the neutral sources;
+regenerate expressions with `python3 assets/vector/portrait-expressions.py`.
+
+The Emperor’s entire portrait remains identical to main, including its tall, thin pupils. Tilda’s left
+upper eyelid (on the right in-camera) is slightly lowered over that eye; its
+pupil moves two native pixels down beneath that lid. Keep these individual shapes when
+auditing the otherwise square pupils through the chunky raster.

@@ -428,3 +428,20 @@ during a pending import cancels that request's playback.
 opt-in `public soundtrack` browser cases cover desktop/phone at fractional DPR,
 real synthesis, transport, intro looping, preferences and loading cancellation
 in both dev and production. They are outside the small default CI browser gate.
+
+## First-screen presentation
+
+A fresh title screen omits Continue and Save files until a valid saved journey
+exists. The top-bar Save menu still provides file import in a new browser.
+Chapter One’s arrest uses a temporary imperial soldier alongside Tomas, with
+the escort/boarding cues settled on dialogue advance and removed on skip or
+completion. The same cleanup applies with reduced motion. No extra character
+or campaign flag is introduced. Ansel’s memorial dialogue explicitly names
+his hat.
+
+Ordinary story cutscenes keep music at 70% of its normal level, matching the
+ending films. Explicit silent shots remain silent and closing/skipping restores
+normal music. This is a mix level, separate from the remembered sound toggle.
+The opt-in first-screen browser flow checks title/save behavior, the real audio
+gain, the festival portrait, the escort and memorial on desktop/phone and in
+production. Portrait checks include all four two-pixel sampling phases.

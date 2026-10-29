@@ -37,3 +37,16 @@ test('skipping mid-retreat removes the raid tweens and temporary hound',async({p
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();const state=(await inspect(page)).state;
  await page.waitForTimeout(700);const end=await inspect(page);expect(end.cinematic).toBeNull();expect(end.people).toEqual([]);expect(end.state.flags.raidSeen).toBe(true);expect(end.state.party).toEqual(state.party);expect(errors).toEqual([]);
 });
+
+for(const reduced of [false,true])test(`escort cleanup with ${reduced?'reduced':'normal'} motion`,async({page})=>{
+ await page.emulateMedia({reducedMotion:reduced?'reduce':'no-preference'});await page.goto('/');await importSave(page,checkpoint('festivalSeen'));await approach(page,'tomas');
+ const next=()=>page.locator('.dialogue-actions button').first().click();
+ for(let i=0;i<16;i++){
+  if((await page.locator('.dialogue-copy p').textContent())?.includes('Nell! Find Orrin.'))break;
+  await next();
+ }
+ const guard=(await inspect(page)).people.find(p=>p.id==='raid-soldier');expect(guard).toBeDefined();
+ if(reduced){expect([guard!.x,guard!.y]).toEqual([732,283]);await next();expect((await inspect(page)).people.find(p=>p.id==='raid-soldier')).toBeUndefined();}
+ await page.getByRole('button',{name:'Skip scene',exact:true}).click();await page.waitForTimeout(1000);
+ const done=await inspect(page);expect(done.cinematic).toBeNull();expect(done.state.flags.raidSeen).toBe(true);expect(done.people).toEqual([]);
+});

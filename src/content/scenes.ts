@@ -24,9 +24,8 @@ export const raid = () => scene('one-raid', 'THE ARREST', stage('station','one-r
   line('The square', 'Ansel catches the captain’s arm. Alban turns his blade. Tomas lunges; the crystal in his hand strikes the paving.', { silence: true, cue: 'strike', actors: { ansel: { fallen: true }, tomas: { to: { x: 28, y: 13 } } } }),
   line('Nell', 'Ansel!', {expression:'surprised', actors: { nell: { to: { x: 27, y: 14 } } } }),
   line('The broken crystal', 'A pale fleck catches in the lantern glass. A low hum runs through its handle, raising the hairs on Nell’s arm.', { silence: true, cue: 'resonance' }),
-  line('The platform', 'A whistle cuts through the noise. Soldiers drag Tomas up the steps. The prison coach rolls east.', { cue: 'punch', focus: { x: 29, y: 12 }, actors: { tomas: { to: { x: 31, y: 11 } }, alban: { to: { x: 33, y: 11 } } } }),
-  line('Tomas', 'Nell! Find Orrin. The old branch!', {expression:'worried', actors: { tomas: { visible: false }, alban: { visible: false } } }),
-  line('Stationmaster Ansel', 'West gate. Iona’s got the key. Go on, Nell. Go.', { focus: { x: 27, y: 14 }, silence: true }),
+  line('Tomas', 'Nell! Find Orrin. The old branch!', {expression:'worried', effect:'raid-escort', duration:900, cue:'punch', focus:{x:29,y:12}, actors:{tomas:{to:{x:31,y:11}},alban:{to:{x:33,y:11}}}}),
+  line('Stationmaster Ansel', 'West gate. Iona’s got the key. Go on, Nell. Go.', { focus: { x: 27, y: 14 }, silence: true, effect:'raid-board', actors:{tomas:{visible:false},alban:{visible:false}} }),
   line('The square', 'His hand slips from hers. Nell closes his eyes and takes the lantern. The hounds are coming down the steps.', {effect:'raid-hound',focus:{x:24,y:14},duration:900}),
   line('Nell', 'I’m bringing him home. Iona, stay with Ansel.'),
 ]);

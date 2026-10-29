@@ -49,3 +49,45 @@ test('every expression preserves identity outside the features and survives the 
  const panel=page.getByRole('region',{name:'Portrait expressions',exact:true});await panel.getByRole('button',{name:'Sad',exact:true}).click();await expect(panel.locator('img')).toHaveAttribute('src',/portrait-nell-sad\.svg$/);
  await page.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(panel.getByRole('button',{name:'Bashful',exact:true})).toHaveCount(0);await panel.getByRole('button',{name:'Worried',exact:true}).click();await expect(panel.locator('img')).toHaveAttribute('src',/portrait-celia-worried\.svg$/);await capture(page,'portrait-workshop');
 });
+
+test('human portrait eyes retain their authored shapes at every chunky sampling phase',async({page})=>{
+ const {readFileSync}=await import('node:fs');
+ const {CHARACTERS}=await import('../../src/content/characters');
+ const entries=Object.values(CHARACTERS).flatMap(character=>portraitExpressions(character.portrait).flatMap(expression=>{
+  const name=expression==='neutral'?character.portrait:`${character.portrait}-${expression}`;
+  const svg=readFileSync(new URL(`../../public/art/vector/${name}.svg`,import.meta.url),'utf8');
+  if(name==='portrait-emperor'){
+   const pupils=[...svg.matchAll(/<rect x="(\d+)" y="(\d+)" width="3" height="4" fill="#142a37"/g)];
+   expect(pupils).toHaveLength(2);
+   return [{name,boxes:pupils.map(m=>[+m[1],+m[2],+m[1]+3,+m[2]+4]),colors:['#142a37']}];
+  }
+  const match=[...svg.matchAll(/<path d="M(\d+) (\d+)H(\d+)V(\d+)H\d+Z M(\d+) (\d+)H(\d+)V(\d+)H\d+Z" fill="(#[0-9a-f]+)"\/>/g)].find(m=>[3,4].includes(+m[3]-+m[1])&&+m[7]-+m[5]===+m[3]-+m[1]&&+m[2]>=46&&+m[2]<=55);
+  if(!match)return [];
+  return [{name,boxes:[[+match[1],+match[2],+match[3],+match[4]],[+match[5],+match[6],+match[7],+match[8]]],colors:[match[9],...(name.includes('tomas')?['#25372b']:[])]}];
+ }));
+ expect(entries).toHaveLength(62);await page.goto('/');
+ const failures=await page.evaluate(async entries=>{
+  const failures=[];
+  for(const entry of entries){
+   const img=new Image();img.src=`/art/vector/${entry.name}.svg`;await img.decode();
+   const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d')!;ctx.drawImage(img,0,0);
+   const pixels=ctx.getImageData(0,0,128,128).data,colors=entry.colors.map(color=>[1,3,5].map(i=>parseInt(color.slice(i,i+2),16)));
+   for(let py=0;py<2;py++)for(let px=0;px<2;px++){
+    const counts=entry.boxes.map(([left,top,right,bottom])=>{
+     let count=0;
+     for(let y=top;y<bottom;y++)for(let x=left;x<right;x++){
+      if(x%2!==px||y%2!==py)continue;
+      const at=(y*128+x)*4;if(colors.some(color=>color.every((v,i)=>pixels[at+i]===v)))count++;
+     }
+     return count;
+    });
+    // Tilda's lowered left pupil sits under a partly closed upper lid.
+    // The Emperor retains paired narrow slits, not the cast's square pupils.
+    const valid=counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
+    if(!valid)failures.push({name:entry.name,px,py,counts});
+   }
+  }
+  return failures;
+ },entries);
+ expect(failures).toEqual([]);
+});

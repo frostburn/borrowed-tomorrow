@@ -31,8 +31,8 @@
 <path d="M36 57L45 56 51 63 47 70 39 66Z" fill="#ce9872"/>
 <path d="M43 50L53 48 59 51 56 57 44 56Z M69 49L79 51 84 54 80 58 70 56Z" fill="#ad795b"/>
 <path d="M42 48L57 42 59 45 43 51Z M69 42L84 47V50L69 45Z" fill="#879b95"/>
-<path d="M46 54L54 53 55 56H47Z M72 54L79 53 80 56H73Z" fill="#e8cfaa"/>
-<path d="M50 53H53V57H50Z M76 53H79V57H76Z" fill="#263e4b"/>
+<path d="M46 54L54 53 55 57H47Z M72 54L79 53 80 57H73Z" fill="#eee9dc"/>
+<path d="M50 53H54V57H50Z M76 53H80V57H76Z" fill="#263e4b"/>
 <path d="M63 51L61 63 57 68 62 72 71 69 73 66 66 63Z" fill="#b17b5c"/>
 <path d="M64 54L64 64 69 67 66 69 61 67Z" fill="#e1b68c"/>
 <path d="M59 70L65 71 68 69 69 72 64 74Z" fill="#895d49"/>

@@ -38,3 +38,13 @@ the actual dialogue assets and the shared chunky framebuffer. Browser checks
 compare every variant with its original outside the facial features, check
 native dimensions and sampled expression detail, and replay the festival and
 optional recovery scenes at desktop and phone sizes.
+
+Pupils use equal 4 × 4 native rectangles in each expression. The eye openings
+keep those blocks within a visible pale ivory sclera, including happy eyes;
+three-pixel widths and mismatched odd heights can produce unequal pupils after
+two-pixel sampling. Local eyelid/brow anchors still follow each original face.
+Tomas’s darker pupil accents are paired 2 × 2 blocks within his green irises.
+The browser regression renders all 62 human faces at all four sampling phases,
+checking the actual visible eye pixels rather than just SVG coordinates.
+The neutral Emperor is unchanged from main, and Tilda has a deliberately
+partly closed left eyelid with a lowered pupil; the audit preserves these individual shapes.
