@@ -107,7 +107,8 @@ export class UI {
   get panelOpen() { return this.sceneLayer.childElementCount > 0; }
   get modalOpen() { return !this.modal.hidden; }
   showModal(title: string, content: string, buttons: Button[] = []) {
-    this.modalReturn = document.activeElement as HTMLElement;
+    // Replacing one dialog with another retains the original menu's focus owner.
+    if(this.modal.hidden||!this.modal.contains(document.activeElement))this.modalReturn = document.activeElement as HTMLElement;
     this.modal.hidden = false;
     this.modal.innerHTML = `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><header><h2 id="modal-title">${esc(title)}</h2><button class="close-modal" aria-label="Close">×</button></header><div class="modal-content">${content}</div><div class="modal-actions"></div></section>`;
     this.modal.querySelector<HTMLButtonElement>('.close-modal')!.onclick = () => this.closeModal();

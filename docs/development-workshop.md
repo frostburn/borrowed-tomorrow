@@ -389,3 +389,14 @@ Cinematic vectors use continuous camera/train coordinates and refresh at the
 render cadence. They bypass the ordinary 20 fps ambient display budget; there
 is no camera-position snapping during the pullback. Reduced motion omits the
 cloud flash and keeps the rainy composition static.
+
+
+## Help-menu credits
+
+The **? → Credits** page is available from the title screen, campaign and
+workshop. A static Canvas vector still life shows Nell's red cap and a whole
+lantern in warm lamplight. The scrollable list uses the same `ENDING_CREDITS`
+data as both films, with the original billing, shared creative credits and
+tooling last. **Back to help**, Close and Escape retain the current scene,
+formation, equipment, battle and music; opening this page writes no saves.
+`game/credits.ts` authors the artwork directly, with no added images or audio.

@@ -1,5 +1,6 @@
 import {expect,it} from 'vitest';
 import {GOOD_ENDING_DURATION,GOOD_ENDING_SHOTS,BAD_ENDING_DURATION,BAD_ENDING_SHOTS,BAD_ENDING_CUES,ENDING_FILMS,endingFrame,endingShotStart,endingCreditTime,canPlayGoodEnding,canPlayBadEnding} from '../src/content/ending-film';
+import {paintCreditsStillLife} from '../src/game/credits';
 import {paintEndingFilm} from '../src/game/ending-art';
 import {newGame} from '../src/rules/state';
 import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
@@ -151,11 +152,11 @@ it('saves the Lightbearer outcome before its film and preserves the headless end
 it('paints finite vector geometry in wide and narrow views without mutating the timeline',()=>{
  const original=JSON.stringify(ENDING_FILMS);let calls=0;
  const ctx=new Proxy({canvas:{width:1008,height:480}} as unknown as CanvasRenderingContext2D,{
-  get:(target,key)=>key==='createLinearGradient'?()=>({addColorStop(){}}):key in target?Reflect.get(target,key):(...args:unknown[])=>{calls++;for(const value of args)if(typeof value==='number')expect(Number.isFinite(value)).toBe(true);},
+  get:(target,key)=>(key==='createLinearGradient'||key==='createRadialGradient')?()=>({addColorStop(){}}):key in target?Reflect.get(target,key):(...args:unknown[])=>{calls++;for(const value of args)if(typeof value==='number')expect(Number.isFinite(value)).toBe(true);},
   set:(target,key,value)=>Reflect.set(target,key,value),
  });
  for(const width of [1008,368])for(const reduced of [false,true]){
-  ctx.canvas.width=width;
+  ctx.canvas.width=width;paintCreditsStillLife(ctx);
   for(const kind of ['good','bad'] as const)for(let i=0;i<ENDING_FILMS[kind].shots.length;i++)for(const offset of [0,400,3000,ENDING_FILMS[kind].shots[i].duration/2,ENDING_FILMS[kind].shots[i].duration-1])paintEndingFilm(ctx,endingShotStart(i,kind)+offset,reduced,kind);
  }
  expect(calls).toBeGreaterThan(10000);expect(JSON.stringify(ENDING_FILMS)).toBe(original);
