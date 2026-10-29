@@ -37,7 +37,7 @@ export function interactChapterFour(h:StoryHost,id:string){
   case 'refuge-works':return go('breakwater','refuge');
   case 'works-bram':return say('Bram',f.worksGateWon?'The winding wheel is on the middle pier. Turn it and I’ll bring the ferry through.':'The crews have the upper deck. We need the guards off the winding gear.');
   case 'works-approach':
-   if(f.worksGateWon)return h.toast('The guards are down. Turn the winding wheel on the middle pier.');
+   if(f.worksGateWon)return h.toast('The guards are down. The winding gear is clear.');
    if(!f.worksArrival)return;
    return h.talk({lines:[SAY('Orrin','The dry chain walk has a guardian and two ranged crows. Down on the pump floor it’s a guardian and two hounds; the water slows movement.')],choices:[
     {label:'Take the dry chain walk · ranged crows',action:()=>{f.worksRouteSet=true;f.worksFlooded=false;h.save();h.battle('works-dry');}},

@@ -83,7 +83,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'cooling-forge':return f.coolingOpened?go('anchorforge','start'):h.toast('Open the manual cooling gate first.');
   case 'cooling-return':return go('hammerplain','cooling');
   case 'forge-carrier':
-   if(f.furnaceWon)return h.toast('The carrier has stopped. Pull the anchor breaker above the gantry.');
+   if(f.furnaceWon)return h.toast('The carrier has stopped. The anchor breaker is exposed.');
    if(!f.forgeGantrySeen)return;
    return h.talk({lines:[SAY('Orrin','Watch where it points that ladle. The metal behind its tracks will burn straight through your boots.')],choices:[{label:'Hold off the furnace carrier',action:()=>{h.commit('furnaceConfronted');h.battle('hammer-carrier');}},{label:'Prepare our equipment first',action:()=>{}}]});
   case 'forge-anchor':

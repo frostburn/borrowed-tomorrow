@@ -1,38 +1,43 @@
 """Native hollow-sun and exposed-heart atlases, sharing a 360x288 frame."""
-import math
+import math,sys
 from pathlib import Path
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[2];ART=ROOT/'public/art/vector/benefactor'
+sys.path.insert(0,str(ROOT/'assets/vector'))
+from hollow_sun import GEOMETRY,band_polar,edge_polar,ray_angles
 GOLD='#c2a16b';PALE='#e2e3cf';INK='#152937';TEAL='#8dc7be';BLUE='#4f7385'
 def poly(points,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in points)+f'" fill="{c}"/>'
 def ring(cx,cy,r,w,c):return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{c}" stroke-width="{w}"/>'
 def hollow_sun(i,cx,cy):
  """A deep broken corona: gaps are transparent, never painted-on slashes."""
  pulse=math.sin(i/8*math.tau) if i<8 else [-.5,-1,1,0][i-8]
- radius=1+pulse*.012
+ radius=1+pulse*.012;inner=100*GEOMETRY['innerRadius']
  def at(a,r):
   a=math.radians(a)
   return (round(cx+math.cos(a)*r*radius,1),round(cy+math.sin(a)*r*radius,1))
  def band(start,end,outer,inner,shift=(0,0)):
-  angles=[start]+[a for a in range(-90,361,15) if start<a<end]+[end]
-  points=[at(a,outer)for a in angles]+[at(a,inner)for a in reversed(angles)]
+  points=[at(a,r*100)for a,r in band_polar(start,end,outer/100,inner/100)]
   return [(round(x+shift[0],1),round(y+shift[1],1))for x,y in points]
- out=[];arcs=[(-56,48),(56,168),(177,296)]
+ out=[];arcs=[GEOMETRY['rimArc']]
  # A back plane and fracture end faces give the ring material thickness.
  for start,end in arcs:
-  out.append(poly(band(start,end,100,71,(4,6)),'#665c4b'))
- for j in range(12):
-  a=-90+j*30;root=at(a-7,95);tip=at(a+2,130+(4 if j%3==0 else 0));end=at(a+7,95)
+  out.append(poly(band(start,end,100,inner,(4,6)),'#665c4b'))
+ for j,a in ray_angles():
+  root=at(a-GEOMETRY['rayHalfAngle'],GEOMETRY['rayRoot']*100);tip=at(a+GEOMETRY['rayTipOffset'],100*(GEOMETRY['longRayTip']if j%3==0 else GEOMETRY['rayTip']));end=at(a+GEOMETRY['rayHalfAngle'],GEOMETRY['rayRoot']*100)
   out += [poly([(x+3,y+5)for x,y in [root,tip,end]],'#78664a'),poly([root,tip,end],GOLD),poly([tip,end,at(a+1,100)],'#967e55')]
  for start,end in arcs:
   for a in [start,end]:
-   x,y=at(a,100);xx,yy=at(a,71)
-   out.append(poly([(x,y),(x+4,y+6),(xx+4,yy+6),(xx,yy)],'#8b7b60'))
+   edge=[at(angle,r*100)for angle,r in edge_polar(a,1,GEOMETRY['innerRadius'])]
+   out.append(poly(edge+[(x+4,y+6)for x,y in reversed(edge)],'#8b7b60'))
   # Broad angled sectors retain planar lighting, without tracing every facet.
   divisions=[start]+[a for a in [0,90,180,270]if start<a<end]+[end]
   for a,b in zip(divisions,divisions[1:]):
    lit=math.cos(math.radians((a+b)/2+135))>.1
-   out += [poly(band(a,b,100,94),'#e4cf94'if lit else '#aa8e5f'),poly(band(a,b,94,78),'#ceb17a'if lit else '#ac8f60'),poly(band(a,b,78,71),'#727d78'if lit else '#465a63')]
+   out += [poly(band(a,b,100,94),'#e4cf94'if lit else '#aa8e5f'),poly(band(a,b,94,78),'#ceb17a'if lit else '#ac8f60'),poly(band(a,b,78,inner),'#727d78'if lit else '#465a63')]
+ # Fine closed seams weather a continuous rim, instead of removing whole sectors.
+ for crack in GEOMETRY['fractures']:
+  points=' '.join(f'{x:g},{y:g}'for x,y in [at(a,r*100)for a,r in crack])
+  out.append(f'<polyline data-fracture="closed" points="{points}" fill="none" stroke="#756e60" stroke-width="{100*GEOMETRY["fractureWidth"]:g}" stroke-linejoin="bevel"/>')
  # A small suspended fragment, with a recessed fracture, leaves the aperture hollow.
  dy=pulse*1.5
  def shard(points,c):return poly([(x,y+dy)for x,y in points],c)

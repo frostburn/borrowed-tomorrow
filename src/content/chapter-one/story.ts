@@ -24,7 +24,7 @@ export function objective(s: GameState): string {
   if (!f.orrinJoined) return s.location.map === 'station' ? 'Go west to Orrin’s workshop.' : 'Find Orrin by his engine.';
   if (!f.villageSeen) return 'Take the northwest branch to Rillbridge.';
   if (!f.collectorDefeated) return 'Stop the collector at Rillbridge’s eastern carriage.';
-  if (!f.villageFreed) return 'Break open the collector and free the village.';
+  if (!f.villageFreed) return 'Orrin is opening the collector’s casing.';
   if (!f.passSeen) return 'Take the northern road to the eastern pass.';
   if (!f.captainDefeated) return 'Defeat Captain Alban at the far end of the pass.';
   return 'Board Orrin’s engine beyond the crossing.';

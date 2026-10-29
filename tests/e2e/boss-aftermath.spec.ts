@@ -10,7 +10,10 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  try{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');await importSave(page,checkpoint('collectorConfronted'));await approach(page,'collector');
-  await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+  await page.getByRole('button',{name:'Win battle',exact:true}).click();
+  await expect(page.getByText('The guard is down. Orrin reaches for the collector’s casing.',{exact:true})).toBeVisible();
+  await capture(page,`collector-victory-copy-${device}`);
+  await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('one-release');
   const won=(await inspect(page)).state;expect(won.flags.collectorDefeated).toBe(true);expect(won.flags.villageFreed).toBeUndefined();
   await capture(page,`rillbridge-automatic-release-${device}`);
@@ -29,6 +32,8 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   await importSave(page,palaceCheckpoint('conduitSeen'));await approach(page,'heart-regulator');
   await page.getByRole('button',{name:'Win battle',exact:true}).click();
+  await expect(page.getByText('The regulator is still. An insulated coat goes into the bag; any companion can wear it. The intake console is no longer guarded.',{exact:true})).toBeVisible();
+  await capture(page,`regulator-victory-copy-${device}`);
   await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-rupture');
   const won=(await inspect(page)).state;expect(won.flags.conduitGuardWon).toBe(true);expect(won.flags.extractionStopped).toBeUndefined();
@@ -47,7 +52,9 @@ test('Stillwater Avenue has one procession cue and automatically frees the stree
  const saved=chapterSixCapitalStart();saved.flags.capitalQuaySeen=true;saved.flags.capitalStreetSeen=true;saved.location=arrival('stillcity','start');
  await page.goto('/');await importSave(page,saved);await capture(page,'stillwater-single-story-marker');
  await approach(page,'city-procession');await page.getByRole('button',{name:'Clear the procession machines',exact:true}).click();
- await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
+ await page.getByRole('button',{name:'Win battle',exact:true}).click();
+ await expect(page.getByText('The procession machines stop. A lined ceremonial coat goes into the bag. The bronze street return is no longer guarded.',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Continue the journey',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:30000}).toBe('six-capital-release');
  const won=(await inspect(page)).state;expect(won.flags.capitalStreetFreed).toBeUndefined();
  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();

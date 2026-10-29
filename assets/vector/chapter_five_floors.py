@@ -108,12 +108,8 @@ def timber(w,top,bottom):
  return out
 
 def crest(cx,cy,r=105):
- out=[ellipse(cx,cy,r,r*.5,'#6e8680'),ellipse(cx,cy,r-7,(r-7)*.5,'#a9a07b'),ellipse(cx,cy,r-12,(r-12)*.5,'#718780')]
- for i in range(8):
-  a=i*math.pi/4;c=math.cos(a);s=math.sin(a)
-  out.append(poly([(cx+c*(r-20),cy+s*(r-20)*.5),(cx+c*32-s*7,cy+(s*32+c*7)*.5),(cx+c*32+s*7,cy+(s*32-c*7)*.5)],'#b9ab7e'))
- out += [ellipse(cx,cy,22,11,'#b9ab7e'),ellipse(cx,cy,14,7,'#718780')]
- return out
+ from hollow_sun import emblem
+ return [ellipse(cx,cy,r,r*.5,'#6e8680'),emblem(cx,cy,r/1.34,gold='#b9ab7e',shade='#9d9878',light='#c6bd96',aspect=.5)]
 
 def ceramic(w,top,bottom):
  out=[];sy=40

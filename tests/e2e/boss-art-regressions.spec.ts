@@ -22,15 +22,17 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
    const img=new Image();img.src='/art/vector/benefactor/benefactor-sun-motion.svg';await img.decode();
    const canvas=document.createElement('canvas');canvas.width=720;canvas.height=1728;const ctx=canvas.getContext('2d')!;ctx.drawImage(img,0,0);const data=ctx.getImageData(0,0,720,1728).data;
    const sample=(i:number,x:number,y:number)=>data[((Math.floor(i/2)*288+Math.round(y))*720+i%2*360+Math.round(x))*4+3];
-   let aperture=0,solid=0;
+   let aperture=0,solid=0,mainBreak=0,closedSeams=0;
    for(let i=0;i<12;i++){
     const cy=139+(i<8?Math.sin(i/8*Math.PI*2)*2:[-3,-6,2,0][i-8]);
     for(let a=0;a<360;a+=15)aperture=Math.max(aperture,sample(i,180+Math.cos(a*Math.PI/180)*55,cy+Math.sin(a*Math.PI/180)*55));
+    mainBreak=Math.max(mainBreak,sample(i,180+Math.cos(249*Math.PI/180)*87,cy+Math.sin(249*Math.PI/180)*87));
+    for(const a of [-70,-39,-7,134])if(sample(i,180+Math.cos(a*Math.PI/180)*87,cy+Math.sin(a*Math.PI/180)*87)>250)closedSeams++;
     for(const a of [0,90,225])if(sample(i,180+Math.cos(a*Math.PI/180)*87,cy+Math.sin(a*Math.PI/180)*87)>250)solid++;
    }
-   return {aperture,solid,width:img.naturalWidth,height:img.naturalHeight};
+   return {aperture,solid,mainBreak,closedSeams,width:img.naturalWidth,height:img.naturalHeight};
   });
-  expect(alpha).toEqual({aperture:0,solid:36,width:720,height:1728});
+  expect(alpha).toEqual({aperture:0,solid:36,mainBreak:0,closedSeams:48,width:720,height:1728});
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
 });

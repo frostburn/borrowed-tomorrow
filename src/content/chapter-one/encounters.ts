@@ -14,7 +14,7 @@ export const ENCOUNTERS: Record<string, Encounter> = {
   collector: {
     id: 'collector', music:'battle', name: 'The imperial collector', flag: 'collectorDefeated', xp: 45, coins: 26, journal: 'collector',
     enemies: [{ kind: 'guardian', name: 'Collector guard', col: 7, row: 3, hp: 52 }, { kind: 'crow', name: 'Signal crow', col: 8, row: 1 }, { kind: 'hound', col: 6, row: 5, hp: 22 }],
-    rocks: [[4, 2], [5, 4], [8, 5]], victory: 'The guard is down. Break open the collector to wake Rillbridge.',
+    rocks: [[4, 2], [5, 4], [8, 5]], victory: 'The guard is down. Orrin reaches for the collector’s casing.',
   },
   captain: {
     id: 'captain', music:'inspector', name: 'Captain Alban · the eastern pass', flag: 'captainDefeated', xp: 65, coins: 40, journal: 'captain',

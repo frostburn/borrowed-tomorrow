@@ -145,8 +145,8 @@ export const lost=(s:GameState)=>scene(s,'crown','six-lightbearer-fall','The las
  line('The platform','He sets it beside her hand. Celia does not ask him to move away.'),
 ]);
 export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city lands',actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
- line('The allied quay','The last terrace settles on its old foundations. Above it, the hollow sun opens across a dark strip of sky.',{focus:{x:32,y:20},cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
- line('Alda','The last ward boat’s in. Skeld’s pilots are checking the lower streets.'),
+ line('The allied quay','The last terrace settles on its old foundations. Above it, the hollow sun opens across a dark strip of sky.',{focus:{x:32,y:14},cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
+ line('Alda','The last ward boat’s in. Skeld’s pilots are checking the lower streets.',{focus:{x:34,y:25},cut:true}),
  line('Celia','The man behind the screen is with the medical crew. He asked for breakfast.'),
  line('Orrin','The broken vessel’s still connected to something above it. The old hospice diagram had this same opening.'),
  line('The sky','Light passes over the far hills. Beyond the imperial roads, a line of field lamps goes dark.'),

@@ -1,5 +1,37 @@
 # Cinematic vector scenery
 
+The recurring hollow sun shares its twelve broad ray positions and empty aperture through
+`src/content/hollow-sun.json`. `assets/vector/hollow_sun.py` draws the source SVG
+emblems, Chapter Five inlays, imperial breastplate and Chapter Seven sky signs;
+the live capital reveal uses the same geometry. The reference is the archived
+`47f59cd` raster boss: one missing upper-left wedge, a missing ray at that wedge,
+and several smaller closed zigzag fractures across an otherwise continuous rim.
+The primary boss halo and its portrait share this pattern; the body outside the
+halo stays intact. The sun-form boss's suspended shard remains separate. Sky appearances have an
+opaque dark-indigo interior (`skyInterior`); the boss aperture and the main rim
+break retain their native transparency.
+To rebuild the affected art without exporting unrelated actors:
+
+```sh
+python3 assets/vector/emblems.py
+python3 assets/vector/chapter-one.py --map rillbridge
+python3 assets/vector/chapter-one.py --map tunnel
+python3 assets/vector/chapter-one.py --chapter two --map cinderbank
+python3 assets/vector/chapter-one.py --chapter three --map northglass
+python3 assets/vector/chapter-one.py --chapter three --map relayhall
+python3 assets/vector/chapter-one.py --chapter three --map conduit
+python3 assets/vector/chapter-five.py
+python3 assets/bosses/export-imperial.py
+python3 assets/vector/chapter-six-capital.py
+python3 assets/bosses/export-benefactor.py
+python3 assets/bosses/export-benefactor-forms.py
+python3 assets/vector/chapter-seven.py
+```
+
+Rillbridge's three decorative mote tiles were removed. The six Chapter Three
+tiles of that type are attached instrument indicators with a backing and lens,
+including the relocated relayhall pair. Regeneration preserves their anchors.
+
 The current direction takes its broad silhouettes, flat lighting planes and sparse outlines from cinematic polygonal adventures such as Another World. The old generated paintings supply architecture, rooflines, train silhouettes, cave recesses and lighting references. They are interpreted around the playable story layout rather than shipped as bitmaps.
 
 The 24 SVGs in `public/art/vector/scenery/` are **editable originals**. Each includes a reference commit/path and crop in its metadata. They are whole buildings, trains, trees, bridge pieces and props, with natural dimensions up to 288 × 264; they are not tile atlases. Edit the SVG directly. The 29 continuous ground/layer SVGs under `public/art/vector/scenes/` and `src/content/chapter-one/scene-art.json` are reproducible compiler outputs:

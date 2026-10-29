@@ -106,7 +106,7 @@ def terrain(kind,base,w,h,scene):
  # One replacement pass avoids accidental recoloring of a replacement color.
  base=re.sub(r'#[0-9a-f]{6}',lambda m:PALETTE.get(m[0],m[0]),base)
  if scene=='relayhall'and kind=='motes':
-  return base.replace('x="707" y="394"','x="559" y="420"').replace('x="851" y="394"','x="919" y="396"')
+  return base.replace('translate(707 394)','translate(559 420)').replace('translate(851 394)','translate(919 396)')
  if scene in ('relayhall','conduit')and kind.startswith('works-pipe-'):
   # Whole rigid pipe runs with elbows and clearance offsets, rather than a
   # ruler-straight rectangular circuit or independently warped tile fragments.

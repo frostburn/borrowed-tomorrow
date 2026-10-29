@@ -46,7 +46,7 @@ export const stillness = () => scene('one-stillness', 'RILLBRIDGE', stage('rillb
   line('The branch', 'Orrin leaves the engine before the town crossing. Smoke from a chimney stands in a straight column.', { focus: { x: 17, y: 18 }, cut: true, silence: true }),
   line('Nell', 'There’s water hanging over the river. Look at the people.',{expression:'surprised'}),
   line('Orrin', 'The lantern’s making my teeth ache. Is it louder here?', { actors: { nell: { to: { x: 15, y: 18 } } }, cue: 'resonance' }),
-  line('Nell', 'It hasn’t been quiet since the square.'),
+  line('Nell', 'Yes. It’s vibrating right through the handle.'),
   line('Orrin', 'That machine by the eastern carriage is still running. Same sun on its casing.'),
   line('Nell', 'Tomas’s train came through here. We stop the machine, then we follow it.'),
 ]);
