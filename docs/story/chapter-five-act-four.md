@@ -14,7 +14,7 @@ Playable from the flight chart after all three regional completions, `allAnchors
 | `retaliationWon` | Once-only minion victory. Resume stages the conversation beside Nell's berth. |
 | `chapterFiveComplete` | Chapter `chapter-five`, boundary `chapter-six:capital-approach`, journal `fiveDeparture`; committed together. Nell remains ill and unavailable. |
 
-All scenes commit only on completion or Skip. Reloading an unfinished intervention leaves the ship, Alban and Nell's old formation intact until it completes. Reloading after the intervention never fights the flagship again. An interrupted hunters/departure scene replays. The boundary is exportable and restorable; the playable Chapter Six continues after the coast-to-capital cinematic. No save-version change or migration is introduced.
+All scenes commit only on completion or Skip. Reloading an unfinished intervention leaves the ship, Alban and Nell's old formation intact until it completes. Reloading after the intervention never fights the flagship again. An interrupted hunters/departure scene replays. The boundary is exportable and restorable; the playable Chapter Six continues after the airship approach cinematic. No save-version change or migration is introduced.
 
 ## Story
 
