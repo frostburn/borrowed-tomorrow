@@ -1,8 +1,9 @@
 import {expect,it} from 'vitest';
-import {GOOD_ENDING_DURATION,GOOD_ENDING_SHOTS,endingFrame,endingShotStart,canPlayGoodEnding} from '../src/content/ending-film';
-import {paintGoodEnding} from '../src/game/ending-art';
+import {GOOD_ENDING_DURATION,GOOD_ENDING_SHOTS,BAD_ENDING_DURATION,BAD_ENDING_SHOTS,ENDING_FILMS,endingFrame,endingShotStart,endingCreditTime,canPlayGoodEnding,canPlayBadEnding} from '../src/content/ending-film';
+import {paintEndingFilm} from '../src/game/ending-art';
 import {newGame} from '../src/rules/state';
 import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
+import {interactCapital} from '../src/content/chapter-six/capital/interactions';
 import type {StoryHost} from '../src/content/story-host';
 import {ENDING_CREDITS,ENDING_CREDITS_START,ENDING_CREDITS_END,ENDING_CREDIT_PAGE,endingCreditPage} from '../src/content/credits';
 import {SHORE_COMPANIONS,SHORE_HORIZON,shoreScaleAt,shoreBlocking} from '../src/game/ending-shore';
@@ -18,6 +19,25 @@ it('cuts at exact shot boundaries, clamps review positions and ends after the fi
  expect(endingFrame(-1)).toMatchObject({index:0,time:0});
  expect(endingFrame(NaN)).toMatchObject({index:0,time:0});
  expect(endingShotStart(99)).toBe(endingShotStart(3));
+});
+
+it('gives the bad ending two shorter shots and the identical full credit interval',()=>{
+ expect(BAD_ENDING_DURATION).toBe(54000);expect(BAD_ENDING_DURATION).toBeLessThan(GOOD_ENDING_DURATION);
+ for(let i=0;i<BAD_ENDING_SHOTS.length;i++){
+  const start=endingShotStart(i,'bad'),shot=BAD_ENDING_SHOTS[i];
+  expect(endingFrame(start,'bad')).toMatchObject({index:i,shot,time:0});
+  expect(endingFrame(start+shot.duration-1,'bad').shot.id).toBe(shot.id);
+ }
+ expect(endingFrame(BAD_ENDING_DURATION,'bad')).toMatchObject({index:1,progress:1,ended:true});
+ expect(endingFrame(NaN,'bad')).toMatchObject({index:0,time:0});
+ expect(endingShotStart(99,'bad')).toBe(8000);
+ for(const kind of ['good','bad'] as const){
+  const film=ENDING_FILMS[kind],creditLength=ENDING_CREDITS_END-ENDING_CREDITS_START;
+  expect(endingCreditTime(film.creditStart,kind)).toBe(ENDING_CREDITS_START);
+  expect(endingCreditTime(film.creditStart+creditLength,kind)).toBe(ENDING_CREDITS_END);
+  expect(film.creditStart+creditLength).toBeLessThan(film.shots[film.creditShot]!.duration);
+  for(let i=0;i<ENDING_CREDITS.length;i++)expect(endingCreditPage(endingCreditTime(film.creditStart+i*ENDING_CREDIT_PAGE+1,kind))).toBe(i);
+ }
 });
 
 it('lets the companions stand and leave the camera before the couple reaches the sunset credits',()=>{
@@ -75,6 +95,13 @@ it('only exposes campaign replay for a recovered, completed real-sea ending',()=
  s.flags.realSeaSeen=false;expect(canPlayGoodEnding(s)).toBe(false);
 });
 
+it('exposes bad-ending replay only after Nell’s loss and the completed station aftermath',()=>{
+ const s=newGame();expect(canPlayBadEnding(s)).toBe(false);
+ s.flags.nellLost=s.flags.emptySeatSeen=true;expect(canPlayBadEnding(s)).toBe(false);
+ s.flags.lightbearerEnding=true;expect(canPlayBadEnding(s)).toBe(true);expect(canPlayGoodEnding(s)).toBe(false);
+ for(const flag of ['nellRecovered','chapterSevenComplete']){s.flags[flag]=true;expect(canPlayBadEnding(s)).toBe(false);delete s.flags[flag];}
+});
+
 it('saves completion before playback and leaves headless hosts on the existing boundary path',()=>{
  for(const film of [false,true]){
   const s=newGame();s.flags.realSeaSeen=true;const order:string[]=[];
@@ -83,15 +110,25 @@ it('saves completion before playback and leaves headless hosts on the existing b
  }
 });
 
+it('saves the Lightbearer outcome before its film and preserves the headless ending',()=>{
+ for(const film of [false,true]){
+  const s=newGame();s.location={map:'laststation',x:22,y:15};s.flags.nellLost=s.flags.emptySeatSeen=true;
+  const order:string[]=[];
+  const host={state:s,save:()=>{expect(s.flags.lightbearerEnding).toBe(true);expect(s.boundary).toBeNull();order.push('save');},boundary:()=>order.push('boundary'),...(film?{endingFilm:(kind:string)=>order.push('film:'+kind)}:{})} as unknown as StoryHost;
+  interactCapital(host,'last-ending');expect(order).toEqual(['save',film?'film:bad':'boundary']);
+  expect(s.flags.chapterSixComplete).toBeUndefined();expect(s.flags.chapterSevenComplete).toBeUndefined();
+ }
+});
+
 it('paints finite vector geometry in wide and narrow views without mutating the timeline',()=>{
- const original=JSON.stringify(GOOD_ENDING_SHOTS);let calls=0;
+ const original=JSON.stringify(ENDING_FILMS);let calls=0;
  const ctx=new Proxy({canvas:{width:1008,height:480}} as unknown as CanvasRenderingContext2D,{
-  get:(target,key)=>key in target?Reflect.get(target,key):(...args:unknown[])=>{calls++;for(const value of args)if(typeof value==='number')expect(Number.isFinite(value)).toBe(true);},
+  get:(target,key)=>key==='createLinearGradient'?()=>({addColorStop(){}}):key in target?Reflect.get(target,key):(...args:unknown[])=>{calls++;for(const value of args)if(typeof value==='number')expect(Number.isFinite(value)).toBe(true);},
   set:(target,key,value)=>Reflect.set(target,key,value),
  });
  for(const width of [1008,368])for(const reduced of [false,true]){
   ctx.canvas.width=width;
-  for(let i=0;i<4;i++)for(const offset of [0,400,3000,GOOD_ENDING_SHOTS[i].duration/2,GOOD_ENDING_SHOTS[i].duration-1])paintGoodEnding(ctx,endingShotStart(i)+offset,reduced);
+  for(const kind of ['good','bad'] as const)for(let i=0;i<ENDING_FILMS[kind].shots.length;i++)for(const offset of [0,400,3000,ENDING_FILMS[kind].shots[i].duration/2,ENDING_FILMS[kind].shots[i].duration-1])paintEndingFilm(ctx,endingShotStart(i,kind)+offset,reduced,kind);
  }
- expect(calls).toBeGreaterThan(10000);expect(JSON.stringify(GOOD_ENDING_SHOTS)).toBe(original);
+ expect(calls).toBeGreaterThan(10000);expect(JSON.stringify(ENDING_FILMS)).toBe(original);
 });

@@ -295,7 +295,7 @@ Each offers a chapter-level preset or **Use workshop party**. Share selections w
 Only the selected arena is loaded when starting a new catalogue preview. Missing assets leave the catalogue available for retry; changing the selection or tab during loading cancels entry into that fight. Earlier bosses retain their authored lighting, and the furnace/ward/domain previews show the same lighting as the campaign. Ordinary tactical previews also use their actual map’s actor-lighting profile.
 
 
-## Good-ending cinematic
+## Ending cinematics
 
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
@@ -327,8 +327,8 @@ download or dependencies. The four shots use rigid layer motion, coastal
 parallax, train wheels/steam, shallow waves and a passing fishing boat.
 `ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
 deterministic shot timeline. No workshop playback writes campaign state.
-`ending-shore.ts` owns the final camera, walk, sunset and native-coordinate
-credit lettering; `content/credits.ts` owns the credit data and timings. The
+`ending-shore.ts` owns the final camera, walk and sunset;
+`ending-credits.ts` paints the shared native-coordinate credit lettering; `content/credits.ts` owns the credit data and timings. The
 opening is **Borrowed Tomorrow / A game by / GPT-6.1 Sol / Directed by / Lumi
 Pakkanen**. Game design credits both collaborators; Lumi is also credited for
 combat-system direction, story concepts, art direction and playtesting. Code,
@@ -356,3 +356,23 @@ Campaign completion is committed and saved before the film opens. Finish, skip
 and replay return to the existing completion panel; **Replay ending cinematic**
 is also available there. Reloading a completion save opens that panel rather
 than forcing the film again. The Lightbearer ending has no good-ending replay.
+
+
+Select **Bad ending** in Cinematics for the shorter 54-second Lightbearer
+epilogue. **Play bad ending** or **Play selected shot** reviews the same player
+used by the campaign. Its two shots show Tomas and Kit beside an empty platform
+bench holding Nell's folded coat and unlit lantern (8 seconds), then all five
+surviving travelers at Larkspur while an ordinary train leaves (46 seconds).
+No Nell actor or divine body appears. The Benefactor has not been defeated.
+`ending-bad.ts` paints the two native vector compositions; the same 19 credit
+entries, order, typography, 36-second roll and reduced-motion pages are used by
+both endings. The bad ending's roll begins four seconds into its second shot.
+The static reduced-motion composition shows the train already gone.
+
+The final **last-ending** interaction saves `lightbearerEnding` before playback.
+Finish/skip returns to **An unfinished tomorrow**, with replay and the existing
+pre-assault return checkpoint. Reload opens the panel, without forcing a replay;
+Nell remains deceased and no Chapter Seven departure is granted. Headless hosts
+still complete through the existing boundary callback. Both workshop previews
+leave all campaign/workshop saves and builds untouched. Detailed cinematic
+browser cases remain opt-in.

@@ -1,3 +1,4 @@
+import type {EndingKind} from './ending-film';
 import type { GameState,MapId } from '../rules/state';
 import type { ShopId } from '../rules/supplies';
 import type { Dialogue } from './dialogue';
@@ -17,5 +18,5 @@ export interface StoryHost {
   toast(message: string): void;
   endingMusic(): void;
   /** Optional renderer; headless hosts still finish through boundary(). */
-  endingFilm?(): void;
+  endingFilm?(kind?:EndingKind): void;
 }

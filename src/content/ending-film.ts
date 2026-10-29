@@ -1,5 +1,5 @@
 import type {GameState} from '../rules/state';
-import {ENDING_SHORE_DURATION} from './credits';
+import {ENDING_SHORE_DURATION,ENDING_CREDITS_START} from './credits';
 
 /** Durations are scene time; seeking and workshop review never mutate a save. */
 export const GOOD_ENDING_SHOTS=[
@@ -9,19 +9,34 @@ export const GOOD_ENDING_SHOTS=[
  {id:'shore',title:'Until evening',duration:ENDING_SHORE_DURATION,music:'seaholiday'},
 ] as const;
 export const GOOD_ENDING_DURATION=GOOD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
-export type EndingShotId=typeof GOOD_ENDING_SHOTS[number]['id'];
-export function endingShotStart(index:number){
- const selected=Math.max(0,Math.min(GOOD_ENDING_SHOTS.length-1,Math.trunc(Number.isFinite(index)?index:0)));
- return GOOD_ENDING_SHOTS.slice(0,selected).reduce((sum,s)=>sum+s.duration,0);
+export const BAD_ENDING_SHOTS=[
+ {id:'empty-seat',title:'The empty seat',duration:8000,music:'laststation'},
+ {id:'last-train',title:'An unfinished tomorrow',duration:46000,music:'laststation'},
+] as const;
+export const BAD_ENDING_DURATION=BAD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
+export const ENDING_FILMS={
+ good:{label:'Good ending',title:'The days return',description:'A journey to the real sea',shots:GOOD_ENDING_SHOTS,duration:GOOD_ENDING_DURATION,creditShot:3,creditStart:ENDING_CREDITS_START,room:'seaholiday'},
+ bad:{label:'Bad ending',title:'An unfinished tomorrow',description:'Nell’s place on the sea train is empty',shots:BAD_ENDING_SHOTS,duration:BAD_ENDING_DURATION,creditShot:1,creditStart:4000,room:'laststation'},
+} as const;
+export type EndingKind=keyof typeof ENDING_FILMS;
+export type EndingShotId=typeof GOOD_ENDING_SHOTS[number]['id']|typeof BAD_ENDING_SHOTS[number]['id'];
+export function endingShotStart(index:number,kind:EndingKind='good'){
+ const shots=ENDING_FILMS[kind].shots;
+ const selected=Math.max(0,Math.min(shots.length-1,Math.trunc(Number.isFinite(index)?index:0)));
+ return shots.slice(0,selected).reduce((sum,s)=>sum+s.duration,0);
 }
-export function endingFrame(milliseconds:number){
- const time=Math.max(0,Math.min(GOOD_ENDING_DURATION,Number.isFinite(milliseconds)?milliseconds:0));
+export function endingFrame(milliseconds:number,kind:EndingKind='good'){
+ const {shots,duration}=ENDING_FILMS[kind];
+ const time=Math.max(0,Math.min(duration,Number.isFinite(milliseconds)?milliseconds:0));
  let start=0;
- for(let index=0;index<GOOD_ENDING_SHOTS.length;index++){
-  const shot=GOOD_ENDING_SHOTS[index],end=start+shot.duration;
-  if(time<end||index===GOOD_ENDING_SHOTS.length-1)return {shot,index,time:time-start,progress:(time-start)/shot.duration,ended:time>=GOOD_ENDING_DURATION};
+ for(let index=0;index<shots.length;index++){
+  const shot=shots[index],end=start+shot.duration;
+  if(time<end||index===shots.length-1)return {shot,index,time:time-start,progress:(time-start)/shot.duration,ended:time>=duration};
   start=end;
  }
  throw new Error('The ending needs at least one shot.');
 }
 export const canPlayGoodEnding=(state:Pick<GameState,'flags'>)=>!!(state.flags.chapterSevenComplete&&state.flags.realSeaSeen&&state.flags.nellRecovered&&!state.flags.nellLost&&!state.flags.lightbearerEnding);
+export const canPlayBadEnding=(state:Pick<GameState,'flags'>)=>!!(state.flags.lightbearerEnding&&state.flags.nellLost&&state.flags.emptySeatSeen&&!state.flags.nellRecovered&&!state.flags.chapterSevenComplete);
+/** Translate each film's last shot into the one shared credit-roll clock. */
+export const endingCreditTime=(shotTime:number,kind:EndingKind='good')=>shotTime+ENDING_CREDITS_START-ENDING_FILMS[kind].creditStart;

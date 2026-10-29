@@ -102,7 +102,7 @@ export function interactCapital(h:StoryHost,id:string):boolean{
   case 'crown-landing':if(f.capitalReleased)go(h,'capitalquay');break;
   case 'last-tomas':say('Tomas','I’ll stay until the train leaves. You can sit here if you want.');break;
   case 'last-kit':say('Kit','I wrote the harbor signals down for her. They’re in the coat pocket.');break;
-  case 'last-ending':f.lightbearerEnding=true;remember(s,'lightbearerEnding');h.save();h.boundary();break;
+  case 'last-ending':f.lightbearerEnding=true;remember(s,'lightbearerEnding');h.save();if(h.endingFilm)h.endingFilm('bad');else h.boundary();break;
   default:return false;
  }
  return true;

@@ -1,5 +1,5 @@
 import {EndingFilm} from './ending-film';
-import {canPlayGoodEnding} from '../content/ending-film';
+import {canPlayGoodEnding,canPlayBadEnding,type EndingKind} from '../content/ending-film';
 import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
 import {icon} from './item-icons';
@@ -543,19 +543,20 @@ export class Adventure extends Phaser.Scene {
       travel: (map, x, y) => { void this.changeMap(map, x, y); }, battle: id => this.startBattle(id),
       shop: shop => this.shop(shop), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
       endingMusic: () => this.audio.setMode('ending'),
-      endingFilm: () => this.playGoodEndingFilm(),
+      endingFilm: kind => this.playEndingFilm(kind),
     };
   }
   private boundaryPanel() {
     if(this.state.flags.lightbearerEnding){
       this.ui.panel('An unfinished tomorrow','<p>The Emperor’s rule has ended. The capital has landed, but the Benefactor still takes days from the world.</p><p>Nell’s place on the sea train is empty.</p>',[
+        ...(canPlayBadEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm('bad')}]:[]),
         {label:'Return before the final assault',action:()=>{void listSaves().then(records=>{const prior=records.find(r=>r.slot==='capital-return');if(prior)void this.loadState(prior.state);else this.ui.toast('The return checkpoint is unavailable in this browser. Import your earlier save from Save files.');}).catch(()=>this.ui.toast('Browser saves are unavailable. Your exported saves can still be imported.'));}},
         {label:'Export ending save',action:()=>exportSave(this.state)},
       ]);return;
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
     this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
-      ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playGoodEndingFilm()}]:[]),
+      ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm()}]:[]),
       ...(destination?[{label:`Begin ${destination.title}`,action:()=>{void this.beginNextChapter();}}]:[]),
       {label:chapter.ending.returnLabel,action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
       {label:chapter.ending.exportLabel??'Export departure save',action:()=>exportSave(this.state)},
@@ -569,21 +570,21 @@ export class Adventure extends Phaser.Scene {
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
   }
-  private playGoodEndingFilm(){
-    if(!canPlayGoodEnding(this.state)){this.boundaryPanel();return;}
-    this.openEndingFilm(()=>{this.showWorld();this.boundaryPanel();});
+  private playEndingFilm(kind:EndingKind='good'){
+    if(!(kind==='bad'?canPlayBadEnding(this.state):canPlayGoodEnding(this.state))){this.boundaryPanel();return;}
+    this.openEndingFilm(()=>{this.showWorld();this.boundaryPanel();},0,false,kind);
   }
-  private openEndingFilm(done:()=>void,shot=0,review=false){
+  private openEndingFilm(done:()=>void,shot=0,review=false,kind:EndingKind='good'){
     this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);
-    this.endingFilm=new EndingFilm(this,this.ui,this.audio,()=>{this.endingFilm=undefined;done();},shot,review);
+    this.endingFilm=new EndingFilm(this,this.ui,this.audio,()=>{this.endingFilm=undefined;done();},shot,review,kind);
     this.ui.canvas.focus();
   }
   /** Vite-only entry uses the exact campaign player, without campaign writes. */
-  previewEndingFilm(returnToWorkshop:()=>void,shot=0){
+  previewEndingFilm(returnToWorkshop:()=>void,shot=0,kind:EndingKind='good'){
     if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
-    this.closePreview();this.openEndingFilm(returnToWorkshop,shot,true);
+    this.closePreview();this.openEndingFilm(returnToWorkshop,shot,true,kind);
   }
   /** A standalone harness: no campaign saves, flags, loot or experience. */
   previewBattle(battle: Battle, returnToWorkshop: () => void, presentation?:BattlePresentation) {

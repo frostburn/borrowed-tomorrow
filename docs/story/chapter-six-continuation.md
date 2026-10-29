@@ -140,3 +140,12 @@ The party’s [relationships while traveling](party-relationships.md) develop th
 ## Optional paid improvements
 
 After treatment and `riverRestSeen`, Tavi offers Kit river-courier footing training in Iria; the desert's completion/order is irrelevant. Nell's cure and personal scenes remain free. Once the capital opens, recovered Nell can buy reinforced lantern housing from Orrin at the allied quay or palace preparation rests. Ill/deceased Nell cannot train. Airship training continues through the outer mooring and allied quay; see [economy.md](../economy.md).
+
+
+The final train interaction now saves the Lightbearer outcome before a short,
+wordless vector cinematic: Nell's coat and unlit lantern on the empty bench,
+then Tomas, Kit, Orrin, Celia and Petra on Larkspur's platform as the train
+leaves. It uses the good ending's complete credits. There is no Nell actor,
+recovery or victory over the Benefactor. Skip/finish and reload return to the
+existing ending panel; replay is optional and the pre-assault checkpoint is
+retained. Workshop → Cinematics previews both endings without campaign writes.

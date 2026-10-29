@@ -1,5 +1,7 @@
-import {endingFrame} from '../content/ending-film';
-import {paintEndingShore,paintEndingCredits} from './ending-shore';
+import {endingFrame,endingCreditTime,ENDING_FILMS,type EndingKind} from '../content/ending-film';
+import {paintEndingShore} from './ending-shore';
+import {paintEndingCredits} from './ending-credits';
+import {paintBadEndingShot} from './ending-bad';
 import {paintEndingPerson as person} from './ending-cast';
 
 type C=CanvasRenderingContext2D;
@@ -123,18 +125,19 @@ function windowSeat(c:C,p:number,t:number){
 }
 /** Native view coordinates adapt to the canvas, then the shared display chunks
  * art, transitions and UI together. No GIF/video, embedded raster or film filter. */
-export function paintGoodEnding(c:C,milliseconds:number,reduced=false){
- const frame=endingFrame(milliseconds),p=reduced?(frame.shot.id==='shore'?.9:.55):frame.progress,t=reduced?0:frame.time/1000;
+export function paintEndingFilm(c:C,milliseconds:number,reduced=false,kind:EndingKind='good'){
+ const frame=endingFrame(milliseconds,kind),p=reduced?(frame.shot.id==='shore'?.9:.55):frame.progress,t=reduced?0:frame.time/1000;
  const w=c.canvas.width,h=c.canvas.height,s=Math.min(w/512,h/288);
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#080f19',0,0,w,h);
  c.save();c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
  c.beginPath();c.rect(0,0,512,288);c.clip();
- if(frame.shot.id==='release')release(c,p,t);
+ if(kind==='bad')paintBadEndingShot(c,frame.shot.id,frame.time,reduced);
+ else if(frame.shot.id==='release')release(c,p,t);
  else if(frame.shot.id==='station')station(c,p,t);
  else if(frame.shot.id==='window')windowSeat(c,p,t);
  else paintEndingShore(c,frame.time,reduced,s);
  c.restore();
- if(frame.shot.id==='shore')paintEndingCredits(c,frame.time,w,h,reduced);
+ if(frame.index===ENDING_FILMS[kind].creditShot)paintEndingCredits(c,endingCreditTime(frame.time,kind),w,h,reduced);
  if(!reduced){const fade=Math.max(0,1-frame.time/500,1-(frame.shot.duration-frame.time)/500);if(fade>0){c.globalAlpha=Math.min(1,fade);rect(c,'#080f19',0,0,w,h);}}
  c.restore();
 }
