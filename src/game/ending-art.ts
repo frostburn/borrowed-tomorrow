@@ -1,5 +1,7 @@
-import {endingFrame} from '../content/ending-film';
-import {paintEndingShore,paintEndingCredits} from './ending-shore';
+import {endingFrame,endingCreditTime,ENDING_FILMS,type EndingKind} from '../content/ending-film';
+import {paintEndingShore} from './ending-shore';
+import {paintEndingCredits} from './ending-credits';
+import {paintBadEnding,paintBadEndingCaption} from './ending-bad';
 import {paintEndingPerson as person} from './ending-cast';
 
 type C=CanvasRenderingContext2D;
@@ -81,7 +83,7 @@ function station(c:C,p:number,t:number){
   for(let j=0;j<4;j++){rect(c,'#b4ccc1',x+8+j*25,177,17,22);line(c,'#49636c',2,[[x+8+j*25,178],[x+8+j*25,199]]);}
  }
  locomotive(c,engine,225);
- for(let i=0;i<4;i++){const smoke=(t*.045+i*.21)%1;c.globalAlpha=(1-smoke)*.35;poly(c,'#e5e4ce',[[engine+15+smoke*21,160-smoke*46],[engine+29+smoke*23,147-smoke*49],[engine+54+smoke*34,153-smoke*44],[engine+47+smoke*28,171-smoke*42]]);}c.globalAlpha=1;
+ for(let i=0;i<4;i++){const smoke=(t*.24+i/4)%1;c.globalAlpha=(1-smoke)*.3;oval(c,'#e5e4ce',engine+18+smoke*24,153-smoke*44,6+smoke*10,4+smoke*7);}c.globalAlpha=1;
  // A raised foreground platform separates the travelers from the moving rails.
  // Its back edge, front face and sole anchors share the same perspective slope.
  poly(c,'#b8b69c',[[0,247],[512,231],[512,272],[0,288]]);
@@ -123,18 +125,20 @@ function windowSeat(c:C,p:number,t:number){
 }
 /** Native view coordinates adapt to the canvas, then the shared display chunks
  * art, transitions and UI together. No GIF/video, embedded raster or film filter. */
-export function paintGoodEnding(c:C,milliseconds:number,reduced=false){
- const frame=endingFrame(milliseconds),p=reduced?(frame.shot.id==='shore'?.9:.55):frame.progress,t=reduced?0:frame.time/1000;
+export function paintEndingFilm(c:C,milliseconds:number,reduced=false,kind:EndingKind='good'){
+ const frame=endingFrame(milliseconds,kind),p=reduced?(frame.shot.id==='shore'?.9:.55):frame.progress,t=reduced?0:frame.time/1000;
  const w=c.canvas.width,h=c.canvas.height,s=Math.min(w/512,h/288);
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#080f19',0,0,w,h);
  c.save();c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
  c.beginPath();c.rect(0,0,512,288);c.clip();
- if(frame.shot.id==='release')release(c,p,t);
+ if(kind==='bad')paintBadEnding(c,frame.time,reduced);
+ else if(frame.shot.id==='release')release(c,p,t);
  else if(frame.shot.id==='station')station(c,p,t);
  else if(frame.shot.id==='window')windowSeat(c,p,t);
  else paintEndingShore(c,frame.time,reduced,s);
  c.restore();
- if(frame.shot.id==='shore')paintEndingCredits(c,frame.time,w,h,reduced);
+ if(frame.index===ENDING_FILMS[kind].creditShot)paintEndingCredits(c,endingCreditTime(frame.time,kind),w,h,reduced);
+ if(kind==='bad'&&!reduced)paintBadEndingCaption(c,frame.time,w,h);
  if(!reduced){const fade=Math.max(0,1-frame.time/500,1-(frame.shot.duration-frame.time)/500);if(fade>0){c.globalAlpha=Math.min(1,fade);rect(c,'#080f19',0,0,w,h);}}
  c.restore();
 }

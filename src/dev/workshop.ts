@@ -1,5 +1,5 @@
-import {GOOD_ENDING_SHOTS,endingShotStart} from '../content/ending-film';
-import {paintGoodEnding} from '../game/ending-art';
+import {ENDING_FILMS,endingShotStart,type EndingKind} from '../content/ending-film';
+import {paintEndingFilm} from '../game/ending-art';
 import {BOSS_CHOICES,campaignBoss,createCampaignBoss,workshopBoss,type WorkshopBoss} from './boss-catalog';
 import {campaignBossPortrait,campaignBossPresentation,loadCampaignBoss} from './campaign-boss-preview';
 import {icon} from '../game/item-icons';
@@ -58,6 +58,7 @@ class Workshop {
   private maps = new MapWorkshop(message=>this.ui.toast(message));
   private tab: 'combat' | 'character' | 'equipment' | 'music' | 'sprites' | 'animation' | 'maps' | 'bosses' | 'cinematics' = new URLSearchParams(location.search).get('dev') === 'cinematics' ? 'cinematics' : new URLSearchParams(location.search).get('dev') === 'combat' ? 'combat' : new URLSearchParams(location.search).get('dev') === 'boss' ? 'bosses' : new URLSearchParams(location.search).get('dev') === 'inventory' ? 'equipment' : new URLSearchParams(location.search).get('dev') === 'music' ? 'music' : new URLSearchParams(location.search).get('dev') === 'sprites' ? 'sprites' : new URLSearchParams(location.search).get('dev') === 'animation' ? 'animation' : new URLSearchParams(location.search).get('dev') === 'maps' ? 'maps' : 'character';
   private endingShot=0;
+  private endingKind:EndingKind='good';
   private hero: CompanionId = 'nell';
   private boss:WorkshopBoss=workshopBoss(new URLSearchParams(location.search).get('boss'));
   private loadingBoss=false;
@@ -232,15 +233,19 @@ class Workshop {
   private showCinematics(){
     this.music.hide();this.scene.closePreview();document.querySelector('.game-shell')!.classList.add('inventory-open');
     (document.getElementById('save-button') as HTMLButtonElement).disabled=false;
-    this.ui.initiative.textContent='Cinematics / Good ending';
-    this.ui.sceneLayer.innerHTML='<section class="inventory-panel" aria-label="Character workshop">'+this.tabs()+'<section class="ending-workshop" aria-label="Ending cinematic preview"><div><h2>The days return</h2><canvas id="ending-poster" width="512" height="288" aria-label="Selected ending shot"></canvas><p>A short, wordless epilogue: the released crossing, Larkspur, window seats and the real sea. The good-ending cast and outcome are fixed.</p><div id="ending-start" class="panel-actions"></div></div><div><h3>Shots</h3><nav class="ending-shot-list" aria-label="Cinematic shots">'+GOOD_ENDING_SHOTS.map((s,index)=>'<button data-ending-select="'+index+'" aria-pressed="'+(index===this.endingShot)+'">'+(index+1)+'. '+s.title+'</button>').join('')+'<p>Space pauses; arrows change shots. The accessibility setting starts a still review. Playback changes no saves, equipment or workshop builds.</p></div></section></section>';
+    const film=ENDING_FILMS[this.endingKind];
+    const description=this.endingKind==='good'?'A wordless epilogue: the released crossing, Larkspur, window seats and the real sea.':'One continuous pullback from Nell’s folded coat at an empty seat reveals the surviving companions and her broken lantern, before the train leaves and rain begins. The Benefactor remains undefeated.';
+    this.ui.initiative.textContent='Cinematics / '+film.label;
+    this.ui.sceneLayer.innerHTML='<section class="inventory-panel" aria-label="Character workshop">'+this.tabs()+'<nav class="panel-actions" aria-label="Ending selection">'+(Object.keys(ENDING_FILMS) as EndingKind[]).map(kind=>'<button class="'+(kind===this.endingKind?'selected':'')+'" data-ending-kind="'+kind+'" aria-pressed="'+(kind===this.endingKind)+'">'+ENDING_FILMS[kind].label+'</button>').join('')+'</nav><section class="ending-workshop" aria-label="Ending cinematic preview"><div><h2>'+film.title+'</h2><canvas id="ending-poster" width="512" height="288" aria-label="Selected ending shot"></canvas><p>'+description+' Both endings use the same credits.</p><div id="ending-start" class="panel-actions"></div></div><div><h3>Shots</h3><nav class="ending-shot-list" aria-label="Cinematic shots">'+film.shots.map((s,index)=>'<button class="'+(index===this.endingShot?'selected':'')+'" data-ending-select="'+index+'" aria-pressed="'+(index===this.endingShot)+'">'+(index+1)+'. '+s.title+'</button>').join('')+'</nav><p>Space pauses; arrows change shots. The accessibility setting starts a still review. Playback changes no saves, equipment or workshop builds.</p></div></section></section>';
     this.bindTabs();
     const canvas=this.ui.sceneLayer.querySelector<HTMLCanvasElement>('#ending-poster')!;
-    paintGoodEnding(canvas.getContext('2d')!,endingShotStart(this.endingShot)+GOOD_ENDING_SHOTS[this.endingShot].duration*.55,true);
+    const poster=this.endingKind==='bad'?14000:endingShotStart(this.endingShot,this.endingKind)+film.shots[this.endingShot].duration*.55;
+    paintEndingFilm(canvas.getContext('2d')!,poster,this.endingKind!=='bad',this.endingKind);
+    for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-kind]'))button.onclick=()=>{this.endingKind=button.dataset.endingKind as EndingKind;this.endingShot=0;this.show();};
     for(const button of this.ui.sceneLayer.querySelectorAll<HTMLButtonElement>('[data-ending-select]'))button.onclick=()=>{this.endingShot=Number(button.dataset.endingSelect);this.show();};
-    const start=(shot:number)=>{this.music.hide();document.querySelector('.game-shell')!.classList.remove('inventory-open');this.scene.previewEndingFilm(()=>this.show(),shot);};
+    const start=(shot:number)=>{this.music.hide();document.querySelector('.game-shell')!.classList.remove('inventory-open');this.scene.previewEndingFilm(()=>this.show(),shot,this.endingKind);};
     this.ui.actionRow(this.ui.sceneLayer.querySelector('#ending-start')!,[
-      {label:'Play good ending',action:()=>start(0)},
+      {label:'Play '+film.label.toLowerCase(),action:()=>start(0)},
       {label:'Play selected shot',action:()=>start(this.endingShot)},
     ]);
     this.ui.status.textContent='Cinematic review / Shares the campaign player';
