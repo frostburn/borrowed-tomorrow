@@ -83,7 +83,7 @@ function station(c:C,p:number,t:number){
   for(let j=0;j<4;j++){rect(c,'#b4ccc1',x+8+j*25,177,17,22);line(c,'#49636c',2,[[x+8+j*25,178],[x+8+j*25,199]]);}
  }
  locomotive(c,engine,225);
- for(let i=0;i<4;i++){const smoke=(t*.045+i*.21)%1;c.globalAlpha=(1-smoke)*.35;poly(c,'#e5e4ce',[[engine+15+smoke*21,160-smoke*46],[engine+29+smoke*23,147-smoke*49],[engine+54+smoke*34,153-smoke*44],[engine+47+smoke*28,171-smoke*42]]);}c.globalAlpha=1;
+ for(let i=0;i<4;i++){const smoke=(t*.24+i/4)%1;c.globalAlpha=(1-smoke)*.3;oval(c,'#e5e4ce',engine+18+smoke*24,153-smoke*44,6+smoke*10,4+smoke*7);}c.globalAlpha=1;
  // A raised foreground platform separates the travelers from the moving rails.
  // Its back edge, front face and sole anchors share the same perspective slope.
  poly(c,'#b8b69c',[[0,247],[512,231],[512,272],[0,288]]);
