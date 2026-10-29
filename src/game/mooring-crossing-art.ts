@@ -3,6 +3,17 @@ import {surveyShip} from './airfield-crossing-art';
 import {floatingCapital} from './refuge-crossing-art';
 import {paintEndingPerson as person} from './ending-cast';
 
+function birds(c:C,t:number){
+ c.save();c.strokeStyle='#243d4b';c.lineWidth=1.5;c.lineCap='round';
+ for(const [i,[x,y,s]]of [[62,65,9],[101,79,7],[34,88,6]].entries()){
+  const lift=3+Math.sin(t*4.4-i*.9)*2;
+  c.save();c.translate(x+t*3,y+Math.sin(t*.7-i)*2);
+  // Two curved wings meet at the head; no separate body or feather detail.
+  c.beginPath();c.moveTo(-s,0);c.quadraticCurveTo(-s*.5,-lift,0,2);
+  c.quadraticCurveTo(s*.5,-lift,s,0);c.stroke();c.restore();
+ }
+ c.restore();
+}
 function sky(c:C,t:number){
  rect(c,'#344e61',0,0,512,288);
  poly(c,'#647e87',[[0,89],[112,65],[220,85],[344,58],[512,77],[512,168],[0,168]]);
@@ -11,6 +22,7 @@ function sky(c:C,t:number){
   const x=(i*139-t*6+700)%700-100;
   poly(c,'#81999a',[[x,229],[x+41,213+i*3],[x+78,222+i*3],[x+139,211+i*3],[x+171,240],[x,248]]);
  }
+ birds(c,t);
 }
 function clouds(c:C,p:number,t:number){
  sky(c,t);
@@ -50,12 +62,12 @@ function berth(c:C,_p:number,t:number){
  poly(c,'#ded4b1',[[126,180],[179,178],[191,223],[128,227]]);
  // The shared head and collar rest on the pillow; arms/body stay under the cover.
  // Clip the covered figure so a standing sleeve cannot stick out behind the cot.
- c.save();c.beginPath();c.moveTo(122,174);c.lineTo(198,178);c.lineTo(211,214);c.lineTo(201,232);c.lineTo(122,234);c.closePath();c.clip();
- c.translate(303,205);c.rotate(-Math.PI/2);person(c,'nell',0,0,1.6);c.restore();
- poly(c,'#607e7c',[[201,184],[319,183],[329,204],[334,229],[204,232],[190,218]]);
- poly(c,'#aab9a3',[[201,184],[319,183],[322,197],[199,197]]);
- poly(c,'#486965',[[204,213],[327,211],[334,229],[204,232],[190,218]]);
- line(c,'#819b8c',2,[[201,205],[324,203]]);
+ c.save();c.beginPath();c.rect(122,174,64,60);c.clip();
+ c.translate(248,205);c.rotate(-Math.PI/2);person(c,'nell',0,0,1.02);c.restore();
+ poly(c,'#607e7c',[[187,184],[319,183],[329,204],[334,229],[190,232],[176,218]]);
+ poly(c,'#aab9a3',[[187,184],[319,183],[322,197],[185,197]]);
+ poly(c,'#486965',[[190,213],[327,211],[334,229],[190,232],[176,218]]);
+ line(c,'#819b8c',2,[[187,205],[324,203]]);
  poly(c,'#687e78',[[120,234],[344,229],[344,244],[120,251]]);
  line(c,'#b8b493',3,[[121,234],[344,229]]);
  for(const [x,y]of [[125,249],[334,244]])poly(c,'#526a69',[[x,y],[x+9,y],[x+8,y+15],[x+1,y+15]]);
@@ -84,11 +96,12 @@ function capital(c:C,p:number,t:number){
  poly(c,'#617b70',[[0,243],[242,211],[371,225],[512,251],[512,288],[0,288]]);
  poly(c,'#83917a',[[0,242],[242,208],[374,222],[512,248],[512,256],[371,231],[243,219],[0,253]]);
  for(const y of [248,269,287])line(c,'#9b9e80',1,[[0,y],[241,y-28],[512,y+4]]);
+ // The forward rail is beyond the companions, behind their silhouettes in camera.
+ for(const [x,y]of [[20,236],[89,227],[284,210],[422,225]])line(c,'#57786d',4,[[x,y+22],[x,y]]);
+ line(c,'#c1b48b',3,[[0,237],[255,207],[512,234]]);
  // Both companions remain at a fixed scale and foot position on the foredeck.
  person(c,'orrin',151,257,.66,true);
  person(c,'petra',233,255,.67,true);
- line(c,'#c1b48b',3,[[0,265],[255,235],[512,262]]);
- for(const [x,y]of [[20,264],[89,255],[284,238],[422,253]])line(c,'#57786d',4,[[x,y+22],[x,y]]);
  // Rigging frames the view without crossing the faces or the palace crest.
  line(c,'#718d83',2,[[32,0],[58,221]]);
  line(c,'#718d83',2,[[489,0],[461,231]]);
