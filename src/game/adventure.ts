@@ -177,6 +177,7 @@ export class Adventure extends Phaser.Scene {
   }
   private mechanisms?:WorldMechanisms;
   private mapLife?:MapLife;
+  get smoothAnimation(){return !!this.endingFilm?.animating;}
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
     return !!this.endingFilm?.animating||(this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview||!!this.bossLighting?.animating;

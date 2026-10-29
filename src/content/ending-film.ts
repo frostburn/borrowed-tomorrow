@@ -9,7 +9,7 @@ export const GOOD_ENDING_SHOTS=[
  {id:'shore',title:'Until evening',duration:ENDING_SHORE_DURATION,music:'seaholiday'},
 ] as const;
 export const GOOD_ENDING_DURATION=GOOD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
-export const BAD_ENDING_CUES={pullbackStart:1000,pullbackEnd:13000,trainStart:15000,trainEnd:24000,rainStart:25000,rainFull:30000,captionStart:66000} as const;
+export const BAD_ENDING_CUES={pullbackStart:1000,pullbackEnd:13000,trainStart:15000,trainEnd:24000,lightningStart:16000,lightningEnd:17400,rainStart:18000,rainFull:23000,captionStart:66000} as const;
 export const BAD_ENDING_HINT='Cure Nell for additional story content.';
 export const BAD_ENDING_SHOTS=[
  {id:'empty-seat',title:'The empty seat',duration:72000,music:'laststation'},

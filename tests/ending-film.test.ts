@@ -56,7 +56,12 @@ it('reveals the cast then the lantern through framing before departure, rain and
  for(const actor of BAD_ENDING_CAST){const feet=projected(BAD_ENDING_CUES.pullbackEnd,actor.x,279-actor.x/32);expect(feet.x).toBeGreaterThan(0);expect(feet.y).toBeLessThan(288);}
  expect(BAD_ENDING_CUES.pullbackEnd).toBeLessThan(BAD_ENDING_CUES.trainStart);
  expect(badEndingBlocking(BAD_ENDING_CUES.trainEnd).train).toBeGreaterThan(554); // last coach has cleared x=0
- expect(badEndingBlocking(BAD_ENDING_CUES.trainEnd).rain).toBe(0);
+ expect(badEndingBlocking(BAD_ENDING_CUES.trainEnd).rain).toBe(1);
+ const flash=badEndingBlocking((BAD_ENDING_CUES.lightningStart+BAD_ENDING_CUES.lightningEnd)/2);
+ expect(flash.lightning).toBeCloseTo(1);expect(flash.rain).toBe(0);
+ expect(BAD_ENDING_CUES.lightningEnd).toBeLessThan(BAD_ENDING_CUES.rainStart);
+ expect(BAD_ENDING_CUES.rainStart).toBeLessThan(BAD_ENDING_CUES.trainEnd);
+ expect(badEndingBlocking(16500,true).lightning).toBe(0);
  expect(badEndingBlocking(BAD_ENDING_CUES.rainFull).rain).toBe(1);
  expect(ENDING_FILMS.bad.creditStart).toBeGreaterThan(BAD_ENDING_CUES.rainStart);
  expect(BAD_ENDING_CUES.captionStart).toBeGreaterThan(ENDING_FILMS.bad.creditStart+ENDING_CREDITS_END-ENDING_CREDITS_START);

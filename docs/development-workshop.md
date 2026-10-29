@@ -365,8 +365,9 @@ continuous camera move, beginning close to Nell's folded coat on the empty
 bench. Between seconds 1–13 the camera pulls back to reveal Kit, Tomas, Petra,
 Celia and Orrin; the broken lantern and scattered glass beside Orrin enter the
 frame last. The train starts moving at second 15 and clears the frame by 24.
-Rain starts at second 25 and builds gently, with wet platform planes and a
-cooler overcast cast. Nobody fades into existence and no Nell actor appears.
+The clouds brighten briefly at second 16, implying distant lightning.
+Rain starts at second 18 while the train is still leaving. It builds gently,
+with wet platform planes and cooler overcast light. Nobody fades into existence and no Nell actor appears.
 
 `ending-bad.ts` redraws vectors through the shared camera and chunky raster.
 The 19 credit entries, order, typography, 36-second roll and reduced-motion
@@ -383,3 +384,8 @@ Nell remains deceased and no Chapter Seven departure is granted. Headless hosts
 still complete through the existing boundary callback. Both workshop previews
 leave all campaign/workshop saves and builds untouched. Detailed cinematic
 browser cases remain opt-in.
+
+Cinematic vectors use continuous camera/train coordinates and refresh at the
+render cadence. They bypass the ordinary 20 fps ambient display budget; there
+is no camera-position snapping during the pullback. Reduced motion omits the
+cloud flash and keeps the rainy composition static.

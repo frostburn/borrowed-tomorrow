@@ -131,7 +131,7 @@ export function paintEndingFilm(c:C,milliseconds:number,reduced=false,kind:Endin
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#080f19',0,0,w,h);
  c.save();c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
  c.beginPath();c.rect(0,0,512,288);c.clip();
- if(kind==='bad')paintBadEnding(c,frame.time,reduced,s);
+ if(kind==='bad')paintBadEnding(c,frame.time,reduced);
  else if(frame.shot.id==='release')release(c,p,t);
  else if(frame.shot.id==='station')station(c,p,t);
  else if(frame.shot.id==='window')windowSeat(c,p,t);

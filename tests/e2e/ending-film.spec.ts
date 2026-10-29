@@ -104,9 +104,10 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await expect(page.getByRole('button',{name:'Next shot',exact:true})).toBeDisabled();
   await page.getByRole('button',{name:'Play',exact:true}).dispatchEvent('click');await page.mouse.move(1,1);
   await page.clock.runFor(5000);expect((await filmHash(page)).hash).not.toBe(paused.hash);await capture(page,'bad-ending-pullback-'+device);
+  const motionFrames=new Set<number>();for(let i=0;i<8;i++){await page.clock.runFor(17);motionFrames.add((await filmHash(page)).hash);}expect(motionFrames.size).toBeGreaterThanOrEqual(6);
   await page.clock.runFor(8000);await capture(page,'bad-ending-lantern-reveal-'+device);
   await expect(page.locator('#canvas')).toHaveAttribute('data-ending-shot','empty-seat');
-  const train=await filmHash(page);await page.clock.runFor(6000);
+  const train=await filmHash(page);await page.clock.runFor(2100);await capture(page,'bad-ending-lightning-'+device);await page.clock.runFor(3900);
   expect((await filmHash(page)).hash).not.toBe(train.hash);await capture(page,'bad-ending-departure-'+device);
   await page.clock.runFor(8000);await capture(page,'bad-ending-rain-'+device);
   await page.getByRole('button',{name:'Credits',exact:true}).dispatchEvent('click');await page.clock.runFor(1200);

@@ -54,7 +54,7 @@ export class EndingFilm {
  };
  private paint(){
   const frame=endingFrame(this.elapsed,this.kind);
-  const position=this.reduced.matches?frame.shot.id+':'+endingCreditPage(endingCreditTime(frame.time,this.kind)):Math.floor(this.elapsed/50);
+  const position=this.reduced.matches?frame.shot.id+':'+endingCreditPage(endingCreditTime(frame.time,this.kind)):this.elapsed;
   const key=[position,this.reduced.matches,this.texture.width,this.texture.height].join(':');
   if(key===this.paintKey)return;this.paintKey=key;
   paintEndingFilm(this.texture.context,this.elapsed,this.reduced.matches,this.kind);

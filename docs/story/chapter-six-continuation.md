@@ -145,7 +145,7 @@ After treatment and `riverRestSeen`, Tavi offers Kit river-courier footing train
 The final train interaction saves the Lightbearer outcome before a single
 continuous vector shot. It starts at Nell's folded coat on the empty bench,
 pulls back to reveal the surviving companions and finally the broken lantern
-beside Orrin, then lets the train depart before rain begins. It uses the good
+beside Orrin, then lets the train depart as clouds flash and rain begins. It uses the good
 ending's complete credits and retains **Borrowed Tomorrow** as its title.
 **Cure Nell for additional story content.** is shown after the roll and in the
 ending panel. There is no Nell actor, recovery or victory over the Benefactor.

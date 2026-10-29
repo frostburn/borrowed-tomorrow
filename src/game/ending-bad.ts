@@ -63,6 +63,7 @@ export function badEndingBlocking(milliseconds:number,reduced=false){
  const zoom=8**(1-u);
  return {time,zoom,offsetX:256+197*u-453*zoom,offsetY:144+102*u-246*zoom,
   train:640*ease((time-BAD_ENDING_CUES.trainStart)/(BAD_ENDING_CUES.trainEnd-BAD_ENDING_CUES.trainStart)),
+  lightning:reduced||time<=BAD_ENDING_CUES.lightningStart||time>=BAD_ENDING_CUES.lightningEnd?0:Math.sin(Math.PI*(time-BAD_ENDING_CUES.lightningStart)/(BAD_ENDING_CUES.lightningEnd-BAD_ENDING_CUES.lightningStart))**2,
   rain:ease((time-BAD_ENDING_CUES.rainStart)/(BAD_ENDING_CUES.rainFull-BAD_ENDING_CUES.rainStart))};
 }
 function brokenLantern(c:C){
@@ -99,7 +100,9 @@ function rain(c:C,t:number,strength:number,foreground:boolean){
 function station(c:C,stage:ReturnType<typeof badEndingBlocking>){
  const {time,train,rain:wet}=stage,t=time/1000;
  rect(c,'#4e6572',-500,-500,1512,1288);
- poly(c,'#72838a',[[0,68],[94,57],[182,66],[276,53],[396,64],[512,51],[512,103],[0,99]]);
+ const clouds:readonly Point[]=[[0,68],[94,57],[182,66],[276,53],[396,64],[512,51],[512,103],[0,99]];
+ poly(c,'#72838a',clouds);
+ if(stage.lightning>0){c.save();c.globalAlpha=stage.lightning*.65;poly(c,'#d4e0e8',clouds);c.restore();}
  poly(c,'#425d68',[[0,154],[83,126],[145,138],[234,112],[319,139],[406,120],[512,145],[512,237],[0,237]]);
  poly(c,'#7e8d89',[[0,224],[512,209],[512,271],[0,288]]);
  // Crooked Larkspur roof/gable, with a warm office still open to the living.
@@ -114,7 +117,7 @@ function station(c:C,stage:ReturnType<typeof badEndingBlocking>){
  line(c,'#a1997b',2,[[434,175],[449,173]]);
  line(c,'#a3ab99',3,[[0,248],[512,233]]);line(c,'#3b5763',3,[[0,255],[512,240]]);
  rain(c,t,wet,false);
- const travel=Math.round(train/2)*2;
+ const travel=train;
  for(let i=0;i<3;i++)coach(c,116+i*146-travel,235-i*4,.8);
  poly(c,'#929b8e',[[0,258],[512,242],[512,282],[0,298]]);
  poly(c,'#5f7576',[[0,298],[512,282],[512,301],[0,317]]);
@@ -129,17 +132,17 @@ function station(c:C,stage:ReturnType<typeof badEndingBlocking>){
  poly(c,'#516c70',[[505,143],[510,144],[508,274],[503,274]]);
  poly(c,'#a2946c',[[496,140],[512,140],[512,154],[497,154]]);
  poly(c,'#d9c595',[[499,143],[508,143],[508,151],[499,151]]);
- // Wet, overcast light builds only after the train has cleared the platform.
+ // Wet, overcast light builds as the departing train passes.
  c.save();c.globalAlpha=wet*.2;rect(c,'#233f56',0,0,512,288);c.restore();
  rain(c,t,wet,true);
 }
 /** One unbroken shot. The lantern enters the framing after the companions,
  * before departure and rain. Every frame redraws vectors through one camera. */
-export function paintBadEnding(c:C,milliseconds:number,reduced:boolean,nativeScale:number){
+export function paintBadEnding(c:C,milliseconds:number,reduced:boolean){
  const stage=badEndingBlocking(milliseconds,reduced);
  c.save();
- // Align camera translation with the common two-pixel display grid.
- c.translate(Math.round(stage.offsetX*nativeScale/2)*2/nativeScale,Math.round(stage.offsetY*nativeScale/2)*2/nativeScale);
+ // Transform the vector scene continuously; its scale has no fixed pixel grid.
+ c.translate(stage.offsetX,stage.offsetY);
  c.scale(stage.zoom,stage.zoom);station(c,stage);c.restore();
  // The credit side falls into a diffuse shadow once the pullback has ended.
  const shade=c.createLinearGradient(0,0,280,0);
