@@ -32,7 +32,7 @@
 <defs><clipPath id="left-eyelid"><path d="M40 48H60V58H40Z M72 53L85 52V59H72Z"/></clipPath></defs>
 <g clip-path="url(#left-eyelid)">
 <path d="M44 52L54 51V54H45Z M73 52L83 53V56H73Z" fill="#eee9dc"/>
-<path d="M49 51H53V55H49Z M77 52H81V56H77Z" fill="#263e4b"/>
+<path d="M49 51H53V55H49Z M77 53H81V57H77Z" fill="#263e4b"/>
 </g>
 <path d="M64 51L61 61 57 67 62 72 74 70 76 66 68 63 69 54Z" fill="#b17b5c"/>
 <path d="M65 54L64 64 71 67 67 70 61 68Z" fill="#e1b68c"/>

@@ -77,5 +77,5 @@ regenerate expressions with `python3 assets/vector/portrait-expressions.py`.
 
 The Emperor’s entire portrait remains identical to main, including its tall, thin pupils. Tilda’s left
 upper eyelid (on the right in-camera) is slightly lowered over that eye; its
-pupil moves one native pixel down beneath that lid. Keep these individual shapes when
+pupil moves two native pixels down beneath that lid. Keep these individual shapes when
 auditing the otherwise square pupils through the chunky raster.

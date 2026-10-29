@@ -83,7 +83,7 @@ test('human portrait eyes retain their authored shapes at every chunky sampling 
     });
     // Tilda's lowered left pupil sits under a partly closed upper lid.
     // The Emperor retains paired narrow slits, not the cast's square pupils.
-    const valid=entry.name==='portrait-tilda'?counts[0]===4&&counts[1]===(py===0?2:4):counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
+    const valid=counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
     if(!valid)failures.push({name:entry.name,px,py,counts});
    }
   }
