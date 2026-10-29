@@ -16,4 +16,6 @@ export interface StoryHost {
   boundary(): void;
   toast(message: string): void;
   endingMusic(): void;
+  /** Optional renderer; headless hosts still finish through boundary(). */
+  endingFilm?(): void;
 }

@@ -119,6 +119,6 @@ export function interactChapterSeven(h:StoryHost,id:string){
    SAY('Orrin','A bit. Then I went back to sleep.'),
   ]});
   case 'sea-friends':return h.talk(scenes.picnic());
-  case 'sea-ending':if(!f.realSeaSeen)return resumeChapterSeven(h);f.chapterSevenComplete=true;remember(s,'chapterSevenComplete');h.refresh();h.save();h.boundary();return;
+  case 'sea-ending':if(!f.realSeaSeen)return resumeChapterSeven(h);f.chapterSevenComplete=true;remember(s,'chapterSevenComplete');h.refresh();h.save();if(h.endingFilm)h.endingFilm();else h.boundary();return;
  }
 }

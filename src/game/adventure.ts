@@ -1,3 +1,5 @@
+import {EndingFilm} from './ending-film';
+import {canPlayGoodEnding} from '../content/ending-film';
 import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
 import {icon} from './item-icons';
@@ -84,6 +86,7 @@ export class Adventure extends Phaser.Scene {
   private ui!: UI;
   private layer?: Phaser.GameObjects.Container;
   private cinematic?:Cutscene;
+  private endingFilm?:EndingFilm;
   private grid?: Phaser.GameObjects.Graphics;
   private player?: Phaser.GameObjects.Image;
   private followers: Phaser.GameObjects.Image[] = [];
@@ -143,7 +146,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.endingFilm?'good-ending-film':this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -152,6 +155,7 @@ export class Adventure extends Phaser.Scene {
   }
   resizeView(){
     if(!this.sys.isActive())return;
+    if(this.endingFilm){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);this.endingFilm.resize();return;}
     if(this.mode==='battle'){
       const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
     }
@@ -175,7 +179,7 @@ export class Adventure extends Phaser.Scene {
   private mapLife?:MapLife;
   get animating(){
     const preview=this.mode==='battle'&&this.battle?this.battlePresentation?.animating?.(this.battle):false;
-    return (this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview||!!this.bossLighting?.animating;
+    return !!this.endingFilm?.animating||(this.mode==='battle'&&this.boarding.active)||!!this.mechanisms?.animating||this.moving||this.motion.active||!!this.cinematic?.animating||this.tweens.getTweens().length>0||!!preview||!!this.bossLighting?.animating;
   }
   get sceneryChanged(){const people=this.peopleMotion.takeFrame(),scenery=this.mapLife?.takeFrame()??false;return people||scenery;}
   private label(x:number,y:number,text:string,color:string,scale=3,outline=false){
@@ -192,8 +196,9 @@ export class Adventure extends Phaser.Scene {
     if(pixelAligned)image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     image.once('destroy',()=>this.textures.remove(name));return image;
   }
-  private get blocked() { return this.ui.panelOpen || this.ui.modalOpen; }
+  private get blocked() { return !!this.endingFilm || this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.endingFilm?.close();this.endingFilm=undefined;
     this.mechanisms?.close();this.mechanisms=undefined;
     this.mapLife?.close();this.mapLife=undefined;
     this.boarding.clear();
@@ -407,6 +412,7 @@ export class Adventure extends Phaser.Scene {
       .sort((a,z) => (Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(z.x-p.x)+Math.abs(z.y-p.y)))[0];
   }
   update(time: number,delta:number) {
+    if(this.endingFilm)return;
     this.peopleMotion.update(delta,this.mode!=='world'||this.blocked||this.busy||!!this.cinematic);
     this.motion.update();
     this.sortWorld();
@@ -490,6 +496,7 @@ export class Adventure extends Phaser.Scene {
     this.ui.canvas.focus();
   }
   private keydown(e: KeyboardEvent) {
+    if(this.endingFilm)return;
     // One DOM event must never both select and confirm a tactical action.
     if(this.handledKeys.has(e))return;this.handledKeys.add(e);
     const tag = (e.target as HTMLElement)?.tagName;
@@ -536,6 +543,7 @@ export class Adventure extends Phaser.Scene {
       travel: (map, x, y) => { void this.changeMap(map, x, y); }, battle: id => this.startBattle(id),
       shop: shop => this.shop(shop), boundary: () => this.boundaryPanel(), toast: message => this.ui.toast(message),
       endingMusic: () => this.audio.setMode('ending'),
+      endingFilm: () => this.playGoodEndingFilm(),
     };
   }
   private boundaryPanel() {
@@ -547,6 +555,7 @@ export class Adventure extends Phaser.Scene {
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
     this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
+      ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playGoodEndingFilm()}]:[]),
       ...(destination?[{label:`Begin ${destination.title}`,action:()=>{void this.beginNextChapter();}}]:[]),
       {label:chapter.ending.returnLabel,action:()=>{this.ui.clearPanel();this.renderWorldControls();}},
       {label:chapter.ending.exportLabel??'Export departure save',action:()=>exportSave(this.state)},
@@ -559,6 +568,22 @@ export class Adventure extends Phaser.Scene {
     this.battlePresentation=definition.boss==='benefactor'?benefactorPresentation(definition):definition.boss==='emperor'||definition.boss==='lightbearer'?imperialPresentation(definition):definition.boss==='dragon'?winterDragonPresentation(definition):definition.boss==='serpent'?serpentPresentation(definition):definition.boss==='conduit'?conduitPresentation(definition):definition.boss==='furnace'?furnacePresentation(definition):definition.boss==='ward'?wardPresentation(definition):definition.boss==='flagship'?flagshipPresentation(definition):undefined;
     this.ui.clearPanel();this.path=[];this.autosave();this.battle=createBattle(id,this.state);this.mode='battle';this.selected='move';this.plan=undefined;this.hover=undefined;
     this.enterBattle();
+  }
+  private playGoodEndingFilm(){
+    if(!canPlayGoodEnding(this.state)){this.boundaryPanel();return;}
+    this.openEndingFilm(()=>{this.showWorld();this.boundaryPanel();});
+  }
+  private openEndingFilm(done:()=>void,shot=0,review=false){
+    this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
+    const view=worldView();this.scale.setGameSize(view.width,view.height);
+    this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);
+    this.endingFilm=new EndingFilm(this,this.ui,this.audio,()=>{this.endingFilm=undefined;done();},shot,review);
+    this.ui.canvas.focus();
+  }
+  /** Vite-only entry uses the exact campaign player, without campaign writes. */
+  previewEndingFilm(returnToWorkshop:()=>void,shot=0){
+    if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
+    this.closePreview();this.openEndingFilm(returnToWorkshop,shot,true);
   }
   /** A standalone harness: no campaign saves, flags, loot or experience. */
   previewBattle(battle: Battle, returnToWorkshop: () => void, presentation?:BattlePresentation) {

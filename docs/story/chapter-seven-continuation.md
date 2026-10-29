@@ -31,3 +31,24 @@ Celia’s [personal arc](celia-arc.md) follows her uncertainty as a teacher thro
 Orrin’s [crew-trust thread](orrin-arc.md) pays off Hammerplain at the capital patient hoist: he leaves Hester’s fitters to complete their own repair, sees it support the evacuation, and later hands the gate watch to the porter. The sea trip lets him rest while someone else runs the train.
 
 The party’s [relationships while traveling](party-relationships.md) develop through shared work, disagreements, mutual care and a seaside card game. The optional deck talks adapt to regional progress; existing individual arcs and Nell’s recovery gates remain intact.
+
+
+## Completion film
+
+After the real-sea ending interaction commits `chapterSevenComplete` and saves,
+the shared 90-second vector film plays before the existing completion panel.
+It revisits the release, ordinary train and holiday as a wordless epilogue;
+the playable station/shore scenes and all their choices remain intact. It shows
+surviving travelers only. Ansel is represented by his cap at the office, with an
+empty hook beneath it. There is no resurrection or reset.
+
+At the beach, Nell and Kit walk together toward the water. Their companions
+stand as they pass; the camera follows until the picnic has left the frame.
+The two remain by the sea while the sky turns to sunset and the credits roll.
+The companions are still at the picnic, not removed from the story or party.
+
+The film is skippable, pauseable and replayable from completion. Reload opens
+the completion panel directly. Its renderer changes no flags, locations,
+resources, equipment, formation or save version. Headless story hosts without
+the optional film service continue directly to the existing boundary callback.
+The workshop reviews the same film without requiring or changing a save.

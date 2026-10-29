@@ -293,3 +293,66 @@ The additional campaign previews are:
 Each offers a chapter-level preset or **Use workshop party**. Share selections with `?dev=boss&boss=furnace`, `boss=ward`, `boss=aurel` or a domain ID such as `boss=domain-ward`. `src/dev/boss-catalog.ts` owns metadata and independent encounter copies; `campaign-boss-preview.ts` uses the production presentations for large bosses and the original tactical maps for other fights. Authored encounter IDs stay intact so domain rules, original maps and their floor masks match. Rewards are removed and the normal isolated practice host handles outcomes; campaign saves and story flags are never advanced.
 
 Only the selected arena is loaded when starting a new catalogue preview. Missing assets leave the catalogue available for retry; changing the selection or tab during loading cancels entry into that fight. Earlier bosses retain their authored lighting, and the furnace/ward/domain previews show the same lighting as the campaign. Ordinary tactical previews also use their actual map’s actor-lighting profile.
+
+
+## Good-ending cinematic
+
+Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
+vector player as campaign completion: the days returning at the crossing,
+Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.
+Nell and Kit walk hand in hand toward the shore. Tomas, Orrin, Celia and Petra
+stand from the picnic as they pass. The camera follows upward until only Nell
+and Kit remain, then the sky turns to sunset while the credits roll. The final
+minute allows twelve seconds for the walk/camera, a credit roll at seconds
+16–52, and a closing title. Walking uses separate six-pose articulated legs and
+arms. Figure height, couple spacing, the handhold and contact shadows recede
+together on one ground plane. The scale follows distance below the horizon:
+about 0.71 beside the picnic and 0.31 at the water. Companions, boats and ripple
+sizes use that same projection; the camera pans over it. Heads and bodies keep
+their proportions.
+
+**Play good ending** starts from the beginning; **Play selected shot** starts from
+the chosen poster. Space pauses, left/right changes shots, Replay returns to the
+opening, and Escape returns to the workshop. Sound follows the existing sound
+preference. Reduced motion starts paused with static compositions; Next shot
+still works. **Credits** jumps directly to the roll from any shot. Reduced
+motion shows the final sunset with static, readable credit pages, navigated
+with **Previous credit / Next credit** or left/right while the canvas is focused.
+Hiding the browser pauses playback.
+
+`ending-art.ts` paints editable polygons directly into a native-size scene
+surface, then the game's shared 2px framebuffer samples the artwork and UI
+together. There are no movie files, prerendered sprite sheets, new textures to
+download or dependencies. The four shots use rigid layer motion, coastal
+parallax, train wheels/steam, shallow waves and a passing fishing boat.
+`ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
+deterministic shot timeline. No workshop playback writes campaign state.
+`ending-shore.ts` owns the final camera, walk, sunset and native-coordinate
+credit lettering; `content/credits.ts` owns the credit data and timings. The
+opening is **Borrowed Tomorrow / A game by / GPT-6.1 Sol / Directed by / Lumi
+Pakkanen**. Game design credits both collaborators; Lumi is also credited for
+combat-system direction, story concepts, art direction and playtesting. Code,
+writing, artwork, animation, sound and automated testing credit GPT-6.1 Sol. **Additional
+musical passages** credits Lumi's contributed bars, including the documented
+Iron Coast phrases. Copyright remains with Lumi under the repository license.
+Tooling acknowledgments close the roll. Line wrapping and pages retain full
+two-pixel text stems on phones.
+
+In the station shot, the cast stands on a raised foreground platform. Its
+sloping edges and sole anchors use the same projection, with the moving train
+and rails behind the platform lip.
+
+`ending-cast.ts` authors the six travelers' cinematic poses against the accepted
+actor/portrait SVGs in `public/art/vector/`. Preserve Nell's red cap, braids and
+navy bib; Orrin's goggled cap, brown beard, cream shirt and overalls; Kit's copper
+spikes, gold scarf and left-hip satchel; Celia's silver bob, teal spectacles and
+left-hand book; Petra's short dark bob and gold-edged silver armor over green;
+and Tomas's taller build, green eyes, navy jacket and red scarf. Heads are drawn
+individually. Rear views retain the same clothes, and Nell's jacket covers her
+back. Station/picnic staging leaves room to read the complete cast through the
+final chunky raster, including at fractional DPR.
+
+Campaign completion is committed and saved before the film opens. Finish, skip
+and replay return to the existing completion panel; **Replay ending cinematic**
+is also available there. Reloading a completion save opens that panel rather
+than forcing the film again. The Lightbearer ending has no good-ending replay.
