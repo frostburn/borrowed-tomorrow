@@ -4,7 +4,7 @@ import {paintEndingPerson as person} from './ending-cast';
 import {hollowSunPolygons} from '../content/hollow-sun';
 
 /** The white royal city is already airborne, separate from the green works. */
-function floatingCapital(c:C,x:number,y:number,s:number){
+export function floatingCapital(c:C,x:number,y:number,s:number){
  c.save();c.translate(x,y);c.scale(s,s);
  poly(c,'#64746f',[[-177,25],[-113,11],[115,9],[173,24],[148,48],[109,54],[68,89],[31,62],[-15,100],[-57,68],[-99,76],[-136,48]]);
  poly(c,'#849080',[[-177,25],[-113,11],[-31,22],[-15,100],[-57,68],[-99,76],[-136,48]]);

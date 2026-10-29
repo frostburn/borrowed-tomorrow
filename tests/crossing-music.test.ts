@@ -1,3 +1,4 @@
+import {octave} from '../src/game/tuning';
 import {expect,it} from 'vitest';
 import {ARRANGEMENTS,scoreBar,scoreLength} from '../src/game/score';
 import {CROSSING_DURATION} from '../src/content/crossing';
@@ -49,4 +50,15 @@ it('fits the westward walk and keeps The Western Mooring melody intact',()=>{
   for(const n of notes){expect(n.beat).toBeGreaterThanOrEqual(0);expect(n.beat).toBeLessThan(4);expect(n.duration).toBeGreaterThan(0);}
  }
  expect(scoreBar('airfield-crossing',8)).toEqual(scoreBar('airfield-crossing',0));
+});
+
+it('fits the quiet capital approach and halves the airship phrase without changing its spelling',()=>{
+ expect(scoreLength('mooring-crossing')).toBe(8);
+ expect(8*ARRANGEMENTS['mooring-crossing'].beats*60000/ARRANGEMENTS['mooring-crossing'].bpm).toBe(CROSSING_DURATION);
+ const source=Array.from({length:4},(_,bar)=>scoreBar('airship',bar).filter(n=>n.pan===-.16).map(n=>[bar*8+n.beat*2,octave(n.pitch,-1),n.duration*2])).flat();
+ const notes=Array.from({length:8},(_,bar)=>scoreBar('mooring-crossing',bar));
+ const melody=notes.flatMap((bar,i)=>bar.filter(n=>n.pan===-.16).map(n=>[i*4+n.beat,n.pitch,n.duration]));
+ expect(melody).toEqual(source);expect(notes.flat().some(n=>n.beat+n.duration>4)).toBe(true);
+ expect(notes.flat().some(n=>['kick','snare','hat','timpani','cymbal'].includes(n.instrument))).toBe(false);
+ expect(scoreBar('mooring-crossing',8)).toEqual(scoreBar('mooring-crossing',0));
 });

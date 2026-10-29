@@ -22,9 +22,14 @@ export const AIRFIELD_CROSSING_SHOTS=[
  {id:'road',title:'The western road',duration:6500},
  {id:'mooring',title:'The survey mooring',duration:4500},
 ] as const;
-export type CrossingKind='coast'|'capital'|'refuge'|'airfield';
+export const MOORING_CROSSING_SHOTS=[
+ {id:'clouds',title:'Beyond the fleet',duration:5000},
+ {id:'berth',title:'Keeping watch',duration:6500},
+ {id:'capital',title:'The outer lights',duration:4500},
+] as const;
+export type CrossingKind='coast'|'capital'|'refuge'|'airfield'|'mooring';
 export const CHAPTER_CROSSINGS:Partial<Record<GameState['chapter'],CrossingKind>>={
- 'chapter-one':'coast','chapter-two':'capital','chapter-three':'refuge','chapter-four':'airfield',
+ 'chapter-one':'coast','chapter-two':'capital','chapter-three':'refuge','chapter-four':'airfield','chapter-five':'mooring',
 };
 interface CrossingFilm {
  id:string;label:string;title:string;from:string;to:string;place:string;returnLabel:string;
@@ -51,6 +56,11 @@ export const CROSSING_FILMS:Record<CrossingKind,CrossingFilm>={
   id:'four-five-crossing',label:'Chapter Four → Five',title:'The westward road',from:'A Light on the Water',to:'Taking the World Back',place:'the western airfield',returnLabel:'Return to the refuge',music:'airfield-crossing',map:'airfield',shots:AIRFIELD_CROSSING_SHOTS,
   description:'Tomas waves from the refuge as the ferry crosses the open harbor. Nell, Orrin, Kit, Celia and Petra take the coastal road west. Beyond the headland, the survey ship waits at its mooring, still tied down beside the hangar.',
   accessibility:'Nell leaves Tomas safe at the railway refuge. All five companions walk along the coast to the western airfield. The survey airship stays moored; the party has not boarded it. Space pauses. Escape skips to Chapter Five.',
+ },
+ mooring:{
+  id:'five-six-crossing',label:'Chapter Five → Six',title:'The long approach',from:'Taking the World Back',to:'The Emperor’s Last Day',place:'the outer mooring',returnLabel:'Return to the flight deck',music:'mooring-crossing',map:'outermooring',shots:MOORING_CROSSING_SHOTS,
+  description:'The survey ship leaves the fleet’s last smoke behind. Below deck, Kit keeps watch beside Nell’s berth while Celia stays with her. Orrin and Petra watch the airborne marble capital draw closer. The landing bridge and the Emperor’s pact remain part of Chapter Six’s opening.',
+  accessibility:'The survey ship carries the companions toward the capital. Nell remains ill in her berth, with Kit and Celia beside her. Orrin and Petra watch the white-marble city from the bow. Space pauses. Escape skips to Chapter Six.',
  },
 };
 export function crossingDuration(kind:CrossingKind='coast'){return CROSSING_FILMS[kind].shots.reduce((sum,shot)=>sum+shot.duration,0);}

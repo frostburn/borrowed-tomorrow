@@ -4,6 +4,7 @@ import {type C,poly,rect,line,oval,P,engine} from './crossing-drawing';
 import {capitalCrossingShot} from './capital-crossing-art';
 import {refugeCrossingShot} from './refuge-crossing-art';
 import {airfieldCrossingShot} from './airfield-crossing-art';
+import {mooringCrossingShot} from './mooring-crossing-art';
 function coast(c:C,shift:number){
  rect(c,P.sky,0,0,512,288);poly(c,'#bdc0ac',[[0,90],[94,79],[176,88],[288,71],[423,82],[512,73],[512,145],[0,145]]);
  rect(c,P.sea,0,134,512,154);
@@ -79,13 +80,13 @@ export function paintChapterCrossing(c:C,milliseconds:number,reduced=false,kind:
  const f=crossingFrame(milliseconds,kind),p=reduced?.55:f.progress,t=reduced?1.5:f.time/1000;
  const w=c.canvas.width,h=c.canvas.height;
  // Keep both ends of the escape and the arrested coast in narrow overview shots.
- const overview=(kind==='airfield'||kind==='refuge'&&f.index!==1)&&w/h<512/288;
+ const overview=(kind==='airfield'||kind==='mooring'||kind==='refuge'&&f.index!==1)&&w/h<512/288;
  const scale=overview?Math.min(w/512,h/288):Math.max(w/512,h/288);
  const focal=kind==='refuge'?(f.index===0?280-p*65:f.index===1?256:290):kind==='capital'?(f.index===0?280+p*50:f.index===1?240:270):f.index===0?241+p*30:f.index===1?165+p*160:254;
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#101e2d',0,0,w,h);
  const center=overview?256:Math.max(w/scale/2,Math.min(512-w/scale/2,focal));
  c.translate(w/2-center*scale,(h-288*scale)/2);c.scale(scale,scale);
- if(kind==='airfield')airfieldCrossingShot(c,f.index,p,t);else if(kind==='refuge')refugeCrossingShot(c,f.index,p,t);else if(kind==='capital')capitalCrossingShot(c,f.index,p,t);else if(f.index===0)pass(c,p,t);else if(f.index===1)viaduct(c,p,t);else exchange(c,p,t);
+ if(kind==='mooring')mooringCrossingShot(c,f.index,p,t);else if(kind==='airfield')airfieldCrossingShot(c,f.index,p,t);else if(kind==='refuge')refugeCrossingShot(c,f.index,p,t);else if(kind==='capital')capitalCrossingShot(c,f.index,p,t);else if(f.index===0)pass(c,p,t);else if(f.index===1)viaduct(c,p,t);else exchange(c,p,t);
  c.restore();
  if(!reduced){
   const fade=Math.max(0,1-f.time/300,f.index<2?1-(f.shot.duration-f.time)/300:0);

@@ -37,7 +37,7 @@ export const SOUNDTRACK: readonly SoundtrackTrack[] = [
   {mode:'sun-serpent',title:'Coils around the Sun',group:'6'},
   {mode:'windmere',title:'Windmere · The Garden Walk',group:'5'}, {mode:'dispensary',title:'Beds beside the Water Lift',group:'5'}, {mode:'mirrorward',title:'The Mirrored Ward',group:'5'},
   {mode:'wind-battle',title:'Windmere · Keep the Ward Open',group:'5'}, {mode:'wind-engine',title:'The Light We Keep',group:'5'},
-  {mode:'airship',title:'Above the Railway',group:'5'}, {mode:'airfield',title:'The Western Mooring',group:'5'},
+  {mode:'mooring-crossing',title:'The long approach',group:'5'}, {mode:'airship',title:'Above the Railway',group:'5'}, {mode:'airfield',title:'The Western Mooring',group:'5'},
   {mode:'hammerplain',title:'The Next Shift',group:'5'}, {mode:'coolingworks',title:'The Cooling Race',group:'5'}, {mode:'anchorforge',title:'Under the Gantry',group:'5'},
   {mode:'five-battle',title:'Hammerplain · Hold the Floor',group:'5'}, {mode:'five-furnace',title:'The Pouring Lane',group:'5'},
   {mode:'dawnwatch',title:'Dawnwatch · The Open Gate',group:'5'}, {mode:'watchbarracks',title:'The Gun Terraces',group:'5'}, {mode:'signalwall',title:'The Town Wheel',group:'5'},
@@ -68,7 +68,7 @@ const sections:Record<string,readonly {title:string;modes:readonly MusicMode[]}[
   {title:'Act I · Hammerplain',modes:['hammerplain','coolingworks','anchorforge','five-battle','five-furnace']},
   {title:'Act II · Dawnwatch',modes:['dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander']},
   {title:'Act III · Windmere',modes:['windmere','dispensary','mirrorward','wind-battle','wind-engine']},
-  {title:'Act IV · The flagship',modes:['flagship','claim']},
+  {title:'Act IV · The flagship',modes:['flagship','claim','mooring-crossing']},
  ],
  '6':[
   {title:'The sealed capital',modes:['outermooring']},

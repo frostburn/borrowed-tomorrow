@@ -13,7 +13,7 @@ it('exposes each authored cue once through the shared public/workshop catalogue'
 it('groups all Chapter Five cues by the shared voyage and four acts',()=>{
  const sections=soundtrackSections('5');
  expect(sections.map(section=>section.title)).toEqual(['The shared voyage','Act I · Hammerplain','Act II · Dawnwatch','Act III · Windmere','Act IV · The flagship']);
- expect(sections[4].tracks.map(track=>track.mode)).toEqual(['flagship','claim']);
+ expect(sections[4].tracks.map(track=>track.mode)).toEqual(['flagship','claim','mooring-crossing']);
  for(const chapter of SOUNDTRACK_CHAPTERS){
   const tracks=soundtrackSections(chapter.id).flatMap(section=>section.tracks);
   expect(tracks.every(track=>track.group===chapter.id)).toBe(true);
