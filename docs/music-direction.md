@@ -61,6 +61,15 @@ brief phrase-ending fills. The last bar opens space before the original
 Northglass arrangement takes over at the siding. Review under Music/Soundtrack
 → Chapter Two. The original capital and gallery scores retain their notes.
 
+The Chapter Three escape uses **The coastward run** (`refuge-crossing`): eight
+bars of 4/4 at 120 BPM, exactly sixteen seconds. It shares A Place to Return’s
+opening melody and Am9/Fmaj9/C-over-E/G/Dm9/Em9/Fmaj9/G harmony. Urgent strings,
+a short-note bass and straight backbeat carry the bridge escape; piano takes
+the later answer, the accompaniment thins and the drums soften into arrival.
+Delayed string vibrato uses the shared expression controls; the pulse stays
+constant to fit the film. Music/Soundtrack → Ch 3 reviews this arrangement;
+the original refuge retains its quieter expression and rubato.
+
 The capital and control gallery use the retained 32-bar Evangelion-inspired original melodies; chapter battles use the related switching arrangement. The new extraction chamber uses a restrained non-functional Dm9 / B♭maj9 / Fm7 / A♭maj7 vamp at 68 BPM, one sparse bell call, low sustained support and an octave-lowered answer. Audible bell rolls anticipate the even-bar bells by half a beat; their four ascending attacks lead into the main call. Roll velocities rise from .045 to .06. All four notes stay held to beat 3.5 and release together over 1.8 seconds, so the chord supports the call instead of dropping away after its attack. Bell releases last 1.8 seconds after the written hold. The rolls remain an anticipation rather than a continuous arpeggio, and there is no percussion. This applies the remembered suspended-harmony reference without copying a melody.
 
 

@@ -65,6 +65,13 @@ Three arrival. See [the preserved handoff](chapter-three-handoff.md).
 The four recruited travelers are Nell, Orrin, Kit and Petra; three can fight. Celia has not appeared. Level 6 begins at 520 XP and level 7 at 700 XP. All five equipment rewards go into the bag and remain subject to normal manual equipment and one-copy-per-wearer rules.
 
 
+A wordless film carries the earned Chapter Three departure into the refuge:
+the bridge drops behind the full medical train, Nell and Tomas sit together,
+and the still boat comes into view on flat water beside the coastal ward. The
+green conduit works remain grounded below the separate airborne marble capital. The same rescued
+passengers and four travelers remain aboard. The film changes no saved progress
+or resources; Chapter Four’s original arrival follows successful scenery loading.
+
 ## Chapter Four — A Light on the Water
 
 - The exact `chapter-four:broken-world` boundary starts Chapter Four after all three SVG maps and their battle arenas load. Entry keeps the four recruits, chosen active formation, resources, individual HP/focus, equipment and play time. No companions scatter and no temporary-party state is written.
@@ -73,7 +80,7 @@ The four recruited travelers are Nell, Orrin, Kit and Petra; three can fight. Ce
 - The dry chain walk has a guardian and two crows. The shallow pump floor has a guardian and two hounds, with slowing water. Choosing commits `worksRouteSet` and boolean `worksFlooded`. Either victory sets `worksGateWon`, awards Orrin's return valve and leaves the physical winding wheel to the player. The survey-cart patrol can be declined; its once-only reward is Kit's folding sight (`worksStoresWon`).
 - Turning the wheel lets the ferry through (`harborOpened`). Bram brings the crews to Dena, starts supply runs and opens the service stair. The boat changes mooring; workers leave the pump house and supplies appear at the refuge. Celia stays with the party. All five travelers remain recruited; three can fight, with no narrative explanation for that limit.
 - On the sanctuary terrace (`sanctuaryEntered`), Celia recognizes the old hospice under an added imperial cable. The Sanctuary Warden maintains the arrest despite Petra's objection. Clear the eastern bridge guards (`roadGuardWon`, rescue coat), then disconnect the copper clamp in a scene (`signalCut`). The lantern answers the spark with a cold hum; nobody explains its power. The warden continues from a local reserve, which the party defeats (`sanctuaryWardenWon`, guardian prism).
-- Defeating the warden ends the coastal arrest. The suspended wave falls, water and clocks resume, and the hollow-ring chart becomes accessible. Celia's field clasp is in a hospice chest (`sanctuaryCache`). The five new items enter the shared bag for manual fitting. Previously taken days have not been restored.
+- Defeating the warden ends the coastal arrest. The tide turns, boats and clocks resume, and the hollow-ring chart becomes accessible. Celia's field clasp is in a hospice chest (`sanctuaryCache`). The five new items enter the shared bag for manual fitting. Previously taken days have not been restored.
 - Under an imperial cover plate, the founding pledge names descendants' days as the price of harvests, healing and light. Celia recognizes omitted terms from the hospice oath she taught. The operating chart identifies Hammerplain, Dawnwatch and Windmere as distant anchors stabilizing the palace conduit; those anchors remain intact. An older diagram distinguishes the conduit from a source beyond the hollow sun. Copying it commits `anchorsKnown`; the party has not opened or traveled that passage. The Benefactor never speaks.
 - At the supplied refuge, Nell and Tomas take their promised walk to the sea. Tomas offers her the choice to stay; Nell decides to pursue the anchors. He stays to coordinate railway messages. Bram marks a survey ship at the western airfield; Celia leaves a complete pledge copy with Dena. Completing the sea-wall choice records `seaWalkSeen`; preparing first leaves the boundary untouched and later visits offer a short readiness choice. Choosing departure commits `chapterFourComplete`, journal `anchorsDeparture`, and `chapter-five:anchors` at `refuge` (12,28). All gear, health and formation persist. Alban's fate remains for Chapter Five; Ansel stays dead.
 

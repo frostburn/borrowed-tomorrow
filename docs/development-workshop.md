@@ -316,6 +316,16 @@ the original theme returns at the capital arrival. In campaign, the
 existing `chapter-three:capital` boundary is only consumed after all destination
 assets load; failure keeps the final shot and Retry crossing available.
 
+The **Chapter Three → Four** selection (`?dev=cinematics&film=refuge-crossing`)
+reviews the sixteen-second escape: the last bridge drops behind the full train,
+Nell and Tomas sit together, and the railway refuge appears beside calm, arrested
+water. The green conduit works stay grounded below the airborne marble capital;
+there are no raised frozen wave crests.
+Kit and Petra travel with them; Celia’s introduction remains at Breakwater. The
+same player handles individual shots, reduced motion, pause, return and export.
+The coastward run, a driving refuge-theme arrangement, is in Music → Ch 3.
+Missing Chapter Four scenery retains the last shot and the earned departure.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.

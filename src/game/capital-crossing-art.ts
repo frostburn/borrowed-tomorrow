@@ -4,7 +4,7 @@ import {type C,poly,rect,line,oval,P,engine} from './crossing-drawing';
 const GREEN='#41645c',LIGHT_GREEN='#6f8b78',SHADOW='#2e4b4b',CREAM='#d6c7a0',SKIN='#d49c70';
 
 /** Couplings, wheel contact and the roof line share the locomotive's ground. */
-function coach(c:C,x:number,t:number,occupied=true){
+export function coach(c:C,x:number,t:number,occupied=true){
  c.save();c.translate(x,0);
  for(const wx of [-43,42]){
   oval(c,P.dark,wx,3,9,9);oval(c,'#7e9790',wx,3,5,5);
@@ -142,6 +142,26 @@ function capital(c:C,p:number,t:number){
  // Growing industrial architecture stays grounded around the rail vanishing point.
  c.save();c.translate(268,173);c.scale(1+p*.09,1+p*.09);c.translate(-268,-173);
  poly(c,'#5b7267',[[0,170],[135,151],[224,153],[349,145],[512,166],[512,226],[0,226]]);
+ conduitDistrict(c,t);
+ c.restore();
+ poly(c,'#708476',[[233,174],[288,174],[444,288],[66,288]]);
+ for(const side of [-1,1])line(c,'#d0ccb1',2.5,[[268+side*5,173],[268+side*88,288]]);
+ for(let i=0;i<14;i++){const u=(i/14+t*.15)%1,y=176+u*u*134;line(c,'#a59c7b',2+u*3,[[263-u*83,y],[273+u*83,y]]);}
+ // Fixed cab framing makes the slow approach legible, including on a phone.
+ poly(c,'#2e4949',[[0,0],[33,0],[58,288],[0,288]]);poly(c,'#789080',[[31,0],[42,0],[67,288],[56,288]]);
+ poly(c,'#2e4949',[[487,0],[512,0],[512,288],[455,288]]);poly(c,'#638173',[[478,0],[488,0],[466,288],[456,288]]);
+ poly(c,'#2c4748',[[0,0],[512,0],[512,26],[315,15],[148,21],[0,38]]);
+ poly(c,'#7d8b70',[[51,274],[458,267],[458,288],[52,288]]);
+ clearance(c,112,275,.7);
+ // The brass controls and a steady oil flame stay in the foreground.
+ oval(c,'#bda16a',397,279,14,14);oval(c,'#d8cdab',397,279,10,10);line(c,'#557067',2,[[397,279],[402,273]]);
+}
+export function capitalCrossingShot(c:C,index:number,p:number,t:number){
+ if(index===0)medicalTrain(c,p,t);else if(index===1)passengers(c,p,t);else capital(c,p,t);
+}
+
+/** The same grounded green-iron works on the approach and the coastward escape. */
+export function conduitDistrict(c:C,t:number){
  // Factory wings, brick piers and brass service pipes belong to the conduit district.
  poly(c,SHADOW,[[105,121],[227,107],[232,173],[103,183]]);
  poly(c,GREEN,[[105,121],[149,115],[150,178],[103,183]]);
@@ -178,19 +198,4 @@ function capital(c:C,p:number,t:number){
  poly(c,'#d4ccb0',[[350,148],[386,132],[428,137],[461,154],[453,158],[386,143],[354,154]]);
  for(const x of [368,392,417,442])line(c,'#617d70',3,[[x,155],[x,180]]);
  rect(c,CREAM,390,153,15,17);rect(c,'#5b877b',396,155,3,12);rect(c,'#5b877b',393,159,9,3);
- c.restore();
- poly(c,'#708476',[[233,174],[288,174],[444,288],[66,288]]);
- for(const side of [-1,1])line(c,'#d0ccb1',2.5,[[268+side*5,173],[268+side*88,288]]);
- for(let i=0;i<14;i++){const u=(i/14+t*.15)%1,y=176+u*u*134;line(c,'#a59c7b',2+u*3,[[263-u*83,y],[273+u*83,y]]);}
- // Fixed cab framing makes the slow approach legible, including on a phone.
- poly(c,'#2e4949',[[0,0],[33,0],[58,288],[0,288]]);poly(c,'#789080',[[31,0],[42,0],[67,288],[56,288]]);
- poly(c,'#2e4949',[[487,0],[512,0],[512,288],[455,288]]);poly(c,'#638173',[[478,0],[488,0],[466,288],[456,288]]);
- poly(c,'#2c4748',[[0,0],[512,0],[512,26],[315,15],[148,21],[0,38]]);
- poly(c,'#7d8b70',[[51,274],[458,267],[458,288],[52,288]]);
- clearance(c,112,275,.7);
- // The brass controls and a steady oil flame stay in the foreground.
- oval(c,'#bda16a',397,279,14,14);oval(c,'#d8cdab',397,279,10,10);line(c,'#557067',2,[[397,279],[402,273]]);
-}
-export function capitalCrossingShot(c:C,index:number,p:number,t:number){
- if(index===0)medicalTrain(c,p,t);else if(index===1)passengers(c,p,t);else capital(c,p,t);
 }

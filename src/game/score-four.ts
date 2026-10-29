@@ -156,6 +156,12 @@ const harmonies = { refuge: homeHarmony, breakwater: worksHarmony, sanctuary: te
 // middle subsides, and the last sentence comes home more quietly.
 const homeDynamics=[.72,.8,.75,.64,.78,.83,.73,.61,.84,.99,.9,.74,.93,.85,.78,.65,.98,1.04,.93,.8,.86,.76,.69,.62,.76,.82,.74,.63,.79,.73,.68,.56];
 
+/** Shared opening for the coastward train arrangement; the original stays intact. */
+export function refugeOpeningBar(bar:number){
+ const i=((bar%8)+8)%8;
+ return {melody:homeA[i],...chords[homeHarmony[i]]};
+}
+
 /** Thirty-two bars, with an opening, answer, contrasting middle and return. */
 export function returnBar(mode: ReturnMode, bar: number): Note[] {
   const i = ((bar % 32) + 32) % 32, phrase = Math.floor(i / 8), end = i % 8 === 7;

@@ -229,14 +229,14 @@ def world(id,name,subtitle,outlines,blocks,objects,arrivals,casts,people,decor,b
   if light:
    clipped=f'<defs><clipPath id="light-floor"><path d="'+floor_path(outlines)+'" clip-rule="evenodd"/></clipPath></defs><g clip-path="url(#light-floor)">'+light+'</g>'
    add(f'light-{id}-{lid}',[clipped],depth=-950,layer=lid)
- # The unnatural raised wave disappears in all locations after the local victory.
- lid=len(layers)+1;layers.append(group(lid,'Suspended water',hiddenFlag='sanctuaryWardenWon'))
- wave=[poly([(82,388),(137,340),(156,288),(188,253),(223,264),(201,306),(172,337),(170,385),(208,411)],'#8aaca8'),poly([(156,288),(188,253),(223,264),(204,274),(180,273),(168,294)],'#d1d2b4'),line([(175,290),(173,321),(152,353)],'#bed0ba',4)]
+ # A motionless skiff and flat reflection show the arrest, without frozen crests.
+ lid=len(layers)+1;layers.append(group(lid,'Arrested water',hiddenFlag='sanctuaryWardenWon'))
+ still_water=[poly([(142,428),(225,426),(210,433),(156,435)],'#486e75'),line([(174,432),(177,471)],'#7b938b',2),line([(127,444),(160,443)],'#94aaa0',2),line([(203,454),(242,452)],'#94aaa0',2)]
  if id!='sanctuary':
-  wave.extend([line([(173,240),(173,412)],'#6d5845',5),line([(172,242),(172,408)],'#c6af7b',2),line([(173,245),(222,405)],'#a9a88a',1.5),poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(173,399),(217,397)],'#9b895d',3)])
+  still_water.extend([line([(173,240),(173,412)],'#6d5845',5),line([(172,242),(172,408)],'#c6af7b',2),line([(173,245),(222,405)],'#a9a88a',1.5),poly([(140,405),(228,405),(214,422),(154,424)],'#654f3e'),line([(145,407),(222,407)],'#c6ad7b',3),line([(173,399),(217,397)],'#9b895d',3)])
   # Keep the stranded skiff in open water, with the quay occluding sea scenery.
   shift,y_shift=(1000,0) if id=='refuge' else (480,-40)
-  add(id+'-wave',[f'<g transform="translate({shift} {y_shift})">',*wave,'</g>'],depth=-999,layer=lid)
+  add(id+'-still-water',[f'<g transform="translate({shift} {y_shift})">',*still_water,'</g>'],depth=-999,layer=lid)
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v) for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v) for k,v in cast.items()]))
  write_map(id,name,subtitle,w,h,layers,next(iter(arrivals)))
