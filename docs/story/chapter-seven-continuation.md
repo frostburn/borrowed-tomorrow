@@ -36,11 +36,16 @@ The party’s [relationships while traveling](party-relationships.md) develop th
 ## Completion film
 
 After the real-sea ending interaction commits `chapterSevenComplete` and saves,
-the shared 44-second vector film plays before the existing completion panel.
+the shared 90-second vector film plays before the existing completion panel.
 It revisits the release, ordinary train and holiday as a wordless epilogue;
 the playable station/shore scenes and all their choices remain intact. It shows
 surviving travelers only. Ansel is represented by his cap at the office, with an
 empty hook beneath it. There is no resurrection or reset.
+
+At the beach, Nell and Kit walk together toward the water. Their companions
+stand as they pass; the camera follows until the picnic has left the frame.
+The two remain by the sea while the sky turns to sunset and the credits roll.
+The companions are still at the picnic, not removed from the story or party.
 
 The film is skippable, pauseable and replayable from completion. Reload opens
 the completion panel directly. Its renderer changes no flags, locations,

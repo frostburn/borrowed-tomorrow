@@ -6,7 +6,7 @@
 type C=CanvasRenderingContext2D;
 type Point=readonly [number,number];
 export type EndingPerson='nell'|'orrin'|'kit'|'celia'|'petra'|'tomas';
-export type PicnicPose={sit:number;gesture:number};
+export type EndingPose={sit?:number;walk?:number};
 const poly=(c:C,color:string,points:readonly Point[])=>{c.fillStyle=color;c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();};
 const line=(c:C,color:string,width:number,points:readonly Point[])=>{c.strokeStyle=color;c.lineWidth=width;c.lineJoin='bevel';c.lineCap='butt';c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();};
 const oval=(c:C,color:string,x:number,y:number,rx:number,ry:number)=>{c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();};
@@ -122,11 +122,30 @@ function picnicLegs(c:C,wide:number,sit:number){
  }
 }
 
+/** Six distinct stepping poses, with knees/feet advancing along the shore path.
+ * The torso and head stay rigid; no whole-body scaling or vibrating idle pose. */
+function walkingLegs(c:C,phase:number){
+ const frame=((Math.floor(phase*6)%6)+6)%6;
+ const strides=[-5,-1,5,5,1,-5],lifts=[0,5,2,0,0,0];
+ poly(c,P.navy,[[-12,-41],[12,-41],[13,-29],[-13,-29]]);
+ for(const side of [-1,1]){
+  const at=(frame+(side===1?3:0))%6,stride=strides[at],lift=lifts[at];
+  const hip:Point=[side*7,-35],knee:Point=[side*9+stride*.33,-20-stride*.33-lift*.35],ankle:Point=[side*8+stride*.64,-3-stride*.76-lift];
+  for(const [a,b,width,ink]of [[hip,knee,5,P.navy],[knee,ankle,4.5,side===1?P.navyShade:P.navyLight]] as const){
+   const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),nx=-dy/length*width,ny=dx/length*width;
+   poly(c,ink,[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny]]);
+  }
+  const [x,y]=ankle;
+  poly(c,P.boot,[[x-4,y-5],[x+1,y-8],[x+6,y-4],[x+3,y+4],[x-5,y+5]]);
+  line(c,P.hairLight,1.5,[[x-2,y-4],[x+2,y-5]]);
+ }
+}
+
 /** Foot-anchored figures keep adult proportions, distinct builds and the same
  * clothing in front/back. joinSide is a screen side omitted for the sea handhold. */
-export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,back=false,joinSide?:'left'|'right',picnic?:PicnicPose){
+export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,back=false,joinSide?:'left'|'right',pose?:EndingPose){
  c.save();c.translate(x,y);c.scale(s,s);
- const sit=Math.max(0,Math.min(1,picnic?.sit??0)),gesture=sit*Math.max(0,Math.min(1,picnic?.gesture??0));
+ const sit=Math.max(0,Math.min(1,pose?.sit??0)),walk=pose?.walk;
  const wide=who==='orrin'?5:who==='petra'?2:0;
  const coat=who==='nell'?P.red:who==='celia'||who==='petra'?P.green:P.navy;
  const shadow=who==='nell'?P.redShade:who==='celia'||who==='petra'?P.greenShade:P.navyShade;
@@ -135,7 +154,8 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  const sleeveShade=who==='orrin'?P.creamShade:who==='petra'?P.silverShade:shadow;
  const top=who==='tomas'?-69:-64;
  // Joined trousers and separate substantial boots; no floating lower legs.
- if(picnic)picnicLegs(c,wide,sit);
+ if(walk!==undefined)walkingLegs(c,walk);
+ else if(pose?.sit!==undefined)picnicLegs(c,wide,sit);
  else{
  poly(c,P.navy,[[-11-wide,-41],[11+wide,-41],[12+wide,-19],[10+wide,-3],[3,-3],[1,-24],[-2,-24],[-4,-3],[-12-wide,-3],[-13-wide,-19]]);
  poly(c,P.navyShade,[[1,-26],[6,-26],[7,-4],[3,-3]]);
@@ -197,13 +217,12 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
  for(const side of [-1,1] as const){
   if(joinSide===(side===-1?'left':'right'))continue;
   if(who==='celia'&&!back&&side===1)continue;
-  if(picnic&&sit>0){
-   const active=side===-1,lift=active?gesture:0;
+  if(sit>0||walk!==undefined){
+   const swing=walk===undefined?0:Math.sin(walk*Math.PI*2)*side;
    const shoulder:Point=[side*(13+wide),top+5];
-   const elbow:Point=[side*(20+wide),-47+sit*4];
-   const mouthLift=who==='orrin'?31:who==='celia'?27:32;
-   const hand:Point=[side*(18+wide)*(1-sit)+side*(7-lift*4)*sit,-29-sit*7-lift*mouthLift];
-   // Fold the elbows onto the lap, then bring a cup or bread to the mouth.
+   const elbow:Point=[side*(20+wide)+swing,-47+sit*4+swing];
+   const hand:Point=[side*(18+wide)*(1-sit)+side*7*sit+swing*2,-29-sit*7+swing*4];
+   // Seated hands rest on the lap; the free walking arm swings at its joints.
    const limb=(a:Point,b:Point,width:number,color:string)=>{
     const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),nx=-dy/length*width,ny=dx/length*width;
     poly(c,color,[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny]]);
@@ -212,13 +231,6 @@ export function paintEndingPerson(c:C,who:EndingPerson,x:number,y:number,s=1,bac
    if(who==='petra'){
     poly(c,P.gold,[[shoulder[0]-6,top+4],[shoulder[0],top],[shoulder[0]+7,top+5],[shoulder[0]+7,top+12],[shoulder[0]-5,top+13]]);
     poly(c,P.silverLight,[[shoulder[0]-3,top+5],[shoulder[0],top+3],[shoulder[0]+4,top+6],[shoulder[0]+4,top+10],[shoulder[0]-3,top+10]]);
-   }
-   if(active){
-    const [hx,hy]=hand;
-    if(who==='orrin'||who==='celia'){
-     poly(c,P.cream,[[hx-4,hy-4],[hx+3,hy-4],[hx+2,hy+3],[hx-3,hy+3]]);
-     line(c,P.goldShade,1.5,[[hx+3,hy-3],[hx+6,hy-2],[hx+6,hy+1],[hx+2,hy+1]]);
-    }else poly(c,P.goldLight,[[hx-4,hy-3],[hx,hy-6],[hx+4,hy-3],[hx+2,hy+2],[hx-3,hy+2]]);
    }
    continue;
   }

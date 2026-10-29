@@ -297,20 +297,24 @@ Only the selected arena is loaded when starting a new catalogue preview. Missing
 
 ## Good-ending cinematic
 
-Open **Cinematics** or use `?dev=cinematics`. The four-shot, 44-second film uses the same
+Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.
-Nell and Kit hold hands while Tomas, Orrin, Celia and Petra share the picnic.
-The picnic group sits down in staggered, articulated poses during the first
-three seconds of the last shot, then eats bread and drinks before the closing
-title fades in. Upper bodies retain their proportions as the knees fold;
-reduced motion shows the settled, seated composition.
+Nell and Kit walk hand in hand toward the shore. Tomas, Orrin, Celia and Petra
+stand from the picnic as they pass. The camera follows upward until only Nell
+and Kit remain, then the sky turns to sunset while the credits roll. The final
+minute allows twelve seconds for the walk/camera, a credit roll at seconds
+16–52, and a closing title. Walking uses separate six-pose articulated legs and
+arms without scaling or distorting the heads and bodies.
 
 **Play good ending** starts from the beginning; **Play selected shot** starts from
 the chosen poster. Space pauses, left/right changes shots, Replay returns to the
 opening, and Escape returns to the workshop. Sound follows the existing sound
 preference. Reduced motion starts paused with static compositions; Next shot
-still works. Hiding the browser pauses playback.
+still works. **Credits** jumps directly to the roll from any shot. Reduced
+motion shows the final sunset with static, readable credit pages, navigated
+with **Previous credit / Next credit** or left/right while the canvas is focused.
+Hiding the browser pauses playback.
 
 `ending-art.ts` paints editable polygons directly into a native-size scene
 surface, then the game's shared 2px framebuffer samples the artwork and UI
@@ -319,6 +323,11 @@ download or dependencies. The four shots use rigid layer motion, coastal
 parallax, train wheels/steam, shallow waves and a passing fishing boat.
 `ending-film.ts` owns playback and cleanup; `content/ending-film.ts` owns the
 deterministic shot timeline. No workshop playback writes campaign state.
+`ending-shore.ts` owns the final camera, walk, sunset and native-coordinate
+credit lettering; `content/credits.ts` owns the factual credit data and timings.
+Credit names come from the repository's license, package list and writing-guide
+attribution. Roles, line wrapping and pages keep their full two-pixel stems on
+phones, rather than scaling text down with the wide scenery.
 
 `ending-cast.ts` authors the six travelers' cinematic poses against the accepted
 actor/portrait SVGs in `public/art/vector/`. Preserve Nell's red cap, braids and

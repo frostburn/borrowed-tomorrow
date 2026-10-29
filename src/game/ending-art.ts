@@ -1,5 +1,5 @@
 import {endingFrame} from '../content/ending-film';
-import {bitmapText} from './pixel-font';
+import {paintEndingShore,paintEndingCredits} from './ending-shore';
 import {paintEndingPerson as person} from './ending-cast';
 
 type C=CanvasRenderingContext2D;
@@ -19,18 +19,6 @@ function boat(c:C,x:number,y:number,s=1){
  poly(c,'#876348',[[-22,0],[23,0],[15,9],[-10,10]]);poly(c,'#bd9d6a',[[-20,0],[17,0],[10,3],[-15,4]]);
  line(c,'#556269',2,[[0,-37],[0,1]]);poly(c,'#e8dfbd',[[-2,-35],[-2,-3],[-23,-3]]);poly(c,'#b8c9c2',[[2,-29],[18,-6],[2,-4]]);
  line(c,P.foam,1,[[-27,12],[-7,14],[20,12],[35,12]]);c.restore();
-}
-function lantern(c:C,x:number,y:number,s=1){
- c.save();c.translate(x,y);c.scale(s,s);
- line(c,'#947d53',3,[[-5,0],[-5,-9],[4,-12],[10,-7],[10,0]]);
- poly(c,'#8b7652',[[-10,0],[13,0],[16,30],[-12,30]]);poly(c,'#b6bfa7',[[-5,5],[7,5],[9,24],[-7,24]]);
- poly(c,'#e1d6a9',[[-3,5],[1,5],[-1,24],[-7,24]]);rect(c,'#695d48',-12,28,28,4);c.restore();
-}
-function coast(c:C,t:number){
- rect(c,P.sky,0,0,512,288);cloud(c,42-t*4,24,1.4);cloud(c,330-t*2,44,.85);
- poly(c,'#8ba6a5',[[0,104],[84,91],[128,97],[188,84],[254,103],[329,97],[418,105],[512,99],[512,139],[0,139]]);
- rect(c,P.sea,0,120,512,168);
- for(let i=0;i<10;i++){const y=131+i*13,shift=Math.sin(t*1.1+i)*4;poly(c,i%2?P.water:'#638c94',[[12+i*7+shift,y],[139+i*15+shift,y-1],[197+i*9+shift,y+2],[62+i*4+shift,y+3]]);}
 }
 function release(c:C,p:number,t:number){
  rect(c,'#203c50',0,0,512,288);
@@ -126,63 +114,20 @@ function windowSeat(c:C,p:number,t:number){
  poly(c,'#385368',[[44,251],[65,246],[81,251],[76,277],[53,278]]);
  poly(c,'#d8c9a1',[[66,256],[99,252],[107,270],[72,274]]);line(c,'#9b9478',1,[[73,260],[98,257],[102,264],[77,267]]);
 }
-function shore(c:C,p:number,t:number){
- coast(c,t);
- boat(c,111+p*52,136,.48);boat(c,365-p*31,158,.28);
- poly(c,'#81958e',[[0,185],[73,171],[113,187],[145,215],[97,235],[0,247]]);
- poly(c,'#d3b889',[[0,234],[104,211],[210,219],[305,207],[407,200],[512,207],[512,288],[0,288]]);
- poly(c,'#a18c6c',[[0,265],[112,244],[220,249],[346,233],[457,241],[512,232],[512,288],[0,288]]);
- // Continuous shallow foam approaches, then retreats along the actual shoreline.
- const wave=Math.sin(t*.8)*3;
- poly(c,P.foam,[[127,209+wave],[214,213+wave],[304,201+wave],[405,195+wave],[512,201+wave],[512,204+wave],[405,200+wave],[305,206+wave],[216,218+wave],[133,214+wave]]);
- poly(c,'#76847b',[[3,223],[55,208],[83,220],[71,239],[7,247]]);
- poly(c,'#a2aa91',[[3,223],[51,215],[78,220],[63,228],[10,235]]);
- // The picnic includes the other four travelers. Their work can wait.
- poly(c,'#8e6e60',[[295,215],[365,211],[391,239],[315,246]]);
- line(c,'#c1ac8d',3,[[307,220],[376,231]]);line(c,'#c1ac8d',2,[[330,215],[349,242]]);
- oval(c,'#d6c7a4',340,233,7,3);poly(c,'#c2a16b',[[324,232],[329,225],[337,228],[334,234]]);
- // Settle onto the blanket in sequence, well before the title. Seated torsos
- // retain their proportions; only the articulated legs fold beneath them.
- const picnic=[['celia',342,219,.62,1.1],['orrin',302,232,.65,.5],['petra',386,232,.66,1.5],['tomas',352,246,.62,1.9]] as const;
- for(let i=0;i<picnic.length;i++){
-  const [who,x,y,scale,delay]=picnic[i],sit=ease((p*14-delay)/1.1);
-  const gesture=ease((p*14-3.2)/.7)*Math.min(1,t/4)*Math.max(0,Math.sin((t-3)*1.2+i*1.8))**2;
-  person(c,who,x,y,scale,false,undefined,{sit,gesture});
- }
- // A closer, sheltered plane: two young people watching fishing boats.
- person(c,'nell',206,253,.86,true,'right');person(c,'kit',246,253,.91,true,'left');
- const reach=ease((p-.18)/.28);
- line(c,'#a95243',6,[[217,202],[222,218],[224+reach*3,230]]);
- line(c,'#c27054',2,[[216,203],[220,218],[224+reach*3,230]]);
- line(c,'#263e53',6,[[234,200],[234,218],[231-reach*4,230]]);
- line(c,'#385368',2,[[234,202],[232,218],[231-reach*4,230]]);
- oval(c,'#d49c70',225+reach*2,232,3,2);
- if(reach<.8)oval(c,'#d49c70',231-reach*4,232,3,2);
- oval(c,'#6c7464',147,266,23,6);lantern(c,148,235,.82);
- // Angled foreground pines frame the open sea, with a slight breeze at the tips.
- poly(c,'#49665d',[[0,0],[16,0],[33,161],[60,288],[31,288],[13,187]]);
- poly(c,'#526f62',[[0,0],[144,0],[122,22],[97,18],[79,35],[39,21],[0,34]]);
- const breeze=Math.sin(t*.65)*1.5;
- poly(c,'#78917b',[[9,5],[109,5],[94,14+breeze],[68,12],[51,23+breeze],[21,13]]);
- if(p>.65){
-  c.globalAlpha=ease((p-.65)/.23);
-  bitmapText(c,'Borrowed Tomorrow',154,270,'#f4e5be',2);
-  c.globalAlpha=1;
- }
-}
-
 /** Native view coordinates adapt to the canvas, then the shared display chunks
  * art, transitions and UI together. No GIF/video, embedded raster or film filter. */
 export function paintGoodEnding(c:C,milliseconds:number,reduced=false){
  const frame=endingFrame(milliseconds),p=reduced?(frame.shot.id==='shore'?.9:.55):frame.progress,t=reduced?0:frame.time/1000;
  const w=c.canvas.width,h=c.canvas.height,s=Math.min(w/512,h/288);
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#080f19',0,0,w,h);
- c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
+ c.save();c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
  c.beginPath();c.rect(0,0,512,288);c.clip();
  if(frame.shot.id==='release')release(c,p,t);
  else if(frame.shot.id==='station')station(c,p,t);
  else if(frame.shot.id==='window')windowSeat(c,p,t);
- else shore(c,p,t);
- if(!reduced){const fade=Math.max(0,1-frame.time/500,1-(frame.shot.duration-frame.time)/500);if(fade>0){c.globalAlpha=Math.min(1,fade);rect(c,'#080f19',0,0,512,288);}}
+ else paintEndingShore(c,frame.time,reduced,s);
+ c.restore();
+ if(frame.shot.id==='shore')paintEndingCredits(c,frame.time,w,h,reduced);
+ if(!reduced){const fade=Math.max(0,1-frame.time/500,1-(frame.shot.duration-frame.time)/500);if(fade>0){c.globalAlpha=Math.min(1,fade);rect(c,'#080f19',0,0,w,h);}}
  c.restore();
 }
