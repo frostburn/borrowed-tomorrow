@@ -358,16 +358,23 @@ is also available there. Reloading a completion save opens that panel rather
 than forcing the film again. The Lightbearer ending has no good-ending replay.
 
 
-Select **Bad ending** in Cinematics for the shorter 54-second Lightbearer
-epilogue. **Play bad ending** or **Play selected shot** reviews the same player
-used by the campaign. Its two shots show Tomas and Kit beside an empty platform
-bench holding Nell's folded coat and unlit lantern (8 seconds), then all five
-surviving travelers at Larkspur while an ordinary train leaves (46 seconds).
-No Nell actor or divine body appears. The Benefactor has not been defeated.
-`ending-bad.ts` paints the two native vector compositions; the same 19 credit
-entries, order, typography, 36-second roll and reduced-motion pages are used by
-both endings. The bad ending's roll begins four seconds into its second shot.
-The static reduced-motion composition shows the train already gone.
+Select **Bad ending** in Cinematics for the 72-second Lightbearer epilogue.
+The chosen ending and shot have the same visible selected treatment as other
+workshop controls. **Play bad ending** or **Play selected shot** reviews one
+continuous camera move, beginning close to Nell's folded coat on the empty
+bench. Between seconds 1–13 the camera pulls back to reveal Kit, Tomas, Petra,
+Celia and Orrin; the broken lantern and scattered glass beside Orrin enter the
+frame last. The train starts moving at second 15 and clears the frame by 24.
+Rain starts at second 25 and builds gently, with wet platform planes and a
+cooler overcast cast. Nobody fades into existence and no Nell actor appears.
+
+`ending-bad.ts` redraws vectors through the shared camera and chunky raster.
+The 19 credit entries, order, typography, 36-second roll and reduced-motion
+pages remain identical to the good ending. The roll occupies seconds 28–64;
+**Borrowed Tomorrow** and **Cure Nell for additional story content.** appear
+over the same rainy scene at second 66. The ending panel gives the same hint
+and points to Iria via the existing return checkpoint. Reduced motion keeps a
+stable wide rainy composition, manually navigable credits and a text hint.
 
 The final **last-ending** interaction saves `lightbearerEnding` before playback.
 Finish/skip returns to **An unfinished tomorrow**, with replay and the existing

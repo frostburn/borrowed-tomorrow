@@ -9,14 +9,15 @@ export const GOOD_ENDING_SHOTS=[
  {id:'shore',title:'Until evening',duration:ENDING_SHORE_DURATION,music:'seaholiday'},
 ] as const;
 export const GOOD_ENDING_DURATION=GOOD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
+export const BAD_ENDING_CUES={pullbackStart:1000,pullbackEnd:13000,trainStart:15000,trainEnd:24000,rainStart:25000,rainFull:30000,captionStart:66000} as const;
+export const BAD_ENDING_HINT='Cure Nell for additional story content.';
 export const BAD_ENDING_SHOTS=[
- {id:'empty-seat',title:'The empty seat',duration:8000,music:'laststation'},
- {id:'last-train',title:'An unfinished tomorrow',duration:46000,music:'laststation'},
+ {id:'empty-seat',title:'The empty seat',duration:72000,music:'laststation'},
 ] as const;
 export const BAD_ENDING_DURATION=BAD_ENDING_SHOTS.reduce((sum,s)=>sum+s.duration,0);
 export const ENDING_FILMS={
  good:{label:'Good ending',title:'The days return',description:'A journey to the real sea',shots:GOOD_ENDING_SHOTS,duration:GOOD_ENDING_DURATION,creditShot:3,creditStart:ENDING_CREDITS_START,room:'seaholiday'},
- bad:{label:'Bad ending',title:'An unfinished tomorrow',description:'The empty seat',shots:BAD_ENDING_SHOTS,duration:BAD_ENDING_DURATION,creditShot:1,creditStart:4000,room:'laststation'},
+ bad:{label:'Bad ending',title:'The empty seat',description:'The empty seat',shots:BAD_ENDING_SHOTS,duration:BAD_ENDING_DURATION,creditShot:0,creditStart:28000,room:'laststation'},
 } as const;
 export type EndingKind=keyof typeof ENDING_FILMS;
 export type EndingShotId=typeof GOOD_ENDING_SHOTS[number]['id']|typeof BAD_ENDING_SHOTS[number]['id'];

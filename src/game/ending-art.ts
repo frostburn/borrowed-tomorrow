@@ -1,7 +1,7 @@
 import {endingFrame,endingCreditTime,ENDING_FILMS,type EndingKind} from '../content/ending-film';
 import {paintEndingShore} from './ending-shore';
 import {paintEndingCredits} from './ending-credits';
-import {paintBadEndingShot} from './ending-bad';
+import {paintBadEnding,paintBadEndingCaption} from './ending-bad';
 import {paintEndingPerson as person} from './ending-cast';
 
 type C=CanvasRenderingContext2D;
@@ -131,13 +131,14 @@ export function paintEndingFilm(c:C,milliseconds:number,reduced=false,kind:Endin
  c.save();c.setTransform(1,0,0,1,0,0);rect(c,'#080f19',0,0,w,h);
  c.save();c.translate((w-512*s)/2,(h-288*s)/2);c.scale(s,s);
  c.beginPath();c.rect(0,0,512,288);c.clip();
- if(kind==='bad')paintBadEndingShot(c,frame.shot.id,frame.time,reduced);
+ if(kind==='bad')paintBadEnding(c,frame.time,reduced,s);
  else if(frame.shot.id==='release')release(c,p,t);
  else if(frame.shot.id==='station')station(c,p,t);
  else if(frame.shot.id==='window')windowSeat(c,p,t);
  else paintEndingShore(c,frame.time,reduced,s);
  c.restore();
  if(frame.index===ENDING_FILMS[kind].creditShot)paintEndingCredits(c,endingCreditTime(frame.time,kind),w,h,reduced);
+ if(kind==='bad'&&!reduced)paintBadEndingCaption(c,frame.time,w,h);
  if(!reduced){const fade=Math.max(0,1-frame.time/500,1-(frame.shot.duration-frame.time)/500);if(fade>0){c.globalAlpha=Math.min(1,fade);rect(c,'#080f19',0,0,w,h);}}
  c.restore();
 }

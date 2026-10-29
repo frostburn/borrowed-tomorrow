@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import {ENDING_FILMS,endingFrame,endingShotStart,endingCreditTime,type EndingKind} from '../content/ending-film';
+import {ENDING_FILMS,BAD_ENDING_HINT,endingFrame,endingShotStart,endingCreditTime,type EndingKind} from '../content/ending-film';
 import {ENDING_CREDITS,ENDING_CREDIT_PAGE,endingCreditPage} from '../content/credits';
 import {paintEndingFilm} from './ending-art';
 import type {Audio} from './audio';
@@ -84,8 +84,8 @@ export class EndingFilm {
   if(changed){this.audio.setMode(f.shot.music);this.ui.location(f.shot.title);}
   this.ui.canvas.dataset.endingKind=this.kind;this.ui.canvas.dataset.endingShot=f.shot.id;this.ui.canvas.dataset.endingPlaying=String(this.playing);
   const fullCredits=ENDING_CREDITS.map(entry=>entry.role+(entry.lines.length?': '+entry.lines.join(', '):'')).join('. ');
-  this.ui.canvas.setAttribute('aria-description',this.film.label+' cinematic. Space pauses or plays. Left and right change '+(cards?'credits':'shots')+'. Escape returns.'+(f.index===this.film.creditShot?' Credits: '+fullCredits: ''));
-  this.ui.controls.innerHTML='<section class="ending-controls" aria-label="Cinematic controls"><div><h2>Borrowed Tomorrow</h2><p role="status">'+(this.playing?'Playing':'Paused')+' · '+(cards?'Credits '+(this.credit+1)+' / '+ENDING_CREDITS.length:(f.index+1)+' / '+this.film.shots.length+' · '+f.shot.title)+'</p>'+(cards?'<p class="ending-credit-copy">'+credit.role+(credit.lines.length?' · '+credit.lines.join(' · '):'')+'</p>':'')+'</div><div class="panel-actions" id="ending-actions"></div><p class="ending-keys">Space · play / pause　 Left / right · '+(cards?'credits':'shots')+'　 Escape · return</p></section>';
+  this.ui.canvas.setAttribute('aria-description',this.film.label+' cinematic. Space pauses or plays. Left and right change '+(cards?'credits':'shots')+'. Escape returns.'+(f.index===this.film.creditShot?' Credits: '+fullCredits: '')+(this.kind==='bad'?' '+BAD_ENDING_HINT:''));
+  this.ui.controls.innerHTML='<section class="ending-controls" aria-label="Cinematic controls"><div><h2>Borrowed Tomorrow</h2><p role="status">'+(this.playing?'Playing':'Paused')+' · '+(cards?'Credits '+(this.credit+1)+' / '+ENDING_CREDITS.length:(f.index+1)+' / '+this.film.shots.length+' · '+f.shot.title)+'</p>'+(cards?'<p class="ending-credit-copy">'+credit.role+(credit.lines.length?' · '+credit.lines.join(' · '):'')+'</p>':'')+(cards&&this.kind==='bad'?'<p class="ending-hint">'+BAD_ENDING_HINT+'</p>':'')+'</div><div class="panel-actions" id="ending-actions"></div><p class="ending-keys">Space · play / pause　 Left / right · '+(cards?'credits':'shots')+'　 Escape · return</p></section>';
   this.ui.actionRow(this.ui.controls.querySelector('#ending-actions')!,[
    {label:this.playing?'Pause':'Play',action:()=>this.toggle()},
    {label:'Replay',action:()=>{this.playing=!this.reduced.matches;this.seek(0);}},
@@ -107,8 +107,8 @@ export class EndingFilm {
   if(event.key==='Escape'){event.preventDefault();this.finish();return;}
   if(target?.closest('button,input,textarea,select'))return;
   if(event.key===' '){event.preventDefault();this.toggle();}
-  else if(event.key==='ArrowRight'){event.preventDefault();if(this.reduced.matches&&this.shot===this.film.creditShot)this.seekCredit(this.credit+1);else this.seek(endingFrame(this.elapsed,this.kind).index+1);}
-  else if(event.key==='ArrowLeft'){event.preventDefault();if(this.reduced.matches&&this.shot===this.film.creditShot)this.seekCredit(this.credit-1);else this.seek(endingFrame(this.elapsed,this.kind).index-1);}
+  else if(event.key==='ArrowRight'){event.preventDefault();if(this.reduced.matches&&this.shot===this.film.creditShot)this.seekCredit(this.credit+1);else if(this.film.shots.length>1)this.seek(endingFrame(this.elapsed,this.kind).index+1);}
+  else if(event.key==='ArrowLeft'){event.preventDefault();if(this.reduced.matches&&this.shot===this.film.creditShot)this.seekCredit(this.credit-1);else if(this.film.shots.length>1)this.seek(endingFrame(this.elapsed,this.kind).index-1);}
  };
  private visibility=()=>{if(document.hidden&&this.playing){this.playing=false;this.controls();}};
  private preference=()=>{if(this.reduced.matches)this.playing=false;this.paintKey='';this.controls();this.paint();};

@@ -81,6 +81,7 @@ test('bad-ending completion saves before playback, skips, replays and reloads at
  await capture(page,'bad-ending-campaign');
  await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();
  await expect(page.getByRole('heading',{name:'An unfinished tomorrow',exact:true})).toBeVisible();
+ await expect(page.getByText('Cure Nell for additional story content.',{exact:false})).toBeVisible();
  await page.getByRole('button',{name:'Replay ending cinematic',exact:true}).click();
  await expect(page.locator('#canvas')).toHaveAttribute('data-ending-shot','empty-seat');
  expect((await inspect(page)).state).toEqual({...completed,playSeconds:expect.any(Number)});

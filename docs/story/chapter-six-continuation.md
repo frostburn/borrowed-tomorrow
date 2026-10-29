@@ -142,10 +142,13 @@ The party’s [relationships while traveling](party-relationships.md) develop th
 After treatment and `riverRestSeen`, Tavi offers Kit river-courier footing training in Iria; the desert's completion/order is irrelevant. Nell's cure and personal scenes remain free. Once the capital opens, recovered Nell can buy reinforced lantern housing from Orrin at the allied quay or palace preparation rests. Ill/deceased Nell cannot train. Airship training continues through the outer mooring and allied quay; see [economy.md](../economy.md).
 
 
-The final train interaction now saves the Lightbearer outcome before a short,
-wordless vector cinematic: Nell's coat and unlit lantern on the empty bench,
-then Tomas, Kit, Orrin, Celia and Petra on Larkspur's platform as the train
-leaves. It uses the good ending's complete credits. There is no Nell actor,
-recovery or victory over the Benefactor. Skip/finish and reload return to the
-existing ending panel; replay is optional and the pre-assault checkpoint is
-retained. Workshop → Cinematics previews both endings without campaign writes.
+The final train interaction saves the Lightbearer outcome before a single
+continuous vector shot. It starts at Nell's folded coat on the empty bench,
+pulls back to reveal the surviving companions and finally the broken lantern
+beside Orrin, then lets the train depart before rain begins. It uses the good
+ending's complete credits and retains **Borrowed Tomorrow** as its title.
+**Cure Nell for additional story content.** is shown after the roll and in the
+ending panel. There is no Nell actor, recovery or victory over the Benefactor.
+Skip/finish and reload return to the existing ending panel; replay is optional
+and the pre-assault checkpoint is retained. Workshop → Cinematics previews both
+endings without campaign writes.

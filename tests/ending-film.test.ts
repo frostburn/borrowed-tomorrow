@@ -1,11 +1,12 @@
 import {expect,it} from 'vitest';
-import {GOOD_ENDING_DURATION,GOOD_ENDING_SHOTS,BAD_ENDING_DURATION,BAD_ENDING_SHOTS,ENDING_FILMS,endingFrame,endingShotStart,endingCreditTime,canPlayGoodEnding,canPlayBadEnding} from '../src/content/ending-film';
+import {GOOD_ENDING_DURATION,GOOD_ENDING_SHOTS,BAD_ENDING_DURATION,BAD_ENDING_SHOTS,BAD_ENDING_CUES,ENDING_FILMS,endingFrame,endingShotStart,endingCreditTime,canPlayGoodEnding,canPlayBadEnding} from '../src/content/ending-film';
 import {paintEndingFilm} from '../src/game/ending-art';
 import {newGame} from '../src/rules/state';
 import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
 import {interactCapital} from '../src/content/chapter-six/capital/interactions';
 import type {StoryHost} from '../src/content/story-host';
 import {ENDING_CREDITS,ENDING_CREDITS_START,ENDING_CREDITS_END,ENDING_CREDIT_PAGE,endingCreditPage} from '../src/content/credits';
+import {badEndingBlocking,BAD_ENDING_CAST,BAD_ENDING_LANTERN} from '../src/game/ending-bad';
 import {SHORE_COMPANIONS,SHORE_HORIZON,shoreScaleAt,shoreBlocking} from '../src/game/ending-shore';
 
 it('cuts at exact shot boundaries, clamps review positions and ends after the final image',()=>{
@@ -21,16 +22,16 @@ it('cuts at exact shot boundaries, clamps review positions and ends after the fi
  expect(endingShotStart(99)).toBe(endingShotStart(3));
 });
 
-it('gives the bad ending two shorter shots and the identical full credit interval',()=>{
- expect(BAD_ENDING_DURATION).toBe(54000);expect(BAD_ENDING_DURATION).toBeLessThan(GOOD_ENDING_DURATION);
+it('gives the bad ending one continuous shot and the identical full credit interval',()=>{
+ expect(BAD_ENDING_DURATION).toBe(72000);expect(BAD_ENDING_SHOTS).toHaveLength(1);expect(BAD_ENDING_DURATION).toBeLessThan(GOOD_ENDING_DURATION);
  for(let i=0;i<BAD_ENDING_SHOTS.length;i++){
   const start=endingShotStart(i,'bad'),shot=BAD_ENDING_SHOTS[i];
   expect(endingFrame(start,'bad')).toMatchObject({index:i,shot,time:0});
   expect(endingFrame(start+shot.duration-1,'bad').shot.id).toBe(shot.id);
  }
- expect(endingFrame(BAD_ENDING_DURATION,'bad')).toMatchObject({index:1,progress:1,ended:true});
+ expect(endingFrame(BAD_ENDING_DURATION,'bad')).toMatchObject({index:0,progress:1,ended:true});
  expect(endingFrame(NaN,'bad')).toMatchObject({index:0,time:0});
- expect(endingShotStart(99,'bad')).toBe(8000);
+ expect(endingShotStart(99,'bad')).toBe(0);
  for(const kind of ['good','bad'] as const){
   const film=ENDING_FILMS[kind],creditLength=ENDING_CREDITS_END-ENDING_CREDITS_START;
   expect(endingCreditTime(film.creditStart,kind)).toBe(ENDING_CREDITS_START);
@@ -38,6 +39,28 @@ it('gives the bad ending two shorter shots and the identical full credit interva
   expect(film.creditStart+creditLength).toBeLessThan(film.shots[film.creditShot]!.duration);
   for(let i=0;i<ENDING_CREDITS.length;i++)expect(endingCreditPage(endingCreditTime(film.creditStart+i*ENDING_CREDIT_PAGE+1,kind))).toBe(i);
  }
+});
+
+it('reveals the cast then the lantern through framing before departure, rain and credits',()=>{
+ const projected=(time:number,x:number,y:number)=>{
+  const camera=badEndingBlocking(time);return {x:x*camera.zoom+camera.offsetX,y:y*camera.zoom+camera.offsetY};
+ };
+ for(const actor of BAD_ENDING_CAST)expect(projected(0,actor.x+24*actor.scale,250).x).toBeLessThan(0);
+ // Orrin is already inside the shot while the broken lantern is still outside it.
+ expect(projected(8000,286,245).x).toBeGreaterThan(0);
+ expect(projected(8000,BAD_ENDING_LANTERN.x,BAD_ENDING_LANTERN.y).x).toBeLessThan(0);
+ expect(projected(10000,BAD_ENDING_LANTERN.x,BAD_ENDING_LANTERN.y).x).toBeGreaterThan(0);
+ const reveal=badEndingBlocking(BAD_ENDING_CUES.pullbackEnd);
+ expect(reveal.zoom).toBe(1);expect(reveal.offsetX).toBe(0);expect(reveal.offsetY).toBe(0);
+ expect(reveal.train).toBe(0);expect(reveal.rain).toBe(0);
+ for(const actor of BAD_ENDING_CAST){const feet=projected(BAD_ENDING_CUES.pullbackEnd,actor.x,279-actor.x/32);expect(feet.x).toBeGreaterThan(0);expect(feet.y).toBeLessThan(288);}
+ expect(BAD_ENDING_CUES.pullbackEnd).toBeLessThan(BAD_ENDING_CUES.trainStart);
+ expect(badEndingBlocking(BAD_ENDING_CUES.trainEnd).train).toBeGreaterThan(554); // last coach has cleared x=0
+ expect(badEndingBlocking(BAD_ENDING_CUES.trainEnd).rain).toBe(0);
+ expect(badEndingBlocking(BAD_ENDING_CUES.rainFull).rain).toBe(1);
+ expect(ENDING_FILMS.bad.creditStart).toBeGreaterThan(BAD_ENDING_CUES.rainStart);
+ expect(BAD_ENDING_CUES.captionStart).toBeGreaterThan(ENDING_FILMS.bad.creditStart+ENDING_CREDITS_END-ENDING_CREDITS_START);
+ expect(badEndingBlocking(0,true)).toEqual(badEndingBlocking(70000,true));
 });
 
 it('lets the companions stand and leave the camera before the couple reaches the sunset credits',()=>{
