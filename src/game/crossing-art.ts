@@ -87,6 +87,8 @@ function exchange(c:C,p:number,t:number){
  poly(c,'#5e7476',[[105,159],[398,159],[512,288],[0,288]]);
  for(const offset of [-1,1])line(c,'#b5c0b0',3,[[257+offset*7,161],[257+offset*73,288]]);
  for(let i=0;i<14;i++){const u=(i/14+t*.13)%1,y=163+u*u*133;line(c,'#998d70',2+u*2,[[248-u*76,y],[266+u*76,y]]);}
+ // A gentle approach about the vanishing point leaves the foreground cab fixed.
+ c.save();c.translate(257,156);c.scale(1+.08*p,1+.08*p);c.translate(-257,-156);
  for(let i=0;i<4;i++){
   const x=63+i*34;poly(c,'#354e5d',[[x,144],[x+28,143],[x+30,164],[x,165]]);
   rect(c,'#c8b68c',x+5,148,5,6);rect(c,'#c8b68c',x+17,148,5,6);
@@ -96,6 +98,7 @@ function exchange(c:C,p:number,t:number){
  poly(c,'#d0c8a0',[[415,115],[422,115],[421,121],[416,121]]);
  for(const x of [210,307]){line(c,'#4b6168',3,[[x,165],[x-2,123]]);oval(c,P.light,x-2,123,3,2);}
  poly(c,'#9ca995',[[215,154],[231,158],[231,165],[215,164]]);poly(c,'#4c615e',[[282,157],[301,154],[301,164],[282,165]]);
+ c.restore();
  // Foreground cab framing and two familiar silhouettes, looking down the line.
  poly(c,P.dark,[[0,0],[67,0],[83,288],[0,288]]);poly(c,P.steel,[[48,0],[66,0],[82,288],[65,288]]);
  poly(c,P.dark,[[450,0],[512,0],[512,288],[435,288]]);poly(c,P.steel,[[450,0],[462,0],[446,288],[435,288]]);

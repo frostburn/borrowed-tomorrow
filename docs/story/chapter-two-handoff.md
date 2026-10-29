@@ -12,7 +12,10 @@ Load and validate new region assets before consuming this boundary. An error mus
 
 The departure now plays a sixteen-second, wordless vector cinematic: Orrin's coal
 engine leaves the mountain pass, crosses the coastal viaduct and approaches the
-Iron Coast exchange. Nell and Orrin look down the line from the cab; Ansel's
+Iron Coast exchange. The exchange structures grow subtly around the rail
+vanishing point as the cab approaches; the foreground remains fixed. A driving
+workshop-theme arrangement accompanies the whole journey. Nell and Orrin look
+down the line from the cab; Ansel's
 lantern hangs beside Nell. The next scene still introduces Kit doing his delivery.
 No new fact about the shard or the Benefactor is revealed.
 

@@ -31,6 +31,7 @@ export class ChapterCrossing {
   this.ui.clearPanel();this.ui.battlePan.hidden=true;this.ui.initiative.textContent='Leaving Home → Prison Trains';
   document.querySelector('.game-shell')!.classList.add('crossing-film-open');
   this.audio.setRoom(MAP_ROOMS.coast);this.audio.cinematicMix(.8);
+  this.audio.setMode('crossing');if(this.audio.enabled)void this.audio.play('crossing');
   scene.events.on(Phaser.Scenes.Events.UPDATE,this.tick);scene.events.once(Phaser.Scenes.Events.SHUTDOWN,this.close);
   window.addEventListener('keydown',this.key);document.addEventListener('visibilitychange',this.visibility);this.reduced.addEventListener('change',this.preference);
   this.resize();this.controls();
@@ -50,8 +51,7 @@ export class ChapterCrossing {
  private toggle(){if(this.loading||this.failed)return;this.playing=!this.playing;this.controls();}
  private seek(index:number){if(this.loading||this.failed)return;this.elapsed=crossingShotStart(index);this.paintKey='';this.controls();this.paint();}
  private controls(){
-  const f=crossingFrame(this.elapsed),changed=f.index!==this.shot;this.shot=f.index;
-  if(changed)this.audio.setMode(f.index===2?'coast':'ending');
+  const f=crossingFrame(this.elapsed);this.shot=f.index;
   this.ui.location(f.shot.title);this.ui.canvas.dataset.crossingShot=f.shot.id;this.ui.canvas.dataset.crossingPlaying=String(this.playing&&!this.loading);
   this.ui.canvas.setAttribute('aria-description','Nell and Orrin take their coal engine through the cliffs to the Iron Coast. Space pauses. Escape skips to Chapter Two.');
   this.ui.controls.innerHTML='<section class="ending-controls crossing-controls" aria-label="Chapter crossing controls"><div><h2>'+(this.shot===2?'Prison Trains':'Leaving Home')+'</h2><p aria-live="polite">'+(this.loading?'Loading the Iron Coast…':this.failed?'The departure is safe. Retry the journey, or return to the pass.':(this.playing?'Playing':'Paused')+' · '+(f.index+1)+' / 3 · '+f.shot.title)+'</p></div><div class="panel-actions" id="crossing-actions"></div><p class="ending-keys">Space · play / pause　 Escape · skip cinematic</p></section>';
