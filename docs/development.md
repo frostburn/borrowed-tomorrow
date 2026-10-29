@@ -53,6 +53,15 @@ CI reports **Tests and build** and **Browser checks** separately. A tiny final *
 
 Art exports have matching commands: `npm run art:one` through `npm run art:seven`. They invoke the existing reproducible SVG exporters; inspect their diff before staging. Run `npm run check:art-upload` on the staged assets. Keep screenshots, traces and temporary scripts outside the repository; `BT_QA_SCREENSHOTS` selects an external capture directory.
 
+## Release preparation
+
+Use [releasing.md](releasing.md) for the production playthrough, persistence,
+hosting and publication checks. [release-notes.md](release-notes.md) is an
+unpublished draft for the completed game. Preparing those documents does not
+bump the package version, change save format 11, create a tag or publish a
+release. Preserve actual playthrough evidence separately from historical
+headless audit results.
+
 ## Rendering performance
 
 Chapter One–Five's lit maps blend consecutive static planes below depth −900 into native Canvas textures when `drawTileMap` builds the world. Actors, ground shadows, sorted props, markers and effects remain live. The texture belongs to that world container and is released on destruction. Story refreshes, battle redraws and restarts rebuild from the current visible pieces, so collector shutdown and other flag changes cannot reuse stale light. A Tiled layer marked `live` remains an independent image between its cached neighbors; Chapter Three's feed-light shutdown and Chapter Five's survey takeoff and flagship destruction use this. Later chapters keep their existing renderer. No raster assets are written to disk.

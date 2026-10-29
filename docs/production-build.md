@@ -34,7 +34,15 @@ This is about 53% less raw JavaScript and 26% less gzip transfer. The complete o
 - **Story** holds authored dialogue, separate from rules and rendering. It is still eagerly imported, as are chapter maps: the synchronous story catalogue, save validation and cross-chapter arrivals require them. These boundaries improve caching; they do not claim chapter-by-chapter network deferral.
 - **Music runtime** is a genuine dynamic import. The silent title and game do not request score code. The first sound request starts AudioContext resume during the user gesture and awaits both resume and score loading before scheduling. Pause/new playback generation checks discard stale completions; a location change during loading selects the latest area's cue. Subsequent toggles reuse the module. Score notes, tuning, room profiles and synth behavior are unchanged.
 
-Keep `chunkSizeWarningLimit` at its normal value. Phaser remains over 500 kB and produces the one expected warning; splitting its tightly connected CommonJS internals merely to hide that warning would add requests without reducing engine weight. Every application/data chunk is below 500 kB. No dependency version, art guard or CI job was changed.
+Keep `chunkSizeWarningLimit` at its normal value. Phaser remains over 500 kB;
+splitting its tightly connected CommonJS internals merely to hide that warning
+would add requests without reducing engine weight. The table above is a
+historical optimization baseline, not a claim that today's application chunks
+all fit below 500 kB. Subsequent content, including the chapter cinematics, can
+also trigger warnings. Run `build:size` on the release candidate and compare
+startup weight, deferred music and total compressed transfer before deciding
+whether further splitting is useful. The build optimization described here did
+not change dependency versions, the art guard or CI jobs.
 
 ## Validation
 
