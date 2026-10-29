@@ -2,6 +2,7 @@ import {openSoundtrack} from './soundtrack-entry';
 import {showCredits} from './credits';
 import {EndingFilm} from './ending-film';
 import {ChapterCrossing} from './chapter-crossing';
+import type {CrossingKind} from '../content/crossing';
 import {canPlayGoodEnding,canPlayBadEnding,BAD_ENDING_HINT,type EndingKind} from '../content/ending-film';
 import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
@@ -150,7 +151,7 @@ export class Adventure extends Phaser.Scene {
       void listSaves().then(records => { const current = records[0]; if (current) this.latestSave = current.state; if (this.mode === 'title') this.titlePanel(); }).catch(() => this.ui.toast('Browser saves are unavailable. You can still export your progress.'));
       window.addEventListener('pagehide', () => { if (this.mode === 'world') this.autosave(); });
     }
-    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.crossingFilm?'one-two-crossing':this.endingFilm?'good-ending-film':this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
+    window.borrowedTomorrow = { inspect: () => ({ mode: this.mode, busy:this.busy, moving:this.moving||this.path.length>0||!!this.pendingObject, cinematic:this.crossingFilm?this.crossingFilm.id:this.endingFilm?'good-ending-film':this.cinematic?.script.id??null,ambient:this.mapLife?.inspect(),audioRoom:this.audio.room, actors:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('hero')&&child.visible).map(image=>({hero:String(image.getData('hero')),texture:image.texture.key,frame:String(image.frame.name),motion:String(image.getData('actor-motion')??'idle'),x:image.x,y:image.y})), people:(this.layer?.list??[]).filter((child):child is Phaser.GameObjects.Image=>child instanceof Phaser.GameObjects.Image&&!!child.getData('person')&&child.visible).map(image=>({id:String(image.getData('person')),motion:String(image.getData('person-motion')??'idle'),frame:String(image.frame.name),texture:image.texture.key,alpha:image.alpha,x:image.x,y:image.y,depth:image.depth,scale:image.scaleX,originX:image.originX,originY:image.originY,sourceWidth:image.frame.width,sourceHeight:image.frame.height,filter:image.frame.source.scaleMode})), state: structuredClone(this.state), battle: this.battle ? { ...structuredClone(this.battle), obstacles: [...this.battle.obstacles], water:[...this.battle.water],vents:[...this.battle.vents] } : null, view: { width:this.cameras.main.width,height:this.cameras.main.height,scrollX:this.cameras.main.scrollX,scrollY:this.cameras.main.scrollY,roundPixels:this.cameras.main.roundPixels } }) };
     if(import.meta.env.DEV)void import('../dev/testing-tools').then(({renderTestingTools})=>{
       if(!this.sys.isActive())return;
       this.testingTools=renderTestingTools;
@@ -567,8 +568,8 @@ export class Adventure extends Phaser.Scene {
       ]);return;
     }
     const chapter=CHAPTERS[this.state.chapter],destination=nextChapter(this.state);
-    if(this.state.chapter==='chapter-one'&&destination){
-      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state));return;
+    if(destination&&(this.state.chapter==='chapter-one'||this.state.chapter==='chapter-two')){
+      this.openChapterCrossing(()=>this.beginNextChapter(),()=>this.showWorld(),()=>exportSave(this.state),false,0,this.state.chapter==='chapter-two'?'capital':'coast');return;
     }
     this.ui.panel(this.state.flags.chapterSevenComplete?'Borrowed Tomorrow · complete':`${chapter.title} complete`,chapter.ending.html,[
       ...(canPlayGoodEnding(this.state)?[{label:'Replay ending cinematic',action:()=>this.playEndingFilm()}]:[]),
@@ -578,17 +579,17 @@ export class Adventure extends Phaser.Scene {
     ]);
   }
 
-  private openChapterCrossing(arrive:()=>Promise<boolean>,back:()=>void,exportDeparture:()=>void,review=false,shot=0){
+  private openChapterCrossing(arrive:()=>Promise<boolean>,back:()=>void,exportDeparture:()=>void,review=false,shot=0,kind:CrossingKind='coast'){
     this.ui.closeModal();this.clearLayer();this.ui.clearPanel();
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     this.cameras.main.stopFollow();this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);
-    this.crossingFilm=new ChapterCrossing(this,this.ui,this.audio,arrive,back,exportDeparture,review,shot);this.ui.canvas.focus();
+    this.crossingFilm=new ChapterCrossing(this,this.ui,this.audio,arrive,back,exportDeparture,review,shot,kind);this.ui.canvas.focus();
   }
-  previewChapterCrossing(returnToWorkshop:()=>void,shot=0){
+  previewChapterCrossing(returnToWorkshop:()=>void,shot=0,kind:CrossingKind='coast'){
     if(!import.meta.env.DEV||!this.practiceReady)throw new Error('A development practice host is required.');
     this.closePreview();
     const back=()=>{this.crossingFilm?.close();this.crossingFilm=undefined;returnToWorkshop();};
-    this.openChapterCrossing(async()=>{back();return true;},back,()=>{},true,shot);
+    this.openChapterCrossing(async()=>{back();return true;},back,()=>{},true,shot,kind);
   }
 
   private startBattle(id: string) {

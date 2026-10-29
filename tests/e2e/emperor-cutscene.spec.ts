@@ -76,8 +76,8 @@ test('skip during absorption cleans effects, while reduced motion settles every 
 test('missing Emperor poses preserve a chapter departure and retry normally',async({page})=>{
  const {coastCheckpoint}=await import('../support/progress');const saved=coastCheckpoint('chapterTwoComplete');
  await page.route('**/art/vector/emperor-reach.svg',r=>r.abort());await page.goto('/');await importSave(page,saved);
- await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');
- await page.unroute('**/art/vector/emperor-reach.svg');await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state.boundary).toBe('chapter-three:capital');
+ await page.unroute('**/art/vector/emperor-reach.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
 test('reload during absorption replays the checkpoint; fast advance and skip during retreat settle safely',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});

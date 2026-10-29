@@ -20,7 +20,7 @@ async function choices(page:import('@playwright/test').Page){
 }
 async function begin(page:import('@playwright/test').Page){
  await page.goto('/');await importSave(page,coastCheckpoint('chapterTwoComplete'));
- await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 }
 test('canonical Chapter Three replays arrival with earned equipment and preserves manual saves',async({page})=>{
@@ -83,8 +83,8 @@ test('the pressure route, optional stores refusal and escape work on a phone',as
 test('failed chamber SVG preserves the current departure for retry',async({page})=>{
  const chamberArt=sceneAssets(CHAPTER_THREE_MAPS.conduit.tiles!).find(p=>p.key==='scenery-conduit-vessel')!;expect(chamberArt).toBeTruthy();
  await page.route(`**/${chamberArt.url}`,route=>route.abort());await page.goto('/');const before=coastCheckpoint('chapterTwoComplete');await importSave(page,before);
- await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
- await page.unroute(`**/${chamberArt.url}`);await page.getByRole('button',{name:'Begin Chapter Three',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
+ await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await expect(page.getByRole('status')).toContainText('checkpoint is intact');expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',boundary:'chapter-three:capital',inventory:before.inventory});
+ await page.unroute(`**/${chamberArt.url}`);await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-capital');
 });
 
 test('covered Chapter Three saves restore onto connected native floors at fractional DPR',async({browser})=>{

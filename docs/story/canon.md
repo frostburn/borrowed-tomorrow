@@ -39,9 +39,15 @@ Save version 10 identifies campaign `imperial-debt` and stores a shared equipmen
 - The traveling party is Nell, Orrin and Kit. Celia neither appears nor joins; her introduction is deferred to a later chapter. The workshop continues to preview her build. The mechanical three-fighter cap has no story explanation yet.
 - At Cinderbank, Alban orders the settlement collected to feed the capital’s engines. Petra objects to abandoning the promised evacuation; he cites the emperor’s superseding order (`settlementSeen`). Orrin opens the casing before the battle. The party holds the gold loading walk while Dena brings families aboard: three clear rounds or defeating all machines completes `coastCollectorWon` and awards a reinforced work coat. Blocked families wait safely; no civilian death clock runs. Checking with Dena completes `evacuationReady` and reunites Kit’s letter recipients. Previously taken days are not restored.
 - Petra accepts the patients’ clearance but insists on arresting Nell and recovering the fragment. Alban retreats behind her shield at the far crossing. Petra is the chapter boss, using Shield bash, Taunt and Saber sweep alongside two command crows; Alban is not a combat target. Winning `recaptureWon` disarms Petra and opens the crossing.
-- After Petra’s defeat, Alban orders crows to fire on the departing coach doors. Petra steps into their line and refuses. Alban strips her commission; she agrees to report to the capital and stays to countermand the firing order among her soldiers. She witnesses Orrin’s coal engine move the full medical train without a crystal. The prisoners and Cinderbank families escape on that engine and the ward’s coaches. Kit’s deliveries are complete; he chooses to see the passengers safely through to the capital and help Nell find Tomas. Completion commits `chapterTwoComplete`, journal `fiveDeparture` and boundary `chapter-three:capital` together.
+- After Petra’s defeat, Alban orders crows to fire on the departing coach doors. Petra steps into their line and refuses. Alban strips her commission; she agrees to report to the capital and stays to countermand the firing order among her soldiers. She witnesses Orrin’s coal engine move the full medical train without a crystal. The prisoners and Cinderbank families escape on that engine and the ward’s coaches. Kit’s deliveries are complete; he chooses to see the passengers safely through to the capital and help Nell find Tomas. Completion commits `chapterTwoComplete`, journal `capitalDeparture` and boundary `chapter-three:capital` together.
 
 The emperor’s first direct scene remains reserved for the capital chapter. Celia does not appear until the Chapter Four harbor and has no connection to Tomas’s transfer. The complete bargain, the conduit and the Benefactor’s separate domain require later discoveries. The Chapter Three rescue must succeed permanently and bring Tomas back alive.
+
+The Chapter Two departure is followed by a short wordless train film: the full
+medical coaches leave the coast, Dena tends the passengers, Nell and Kit check
+the clearance, and the grounded green-iron capital approaches. It introduces no
+new revelation or recruit. The clerk’s clearance check remains the Chapter
+Three arrival. See [the preserved handoff](chapter-three-handoff.md).
 
 ## Chapter Three — Beneath the Palace
 

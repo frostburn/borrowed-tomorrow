@@ -306,6 +306,15 @@ skip, return and departure export. Reduced motion keeps the campaign's timing
 but shows stills; workshop review starts paused. The existing endings keep their
 own credit controls.
 
+The **Chapter Two → Three** selection (`?dev=cinematics&film=capital-crossing`)
+reviews the sixteen-second medical-train journey: full coaches leaving the
+coast, the patients and clearance inside, then the green-iron capital approach.
+The same player handles both crossings, including reduced-motion stills, pause
+and shot review; selection stays highlighted after returning from playback.
+The Northglass score continues into the capital arrival. In campaign, the
+existing `chapter-three:capital` boundary is only consumed after all destination
+assets load; failure keeps the final shot and Retry crossing available.
+
 Open **Cinematics** or use `?dev=cinematics`. The four-shot, 90-second film uses the same
 vector player as campaign completion: the days returning at the crossing,
 Larkspur's ordinary train, Nell and Tomas in their window seats, and the real sea.

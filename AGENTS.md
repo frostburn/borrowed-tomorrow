@@ -1,10 +1,13 @@
 # Borrowed Tomorrow
 
-Chapter One's earned Iron Coast departure plays a sixteen-second vector crossing
-through `content/crossing.ts`, `game/chapter-crossing.ts` and `crossing-art.ts`.
-Keep automatic arrival and Skip on the existing asset-checked chapter entry;
-failure retains the departure with retry, return and export. The film adds no
-saved flags or resource changes. The dev Cinematics tab previews the same player
+Chapters One and Two's earned departures play sixteen-second vector crossings
+through `content/crossing.ts` and the shared `game/chapter-crossing.ts` player.
+`crossing-art.ts` owns the Iron Coast journey; `capital-crossing-art.ts` owns the
+full medical train, passenger coach and grounded green-iron capital approach.
+The locomotive and drawing primitives are shared in `crossing-drawing.ts`.
+Keep automatic arrival and Skip on the existing asset-checked chapter entries;
+failure retains the correct departure with retry, return and export. Films add
+no saved flags or resource changes. The dev Cinematics tab previews both films
 with three selectable shots, independently of campaign progress.
 
 The user authorized a complete story reboot. The former Disks A–D campaign has been removed. `docs/story/grand-outline.md` is the seven-chapter plan; Chapters One: Leaving Home, Two: Prison Trains, Three: Beneath the Palace and Four: A Light on the Water, plus all four acts of Chapter Five and all three Chapter Six expeditions and the capital finale, are playable canon with bundled SVG artwork. The final chapter travels into the Benefactor’s own domain and defeats the god permanently. “Borrowed Tomorrow” refers to its demand for repayment of the boons it lent the empire.
