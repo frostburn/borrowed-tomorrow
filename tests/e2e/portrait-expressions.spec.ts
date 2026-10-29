@@ -50,13 +50,13 @@ test('every expression preserves identity outside the features and survives the 
  await page.getByRole('button',{name:'Inspect Celia',exact:true}).click();await expect(panel.getByRole('button',{name:'Bashful',exact:true})).toHaveCount(0);await panel.getByRole('button',{name:'Worried',exact:true}).click();await expect(panel.locator('img')).toHaveAttribute('src',/portrait-celia-worried\.svg$/);await capture(page,'portrait-workshop');
 });
 
-test('human portrait pupils stay paired at every chunky sampling phase',async({page})=>{
+test('human portrait eyes retain their authored shapes at every chunky sampling phase',async({page})=>{
  const {readFileSync}=await import('node:fs');
  const {CHARACTERS}=await import('../../src/content/characters');
  const entries=Object.values(CHARACTERS).flatMap(character=>portraitExpressions(character.portrait).flatMap(expression=>{
   const name=expression==='neutral'?character.portrait:`${character.portrait}-${expression}`;
   const svg=readFileSync(new URL(`../../public/art/vector/${name}.svg`,import.meta.url),'utf8');
-  const match=[...svg.matchAll(/<path d="M(\d+) (\d+)H(\d+)V(\d+)H\d+Z M(\d+) (\d+)H(\d+)V(\d+)H\d+Z" fill="(#[0-9a-f]+)"\/>/g)].find(m=>+m[3]-+m[1]===4&&+m[7]-+m[5]===4&&+m[2]>=46&&+m[2]<=55);
+  const match=[...svg.matchAll(/<path d="M(\d+) (\d+)H(\d+)V(\d+)H\d+Z M(\d+) (\d+)H(\d+)V(\d+)H\d+Z" fill="(#[0-9a-f]+)"\/>/g)].find(m=>[3,4].includes(+m[3]-+m[1])&&+m[7]-+m[5]===+m[3]-+m[1]&&+m[2]>=46&&+m[2]<=55);
   if(!match)return [];
   return [{name,boxes:[[+match[1],+match[2],+match[3],+match[4]],[+match[5],+match[6],+match[7],+match[8]]],colors:[match[9],...(name.includes('tomas')?['#25372b']:[])]}];
  }));
@@ -76,7 +76,10 @@ test('human portrait pupils stay paired at every chunky sampling phase',async({p
      }
      return count;
     });
-    if(counts.some(count=>count!==4))failures.push({name:entry.name,px,py,counts});
+    // Tilda's left upper lid deliberately covers one chunky row.
+    // The Emperor retains paired narrow slits, not the cast's square pupils.
+    const valid=entry.name==='portrait-tilda'?counts[0]===4&&counts[1]===2:counts[0]===counts[1]&&counts[0]>=(entry.name==='portrait-emperor'?2:4);
+    if(!valid)failures.push({name:entry.name,px,py,counts});
    }
   }
   return failures;

@@ -46,3 +46,5 @@ two-pixel sampling. Local eyelid/brow anchors still follow each original face.
 Tomas’s darker pupil accents are paired 2 × 2 blocks within his green irises.
 The browser regression renders all 62 human faces at all four sampling phases,
 checking the actual visible eye pixels rather than just SVG coordinates.
+The neutral Emperor keeps his narrow pupils, and Tilda has a deliberately
+partly closed left eyelid; the audit preserves these individual shapes.

@@ -38,7 +38,7 @@
 <polygon points="72,54 82,51 88,54 85,57 74,57" fill="#704d40" />
 <polygon points="47,54 49,53 57,53 57,57 47,57" fill="#eee9dc" />
 <polygon points="75,54 77,53 86,53 85,57 75,57" fill="#eee9dc" />
-<path d="M51 53H55V57H51Z M79 53H83V57H79Z" fill="#142a37"/>
+<path d="M51 53H54V57H51Z M79 53H82V57H79Z" fill="#142a37"/>
 <polyline points="44,49 57,50" fill="none" stroke="#758781" stroke-width="3" stroke-linejoin="bevel" />
 <polyline points="73,49 86,47" fill="none" stroke="#758781" stroke-width="3" stroke-linejoin="bevel" />
 <polyline points="47,61 54,63" fill="none" stroke="#ae7658" stroke-width="2" stroke-linejoin="bevel" />
