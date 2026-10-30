@@ -59,8 +59,8 @@ name the loot; victory prose focuses on the scene and next objective.
 
 The first new piece of gear that an available recruited companion can equip
 shows **Equip gear to use its bonuses** with **Equip now**. This opens Equipment
-with that companion and item selected; fitting is still manual. Battles and
-shops offer it inline; exploration finds wait until dialogue/cutscenes finish.
+with that companion and item selected; fitting is still manual. Battles offer it inline; shops show a separate post-purchase dialog with
+Equip now and Keep shopping; exploration finds wait until dialogue/cutscenes finish.
 The current save’s `equipmentHintSeen` flag prevents repeats after later loot or
 reloads. Consumables, failed/capped rewards, equipment transfers and gear for
 unavailable/unrecruited characters do not consume the hint. Loading a bag alone
