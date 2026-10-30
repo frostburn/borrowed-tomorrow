@@ -38,11 +38,17 @@ try{
    await page.getByRole('dialog').waitFor({state:'hidden'});
    await page.getByRole('button',{name:'Sound off',exact:true}).click();await page.getByRole('button',{name:'Sound on',exact:true}).waitFor();await page.waitForTimeout(500);
    await page.evaluate(async()=>{
-    window.walkProfile={paint:[],presentations:[],rebuild:[],steps:[],raf:[],long:[],active:true};
+    window.walkProfile={paint:[],presentations:[],animationRuns:[],rebuild:[],steps:[],raf:[],long:[],active:true};
     const {PixelDisplay}=await import('/src/game/pixel-display.ts');
     const rebuild=PixelDisplay.prototype.rebuild,paint=PixelDisplay.prototype.paint;
     PixelDisplay.prototype.rebuild=function(...args){const t=performance.now();const result=rebuild.apply(this,args);window.walkProfile.rebuild.push(performance.now()-t);return result;};
-    PixelDisplay.prototype.paint=function(...args){const t=performance.now(),last=this.lastPaint;const result=paint.apply(this,args);if(this.lastPaint!==last){window.walkProfile.paint.push(performance.now()-t);if(args[0])window.walkProfile.presentations.push(performance.now());}return result;};
+    PixelDisplay.prototype.paint=function(...args){
+     const probe=window.walkProfile,t=performance.now(),last=this.lastPaint;
+     if(args[0]&&!probe.run){probe.run=[];probe.animationRuns.push(probe.run);}else if(!args[0])probe.run=undefined;
+     const result=paint.apply(this,args);
+     if(this.lastPaint!==last){probe.paint.push(performance.now()-t);if(args[0]){const at=performance.now();probe.presentations.push(at);probe.run.push(at);}}
+     return result;
+    };
     const {Synth}=await import('/src/game/synth.ts'),effect=Synth.prototype.effect;
     Synth.prototype.effect=function(kind,when,...args){if(kind==='move')window.walkProfile.steps.push(when);return effect.call(this,kind,when,...args);};
     new PerformanceObserver(list=>window.walkProfile.long.push(...list.getEntries().map(e=>({time:e.startTime,duration:e.duration})))).observe({type:'longtask'});
@@ -60,8 +66,9 @@ try{
    const idle=new Set(profile.nodes.filter(n=>n.callFrame.functionName==='(idle)').map(n=>n.id));
    const total=profile.timeDeltas.reduce((a,b)=>a+b,0),idleTime=profile.samples.reduce((sum,id,i)=>sum+(idle.has(id)?profile.timeDeltas[i]:0),0);
    const intervals=measurements.steps.slice(1).map((t,i)=>(t-measurements.steps[i])*1000);
-   const presented=measurements.presentations,presentationIntervals=presented.slice(1).map((t,i)=>t-presented[i]);
-   summaries.push({map,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),presentationFps:1000*(presented.length-1)/(presented.at(-1)-presented[0]),presentationMedianMs:quantile(presentationIntervals,.5),presentationP95Ms:quantile(presentationIntervals,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
+   const runs=measurements.animationRuns.filter(run=>run.length>1),presentationIntervals=runs.flatMap(run=>run.slice(1).map((t,i)=>t-run[i]));
+   const presentationTime=runs.reduce((sum,run)=>sum+run.at(-1)-run[0],0);
+   summaries.push({map,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),presentationFps:presentationTime?1000*presentationIntervals.length/presentationTime:0,presentationMedianMs:quantile(presentationIntervals,.5),presentationP95Ms:quantile(presentationIntervals,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
    console.log(JSON.stringify(summaries.at(-1)));
   }finally{await context.close();}
  }
