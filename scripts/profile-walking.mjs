@@ -11,6 +11,9 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 const directory=process.argv[2]?resolve(process.argv[2]):await mkdtemp(join(tmpdir(),'borrowed-tomorrow-walking-'));
 const rate=Number(process.argv[3]??1);
 if(!Number.isFinite(rate)||rate<1)throw new Error('CPU throttle must be a number >= 1.');
+const chapter=process.argv[4]??'early';
+if(chapter!=='early'&&chapter!=='three')throw new Error('Map group must be early or three.');
+const scenarios=chapter==='three'?[['northglass','petraJoined',32,31],['relayhall','tomasRescued',22,16],['conduit','conduitSeen',25,30]]:[['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]];
 await mkdir(directory,{recursive:true});
 const server=await createServer({root,server:{host:'127.0.0.1',port:5173}});
 let browser;
@@ -19,14 +22,14 @@ try{
  await server.listen();const url=server.resolvedUrls.local[0];
  browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required']});
  const summaries=[];
- for(const [map,flag,x,y]of [['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]]){
+ for(const [map,flag,x,y]of scenarios){
   const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'no-preference'});
   try{
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(url);await page.waitForFunction(()=>!!window.borrowedTomorrow);
    const state=await page.evaluate(async({map,flag,x,y})=>{
     const fixtures=await import('/tests/support/progress.ts');
-    const state=map==='station'?fixtures.checkpoint(flag):fixtures.coastCheckpoint(flag);
+    const state=map==='station'?fixtures.checkpoint(flag):['coast','cinderbank'].includes(map)?fixtures.coastCheckpoint(flag):fixtures.palaceCheckpoint(flag);
     state.location={map,x,y};return state;
    },{map,flag,x,y});
    await page.getByRole('button',{name:/^Save files$|^Save$/}).first().click();
@@ -35,11 +38,11 @@ try{
    await page.getByRole('dialog').waitFor({state:'hidden'});
    await page.getByRole('button',{name:'Sound off',exact:true}).click();await page.getByRole('button',{name:'Sound on',exact:true}).waitFor();await page.waitForTimeout(500);
    await page.evaluate(async()=>{
-    window.walkProfile={paint:[],rebuild:[],steps:[],raf:[],long:[],active:true};
+    window.walkProfile={paint:[],presentations:[],rebuild:[],steps:[],raf:[],long:[],active:true};
     const {PixelDisplay}=await import('/src/game/pixel-display.ts');
     const rebuild=PixelDisplay.prototype.rebuild,paint=PixelDisplay.prototype.paint;
     PixelDisplay.prototype.rebuild=function(...args){const t=performance.now();const result=rebuild.apply(this,args);window.walkProfile.rebuild.push(performance.now()-t);return result;};
-    PixelDisplay.prototype.paint=function(...args){const t=performance.now(),last=this.lastPaint;const result=paint.apply(this,args);if(this.lastPaint!==last)window.walkProfile.paint.push(performance.now()-t);return result;};
+    PixelDisplay.prototype.paint=function(...args){const t=performance.now(),last=this.lastPaint;const result=paint.apply(this,args);if(this.lastPaint!==last){window.walkProfile.paint.push(performance.now()-t);if(args[0])window.walkProfile.presentations.push(performance.now());}return result;};
     const {Synth}=await import('/src/game/synth.ts'),effect=Synth.prototype.effect;
     Synth.prototype.effect=function(kind,when,...args){if(kind==='move')window.walkProfile.steps.push(when);return effect.call(this,kind,when,...args);};
     new PerformanceObserver(list=>window.walkProfile.long.push(...list.getEntries().map(e=>({time:e.startTime,duration:e.duration})))).observe({type:'longtask'});
@@ -57,7 +60,8 @@ try{
    const idle=new Set(profile.nodes.filter(n=>n.callFrame.functionName==='(idle)').map(n=>n.id));
    const total=profile.timeDeltas.reduce((a,b)=>a+b,0),idleTime=profile.samples.reduce((sum,id,i)=>sum+(idle.has(id)?profile.timeDeltas[i]:0),0);
    const intervals=measurements.steps.slice(1).map((t,i)=>(t-measurements.steps[i])*1000);
-   summaries.push({map,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
+   const presented=measurements.presentations,presentationIntervals=presented.slice(1).map((t,i)=>t-presented[i]);
+   summaries.push({map,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),presentationFps:1000*(presented.length-1)/(presented.at(-1)-presented[0]),presentationMedianMs:quantile(presentationIntervals,.5),presentationP95Ms:quantile(presentationIntervals,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
    console.log(JSON.stringify(summaries.at(-1)));
   }finally{await context.close();}
  }

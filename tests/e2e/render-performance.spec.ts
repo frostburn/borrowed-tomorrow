@@ -9,10 +9,10 @@ async function compareFullFrame(page:Page){
   const mod='/src/game/pixel-display.ts',{PixelDisplay,PALETTE}=await import(/* @vite-ignore */mod);
   return new Promise<number>(resolve=>{
    const paint=PixelDisplay.prototype.paint;
-   PixelDisplay.prototype.paint=function(...args:boolean[]){
+   PixelDisplay.prototype.paint=function(...args:Parameters<typeof paint>){
     const d=this as any,last=d.lastPaint;paint.apply(this,args);
     // The display intentionally skips some native frames. Compare the same
-    // presented frame, not a newer scene against a cached 20Hz display.
+    // presented frame, not a newer scene against a cached display.
     if(d.lastPaint===last)return;PixelDisplay.prototype.paint=paint;
     const canvas=(w:number,h:number)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
     const full=canvas(d.width,d.height),fc=full.getContext('2d')!;fc.imageSmoothingEnabled=false;fc.fillStyle=PALETTE[0];fc.fillRect(0,0,full.width,full.height);
