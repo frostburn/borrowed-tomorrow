@@ -58,7 +58,7 @@ export const departure=()=>scene('airship','five-capital-departure','Beside the 
  line('Celia','Ask about patients exposed to an open return. Tell her exactly what happened here.'),
  line('Nell','Kit. Will you stay a little longer?'),
  line('Kit','I’ve a delivery for the morning. I can sit here until then.'),
- line('Nell','I’m glad. Tell me about your round while we wait.'),
+ line('Nell','I’m glad. Tell me about your round while we wait.',{expression:'happy'}),
  line('Alda','The capital’s lights are answering the same pulse. I can hold us at the outer mooring.'),
  line('Petra','We still have to reach the Emperor. But we know who’s reaching back through his conduit now.'),
  line('Nell','Don’t let it take another town.'),

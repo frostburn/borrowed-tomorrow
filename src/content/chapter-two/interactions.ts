@@ -30,7 +30,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
       host.talk({ ...scenes.raid(diversion), done: () => { host.commit('raidConfronted'); host.battle(raidId()); } });
       return;
     }
-    host.talk({ lines: [SAY('Kit', diversion ? 'The signal walk has three machines: two crows and a hound. More room to spread out, but less cover from their shots.' : 'The loading gate has a plated guardian and two hounds. My Piercing bolt can get through its armor. Keep clear of Orrin’s steam line.')], choices: [
+    host.talk({ lines: [SAY('Kit', diversion ? 'The signal walk has three machines: two crows and a hound. More room to spread out, but less cover from their shots.' : 'The loading gate has a plated guardian and two hounds. I can keep the hounds busy. Keep clear of Orrin’s steam line.')], choices: [
       { label: diversion ? 'Take the signal walk' : 'Breach the loading gate', action: () => { f.raidDiversion = diversion; host.commit('raidPlanned'); breach(diversion); } },
       { label: 'Look at the other approach', action: () => {} },
     ] });
@@ -38,7 +38,7 @@ export function interactChapterTwo(host: StoryHost, id: string) {
   switch (id) {
     case 'kit-contact':
       if (f.kitJoined) return say('Kit', 'Signal walk to the east, loading gate to the north. I’ll follow your lead.');
-      host.talk({ ...scenes.meetKit(), done: () => { recruit(s, 'kit'); remember(s, 'kit'); s.location = arrival('coast','kit-joined'); host.refresh(); host.save(); host.toast('Kit joined · Quick shot, Piercing bolt and Feint.'); } }); return;
+      host.talk({ ...scenes.meetKit(), done: () => { recruit(s, 'kit'); remember(s, 'kit'); s.location = arrival('coast','kit-joined'); host.refresh(); host.save(); host.toast('Kit joined the party.'); } }); return;
     case 'signal-walk': breach(true); return;
     case 'loading-gate': breach(false); return;
     case 'prison-coach':
