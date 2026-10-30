@@ -30,9 +30,15 @@ export function battleMenuFlows(production=false){
     const team=page.getByRole('button',{name:/Lantern volley$/});await expect(team).toHaveClass(/unavailable/);await team.click();
     await expect(page.locator('#confirmation')).toContainText('Kit has already used their action');
     await expect(page.locator('#confirmation')).toBeInViewport();await expect(page.locator('#confirmation button')).toHaveCount(0);
-    await page.getByRole('button',{name:/Prism lance$/}).click();const enemy=before.units.find(u=>u.side==='enemy')!;
+    const anchored=await page.locator('#confirmation').boundingBox(),field=(await page.locator('.world-input').boundingBox())!;
+    for(const [x,y]of [[.2,.2],[.8,.2],[.2,.8],[.8,.8]]){
+     await page.mouse.move(field.x+field.width*x,field.y+field.height*y,{steps:8});
+     expect(await page.locator('#confirmation').boundingBox(),'warnings stay anchored while hovering').toEqual(anchored);
+    }
+    await page.getByRole('button',{name:/Prism lance$/}).click();expect(await page.locator('#confirmation').boundingBox(),'skill information uses the same card').toEqual(anchored);const enemy=before.units.find(u=>u.side==='enemy')!;
     await clickHex(page,enemy.hex);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();
     const card=await page.locator('#confirmation').boundingBox(),stage=await page.locator('.stage-wrap').boundingBox();
+    expect(card,'confirmation uses the same fixed-size card').toEqual(anchored);
     expect(card!.x).toBeGreaterThanOrEqual(stage!.x);expect(card!.y).toBeGreaterThanOrEqual(stage!.y);
     expect(card!.x+card!.width).toBeLessThanOrEqual(stage!.x+stage!.width+1);expect(card!.y+card!.height).toBeLessThanOrEqual(stage!.y+stage!.height+1);
     const view=(await inspect(page)).view,world=(await page.locator('.world-input').boundingBox())!,p=toPixel(enemy.hex);

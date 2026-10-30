@@ -235,9 +235,12 @@ the basic action, so an out-of-range body tap stays a rejected Strike. A fixture
 Move here button selects movement onto its otherwise walkable cell. Team helpers retain their movement-only allowance.
 
 Confirmation is a separate field overlay, outside both the command scroller and
-`UI.sceneLayer`, so it does not block targeting as a story panel. It occupies the
-opposite corner from the selected hex, below the field toolbar, and holds its
-position while a plan is selected. Pan/resize recomputes placement. Cancel spends
+`UI.sceneLayer`, so it does not block targeting as a story panel. It stays in the
+top-right corner below the toolbar; upward boss fights use the bottom-right
+corner above development tools to keep the boss visible. Neither layout follows
+the cursor or selected target. A fixed-size card and
+fixed button row prevent jumps between hints, warnings and confirmation, including
+while hovering or panning. Predictions scroll inside the card. Cancel spends
 nothing. Log (L) opens the complete current battle history in the shared modal;
 it no longer reserves a desktop column. Clear/restore removes the field overlay.
 Phones use a compact character header and three-column grid, with the full skill

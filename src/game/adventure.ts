@@ -167,7 +167,7 @@ export class Adventure extends Phaser.Scene {
     const film=this.crossingFilm??this.endingFilm;
     if(film){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);film.resize();return;}
     if(this.mode==='battle'){
-      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);this.positionConfirmation(this.plan?.hex??this.hover);return;
+      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);this.positionConfirmation();return;
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
@@ -178,7 +178,7 @@ export class Adventure extends Phaser.Scene {
   panBattle(direction:-1|1){
     if(this.mode!=='battle'||this.blocked)return;
     const camera=this.cameras.main;camera.setScroll(Phaser.Math.Clamp(camera.scrollX+direction*192,0,WIDTH-camera.width),0);
-    this.positionConfirmation(this.plan?.hex??this.hover);
+    this.positionConfirmation();
     this.ui.status.textContent='Battlefield view · choose an action and target';
   }
   private revealHex(hex:Hex,margin=48){
@@ -834,7 +834,7 @@ export class Adventure extends Phaser.Scene {
     if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
-    this.positionConfirmation(aimed);
+    this.positionConfirmation();
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){
       const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;confirm.hidden=false;
       const note=document.createElement('span');note.className='prediction invalid-target team-unavailable';note.setAttribute('role','status');note.textContent=reason;confirm.append(note);return;
@@ -871,11 +871,8 @@ export class Adventure extends Phaser.Scene {
       confirm.append(this.ui.button({label:'Move here',action:()=>{this.selected='move';this.plan={action:'move',hex};this.drawGrid();this.updatePreview();this.ui.canvas.focus();}}));
     }
   }
-  private positionConfirmation(aim?:Hex){
+  private positionConfirmation(){
     if(import.meta.env.DEV)this.ui.battleOverlay.style.setProperty('--dev-tools-height',`${(this.ui.battleOverlay.querySelector<HTMLElement>('.dev-battle-tools')?.offsetHeight??-8)+8}px`);
-    const view=this.cameras.main,p=aim?toPixel(aim):undefined,card=this.ui.battleConfirmation;
-    card.dataset.vertical=p&&p.y-view.scrollY>view.height/2?'top':'bottom';
-    card.dataset.horizontal=p&&p.x-view.scrollX>view.width/2?'left':'right';
   }
   private selectAction(action: Action, fromItems=false) {
     const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||abilityFor(u!,action).bonus&&u.bonusUsed)))return;

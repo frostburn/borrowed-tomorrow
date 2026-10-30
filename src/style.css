@@ -73,14 +73,12 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 .battle-log-button{position:absolute;top:8px;left:8px;font:10px/12px SwitchyardCompact,monospace;padding:6px 8px;min-height:28px}
 .boss-battle .battle-log-button{top:50px}
 .battle-history p{font:10px/16px SwitchyardCompact,monospace;border-bottom:1px solid #234047;padding:8px 0}
-.battlefield-confirmation{position:absolute;margin:0;bottom:calc(8px + var(--dev-tools-height,0px));right:8px;left:auto;width:min(360px,calc(100% - 16px));max-height:164px;min-height:0;padding:8px;background:#101d28;border:2px solid #b8a780;display:flex;gap:6px;align-content:flex-start;overflow:hidden}
-.battlefield-confirmation[data-vertical="top"]{top:48px;bottom:auto}
-.boss-battle .battlefield-confirmation[data-vertical="top"]{top:96px}
-.battlefield-confirmation[data-horizontal="left"]{left:8px;right:auto}
+.battlefield-confirmation{position:absolute;margin:0;top:48px;right:8px;width:min(360px,calc(100% - 16px));height:164px;max-height:164px;min-height:0;padding:8px;background:#101d28;border:2px solid #b8a780;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:12px minmax(0,1fr)40px;gap:6px;overflow:hidden}
+.boss-battle .battlefield-confirmation{top:auto;bottom:calc(8px + var(--dev-tools-height,0px))}
 .battlefield-confirmation:not(.has-plan){pointer-events:none}
-.battlefield-confirmation .confirmation-title{font:10px/12px SwitchyardCompact,monospace;color:#f4c77a;flex-basis:100%}
-.battlefield-confirmation button{font:10px/12px SwitchyardCompact,monospace;min-height:28px;padding:4px 8px;order:1}
-.battlefield-confirmation .prediction{font:10px/14px SwitchyardCompact,monospace;max-height:84px;overflow:auto}
+.battlefield-confirmation .confirmation-title{font:10px/12px SwitchyardCompact,monospace;color:#f4c77a;grid-column:1/-1;grid-row:1}
+.battlefield-confirmation button{font:10px/12px SwitchyardCompact,monospace;min-width:0;min-height:0;padding:4px;grid-row:3;order:1}
+.battlefield-confirmation .prediction{font:10px/14px SwitchyardCompact,monospace;grid-column:1/-1;grid-row:2;min-height:0;overflow:auto}
 
 @media(max-width:1023px){
  .battle-controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:64px minmax(0,1fr)}
@@ -97,6 +95,5 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
  .battle-controls .actions button{min-height:28px;padding:2px 4px}
  .battle-controls .hint{display:none}
  .battle-controls .skill-badge{margin-left:4px;padding:0 2px;border-width:1px}
- .battlefield-confirmation{padding:6px;gap:4px;max-height:140px}
- .battlefield-confirmation .prediction{max-height:60px}
+ .battlefield-confirmation{padding:6px;gap:4px;height:140px;max-height:140px;grid-template-rows:12px minmax(0,1fr)32px}
 }
