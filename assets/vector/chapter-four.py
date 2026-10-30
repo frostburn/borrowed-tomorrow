@@ -10,6 +10,7 @@ from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
 from chapter_four_style import treatment, floor_paint, coastal_lamp, opal, floor_spill, drive_link, arena_lights
 from gate_pose import folded_leaves
+from hollow_sun import emblem
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-four'
 MAP=ROOT/'src/content/chapter-four/maps'
@@ -138,11 +139,9 @@ def pump_house():
 def sanctuary():
  out=[poly([(0,277),(70,247),(560,247),(648,281),(648,308),(0,308)],'#1c3542'),poly([(40,261),(86,222),(553,222),(608,263)],'#9e9c80'),rect(81,183,476,43,'#4b6665')]
  for x in (109,495):out += [poly([(x-28,192),(x-22,52),(x-6,33),(x+18,49),(x+28,191)],'#485d61'),poly([(x-22,52),(x-6,33),(x-3,181),(x-28,192)],'#9c9a7b'),rect(x-22,190,51,12,'#c6b288')]
- # Faceted astronomical ring, naturally open sky through its center.
- out += [ring(322,123,121,112,25,'#263f49'),ring(317,115,116,109,19,'#b59661'),ring(317,115,96,91,4,'#e0bd77'),ring(317,115,105,99,4,'#d0af73')]
- for i in range(16):
-  a=i*math.pi/8;dx=math.sin(a);dy=math.cos(a)
-  out.append(line([(317+dx*98,115+dy*92),(317+dx*112,115+dy*105)],'#584f42',5))
+ # A bronze rendering of the shared broken sun, with open sky through its
+ # aperture and missing wedge. Keep its supports and cable mounting physical.
+ out.append(emblem(317,115,88,gold='#b59661',shade='#7e694d',light='#e0bd77',aspect=109/116))
  out += [poly([(302,193),(331,193),(344,247),(289,247)],'#345358'),poly([(302,193),(314,196),(308,242),(289,247)],'#baa370'),rect(244,232,151,24,'#7a8976'),rect(255,237,130,11,'#c8b987')]
  # Carved old hospice wings: broad arches, not a marble palace.
  for x in (3,452):
