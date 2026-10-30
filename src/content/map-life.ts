@@ -26,7 +26,9 @@ export interface SteamSource {x:number;y:number;depth:number;phase:number}
 export function steamSources(pieces:readonly ScenePiece[]):SteamSource[]{
  return pieces.flatMap(p=>{
   const name=p.url.split('/').at(-1);
-  const chimneys=name==='engine.svg'?[[67,25]]:name==='engine-right.svg'?[[221,25]]:name==='ward-stove.svg'?[[29,0]]:name==='casting-hall.svg'?[[92,-12],[502,-12]]:[];
+  // The hall's architecture pass leans its stacks and clips their caps at y=0.
+  // Use the visible mouths, rather than the pre-treatment drafting coordinates.
+  const chimneys=name==='engine.svg'?[[67,25]]:name==='engine-right.svg'?[[221,25]]:name==='ward-stove.svg'?[[29,0]]:name==='casting-hall.svg'?[[102,0],[495,0]]:[];
   return chimneys.map(([x,y])=>({x:p.x+x,y:p.y+y,depth:p.depth+.1,phase:seed(`${p.key}:${p.x+x}:${p.y+y}`)%6000}));
  });
 }

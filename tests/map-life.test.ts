@@ -1,9 +1,28 @@
 import {describe,it,expect} from 'vitest';
+import {readFileSync} from 'node:fs';
 import {lifePaused,lifeStep,sceneryAngle,sceneryPose,swayingScenery,movingScenery,steamSources,cloudLife,waterLife,snowLife} from '../src/content/map-life';
 import {MAPS} from '../src/content/maps';
 import {sceneArt,visibleSceneArt} from '../src/content/scene-art';
 
 describe('ambient scenery respects collection and authored geometry',()=>{
+ it('attaches foundry exhaust to the visible, transformed chimney caps',()=>{
+  const piece=sceneArt(MAPS.hammerplain.tiles!)!.find(p=>p.url.endsWith('/casting-hall.svg'))!;
+  const svg=readFileSync(`public/${piece.url}`,'utf8');
+  const caps=[...svg.matchAll(/<polygon points="([^"]+)" fill="#8c8973"/g)].map(m=>m[1].split(' ').map(p=>p.split(',').map(Number)));
+  const inside=(x:number,y:number,points:number[][])=>{
+   let hit=false;
+   for(let i=0,j=points.length-1;i<points.length;j=i++){
+    const [a,b]=points[i],[c,d]=points[j];
+    if((b>y)!==(d>y)&&x<(c-a)*(y-b)/(d-b)+a)hit=!hit;
+   }
+   return hit;
+  };
+  const sources=steamSources([piece]);expect(sources).toHaveLength(caps.length);
+  for(const source of sources){
+   expect(source.y).toBeGreaterThanOrEqual(piece.y);
+   expect(caps.some(cap=>inside(source.x-piece.x,source.y-piece.y+1,cap))).toBe(true);
+  }
+ });
  it('keeps collected water and vegetation still until the local release',()=>{
   for(const [map,flag]of [['rillbridge','villageFreed'],['cinderbank','coastCollectorWon'],['refuge','sanctuaryWardenWon'],['breakwater','sanctuaryWardenWon'],['sanctuary','sanctuaryWardenWon'],['stillcity','capitalStreetFreed'],['takenwater','takenPeopleFreed'],['firstfield','harvestFreed'],['quietward','wardPeopleFreed'],['seasonstreet','seasonsFreed']]){
    expect(lifePaused(map,{})).toBe(true);expect(lifePaused(map,{[flag]:true})).toBe(false);
