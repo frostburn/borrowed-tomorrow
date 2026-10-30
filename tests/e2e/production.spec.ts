@@ -1,3 +1,5 @@
+import {walkingCadenceFlows} from './walking-cadence-flow';
+walkingCadenceFlows(true);
 import {battleLoadFlows} from './battle-load-flow';
 battleLoadFlows(true);
 import {openIssueFlows} from './open-issues-flow';

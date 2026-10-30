@@ -94,10 +94,13 @@ For repeatable profiles, use an installed Chromium and run:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium npm run profile:walking -- /tmp/bt-walk-after 4
 ```
 
-The optional last argument is CDP CPU throttling (1 by default). The command
+The CPU-throttling argument defaults to 1. The command also accepts a map group: `early` (the default) or `three`, for example
+`npm run profile:walking -- /tmp/bt-walk-three 1 three`.
+The CPU-throttling argument precedes the map group. The command
 starts its own Vite server and clean browser contexts, imports authored test
 checkpoints through Save, enables sound, then walks right and left for 2.2s each
-in Larkspur, Iron Coast and Cinderbank at 1280 × 800. It writes CPU profiles,
+at 1280 × 800. The early group covers Larkspur, Iron Coast and Cinderbank;
+`three` covers Northglass, the relay hall and the conduit. It writes CPU profiles,
 frame/footstep intervals, long tasks and presentation timings to the selected
 directory. No output is included in the game build. With no directory it creates
 a temporary one. Use the same script/settings on each revision, run profiles
@@ -117,6 +120,42 @@ This is about 17–22% less presentation time in that run, reducing main-thread
 work that can delay walking callbacks. It is not a universal frame-rate or
 footstep-jitter guarantee; CPU throttling, warmup, browser and device affect
 results. The profiling command records those timings for further investigation.
+
+Animated presentation now follows a fixed 30Hz clock using Phaser's original
+browser-frame timestamp. Deadlines retain their phase after late frames, with
+a small tolerance for rounded timestamps, rather than waiting another full
+interval after drawing finishes. Missed slots are skipped without catch-up
+bursts. Films retain their uncapped presentation. UI changes and the final
+stationary pose remain immediate; ambient changes during motion are retained
+for the next scheduled frame. Idle scenery still redraws only when it changes.
+Movement keeps its 130ms tile tween, distance-based poses and existing footsteps;
+camera scroll stays on the shared two-pixel grid.
+
+The profiler excludes deliberate idle gaps between walking runs, while retaining
+late frames within each run. It reports actual presentation FPS/intervals separately from native
+requestAnimationFrame intervals and paint cost. Before this change, normal-speed
+Chapter Three interior profiles produced about 16–17 visible updates per second
+despite a 60Hz game loop: the old 50ms gate often waited four native frames.
+Water could bypass that gate in coastal maps. Compare the same checkpoints,
+browser and CPU setting when evaluating pacing; the 30Hz target is not a promise
+that an overloaded device can render at that rate.
+
+In normal-speed headless Chromium at 1280 × 800, the relay hall and conduit
+improved from roughly 16–17 visible updates/s to 30.2 and 30.3. Median intervals
+became 33.2/33.3ms, with 95th-percentile intervals of 35.5/36ms. The corresponding
+95th-percentile footstep interval stayed about 151ms. These are isolated profiles,
+not hardware-independent guarantees. At 4× CPU throttling the same regions were
+CPU-limited to roughly 24–29 visible updates/s; missed deadlines are dropped
+rather than replayed.
+
+Review the opt-in movement, compositor, camera, reduced-motion and overlay checks:
+
+```sh
+npx playwright test walking-cadence.spec.ts render-performance.spec.ts raster-scroll.spec.ts
+BT_PRODUCTION=1 npx playwright test --grep 'production walking cadence'
+```
+
+These do not add to the default browser gate.
 
 ## Adding the next chapter
 

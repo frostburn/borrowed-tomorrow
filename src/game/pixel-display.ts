@@ -1,6 +1,7 @@
 import { bitmapText } from './pixel-font';
 import { displayWidth, DISPLAY_HEIGHT } from './resolution';
 import { RASTER_UNIT, rasterize, snapRaster } from './raster';
+import {FrameCadence} from './frame-cadence';
 
 /** Panel and text colors. Asset colors pass through unchanged. */
 export const PALETTE = ['#080f19','#101d28','#182b32','#234047','#35535a','#557179','#87a3a2',
@@ -36,8 +37,11 @@ export class PixelDisplay {
   private dirty=true;
   private commands:{draw:(ctx:CanvasRenderingContext2D)=>void;state:boolean;world?:boolean}[]=[];
   private fitted='';
-  private lastPaint=-1;
+  private paintedAt=-1;
+  get lastPaint(){return this.paintedAt;}
   private wasAnimated=false;
+  private cadence=new FrameCadence();
+  private sceneDirty=false;
   constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void) {
     this.source=document.createElement('div');this.source.className='pixel-source';
     while(root.firstChild)this.source.append(root.firstChild);root.append(this.source);
@@ -83,14 +87,19 @@ export class PixelDisplay {
       this.fitted=fitted;this.dirty=true;
     }
   }
-  paint(animated=false,sceneChanged=false,smoothAnimation=false){
+  paint(animated=false,sceneChanged=false,smoothAnimation=false,now=performance.now()){
     if(!this.native)return;
-    const now=performance.now();
     const resized=this.world.width!==this.native.width||this.world.height!==this.native.height;
+    this.sceneDirty||=sceneChanged;
     if(this.wasAnimated&&!animated)this.dirty=true;
+    if(!animated||!this.wasAnimated||smoothAnimation)this.cadence.reset();
     this.wasAnimated=animated;
-    if(!resized&&!this.dirty&&!sceneChanged&&(!animated||(!smoothAnimation&&now-this.lastPaint<50)))return;
-    this.lastPaint=now;
+    const due=animated&&(smoothAnimation||this.cadence.due(now));
+    // UI stays immediate. While moving, ambient changes join the next scheduled
+    // frame instead of making waterfront walking faster than indoor walking.
+    if(!resized&&!this.dirty&&!due&&(animated||!this.sceneDirty))return;
+    this.paintedAt=now;
+    this.sceneDirty=false;
     this.fitWorld();
     const full=this.dirty||resized;
     if(this.dirty){this.rebuild();this.dirty=false;}
