@@ -3,8 +3,8 @@
 Run `python3 assets/ui/export-icons.py` from the repository root. It writes only
 `public/art/vector/ui/`: native 32 × 32 transparent icons and 128 × 128 dialogue
 cards. Object cards reuse the same shapes at integer scale on a subdued
-background; the anonymous speaker has a dedicated native portrait with readable
-facial features. The ordinary bandage is a plain adhesive strip, while field
+background; anonymous speakers keep a shaded head, hair, neck and clothing,
+without eyes, nose or mouth. The ordinary bandage is a plain adhesive strip, while field
 dressings retain their larger wrapped packet. All artwork is authored directly as vector geometry; no image
 samples, external dependencies, fonts or embedded images are needed.
 

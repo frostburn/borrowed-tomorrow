@@ -39,11 +39,11 @@ ART['mural']=path('M3 3L25 2L30 10L27 29L5 30L2 21Z','#526876')+path('M4 5L23 4L
 ART['lantern']=path('M9 5L12 1L20 1L23 5L21 9L19 8L20 5L18 3L14 3L12 5L13 8L11 9Z',brass)+path('M7 9L24 7L28 13L25 29L7 30L4 14Z',brass)+path('M8 12L23 10L24 25L9 27Z',gold)+path('M12 13L21 12L20 23L13 25Z','#f5df9c')+path('M6 9L24 7L28 13L5 16Z',dark)+path('M7 27L25 25L26 30L7 32Z',dark)
 ART['horn']=path('M3 19L15 13L25 2L28 3L29 15L18 18L7 25Z',brass)+path('M3 19L15 13L25 2L26 5L16 16L5 22Z',gold)+path('M25 2L28 3L29 15L26 14Z',shade)+path('M11 22L15 20L19 27L16 30Z',brass)
 ART['light']=path('M13 1L19 1L18 31L14 31Z',pale)+path('M14 4L8 7L3 24L14 19Z',gold)+path('M18 4L25 7L30 23L18 19Z',brass)
-ART['speaker']=path('M4 32L5 24L12 20L22 20L28 25L30 32Z',blue)+path('M12 18L12 24L18 27L22 23L21 17Z','#b69c80')+path('M9 6L16 2L23 6L24 14L20 21L13 20L8 14Z','#d2baa0')+path('M8 12L8 5L14 1L21 2L25 6L24 12L20 8L14 7L11 12Z',shade)+rect(11,12,3,1,'#594e45')+rect(19,12,3,1,'#594e45')+path('M16 13L18 16L15 16Z','#bba287')+rect(14,18,5,1,'#997563')
+ART['speaker']=path('M4 32L5 24L12 20L22 20L28 25L30 32Z',blue)+path('M12 18L12 24L18 27L22 23L21 17Z','#b69c80')+path('M9 6L16 2L23 6L24 14L20 21L13 20L8 14Z','#d2baa0')+path('M8 12L8 5L14 1L21 2L25 6L24 12L20 8L14 7L11 12Z',shade)
 
 def speaker_portrait():
- # Draw at the portrait's own resolution: readable eyes, a small nose and a
- # relaxed closed mouth. Neck behind the collar, no beard-shaped face patch.
+ # Anonymous speakers keep their hair, head, neck and clothing, but no facial
+ # features. Preserve the shaded silhouette without implying a shared identity.
  skin,shadow,hair='#d2baa0','#bba287','#645343'
  return ''.join([
   path('M48 72L47 99L65 113L84 95L81 69Z',shadow),
@@ -58,14 +58,6 @@ def speaker_portrait():
   path('M80 27L91 44L86 69L76 83L61 88L60 83L74 78L82 62L84 44Z',shadow),
   path('M35 49L32 36L36 19L52 11L72 13L89 23L94 39L88 52L82 36L69 32L57 24L46 35L42 50Z',hair),
   path('M36 24L52 13L71 15L84 23L69 21L56 20L45 29L36 38Z','#85735e'),
-  path('M44 43L54 42L56 45L44 46Z','#82705d'),
-  path('M70 43L80 44L81 47L69 46Z','#82705d'),
-  path('M44 49L53 49L56 53L45 54Z','#eee0c9'),
-  path('M69 50L79 50L80 54L69 54Z','#eee0c9'),
-  rect(49,49,4,5,'#596b69'),rect(72,50,4,4,'#596b69'),
-  path('M61 50L66 61L60 63L57 60Z','#c3a78a'),
-  path('M54 71L62 72L71 70L69 73L61 75L55 73Z','#9e7867'),
-  path('M58 77L65 78L69 76L65 80L60 80Z','#dbc3a7'),
  ])
 
 def svg(body,size): return f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">{body}</svg>\n'
