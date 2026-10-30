@@ -43,7 +43,13 @@ def write_map(id,title,subtitle,floor,objects,casts,people,back,ground,decor=[],
   else:add('back',back,-1000,1)
   add('ground',ground,-999,2)
  if id in ('hollowsill','takenwater','lastrefuge','seasonstreet'):
-  boat=[poly([(0,11),(107,0),(86,32),(25,39)],'#b2c5b9'),poly([(0,11),(25,39),(86,32),(83,40),(23,48)],'#628f92'),line([(55,31),(61,128)],'#a9c1b5',4),poly([(58,49),(60,119),(107,106)],'#83a7a3')]
+  # Draw one complete upright boat, then invert it as a unit: the keel is
+  # above its broad deck, with the mast and sail hanging below that deck.
+  boat=['<g transform="translate(0 132) scale(1 -1)">',
+   poly([(0,95),(107,84),(86,116),(25,123)],'#b2c5b9'),
+   poly([(0,95),(25,123),(86,116),(83,124),(23,132)],'#628f92'),
+   line([(55,89),(61,4)],'#a9c1b5',4),
+   poly([(58,83),(60,13),(107,26)],'#83a7a3'),'</g>']
   add('hanging-boat',boat,-999.2,1,112,132,1050,112);entries[-1]['motion']={'kind':'sail','distance':32,'after':'takenPeopleFreed'}
  decor=list(decor)
  for i,(x,y)in enumerate(FIXTURES.get(id,[])):decor.append(('light-'+str(i),fixture(id=='quietward'),48,148,x-23,y-148,y,{}))
