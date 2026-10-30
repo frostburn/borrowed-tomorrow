@@ -22,7 +22,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    if(hero==='nell'||hero==='petra')await capture(page,`battle-all-skills-${hero}-${device.replace(' ','-')}`);
    if(hero==='nell'){
     const before=(await inspect(page)).battle!;await clickHex(page,offset(3,3));
-    await expect(page.locator('#confirmation .confirmation-title')).toHaveText('Strike');await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();
+    await expect(page.locator('.stage-wrap #confirmation')).toHaveCount(0);await commandsFit(page);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();
     await page.getByRole('button',{name:'Move here',exact:true}).click();await expect(page.getByRole('button',{name:/^Confirm move/})).toBeVisible();
     await page.getByRole('button',{name:'Cancel',exact:true}).click();expect((await inspect(page)).battle).toEqual(before);
     await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Out of range');await expect(page.locator('#confirmation button')).toHaveCount(0);expect((await inspect(page)).battle).toEqual(before);

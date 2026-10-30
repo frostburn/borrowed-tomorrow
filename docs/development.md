@@ -222,7 +222,7 @@ storage failure in both development and production. These detailed flows remain
 opt-in, outside the small default CI browser gate.
 
 
-## Battle commands and field confirmation
+## Battle commands and confirmation
 
 The single command grid contains the contextual **Move / Strike** action, all
 learned solo/team skills, Items, Defend and Wait. Shortcut 1 selects the basic
@@ -234,25 +234,24 @@ move-and-attack is performed. A projected boss body is identified before choosin
 the basic action, so an out-of-range body tap stays a rejected Strike. A fixture’s
 Move here button selects movement onto its otherwise walkable cell. Team helpers retain their movement-only allowance.
 
-Confirmation is a separate field overlay, outside both the command scroller and
-`UI.sceneLayer`, so it does not block targeting as a story panel. It stays in the
-top-right corner below the toolbar; upward boss fights use the bottom-right
-corner above development tools to keep the boss visible. Neither layout follows
-the cursor or selected target. A fixed-size card and
-fixed button row prevent jumps between hints, warnings and confirmation, including
-while hovering or panning. Predictions scroll inside the card. Cancel spends
-nothing. Log (L) opens the complete current battle history in the shared modal;
-it no longer reserves a desktop column. Clear/restore removes the field overlay.
-Phones use a compact character header and three-column grid, with the full skill
-description in the field preview. Development tools remain outside the command
-grid and out of the production build. Skills retain rank badges; team buttons use
-a blue border and inspectable gray unavailable states.
+Confirmation and target feedback sit below the command grid in the bottom command
+panel, outside its scroller. Confirm, Cancel and fixture Move here buttons stay
+in a fixed row; predictions and warnings scroll above it. Nothing covers the
+battlefield or follows the cursor. The region reserves the same space during
+skill information, unavailable-team explanations, targeting and confirmation.
+Cancel spends nothing. Log (L) opens the complete current battle history in the
+shared modal; it no longer reserves a desktop column. Clear/restore removes the
+battle controls. Phones use a compact 40px character header and three-column
+grid so every learned command and the confirm row fit together. Development
+tools remain outside the command grid and out of the production build. Skills
+retain rank badges; team buttons use a blue border and inspectable gray
+unavailable states.
 
 Review the focused browser checks:
 
 ```sh
 npx playwright test battle-menu.spec.ts rich-combat.spec.ts team-skills.spec.ts
-BT_PRODUCTION=1 npx playwright test --grep 'production field confirmation'
+BT_PRODUCTION=1 npx playwright test --grep 'production panel confirmation'
 ```
 
 The max-level layout cases cover all five characters and desktop, fractional-DPR

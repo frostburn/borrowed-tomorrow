@@ -16,7 +16,7 @@ export async function commandsFit(page:Page){
 }
 export function battleMenuFlows(production=false){
  for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
-  test(`${production?'production ':''}field confirmation and a full campaign command grid on ${device}`,async({browser})=>{
+  test(`${production?'production ':''}panel confirmation and a full campaign command grid on ${device}`,async({browser})=>{
    const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
    try{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -35,16 +35,23 @@ export function battleMenuFlows(production=false){
      await page.mouse.move(field.x+field.width*x,field.y+field.height*y,{steps:8});
      expect(await page.locator('#confirmation').boundingBox(),'warnings stay anchored while hovering').toEqual(anchored);
     }
-    await page.getByRole('button',{name:/Prism lance$/}).click();expect(await page.locator('#confirmation').boundingBox(),'skill information uses the same card').toEqual(anchored);const enemy=before.units.find(u=>u.side==='enemy')!;
+    await page.getByRole('button',{name:/Prism lance$/}).click();expect(await page.locator('#confirmation').boundingBox(),'skill information uses the same region').toEqual(anchored);const enemy=before.units.find(u=>u.side==='enemy')!;
     await clickHex(page,enemy.hex);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();
-    const card=await page.locator('#confirmation').boundingBox(),stage=await page.locator('.stage-wrap').boundingBox();
-    expect(card,'confirmation uses the same fixed-size card').toEqual(anchored);
-    expect(card!.x).toBeGreaterThanOrEqual(stage!.x);expect(card!.y).toBeGreaterThanOrEqual(stage!.y);
-    expect(card!.x+card!.width).toBeLessThanOrEqual(stage!.x+stage!.width+1);expect(card!.y+card!.height).toBeLessThanOrEqual(stage!.y+stage!.height+1);
+    const card=await page.locator('#confirmation').boundingBox(),stage=await page.locator('.stage-wrap').boundingBox(),controls=await page.locator('.controls').boundingBox();
+    expect(card,'confirmation uses the same fixed-size region').toEqual(anchored);
+    expect(card!.y,'confirmation is below the entire battlefield').toBeGreaterThanOrEqual(stage!.y+stage!.height);
+    expect(card!.x).toBeGreaterThanOrEqual(controls!.x);expect(card!.x+card!.width).toBeLessThanOrEqual(controls!.x+controls!.width+1);
+    expect(card!.y+card!.height).toBeLessThanOrEqual(controls!.y+controls!.height+1);
+    await expect(page.locator('.stage-wrap #confirmation')).toHaveCount(0);await commandsFit(page);
+    const preview=await page.locator('#confirmation .prediction').boundingBox();
+    for(const button of await page.locator('#confirmation button').all()){
+     const bounds=(await button.boundingBox())!;expect(bounds.y).toBeGreaterThanOrEqual(preview!.y+preview!.height-1);
+     expect(bounds.y+bounds.height).toBeLessThanOrEqual(card!.y+card!.height+1);expect(await button.evaluate(b=>b.clientHeight)).toBeGreaterThanOrEqual(26);
+    }
     const view=(await inspect(page)).view,world=(await page.locator('.world-input').boundingBox())!,p=toPixel(enemy.hex);
     const target={x:world.x+(p.x-view.scrollX)*world.width/view.width,y:world.y+(p.y-view.scrollY)*world.height/view.height};
     if(target.x>=world.x&&target.x<=world.x+world.width)expect(target.x<card!.x||target.x>card!.x+card!.width||target.y<card!.y||target.y>card!.y+card!.height,'confirmation leaves its selected hex uncovered').toBe(true);
-    await capture(page,`battle-field-${production?'production':'dev'}-${device}`);
+    await capture(page,`battle-panel-${production?'production':'dev'}-${device}`);
     await page.getByRole('button',{name:'Battle log',exact:true}).click();await expect(page.getByRole('dialog',{name:'Battle log',exact:true})).toBeVisible();
     await page.getByRole('button',{name:'Close',exact:true}).click();expect((await inspect(page)).battle).toEqual(before);
     await page.getByRole('button',{name:'Cancel',exact:true}).focus();await page.keyboard.press('Enter');
