@@ -1,3 +1,5 @@
 .dev-battle-tools{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid #625842}
 .dev-battle-tools button{font-size:10px;line-height:12px;padding:4px 6px;min-height:24px}
 .dev-battle-tools small{color:#f4c77a}
+
+.battle-overlay .dev-battle-tools{pointer-events:auto;position:absolute;bottom:8px;left:8px;right:8px;padding:4px;margin:0;border:1px solid #625842;background:#101d28}

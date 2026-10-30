@@ -140,7 +140,7 @@ async function aimAfterMoving(page:Page,ability:AbilityId){
   }
   expect(choice).toBeTruthy();
   if(choice!.path.length){
-    await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,choice!.position);
+    await page.locator('.actions').getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,choice!.position);
     const sampling=record(page,choice!.path.length*95+180);await page.getByRole('button',{name:/^Confirm move/}).click();const samples=await sampling;
     const actors=samples.flatMap(s=>s.actors.filter(a=>a.hero===u.kind&&a.motion==='walk'));
     expect(actors.length).toBeGreaterThan(0);

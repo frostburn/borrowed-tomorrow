@@ -21,7 +21,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
     let battle=(await inspect(page)).battle!;
     for(const unit of battle.units.filter(u=>u.side==='party'))expect(unit).toMatchObject({hp:unit.maxHp,focus:6});
     expect(battle.units.filter(u=>u.side==='enemy')).toEqual(start.units.filter(u=>u.side==='enemy'));
-    await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(2,2));
+    await page.locator('.actions').getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(2,2));
     await page.getByRole('button',{name:/^Confirm move/}).click();
     // Restart during movement animation; its delayed callback must not touch the new battle.
     await tools.getByRole('button',{name:'Restart battle',exact:true}).click();

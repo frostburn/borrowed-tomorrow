@@ -54,7 +54,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    await page.locator('.actions').getByRole('button',{name:/Safety guard/}).click();await clickHex(page,(await inspect(page)).battle!.units.find(u=>u.id==='nell')!.hex);
    await page.getByRole('button',{name:'Confirm ability',exact:true}).click();await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);
    expect((await inspect(page)).battle!.units.find(u=>u.id==='nell')!.guard).toBe(10);await crispLabels(page);
-   await page.locator('.actions').getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(2,3));await page.getByRole('button',{name:/^Confirm move/}).click();
+   await page.locator('.actions').getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(2,3));await page.getByRole('button',{name:/^Confirm move/}).click();
    await expect.poll(async()=>!(await inspect(page)).busy).toBe(true);expect((await inspect(page)).battle!.units.find(u=>u.id==='nell')!.hex).toEqual(offset(2,3));
    await crispLabels(page);await capture(page,`battle-labels-odd-row-${device}`);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
   }finally{await context.close();}

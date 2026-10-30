@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
 import { bitmapText } from './pixel-font';
-import { ABILITIES, active, legalAim, targets, unitAt, type AbilityId, type Battle, type Unit } from '../rules/combat';
+import { ABILITIES, active, legalAim, targets, unitAt, type Battle, type Unit } from '../rules/combat';
 import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, toPixel } from '../rules/hex';
 import { vectorSurface } from './vector-image';
+import type {BattlePickAction} from './battle-presentation';
 
 let labelId=0;
 export function nativeTexture(scene:Phaser.Scene,key:string){
@@ -23,8 +24,10 @@ export function bossPlacement(unit:Unit){
   return {x:Math.round(toPixel(unit.hex).x),y:Math.round(Math.max(...occupiedHexes(unit).map(h=>toPixel(h).y))+24)};
 }
 
-/** Projected art is a shortcut to a legal occupied cell, never to a nearby ally. */
-export function pickBossBody(b:Battle,action:AbilityId|'move',x:number,y:number,boss:Unit,width:number,height:number,mask?:Uint8Array,visualOffset={x:0,y:0}){
+/** Skills shortcut to legal contacts. A basic body hit stays an explicit strike
+ * even out of range, never movement onto the ground behind it or a nearby ally. */
+export function pickBossBody(b:Battle,requested:BattlePickAction,x:number,y:number,boss:Unit,width:number,height:number,mask?:Uint8Array,visualOffset={x:0,y:0}){
+  const contextual=requested==='basic',action=contextual?'strike':requested;
   if(action==='move'||ABILITIES[action].heal||['guard','focus','taunt'].includes(ABILITIES[action].effect??''))return;
   const u=active(b);if(!u||u.side!=='party'||boss.hp<=0)return;
   const p=bossPlacement(boss),px=Math.floor(x-p.x-visualOffset.x+width/2),py=Math.floor(y-p.y-visualOffset.y+height);
@@ -34,5 +37,5 @@ export function pickBossBody(b:Battle,action:AbilityId|'move',x:number,y:number,
   if(legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
   if(!mask||mask[py*width+px]===0)return;
   const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
-  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id));
+  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??(contextual?parts[0]:undefined);
 }

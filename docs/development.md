@@ -220,3 +220,48 @@ when IndexedDB is unavailable. The battle-loading browser regressions exercise
 slots, imports during animations, stale callbacks, failed-load recovery and
 storage failure in both development and production. These detailed flows remain
 opt-in, outside the small default CI browser gate.
+
+
+## Battle commands and confirmation
+
+The single command grid contains the contextual **Move / Strike** action, all
+learned solo/team skills, Items, Defend and Wait. Shortcut 1 selects the basic
+command; the remaining numbered shortcuts follow the displayed skill buttons.
+An enemy click (including a projected multi-hex boss body) previews a strike in
+place when adjacent, or the shortest legal route to a reachable adjacent hex plus
+a strike. Routes use movement cost first, then hex count and stable row/column
+ties. A read-only forecast supplies the path, destination and damage without
+spending anything. **Confirm move + strike** commits both ordinary rule calls
+and animates the walk before contact; Cancel spends neither. The selected
+destination is revalidated before either allowance is spent. Obstacles, occupied
+cells, water/ice costs, Pin, Taunt and spent movement/actions still apply. A boss
+can be struck at its closest legal contact even when another body contact was
+clicked. An unreachable enemy stays invalid, without a partial approach.
+Ground clicks still preview movement separately; adjacent enemies use Confirm
+attack. Fixtures retain Strike / Move here choices without automatic approaches.
+Team helpers retain their movement-only continuation and show **Move**, never
+Move / Strike, alongside End turn.
+
+Confirmation and target feedback sit below the command grid in the bottom command
+panel, outside its scroller. Confirm, Cancel and fixture Move here buttons stay
+in a fixed row; predictions and warnings scroll above it. Nothing covers the
+battlefield or follows the cursor. The region reserves the same space during
+skill information, unavailable-team explanations, targeting and confirmation.
+Cancel spends nothing. Log (L) opens the complete current battle history in the
+shared modal; it no longer reserves a desktop column. Clear/restore removes the
+battle controls. Phones use a compact 40px character header and three-column
+grid so every learned command and the confirm row fit together. Development
+tools remain outside the command grid and out of the production build. Skills
+retain rank badges; team buttons use a blue border and inspectable gray
+unavailable states.
+
+Review the focused browser checks:
+
+```sh
+npx playwright test battle-menu.spec.ts rich-combat.spec.ts team-skills.spec.ts
+BT_PRODUCTION=1 npx playwright test --grep 'production panel confirmation'
+```
+
+The max-level layout cases cover all five characters and desktop, fractional-DPR
+phone and 320px phone layouts. Detailed menu cases remain outside the default
+browser CI selection.

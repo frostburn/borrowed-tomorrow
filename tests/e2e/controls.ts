@@ -160,7 +160,7 @@ export async function battle(page: Page, screenshot?: string, practice=false, op
     if(u.side!=='party'){await page.waitForTimeout(250);continue;}
     const decision=playerPlan(b);
     const definition=decision.action==='move'||decision.action==='defend'?undefined:abilityFor(u,decision.action);
-    const label=decision.action==='move'?/^1\s+Move$/:decision.action==='defend'?(movementOnly(b,u)?/^F\s+End turn$/:/^F\s+Defend$/):new RegExp(`^\\d\\s+${definition!.name}${definition!.bonus?' · Extra':definition!.team?' · Team':''}$`);
+    const label=decision.action==='move'||decision.action==='strike'?(movementOnly(b,u)?/^1\s+Move$/:/^1\s+Move \/ Strike$/):decision.action==='defend'?(movementOnly(b,u)?/^F\s+End turn$/:/^F\s+Defend$/):new RegExp(`^\\d\\s+${definition!.name}${definition!.bonus?' · Extra':''}$`);
     const item=decision.action!=='move'&&decision.action!=='defend'&&isConsumable(decision.action);
     const action=page.locator('.actions').getByRole('button',{name:item?/^\d\s+Items$/:label});
     await expect(action).toBeEnabled();await action.click();

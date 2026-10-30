@@ -43,9 +43,9 @@ export function automaticSkillFlows(production=false){
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     for(const [level,xp]of [[6,520],[7,700]]as const){
      if(level===7)await page.reload();const s=coastCheckpoint('kitJoined');s.xp=xp;await importSave(page,s);await approach(page,'loading-gate');await page.getByRole('button',{name:'Breach the loading gate',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
-     await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).toBe('kit');await expect(page.getByRole('button',{name:/Lantern volley · Team/})).toHaveCount(level===7?1:0);
+     await expect.poll(async()=>(await inspect(page)).battle?.queue[0]).toBe('kit');await expect(page.getByRole('button',{name:/Lantern volley/})).toHaveCount(level===7?1:0);
      await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
-     const volley=page.getByRole('button',{name:/Lantern volley · Team/}),prism=page.getByRole('button',{name:/Prism lance · Team/});await expect(volley).toHaveCount(level===7?1:0);await expect(prism).toHaveCount(level===7?1:0);
+     const volley=page.getByRole('button',{name:/Lantern volley/}),prism=page.getByRole('button',{name:/Prism lance/});await expect(volley).toHaveCount(level===7?1:0);await expect(prism).toHaveCount(level===7?1:0);
      if(level===7){await expect(volley).toHaveClass(/unavailable/);await volley.click();await expect(page.locator('#confirmation')).toHaveText('Kit has already used their action this round.');await expect(page.locator('#confirmation button')).toHaveCount(0);}
      await capture(page,`automatic-team-level-${level}-${production?'production-':''}${device}`);
     }
