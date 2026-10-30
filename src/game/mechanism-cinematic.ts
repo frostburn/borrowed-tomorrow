@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import {MECHANISM_FRAMES,MECHANISM_SHEETS,STORY_MECHANISMS,mechanismTexture,harborFerryPosition,type MechanismSheet,type StoryMechanism} from '../content/story-mechanisms';
+import {MECHANISM_FRAMES,MECHANISM_SHEETS,STORY_MECHANISMS,mechanismTexture,type MechanismSheet,type StoryMechanism} from '../content/story-mechanisms';
 
 export function mechanismFrame(scene:Phaser.Scene,name:MechanismSheet,frame:number){
  const key=mechanismTexture(name),texture=scene.textures.get(key),d=MECHANISM_SHEETS[name];
@@ -27,13 +27,10 @@ export class MechanismCinematic {
   const definition=STORY_MECHANISMS[kind],updates:((p:number)=>void)[]=[];
   for(const name of definition.sheets){
    const image=this.piece(MECHANISM_SHEETS[name].target);if(!image)continue;
-   updates.push(p=>{const phase=kind==='harbor-open'&&name==='harbor-gate'?clamp((p-.08)/.42):kind==='harbor-open'?clamp(p/.5):p;const f=mechanismFrame(this.scene,name,Math.round(phase*(MECHANISM_FRAMES-1)));image.setTexture(f.key,f.frame);});
+   updates.push(p=>{const f=mechanismFrame(this.scene,name,Math.round(p*(MECHANISM_FRAMES-1)));image.setTexture(f.key,f.frame);});
   }
   const fade=(key:string)=>{const image=this.piece(key);if(image){const alpha=image.alpha;updates.push(p=>image.setAlpha(alpha*(1-p)));}};
-  if(kind==='harbor-open'){
-   const ferry=this.piece('scene-four-harbor-ferry-out');
-   if(ferry){const from={x:ferry.x,y:ferry.y};updates.push(p=>{const to=harborFerryPosition(clamp((p-.38)/.62),from);ferry.setPosition(Math.round(to.x/2)*2,Math.round(to.y/2)*2).setDepth(ferry.y+192);});}
-  }else if(kind==='cable-release'){
+  if(kind==='cable-release'){
    const spark=this.scene.add.graphics().setDepth(29990);this.world.add(spark);this.temporary.push(spark);
    updates.push(p=>{spark.clear();if(p>0&&p<1){const x=1056-(p*276),y=544-(p*218);spark.fillStyle(0xe7e6c2,1).fillRect(Math.round(x/2)*2,Math.round(y/2)*2,6,4);}});
   }else if(kind==='cooling-open'){

@@ -291,8 +291,11 @@ npx playwright test story-mechanisms.spec.ts
 ```
 
 The exporter derives self-contained SVG pose sheets from the shipped regional
-originals; run it after regional art exports. `art:seven` includes this final
-step. Every SVG remains below 128 KiB. The browser matrix checks actual prop
+originals; run it after regional art exports. `art:four` and `art:seven` include
+this final step. Gate poses share `assets/vector/gate_pose.py`: the two free edges recede
+into the passage with mirrored shear, including the saved open artwork. The
+Breakwater ferry stays at its berth during playback and after completion/reload.
+Every SVG remains below 128 KiB. The browser matrix checks actual prop
 pixels on desktop/phone, reduced motion, dialogue advancement, skip, progress
 and resource invariants, plus an interrupted harbor opening. These cases carry
 no `@ci` tag. The audit is in [mechanism-animation-audit.md](story/mechanism-animation-audit.md).

@@ -1,14 +1,14 @@
 # Story mechanism animation audit
 
 Follow-up to #224. This pass traces authored physical actions to their rendered
-props and saved visibility flags. Dialogue, choices, rewards and checkpoint IDs
-stay unchanged. The release/opening flag is still written only by the original
+props and saved visibility flags. Choices, rewards and checkpoint IDs stay
+unchanged; the gate narration keeps the ferry at its berth. The release/opening flag is still written only by the original
 scene completion or Skip callback.
 
 | Scene | Previous presentation | Animation added | Saved result |
 | --- | --- | --- | --- |
 | `two-prisoners` | The narration slides a stationary coach door. | The native door slides over the coach side, exposing the dark doorway. | `prisonersFreed` restores the open pose. |
-| `four-gate` | Gate and ferry switch only after dialogue. | Wheel turns, two leaves fold on their hinges, ferry rounds the quay to the lower mooring. Stone piers stay fixed. | Existing `harborOpened` gate/ferry layers. |
+| `four-gate` | Gate and ferry switch only after dialogue. | Wheel turns and both leaves recede into the passage with mirrored perspective. The ferry stays moored; stone piers stay fixed. | Existing `harborOpened` gate layers; the ferry keeps its berth across completion/reload. |
 | `four-cable` | Clamp switches after dialogue; the spark is only narrated. | Copper shoe lifts, cable sags, spark travels uphill. | Existing `signalCut` clamp layer. |
 | `five-water` | Water appears after dialogue; the control stays still. | Wheel turns and water advances beneath the casting floor. | Existing `coolingOpened` water layer. |
 | `five-wind-lift` | Platform already rises, but its wheel stays still. | Wheel turns alongside the existing platform and attendant motion. | Existing `waterLiftOpened` platform layers. |

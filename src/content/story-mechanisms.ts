@@ -16,7 +16,7 @@ export const MECHANISM_SHEETS={
 export type MechanismSheet=keyof typeof MECHANISM_SHEETS;
 export const STORY_MECHANISMS={
  'coach-open':{sheets:['coach-door'],duration:1100},
- 'harbor-open':{sheets:['harbor-wheel','harbor-gate'],duration:3200},
+ 'harbor-open':{sheets:['harbor-wheel','harbor-gate'],duration:1800},
  'cable-release':{sheets:['sanctuary-clamp'],duration:1500},
  'cooling-open':{sheets:['cooling-wheel'],duration:1800},
  'water-wheel':{sheets:['ward-wheel'],duration:1400},
@@ -31,14 +31,6 @@ export const mechanismTexture=(name:MechanismSheet)=>`scene-mechanism-${name}-po
 export const mechanismAssets=(map:MapId)=>Object.entries(MECHANISM_SHEETS).filter(([,d])=>d.map===map).map(([name])=>({key:mechanismTexture(name as MechanismSheet),url:`art/vector/story-mechanisms/${name}.svg`}));
 /** These must retain individual images instead of entering a static ground cache. */
 export const liveMechanismPiece=(key:string)=>['scene-five-gantry-signal','scene-five-watch-return-line','scene-five-gallery-light'].includes(key);
-/** The ferry rounds the outside of the quay; its hull never cuts over paving. */
-export function harborFerryPosition(progress:number,from:{x:number;y:number}){
- const t=Math.max(0,Math.min(1,progress));
- if(t<.3)return {x:from.x+(1632-from.x)*t/.3,y:from.y};
- if(t<.5)return {x:1632,y:from.y+(768-from.y)*(t-.3)/.2};
- return {x:1632+(36-1632)*(t-.5)/.5,y:768};
-}
-
 /** Static world and Maps review share the same native saved pose. */
 export function mechanismPoseForPiece(key:string,flags:Record<string,boolean>){
  const match=Object.entries(MECHANISM_SHEETS).find(([,d])=>d.target===key);if(!match)return;

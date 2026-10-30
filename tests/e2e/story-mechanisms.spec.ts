@@ -49,6 +49,30 @@ test('an interrupted harbor opening replays and skipping leaves no late prop mot
  await actionLine(page,c);await page.getByRole('button',{name:'Skip scene',exact:true}).click();const after=(await inspect(page)).state;expect(after.flags.harborOpened).toBe(true);
  await page.waitForTimeout(3500);expect((await inspect(page)).state).toMatchObject({flags:after.flags,inventory:after.inventory,party:after.party});expect((await inspect(page)).cinematic).toBeNull();expect(errors).toEqual([]);
 });
+test('the Breakwater ferry stays moored while the gate opens',async({page})=>{
+ const c=mechanismCases.find(c=>c.name==='harbor')!;await page.goto('/');await importSave(page,c.save());await actionLine(page,c);
+ await page.mouse.move(0,0);await page.waitForTimeout(1100);
+ const ferry={...c,roi:{x:1270,y:270,w:160,h:130}};
+ expect((await hashes(page,ferry,1000)).length,'the ferry remains still while the gate finishes opening').toBe(1);
+ await page.locator('.dialogue-actions button').first().click();expect((await hashes(page,ferry,400)).length).toBe(1);
+ await capture(page,'breakwater-ferry-moored');
+});
+test('gate leaves recede into the passage and match the saved open artwork',async({page})=>{
+ await page.goto('/');
+ const result=await page.evaluate(async()=>{
+  const pixels=async(url:string,frame=0)=>{
+   const image=new Image();image.src=url;await image.decode();const canvas=document.createElement('canvas');canvas.width=312;canvas.height=192;
+   const ctx=canvas.getContext('2d')!;ctx.drawImage(image,frame*312,0,312,192,0,0,312,192);return ctx.getImageData(0,0,312,192).data;
+  };
+  const open=await pixels('/art/vector/chapter-four/harbor-gate-open.svg'),frames=await Promise.all([0,4,8,12,16].map(i=>pixels('/art/vector/story-mechanisms/harbor-gate.svg',i)));
+  const mask=(p:Uint8ClampedArray,x:number,y:number)=>p[(y*312+x)*4+3]>128;
+  const asymmetry=(p:Uint8ClampedArray)=>{let count=0;for(let y=0;y<192;y++)for(let x=0;x<156;x++)if(mask(p,x,y)!==mask(p,311-x,y))count++;return count;};
+  let savedDifference=0;for(let y=0;y<192;y++)for(let x=0;x<312;x++)if(mask(open,x,y)!==mask(frames[4],x,y))savedDifference++;
+  return {asymmetry:frames.map(asymmetry),savedDifference,freeEdges:[mask(open,70,80),mask(open,241,80)]};
+ });
+ for(const mismatch of result.asymmetry)expect(mismatch,'the two leaves share mirrored perspective into the passage').toBeLessThan(32);
+ expect(result.savedDifference,'finishing the scene keeps the same gate silhouette').toBeLessThan(32);expect(result.freeEdges).toEqual([true,true]);
+});
 for(const [map,flag,sheet,width,x,y,px,py]of [
  ['coast','prisonersFreed','coach-door',264,504,168,222,86],
  ['signalwall','dawnwatchFreed','watch-anchor',320,620,135,162,108],

@@ -3,6 +3,7 @@ Run after regional art exports: npm run art:mechanisms.
 """
 from pathlib import Path
 import copy, json, math, xml.etree.ElementTree as ET
+from gate_pose import folded_leaves
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/story-mechanisms';ART.mkdir(exist_ok=True)
 NS='{http://www.w3.org/2000/svg}'
@@ -29,16 +30,10 @@ wheel('harbor-wheel','chapter-four/harbor-wheel.svg',(40,33))
 wheel('cooling-wheel','chapter-five/cooling-wheel.svg',(43,35))
 wheel('ward-wheel','chapter-five/windmere-lift-wheel.svg',(43,35))
 
-closed=source('chapter-four/harbor-gate-closed.svg');opened=source('chapter-four/harbor-gate-open.svg')
+closed=source('chapter-four/harbor-gate-closed.svg')
 def gate(p,season=False):
- if p==1:return group(opened)+season_details(p)if season else group(opened)
  # Gate leaves hinge independently; the stone piers and their feet stay fixed.
- common=group(closed[:8]);leaves=group(closed[8:]);scale=1-p*.82
- body=common
- for side,(x,w,pivot)in enumerate([(48,108,48),(156,108,264)]):
-  clip=f'leaf-{side}-{round(p*16)}'+('-snow'if season else '')
-  body+=f'<defs><clipPath id="{clip}"><rect x="{x}" y="30" width="{w}" height="154"/></clipPath></defs>'
-  body+=group([group([leaves],extra=f'clip-path="url(#{clip})"')],f'translate({pivot} 0) scale({scale:g} 1) translate({-pivot} 0)')
+ body=group(closed[:8])+folded_leaves(group(closed[8:]),p,f'leaf-{round(p*16)}'+('-snow'if season else ''))
  return body+(season_details(p)if season else '')
 snow='<path d="M0 10 24 0 48 10 44 17 28 12 10 19ZM264 10 288 0 312 10 306 18 288 12 274 19Z" fill="#dce4db"/>'
 def season_details(p):

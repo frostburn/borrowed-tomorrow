@@ -264,6 +264,6 @@ on close, and leaves every flag write in the existing completion/skip callback.
 `world-mechanisms.ts` restores saved terminal poses. Return-light layers listed
 by `liveMechanismPiece` must stay out of static ground caches. Rebuild the SVG
 poses from the regional originals with `npm run art:mechanisms` after regional
-art exports; Chapter Seven's exporter runs it automatically to retain its
-season-street gate layers without renumbering existing IDs. Keep the detailed
+art exports. Chapter Four and Seven's exporters run it automatically; Chapter
+Seven retains its season-street gate layers without renumbering existing IDs. Keep the detailed
 mechanism/device/reload checks opt-in. See `docs/story/mechanism-animation-audit.md`.
