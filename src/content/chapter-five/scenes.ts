@@ -21,7 +21,7 @@ export const launch=()=>scene('airfield','five-launch','Above the railway',[
  line('Alda','Mooring brake is free. Everyone aboard. Mind the survey rods.',{focus:{x:31,y:23},cut:true,actors:{durn:{visible:false}}}),
  line('Kit','I’ll take the heavy case.'),
  line('Nell','Which one?'),
- line('Kit','Yours. If you— I mean, I’m already carrying the others.',{expression:'bashful'}),
+ line('Kit','Yours, if you don’t mind. I—here, let me take it.',{expression:'flustered'}),
  line('Nell','Thanks. I’ll get the door.',{expression:'happy'}),
  line('The gangway','The last bag goes aboard. Alda folds the gangway and releases the mooring.',{effect:'survey-board',duration:1400,focus:{x:32,y:21}} ),
  line('Alda','Hold a rail. She lifts a little nose-first.',{effect:'survey-launch',duration:1800,cue:'steam',focus:{x:32,y:18}}),

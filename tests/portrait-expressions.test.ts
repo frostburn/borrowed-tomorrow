@@ -13,6 +13,8 @@ it('resolves only authored expressions, with neutral fallback for other portrait
  }
  expect(expressivePortrait('portrait-alban','angry')).toBe('portrait-alban');expect(expressivePortrait(undefined,'happy')).toBeUndefined();
  expect(expressivePortrait('portrait-celia','bashful')).toBe('portrait-celia');
+ expect(expressivePortrait('portrait-kit','flustered')).toBe('portrait-kit-flustered');
+ expect(expressivePortrait('portrait-nell','flustered')).toBe('portrait-nell');
  expect(SAY('Nell','A line.').expression).toBeUndefined();expect(SAY('Narrator','A line.').portrait).toBeUndefined();
  expect(SAY('Alias','A line.','master').portrait).toBe('portrait-master');
  const line=STAGED('Nell','A line.',{expression:'worried',focus:{x:2,y:3},duration:500});

@@ -62,13 +62,13 @@ export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pu
 ]);
 export const rest=()=>scene('rainhouse','six-river-rest','A little farther',[
  line('Nell','Kit. Come over here, will you?',{focus:{x:30,y:28},cut:true,actors:{nell:{to:{x:29,y:28}}},duration:800}),
- line('Kit','I put your water here. Is there anything else you—'),
+ line('Kit','I put your water here. Is there anything else you need?'),
  line('Nell','You. I wanted to see you without someone counting my pulse.',{expression:'bashful'}),
- line('Kit','Oh. I kept thinking I’d left something on the boat.',{expression:'bashful'}),
+ line('Kit','Oh. I kept thinking I’d left something on the boat.',{expression:'flustered'}),
  line('Nell','My shoes?'),
  line('Kit','Only once.'),
  line('Nell','I missed talking to you.',{expression:'happy'}),
- line('Kit','I missed it too.',{expression:'happy',actors:{kit:{to:{x:30,y:28}}},duration:600}),
+ line('Kit','I missed it too.',{expression:'bashful',actors:{kit:{to:{x:30,y:28}}},duration:600}),
  line('The rain house','Nell sets the lantern by her feet and steps close to Kit.',{actors:{nell:{face:'nell-rest'},kit:{face:'kit-rest'}}}),
  line('Nell','I’m all right now.',{expression:'happy'}),
  line('The river','She puts her arms around him. After a moment, he hugs her back.',{actors:{nell:{at:{x:29.5,y:28},face:'pair-hug'},kit:{visible:false}},duration:900}),

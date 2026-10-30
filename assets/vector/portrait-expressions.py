@@ -1,8 +1,8 @@
 """Rebuild small expression SVGs from independent neutral portraits.
 
 Run from the repository root: python assets/vector/portrait-expressions.py
-Only named facial paths change; costume, face planes, hair, neck and glasses
-remain the portrait artist's original drawing. No bitmap resampling is used.
+Named facial paths change; Kit's flustered pose also adds a raised right arm
+and sweat drop. Neutral originals stay untouched. No bitmap resampling is used.
 """
 from pathlib import Path
 import re
@@ -16,7 +16,7 @@ FACES = {
  'orrin': dict(brows='M41 44', eyes='M44 52', pupils='M50 51', mouth='M57 79', lip=None, near=(44,55,52), far=(73,83,53), brow=(41,59,70,87,44),
   mouths=dict(happy='M56 78L63 80 74 77 72 80 64 83 58 81Z', worried='M59 80L65 79 72 80 71 82 59 82Z', sad='M57 81L65 78 72 80 72 82 65 81 58 83Z', angry='M57 79L73 78 73 81 58 82Z', surprised='M61 79L67 78 70 81 68 85 62 84Z')),
  'kit': dict(brows='M40 45', eyes='M44 52', pupils='M49 50', mouth='M52 77', lip=None, near=(44,55,52), far=(72,81,52), brow=(40,57,69,83,44),
-  mouths=dict(happy='M52 76L63 79 75 74 72 80 64 83 55 81Z', worried='M56 79L63 77 71 78 72 81 65 80 57 82Z', sad='M53 81L62 77 69 78 75 81 72 82 63 80 56 83Z', angry='M53 78L74 76 73 79 55 81Z', surprised='M59 76L65 75 70 78 69 83 63 85 59 82Z', bashful='M53 79L61 81 72 77 70 81 63 83 56 82Z')),
+  mouths=dict(happy='M52 76L63 79 75 74 72 80 64 83 55 81Z', worried='M56 79L63 77 71 78 72 81 65 80 57 82Z', sad='M53 81L62 77 69 78 75 81 72 82 63 80 56 83Z', angry='M53 78L74 76 73 79 55 81Z', surprised='M59 76L65 75 70 78 69 83 63 85 59 82Z', bashful='M53 79L61 81 72 77 70 81 63 83 56 82Z', flustered='M56 78L64 79 71 77 71 81 64 83 57 81Z')),
  'celia': dict(brows='M42 45', eyes='M46 53', pupils='M50 52', mouth='M53 79', lip='M58 80', near=(46,55,54), far=(72,80,54), brow=(42,59,69,84,45),
   mouths=dict(happy='M54 79L63 81 75 77 72 82 64 85 57 83Z', worried='M57 82L64 80 72 81 73 83 64 82 58 84Z', sad='M54 83L63 79 70 80 75 83 71 84 64 82 57 85Z', angry='M54 81L75 79 74 82 56 84Z', surprised='M60 79L66 78 70 82 68 87 62 87 59 83Z')),
  'petra': dict(brows='M42 44', eyes='M46 52', pupils='M51 51', mouth='M53 79', lip='M59 84', near=(46,56,52), far=(73,82,53), brow=(42,60,70,86,44),
@@ -39,6 +39,8 @@ def brow_path(face, emotion):
  # A furrow points down toward the nose; worry and grief lift the inner ends.
  if emotion=='angry':
   return f'M{a} {y}L{b} {y+5}V{y+8}L{a+1} {y+3}Z M{c} {y+5}L{d} {y}V{y+3}L{c} {y+8}Z'
+ if emotion=='flustered':
+  return f'M{a} {y+1}L{b-2} {y-3} {b} {y-1} {a+1} {y+4}Z M{c} {y-2}L{d} {y+1}V{y+4}L{c} {y+1}Z'
  if emotion in ('worried','sad'):
   lift=3 if emotion=='worried' else 5
   return f'M{a} {y+3}L{b-2} {y-lift} {b} {y-lift+3} {a+1} {y+6}Z M{c} {y-lift}L{d} {y+2}V{y+5}L{c} {y-lift+3}Z'
@@ -48,13 +50,14 @@ def eye_paths(face,emotion):
  eyes=[];pupils=[]
  for x,right,y in (face['near'],face['far']):
   y=y//2*2
-  if emotion=='surprised': top,bottom=y-3,y+5
+  if emotion=='flustered': top,bottom=y-2,y+6
+  elif emotion=='surprised': top,bottom=y-3,y+5
   elif emotion in ('happy','bashful'): top,bottom=y,y+4
   else: top,bottom=y-1,y+3
   eyes.append(f'M{x} {top+1}L{right-1} {top} {right} {bottom}H{x+1}Z')
-  center=(x+right)//2+(0 if emotion=='bashful' else 1)
+  center=(x+right)//2+(-1 if emotion=='flustered' else 0 if emotion=='bashful' else 1)
   # Equal 4x4 pupils remain equal at all four chunky sampling phases.
-  pupil_top=top+2 if emotion=='surprised' else top
+  pupil_top=top+2 if emotion in ('surprised','flustered') else top
   pupils.append(f'M{center-1} {pupil_top}H{center+3}V{pupil_top+4}H{center-1}Z')
  return ' '.join(eyes),' '.join(pupils)
 
@@ -75,9 +78,28 @@ for hero,face in FACES.items():
    out=replace_path(out,face['detail'],' '.join(detail))
   out=replace_path(out,face['mouth'],mouth)
   if face['lip']:out=replace_path(out,face['lip'],'')
-  if emotion=='bashful':
+  if emotion in ('bashful','flustered'):
    blush='<path d="M43 66L50 65 53 69 46 71Z M74 65L81 65 81 69 75 70Z" fill="#b57264" opacity=".55"/>'
+   if emotion=='flustered':blush=blush.replace('opacity=".55"','opacity=".7"')
    out=out.replace('</svg>',blush+'\n</svg>')
+  if hero=='kit' and emotion=='flustered':
+   # Anatomical right arm on camera-left: elbow below the crop, hand at neck.
+   pose='''<g data-part="flustered-arm">
+<path d="M31 99L22 101 10 119 10 140 26 140 36 121 40 104Z" fill="#233d52"/>
+<path d="M25 104L14 120 14 140 23 140 31 120 35 104Z" fill="#3e596b"/>
+<path d="M22 125L23 140 26 140 36 121 40 104 35 102 28 119Z" fill="#122634"/>
+<path d="M13 129L27 137 48 96 45 88 36 85 26 102Z" fill="#3e596b"/>
+<path d="M23 130L27 137 48 96 45 88 42 90 42 96Z" fill="#233d52"/>
+<path d="M34 92L39 85 48 89 48 97 41 101Z" fill="#7c98a6"/>
+<path d="M38 89L38 84 41 78 45 76 48 78 47 83 50 85 50 90 46 93 42 92Z" fill="#c99571"/>
+<path d="M44 79L45 76 48 78 47 83 50 85 50 90 46 93 44 90 46 86 44 84Z" fill="#a7745a"/>
+<path d="M39 84L42 79 44 79 42 85 43 89 40 89Z" fill="#e1b68c"/>
+</g>
+<g data-part="sweat-drop">
+<path d="M94 48L99 57 99 61 96 65 92 64 90 60 91 56Z" fill="#80b3bf"/>
+<path d="M94 52L95 57 94 61 92 60 92 57Z" fill="#e2eee7"/>
+</g>'''
+   out=out.replace('</svg>',pose+'\n</svg>')
   out=re.sub(r'<title>(.*?)</title>',lambda m:f'<title>{m[1]} — {emotion}</title>',out)
   out=out.replace('<metadata>',f'<!-- Expression: {emotion}; derived by assets/vector/portrait-expressions.py -->\n<metadata>',1)
   (ART/f'portrait-{hero}-{emotion}.svg').write_text(out)

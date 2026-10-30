@@ -13,7 +13,7 @@ export const arrival=(s:GameState)=>scene(s,'bellharbor','six-north-arrival','Sk
  line('Orrin','We can open the passage. Will your expedition come with us?'),
  line('Signe','The porters are packed. Egil knows the glacier route; I know the release.'),
  line('Egil','It was a stair when I last took it. The ice has pulled back since then. We’ll see what’s left.'),
- ...(s.flags.nellRecovered?[line('Nell','We’ll bring rope. Kit, did the launch take our long coil?'),line('Kit','Under your bag. I mean—the equipment bag. I’ll get it.',{expression:'bashful'})]:[line('Celia','One of our companions is ill aboard. I’ll leave her care notes with your harbor medics.'),line('King Edric','They’ll take the next launch. We can keep the watch while you’re on the mountain.')]),
+ ...(s.flags.nellRecovered?[line('Nell','We’ll bring rope. Kit, did the launch take our long coil?'),line('Kit','With the packs. I’ll get it.')]:[line('Celia','One of our companions is ill aboard. I’ll leave her care notes with your harbor medics.'),line('King Edric','They’ll take the next launch. We can keep the watch while you’re on the mountain.')]),
  line('Signe','The covered road starts above the eastern quay. Take warm coats before we go.'),
 ]);
 export const watch=(s:GameState)=>scene(s,'frostwatch','six-north-watch','The closed mountain passage',[

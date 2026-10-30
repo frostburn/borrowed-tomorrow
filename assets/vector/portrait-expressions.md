@@ -1,14 +1,22 @@
 # Portrait expressions
 
 The five party members and Tomas retain their independently drawn 128 x 128 neutral SVGs
-in `public/art/vector/portrait-*.svg`. Expression variants replace only each
+in `public/art/vector/portrait-*.svg`. Expression variants adjust each
 portrait's existing brows, eyes, pupils and mouth. Orrin's beard, Celia's glasses,
-head shapes, hair, connected necks and costumes stay in their original layers.
+head shapes, hair, connected necks and costumes stay in their original layers;
+Kit’s flustered arm gesture overlays his original jacket.
 Tomas retains his two-tone dark green eyes, including paired iris accents in
 every expression. His first-screen welcome, concern and protective refusal
 use explicit cues, with further cues at his rescue and later sibling scenes.
 
-Rebuild the 32 variants from the repository root, without extra dependencies:
+Kit also has a flustered variant: lifted inner brows, a wider sideways glance,
+a small parted smile, warmer cheeks, a sweat drop and his right hand raised to
+his neck. The thicker sleeve is on camera-left and continues below the portrait
+crop, with the elbow off-screen. Use it for his verbal
+slips, reserving the softer bashful smile for quieter affection. It is available
+only for Kit.
+
+Rebuild the 33 variants from the repository root, without extra dependencies:
 
 ```sh
 python assets/vector/portrait-expressions.py
@@ -35,7 +43,8 @@ branches. Add cues in context rather than inferring emotion from keywords.
 
 Review under **Workshop → Sprites → Portrait expressions**. The preview uses
 the actual dialogue assets and the shared chunky framebuffer. Browser checks
-compare every variant with its original outside the facial features, check
+compare every variant with its original outside the facial features (and Kit's
+explicit arm/sweat regions), check
 native dimensions and sampled expression detail, and replay the festival and
 optional recovery scenes at desktop and phone sizes.
 
@@ -44,7 +53,7 @@ keep those blocks within a visible pale ivory sclera, including happy eyes;
 three-pixel widths and mismatched odd heights can produce unequal pupils after
 two-pixel sampling. Local eyelid/brow anchors still follow each original face.
 Tomas’s darker pupil accents are paired 2 × 2 blocks within his green irises.
-The browser regression renders all 62 human faces at all four sampling phases,
+The browser regression renders all 63 human faces at all four sampling phases,
 checking the actual visible eye pixels rather than just SVG coordinates.
 The neutral Emperor is unchanged from main, and Tilda has a deliberately
 partly closed left eyelid with a lowered pupil; the audit preserves these individual shapes.
