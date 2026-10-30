@@ -1,3 +1,5 @@
+import {newSkillBook} from '../../src/rules/skills';
+import {level} from '../../src/rules/state';
 import { chapterSixNorthStart } from '../../src/dev/canonical-saves';
 import { arrival } from '../../src/content/maps';
 import { ENCOUNTERS } from '../../src/content/chapter-six/north/encounters';
@@ -8,5 +10,5 @@ export function northCheckpoint(flag:typeof northOrder[number],recovered=false){
  for(const f of northOrder.slice(0,index+1)){s.flags[f]=true;s.journal.push(f);}
  for(const e of Object.values(ENCOUNTERS))if(s.flags[e.flag]){s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}
  s.location=index>=13?arrival('outermooring','namar'):index>=12?arrival('bellharbor','return'):index>=8?arrival('wintershrine','stand'):index>=5?arrival('glacier','wreck'):index>=1?arrival('frostwatch','start'):arrival('bellharbor','start');
- return s;
+ s.skills=newSkillBook(level(s));return s;
 }

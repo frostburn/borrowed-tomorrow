@@ -17,7 +17,7 @@ import {abilityFor,skillAbilities,type SkillRanks} from './skills';
 import {teamOutput,teamSolo} from './abilities';
 import { CHARACTERS } from '../content/characters';
 import { blast, cells, diagonalRay, distance, equal, inside, key, lanternVolley, offset, quad, ray, reachable, visible, type Hex } from './hex';
-import { level, maxHp, type GameState, type HeroId, type MapId } from './state';
+import { gainExperience, level, maxHp, type GameState, type HeroId, type MapId } from './state';
 import { equipmentBonuses, receiveItem, type EquipmentBonuses, type ItemId } from './inventory';
 import type { CharacterProfile, CompanionId } from './characters';
 import { validParty } from './party';
@@ -452,7 +452,7 @@ export function awardVictory(b: Battle, s: GameState) {
   if (b.result !== 'victory' || s.flags[e.flag]) return;
   if (e.item) receiveItem(s.inventory, e.item);
   const oldLevel = level(s);
-  s.flags[e.flag] = true; s.xp += e.xp; s.coins += e.coins; s.bandages = b.bandages;
+  s.flags[e.flag] = true; gainExperience(s,e.xp); s.coins += e.coins; s.bandages = b.bandages;
   for (const id of PACKED_CONSUMABLES) if (b.supplies[id] || s.inventory.bag[id] !== undefined) s.inventory.bag[id] = b.supplies[id];
   for (const hero of s.party) {
     if(!heroAvailable(s,hero.id))continue;

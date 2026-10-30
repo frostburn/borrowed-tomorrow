@@ -1,4 +1,4 @@
-/* Compact cards keep the offered upgrade visible; current rules expand on demand. */
+/* Automatic milestones stay visible; current rules expand on demand. */
 .skill-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:8px}
 .skill-cards>.skill-card{min-width:0;margin:0;padding:8px;border:2px solid #625842;background:#182b32}
 .skill-card-heading{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 8px}
@@ -10,9 +10,6 @@
 .skill-current p{color:#f4e5be}
 .skill-next{margin-top:6px;padding-top:6px;border-top:2px solid #405955}
 .skill-stats{color:#f4c77a}
-.skill-purchase{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin-top:8px}
-.skill-card button{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:14px;white-space:normal;padding:6px 8px;min-height:28px}
-.skill-reason{flex:1;min-width:100px}
 .skill-summary{display:flex;flex-wrap:wrap;gap:4px 12px;margin:8px 0}
 .skill-summary strong{color:#f4c77a}
 .skill-characters{display:flex;flex-wrap:wrap;gap:4px}
@@ -20,7 +17,7 @@
 .skill-identity{display:flex;align-items:center;gap:8px;margin-top:8px}
 .skill-identity img{width:48px;height:48px;flex-shrink:0}
 .skill-identity h2{margin:0}
-.character-skills>p[role=status]:empty{display:none}
+.skill-gains{margin:8px 0;padding-left:20px;color:#f4c77a}
 @media(max-width:700px){.skill-cards{grid-template-columns:1fr}}
 
 

@@ -24,11 +24,11 @@ export function daybreakProtection(u:Unit,partner?:Unit){
  const ward=abilityFor(vanguard,'taunt').ward;
  return {vanguard,power:ward?teamOutput(ward.power+Math.floor(Math.max(0,(vanguard.level??1)-1)*1.5)):0,party:!!ward?.party};
 }
-/** Fallen partners remain in the battle; missing or reserve partners do not clutter commands. */
+/** Only learned combinations appear. Busy, exhausted or fallen trained partners remain inspectable. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
  if(u.teamSpentRound===b.round)return false;
  const team=ABILITIES[id].team;
- return !team||team.pair.includes(u.kind)&&b.units.some(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind)&&(!u.linkedTo||u.linkedTo===v.id));
+ return !team||team.pair.includes(u.kind)&&u.abilities.includes(teamSolo(u.kind,id)!)&&b.units.some(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind)&&v.abilities.includes(teamSolo(v.kind,id)!)&&(!u.linkedTo||u.linkedTo===v.id));
 });
 export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:Unit;reason?:string}{
  const team=ABILITIES[id].team;if(!team)return {};

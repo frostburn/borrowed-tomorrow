@@ -10,16 +10,14 @@ import {decodeSave} from '../rules/save';
 import {awardVictory,createBattle,type Battle} from '../rules/combat';
 import {equipItem,ITEMS,type ItemId} from '../rules/inventory';
 import {buySupply,canBuy,shopStock,type ShopId,type SupplyId} from '../rules/supplies';
-import {upgradeSkill,type SkillId} from '../rules/skills';
 import type {CompanionId} from '../rules/party';
 import {playBattle} from './battle';
 
+/** Build selects formations; skill growth is automatic for every policy. */
 export interface AgentOptions {tactics:'legacy'|'defensive'|'cooperative';build:'offense'|'support';spending:'baseline'|'frugal'|'prepared'}
 export const baselineAgent:AgentOptions={tactics:'legacy',build:'offense',spending:'baseline'};
 export const defaultAgent:AgentOptions={tactics:'defensive',build:'offense',spending:'prepared'};
 
-const priorities:Record<CompanionId,SkillId[]>={nell:['burst','sunline','mend','dazzle'],orrin:['steam','rivet','guard','repulse'],kit:['quickshot','pin','ricochet','feint'],petra:['crush','sweep','taunt','bash'],celia:['heal','celestialbolt','rally','sanctuary']};
-const support:Record<CompanionId,SkillId[]>={nell:['mend','dazzle','burst','sunline'],orrin:['guard','rivet','steam','repulse'],kit:['feint','pin','quickshot','ricochet'],petra:['taunt','bash','crush','sweep'],celia:['heal','sanctuary','rally','celestialbolt']};
 export const resources=(s:GameState)=>structuredClone({chapter:s.chapter,location:s.location,level:level(s),xp:s.xp,coins:s.coins,bandages:s.bandages,party:s.party,activeParty:s.activeParty,inventory:s.inventory,skills:s.skills,improvements:IMPROVEMENTS.filter(i=>improved(s,i.id)).map(i=>i.id)});
 export class CampaignSession{
  readonly state:GameState;
@@ -91,7 +89,6 @@ export class CampaignSession{
  }
  prepare(){
   this.world();const s=this.state;
-  for(const p of s.party)for(const skill of (this.agent.build==='support'?support:priorities)[p.id])while(upgradeSkill(p.id,level(s),s.skills[p.id],skill))this.events.push({event:'skill',hero:p.id,skill,rank:s.skills[p.id][skill]});
   // Prefer better bag items without taking gear away from another fighter.
   const rating=(id:ItemId|null)=>id?ITEMS[id].bonuses.attack*3+ITEMS[id].bonuses.armor*2+ITEMS[id].bonuses.speed:0;
   const heroes=[...s.activeParty,...s.party.map(p=>p.id).filter(id=>!s.activeParty.includes(id))];

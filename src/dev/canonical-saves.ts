@@ -1,6 +1,6 @@
-import {presetSkills} from '../rules/skills';
+import {newSkillBook} from '../rules/skills';
 import {level,type GameState} from '../rules/state';
-const canonicalSkills=(s:GameState)=>{for(const h of s.party)s.skills[h.id]=presetSkills(h.id,level(s));return s;};
+const canonicalSkills=(s:GameState)=>{s.skills=newSkillBook(level(s));return s;};
 import {ENCOUNTERS as SEVEN_ENCOUNTERS} from '../content/chapter-seven/encounters';
 import { ENCOUNTERS as SIX_ENCOUNTERS } from '../content/chapter-six/encounters';
 import { ENCOUNTERS as FINALE_ENCOUNTERS } from '../content/chapter-six/capital/encounters';

@@ -3,7 +3,7 @@ import {ABILITIES,cast,createBattle,damage,defend,endTurn,legalAim,shape,targets
 import {teamSolo} from '../src/rules/abilities';
 import {supportPower,battleAbilities,daybreakProtection,teamStatus} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
-import {abilityFor,decodeSkillBook,newSkillBook,skillAbilities,startingSkills,upgradeSkill} from '../src/rules/skills';
+import {abilityFor,decodeSkillBook,newSkillBook,skillAbilities,skillsAtLevel,startingSkills} from '../src/rules/skills';
 import {COMPANION_IDS,type CompanionId} from '../src/rules/party';
 import {add,DIRECTIONS,inside,key,offset,scale} from '../src/rules/hex';
 import {newGame} from '../src/rules/state';
@@ -40,11 +40,11 @@ describe('a circle of team partners',()=>{
  });
 });
 describe('distinct healing progression and caster-originating Steam lance',()=>{
- it('keeps Celia’s Heal choices separate from Nell’s Mend and saves only the owned skill',()=>{
+ it('keeps Celia’s automatic Heal progression separate from Nell’s Mend',()=>{
   const nell=startingSkills('nell'),celia=startingSkills('celia');expect(celia.heal).toBe(1);expect(celia.mend).toBeUndefined();expect(nell.mend).toBe(0);expect(nell.heal).toBeUndefined();
-  expect(upgradeSkill('celia',3,celia,'heal')).toBe(true);expect(upgradeSkill('nell',3,nell,'mend')).toBe(true);expect(upgradeSkill('nell',3,nell,'mend')).toBe(false);
+  Object.assign(celia,skillsAtLevel('celia',4));Object.assign(nell,skillsAtLevel('nell',4));expect(celia.heal).toBe(2);expect(nell.mend).toBe(1);
   expect(abilityFor({kind:'celia',skills:celia},'heal').name).toBe('Heal');expect(skillAbilities('celia',celia)).not.toContain('mend');
-  const book=newSkillBook();book.celia=celia;book.nell=nell;expect(decodeSkillBook(book,3)).toEqual(book);
+  const book=newSkillBook(4);expect(decodeSkillBook(book,4)).toEqual(book);
   const bad=structuredClone(book);delete bad.celia.heal;bad.celia.mend=2;expect(()=>decodeSkillBook(bad,3)).toThrow();
  });
  for(const rank of [1,2,3])it(`Steam lance rank ${rank} stays a contiguous four-hex ray from Orrin in every direction`,()=>{

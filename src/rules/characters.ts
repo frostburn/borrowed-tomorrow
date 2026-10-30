@@ -1,7 +1,7 @@
 import { CHARACTERS } from '../content/characters';
 import type { AbilityId } from './combat';
 import { MAX_LEVEL } from './progression';
-import {presetSkills,skillAbilities,decodeSkillRanks,type SkillRanks} from './skills';
+import {skillsAtLevel,skillAbilities,decodeSkillRanks,type SkillRanks} from './skills';
 export { LEARNING } from './progression';
 import { COMPANION_IDS, MAX_PARTY_SIZE, validParty, type CompanionId } from './party';
 export { COMPANION_IDS, type CompanionId } from './party';
@@ -21,7 +21,7 @@ export interface CharacterSettings { version: 3; characters: Record<CompanionId,
 export function defaultBuild(hero: CompanionId, level = 1): CharacterBuild {
   if (!Number.isInteger(level) || level < 1 || level > MAX_LEVEL) throw new Error(`Level must be 1–${MAX_LEVEL}.`);
   const c = COMPANIONS[hero];
-  return { level, skills:presetSkills(hero,level), maxHp: c.maxHp + (level - 1) * 6, attack: c.attack + (level - 1) * 2, armor: c.armor, speed: c.speed, movement: c.movement, focus: 6 };
+  return { level, skills:skillsAtLevel(hero,level), maxHp: c.maxHp + (level - 1) * 6, attack: c.attack + (level - 1) * 2, armor: c.armor, speed: c.speed, movement: c.movement, focus: 6 };
 }
 export function newCharacterSettings(): CharacterSettings {
   return { version: 3, characters: Object.fromEntries(COMPANION_IDS.map(id => [id, defaultBuild(id)])) as Record<CompanionId, CharacterBuild>, party: ['nell', 'orrin'] };

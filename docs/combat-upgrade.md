@@ -2,36 +2,38 @@
 
 Issue #105 shares the campaign resolver with **Workshop → Combat** (`?dev=combat`). Movement and actions remain separate. Equipment, deployment and victory rules keep their existing behavior.
 
-## Upgrade choices
+## Automatic progression
 
-Each character level after the first grants **one upgrade point per companion**, including reserves, until that companion has earned enough to buy every rank (11 points; 10 for Celia, who starts with two free skills). Points are derived from this capped level allowance minus purchased ranks, so they can be saved, cannot be awarded twice on reload, and are available to later recruits. Each skill has its own rank and a character-level gate for each upgrade. Learning a new skill also costs one point; level-one starting skills are free.
+Skills are learned and improved automatically at the following **character levels**. There are no upgrade points, purchase buttons or banked choices. The party shares experience; reserves and later recruits receive the same level-based progression. Every character learns their four skills by level seven and masters them at fifteen. Quiet levels still give normal stat growth.
 
-Choose **Upgrade skills** on the victory panel, the spendable-points button while exploring, or **Equipment → Skills**. Each character has separate points and saved choices. The cards show current/next effects, skill rank, character-level requirement and why an upgrade is unavailable. Combat buttons have compact rank badges; preview, legality, damage and animation all resolve the chosen rank. Raising the character level does not silently buy skills.
+| Character | Skill | Learn | Rank II | Rank III |
+| --- | --- | ---: | ---: | ---: |
+| Nell | Lantern burst | 1 | 3 | 10 |
+| Nell | Mend | 2 | 6 | 12 |
+| Nell | Dazzle | 4 | 8 | 13 |
+| Nell | Horizon light | 7 | 11 | 15 |
+| Orrin | Steam lance | 1 | 5 | 11 |
+| Orrin | Rivet shot | 2 | 7 | 12 |
+| Orrin | Safety guard | 3 | 8 | 14 |
+| Orrin | Pressure wave | 6 | 10 | 15 |
+| Kit | Quick shot | 1 | 4 | 10 |
+| Kit | Feint | 2 | 6 | 12 |
+| Kit | Ricochet | 5 | 9 | 14 |
+| Kit | Pinning shot | 7 | 11 | 15 |
+| Celia | Celestial bolt | 1 | 7 | 13 |
+| Celia | Heal | 1 | 4 | 11 |
+| Celia | Rallying cry | 2 | 6 | 12 |
+| Celia | Sanctuary | 5 | 9 | 15 |
+| Petra | Shield bash | 1 | 6 | 12 |
+| Petra | Taunt | 2 | 8 | 14 |
+| Petra | Saber sweep | 3 | 7 | 11 |
+| Petra | Crushing blow | 5 | 10 | 15 |
 
-| Character | Compact skill lines |
-| --- | --- |
-| Nell | Lantern burst, Mend, Dazzle, Horizon light |
-| Orrin | Steam lance, Rivet shot, Safety guard, Pressure wave |
-| Kit | Quick shot, Feint, Ricochet, Pinning shot |
-| Celia | Celestial bolt, Heal, Rallying cry, Sanctuary |
-| Petra | Shield bash, Taunt, Saber sweep, Crushing blow |
+Victory results name each new skill (for example **Nell learns Mend.**) and rank improvement, including every milestone crossed by a multi-level reward. Only recruited, available companions are named; reserves receive the same announcements. Ill/lost Nell is not announced. Story-earned XP uses the same growth rule and shows its notices alongside received rewards. Loading does not repeat level-up announcements.
 
-Strike and Items stay separate from skill upgrades. Items opens one shared bag menu for bandages, field bandages and focus tonics, with quantities and effects; each uses a main action after targeting and confirmation. See [economy.md](economy.md) for the early supply counters. Solo skills have three ranks; team moves have no separate rank or point cost. The longest character command list has eight entries, with team commands omitted when their partner is absent. `rules/skills.ts` is the source for all rank effects and level gates.
+**Equipment → Skills** is a read-only reference with expandable current effects, the next automatic milestone and mastery. It preserves the selected character and hides combinations until both solos are learned and both characters are recruited. The workshop uses the same cards; changing level replaces its ranks automatically. There are no exploration upgrade prompts. Victory panels retain learned-skill notifications and only the Continue action; review skills through Equipment.
 
-The exploration/victory shortcut appears only when an available companion can buy an upgrade now; its count excludes points waiting behind level gates. Equipment → Skills remains available for review. The shared campaign/workshop cards distinguish banked points, show the next character level that permits an upgrade, and replace surplus counts with **All skills mastered** when finished. Character tabs mark banked points and mastery too. Opening the shortcut selects a companion who can spend; opening Skills from Equipment preserves the selected character.
-
-Current-format saves retain all purchased ranks. Point balances are derived, not stored, so no migration/reset is needed. Canonical builds still spend their available points and may bank one point ahead of a late gate; that is distinct from permanent surplus after mastery.
-
-| Skill | Previous character-level gates | Current gates |
-| --- | --- | --- |
-| Kit — Feint | 2 / 3 / 10 | 2 / 3 / 6 |
-| Kit — Ricochet | 5 / 8 / 12 | 5 / 8 / 11 |
-| Celia — Celestial bolt | 1 / 6 / 11 | 1 / 4 / 7 |
-| Celia — Sanctuary | 5 / 9 / 12 | 5 / 8 / 12 |
-
-These earlier upgrades fill the long blocked stretches without adding ranks or changing their effects. First-learning gates, team unlocks, level-ten revival/party Rally, and level-thirteen Pinning shot remain unchanged. Kit can spend every earned point through level eleven; Celia through level eight. Short waits for later upgrades are still explicit, with banked points preserved.
-
-Kit can learn Feint at character level two and upgrade it to its one-focus second rank at level three. This gives his two earned points an eligible purchase when he joins at the canonical Chapter Two start; Ricochet, Pinning shot and team-move learning gates retain their later levels.
+Strike and Items remain separate. Items opens the shared bag for bandages, field bandages and focus tonics, with quantities and effects; each uses a main action after targeting and confirmation. See [economy.md](economy.md). Solo skills have three ranks; team moves derive from the two solos and have no separate rank or cost to learn. `rules/skills.ts` owns all milestones and unchanged rank effects. Campaign, canonical starts, workshop and headless play share that schedule; the headless `--build` policy now chooses formations only.
 
 The themed merges are functional: Nell’s Mend and Celia’s Heal each gain area healing; Celia’s final Heal includes revival. Dimming halo becomes area Dazzle. Steam lance retains its original contiguous four-hex ray at every rank, with increasing damage; Field bracing becomes upgraded Safety guard. Piercing bolt becomes upgraded Quick shot; Volley gives way to the Ricochet line. Driving blow becomes final Crushing blow, while Hold the line becomes final Taunt’s party barrier.
 
@@ -40,8 +42,8 @@ The themed merges are functional: Nell’s Mend and Celia’s Heal each gain are
 | Skill rank | Character level required | Base power | Footprint | Friendly damage |
 | --- | ---: | ---: | --- | --- |
 | 1 | 1 | 8 | Four touching hexes in a down-right slanted square | Full |
-| 2 | 2 | 12 | Target plus six neighbors | Full |
-| 3 | 6 | 17 | Target plus six neighbors | Half |
+| 2 | 3 | 12 | Target plus six neighbors | Full |
+| 3 | 10 | 17 | Target plus six neighbors | Half |
 
 All three cost two focus and aim within five hexes. The first footprint is `aim`, `aim + (1,0)`, `aim + (0,1)`, `aim + (1,1)` in axial coordinates, clipped to the board. Friendly reduction applies after attack, armor, Defend and Dazzle calculations, before barrier absorption. The preview uses the same rounded damage as resolution.
 
@@ -63,7 +65,7 @@ Team moves are derived from their solo skills, never purchased or upgraded separ
 
 Team damage takes **90% of the two actual solo attack contributions, rounded down**, before barrier absorption (#136). Separate actions therefore deliver about 11% more output when they can hit the same targets. Teaming buys immediate access to the partner’s action and its shared footprint; it can still win on total damage by hitting more targets. Each contribution retains its own ranked power, attack bonus, armor piercing, Dazzle, friendly-fire reduction, defense calculation and rounding; the target's barrier absorbs the total once. Solo targeting restrictions and bonus effects do not become additional team requirements or effects. Daybreak uses 90% of Celia’s Heal strength at her own rank and character level, and Petra’s actual Taunt: every living enemy targets Petra until her next turn. Taunt rank one has no barrier; rank two wards Petra; rank three wards the living party. Daybreak barriers take 90% of the level-scaled solo Taunt ward, rounded down, and preserve stronger existing wards. Daybreak can be useful at full HP because of Taunt/guard; it does not revive. Lantern volley takes 90% of both solo damage contributions but targets enemies only; it does not inherit Pinning shot’s pin effect. Its screen-facing footprint follows **Kit’s Pinning shot rank**, regardless of who initiates: rank one is a seven-hex ball; rank two adds `(2,-1) (2,0) (1,1)` relative to the aim for ten contacts; rank three adds `(-1,2) (0,2)` for twelve. Nell’s Burst rank improves her damage contribution without enlarging the volley. The final footprint retains the accepted staggered 3/4/3/2 rows on either row parity. Only board edges clip it. `hex.lanternVolley` supplies preview, targets, fixture damage and effects, using the actual contributors even after their shared action is spent. Crossfire inherits Kit's current Ricochet range and bounce reach for either initiator. Preview and resolution share these calculations.
 
-Full-width attacks exclude both operators, can hit another ally and damage multi-contact enemies once. Team commands disappear when a same-side partner is absent. Commands remain gray and inspectable when a partner has acted, is down, lacks focus or has not learned their required solo skill. Selecting one names the unavailable fighter and reason in the fixed confirmation area, where it stays visible even with a scrolled menu; it never offers confirmation. Shortcuts follow the filtered list. The skill-upgrade screen only describes combinations with **already recruited** characters, so later party members remain unspoiled.
+Full-width attacks exclude both operators, can hit another ally and damage multi-contact enemies once. Team commands disappear when a same-side partner is absent. Commands are also hidden until both required solo skills are learned (#208). Learned combinations remain gray and inspectable when a partner has acted, is down or lacks focus. Selecting one names the unavailable fighter and reason in the fixed confirmation area, where it stays visible even with a scrolled menu; it never offers confirmation. Shortcuts follow the filtered list. The Skills screen only describes learned combinations with **already recruited** characters, so later party members remain unspoiled.
 
 A shared wind-up and both actors' attack poses show cooperation. `game/battle-team-effects.ts` gives each move its own effect on the actual affected footprint: Falling stars descends from above into landing flares; Prism lance uses separated prismatic planes and steam; Crossfire combines bolt bounces with crossing saber strokes; Daybreak spreads dawn light while Petra raises her shield, showing barriers only where her Taunt rank grants them; Lantern volley sends lantern-lit bolts into the selected ranked area. Enemy relays fire arcing shots from both operators. Shared animation timings align the HP/terrain reveal with contact. The effect container survives the impact redraw, is cleaned up with the battle and respects reduced motion. Falling stars has its own falling/landing sound.
 
@@ -75,7 +77,7 @@ Ricochets select the nearest distinct visible second enemy; ties resolve by enem
 
 Healing adds `2 × (character level − 1)` to ranked base power. Barriers add `floor(1.5 × (character level − 1))`. Weapon damage never inflates support. Barriers keep the strongest value instead of stacking. Bandages remain fixed at 24 HP; Rallying cry increases normal turn-start focus regeneration instead of restoring focus immediately.
 
-Celia’s rank-three Heal requires character level ten. It heals living allies in the area, clears Dazzle/pin, and can restore **one fallen ally at the clear center** to 35% maximum HP. The revived character acts next round and cannot retaliate immediately. A blocked or occupied center cannot revive anyone. This affects only units already in that battle, never reserves, story illness or permanent story deaths. Nell’s Mend does not revive. Heal has its own skill ID and level gates (1/3/10), distinct from Nell’s Mend (2/5/10). Final Taunt combines enemy targeting with level-scaled party barriers.
+Celia’s rank-three Heal arrives at character level eleven. It heals living allies in the area, clears Dazzle/pin, and can restore **one fallen ally at the clear center** to 35% maximum HP. The revived character acts next round and cannot retaliate immediately. A blocked or occupied center cannot revive anyone. This affects only units already in that battle, never reserves, story illness or permanent story deaths. Nell’s Mend does not revive. Heal has its own skill ID and milestones (1/4/11), distinct from Nell’s Mend (2/6/12). Final Taunt combines enemy targeting with level-scaled party barriers.
 
 ## Battlefield objects and enemy teams
 
@@ -87,9 +89,9 @@ The Chapter One shed introduces cover; Chapter Two’s loading gate has a valve;
 
 ## Persistence and review
 
-Campaign saves are now **version 11**, storing every character’s skill ranks. Workshop character records are **version 3**, under `borrowed-tomorrow:character-workshop:v3`; inventory records remain version 2. Only current formats are read, in accordance with the repository policy. Version-10 campaign saves and previous workshop character records are not migrated. Canonical dev starts contain validated authored skill allocations; they never read a workshop build.
+Campaign saves remain **version 11**, with a structurally validated skill-book snapshot. On loading a current-format save, ranks are recalculated from character level, replacing previous manual allocations without changing any other progress or resources. Workshop character records remain **version 3**, under `borrowed-tomorrow:character-workshop:v3`; their ranks are reconstructed from each character’s own level while preserving stat edits and equipment. Inventory stays version 2. Retired formats remain unsupported.
 
-Changing a workshop character’s level installs a balanced authored build. **Reset skill choices** retains level, stats and equipment while returning that character’s points for manual allocation. Practice never changes campaign choices. Combat presets exercise the shared rules; **Practice Revive** demonstrates Celia’s final Heal. Lantern volley presets at character levels 7 / 10 / 13 demonstrate Pinning shot ranks 1 / 2 / 3 and coverage of 7 / 10 / 12 hexes. Detailed desktop/phone journeys and skill checks remain outside the small default CI gate. Browser plugin not available in the task environment; local QA uses Playwright.
+Changing a workshop character’s level applies its automatic skills and level-default stats. Practice stays isolated from campaign saves. **Practice Revive** uses Celia’s final Heal at level eleven; Lantern volley presets at levels 7 / 11 / 15 demonstrate Pinning shot ranks 1 / 2 / 3 and coverage of 7 / 10 / 12 hexes. Daybreak’s party-ward preset uses level fourteen. Detailed desktop/phone journeys and skill checks remain outside the small default CI gate. Browser plugin not available in the task environment; local QA uses Playwright.
 
 ## Chapter Five boss pressure
 
@@ -124,7 +126,7 @@ The extra cast uses the existing once-per-turn bonus allowance and leaves the sa
 
 ## Rallying cry and skill balance pass
 
-Rallying cry costs three focus and one main action at every rank. Rank I (level 2) covers the six hexes around Celia, excluding her. Rank II (level 6) includes Celia. Rank III (level 10) covers the entire active party. The field follows its living source; check eligibility when each fighter's normal turn begins. It grants **+1 focus regeneration**, capped at six, with no immediate refill. Wait resumes and movement-only team continuations never grant another tick.
+Rallying cry costs three focus and one main action at every rank. Rank I (level 2) covers the six hexes around Celia, excluding her. Rank II (level 6) includes Celia. Rank III (level 12) covers the entire active party. The field follows its living source; check eligibility when each fighter's normal turn begins. It grants **+1 focus regeneration**, capped at six, with no immediate refill. Wait resumes and movement-only team continuations never grant another tick.
 
 The cry lasts three combat rounds **including the casting round**: cast in round R, expire before any turn in R+3. This keeps duration independent of initiative, waiting and borrowed actions; Celia's own first boosted regeneration is on a later normal turn. Recasting after a round has elapsed refreshes the duration, without stacking. A full-duration cry cannot be refreshed. Celia's fall removes it permanently; revival does not restore the field. It is battle-local and affects no reserve or unavailable character. The blue-violet field, shared grid boundary, regeneration status and round counter use the same eligibility rules. Selecting the self-centered command previews its field and asks only for confirmation, including when no ally is currently in the ring but one could move into it.
 
@@ -138,21 +140,21 @@ The cry lasts three combat rounds **including the casting round**: cast in round
 | Feint III | Free; range 4 | 1 focus; range 6 | Improve safe reach instead of making boss control free. |
 | Taunt III | Base party ward 12; 3 focus | Base party ward 10; 4 focus | Preserve Taunt while giving dedicated protection a clearer advantage. Daybreak inherits the weaker ward at its existing 90% output. |
 
-Learning gates, purchased ranks and current save formats are unchanged. The same solo contributions feed team damage at 90%, so these changes also update the appropriate combinations. Heal/Mend, Steam lance, Rivet shot, Celestial bolt, Sanctuary and Shield bash retain their established roles. This balance pass did not add ranks; the later point-cap and prompt correction is documented under Upgrade choices above.
+That earlier balance pass left learning gates, purchased ranks and save formats unchanged. The automatic milestones above now supersede those learning gates and purchases. The same solo contributions feed team damage at 90%, so these changes also update the appropriate combinations. Heal/Mend, Steam lance, Rivet shot, Celestial bolt, Sanctuary and Shield bash retain their established roles. This balance pass did not add ranks; the current automatic progression is documented above.
 
 Workshop → Combat adds dedicated **Rallying cry I / II / III** practices with low-focus allies. The headless players shortlist useful placements and value the incremental future focus of a refresh; the cooperative forecast resolves the actual future regeneration. The controlled utility probe suppresses the new aura alongside other support abilities. No forecast grants an immediate refill.
 
-The sealed Chapter Three regulator has 155 HP rather than 170. The reduced Burst otherwise added two rounds to the feed-grounding route compared with pressure walk. Across matched offensive/support and prepared/frugal inputs, grounding now takes three–four rounds versus three for pressure walk, with less HP lost in each pair. Plates, shield release, enemy power and rewards are unchanged.
+The sealed Chapter Three regulator has 155 HP rather than 170. The reduced Burst otherwise added two rounds to the feed-grounding route compared with pressure walk. Across matched offensive/support and prepared/frugal inputs, grounding now takes three–four rounds versus three for pressure walk, with less HP lost in each pair under those earlier builds. The automatic-progression follow-up in [headless.md](headless.md#automatic-skill-progression-follow-up) records the new route observations. Plates, shield release, enemy power and rewards are unchanged.
 
 ## Celia's protection (#135)
 
-Sanctuary's base barrier is **8 / 24 / 32** (previously 8 / 16 / 20). It retains its level 5/9/12 gates, three/three/four focus costs and existing coverage: an aimed seven-hex area for ranks I/II, then every living party member at rank III. Barriers still add `floor(1.5 × (level − 1))`, preserve stronger existing protection and never stack.
+Sanctuary's base barrier is **8 / 24 / 32** (previously 8 / 16 / 20). It uses the automatic level 5/9/15 milestones, three/three/four focus costs and existing coverage: an aimed seven-hex area for ranks I/II, then every living party member at rank III. Barriers still add `floor(1.5 × (level − 1))`, preserve stronger existing protection and never stack.
 
-At level nine, Sanctuary II grants 36 barrier per target instead of 28; at level twelve, Sanctuary III grants 48 instead of 36. Orrin's top Safety guard grants 41 at level twelve and costs three focus, but requires nearby allies. Celia's stronger global protection rewards her dedicated support slot. Heal, Rallying cry, Celestial bolt and the team moves retain their current behavior.
+At level nine, Sanctuary II grants 36 barrier per target instead of 28; at level fifteen, Sanctuary III grants 53 instead of 41. Orrin's top Safety guard grants 44 at level fourteen and costs three focus, but requires nearby allies. Celia's stronger global protection rewards her dedicated support slot. Heal, Rallying cry, Celestial bolt and the team moves retain their current behavior.
 
 `node scripts/compare-party-balance.mjs --output /tmp/party-after.json` exercises all ten three-character formations against four authored boss inputs at levels 9/10/13/15. Pass `--root <baseline-checkout>` to compare earlier rules against the same fixtures. It preserves each formation's preset ranks, worn gear, stock and deployment; it does not reset builds, reassign equipment or claim an earned campaign. The defensive controller may undervalue setup skills, so formation results are evidence about those fights rather than a universal character ranking. This comparison remains outside default CI.
 
-[The matched comparison](headless/celia-protection.json) records 40 victories without knockouts on each version. Six of Celia's 24 cases improve; the remaining eighteen and all sixteen cases without her are identical. Celia's cohort loses 4,819 rather than 5,061 HP and uses 44 rather than 47 bandages across the independent fixtures. Sanctuary casts rise from three to six. Fight lengths do not change. This is a modest protection benefit, not proof that every party choice is equally strong; the controller still does not use Rallying cry. The existing earned campaign checkpoints retain their prior source hashes.
+The historical [matched comparison](headless/celia-protection.json), before automatic progression, records 40 victories without knockouts on each version. Six of Celia's 24 cases improve; the remaining eighteen and all sixteen cases without her are identical. Celia's cohort loses 4,819 rather than 5,061 HP and uses 44 rather than 47 bandages across the independent fixtures. Sanctuary casts rise from three to six. Fight lengths do not change. This is a modest protection benefit, not proof that every party choice is equally strong; the controller still does not use Rallying cry. The existing earned campaign checkpoints retain their prior source hashes.
 
 ## Final Benefactor summons
 

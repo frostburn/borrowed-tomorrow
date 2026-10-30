@@ -1,4 +1,4 @@
-import {abilityFor} from '../src/rules/skills';
+import {abilityFor,skillsAtLevel} from '../src/rules/skills';
 import { expect, it } from 'vitest';
 import { characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings } from '../src/rules/characters';
 import { active, cast, createBattle, damage, defend, legalAim, move, pushDestination, targets, wait } from '../src/rules/combat';
@@ -9,7 +9,7 @@ import { newGame, recruitOrrin } from '../src/rules/state';
 function practice() {
   const state = newGame(); recruitOrrin(state);
   const settings = newCharacterSettings();
-  settings.characters.nell = defaultBuild('nell', 5); settings.characters.orrin = defaultBuild('orrin', 5);
+  settings.characters.nell = defaultBuild('nell', 6); settings.characters.orrin = defaultBuild('orrin', 6);
   const b = createBattle('workshop', state, equipmentBonuses(newInventory()), characterProfiles(settings));
   const [nell, orrin, enemy] = b.units;
   b.units = [nell, orrin, enemy]; b.queue = b.units.map(u => u.id);
@@ -43,6 +43,11 @@ it('round-trips only validated character settings and rejects invalid levels or 
   for (const text of ['null', '{}', '{', '{"version":1,"characters":{}}']) expect(() => decodeCharacterSettings(text)).toThrow();
 });
 
+it('reconstructs workshop skills from level while retaining edited stats and formation',()=>{
+ const s=newCharacterSettings();s.party=['kit','celia'];s.characters.kit={...defaultBuild('kit',6),maxHp:123,attack:37};s.characters.kit.skills.feint=3;
+ const loaded=decodeCharacterSettings(JSON.stringify(s));expect(loaded).toEqual({...s,characters:{...s.characters,kit:{...s.characters.kit,skills:skillsAtLevel('kit',6)}}});
+});
+
 it('uses edited base stats plus gear in practice without changing the campaign battle defaults', () => {
   const state = newGame(); recruitOrrin(state);
   const settings = newCharacterSettings(), inventory = newInventory();
@@ -52,7 +57,7 @@ it('uses edited base stats plus gear in practice without changing the campaign b
   const b = createBattle('workshop', state, equipmentBonuses(inventory), characterProfiles(settings));
   expect(b.units[0]).toMatchObject({ hp: 120, maxHp: 120, bonus: 12, armor: 6, speed: 10, movement: 6, focus: 3, level: 5 });
   expect(active(b)?.id).toBe('nell');
-  expect(abilityFor(b.units[0],'mend').shape).toBe('blast');
+  expect(abilityFor(b.units[0],'mend').shape).toBe('single');
   const campaign = createBattle('workshop', state);
   expect(campaign.units[0]).toMatchObject({ maxHp: 42, bonus: 0, armor: 0, movement: 3 });
   expect(campaign.units[0].abilities).not.toContain('beacon'); expect(state.xp).toBe(0);
@@ -126,13 +131,13 @@ it('Upgraded Mend can target an empty center, heals only allies, and clamps at m
 
 it('Safety guard absorbs real attacks, does not stack, and is consumed before HP', () => {
   const { b, nell, orrin, enemy } = practice(); b.queue = [orrin.id, enemy.id, nell.id];
-  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(16);
+  expect(cast(b, orrin, 'guard', nell.hex)).toBe(true); expect(nell.guard).toBe(17);
   b.queue = [orrin.id, enemy.id, nell.id]; expect(legalAim(b, orrin, 'guard', nell.hex)).toBe(false);
   b.queue = [enemy.id, nell.id, orrin.id]; const hp = nell.hp;
   expect(cast(b, enemy, 'strike', nell.hex)).toBe(true);
-  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(8);
+  expect(nell.hp).toBe(hp); expect(nell.guard).toBe(9);
   expect(cast(b, nell, 'strike', enemy.hex)).toBe(true);
-  expect(nell.guard).toBe(0); expect(nell.hp).toBe(hp);
+  expect(nell.guard).toBe(1); expect(nell.hp).toBe(hp);
 });
 
 it('Rivet shot ignores two armor but still obeys line of sight and focus', () => {
