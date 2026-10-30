@@ -50,7 +50,7 @@ export const wrecks=(s:GameState)=>scene(s,'glacier','six-north-wrecks','The fle
  line('Petra','There are wings on the upper shelf. Keep the porters behind the wreck while we clear the path.'),
 ]);
 export const shrine=(s:GameState)=>scene(s,'wintershrine','six-north-shrine','The winter sanctuary',[
- line('The sanctuary','Ice wings fill the arch above the pact bell. The dragon draws breath; loose snow runs up the walk toward its mouth.',{focus:{x:32,y:19},cut:true,cue:'resonance'}),
+ line('The sanctuary','The dragon crouches in front of the sanctuary gate. It draws breath; loose snow runs up the walk toward its mouth.',{focus:{x:32,y:22},cut:true,cue:'resonance'}),
  line('Egil','That bell used to guide the ships in. You could hear it from the outer marker.'),
  line('Signe','The dragon was carved above the door. Nobody fed it or kept it behind a gate.'),
  line('Celia','The white creatures cleared this place for it. Stay back from the broken shelf.'),
