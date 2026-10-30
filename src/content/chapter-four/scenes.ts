@@ -67,10 +67,10 @@ export const terrace=()=>scene('sanctuary','four-terrace','The signal sanctuary'
 ]);
 export const cable=()=>scene('sanctuary','four-cable','The return line',[
  line('Orrin','Stand back from the copper shoe.',{focus:{x:43,y:26},actors:{orrin:{to:{x:43,y:25}},nell:{to:{x:40,y:27}}}}),
- line('The return line','Orrin releases the clamp. A white spark runs uphill. Nell’s lantern gives a thin, answering hum.',{cue:'steam'}),
+ line('The return line','Orrin releases the clamp. A white spark runs uphill. Nell’s lantern gives a thin, answering hum.',{cue:'steam',omen:'shard'}),
  line('Nell','I felt that through the handle.'),
  line('Celia','Put it down if it burns.'),
- line('Nell','It’s cold.'),
+ line('Nell','It’s cold.',{omen:'shard'}),
  line('The Sanctuary Warden','Return line lost. Maintaining arrest from the local reserve.'),
  line('Petra','It’s still holding them.'),
  line('Orrin','But it can’t draw anything else from the palace. We can reach it now.'),

@@ -46,7 +46,7 @@ export const raid = (diversion: boolean) => scene('coast', 'two-raid', diversion
   line('Petra', 'I have. You can take them to the ward when this is settled. Nell must come with me.'),
   line('Nell', 'And you’ll put me on the same train as my brother?'),
   line('Petra', 'The fragment was taken from the imperial conduits. I have orders to recover it.'),
-  line('The lantern', 'A faint hum travels through the handle. Nell closes her other hand around it.', { silence: true, cue: 'resonance' }),
+  line('The lantern', 'A faint hum travels through the handle. Nell closes her other hand around it.', { silence: true, cue: 'resonance', omen:'shard' }),
   line('Kit', diversion ? 'Orrin, the points! Send that empty wagon across her track.' : 'Orrin, release the loading crane! She’ll have to go round.'),
   line('Orrin', 'Mind your feet!', { cue: 'steam', actors: { petra: { to: { x: 42, y: 20 } } } }),
   line('Petra', 'Stop! You’ll bring the guard machines down on everyone.'),
@@ -165,5 +165,5 @@ export const departure = () => scene('cinderbank', 'two-departure', 'THE CAPITAL
   line('Kit', 'I should see the coaches through. And you’ll want the south siding. I’ve done that round.'),
   line('Nell', 'I’m glad you’re coming.'),
   line('Nell', 'Tomas is at the imperial conduit works. We’ve got a train. This time we go straight to him.'),
-  line('The lantern', 'The glass trembles against Nell’s coat. She wraps it in Ansel’s old cloth and watches the last harbor lights pass.', { silence: true }),
+  line('The lantern', 'The glass trembles against Nell’s coat. She wraps it in Ansel’s old cloth and watches the last harbor lights pass.', { silence: true, omen:'shard' }),
 ]);

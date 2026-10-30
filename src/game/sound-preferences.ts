@@ -1,7 +1,8 @@
 import type {Audio} from './audio';
+export type SoundPhase='waiting'|'starting';
 const key='borrowed-tomorrow:sound';
 /** Campaign preference, independent of saves and workshop transport controls. */
-export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on:boolean)=>void,failed:()=>void){
+export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on:boolean,phase?:SoundPhase)=>void,failed:()=>void){
  let known=false,wanted=false,pending:Promise<void>|undefined;
  try{const saved=localStorage.getItem(key);known=saved==='on'||saved==='off';wanted=saved==='on';}catch{/* Storage is optional. */}
  const remember=()=>{known=true;try{localStorage.setItem(key,wanted?'on':'off');}catch{/* Play normally without persistence. */}};
@@ -10,6 +11,7 @@ export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on
   close();if(wanted&&pending)return pending;
   wanted=true;remember();
   if(audio.enabled){changed(true);return Promise.resolve();}
+  changed(false,'starting');
   const request=audio.play(audio.position().mode).then(()=>{changed(audio.enabled);},()=>{changed(audio.enabled);failed();}).finally(()=>{if(pending===request)pending=undefined;});
   pending=request;return request;
  };
@@ -24,6 +26,7 @@ export function installSoundPreferences(root:HTMLElement,audio:Audio,changed:(on
   if((event.target as Element).closest('#sound-button'))return;
   if(wanted)void enable();
  }
+ changed(audio.enabled,wanted&&!audio.enabled?'waiting':undefined);
  root.addEventListener('pointerdown',first,true);root.addEventListener('keydown',first,true);
  return {enable,toggle,close,get known(){return known;}};
 }

@@ -64,7 +64,7 @@ export const mirrors=()=>scene('mirrorward','five-wind-mirror','The light in the
 export const release=()=>scene('mirrorward','five-wind-release','Care without the light',[
  line('Sera','The last bed is on the bellows. All ward returns are isolated.',{focus:{x:33,y:22},cut:true}),
  line('Celia','Close the treatment supply first. Then open the upward contact. Orrin, slowly.'),
- line('The anchor','The shutters close. A pale line shrinks inside the lens and goes dark. Nell feels a brief chill through the lantern handle.',{cue:'steam'}),
+ line('The anchor','The shutters close. A pale line shrinks inside the lens and goes dark. Nell feels a brief chill through the lantern handle.',{cue:'steam',omen:'shard'}),
  line('Director Iven','If one of them worsens tonight—'),
  line('Celia','We’ll treat them. We’ll need the records you kept back.'),
  line('Sera','And the villages need copies. No more sealed pages.'),

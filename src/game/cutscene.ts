@@ -1,3 +1,4 @@
+import {LanternGlint} from './lantern-glint';
 import {StationRaid} from './station-raid';
 import {DomainCinematic} from './domain-cinematic';
 import { ImperialCinematic,type ImperialEffect } from './imperial-cinematic';
@@ -48,6 +49,7 @@ export class Cutscene {
   private imperial?:ImperialCinematic;
   private domain?:DomainCinematic;
   private raid?:StationRaid;
+  private glint?:LanternGlint;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
@@ -74,9 +76,9 @@ export class Cutscene {
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.7);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating||!!this.raid?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating||!!this.raid?.animating||!!this.glint?.animating);}
   shot(shot?:Shot){
-    if(this.closed||!shot)return;
+    if(this.closed)return;this.glint?.stop();if(!shot)return;
     this.raid?.settle();
     if(shot.music)this.audio.setMode(shot.music);
     const duration=this.duration?(shot.duration??this.duration):0;
@@ -128,10 +130,8 @@ export class Cutscene {
           g.lineStyle(3,0xf2e2af,1);g.lineBetween(x-radius+20,y,x,y-25).lineBetween(x,y-25,x+radius-20,y).lineBetween(x+radius-20,y,x,y+25).lineBetween(x,y+25,x-radius+20,y);
           g.fillStyle(0xf2e2af,1).fillRect(x-5,y-19,10,38);
         }else{
-          const actor=this.actors.get('nell'),x=Math.round(actor?.x??camera.midPoint.x),y=Math.round((actor?.y??camera.midPoint.y)-28);
-          g.lineStyle(2,0x98e8ef,1).strokeCircle(x,y,23);
-          g.fillStyle(0xf8f0c8,1).fillRect(x-3,y-14,6,28).fillRect(x-14,y-3,28,6);
-          for(const [dx,dy] of [[-29,-15],[24,-23],[-22,24],[32,17]])g.fillRect(x+dx,y+dy,3,3);
+          this.glint??=new LanternGlint(this.scene,this.layer,this.actors.get('nell'));
+          this.glint.play();
         }
       }
     }
@@ -139,7 +139,7 @@ export class Cutscene {
   }
   reframe(){const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
+    if(this.closed)return;this.closed=true;this.glint?.close();this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

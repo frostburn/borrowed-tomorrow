@@ -29,3 +29,10 @@ export const motionFrame = (motion:ActorMotion,elapsed:number,hero?:string):numb
   }
   return motion==='walk'?Math.floor(Math.max(0,elapsed)/WALK_FRAME_MS)%WALK_FRAMES:motion==='attack'||motion==='bash'?(elapsed<ATTACK_CONTACT_MS?(motion==='bash'?BASH_WINDUP_FRAME:ATTACK_WINDUP_FRAME):elapsed<280?(motion==='bash'?BASH_CONTACT_FRAME:ATTACK_CONTACT_FRAME):undefined):undefined;
 };
+
+/** Native 80px lens centers, kept with the right-handed Nell actor metadata. */
+export const NELL_LANTERN_LENSES={front:{x:22,y:48},left:{x:34,y:48},right:{x:52,y:48},back:{x:56,y:48}} as const;
+export function nellLanternLens(face:string,walkFrame?:number){
+ const direction=directionOf(face),lens=NELL_LANTERN_LENSES[direction],swing=walkFrame===undefined?0:Math.sin(walkFrame*Math.PI/3);
+ return {x:lens.x+(['left','right'].includes(direction)?swing*2:0),y:lens.y+swing};
+}

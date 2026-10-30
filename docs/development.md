@@ -151,3 +151,18 @@ When changing this lattice, check all arena floors and boss anchors. The
 ward's authored circular paving follows its combat base; regenerate it
 with `python assets/vector/chapter-five.py`. Keep detailed fractional-DPR
 rendering and movement checks outside the default CI selection.
+
+## Scripted lantern light and pending sound
+
+`Shot.omen: 'shard'` plays the small lens glint in `game/lantern-glint.ts`.
+It follows Nell’s independently drawn facings and walking hand positions from
+`content/actor-motion.ts`, and redraws on scene time through `Cutscene.animating`.
+Use it only for explicit lantern reactions, not every machine’s resonance cue.
+The next dialogue line or scene close/skip stops it; reduced motion keeps a
+steady small light. No state, sprites or story flags are changed by the effect.
+
+Remembered sound starts only after a trusted first gesture. While waiting, the
+button reads **Sound on next input**; a slow start reads **Starting sound**. Both
+can be cancelled from that button. These phases describe the saved intent and
+loading state separately from audible playback, without opening an AudioContext
+on page load or changing workshop transport controls.

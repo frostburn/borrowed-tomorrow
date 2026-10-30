@@ -88,7 +88,7 @@ export const release=()=>scene('anchorforge','five-release','The anchor breaker'
  line('Hester','Cooling pressure holds. Starter crew, take the load!',{focus:{x:32,y:19},cut:true,actors:{durn:{visible:false}}}),
  line('Orrin','The return is yours, Nell. Pull it all the way down.'),
  line('Nell','Here goes.',{duration:650,actors:{nell:{to:{x:32,y:18}}}}),
- line('The anchor','The breaker falls. Copper contacts part above the gantry. Nell’s lantern hums against her fingers; she tightens her grip.',{cue:'steam'}),
+ line('The anchor','The breaker falls. Copper contacts part above the gantry. Nell’s lantern hums against her fingers; she tightens her grip.',{cue:'steam',omen:'shard'}),
  line('Kit','The light’s gone from the cable.'),
  line('Hester','Keep the water running. I want to hear both engines before anybody celebrates.'),
  line('Petra','Durn’s at the lower stair.'),

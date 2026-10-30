@@ -1,3 +1,5 @@
+import {openIssueFlows} from './open-issues-flow';
+openIssueFlows(true);
 import {equipmentRewardFlows} from './equipment-rewards-flow';
 equipmentRewardFlows(true);
 import {automaticSkillFlows} from './automatic-skills-flow';
