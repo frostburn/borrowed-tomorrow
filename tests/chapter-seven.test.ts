@@ -54,6 +54,14 @@ it('places the hospice patient in front of her bed and removes defeated courier-
  j.act('season-rest');expect(j.read()?.choices?.[0].label).toContain('Rest');j.choose();expect(j.s.party[0].hp).toBeGreaterThan(1);
  expect(j.s.flags.domainPatrolWon).toBe(true);expect(visibleObjects(MAPS.seasonstreet,decodeSave(JSON.stringify(j.s))).some(o=>o.id==='season-patrol')).toBe(false);
 });
+it('places the Chapter Seven dragon in front of the closed return gate until defeated',()=>{
+ const map=MAPS.seasonstreet,state=chapterSevenStart(),dragon=visibleObjects(map,state).find(o=>o.id==='season-dragon')!;
+ const gate=visibleSceneArt(map.tiles!,state)!.find(p=>p.key==='scene-mechanism-season-gate-closed')!;
+ expect((dragon.y+.5)*24+7,'the dragon must render above the gate leaves').toBeGreaterThan(gate.depth);
+ expect(walkable(map,dragon.x,dragon.y,state)).toBe(true);
+ expect(worldPath(map,arrival('seasonstreet','start'),dragon,state).length).toBeGreaterThan(0);
+ expect(visibleObjects(map,{...state,flags:{...state.flags,domainDragonWon:true}}).some(o=>o.id==='season-dragon')).toBe(false);
+});
 it('opens only the recovered departure after loading, preserving actual formation and resources',()=>{
  const s=chapterSevenDeparture();s.activeParty=['orrin'];s.party[0].hp=23;s.bandages=3;s.playSeconds=322;const before=structuredClone(s);
  expect(beginChapterSeven(s)).toBe(true);expect(s.chapter).toBe('chapter-seven');expect(s.boundary).toBeNull();

@@ -55,7 +55,7 @@ world('wintershrine','Skeld · the winter sanctuary','The winter dragon holds th
  obj('north-dragon',32,25,'Winter dragon · the pact sanctuary',hiddenFlag='winterDragonWon',doneFlag='winterDragonWon',sign=True),control('north-release',32,22,(28,17,9,5),'Pact bell · release the northern seal',hiddenFlag='northSealBroken',doneFlag='northSealBroken',sign=True),obj('shrine-rest',19,31,'Expedition camp · rest and supplies',kind='optional',sign=True),obj('shrine-glacier',15,33,'Glacier walk · return to the harbor',kind='exit',sign=True),obj('shrine-home',45,31,'Signe · return expedition',kind='exit',requiredFlag='northSealBroken',sprite='signe',sign=True)],
  {'start':(32,32),'stand':(32,28),'release':(32,24)}, {'six-north-shrine':party,'six-north-release':{**party,'signe':(32,23),'egil':(36,25)}},
  [point('sanctuary-porter',22,31,sprite='civilian-dockhand-rust')],
- [('shrine-dragon',drag(),528,280,504,334,614,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench('skeld'),168,86,369,689,775,{})],shrine)
+ [('shrine-dragon',drag(),528,280,504,262,542,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench('skeld'),168,86,369,689,775,{})],shrine)
 
 def patient_hoist(ready=False):
  # A crooked royal quay crane; the manual repair shares its existing footing.

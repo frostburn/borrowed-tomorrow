@@ -81,7 +81,7 @@ export const seasons=()=>scene('seasonstreet','seven-seasons','The road between 
  l('Petra','I’ll hold the stair while they come through.'),
  l('The Benefactor','I kept their harvests. Their recoveries. Their summers. Outside, everything I gave them ends.'),
  l('Nell','They’ve asked to leave.'),
- l('The city','Ice spreads down the terrace. Wings lift above the gate.'),
+ l('The city','Ice spreads down the terrace. The dragon spreads its wings in front of the gate.'),
  l('Celia','Skeld’s dragon. There’s no bell under it this time.'),
  l('Orrin','There’s the last return. It’s keeping the whole road inside.'),
 ]);
