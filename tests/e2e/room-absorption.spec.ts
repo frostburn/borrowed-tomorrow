@@ -50,3 +50,29 @@ test('isolated upper-register notes clear quickly in large rooms without losing 
   expect(r.late,label).toBeLessThan(low.late*.01);
  }
 });
+
+test('Engine hall clears isolated bass and midrange notes without muting the room',async({page},testInfo)=>{
+ await page.goto('/');
+ const rows=await page.evaluate(async()=>{
+  // @ts-expect-error Measure the production room, including its feedback network.
+  const {RoomReverb}:typeof import('../../src/game/room-reverb')=await import('/src/game/room-reverb.ts');
+  const rows=[];
+  for(const rate of [44100,48000])for(const hz of [82,110,165,220,330,440,550,660,700,880,1000,1320,1600]){
+   const c=new OfflineAudioContext(2,rate*3,rate),input=c.createGain(),room=new RoomReverb(c,input,c.destination);room.setRoom('works');
+   const tone=c.createOscillator(),env=c.createGain();tone.frequency.value=hz;tone.connect(env);env.connect(input);
+   env.gain.setValueAtTime(0,.5);env.gain.linearRampToValueAtTime(.15,.51);env.gain.setValueAtTime(.15,.69);env.gain.linearRampToValueAtTime(0,.7);tone.start(.5);tone.stop(.71);
+   const audio=await c.startRendering(),energy=new Float64Array(audio.length);let total=0,late=0,t999=0,sum=0;
+   for(let ch=0;ch<2;ch++){const d=audio.getChannelData(ch);for(let i=Math.ceil(.72*rate);i<d.length;i++){energy[i]+=d[i]*d[i];total+=d[i]*d[i];if(i>1.2*rate)late+=d[i]*d[i];}}
+   for(let i=Math.ceil(.72*rate);i<energy.length;i++){sum+=energy[i];if(!t999&&sum>=total*.999)t999=i/rate-.7;}
+   room.close();rows.push({rate,hz,tail:total/rate,lateFraction:late/total,t999});
+  }
+  return rows;
+ });
+ await testInfo.attach('engine-hall-decay',{body:JSON.stringify(rows,null,2),contentType:'application/json'});
+ for(const r of rows){
+  const label=JSON.stringify(r);
+  // Keep a real room return, and measure its shape independently of wet volume.
+  expect(r.tail,label).toBeGreaterThan(1e-8);expect(r.t999,label).toBeGreaterThan(.1);
+  expect(r.t999,label).toBeLessThan(.65);expect(r.lateFraction,label).toBeLessThan(.005);
+ }
+});
