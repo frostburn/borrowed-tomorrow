@@ -78,6 +78,7 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 .battle-controls .confirmation .prediction{font:10px/12px SwitchyardCompact,monospace;grid-column:1/-1;grid-row:1;min-height:0;overflow:auto}
 
 .battle-controls .confirmation:not(:has(button)) .prediction{grid-row:1/-1}
+.battle-controls .confirmation:not(:has(button:nth-of-type(3))) button:first-of-type{grid-column:span 2}
 
 @media(max-width:1023px){
  .battle-controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:40px minmax(0,1fr)}

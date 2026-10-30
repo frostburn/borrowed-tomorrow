@@ -227,12 +227,20 @@ opt-in, outside the small default CI browser gate.
 The single command grid contains the contextual **Move / Strike** action, all
 learned solo/team skills, Items, Defend and Wait. Shortcut 1 selects the basic
 command; the remaining numbered shortcuts follow the displayed skill buttons.
-A living enemy contact (including multi-hex bosses) or strikeable fixture selects
-a Strike preview. Ground selects movement. The existing legality checks still
-reject out-of-range attacks, occupied destinations and spent actions; no automatic
-move-and-attack is performed. A projected boss body is identified before choosing
-the basic action, so an out-of-range body tap stays a rejected Strike. A fixture’s
-Move here button selects movement onto its otherwise walkable cell. Team helpers retain their movement-only allowance.
+An enemy click (including a projected multi-hex boss body) previews a strike in
+place when adjacent, or the shortest legal route to a reachable adjacent hex plus
+a strike. Routes use movement cost first, then hex count and stable row/column
+ties. A read-only forecast supplies the path, destination and damage without
+spending anything. **Confirm move + strike** commits both ordinary rule calls
+and animates the walk before contact; Cancel spends neither. The selected
+destination is revalidated before either allowance is spent. Obstacles, occupied
+cells, water/ice costs, Pin, Taunt and spent movement/actions still apply. A boss
+can be struck at its closest legal contact even when another body contact was
+clicked. An unreachable enemy stays invalid, without a partial approach.
+Ground clicks still preview movement separately; adjacent enemies use Confirm
+attack. Fixtures retain Strike / Move here choices without automatic approaches.
+Team helpers retain their movement-only continuation and show **Move**, never
+Move / Strike, alongside End turn.
 
 Confirmation and target feedback sit below the command grid in the bottom command
 panel, outside its scroller. Confirm, Cancel and fixture Move here buttons stay
