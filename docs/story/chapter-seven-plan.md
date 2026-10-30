@@ -15,6 +15,8 @@ Implementation plan approved in the work chat. Continue only from the recovered 
 
 ## Combat and presentation
 
+Keep the sky portal at the crossing. The harvest motif is carved into the floor; the final shelter, throne and arena leave the Benefactor’s attached halo as the only physical ring near its body. Dialogue and transformations use the quiet throne theme; each boss cue begins with its confirmed battle.
+
 This is a substantial boss sequence, not a speed gauntlet. Familiar bosses keep their actual tactical identities and gain authored late-game numbers, domain scenery, dialogue and musical context. Human antagonists never resurrect. Each source defeat immediately starts its aftermath and removes its marker. Rest, supplies, optional manually fitted loot and retreat between domain areas prevent attrition from replacing tactics.
 
 Native polygonal SVG scenery, real Tiled collision/arrivals/casts and the existing shared chunky raster. Promote the accepted animated Benefactor art into shared campaign/workshop assets. Give its sun and heart their own forms. All images remain below 128 KiB. Music stays procedural and 31-EDO, developing the approved radiant octatonic and its inversion, the descending divine call and selected familiar musical phrases. Distinct exploration, reprise battle, final-form and return cues; expressive held lines, quiet-bar sustains and smooth releases.

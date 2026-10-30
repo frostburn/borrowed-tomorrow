@@ -1,5 +1,14 @@
 import {expect,it} from 'vitest';
+import {readFileSync} from 'node:fs';
 import {hollowSunPolygons} from '../src/content/hollow-sun';
+
+it('keeps the sky portal at the crossing, separate from the inner-domain boss staging',()=>{
+ const background=(map:string)=>readFileSync(`public/art/vector/chapter-seven/${map}-back.svg`,'utf8');
+ expect(background('hollowsill').match(/data-symbol="hollow-sun"/g)).toHaveLength(1);
+ for(const map of ['firstfield','lastrefuge','sunthrone'])expect(background(map),map).not.toContain('data-symbol="hollow-sun"');
+ expect(readFileSync('public/art/vector/chapter-seven/firstfield-ground.svg','utf8')).toContain('data-surface="carved"');
+ expect(readFileSync('public/art/vector/chapter-seven/sunthrone-monument.svg','utf8')).toContain('id="halo"');
+});
 
 type Point={x:number;y:number};
 function inside(point:Point,polygon:Point[]){

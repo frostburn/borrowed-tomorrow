@@ -1,6 +1,21 @@
 import {expect,it} from 'vitest';
 import {ARRANGEMENTS,scoreBar,scoreLength,type MusicMode} from '../src/game/score';
 import {isPercussion} from '../src/game/tuning';
+import {ENCOUNTERS} from '../src/content/encounters';
+import * as sevenScenes from '../src/content/chapter-seven/scenes';
+import * as capitalScenes from '../src/content/chapter-six/capital/scenes';
+import {chapterSixCapitalStart} from '../src/dev/canonical-saves';
+
+it('reserves boss themes for combat, including final introductions and transformations',()=>{
+ const bossCues=new Set(Object.values(ENCOUNTERS).filter(e=>e.boss).map(e=>e.music));
+ const scripts=[...Object.values(sevenScenes).map(make=>make()),...[false,true].flatMap(well=>Object.values(capitalScenes).map(make=>make(chapterSixCapitalStart(well))))];
+ for(const d of scripts)for(const line of d.lines)if(line.shot?.music)expect(bossCues.has(line.shot.music),`${d.scene?.id}: ${line.shot.music}`).toBe(false);
+ for(const id of ['benefactor-body','benefactor-sun','benefactor-heart','lightbearer']as const){
+  expect(ARRANGEMENTS[ENCOUNTERS[id].music].introBars,id).toBe(2);
+ }
+ for(const make of [sevenScenes.god,sevenScenes.sun,sevenScenes.heart])expect(make().lines[0].shot?.music).toBe('sunthrone');
+ expect(capitalScenes.manifestation(chapterSixCapitalStart()).lines[0].shot?.music).toBe('crown');
+});
 
 const pairs:readonly (readonly [MusicMode,MusicMode])[]=[
  ['five-furnace','five-battle'],['dawn-commander','dawn-battle'],['wind-engine','wind-battle'],

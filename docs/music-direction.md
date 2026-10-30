@@ -328,7 +328,7 @@ Northern exploration uses a pure sine oscillator in place of reed (including the
 | `capital-return` · The City Comes Down | 4/4, 82 | Warm descending reed answers, held strings/bass, modest ensemble rubato and a quieter unfinished return toward the next journey. |
 | `laststation` · The Empty Seat | 4/4, 60 | A lower, sparse piano recollection of Nell’s phrase, soft strings, long bass and ensemble breaths; no percussion or triumphant cadence. |
 
-All held melodic voices receive dynamics/controlled vibrato; bell tails release softly. Battle clocks stay steady. Full forms and loop seams render through the same Synth/performance clock as live playback, with finite-level and click checks outside the default CI gate. The Lightbearer reveal starts its own cue; the mantle’s fall gives way to The Empty Seat.
+All held melodic voices receive dynamics/controlled vibrato; bell tails release softly. Battle clocks stay steady. Full forms and loop seams render through the same Synth/performance clock as live playback, with finite-level and click checks outside the default CI gate. The Lightbearer reveal keeps the quiet `crown` cue. Its battle theme starts only when combat is confirmed; the mantle’s fall gives way to The Empty Seat.
 
 ## Chapter Seven — the stolen days and three final forms
 
@@ -347,6 +347,8 @@ All held melodic voices receive dynamics/controlled vibrato; bell tails release 
 | `hollow-sun` | Reflected brass in 5/4, quarter=128, falling exchanges across registers and a bass that changes its role at phrase turns. |
 | `unborrowed` | Radiant strings, answering brass and a clear 4/4 at quarter=148. The shorter exposed-heart fight gets the most forward theme. |
 | `homecoming`, `seaholiday` | Human D-minor material, a warmer reed return and a three-beat lute holiday; no alien harmony at the real coast. |
+
+The quiet `sunthrone` cue accompanies the approach, dialogue and transformations between final forms. `benefactor`, `hollow-sun` and `unborrowed` start only when their battles begin, preserving their two-bar introductions for combat. Preparing equipment, declining a fight, retreating and restoring a pre-fight checkpoint keep the location cue.
 
 Every form has an opening, answers, a lifted contrasting middle and a changed return. Held bass/pads cross quiet bars without repeated attacks; controlled vibrato and swells belong to sustained voices, while plucked voices retain their attacks. The procedural organ uses exact harmonic sine partials at 1/2/3/4 times the shared tuned fundamental, with normal smooth envelopes and cancellation. No samples or production dependencies. Music → Ch 7 exposes every cue and an Organ solo part. Full-form/loop renders and device review stay outside normal CI.
 
