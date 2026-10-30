@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {clickHex,inspect,capture} from './controls';
-import {offset} from '../../src/rules/hex';
+import {offset,toPixel} from '../../src/rules/hex';
 import {damage,type Unit} from '../../src/rules/combat';
 import {defaultBuild,newCharacterSettings} from '../../src/rules/characters';
 
@@ -68,7 +68,12 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.units.find(u=>u.id===guardian.id)!.hp).toBe(guardian.hp-predicted);
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('celia');await page.getByRole('button',{name:/^F\s+Defend$/}).click();
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
-  await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:'Move here',exact:true}).click();await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));
+  const fixed=await page.locator('#confirmation').boundingBox(),unchanged=(await inspect(page)).battle,box=(await page.locator('#canvas canvas').boundingBox())!,view=(await inspect(page)).view,p=toPixel(offset(6,2));
+  await page.mouse.move(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height,{steps:12});
+  await expect(page.getByRole('button',{name:'Move here',exact:true})).toBeVisible();expect(await page.locator('#confirmation').boundingBox()).toEqual(fixed);
+  await page.keyboard.press('Enter');expect((await inspect(page)).battle).toEqual(unchanged);await expect(page.getByRole('button',{name:'Move here',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Move here',exact:true}).click();await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
   await page.getByRole('button',{name:/Steam lance$/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`straight-orrin-${device}`);
   const steam=(await inspect(page)).battle!,orrin=steam.units.find(u=>u.id==='orrin')!,steamTarget=steam.units.find(u=>u.kind==='guardian')!,steamDamage=damage(orrin as Unit,steamTarget as Unit,'steam');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.units.find(u=>u.id===steamTarget.id)!.hp).toBe(steamTarget.hp-steamDamage);
   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Falling stars',exact:true}).click();

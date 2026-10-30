@@ -904,12 +904,14 @@ export class Adventure extends Phaser.Scene {
     if(this.basicSelected)this.selected=basicAction(b,u,hex);
     this.ui.canvas.focus();
     const valid=this.selected==='move'?!!movement(b,u).get(key(hex))?.path.length:legalAim(b,u,this.selected,hex);
-    if(valid){this.plan={action:this.selected,hex};this.audio.effect('click');}
+    const moveInstead=this.selected==='strike'&&b.fixtures?.some(f=>f.hp>0&&equal(f.hex,hex))&&movement(b,u).get(key(hex))?.path.length;
+    if(valid||moveInstead){this.plan={action:this.selected,hex};this.audio.effect('click');}
     else this.plan=undefined;
     this.drawGrid();this.updatePreview();
   }
   private commitPlan() {
     const b=this.battle!,u=active(b),plan=this.plan;if(!u||!plan||this.busy)return;
+    if(plan.action!=='move'&&!legalAim(b,u,plan.action,plan.hex))return;
     const before=this.battleSnapshot();
     const retaliations:string[]=[];
     const partner=plan.action==='move'?undefined:teamStatus(b,u,plan.action).partner;
