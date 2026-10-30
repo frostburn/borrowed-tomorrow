@@ -23,4 +23,3 @@
 
 .skill-badge{display:inline-block;margin-left:6px;padding:0 4px;border:2px solid #728574;color:#f4c77a;font-family:SwitchyardCompact,monospace;font-size:10px;line-height:12px}
 .skill-combination{color:#adc9bb;border-left:2px solid #728574;padding-left:8px}.actions button.unavailable{color:#909b9d;border-color:#566265;background:#1d2a30}.actions button.unavailable.selected{border-color:#9aa5a6;background:#354047}
-.command-panel:has(.team-unavailable) .hint{display:none}

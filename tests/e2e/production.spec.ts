@@ -1,3 +1,5 @@
+import {battleMenuFlows} from './battle-menu-flow';
+battleMenuFlows(true);
 import {walkingCadenceFlows} from './walking-cadence-flow';
 walkingCadenceFlows(true);
 import {battleLoadFlows} from './battle-load-flow';

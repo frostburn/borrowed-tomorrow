@@ -38,7 +38,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    const next=(await inspect(page)).battle!,caster=next.units.find(u=>u.id===next.queue[0])!;
    await page.getByRole('button',{name:caster.kind==='celia'?/Celestial bolt/:/Steam lance/}).click();await clickHex(page,offset(3,3));await expect(page.locator('#confirmation')).toContainText('extra steam burst');await capture(page,`repeat-valve-${device}`);
    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.fixtures!.find(f=>f.kind==='valve')).toMatchObject({bursts:2});expect((await inspect(page)).battle!.vents).toHaveLength(3);await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');
-   await page.getByRole('button',{name:'Practice Crossfire',exact:true}).click();await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.getByRole('button',{name:/Quick shot$/}).click();await clickHex(page,offset(7,4));
+   await page.getByRole('button',{name:'Practice Crossfire',exact:true}).click();await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:'Move here',exact:true}).click();await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.getByRole('button',{name:/Quick shot$/}).click();await clickHex(page,offset(7,4));
    await expect(page.locator('#confirmation')).toContainText('Pressure drum');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
    expect((await inspect(page)).battle!.fixtures!.find(f=>f.kind==='drum')!.hp).toBe(0);await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
    await capture(page,`pressure-drum-result-${device}`);expect(errors).toEqual([]);
@@ -48,7 +48,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    const stored=await page.evaluate(()=>[localStorage.getItem('borrowed-tomorrow:character-workshop:v3'),localStorage.getItem('borrowed-tomorrow:inventory-workshop:v1')]);
    await page.getByRole('button',{name:'Practice Daybreak',exact:true}).click();const before=(await inspect(page)).battle!;
    await page.getByRole('button',{name:/Daybreak/}).click();await expect(page.locator('#confirmation')).toContainText('Celia + Petra');await page.getByRole('button',{name:'Confirm healing',exact:true}).click();
-   const after=(await inspect(page)).battle!;for(const u of after.units.filter(u=>u.side==='party')){expect(u.hp).toBeGreaterThan(before.units.find(v=>v.id===u.id)!.hp);expect(u.guard).toBe(30);}
+   const after=(await inspect(page)).battle!;for(const u of after.units.filter(u=>u.side==='party')){expect(u.hp).toBeGreaterThan(before.units.find(v=>v.id===u.id)!.hp);expect(u.guard).toBe(26);}
    expect(after.queue).not.toContain('celia');await capture(page,`daybreak-result-${device}`);
    expect(await page.evaluate(()=>[localStorage.getItem('borrowed-tomorrow:character-workshop:v3'),localStorage.getItem('borrowed-tomorrow:inventory-workshop:v1')])).toEqual(stored);
   });
@@ -60,7 +60,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');
   await page.getByRole('button',{name:'Practice Revive',exact:true}).click();
   await page.getByRole('button',{name:/Heal$/}).click();await clickHex(page,offset(2,4));await expect(page.locator('#confirmation')).toContainText('Orrin');await page.getByRole('button',{name:'Confirm healing',exact:true}).click();
-  const revived=(await inspect(page)).battle!;expect(revived.units.find(u=>u.id==='orrin')!.hp).toBe(38);expect(revived.queue).not.toContain('orrin');await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await capture(page,`revive-result-${device}`);
+  const revived=(await inspect(page)).battle!;expect(revived.units.find(u=>u.id==='orrin')!.hp).toBe(40);expect(revived.queue).not.toContain('orrin');await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await capture(page,`revive-result-${device}`);
   await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Prism lance',exact:true}).click();
   await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(4,1));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
   await page.getByRole('button',{name:/Horizon light$/}).click();await clickHex(page,offset(7,3));await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`diagonal-nell-${device}`);
@@ -68,7 +68,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.units.find(u=>u.id===guardian.id)!.hp).toBe(guardian.hp-predicted);
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('celia');await page.getByRole('button',{name:/^F\s+Defend$/}).click();
   await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
-  await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
+  await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(3,3));await page.getByRole('button',{name:'Move here',exact:true}).click();await page.getByRole('button',{name:/Confirm move/}).click();await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
   await page.getByRole('button',{name:/Steam lance$/}).click();await clickHex(page,offset(7,3));await expect(page.locator('#confirmation')).toContainText('Rail guardian');await capture(page,`straight-orrin-${device}`);
   const steam=(await inspect(page)).battle!,orrin=steam.units.find(u=>u.id==='orrin')!,steamTarget=steam.units.find(u=>u.kind==='guardian')!,steamDamage=damage(orrin as Unit,steamTarget as Unit,'steam');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();expect((await inspect(page)).battle!.units.find(u=>u.id===steamTarget.id)!.hp).toBe(steamTarget.hp-steamDamage);
   await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.keyboard.press('Escape');await page.getByRole('button',{name:'Practice Falling stars',exact:true}).click();
@@ -84,7 +84,7 @@ test('absent team partners leave no commands or gaps in keyboard shortcuts',asyn
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?dev=combat');await page.getByRole('button',{name:'Practice current workshop party',exact:true}).click();
  await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('orrin');
  await expect(page.getByRole('button',{name:/Prism lance|Falling stars/})).toHaveCount(0);
- await page.keyboard.press('5');await expect(page.getByRole('button',{name:/Safety guard$/})).toHaveClass(/selected/);await expect(page.locator('#confirmation')).toContainText('Orrin: +38 guard');
+ await page.keyboard.press('5');await expect(page.getByRole('button',{name:/Safety guard$/})).toHaveClass(/selected/);await expect(page.locator('#confirmation')).toContainText('Orrin: +29 guard');
 });
 
 test('enemy relay charges for a full round and then spends both machine turns',async({page})=>{

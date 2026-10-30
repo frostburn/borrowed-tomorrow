@@ -230,7 +230,9 @@ command; the remaining numbered shortcuts follow the displayed skill buttons.
 A living enemy contact (including multi-hex bosses) or strikeable fixture selects
 a Strike preview. Ground selects movement. The existing legality checks still
 reject out-of-range attacks, occupied destinations and spent actions; no automatic
-move-and-attack is performed. Team helpers retain their movement-only allowance.
+move-and-attack is performed. A projected boss body is identified before choosing
+the basic action, so an out-of-range body tap stays a rejected Strike. A fixture’s
+Move here button selects movement onto its otherwise walkable cell. Team helpers retain their movement-only allowance.
 
 Confirmation is a separate field overlay, outside both the command scroller and
 `UI.sceneLayer`, so it does not block targeting as a story panel. It occupies the
@@ -242,3 +244,14 @@ Phones use a compact character header and three-column grid, with the full skill
 description in the field preview. Development tools remain outside the command
 grid and out of the production build. Skills retain rank badges; team buttons use
 a blue border and inspectable gray unavailable states.
+
+Review the focused browser checks:
+
+```sh
+npx playwright test battle-menu.spec.ts rich-combat.spec.ts team-skills.spec.ts
+BT_PRODUCTION=1 npx playwright test --grep 'production field confirmation'
+```
+
+The max-level layout cases cover all five characters and desktop, fractional-DPR
+phone and 320px phone layouts. Detailed menu cases remain outside the default
+browser CI selection.
