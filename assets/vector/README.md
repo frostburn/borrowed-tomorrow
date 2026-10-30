@@ -2,7 +2,7 @@
 
 The recurring hollow sun shares its twelve broad ray positions and empty aperture through
 `src/content/hollow-sun.json`. `assets/vector/hollow_sun.py` draws the source SVG
-emblems, Chapter Five inlays, imperial breastplate and Chapter Seven sky signs;
+emblems, the Chapter Four sanctuary ring, Chapter Five inlays, imperial breastplate and Chapter Seven sky signs;
 the live capital reveal uses the same geometry. The reference is the archived
 `47f59cd` raster boss: one missing upper-left wedge, a missing ray at that wedge,
 and several smaller closed zigzag fractures across an otherwise continuous rim.
@@ -20,6 +20,7 @@ python3 assets/vector/chapter-one.py --chapter two --map cinderbank
 python3 assets/vector/chapter-one.py --chapter three --map northglass
 python3 assets/vector/chapter-one.py --chapter three --map relayhall
 python3 assets/vector/chapter-one.py --chapter three --map conduit
+python3 assets/vector/chapter-four.py
 python3 assets/vector/chapter-five.py
 python3 assets/bosses/export-imperial.py
 python3 assets/vector/chapter-six-capital.py
