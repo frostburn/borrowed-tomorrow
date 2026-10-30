@@ -19,7 +19,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    expect(celia.focus).toBe(3);expect(kit.focus).toBe(3);expect(celia.rally).toEqual({rank,expiresRound:4});
    await expect(page.locator('.initiative')).toContainText('Cry 3r');await expect(page.locator('.identity .role')).toContainText('Focus regen +1');
    await capture(page,`rally-${rank}-active-${device}`);
-   await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(4,2));await page.getByRole('button',{name:/Confirm move/}).click();
+   await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(4,2));await page.getByRole('button',{name:/Confirm move/}).click();
    await expect.poll(async()=>(await inspect(page)).busy).toBe(false);
    const moved=(await inspect(page)).battle!,movingKit=moved.units.find(u=>u.id==='kit')!;
    expect(rallyBonus(moved,movingKit)).toBe(rank===3?1:0);expect(movingKit.focus).toBe(3);

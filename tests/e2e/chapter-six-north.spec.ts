@@ -69,7 +69,7 @@ for(const reduced of [false,true])test(`dragon workshop ${reduced?'reduced':'mov
    else{const seen=new Set<number>();for(let i=0;i<18;i++){seen.add(await dragonPixels(page));await page.waitForTimeout(250);}expect(seen.size).toBeGreaterThan(1);}
    await capture(page,`skeld-preview-${reduced?'reduced':'moving'}`);
    const before=(await inspect(page)).battle!,boss=before.units.find(u=>u.id==='winter-dragon')!;
-   await page.getByRole('button',{name:/^3\s+Quick shot$/}).click();
+   await page.getByRole('button',{name:/Quick shot$/}).click();
    const view=(await inspect(page)).view,box=(await page.locator('#canvas canvas').boundingBox())!;
    await page.mouse.click(box.x+(493-view.scrollX)*box.width/view.width,box.y+(185-view.scrollY)*box.height/view.height);
    await expect(page.locator('#confirmation')).toContainText('Winter dragon');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();await ready(page);expect((await inspect(page)).battle!.units.find(u=>u.id==='winter-dragon')!.hp).toBeLessThan(boss.hp);

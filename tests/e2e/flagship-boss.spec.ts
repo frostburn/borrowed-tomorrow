@@ -26,7 +26,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    expect(start.actors.filter(a=>['nell','orrin','petra'].includes(a.hero)).every(a=>a.texture.endsWith('-back'))).toBe(true);
    expect(b.units.filter(u=>u.side==='party').every(u=>toPixel(u.hex).y>Math.max(...occupiedHexes(gun).map(h=>toPixel(h).y)))).toBe(true);
    await capture(page,`flagship-battle-${device}`);
-   await page.getByRole('button',{name:/^3\s+Lantern burst$/}).click();
+   await page.getByRole('button',{name:/Lantern burst$/}).click();
    // A painted gun barrel above its occupied hexes still picks its nearest legal contact.
    await clickBody(page,281,190);await expect(page.locator('#confirmation')).toContainText('Port battery');
    await capture(page,`flagship-target-${device}`);await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
@@ -96,7 +96,7 @@ test('@journey the flagship is defeated through ordinary component combat',async
   u.hex=original;
   if(!best){await page.getByRole('button',{name:/^F\s+Defend$/}).click();continue;}
   if(!equal(best.position,original)){
-   await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,best.position);await page.getByRole('button',{name:/^Confirm move/}).click();
+   await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,best.position);await page.getByRole('button',{name:/^Confirm move/}).click();
   }else{
    const a=ABILITIES[best.ability];await page.getByRole('button',{name:new RegExp(`^\\d\\s+${a.name}$`)}).click();await clickHex(page,best.aim);
    await page.getByRole('button',{name:a.heal?'Confirm healing':'Confirm attack',exact:true}).click();

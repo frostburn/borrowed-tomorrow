@@ -105,7 +105,7 @@ test('enemy retaliation marks the attacker’s hex and shows its own impact',asy
   const state=newGame();recruitOrrin(state);const b=createBattle('workshop',state);b.units[0].hex=offset(5,3);b.queue=['nell','orrin','hound-0'];
   (window as unknown as {attackScene:InstanceType<typeof Adventure>}).attackScene.previewBattle(b,()=>{});
  });
- await page.locator('.actions').getByRole('button',{name:/^2\s+Strike$/}).click();await clickHex(page,offset(6,3));await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
+ await page.locator('.actions').getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(6,3));await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
  const impact=await hold(page,true);expect(impact).toEqual({actorId:'hound-0',ability:'strike',cells:[offset(5,3)],impact:true});await capture(page,'enemy-retaliation');
  expect((await inspect(page)).battle!.log.some(t=>t.includes('Track hound retaliates'))).toBe(true);await resume(page);
  await expect.poll(()=>page.evaluate(()=>(window as unknown as {attackScene:{enemyAttack?:Attack}}).attackScene.enemyAttack??null)).toBeNull();

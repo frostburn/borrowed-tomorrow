@@ -1,3 +1,4 @@
+import {basicAction} from './battle-basic';
 import {openSoundtrack} from './soundtrack-entry';
 import {showCredits} from './credits';
 import {EndingFilm} from './ending-film';
@@ -133,7 +134,7 @@ export class Adventure extends Phaser.Scene {
   private get battleDefinition(){return this.battlePresentation?.encounter??ENCOUNTERS[this.battle!.encounter];}
 
   constructor(private readonly practiceReady?: (scene: Adventure, ui: UI) => void, private readonly practiceActors: readonly string[] = [], private readonly previewAssets:readonly {key:string;url:string}[] = []) { super('adventure'); }
-  attach(ui: UI) { this.ui = ui; }
+  attach(ui: UI) { this.ui = ui;ui.battleLog.onclick=()=>this.showBattleLog(); }
   preload() {
     for (const name of new Set([...textures,...(import.meta.env.DEV ? this.practiceActors : [])])) this.load.image(name, art(name));
     if(import.meta.env.DEV)for(const asset of this.previewAssets)this.load.image(asset.key,asset.url);
@@ -166,7 +167,7 @@ export class Adventure extends Phaser.Scene {
     const film=this.crossingFilm??this.endingFilm;
     if(film){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);film.resize();return;}
     if(this.mode==='battle'){
-      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
+      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);this.positionConfirmation(this.plan?.hex??this.hover);return;
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
@@ -177,6 +178,7 @@ export class Adventure extends Phaser.Scene {
   panBattle(direction:-1|1){
     if(this.mode!=='battle'||this.blocked)return;
     const camera=this.cameras.main;camera.setScroll(Phaser.Math.Clamp(camera.scrollX+direction*192,0,WIDTH-camera.width),0);
+    this.positionConfirmation(this.plan?.hex??this.hover);
     this.ui.status.textContent='Battlefield view · choose an action and target';
   }
   private revealHex(hex:Hex,margin=48){
@@ -208,6 +210,7 @@ export class Adventure extends Phaser.Scene {
   }
   private get blocked() { return !!this.crossingFilm || !!this.endingFilm || this.ui.panelOpen || this.ui.modalOpen; }
   private clearLayer() {
+    this.ui.battleOverlay.hidden=true;this.ui.battleConfirmation.hidden=true;this.ui.battleConfirmation.innerHTML='';this.ui.battleOverlay.querySelector('.dev-battle-tools')?.remove();this.ui.controls.classList.remove('battle-controls');
     this.crossingFilm?.close();this.crossingFilm=undefined;
     this.endingFilm?.close();this.endingFilm=undefined;
     this.mechanisms?.close();this.mechanisms=undefined;
@@ -529,6 +532,7 @@ export class Adventure extends Phaser.Scene {
     if (tag === 'INPUT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'Escape') { if (this.ui.modalOpen) this.ui.closeModal(); else if(import.meta.env.DEV&&this.practiceReady)this.practiceReturn?.(); else if(this.cinematic){this.ui.skipDialogue();} else if (this.plan) { this.plan=undefined; this.renderBattleControls(); this.drawGrid(); } else if (!this.ui.dialogueOpen) this.help(); return; }
     if (this.ui.modalOpen) return;
+    if(tag==='BUTTON'&&(e.key==='Enter'||e.key===' '))return;
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     if (this.ui.dialogueOpen && ['Enter',' ','e','E'].includes(e.key)) { e.preventDefault(); this.ui.advanceDialogue(); return; }
     if (this.blocked || this.busy || e.repeat) return;
@@ -539,6 +543,7 @@ export class Adventure extends Phaser.Scene {
       const u=active(this.battle!)!;
       if (e.key==='1') this.selectAction('move');
       else if (/^[2-9]$/.test(e.key)) { const id=this.commandAbilities(this.battle!,u)[Number(e.key)-2];if(id)this.selectAction(id); }
+      else if (e.key.toLowerCase()==='l') this.showBattleLog();
       else if (e.key.toLowerCase()==='f') this.doDefend();
       else if (e.key.toLowerCase()==='w') this.doWait();
       else if (e.key==='Enter' || e.key===' ') { if(this.plan)this.commitPlan();else this.chooseHex(this.battleCursor); }
@@ -703,7 +708,8 @@ export class Adventure extends Phaser.Scene {
     if(!this.grid||!this.battle)return;this.grid.clear();const b=this.battle,u=active(b);
     const aimed=this.plan?.hex??this.hover;
     const canAct=u?.side==='party'&&!b.result&&!this.busy;
-    const reachableHexes=canAct&&this.selected==='move'?movement(b,u!):undefined;
+    if(canAct&&aimed&&!this.plan&&this.basicSelected)this.selected=basicAction(b,u!,aimed);
+    const reachableHexes=canAct&&this.basicSelected?movement(b,u!):undefined;
     const occupied=new Set(b.units.filter(v=>v.hp>0&&v.footprint?.length).flatMap(v=>occupiedHexes(v).map(key)));
     const attack=this.enemyAttack?.battle===b?this.enemyAttack:undefined;
     const attackCells=new Set(attack?.cells.map(key));
@@ -770,16 +776,25 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle!,u=active(b),esc=this.ui.escape;
     this.ui.initiative.innerHTML=`<span class="round">Round ${b.round}${b.grounding?(b.grounding.open?' · shield released':' · earth both blue plates'):b.vents.size?' · vents after last turn':''}</span>${rallySources(b).map(source=>`<span class="round">Cry ${rallyRemaining(b,source)}r</span>`).join('')}${b.queue.map(id=>b.units.find(v=>v.id===id)!).filter(v=>v.hp>0).map(v=>`<span class="turn ${v.id===u?.id?'active':''}">${esc(v.name)}${v.waited?' · waiting':''}</span>`).join('')}`;
   }
-  private commandAbilities(b:Battle,u:Unit){return battleAbilities(b,u).filter(id=>!isConsumable(id)||id==='bandage');}
+  private commandAbilities(b:Battle,u:Unit){return battleAbilities(b,u).filter(id=>id!=='strike'&&(!isConsumable(id)||id==='bandage'));}
+  private get basicSelected(){return this.selected==='move'||this.selected==='strike';}
+  private showBattleLog(){
+    if(this.mode!=='battle'||!this.battle||this.ui.modalOpen)return;
+    this.ui.showModal('Battle log',`<div class="battle-history">${this.battle.log.map(line=>`<p>${this.ui.escape(line)}</p>`).join('')}</div>`);
+    const content=this.ui.modal.querySelector('.modal-content')!;content.scrollTop=content.scrollHeight;
+  }
+  private cancelPlan(){this.plan=undefined;this.hover=undefined;if(this.basicSelected)this.selected='move';this.drawGrid();this.updatePreview();this.ui.canvas.focus();}
   private renderBattleControls() {
     const b=this.battle;if(!b)return;const u=active(b);if(!u)return;
     const player=u.side==='party'&&!b.result&&!this.busy,esc=this.ui.escape;
     const abilities=battleAbilities(b,u);if(this.selected!=='move'&&!abilities.includes(this.selected)){this.selected='move';this.plan=undefined;}
+    this.ui.battleOverlay.hidden=false;this.ui.controls.classList.add('battle-controls');
     const commandScroll=this.ui.controls.dataset.unit===u.id?(this.ui.controls.querySelector('.command-list')?.scrollTop??0):0;this.ui.controls.dataset.unit=u.id;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',rallyBonus(b,u)?'Focus regen +1':'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div>Focus ${u.focus} / ${focusCapacity(u)}<div class="bar focus"><span style="width:${u.focus/focusCapacity(u)*100}%"></span></div></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation"></div></div><div class="battle-log" aria-label="Battle log">${b.log.slice(-4).map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+    this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',rallyBonus(b,u)?'Focus regen +1':'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals"><span class="vital">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div></span><span class="vital">Focus ${u.focus} / ${focusCapacity(u)}<div class="bar focus"><span style="width:${u.focus/focusCapacity(u)*100}%"></span></div></span></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div></div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
-    if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.controls.querySelector('.command-list')!,{
+    this.ui.battleOverlay.querySelector('.dev-battle-tools')?.remove();
+    if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.battleOverlay,{
       current:()=>this.mode==='battle'&&!this.ui.modalOpen&&!this.ui.panelOpen?this.battle:undefined,
       initial:()=>this.testingBattle,
       apply:(battle,restart)=>{
@@ -790,20 +805,23 @@ export class Adventure extends Phaser.Scene {
         if(battle.result)this.battleEnded();else this.scheduleEnemy();
       },
     });
-    this.ui.actionRow(actions,[{label:'Move',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved,selected:this.selected==='move'},...this.commandAbilities(b,u).map((id,i)=>{
+    this.ui.actionRow(actions,[{label:'Move / Strike',key:'1',action:()=>this.selectAction('move'),disabled:!player||u.moved&&!abilities.includes('strike'),selected:this.basicSelected},...this.commandAbilities(b,u).map((id,i)=>{
       const team=teamStatus(b,u,id),a=abilityFor(u,id,team.partner),reason=team.reason??(id==='rally'?rallyReason(b,u):undefined);
-      return {label:(id==='bandage'?'Items':a.name)+(a.bonus?' · Extra':a.team?' · Team':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!Object.keys(CONSUMABLES).some(item=>battleItemCount(b,item as keyof typeof CONSUMABLES)>0)),unavailable:!!reason,selected:this.selected===id||id==='bandage'&&isConsumable(this.selected),badge:a.rank?String(a.rank):undefined,title:reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
+      return {label:(id==='bandage'?'Items':a.name)+(a.bonus?' · Extra':''),key:i<8?String(i+2):undefined,action:()=>this.selectAction(id),disabled:!player||!a.team&&u.focus<a.cost||!!(a.bonus&&u.bonusUsed)||(id==='bandage'&&!Object.keys(CONSUMABLES).some(item=>battleItemCount(b,item as keyof typeof CONSUMABLES)>0)),unavailable:!!reason,selected:this.selected===id||id==='bandage'&&isConsumable(this.selected),badge:a.rank?String(a.rank):undefined,title:reason??`${a.rank?`Skill ${a.rank}. `:''}${a.description}`};
     }),
       {label:movementOnly(b,u)?'End turn':'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},...movementOnly(b,u)?[]:[{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]]);
+    for(const [i,id] of this.commandAbilities(b,u).entries())if(ABILITIES[id].team)actions.children[i+1]?.classList.add('team-skill');
+    this.ui.battleOverlay.style.setProperty('--dev-tools-height',`${(this.ui.battleOverlay.querySelector<HTMLElement>('.dev-battle-tools')?.offsetHeight??-8)+8}px`);
     this.ui.status.textContent=player?(movementOnly(b,u)?'Attack spent. Move or End turn (F).':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
     this.ui.controls.querySelector('.command-list')!.scrollTop=commandScroll;
-    if(this.selected!=='move')this.ui.controls.querySelector('.actions button.selected')?.scrollIntoView({block:'nearest',inline:'nearest'});
+    if(!this.basicSelected)this.ui.controls.querySelector('.actions button.selected')?.scrollIntoView({block:'nearest',inline:'nearest'});
   }
   private updatePreview() {
     if(this.mode!=='battle'||!this.battle)return;const b=this.battle,u=active(b);if(!u)return;
-    const hint=document.getElementById('battle-hint'),confirm=document.getElementById('confirmation');if(!hint||!confirm)return;
-    const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;
+    const confirm=this.ui.battleConfirmation;confirm.hidden=true;
+    const hint=document.getElementById('battle-hint');if(!hint)return;
+    const aimed=this.plan?.hex??this.hover;const player=u.side==='party'&&!this.busy;confirm.classList.toggle('has-plan',!!this.plan);
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected,teamStatus(b,u,this.selected).partner).description;
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
@@ -812,15 +830,17 @@ export class Adventure extends Phaser.Scene {
     if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
     confirm.innerHTML='';
+    this.positionConfirmation(aimed);
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){
-      const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;
+      const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;confirm.hidden=false;
       const note=document.createElement('span');note.className='prediction invalid-target team-unavailable';note.setAttribute('role','status');note.textContent=reason;confirm.append(note);return;
     }
-    if(this.selected==='rally'&&rallyReason(b,u)){const note=document.createElement('span');note.className='prediction invalid-target';note.textContent=rallyReason(b,u)!;confirm.append(note);return;}
+    if(this.selected==='rally'&&rallyReason(b,u)){confirm.hidden=false;const note=document.createElement('span');note.className='prediction invalid-target';note.textContent=rallyReason(b,u)!;confirm.append(note);return;}
     if(!aimed){
-      if(directHint){const note=document.createElement('span');note.className='prediction';note.textContent=bossDirectHint(b,true);confirm.append(note);}
+      if(directHint||this.selected!=='move'){confirm.hidden=false;const note=document.createElement('span');note.className='prediction';note.textContent=directHint?bossDirectHint(b,true):hint.textContent;confirm.append(note);}
       return;
     }
+    confirm.hidden=false;
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}
@@ -838,6 +858,15 @@ export class Adventure extends Phaser.Scene {
       const protection=this.selected==='daybreak'?daybreakProtection(u,team):undefined;
       const text=document.createElement('span');text.className='prediction';text.textContent=(team?`${u.name} + ${team.name} · both actions · ${ability.team!.cost} focus each. ${contributions}. `:'')+description+(ability.ward&&!protection?` · ${ability.ward.party?'All allies':u.name}: up to ${ability.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5)} guard`:'')+(protection?` · all enemies target ${protection.vanguard.name}${protection.power?` · ${protection.party?'All allies':protection.vanguard.name}: up to ${protection.power} guard`:''}`:'');confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
+    if(this.plan){
+      const title=document.createElement('strong');title.className='confirmation-title';title.textContent=this.plan.action==='move'?'Move':abilityFor(u,this.plan.action).name;confirm.prepend(title);
+      confirm.append(this.ui.button({label:'Cancel',action:()=>this.cancelPlan()}));
+    }
+  }
+  private positionConfirmation(aim?:Hex){
+    const view=this.cameras.main,p=aim?toPixel(aim):undefined,card=this.ui.battleConfirmation;
+    card.dataset.vertical=p&&p.y-view.scrollY>view.height/2?'top':'bottom';
+    card.dataset.horizontal=p&&p.x-view.scrollX>view.width/2?'left':'right';
   }
   private selectAction(action: Action, fromItems=false) {
     const u=active(this.battle!);if(this.busy||u?.side!=='party'||(action!=='move'&&(!battleAbilities(this.battle!,u).includes(action)||abilityFor(u!,action).bonus&&u.bonusUsed)))return;
@@ -847,7 +876,7 @@ export class Adventure extends Phaser.Scene {
       this.plan={action,hex:{...u.hex}};this.battleCursor={...u.hex};
       this.revealHex(u.hex,HEX_SIZE*5); // Include adjacent hexes and knockback landings.
     }
-    this.drawGrid();this.renderBattleControls();
+    this.drawGrid();this.renderBattleControls();this.ui.canvas.focus();
   }
   private openBattleItems() {
     const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||movementOnly(b,u))return;
@@ -863,6 +892,8 @@ export class Adventure extends Phaser.Scene {
     const b=this.battle!,u=active(b);if(!u||u.side!=='party'||this.busy||b.result)return;
     if(this.selected!=='move'&&abilityFor(u!,this.selected).range===0)return;
     this.hover=hex;this.battleCursor=hex;
+    if(this.basicSelected)this.selected=basicAction(b,u,hex);
+    this.ui.canvas.focus();
     const valid=this.selected==='move'?!!movement(b,u).get(key(hex))?.path.length:legalAim(b,u,this.selected,hex);
     if(valid){this.plan={action:this.selected,hex};this.audio.effect('click');}
     else this.plan=undefined;

@@ -14,7 +14,7 @@ async function clickBody(page:Page){
 }
 async function ready(page:Page){await expect.poll(async()=>(await inspect(page)).busy).toBe(false);}
 async function moveTo(page:Page,col:number,row:number){
- await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,offset(col,row));await page.getByRole('button',{name:/^Confirm move/}).click();await ready(page);
+ await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(col,row));await page.getByRole('button',{name:/^Confirm move/}).click();await ready(page);
 }
 for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
  test(`conduit boss previews both routes, targets three contacts and preserves the campaign on ${device}`,async({browser})=>{
@@ -35,7 +35,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    await moveTo(page,7,5);await page.getByRole('button',{name:/^F\s+Defend$/}).click();await ready(page);
    await moveTo(page,3,5);expect((await inspect(page)).battle!.grounding!.open).toBe(true);
    const open=(await inspect(page)).battle!,regulator=open.units.find(u=>u.id==='conduit-regulator')!,nell=open.units.find(u=>u.id==='nell')!;
-   expect(regulator.sealed).toBe(false);await page.getByRole('button',{name:/^3\s+Lantern burst$/}).click();await clickBody(page);
+   expect(regulator.sealed).toBe(false);await page.getByRole('button',{name:/Lantern burst$/}).click();await clickBody(page);
    await expect(page.locator('#confirmation')).toContainText('Heart regulator');await capture(page,`conduit-aim-${device}`);
    await page.getByRole('button',{name:'Confirm attack',exact:true}).click();await ready(page);
    expect((await inspect(page)).battle!.units.find(u=>u.id==='conduit-regulator')!.hp).toBe(regulator.hp-damage(nell,regulator,'burst'));

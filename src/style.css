@@ -58,3 +58,44 @@ img[src*="/art/vector/"]{image-rendering:pixelated}
 .interact-action{display:flex}
 .interact-action>button,.world-actions>button{width:100%}
 @media(max-width:1023px){.world-actions{gap:2px}.world-actions>.dpad{align-self:center}.world-actions>button{font-family:SwitchyardCompact,monospace;font-size:10px;line-height:12px;min-height:28px;padding:4px 8px}}
+
+/* All battle commands stay in one panel; targeting and the log live on the field. */
+.battle-controls .command-panel{padding:8px;overflow:hidden}
+.battle-controls .command-list{overflow:auto;display:flex;flex-direction:column;gap:6px}
+.battle-controls .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.battle-controls .actions button{min-width:0;min-height:34px;font:10px/12px SwitchyardCompact,monospace;padding:4px;overflow-wrap:anywhere}
+.battle-controls .actions .team-skill:not(.unavailable){border-color:#87a3b3;background:#234047}
+.battle-controls .actions .team-skill.selected{background:#35535a;border-color:#f4c77a}
+.battle-controls .hint{margin:0;max-height:48px;overflow:auto}
+.battle-controls .vital{display:block}
+.battle-overlay{position:absolute;inset:0;pointer-events:none}
+.battle-overlay>button,.battle-overlay .confirmation,.battle-overlay .dev-battle-tools{pointer-events:auto}
+.battle-log-button{position:absolute;top:8px;left:8px;font:10px/12px SwitchyardCompact,monospace;padding:6px 8px;min-height:28px}
+.boss-battle .battle-log-button{top:50px}
+.battle-history p{font:10px/16px SwitchyardCompact,monospace;border-bottom:1px solid #234047;padding:8px 0}
+.battlefield-confirmation{position:absolute;margin:0;bottom:calc(8px + var(--dev-tools-height,0px));right:8px;left:auto;width:min(360px,calc(100% - 16px));max-height:164px;min-height:0;padding:8px;background:#101d28;border:2px solid #b8a780;display:flex;gap:6px;align-content:flex-start;overflow:hidden}
+.battlefield-confirmation[data-vertical="top"]{top:48px;bottom:auto}
+.boss-battle .battlefield-confirmation[data-vertical="top"]{top:86px}
+.battlefield-confirmation[data-horizontal="left"]{left:8px;right:auto}
+.battlefield-confirmation:not(.has-plan){pointer-events:none}
+.battlefield-confirmation .confirmation-title{font:10px/12px SwitchyardCompact,monospace;color:#f4c77a;flex-basis:100%}
+.battlefield-confirmation button{font:10px/12px SwitchyardCompact,monospace;min-height:28px;padding:4px 8px;order:1}
+.battlefield-confirmation .prediction{font:10px/14px SwitchyardCompact,monospace;max-height:84px;overflow:auto}
+.battle-overlay .dev-battle-tools{position:absolute;bottom:8px;left:8px;right:8px;padding:4px;margin:0;border:1px solid #625842;background:#101d28}
+@media(max-width:1023px){
+ .battle-controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:64px minmax(0,1fr)}
+ .battle-controls .identity{display:flex;gap:8px;padding:0 8px;border-right:0;border-bottom:1px solid #625842;min-width:0;overflow:hidden}
+ .battle-controls .identity img{width:64px;height:64px;object-fit:fill}
+ .battle-controls .identity>div{min-width:0;flex:1}
+ .battle-controls .identity h2{margin:0 0 2px}
+ .battle-controls .identity .role{margin:0 0 2px;max-height:24px;overflow:auto}
+ .battle-controls .vitals{display:flex;gap:12px}
+ .battle-controls .bar{display:none}
+ .battle-controls .command-panel{padding:4px 8px}
+ .battle-controls .command-list{gap:0}
+ .battle-controls .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+ .battle-controls .actions button{min-height:28px;padding:2px 4px}
+ .battle-controls .hint{display:none}
+ .battle-controls .skill-badge{margin-left:4px;padding:0 2px;border-width:1px}
+ .battlefield-confirmation{padding:6px;gap:4px;max-height:164px}
+}

@@ -42,14 +42,14 @@ test('@journey the finale preset defeats both attack phases through ordinary com
     }
     u.hex=original;
     if(best&&!equal(best.position,original)){
-      await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,best.position);await page.getByRole('button',{name:/^Confirm move/}).click();
+      await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,best.position);await page.getByRole('button',{name:/^Confirm move/}).click();
     }else if(best){
       await page.locator('.actions').getByRole('button',{name:new RegExp(`^\\d\\s+${ABILITIES[best.ability].name}$`)}).click();
       if(ABILITIES[best.ability].range!==0)await clickHex(page,best.aim);
       await page.getByRole('button',{name:ABILITIES[best.ability].heal?'Confirm healing':'Confirm attack',exact:true}).click({timeout:5000});
     }else{
       const safe=[...movement(b,u).values()].find(p=>!danger.has(key(p.hex))&&p.path.length);
-      if(danger.has(key(u.hex))&&safe){await page.getByRole('button',{name:/^1\s+Move$/}).click();await clickHex(page,safe.hex);await page.getByRole('button',{name:/^Confirm move/}).click();}
+      if(danger.has(key(u.hex))&&safe){await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,safe.hex);await page.getByRole('button',{name:/^Confirm move/}).click();}
       else await page.getByRole('button',{name:/^F\s+Defend$/}).click();
     }
   }
@@ -94,7 +94,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
     expect(start.actors.filter(a=>['nell','petra','celia'].includes(a.hero)).every(a=>a.texture.endsWith('-back'))).toBe(true);
     expect(start.battle!.units.filter(u=>u.side==='party').every(u=>toPixel(u.hex).y>Math.max(...occupiedHexes(boss).map(h=>toPixel(h).y)))).toBe(true);
     await nativeBoss(page,portrait);await capture(page,`boss-arrival-${device}`);
-    await page.getByRole('button',{name:/^3\s+Lantern burst$/}).click();await clickBody(page);
+    await page.getByRole('button',{name:/Lantern burst$/}).click();await clickBody(page);
     await expect(page.locator('#confirmation')).toContainText('The Benefactor');await page.getByRole('button',{name:'Confirm attack',exact:true}).click();
     await expect.poll(async()=>(await inspect(page)).battle!.units.find(u=>u.id==='benefactor')!.hp).toBe(boss.hp-27);
     for(let i=0;i<2;i++){await expect.poll(async()=>(await inspect(page)).busy).toBe(false);await page.getByRole('button',{name:/^F\s+Defend$/}).click();}

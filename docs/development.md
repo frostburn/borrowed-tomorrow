@@ -220,3 +220,25 @@ when IndexedDB is unavailable. The battle-loading browser regressions exercise
 slots, imports during animations, stale callbacks, failed-load recovery and
 storage failure in both development and production. These detailed flows remain
 opt-in, outside the small default CI browser gate.
+
+
+## Battle commands and field confirmation
+
+The single command grid contains the contextual **Move / Strike** action, all
+learned solo/team skills, Items, Defend and Wait. Shortcut 1 selects the basic
+command; the remaining numbered shortcuts follow the displayed skill buttons.
+A living enemy contact (including multi-hex bosses) or strikeable fixture selects
+a Strike preview. Ground selects movement. The existing legality checks still
+reject out-of-range attacks, occupied destinations and spent actions; no automatic
+move-and-attack is performed. Team helpers retain their movement-only allowance.
+
+Confirmation is a separate field overlay, outside both the command scroller and
+`UI.sceneLayer`, so it does not block targeting as a story panel. It occupies the
+opposite corner from the selected hex, below the field toolbar, and holds its
+position while a plan is selected. Pan/resize recomputes placement. Cancel spends
+nothing. Log (L) opens the complete current battle history in the shared modal;
+it no longer reserves a desktop column. Clear/restore removes the field overlay.
+Phones use a compact character header and three-column grid, with the full skill
+description in the field preview. Development tools remain outside the command
+grid and out of the production build. Skills retain rank badges; team buttons use
+a blue border and inspectable gray unavailable states.
