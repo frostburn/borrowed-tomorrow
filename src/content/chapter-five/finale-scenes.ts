@@ -21,7 +21,7 @@ export const claim=()=>scene('flagship','five-benefactor-claim','The light above
  line('Petra','It’s finished, Alban. Put the rod down.'),
  line('Captain Alban','You have no commission here.'),
  line('Nell','Ansel didn’t have one either.',{actors:{nell:{to:{x:31,y:24},face:'nell-back'}}}),
- line('The lantern','Its handle jerks in Nell’s grip. A bright seam opens above the bridge windows.',{effect:'claim-omen',focus:{x:32,y:14},cut:true,cue:'flare',silence:true}),
+ line('The lantern','Its handle jerks in Nell’s grip. A bright seam opens above the bridge windows.',{effect:'claim-omen',omen:'shard',focus:{x:32,y:14},cut:true,cue:'flare',silence:true}),
  line('The Benefactor','You have broken my anchors.'),
  line('Captain Alban','This ship serves the Emperor.'),
  line('The Benefactor','The ships were my gift. I take them back.'),

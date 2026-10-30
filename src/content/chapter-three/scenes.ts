@@ -63,7 +63,7 @@ export const rescue=()=>scene('relayhall','three-reunion','TOMAS',[
   line('Kit','Dena’s at the coaches. I’ll take you and the fitters to her.'),
 ]);
 export const heart=()=>scene('conduit','three-heart','THE VESSEL BELOW',[
-  line('Below the conduit works','Iron restraints bite into a pale vessel above the machines. The hum in Nell’s lantern catches against the hum from the walls.',{focus:{x:32,y:12},cut:true,silence:true,cue:'resonance'}),
+  line('Below the conduit works','Iron restraints bite into a pale vessel above the machines. The hum in Nell’s lantern catches against the hum from the walls.',{focus:{x:32,y:12},cut:true,silence:true,cue:'resonance',omen:'shard'}),
   line('The Emperor','I gave orders for your brother to be kept alive.',{focus:{x:41,y:22},cut:true}),
   line('Nell','Your warden was cutting him apart.'),
   line('The Emperor','I came down to recover the fragment, not to have your brother killed. Return it, and I will have the train take you both home.'),

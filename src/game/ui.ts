@@ -1,3 +1,4 @@
+import type {SoundPhase} from './sound-preferences';
 import {icon} from './item-icons';
 import {objectPortrait,type UIIcon} from '../content/ui-art';
 import {rewardList,type ResourceGain} from './rewards';
@@ -50,7 +51,12 @@ export class UI {
     });
   }
   location(name: string) { document.getElementById('location')!.textContent = name; }
-  sound(enabled: boolean) { const button = document.getElementById('sound-button')!; button.textContent = enabled ? 'Sound on' : 'Sound off'; button.setAttribute('aria-pressed', String(enabled)); }
+  sound(enabled:boolean,phase?:SoundPhase){
+    const button=document.getElementById('sound-button')!;button.textContent=phase==='waiting'?'Sound on next input':phase==='starting'?'Starting sound':enabled?'Sound on':'Sound off';
+    button.setAttribute('aria-pressed',String(enabled||!!phase));
+    const description=phase==='waiting'?'Sound will start with your next click or key press. Select to keep sound off.':phase==='starting'?'Sound is starting. Select to cancel.':enabled?'Mute sound.':'Enable sound.';
+    button.setAttribute('aria-description',description);button.title=description;
+  }
   button(b: Button): HTMLButtonElement {
     const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
     if(b.icon)button.insertAdjacentHTML('afterbegin',icon(b.icon));

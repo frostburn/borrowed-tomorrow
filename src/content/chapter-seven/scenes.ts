@@ -140,7 +140,7 @@ export const sun=()=>scene('sunthrone','seven-sun','The mantle falls',[
  l('Petra','It can still reach us. Watch where the light falls.'),
 ]);
 export const heart=()=>scene('sunthrone','seven-heart','The fragment goes home',[
- l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'unborrowed'}),
+ l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{omen:'shard',focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'unborrowed'}),
  l('Nell','This came out of you.'),
  l('Celia','The collar Ines fitted is still holding. You can let it go.'),
  l('Nell','Orrin, the glass.'),
