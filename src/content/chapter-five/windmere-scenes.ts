@@ -30,7 +30,7 @@ export const dispensary=()=>scene('dispensary','five-wind-dispensary','The store
 export const lift=()=>scene('dispensary','five-wind-lift','Up from the dispensary',[
  line('Orrin','Sera, hold the latch. I’ll ease the wheel back.',{focus:{x:42,y:24},cut:true}),
  line('Sera','Ready below? Keep your hands inside the rail.'),
- line('The water lift','Water fills the lower chamber. The platform rises with its load of beds and bellows.',{duration:1600,effect:'water-lift',cue:'steam',focus:{x:35,y:23}}),
+ line('The water lift','Water fills the lower chamber. The platform rises with its load of beds and bellows.',{duration:900,effect:'water-lift',mechanism:'water-wheel',cue:'steam',focus:{x:38,y:23}}),
  line('Kit','The volunteers have the handles. Next load can come up.'),
  line('Celia','I’ll take the first beds through. Nell, meet us at the ordinary ward’s bypass valve.'),
 ]);
@@ -64,7 +64,7 @@ export const mirrors=()=>scene('mirrorward','five-wind-mirror','The light in the
 export const release=()=>scene('mirrorward','five-wind-release','Care without the light',[
  line('Sera','The last bed is on the bellows. All ward returns are isolated.',{focus:{x:33,y:22},cut:true}),
  line('Celia','Close the treatment supply first. Then open the upward contact. Orrin, slowly.'),
- line('The anchor','The shutters close. A pale line shrinks inside the lens and goes dark. Nell feels a brief chill through the lantern handle.',{cue:'steam',omen:'shard'}),
+ line('The anchor','The shutters close. A pale line shrinks inside the lens and goes dark. Nell feels a brief chill through the lantern handle.',{cue:'steam',omen:'shard',mechanism:'ward-release',focus:{x:33,y:17},duration:900}),
  line('Director Iven','If one of them worsens tonight—'),
  line('Celia','We’ll treat them. We’ll need the records you kept back.'),
  line('Sera','And the villages need copies. No more sealed pages.'),

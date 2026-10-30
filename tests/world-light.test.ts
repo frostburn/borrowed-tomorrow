@@ -44,8 +44,8 @@ describe('world-space actor lighting',()=>{
       const moored=opened?'harbor-ferry-in':'harbor-ferry-out',gone=opened?'harbor-ferry-out':'harbor-ferry-in';
       expect(pieces.some(p=>p.url.endsWith(`/${moored}.svg`))).toBe(true);
       expect(pieces.some(p=>p.url.endsWith(`/${gone}.svg`))).toBe(false);
-      expect(rig.lamps.some(l=>l.x===(opened?172:1306)&&l.y===(opened?942:402))).toBe(true);
-      expect(rig.lamps.some(l=>l.x===(opened?1306:172)&&l.y===(opened?402:942))).toBe(false);
+      expect(rig.lamps.filter(l=>l.x===1306&&l.y===402)).toHaveLength(1);
+      expect(rig.lamps.some(l=>l.x===172&&l.y===942)).toBe(false);
       const ferry=pieces.find(p=>p.url.endsWith(`/${moored}.svg`))!;
       expect(pieces.some(p=>p.layerId===ferry.layerId&&p.url.includes('/light-'))).toBe(true);
     }

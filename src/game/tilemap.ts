@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import {liveMechanismPiece} from '../content/story-mechanisms';
 import { layerVisible, properties, TILESET, tilePages, tileFrame, tileProperties, type TileMap } from '../content/tilemaps';
 import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
@@ -41,7 +42,7 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
     };
     if(sceneLight(String(properties(data).sceneArt),[])){
       for(const piece of [...pieces].filter(p=>p.depth<-900).sort((a,b)=>a.depth-b.depth)){
-        if(live.has(piece.layerId)||swayingScenery(piece))flush();else ground.push(piece);
+        if(live.has(piece.layerId)||liveMechanismPiece(piece.key)||swayingScenery(piece))flush();else ground.push(piece);
       }
       flush();
     }

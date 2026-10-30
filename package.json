@@ -20,6 +20,7 @@
     "test:e2e:production": "BT_PRODUCTION=1 playwright test",
     "test:e2e:smoke": "playwright test --grep-invert @journey",
     "test:e2e:journeys": "playwright test --grep @journey",
+    "art:mechanisms": "python3 assets/vector/story_mechanisms.py",
     "art:one": "node scripts/export-chapter-one-art.mjs",
     "art:two": "node scripts/export-chapter-two-art.mjs",
     "art:three": "node scripts/export-chapter-three-art.mjs",

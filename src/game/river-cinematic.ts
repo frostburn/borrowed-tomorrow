@@ -16,7 +16,7 @@ export class RiverCinematic {
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(kind==='river-launch'){
    const chain=this.piece('scene-six-river-chain'),boat=this.piece('scene-six-canopy-launch')??this.piece('scene-six-rainhouse-launch');
-   if(chain){if(reduced)chain.alpha=0;else this.tweens.push(this.scene.tweens.add({targets:chain,alpha:0,duration:350}));}
+   if(chain){if(reduced)chain.setY(chain.y-96).setAlpha(0);else this.tweens.push(this.scene.tweens.add({targets:chain,y:chain.y-96,alpha:0,duration:650,ease:'Sine.easeInOut'}));}
    if(boat){
     const x=boat.x,y=boat.y,dx=chain?64:-30,dy=chain?-94:-18;
     if(reduced)boat.setPosition(x+dx,y+dy);

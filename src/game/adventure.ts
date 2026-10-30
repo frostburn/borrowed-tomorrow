@@ -361,7 +361,7 @@ export class Adventure extends Phaser.Scene {
     const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.stopFollow();this.cameras.main.setScroll(0,0);
     this.clearLayer(); const map = MAPS[this.state.location.map]; this.background(map.id); this.audio.setRoom(MAP_ROOMS[map.id]);this.audio.setMode((map.id==='station'&&this.state.flags.raidSeen)||(map.id==='rillbridge'&&!this.state.flags.villageFreed)?'tunnel':map.id==='lastshore'?'refuge':map.id==='capitalquay'?(this.state.flags.capitalReleased?'capital-return':'outermooring'):map.id==='flagship'?'signalwall':map.id==='airship'&&this.state.flags.nellIll&&!this.state.flags.nellRecovered?'observation':map.id==='rainhouse'&&this.state.flags.nellRecovered?'rainhouse-rest':map.id);
     this.lighting.attach(this.layer!,map.tiles,this.state);
-    this.mechanisms=new WorldMechanisms(this,this.layer!);
+    this.mechanisms=new WorldMechanisms(this,this.layer!,this.state);
     this.mapLife=new MapLife(this,this.layer!,map,this.state);
     for(const person of visiblePeople(map,this.state)){
       const image=this.lighting.actor(this.layer!,(person.x+.5)*TILE,(person.y+.5)*TILE+7,person.sprite).setOrigin(.5,.85).setAlpha(person.projection?.72:1).setData('projection',!!person.projection).setData('world-actor',true).setData('person',person.id);

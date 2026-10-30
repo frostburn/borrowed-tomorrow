@@ -27,7 +27,7 @@ export const watch=(s:GameState)=>scene(s,'frostwatch','six-north-watch','The cl
 export const gate=(s:GameState)=>scene(s,'frostwatch','six-north-gate','The expedition road',[
  line('Orrin','Ice in the pawl. Hold this while I lift it.',{focus:{x:43,y:24},cut:true}),
  line('Signe','I’ve got it. Egil, keep the porters back from the cable.'),
- line('The covered passage','The windlass turns. Snow falls from the rising gate; the porters shoulder their packs.',{cue:'defend',duration:1100}),
+ line('The covered passage','The windlass turns. Snow falls from the rising gate; the porters shoulder their packs.',{cue:'defend',mechanism:'north-open',focus:{x:49,y:25},duration:900}),
  line('Egil','Follow my tracks past the first turn. The old relief ships are below the eastern shelf.'),
  line('Kit','Ships? This high up?',{expression:'surprised'}),
  line('Egil','The bay came this far once. The winter that took them never left.'),

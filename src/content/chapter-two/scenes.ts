@@ -55,7 +55,7 @@ export const raid = (diversion: boolean) => scene('coast', 'two-raid', diversion
 
 export const freePrisoners = () => scene('coast', 'two-prisoners', 'THE COACH OPENS', [
   line('Kit', 'Stand back from the lock. There.', { focus: { x: 27, y: 13 }, cut: true, cue: 'strike' }),
-  line('The prison coach', 'Kit slides the door aside. Orrin braces a shoulder beneath a prisoner’s arm and helps him down.'),
+  line('The prison coach', 'Kit slides the door aside. Orrin braces a shoulder beneath a prisoner’s arm and helps him down.',{mechanism:'coach-open',duration:1100}),
   line('Nell', 'Tomas! Have you seen my brother? Brown hair, red scarf?',{expression:'surprised'}),
   line('The prisoners', 'A man in a torn railway coat holds out a folded slip. “They took him off here this morning. He said to keep this for his sister.”'),
   line('Transfer slip', '“Tomas · imperial conduit works, Northglass. Personal custody by imperial order.” Below the stamp: “The collectors feed the engines. I saw the houses go dark. — T.”', { document: { heading: 'CAPITAL TRANSFER', lines: ['TOMAS · IMPERIAL CONDUIT WORKS', 'PERSONAL CUSTODY · IMPERIAL ORDER', 'The collectors feed the engines.', 'I saw the houses go dark. — T.'], stamp: 'TRANSFERRED' } }),

@@ -836,7 +836,7 @@
           "name": "lift-attendant-high",
           "point": true,
           "x": 948,
-          "y": 564,
+          "y": 660,
           "properties": [
             {
               "name": "sprite",

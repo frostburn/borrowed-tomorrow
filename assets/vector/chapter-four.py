@@ -9,6 +9,7 @@ from pathlib import Path
 from map_metadata import retain_interaction_roles
 from xml.sax.saxutils import escape
 from chapter_four_style import treatment, floor_paint, coastal_lamp, opal, floor_spill, drive_link, arena_lights
+from gate_pose import folded_leaves
 ROOT=Path(__file__).resolve().parents[2]
 ART=ROOT/'public/art/vector/chapter-four'
 MAP=ROOT/'src/content/chapter-four/maps'
@@ -120,12 +121,10 @@ def ferry(opened=False):
 def gate(opened):
  out=[]
  for x in (0,264):out.extend([rect(x,10,48,178,'#344b52'),poly([(x,10),(x+24,0),(x+48,10),(x+48,25),(x,25)],'#929c86'),rect(x+8,27,8,156,'#617c73'),rect(x+25,48,10,80,'#c2a46b')])
- if opened:
-  for x in (41,247):out.append(poly([(x,54),(x+21,35),(x+21,166),(x,183)],'#7b937d'))
- else:
-  out.extend([rect(48,51,216,130,'#365c5b'),poly([(48,51),(156,34),(264,51),(264,74),(156,56),(48,74)],'#799787')])
-  for x in range(64,264,24):out.extend([rect(x,60,8,120,'#9f9e7b'),line([(x+3,63),(x+3,176)],'#bdb486',2)])
-  out.extend([rect(148,51,16,130,'#b7a372'),ring(156,114,25,25,7,'#d9bb79')])
+ leaves=[rect(48,51,216,130,'#365c5b'),poly([(48,51),(156,34),(264,51),(264,74),(156,56),(48,74)],'#799787')]
+ for x in range(64,264,24):leaves.extend([rect(x,60,8,120,'#9f9e7b'),line([(x+3,63),(x+3,176)],'#bdb486',2)])
+ leaves.extend([rect(148,51,16,130,'#b7a372'),ring(156,114,25,25,7,'#d9bb79')])
+ out.append(folded_leaves(''.join(leaves),int(opened),'harbor-open'))
  return out
 
 def pump_house():
@@ -282,7 +281,7 @@ for module,x in [('engine',948),('coach',660)]:
  manifest['refuge'].append({'key':key,'url':url,'x':x,'y':846-hh+8,'width':ww,'height':hh,'depth':854,'layerId':3})
 
 harbor_f=[[(96,704),(210,682),(238,600),(270,572),(284,530),(548,514),(566,492),(660,510),(678,420),(920,414),(970,432),(1040,174),(1090,174),(1172,406),(1390,452),(1406,550),(1536,570),(1536,682),(1312,660),(1280,858),(1024,882),(760,852),(500,876),(222,850),(206,809),(100,830)],[(990,552),(982,600),(1194,612),(1200,568)]]
-decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1170,228,420,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,36,768,960,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
+decor=[('harbor-pumphouse',pump_house(),312,264,300,312,576,{}),('harbor-ferry-out',ferry(),360,192,1170,228,420,{'hiddenFlag':'harborOpened'}),('harbor-ferry-in',ferry(),360,192,1170,228,420,{'requiredFlag':'harborOpened'}),('harbor-gate-closed',gate(False),312,192,912,264,456,{'hiddenFlag':'harborOpened'}),('harbor-gate-open',gate(True),312,192,912,264,456,{'requiredFlag':'harborOpened'}),('harbor-wheel',wheel(),80,96,788,456,552,{}),('harbor-survey',crate(),84,80,244,613,693,{})]
 world('breakwater','Breakwater · the sea gate','The winding wheel operates the gate. Its service stair climbs to the sanctuary.',harbor_f,[(13,19,12,5),(38,17,2,2),(49,17,2,2)],[
  interaction('works-approach',33,18,'Chain walk · choose an approach',sprite='guardian-dusk',hiddenFlag='worksGateWon'),control('works-wheel',34,23,'Winding wheel · open the sea gate',(32,19,5,4),sign=True,accessFlag='worksGateWon',doneFlag='harborOpened'),control('works-cart',12,29,'Survey cart · folding range sight',(10,25,4,4),sign=True,doneFlag='worksStoresWon'),interaction('works-bram',27,24,'Bram · ferry crews',sprite='bram',hiddenFlag='harborOpened'),interaction('works-bench',17,26,'Pump-house bench · rest',sign=True),interaction('works-refuge',6,31,'West path · railway refuge',sign=True),interaction('works-sanctuary',45,13,'Through the gate · sanctuary bridge',sign=True,accessFlag='harborOpened')],
  {'refuge':(25,29),'gate':(34,25),'sanctuary':(45,20)},

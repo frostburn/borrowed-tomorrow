@@ -81,12 +81,12 @@ export const seasons=()=>scene('seasonstreet','seven-seasons','The road between 
  l('Petra','I’ll hold the stair while they come through.'),
  l('The Benefactor','I kept their harvests. Their recoveries. Their summers. Outside, everything I gave them ends.'),
  l('Nell','They’ve asked to leave.'),
- l('The city','Ice spreads down the terrace. Wings lift above the gate.'),
+ l('The city','Ice spreads down the terrace. The dragon spreads its wings in front of the gate.'),
  l('Celia','Skeld’s dragon. There’s no bell under it this time.'),
  l('Orrin','There’s the last return. It’s keeping the whole road inside.'),
 ]);
 export const seasonsFree=()=>scene('seasonstreet','seven-seasons-free','One road stays open',[
- l('The city','The ice breaks away from the gate. Orrin drives the wheel past its stop and wedges the teeth apart.',{focus:{x:32,y:24},cut:true,cue:'steam'}),
+ l('The city','The ice breaks away from the gate. Orrin drives the wheel past its stop and wedges the teeth apart.',{focus:{x:32,y:24},cut:true,cue:'steam',mechanism:'season-open',actors:{orrin:{at:{x:37,y:24},face:'orrin-right'}}}),
  l('Kit','This way! Keep the children on the inside of the stair.'),
  l('Petra','The landing’s clear. Send the next group.'),
  l('The hollow sun','The last stream tears free. For the first time, the distant ring stops turning.'),

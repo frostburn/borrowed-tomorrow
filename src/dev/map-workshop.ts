@@ -159,7 +159,7 @@ export class MapWorkshop {
     }
     if(pieces){
       for(const piece of pieces){
-        const image=this.image(`${import.meta.env.BASE_URL}${piece.url}`),draw=()=>{if(!image.complete||!image.naturalWidth)return;ctx.save();const angle=sceneryAngle(piece,time);if(angle){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(angle);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);ctx.drawImage(vectorSurface(image),0,0);ctx.restore();};
+        const pose=mechanismPoseForPiece(piece.key,this.flags),image=this.image(`${import.meta.env.BASE_URL}${pose?.url??piece.url}`),draw=()=>{if(!image.complete||!image.naturalWidth)return;ctx.save();const angle=sceneryAngle(piece,time);if(angle){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(angle);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);if(pose)ctx.drawImage(vectorSurface(image),pose.frame*pose.width,0,pose.width,pose.height,0,0,pose.width,pose.height);else ctx.drawImage(vectorSurface(image),0,0);ctx.restore();};
         if(piece.depth>=0||swayingScenery(piece))sorted.push({depth:piece.depth,draw});else draw();
       }
       if(time!==undefined&&e.tiles){
@@ -217,14 +217,14 @@ export class MapWorkshop {
     if(this.overlays.has('markers'))for(const l of e.tiles?.layers.filter(l=>l.type==='objectgroup'&&!l.name.startsWith('Scene:'))??[]){for(const o of l.objects??[]){const p=properties(o);if(p.hiddenFlag&&this.flags[String(p.hiddenFlag)]||p.requiredFlag&&!this.flags[String(p.requiredFlag)])continue;const interaction=l.name==='Interactions'?e.world?.objects.find(item=>item.id===o.name):undefined,marker=interaction?interactionMarker(interaction,{flags:this.flags}):undefined;if(interaction&&!marker)continue;const color=marker?.color??'#73d5de';ctx.strokeStyle=color;ctx.lineWidth=1;ctx.strokeRect(Math.floor(o.x)+.5,Math.floor(o.y)+.5,o.width||6,o.height||6);bitmapText(ctx,marker?`${marker.glyph} ${o.name}`:o.name,Math.floor(o.x)+8,Math.floor(o.y),color,1);}}
     ctx.strokeStyle='#f4c77a';ctx.lineWidth=2;ctx.strokeRect(this.selected.x*24+1,this.selected.y*24+1,22,22);
     this.inspector();
-    const urls=pieces?pieces.map(p=>`${import.meta.env.BASE_URL}${p.url}`):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}${e.image??`art/${e.world!.art??e.id}.webp`}`];
+    const urls=pieces?pieces.flatMap(p=>{const pose=mechanismPoseForPiece(p.key,this.flags);return [`${import.meta.env.BASE_URL}${pose?.url??p.url}`,...pose&&rig?[`${import.meta.env.BASE_URL}${p.url}`]:[]];}):e.tiles?tilePages(e.tiles).map(p=>`${import.meta.env.BASE_URL}${p.url}`):[`${import.meta.env.BASE_URL}${e.image??`art/${e.world!.art??e.id}.webp`}`];
     const missing=urls.filter(url=>this.failed.has(url)),loading=urls.filter(url=>!this.images.get(url)?.complete);
     const status=host.querySelector('#map-load')!;status.textContent=missing.length?'Some artwork is unavailable. Retry missing art or choose another map.':loading.length?'Loading map art...':'Map art loaded.';host.dataset.ready=String(!missing.length&&!loading.length);host.dataset.paint=String(Number(host.dataset.paint??0)+1);
   }
   private stack(){const {x,y}=this.selected;return this.layers.filter(l=>l.data![y*this.entry.tiles!.width+x]).map(l=>({layer:l,gid:l.data![y*this.entry.tiles!.width+x]})).reverse();}
   private source(layer:TileLayer,gid:number){
     const pieces=sceneArt(this.entry.tiles);
-    if(pieces){const x=this.selected.x*24,y=this.selected.y*24;return pieces.filter(p=>p.layerId===layer.id&&x>=p.x&&y>=p.y&&x<p.x+p.width&&y<p.y+p.height).map(p=>p.url).join(', ');}
+    if(pieces){const x=this.selected.x*24,y=this.selected.y*24;return pieces.filter(p=>p.layerId===layer.id&&x>=p.x&&y>=p.y&&x<p.x+p.width&&y<p.y+p.height).map(p=>{const pose=mechanismPoseForPiece(p.key,this.flags);return pose?`${pose.url} / frame ${pose.frame}`:p.url;}).join(', ');}
     const f=tileFrame(gid,this.entry.tiles),page=mapTilePages(this.entry.tiles).find(p=>p.name===f.key)!;
     return `${page.url} / frame ${f.frame}`;
   }
@@ -246,4 +246,5 @@ export class MapWorkshop {
     crop.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`${this.entry.id}-${this.selected.x}-${this.selected.y}.png`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
   }
 }
+import {mechanismPoseForPiece} from '../content/story-mechanisms';
 import { worldActorScaleY } from '../content/actors';

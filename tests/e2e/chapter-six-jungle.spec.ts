@@ -61,7 +61,7 @@ test('river launch and treatment effects run on scene time, honor reduced motion
   try{
    const s=jungleCheckpoint('riverPatrolWon');s.location=arrival('canopy','chain');await page.goto('/');await importSave(page,s);await approach(page,'river-chain');await page.mouse.move(0,0);await page.waitForTimeout(80);const early=await frame();await page.waitForTimeout(400);expect((await frame())===early).toBe(reduced);await skip(page);expect((await inspect(page)).state.flags.riverChainOpen).toBe(true);
    await importSave(page,jungleCheckpoint('rainhouseWon'));await approach(page,'river-treatment');await page.getByRole('button',{name:'Bring Nell and begin the treatment',exact:true}).click();
-   for(let i=0;i<12&&!(await page.locator('.dialogue p').textContent())?.includes('split collar');i++)await page.locator('.dialogue-actions button').first().click();
+   for(let i=0;i<32&&!(await page.locator('.dialogue p').textContent())?.includes('split collar');i++)await page.locator('.dialogue-actions button').first().click();
    await expect(page.locator('.dialogue p')).toContainText('split collar');await page.mouse.move(0,0);await page.waitForTimeout(80);const pulse=await frame();await page.waitForTimeout(350);expect((await frame())===pulse).toBe(reduced);await capture(page,`iria-basin-${reduced?'reduced':'moving'}`);await skip(page);expect((await inspect(page)).state.flags.nellRecovered).toBe(true);expect(errors).toEqual([]);
   }finally{await context.close();}
  }

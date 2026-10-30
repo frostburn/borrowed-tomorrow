@@ -265,3 +265,37 @@ BT_PRODUCTION=1 npx playwright test --grep 'production panel confirmation'
 The max-level layout cases cover all five characters and desktop, fractional-DPR
 phone and 320px phone layouts. Detailed menu cases remain outside the default
 browser CI selection.
+
+
+## Story mechanism animation
+
+`Shot.mechanism` names an explicit narrated action. The catalogue in
+`content/story-mechanisms.ts` registers its regional assets and durations.
+`MechanismCinematic` applies 17 native poses plus scene-time prop movement;
+`Cutscene.animating` keeps the shared framebuffer refreshing with a parked
+cursor. Advancing dialogue settles the action. Reduced motion uses its final
+pose immediately. Close/skip restores temporary textures, positions, depths and
+alpha before the existing story callback rebuilds the saved world.
+
+`WorldMechanisms` and the Maps review select the same saved coach-door, anchor
+and shutter end poses.
+Return light that fades during a shot keeps its own image through
+`liveMechanismPiece`, outside the static floor cache. The new season-street gate
+adds two visibility-only Tiled layers at the end, retaining every previous
+layer/object ID, collision cell and interaction anchor.
+
+```sh
+npm run art:mechanisms
+npx vitest run tests/story-mechanisms.test.ts
+npx playwright test story-mechanisms.spec.ts
+```
+
+The exporter derives self-contained SVG pose sheets from the shipped regional
+originals; run it after regional art exports. `art:four` and `art:seven` include
+this final step. Gate poses share `assets/vector/gate_pose.py`: the two free edges recede
+into the passage with mirrored shear, including the saved open artwork. The
+Breakwater ferry stays at its berth during playback and after completion/reload.
+Every SVG remains below 128 KiB. The browser matrix checks actual prop
+pixels on desktop/phone, reduced motion, dialogue advancement, skip, progress
+and resource invariants, plus an interrupted harbor opening. These cases carry
+no `@ci` tag. The audit is in [mechanism-animation-audit.md](story/mechanism-animation-audit.md).
