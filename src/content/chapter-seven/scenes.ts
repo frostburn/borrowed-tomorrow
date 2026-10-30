@@ -97,9 +97,9 @@ export const refuge=()=>scene('lastrefuge','seven-refuge','The unwritten hour',[
  l('A porter','Alda answered the bell. The first group’s across.'),
  l('Celia','Leave the sleeping ones here. We’ll bring the next group together.'),
  l('Kit','I checked the whole route. Blue ties at the turns, two at the broken step.'),
- l('Nell','I saved you some water. There’s room beside me.'),
- l('Kit','Thank you. The porter’s taking the next group; I can stay a while.'),
- l('Nell','Good. I wanted you here.'),
+ l('Nell','I saved you some water. There’s room beside me.',{expression:'happy'}),
+ l('Kit','Thank you. The porter’s taking the next group; I can stay a while.',{expression:'happy'}),
+ l('Nell','Good. I wanted you here.',{expression:'bashful'}),
  l('Orrin','The gate will stay open. It isn’t drawing from the sun anymore.'),
  l('Petra','We can rest. Then we finish this.'),
 ]);

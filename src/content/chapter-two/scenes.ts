@@ -50,7 +50,7 @@ export const raid = (diversion: boolean) => scene('coast', 'two-raid', diversion
   line('Kit', diversion ? 'Orrin, the points! Send that empty wagon across her track.' : 'Orrin, release the loading crane! She’ll have to go round.'),
   line('Orrin', 'Mind your feet!', { cue: 'steam', actors: { petra: { to: { x: 42, y: 20 } } } }),
   line('Petra', 'Stop! You’ll bring the guard machines down on everyone.'),
-  line('Kit', diversion ? 'The crows are coming off the signal gantry. Spread out. My bolts can reach them.' : 'The guardian’s turning. My piercing bolts can get through its plating.', { actors: { petra: { visible: false } } }),
+  line('Kit', diversion ? 'The crows are coming off the signal gantry. Spread out. My bolts can reach them.' : 'The guardian’s turning. I’ll cover you from the wall.', { actors: { petra: { visible: false } } }),
 ]);
 
 export const freePrisoners = () => scene('coast', 'two-prisoners', 'THE COACH OPENS', [
@@ -63,7 +63,7 @@ export const freePrisoners = () => scene('coast', 'two-prisoners', 'THE COACH OP
   line('Kit', 'My bag’s here. The bottles are still packed. Dena can take everyone at the railway ward, west of the exchange.',{expression:'happy'}),
   line('Orrin', 'There’s a dispatch case under the bench. Medical-train clearance, for the conduit works outside the capital.'),
   line('Kit', 'I deliver to that siding. Let me see the seal.'),
-  line('Nell', 'Thank you, Kit.'),
+  line('Nell', 'Thank you, Kit.',{expression:'happy'}),
   line('Kit', 'You’re welcome. I’ll—let me get the door. The left one sticks.', { expression:'flustered', actors: { kit: { to: { x: 28, y: 15 } } } }),
   line('Nell', 'Orrin, bring the case. Let’s get them somewhere warm.'),
 ]);
@@ -139,7 +139,7 @@ export const recapture = () => scene('cinderbank', 'two-recapture', 'THE LAST CR
   line('Nell', 'He killed Ansel for standing in his way. What will you do when he gives that order again?'),
   line('Captain Alban', 'Enough. Recover the fragment.'),
   line('Petra', 'Stay behind me, Captain.', { cue: 'defend' }),
-  line('Kit', 'She’ll draw our attacks onto her shield. My piercing bolts can get through. Watch her bash near the rails.'),
+  line('Kit', 'She’ll draw our attacks onto her shield. Keep some room behind you when she closes in.'),
 ]);
 
 export const departure = () => scene('cinderbank', 'two-departure', 'THE CAPITAL LINE', [
@@ -163,7 +163,7 @@ export const departure = () => scene('cinderbank', 'two-departure', 'THE CAPITAL
   line('Kit', 'And all the letters are delivered.'),
   line('Nell', 'Come to the works with us, Kit.'),
   line('Kit', 'I should see the coaches through. And you’ll want the south siding. I’ve done that round.'),
-  line('Nell', 'I’m glad you’re coming.'),
+  line('Nell', 'I’m glad you’re coming.',{expression:'happy'}),
   line('Nell', 'Tomas is at the imperial conduit works. We’ve got a train. This time we go straight to him.'),
   line('The lantern', 'The glass trembles against Nell’s coat. She wraps it in Ansel’s old cloth and watches the last harbor lights pass.', { silence: true, omen:'shard' }),
 ]);

@@ -1,7 +1,7 @@
 import type { GameState } from '../../rules/state';
 export const JOURNAL: Record<string, { title: string; text: string }> = {
   coast: { title: 'Iron Coast exchange', text: 'A barred coach is waiting at the exchange. Alban seized a courier’s medicine and letters. Speak to the courier at the loading gate once Alban has gone.' },
-  kit: { title: 'The courier', text: 'Kit saw Tomas at the transfer window. He is guiding us to the coach to recover his seized deliveries while we look for Tomas. The signal walk has crows; the loading gate has an armored guardian. Choose our approach at either entrance. His crossbow can fire from cover, and Piercing bolt ignores armor.' },
+  kit: { title: 'The courier', text: 'Kit saw Tomas at the transfer window. He is guiding us to the coach to recover his seized deliveries while we look for Tomas. The signal walk has crows; the loading gate has an armored guardian. Choose our approach at either entrance. His crossbow lets him fight from a distance.' },
   trainRaid: { title: 'The guard is down', text: 'We reached the barred coach. Open its door and get the prisoners out.' },
   prisoners: { title: 'Tomas’s transfer', text: 'The prisoners are free. A freed prisoner kept Tomas’s transfer slip for Nell. He is at the imperial conduit works outside the capital. His note says the collectors feed the engines. We took a medical-train clearance from the dispatch case. Escort everyone west to the railway ward.' },
   ward: { title: 'The delivery book', text: 'Dena received Kit’s medicine and took in the prisoners. Our clearance gives us a route to the capital, but Nell chose an extra stop for the families at Cinderbank. Kit still has a letter for the family at the green door. Dena is coming to care for the passengers.' },
