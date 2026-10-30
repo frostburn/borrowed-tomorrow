@@ -113,6 +113,7 @@ export class Adventure extends Phaser.Scene {
   private pendingEquipmentHint?:{state:GameState;gains:ReturnType<typeof resourceGains>};
   private moving = false;
   private busy = false;
+  private loadingSave = false;
   private face = 'nell';
   private arrowKeys?: Phaser.Types.Input.Keyboard.CursorKeys;
   private letters?: Record<string, Phaser.Input.Keyboard.Key>;
@@ -330,7 +331,12 @@ export class Adventure extends Phaser.Scene {
     finally{this.busy=false;}
   }
   private async loadState(state: GameState) {
-    if(this.busy)return;this.busy=true;
+    const fromBattle=this.mode==='battle';
+    if(this.loadingSave||this.busy&&!fromBattle)return;
+    this.loadingSave=true;
+    // Combat owns its busy flag while assets load. Failure must leave its
+    // animation/turn queue playable; success invalidates it through showWorld.
+    if(!fromBattle)this.busy=true;
     try {
       const candidate = decodeSave(JSON.stringify(state));
       const floor=restorePoint(MAPS[candidate.location.map],candidate.location,candidate);
@@ -343,7 +349,7 @@ export class Adventure extends Phaser.Scene {
       else resumeChapter(this.storyHost());
       this.ui.toast('Journey restored.');
     } catch (error) { this.ui.toast(error instanceof Error ? error.message : 'Unable to load the save.'); }
-    finally{this.busy=false;}
+    finally{this.loadingSave=false;if(!fromBattle)this.busy=false;}
   }
   private showWorld() {
     document.querySelector('.game-shell')!.classList.remove('boss-battle');
@@ -1065,16 +1071,16 @@ export class Adventure extends Phaser.Scene {
     this.serialSave=this.serialSave.catch(()=>{}).then(()=>save('autosave',snapshot)).catch(()=>{this.ui.toast('Unable to save in this browser. Export your progress from the Save menu.');});
   }
   async saves() {
-    if(this.mode==='battle'){this.ui.toast('The checkpoint before this battle is saved. Manual saves are available after the battle.');return;}
+    const importFile={label:'Import save file',action:()=>{const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{try{const file=input.files?.[0];if(!file)return;if(file.size>2_000_000)throw new Error('That save file is too large.');this.loadState(decodeSave(await file.text()));}catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to import the save.');}};input.click();}};
     try{
       const records=await listSaves();const esc=this.ui.escape;
-      this.ui.showModal('Keep your place',`<p>Autosave records story checkpoints. Manual slots stay available when you begin a new journey.</p><div id="save-slots">${['autosave','slot-1','slot-2','slot-3'].map(slot=>{const r=records.find(v=>v.slot===slot);return`<div class="save-row"><div><h3>${slot==='autosave'?'Autosave':`Slot ${slot.slice(-1)}`}</h3><p>${r?`${esc(MAPS[r.state.location.map].name)} · Lv ${level(r.state)} · ${new Date(r.savedAt).toLocaleString()}`:'Empty'}</p></div><div class="slot-buttons" data-slot="${slot}"></div></div>`;}).join('')}</div><p style="margin-top:18px">Export a JSON file to carry your journey to another browser or keep a backup.</p>`,[
-        {label:'Export current save',disabled:this.mode==='title',action:()=>exportSave(this.state)},
-        {label:'Import save file',action:()=>{const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{try{const file=input.files?.[0];if(!file)return;if(file.size>2_000_000)throw new Error('That save file is too large.');this.loadState(decodeSave(await file.text()));}catch(error){this.ui.toast(error instanceof Error?error.message:'Unable to import the save.');}};input.click();}},
+      this.ui.showModal('Keep your place',`<p>${this.mode==='battle'?'Choose a saved checkpoint to leave this battle.':'Autosave records story checkpoints. Manual slots stay available when you begin a new journey.'}</p><div id="save-slots">${['autosave','slot-1','slot-2','slot-3'].map(slot=>{const r=records.find(v=>v.slot===slot);return`<div class="save-row"><div><h3>${slot==='autosave'?'Autosave':`Slot ${slot.slice(-1)}`}</h3><p>${r?`${esc(MAPS[r.state.location.map].name)} · Lv ${level(r.state)} · ${new Date(r.savedAt).toLocaleString()}`:'Empty'}</p></div><div class="slot-buttons" data-slot="${slot}"></div></div>`;}).join('')}</div><p style="margin-top:18px">${this.mode==='battle'?'You can also import a JSON save file.':'Export a JSON file to carry your journey to another browser or keep a backup.'}</p>`,[
+        ...(this.mode==='battle'?[]:[{label:'Export current save',disabled:this.mode==='title',action:()=>exportSave(this.state)}]),
+        importFile,
       ]);
       for(const slot of ['autosave','slot-1','slot-2','slot-3']){
         const target=this.ui.modal.querySelector(`[data-slot="${slot}"]`)!;const record=records.find(v=>v.slot===slot);
-        if(slot!=='autosave')target.append(this.ui.button({label:'Save',disabled:this.mode==='title',action:async()=>{
+        if(slot!=='autosave'&&this.mode!=='battle')target.append(this.ui.button({label:'Save',disabled:this.mode==='title',action:async()=>{
           const write=async()=>{await save(slot,this.state);this.ui.toast('Place saved.');await this.saves();};
           if(record)this.ui.showModal('Replace this save?',`<p>Replace ${slot.replace('-',' ')} with your current journey?</p>`,[{label:'Replace save',action:()=>{void write().catch(()=>this.ui.toast('Save failed. You can export a file instead.'));}}]);
           else void write().catch(()=>this.ui.toast('Save failed. You can export a file instead.'));
@@ -1085,7 +1091,7 @@ export class Adventure extends Phaser.Scene {
           else this.ui.showModal('Restore this journey?', '<p>Progress since your last checkpoint will be replaced by this save.</p>',[{label:'Load save',action:()=>this.loadState(record.state)}]);
         }}));
       }
-    }catch{this.ui.showModal('Save files','<p>Browser storage is unavailable. You can still export and import JSON saves.</p>',[{label:'Export current save',disabled:this.mode==='title',action:()=>exportSave(this.state)},{label:'Close',action:()=>this.ui.closeModal()}]);}
+    }catch{this.ui.showModal('Save files',this.mode==='battle'?'<p>Browser storage is unavailable. You can still import a JSON save.</p>':'<p>Browser storage is unavailable. You can still export and import JSON saves.</p>',[...(this.mode==='battle'?[]:[{label:'Export current save',disabled:this.mode==='title',action:()=>exportSave(this.state)}]),importFile,{label:'Close',action:()=>this.ui.closeModal()}]);}
   }
   private shop(shop:ShopId='station') {
     openShop(this.ui,this.state,shop,()=>{this.autosave();this.renderWorldControls();},()=>{

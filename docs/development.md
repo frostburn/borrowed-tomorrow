@@ -166,3 +166,18 @@ button reads **Sound on next input**; a slow start reads **Starting sound**. Bot
 can be cancelled from that button. These phases describe the saved intent and
 loading state separately from audible playback, without opening an AudioContext
 on page load or changing workshop transport controls.
+
+
+### Loading during combat
+
+Save remains available during campaign battles for loading an existing slot or
+importing a current-format JSON file. Combat does not write manual slots or
+export a mid-battle snapshot. Restore keeps the active battle until the target
+assets have loaded, then discards its presentation and callbacks through the
+existing battle-identity guards. Invalid files and failed scenery loads leave
+the current battle playable. A separate load guard serializes restore requests
+without borrowing the combat animation/turn busy flag. JSON import also works
+when IndexedDB is unavailable. The battle-loading browser regressions exercise
+slots, imports during animations, stale callbacks, failed-load recovery and
+storage failure in both development and production. These detailed flows remain
+opt-in, outside the small default CI browser gate.
