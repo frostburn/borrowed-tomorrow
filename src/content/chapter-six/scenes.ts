@@ -153,7 +153,7 @@ export const home=(s:SceneState=empty)=>scene(s,'outermooring','six-home',s.flag
  line('Orrin','Their clock runs on canal water. It stops whenever a boat parks badly.'),
  line('Nell','I’d like to see that.'),
  line('Orrin','I drew it for you. Kit’s got the page.'),
- line('Kit','I kept it flat. There’s a clean bit on the back if you want to— I’ll turn it round.'),
+ line('Kit','I kept it flat. There’s a clean bit on the back if you want to draw. Here, I’ll turn it round.',{expression:'happy'}),
  line('Nell','You kept it for me? Thank you. Come and help me work out which boat is holding up the clock.'),
  line('Celia','And someone bring the tea over. She’s been waiting to hear this all afternoon.'),
 ]);

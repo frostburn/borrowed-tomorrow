@@ -64,7 +64,7 @@ export const freePrisoners = () => scene('coast', 'two-prisoners', 'THE COACH OP
   line('Orrin', 'There’s a dispatch case under the bench. Medical-train clearance, for the conduit works outside the capital.'),
   line('Kit', 'I deliver to that siding. Let me see the seal.'),
   line('Nell', 'Thank you, Kit.'),
-  line('Kit', 'You’re—yes. The left door sticks. I’ll take it.', { actors: { kit: { to: { x: 28, y: 15 } } } }),
+  line('Kit', 'You’re welcome. I’ll—let me get the door. The left one sticks.', { expression:'flustered', actors: { kit: { to: { x: 28, y: 15 } } } }),
   line('Nell', 'Orrin, bring the case. Let’s get them somewhere warm.'),
 ]);
 

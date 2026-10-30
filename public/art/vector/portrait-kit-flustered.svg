@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<title>Kit, railway courier — flustered</title>
+<!-- Expression: flustered; derived by assets/vector/portrait-expressions.py -->
+<metadata>{"reference": "babe8ca:public/art/portrait-kit.png", "construction": "Young round chin, fuller cheek, lifted brow and a small uneven smile. Tousled brown hair, ochre scarf and blue courier jacket.", "method": "Independent polygon drawing in the Edric/Samira portrait direction"}</metadata>
+<path d="M0 0H128V128H0Z" fill="#182e3b"/>
+<path d="M0 0H128V22L45 10L0 62Z" fill="#294550"/>
+<path d="M3 128L12 108 34 96 51 88H79L106 102 123 128Z" fill="#233d52"/>
+<path d="M6 123L20 107 37 99 44 128Z" fill="#3e596b"/>
+<path d="M88 97L109 110 123 128H88Z" fill="#122634"/>
+<path d="M48 75L47 95 64 106 81 94 78 73Z" fill="#b58261"/>
+<path d="M60 84L78 78 81 94 65 104 54 94Z" fill="#96674f"/>
+<path d="M31 97L46 89 64 103 81 88 96 99 73 118 57 112 57 128H44L47 108Z" fill="#c8ab75"/>
+<path d="M36 98L47 94 64 108 80 93 87 97 69 113 58 108 48 103Z" fill="#e0c38b"/>
+<path d="M77 108L86 105 78 128H63L64 115Z" fill="#9f7d4f"/>
+<path d="M28 35L35 22 49 14 70 13 86 24 94 43 92 59 87 65 83 59 82 44 73 31 54 26 39 37 34 56 29 62 25 51Z" fill="#623d29"/>
+<path d="M39 33L54 25 72 29 84 42 87 59 82 74 71 85 60 88 47 81 38 68 34 52 34 43Z" fill="#c99571"/>
+<path d="M40 35L54 29 68 33 77 43 74 52 53 56 37 48Z" fill="#e1b68c"/>
+<path d="M79 35L84 42 87 59 82 74 71 85 60 88 60 83 74 76 79 62Z" fill="#a7745a"/>
+<path d="M36 56L46 55 52 62 47 69 39 65Z" fill="#ce9872"/>
+<path d="M41 50L52 47 58 50 56 56 43 55Z M69 49L79 50 84 53 81 56 70 55Z" fill="#b58261"/>
+<path d="M40 45L55 41 57 43 41 48Z M69 42L83 45V48L69 45Z" fill="#623d29"/>
+<path d="M44 51L54 50 55 58H45Z M72 51L80 50 81 58H73Z" fill="#eee9dc"/>
+<path d="M47 52H51V56H47Z M74 52H78V56H74Z" fill="#263e4b"/>
+<path d="M63 51L61 61 57 67 62 70 70 68 72 65 66 62Z" fill="#b17b5c"/>
+<path d="M63 54L64 63 68 65 65 67 60 65Z" fill="#e1b68c"/>
+<path d="M59 69L64 70 68 68 68 71 63 73Z" fill="#895d49"/>
+<path d="M56 78L64 79 71 77 71 81 64 83 57 81Z" fill="#975f51"/>
+<path d="M60 85L66 84 69 82 68 85 64 87Z" fill="#ce9872" data-part="chin-highlight" opacity=".25"/>
+<path d="M26 43L29 32 25 26 37 25 36 15 47 20 51 9 60 16 70 8 76 19 88 17 86 29 97 36 89 42 91 52 83 49 76 36 65 31 56 37 47 31 40 43 35 57 31 61 27 54Z" fill="#623d29"/>
+<path d="M32 34L42 29 42 24 49 27 54 18 61 24 69 17 71 25 80 25 74 30 63 27 55 31 47 28 39 36 34 46Z" fill="#9b5d32"/>
+<path d="M83 32L90 38 92 49 89 61 85 65 83 60 86 50Z" fill="#49362c"/>
+<path d="M30 100L36 99 41 128H34Z" fill="#c69c5c"/>
+<path d="M32 111H40V118H32Z" fill="#80553d"/>
+<path d="M43 66L50 65 53 69 46 71Z M74 65L81 65 81 69 75 70Z" fill="#b57264" opacity=".7"/>
+</svg>
