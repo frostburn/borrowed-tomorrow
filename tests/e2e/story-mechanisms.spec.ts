@@ -3,6 +3,10 @@ import {mechanismCases} from '../support/mechanisms';
 import {importSave,approach} from './navigation';
 import {inspect,capture} from './controls';
 type Case=typeof mechanismCases[number];
+async function liftAttendant(page:Page){
+ const people=(await inspect(page)).people.filter(p=>p.id.startsWith('lift-attendant-'));expect(people).toHaveLength(1);
+ const p=people[0];expect(p.x).toBe(948);expect(p.y).toBeGreaterThanOrEqual(667);expect(p.y).toBeLessThanOrEqual(675);return {x:p.x,y:p.y};
+}
 async function actionLine(page:Page,c:Case){
  await expect.poll(async()=>(await inspect(page)).cinematic).toBe(c.scene);
  for(let i=0;i<24;i++){
@@ -34,12 +38,15 @@ for(const [device,viewport,dpr,reduced]of [
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await importSave(page,c.save());if(c.object)await approach(page,c.object);
   await actionLine(page,c);await page.mouse.move(0,0);const before=(await inspect(page)).state;
+  const attendant=c.name==='lift'?await liftAttendant(page):undefined;
   expect(before.flags[c.flag]).toBeFalsy();await page.waitForTimeout(c.name==='coach'||c.name==='seasons'?120:950);
   const samples=await hashes(page,c);if(reduced)expect(samples.length,'reduced motion is steady').toBe(1);else expect(samples.length,`${c.name} prop pixels advance with a parked cursor`).toBeGreaterThan(1);
+  if(attendant)expect(await liftAttendant(page),'the loading attendant does not rise with the platform').toEqual(attendant);
   await capture(page,`mechanism-${c.name}-${device}`);
   await page.locator('.dialogue-actions button').first().click();await page.waitForTimeout(1050);expect((await hashes(page,c,250)).length,'advancing dialogue settles the prop').toBe(1);
   expect((await inspect(page)).state.flags[c.flag]).toBeFalsy();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
   const after=(await inspect(page)).state;expect(after.flags[c.flag]).toBe(true);expect(after.inventory).toEqual(before.inventory);expect(after.party).toEqual(before.party);expect(after.xp).toBe(before.xp);expect(after.coins).toBe(before.coins);
+  if(attendant){await liftAttendant(page);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.waterLiftOpened).toBe(true);await liftAttendant(page);}
   await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
  }finally{await context.close();}
 });

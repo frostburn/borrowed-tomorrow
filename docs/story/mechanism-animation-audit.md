@@ -11,7 +11,7 @@ scene completion or Skip callback.
 | `four-gate` | Gate and ferry switch only after dialogue. | Wheel turns and both leaves recede into the passage with mirrored perspective. The ferry stays moored; stone piers stay fixed. | Existing `harborOpened` gate layers; the ferry keeps its berth across completion/reload. |
 | `four-cable` | Clamp switches after dialogue; the spark is only narrated. | Copper shoe lifts, cable sags, spark travels uphill. | Existing `signalCut` clamp layer. |
 | `five-water` | Water appears after dialogue; the control stays still. | Wheel turns and water advances beneath the casting floor. | Existing `coolingOpened` water layer. |
-| `five-wind-lift` | Platform already rises, but its wheel stays still. | Wheel turns alongside the existing platform and attendant motion. | Existing `waterLiftOpened` platform layers. |
+| `five-wind-lift` | Platform already rises, but its wheel stays still; an attendant floats beside it. | Wheel turns alongside the platform; the loading attendant stays on the lower landing. | Existing `waterLiftOpened` platform layers; attendant stays on the landing after completion/reload. |
 | `five-release` | Breaker, contacts and anchor stay lit/static. | Breaker drops, copper contacts part, crystal and return light darken. | `hammerplainFreed` restores the released pose. |
 | `five-watch-release` | The named release wheel is absent. | A mounted wheel turns; contacts part and the cable/crystal darken. | `dawnwatchFreed` restores the released pose. |
 | `five-wind-release` | Shutters are narrated; the lens stays lit. | Two shutters close over the native lens; the gallery beam fades. | `windmereFreed` restores the shut pose. |

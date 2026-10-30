@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync,statSync} from 'node:fs';
 import {MECHANISM_FRAMES,MECHANISM_SHEETS,mechanismAssets,mechanismTexture,liveMechanismPiece,mechanismPoseForPiece} from '../src/content/story-mechanisms';
 import {sceneArt,visibleSceneArt} from '../src/content/scene-art';
-import {MAPS} from '../src/content/maps';
+import {MAPS,visiblePeople,walkable} from '../src/content/maps';
 import * as four from '../src/content/chapter-four/scenes';
 import * as five from '../src/content/chapter-five/scenes';
 import * as watch from '../src/content/chapter-five/dawnwatch-scenes';
@@ -37,6 +37,14 @@ describe('native story mechanisms',()=>{
   const ferry=(flags:Record<string,boolean>)=>visibleSceneArt(MAPS.breakwater.tiles!,{flags})!.filter(p=>p.key.startsWith('scene-four-harbor-ferry-'));
   const before=ferry({}),after=ferry({harborOpened:true});expect(before).toHaveLength(1);expect(after).toHaveLength(1);
   for(const pose of [before[0],after[0]])expect(pose).toMatchObject({x:1170,y:228,width:360,height:192,depth:420});
+ });
+ it('raises the Windmere platform while the loading attendant keeps the same floor position',()=>{
+  const map=MAPS.dispensary,states:{flags:Record<string,boolean>}[]=[{flags:{}},{flags:{waterLiftOpened:true}}];
+  const attendants=states.map(s=>visiblePeople(map,s).filter(p=>p.id.startsWith('lift-attendant-')));
+  for(const people of attendants){expect(people).toHaveLength(1);expect(walkable(map,people[0].x,people[0].y)).toBe(true);}
+  expect({x:attendants[1][0].x,y:attendants[1][0].y}).toEqual({x:attendants[0][0].x,y:attendants[0][0].y});
+  const platforms=states.map(s=>visibleSceneArt(map.tiles!,s)!.find(p=>p.key.startsWith('scene-five-water-platform'))!);
+  expect(platforms[1].x).toBe(platforms[0].x);expect(platforms[1].y).toBe(platforms[0].y-96);
  });
  it('preserves separately animated return-light images in the floor cache',()=>{
   for(const [map,key]of [['anchorforge','scene-five-gantry-signal'],['signalwall','scene-five-watch-return-line'],['mirrorward','scene-five-gallery-light']]as const){
