@@ -359,7 +359,7 @@
       "source": "../../../../assets/tiles/pages/tiles-086.json"
     }
   ],
-  "nextlayerid": 15,
+  "nextlayerid": 17,
   "nextobjectid": 19,
   "properties": [
     {
@@ -906,6 +906,44 @@
         }
       ],
       "properties": []
+    },
+    {
+      "id": 15,
+      "name": "season-return-gate-closed",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "seasonsFreed"
+        },
+        {
+          "name": "sort",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "season-return-gate-open",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "requiredFlag",
+          "type": "string",
+          "value": "seasonsFreed"
+        },
+        {
+          "name": "sort",
+          "type": "bool",
+          "value": true
+        }
+      ]
     }
   ]
 }

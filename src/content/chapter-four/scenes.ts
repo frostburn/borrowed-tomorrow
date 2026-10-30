@@ -41,7 +41,7 @@ export const harbor=()=>scene('breakwater','four-harbor','The closed harbor',[
 ]);
 export const openGate=()=>scene('breakwater','four-gate','A way through',[
  line('Orrin','Kit, take the slack. Nell, turn that wheel when I lift the brake.',{focus:{x:34,y:23},actors:{orrin:{to:{x:33,y:22}},kit:{to:{x:36,y:24}},nell:{to:{x:34,y:24}}}}),
- line('The sea gate','The chain catches. The iron leaves fold back, and the ferry scrapes into the basin.',{cue:'steam'}),
+ line('The sea gate','The chain catches. The iron leaves fold back, and the ferry scrapes into the basin.',{cue:'steam',mechanism:'harbor-open',focus:{x:44,y:20},duration:1000}),
  line('Bram','Easy on the gangway! There’s hot food at the railway ward.'),
  line('Celia','The man with the splint stays at the back. No carrying ropes.'),
  line('Kit','Dena’s going to make him sit down, isn’t she?'),
@@ -67,7 +67,7 @@ export const terrace=()=>scene('sanctuary','four-terrace','The signal sanctuary'
 ]);
 export const cable=()=>scene('sanctuary','four-cable','The return line',[
  line('Orrin','Stand back from the copper shoe.',{focus:{x:43,y:26},actors:{orrin:{to:{x:43,y:25}},nell:{to:{x:40,y:27}}}}),
- line('The return line','Orrin releases the clamp. A white spark runs uphill. Nell’s lantern gives a thin, answering hum.',{cue:'steam',omen:'shard'}),
+ line('The return line','Orrin releases the clamp. A white spark runs uphill. Nell’s lantern gives a thin, answering hum.',{cue:'steam',omen:'shard',mechanism:'cable-release',focus:{x:43,y:27},duration:900}),
  line('Nell','I felt that through the handle.'),
  line('Celia','Put it down if it burns.'),
  line('Nell','It’s cold.',{omen:'shard'}),

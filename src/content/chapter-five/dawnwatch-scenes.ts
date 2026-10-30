@@ -59,7 +59,7 @@ export const release=()=>scene('signalwall','five-watch-release','The town wheel
  line('Enna','My watch can work the wheel. We used it before the capital put a lock on the return.'),
  line('Orrin','The town line’s separate. Open the copper contacts and you can keep the signal lamps.'),
  line('Petra','Then it’s yours to turn.',{duration:700,actors:{petra:{to:{x:34,y:23}},enna:{to:{x:32,y:20}}}}),
- line('The anchor','Enna hauls the release wheel around. The upward cable darkens. The lantern handle hums against Nell’s palm.',{cue:'steam',omen:'shard'}),
+ line('The anchor','Enna hauls the release wheel around. The upward cable darkens. The lantern handle hums against Nell’s palm.',{cue:'steam',omen:'shard',mechanism:'watch-release',focus:{x:32,y:16},duration:900}),
  line('Nell','That’s it. Let’s tell the shelter.'),
 ]);
 export const town=()=>scene('dawnwatch','five-dawn-freed','The watch stays',[

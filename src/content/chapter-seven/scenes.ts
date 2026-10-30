@@ -86,7 +86,7 @@ export const seasons=()=>scene('seasonstreet','seven-seasons','The road between 
  l('Orrin','There’s the last return. It’s keeping the whole road inside.'),
 ]);
 export const seasonsFree=()=>scene('seasonstreet','seven-seasons-free','One road stays open',[
- l('The city','The ice breaks away from the gate. Orrin drives the wheel past its stop and wedges the teeth apart.',{focus:{x:32,y:24},cut:true,cue:'steam'}),
+ l('The city','The ice breaks away from the gate. Orrin drives the wheel past its stop and wedges the teeth apart.',{focus:{x:32,y:24},cut:true,cue:'steam',mechanism:'season-open',actors:{orrin:{at:{x:37,y:24},face:'orrin-right'}}}),
  l('Kit','This way! Keep the children on the inside of the stair.'),
  l('Petra','The landing’s clear. Send the next group.'),
  l('The hollow sun','The last stream tears free. For the first time, the distant ring stops turning.'),

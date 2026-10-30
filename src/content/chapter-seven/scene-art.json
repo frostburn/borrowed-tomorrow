@@ -457,6 +457,26 @@
       "height": 1008,
       "depth": -997,
       "layerId": 9
+    },
+    {
+      "key": "scene-mechanism-season-gate-closed",
+      "url": "art/vector/story-mechanisms/season-gate-closed.svg",
+      "x": 624,
+      "y": 380,
+      "width": 312,
+      "height": 192,
+      "depth": 572,
+      "layerId": 15
+    },
+    {
+      "key": "scene-mechanism-season-gate-open",
+      "url": "art/vector/story-mechanisms/season-gate-open.svg",
+      "x": 624,
+      "y": 380,
+      "width": 312,
+      "height": 192,
+      "depth": 572,
+      "layerId": 16
     }
   ],
   "lastrefuge": [

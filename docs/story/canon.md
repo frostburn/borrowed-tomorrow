@@ -234,3 +234,12 @@ The Emperor’s [breakfast-window thread](emperor-arc.md) connects his Chapter T
 Orrin’s [crew-trust thread](orrin-arc.md) pays off Hammerplain at the capital patient hoist: he leaves Hester’s fitters to complete their own repair, sees it support the evacuation, and later hands the gate watch to the porter. The sea trip lets him rest while someone else runs the train.
 
 The party’s [relationships while traveling](party-relationships.md) develop through shared work, disagreements, mutual care and a seaside card game. The optional deck talks adapt to regional progress; existing individual arcs and Nell’s recovery gates remain intact.
+
+
+## Mechanism presentation
+
+Coach doors, the Breakwater gate/ferry, sanctuary clamp, cooling and hospital
+wheels, regional anchor releases, Skeld’s passage and the season-street gate now
+animate during their existing narrated actions. The Iria channel chain rises
+with its boat sequence. Their original completion/skip flags, route gates and
+rewards are unchanged; see [the animation audit](mechanism-animation-audit.md).

@@ -1,3 +1,4 @@
+import {MechanismCinematic} from './mechanism-cinematic';
 import {LanternGlint} from './lantern-glint';
 import {StationRaid} from './station-raid';
 import {DomainCinematic} from './domain-cinematic';
@@ -50,9 +51,10 @@ export class Cutscene {
   private domain?:DomainCinematic;
   private raid?:StationRaid;
   private glint?:LanternGlint;
+  private mechanisms?:MechanismCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
-  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
+  constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
@@ -76,9 +78,9 @@ export class Cutscene {
     if(script.id==='three-rupture')this.effects=new ConduitCinematic(scene,world,this.layer,this.actors.get('emperor'));
     world.sort('depth');scene.cameras.main.stopFollow();scene.cameras.main.roundPixels=false;audio.cinematicMix(.7);
   }
-  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating||!!this.raid?.animating||!!this.glint?.animating);}
+  get animating(){return !this.closed&&(this.scene.cameras.main.panEffect.isRunning||[...this.actors.values()].some(a=>this.scene.tweens.isTweening(a))||!!this.effects?.animating||!!this.launch?.animating||!!this.shelter?.animating||!!this.ward?.animating||!!this.flagship?.animating||!!this.claim?.animating||!!this.pact?.animating||!!this.river?.animating||!!this.imperial?.animating||!!this.domain?.animating||!!this.raid?.animating||!!this.glint?.animating||!!this.mechanisms?.animating);}
   shot(shot?:Shot){
-    if(this.closed)return;this.glint?.stop();if(!shot)return;
+    if(this.closed)return;this.glint?.stop();this.mechanisms?.settle();if(!shot)return;
     this.raid?.settle();
     if(shot.music)this.audio.setMode(shot.music);
     const duration=this.duration?(shot.duration??this.duration):0;
@@ -135,11 +137,12 @@ export class Cutscene {
         }
       }
     }
+    if(shot.mechanism){this.mechanisms??=new MechanismCinematic(this.scene,this.world);this.mechanisms.play(shot.mechanism);}
     this.audio.cinematicMix(shot.silence?0:.7);if(shot.cue)this.audio.effect(shot.cue);
   }
   reframe(){const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
-    if(this.closed)return;this.closed=true;this.glint?.close();this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
+    if(this.closed)return;this.closed=true;this.mechanisms?.close();this.glint?.close();this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);

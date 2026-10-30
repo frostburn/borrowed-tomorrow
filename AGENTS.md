@@ -256,3 +256,14 @@ The Benefactor's sun and heart forms summon at most two living divine minions (a
 Equipment feedback uses character names for tool fittings, never copy counts, across reward icons, campaign/workshop bags and shops. Shared coats/consumables retain counts. Let icon rows name received loot; avoid repeated bag/manual-fitting explanations in victory prose and journals. `game/equipment-tutorial.ts` gates a one-time `equipmentHintSeen` flag on an actual new usable bag addition. Battles offer Equip now inline; shops show a separate post-purchase dialog with Equip now / Keep shopping; story finds wait for an unobstructed world state and offer a small modal. Open Equipment with the intended character/item selected, but never fit it automatically. Do not consume the hint for medicine, failed/capped gains, transfers, unavailable/unrecruited recipients, or merely loading existing gear. Preserve current save formats and keep detailed tutorial/device journeys outside default CI.
 
 Remembered sound waiting for a first trusted gesture must read Sound on next input, not Sound off; async loading reads Starting sound. Both can be cancelled; keep actual off/on labels, persistence, keyboard starts and workshop controls intact. `Shot.omen: 'shard'` is a small animated glint inside Nell’s lantern, using native facing/walking lens anchors in `content/actor-motion.ts`. Explicitly author lantern reactions rather than inferring them from all resonance sounds. Forward scene-time animation through `Cutscene.animating`; end on the next line/close/skip and use steady light for reduced motion. Preserve early crystal ambiguity, actor handedness, and all story checkpoints. Detailed device/pixel checks stay outside default CI.
+
+Story mechanism actions use explicit `Shot.mechanism` cues and the native pose
+catalogue in `content/story-mechanisms.ts`. `game/mechanism-cinematic.ts` reports
+scene-time motion, settles on the next dialogue line, restores temporary props
+on close, and leaves every flag write in the existing completion/skip callback.
+`world-mechanisms.ts` restores saved terminal poses. Return-light layers listed
+by `liveMechanismPiece` must stay out of static ground caches. Rebuild the SVG
+poses from the regional originals with `npm run art:mechanisms` after regional
+art exports; Chapter Seven's exporter runs it automatically to retain its
+season-street gate layers without renumbering existing IDs. Keep the detailed
+mechanism/device/reload checks opt-in. See `docs/story/mechanism-animation-audit.md`.
