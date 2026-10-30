@@ -27,7 +27,7 @@ export const released=(s:GameState)=>scene(s,'stillcity','six-capital-release','
 ]);
 export const palace=(s:GameState)=>scene(s,'lastpalace','six-palace-arrival','The palace of the last day',[
  line('The lower gallery','A servant carries a covered bowl to an empty chair. A woman’s pale reflection waits beside a closed window.',{focus:{x:38,y:22},cut:true}),
- line('The household','“Open the window, would you? I can hear the bread cart.”',{portrait:'ui/portrait-speaker'}),
+ line('The household','“Open the window, would you? I can hear the bread cart.”'),
  line('The lower gallery','She begins the request again, with the same pause before “window.”'),
  line('Petra','The Empress. I was on guard at her funeral.',{focus:{x:34,y:29},duration:800}),
  line('Celia','The man behind that screen is asking for water. The servant keeps passing him.',{focus:{x:24,y:25},duration:800}),

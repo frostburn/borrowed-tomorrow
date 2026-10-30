@@ -21,7 +21,8 @@ it('uses object cards for reading and leaves narration and character cues intact
  expect(SAY('Ansel','Words.').portrait).toBe('portrait-master');
  expect(SAY('The Benefactor','Words.').portrait).toBe('ui/portrait-light');
  expect(SAY('The Benefactor','Words.','benefactor').portrait).toBe('portrait-benefactor');
- expect(SAY('Supply clerk','Coats here.').portrait).toBe('ui/portrait-speaker');
+ for(const who of ['Supply clerk','The baker','The cart woman','A Cinderbank passenger','A fitter','Palace commandant','The household'])expect(SAY(who,'Words.').portrait).toBeUndefined();
+ expect(SAY('Iona','Coats here.').portrait).toBe('portrait-clerk');
 });
 it('registers small self-contained native icons and full-size dialogue cards',()=>{
  for(const [names,prefix,size]of [[UI_ICONS,'',32],[OBJECT_CARDS,'portrait-',128]]as const)for(const id of names){
