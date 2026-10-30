@@ -128,7 +128,7 @@ export const fallen=(s:GameState)=>scene(s,'crown','six-imperial-fall','The crow
  ]),
 ]);
 export const manifestation=(s:GameState)=>scene(s,'crown','six-lightbearer-rise','The Lightbearer',[
- line('The broken crown','The thread tightens. Above the ship, a small figure rises into the light. Orange cloth shows through the unfolding white plates.',{focus:{x:32,y:20},cut:true,music:'lightbearer',effect:'lightbearer-rise',duration:1700,cue:'resonance'}),
+ line('The broken crown','The thread tightens. Above the ship, a small figure rises into the light. Orange cloth shows through the unfolding white plates.',{focus:{x:32,y:20},cut:true,music:'crown',effect:'lightbearer-rise',duration:1700,cue:'resonance'}),
  line('Kit','Nell!',{expression:'surprised'}),
  line('The Lightbearer','Her lantern hangs in her right hand. Its shutter opens, and a white line cuts through the empty crown.'),
  line('Orrin','Behind the broken wall. Now.'),

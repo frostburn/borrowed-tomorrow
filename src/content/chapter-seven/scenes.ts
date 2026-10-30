@@ -7,7 +7,7 @@ export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
  l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:29},cut:true,music:'hollowsill'}),
  l('Orrin','The mooring line’s tight. Alda, keep the drum locked.'),
  l('Alda','I can do that. Coming back will be your part.'),
- l('The hollow sun','A gold ring turns above the far stair. The figure beneath it lowers its hands across the road.',{focus:{x:32,y:22},duration:2200}),
+ l('The far stair','A broken gold ring frames the figure’s shoulders. Its hands lower across the road.',{focus:{x:32,y:22},duration:2200}),
  l('The Benefactor','Return to your ship. You have no place here.'),
  l('Celia','There are people in that light.',{expression:'worried',focus:{x:32,y:29}}),
  l('Nell','Let them go.',{expression:'angry'}),
@@ -51,7 +51,7 @@ export const harvestFree=()=>scene('firstfield','seven-harvest-free','The uncut 
  l('Orrin','Same return valve as Hammerplain. The workers changed the pressure housing, but they kept its circuit.'),
  l('A farmer','I thought we’d spoiled the gift. Every year we worked harder.'),
  l('Petra','The road behind us is open. Nobody’s keeping you at the harvest.'),
- l('The hollow sun','One stream of light gutters out at the distant figure’s shoulder.'),
+ l('The distant figure','One stream of light gutters out at the distant figure’s shoulder.'),
  l('Nell','It’s losing what it took. Keep the next road open.'),
 ]);
 export const hospice=()=>scene('quietward','seven-hospice','After the healing',[
@@ -71,7 +71,7 @@ export const hospiceFree=()=>scene('quietward','seven-hospice-free','Out of bed'
  l('Celia','Put your weight on my arm. We’ll stop if you need to.',{focus:{x:24,y:32}}),
  l('A patient','I’d like to keep going.'),
  l('Kit','The porter’s waiting at the lower turn. He can walk with you.'),
- l('The hollow sun','A second stream breaks. The gold figure shifts; flakes of its mantle fall into the sea.'),
+ l('The distant figure','A second stream breaks. The gold figure shifts; flakes of its mantle fall into the sea.'),
  l('Petra','It can feel this. Watch the next crossing.'),
 ]);
 export const seasons=()=>scene('seasonstreet','seven-seasons','The road between seasons',[
@@ -89,7 +89,7 @@ export const seasonsFree=()=>scene('seasonstreet','seven-seasons-free','One road
  l('The city','The ice breaks away from the gate. Orrin drives the wheel past its stop and wedges the teeth apart.',{focus:{x:32,y:24},cut:true,cue:'steam',mechanism:'season-open',actors:{orrin:{at:{x:37,y:24},face:'orrin-right'}}}),
  l('Kit','This way! Keep the children on the inside of the stair.'),
  l('Petra','The landing’s clear. Send the next group.'),
- l('The hollow sun','The last stream tears free. For the first time, the distant ring stops turning.'),
+ l('The distant figure','The last stream tears free. For the first time, the distant ring stops turning.'),
  l('Nell','There’s a shelter beyond the gate. We get everyone there before we climb.'),
 ]);
 export const refuge=()=>scene('lastrefuge','seven-refuge','The unwritten hour',[
@@ -121,7 +121,7 @@ export const orrin=()=>scene('lastrefuge','seven-orrin','The next watch',[
  l('Orrin','Then I’m getting a window seat.'),
 ]);
 export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
- l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:18},cut:true,music:'benefactor'}),
+ l('The sun throne','The Benefactor lowers its hands. Its empty face contains the same night as the sea beneath the crossing.',{focus:{x:32,y:18},cut:true,music:'sunthrone'}),
  l('The Benefactor','You carry my light into my own house. Where are the lives you took from it?'),
  l('Nell','On their way home.'),
  l('The Benefactor','I held the winter back. I closed their wounds. What have you brought to replace me?'),
@@ -133,14 +133,14 @@ export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
  l('The sun throne','The god’s hands close over the stair. Its broken shoulder streams reach for the empty channels.'),
 ]);
 export const sun=()=>scene('sunthrone','seven-sun','The mantle falls',[
- l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'hollow-sun'}),
+ l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'sunthrone'}),
  l('Orrin','The channels are empty. It can’t build another body.'),
  l('The Benefactor','I was here before your stations. Before your names.'),
  l('The sun throne','The ring lifts from the wreckage. Its rays unfold across the floor.'),
  l('Petra','It can still reach us. Watch where the light falls.'),
 ]);
 export const heart=()=>scene('sunthrone','seven-heart','The fragment goes home',[
- l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{omen:'shard',focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'unborrowed'}),
+ l('The sun throne','The ring splits. A pale heart turns inside it; the lantern pulls toward the opening.',{omen:'shard',focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'sunthrone'}),
  l('Nell','This came out of you.'),
  l('Celia','The collar Ines fitted is still holding. You can let it go.'),
  l('Nell','Orrin, the glass.'),
