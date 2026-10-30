@@ -1,3 +1,5 @@
+import {newSkillBook} from '../../src/rules/skills';
+import {level} from '../../src/rules/state';
 import { chapterSixJungleStart } from '../../src/dev/canonical-saves';
 import { arrival } from '../../src/content/maps';
 import { ENCOUNTERS } from '../../src/content/chapter-six/jungle/encounters';
@@ -12,5 +14,5 @@ export function jungleCheckpoint(flag:typeof jungleOrder[number]){
  if(index>=8)completeRiverTreatment(s);
  for(const f of jungleOrder.slice(9,index+1))s.flags[f]=true;
  s.location=index>=11?arrival('outermooring','namar'):index>=10?arrival('riverhaven','return'):index>=5?arrival('rainhouse','stand'):index>=1?arrival('canopy','start'):arrival('riverhaven','start');
- return s;
+ s.skills=newSkillBook(level(s));return s;
 }

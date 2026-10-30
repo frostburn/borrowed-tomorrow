@@ -1,4 +1,4 @@
-import {presetSkills} from '../src/rules/skills';
+import {skillsAtLevel} from '../src/rules/skills';
 import { expect, it } from 'vitest';
 import { active, awardVictory, cast, createBattle, defend, enemyTurn, legalAim, type Battle } from '../src/rules/combat';
 import { equal, offset } from '../src/rules/hex';
@@ -62,7 +62,7 @@ it('Petra can bash without damage before spending her main action on an attack',
 });
 
 it('a taunted surrounding attack remains usable when Petra is in its affected hexes',()=>{
-  const state=coastCheckpoint('evacuationReady');state.xp=370;state.skills.orrin=presetSkills('orrin',5);
+  const state=coastCheckpoint('evacuationReady');state.xp=520;state.skills.orrin=skillsAtLevel('orrin',6);
   const b=createBattle('coast-recapture',state),petra=b.units.find(u=>u.appearance==='petra')!,orrin=b.units.find(u=>u.id==='orrin')!;
   petra.hex=offset(5,3);orrin.hex=offset(4,3);b.queue=[petra.id,orrin.id,...b.queue.filter(id=>id!==petra.id&&id!==orrin.id)];
   expect(cast(b,petra,'taunt',petra.hex)).toBe(true);expect(legalAim(b,orrin,'repulse',orrin.hex)).toBe(true);

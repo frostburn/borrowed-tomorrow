@@ -12,12 +12,11 @@ Chapter Two travels with Nell, Orrin and Kit. Celia joins during Chapter Four, a
 
 ## Skills and permanent training
 
-**Skills** in Equipment shows the current ranks, available points and next
-requirements. Spend a point on any eligible upgrade or keep it for later.
-Points can be banked behind a character-level requirement; mastered skills do
-not need more points. Team moves derive from two learned solo skills rather
-than a separate team skill purchase. See [combat-upgrade.md](combat-upgrade.md)
-for the complete rules.
+**Skills** in Equipment shows current effects and the next automatic milestone.
+Characters learn and improve skills as they level up, including reserves and later
+recruits. Victory results name new skills and rank improvements. There are no
+upgrade points to spend. Team moves derive from two learned solo skills.
+See [combat-upgrade.md](combat-upgrade.md) for the progression table.
 
 Later supply clerks offer generic training and quest-unlocked specialist
 improvements. Each course is a once-only purchase, independent of equipment.
@@ -27,7 +26,7 @@ last chapter. See [economy.md](economy.md) for providers and prices.
 
 ## Existing saves
 
-Version 11 stores the shared inventory, active formation and chosen skill ranks. Field-bandage and tonic stacks are validated bag entries; basic bandages retain their separate counter. Only the current save format is supported; previous campaign versions are not migrated. Continue, manual slots and JSON imports all validate the same current-format data.
+Version 11 stores the shared inventory, active formation and automatic skill snapshots (recalculated from level on load). Field-bandage and tonic stacks are validated bag entries; basic bandages retain their separate counter. Only the current save format is supported; previous campaign versions are not migrated. Continue, manual slots and JSON imports all validate the same current-format data.
 
 The dev workshop retains its own local storage and cannot grant campaign items or bonuses.
 

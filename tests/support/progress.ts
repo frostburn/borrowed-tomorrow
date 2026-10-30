@@ -1,3 +1,5 @@
+import {newSkillBook} from '../../src/rules/skills';
+import {level} from '../../src/rules/state';
 import { beginChapterTwo, beginChapterThree, beginChapterFour, recruit, THIRD_CHAPTER, newGame, recruitOrrin, NEXT_CHAPTER, type GameState } from '../../src/rules/state';
 
 import { receiveItem } from '../../src/rules/inventory';
@@ -14,7 +16,7 @@ export function checkpoint(last: typeof ordered[number]): GameState {
   s.location = s.flags.passSeen ? { map: 'tunnel', x: 5, y: 14 }
     : s.flags.villageSeen ? { map: 'rillbridge', x: 15, y: 18 }
     : s.flags.escapeWon ? { map: 'yard', x: 35, y: 18 } : { map: 'station', x: 23, y: 15 };
-  return s;
+  s.skills=newSkillBook(level(s));return s;
 }
 
 const coastOrder=['coastSeen','kitJoined','raidPlanned','raidConfronted','trainRaidWon','prisonersFreed','wardSeen','settlementSeen','coastCollectorWon','evacuationReady','recaptureConfronted','recaptureWon','chapterTwoComplete'] as const;
@@ -28,7 +30,7 @@ export function coastCheckpoint(last:typeof coastOrder[number]):GameState {
   if(s.flags.recaptureWon){s.xp+=90;s.coins+=50;}
   if(s.flags.chapterTwoComplete)s.boundary=THIRD_CHAPTER;
   s.location=s.flags.settlementSeen?{map:'cinderbank',x:27,y:22}:s.flags.wardSeen?{map:'infirmary',x:31,y:21}:{map:'coast',x:24,y:26};
-  return s;
+  s.skills=newSkillBook(level(s));return s;
 }
 
 const palaceOrder=['capitalSeen','capitalConfronted','capitalGateWon','petraJoined','worksSeen','worksWardenWon','tomasRescued','intakePlanned','conduitSeen','conduitGuardWon','extractionStopped','emperorMerged','chapterThreeComplete'] as const;
@@ -42,7 +44,7 @@ export function palaceCheckpoint(last:typeof palaceOrder[number]):GameState{
   if(s.flags.conduitGuardWon){s.xp+=135;s.coins+=80;receiveItem(s.inventory,'insulated-coat');}
   s.location=s.flags.emperorMerged?{map:'northglass',x:46,y:17}:s.flags.conduitSeen?{map:'conduit',x:25,y:30}:s.flags.worksSeen?{map:'relayhall',x:22,y:16}:{map:'northglass',x:32,y:31};
   if(s.flags.chapterThreeComplete){s.boundary='chapter-four:broken-world';s.location={map:'northglass',x:32,y:33};}
-  return s;
+  s.skills=newSkillBook(level(s));return s;
 }
 
 export const brokenOrder=['refugeSeen','worksArrival','worksRouteSet','worksGateWon','harborOpened','sanctuaryEntered','roadGuardWon','signalCut','sanctuaryWardenWon','anchorsKnown','seaWalkSeen','chapterFourComplete'] as const;
@@ -57,5 +59,5 @@ export function brokenCheckpoint(last:typeof brokenOrder[number]):GameState{
  s.location=s.flags.sanctuaryEntered?{map:'sanctuary',x:32,y:32}:s.flags.worksArrival?{map:'breakwater',x:25,y:29}:{map:'refuge',x:31,y:28};
  if(s.flags.anchorsKnown)s.location={map:'refuge',x:31,y:28};
  if(s.flags.chapterFourComplete){s.boundary='chapter-five:anchors';s.location={map:'refuge',x:12,y:28};}
- return s;
+ s.skills=newSkillBook(level(s));return s;
 }

@@ -6,7 +6,7 @@ village where time has stopped draw her into an empire living on tomorrow's
 promise.
 
 - Five playable companions, with up to three active fighters and manually equipped gear.
-- Turn-based hex combat with upgradeable skills, paired team abilities, battlefield hazards and towering bosses.
+- Turn-based hex combat with automatically progressing skills, paired team abilities, battlefield hazards and towering bosses.
 - Optional quests, permanent training, an alternate ending and playable epilogues.
 - Polygonal vector scenery, animated characters, dynamic actor lighting and a shared chunky display for graphics and text.
 - Procedural music in 31-tone equal temperament, synthesized sound effects, room reverb and a public soundtrack menu.
@@ -65,10 +65,10 @@ Nell's Lantern burst starts as four slanted hexes, grows to a seven-hex area,
 then gains stronger damage with reduced friendly fire. Orrin's Steam lance
 stays a four-hex straight ray. Team moves require both learned solo skills and
 spend both fighters' main actions; the assisting fighter keeps unused movement.
-Skills and their previews show the current rank's actual effects.
+Skills improve automatically at fixed character levels. Level-up results name new skills and rank improvements; Equipment → Skills shows current effects and upcoming milestones.
 
 Bought and found equipment goes into the shared bag. Open **Equipment** to fit
-it, choose active companions or upgrade skills. Reserves keep their equipment
+it, choose active companions or review skills. Reserves keep their equipment
 and share campaign experience. Rest spots restore available companions;
 suppliers sell medicine and gear, and later training offers permanent
 improvements. Cleared battles and one-time rewards cannot be farmed.

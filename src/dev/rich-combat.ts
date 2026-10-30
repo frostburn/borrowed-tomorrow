@@ -21,7 +21,7 @@ export function richCombatPreview(preset:CombatPreset|'workshop',settings?:Chara
  const builds=preset==='workshop'?structuredClone(settings!):newCharacterSettings();
  if(preset!=='workshop'){
   builds.party=rally?['celia','orrin','kit']:preset==='crossfire'?['kit','petra','celia']:lantern?['nell','kit','orrin']:preset==='daybreak'?['celia','petra','orrin']:preset==='recovery'||preset==='stars'?['celia','orrin','petra']:['nell','orrin','celia'];
-  for(const hero of builds.party)builds.characters[hero]=defaultBuild(hero,preset==='daybreak'||preset==='lantern-full'?13:preset==='lantern'?7:10);
+  for(const hero of builds.party)builds.characters[hero]=defaultBuild(hero,preset==='lantern-full'?15:preset==='daybreak'?14:preset==='recovery'||preset==='lantern-wide'?11:preset==='rally-party'?12:preset==='lantern'?7:10);
  }
  const state=newGame(),battle=createBattle(TACTICS_ENCOUNTER,state,equipmentBonuses(preset==='workshop'?inventory!:newInventory()),characterProfiles(builds),builds.party);
  builds.party.forEach((id,i)=>{const unit=battle.units.find(u=>u.id===id)!;unit.hex=offset(2,[3,4,1][i]);if(preset==='daybreak')unit.hp=Math.ceil(unit.maxHp*.35);});

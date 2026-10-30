@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { chapterTwoStart,chapterThreeStart,chapterFourStart } from '../src/dev/canonical-saves';
 import * as canonical from '../src/dev/canonical-saves';
-import {SKILLS,skillProgress,upgradeReason} from '../src/rules/skills';
+import {newSkillBook} from '../src/rules/skills';
 import { level } from '../src/rules/state';
 import { decodeSave } from '../src/rules/save';
 import { resumeChapterTwo } from '../src/content/chapter-two/interactions';
@@ -42,17 +42,8 @@ it('starts the rewritten Chapter Four with a safe Tomas, four recruits and no fo
  expect(s.inventory.characters.petra.fitting).toBe('saber-hilt');expect(s.inventory.characters.nell.fitting).toBe('silver-reflector');
 });
 
-it('canonical allocations leave only explicitly level-gated banked points, never surplus after mastery',()=>{
+it('every canonical save uses the automatic schedule for the entire roster, including future recruits',()=>{
  for(const make of Object.values(canonical))for(const recovered of [false,true]){
-  const s=make(recovered);expect(decodeSave(JSON.stringify(s))).toEqual(s);
-  for(const hero of s.party){
-   const progress=skillProgress(hero.id,level(s),s.skills[hero.id]);
-   expect(progress.spendable).toBe(0);
-   if(progress.mastered)expect(progress.points).toBe(0);
-   else if(progress.points){
-    expect(progress.nextLevel).toBeGreaterThan(level(s));
-    expect(SKILLS[hero.id].some(skill=>!upgradeReason(hero.id,progress.nextLevel!,s.skills[hero.id],skill.id))).toBe(true);
-   }
-  }
+  const s=make(recovered);expect(s.skills).toEqual(newSkillBook(level(s)));expect(decodeSave(JSON.stringify(s))).toEqual(s);
  }
 });

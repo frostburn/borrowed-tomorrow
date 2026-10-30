@@ -1,3 +1,5 @@
+import {newSkillBook} from '../../src/rules/skills';
+import {level} from '../../src/rules/state';
 import { chapterSixStart } from '../../src/dev/canonical-saves';
 import { ENCOUNTERS } from '../../src/content/chapter-six/encounters';
 import { arrival } from '../../src/content/maps';
@@ -9,5 +11,5 @@ export function desertCheckpoint(flag:typeof desertOrder[number]){
  if(s.flags.palaceRouteChosen)s.flags.palaceWaterRoute=false;
  for(const id of ['palace-gallery','desert-ascent','sun-serpent']){const e=ENCOUNTERS[id];if(s.flags[e.flag]){s.xp+=e.xp;s.coins+=e.coins;if(e.item)receiveItem(s.inventory,e.item);}}
  s.location=s.flags.desertReported?arrival('outermooring','start'):s.flags.desertReleaseReady?arrival('namar','return'):s.flags.sunSerpentSeen?arrival('observatory','stand'):s.flags.desertAscentSeen?arrival('skywalk','terrace'):s.flags.palaceCoup?arrival('sunpalace','escape'):s.flags.desertSeen?arrival('namar','start'):arrival('outermooring','start');
- restoreParty(s);return s;
+ restoreParty(s);s.skills=newSkillBook(level(s));return s;
 }

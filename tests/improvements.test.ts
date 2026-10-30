@@ -6,7 +6,7 @@ import {maxHp,newGame,restoreParty,type GameState} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {active,awardVictory,cast,createBattle,createPartyUnit,defend,legalAim,movement,type Encounter} from '../src/rules/combat';
 import {offset,key} from '../src/rules/hex';
-import {abilityFor,presetSkills} from '../src/rules/skills';
+import {abilityFor,skillsAtLevel} from '../src/rules/skills';
 import {defaultBuild,characterProfiles,newCharacterSettings} from '../src/rules/characters';
 import {completeRiverTreatment} from '../src/content/chapter-six/jungle/recovery';
 import {offerImprovements} from '../src/content/improvements';
@@ -117,7 +117,7 @@ it('Orrin gains one real movement, including in battle previews',()=>{
  const b=createBattle(arena,s),orrin=b.units.find(u=>u.id==='orrin')!;expect(orrin.movement).toBe(before+1);expect(movement(b,orrin).get(key(offset(4,3)))?.cost).toBe(3);
 });
 it('Shield bash keeps its bonus-action limit, deals no damage and grants non-stacking Guard only to trained Petra',()=>{
- const s=ready();s.location.map='dawnwatch';purchase(s,'petra-recovery');s.activeParty=['nell','petra'];s.skills.petra=presetSkills('petra',10);s.skills.petra.bash=1;
+ const s=ready();s.location.map='dawnwatch';purchase(s,'petra-recovery');s.activeParty=['nell','petra'];s.skills.petra=skillsAtLevel('petra',10);s.skills.petra.bash=1;
  const b=createBattle(arena,s),petra=b.units.find(u=>u.id==='petra')!,enemy=b.units.at(-1)!;
  petra.hex=offset(3,3);enemy.hex=offset(4,3);b.queue=[petra.id,enemy.id];const hp=enemy.hp;
  expect(cast(b,petra,'bash',enemy.hex)).toBe(true);expect(enemy.hp).toBe(hp);expect(petra.guard).toBe(4);expect(active(b)).toBe(petra);expect(petra.bonusUsed).toBe(true);
@@ -125,7 +125,7 @@ it('Shield bash keeps its bonus-action limit, deals no damage and grants non-sta
  expect(createPartyUnit(s,'nell').improvements?.bash).toBe(false);
 });
 it('Celia gets precisely one extra Heal range, shared by targeting and description, without altering Daybreak',()=>{
- const s=ready();s.location.map='windmere';s.activeParty=['nell','celia'];s.skills.celia=presetSkills('celia',10);
+ const s=ready();s.location.map='windmere';s.activeParty=['nell','celia'];s.skills.celia=skillsAtLevel('celia',10);
  const before=createPartyUnit(s,'celia'),range=abilityFor(before,'heal').range;purchase(s,'celia-sight');
  const b=createBattle(arena,s),celia=b.units.find(u=>u.id==='celia')!,nell=b.units[0];celia.hex=offset(1,3);nell.hex={q:celia.hex.q+range+1,r:celia.hex.r};nell.hp=1;b.queue=[celia.id,nell.id];
  expect(abilityFor(celia,'heal').range).toBe(range+1);expect(abilityFor(celia,'heal').description).toContain(`range ${range+1}`);expect(legalAim(b,celia,'heal',nell.hex)).toBe(true);

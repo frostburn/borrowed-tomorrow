@@ -1,10 +1,10 @@
 import {describe,it,expect} from 'vitest';
-import {SKILLS,abilityFor,decodeSkillBook,earnedSkillPoints,presetSkills,skillAbilities,skillPoints,skillProgress,startingSkills,upgradeReason,upgradeSkill} from '../src/rules/skills';
-import {newGame,level,recruitOrrin,recruit} from '../src/rules/state';
+import {SKILLS,abilityFor,decodeSkillBook,newSkillBook,skillsAtLevel,skillAbilities,skillChanges,skillProgress} from '../src/rules/skills';
+import {newGame,gainExperience,level,recruitOrrin,recruit} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {cast,createBattle,damage,awardVictory,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
-import {chapterTwoStart,chapterSevenRefugeStart} from '../src/dev/canonical-saves';
+import {chapterTwoStart,chapterFiveStart} from '../src/dev/canonical-saves';
 import {offset,quad} from '../src/rules/hex';
 
 const yard:Encounter={id:'skills-test',name:'Skills',music:'battle',flag:'skillsTest',xp:0,coins:0,rocks:[],enemies:[{kind:'hound',col:6,row:3,hp:500}]};
@@ -12,86 +12,54 @@ function battle(party:('nell'|'orrin'|'celia'|'petra'|'kit')[]=['nell','orrin'])
  const settings=newCharacterSettings();settings.party=party;for(const id of party)settings.characters[id]=defaultBuild(id,15);
  const b=createBattle(yard,newGame(),undefined,characterProfiles(settings),party);b.queue=b.units.map(u=>u.id);return {b,u:b.units[0],ally:b.units[1],enemy:b.units.at(-1)!};
 }
-describe('chosen skill progression',()=>{
- it('banks one point per level and lets the player choose between an upgrade and learning another eligible skill',()=>{
-  const s=newGame(),r=s.skills.nell;s.xp=50;expect(level(s)).toBe(2);expect(skillPoints('nell',2,r)).toBe(1);
-  expect(r.mend).toBe(0);expect(upgradeSkill('nell',2,r,'burst')).toBe(true);expect(r.burst).toBe(2);expect(skillPoints('nell',2,r)).toBe(0);expect(upgradeSkill('nell',2,r,'mend')).toBe(false);
-  const alternative=startingSkills('nell');expect(upgradeSkill('nell',2,alternative,'mend')).toBe(true);expect(alternative.burst).toBe(1);expect(alternative.mend).toBe(1);
-  expect(upgradeReason('nell',2,r,'burst')).toContain('level 6');s.xp=370;expect(skillPoints('nell',5,r)).toBe(3);
+describe('automatic skill progression',()=>{
+ it('uses the agreed three milestones for every skill',()=>{
+  const expected={nell:[[1,3,10],[2,6,12],[4,8,13],[7,11,15]],orrin:[[1,5,11],[2,7,12],[3,8,14],[6,10,15]],kit:[[1,4,10],[2,6,12],[5,9,14],[7,11,15]],celia:[[1,7,13],[1,4,11],[2,6,12],[5,9,15]],petra:[[1,6,12],[2,8,14],[3,7,11],[5,10,15]]};
+  for(const hero of Object.keys(expected)as (keyof typeof expected)[])expect(SKILLS[hero].map(s=>s.levels)).toEqual(expected[hero]);
  });
- it('caps earned points at all purchasable ranks, with no surplus after mastery or on reload',()=>{
-  const s=chapterSevenRefugeStart();s.xp=Math.max(s.xp,8200);
-  for(const hero of ['nell','orrin','kit','celia','petra']as const){
-   const capacity=hero==='celia'?10:11;
-   expect(earnedSkillPoints(hero,15)).toBe(capacity);expect(skillPoints(hero,15,startingSkills(hero))).toBe(capacity);
-   s.skills[hero]=presetSkills(hero,15);
-   expect(skillProgress(hero,15,s.skills[hero])).toEqual({points:0,spendable:0,mastered:true,nextLevel:undefined});
-  }
-  const loaded=decodeSave(JSON.stringify(s));expect(loaded).toEqual(s);
-  for(const p of loaded.party)expect(skillPoints(p.id,level(loaded),loaded.skills[p.id])).toBe(0);
+ it('learns Mend on the first level-up and upgrades Burst separately at level three',()=>{
+  const s=newGame();expect(s.skills.nell).toEqual({burst:1,mend:0,dazzle:0,sunline:0});
+  gainExperience(s,50);expect(level(s)).toBe(2);expect(s.skills.nell).toEqual({burst:1,mend:1,dazzle:0,sunline:0});
+  gainExperience(s,80);expect(level(s)).toBe(3);expect(s.skills.nell.burst).toBe(2);
+  expect(skillChanges('nell',1,3)).toEqual([{id:'mend',rank:1,level:2},{id:'burst',rank:2,level:3}]);
+  expect(skillChanges('nell',3,3)).toEqual([]);
  });
- it('keeps every earned point spendable eventually and reports only currently possible purchases',()=>{
+ it('reports every milestone in order for multi-level rewards and leaves quiet levels quiet',()=>{
+  expect(skillChanges('orrin',1,8).map(c=>[c.id,c.rank,c.level])).toEqual([['rivet',1,2],['guard',1,3],['steam',2,5],['repulse',1,6],['rivet',2,7],['guard',2,8]]);
+  expect(skillChanges('nell',4,5)).toEqual([]);expect(skillProgress('nell',5)).toEqual({mastered:false,nextLevel:6});
+  for(const hero of ['nell','orrin','kit','celia','petra']as const)expect(skillProgress(hero,15)).toEqual({mastered:true,nextLevel:undefined});
+ });
+ it('gives reserves and later recruits the same level-based growth without changing resources or story availability',()=>{
+  const s=newGame();recruitOrrin(s);recruit(s,'petra');s.activeParty=['nell','orrin'];s.flags.nellIll=true;
+  const before=structuredClone({party:s.party,activeParty:s.activeParty,inventory:s.inventory,coins:s.coins,bandages:s.bandages,flags:s.flags});
+  gainExperience(s,1180);expect(level(s)).toBe(9);expect(s.skills).toEqual(newSkillBook(9));
+  expect({party:s.party,activeParty:s.activeParty,inventory:s.inventory,coins:s.coins,bandages:s.bandages,flags:s.flags}).toEqual(before);
+  recruit(s,'celia');expect(s.skills.celia).toEqual(skillsAtLevel('celia',9));expect(s.skills.petra).toEqual(skillsAtLevel('petra',9));
+ });
+ it('normalizes existing current-format choices to the new schedule on load without changing any other progress',()=>{
+  const s=chapterFiveStart(),before=structuredClone(s);s.skills.nell={burst:3,mend:2,dazzle:2,sunline:1};s.skills.kit={quickshot:3,feint:3,ricochet:2,pin:1};
+  const loaded=decodeSave(JSON.stringify(s));expect(loaded).toEqual({...before,skills:newSkillBook(level(s))});
+  expect(decodeSave(JSON.stringify(loaded))).toEqual(loaded);
+  for(const bad of [null,{}, {...s.skills,nell:{...s.skills.nell,burst:4}},{...s.skills,nell:{...s.skills.nell,prism:1}},{...s.skills,nell:{...s.skills.nell,burst:1.5}},{...s.skills,nell:{...s.skills.nell,burst:0}}])expect(()=>decodeSkillBook(bad,3)).toThrow();
+ });
+ it('has no duplicate or obsolete commands at any level and reaches full mastery at fifteen',()=>{
   for(const hero of ['nell','orrin','kit','celia','petra']as const)for(let lv=1;lv<=15;lv++){
-   const ranks=startingSkills(hero),earned=skillPoints(hero,lv,ranks),progress=skillProgress(hero,lv,ranks);let spent=0;
-   for(const skill of SKILLS[hero])while(upgradeSkill(hero,lv,ranks,skill.id))spent++;
-   expect(spent).toBe(progress.spendable);
-   const banked=skillProgress(hero,lv,ranks);expect(banked.spendable).toBe(0);expect(banked.points+spent).toBe(earned);
-   if(!banked.mastered){
-    expect(banked.nextLevel).toBeGreaterThan(lv);
-    expect(SKILLS[hero].some(s=>!upgradeReason(hero,banked.nextLevel!,ranks,s.id))).toBe(true);
-   }
-   for(const skill of SKILLS[hero])while(upgradeSkill(hero,15,ranks,skill.id)){};
-   expect(skillProgress(hero,15,ranks)).toMatchObject({points:0,spendable:0,mastered:true});
-  }
- });
- it('distinguishes temporary banking from mastery, and brings banked points back at the next gate',()=>{
-  const r=presetSkills('nell',9);
-  expect(skillProgress('nell',9,r)).toEqual({points:1,spendable:0,mastered:false,nextLevel:10});
-  expect(skillProgress('nell',10,r)).toMatchObject({points:2,spendable:2,mastered:false});
-  const late=presetSkills('nell',12);
-  expect(skillProgress('nell',12,late)).toEqual({points:1,spendable:0,mastered:false,nextLevel:13});
-  expect(upgradeSkill('nell',13,late,'sunline')).toBe(true);
-  expect(skillProgress('nell',13,late)).toMatchObject({points:0,spendable:0,mastered:true});
- });
- it('fills Kit and Celia’s long blocked stretches without advancing first skills or team unlocks',()=>{
-  for(let lv=6;lv<=11;lv++)expect(skillPoints('kit',lv,presetSkills('kit',lv))).toBe(0);
-  for(let lv=2;lv<=8;lv++)expect(skillPoints('celia',lv,presetSkills('celia',lv))).toBe(0);
-  const kit=startingSkills('kit');for(let i=0;i<3;i++)expect(upgradeSkill('kit',6,kit,'feint')).toBe(true);
-  expect(abilityFor({kind:'kit',skills:kit},'feint').range).toBe(6);
-  expect(upgradeReason('kit',6,kit,'pin')).toBe('Requires character level 7.');
-  const celia=presetSkills('celia',7);expect(celia.celestialbolt).toBe(3);expect(celia.heal).toBe(2);expect(celia.rally).toBe(2);expect(celia.sanctuary).toBe(1);
-  expect(upgradeReason('celia',9,celia,'heal')).toBe('Requires character level 10.');
- });
- it('rejects locked or maxed ranks without spending a point',()=>{
-  const r=startingSkills('nell');expect(upgradeSkill('nell',1,r,'dazzle')).toBe(false);expect(r.dazzle).toBe(0);
-  expect(upgradeSkill('nell',6,r,'burst')).toBe(true);expect(upgradeSkill('nell',6,r,'burst')).toBe(true);const before=structuredClone(r);expect(upgradeSkill('nell',15,r,'burst')).toBe(false);expect(r).toEqual(before);expect(upgradeReason('nell',15,r,'burst')).toContain('Maximum');
- });
- it('stores choices in the campaign and validates skill ownership, rank gates and point budgets',()=>{
-  const s=newGame();s.xp=50;upgradeSkill('nell',2,s.skills.nell,'burst');expect(decodeSave(JSON.stringify(s))).toEqual(s);
-  for(const bad of [null,{}, {...s.skills,nell:{...s.skills.nell,burst:4}},{...s.skills,nell:{...s.skills.nell,prism:1}},{...s.skills,nell:{...s.skills.nell,burst:1.5}}])expect(()=>decodeSkillBook(bad,2)).toThrow();
-  const excessive=structuredClone(s.skills);excessive.nell={burst:2,mend:1,dazzle:1,sunline:0};expect(()=>decodeSkillBook(excessive,3)).toThrow('Too many');
- });
- it('keeps themed upgrades under a single command and all authored builds within their point budgets',()=>{
-  for(const hero of ['nell','orrin','kit','celia','petra']as const)for(let lv=1;lv<=15;lv++){
-   const ranks=presetSkills(hero,lv),book=newGame().skills;book[hero]=ranks;expect(()=>decodeSkillBook(book,lv)).not.toThrow();
-   const commands=skillAbilities(hero,ranks);expect(new Set(commands).size).toBe(commands.length);expect(commands.length).toBeLessThanOrEqual(9);
+   const ranks=skillsAtLevel(hero,lv),commands=skillAbilities(hero,ranks);
+   expect(new Set(commands).size).toBe(commands.length);expect(commands.length).toBeLessThanOrEqual(9);
    for(const obsolete of ['beacon','dimhalo','pressureline','brace','bolt','volley','driving','bulwark'])expect(commands).not.toContain(obsolete);
-   expect(SKILLS[hero].every(s=>(ranks[s.id]??0)<=s.ranks.length)).toBe(true);
+   for(const skill of SKILLS[hero]){expect(ranks[skill.id]).toBe(skill.levels.filter(required=>required<=lv).length);if(lv===15)expect(ranks[skill.id]).toBe(3);}
   }
  });
- it('lets Kit spend both points at the canonical Chapter Two loading-gate victory',()=>{
+ it('automatically awards the canonical loading-gate skills and never repeats victory rewards',()=>{
   const s=chapterTwoStart();s.flags.coastSeen=true;recruit(s,'kit');s.flags.raidPlanned=s.flags.raidConfronted=true;s.flags.raidDiversion=false;
   const b=createBattle('coast-loading',s);b.result='victory';awardVictory(b,s);
-  expect(level(s)).toBe(3);expect(skillPoints('kit',level(s),s.skills.kit)).toBe(2);
-  expect(upgradeSkill('kit',level(s),s.skills.kit,'feint')).toBe(true);
-  expect(upgradeSkill('kit',level(s),s.skills.kit,'feint')).toBe(true);
-  expect(skillPoints('kit',level(s),s.skills.kit)).toBe(0);expect(abilityFor({kind:'kit',skills:s.skills.kit},'feint').cost).toBe(1);
+  expect(level(s)).toBe(3);expect(s.skills.kit).toEqual(skillsAtLevel('kit',3));expect(s.skills.kit.feint).toBe(1);
   expect(skillAbilities('kit',s.skills.kit)).not.toContain('ricochet');expect(skillAbilities('kit',s.skills.kit)).not.toContain('lanternvolley');
-  expect(decodeSave(JSON.stringify(s))).toEqual(s);
+  const before=structuredClone(s);awardVictory(b,s);expect(s).toEqual(before);expect(decodeSave(JSON.stringify(s))).toEqual(s);
  });
- it('grants reserve characters the same earned points and does not silently spend them at battle victory',()=>{
-  const s=newGame();recruitOrrin(s);s.xp=49;const before=structuredClone(s.skills),b=createBattle('workshop',s);b.result='victory';awardVictory(b,s);
-  expect(level(s)).toBeGreaterThan(1);expect(s.skills).toEqual(before);expect(skillPoints('orrin',level(s),s.skills.orrin)).toBe(level(s)-1);
+ it('updates growth at victory even for companions not deployed in that battle',()=>{
+  const s=newGame();recruitOrrin(s);s.activeParty=['nell'];gainExperience(s,49);const b=createBattle('workshop',s);b.result='victory';awardVictory(b,s);
+  expect(level(s)).toBeGreaterThan(1);expect(s.skills.orrin).toEqual(skillsAtLevel('orrin',level(s)));expect(s.skills.orrin.rivet).toBe(1);
  });
 });
 describe('ranked combat resolution',()=>{

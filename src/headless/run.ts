@@ -6,7 +6,7 @@ import type {StoryHost} from '../content/story-host';
 import type {Dialogue} from '../content/dialogue';
 import {active,createBattle,awardVictory,cast,damage,legalAim,move,movement,targets,defend,enemyTurn} from '../rules/combat';
 import {cells,distance,equal} from '../rules/hex';
-import {abilityFor,upgradeSkill,skillPoints} from '../rules/skills';
+import {abilityFor} from '../rules/skills';
 import {equipItem,ITEMS} from '../rules/inventory';
 import {decodeSave} from '../rules/save';
 import {writeFile} from 'node:fs/promises';
@@ -36,7 +36,7 @@ export function playEarly(state:GameState,report:unknown[]=[]){
   report.push({battle:id,result:b.result??'stalled',rounds:b.round,actions,start,end:b.units.filter(u=>u.side==='party').map(u=>({id:u.id,hp:u.hp})),bandagesUsed:state.bandages-b.bandages});
   if(b.result!=='victory')throw Error(`Failed ${id}: ${b.result??'stalled'}`);
   awardVictory(b,state);decodeSave(JSON.stringify(state));
-  for(const p of state.party){for(const skill of p.id==='nell'?['burst','mend','dazzle']as const:p.id==='orrin'?['steam','rivet','guard']as const:['quickshot','feint','ricochet']as const)while(skillPoints(p.id,level(state),state.skills[p.id])&&upgradeSkill(p.id,level(state),state.skills[p.id],skill)){};
+  for(const p of state.party){
    for(const item of Object.keys(ITEMS)as (keyof typeof ITEMS)[])if(state.inventory.bag[item])equipItem(state.inventory,p.id,item);
   }
   resumeChapter(host);settle();

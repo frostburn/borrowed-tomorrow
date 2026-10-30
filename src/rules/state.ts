@@ -2,7 +2,7 @@ import {hpTraining,maxFocus} from './improvements';
 import { heroAvailable } from './availability';
 import { newInventory, type Inventory } from './inventory';
 import { BASE_STATS } from './progression';
-import {newSkillBook,type SkillBook} from './skills';
+import {newSkillBook,skillsAtLevel,type SkillBook} from './skills';
 
 export const SAVE_FORMAT = 'borrowed-tomorrow';
 export const SAVE_VERSION = 11;
@@ -42,11 +42,14 @@ export function newGame(): GameState {
   };
 }
 export const level = (s: Pick<GameState, 'xp'>) => s.xp >= 8200 ? 15 : s.xp >= 6600 ? 14 : s.xp >= 5200 ? 13 : s.xp >= 4000 ? 12 : s.xp >= 3500 ? 11 : s.xp >= 1490 ? 10 : s.xp >= 1180 ? 9 : s.xp >= 920 ? 8 : s.xp >= 700 ? 7 : s.xp >= 520 ? 6 : s.xp >= 370 ? 5 : s.xp >= 250 ? 4 : s.xp >= 130 ? 3 : s.xp >= 50 ? 2 : 1;
+/** The skill book is refreshed for reserves and future recruits as well as active heroes. */
+export function gainExperience(s:GameState,amount:number){s.xp+=amount;s.skills=newSkillBook(level(s));}
 export const maxHp = (id: HeroId, s: Pick<GameState, 'xp'> & Partial<Pick<GameState,'flags'>>) => BASE_STATS[id].maxHp + (level(s) - 1) * 6 + hpTraining(s,id);
 export function restoreParty(s: GameState) { for (const hero of s.party) { if(!heroAvailable(s,hero.id))continue;hero.hp = maxHp(hero.id, s); hero.focus = maxFocus(s,hero.id); } }
 export function recruitOrrin(s: GameState) {
   if (!s.party.some(h => h.id === 'orrin')) s.party.push({ id: 'orrin', hp: maxHp('orrin', s), focus: 6 });
   if (!s.activeParty.includes('orrin') && s.activeParty.length < 3) s.activeParty.push('orrin');
+  s.skills.orrin=skillsAtLevel('orrin',level(s));
   s.flags.orrinJoined = true;
 }
 export function recruit(s: GameState, id: 'kit' | 'celia' | 'petra') {
@@ -54,6 +57,7 @@ export function recruit(s: GameState, id: 'kit' | 'celia' | 'petra') {
     s.party.push({ id, hp: maxHp(id, s), focus: 6 });
     if (s.activeParty.length < 3) s.activeParty.push(id);
   }
+  s.skills[id]=skillsAtLevel(id,level(s));
   s.flags[`${id}Joined`] = true;
 }
 export function setActive(s: GameState, id: HeroId, included: boolean): boolean {

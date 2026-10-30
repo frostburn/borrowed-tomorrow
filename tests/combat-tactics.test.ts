@@ -72,9 +72,9 @@ describe('shared-turn moves',()=>{
   expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.round).toBe(round);expect(endTurn(b)).toBe(true);expect(b.round).toBe(round+1);expect(b.queue.filter(id=>id===u.id)).toHaveLength(1);expect(b.queue.filter(id=>id===partner.id)).toHaveLength(1);
  });
  it('Daybreak heals the living formation, applies Petra’s Taunt and preserves stronger barriers',()=>{
-  const {b,u,partner,third,enemy}=yard(['celia','petra','orrin']);for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;third.guard=60;
+  const {b,u,partner,third,enemy}=yard(['celia','petra','orrin'],14);for(const v of b.units.filter(v=>v.side==='party'))v.hp-=50;third.guard=60;
   const hp=u.hp,healing=supportPower(u,'daybreak',partner);expect(teamStatus(b,u,'daybreak').partner).toBe(partner);cast(b,u,'daybreak',u.hex);
-  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(25);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).toContain(partner.id);
+  expect(u.hp).toBe(Math.min(u.maxHp,hp+healing));expect(u.guard).toBe(daybreakProtection(u,partner)!.power);expect(partner.guard).toBe(daybreakProtection(u,partner)!.power);expect(third.guard).toBe(60);expect(enemy.tauntedBy).toBe(partner.id);expect(b.queue).toContain(partner.id);
  });
 });
 

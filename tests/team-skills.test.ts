@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {ABILITIES,teamOutput,teamSolo} from '../src/rules/abilities';
 import {active,cast,createBattle,damage,fixtureDamage,legalAim,movementOnly,targets,type Encounter} from '../src/rules/combat';
 import {battleAbilities,supportPower,teamStatus} from '../src/rules/combat-tactics';
-import {SKILLS,abilityFor,skillAbilities,skillPoints,startingSkills,upgradeSkill} from '../src/rules/skills';
+import {SKILLS,abilityFor,skillAbilities,skillsAtLevel,startingSkills} from '../src/rules/skills';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
 import {newGame} from '../src/rules/state';
 import {offset} from '../src/rules/hex';
@@ -19,15 +19,14 @@ describe('teams inherit solo skills',()=>{
  it('never charges a separate team rank or persists one, and derives a command from the corresponding solo',()=>{
   for(const hero of ['nell','orrin','kit','celia','petra']as const){
    expect(SKILLS[hero].every(s=>!ABILITIES[s.id].team)).toBe(true);
-   const ranks=startingSkills(hero),points=skillPoints(hero,15,ranks);
+   const ranks=startingSkills(hero);
    for(const a of Object.values(ABILITIES).filter(a=>a.team?.pair.includes(hero))){
     const solo=teamSolo(hero,a.id)!;expect(a.id in ranks).toBe(false);
     expect(skillAbilities(hero,ranks).includes(a.id)).toBe((ranks[solo as keyof typeof ranks]??0)>0);
    }
-   expect(skillPoints(hero,15,ranks)).toBe(points);
   }
   const ranks=startingSkills('kit');expect(skillAbilities('kit',ranks)).not.toContain('crossfire');
-  expect(upgradeSkill('kit',5,ranks,'ricochet')).toBe(true);expect(skillAbilities('kit',ranks)).toContain('crossfire');expect(skillPoints('kit',5,ranks)).toBe(3);
+  expect(skillAbilities('kit',skillsAtLevel('kit',5))).toContain('crossfire');
  });
  for(const id of ['prism','starline','crossfire','lanternvolley']as const)it(`${id} trades ten percent of the actual solo damage for timing and coverage including separate armor, piercing, defense and Dazzle`,()=>{
   const {b,u,partner,enemy}=yard([...ABILITIES[id].team!.pair]as CompanionId[]);
@@ -48,17 +47,21 @@ describe('teams inherit solo skills',()=>{
  });
  for(const [id,first,second,learn]of [['prism','nell','orrin','sunline'],['lanternvolley','kit','nell','pin']]as const)it(`${id} waits for the later solo skill, then works at rank one without another gate`,()=>{
   const {b,u,partner,enemy}=yard([first,second]);u.hex=offset(3,3);
-  for(const fighter of [u,partner]){fighter.skills=startingSkills(fighter.kind as CompanionId);fighter.level=6;}
-  const nell=[u,partner].find(v=>v.kind==='nell')!;upgradeSkill('nell',6,nell.skills!,'burst');upgradeSkill('nell',6,nell.skills!,'burst');
-  if(first==='kit')upgradeSkill('kit',6,u.skills!,'quickshot');
-  const refresh=()=>{for(const fighter of [u,partner])fighter.abilities=skillAbilities(fighter.kind as CompanionId,fighter.skills!);};refresh();
-  expect(battleAbilities(b,u)).not.toContain(id);expect(battleAbilities(b,partner)).toContain(id);
+  const refresh=(level:number)=>{for(const fighter of [u,partner]){fighter.level=level;fighter.skills=skillsAtLevel(fighter.kind as CompanionId,level);fighter.abilities=skillAbilities(fighter.kind as CompanionId,fighter.skills);}};refresh(6);
+  expect(battleAbilities(b,u)).not.toContain(id);expect(battleAbilities(b,partner)).not.toContain(id);
   expect(teamStatus(b,partner,id).reason).toBe(`${u.name} needs to learn ${ABILITIES[learn].name}.`);
   const before=structuredClone(b);expect(cast(b,u,id,enemy.hex)).toBe(false);expect(b).toEqual(before);
-  expect(upgradeSkill(first,6,u.skills!,learn)).toBe(false);
-  expect(upgradeSkill(first,7,u.skills!,learn)).toBe(true);refresh();
+  refresh(7);
   expect(u.skills![learn]).toBe(1);expect(teamStatus(b,u,id).partner).toBe(partner);expect(teamStatus(b,partner,id).partner).toBe(u);
   expect(cast(b,u,id,enemy.hex)).toBe(true);
+ });
+ it('hides all five combinations from both partners if either required solo is unlearned (#208)',()=>{
+  for(const id of ['prism','starline','crossfire','daybreak','lanternvolley']as const)for(const missing of [0,1]){
+   const {b,u,partner,enemy}=yard([...ABILITIES[id].team!.pair]as CompanionId[]),fighter=[u,partner][missing],solo=teamSolo(fighter.kind,id)!;
+   fighter.abilities=fighter.abilities.filter(ability=>ability!==solo);delete fighter.skills![solo as keyof typeof fighter.skills];
+   expect(battleAbilities(b,u),`${id}: ${fighter.name}`).not.toContain(id);expect(battleAbilities(b,partner)).not.toContain(id);
+   expect(legalAim(b,u,id,enemy.hex)).toBe(false);expect(legalAim(b,partner,id,enemy.hex)).toBe(false);
+  }
  });
  it('enemy relay power also discounts the sum of its two attacks and independent of the starting operator',()=>{
   const {b,u,enemy}=yard(['nell','orrin']),crow=b.units.find(u=>u.kind==='crow')!;
@@ -77,12 +80,12 @@ describe('teams inherit solo skills',()=>{
   expect(cast(separate,first,'ricochet',victim.hex)).toBe(true);expect(victim.hp).toBeGreaterThan(0);expect(active(separate)?.id).toBe(enemy.id);
   expect(cast(b,u,'crossfire',enemy.hex)).toBe(true);expect(enemy.hp).toBe(0);expect(active(b)).toBe(partner);expect(movementOnly(b,partner)).toBe(true);
  });
- it('names the busy, exhausted, fallen or untrained partner and keeps unavailable commands in the list',()=>{
+ it('keeps busy, exhausted and fallen trained partners inspectable but hides unlearned combinations',()=>{
   const {b,u,partner,enemy}=yard(['nell','orrin']);b.queue=b.queue.filter(id=>id!==partner.id);
   expect(battleAbilities(b,u)).toContain('prism');expect(teamStatus(b,u,'prism').reason).toBe('Orrin has already used their action this round.');expect(legalAim(b,u,'prism',enemy.hex)).toBe(false);
   b.queue.push(partner.id);partner.focus=1;expect(teamStatus(b,u,'prism').reason).toBe('Orrin needs 3 focus (has 1).');
   partner.hp=0;expect(teamStatus(b,u,'prism').reason).toContain('Orrin is down');
-  partner.hp=1;partner.focus=6;partner.abilities=partner.abilities.filter(id=>id!=='steam');expect(teamStatus(b,u,'prism').reason).toBe('Orrin needs to learn Steam lance.');
+  partner.hp=1;partner.focus=6;partner.abilities=partner.abilities.filter(id=>id!=='steam');expect(teamStatus(b,u,'prism').reason).toBe('Orrin needs to learn Steam lance.');expect(battleAbilities(b,u)).not.toContain('prism');
  });
  it('Crossfire takes its aiming and bounce reach from Kit’s solo rank for either initiator',()=>{
   for(const reverse of [false,true]){
