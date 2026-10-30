@@ -566,3 +566,21 @@ The two-living cap, odd-round source turns, next-round initiative, arrival-round
 All routes complete the real ending without defeats or retries. The full default sun takes six rounds / 148 HP lost and heart five / 89; the mantle remains seven / 189. The four opt-in simulations, including every form-break resume, pass. All 817 normal tests, TypeScript and production build pass; the focused 17 Benefactor tests additionally assert the actual herald/wing profiles and abilities. Four desktop/phone arrival checks pass with the correct rendered models, reduced motion and restart cleanup. The earlier training-purchase checks remain applicable.
 
 [chapter-seven-divine-summons-audit.json](headless/chapter-seven-divine-summons-audit.json) records current commands, report/input hashes, per-battle results and minion actions. Use its results instead of the prototype combat table above.
+
+## Automatic skill progression follow-up
+
+The campaign and agents now use the same level-based skill schedule in
+[combat-upgrade.md](combat-upgrade.md#automatic-progression). Headless prepare
+no longer buys skill ranks; `--build` still chooses offense/support formations.
+Existing current-format checkpoints recalculate their skill snapshot on load,
+so historical damage/spending reports remain evidence for their original rules.
+
+The fresh Chapters One–Two route still completes at level five, 250 marks and
+zero bandages. All eight middle continuation/branch/policy cases complete under
+the automatic schedule. In the separate conduit comparison the defensive agent
+loses 36 HP on the feed route and 26 on pressure, with neither suffering a knockout.
+These are different deployments and enemy arrangements: grounding is not a
+guarantee of less damage for every skill build or agent. The regression now checks
+actual grounding, victory without knockouts, loss below a quarter of deployed
+maximum HP on each route, and no excessive setup-round overhead. No encounter
+stats or agent tactics were changed for this progression update.
