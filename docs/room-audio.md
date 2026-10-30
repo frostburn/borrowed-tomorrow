@@ -46,7 +46,7 @@ Engine hall uses a shorter room scale (0.8), lower feedback (0.4) and a
 3 kHz return cutoff. Its wet level stays at 0.225. This reduces repeated bass
 and midrange reflections while retaining an audible early room response.
 Relay Hall, the conduit works and Hammerplain use the same profile in the
-campaign and Music workshop. Other room profiles, scores, instrument envelopes,
+campaign and Music workshop. Scores, instrument envelopes,
 input compression and room crossfades retain their settings. Each settled
 room remains linear and time-invariant.
 
@@ -59,3 +59,13 @@ requiring an audible return, 99.9% decay within 0.65 seconds and less than
 0.5% of the tail energy after half a second. `room-decay.spec.ts` also applies
 the 0.65-second limit to Engine hall's broadband impulse. These remain opt-in
 audio checks outside the normal CI browser gate.
+
+## Ward adjustment
+
+Ward takes a smaller step: feedback drops from 0.57 to 0.5 and the return
+cutoff from 5.2 to 4.2 kHz. Its 0.8 room scale and 0.2125 wet level stay in
+place, keeping the infirmary and Windmere dispensary spacious with a softer,
+less persistent return. Engine hall keeps its stronger shortening above.
+The shared bass/midrange probes now cover Ward too, including a return-energy
+limit that catches its former excessive 220 Hz buildup. Its impulse and
+isolated-note tails must clear 99.9% of their energy within 0.75 seconds.
