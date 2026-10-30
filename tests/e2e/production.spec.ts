@@ -1,3 +1,5 @@
+import {battleLoadFlows} from './battle-load-flow';
+battleLoadFlows(true);
 import {openIssueFlows} from './open-issues-flow';
 openIssueFlows(true);
 import {equipmentRewardFlows} from './equipment-rewards-flow';
