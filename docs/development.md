@@ -179,4 +179,5 @@ the current battle playable. A separate load guard serializes restore requests
 without borrowing the combat animation/turn busy flag. JSON import also works
 when IndexedDB is unavailable. The battle-loading browser regressions exercise
 slots, imports during animations, stale callbacks, failed-load recovery and
-storage failure in both the development and production CI checks.
+storage failure in both development and production. These detailed flows remain
+opt-in, outside the small default CI browser gate.

@@ -1,0 +1,25 @@
+name: Temporary combat-load validation
+on:
+  push:
+    branches: [fix/load-during-battle]
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --user 1001 --ipc=host
+    env:
+      CI: 'true'
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright test battle-load.spec.ts
+      - run: npx playwright test --grep 'production battle loading'
+        env:
+          BT_PRODUCTION: '1'
