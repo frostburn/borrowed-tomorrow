@@ -65,7 +65,7 @@ export function interactChapterFour(h:StoryHost,id:string){
    return h.talk({...scenes.record(),done:()=>h.commit('anchorsKnown','anchorsKnown')});
   case 'sanctuary-chest':
    if(f.sanctuaryCache)return say('Celia','Nothing else in the chest.');
-   return h.talk({lines:[SAY('Celia','My old field clasp. It keeps the pages dry. I thought I’d lost it.')],done:()=>{if(!f.sanctuaryCache){receiveItem(s.inventory,'field-clasp');h.commit('sanctuaryCache');h.toast('Silver field clasp added to the bag.');}}});
+   return h.talk({lines:[SAY('Celia','My old field clasp. It keeps the pages dry. I thought I’d lost it.')],done:()=>{if(!f.sanctuaryCache){receiveItem(s.inventory,'field-clasp');h.commit('sanctuaryCache');}}});
   case 'sanctuary-refuge':return go('refuge','harbor');
   case 'sanctuary-harbor':return go('breakwater','sanctuary');
  }

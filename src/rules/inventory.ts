@@ -59,6 +59,8 @@ export const ITEMS = {
   'heavy-coat': { name: 'Heavy work coat', slot: 'coat', heroes: COMPANION_IDS, description: 'Extra protection, but slower to act.', bonuses: { attack: 0, armor: 2, speed: -2 } },
 } as const satisfies Record<string, ItemDefinition>;
 export type ItemId = keyof typeof ITEMS;
+/** Tool fittings belong to one character; coats remain shared equipment. */
+export const equipmentOwner=(item:ItemId):CompanionId|undefined=>ITEMS[item].slot==='fitting'?ITEMS[item].heroes[0]:undefined;
 export interface Inventory {
   version: 2;
   bag: Partial<Record<ItemId | PackedConsumableId, number>>;

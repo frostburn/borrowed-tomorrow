@@ -97,7 +97,7 @@ export const night=()=>scene('windmere','five-wind-night','The first night shift
  line('Sera','Come back to the ward before you leave. I can calibrate your focus over the longer beds for four-fifty.'),
  line('Celia','Sera’s sending a medical crew and copies of the release sequence. We’ve tested it with people still on support.'),
  line('Kit','I’ll send Dena their supply list. Tomas can keep the railway copies at his desk.'),
- line('Sera','Take my spare focus, Celia. You’ll need a steady lens up there. It’s in your bag.'),
+ line('Sera','Take my spare focus, Celia. You’ll need a steady lens up there.'),
  line('Celia','Keep the clinic open. Send for me if you need me.'),
 ]);
 export const alliance=()=>scene('airship','five-alliance','The capital approach',[

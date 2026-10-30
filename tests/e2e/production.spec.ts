@@ -1,3 +1,5 @@
+import {equipmentRewardFlows} from './equipment-rewards-flow';
+equipmentRewardFlows(true);
 import {automaticSkillFlows} from './automatic-skills-flow';
 automaticSkillFlows(true);
 import {firstScreenFlows} from './first-screen-flow';

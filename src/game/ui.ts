@@ -132,7 +132,7 @@ export class UI {
   received(gains:ResourceGain[],keepMessage=false){
     if(!gains.length)return;
     const message=keepMessage?document.getElementById('toast')!.textContent:'';
-    const described=message&&gains.length===1&&message.toLowerCase().includes(gains[0].name.toLowerCase())&&(gains[0].quantity===1||message.includes(String(gains[0].quantity)));
+    const described=message&&gains.length===1&&!gains[0].item&&message.toLowerCase().includes(gains[0].name.toLowerCase())&&(gains[0].quantity===1||message.includes(String(gains[0].quantity)));
     this.toast('');document.getElementById('toast')!.innerHTML=described?`<ul class="reward-list" aria-label="Received"><li>${icon(gains[0].icon)}<span>${esc(message)}</span></li></ul>`:(message?`<p>${esc(message)}</p>`:'')+rewardList(gains);
   }
   escape = esc;

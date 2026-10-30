@@ -35,7 +35,7 @@ import { mountGame } from '../game/mount';
 import { art, type UI } from '../game/ui';
 import { ABILITIES, createBattle, type Unit } from '../rules/combat';
 import { newGame, recruitOrrin } from '../rules/state';
-import { ITEMS, SLOTS, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, ownedCopies, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
+import { ITEMS, SLOTS, equipmentOwner, canEquip, decodeInventory, equipmentBonuses, equipItem, newInventory, ownedCopies, receiveItem, unequipItem, type Inventory, type ItemId } from '../rules/inventory';
 import { COMPANION_IDS, COMPANIONS, STAT_LIMITS, setPartyMember, type CompanionId, characterProfiles, decodeCharacterSettings, defaultBuild, newCharacterSettings, validStat, type CharacterStat } from '../rules/characters';
 import { CHARACTERS } from '../content/characters';
 import { MAX_PARTY_SIZE } from '../rules/party';
@@ -159,7 +159,7 @@ class Workshop {
     const items = (Object.keys(ITEMS) as ItemId[]).map(id => {
       const item = ITEMS[id], holders = COMPANION_IDS.filter(h => Object.values(this.inventory.characters[h]).includes(id));
       const compatible=canEquip(hero,id);
-      return `<button class="inv-item${id === this.selected ? ' selected' : ''}${compatible?'':' incompatible'}" data-item="${id}" aria-pressed="${id === this.selected}" ${compatible?'':`aria-description="${names[hero]} cannot use this item."`}><span class="icon-label">${icon(itemIcon(id))}<span>${esc(item.name)}</span></span><small>${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}</small></button>`;
+      return `<button class="inv-item${id === this.selected ? ' selected' : ''}${compatible?'':' incompatible'}" data-item="${id}" aria-pressed="${id === this.selected}" ${compatible?'':`aria-description="${names[hero]} cannot use this item."`}><span class="icon-label">${icon(itemIcon(id))}<span>${esc(item.name)}</span></span><small>${equipmentOwner(id)?`${names[equipmentOwner(id)!]}${holders.length?' · Equipped':''}`:`${this.inventory.bag[id] ?? 0} in bag${holders.length ? ` · ${holders.map(h => names[h]).join(', ')}` : ''}`}</small></button>`;
     }).join('');
     this.ui.sceneLayer.innerHTML = `<section class="inventory-panel" aria-label="Character workshop">
       <div class="inv-characters" role="group" aria-label="Character">${COMPANION_IDS.map(id=>`<button data-hero="${id}" aria-label="${names[id]}" aria-pressed="${hero===id}" class="${hero===id?'selected':''}">${names[id]}<small>${this.settings.party.includes(id)?'Party':'Reserve'}</small></button>`).join('')}</div>
