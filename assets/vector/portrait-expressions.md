@@ -11,7 +11,8 @@ use explicit cues, with further cues at his rescue and later sibling scenes.
 
 Kit also has a flustered variant: lifted inner brows, a wider sideways glance,
 a small parted smile, warmer cheeks, a sweat drop and his right hand raised to
-his neck. The arm is on camera-left, with the elbow down. Use it for his verbal
+his neck. The thicker sleeve is on camera-left and continues below the portrait
+crop, with the elbow off-screen. Use it for his verbal
 slips, reserving the softer bashful smile for quieter affection. It is available
 only for Kit.
 

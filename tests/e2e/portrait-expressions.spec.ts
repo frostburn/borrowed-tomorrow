@@ -41,7 +41,7 @@ test('every expression preserves identity outside the features and survives the 
     const img=expression==='neutral'?neutral:await decode(`${hero}-${expression}`);ctx.clearRect(0,0,128,128);ctx.drawImage(img,0,0);const actual=ctx.getImageData(0,0,128,128).data;let outside=0,changed=0,chunky=0;
     for(let y=0;y<128;y++)for(let x=0;x<128;x++){
      const at=(y*128+x)*4,diff=[0,1,2,3].some(c=>actual[at+c]!==original[at+c]);
-     const kitPose=hero==='kit'&&expression==='flustered'&&((x>=12&&x<=50&&y>=76)||(x>=92&&x<=101&&y>=48&&y<=65));
+     const kitPose=hero==='kit'&&expression==='flustered'&&((x>=10&&x<=50&&y>=76)||(x>=90&&x<=99&&y>=48&&y<=65));
      if(diff){changed++;if((x<38||x>88||y<38||y>89)&&!kitPose)outside++;if(x%2===0&&y%2===0)chunky++;}
     }
     // The actual final framebuffer samples one native pixel per 2x2 square.
