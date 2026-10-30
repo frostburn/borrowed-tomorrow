@@ -39,14 +39,35 @@ ART['mural']=path('M3 3L25 2L30 10L27 29L5 30L2 21Z','#526876')+path('M4 5L23 4L
 ART['lantern']=path('M9 5L12 1L20 1L23 5L21 9L19 8L20 5L18 3L14 3L12 5L13 8L11 9Z',brass)+path('M7 9L24 7L28 13L25 29L7 30L4 14Z',brass)+path('M8 12L23 10L24 25L9 27Z',gold)+path('M12 13L21 12L20 23L13 25Z','#f5df9c')+path('M6 9L24 7L28 13L5 16Z',dark)+path('M7 27L25 25L26 30L7 32Z',dark)
 ART['horn']=path('M3 19L15 13L25 2L28 3L29 15L18 18L7 25Z',brass)+path('M3 19L15 13L25 2L26 5L16 16L5 22Z',gold)+path('M25 2L28 3L29 15L26 14Z',shade)+path('M11 22L15 20L19 27L16 30Z',brass)
 ART['light']=path('M13 1L19 1L18 31L14 31Z',pale)+path('M14 4L8 7L3 24L14 19Z',gold)+path('M18 4L25 7L30 23L18 19Z',brass)
+ART['speaker']=path('M4 32L5 24L12 20L22 20L28 25L30 32Z',blue)+path('M12 18L12 24L18 27L22 23L21 17Z','#b69c80')+path('M9 6L16 2L23 6L24 14L20 21L13 20L8 14Z','#d2baa0')+path('M8 12L8 5L14 1L21 2L25 6L24 12L20 8L14 7L11 12Z',shade)
+
+def speaker_portrait():
+ # Anonymous speakers keep their hair, head, neck and clothing, but no facial
+ # features. Preserve the shaded silhouette without implying a shared identity.
+ skin,shadow,hair='#d2baa0','#bba287','#645343'
+ return ''.join([
+  path('M48 72L47 99L65 113L84 95L81 69Z',shadow),
+  path('M50 78L51 95L65 103L76 93L76 77Z',skin),
+  path('M9 128L13 103L44 90L63 104L85 89L112 102L121 128Z','#6a8999'),
+  path('M9 128L13 103L27 97L25 128Z','#506e80'),
+  path('M44 89L63 104L53 113L35 95Z','#b4c6ca'),
+  path('M83 89L63 104L74 114L94 95Z','#93adb3'),
+  path('M36 46L32 48L34 61L42 65L43 48Z',shadow),
+  path('M88 45L94 48L92 61L86 65Z',shadow),
+  path('M39 26L61 16L83 24L91 44L86 69L76 83L61 88L47 81L38 65L35 44Z',skin),
+  path('M80 27L91 44L86 69L76 83L61 88L60 83L74 78L82 62L84 44Z',shadow),
+  path('M35 49L32 36L36 19L52 11L72 13L89 23L94 39L88 52L82 36L69 32L57 24L46 35L42 50Z',hair),
+  path('M36 24L52 13L71 15L84 23L69 21L56 20L45 29L36 38Z','#85735e'),
+ ])
+
 def svg(body,size): return f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">{body}</svg>\n'
 
 def export():
  OUT.mkdir(parents=True,exist_ok=True)
  for name,body in ART.items():
   (OUT/f'{name}.svg').write_text(svg(body,32))
- for name in ('letter','ledger','chart','mural','lantern','horn','bandage','light'):
-  body=rect(0,0,128,128,'#182b32')+path('M0 103L128 78L128 128L0 128Z','#25404a')+f'<g transform="translate(16 12) scale(3)">{ART[name]}</g>'
+ for name in ('letter','ledger','chart','mural','lantern','horn','speaker','bandage','light'):
+  body=rect(0,0,128,128,'#182b32')+path('M0 103L128 78L128 128L0 128Z','#25404a')+(speaker_portrait() if name=='speaker' else f'<g transform="translate(16 12) scale(3)">{ART[name]}</g>')
   (OUT/f'portrait-{name}.svg').write_text(svg(body,128))
- print(f'Exported {len(ART)} icons and 8 object cards')
+ print(f'Exported {len(ART)} icons and 9 object/speaker cards')
 if __name__=='__main__':export()

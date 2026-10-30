@@ -2,7 +2,7 @@ import type { ItemId } from '../rules/inventory';
 import type { SupplyId } from '../rules/supplies';
 
 /** Native 32px objects, shared by equipment, transactions and reward notices. */
-export const UI_ICONS=['marks','reflector','prism','nozzle','valve','ring','sight','stock','focus','clasp','hilt','brace','coat','heavy-coat','harness','bandage','field-bandage','tonic','letter','ledger','chart','mural','lantern','horn','light'] as const;
+export const UI_ICONS=['marks','reflector','prism','nozzle','valve','ring','sight','stock','focus','clasp','hilt','brace','coat','heavy-coat','harness','bandage','field-bandage','tonic','letter','ledger','chart','mural','lantern','horn','speaker','light'] as const;
 export type UIIcon=typeof UI_ICONS[number];
 const equipmentIcons={
  'coastal-reflector':'reflector','sealed-nozzle':'nozzle','steady-stock':'stock','travel-coat':'coat',
@@ -21,11 +21,11 @@ export function itemIcon(id:SupplyId):UIIcon{
  return id==='focus-tonic'?'tonic':equipmentIcons[id];
 }
 /** Only actual reading/inspection labels, not every narrated object or location. */
-export const OBJECT_CARDS=['letter','ledger','chart','mural','lantern','horn','bandage','light'] as const;
+export const OBJECT_CARDS=['letter','ledger','chart','mural','lantern','horn','speaker','bandage','light'] as const;
 const objects:Record<string,typeof OBJECT_CARDS[number]>={
  'Transfer slip':'letter','The dispatch':'letter','The founding pledge':'ledger','The old diagram':'chart','The old mural':'mural','Festival lanterns':'lantern','The gate horn':'horn',
  'Supplies':'bandage',
- 'The Benefactor':'light',
+ 'Supply clerk':'speaker','The baker':'speaker','The cart woman':'speaker','A Cinderbank passenger':'speaker','A fitter':'speaker','The Benefactor':'light','Palace commandant':'speaker',
 };
 export const objectPortrait=(label:string)=>Object.hasOwn(objects,label)?`ui/portrait-${objects[label]}`:undefined;
 export const uiArtAsset=(name:string)=>UI_ICONS.some(id=>name===`ui/${id}`)||OBJECT_CARDS.some(id=>name===`ui/portrait-${id}`);

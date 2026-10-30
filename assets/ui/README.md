@@ -3,10 +3,10 @@
 Run `python3 assets/ui/export-icons.py` from the repository root. It writes only
 `public/art/vector/ui/`: native 32 × 32 transparent icons and 128 × 128 dialogue
 cards. Object cards reuse the same shapes at integer scale on a subdued
-background. Anonymous speakers use the BT placeholder rather than a shared face.
-The ordinary bandage is a plain adhesive strip, while field dressings retain
-their larger wrapped packet. All artwork is authored directly as vector geometry;
-no image samples, external dependencies, fonts or embedded images are needed.
+background; anonymous speakers keep a shaded head, hair, neck and clothing,
+without eyes, nose or mouth. The ordinary bandage is a plain adhesive strip, while field
+dressings retain their larger wrapped packet. All artwork is authored directly as vector geometry; no image
+samples, external dependencies, fonts or embedded images are needed.
 
 Broad material planes, colored undersides and restrained detail match the cast
 and the shared two-pixel framebuffer. Icons are displayed at native size
@@ -21,7 +21,8 @@ That module also resolves authored reading/inspection labels to cards. Narrated
 locations and actions keep BT. An explicit dialogue portrait takes precedence,
 so the unseen Chapter Five voice remains abstract light while Chapter Seven can
 show the Benefactor. Named character portraits and expressions are unchanged.
-The household's spoken line and narration both retain BT.
+The household's spoken line has an explicit speaker cue; narration under the
+same label retains BT.
 
 `game/rewards.ts` compares money, medicine and total owned equipment before and
 after dialogue completion/choice or battle victory. Only real positive changes
