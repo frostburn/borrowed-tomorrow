@@ -31,9 +31,10 @@ export function automaticSkillFlows(production=false){
     if(production)await battle(page,undefined,false,{pauseOnVictory:true});else await page.getByRole('button',{name:'Win battle',exact:true}).click();
     const improvements=page.getByRole('list',{name:'Skill improvements'});await expect(improvements).toContainText('Nell learns Mend.');await expect(improvements).toContainText('Orrin learns Rivet shot.');await expect(improvements).not.toContainText('Kit');
     expect((await inspect(page)).state.skills.nell.mend).toBe(1);expect((await inspect(page)).state.skills.orrin.rivet).toBe(1);await capture(page,`automatic-level-up-${production?'production-':''}${device}`);
-    await page.locator('.panel-actions').getByRole('button',{name:'Skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});
+    await expect(page.locator('.panel-actions button')).toHaveCount(1);await expect(page.locator('.panel-actions').getByRole('button',{name:'Skills',exact:true})).toHaveCount(0);
+    await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('button',{name:'Skills',exact:true}).click();const skills=page.getByRole('dialog',{name:'Character skills'});
     await expect(skills).toContainText('Character level 2');await expect(skills.locator('[data-ability="mend"]')).toContainText('Skill 1 / 3');await expect(skills).not.toContainText('Team:');await expect(skills.locator('[data-skill]')).toHaveCount(0);
-    await page.getByRole('button',{name:'Close',exact:true}).click();await expect(page.locator('.panel-actions').getByRole('button',{name:'Skills',exact:true})).toBeFocused();
+    await page.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:'Equipment',exact:true})).toBeFocused();
     await page.getByRole('button',{name:'Continue the journey',exact:true}).click();await page.getByRole('button',{name:'Skip scene',exact:true}).click();
     await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.skills.nell.mend).toBe(1);expect((await inspect(page)).state.skills.orrin.rivet).toBe(1);
     await expect(page.locator('.skill-gains')).toHaveCount(0);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);

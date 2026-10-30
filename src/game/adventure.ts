@@ -12,7 +12,7 @@ import {resourceSnapshot,resourceGains,rewardList} from './rewards';
 import {PeopleMotion} from './people-motion';
 import {PERSON_MOTION_PAGES} from '../content/people-motion';
 import {abilityFor} from '../rules/skills';
-import {openSkills,skillMessages} from './skills';
+import {skillMessages} from './skills';
 import {teamStatus,battleAbilities,daybreakProtection,VENT_DAMAGE} from '../rules/combat-tactics';
 import {drawBattleFixtures} from './battle-fixtures';
 import type {installSoundPreferences} from './sound-preferences';
@@ -1025,7 +1025,6 @@ export class Adventure extends Phaser.Scene {
     this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
     const learned=skillMessages(this.state,previousLevel);
     this.ui.panel('The line is clear',`<p>${e.xp} experience</p>${rewardList(resourceGains(resources,this.state))}<p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${learned.length?`<ul class="skill-gains" aria-label="Skill improvements">${learned.map(message=>`<li>${this.ui.escape(message)}</li>`).join('')}</ul>`:''}${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
-    if(learned.length)this.ui.sceneLayer.querySelector('.panel-actions')!.prepend(this.ui.button({label:'Skills',action:()=>openSkills(this.ui,this.state)}));
   }
 
   inventory() {
