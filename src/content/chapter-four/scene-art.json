@@ -38,7 +38,10 @@
       "width": 360,
       "height": 192,
       "depth": 600,
-      "layerId": 4
+      "layerId": 4,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-four-refuge-supplies",
@@ -190,7 +193,10 @@
       "width": 360,
       "height": 192,
       "depth": 420,
-      "layerId": 4
+      "layerId": 4,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-four-harbor-ferry-in",
@@ -200,7 +206,10 @@
       "width": 360,
       "height": 192,
       "depth": 420,
-      "layerId": 5
+      "layerId": 5,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-four-harbor-gate-closed",

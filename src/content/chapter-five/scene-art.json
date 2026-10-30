@@ -160,7 +160,10 @@
       "width": 1536,
       "height": 400,
       "depth": -998,
-      "layerId": 4
+      "layerId": 4,
+      "motion": {
+        "kind": "hover"
+      }
     },
     {
       "key": "scene-five-ship-cordon",
@@ -170,7 +173,20 @@
       "width": 1536,
       "height": 400,
       "depth": -998,
-      "layerId": 5
+      "layerId": 5,
+      "motion": {
+        "kind": "hover"
+      }
+    },
+    {
+      "key": "scene-five-ship-blockade-sky",
+      "url": "art/vector/chapter-five/ship-blockade-sky.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 300,
+      "depth": -998,
+      "layerId": 6
     },
     {
       "key": "scene-five-ship-blockade",
@@ -180,7 +196,10 @@
       "width": 1536,
       "height": 300,
       "depth": -998,
-      "layerId": 6
+      "layerId": 6,
+      "motion": {
+        "kind": "hover"
+      }
     },
     {
       "key": "scene-five-ship-medical-kit",

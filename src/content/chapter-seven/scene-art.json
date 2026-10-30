@@ -21,6 +21,21 @@
       "layerId": 2
     },
     {
+      "key": "scene-seven-hollowsill-hanging-boat",
+      "url": "art/vector/chapter-seven/hollowsill-hanging-boat.svg",
+      "x": 1050,
+      "y": 112,
+      "width": 112,
+      "height": 132,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 32,
+        "after": "takenPeopleFreed"
+      }
+    },
+    {
       "key": "scene-seven-hollowsill-survey-ship",
       "url": "art/vector/chapter-seven/hollowsill-survey-ship.svg",
       "x": 0,
@@ -131,6 +146,21 @@
       "height": 1008,
       "depth": -999,
       "layerId": 2
+    },
+    {
+      "key": "scene-seven-takenwater-hanging-boat",
+      "url": "art/vector/chapter-seven/takenwater-hanging-boat.svg",
+      "x": 1050,
+      "y": 112,
+      "width": 112,
+      "height": 132,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 32,
+        "after": "takenPeopleFreed"
+      }
     },
     {
       "key": "scene-seven-takenwater-station-house",
@@ -389,6 +419,16 @@
       "layerId": 1
     },
     {
+      "key": "scene-seven-seasonstreet-relief",
+      "url": "art/vector/chapter-seven/seasonstreet-relief.svg",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1008,
+      "depth": -999.1,
+      "layerId": 1
+    },
+    {
       "key": "scene-seven-seasonstreet-ground",
       "url": "art/vector/chapter-seven/seasonstreet-ground.svg",
       "x": 0,
@@ -397,6 +437,21 @@
       "height": 1008,
       "depth": -999,
       "layerId": 2
+    },
+    {
+      "key": "scene-seven-seasonstreet-hanging-boat",
+      "url": "art/vector/chapter-seven/seasonstreet-hanging-boat.svg",
+      "x": 1050,
+      "y": 112,
+      "width": 112,
+      "height": 132,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 32,
+        "after": "takenPeopleFreed"
+      }
     },
     {
       "key": "scene-seven-seasonstreet-river-wall",
@@ -499,6 +554,21 @@
       "height": 1008,
       "depth": -999,
       "layerId": 2
+    },
+    {
+      "key": "scene-seven-lastrefuge-hanging-boat",
+      "url": "art/vector/chapter-seven/lastrefuge-hanging-boat.svg",
+      "x": 1050,
+      "y": 112,
+      "width": 112,
+      "height": 132,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 32,
+        "after": "takenPeopleFreed"
+      }
     },
     {
       "key": "scene-seven-lastrefuge-chest",

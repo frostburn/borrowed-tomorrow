@@ -35,7 +35,16 @@ def write_map(id,title,subtitle,floor,objects,casts,people,back,ground,decor=[],
  if id in OUTLINES:layers[1]['data']=cells(OUTLINES[id])
  def add(n,body,depth,lid,w=1536,h=1008,x=0,y=0):
   svg(ART/f'{id}-{n}.svg',w,h,body);entries.append({'key':f'scene-seven-{id}-{n}','url':f'art/vector/chapter-seven/{id}-{n}.svg','x':x,'y':y,'width':w,'height':h,'depth':depth,'layerId':lid})
- if art:add('back',back,-1000,1);add('ground',ground,-999,2)
+ if art:
+  if id=='seasonstreet':
+   # The moving boat stays behind the mountain and hospice, just as the old
+   # painted boat did. All three planes inherit the same surroundings layer.
+   split=len(sky());add('back',back[:split],-1000,1);add('relief',back[split:],-999.1,1)
+  else:add('back',back,-1000,1)
+  add('ground',ground,-999,2)
+ if id in ('hollowsill','takenwater','lastrefuge','seasonstreet'):
+  boat=[poly([(0,11),(107,0),(86,32),(25,39)],'#b2c5b9'),poly([(0,11),(25,39),(86,32),(83,40),(23,48)],'#628f92'),line([(55,31),(61,128)],'#a9c1b5',4),poly([(58,49),(60,119),(107,106)],'#83a7a3')]
+  add('hanging-boat',boat,-999.2,1,112,132,1050,112);entries[-1]['motion']={'kind':'sail','distance':32,'after':'takenPeopleFreed'}
  decor=list(decor)
  for i,(x,y)in enumerate(FIXTURES.get(id,[])):decor.append(('light-'+str(i),fixture(id=='quietward'),48,148,x-23,y-148,y,{}))
  for n,body,w,h,x,y,depth,flags in decor:
@@ -62,7 +71,6 @@ def sky(sea=True):
  if sea:
   out += [poly([(0,0),(1536,0),(1536,560),(1280,619),(975,590),(727,645),(420,602),(190,631),(0,580)],'#28596b'),poly([(0,0),(1536,0),(1536,448),(1250,538),(951,507),(714,568),(427,537),(184,557),(0,504)],'#507f88')]
   for x,y,w in [(40,106,280),(360,150,320),(820,75,480),(1160,185,300),(220,222,190),(714,227,470)]:out.append(poly([(x,y+320),(x+w,y+307),(x+w-47,y+323),(x+14,y+328)],'#8bafb0'))
-  out += [poly([(1050,123),(1157,112),(1136,144),(1075,151)],'#b2c5b9'),poly([(1050,123),(1075,151),(1136,144),(1133,152),(1073,160)],'#628f92'),line([(1105,143),(1111,240)],'#a9c1b5',4),poly([(1108,161),(1110,231),(1157,218)],'#83a7a3')]
  return out
 def sun(cx=768,cy=197,r=102):
  return [ellipse(cx,cy,r*GEOMETRY['innerRadius'],r*GEOMETRY['innerRadius'],GEOMETRY['skyInterior']),emblem(cx,cy,r)]

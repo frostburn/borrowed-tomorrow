@@ -656,7 +656,10 @@
       "width": 224,
       "height": 100,
       "depth": 870,
-      "layerId": 3
+      "layerId": 3,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-six-iria-racks",
@@ -940,7 +943,10 @@
       "width": 224,
       "height": 100,
       "depth": 966,
-      "layerId": 3
+      "layerId": 3,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-six-rainhouse-ferns",
@@ -1118,7 +1124,10 @@
       "width": 250,
       "height": 110,
       "depth": 973,
-      "layerId": 3
+      "layerId": 3,
+      "motion": {
+        "kind": "moored"
+      }
     },
     {
       "key": "scene-six-harbor-shelter",

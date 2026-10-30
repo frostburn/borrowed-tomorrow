@@ -12,8 +12,8 @@ import { sceneArt, visibleSceneArt } from '../content/scene-art';
 import { sceneLight, lightPixels } from '../game/world-light';
 import { foregroundSurface, lightGround, paintActorShadow } from '../game/light-canvas';
 import { snapRasterWithin } from '../game/raster';
-import {lifePaused,lifeStep,sceneryAngle,swayingScenery} from '../content/map-life';
-import {lifeMasks,paintMapLife,type LifeMasks} from '../game/life-canvas';
+import {lifePaused,lifeStep,sceneryPose,steamSources} from '../content/map-life';
+import {lifeMasks,paintMapLife,paintSteam,type LifeMasks} from '../game/life-canvas';
 
 const esc=(text:unknown)=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const numbers=(text:string|null)=>text?.split(',').map(Number)??[];
@@ -159,13 +159,19 @@ export class MapWorkshop {
     }
     if(pieces){
       for(const piece of pieces){
-        const pose=mechanismPoseForPiece(piece.key,this.flags),image=this.image(`${import.meta.env.BASE_URL}${pose?.url??piece.url}`),draw=()=>{if(!image.complete||!image.naturalWidth)return;ctx.save();const angle=sceneryAngle(piece,time);if(angle){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(angle);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);if(pose)ctx.drawImage(vectorSurface(image),pose.frame*pose.width,0,pose.width,pose.height,0,0,pose.width,pose.height);else ctx.drawImage(vectorSurface(image),0,0);ctx.restore();};
-        if(piece.depth>=0||swayingScenery(piece))sorted.push({depth:piece.depth,draw});else draw();
+        const pose=mechanismPoseForPiece(piece.key,this.flags),image=this.image(`${import.meta.env.BASE_URL}${pose?.url??piece.url}`),draw=()=>{
+          if(!image.complete||!image.naturalWidth)return;
+          const motion=sceneryPose(piece,time,this.flags);ctx.save();ctx.translate(motion.dx,motion.dy);
+          if(motion.rotation){ctx.translate(piece.x+piece.width/2,piece.y+piece.height);ctx.rotate(motion.rotation);ctx.translate(-piece.width/2,-piece.height);}else ctx.translate(piece.x,piece.y);
+          if(pose)ctx.drawImage(vectorSurface(image),pose.frame*pose.width,0,pose.width,pose.height,0,0,pose.width,pose.height);else ctx.drawImage(vectorSurface(image),0,0);ctx.restore();
+        };
+        sorted.push({depth:piece.depth,draw});
       }
       if(time!==undefined&&e.tiles){
         const key=JSON.stringify([e.id,this.flags,[...this.hidden]]);
         if(this.masks?.key!==key){const value=lifeMasks(e.id,e.tiles,this.flags,pieces,p=>{const img=this.image(`${import.meta.env.BASE_URL}${p.url}`);return img.complete&&img.naturalWidth?vectorSurface(img):undefined;});this.masks={key,value};}
         sorted.push({depth:-999.4,draw:()=>paintMapLife(ctx,e.id,this.masks?.value,time)});
+        for(const source of steamSources(pieces))sorted.push({depth:source.depth,draw:()=>paintSteam(ctx,source,time)});
       }
     }else if(e.tiles){
       for(const page of tilePages(e.tiles))this.image(`${import.meta.env.BASE_URL}${page.url}`);

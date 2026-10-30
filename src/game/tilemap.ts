@@ -5,7 +5,7 @@ import { visibleSceneArt } from '../content/scene-art';
 import type { GameState } from '../rules/state';
 import { sceneLight } from './world-light';
 import {foregroundSurface} from './light-canvas';
-import {swayingScenery} from '../content/map-life';
+import {movingScenery} from '../content/map-life';
 
 let groundId=0;
 
@@ -42,7 +42,7 @@ export function drawTileMap(scene:Phaser.Scene,world:Phaser.GameObjects.Containe
     };
     if(sceneLight(String(properties(data).sceneArt),[])){
       for(const piece of [...pieces].filter(p=>p.depth<-900).sort((a,b)=>a.depth-b.depth)){
-        if(live.has(piece.layerId)||liveMechanismPiece(piece.key)||swayingScenery(piece))flush();else ground.push(piece);
+        if(live.has(piece.layerId)||liveMechanismPiece(piece.key)||movingScenery(piece))flush();else ground.push(piece);
       }
       flush();
     }

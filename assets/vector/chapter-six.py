@@ -144,6 +144,7 @@ def world(id,name,subtitle,floor,blocks,objects,arrivals,casts,people,decor,back
    if n=='mooring-barrier':item['properties'].extend(props(live=True))
    layers.append(item)
   add(n,body,ww,hh,x,y,depth,lid)
+  if n in ('iria-launch','rainhouse-launch','harbor-launch'):entries[-1]['motion']={'kind':'moored'}
  layers.extend([group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)])
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v,**({'projection':True}if sid=='six-sealed' and k=='emperor' else {'hidden':True}if sid=='six-court' and k=='amal' else {}))for k,v in cast.items()]))
  # Cache static ground, but retain individual images moved by the cinematics.

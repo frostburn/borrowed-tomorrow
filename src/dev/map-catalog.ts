@@ -7,6 +7,7 @@ import { CHAPTER_THREE_MAPS, CHAPTER_THREE_BATTLES } from '../content/chapter-th
 import { CHAPTER_FOUR_MAPS, CHAPTER_FOUR_BATTLES } from '../content/chapter-four/maps';
 import { properties, type TileMap } from '../content/tilemaps';
 import { REGULATOR_ENCOUNTERS } from '../content/chapter-three/regulator';
+import { sceneArt } from '../content/scene-art';
 
 export interface MapReview {
   id:string; chapter:number; kind:'World'|'Battle'; name:string;
@@ -31,6 +32,7 @@ export function reviewFlags(entry:MapReview){
   };
   for(const l of entry.tiles?.layers??[]){add(properties(l));for(const o of l.objects??[])add(properties(o));}
   for(const o of [...entry.world?.objects??[],...entry.world?.people??[],...entry.world?.gates??[]])add(o as unknown as Record<string,unknown>);
+  for(const piece of entry.tiles?sceneArt(entry.tiles)??[]:[])if(piece.motion?.after)names.add(piece.motion.after);
   return [...names].sort();
 }
 
