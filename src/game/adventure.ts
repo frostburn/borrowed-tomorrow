@@ -864,11 +864,11 @@ export class Adventure extends Phaser.Scene {
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
     if(this.plan){
       const title=document.createElement('strong');title.className='confirmation-title';title.textContent=this.plan.action==='move'?'Move':abilityFor(u,this.plan.action).name;confirm.prepend(title);
-      if(this.plan.action==='strike'&&b.fixtures?.some(f=>f.hp>0&&equal(f.hex,this.plan!.hex))&&movement(b,u).get(key(this.plan.hex))?.path.length){
-        const hex={...this.plan.hex};
-        confirm.append(this.ui.button({label:'Move here',action:()=>{this.selected='move';this.plan={action:'move',hex};this.drawGrid();this.updatePreview();this.ui.canvas.focus();}}));
-      }
       confirm.append(this.ui.button({label:'Cancel',action:()=>this.cancelPlan()}));
+    }
+    if(this.selected==='strike'&&b.fixtures?.some(f=>f.hp>0&&equal(f.hex,aimed))&&movement(b,u).get(key(aimed))?.path.length){
+      const hex={...aimed};confirm.classList.add('has-plan');
+      confirm.append(this.ui.button({label:'Move here',action:()=>{this.selected='move';this.plan={action:'move',hex};this.drawGrid();this.updatePreview();this.ui.canvas.focus();}}));
     }
   }
   private positionConfirmation(aim?:Hex){
