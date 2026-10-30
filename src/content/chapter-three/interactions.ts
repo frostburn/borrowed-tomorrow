@@ -7,7 +7,7 @@ import * as scenes from './scenes';
 export function resumeChapterThree(h:StoryHost){
   const s=h.state,f=s.flags;
   if(!f.capitalSeen)h.talk({...scenes.arrival(),done:()=>h.commit('capitalSeen','capital')});
-  else if(f.capitalGateWon&&!f.petraJoined)h.talk({...scenes.defection(),done:()=>{recruit(s,'petra');receiveItem(s.inventory,'saber-hilt');remember(s,'defection');h.refresh();h.save();h.toast('Petra joined · balanced saber hilt added to the bag. Equipment selects active fighters.');}});
+  else if(f.capitalGateWon&&!f.petraJoined)h.talk({...scenes.defection(),done:()=>{recruit(s,'petra');receiveItem(s.inventory,'saber-hilt');remember(s,'defection');h.refresh();h.save();h.toast('Petra joined.');}});
   else if(s.location.map==='relayhall'&&!f.worksSeen)h.talk({...scenes.gallery(),done:()=>{h.commit('worksSeen');h.battle('works-warden');}});
   else if(s.location.map==='conduit'&&!f.conduitSeen)h.talk({...scenes.heart(),done:()=>h.commit('conduitSeen','heart')});
 }
@@ -28,7 +28,7 @@ export function interactChapterThree(h:StoryHost,id:string){
     case 'capital-engine':rest();return;
     case 'capital-cache':
       if(f.capitalCache)return say('Orrin','Empty. The baffled nozzle is in our equipment bag.');
-      h.talk({lines:[SAY('Orrin','A baffled pressure nozzle. Quicker valve return than mine. That’ll fit my lance.')],done:()=>{receiveItem(s.inventory,'baffled-nozzle');h.commit('capitalCache');h.toast('Baffled pressure nozzle added to the bag · fits Orrin.');}});return;
+      h.talk({lines:[SAY('Orrin','A baffled pressure nozzle. Quicker valve return than mine. That’ll fit my lance.')],done:()=>{receiveItem(s.inventory,'baffled-nozzle');h.commit('capitalCache');}});return;
     case 'capital-works':
       if(!f.petraJoined)return h.toast('The custody machines still hold the square.');
       travel('relayhall','from-siding');return;

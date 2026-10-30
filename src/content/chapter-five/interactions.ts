@@ -64,7 +64,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'hammer-cooling':return go('coolingworks','start');
   case 'hammer-ship':return go('airship','hammerplain');
   case 'hammer-coat':
-   if(f.forgeStoresWon)return say('Orrin','That safety coat’s good for anybody. We can fit it from Equipment.');
+   if(f.forgeStoresWon)return say('Orrin','That safety coat’s good for anybody.');
    return h.talk({lines:[SAY('Hester','The safety store’s still locked. There’s a heat coat in it, if you can get past the guardian and its hound.')],choices:[{label:'Open the safety store · fight its guards',action:()=>h.battle('hammer-stores')},{label:'Leave the store sealed',action:()=>{}}]});
   case 'cooling-route':
    if(f.forgeApproachWon)return h.toast(f.coolingOpened?'The cooling gate is open. Take the upper gantry.':'Turn the red cooling wheel on the eastern walkway.');

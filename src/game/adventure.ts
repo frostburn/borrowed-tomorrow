@@ -8,6 +8,7 @@ import {BossLighting} from './boss-lighting';
 import {focusCapacity} from '../rules/improvements';
 import {icon} from './item-icons';
 import {itemIcon} from '../content/ui-art';
+import {equipmentHint,takeEquipmentHint,EQUIPMENT_HINT,type EquipmentHint} from './equipment-tutorial';
 import {resourceSnapshot,resourceGains,rewardList} from './rewards';
 import {PeopleMotion} from './people-motion';
 import {PERSON_MOTION_PAGES} from '../content/people-motion';
@@ -109,6 +110,7 @@ export class Adventure extends Phaser.Scene {
   private plan?: Plan;
   private path: { x: number; y: number }[] = [];
   private pendingObject?: MapObject;
+  private pendingEquipmentHint?:{state:GameState;gains:ReturnType<typeof resourceGains>};
   private moving = false;
   private busy = false;
   private face = 'nell';
@@ -394,7 +396,7 @@ export class Adventure extends Phaser.Scene {
       if(finished)return;finished=true;director?.close();if(this.cinematic===director)this.cinematic=undefined;
       if(this.mode==='world'&&this.player)this.cameras.main.startFollow(this.player,false,1,1,0,MAPS[this.state.location.map].cameraLeadY??0);
       const resources=resourceSnapshot(this.state),notice=this.ui.toastSerial,previousLevel=level(this.state);
-      action?.();const learned=skillMessages(this.state,previousLevel);if(learned.length)this.ui.toast(learned.join(' '));this.ui.received(resourceGains(resources,this.state),this.ui.toastSerial!==notice);if(this.mode==='world'){this.renderWorldControls();this.autosave();}
+      action?.();const learned=skillMessages(this.state,previousLevel);if(learned.length)this.ui.toast(learned.join(' '));const gains=resourceGains(resources,this.state);this.ui.received(gains,this.ui.toastSerial!==notice);if(equipmentHint(this.state,gains))this.pendingEquipmentHint={state:this.state,gains};if(this.mode==='world'){this.renderWorldControls();this.autosave();}
     };
     this.ui.showDialogue({...dialogue,choices:dialogue.choices?.map(c=>({...c,action:()=>finish(c.action)})),done:()=>finish(dialogue.done)},index=>director?.shot(dialogue.lines[index].shot));
   }
@@ -425,6 +427,12 @@ export class Adventure extends Phaser.Scene {
   }
   update(time: number,delta:number) {
     if(this.endingFilm||this.crossingFilm)return;
+    const pending=this.pendingEquipmentHint;
+    if(pending&&this.mode==='world'&&!this.blocked&&!this.busy&&!this.moving){
+      this.pendingEquipmentHint=undefined;
+      const hint=pending.state===this.state?takeEquipmentHint(this.state,pending.gains):undefined;
+      if(hint){this.ui.showModal('Equipment',`${rewardList(pending.gains.filter(g=>g.item===hint.item))}<p>${EQUIPMENT_HINT}</p>`,[{label:'Equip now',action:()=>this.equipReward(hint)},{label:'Later',action:()=>this.ui.closeModal()}]);this.autosave();}
+    }
     this.peopleMotion.update(delta,this.mode!=='world'||this.blocked||this.busy||!!this.cinematic);
     this.motion.update();
     this.sortWorld();
@@ -1023,8 +1031,13 @@ export class Adventure extends Phaser.Scene {
     (document.getElementById('inventory-button') as HTMLButtonElement).disabled=false;
     if(e.journal)remember(this.state,e.journal);
     this.audio.setMode(this.state.location.map==='lastshore'?'refuge':this.state.location.map==='capitalquay'?'outermooring':this.state.location.map);this.audio.effect('win');
-    const learned=skillMessages(this.state,previousLevel);
-    this.ui.panel('The line is clear',`<p>${e.xp} experience</p>${rewardList(resourceGains(resources,this.state))}<p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${learned.length?`<ul class="skill-gains" aria-label="Skill improvements">${learned.map(message=>`<li>${this.ui.escape(message)}</li>`).join('')}</ul>`:''}${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    const learned=skillMessages(this.state,previousLevel),gains=resourceGains(resources,this.state),hint=takeEquipmentHint(this.state,gains);
+    this.ui.panel('The line is clear',`<p>${e.xp} experience</p>${rewardList(gains)}<p>${level(this.state)>previousLevel?`The party reaches level ${level(this.state)}. Maximum HP and attack power increase.`:'The party catches its breath. Some HP and all focus are restored.'}</p>${learned.length?`<ul class="skill-gains" aria-label="Skill improvements">${learned.map(message=>`<li>${this.ui.escape(message)}</li>`).join('')}</ul>`:''}${e.victory?`<p>${this.ui.escape(e.victory)}</p>`:''}${hint?`<p class="equipment-hint">${EQUIPMENT_HINT}</p>`:''}`,[{label:'Continue the journey',action:()=>{this.ui.clearPanel();this.showWorld();this.autosave();resumeChapter(this.storyHost());}}]);
+    if(hint)this.ui.sceneLayer.querySelector('.panel-actions')!.prepend(this.ui.button({label:'Equip now',action:()=>this.equipReward(hint)}));
+  }
+
+  private equipReward(hint:EquipmentHint){
+    openInventory(this.ui,this.state,()=>{this.autosave();if(this.mode==='world')this.showWorld();},hint);
   }
 
   inventory() {
@@ -1077,6 +1090,6 @@ export class Adventure extends Phaser.Scene {
   private shop(shop:ShopId='station') {
     openShop(this.ui,this.state,shop,()=>{this.autosave();this.renderWorldControls();},()=>{
       restoreParty(this.state);this.ui.closeModal();this.showWorld();this.autosave();this.ui.toast('Party HP and focus restored.');
-    },()=>openInventory(this.ui,this.state,()=>{this.showWorld();this.autosave();}));
+    },hint=>hint?this.equipReward(hint):openInventory(this.ui,this.state,()=>{this.showWorld();this.autosave();}));
   }
 }

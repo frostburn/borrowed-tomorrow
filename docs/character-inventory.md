@@ -50,3 +50,18 @@ Each reward enters the shared bag once. Compare and equip it manually in Equipme
 The rewritten Chapter Four keeps the four-person roster and the player's active formation from Chapter Three. Celia joins at the harbor, initially in reserve when three are active. Normal Equipment swaps remain available throughout. No temporary groups or reunion formation is stored; Nell continues to lead. The three-fighter cap is a game mechanic.
 
 Once-only bag rewards are Orrin's return valve (either gate route), Kit's folding sight (survey cart), a rescue coat (sanctuary bridge), Celia's field clasp (hospice chest) and Nell's guardian prism (warden). Skipping the cart/chest never blocks progress. Existing individual HP, focus and loadouts persist into the chapter and its anchor departure. Reserves retain their equipment and share growth/recovery.
+
+## Reward feedback
+
+Tool fittings show their character’s name in rewards, shops and the bag instead
+of copy counts. Shared coats and consumables keep their counts. Reward icons
+name the loot; victory prose focuses on the scene and next objective.
+
+The first new piece of gear that an available recruited companion can equip
+shows **Equip gear to use its bonuses** with **Equip now**. This opens Equipment
+with that companion and item selected; fitting is still manual. Battles offer it inline; shops show a separate post-purchase dialog with
+Equip now and Keep shopping; exploration finds wait until dialogue/cutscenes finish.
+The current save’s `equipmentHintSeen` flag prevents repeats after later loot or
+reloads. Consumables, failed/capped rewards, equipment transfers and gear for
+unavailable/unrecruited characters do not consume the hint. Loading a bag alone
+does not trigger it. Workshop storage stays separate.

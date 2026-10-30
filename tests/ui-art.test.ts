@@ -32,7 +32,7 @@ it('registers small self-contained native icons and full-size dialogue cards',()
 });
 it('announces real gains, including optional finds and medicines, without treating equipment transfers as loot',()=>{
  const s=newGame(),before=resourceSnapshot(s);receiveItem(s.inventory,'work-coat');s.coins+=24;s.bandages+=2;s.inventory.bag['focus-tonic']=1;
- expect(resourceGains(before,s)).toEqual(expect.arrayContaining([{icon:'marks',name:'marks',quantity:24},{icon:'coat',name:'Reinforced work coat',quantity:1},{icon:'bandage',name:'Bandage',quantity:2},{icon:'tonic',name:'Focus tonic',quantity:1}]));
+ expect(resourceGains(before,s)).toEqual(expect.arrayContaining([{icon:'marks',name:'marks',quantity:24},{icon:'coat',name:'Reinforced work coat',quantity:1,item:'work-coat'},{icon:'bandage',name:'Bandage',quantity:2},{icon:'tonic',name:'Focus tonic',quantity:1}]));
  const after=resourceSnapshot(s);equipItem(s.inventory,'nell','work-coat');expect(resourceGains(after,s)).toEqual([]);unequipItem(s.inventory,'nell','coat');expect(resourceGains(after,s)).toEqual([]);
 });
 it('does not report failed purchases, capped rewards, spending or a repeated completed award',()=>{
