@@ -46,9 +46,17 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
    }));
    expect(poses).toContain('emperor-left-step-0');expect(poses).toContain('emperor-left-step-1');
    expect((await inspect(page)).actors.find(a=>a.hero==='emperor')!.x).toBe(876);await capture(page,`emperor-approach-${device}`);
-   await line(page,'Brass shutters close');await page.mouse.move(0,0);
+   await line(page,'His body turns to light');await page.mouse.move(0,0);
    expect((await inspect(page)).actors.some(a=>a.hero==='emperor'&&a.texture==='emperor-reach')).toBe(true);
-   await page.waitForTimeout(800);expect((await inspect(page)).actors.find(a=>a.hero==='emperor')?.x).toBe(876);await capture(page,`emperor-entry-${device}`);
+   await page.waitForTimeout(800);expect((await inspect(page)).actors.find(a=>a.hero==='emperor')?.x).toBe(876);
+   const framing=await page.evaluate(()=>{
+    const {view,actors}=window.borrowedTomorrow.inspect(),actor=actors.find(a=>a.hero==='emperor')!;
+    const world=document.querySelector('.world-input')!.getBoundingClientRect(),dialogue=document.querySelector('.dialogue')!.getBoundingClientRect();
+    return {feet:world.top+(actor.y-view.scrollY)*world.height/view.height,dialogue:dialogue.top};
+   });
+   expect(framing.feet,'the full glowing body stays above the dialogue').toBeLessThan(framing.dialogue-8);
+   await capture(page,`emperor-entry-${device}`);
+   await page.waitForTimeout(600);await capture(page,`emperor-dissolve-${device}`);
    await expect.poll(async()=>(await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
    await line(page,'pipes buckle');await page.mouse.move(0,0);await page.waitForTimeout(1700);
    // Camera shake and its initial tween have ended: parked-cursor pixels must
@@ -66,10 +74,10 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
  });
 }
 test('skip during transfer cleans effects, while reduced motion settles every shot',async({page})=>{
- const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await begin(page);await line(page,'Brass shutters close');
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});await begin(page);await line(page,'His body turns to light');
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('northglass');
  await page.waitForTimeout(2700);expect((await inspect(page)).cinematic).toBeNull();expect((await inspect(page)).state.flags.tomasRescued).toBe(true);
- await page.emulateMedia({reducedMotion:'reduce'});await begin(page);await line(page,'Brass shutters close');expect((await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
+ await page.emulateMedia({reducedMotion:'reduce'});await begin(page);await line(page,'His body turns to light');expect((await inspect(page)).actors.some(a=>a.hero==='emperor')).toBe(false);
  await line(page,'pipes buckle');await page.mouse.move(0,0);expect((await movingPixels(page)).length).toBe(1);
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.emperorMerged).toBe(true);expect(errors).toEqual([]);
 });
@@ -81,7 +89,7 @@ test('missing Emperor poses preserve a chapter departure and retry normally',asy
 });
 test('reload during transfer replays the checkpoint; fast advance and skip during retreat settle safely',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'no-preference'});
- const saved=await begin(page);await line(page,'Brass shutters close');await page.waitForTimeout(500);await page.reload();
+ const saved=await begin(page);await line(page,'His body turns to light');await page.waitForTimeout(500);await page.reload();
  await page.getByRole('button',{name:'Continue',exact:true}).click();
  await expect.poll(async()=>(await inspect(page)).state.location.map).toBe('conduit');
  expect((await inspect(page)).state.flags.emperorMerged).toBeUndefined();expect((await inspect(page)).state.flags.tomasRescued).toBe(true);

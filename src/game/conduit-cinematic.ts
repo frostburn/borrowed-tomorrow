@@ -4,6 +4,7 @@ import type { Shot } from '../content/cinematics';
 type Effect=Extract<NonNullable<Shot['effect']>,'feeds-close'|'vessel-transfer'|'chamber-rupture'>;
 const clamp=(n:number)=>Phaser.Math.Clamp(n,0,1);
 const smooth=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
+let transferSerial=0;
 
 /** Temporary, clock-driven staging; never writes campaign flags or map data. */
 export class ConduitCinematic {
@@ -18,10 +19,13 @@ export class ConduitCinematic {
   private transferred=false;
   private broken=false;
   private entry?:{x:number;y:number};
+  private lightBody?:Phaser.GameObjects.Image;
+  private lightTexture?:Phaser.Textures.CanvasTexture;
+  private bodySource?:HTMLCanvasElement;
   private reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   private closed=false;
   private durations:Record<Effect,number>={'feeds-close':1100,'vessel-transfer':2400,'chamber-rupture':1600};
-  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,overlay:Phaser.GameObjects.Container,private emperor?:Phaser.GameObjects.Image){
+  constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,private overlay:Phaser.GameObjects.Container,private emperor?:Phaser.GameObjects.Image){
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image){
       const key=child.getData('scene-piece')?.key;
       if(key==='scenery-conduit-vessel')this.vessel=child;
@@ -32,25 +36,64 @@ export class ConduitCinematic {
     this.graphics=scene.add.graphics();overlay.add(this.graphics);
     scene.events.on(Phaser.Scenes.Events.UPDATE,this.update,this);
   }
-  get animating(){return !this.closed&&!this.reduced&&!!this.phase&&(this.phase!=='feeds-close'||this.scene.time.now-this.started<this.durations[this.phase]);}
+  get animating(){return !this.closed&&!this.reduced&&!!this.phase&&(this.phase==='chamber-rupture'||this.scene.time.now-this.started<this.durations[this.phase]);}
   play(effect:Effect){
     if(this.closed)return;
     this.finish();this.phase=effect;this.started=this.scene.time.now;
     if(effect==='vessel-transfer'&&this.emperor){
       this.entry={x:this.emperor.x,y:this.emperor.y};this.emperor.setTexture('emperor-reach').setVisible(true);
+      if(!this.reduced)this.prepareLightBody();
     }
     if(effect==='chamber-rupture'&&!this.reduced)this.scene.cameras.main.shake(1000,.003);
     this.update();
   }
   private finish(){
     if(this.phase==='feeds-close')this.feeds=true;
-    if(this.phase==='vessel-transfer'){this.transferred=true;this.emperor?.setAlpha(0).setVisible(false);}
+    if(this.phase==='vessel-transfer'){this.transferred=true;this.emperor?.setAlpha(0).setVisible(false);this.lightBody?.setVisible(false);}
     if(this.phase==='chamber-rupture')this.broken=true;
   }
   private polygon(points:{x:number;y:number}[]){
     const g=this.graphics;g.beginPath();g.moveTo(points[0].x,points[0].y);
     for(const p of points.slice(1))g.lineTo(p.x,p.y);
     g.closePath();g.fillPath();
+  }
+  private prepareLightBody(){
+    if(!this.emperor||this.lightBody)return;
+    // Use the actual reaching pose's alpha, including his fingers and coat.
+    // This temporary emissive mask bypasses the actor's ambient shading.
+    const actor=this.emperor,frame=actor.frame,source=document.createElement('canvas');
+    source.width=frame.cutWidth;source.height=frame.cutHeight;
+    const ctx=source.getContext('2d')!;ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(frame.source.image as CanvasImageSource,frame.cutX,frame.cutY,frame.cutWidth,frame.cutHeight,0,0,source.width,source.height);
+    ctx.globalCompositeOperation='source-in';ctx.fillStyle='#fff2cd';ctx.fillRect(0,0,source.width,source.height);
+    this.bodySource=source;
+    const texture=this.lightTexture=this.scene.textures.createCanvas(`conduit-transfer-${transferSerial++}`,source.width+32,source.height+64)!;
+    texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+    this.lightBody=this.scene.add.image(actor.x,actor.y,texture.key)
+      .setOrigin((actor.displayOriginX+16)/texture.width,(actor.displayOriginY+64)/texture.height)
+      .setScale(actor.scaleX,actor.scaleY).setVisible(false);
+    this.overlay.addAt(this.lightBody,this.overlay.getIndex(this.graphics));
+  }
+  private transfer(p:number){
+    if(!this.entry||!this.emperor)return;
+    const origin=this.entry,light=smooth((p-.12)/.3);
+    // The body becomes luminous in place, then its pieces rise without scaling.
+    if(!this.transferred)this.emperor.setPosition(origin.x,origin.y).setAlpha(1-smooth((p-.2)/.32)).setVisible(p<.54);
+    if(!this.reduced&&p<1&&this.lightBody&&this.lightTexture&&this.bodySource){
+      const source=this.bodySource,ctx=this.lightTexture.context;
+      ctx.clearRect(0,0,this.lightTexture.width,this.lightTexture.height);ctx.imageSmoothingEnabled=false;
+      for(let y=0;y<source.height;y+=6)for(let x=0;x<source.width;x+=6){
+        const seed=(x*7+y*11)%19/19,departure=.48+y/source.height*.12+seed*.08;
+        const rise=smooth((p-departure)/.26),fade=1-smooth((rise-.55)/.45);
+        ctx.globalAlpha=light*fade;
+        const dx=Math.round((seed-.5)*24*rise/2)*2,dy=Math.round((38+seed*20)*rise/2)*2;
+        ctx.drawImage(source,x,y,Math.min(6,source.width-x),Math.min(6,source.height-y),x+16+dx,y+64-dy,Math.min(6,source.width-x),Math.min(6,source.height-y));
+      }
+      ctx.globalAlpha=1;this.lightTexture.refresh();this.lightBody.setVisible(true);
+    }
+    const spill=light*(1-smooth((p-.62)/.3));
+    this.graphics.fillStyle(0xf1dca0,spill*.18).fillEllipse(origin.x,origin.y-1,62,18);
+    this.graphics.fillStyle(0xffefd0,spill*.18).fillEllipse(origin.x,origin.y-1,34,8);
   }
   private update(){
     if(this.closed||!this.phase||!this.vessel||!this.controls)return;
@@ -72,20 +115,7 @@ export class ConduitCinematic {
         for(let i=0;i<4;i++){const t=(i/4+elapsed/1400)%1;g.fillStyle(0xd7e1c6,1-feeds).fillRect(v.x+208+(c.x+48-v.x-208)*t,v.y+298,4,4);}
       }
     }
-    if(entry&&this.entry&&this.emperor){
-      const origin=this.entry,closed=smooth(entry/.35)*(1-smooth((entry-.7)/.3));
-      // The Emperor stays on the transfer deck; no pull into the vessel's body.
-      if(!this.transferred)this.emperor.setPosition(origin.x,origin.y).setAlpha(1).setVisible(entry<.4);
-      const left=origin.x-39,top=origin.y-84;
-      g.lineStyle(4,0xb99d65,.95).strokeRect(left,top,78,91);
-      // Two rigid brass shutters meet, then reopen on the empty transfer frame.
-      const width=39*closed;
-      g.fillStyle(0x637c73,1).fillRect(left,top,width,91).fillRect(left+78-width,top,width,91);
-      g.lineStyle(2,0xd2b47e,1).lineBetween(left+width,top,left+width,top+91).lineBetween(left+78-width,top,left+78-width,top+91);
-      const flash=entry>.35&&entry<.8?Math.sin((entry-.35)/.45*Math.PI):0;
-      g.fillStyle(0xdce9d4,flash*.8).fillRect(left+4,top+4,70,83);
-      g.lineStyle(3,0xdce9d4,flash*.65).lineBetween(v.x+108,v.y+162,origin.x,origin.y-40);
-    }
+    if(this.phase==='vessel-transfer')this.transfer(entry);
 
     if(rupture){
       const t=this.reduced?0:this.scene.time.now/1000,shake=this.reduced?0:Math.sin(t*23)*1.5*rupture;
@@ -109,6 +139,9 @@ export class ConduitCinematic {
     if(this.closed)return;this.closed=true;this.scene.events.off(Phaser.Scenes.Events.UPDATE,this.update,this);
     this.scene.cameras.main.shakeEffect.reset();
     for(const {image,x,y,alpha} of this.originals)if(image.active)image.setPosition(x,y).setAlpha(alpha);
+    this.lightBody?.destroy();
+    if(this.lightTexture)this.scene.textures.remove(this.lightTexture.key);
+    this.bodySource=undefined;
     this.graphics.destroy();
   }
 }
