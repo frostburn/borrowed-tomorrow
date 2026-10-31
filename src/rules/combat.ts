@@ -108,6 +108,9 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
 }
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
+// A team-spent main action still permits an unused extra action.
+export const bonusAvailable=(u:Unit)=>!u.bonusUsed&&u.abilities.some(id=>abilityFor(u,id).bonus&&u.focus>=abilityFor(u,id).cost);
+const canStillMove=(u:Unit)=>!u.moved&&!u.anchored&&u.movement>0;
 export const movementOnly=(b:Battle,u:Unit)=>u.teamSpentRound===b.round;
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
 function reviveTarget(b:Battle,u:Unit,id:AbilityId,aim:Hex){
@@ -153,7 +156,7 @@ export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
 export const battleItemCount = (b: Battle, id: ConsumableId) => id === 'bandage' ? b.bandages : b.supplies[id];
 export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   const a = abilityFor(u,id,teamStatus(b,u,id).partner);
-  if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id || movementOnly(b,u)) return false;
+  if (!inside(aim) || !u.abilities.includes(id) || u.focus < a.cost || u.hp<=0 || b.result || active(b)?.id !== u.id || movementOnly(b,u)&&!a.bonus) return false;
   if (a.bonus && u.bonusUsed) return false;
   if(a.team&&!teamStatus(b,u,id).partner)return false;
   if (a.item && battleItemCount(b, a.item) <= 0) return false;
@@ -280,7 +283,7 @@ export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
   u.hex = { ...destination }; u.moved = true;
   checkGrounding(b);
   log(b, `${u.name} moves ${visit.path.length} hexes (${visit.cost} movement).`);
-  if(movementOnly(b,u))finishTurn(b);
+  if(movementOnly(b,u)&&!bonusAvailable(u))finishTurn(b);
   return visit.path;
 }
 export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?:(defenderId:string)=>void): boolean {
@@ -293,7 +296,7 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   else if (a.item) b.supplies[a.item]--;
   if(partner){
     partner.focus-=a.team!.cost;partner.defending=false;u.teamSpentRound=partner.teamSpentRound=b.round;
-    if(partner.moved||partner.anchored||partner.movement<=0){delete partner.pinned;b.queue=b.queue.filter(id=>id!==partner.id);}
+    if(!canStillMove(partner)&&!bonusAvailable(partner)){delete partner.pinned;b.queue=b.queue.filter(id=>id!==partner.id);}
     for(const v of b.units)if(v.tauntedBy===partner.id)delete v.tauntedBy;
     log(b,`${u.name} + ${partner.name}: ${a.name} consumes both actions and ${a.team!.cost} focus each.`);
   }
@@ -337,8 +340,11 @@ export function cast(b: Battle, u: Unit, id: AbilityId, aim: Hex, onRetaliation?
   if (a.bonus) {
     u.bonusUsed = true;
     checkGrounding(b);
-    ended(b);
-  } else finishTurn(b);
+    if(!ended(b)&&movementOnly(b,u)&&!canStillMove(u))finishTurn(b);
+  } else if(partner&&bonusAvailable(u)){
+    // The team spent the main action, not Petra's once-per-turn Bash.
+    checkGrounding(b);ended(b);
+  }else finishTurn(b);
   return true;
 }
 export function defend(b: Battle): boolean {
@@ -346,10 +352,10 @@ export function defend(b: Battle): boolean {
   u.defending = true; u.focus = Math.min(focusCapacity(u), u.focus + 1);
   log(b, `${u.name} defends: 40% less damage until their next turn.`); finishTurn(b); return true;
 }
-/** Finish an assisting fighter's movement without granting Defend or extra focus. */
+/** End remaining team allowances without granting Defend or extra focus. */
 export function endTurn(b:Battle):boolean{
   const u=active(b);if(!u||b.result||!movementOnly(b,u))return false;
-  log(b,`${u.name} ends their remaining movement.`);finishTurn(b);return true;
+  log(b,`${u.name} ends their remaining actions.`);finishTurn(b);return true;
 }
 export function wait(b: Battle): boolean {
   const u = active(b); if (!u || u.waited || u.moved || u.bonusUsed || b.result || movementOnly(b,u)) return false;
