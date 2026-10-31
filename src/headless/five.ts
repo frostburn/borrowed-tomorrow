@@ -23,14 +23,15 @@ function supplies(s:CampaignSession,id:string){
 function localImprovement(s:CampaignSession,o:FiveOptions,id:string,object:string){
  const i=IMPROVEMENTS.find(i=>i.id===id)!;
  if(!o.improvements||s.agent.spending!=='prepared'||improvementProblem(s.state,i)||s.state.coins-i.cost<80)return;
- s.visit(object);s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);s.choose('Leave');
+ s.visit(object);s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);
 }
 function training(s:CampaignSession,o:FiveOptions){
  if(!o.improvements||s.agent.spending!=='prepared'||!improved(s.state,'orrin-counterbalance'))return;
  for(const id of ['hp-celia','focus-celia']){
   const i=IMPROVEMENTS.find(i=>i.id===id)!;
   if(improvementProblem(s.state,i)||s.state.coins-i.cost<80)continue;
-  s.visit('ship-supply','Training · permanent improvements');s.choose('Train Celia');s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);s.choose('Choose another character');s.choose('Leave training');
+  s.visit('ship-supply','Training · permanent improvements');s.choose('Train Celia');s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);
+  if(s.dialogueOpen){s.choose('Choose another character');s.choose('Leave training');}
  }
 }
 function hammerplain(s:CampaignSession,o:FiveOptions){

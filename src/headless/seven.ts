@@ -30,7 +30,7 @@ function training(s:CampaignSession,o:SevenOptions,object:string){
   s.visit(object,'Training · permanent improvements');
   s.choose(i.service==='training'?`Train ${CHARACTERS[i.hero].name}`:'Specialist improvements');
   s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);
-  s.choose(i.service==='training'?'Choose another character':'Back to training');s.choose('Leave training');
+  if(s.dialogueOpen){s.choose(i.service==='training'?'Choose another character':'Back to training');s.choose('Leave training');}
  }
 }
 export function playSeven(s:CampaignSession,o:SevenOptions=defaultSeven){

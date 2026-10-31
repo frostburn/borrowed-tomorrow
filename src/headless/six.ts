@@ -27,6 +27,7 @@ function improvement(s:CampaignSession,o:SixOptions,id:string,object:string,choi
  if(i.service==='training')s.choose('Train Celia');
  if(crew)s.choose('Specialist improvements');
  s.choose(`${i.name} · ${i.cost} marks`);s.choose(`Confirm · ${i.cost} marks`);
+ if(!s.dialogueOpen)return;
  if(crew)s.choose('Back to training');
  if(i.service==='training')s.choose('Choose another character');
  s.choose(i.service==='training'||crew?'Leave training':'Leave');

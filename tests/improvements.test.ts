@@ -49,6 +49,31 @@ it('confirms exact prices, cancels freely, shows completed purchases and keeps f
  expect(j.read().choices?.find(c=>c.label==='Train Celia')?.disabled).toBeFalsy();
  s.party=s.party.filter(p=>p.id!=='kit');offerImprovements(j.h,'training');expect(j.read().choices?.some(c=>c.label.includes('Kit'))).toBe(false);
 });
+it('labels the balance and closes after the last personal course, while cancellation keeps training open',()=>{
+ const s=ready(),j=host(s);s.coins=750;
+ offerImprovements(j.h,'training');j.choose('Train Orrin');
+ expect(j.read().lines.find(l=>l.who==='Permanent improvements')?.text).toMatch(/^You have 750 marks\./);
+ j.choose('Endurance training · 300 marks');j.choose('Confirm · 300 marks');
+ expect(j.read()).toBeDefined();expect(s.coins).toBe(450);
+ j.choose('Focus training · 450 marks');j.choose('Cancel improvement');
+ expect(j.read()).toBeDefined();expect(s.coins).toBe(450);expect(j.saves()).toBe(1);
+ j.choose('Focus training · 450 marks');j.choose('Confirm · 450 marks');
+ expect(j.read()).toBeUndefined();expect(s.coins).toBe(0);expect(j.saves()).toBe(2);
+ offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBe(true);
+});
+it('keeps unlearned courses visible when funds run out or a confirmation fails',()=>{
+ const s=ready(),j=host(s);s.coins=300;
+ offerImprovements(j.h,'training');j.choose('Train Celia');j.choose('Endurance training · 300 marks');j.choose('Confirm · 300 marks');
+ expect(j.read().choices?.find(c=>c.label==='Focus training · 450 marks · Need 450 more marks')?.disabled).toBe(true);
+ s.coins=450;offerImprovements(j.h,'training','celia');j.choose('Focus training · 450 marks');s.coins=0;j.choose('Confirm · 450 marks');
+ expect(j.read()).toBeDefined();expect(s.flags['improved-focus-celia']).toBeUndefined();expect(j.saves()).toBe(1);
+});
+it('dismisses a local specialist after successful training without hiding the completed record on a later visit',()=>{
+ const s=ready(),j=host(s);s.location.map='hammerplain';s.coins=500;
+ offerImprovements(j.h,'hammerplain');j.choose('Counterbalanced lance · 500 marks');j.choose('Confirm · 500 marks');
+ expect(j.read()).toBeUndefined();expect(s.coins).toBe(0);expect(s.flags['improved-orrin-counterbalance']).toBe(true);expect(j.saves()).toBe(1);
+ offerImprovements(j.h,'hammerplain');expect(j.read().choices?.find(c=>c.label==='Counterbalanced lance · Completed')?.disabled).toBe(true);
+});
 it('keeps earned anchor specialties available at every travelling training counter',()=>{
  for(const map of ['airship','outermooring','capitalquay','hollowsill','lastrefuge']as const){
   const s=ready();s.location.map=map;const hp=structuredClone(s.party),skills=structuredClone(s.skills);
@@ -71,10 +96,11 @@ it('crew specialties confirm and persist once without remote trainer dialogue or
  j.choose('Counterbalanced lance · 500 marks');expect(s.coins).toBe(1350);j.choose('Cancel improvement');expect(s.coins).toBe(1350);
  for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450]]as const){
   j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
-  expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+  if(name==='Long-range focus calibration')expect(j.read()).toBeUndefined();
+  else expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
  }
  expect(j.saves()).toBe(3);expect(s.coins).toBe(0);expect(s.party).toEqual(before);expect(s.flags.nellRecovered).toBeFalsy();expect(decodeSave(JSON.stringify(s))).toEqual(s);
- j.choose('Back to training');expect(j.read().choices?.find(c=>c.label==='Train Nell')?.disabled).toBe(true);
+ offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Nell')?.disabled).toBe(true);
  const local=ready();local.location.map='hammerplain';purchase(local,'orrin-counterbalance');local.location.map='airship';
  const k=host(local);offerImprovements(k.h,'training');k.choose('Specialist improvements');expect(k.read().choices?.find(c=>c.label==='Counterbalanced lance · Completed')?.disabled).toBe(true);
  local.flags.dawnwatchComplete=false;local.party=local.party.filter(p=>p.id!=='celia');offerImprovements(k.h,'training');k.choose('Specialist improvements');
@@ -162,7 +188,8 @@ it('the Chapter Seven mooring and refuge retain all earned specialties with real
   j.choose('River courier training · 450 marks');expect(s.coins).toBe(2200);j.choose('Cancel improvement');expect(s.coins).toBe(2200);
   for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450],['River courier training',450],['Reinforced lantern housing',400]]as const){
    j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
-   expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+   if(name==='Reinforced lantern housing')expect(j.read()).toBeUndefined();
+   else expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
   }
   expect(j.saves()).toBe(5);expect(s.coins).toBe(0);expect(s.party).toEqual(hp);expect(s.skills).toEqual(skills);expect(decodeSave(JSON.stringify(s))).toEqual(s);
   s.location.map='riverhaven';expect(buyImprovement(s,'kit-footing')).toBe(false);s.location.map='capitalquay';expect(buyImprovement(s,'nell-housing')).toBe(false);
