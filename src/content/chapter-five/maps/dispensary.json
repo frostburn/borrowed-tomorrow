@@ -864,7 +864,7 @@
           "name": "nell",
           "point": true,
           "x": 708,
-          "y": 684,
+          "y": 732,
           "properties": [],
           "id": 12
         },
@@ -872,31 +872,31 @@
           "name": "celia",
           "point": true,
           "x": 756,
-          "y": 636,
+          "y": 708,
           "properties": [],
           "id": 13
         },
         {
           "name": "orrin",
           "point": true,
-          "x": 636,
-          "y": 660,
+          "x": 660,
+          "y": 708,
           "properties": [],
           "id": 14
         },
         {
           "name": "kit",
           "point": true,
-          "x": 660,
-          "y": 732,
+          "x": 732,
+          "y": 756,
           "properties": [],
           "id": 15
         },
         {
           "name": "petra",
           "point": true,
-          "x": 732,
-          "y": 732,
+          "x": 828,
+          "y": 756,
           "properties": [],
           "id": 16
         },
@@ -904,7 +904,7 @@
           "name": "sera",
           "point": true,
           "x": 804,
-          "y": 612,
+          "y": 684,
           "properties": [],
           "id": 17
         }

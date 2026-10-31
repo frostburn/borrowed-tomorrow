@@ -1,7 +1,8 @@
 import { STAGED as line,type Dialogue } from '../dialogue';
 import { stage,arrival } from '../maps';
 import type { MapId } from '../../rules/state';
-const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines});
+import type { Cinematic } from '../cinematics';
+const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines'],dialoguePosition?:Cinematic['dialoguePosition']):Dialogue=>({scene:{id,title,actors:stage(map,id),...(dialoguePosition?{dialoguePosition}:{})},lines});
 export const hospital=()=>scene('windmere','five-wind-arrival','The garden walk',[
  line('Windmere','A man lets go of the ward rail. His sister reaches for his elbow; he shakes his head and takes another step.',{focus:{x:37,y:25},cut:true}),
  line('Teren','Wait. Let me get to the bench myself.',{duration:1400,actors:{teren:{to:arrival('windmere','patient-step')}}}),
@@ -21,12 +22,12 @@ export const hospital=()=>scene('windmere','five-wind-arrival','The garden walk'
  line('Celia','I know. Sera, show me what you have.'),
 ]);
 export const dispensary=()=>scene('dispensary','five-wind-dispensary','The stored ward',[
- line('Sera','Pressure beds, breathing bellows, clean linen. All put away when the mirrored ward opened.',{focus:{x:33,y:24},cut:true}),
+ line('Sera','Pressure beds, breathing bellows, clean linen. All put away when the mirrored ward opened.',{focus:{x:31,y:29},cut:true}),
  line('Orrin','The water wheel still turns. Those machines have the brake locked.'),
  line('Kit','Dena’s volunteers are at the landing with Bram’s medicine crates. I gave them the ward entrance.'),
  line('Celia','Good. We’ll need hands as much as medicine.'),
  line('Sera','Clear the brake, then turn the wheel on the eastern walk. We can lift the whole store together.'),
-]);
+],'top');
 export const lift=()=>scene('dispensary','five-wind-lift','Up from the dispensary',[
  line('Orrin','Sera, hold the latch. I’ll ease the wheel back.',{focus:{x:42,y:24},cut:true}),
  line('Sera','Ready below? Keep your hands inside the rail.'),
