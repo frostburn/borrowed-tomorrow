@@ -47,9 +47,10 @@ export function teamStatus(b:Battle,u:Unit,id:AbilityId,future=false):{partner?:
 export function ricochetHexes(b:Battle,u:Unit,aim:Hex,id:AbilityId='ricochet'):Hex[]{
  const reach=abilityFor(u,id,teamStatus(b,u,id).partner).bounceRange??3;
  const first=b.units.find(v=>v.hp>0&&v.side!==u.side&&occupiedHexes(v).some(h=>equal(h,aim)));
- if(!first)return [];
- const choices=b.units.filter(v=>v.hp>0&&v.side!==u.side&&v.id!==first.id).flatMap(v=>{
-  const links=occupiedHexes(first).flatMap(a=>occupiedHexes(v).filter(z=>distance(a,z)<=reach&&visible(a,z,b.obstacles)).map(z=>({hex:z,d:distance(a,z)}))).sort((a,z)=>a.d-z.d||a.hex.q-z.hex.q||a.hex.r-z.hex.r);
+ const prop=fixtureAt(b,aim);if(!first&&!prop)return [];
+ const origin=first?occupiedHexes(first):[prop!.hex];
+ const choices=b.units.filter(v=>v.hp>0&&v.side!==u.side&&v.id!==first?.id).flatMap(v=>{
+  const links=origin.flatMap(a=>occupiedHexes(v).filter(z=>distance(a,z)<=reach&&visible(a,z,b.obstacles)).map(z=>({hex:z,d:distance(a,z)}))).sort((a,z)=>a.d-z.d||a.hex.q-z.hex.q||a.hex.r-z.hex.r);
   return links[0]?[{id:v.id,...links[0]}]:[];
  }).sort((a,z)=>a.d-z.d||a.id.localeCompare(z.id));
  return [aim,...choices[0]?[choices[0].hex]:[]];

@@ -53,8 +53,8 @@ export function lanternVolley(aim:Hex,rank:number):Hex[]{
  return offsets.map(h=>add(aim,h)).filter(inside);
 }
 
-/** Aim snaps to one of the six hex axes; a ray stops at the first obstacle. */
-export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>): Hex[] {
+/** Aim snaps to one of six axes. A hittable blocker is included as the final contact. */
+export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>, hitBlocker?:(hex:Hex)=>boolean): Hex[] {
   if (equal(from, aim)) return [];
   const dq = aim.q - from.q, dr = aim.r - from.r;
   const direction = [...DIRECTIONS].sort((a, b) =>
@@ -64,7 +64,8 @@ export function ray(from: Hex, aim: Hex, length: number, obstacles: Set<string>)
   const result: Hex[] = [];
   for (let n = 1; n <= length; n++) {
     const h = add(from, scale(direction, n));
-    if (!inside(h) || obstacles.has(key(h))) break;
+    if (!inside(h)) break;
+    if(obstacles.has(key(h))){if(hitBlocker?.(h))result.push(h);break;}
     result.push(h);
   }
   return result;
