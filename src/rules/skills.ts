@@ -30,7 +30,7 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
  kit:[
   skill('quickshot',[1,4,10],[{power:10},{power:13,pierce:1,description:'A quick shot within 5 hexes. Ignores 1 armor. No focus cost.'},{power:17,pierce:2,description:'A quick shot within 5 hexes. Ignores 2 armor. No focus cost.'}]),
   skill('feint',[2,6,12],[{}, {cost:1,description:'Dazzle one enemy for its next three attacks. Range 4. 1 focus.'},{cost:1,range:6,description:'Dazzle one enemy for its next three attacks. Range 6. 1 focus.'}]),
-  skill('ricochet',[5,9,14],[{power:9,range:4,bounceRange:2,description:'Hit one enemy within 4 hexes, then another within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit one enemy within 6 hexes, then another within 4 of it. 3 focus.'}]),
+  skill('ricochet',[5,9,14],[{power:9,range:4,bounceRange:2,description:'Hit an enemy or battlefield object within 4 hexes; may bounce to the nearest visible enemy within 2 of it. 3 focus.'},{power:14,range:5,bounceRange:3},{power:20,range:6,bounceRange:4,description:'Hit an enemy or battlefield object within 6 hexes; may bounce to the nearest visible enemy within 4 of it. 3 focus.'}]),
   skill('pin',[7,11,15],[{power:11},{power:17},{power:24}]),
  ],
  celia:[

@@ -49,7 +49,7 @@ for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,
      orrin.hex=offset(kind==='blast'?5:2,kind==='blast'?3:5);orrin.retaliated=true;
      b.queue=[actor.id,nell.id,orrin.id];
      const copy=structuredClone(b);let attack:Attack|undefined;
-     enemyTurn(copy,undefined,(ability,aim)=>{attack={actorId:actor.id,ability,cells:shape(copy,copy.units.find(u=>u.id===actor.id)!,ability,aim),impact:false};});
+     enemyTurn(copy,undefined,(ability,aim,affected)=>{attack={actorId:actor.id,ability,cells:affected??shape(copy,copy.units.find(u=>u.id===actor.id)!,ability,aim),impact:false};});
      const scene=(window as unknown as {attackScene:InstanceType<typeof Adventure>}).attackScene;
      scene.previewBattle(b,()=>{});return attack!;
     },kind);

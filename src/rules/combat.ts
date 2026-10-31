@@ -135,14 +135,16 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   if (a.effect === 'taunt') return alive(b).filter(v => v.side !== u.side).flatMap(v => occupiedHexes(v));
   if (a.shape === 'blast') return blast(aim);
   if (a.shape === 'quad') return quad(aim);
-  if (a.shape === 'line') return ray(occupiedHexes(u).sort((x,y)=>distance(x,aim)-distance(y,aim))[0], aim, a.range, b.obstacles);
+  if (a.shape === 'line') return ray(occupiedHexes(u).sort((x,y)=>distance(x,aim)-distance(y,aim))[0], aim, a.range, b.obstacles,h=>damagingAbility(id)&&!!fixtureAt(b,h));
   return [aim];
 }
 export function targets(b: Battle, u: Unit, id: AbilityId, aim: Hex): Unit[] {
   const a = abilityFor(u,id),hexes=shape(b,u,id,aim),affected=new Set(hexes.map(key));
   if(id==='revive'){const fallen=reviveTarget(b,u,id,aim);return fallen?[fallen]:[];}
   const friendly = a.heal || a.effect === 'guard' || a.effect === 'focus' || a.effect==='rally';
-  const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken')||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||a.item||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
+  // A shot aimed at a valve must not acquire an ally sharing its passable hex.
+  const singleEnemy=a.shape==='single'&&!friendly;
+  const living=alive(b).filter(v => (!(a.enemyOnly||a.effect==='weaken'||singleEnemy)||v.side!==u.side)&&(!(a.shape==='axis')||v.id!==u.id&&v.id!==teamStatus(b,u,id).partner?.id)&&occupiedHexes(v).some(h=>affected.has(key(h))) && (!friendly || v.side === u.side)&&(a.effect!=='focus'||a.item||v.id!==u.id) && (a.shape!=='pattern'||v.side!==u.side) && (!(a.shape === 'blast' && a.range === 0) || friendly || v.id !== u.id)).sort((v,w)=>a.shape==='bounce'?hexes.findIndex(h=>occupiedHexes(v).some(p=>equal(h,p)))-hexes.findIndex(h=>occupiedHexes(w).some(p=>equal(h,p))):0);
   const fallen=a.heal?reviveTarget(b,u,id,aim):undefined;return fallen?[...living,fallen]:living;
 }
 export function tauntTarget(b: Battle, u: Unit): Unit | undefined {
@@ -164,8 +166,11 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (a.shape === 'line'||a.shape==='diagonal') return !occupiedHexes(u).some(h=>equal(h,aim)) && occupiedHexes(u).some(h=>distance(h,aim)<=a.range) && shape(b, u, id, aim).length > 0;
   if(id==='revive')return !!reviveTarget(b,u,id,aim);
   if(a.shape==='bounce'&&!ricochetHexes(b,u,aim,id).length)return false;
-  if (a.shape==='single'&&damagingAbility(id)&&fixtureAt(b,aim))return a.unrestricted||distance(u.hex,aim)<=a.range&&visible(u.hex,aim,new Set([...b.obstacles].filter(h=>h!==key(aim))));
-  if (!a.unrestricted && (b.obstacles.has(key(aim)) || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,b.obstacles)))) return false;
+  // A damageable prop is a valid impact point, not cover in front of itself.
+  // Other intervening obstacles still block the shot or blast's aim.
+  const prop=damagingAbility(id)?fixtureAt(b,aim):undefined;
+  const sight=prop?new Set([...b.obstacles].filter(h=>h!==key(aim))):b.obstacles;
+  if (!a.unrestricted && (b.obstacles.has(key(aim))&&!prop || !occupiedHexes(u).some(h=>distance(h,aim)<=a.range&&visible(h,aim,sight)))) return false;
   const v = unitAt(b, aim);
   if(a.effect==='weaken')return targets(b,u,id,aim).some(t=>!t.dazzledAttacks);
   if (a.heal) {
@@ -176,8 +181,9 @@ export function legalAim(b: Battle, u: Unit, id: AbilityId, aim: Hex): boolean {
   if (a.effect==='focus') return targets(b,u,id,aim).some(v=>v.focus<focusCapacity(v));
   if(a.effect==='shove'&&a.shape==='blast')return targets(b,u,id,aim).length>0;
   if (a.shape === 'single') {
-    if (!v || v.side === u.side) return false;
     if (id === 'peck' && alive(b).some(t => t.side !== u.side && bodyDistance(t, u) === 1)) return false;
+    if(prop)return true;
+    if (!v || v.side === u.side) return false;
   }
   return true;
 }
@@ -354,7 +360,7 @@ export function wait(b: Battle): boolean {
 }
 
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
-export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
+export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex,affected?:Hex[])=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   if(movementOnly(b,u)){approachEnemy(b,u);if(active(b)?.id===u.id)endTurn(b);return;}
   if(isFlagshipPart(u)){
@@ -430,8 +436,11 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   u.hex = original;
   if (best) {
     if (!equal(original, best.pos)) move(b, u, best.pos);
+    // Resolution can destroy cover, move targets or advance the round. Keep
+    // the fired footprint for presentation rather than rebuilding it afterward.
+    const affected=shape(b,u,best.ability,best.aim).map(h=>({...h}));
     cast(b, u, best.ability, best.aim, onRetaliation);
-    onAction?.(best.ability,{...best.aim});
+    onAction?.(best.ability,{...best.aim},affected);
     return best.ability;
   } else {
     approachEnemy(b,u);
