@@ -1,14 +1,14 @@
 import {fireBossDirect} from './support/boss';
 import { expect,it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { chapterSixStart } from '../src/dev/canonical-saves';
+import { chapterSixStart,chapterSixRecoveredStart } from '../src/dev/canonical-saves';
 import { beginChapterSix,SIXTH_CHAPTER,remember,restoreParty,level } from '../src/rules/state';
 import { decodeSave } from '../src/rules/save';
 import { equipItem,ownedCopies } from '../src/rules/inventory';
 import { resumeChapterSix,interactChapterSix } from '../src/content/chapter-six/interactions';
 import * as scenes from '../src/content/chapter-six/scenes';
 import { CHAPTER_SIX_MAPS,CHAPTER_SIX_BATTLES } from '../src/content/chapter-six/maps';
-import { arrival,MAPS,walkable,worldPath,visiblePeople } from '../src/content/maps';
+import { arrival,MAPS,walkable,worldPath,visiblePeople,visibleObjects } from '../src/content/maps';
 import { sceneAssets } from '../src/content/scene-art';
 import type { StoryHost } from '../src/content/story-host';
 import type { Dialogue } from '../src/content/dialogue';
@@ -20,6 +20,7 @@ import { ARRANGEMENTS,scoreBar,scoreLength,scorePosition,scoreMeter,type MusicMo
 import { pitchSteps,isBass,isPercussion } from '../src/game/tuning';
 import { hasExpression,hasRubato,performanceBar } from '../src/game/score-performance';
 import { desertCheckpoint } from './support/desert';
+import {northCheckpoint} from './support/north';
 function visit(s=chapterSixStart()){
  let read:Dialogue|undefined,battle='';
  const validate=()=>expect(decodeSave(JSON.stringify(s))).toEqual(s);
@@ -39,6 +40,21 @@ it('records the foreign routes and medical referral together before saving the c
  resumeChapterSix(v.h);v.flush();
  expect(snapshots.filter(s=>s.flags.sixRoutesKnown)).toHaveLength(1);
  for(const s of snapshots.filter(s=>s.flags.sixRoutesKnown)){expect(s.flags.jungleLeadKnown).toBe(true);expect(s.journal).toEqual(expect.arrayContaining(['sixRoutesKnown','jungleLeadKnown']));}
+});
+it('keeps the signal desk report separate from Nell’s berth and recovered crew-table conversation',()=>{
+ for(const state of [chapterSixStart(),chapterSixRecoveredStart(),northCheckpoint('northReported'),desertCheckpoint('desertReported')]){
+  const v=visit(state);state.location=arrival('outermooring','namar');resumeChapterSix(v.h);v.flush();
+  const objects=visibleObjects(MAPS.outermooring,state),nell=objects.filter(o=>o.id==='six-nell'||o.id==='six-nell-ready');
+  expect(nell).toHaveLength(1);expect(nell[0].id).toBe(state.flags.nellRecovered?'six-nell-ready':'six-nell');
+  expect(objects.some(o=>o.id==='six-report')).toBe(true);
+  const before=structuredClone(state);
+  v.act('six-report');expect(v.read().scene).toBeUndefined();expect(v.read().lines.map(l=>l.who)).toEqual(['Celia']);
+  expect(v.read().lines.some(l=>l.text==='Is the gate open?')).toBe(false);
+  if(state.flags.northReported&&!state.flags.desertReported)expect(v.read().lines[0].text).toContain('Skeld’s medics');
+  v.act(nell[0].id);expect(v.read().lines[0].who).toBe('Nell');
+  if(!state.flags.nellRecovered&&!state.flags.northReported&&!state.flags.desertReported)expect(v.read().lines[0].text).toBe('Is the gate open?');
+  expect(state).toEqual(before);
+ }
 });
 it('the palace bar blocks its actual doorway during the seizure and reopens after the postal escape',()=>{
  const map=MAPS.sunpalace;
