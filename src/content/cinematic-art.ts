@@ -10,6 +10,6 @@ const actorCinematicAssets=(map:MapId)=>map==='conduit'
   : map==='sunpalace'?COURT_FOUNTAIN_FRAMES.map((key,i)=>({key,url:`art/vector/chapter-six/palace-fountain${i?'-'+i:''}.svg`}))
   : map==='namar'?NAMAR_CLOCK_FRAMES.map((key,i)=>({key,url:`art/vector/chapter-six/namar-clock${i?'-'+i:''}.svg`}))
   : map==='seaholiday'?COMPANION_POSES.map(key=>({key,url:`art/vector/${key}.svg`}))
-  : (map==='outermooring'||map==='rainhouse')?(map==='outermooring'?['nell-ill','nell-bed']:[ 'nell-ill','nell-faint','kit-carry','petra-carry',...COMPANION_POSES]).map(key=>({key,url:`art/vector/${key}.svg`})) : map==='airship'||map==='flagship'?['alban-command','nell-faint','nell-ill'].map(key=>({key,url:`art/vector/${key}.svg`})) : [];
+  : (map==='outermooring'||map==='rainhouse')?(map==='outermooring'?['nell-ill','nell-bed']:[ 'nell-ill','nell-faint','nell-recovered','kit-carry','petra-carry',...COMPANION_POSES]).map(key=>({key,url:`art/vector/${key}.svg`})) : map==='airship'||map==='flagship'?['alban-command','nell-faint','nell-ill'].map(key=>({key,url:`art/vector/${key}.svg`})) : [];
 
 export const cinematicAssets=(map:MapId)=>[...actorCinematicAssets(map),...mechanismAssets(map)];

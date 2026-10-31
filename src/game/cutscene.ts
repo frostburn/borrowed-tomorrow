@@ -111,7 +111,7 @@ export class Cutscene {
       if(direction.fallen){actor.setOrigin(.5,.5).setAngle(90).setY(actor.y-10);}
       if(direction.to){const p=pixel(direction.to),hero=CHARACTERS[id as keyof typeof CHARACTERS].sprite;actor.setData('destination',p);
         if(!duration){actor.setPosition(p.x,p.y).setData('destination',undefined);continue;}
-        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill'&&actor.texture.key!=='nell-bed'&&!actor.texture.key.endsWith('-carry'))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
+        if(walkingHero(hero)&&!actor.texture.key.startsWith('nell-f')&&actor.texture.key!=='nell-ill'&&actor.texture.key!=='nell-bed'&&actor.texture.key!=='nell-recovered'&&!actor.texture.key.endsWith('-carry'))this.motion.walk(actor,direction.face??facingAsset(hero,p.x-actor.x,p.y-actor.y),duration);
         const emperor=hero==='emperor'&&this.scene.textures.exists(EMPEROR_WALK[0]),start={x:actor.x,y:actor.y};
         if(emperor)actor.setData('cinematic-idle','emperor-left');
         this.scene.tweens.add({targets:actor,x:p.x,y:p.y,duration,ease:'Sine.easeInOut',

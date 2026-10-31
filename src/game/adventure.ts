@@ -1,3 +1,4 @@
+import {illnessDialogue,nellIsPale} from '../content/illness-appearance';
 import {basicAction,basicStrike} from './battle-basic';
 import {openSoundtrack} from './soundtrack-entry';
 import {showCredits} from './credits';
@@ -396,6 +397,7 @@ export class Adventure extends Phaser.Scene {
     this.renderWorldControls();
   }
   private talk(dialogue: Dialogue) {
+    dialogue=illnessDialogue(dialogue,nellIsPale(this.state.flags));
     this.path = []; this.pendingObject = undefined;
     this.cinematic?.close();
     const director=dialogue.scene&&this.layer?new Cutscene(this,this.layer,dialogue.scene,this.audio,this.motion,this.lighting):undefined;

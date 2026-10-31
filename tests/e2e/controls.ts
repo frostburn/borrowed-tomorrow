@@ -7,6 +7,7 @@ import { expect, type Page } from '@playwright/test';
 import { active, damage, legalAim, movement, movementOnly, targets, type Battle, type AbilityId } from '../../src/rules/combat';
 import { cells, distance, equal, key as keyFor, toPixel, type Hex } from '../../src/rules/hex';
 import { speakerPortrait } from '../../src/content/characters';
+import {illnessPortrait,nellIsPale,nellPoseIsPale} from '../../src/content/illness-appearance';
 import { MAPS } from '../../src/content/maps';
 import { BATTLE_MAPS } from '../../src/content/battle-maps';
 import { layerVisible, properties, TILESET, tileProperties, mapTilePages } from '../../src/content/tilemaps';
@@ -30,7 +31,9 @@ export async function clickHex(page: Page, h: Hex) {
 export async function dialogue(page: Page) {
   await expect(page.locator('.dialogue')).toBeVisible({timeout:15000});
   while(await page.locator('.dialogue').isVisible()){
-    const who=await page.locator('.dialogue h2').textContent(),portrait=who?speakerPortrait(who):undefined;
+    const who=await page.locator('.dialogue h2').textContent(),snapshot=await inspect(page);
+    const pale=nellPoseIsPale(snapshot.actors.find(a=>a.hero==='nell')?.texture,nellIsPale(snapshot.state.flags));
+    const portrait=illnessPortrait(who?speakerPortrait(who):undefined,pale);
     if(portrait){
       const image=page.locator('.dialogue-portrait img');
       const expression=(await image.getAttribute('data-expression')??'neutral')as PortraitExpression;
