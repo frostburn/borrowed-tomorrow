@@ -10,7 +10,7 @@ source=(OUT/'nell.svg').read_text()
 source=re.sub(r'^<svg[^>]*>|</svg>\s*$','',source)
 # Change exposed skin only. Keep her cap, braids, clothes and lantern intact.
 healthy=source
-source=source.replace('#d49c70','#ded8bf')
+source=source.replace('#d49c70','#d8ae8d')
 # Preserve the accepted actor's 2:1 SVG proportions before reclining it.
 body='<g transform="translate(8 74) rotate(-90) scale(.72)"><g transform="scale(2 1)">'+source+'</g></g>'
 (OUT/'nell-faint.svg').write_text(svg(80,80,body))
@@ -24,13 +24,18 @@ recovered=body.replace(source,healthy)
 (OUT/'nell-recovered.svg').write_text(svg(80,80,pillow+recovered+blanket))
 
 # Derive illness variants without rewriting any editable portrait original.
-skin={'#b58261':'#bfbea6','#96674f':'#999983','#c99571':'#d4cfb8',
-      '#a7745a':'#aaa993','#e1b68c':'#e8e3ce','#ce9872':'#d2ceb5',
-      '#b17b5c':'#b6b39d','#895d49':'#8e9180','#975f51':'#9c8c81'}
+skin={'#b58261':'#bd9275','#96674f':'#a07b63','#c99571':'#d1a585',
+      '#a7745a':'#b18a71','#e1b68c':'#e6c4a4','#ce9872':'#d0a183',
+      '#b17b5c':'#b98e72','#895d49':'#916f5b','#975f51':'#a17568'}
 for expression in ('','happy','worried','sad','angry','surprised','bashful'):
  suffix=f'-{expression}' if expression else ''
  portrait=(OUT/f'portrait-nell{suffix}.svg').read_text()
  portrait=re.sub(r'#[0-9a-fA-F]{6}',lambda m:skin.get(m[0],m[0]),portrait)
+ # Broad, low-contrast planes below the lower lids; no dark eye outlines.
+ # Follow the open-eye height so surprise and smiling faces keep their shape.
+ lower=57 if expression=='surprised' else 56 if expression in ('happy','bashful') else 55
+ bags=f'<path data-part="under-eye-fatigue" d="M46 {lower+1}L56 {lower} 55 {lower+2} 48 {lower+3}Z M73 {lower+1}L80 {lower} 79 {lower+2} 74 {lower+3}Z" fill="#a58b83" opacity=".45"/>\n'
+ portrait=portrait.replace('<path d="M64 51',bags+'<path d="M64 51')
  (OUT/f'portrait-nell-ill{suffix}.svg').write_text(portrait)
 
 # A matching empty cot and unarmed carrying poses for the Iria treatment.
