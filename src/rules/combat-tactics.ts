@@ -26,7 +26,7 @@ export function daybreakProtection(u:Unit,partner?:Unit){
 }
 /** Only learned combinations appear. Busy, exhausted or fallen trained partners remain inspectable. */
 export const battleAbilities=(b:Battle,u:Unit)=>u.abilities.filter(id=>{
- if(u.teamSpentRound===b.round)return false;
+ if(u.teamSpentRound===b.round)return !!ABILITIES[id].bonus&&!u.bonusUsed;
  const team=ABILITIES[id].team;
  return !team||team.pair.includes(u.kind)&&u.abilities.includes(teamSolo(u.kind,id)!)&&b.units.some(v=>v.side===u.side&&v.kind!==u.kind&&team.pair.includes(v.kind)&&v.abilities.includes(teamSolo(v.kind,id)!)&&(!u.linkedTo||u.linkedTo===v.id));
 });

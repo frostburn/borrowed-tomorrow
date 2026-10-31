@@ -49,7 +49,7 @@ import type { StoryHost } from '../content/story-host';
 import { interactChapter, resumeChapter, CHAPTER, JOURNAL, objective } from '../content/story';
 import type { Dialogue } from '../content/dialogue';
 import { HEIGHT, MAPS, TILE, WIDTH, arrival, mapSize, restorePoint, visibleObjects, visiblePeople, walkable, worldPath, type MapObject } from '../content/maps';
-import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, endTurn, enemyTurn, legalAim, move, movement, movementOnly, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle, type Unit } from '../rules/combat';
+import { ABILITIES, damagingAbility, active, awardVictory, cast, createBattle, damage, fixtureDamage, defend, endTurn, enemyTurn, legalAim, move, movement, movementOnly, bonusAvailable, pushDestination, shape, targets, tauntTarget, wait, type AbilityId, type Battle, type Unit } from '../rules/combat';
 import {rallyArea,rallyBonus,rallyRemaining,rallySources,rallyReason} from '../rules/rally';
 import {bossDirectHint} from '../rules/boss-direct';
 import { ENCOUNTERS } from '../content/encounters';
@@ -821,7 +821,7 @@ export class Adventure extends Phaser.Scene {
     }),
       {label:movementOnly(b,u)?'End turn':'Defend',key:'F',disabled:!player,action:()=>this.doDefend()},...movementOnly(b,u)?[]:[{label:'Wait',key:'W',disabled:!player||u.waited||u.moved||u.bonusUsed,action:()=>this.doWait()}]]);
     for(const [i,id] of this.commandAbilities(b,u).entries())if(ABILITIES[id].team)actions.children[i+1]?.classList.add('team-skill');
-    this.ui.status.textContent=player?(movementOnly(b,u)?'Attack spent. Move or End turn (F).':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
+    this.ui.status.textContent=player?(movementOnly(b,u)?bonusAvailable(u)?'Attack spent. Shield bash, Move or End turn (F).':'Attack spent. Move or End turn (F).':u.bonusUsed?'Shield bash used. Move if available, then take your main action.':this.selected!=='move'&&abilityFor(u!,this.selected).range===0?'Review affected hexes, then confirm. Move once, then act.':'Select an action, then a hex. Confirm to commit. Move once, then act.'):'Enemy turn · watch the initiative order';
     this.updatePreview();
     this.ui.controls.querySelector('.command-list')!.scrollTop=commandScroll;
     if(!this.basicSelected)this.ui.controls.querySelector('.actions button.selected')?.scrollIntoView({block:'nearest',inline:'nearest'});
@@ -837,7 +837,7 @@ export class Adventure extends Phaser.Scene {
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
     const directHint=this.selected==='move'&&bossDirectHint(b);if(directHint)hint.textContent=directHint+' '+hint.textContent;
-    if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
+    if(movementOnly(b,u)&&this.selected==='move')hint.textContent=bonusAvailable(u)?'Attack spent. Shield bash is still available. Move once, or End turn (F).':'Attack spent. Move once, or End turn (F).';
     if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; red hexes mark threatened characters; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){

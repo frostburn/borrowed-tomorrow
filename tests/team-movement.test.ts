@@ -19,13 +19,59 @@ describe('remaining movement after a team action',()=>{
   expect(cast(b,u,'prism',enemy.hex)).toBe(true);expect(b.queue).toEqual([third.id,partner.id,enemy.id]);
   expect(teamStatus(b,third,'starline').reason).toBe('Orrin has already used their action this round.');expect(legalAim(b,third,'starline',enemy.hex)).toBe(false);
  });
- it('allows a pinned partner one move, with no second attack, bonus action, Defend, Wait or focus refill',()=>{
-  const {b,u,partner,third,enemy}=yard(['kit','petra','celia']);partner.focus=4;partner.pinned=true;partner.retaliated=true;partner.defending=true;
+ it('allows a pinned partner one move after an already-used Bash, with no second attack, Defend, Wait or focus refill',()=>{
+  const {b,u,partner,third,enemy}=yard(['kit','petra','celia']);partner.focus=4;partner.bonusUsed=true;partner.pinned=true;partner.retaliated=true;partner.defending=true;
   expect(cast(b,u,'crossfire',enemy.hex)).toBe(true);expect(active(b)).toBe(partner);expect(partner.focus).toBe(1);expect(partner.pinned).toBe(true);expect(partner.retaliated).toBe(true);expect(partner.defending).toBe(false);expect(battleAbilities(b,partner)).toEqual([]);
   for(const id of partner.abilities)expect(legalAim(b,partner,id,enemy.hex),id).toBe(false);
   expect(defend(b)).toBe(false);expect(wait(b)).toBe(false);expect([...movement(b,partner).values()].every(v=>v.cost<=1)).toBe(true);
   const destination=[...movement(b,partner).values()].find(v=>v.path.length)!.hex;
   expect(move(b,partner,destination)).not.toBeNull();expect(partner.hex).toEqual(destination);expect(active(b)).toBe(third);expect(partner.focus).toBe(1);expect(partner.pinned).toBeUndefined();expect(b.queue).not.toContain(partner.id);expect(move(b,partner,u.hex)).toBeNull();
+ });
+ for(const team of ['crossfire','daybreak']as const)for(const initiates of [false,true])for(const moved of [false,true])for(const rank of [1,2,3])it(`preserves rank ${rank} Bash for ${team} ${initiates?'initiator':'helper'} with movement ${moved?'spent':'unspent'}`,()=>{
+  const other=team==='crossfire'?'kit':'celia';
+  const {b,enemy}=yard(initiates?['petra',other,'nell']:[other,'petra','nell']);
+  const petra=b.units.find(u=>u.kind==='petra')!,caster=active(b)!;
+  petra.moved=moved;petra.focus=6;petra.skills!.bash=rank;
+  const aim=()=>rank===3?petra.hex:enemy.hex;
+  enemy.hex=offset(3,4);petra.hex=offset(2,4);
+  expect(cast(b,caster,team,team==='daybreak'?caster.hex:enemy.hex)).toBe(true);
+  expect(active(b)).toBe(petra);expect(petra.bonusUsed).toBeFalsy();expect(petra.focus).toBe(3);
+  expect(battleAbilities(b,petra)).toEqual(['bash']);
+  expect(legalAim(b,petra,'bash',aim())).toBe(true);
+  for(const id of petra.abilities.filter(id=>id!=='bash'))expect(legalAim(b,petra,id,enemy.hex),id).toBe(false);
+  expect(defend(b)).toBe(false);expect(wait(b)).toBe(false);
+  if(!moved){
+   const destination=[...movement(b,petra).values()].find(v=>v.path.length===1&&distance(v.hex,enemy.hex)===1)!.hex;
+   expect(move(b,petra,destination)).not.toBeNull();expect(active(b)).toBe(petra);
+   expect(legalAim(b,petra,'bash',aim())).toBe(true);
+  }
+  expect(cast(b,petra,'bash',aim())).toBe(true);expect(petra.bonusUsed).toBe(true);expect(petra.focus).toBe(rank===1?2:3);
+  expect(active(b)).not.toBe(petra);expect(cast(b,petra,'bash',aim())).toBe(false);
+ });
+ it('keeps movement after Bash, without refreshing Bash or Daybreak Taunt',()=>{
+  const {b,u,partner:petra,enemy}=yard(['celia','petra','nell']);petra.hex=offset(2,4);enemy.hex=offset(3,4);const aim=()=>petra.hex;
+  expect(cast(b,u,'daybreak',u.hex)).toBe(true);expect(enemy.tauntedBy).toBe(petra.id);
+  expect(cast(b,petra,'bash',aim())).toBe(true);expect(active(b)).toBe(petra);expect(enemy.tauntedBy).toBe(petra.id);
+  expect(battleAbilities(b,petra)).toEqual([]);expect(cast(b,petra,'bash',aim())).toBe(false);
+  const destination=[...movement(b,petra).values()].find(v=>v.path.length)!.hex;
+  expect(move(b,petra,destination)).not.toBeNull();expect(active(b)).not.toBe(petra);expect(enemy.tauntedBy).toBe(petra.id);
+ });
+ for(const initiates of [false,true])it(`does not restore a used Bash to the ${initiates?'initiator':'helper'}`,()=>{
+  const {b,enemy}=yard(initiates?['petra','kit','nell']:['kit','petra','nell']);
+  const petra=b.units.find(u=>u.kind==='petra')!;petra.bonusUsed=true;petra.moved=true;
+  expect(cast(b,active(b)!,'crossfire',enemy.hex)).toBe(true);expect(b.queue).not.toContain(petra.id);
+ });
+ it('finishes Petra’s turn if a Crossfire pressure-drum burst downs her',()=>{
+  const {b,u:petra,partner:kit,enemy}=yard(['petra','kit','celia']),drum=offset(3,3);
+  petra.hex=offset(2,3);petra.hp=1;kit.hex=offset(0,0);
+  b.fixtures=[{id:'drum',name:'Pressure drum',kind:'drum',hex:drum,hp:1,maxHp:1,power:100}];
+  b.obstacles.add(key(drum));
+  expect(cast(b,petra,'crossfire',drum)).toBe(true);
+  expect(petra.hp).toBe(0);expect(enemy.hp).toBeGreaterThan(0);expect(b.result).toBeNull();
+  expect(active(b)).toBe(kit);expect(b.queue).not.toContain(petra.id);
+  expect(move(b,petra,offset(1,3))).toBeNull();expect(cast(b,petra,'bash',petra.hex)).toBe(false);
+  // Reject stale callers too, even if a fallen actor is still queued.
+  b.queue.unshift(petra.id);expect(move(b,petra,offset(1,3))).toBeNull();
  });
  it('can skip remaining movement without receiving Defend or focus',()=>{
   const {b,u,partner,third,enemy}=yard();expect(cast(b,u,'prism',enemy.hex)).toBe(true);const hex={...partner.hex},focus=partner.focus;
