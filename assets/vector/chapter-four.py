@@ -221,6 +221,7 @@ def world(id,name,subtitle,outlines,blocks,objects,arrivals,casts,people,decor,b
    if n=='harbor-gate-closed':layers.append(tile(lid,n,cells([(40,11,9,8)],w,h,6),w,h,sort=True,**extra))
    else:layers.append(group(lid,n,sort=True,**extra))
   add(n,parts,ww,hh,x,y,depth,lid)
+  if n in ('refuge-ferry','harbor-ferry-out','harbor-ferry-in'):entries[-1]['motion']={'kind':'moored'}
  # Ground spill inherits the emitter's exact visibility layer, including ferries.
  for lid in sorted({e['layerId']for e in entries}):
   emitters=[e for e in entries if e['layerId']==lid];light=floor_spill(emitters)

@@ -8,9 +8,9 @@ import fourth from './chapter-four/scene-art.json' with { type: 'json' };
 import { layerVisible, properties, type TileMap } from './tilemaps';
 import type { GameState } from '../rules/state';
 
-const scenes={...first,...second,...third,...fourth,...fifth,...sixth,...seventh};
+const scenes={...first,...second,...third,...fourth,...fifth,...sixth,...seventh} as Record<string,ScenePiece[]>;
 
-export interface ScenePiece { key:string; url:string; x:number; y:number; width:number; height:number; depth:number; layerId:number }
+export interface ScenePiece { key:string; url:string; x:number; y:number; width:number; height:number; depth:number; layerId:number; motion?:{kind:'sail'|'moored'|'hover';distance?:number;after?:string} }
 /** Whole SVG planes and props; Tiled remains the layout/collision source. */
 export function sceneArt(map?:TileMap):ScenePiece[]|undefined {
   const id=map&&properties(map).sceneArt;

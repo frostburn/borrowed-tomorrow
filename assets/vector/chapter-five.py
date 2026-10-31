@@ -123,7 +123,11 @@ def world(id,name,subtitle,outline,blocks,objects,arrivals,casts,people,decor,ba
  for n,body,ww,hh,x,y,depth,flags in decor:
   lid=3 if depth>=0 else 2
   if flags:lid=len(layers)+1;layers.append(group(lid,n,sort=depth>=0,**flags))
+  if n=='ship-blockade':
+   # Keep the old sky cover at its exact depth; only the fleet can drift.
+   split=len(sky(ww,hh));add(n+'-sky',body[:split],ww,hh,x,y,depth,lid);body=body[split:]
   add(n,body,ww,hh,x,y,depth,lid)
+  if n in ('ship-fleet','ship-cordon','ship-blockade'):entries[-1]['motion']={'kind':'hover'}
  layers += [group(len(layers)+1,'Interactions',objects),group(len(layers)+2,'Arrivals',[point(k,*v)for k,v in arrivals.items()]),group(len(layers)+3,'People',people)]
  for sid,cast in casts.items():layers.append(group(len(layers)+1,'Scene:'+sid,[point(k,*v,**({'projection':True}if sid=='five-emperor-offer' and k!='nell' else {}))for k,v in cast.items()]))
  # A takeoff image must remain individually addressable when lit scenery is

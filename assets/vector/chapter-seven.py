@@ -35,7 +35,22 @@ def write_map(id,title,subtitle,floor,objects,casts,people,back,ground,decor=[],
  if id in OUTLINES:layers[1]['data']=cells(OUTLINES[id])
  def add(n,body,depth,lid,w=1536,h=1008,x=0,y=0):
   svg(ART/f'{id}-{n}.svg',w,h,body);entries.append({'key':f'scene-seven-{id}-{n}','url':f'art/vector/chapter-seven/{id}-{n}.svg','x':x,'y':y,'width':w,'height':h,'depth':depth,'layerId':lid})
- if art:add('back',back,-1000,1);add('ground',ground,-999,2)
+ if art:
+  if id=='seasonstreet':
+   # The moving boat stays behind the mountain and hospice, just as the old
+   # painted boat did. All three planes inherit the same surroundings layer.
+   split=len(sky());add('back',back[:split],-1000,1);add('relief',back[split:],-999.1,1)
+  else:add('back',back,-1000,1)
+  add('ground',ground,-999,2)
+ if id in ('hollowsill','takenwater','lastrefuge','seasonstreet'):
+  # Draw one complete upright boat, then invert it as a unit: the keel is
+  # above its broad deck, with the mast and sail hanging below that deck.
+  boat=['<g transform="translate(0 132) scale(1 -1)">',
+   poly([(0,95),(107,84),(86,116),(25,123)],'#b2c5b9'),
+   poly([(0,95),(25,123),(86,116),(83,124),(23,132)],'#628f92'),
+   line([(55,89),(61,4)],'#a9c1b5',4),
+   poly([(58,83),(60,13),(107,26)],'#83a7a3'),'</g>']
+  add('hanging-boat',boat,-999.2,1,112,132,1050,112);entries[-1]['motion']={'kind':'sail','distance':32,'after':'takenPeopleFreed'}
  decor=list(decor)
  for i,(x,y)in enumerate(FIXTURES.get(id,[])):decor.append(('light-'+str(i),fixture(id=='quietward'),48,148,x-23,y-148,y,{}))
  for n,body,w,h,x,y,depth,flags in decor:
@@ -62,7 +77,6 @@ def sky(sea=True):
  if sea:
   out += [poly([(0,0),(1536,0),(1536,560),(1280,619),(975,590),(727,645),(420,602),(190,631),(0,580)],'#28596b'),poly([(0,0),(1536,0),(1536,448),(1250,538),(951,507),(714,568),(427,537),(184,557),(0,504)],'#507f88')]
   for x,y,w in [(40,106,280),(360,150,320),(820,75,480),(1160,185,300),(220,222,190),(714,227,470)]:out.append(poly([(x,y+320),(x+w,y+307),(x+w-47,y+323),(x+14,y+328)],'#8bafb0'))
-  out += [poly([(1050,123),(1157,112),(1136,144),(1075,151)],'#b2c5b9'),poly([(1050,123),(1075,151),(1136,144),(1133,152),(1073,160)],'#628f92'),line([(1105,143),(1111,240)],'#a9c1b5',4),poly([(1108,161),(1110,231),(1157,218)],'#83a7a3')]
  return out
 def sun(cx=768,cy=197,r=102):
  return [ellipse(cx,cy,r*GEOMETRY['innerRadius'],r*GEOMETRY['innerRadius'],GEOMETRY['skyInterior']),emblem(cx,cy,r)]
@@ -114,7 +128,16 @@ back=sky(False)+[poly([(180,214),(1326,196),(1340,610),(198,634)],'#74928f'),pol
 for x in [235,445,875,1085]:back+=arch(x,302,176,292)
 write_map('quietward','The first hospice · the quiet ward','The beds are warm. The people in them have been waiting to go home.',f,[control('ward-engine-seven',32,24,(27,14,11,10),'The gift of healing · mirrored engine',hiddenFlag='domainWardWon'),obj('ward-seasons',32,18,'The city of seasons',kind='exit',accessFlag='wardPeopleFreed',sign=True),obj('ward-field',12,35,'The harvest terrace',kind='exit',sign=True),obj('ward-patient',19,29,'The patient by the western window',kind='talk',sign=True),supplies('ward-seven',47,34)],casts('seven-hospice','seven-hospice-free',extra={'nell':(25,29),'celia':(22,30)}),[point('old-patient',20,30,sprite='civilian-patient-green',hiddenFlag='wardPeopleFreed')],back,floor_art('quietward'),[('original-engine',[(ROOT/'public/art/vector/chapter-five/ward-engine-battle.svg').read_text().split('>',1)[1].rsplit('</svg>',1)[0]],256,240,652,348,588,{'hiddenFlag':'domainWardWon'}),cot('western-bed',380,600),cot('eastern-bed',1075,600)],blocks=[(16,26,3,2),(45,26,3,2)])
 f=[(14,26,36,11),(24,17,18,10),(42,22,14,5),(8,33,7,3)]
-back=sky()+[poly([(0,292),(280,103),(565,330),(890,145),(1150,257),(1536,119),(1536,1008),(0,1008)],'#77939f'),poly([(0,292),(280,103),(404,247),(301,226),(233,257),(156,256)],PALE),poly([(923,329),(1387,311),(1405,592),(936,614)],'#a88b6e'),poly([(1360,317),(1387,311),(1405,592),(1369,604)],'#7c7467'),poly([(901,331),(1174,230),(1429,311),(1412,332),(1177,260),(926,348)],'#dec9a3'),poly([(978,296),(1010,246),(1056,223),(1096,247),(1104,283)],'#73988a'),poly([(978,296),(988,305),(1104,293),(1104,283)],'#a8b5a0'),line([(1054,224),(1050,194)],'#c3b68e',4)]
+back=sky()+[
+ poly([(0,292),(280,103),(565,330),(890,145),(1150,257),(1536,119),(1536,1008),(0,1008)],'#77939f'),
+ poly([(0,292),(280,103),(404,247),(301,226),(233,257),(156,256)],PALE),
+ poly([(923,329),(1387,311),(1405,592),(936,614)],'#a88b6e'),
+ poly([(1360,317),(1387,311),(1405,592),(1369,604)],'#7c7467'),
+ # A solid roof beneath its pale fascia; no detached cupola or open gable.
+ '<g data-surface="roof">',
+ poly([(901,331),(1174,230),(1429,311),(1387,331),(923,347)],'#b39a78'),
+ poly([(901,331),(1174,230),(1429,311),(1412,332),(1177,260),(926,348)],'#dec9a3'),
+ '</g>']
 back+=arch(1050,376,218,218)
 ground=floor_art('seasonstreet')
 write_map('seasonstreet','The city of stolen seasons','Skeld’s snow lies across a Namar stair. The freed people need one road that stays open.',f,[obj('season-dragon',32,25,'The winter kept here',hiddenFlag='domainDragonWon',sprite='winter-dragon'),obj('season-refuge',32,18,'The unwritten hour',kind='exit',accessFlag='seasonsFreed',sign=True),obj('season-ward',10,35,'The quiet ward',kind='exit',sign=True),obj('season-patrol',48,27,'The courier stair · divine patrol',kind='optional',hiddenFlag='domainPatrolWon',sprite='herald'),obj('season-nameplate',18,29,'A cut tow-rope beside the snow',kind='talk',sign=True),supplies('season',47,34,accessFlag='domainPatrolWon')],casts('seven-seasons','seven-seasons-free'),[],back,ground,[recalled('river-wall',162,764,.9),('tow-rope',[line([(6,13),(43,9),(62,21),(34,32),(12,21),(27,13),(52,31),(69,44)],'#d1bb8c',4),line([(61,35),(71,33)],'#a2b3a4',2)],84,52,396,670,722,{})])

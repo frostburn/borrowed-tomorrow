@@ -442,6 +442,7 @@ export class Adventure extends Phaser.Scene {
       if(hint){this.ui.showModal('Equipment',`${rewardList(pending.gains.filter(g=>g.item===hint.item))}<p>${EQUIPMENT_HINT}</p>`,[{label:'Equip now',action:()=>this.equipReward(hint)},{label:'Later',action:()=>this.ui.closeModal()}]);this.autosave();}
     }
     this.peopleMotion.update(delta,this.mode!=='world'||this.blocked||this.busy||!!this.cinematic);
+    this.mapLife?.update(delta,this.mode==='battle'||this.ui.modalOpen||this.mode==='world'&&(this.blocked||this.busy||!!this.cinematic));
     this.motion.update();
     this.sortWorld();
     if (this.mode !== 'title' && time - this.lastSecond > 1000) { this.lastSecond = time; this.state.playSeconds++; }

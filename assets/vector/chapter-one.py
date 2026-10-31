@@ -121,7 +121,8 @@ def field(kind,cells,w,h,scene=''):
                     if xx>x and yy==y:out.append(polygon([(x,y),(xx,y),(xx,y+6),(x,y+9)],'#7b8580'))
     if scene=='coast' and kind=='water':
         out.extend([rect(0,0,w,169,'#788e9c'),rect(0,76,w,68,'#9da395'),polygon([(0,67),(96,5),(179,44),(269,4),(360,69),(448,38),(554,95),(668,33),(764,81),(873,8),(989,54),(1094,17),(1220,71),(1335,22),(w,71),(w,151),(0,151)],'#34566e'),polygon([(0,112),(167,61),(278,99),(428,75),(574,124),(746,91),(915,120),(1076,73),(1259,111),(w,84),(w,169),(0,169)],'#23465e')])
-        for x in (137,423,1001,1280):out.append(line([(x,95),(x,215)],'#7897a1',3));out.append(polygon([(x-32,212),(x+37,211),(x+22,225),(x-20,225)],'#18394c'))
+        # Background boats are separate native props, so their motion leaves
+        # the sea and distant mountain silhouettes anchored.
     if scene=='northglass' and kind=='granite':
         out.extend([rect(0,0,w,136,'#829698'),polygon([(0,87),(w*.13,38),(w*.26,94),(w*.43,47),(w*.61,107),(w*.78,40),(w,89),(w,160),(0,160)],'#536e79'),polygon([(0,134),(w*.19,82),(w*.35,121),(w*.51,80),(w*.75,136),(w,98),(w,182),(0,182)],'#304f60')])
     out.append('</g>');return ''.join(out)
@@ -274,6 +275,12 @@ def export(chapter='one', only=None):
         for e in entries:
             source=(ROOT/'public'/e['url']).read_text();m=re.search(r'width="(\d+)" height="(\d+)"',source)
             e.update(width=int(m[1]),height=int(m[2]))
+        if chapter=='two' and file.stem=='coast':
+            url='art/vector/scenes/coast/background-boat.svg'
+            body=line([(34,2),(34,122)],'#7897a1',3)+polygon([(2,119),(71,118),(56,132),(14,132)],'#18394c')
+            (ROOT/'public'/url).write_text('<svg xmlns="http://www.w3.org/2000/svg" width="74" height="134" viewBox="0 0 74 134"><title>Distant harbor boat</title>'+body+'</svg>\n')
+            water_layer=next(e['layerId']for e in entries if e['depth']==-1000)
+            for x in (137,423,1001,1280):entries.append({'key':'scene-coast-background-boat','url':url,'x':x-34,'y':93,'width':74,'height':134,'depth':-999.2,'layerId':water_layer,'motion':{'kind':'sail','distance':48}})
         manifest[file.stem]=entries
     (ROOT/f'src/content/chapter-{chapter}/scene-art.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print(f'Compiled {len(manifest)} SVG scenes; {len(list(OUT.glob("*/*.svg")))} continuous layers and {len(modules)} traced scenery originals')

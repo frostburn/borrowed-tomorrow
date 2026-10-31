@@ -267,3 +267,11 @@ poses from the regional originals with `npm run art:mechanisms` after regional
 art exports. Chapter Four and Seven's exporters run it automatically; Chapter
 Seven retains its season-street gate layers without renumbering existing IDs. Keep the detailed
 mechanism/device/reload checks opt-in. See `docs/story/mechanism-animation-audit.md`.
+
+Ambient scenery uses `ScenePiece.motion`, the story-aware registry in
+`content/map-life.ts`, and the shared campaign/Maps Canvas painters. Keep
+background boats slow, moored boats at their berths, walkable decks/gangways
+anchored, and collection visibly still until its local release. Separate any
+painted sky or occluding relief from a moving craft. Preserve the 120 ms passive
+redraw clock, menu/cinematic pauses, reduced-motion rest poses and map cleanup;
+do not add ambient tweens or change walking cadence. See `docs/map-life.md`.

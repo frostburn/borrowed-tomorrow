@@ -1259,6 +1259,62 @@
       "layerId": 29,
       "width": 1536,
       "height": 1008
+    },
+    {
+      "key": "scene-coast-background-boat",
+      "url": "art/vector/scenes/coast/background-boat.svg",
+      "x": 103,
+      "y": 93,
+      "width": 74,
+      "height": 134,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 48
+      }
+    },
+    {
+      "key": "scene-coast-background-boat",
+      "url": "art/vector/scenes/coast/background-boat.svg",
+      "x": 389,
+      "y": 93,
+      "width": 74,
+      "height": 134,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 48
+      }
+    },
+    {
+      "key": "scene-coast-background-boat",
+      "url": "art/vector/scenes/coast/background-boat.svg",
+      "x": 967,
+      "y": 93,
+      "width": 74,
+      "height": 134,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 48
+      }
+    },
+    {
+      "key": "scene-coast-background-boat",
+      "url": "art/vector/scenes/coast/background-boat.svg",
+      "x": 1246,
+      "y": 93,
+      "width": 74,
+      "height": 134,
+      "depth": -999.2,
+      "layerId": 1,
+      "motion": {
+        "kind": "sail",
+        "distance": 48
+      }
     }
   ],
   "infirmary": [
