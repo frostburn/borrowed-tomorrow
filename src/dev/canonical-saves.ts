@@ -27,6 +27,8 @@ export function chapterTwoStart(){
   state.coins+=Object.values(ENCOUNTERS).reduce((sum,e)=>sum+e.coins,0);
   recruitOrrin(state);
   receiveItem(state.inventory,'brass-reflector');equipItem(state.inventory,'nell','brass-reflector');
+  // Every later canonical preset inherits this already-equipped completion.
+  state.flags.equipmentHintSeen=true;
   state.journal=['home','blessing','raid','escape','orrin','workshop','village','collector','freed','pass','captain','departure'];
   state.boundary=NEXT_CHAPTER;beginChapterTwo(state);restoreParty(state);
   return decodeSave(JSON.stringify(canonicalSkills(state)));

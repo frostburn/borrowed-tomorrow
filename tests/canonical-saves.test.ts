@@ -6,7 +6,9 @@ import { level } from '../src/rules/state';
 import { decodeSave } from '../src/rules/save';
 import { resumeChapterTwo } from '../src/content/chapter-two/interactions';
 import { resumeChapterThree } from '../src/content/chapter-three/interactions';
-import { ownedCopies } from '../src/rules/inventory';
+import { ownedCopies, receiveItem } from '../src/rules/inventory';
+import { takeEquipmentHint } from '../src/game/equipment-tutorial';
+import { supplyGain } from '../src/game/rewards';
 import type { StoryHost } from '../src/content/story-host';
 
 it('starts Chapter Two from a fresh, valid Chapter One completion and replays Kit’s introduction',()=>{
@@ -45,5 +47,16 @@ it('starts the rewritten Chapter Four with a safe Tomas, four recruits and no fo
 it('every canonical save uses the automatic schedule for the entire roster, including future recruits',()=>{
  for(const make of Object.values(canonical))for(const recovered of [false,true]){
   const s=make(recovered);expect(s.skills).toEqual(newSkillBook(level(s)));expect(decodeSave(JSON.stringify(s))).toEqual(s);
+ }
+});
+
+it('every canonical start remembers the equipment introduction and suppresses it on later gear rewards',()=>{
+ for(const make of Object.values(canonical))for(const recovered of [false,true]){
+  const s=decodeSave(JSON.stringify(make(recovered)));
+  expect(s.flags.equipmentHintSeen).toBe(true);
+  receiveItem(s.inventory,'work-coat');
+  const inventory=structuredClone(s.inventory);
+  expect(takeEquipmentHint(s,[supplyGain('work-coat')])).toBeUndefined();
+  expect(s.inventory).toEqual(inventory);
  }
 });
