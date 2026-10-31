@@ -14,7 +14,7 @@ const themes:Partial<Record<MusicMode,{name:string;description:string}>>={
  station:{name:'Nell',description:'The festival song from Larkspur. D minor; a home melody that also answers Orrin in the workshop.'},
  hammerplain:{name:'Orrin',description:'Repeated hammer taps and a downward release. G minor with a working bass riff.'},
  coast:{name:'Kit',description:'Iron Coast: a courier keeps moving. The open coastal phrase and its determined train-raid answer.'},
- dawnwatch:{name:'Petra',description:'C, Db, C, then G: resistance before the decision. F minor; three-bar calls over a straight march.'},
+ dawnwatch:{name:'Petra',description:'C, Db, C, then G: resistance before the decision. Connected F-minor string phrases over held bass and quiet marching drums.'},
  windmere:{name:'Celia',description:'A long descending breath. Db major, borrowed Cb, and a ten-bar sentence in 3/4.'},
  flagship:{name:'Alban',description:'Iron Above the Clouds: a plunging fourth, a return and a rising third. Foreshadowed in his first battle, now a 10/8 march.'},
 };

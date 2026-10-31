@@ -63,6 +63,11 @@ Keep audio procedural and asset-light. Compose phrases with variation, rests, an
 
 For new themes, read `docs/music-direction.md`. The retained Northglass score uses the supplied Evangelion progression. The Nichijou progression and non-functional Chrono Trigger-style vamps remain references for new themes; original melodies and clear phrase variation are required.
 
+Dawnwatch's The Open Gate is a connected string song: its C–Db–C–G motif,
+cross-bar melody holds, sustained roots and common-tone inner strings carry the
+slow phrases. Keep its 92 BPM pulse and phrase-ending breaths. The clipped
+terrace, Wheel and battle arrangements and Petra's crossing remain independent.
+
 Chapter Three uses `northglass` for the conduit works medical siding, `relayhall` for the control gallery, and `conduit` for the new underground vessel chamber. Tomas is rescued alive before the extraction is shut down; the Emperor then teleports to his marble palace using the conduit’s remaining charge. Tomas is a supporting actor, never a combat unit. The three-fighter cap remains a mechanical limit without a story explanation. Loot goes to the bag for manual fitting: baffled nozzle (Orrin), balanced saber hilt (Petra), silver reflector (Nell), ratchet sight (Kit), and insulated work coat (any companion). Keep both intake routes and the optional stores patrol available.
 
 Chapter Four: A Light on the Water begins at the unchanged `chapter-four:broken-world` departure and ends at `chapter-five:anchors`. The user authorized scrapping the old separated-party chapter. Keep Nell, Orrin, Kit and Petra together, preserve the actual active formation and every resource/loadout, and introduce Celia treating ferry crews at the Breakwater pump house. Recruitment leaves the formation intact; normal Equipment swaps stay available. There are no temporary viewpoints, fixed local groups, injury reset or reunion state. Tomas and all medical passengers remain safe at the refuge. The active-three cap needs no story explanation.
