@@ -180,6 +180,14 @@ it('the actual supplies and specialist interactions open their earned services',
  const cured=jungleCheckpoint('riverRestSeen'),k=host(cured);cured.location.map='riverhaven';interactChapterSix(k.h,'river-tavi');expect(k.read().choices?.some(c=>c.label.startsWith('River courier training'))).toBe(true);
  const capital=chapterSixCapitalStart(true),n=host(capital);interactChapterSix(n.h,'capital-crew');n.choose('Reinforce Nell’s lantern · 400 marks');expect(n.read().choices?.some(c=>c.label.startsWith('Reinforced lantern housing'))).toBe(true);
 });
+it('keeps completed Dawnwatch gate conversation separate from Enna’s training',()=>{
+ const s=ready(),j=host(s);s.location.map='dawnwatch';
+ interactChapterFive(j.h,'dawn-gate');
+ expect(j.read().lines[0].text).toContain('The wheel key stays by the shelter door.');
+ expect(j.read().choices).toBeUndefined();
+ interactChapterFive(j.h,'dawn-soldier-after');
+ expect(j.read().choices?.some(c=>c.label==='Shield recovery drill · 400 marks')).toBe(true);
+});
 
 it('the Chapter Seven mooring and refuge retain all earned specialties with real confirmation, cancellation and shared flags',()=>{
  for(const [start,map,object]of [[chapterSevenStart,'hollowsill','sill-rest'],[chapterSevenRefugeStart,'lastrefuge','refuge-seven-rest']]as const){
