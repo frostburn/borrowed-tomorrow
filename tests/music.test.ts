@@ -238,22 +238,26 @@ it('Dawnwatch supports complete 31-EDO phrases, clear endings and a related regi
  for(const mode of ['dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander']as const){
   const line:Note[]=[];
   for(let bar=0;bar<32;bar++)for(const note of scoreBar(mode,bar)){
-   expect(Number.isFinite(semitones(note.pitch))).toBe(true);expect(note.beat).toBeGreaterThanOrEqual(0);expect(note.beat+note.duration).toBeLessThanOrEqual(mode==='signalwall'&&isBass(note.instrument)?8:4);expect(note.velocity).toBeLessThan(.3);
+   expect(Number.isFinite(semitones(note.pitch))).toBe(true);expect(note.beat).toBeGreaterThanOrEqual(0);expect(note.beat).toBeLessThan(4);
+   if(mode==='dawnwatch')expect(bar*4+note.beat+note.duration).toBeLessThanOrEqual(128);
+   else expect(note.beat+note.duration).toBeLessThanOrEqual(mode==='signalwall'&&isBass(note.instrument)?8:4);
+   expect(note.velocity).toBeLessThan(.3);
    if(['strings','brass','bell'].includes(note.instrument)&&note.velocity>=.1)line.push({...note,beat:note.beat+bar*4});
   }
   for(let n=1;n<line.length;n++)expect(line[n-1].beat+line[n-1].duration).toBeLessThanOrEqual(line[n].beat);
   expect(line.some((n,i)=>i>0&&line[i-1].beat+line[i-1].duration<n.beat)).toBe(true);expect(semitones(line.at(-1)!.pitch)%12).toBe(5);expect(scoreBar(mode,32)).toEqual(scoreBar(mode,0));expect(scoreBar(mode,-1)).toEqual(scoreBar(mode,31));
  }
- const dominant=scoreBar('dawnwatch',6);expect(dominant.some(n=>n.pitch==='E4')).toBe(true);expect(dominant.some(n=>n.pitch==='Db5')).toBe(true);
+ const dominant=scoreBar('dawnwatch',6);expect(dominant.some(n=>n.pitch==='E4')).toBe(true);expect(dominant.some(n=>n.pitch==='C5')).toBe(true);
  expect(scoreBar('dawn-battle',0)).not.toEqual(scoreBar('five-battle',0));expect(scoreBar('dawn-commander',0)).not.toEqual(scoreBar('petra-battle',0));
 });
 
 
 it('Petra carries her own refusal motif from the crossing to Dawnwatch, beyond the siding theme',()=>{
  const melody=(mode:'petra-battle'|'dawnwatch')=>scoreBar(mode,0).filter(n=>n.instrument==='strings'&&n.velocity>=.1);
- expect(melody('petra-battle').map(n=>n.pitch)).toEqual(melody('dawnwatch').map(n=>n.pitch));
+ expect(melody('petra-battle').map(n=>n.pitch)).toEqual(melody('dawnwatch').slice(0,4).map(n=>n.pitch));
  expect(melody('petra-battle').map(n=>n.beat)).not.toEqual(melody('dawnwatch').map(n=>n.beat));
  expect(melody('petra-battle').map(n=>n.pitch)).not.toEqual(scoreBar('cinderbank',0).filter(n=>n.instrument==='reed').map(n=>n.pitch));
- for(let bar=0;bar<16;bar++)expect(scoreBar('petra-battle',bar).find(n=>isBass(n.instrument))!.pitch).toBe(scoreBar('dawnwatch',bar).find(n=>isBass(n.instrument))!.pitch);
+ const heldBass=Array.from({length:16},(_,bar)=>scoreBar('dawnwatch',bar).filter(n=>isBass(n.instrument)).map(n=>({...n,beat:n.beat+bar*4}))).flat();
+ for(let bar=0;bar<16;bar++)expect(scoreBar('petra-battle',bar).find(n=>isBass(n.instrument))!.pitch).toBe(heldBass.find(n=>n.beat<=bar*4&&n.beat+n.duration>bar*4)!.pitch);
  expect(scoreBar('petra-battle',16)).toEqual(scoreBar('petra-battle',0));expect(scoreBar('petra-battle',-1)).toEqual(scoreBar('petra-battle',15));
 });

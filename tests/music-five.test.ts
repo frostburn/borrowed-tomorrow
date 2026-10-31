@@ -1,6 +1,43 @@
 import { expect,it } from 'vitest';
 import { ARRANGEMENTS,scoreBar,scoreLength,type Note,type MusicMode } from '../src/game/score';
 import { pitchFrequency,pitchSteps,isBass,isPercussion } from '../src/game/tuning';
+import {hasExpression,hasRubato,performanceBar} from '../src/game/score-performance';
+
+it('The Open Gate sustains its melody and common-tone support through bar lines, with breaths at phrase endings',()=>{
+ const bars=Array.from({length:32},(_,bar)=>scoreBar('dawnwatch',bar)),notes=bars.flatMap((ns,bar)=>ns.map(n=>({...n,beat:bar*4+n.beat})));
+ const lead=notes.filter(n=>n.instrument==='strings'&&n.velocity>=.1);
+ const gaps=lead.slice(1).map((n,i)=>n.beat-lead[i].beat-lead[i].duration);
+ expect(Math.max(...gaps)).toBeLessThanOrEqual(.75);expect(Math.min(...gaps)).toBeGreaterThanOrEqual(0);
+ expect(gaps.filter(g=>g<=.25).length/gaps.length).toBeGreaterThan(.8);
+ expect(lead.filter(n=>n.beat%4+n.duration>4).length).toBeGreaterThanOrEqual(6);
+ expect(lead.at(-1)!.beat+lead.at(-1)!.duration).toBe(127.5);
+ const openingPad=bars[0].find(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='Ab3')!;
+ expect(openingPad.duration).toBeGreaterThan(12);
+ for(const bar of [1,2,3])expect(bars[bar].some(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='Ab3')).toBe(false);
+ const bass=notes.filter(n=>isBass(n.instrument));
+ for(let beat=0;beat<128;beat++)expect(bass.some(n=>n.beat<=beat&&n.beat+n.duration>beat)).toBe(true);
+ expect(ARRANGEMENTS.dawnwatch).toMatchObject({beats:4,bpm:92});expect(hasExpression('dawnwatch')).toBe(true);expect(hasRubato('dawnwatch')).toBe(false);
+ expect(lead.every(n=>!!n.expression?.dynamics)).toBe(true);
+ const hold=performanceBar('dawnwatch',16).notes.find(n=>n.velocity>=.1)!;
+ expect(hold.seconds).toBeGreaterThan(performanceBar('dawnwatch',16).duration);
+ for(let bar=16;bar<24;bar++)expect(bars[bar].some(n=>isPercussion(n.instrument))).toBe(false);
+});
+it('The Open Gate preserves its opening while harmonic tension resolves within the bar',()=>{
+ const melody=(bar:number)=>scoreBar('dawnwatch',bar).filter(n=>n.instrument==='strings'&&n.velocity>=.1);
+ expect(melody(0).map(n=>[n.beat,n.pitch,n.duration])).toEqual([[0,'C5',1],[1,'Db5',.5],[1.5,'C5',1],[2.5,'G4',2]]);
+ const notes=Array.from({length:32},(_,bar)=>scoreBar('dawnwatch',bar).map(n=>({...n,time:bar*4+n.beat}))).flat();
+ const bass=notes.filter(n=>isBass(n.instrument));
+ const rootAt=(beat:number)=>bass.find(n=>n.time<=beat&&n.time+n.duration>beat)!.pitch;
+ for(const bar of [5,6,11,14,22,23,30]){
+  expect(rootAt(bar*4)).toBe('C2');expect(rootAt(bar*4+2)).toBe('F2');
+ }
+ for(const bar of [13,28]){expect(rootAt(bar*4)).toBe('Gb2');expect(rootAt(bar*4+2)).toBe('C2');}
+ expect(rootAt(18*4+2)).toBe('Ab1');expect(rootAt(19*4+2)).toBe('F2');
+ for(const bar of [5,22]){
+  const voiced=notes.filter(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='E4');
+  expect(voiced.some(n=>n.time===bar*4+1&&n.time+n.duration<bar*4+2)).toBe(true);
+ }
+});
 it('Chapter Five has bounded, varied 32-bar scores with one foreground line, rests and safe loop seams',()=>{
  for(const mode of ['airship','airfield','observation','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander','windmere','dispensary','mirrorward','wind-battle','wind-engine']as MusicMode[]){
   const a=ARRANGEMENTS[mode],line:Note[]=[];expect(scoreLength(mode)).toBe(32);

@@ -2,6 +2,11 @@
 
 Compose original melodies with deliberate phrases and Japanese game/anime influence through harmony and pacing. These are compositional references, not requests for borrowed recordings or copied tunes.
 
+For quiet slow cues, distinguish melodic dissonance from harmonic tension.
+Keep a melody's rhythmic character and expressive non-chord tones; do not make
+it monotonous by forcing equal quarter notes. Give suspended, altered and
+false-cadence harmonies a prompt onward motion in the accompaniment.
+
 ## Tuning and spelling
 
 All scores and pitched healing/victory cues use **31-EDO**, anchored to **A4 = 440 Hz**. Scores store explicit pitches such as `Bb4`, `F#4`, `Ed4` and `At5`. ASCII `t`/`d` raise/lower a natural by one 31-EDO step; `#`/`b` raise/lower by two. Compound alterations such as `C#t4` (+3) and `Bbd4` (−3) keep their spelling through octave shifts and transposition. `src/game/tuning.ts` calculates frequencies directly from spelling and constructs diatonic intervals. The semitone-coordinate helper exists only to verify the transcription; it never determines sound.
@@ -138,7 +143,7 @@ The chapter's former rising calls, triadic answers and repeated root–fifth bac
 | Nell · Larkspur festival (`station`, 82) | D–F–E–D: the familiar home song | D minor, four four-bar sentences: call, answer, lifted middle and resolving return. The festival composition is retained. This is Nell’s theme; Above the Railway is general airship travel music. |
 | Orrin · The Next Shift (`hammerplain`, 102) | D, D, Eb, D, A: two taps, a neighbour, a downward release | G minor, C9 and an inverted D7b9. A repeated bass work riff carries short piano gestures; the low middle drops the lead and drums for whole bars. A broader reply and varied return keep the taps recognizable without arpeggiating a triad. |
 | Kit · Iron Coast (`coast`, 88) | The coastal E–G call and its moving answers | The accepted sixteen-bar courier journey: steady half-note support, a broader middle and the Bm7b5/D inversion in bar 2. The train-raid variation develops the same identity. No new melody replaces the accepted Iron Coast. |
-| Petra · The Open Gate (`dawnwatch`, 92) | C–Db–C–G: resistance before a decision | F minor, Db-major inversions, Bbm and a Gb turn; C7 uses E natural. Three-bar calls answer in three, with two bars for resolution. Firm strings and a quiet straight march yield to a low middle without drums. Her Chapter Two crossing establishes this identity with firm beat landings over the retained straight backbeat. |
+| Petra · The Open Gate (`dawnwatch`, 92) | C–Db–C–G: resistance before a decision | F minor, Db-major inversions, Bbm and a Gb turn; C7 uses E natural. Connected string sentences carry across bar lines, with breaths at phrase endings, held roots and common-tone inner voices. A quiet straight march yields to a lower middle without drums. Her Chapter Two crossing establishes the same identity with firmer beat landings and a driving backbeat. |
 | Celia · The Garden Walk (`windmere`, 76, 3/4) | Ab–Gb–F–Eb, then Db–C–Ab–Bb: a long exhale | Db major with Bbm9, Gb6, borrowed Cbmaj7 and Ab7sus/Ab7. A ten-bar opening sustains across two bar lines; its six-bar answer precedes a low eight-bar middle and compressed return. The reed sings above held bass and inner strings rather than three identical piano hits every bar. |
 | Alban · Iron Above the Clouds (`flagship`, 132, 10/8) | D–A–D–F: a plunging fourth, a return and a rising third | The brass command expands into four eight-bar arcs. Captain Alban (`inspector`, 136, 4/4) preserves its opening, then adds an eight-bar flagship-contour extension after the original sixteen bars without importing its meter. |
 
@@ -162,6 +167,23 @@ across all three shots and is listed under Chapter One in Music and Soundtrack.
 `score-five.ts` owns five G-minor compositions. The Cooling Race (`coolingworks`, 102) has its own descending counter-melody and different bass entrances. Under the Gantry (`anchorforge`, 84) breaks the work cell into low fragments with whole-bar rests and sustained low strings. Hold the Floor (`five-battle`, 132) compresses the taps into a fighting question and writes a separate broad reply and low break. The Pouring Lane (`five-furnace`, 136) attacks with low brass hammer taps, opens into that higher answer, drops back to the lower machinery and returns. Its accompaniment uses straight square-bass eighths and clipped brass chords in place of the syncopated bass/piano riff; quarter-note kick/snare weight and phrase-entry timpani supply the industrial drive. Strings appear only in the broader answer and return, with no bell ornaments. Restrained timpani/cymbals mark large entries rather than every four bars. All remain 4/4, with clear kick/snare pulses in combat.
 
 ### Dawnwatch and the crossing retcon
+
+The Open Gate (`dawnwatch`, 92, 4/4) retains the accepted first bar exactly:
+C–Db–C–G at beats 0, 1, 1.5 and 2.5, with lengths 1, .5, 1 and 2.
+Keep the melody's varied rhythm, cross-bar ties and expressive dissonant notes.
+Later entrances follow the beat where no earlier tie supports the downbeat.
+Swells and held-note vibrato belong to the melodic expression, with the Music
+comparison and steady pulse retained.
+
+The accompaniment controls the duration of harmonic tension. In bars 6 and 23,
+Csus moves to C on beat two and resolves to F minor on beat three. Other
+altered dominants reach F minor halfway through their bars. Gb/deceptive turns
+in the middle and return move onward within the measure. Original coloured
+voicings remain, but common tones and roots sustain only until the actual
+harmony changes. Short chord releases keep the resolved harmony clear.
+Reserve cadential breaths for real F-minor arrivals. Keep the 32-bar form,
+31-EDO spelling and quiet drum-free middle. Regional and battle scores and
+Petra's crossing remain independent.
 
 `score-dawnwatch.ts` owns five 32-bar F-minor compositions plus the sixteen-bar Chapter Two crossing. The Gun Terraces (`watchbarracks`, 106) use a shorter brass call and a stronger straight pulse; The Town Wheel (`signalwall`, 80) spreads bell fragments around entire silent bars, with low held support and no drums. The bass carries into every following empty melodic bar without reattacking. Across the Terraces (`dawn-battle`, 132) uses a triplet opening, a broad high answer, a lower middle and a varied return. Orders Worth Refusing (`dawn-commander`, 140) begins with Aurel's brass G–Ab–G–Db command; the tritone demand gives way to Petra's string answer in the middle. The command returns before settling onto her F-minor ground. Do not turn the marching drums into triplets.
 
