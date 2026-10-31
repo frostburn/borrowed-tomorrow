@@ -208,6 +208,24 @@ it('matches exhaustive lighting at radius/beam edges, including rotated and mirr
   }
 });
 
+it('keeps cached small-actor lighting identical to the general shader through Hammerplain’s release and movement',()=>{
+  const w=80,h=80,data=new Uint8ClampedArray(w*h*4),padded=new Uint8ClampedArray((w+1)*h*4);
+  for(let y=6;y<74;y++)for(let x=22;x<58;x++)if((x+y)%9){
+    const rgba=[100+x,80+y,120,(x+y)%5?255:96];data.set(rgba,(y*w+x)*4);padded.set(rgba,(y*(w+1)+x)*4);
+  }
+  const source={data,width:w,height:h,colorSpace:'srgb'}as ImageData,reference={...source,width:w+1,data:padded};
+  // The transparent extra column selects the general shader without changing
+  // any material plane, source pixel, coordinate or light. Reuse the same small
+  // frame across positions, rigs, reflections and scales to exercise its cache.
+  const map=CHAPTER_FIVE_MAPS.hammerplain.tiles!;
+  for(const freed of [false,true])for(const [x,y,sx,sy]of [[300,690,1,1],[302.5,690.25,1,1],[335,604,-1,1],[210,590,-1,.75],[700,690,1,1],[300,690,1,1]]){
+    const rig={...sceneLight('hammerplain',visibleSceneArt(map,{flags:{hammerplainFreed:freed}})!)!,maxGain:1.04};
+    const actual={...source,data:new Uint8ClampedArray(data.length).fill(255)},expected={...reference,data:new Uint8ClampedArray(padded.length)};
+    lightPixels(source,actual,rig,x,y,40,68,sx,sy);lightPixels(reference,expected,rig,x,y,40,68,sx,sy);
+    for(let row=0;row<h;row++)expect(actual.data.slice(row*w*4,(row+1)*w*4)).toEqual(expected.data.slice(row*(w+1)*4,(row*(w+1)+w)*4));
+  }
+});
+
 it('projects a rounded actor with ground width under lateral lights, smoothly across the side-on angle',()=>{
   for(const sign of [-1,1]){
     const matrices=[-1,0,1].map(dy=>shadowProjection(sign*80,dy));

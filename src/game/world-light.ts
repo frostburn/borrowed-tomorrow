@@ -78,6 +78,41 @@ function frameLamps(rig:WorldLight,w:number,h:number,x:number,y:number,ox:number
   });
 }
 
+// Walking changes the world position, not the geometry of an upright native
+// actor frame. Cache just its opaque samples; retain one transform per frame
+// and let the frame's ImageData own its lifetime. Large boss sheets stay on
+// the general path so their many poses cannot grow this small-sprite cache.
+const samples=new WeakMap<ImageData,{pose:string;data:Float64Array}>();
+function uprightSamples(source:ImageData,ox:number,oy:number,sx:number,sy:number){
+  const pose=[ox,oy,sx,sy].join(':'),cached=samples.get(source);if(cached?.pose===pose)return cached.data;
+  const planes=actorPlanes(source),a=source.data,values:number[]=[],signX=Math.sign(sx),signY=Math.sign(sy);
+  for(let i=0;i<a.length;i+=4)if(a[i+3]){
+    const at=i/4*3;
+    values.push(i,(i/4%source.width-ox)*sx,Math.max(0,-(Math.floor(i/4/source.width)-oy)*sy),planes[at]/100*signX,planes[at+1]/100*signY,planes[at+2]/100);
+  }
+  const data=new Float64Array(values);samples.set(source,{pose,data});return data;
+}
+
+function lightUpright(source:ImageData,output:ImageData,rig:WorldLight,lamps:readonly WorldLamp[],x:number,y:number,ox:number,oy:number,sx:number,sy:number,exposure:number,ceiling:number){
+  const a=source.data,b=output.data,geometry=uprightSamples(source,ox,oy,sx,sy);
+  // These terms are identical for every pixel at this ground position.
+  const depths=lamps.map(l=>(l.y-y)*1.35);
+  b.fill(0);
+  for(let at=0;at<geometry.length;at+=6){
+    const i=geometry[at],wx=x+geometry[at+1],height=geometry[at+2],nx=geometry[at+3],ny=geometry[at+4],nz=geometry[at+5];
+    let strength=0,red=0,green=0,blue=0;
+    for(let n=0;n<lamps.length;n++){
+      const lamp=lamps[n],lx=lamp.x-wx,ly=lamp.height-height,lz=depths[n],distance=Math.sqrt(lx*lx+ly*ly+lz*lz);
+      const power=attenuation(lamp,wx,y,distance);if(!power)continue;
+      const dot=(nx*lx+ny*ly+nz*lz)/Math.max(1,distance),band=dot>.55?1.08:dot>.05?.72:.30,fill=lamp.fill??0;
+      const response=power*(fill+(1-fill)*band),color=lamp.color??WARM;
+      strength+=power;red+=response*color[0];green+=response*color[1];blue+=response*color[2];
+    }
+    const factor=strength?Math.min(.65,strength)/strength:0;
+    b[i]=a[i]*Math.min(ceiling,rig.ambient[0]+factor*red)*exposure;b[i+1]=a[i+1]*Math.min(ceiling,rig.ambient[1]+factor*green)*exposure;b[i+2]=a[i+2]*Math.min(ceiling,rig.ambient[2]+factor*blue)*exposure;b[i+3]=a[i+3];
+  }
+}
+
 /** A small material-neutral light field; original alpha and geometry survive. */
 export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:number,y:number,originX:number,originY:number,scaleX=1,scaleY=1,rotation=0){
   const a=source.data,b=output.data,w=source.width,cos=Math.cos(rotation),sin=Math.sin(rotation);
@@ -92,6 +127,7 @@ export function lightPixels(source:ImageData,output:ImageData,rig:WorldLight,x:n
     }
     return;
   }
+  if(rotation===0&&w<=80&&source.height<=80){lightUpright(source,output,rig,lamps,x,y,originX,originY,scaleX,scaleY,exposure,ceiling);return;}
   const planes=actorPlanes(source),signX=Math.sign(scaleX),signY=Math.sign(scaleY);
   for(let i=0;i<a.length;i+=4){
     b[i+3]=a[i+3];if(!a[i+3]){b[i]=b[i+1]=b[i+2]=0;continue;}
