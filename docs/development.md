@@ -324,6 +324,8 @@ portrait on phones; Next/Continue stays fixed as lines change. Scenes without
 the option retain their existing bottom layout, and closing or skipping clears
 the placement before ordinary dialogue or panels open.
 
+The Emperor’s crown entrance also supplies `Cinematic.stageWidth` and `stageHeight`. These fit the whole assembly to the viewport and the area below the upper dialogue card. Camera focus offsets account for zoom; resize recomputes the fit. Close/skip restores the original zoom and bounds before exploration or combat resumes. Other scenes retain their existing camera scale. The opt-in `imperial-entry.spec.ts` cases cover motion/reduced motion, both Nell routes, early advance, skip, reload, resize, failed-art retry and actual battle handoff.
+
 The Lower Dispensary introduction stages all six actors on clear floor in front
 of the lift. Its Tiled `Scene:five-wind-dispensary` cast and
 `assets/vector/windmere.py` must agree. The separate lift action keeps its own

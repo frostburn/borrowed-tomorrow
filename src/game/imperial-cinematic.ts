@@ -2,15 +2,20 @@ import Phaser from 'phaser';
 import type { StagePoint } from '../content/cinematics';
 import { hollowSunPolygons } from '../content/hollow-sun';
 import hollowSun from '../content/hollow-sun.json';
-export type ImperialEffect='capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall';
+import {ImperialEntry} from './imperial-entry';
+import type {ImperialEntryEffect} from '../content/imperial-entry';
+export type ImperialEffect=ImperialEntryEffect|'capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall';
 /** Scene-time effects own no story state; completion/skip commits the checkpoint. */
 export class ImperialCinematic {
  private tweens:Phaser.Tweens.Tween[]=[];
  private objects:Phaser.GameObjects.GameObject[]=[];
  private originals:{image:Phaser.GameObjects.Image;x:number;y:number;alpha:number}[]=[];
- constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container){}
- get animating(){return this.tweens.some(t=>t.isPlaying());}
+ private entry?:ImperialEntry;
+ constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,emperor?:Phaser.GameObjects.Image){if(emperor)this.entry=new ImperialEntry(scene,world,emperor);}
+ get animating(){return !!this.entry?.animating||this.tweens.some(t=>t.isPlaying());}
+ settle(){this.entry?.settle();}
  play(kind:ImperialEffect,focus?:StagePoint){
+  if(kind==='imperial-enter'||kind==='imperial-close'||kind==='imperial-unfold'){this.entry?.play(kind);return;}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches,x=((focus?.x??32)+.5)*24,y=((focus?.y??22)+.5)*24;
   if(kind==='capital-street'){
    for(const o of this.world.list)if(o instanceof Phaser.GameObjects.Image&&/city-return|palace-cordon|city-cart/.test(o.getData('scene-piece')?.key??'')){
@@ -45,5 +50,5 @@ export class ImperialCinematic {
   }
   this.world.sort('depth');
  }
- close(){for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const p of this.originals)if(p.image.active)p.image.setPosition(p.x,p.y).setAlpha(p.alpha);this.originals=[];}
+ close(){this.entry?.close();this.entry=undefined;for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const p of this.originals)if(p.image.active)p.image.setPosition(p.x,p.y).setAlpha(p.alpha);this.originals=[];}
 }
