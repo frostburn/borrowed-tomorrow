@@ -34,13 +34,13 @@ for expression in ('','happy','worried','sad','angry','surprised','bashful'):
  if not expression:
   # Slightly lift the inner brow ends on her default face for discomfort.
   portrait=portrait.replace('M43 45L52 43 58 45 59 48 51 47 44 49Z M69 45L77 44 82 47 82 49 72 48Z',
-                            'M43 45L52 43 58 41 59 44 51 47 44 49Z M69 42L77 44 82 47 82 49 72 46Z')
+                            'M43 45L52 43 58 42 59 45 51 47 44 49Z M69 43L77 44 82 47 82 49 72 47Z')
  # Lift the lower lids into a mild pained squint. The eye bags span four
  # native rows so they remain visible after the game's two-pixel sampling.
  lower=57 if expression=='surprised' else 56 if expression in ('happy','bashful') else 55
  lid=lower-1.5
  lids=f'<g data-part="raised-lower-eyelids"><path d="M46 {lid+1}L51 {lid} 56 {lid} 58 {lid+1} 58 {lower+1}H46Z" fill="#d1a585"/><path d="M71 {lid+1}L75 {lid} 79 {lid} 81 {lid+1} 81 {lower+1}H71Z" fill="#bd9275"/></g>\n'
- bags=f'<g data-part="under-eye-fatigue"><path d="M46 {lower+1}L50 {lower+2} 56 {lower+1} 58 {lower+2} 55 {lower+5} 49 {lower+5} 46 {lower+3}Z" fill="#b18d7e"/><path d="M72 {lower+1}L76 {lower+2} 80 {lower+1} 81 {lower+3} 78 {lower+5} 74 {lower+5} 72 {lower+3}Z" fill="#997c70"/></g>\n'
+ bags=f'<g data-part="under-eye-fatigue"><path d="M46 {lower+1}L50 {lower+2} 56 {lower+1} 58 {lower+2} 55 {lower+5} 49 {lower+5} 46 {lower+3}Z" fill="#ad8990"/><path d="M72 {lower+1}L76 {lower+2} 80 {lower+1} 81 {lower+3} 78 {lower+5} 74 {lower+5} 72 {lower+3}Z" fill="#94787f"/></g>\n'
  portrait=portrait.replace('<path d="M64 51',lids+bags+'<path d="M64 51')
  (OUT/f'portrait-nell-ill{suffix}.svg').write_text(portrait)
 

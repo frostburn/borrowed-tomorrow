@@ -29,11 +29,11 @@
 <path d="M77 35L82 42 85 59 80 75 69 86 60 88 61 83 73 75 77 62Z" fill="#b18a71"/>
 <path d="M37 56L46 55 52 62 48 68 40 65Z" fill="#d0a183"/>
 <path d="M44 50L54 48 60 51 58 56 45 55Z M69 49L79 50 83 53 80 56 70 55Z" fill="#bd9275"/>
-<path d="M43 45L52 43 58 41 59 44 51 47 44 49Z M69 42L77 44 82 47 82 49 72 46Z" fill="#623d29"/>
+<path d="M43 45L52 43 58 42 59 45 51 47 44 49Z M69 43L77 44 82 47 82 49 72 47Z" fill="#623d29"/>
 <path d="M46 52L56 51 57 54H47Z M72 51H80V54H72Z" fill="#eee9dc"/>
 <path d="M52 51H56V55H52Z M75 51H79V55H75Z" fill="#263e4b"/>
 <g data-part="raised-lower-eyelids"><path d="M46 54.5L51 53.5 56 53.5 58 54.5 58 56H46Z" fill="#d1a585"/><path d="M71 54.5L75 53.5 79 53.5 81 54.5 81 56H71Z" fill="#bd9275"/></g>
-<g data-part="under-eye-fatigue"><path d="M46 56L50 57 56 56 58 57 55 60 49 60 46 58Z" fill="#b18d7e"/><path d="M72 56L76 57 80 56 81 58 78 60 74 60 72 58Z" fill="#997c70"/></g>
+<g data-part="under-eye-fatigue"><path d="M46 56L50 57 56 56 58 57 55 60 49 60 46 58Z" fill="#ad8990"/><path d="M72 56L76 57 80 56 81 58 78 60 74 60 72 58Z" fill="#94787f"/></g>
 <path d="M64 51L62 62 59 67 63 70 70 68 72 65 67 62Z" fill="#b98e72"/>
 <path d="M64 54L65 63 69 65 66 67 62 65Z" fill="#e6c4a4"/>
 <path d="M60 68L65 69 69 67 69 70 64 72Z" fill="#916f5b"/>
