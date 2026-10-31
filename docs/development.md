@@ -242,6 +242,13 @@ attack. Fixtures retain Strike / Move here choices without automatic approaches.
 Team helpers retain their movement-only continuation and show **Move**, never
 Move / Strike, alongside End turn.
 
+Scheduled enemy attack cells retain their red X. A living party member on one
+of those cells has a red filled hex and red outline, including the active
+character and allies inside an ability preview. Empty threatened destinations
+keep their blue reachable interior. The current attack's wind-up/impact colors
+take precedence while it plays; leaving a marked cell removes the character's
+red highlight.
+
 Confirmation and target feedback sit below the command grid in the bottom command
 panel, outside its scroller. Confirm, Cancel and fixture Move here buttons stay
 in a fixed row; predictions and warnings scroll above it. Nothing covers the

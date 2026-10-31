@@ -719,6 +719,7 @@ export class Adventure extends Phaser.Scene {
     const attack=this.enemyAttack?.battle===b?this.enemyAttack:undefined;
     const attackCells=new Set(attack?.cells.map(key));
     const danger=new Set(b.units.filter(v=>v.hp>0&&!(v.id===attack?.actorId&&ABILITIES[attack.ability].shape==='pattern')).flatMap(v=>v.intent?.cells.map(key)??[]));
+    const threatenedParty=new Set(b.units.filter(v=>v.side==='party'&&v.hp>0).flatMap(v=>occupiedHexes(v).map(key)).filter(id=>danger.has(id)));
     const strike=canAct&&aimed&&this.selected==='strike'?basicStrike(b,u!,aimed,this.plan?.approach):undefined;
     const affected=strike?new Set(shape(strike.battle,strike.actor,'strike',strike.aim).map(key)):canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     const valves=this.selected!=='move'&&damagingAbility(this.selected)?b.fixtures?.filter(f=>f.kind==='valve'&&affected.has(key(f.hex)))??[]:[];
@@ -745,7 +746,10 @@ export class Adventure extends Phaser.Scene {
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);priority=8;if(alpha===.12){color=0xd7a548;alpha=.22;}}
-      if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;priority=10;}
+      // Keep danger visible under every threatened fighter, including the active
+      // character and allies inside a selected healing or attack footprint.
+      if(threatenedParty.has(id)){color=0xc23842;alpha=.6;stroke=0xff7770;width=3;priority=10;}
+      if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;priority=11;}
       fill(h,color,alpha);outlines.push({hex:h,color:stroke,width,priority});
       if(danger.has(id)){
         if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,6);
@@ -834,7 +838,7 @@ export class Adventure extends Phaser.Scene {
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
     const directHint=this.selected==='move'&&bossDirectHint(b);if(directHint)hint.textContent=directHint+' '+hint.textContent;
     if(movementOnly(b,u))hint.textContent='Attack spent. Move once, or End turn (F).';
-    if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; blue interiors remain reachable.';
+    if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; red hexes mark threatened characters; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){
       const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;confirm.hidden=false;

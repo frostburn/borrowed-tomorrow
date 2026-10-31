@@ -38,6 +38,7 @@ export class CampaignSession{
   }),travel:(map,x,y)=>{this.state.location={map,x,y};resumeChapter(this.host);},battle:id=>{if(this.pendingBattle)throw Error('Overlapping battles');this.pendingBattle=id;},shop:id=>{this.shop=id??'station';},boundary(){},toast:message=>this.events.push({event:'message',message}),endingMusic(){}};
  }
  private world(){if(this.dialogue||this.pendingBattle||this.shop||this.pendingCheckpoint)throw Error('Finish the pending dialogue, battle, shop or checkpoint first');}
+ get dialogueOpen(){return !!this.dialogue;}
  private observed(event:string,detail:Record<string,unknown>,action:()=>void){const before=resources(this.state);action();this.events.push({event,...detail,before,after:resources(this.state)});}
  /** Complete linear scenes and real battles, stopping at an explicit choice. */
  settle(){

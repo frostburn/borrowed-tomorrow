@@ -51,9 +51,9 @@ function offerCrewSpecialties(h:StoryHost){
 /** Local specialists and the travelling crew share confirmation and charging. */
 function improvementMenu(h:StoryHost,who:string,intro:string,choices:readonly Improvement[],again:()=>void,backLabel:string,back:()=>void){
  const s=h.state;
- h.talk({lines:[SAY(who,intro),SAY('Permanent improvements',`${s.coins} marks. Improvements stay with the character. Training does not restore HP or focus.`),...choices.map(i=>SAY('Permanent improvement',`${CHARACTERS[i.hero].name} · ${i.name}: ${improvementEffect(s,i)}`))],choices:[
+ h.talk({lines:[SAY(who,intro),SAY('Permanent improvements',`You have ${s.coins} marks. Improvements stay with the character. Training does not restore HP or focus.`),...choices.map(i=>SAY('Permanent improvement',`${CHARACTERS[i.hero].name} · ${i.name}: ${improvementEffect(s,i)}`))],choices:[
   ...choices.map(i=>{const problem=improvementProblem(s,i);return {label:`${i.name} · ${problem==='Completed'?'Completed':`${i.cost} marks${problem?` · ${problem}`:''}`}`,disabled:!!problem,action:()=>h.talk({lines:[SAY('Confirm improvement',`${CHARACTERS[i.hero].name} — ${improvementEffect(s,i)} Pay ${i.cost} marks? ${s.coins} → ${s.coins-i.cost} marks.`)],choices:[
-   {label:`Confirm · ${i.cost} marks`,action:()=>{if(buyImprovement(s,i.id)){h.refresh();h.save();h.toast(`${i.name} completed for ${CHARACTERS[i.hero].name}.`);}again();}},
+   {label:`Confirm · ${i.cost} marks`,action:()=>{if(buyImprovement(s,i.id)){h.refresh();h.save();h.toast(`${i.name} completed for ${CHARACTERS[i.hero].name}.`);if(choices.every(i=>improved(s,i.id)))return;}again();}},
    {label:'Cancel improvement',action:again},
   ]})};}),
   {label:backLabel,action:back},

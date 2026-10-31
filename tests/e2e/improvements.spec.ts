@@ -17,7 +17,8 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
    const s=chapterFiveFinaleStart();s.coins=2000;s.party.find(h=>h.id==='orrin')!.focus=0;
    await importSave(page,s);await approach(page,'ship-supply');await choose(page,'Training · permanent improvements');
-   await choose(page,'Train Orrin');await choose(page,'Focus training · 450 marks');
+   await choose(page,'Train Orrin');await page.locator('.dialogue-actions').getByRole('button',{name:/Next$/}).click();
+   await expect(page.locator('.dialogue p')).toContainText('You have 2000 marks.');await choose(page,'Focus training · 450 marks');
    await expect(page.locator('.dialogue')).toContainText('Max focus 6 → 7');await expect(page.locator('.dialogue')).toContainText('2000 → 1550 marks');
    await capture(page,`training-confirm-${device}`);expect((await inspect(page)).state.coins).toBe(2000);
    await choose(page,'Cancel improvement');await choose(page,'Focus training · 450 marks');await choose(page,'Confirm · 450 marks');
@@ -27,7 +28,8 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    await expect(page.getByRole('button',{name:'Focus training · Completed',exact:true})).toBeDisabled();
    await choose(page,'Choose another character');await expect(page.getByRole('button',{name:'Train Orrin',exact:true})).toBeEnabled();
    await choose(page,'Train Orrin');await choose(page,'Endurance training · 300 marks');await choose(page,'Confirm · 300 marks');
-   await choose(page,'Choose another character');await expect(page.getByRole('button',{name:'Train Orrin',exact:true})).toBeDisabled();
+   await expect(page.locator('.dialogue')).toHaveCount(0);await capture(page,`training-dismissed-${device}`);
+   await approach(page,'ship-supply');await choose(page,'Training · permanent improvements');await expect(page.getByRole('button',{name:'Train Orrin',exact:true})).toBeDisabled();
    await capture(page,`training-completed-${device}`);await choose(page,'Leave training');await capture(page,`training-marker-${device}`);
    await approach(page,'ship-supply');await choose(page,'Rest · restore everyone’s HP and focus');
    expect((await inspect(page)).state.party.find(h=>h.id==='orrin')!.focus).toBe(7);
@@ -40,17 +42,17 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
   test('specialists expose local offers, the jungle follows treatment, and ill Nell cannot train',async({page})=>{
    await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
    const s=chapterFiveFinaleStart();s.coins=500;s.location={map:'hammerplain',x:35,y:26};
-   await importSave(page,s);await approach(page,'hammer-hester-after');await choose(page,'Counterbalanced lance · 500 marks');await choose(page,'Confirm · 500 marks');await choose(page,'Leave');
+   await importSave(page,s);await approach(page,'hammer-hester-after');await choose(page,'Counterbalanced lance · 500 marks');await choose(page,'Confirm · 500 marks');await expect(page.locator('.dialogue')).toHaveCount(0);
    expect((await inspect(page)).state.coins).toBe(0);await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Orrin',exact:true}).click();
    await expect(page.getByRole('dialog')).toContainText('Move 3');await capture(page,`counterbalance-${device}`);await page.getByRole('button',{name:'Close',exact:true}).click();
    const ill=chapterSixStart();ill.flags.capitalSealed=true;ill.flags.sixRoutesKnown=true;ill.flags.jungleLeadKnown=true;
    await importSave(page,ill);await approach(page,'six-supplies');await choose(page,'Training · permanent improvements');await expect(page.getByRole('button',{name:'Train Nell',exact:true})).toBeDisabled();await choose(page,'Leave training');
    const cured=jungleCheckpoint('riverRestSeen');cured.location={map:'riverhaven',x:28,y:30};cured.coins=450;
-   await importSave(page,cured);await dialogue(page);await approach(page,'river-tavi');await choose(page,'River courier training · 450 marks');await choose(page,'Confirm · 450 marks');await choose(page,'Leave');
+   await importSave(page,cured);await dialogue(page);await approach(page,'river-tavi');await choose(page,'River courier training · 450 marks');await choose(page,'Confirm · 450 marks');await expect(page.locator('.dialogue')).toHaveCount(0);
    expect((await inspect(page)).state.flags['improved-kit-footing']).toBe(true);expect((await inspect(page)).state.flags.desertSeen).toBeFalsy();
    const capital=chapterSixCapitalStart(true);capital.coins=400;await importSave(page,capital);await dialogue(page);await approach(page,'capital-crew');
    await choose(page,'Reinforce Nell’s lantern · 400 marks');await choose(page,'Reinforced lantern housing · 400 marks');await choose(page,'Confirm · 400 marks');
-   expect((await inspect(page)).state.flags['improved-nell-housing']).toBe(true);await capture(page,`lantern-housing-${device}`);
+   await expect(page.locator('.dialogue')).toHaveCount(0);expect((await inspect(page)).state.flags['improved-nell-housing']).toBe(true);await capture(page,`lantern-housing-${device}`);
   });
   test('the mooring crew retains all three anchor specialties after Chapter Five',async({page})=>{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -64,6 +66,8 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
    for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450]]as const){
     await choose(page,`${name} · ${cost} marks`);await choose(page,`Confirm · ${cost} marks`);
    }
+   await expect(page.locator('.dialogue')).toHaveCount(0);await capture(page,`crew-training-dismissed-${device}`);
+   await approach(page,'six-supplies');await choose(page,'Training · permanent improvements');await choose(page,'Specialist improvements');
    const next=page.locator('.dialogue-actions').getByRole('button',{name:/Next$/});while(await next.count())await next.click();
    for(const name of ['Counterbalanced lance','Shield recovery drill','Long-range focus calibration'])await expect(page.getByRole('button',{name:`${name} · Completed`,exact:true})).toBeDisabled();
    await capture(page,`crew-completed-${device}`);await choose(page,'Back to training');await choose(page,'Leave training');
