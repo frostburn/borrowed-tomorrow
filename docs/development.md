@@ -82,6 +82,12 @@ without changing the display cadence, input timing or movement/footstep rules.
 
 Actor lighting takes an ambient-only path outside all lamp bounds. Lit actors
 reuse transform signs and use a direct three-component distance calculation.
+Upright frames up to 80 × 80 also reuse their transformed opaque samples while
+walking. This avoids scanning transparent margins and reconstructing sprite
+geometry for every position, especially beside Hammerplain's four windows after
+the anchor release. Lighting still uses the current position and all active
+lamps. Each frame retains only its latest origin/scale transform in a weak cache;
+rotated frames and large boss bodies use the general shader.
 The exhaustive lighting oracle still compares exact bytes at lamp/beam edges,
 including mirrored/rotated frames and distant ambient-only poses. The browser
 compositor oracle compares the displayed output with the former full-size
@@ -94,8 +100,12 @@ For repeatable profiles, use an installed Chromium and run:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium npm run profile:walking -- /tmp/bt-walk-after 4
 ```
 
-The CPU-throttling argument defaults to 1. The command also accepts a map group: `early` (the default) or `three`, for example
+The CPU-throttling argument defaults to 1. The command also accepts a map group: `early` (the default), `three` or `hammerplain`, for example
 `npm run profile:walking -- /tmp/bt-walk-three 1 three`.
+`npm run profile:walking -- /tmp/bt-walk-hammerplain 1 hammerplain` compares
+authored pre-release and completed Hammerplain saves on the same western walk,
+writing separate `hammerplain-before.json` and `hammerplain-after.json` profiles.
+Use the same command on both code revisions to measure a performance change.
 The CPU-throttling argument precedes the map group. The command
 starts its own Vite server and clean browser contexts, imports authored test
 checkpoints through Save, enables sound, then walks right and left for 2.2s each

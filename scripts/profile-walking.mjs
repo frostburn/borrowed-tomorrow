@@ -12,8 +12,8 @@ const directory=process.argv[2]?resolve(process.argv[2]):await mkdtemp(join(tmpd
 const rate=Number(process.argv[3]??1);
 if(!Number.isFinite(rate)||rate<1)throw new Error('CPU throttle must be a number >= 1.');
 const chapter=process.argv[4]??'early';
-if(chapter!=='early'&&chapter!=='three')throw new Error('Map group must be early or three.');
-const scenarios=chapter==='three'?[['northglass','petraJoined',32,31],['relayhall','tomasRescued',22,16],['conduit','conduitSeen',25,30]]:[['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]];
+if(!['early','three','hammerplain'].includes(chapter))throw new Error('Map group must be early, three or hammerplain.');
+const scenarios=chapter==='hammerplain'?[['hammerplain','hammerplainSeen',13,29],['hammerplain','hammerplainComplete',13,29]]:chapter==='three'?[['northglass','petraJoined',32,31],['relayhall','tomasRescued',22,16],['conduit','conduitSeen',25,30]]:[['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]];
 await mkdir(directory,{recursive:true});
 const server=await createServer({root,server:{host:'127.0.0.1',port:5173}});
 let browser;
@@ -23,13 +23,14 @@ try{
  browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required']});
  const summaries=[];
  for(const [map,flag,x,y]of scenarios){
+  const name=chapter==='hammerplain'?`${map}-${flag==='hammerplainSeen'?'before':'after'}`:map;
   const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'no-preference'});
   try{
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(url);await page.waitForFunction(()=>!!window.borrowedTomorrow);
    const state=await page.evaluate(async({map,flag,x,y})=>{
     const fixtures=await import('/tests/support/progress.ts');
-    const state=map==='station'?fixtures.checkpoint(flag):['coast','cinderbank'].includes(map)?fixtures.coastCheckpoint(flag):fixtures.palaceCheckpoint(flag);
+    const state=map==='hammerplain'?(await import('/tests/support/anchors.ts')).anchorCheckpoint(flag):map==='station'?fixtures.checkpoint(flag):['coast','cinderbank'].includes(map)?fixtures.coastCheckpoint(flag):fixtures.palaceCheckpoint(flag);
     state.location={map,x,y};return state;
    },{map,flag,x,y});
    await page.getByRole('button',{name:/^Save files$|^Save$/}).first().click();
@@ -62,13 +63,13 @@ try{
    const {profile}=await cdp.send('Profiler.stop');
    const measurements=await page.evaluate(()=>{window.walkProfile.active=false;return {...window.walkProfile,location:window.borrowedTomorrow.inspect().state.location};});
    if(errors.length)throw new Error(errors.join('\n'));
-   await writeFile(join(directory,`${map}.json`),JSON.stringify({profile,measurements}));
+   await writeFile(join(directory,`${name}.json`),JSON.stringify({profile,measurements}));
    const idle=new Set(profile.nodes.filter(n=>n.callFrame.functionName==='(idle)').map(n=>n.id));
    const total=profile.timeDeltas.reduce((a,b)=>a+b,0),idleTime=profile.samples.reduce((sum,id,i)=>sum+(idle.has(id)?profile.timeDeltas[i]:0),0);
    const intervals=measurements.steps.slice(1).map((t,i)=>(t-measurements.steps[i])*1000);
    const runs=measurements.animationRuns.filter(run=>run.length>1),presentationIntervals=runs.flatMap(run=>run.slice(1).map((t,i)=>t-run[i]));
    const presentationTime=runs.reduce((sum,run)=>sum+run.at(-1)-run[0],0);
-   summaries.push({map,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),presentationFps:presentationTime?1000*presentationIntervals.length/presentationTime:0,presentationMedianMs:quantile(presentationIntervals,.5),presentationP95Ms:quantile(presentationIntervals,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
+   summaries.push({map,scenario:name,cpuThrottle:rate,busyPercent:100*(1-idleTime/total),paintMedianMs:quantile(measurements.paint,.5),paintP95Ms:quantile(measurements.paint,.95),presentationFps:presentationTime?1000*presentationIntervals.length/presentationTime:0,presentationMedianMs:quantile(presentationIntervals,.5),presentationP95Ms:quantile(presentationIntervals,.95),frameP95Ms:quantile(measurements.raf,.95),footstepP95Ms:quantile(intervals,.95),longTasks:measurements.long.length,steps:measurements.steps.length});
    console.log(JSON.stringify(summaries.at(-1)));
   }finally{await context.close();}
  }
