@@ -84,7 +84,8 @@ Civilian walking frames are retained as optional artwork. Background movement an
 `illness.py` derives a mildly paler, warm complexion for Nell’s faint/reclining/bed poses and all seven
 portrait expressions, leaving the healthy editable originals intact. Run
 `python3 assets/characters/vector/illness.py` (also included by `art:five` and
-`art:six`). Illness portraits add low-contrast under-eye shadows for fatigue. Clothing,
+`art:six`). Illness portraits raise the lower eyelids into a mild pained squint and add
+under-eye bags deep enough to survive the two-pixel display grid. Clothing,
 hair, lantern and cot stay authored. `nell-recovered.svg` restores her complexion
 while she remains on Iria’s cot. `content/illness-appearance.ts` follows the saved
 illness and explicit staged collapse/recovery poses for dialogue; Equipment uses
