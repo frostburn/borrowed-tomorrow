@@ -19,7 +19,7 @@ export function offersTraining(object:MapObject,state:Pick<GameState,'flags'>):b
  const f=state.flags;if(!f.airshipOwned)return false;
  if(['ship-supply','six-supplies','sill-rest','refuge-seven-rest','capital-crew','capital-departure'].includes(object.id))return true;
  if(['hammer-hester','hammer-hester-after'].includes(object.id))return !!f.hammerplainComplete;
- if(['dawn-gate','dawn-soldier','dawn-soldier-after'].includes(object.id))return !!f.dawnwatchComplete;
+ if(['dawn-soldier','dawn-soldier-after'].includes(object.id))return !!f.dawnwatchComplete;
  if(['wind-sera','wind-lift-sera'].includes(object.id))return !!f.windmereComplete;
  if(['river-tavi','river-stores','rainhouse-rest'].includes(object.id))return !!f.riverRestSeen;
  return ['palace-rest','crown-rest'].includes(object.id)&&!!f.nellRecovered;

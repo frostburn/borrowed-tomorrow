@@ -207,3 +207,11 @@ it('marks training clerks with a barbell, combining rest and story shapes where 
  expect(glyph(GYM_GLYPH)).not.toEqual(glyph('?'));
  expect(smallGlyphs[GYM_GLYPH as keyof typeof smallGlyphs]).toBeDefined();
 });
+it('shows a single Dawnwatch training marker on Enna after the town is freed',()=>{
+ const s=newGame();Object.assign(s.flags,{airshipOwned:true,dawnwatchSeen:true,shelterOpened:true});
+ const trainers=()=>visibleObjects(MAPS.dawnwatch,s).filter(o=>interactionMarker(o,s)?.glyph.includes(GYM_GLYPH)).map(o=>o.id);
+ expect(trainers()).toEqual([]);s.flags.dawnwatchComplete=true;
+ expect(trainers()).toEqual(['dawn-soldier-after']);
+ const gate=visibleObjects(MAPS.dawnwatch,s).find(o=>o.id==='dawn-gate')!;
+ expect(interactionMarker(gate,s)).toEqual(INTERACTION_MARKERS.talk);
+});

@@ -35,7 +35,6 @@ export function interactDawnwatch(h:StoryHost,id:string){
   case 'cabin-deck':return go('airship','cabin');
   case 'dawn-ship':return go('airship','dawnwatch');
   case 'dawn-gate':
-   if(f.dawnwatchComplete)return offerImprovements(h,'dawnwatch');
    if(!f.dawnwatchSeen)return;
    if(f.shelterOpened)return say('Enna',f.dawnwatchComplete?'The wheel key stays by the shelter door. Everybody on watch knows where it is.':'There’s water inside. We’ll keep the door open while you clear the gun terraces.');
    return h.talk({...scenes.shelter(),done:()=>{s.location=arrival('dawnwatch','shelter');h.commit('shelterOpened','shelterOpened');}});
