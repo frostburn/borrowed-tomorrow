@@ -65,8 +65,11 @@ For new themes, read `docs/music-direction.md`. The retained Northglass score us
 
 Dawnwatch's The Open Gate is a connected string song: its C–Db–C–G motif,
 cross-bar melody holds, sustained roots and common-tone inner strings carry the
-slow phrases. Keep its 92 BPM pulse and phrase-ending breaths. The clipped
-terrace, Wheel and battle arrangements and Petra's crossing remain independent.
+slow phrases. Its melody establishes the 92 BPM pulse on quarter beats, with
+only a brief connected Db ornament. Sustain stable tones, resolve suspensions
+promptly and reserve cadential breaths for real F-minor arrivals. Do not treat
+altered tensions or deceptive turns as resting points. The clipped terrace,
+Wheel and battle arrangements and Petra's crossing remain independent.
 
 Chapter Three uses `northglass` for the conduit works medical siding, `relayhall` for the control gallery, and `conduit` for the new underground vessel chamber. Tomas is rescued alive before the extraction is shut down; the Emperor then teleports to his marble palace using the conduit’s remaining charge. Tomas is a supporting actor, never a combat unit. The three-fighter cap remains a mechanical limit without a story explanation. Loot goes to the bag for manual fitting: baffled nozzle (Orrin), balanced saber hilt (Petra), silver reflector (Nell), ratchet sight (Kit), and insulated work coat (any companion). Keep both intake routes and the optional stores patrol available.
 

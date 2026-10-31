@@ -2,6 +2,11 @@
 
 Compose original melodies with deliberate phrases and Japanese game/anime influence through harmony and pacing. These are compositional references, not requests for borrowed recordings or copied tunes.
 
+When quiet percussion leaves the melody to establish a slow cue's pulse,
+ground new phrases on the beat. Keep dissonant passing tones brief and resolve
+them clearly; long holds and cadential breaths belong to stable arrivals.
+Do not stretch an altered tension or deceptive cadence into a resting point.
+
 ## Tuning and spelling
 
 All scores and pitched healing/victory cues use **31-EDO**, anchored to **A4 = 440 Hz**. Scores store explicit pitches such as `Bb4`, `F#4`, `Ed4` and `At5`. ASCII `t`/`d` raise/lower a natural by one 31-EDO step; `#`/`b` raise/lower by two. Compound alterations such as `C#t4` (+3) and `Bbd4` (−3) keep their spelling through octave shifts and transposition. `src/game/tuning.ts` calculates frequencies directly from spelling and constructs diatonic intervals. The semitone-coordinate helper exists only to verify the transcription; it never determines sound.
@@ -164,18 +169,22 @@ across all three shots and is listed under Chapter One in Music and Soundtrack.
 ### Dawnwatch and the crossing retcon
 
 The Open Gate (`dawnwatch`, 92, 4/4) keeps Petra's refusal cell and the regional
-F-minor progression, but gives the town its own legato string line. The opening
-G carries into its answer; the first high F sustains into the next sentence.
-Short rests belong at the ends of phrases rather than between every bar.
-The low middle and changed return connect by stepwise approaches. Soft swells
-and controlled held-note vibrato follow the melody; Expression offers the
-comparison in Music without changing the steady pulse. There is no rubato.
+F-minor progression, but gives the town its own legato string line. Quarter-beat
+entries establish the meter; a brief Db neighbour returns to C on beat two.
+Bars without a downbeat attack have a stable note tied through it. Long ties
+use chord tones that remain stable under every harmony they cross. Passing
+tones and leading notes move on within one beat, with short releases and no
+vibrato. Cadential fades and breaths belong to the real F-minor arrivals in
+bars 8, 16 and 32. The low middle and return keep moving through deceptive turns.
+Expression offers soft swells and controlled vibrato on the stable holds,
+without changing the steady pulse. There is no rubato.
 
 Bass roots sustain through unchanged harmonies, and quiet inner strings tie
-common tones until those tones leave the next voicing. Sparse piano entries
-mark larger phrases instead of restarting the harmony every bar. Holds end
-before the loop seam. Keep the 32-bar form, 31-EDO spelling and low drum-free
-middle. The town melody/backing are separate from the clipped regional phrases
+common tones until those tones leave the next voicing. Clear triads support the
+quiet melody; suspended dominants in bars 6 and 23 resolve halfway through the
+bar. Sparse piano entries mark larger phrases instead of restarting the harmony
+every bar. Holds end before the loop seam. Keep the 32-bar form, 31-EDO spelling
+and low drum-free middle. The town melody/backing are separate from the clipped regional phrases
 used by the terraces and battles; those scores and Petra's crossing retain
 their authored notes and rhythm.
 
