@@ -36,7 +36,7 @@ export class Cutscene {
     const p=pixel(point);
     // Match the authored dialogue position; ordinary phone scenes keep their
     // existing allowance above the lower panel, including the sea-wall walk.
-    p.y+=this.dialogueInset/this.scene.cameras.main.zoom;
+    p.y+=this.dialogueInset;
     return p;
   }
   private layer:Phaser.GameObjects.Container;
@@ -60,11 +60,7 @@ export class Cutscene {
   private mechanisms?:MechanismCinematic;
   private tracked?:Phaser.GameObjects.Image;
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
-  private originalZoom=1;
-  private originalBounds=true;
-  private fitStage(){if(this.script.stageWidth){const camera=this.scene.cameras.main;camera.useBounds=false;const height=camera.height-(this.script.dialoguePosition==='top'?228:0);camera.setZoom(Math.min(this.originalZoom,camera.width/this.script.stageWidth,this.script.stageHeight?Math.max(1,height)/this.script.stageHeight:1));}}
   constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
-    this.originalZoom=scene.cameras.main.zoom;this.originalBounds=scene.cameras.main.useBounds;this.fitStage();
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
@@ -95,7 +91,7 @@ export class Cutscene {
     if(shot.music)this.audio.setMode(shot.music);
     const duration=this.duration?(shot.duration??this.duration):0;
     const camera=this.scene.cameras.main;camera.stopFollow();camera.panEffect.reset();
-    if(this.tracked?.active)camera.centerOn(this.tracked.x,this.tracked.y+this.dialogueInset/camera.zoom);
+    if(this.tracked?.active)camera.centerOn(this.tracked.x,this.tracked.y+this.dialogueInset);
     else if(this.focus){const p=this.cameraPoint(this.focus);camera.centerOn(p.x,p.y);}
     this.tracked=undefined;
     for(const actor of this.actors.values()){
@@ -122,7 +118,7 @@ export class Cutscene {
           onUpdate:()=>{if(emperor&&duration)actor.setTexture(EMPEROR_WALK[Math.floor(Math.hypot(actor.x-start.x,actor.y-start.y)/7)%EMPEROR_WALK.length]);},
           onComplete:()=>{if(emperor&&actor.active)actor.setTexture('emperor-left');}});}
     }
-    if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1,0,-this.dialogueInset/camera.zoom);}
+    if(shot.track){this.tracked=this.actors.get(shot.track);if(this.tracked)camera.startFollow(this.tracked,false,1,1,0,-this.dialogueInset);}
     if(shot.effect==='raid-clear'||shot.effect==='raid-hound'||shot.effect==='raid-escort'||shot.effect==='raid-board')this.raid?.play(shot.effect,shot.effect==='raid-escort'?duration:undefined);
     else if(shot.effect==='domain-withdraw'||shot.effect==='domain-break'||shot.effect==='domain-fragment'||shot.effect==='domain-release')this.domain?.play(shot.effect,shot.focus??this.focus);
     else if(shot.effect==='imperial-enter'||shot.effect==='imperial-close'||shot.effect==='imperial-unfold'||shot.effect==='capital-street'||shot.effect==='capital-fall'||shot.effect==='capital-thread'||shot.effect==='capital-horizon'||shot.effect==='lightbearer-rise'||shot.effect==='lightbearer-fall')this.imperial?.play(shot.effect as ImperialEffect,shot.focus);else if(shot.effect==='river-launch'||shot.effect==='river-treatment')this.river?.play(shot.effect,shot.focus);else if(shot.effect==='pact-seal'||shot.effect==='pact-break'||shot.effect==='pact-open')this.pact?.play(shot.effect,shot.focus??this.focus);else if(shot.effect==='claim-omen'||shot.effect==='claim-strike')this.claim?.play(shot.effect==='claim-strike');else if(shot.effect==='flagship-approach')this.flagship?.play();else if(shot.effect==='water-lift'||shot.effect==='ward-transfer')this.ward?.play(shot.effect);else if(shot.effect==='shelter-open')this.shelter?.play();else if(shot.effect==='survey-board')this.launch?.board();else if(shot.effect==='fleet-sighting'||shot.effect==='capital-blockade')this.layer.add(this.scene.add.image(0,0,shot.effect==='capital-blockade'?'scene-five-ship-blockade':'scene-five-ship-fleet').setOrigin(0));else if(shot.effect==='survey-launch')this.launch?.play();else if(shot.effect)this.effects?.play(shot.effect);
@@ -150,13 +146,12 @@ export class Cutscene {
     if(shot.mechanism){this.mechanisms??=new MechanismCinematic(this.scene,this.world);this.mechanisms.play(shot.mechanism);}
     this.audio.cinematicMix(shot.silence?0:.7);if(shot.cue)this.audio.effect(shot.cue);
   }
-  reframe(){this.fitStage();const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset/this.scene.cameras.main.zoom}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
+  reframe(){const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
     if(this.closed)return;this.closed=true;this.mechanisms?.close();this.glint?.close();this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);
-    if(this.script.stageWidth){this.scene.cameras.main.setZoom(this.originalZoom);this.scene.cameras.main.useBounds=this.originalBounds;}
     this.audio.cinematicMix(1);
   }
 }
