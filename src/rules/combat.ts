@@ -127,7 +127,7 @@ export function shape(b: Battle, u: Unit, id: AbilityId, aim: Hex): Hex[] {
   const a = abilityFor(u,id,partner);
   if(a.effect==='rally')return rallyArea(b,u,a.rank??1);
   if(a.shape==='axis')return axisHexes(a.axis!,aim);
-  if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,b.obstacles);
+  if(a.shape==='diagonal')return diagonalRay(u.hex,aim,a.range,id==='sunline'?new Set():b.obstacles);
   if(a.shape==='bounce')return ricochetHexes(b,u,aim,id);
   if(a.shape==='party')return alive(b).filter(v=>v.side===u.side).flatMap(v=>occupiedHexes(v));
   if(a.shape==='spread')return lanternVolley(aim,a.volleyRank??1);

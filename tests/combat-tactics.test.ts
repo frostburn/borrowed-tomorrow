@@ -97,11 +97,28 @@ describe('geometry and progression',()=>{
   }
   expect(diagonalRay(offset(5,3),offset(5,3),6,new Set())).toEqual([]);
  });
- it('solo diagonals move with the caster, stop at cover, hit allies and deduplicate a multi-contact enemy',()=>{
+ it('solo diagonals move with the caster, hit allies and deduplicate a multi-contact enemy',()=>{
   const {b,u,partner,enemy}=yard();u.hex=offset(2,1);partner.hex=offset(4,2);enemy.hex=offset(5,3);enemy.footprint=[{q:0,r:0},{q:1,r:1}];
   expect(shape(b,u,'sunline',enemy.hex)).toEqual([offset(4,2),offset(5,3),offset(7,4)]);
   const hit=targets(b,u,'sunline',enemy.hex),hp=enemy.hp,predicted=damage(u,enemy,'sunline');expect(hit.filter(v=>v===enemy)).toHaveLength(1);expect(hit).toContain(partner);expect(hit).not.toContain(u);
   cast(b,u,'sunline',enemy.hex);expect(enemy.hp).toBe(hp-predicted);
+ });
+ for(const rank of [1,2,3])it(`Horizon light rank ${rank} previews and hits beyond rocks and intact cover within its normal range`,()=>{
+  const {b,u,enemy}=yard(undefined,15,{...encounter,fixtures:[{id:'cover',kind:'barricade',name:'Cover',col:4,row:2,hp:500}]});
+  u.skills!.sunline=rank;u.hex=offset(2,1);enemy.hex=offset(5,3);
+  b.obstacles.add(key(offset(3,2)));
+  expect(shape(b,u,'sunline',enemy.hex)).toEqual([offset(4,2),offset(5,3),...(rank===1?[]:[offset(7,4)])]);
+  expect(legalAim(b,u,'sunline',enemy.hex)).toBe(true);expect(targets(b,u,'sunline',enemy.hex)).toContain(enemy);
+  expect(legalAim(b,u,'sunline',add(u.hex,scale(DIAGONALS[0],4)))).toBe(false);
+  const hp=enemy.hp,predicted=damage(u,enemy,'sunline');
+  expect(cast(b,u,'sunline',enemy.hex)).toBe(true);expect(enemy.hp).toBe(hp-predicted);
+  expect(b.fixtures![0].hp).toBeLessThan(500);expect(b.fixtures![0].hp).toBeGreaterThan(0);
+  expect(b.obstacles.has(key(offset(4,2)))).toBe(true);
+ });
+ it('keeps Orrin’s pressure seam and Steam lance blocked by obstacles',()=>{
+  const {b,partner}=yard();partner.hex=offset(2,1);b.obstacles.add(key(offset(4,2)));
+  expect(shape(b,partner,'pressureline',offset(5,3))).toEqual([offset(4,2)]);
+  b.obstacles.add(key(offset(3,1)));expect(shape(b,partner,'steam',offset(5,1))).toEqual([]);
  });
  it('bounces only to a distinct enemy, chooses nearest with stable ties, and obeys cover',()=>{
   const {b,u,enemy,crow,partner}=yard(['kit','petra','celia']);partner.hex=offset(7,2);
