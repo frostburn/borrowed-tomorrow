@@ -55,7 +55,7 @@ export const treatment=()=>scene('rainhouse','six-river-treatment','The quiet pu
  line('Nell','Now. It’s cold.'),
  line('Celia','Her pulse has stopped following it.',{expression:'happy'}),
  line('Ines','Let go. The shard stays in the lamp; the binding can settle without pulling on her.'),
- line('The rain house','Rain passes over the roof. When Nell wakes again, the lantern is humming softly on the table.'),
+ line('The rain house','Rain passes over the roof. When Nell wakes again, the lantern is humming softly on the table.',{actors:{nell:{face:'nell-recovered'}}}),
  line('Nell','It did that before it hurt. It doesn’t hurt now.'),
  line('Celia','I’ve checked it twice. You can get up when you’ve eaten something.'),
  line('Nell','Then someone had better find my shoes.',{expression:'happy'}),
