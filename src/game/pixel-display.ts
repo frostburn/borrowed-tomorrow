@@ -42,6 +42,7 @@ export class PixelDisplay {
   private wasAnimated=false;
   private cadence=new FrameCadence();
   private sceneDirty=false;
+  private prepared?:{time:number;draw:boolean};
   constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void) {
     this.source=document.createElement('div');this.source.className='pixel-source';
     while(root.firstChild)this.source.append(root.firstChild);root.append(this.source);
@@ -87,8 +88,10 @@ export class PixelDisplay {
       this.fitted=fitted;this.dirty=true;
     }
   }
-  paint(animated=false,sceneChanged=false,smoothAnimation=false,now=performance.now()){
-    if(!this.native)return;
+  /** Decide before Phaser shades the scene; reuse that decision at presentation. */
+  prepareFrame(animated=false,sceneChanged=false,smoothAnimation=false,now=performance.now()){
+    if(this.prepared?.time===now)return this.prepared.draw;
+    if(!this.native)return false;
     const resized=this.world.width!==this.native.width||this.world.height!==this.native.height;
     this.sceneDirty||=sceneChanged;
     if(this.wasAnimated&&!animated)this.dirty=true;
@@ -97,7 +100,13 @@ export class PixelDisplay {
     const due=animated&&(smoothAnimation||this.cadence.due(now));
     // UI stays immediate. While moving, ambient changes join the next scheduled
     // frame instead of making waterfront walking faster than indoor walking.
-    if(!resized&&!this.dirty&&!due&&(animated||!this.sceneDirty))return;
+    const draw=resized||this.dirty||due||!animated&&this.sceneDirty;
+    this.prepared={time:now,draw};return draw;
+  }
+  paint(animated=false,sceneChanged=false,smoothAnimation=false,now=performance.now()){
+    if(!this.native||!this.prepareFrame(animated,sceneChanged,smoothAnimation,now))return;
+    this.prepared=undefined;
+    const resized=this.world.width!==this.native.width||this.world.height!==this.native.height;
     this.paintedAt=now;
     this.sceneDirty=false;
     this.fitWorld();
@@ -125,7 +134,7 @@ export class PixelDisplay {
     const scale=RASTER_UNIT*this.physicalScale;
     this.presentCtx.drawImage(this.raster,left,top,w,h,this.physicalLeft+left*scale,this.physicalTop+top*scale,w*scale,h*scale);this.presentCtx.restore();
   }
-  /** Measure the DOM only after changes; the world canvas still updates each frame. */
+  /** Measure the DOM only after changes; the world updates each presented frame. */
   private rebuild(){
     const origin=this.source.getBoundingClientRect();this.commands=[];
     const add=(draw:(ctx:CanvasRenderingContext2D)=>void,state=false,world=false)=>this.commands.push({draw,state,world});

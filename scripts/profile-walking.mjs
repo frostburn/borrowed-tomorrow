@@ -12,8 +12,8 @@ const directory=process.argv[2]?resolve(process.argv[2]):await mkdtemp(join(tmpd
 const rate=Number(process.argv[3]??1);
 if(!Number.isFinite(rate)||rate<1)throw new Error('CPU throttle must be a number >= 1.');
 const chapter=process.argv[4]??'early';
-if(!['early','three','hammerplain'].includes(chapter))throw new Error('Map group must be early, three or hammerplain.');
-const scenarios=chapter==='hammerplain'?[['hammerplain','hammerplainSeen',13,29],['hammerplain','hammerplainComplete',13,29]]:chapter==='three'?[['northglass','petraJoined',32,31],['relayhall','tomasRescued',22,16],['conduit','conduitSeen',25,30]]:[['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]];
+if(!['early','three','hammerplain','skeld'].includes(chapter))throw new Error('Map group must be early, three, hammerplain or skeld.');
+const scenarios=chapter==='skeld'?['winterDragonConfronted','northReported'].flatMap(flag=>[['bellharbor',flag,28,30],['frostwatch',flag,19,30],['glacier',flag,30,29],['wintershrine',flag,32,26]]):chapter==='hammerplain'?[['hammerplain','hammerplainSeen',13,29],['hammerplain','hammerplainComplete',13,29]]:chapter==='three'?[['northglass','petraJoined',32,31],['relayhall','tomasRescued',22,16],['conduit','conduitSeen',25,30]]:[['station','orrinJoined',23,18],['coast','kitJoined',24,26],['cinderbank','settlementSeen',27,22]];
 await mkdir(directory,{recursive:true});
 const server=await createServer({root,server:{host:'127.0.0.1',port:5173}});
 let browser;
@@ -23,14 +23,14 @@ try{
  browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required']});
  const summaries=[];
  for(const [map,flag,x,y]of scenarios){
-  const name=chapter==='hammerplain'?`${map}-${flag==='hammerplainSeen'?'before':'after'}`:map;
+  const name=chapter==='hammerplain'||chapter==='skeld'?`${map}-${flag==='hammerplainSeen'||flag==='winterDragonConfronted'?'before':'after'}`:map;
   const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'no-preference'});
   try{
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(url);await page.waitForFunction(()=>!!window.borrowedTomorrow);
    const state=await page.evaluate(async({map,flag,x,y})=>{
     const fixtures=await import('/tests/support/progress.ts');
-    const state=map==='hammerplain'?(await import('/tests/support/anchors.ts')).anchorCheckpoint(flag):map==='station'?fixtures.checkpoint(flag):['coast','cinderbank'].includes(map)?fixtures.coastCheckpoint(flag):fixtures.palaceCheckpoint(flag);
+    const state=['bellharbor','frostwatch','glacier','wintershrine'].includes(map)?(await import('/tests/support/north.ts')).northCheckpoint(flag):map==='hammerplain'?(await import('/tests/support/anchors.ts')).anchorCheckpoint(flag):map==='station'?fixtures.checkpoint(flag):['coast','cinderbank'].includes(map)?fixtures.coastCheckpoint(flag):fixtures.palaceCheckpoint(flag);
     state.location={map,x,y};return state;
    },{map,flag,x,y});
    await page.getByRole('button',{name:/^Save files$|^Save$/}).first().click();
@@ -58,7 +58,7 @@ try{
    const cdp=await context.newCDPSession(page);
    await cdp.send('Emulation.setCPUThrottlingRate',{rate});await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:500});await cdp.send('Profiler.start');
    await page.locator('#canvas').focus();
-   for(const key of ['ArrowRight','ArrowLeft']){await page.keyboard.down(key);await page.waitForTimeout(2200);await page.keyboard.up(key);}
+   for(const key of chapter==='skeld'&&map==='wintershrine'?['ArrowDown','ArrowUp']:['ArrowRight','ArrowLeft']){await page.keyboard.down(key);await page.waitForTimeout(2200);await page.keyboard.up(key);}
    await page.waitForTimeout(150);
    const {profile}=await cdp.send('Profiler.stop');
    const measurements=await page.evaluate(()=>{window.walkProfile.active=false;return {...window.walkProfile,location:window.borrowedTomorrow.inspect().state.location};});

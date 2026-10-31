@@ -5,6 +5,7 @@ import { occupiedHexes } from '../rules/footprint';
 import { distance, fromPixel, toPixel } from '../rules/hex';
 import { vectorSurface } from './vector-image';
 import type {BattlePickAction} from './battle-presentation';
+import {approachAbility} from './battle-basic';
 
 let labelId=0;
 export function nativeTexture(scene:Phaser.Scene,key:string){
@@ -37,5 +38,5 @@ export function pickBossBody(b:Battle,requested:BattlePickAction,x:number,y:numb
   if(legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
   if(!mask||mask[py*width+px]===0)return;
   const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));
-  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??(contextual?parts[0]:undefined);
+  return parts.find(h=>legalAim(b,u,action,h)&&targets(b,u,action,h).some(v=>v.id===boss.id))??(contextual||approachAbility(u,action)?parts[0]:undefined);
 }

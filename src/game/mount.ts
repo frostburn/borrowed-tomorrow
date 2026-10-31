@@ -24,7 +24,18 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
   // Finish all Phaser resize handlers, then sync before the next input event.
   game.events.once('destroy',()=>adventure.soundPreferences?.close());
   game.scale.on('resize',()=>queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}}));
-  game.events.on('postrender',()=>{display.attach(game.canvas);display.paint(adventure.animating,adventure.sceneryChanged,adventure.smoothAnimation,game.loop.now);});
+  let drawFrame=false,visible=true;
+  game.events.on('prerender',()=>{
+    display.attach(game.canvas);
+    drawFrame=display.prepareFrame(adventure.animating,adventure.sceneryChanged,adventure.smoothAnimation,game.loop.now);
+    // Simulation, input, audio and scene clocks still update every browser frame.
+    // Avoid relighting every actor for intermediate frames never presented.
+    visible=adventure.sys.settings.visible;adventure.sys.settings.visible=visible&&drawFrame;
+  });
+  game.events.on('postrender',()=>{
+    adventure.sys.settings.visible=visible;
+    if(drawFrame)display.paint(adventure.animating,false,adventure.smoothAnimation,game.loop.now);
+  });
 
   window.addEventListener('resize',()=>adventure.resizeView());
 
