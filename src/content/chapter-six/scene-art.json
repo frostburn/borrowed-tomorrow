@@ -1444,6 +1444,16 @@
       "height": 1008,
       "depth": -950,
       "layerId": 3
+    },
+    {
+      "key": "scene-six-shrine-dragon-shadow",
+      "url": "art/vector/chapter-six/dragon-shadow.svg",
+      "x": 504,
+      "y": 262,
+      "width": 528,
+      "height": 280,
+      "depth": -901,
+      "layerId": 10
     }
   ],
   "capitalquay": [

@@ -46,11 +46,14 @@ remains 360 × 288 and the body/heart originals are independent.
 
 The Emperor and Lightbearer use a centered seven-cell ball (2 / 3 / 2 rows),
 aligned with the middle party position and, for the Emperor, both crown supports.
-The dragon's eleven cells form paired upper contacts, a seven-cell wing span and
-paired lower contacts (2 / 7 / 2). Its domain reprise uses the same corrected
-body. The lower row and native art height remain unchanged. All other multi-hex
-bosses retain their existing shapes. The rules audit checks every campaign
-multi-hex encounter for connected cells, board bounds, cover and unit overlaps;
+The dragon occupies two separated foot cells, leaving its wings, head and the
+central gap out of its ground footprint. Its centered visual anchor and native
+body height stay fixed. Both the Skeld encounter and domain reprise use the same
+foot contacts. `dragon-shadow.svg` is a separate floor image beneath the tactical
+grid; it never enters a body pose or its alpha-picking mask. The shrine uses the
+same shadow on an appended ground layer with the dragon's victory flag, retaining
+every existing Tiled ID. Other multi-hex bosses retain connected shapes. The rules audit checks
+contacts, board bounds, cover and unit overlaps;
 body targeting, single-hit areas and anchored behavior continue to use the same
 shared footprint helpers.
 

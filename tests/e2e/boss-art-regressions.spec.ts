@@ -11,6 +11,23 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
    if(id==='sun')await page.locator('[data-final-form="1"]').click();else await page.getByRole('button',{name:'Start Chapter Six preset',exact:true}).click();
    await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await page.mouse.move(1,1);
    const b=(await inspect(page)).battle!,core=b.units.find(u=>u.side==='enemy'&&!u.passive)!;
+   if(id==='dragon'){
+    expect(occupiedHexes(core)).toHaveLength(2);
+    const separation=await page.evaluate(async()=>{
+     const presentationURL='/src/game/winter-dragon-presentation.ts',combatURL='/src/rules/combat.ts',saveURL='/src/dev/canonical-saves.ts',displayURL='/src/game/boss-display.ts';
+     const {winterDragonPresentation}:typeof import('../../src/game/winter-dragon-presentation')=await import(presentationURL);
+     const {createBattle}:typeof import('../../src/rules/combat')=await import(combatURL);
+     const {chapterSixDragonStart}:typeof import('../../src/dev/canonical-saves')=await import(saveURL);
+     const {bossPlacement}:typeof import('../../src/game/boss-display')=await import(displayURL);
+     const battle=createBattle('winter-dragon',chapterSixDragonStart()),dragon=battle.units.find(u=>u.id==='winter-dragon')!;
+     const p=bossPlacement(dragon),presentation=winterDragonPresentation({id:'winter-dragon'} as Parameters<typeof winterDragonPresentation>[0]);
+     const alpha=async(name:string)=>{const img=new Image();img.src=`/art/vector/chapter-six/${name}.svg`;await img.decode();const c=document.createElement('canvas');c.width=528;c.height=280;const ctx=c.getContext('2d')!;ctx.drawImage(img,0,0);return ctx.getImageData(264,264,1,1).data[3];};
+     const body=await Promise.all(['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'].map(alpha));
+     return {body,shadow:await alpha('dragon-shadow'),gap:!!presentation.pick!(battle,'basic',p.x,p.y-16),torso:!!presentation.pick!(battle,'basic',p.x,p.y-100)};
+    });
+    expect(separation.body).toEqual([0,0,0,0]);expect(separation.shadow).toBeGreaterThan(0);
+    expect(separation.gap).toBe(false);expect(separation.torso).toBe(true);
+   }
    await page.getByRole('button',{name:/Quick shot/}).click();
    const contact=occupiedHexes(core).sort((a,b)=>b.r-a.r)[0];await clickHex(page,contact);
    await expect(page.locator('#confirmation')).toContainText(core.name);
