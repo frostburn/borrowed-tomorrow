@@ -109,8 +109,8 @@ export function createBattle(encounter: string | Encounter, state: GameState, eq
 export const alive = (b: Battle) => b.units.filter(u => u.hp > 0);
 export const active = (b: Battle) => b.units.find(u => u.id === b.queue[0]);
 // A team-spent main action still permits an unused extra action.
-export const bonusAvailable=(u:Unit)=>!u.bonusUsed&&u.abilities.some(id=>abilityFor(u,id).bonus&&u.focus>=abilityFor(u,id).cost);
-const canStillMove=(u:Unit)=>!u.moved&&!u.anchored&&u.movement>0;
+export const bonusAvailable=(u:Unit)=>u.hp>0&&!u.bonusUsed&&u.abilities.some(id=>abilityFor(u,id).bonus&&u.focus>=abilityFor(u,id).cost);
+const canStillMove=(u:Unit)=>u.hp>0&&!u.moved&&!u.anchored&&u.movement>0;
 export const movementOnly=(b:Battle,u:Unit)=>u.teamSpentRound===b.round;
 export const unitAt = (b: Battle, hex: Hex) => alive(b).find(u => occupiedHexes(u).some(h=>equal(h,hex)));
 function reviveTarget(b:Battle,u:Unit,id:AbilityId,aim:Hex){
@@ -277,7 +277,7 @@ function finishTurn(b: Battle) {
   }else beginTurn(b);
 }
 export function move(b: Battle, u: Unit, destination: Hex): Hex[] | null {
-  if (active(b)?.id !== u.id || b.result || u.moved || equal(u.hex, destination)) return null;
+  if (active(b)?.id !== u.id || u.hp<=0 || b.result || u.moved || equal(u.hex, destination)) return null;
   const visit = movement(b, u).get(key(destination));
   if (!visit) return null;
   u.hex = { ...destination }; u.moved = true;

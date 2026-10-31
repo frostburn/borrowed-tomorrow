@@ -61,6 +61,18 @@ describe('remaining movement after a team action',()=>{
   const petra=b.units.find(u=>u.kind==='petra')!;petra.bonusUsed=true;petra.moved=true;
   expect(cast(b,active(b)!,'crossfire',enemy.hex)).toBe(true);expect(b.queue).not.toContain(petra.id);
  });
+ it('finishes Petra’s turn if a Crossfire pressure-drum burst downs her',()=>{
+  const {b,u:petra,partner:kit,enemy}=yard(['petra','kit','celia']),drum=offset(3,3);
+  petra.hex=offset(2,3);petra.hp=1;kit.hex=offset(0,0);
+  b.fixtures=[{id:'drum',name:'Pressure drum',kind:'drum',hex:drum,hp:1,maxHp:1,power:100}];
+  b.obstacles.add(key(drum));
+  expect(cast(b,petra,'crossfire',drum)).toBe(true);
+  expect(petra.hp).toBe(0);expect(enemy.hp).toBeGreaterThan(0);expect(b.result).toBeNull();
+  expect(active(b)).toBe(kit);expect(b.queue).not.toContain(petra.id);
+  expect(move(b,petra,offset(1,3))).toBeNull();expect(cast(b,petra,'bash',petra.hex)).toBe(false);
+  // Reject stale callers too, even if a fallen actor is still queued.
+  b.queue.unshift(petra.id);expect(move(b,petra,offset(1,3))).toBeNull();
+ });
  it('can skip remaining movement without receiving Defend or focus',()=>{
   const {b,u,partner,third,enemy}=yard();expect(cast(b,u,'prism',enemy.hex)).toBe(true);const hex={...partner.hex},focus=partner.focus;
   expect(endTurn(b)).toBe(true);expect(active(b)).toBe(third);expect(partner.hex).toEqual(hex);expect(partner.focus).toBe(focus);expect(partner.defending).toBe(false);
