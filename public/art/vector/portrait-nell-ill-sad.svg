@@ -33,7 +33,7 @@
 <path d="M43 48L57 40 59 43 44 51Z M69 40L82 47V50L69 43Z" fill="#623d29"/>
 <path d="M46 52L56 51 57 55H47Z M72 52L79 51 80 55H73Z" fill="#eee9dc"/>
 <path d="M51 51H55V55H51Z M76 51H80V55H76Z" fill="#263e4b"/>
-<g data-part="raised-lower-eyelids"><path d="M46 54L51 53 56 53 58 54 58 56H46Z" fill="#d1a585"/><path d="M71 54L75 53 79 53 81 54 81 56H71Z" fill="#bd9275"/></g>
+<g data-part="raised-lower-eyelids"><path d="M46 54.5L51 53.5 56 53.5 58 54.5 58 56H46Z" fill="#d1a585"/><path d="M71 54.5L75 53.5 79 53.5 81 54.5 81 56H71Z" fill="#bd9275"/></g>
 <g data-part="under-eye-fatigue"><path d="M46 56L50 57 56 56 58 57 55 60 49 60 46 58Z" fill="#b18d7e"/><path d="M72 56L76 57 80 56 81 58 78 60 74 60 72 58Z" fill="#997c70"/></g>
 <path d="M64 51L62 62 59 67 63 70 70 68 72 65 67 62Z" fill="#b98e72"/>
 <path d="M64 54L65 63 69 65 66 67 62 65Z" fill="#e6c4a4"/>
