@@ -26,8 +26,7 @@ def dragon(pose='idle'):
   wing([(37,149),(123,140),(127,134),(60,135)],INK)
   wing([(105,191),(196,159),(187,154),(124,173)],INK)
   wing([(226,121),(239,179),(246,195),(240,163),(236,137)],INK)
- # Tail and grounded claws frame the release; wings reach seven hexes.
- out += [poly([(254,204),(232,228),(179,236),(167,251),(211,263),(304,259),(345,243),(364,249),(347,267),(288,279),(216,272),(181,263),(151,244),(184,220),(228,212)],DARK),poly([(184,239),(219,251),(302,247),(340,238),(318,256),(213,260)],MID)]
+ # Grounded claws; the floor shadow is exported independently below.
  for flip in(False,True):
   def limb(points,c):out.append(poly([(528-x if flip else x,y)for x,y in points],c))
   limb([(246,152),(215,165),(195,202),(178,225),(182,250),(201,256),(221,242),(223,214),(251,200)],INK)
@@ -45,6 +44,9 @@ def dragon(pose='idle'):
  if pose in('inhale','breath'):out += [poly([(251,133),(264,140),(277,132),(275,141+jaw),(263,148+jaw),(252,142+jaw)],'#9ee7e5'),poly([(253,135),(257,143),(260,137),(267,144),(273,135)],WHITE)]
  if pose=='shatter':out += [poly([(179,246),(166,258),(182,256),(176,269),(191,257),(205,266),(203,253)],ICE),poly([(347,246),(361,258),(346,256),(353,269),(338,257),(324,266),(326,253)],WHITE)]
  return out
+def shadow():
+ return ['<g fill="#172038"><ellipse cx="264" cy="255" rx="112" ry="18" opacity=".12"/><ellipse cx="194" cy="257" rx="28" ry="9" opacity=".16"/><ellipse cx="334" cy="257" rx="28" ry="9" opacity=".16"/></g>']
+(ART/'dragon-shadow.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" width="528" height="280" viewBox="0 0 528 280"><title>Winter dragon ground shadow</title>'+''.join(shadow())+'</svg>\n')
 for pose,key in [('idle','winter-dragon'),('inhale','dragon-inhale'),('breath','dragon-breath'),('shatter','dragon-shatter')]:
  (ART/f'{key}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="528" height="280" viewBox="0 0 528 280"><title>Winter dragon {pose}</title>'+''.join(dragon(pose))+'</svg>\n')
 # A deliberate crop from the same editable vector geometry, with native portrait dimensions.

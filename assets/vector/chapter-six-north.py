@@ -50,12 +50,24 @@ world('glacier','Skeld · the relief fleet','The wreck’s dispatch cabin is bes
  [],[('glacier-dispatch',[rect(0,17,71,42,DARK),poly([(0,17),(13,0),(58,0),(71,17)],MID),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD),rect(27,30,17,12,LIGHT),line([(34,27),(34,44)],GOLD,3)],74,63,548,538,601,{'hiddenFlag':'northLogRead'}),('glacier-dispatch-open',[rect(0,20,71,39,DARK),poly([(0,20),(2,0),(70,0),(71,20)],MID),rect(8,27,55,23,WOOD),poly([(18,28),(47,24),(53,44),(22,48)],SNOW),rect(7,20,5,33,GOLD),rect(59,20,5,33,GOLD)],74,63,548,538,601,{'requiredFlag':'northLogRead'}),('glacier-bench',bench('skeld'),168,86,696,673,759,{}),('glacier-cache',chest(),60,48,445,492,540,{}),('glacier-ice-face',[poly([(0,0),(87,31),(130,144),(72,174),(22,124)],LIGHT),poly([(0,0),(32,77),(22,124),(72,174),(17,160),(-13,56)],SNOW)],150,180,1304,641,-998,{})],ices)
 shrines=[(12,25,40,11),(23,19,18,7)]
 shrine=caveback()+[poly([(612,340),(768,245),(931,340),(921,454),(612,454)],'#45667e'),line([(649,352),(768,284),(890,352)],LIGHT,8)]
-drag=runpy.run_path(str(ROOT/'assets/bosses/export-winter-dragon.py'))['dragon']
+dragon_art=runpy.run_path(str(ROOT/'assets/bosses/export-winter-dragon.py'));drag=dragon_art['dragon']
 world('wintershrine','Skeld · the winter sanctuary','The winter dragon holds the pact bell above the ice walk. Egil’s expedition camp is sheltered at the southern arch.',shrines,[(27,19,10,3)],[
  obj('north-dragon',32,25,'Winter dragon · the pact sanctuary',hiddenFlag='winterDragonWon',doneFlag='winterDragonWon',sign=True),control('north-release',32,22,(28,17,9,5),'Pact bell · release the northern seal',hiddenFlag='northSealBroken',doneFlag='northSealBroken',sign=True),obj('shrine-rest',19,31,'Expedition camp · rest and supplies',kind='optional',sign=True),obj('shrine-glacier',15,33,'Glacier walk · return to the harbor',kind='exit',sign=True),obj('shrine-home',45,31,'Signe · return expedition',kind='exit',requiredFlag='northSealBroken',sprite='signe',sign=True)],
  {'start':(32,32),'stand':(32,28),'release':(32,24)}, {'six-north-shrine':party,'six-north-release':{**party,'signe':(32,23),'egil':(36,25)}},
  [point('sanctuary-porter',22,31,sprite='civilian-dockhand-rust')],
  [('shrine-dragon',drag(),528,280,504,262,542,{'hiddenFlag':'winterDragonWon'}),('shrine-bell',bell(),98,114,718,383,497,{}),('shrine-camp',bench('skeld'),168,86,369,689,775,{})],shrine)
+
+# Append a ground-only visibility layer; keep every existing Tiled layer/object ID.
+shrine_body=next(e for e in manifest['wintershrine'] if e['key']=='scene-six-shrine-dragon')
+shrine_path=ROOT/'src/content/chapter-six/maps/wintershrine.json'
+text=shrine_path.read_text();layer_id=json.loads(text)['nextlayerid']
+shadow_layer={'id':layer_id,'name':'shrine-dragon-shadow','type':'objectgroup','visible':True,'objects':[],
+ 'properties':[{'name':'sort','type':'bool','value':False},{'name':'hiddenFlag','type':'string','value':'winterDragonWon'}]}
+text=text.replace(f'"nextlayerid": {layer_id}',f'"nextlayerid": {layer_id+1}',1)
+at=text.rfind('\n  ]')
+text=text[:at]+',\n'+''.join('    '+line+'\n' for line in json.dumps(shadow_layer,indent=2).splitlines()).rstrip('\n')+text[at:]
+shrine_path.write_text(text)
+manifest['wintershrine'].append({**shrine_body,'key':'scene-six-shrine-dragon-shadow','url':'art/vector/chapter-six/dragon-shadow.svg','depth':-901,'layerId':layer_id})
 
 def patient_hoist(ready=False):
  # A crooked royal quay crane; the manual repair shares its existing footing.

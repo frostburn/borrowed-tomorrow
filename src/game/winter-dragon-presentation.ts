@@ -11,7 +11,8 @@ import { BATTLE_MAPS } from '../content/battle-maps';
 import { drawTileMap } from './tilemap';
 import { newGame } from '../rules/state';
 export const DRAGON_PORTRAIT=`${import.meta.env.BASE_URL}art/vector/chapter-six/dragon-portrait.svg`;
-export const DRAGON_ASSETS=['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
+const DRAGON_POSES=['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'];
+export const DRAGON_ASSETS=[...DRAGON_POSES,'dragon-shadow'].map(key=>({key,url:`art/vector/chapter-six/${key}.svg`}));
 const masks=new Map<string,Uint8Array>();
 export function winterDragonPresentation(encounter:Encounter):BattlePresentation{
  let texture='winter-dragon',attackPose='dragon-inhale';
@@ -22,10 +23,14 @@ export function winterDragonPresentation(encounter:Encounter):BattlePresentation
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   position:(u,hex)=>u.id===WINTER_DRAGON_ID?bossPlacement({...u,hex}):undefined,
   hint:b=>`${winterDragon(b)?.intent?.phase}. Loose ice costs 2 movement and deals 6 cold damage at round end.`,
-  background(scene,world){drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['winter-dragon'],newGame());},
+  background(scene,world,b){
+   drawTileMap(scene,world,BATTLE_MAPS[encounter.id]??BATTLE_MAPS['winter-dragon'],newGame());
+   const p=bossPlacement(winterDragon(b)!);nativeTexture(scene,'dragon-shadow');
+   world.add(scene.add.image(p.x,p.y,'dragon-shadow').setOrigin(.5,1).setDepth(-901).setData('dragon-ground-shadow',true));
+  },
   actor(scene,u,hp,hex){
    if(u.id!==WINTER_DRAGON_ID)return;
-   for(const {key}of DRAGON_ASSETS){
+   for(const key of DRAGON_POSES){
     const native=nativeTexture(scene,key);
     if(!masks.has(key)){const c=native.getSourceImage() as HTMLCanvasElement,rgba=c.getContext('2d')!.getImageData(0,0,528,280).data;masks.set(key,Uint8Array.from({length:528*280},(_,i)=>rgba[i*4+3]));}
    }

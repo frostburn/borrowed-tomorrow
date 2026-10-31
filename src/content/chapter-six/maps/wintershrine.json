@@ -9,7 +9,7 @@
   "height": 42,
   "tilewidth": 24,
   "tileheight": 24,
-  "nextlayerid": 10,
+  "nextlayerid": 11,
   "nextobjectid": 24,
   "properties": [
     {
@@ -662,27 +662,27 @@
           "x": 468,
           "y": 756,
           "properties": [
-  {
-    "name": "label",
-    "type": "string",
-    "value": "Expedition camp · rest and supplies"
-  },
-  {
-    "name": "kind",
-    "type": "string",
-    "value": "optional"
-  },
-  {
-    "name": "rest",
-    "type": "bool",
-    "value": true
-  },
-  {
-    "name": "sprite",
-    "type": "string",
-    "value": "supply-clerk"
-  }
-],
+            {
+              "name": "label",
+              "type": "string",
+              "value": "Expedition camp \u00b7 rest and supplies"
+            },
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "optional"
+            },
+            {
+              "name": "rest",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "sprite",
+              "type": "string",
+              "value": "supply-clerk"
+            }
+          ],
           "id": 3
         },
         {
@@ -931,6 +931,25 @@
         }
       ],
       "properties": []
+    },
+    {
+      "id": 10,
+      "name": "shrine-dragon-shadow",
+      "type": "objectgroup",
+      "visible": true,
+      "objects": [],
+      "properties": [
+        {
+          "name": "sort",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "name": "hiddenFlag",
+          "type": "string",
+          "value": "winterDragonWon"
+        }
+      ]
     }
   ]
 }

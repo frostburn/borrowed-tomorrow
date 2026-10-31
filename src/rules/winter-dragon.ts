@@ -9,17 +9,17 @@ const unique=(hexes:Hex[])=>[...new Map(hexes.map(h=>[key(h),h])).values()];
 export const brokenIce=(b:Battle,h:Hex)=>b.winterIce?.some(p=>equal(p,h))??false;
 export function configureWinterDragon(b:Battle){
  const dragon=b.units.find(u=>u.appearance===WINTER_DRAGON_ID)!;
- // Center the wing span between the paired head and lower body contacts.
+ // Keep the visual anchor centered; only the two grounded feet occupy cells.
  dragon.hex=add(dragon.hex,{q:-1,r:1});
  Object.assign(dragon,{id:WINTER_DRAGON_ID,kind:WINTER_DRAGON_ID,anchored:true,flying:true,movement:0,speed:3,armor:3,abilities:['judgment'],
-  footprint:[...Array.from({length:7},(_,i)=>({q:i-3,r:0})),{q:0,r:-1},{q:1,r:-1},{q:-1,r:1},{q:0,r:1}]});
+  footprint:[{q:-2,r:1},{q:1,r:1}]});
  const heroes=b.units.filter(u=>u.side==='party');heroes.forEach((u,i)=>{u.hex=offset(heroes.length===3?[3,5,7][i]:heroes.length===2?[4,6][i]:5,6);});
  b.winterIce=[];
 }
 export function prepareWinterDragon(b:Battle){
  const dragon=winterDragon(b);if(!dragon||b.result)return;
  if(dragon.hp<=0){b.winterIce=[];return;}
- dragon.role='Eleven contacts · one creature · anchored';
+ dragon.role='Two foot contacts · one creature · anchored';
  let intent=dragon.intent as Intent|undefined;
  if(intent?.round!==b.round){
   const pattern:Pattern=(['inhale','west','breath','east']as const)[(b.round-1)%4];

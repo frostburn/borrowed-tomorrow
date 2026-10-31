@@ -109,9 +109,9 @@ it('all northern scenes, interactions and arrivals have connected floor and boun
  expect(visibleObjects(MAPS.outermooring,{...s,flags:{...s.flags,capitalOpened:true}}).some(o=>o.id==='six-capital')).toBe(false);
 });
 function dragon(){const b=createBattle('winter-dragon',chapterSixDragonStart()),u=winterDragon(b)!;return {b,u};}
-it('the dragon occupies eleven valid contacts and each area damages it once; anchored body resists pushes',()=>{
- const {b,u}=dragon();expect(occupiedHexes(u)).toHaveLength(11);expect(new Set(occupiedHexes(u).map(key)).size).toBe(11);expect(occupiedHexes(u).every(inside)).toBe(true);
- const hero=b.units[0];expect(targets(b,hero,'burst',offset(5,2)).filter(v=>v.id===u.id)).toHaveLength(1);expect(pushDestination(b,hero,u)).toBeUndefined();expect(move(b,u,offset(4,1))).toBeNull();
+it('the dragon occupies only its two foot contacts and each area damages it once; anchored body resists pushes',()=>{
+ const {b,u}=dragon();expect(occupiedHexes(u)).toHaveLength(2);expect(new Set(occupiedHexes(u).map(key)).size).toBe(2);expect(occupiedHexes(u).every(inside)).toBe(true);
+ const hero=b.units[0];expect(targets(b,hero,'burst',offset(3,3)).filter(v=>v.id===u.id)).toHaveLength(1);expect(pushDestination(b,hero,u)).toBeUndefined();expect(move(b,u,offset(4,1))).toBeNull();
  for(const count of [1,2,3]){const s=chapterSixDragonStart();s.activeParty=s.activeParty.slice(0,count);const battle=createBattle('winter-dragon',s);expect(battle.units.filter(v=>v.side==='party')).toHaveLength(count);}
 });
 it('dragon warnings stay fixed during a round; taunt redirects the fired shelf and ice instead of leaving unseen hazards',()=>{
