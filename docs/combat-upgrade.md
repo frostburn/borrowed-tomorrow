@@ -2,6 +2,14 @@
 
 Issue #105 shares the campaign resolver with **Workshop → Combat** (`?dev=combat`). Movement and actions remain separate. Equipment, deployment and victory rules keep their existing behavior.
 
+Adjacent attacks can confirm movement and the chosen skill together (#247),
+using the same shortest legal approach as Move / Strike. Select Crushing blow,
+Shield bash, Saber sweep or Pressure wave, then click an enemy to preview the
+route and the actual attack footprint from its destination. One confirmation
+spends movement and the skill's normal action/focus; Cancel spends neither.
+In-range attacks stay in place. Movement costs, blockers, Taunt, allowances and
+Petra's unused extra Bash still apply; ranged/support/team targeting is unchanged.
+
 ## Automatic progression
 
 Skills are learned and improved automatically at the following **character levels**. There are no upgrade points, purchase buttons or banked choices. The party shares experience; reserves and later recruits receive the same level-based progression. Every character learns their four skills by level seven and masters them at fifteen. Quiet levels still give normal stat growth.

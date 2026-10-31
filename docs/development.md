@@ -80,6 +80,23 @@ scrolling, overlays and resize still invalidate the complete presentation. This
 removes the per-frame full-size UI/world/UI composite and its final downsample,
 without changing the display cadence, input timing or movement/footstep rules.
 
+Scene rendering follows that same presentation decision (#245). Previously,
+Phaser still shaded every actor and drew the hidden native canvas at 60 Hz,
+even when `PixelDisplay` discarded the intermediate frame. `prepareFrame`
+decides before scene rendering and reuses the decision at presentation. Scene
+updates, input, audio, timers and tweens keep their browser-frame clock; normal
+motion retains 30 Hz, ambient scenery retains its low-rate clock, UI changes
+remain immediate, and smooth chapter films retain every browser frame. A steady
+reduced-motion world does not redraw. This applies to every campaign/preview
+mounted through `mountGame`, including the released shrine in Skeld.
+In a local 1280 × 800 Chromium profile after playing the dragon's opening two
+rounds and its release scene, sampled busy time on the shrine walk fell from
+35.9% to 26.5% (39.5% to 30.9% after restoring the same save). In the separate
+4× CPU-throttled checkpoint comparison, the released shrine's presentation
+interval p95 fell from 47.6 ms to 40.3 ms and browser-frame p95 from 33.4 ms to
+16.8 ms, while both revisions presented about 30 Hz. These are local headroom
+and jitter measurements, rather than a frame-rate multiplier.
+
 Actor lighting takes an ambient-only path outside all lamp bounds. Lit actors
 reuse transform signs and use a direct three-component distance calculation.
 Upright frames up to 80 × 80 also reuse their transformed opaque samples while
@@ -100,15 +117,21 @@ For repeatable profiles, use an installed Chromium and run:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium npm run profile:walking -- /tmp/bt-walk-after 4
 ```
 
-The CPU-throttling argument defaults to 1. The command also accepts a map group: `early` (the default), `three` or `hammerplain`, for example
+The CPU-throttling argument defaults to 1. The command also accepts a map group: `early` (the default), `three`, `hammerplain` or `skeld`, for example
 `npm run profile:walking -- /tmp/bt-walk-three 1 three`.
 `npm run profile:walking -- /tmp/bt-walk-hammerplain 1 hammerplain` compares
 authored pre-release and completed Hammerplain saves on the same western walk,
 writing separate `hammerplain-before.json` and `hammerplain-after.json` profiles.
+`npm run profile:walking -- /tmp/bt-walk-skeld 1 skeld` compares pre-dragon and
+completed expedition saves in all four northern maps. The shrine walk runs
+north/south beside the bell's lamps; the other three run east/west. Output names
+include the map and `before`/`after` checkpoint. The opt-in `skeld-rendering`
+browser cases also take the live battle-to-release route and check that scene
+renders match presented frames while updates continue at the browser rate.
 Use the same command on both code revisions to measure a performance change.
 The CPU-throttling argument precedes the map group. The command
 starts its own Vite server and clean browser contexts, imports authored test
-checkpoints through Save, enables sound, then walks right and left for 2.2s each
+checkpoints through Save, enables sound, then walks each direction for 2.2s
 at 1280 × 800. The early group covers Larkspur, Iron Coast and Cinderbank;
 `three` covers Northglass, the relay hall and the conduit. It writes CPU profiles,
 frame/footstep intervals, long tasks and presentation timings to the selected
@@ -251,6 +274,14 @@ Ground clicks still preview movement separately; adjacent enemies use Confirm
 attack. Fixtures retain Strike / Move here choices without automatic approaches.
 Team helpers retain their movement-only continuation and show **Move**, never
 Move / Strike, alongside End turn.
+
+Selected adjacent skills use the same approach preview (#247): Crushing blow,
+Shield bash, Saber sweep and Pressure wave. Click an enemy, then confirm the
+move and named skill together. Self-centred areas resolve around the projected
+destination, including rank-three Bash; damage, pushes and friendly fire use
+that footprint. In-range attacks stay in place. Ranged/support/team skills keep
+their targeting. An unused Bash can approach during Petra's team continuation,
+without granting another main action.
 
 Scheduled enemy attack cells retain their red X. A living party member on one
 of those cells has a red filled hex and red outline, including the active
