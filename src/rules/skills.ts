@@ -19,7 +19,7 @@ export const SKILLS:Record<CompanionId,readonly Skill[]>={
    {shape:'blast',power:17,friendlyFire:.5,description:'A stronger seven-hex burst. Allies take half damage. Range 5. 2 focus.'},
   ]),restoration('mend',[2,6,12]),
   skill('dazzle',[4,8,13],[{}, {shape:'blast',cost:3,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 3 focus.'},{shape:'blast',cost:2,description:'Dazzle enemies in a seven-hex area for three attacks. Existing Dazzle is not refreshed. Range 4. 2 focus.'}]),
-  skill('sunline',[7,11,15],[{range:4,power:22,cost:3,description:'A short hex-diagonal ray: two spaced contacts from Nell. Stops at cover, hits allies. 3 focus.'},{range:6,power:28,cost:3,description:'A stronger hex-diagonal ray: three spaced contacts from Nell. Stops at cover, hits allies. 3 focus.'},{range:6,power:35,cost:3,description:'A powerful hex-diagonal ray: three spaced contacts from Nell. Stops at cover, hits allies. 3 focus.'}]),
+  skill('sunline',[7,11,15],[{range:4,power:22,cost:3,description:'A short hex-diagonal ray: two spaced contacts from Nell. Passes through obstacles, hits allies. 3 focus.'},{range:6,power:28,cost:3,description:'A stronger hex-diagonal ray: three spaced contacts from Nell. Passes through obstacles, hits allies. 3 focus.'},{range:6,power:35,cost:3,description:'A powerful hex-diagonal ray: three spaced contacts from Nell. Passes through obstacles, hits allies. 3 focus.'}]),
  ],
  orrin:[
   skill('steam',[1,5,11],[{power:16},{power:21},{power:28}]),
