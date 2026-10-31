@@ -2,10 +2,10 @@
 
 Compose original melodies with deliberate phrases and Japanese game/anime influence through harmony and pacing. These are compositional references, not requests for borrowed recordings or copied tunes.
 
-When quiet percussion leaves the melody to establish a slow cue's pulse,
-ground new phrases on the beat. Keep dissonant passing tones brief and resolve
-them clearly; long holds and cadential breaths belong to stable arrivals.
-Do not stretch an altered tension or deceptive cadence into a resting point.
+For quiet slow cues, distinguish melodic dissonance from harmonic tension.
+Keep a melody's rhythmic character and expressive non-chord tones; do not make
+it monotonous by forcing equal quarter notes. Give suspended, altered and
+false-cadence harmonies a prompt onward motion in the accompaniment.
 
 ## Tuning and spelling
 
@@ -168,25 +168,22 @@ across all three shots and is listed under Chapter One in Music and Soundtrack.
 
 ### Dawnwatch and the crossing retcon
 
-The Open Gate (`dawnwatch`, 92, 4/4) keeps Petra's refusal cell and the regional
-F-minor progression, but gives the town its own legato string line. Quarter-beat
-entries establish the meter; a brief Db neighbour returns to C on beat two.
-Bars without a downbeat attack have a stable note tied through it. Long ties
-use chord tones that remain stable under every harmony they cross. Passing
-tones and leading notes move on within one beat, with short releases and no
-vibrato. Cadential fades and breaths belong to the real F-minor arrivals in
-bars 8, 16 and 32. The low middle and return keep moving through deceptive turns.
-Expression offers soft swells and controlled vibrato on the stable holds,
-without changing the steady pulse. There is no rubato.
+The Open Gate (`dawnwatch`, 92, 4/4) retains the accepted first bar exactly:
+C–Db–C–G at beats 0, 1, 1.5 and 2.5, with lengths 1, .5, 1 and 2.
+Keep the melody's varied rhythm, cross-bar ties and expressive dissonant notes.
+Later entrances follow the beat where no earlier tie supports the downbeat.
+Swells and held-note vibrato belong to the melodic expression, with the Music
+comparison and steady pulse retained.
 
-Bass roots sustain through unchanged harmonies, and quiet inner strings tie
-common tones until those tones leave the next voicing. Clear triads support the
-quiet melody; suspended dominants in bars 6 and 23 resolve halfway through the
-bar. Sparse piano entries mark larger phrases instead of restarting the harmony
-every bar. Holds end before the loop seam. Keep the 32-bar form, 31-EDO spelling
-and low drum-free middle. The town melody/backing are separate from the clipped regional phrases
-used by the terraces and battles; those scores and Petra's crossing retain
-their authored notes and rhythm.
+The accompaniment controls the duration of harmonic tension. In bars 6 and 23,
+Csus moves to C on beat two and resolves to F minor on beat three. Other
+altered dominants reach F minor halfway through their bars. Gb/deceptive turns
+in the middle and return move onward within the measure. Original coloured
+voicings remain, but common tones and roots sustain only until the actual
+harmony changes. Short chord releases keep the resolved harmony clear.
+Reserve cadential breaths for real F-minor arrivals. Keep the 32-bar form,
+31-EDO spelling and quiet drum-free middle. Regional and battle scores and
+Petra's crossing remain independent.
 
 `score-dawnwatch.ts` owns five 32-bar F-minor compositions plus the sixteen-bar Chapter Two crossing. The Gun Terraces (`watchbarracks`, 106) use a shorter brass call and a stronger straight pulse; The Town Wheel (`signalwall`, 80) spreads bell fragments around entire silent bars, with low held support and no drums. The bass carries into every following empty melodic bar without reattacking. Across the Terraces (`dawn-battle`, 132) uses a triplet opening, a broad high answer, a lower middle and a varied return. Orders Worth Refusing (`dawn-commander`, 140) begins with Aurel's brass G–Ab–G–Db command; the tritone demand gives way to Petra's string answer in the middle. The command returns before settling onto her F-minor ground. Do not turn the marching drums into triplets.
 

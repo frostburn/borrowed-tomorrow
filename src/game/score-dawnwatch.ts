@@ -19,20 +19,41 @@ const town:Tune=[
  [[0,'Db5',1.5],[2,'C5',1]],[[.5,'Eb5',1.5]],[[0,'Db5',1],[1.5,'Bb4',1]],
  [[0,'Ab4',1.5],[2,'G4',1]],[[.5,'E4',1.5]],[[0,'F4',2.75]],
 ];
-// The melody supplies the pulse: entries land on quarter beats, with only a
-// brief Db neighbour before beat two. Long ties belong to stable chord tones.
+// Keep Petra's varied, dissonant melodic cell. The accompaniment, rather
+// than flattened melody notes, controls how long harmonic tension lasts.
 const openGate:Tune=[
- [[0,'C5',.75],[.75,'Db5',.25],[1,'C5',1],[2,'G4',1],[3,'Ab4',2]],[[1,'G4',1],[2,'F4',2]],[[0,'F4',2],[2,'Ab4',1],[3,'F4',1]],
- [[0,'Ab4',1],[1,'Bb4',1],[2,'C5',1],[3,'Db5',3]],[[2,'F5',1],[3,'Db5',1]],[[0,'C5',1],[1,'Bb4',.75],[2,'G4',1],[3,'F4',.75]],
- [[0,'E4',1],[1,'G4',1],[2,'C5',1],[3,'E5',.75]],[[0,'F5',3.5]],
- [[0,'F5',1],[1,'Eb5',1],[2,'Db5',2]],[[0,'C5',2],[2,'Bb4',1],[3,'Ab4',1]],[[0,'Bb4',2],[2,'Ab4',1],[3,'F4',1]],
- [[0,'G4',1],[1,'Ab4',.75],[2,'G4',1],[3,'E4',.75]],[[0,'F4',2],[2,'Ab4',1],[3,'C5',1]],[[0,'Db5',1],[1,'Bb4',1],[2,'Ab4',1],[3,'G4',1]],
- [[0,'C5',1],[1,'Bb4',1],[2,'G4',1],[3,'E4',.75]],[[0,'F4',3.5]],
- [[0,'Bb4',6]],[[2,'Gb4',1],[3,'Eb4',1]],[[0,'Gb4',2],[2,'Bb4',1],[3,'Db5',3]],[[2,'Bb4',1],[3,'Ab4',1]],
- [[0,'Ab4',2],[2,'F4',4]],[[2,'Bb4',1],[3,'Db5',1]],[[0,'C5',1],[1,'Bb4',1],[2,'G4',1],[3,'F4',.75]],[[0,'E4',1],[1,'G4',1],[2,'Bb4',.75],[3,'G4',.75]],
- [[0,'C5',.75],[.75,'Db5',.25],[1,'C5',1],[2,'G4',1],[3,'Ab4',2]],[[1,'Bb4',1],[2,'Ab4',1],[3,'F4',1]],
- [[0,'Db5',2],[2,'C5',1],[3,'Bb4',1]],[[0,'C5',2],[2,'Eb5',1],[3,'C5',1]],[[0,'Db5',2],[2,'Bb4',1],[3,'Gb4',1]],
- [[0,'F4',1],[1,'Bb4',1],[2,'Ab4',1],[3,'G4',1]],[[0,'G4',1],[1,'C5',1],[2,'G4',1],[3,'E4',.75]],[[0,'F4',3.5]],
+ [[0,'C5',1],[1,'Db5',0.5],[1.5,'C5',1],[2.5,'G4',2]],
+ [[0.5,'Ab4',2],[2.5,'G4',1.5]],
+ [[0,'F4',4.25]],
+ [[0.5,'Ab4',1],[1.5,'Bb4',1],[2.5,'C5',1.5]],
+ [[0,'Db5',2],[2,'C5',2]],
+ [[0,'Bb4',3.75]],
+ [[0,'E5',1],[1.5,'Db5',1],[2.5,'C5',1.5]],
+ [[0,'F5',5.75]],
+ [[2,'Eb5',1.75]],
+ [[0,'C5',2],[2,'Ab4',2]],
+ [[0,'Bb4',3.75]],
+ [[0,'G4',1],[1.5,'Ab4',1],[2.5,'E4',1.5]],
+ [[0,'F4',4.75]],
+ [[1,'Gb4',1],[2,'Ab4',1],[3,'Bb4',1]],
+ [[0,'C5',1],[1,'Db5',0.5],[1.5,'E5',1],[2.5,'C5',1.5]],
+ [[0,'F5',3.75]],
+ [[0,'Bb4',4.75]],
+ [[1,'Ab4',3.5]],
+ [[0.5,'Gb4',3.5]],
+ [[0,'Eb4',3.75]],
+ [[0,'F4',2],[2,'Ab4',2.5]],
+ [[0.5,'G4',1.5],[2,'F4',2]],
+ [[0,'Bb4',2],[2,'Ab4',1.75]],
+ [[0,'G4',1.5],[1.5,'E4',1],[2.5,'G4',1.25]],
+ [[0,'C5',1],[1,'Db5',0.5],[1.5,'C5',1],[2.5,'G4',2]],
+ [[0.5,'Ab4',2],[2.5,'Bb4',1.5]],
+ [[0,'Db5',2],[2,'C5',2.5]],
+ [[0.5,'Eb5',3.5]],
+ [[0,'Db5',1.5],[1.5,'Bb4',2.5]],
+ [[0,'Ab4',2],[2,'G4',2]],
+ [[0,'E4',3.5]],
+ [[0,'F4',3.5]],
 ];
 const townDynamics=[.9,.93,.88,.94,.99,.9,1.02,.96,.95,.92,.88,.9,.88,.94,1.02,.86,.76,.8,.82,.78,.84,.86,.88,.9,1,.98,1.02,1.04,.98,.94,.9,.84];
 const townCadences=new Set([7,15,31]);
@@ -94,19 +115,26 @@ const changes:Chord[]=[
  'fm','fm','db','db','bb','cs','c','fm','db','ab','bb','c','fm','gb','c','fm',
  'eb','eb','gb','gb','db','bb','cs','c','fm','db','bb','ab','gb','bb','c','fm',
 ];
-// Clear triads anchor this quiet arrangement. Its suspended dominants resolve
-// halfway through the bar; altered extensions belong to the regional variants.
-const townChords:Record<Chord,{bass:Pitch;notes:Pitch[]}>= {
- fm:{bass:'F2',notes:['F3','Ab3','C4']},db:{bass:'Ab1',notes:['F3','Ab3','Db4']},
- bb:{bass:'Bb1',notes:['F3','Bb3','Db4']},cs:{bass:'C2',notes:['F3','G3','C4']},
- c:{bass:'C2',notes:['E3','G3','C4']},gb:{bass:'Gb2',notes:['Gb3','Bb3','Db4']},
- ab:{bass:'Ab1',notes:['Eb3','Ab3','C4']},eb:{bass:'Eb2',notes:['Eb3','Gb3','Bb3']},
-};
-const townHarmony=(step:number)=>townChords[changes[Math.floor(step/2)]==='cs'&&step%2?'c':changes[Math.floor(step/2)]];
-/** Sustain common tones across half-bar harmony slots, bounded at the loop. */
+// The town's passing harmonies have their own clock. Suspended/altered
+// dominants and deceptive turns resolve inside the bar rather than occupying
+// a whole slow measure. Melody and expressive tensions remain independent.
+function townHarmony(step:number){
+ const bar=Math.floor(step/4),beat=step%4;
+ let harmony=changes[bar];
+ if(bar===5||bar===22)harmony=beat===0?'cs':beat===1?'c':'fm';
+ else if([6,11,14,23,30].includes(bar)&&beat>=2)harmony='fm';
+ else if([13,28].includes(bar)&&beat>=2)harmony='c';
+ else if(bar===17)harmony='bb';
+ else if(bar===18&&beat>=2)harmony='db';
+ else if(bar===19)harmony=beat<2?'bb':'fm';
+ else if(bar===27&&beat>=2)harmony='db';
+ else if(bar===29&&beat>=2)harmony='c';
+ const {bass,notes}=chords[harmony];return {bass,notes:notes.slice(0,3) as Pitch[]};
+}
+/** Sustain common tones only until the actual harmony changes. */
 function supportHold(step:number,continues:(next:number)=>boolean){
- let end=step+1;while(end<64&&continues(end))end++;
- return (end-step)*2-.15;
+ let end=step+1;while(end<128&&continues(end))end++;
+ return end-step-.1;
 }
 export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
  const i=((bar%32)+32)%32,song=mode==='dawnwatch',quiet=mode==='signalwall',boss=mode==='dawn-commander',fight=boss||mode==='dawn-battle',guns=mode==='watchbarracks',middle=i>=16&&i<24;
@@ -119,19 +147,19 @@ export function dawnwatchBar(mode:DawnwatchMode,bar:number):Note[]{
   if(song){
    const strength=townDynamics[i],cadence=townCadences.has(i)&&n===tune[i].length-1;
    const expression=singing('clear',strength,duration,cadence);
-   voice.expression={...expression,vibrato:duration>=2?expression.vibrato:undefined,dynamics:[[0,.88*strength],[.22,strength],[.75,1.05*strength],[1,(cadence?.45:.9)*strength]],release:duration>=2?.28:.12};
+   voice.expression={...expression,dynamics:[[0,.88*strength],[.22,strength],[.75,1.05*strength],[1,(cadence?.45:.9)*strength]],release:.28};
   }
  }
  if(song){
-  for(const step of [i*2,i*2+1]){
-   const current=townHarmony(step),previous=step?townHarmony(step-1):undefined,beat=step%2*2;
+  for(const step of [i*4,i*4+1,i*4+2,i*4+3]){
+   const current=townHarmony(step),previous=step?townHarmony(step-1):undefined,beat=step%4;
    if(previous?.bass!==current.bass)add('round-bass',current.bass,beat,supportHold(step,b=>townHarmony(b).bass===current.bass),.105,-.08);
    for(const [n,p]of current.notes.entries())if(!previous?.notes.includes(p)){
     const voice=add('strings',p,beat,supportHold(step,b=>townHarmony(b).notes.includes(p)),.014,n%2?.4:-.4);
-    voice.expression={...phrasing(.9,true),release:.25};
+    voice.expression={...phrasing(.9,true),release:.12};
    }
   }
-  if(i%4===0)for(const p of townHarmony(i*2).notes)add('keys',p,0,2.75,.02,.3);
+  if(i%4===0)for(const p of townHarmony(i*4).notes)add('keys',p,0,2.75,.02,.3);
   if(!middle){
    for(const beat of [0,2])add('kick','C2',beat,.15,.018);
    for(const beat of [1,3])add('snare','D2',beat,.12,.012,-.2);

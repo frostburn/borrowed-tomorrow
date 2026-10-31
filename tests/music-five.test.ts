@@ -15,32 +15,28 @@ it('The Open Gate sustains its melody and common-tone support through bar lines,
  expect(openingPad.duration).toBeGreaterThan(12);
  for(const bar of [1,2,3])expect(bars[bar].some(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='Ab3')).toBe(false);
  const bass=notes.filter(n=>isBass(n.instrument));
- for(let bar=0;bar<32;bar++)expect(bass.some(n=>n.beat<=bar*4&&n.beat+n.duration>=bar*4+3.5)).toBe(true);
+ for(let beat=0;beat<128;beat++)expect(bass.some(n=>n.beat<=beat&&n.beat+n.duration>beat)).toBe(true);
  expect(ARRANGEMENTS.dawnwatch).toMatchObject({beats:4,bpm:92});expect(hasExpression('dawnwatch')).toBe(true);expect(hasRubato('dawnwatch')).toBe(false);
  expect(lead.every(n=>!!n.expression?.dynamics)).toBe(true);
  const hold=performanceBar('dawnwatch',16).notes.find(n=>n.velocity>=.1)!;
  expect(hold.seconds).toBeGreaterThan(performanceBar('dawnwatch',16).duration);
  for(let bar=16;bar<24;bar++)expect(bars[bar].some(n=>isPercussion(n.instrument))).toBe(false);
 });
-it('The Open Gate grounds entries on the pulse and saves long notes and cadential fades for stable arrivals',()=>{
- const bars=Array.from({length:32},(_,bar)=>scoreBar('dawnwatch',bar)),lead=bars.flatMap((notes,bar)=>notes.filter(n=>n.instrument==='strings'&&n.velocity>=.1).map(n=>({...n,bar,time:bar*4+n.beat})));
- // Each new entrance is on a quarter beat. The only offbeat note is the short,
- // connected Db neighbour; bars without a downbeat attack have a real tie.
- for(const [i,n]of lead.entries()){
-  if(!Number.isInteger(n.beat)){expect(n).toMatchObject({pitch:'Db5',beat:.75,duration:.25});expect(lead[i-1].time+lead[i-1].duration).toBe(n.time);}
-  if(!i||n.time>lead[i-1].time+lead[i-1].duration)expect(Number.isInteger(n.beat)).toBe(true);
-  if(n.duration<2)expect(n.expression?.vibrato).toBeUndefined();
-  const ending=n.expression!.dynamics!.at(-1)![1];
-  if(ending<.6){expect([7,15,31]).toContain(n.bar);expect(n.pitch).toMatch(/^F/);}
+it('The Open Gate preserves its opening while harmonic tension resolves within the bar',()=>{
+ const melody=(bar:number)=>scoreBar('dawnwatch',bar).filter(n=>n.instrument==='strings'&&n.velocity>=.1);
+ expect(melody(0).map(n=>[n.beat,n.pitch,n.duration])).toEqual([[0,'C5',1],[1,'Db5',.5],[1.5,'C5',1],[2.5,'G4',2]]);
+ const notes=Array.from({length:32},(_,bar)=>scoreBar('dawnwatch',bar).map(n=>({...n,time:bar*4+n.beat}))).flat();
+ const bass=notes.filter(n=>isBass(n.instrument));
+ const rootAt=(beat:number)=>bass.find(n=>n.time<=beat&&n.time+n.duration>beat)!.pitch;
+ for(const bar of [5,6,11,14,22,23,30]){
+  expect(rootAt(bar*4)).toBe('C2');expect(rootAt(bar*4+2)).toBe('F2');
  }
- for(let bar=0;bar<32;bar++){
-  const first=lead.find(n=>n.bar===bar)!;
-  if(first.beat)expect(lead.some(n=>n.time<bar*4&&n.time+n.duration>=first.time)).toBe(true);
+ for(const bar of [13,28]){expect(rootAt(bar*4)).toBe('Gb2');expect(rootAt(bar*4+2)).toBe('C2');}
+ expect(rootAt(18*4+2)).toBe('Ab1');expect(rootAt(19*4+2)).toBe('F2');
+ for(const bar of [5,22]){
+  const voiced=notes.filter(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='E4');
+  expect(voiced.some(n=>n.time===bar*4+1&&n.time+n.duration<bar*4+2)).toBe(true);
  }
- const triads=[['F','Ab','C'],['F','Ab','C'],['Db','F','Ab'],['Db','F','Ab'],['Bb','Db','F'],['C','F','G'],['C','E','G'],['F','Ab','C'],['Db','F','Ab'],['Ab','C','Eb'],['Bb','Db','F'],['C','E','G'],['F','Ab','C'],['Gb','Bb','Db'],['C','E','G'],['F','Ab','C'],['Eb','Gb','Bb'],['Eb','Gb','Bb'],['Gb','Bb','Db'],['Gb','Bb','Db'],['Db','F','Ab'],['Bb','Db','F'],['C','F','G'],['C','E','G'],['F','Ab','C'],['Db','F','Ab'],['Bb','Db','F'],['Ab','C','Eb'],['Gb','Bb','Db'],['Bb','Db','F'],['C','E','G'],['F','Ab','C']];
- for(const n of lead.filter(n=>n.duration>1))for(let bar=n.bar;bar*4<n.time+n.duration;bar++)expect(triads[bar],`${n.pitch} held in bar ${bar+1}`).toContain(n.pitch.slice(0,-1));
- for(const bar of [5,6,11,14,22,23,30])expect(lead.filter(n=>n.bar===bar).every(n=>n.duration<=1)).toBe(true);
- for(const bar of [5,22])expect(bars[bar].some(n=>n.instrument==='strings'&&n.velocity<.09&&n.pitch==='E3'&&n.beat===2)).toBe(true);
 });
 it('Chapter Five has bounded, varied 32-bar scores with one foreground line, rests and safe loop seams',()=>{
  for(const mode of ['airship','airfield','observation','hammerplain','coolingworks','anchorforge','five-battle','five-furnace','dawnwatch','watchbarracks','signalwall','dawn-battle','dawn-commander','windmere','dispensary','mirrorward','wind-battle','wind-engine']as MusicMode[]){
