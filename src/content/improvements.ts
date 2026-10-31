@@ -4,7 +4,7 @@ import type {StoryHost} from './story-host';
 import {BASE_STATS} from '../rules/progression';
 import {maxHp,type GameState,type HeroId} from '../rules/state';
 import {abilityFor} from '../rules/skills';
-import {CREW_SERVICES,IMPROVEMENTS,buyImprovement,improved,improvementProblem,improvementUnlocked,maxFocus,serviceAvailable,type Improvement,type ImprovementService} from '../rules/improvements';
+import {CREW_SERVICES,IMPROVEMENTS,buyImprovement,improved,improvementProblem,improvementUnlocked,maxFocus,remainingImprovements,serviceAvailable,type Improvement,type ImprovementService} from '../rules/improvements';
 
 export function improvementEffect(s:GameState,i:Improvement):string {
  const owned=improved(s,i.id);
@@ -35,15 +35,22 @@ export function offerImprovements(h:StoryHost,service:ImprovementService,hero?:H
  if(!serviceAvailable(s,service))return;
  if(service==='training'&&!hero){
   h.talk({lines:[SAY(who,`${intro} You have ${s.coins} marks.`)],choices:[
-   ...s.party.filter(p=>p.id!=='nell'||!s.flags.nellLost).map(p=>({label:`Train ${CHARACTERS[p.id].name}`,disabled:improved(s,`hp-${p.id}`)&&improved(s,`focus-${p.id}`)||p.id==='nell'&&!!s.flags.nellIll&&!s.flags.nellRecovered,action:()=>offerImprovements(h,service,p.id)})),
+   ...s.party.filter(p=>remainingImprovements(s,service,p.id).length).map(p=>({label:`Train ${CHARACTERS[p.id].name}`,disabled:p.id==='nell'&&!!s.flags.nellIll&&!s.flags.nellRecovered,action:()=>offerImprovements(h,service,p.id)})),
    ...crewSpecialties(s).length?[{label:'Specialist improvements',action:()=>offerCrewSpecialties(h)}]:[],
    {label:'Leave training',action:()=>{}},
   ]});return;
  }
- const choices=IMPROVEMENTS.filter(i=>i.service===service&&(!hero||i.hero===hero)&&improvementUnlocked(s,i));
+ const choices=remainingImprovements(s,service,hero);
+ if(!choices.length){
+  // A direct visit to a finished specialist can still review the earned effect,
+  // without offering another purchase or an empty transaction menu.
+  const completed=IMPROVEMENTS.filter(i=>i.service===service&&(!hero||i.hero===hero)&&improvementUnlocked(s,i)&&improved(s,i.id));
+  if(completed.length)h.talk({lines:completed.map(i=>SAY('Permanent improvement',`${CHARACTERS[i.hero].name} · ${i.name}: ${improvementEffect(s,i)}`))});
+  return;
+ }
  improvementMenu(h,who,intro,choices,()=>offerImprovements(h,service,hero),service==='training'?'Choose another character':'Leave',()=>{if(service==='training')offerImprovements(h,service);});
 }
-const crewSpecialties=(s:GameState)=>IMPROVEMENTS.filter(i=>CREW_SERVICES.includes(i.service)&&improvementUnlocked(s,i));
+const crewSpecialties=(s:GameState)=>CREW_SERVICES.flatMap(service=>remainingImprovements(s,service));
 function offerCrewSpecialties(h:StoryHost){
  if(!serviceAvailable(h.state,'training'))return;
  improvementMenu(h,trainingHost(h.state),'The allied crews sent fittings and drill notes with the supplies. We can finish that work here.',crewSpecialties(h.state),()=>offerCrewSpecialties(h),'Back to training',()=>offerImprovements(h,'training'));
@@ -52,15 +59,19 @@ function offerCrewSpecialties(h:StoryHost){
 function improvementMenu(h:StoryHost,who:string,intro:string,choices:readonly Improvement[],again:()=>void,backLabel:string,back:()=>void){
  const s=h.state;
  h.talk({lines:[SAY(who,intro),SAY('Permanent improvements',`You have ${s.coins} marks. Improvements stay with the character. Training does not restore HP or focus.`),...choices.map(i=>SAY('Permanent improvement',`${CHARACTERS[i.hero].name} · ${i.name}: ${improvementEffect(s,i)}`))],choices:[
-  ...choices.map(i=>{const problem=improvementProblem(s,i);return {label:`${i.name} · ${problem==='Completed'?'Completed':`${i.cost} marks${problem?` · ${problem}`:''}`}`,disabled:!!problem,action:()=>h.talk({lines:[SAY('Confirm improvement',`${CHARACTERS[i.hero].name} — ${improvementEffect(s,i)} Pay ${i.cost} marks? ${s.coins} → ${s.coins-i.cost} marks.`)],choices:[
+  ...choices.map(i=>{const problem=improvementProblem(s,i);return {label:`${i.name} · ${i.cost} marks${problem?` · ${problem}`:''}`,disabled:!!problem,action:()=>h.talk({lines:[SAY('Confirm improvement',`${CHARACTERS[i.hero].name} — ${improvementEffect(s,i)} Pay ${i.cost} marks? ${s.coins} → ${s.coins-i.cost} marks.`)],choices:[
    {label:`Confirm · ${i.cost} marks`,action:()=>{if(buyImprovement(s,i.id)){h.refresh();h.save();h.toast(`${i.name} completed for ${CHARACTERS[i.hero].name}.`);if(choices.every(i=>improved(s,i.id)))return;}again();}},
    {label:'Cancel improvement',action:again},
   ]})};}),
   {label:backLabel,action:back},
  ]});
 }
-export const trainingChoice=(h:StoryHost)=>({label:'Training · permanent improvements',action:()=>offerImprovements(h,'training')});
-export const lanternChoice=(h:StoryHost)=>({label:'Reinforce Nell’s lantern · 400 marks',action:()=>offerImprovements(h,'capital')});
+export function improvementChoices(h:StoryHost,service:ImprovementService,label:string){
+ const remaining=remainingImprovements(h.state,service).length+(service==='training'?crewSpecialties(h.state).length:0);
+ return serviceAvailable(h.state,service)&&remaining?[{label,action:()=>offerImprovements(h,service)}]:[];
+}
+export const trainingChoices=(h:StoryHost)=>improvementChoices(h,'training','Training · permanent improvements');
+export const lanternChoices=(h:StoryHost)=>improvementChoices(h,'capital','Reinforce Nell’s lantern · 400 marks');
 export function improvementSummary(s:GameState,hero:HeroId):string[] {
  return IMPROVEMENTS.filter(i=>i.hero===hero&&improved(s,i.id)).map(i=>`${i.name}: ${improvementEffect(s,i)}`);
 }

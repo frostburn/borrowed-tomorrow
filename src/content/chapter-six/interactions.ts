@@ -1,4 +1,4 @@
-import {trainingChoice} from '../improvements';
+import {trainingChoices} from '../improvements';
 import { resumeCapital,interactCapital } from './capital/interactions';
 import { resumeNorth,interactNorth } from './north/interactions';
 import { resumeJungle,interactJungle } from './jungle/interactions';
@@ -41,7 +41,7 @@ export function interactChapterSix(h:StoryHost,id:string){
   choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
-   ...(id==='six-supplies'?[trainingChoice(h)]:[]),
+   ...(id==='six-supplies'?trainingChoices(h):[]),
    {label:'Keep going',action:()=>{}},
   ],
  });

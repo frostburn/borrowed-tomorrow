@@ -32,6 +32,8 @@ const locations:Record<ImprovementService,readonly MapId[]>={
 /** Travelling counters retain every quest-unlocked specialty after departure. */
 export const CREW_SERVICES:readonly ImprovementService[]=['hammerplain','dawnwatch','windmere','iria','capital'];
 export const serviceAvailable=(s:GameState,service:ImprovementService)=>!!s.flags.airshipOwned&&(locations[service].includes(s.location.map)||CREW_SERVICES.includes(service)&&locations.training.includes(s.location.map));
+/** Keep future purchases visible even when unaffordable, but omit finished work. */
+export const remainingImprovements=(s:GameState,service:ImprovementService,hero?:HeroId)=>serviceAvailable(s,service)?IMPROVEMENTS.filter(i=>i.service===service&&(!hero||i.hero===hero)&&improvementUnlocked(s,i)&&!improved(s,i.id)&&(i.hero!=='nell'||!s.flags.nellLost)):[];
 export function improvementProblem(s:GameState,i:Improvement):string|undefined {
  if(improved(s,i.id))return 'Completed';
  if(!serviceAvailable(s,i.service)||!improvementUnlocked(s,i))return 'Not available yet';

@@ -42,8 +42,8 @@ export function interactDawnwatch(h:StoryHost,id:string){
   case 'dawn-soldier':if(f.dawnwatchComplete)return offerImprovements(h,'dawnwatch');return say('Enna',f.shelterOpened?'I’ll stay at the gate. Both gun positions are above the barracks stair.':'The lever’s above us. I’ll help Petra lift it.');
   case 'dawn-soldier-after':return offerImprovements(h,'dawnwatch');
   case 'watch-plan':return h.talk({lines:[SAY('Petra',f.mortarWon&&f.repeaterWon?'Both guns are silent. The signal-wall stair is north.':'Which position? The other gun supports its crew until we defeat the spotter.')],choices:[
-   {label:f.mortarWon?'Western mortar · position clear':'Western mortar · repeater lane support',disabled:!!f.mortarWon,action:()=>gun(true)},
-   {label:f.repeaterWon?'Eastern repeater · position clear':'Eastern repeater · mortar blast support',disabled:!!f.repeaterWon,action:()=>gun(false)},
+   ...(!f.mortarWon?[{label:'Western mortar · repeater lane support',action:()=>gun(true)}]:[]),
+   ...(!f.repeaterWon?[{label:'Eastern repeater · mortar blast support',action:()=>gun(false)}]:[]),
    {label:'Leave the terrace for now',action:()=>{}},
   ]});
   case 'watch-mortar':return gun(true);

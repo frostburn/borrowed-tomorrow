@@ -1,4 +1,4 @@
-import {offerImprovements,trainingChoice} from '../improvements';
+import {offerImprovements,trainingChoices} from '../improvements';
 import { beginFlagship,interactFinale,resumeFinale,flagshipReady,beginRetaliation } from './finale';
 import { completedAnchors } from './progress';
 import { resumeDawnwatch,interactDawnwatch } from './dawnwatch';
@@ -39,7 +39,7 @@ export function interactChapterFive(h:StoryHost,id:string){
   case 'airfield-supply':case 'ship-supply':case 'hammer-supply':case 'forge-supply':case 'dawn-supply':case 'wind-supply':return h.talk({lines:[SAY('Supplies','There’s room to rest, and bandages for eight marks.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
-   ...(id==='ship-supply'?[trainingChoice(h)]:[]),
+   ...(id==='ship-supply'?trainingChoices(h):[]),
    {label:'Leave',action:()=>{}},
   ]});
   case 'airfield-seizure':
