@@ -24,7 +24,9 @@ export const hpTraining=(s:Progress,id:HeroId)=>improved(s,`hp-${id}`)?12:0;
 export const maxFocus=(s:Progress,id:HeroId)=>improved(s,`focus-${id}`)?7:6;
 /** Battle fixtures without a campaign profile keep the ordinary six-focus cap. */
 export const focusCapacity=(u:{maxFocus?:number})=>u.maxFocus??6;
-export const improvementUnlocked=(s:Pick<GameState,'party'|'flags'>,i:Improvement)=>s.party.some(h=>h.id===i.hero)&&!!s.flags[i.requires]&&(i.effect!=='barrier'||!!s.flags.nellRecovered);
+/** Flags-only art previews have no roster; campaign checks use actual recruits. */
+export type ImprovementProgress=Pick<GameState,'flags'>&Partial<Pick<GameState,'party'>>;
+export const improvementUnlocked=(s:ImprovementProgress,i:Improvement)=>(!s.party||s.party.some(h=>h.id===i.hero))&&!!s.flags[i.requires]&&(i.effect!=='barrier'||!!s.flags.nellRecovered);
 const locations:Record<ImprovementService,readonly MapId[]>={
  training:['airship','outermooring','capitalquay','hollowsill','lastrefuge'],
  hammerplain:['hammerplain'],dawnwatch:['dawnwatch'],windmere:['windmere','dispensary'],iria:['riverhaven','rainhouse'],capital:['capitalquay','lastpalace','crown'],
@@ -33,7 +35,8 @@ const locations:Record<ImprovementService,readonly MapId[]>={
 export const CREW_SERVICES:readonly ImprovementService[]=['hammerplain','dawnwatch','windmere','iria','capital'];
 export const serviceAvailable=(s:GameState,service:ImprovementService)=>!!s.flags.airshipOwned&&(locations[service].includes(s.location.map)||CREW_SERVICES.includes(service)&&locations.training.includes(s.location.map));
 /** Keep future purchases visible even when unaffordable, but omit finished work. */
-export const remainingImprovements=(s:GameState,service:ImprovementService,hero?:HeroId)=>serviceAvailable(s,service)?IMPROVEMENTS.filter(i=>i.service===service&&(!hero||i.hero===hero)&&improvementUnlocked(s,i)&&!improved(s,i.id)&&(i.hero!=='nell'||!s.flags.nellLost)):[];
+export const unlearnedImprovements=(s:ImprovementProgress,service:ImprovementService,hero?:HeroId)=>IMPROVEMENTS.filter(i=>i.service===service&&(!hero||i.hero===hero)&&improvementUnlocked(s,i)&&!improved(s,i.id)&&(i.hero!=='nell'||!s.flags.nellLost));
+export const remainingImprovements=(s:GameState,service:ImprovementService,hero?:HeroId)=>serviceAvailable(s,service)?unlearnedImprovements(s,service,hero):[];
 export function improvementProblem(s:GameState,i:Improvement):string|undefined {
  if(improved(s,i.id))return 'Completed';
  if(!serviceAvailable(s,i.service)||!improvementUnlocked(s,i))return 'Not available yet';
