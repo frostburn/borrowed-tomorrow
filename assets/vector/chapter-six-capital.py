@@ -76,11 +76,16 @@ world('lastshore','The remembered coast','Tomas has left their bags beside the p
 # The crown is the route's sole commitment point; no exits lead back after the warning.
 f=[(12,24,40,12),(24,18,17,7)]
 back=[rect(0,0,1536,1008,'#314958'),poly([(0,294),(289,211),(633,302),(1020,181),(1536,261),(1536,1008),(0,1008)],BLUE),poly([(0,481),(424,387),(789,446),(1144,362),(1536,475),(1536,614),(0,614)],'#b3bfae')]
-world('crown','The capital · crown platform','The imperial vessel stands above its two supports. The final stair is behind you; the evacuation boats are far below.',f,[],[
+world('crown','The capital · crown platform','The crown platform hangs above the palace roof. The final stair is behind you; the evacuation boats are far below.',f,[],[
  obj('capital-emperor',32,26,'The Emperor · imperial vessel',hiddenFlag='emperorWon',doneFlag='emperorWon',sign=True),obj('capital-lightbearer',32,26,'The Lightbearer · Nell’s lantern',requiredFlag='lightbearerSeen',hiddenFlag='lightbearerWon',doneFlag='lightbearerWon',sign=True),obj('crown-landing',46,32,'The allied landing · descend with the crews',requiredFlag='capitalReleased',kind='exit',sign=True),obj('crown-rest',19,32,'Broken stair shelter · rest and supplies',kind='optional',requiredFlag='emperorWon',sign=True)],
  {'start':(32,32)}, {'six-imperial-vessel':party,'six-imperial-fall':party,'six-lightbearer-rise':party,'six-lightbearer-fall':party},[],
  [('crown-vessel',[inline('imperial-idle')],528,280,516,224,504,{'hiddenFlag':'emperorWon'}),('crown-west-support',[inline('imperial-support')],96,160,502,349,509,{'hiddenFlag':'emperorWon'}),('crown-east-support',[inline('imperial-support')],96,160,978,349,509,{'hiddenFlag':'emperorWon'}),('crown-lightbearer',[inline('lightbearer-idle')],528,280,516,224,504,{'requiredFlag':'lightbearerSeen','hiddenFlag':'lightbearerWon'}),('crown-broken-marble',[poly([(0,22),(60,0),(122,31),(74,66),(30,59)],WHITE),poly([(122,31),(74,66),(70,90),(116,58)],BLUE)],124,92,422,759,851,{'requiredFlag':'emperorWon'})],back)
 home_map('laststation',False)
+# Append the entry actor without renumbering the existing four scene casts.
+crown_path=ROOT/'src/content/chapter-six/maps/crown.json';crown=json.loads(crown_path.read_text())
+entry=next(l for l in crown['layers']if l['name']=='Scene:six-imperial-vessel')
+emperor=point('emperor',36,19);emperor['id']=crown['nextobjectid'];crown['nextobjectid']+=1;entry['objects'].append(emperor)
+crown_path.write_text(json.dumps(crown,indent=2)+'\n')
 for id,title in [('capital-procession','The repeating procession'),('palace-command','The palace cordon'),('capital-hunters','The eastern cloister'),('imperial-vessel','The Emperor’s vessel'),('lightbearer','The Lightbearer')]:
  f=[(3,3,34,16)];back=[rect(0,0,1008,480,'#394f61'),poly([(0,90),(200,7),(447,87),(736,0),(1008,75),(1008,480),(0,480)],BLUE)]
  if id not in ('imperial-vessel','lightbearer'):

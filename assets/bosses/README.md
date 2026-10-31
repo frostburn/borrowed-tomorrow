@@ -85,3 +85,5 @@ reports `heartbeat`, updates alpha picking with each pose, settles at frame zero
 for reduced motion or defeat, and resumes the current beat after an attack or
 redraw. Review Campaign → exposed heart in the Bosses workshop with the cursor
 parked. Campaign and workshop use the same presentation.
+
+The crown entrance splits the accepted imperial vessel into eight native pieces, retaining its painter order and geometry. `python3 assets/bosses/export-imperial.py --entry-only` regenerates the back, hinged arms, split collar/front plates and likeness without touching battle poses or portraits. `content/imperial-entry.ts` owns the assembly clock/assets; `game/imperial-entry.ts` owns temporary scene objects, native supports, reduced motion and cleanup. The Tiled crown cast supplies the walking Emperor. Closing resolves to the existing whole-image scenery.

@@ -12,8 +12,8 @@ def p(points,c):return '<polygon points="'+' '.join(f'{x:g},{y:g}'for x,y in poi
 def r(x,y,w,h,c):return f'<path d="M{x:g} {y:g}h{w:g}v{h:g}h{-w:g}Z" fill="{c}"/>'
 def l(points,c,w=3):return '<polyline points="'+' '.join(f'{x:g},{y:g}'for x,y in points)+f'" fill="none" stroke="{c}" stroke-width="{w}"/>'
 def ring(cx,cy,rx,ry,c,w=8):return f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="none" stroke="{c}" stroke-width="{w}"/>'
-def vessel(pose='idle'):
- charged=pose in ('charge','cast');fallen=pose=='fallen';out=[]
+def vessel(pose='idle',part=None):
+ charged=pose in ('charge','cast');fallen=pose=='fallen';out=[];parts={}
  def m(points):return [(528-x,y)for x,y in points]
  # Stepped throne architecture and deep recesses, rather than a flat gold crown.
  out += [p([(143,110),(151,54),(207,54),(224,31),(250,31),(264,9),(279,31),(305,31),(322,54),(377,54),(385,110),(346,155),(182,155)],'#61563f'),p([(156,99),(163,64),(216,64),(232,41),(255,41),(264,25),(274,41),(297,41),(313,64),(366,64),(372,99)],GOLD),p([(178,94),(183,72),(224,72),(237,50),(291,50),(305,72),(346,72),(351,94),(326,128),(202,128)],SHADOW),p([(213,79),(227,62),(301,62),(315,79),(315,155),(213,155)],'#162d38')]
@@ -21,20 +21,26 @@ def vessel(pose='idle'):
  # Lower body remains a substantial throne base, with cloth between rigid armor planes.
  out += [p([(172,174),(356,174),(384,249),(353,268),(175,268),(144,249)],'#4c6673'),p([(181,182),(347,182),(365,241),(343,251),(185,251),(164,241)],BLUE),p([(213,180),(315,180),(332,251),(298,260),(264,251),(230,260),(195,251)],'#345364'),p([(230,187),(250,190),(241,248),(228,251)],SHADOW),p([(278,189),(298,186),(307,249),(290,252)],SHADOW)]
  out += [p([(144,249),(172,221),(185,251),(230,260),(264,251),(298,260),(343,251),(356,220),(384,249),(353,268),(175,268)],'#304957')]
+ parts['frame']=out[:]
  # Each shoulder connects through an elbow to a broad articulated hand.
  for flip in (False,True):
+  start=len(out)
   def q(points):return m(points)if flip else points
   out += [p(q([(91,135),(137,126),(172,168),(161,205),(131,223),(100,204),(74,178)]),'#4a6470'),p(q([(99,142),(131,136),(158,170),(151,194),(129,207),(109,191),(86,175)]),BLUE if not flip else '#607b89'),p(q([(99,142),(113,145),(137,180),(129,207),(109,191),(86,175)]),SHADOW if not flip else '#344b5b'),p(q([(115,184),(143,177),(159,194),(147,213),(124,224),(106,209)]),GOLD),p(q([(83,112),(130,83),(199,113),(186,153),(139,168),(80,150),(60,133)]),'#7e969c'),p(q([(85,119),(132,94),(187,117),(177,144),(139,155),(86,141),(72,132)]),MARBLE if not flip else '#bbc9c3'),p(q([(132,94),(187,117),(177,144),(161,143),(165,120)]),BLUE if not flip else '#607b89'),p(q([(85,119),(132,94),(165,120),(141,127)]),WHITE if not flip else '#d2d3ae'),l(q([(78,131),(140,147),(178,136)]),GOLD,5)]
   out += [p(q([(80,150),(139,168),(186,153),(178,168),(143,183),(100,165)]),'#3c5360')]
   # Parallel finger plates read as a hand, not disconnected decorative spikes.
   out += [p(q([(104,205),(132,211),(141,235),(124,252),(93,251),(73,236),(77,218)]),'#9b783f'),p(q([(105,214),(124,217),(130,234),(120,243),(96,242),(82,232),(86,223)]),GOLD),p(q([(89,221),(100,217),(118,225),(121,236),(99,231)]),WHITE if not flip else '#d2d3ae'),l(q([(88,231),(99,234),(102,243)]),'#9b783f',3),l(q([(102,230),(112,233),(115,244)]),'#9b783f',3),p(q([(125,212),(142,207),(151,214),(144,229),(132,233)]),GOLD)]
+  parts['arm-right'if flip else 'arm-left']=out[start:]
  # Recessed human head and a wide collar. Flesh has separate brow, nose and jaw planes.
+ start=len(out)
  out += [p([(177,128),(216,112),(240,128),(286,128),(313,111),(352,128),(364,183),(336,211),(192,211),(164,183)],'#7b959b'),p([(184,134),(215,122),(237,140),(289,140),(315,122),(345,134),(353,180),(329,199),(199,199),(176,180)],MARBLE),p([(315,122),(345,134),(353,180),(329,199),(313,185),(320,151)],'#597585'),p([(184,134),(215,122),(237,140),(224,151),(191,146)],WHITE),l([(190,162),(215,166),(226,153)],GOLD,4),l([(338,162),(313,166),(302,153)],GOLD,4)]
  # Same silver mane, narrow face, pointed beard and restrained diadem as the
  # human actor. Keep the likeness recessed, instead of replacing it with a crown.
+ parts['collar']=out[start:];start=len(out)
  face=Drawing();emperor_head(face,fallen)
  face_svg=face.svg().split('>',1)[1].rsplit('</svg>',1)[0]
  out += ['<g id="emperor-likeness" transform="translate(204 '+('60'if fallen else '54')+') scale(3 2.5)">',face_svg,'</g>']
+ parts['face']=out[start:];start=len(out)
  out += [p([(191,178),(214,186),(232,183),(235,199),(199,199),(176,180)],'#a4b3ad'),p([(313,152),(345,164),(353,180),(329,199),(313,185)],'#3b5563')]
  # The same hollow-sun emblem embossed in brass; its open center exposes the
  # recessed breastplate. This is heraldry, without the god's suspended shard.
@@ -44,7 +50,10 @@ def vessel(pose='idle'):
  if fallen:out += [p([(259,144),(266,159),(260,177),(271,187),(260,217),(262,197),(252,183),(260,163)],INK)]
  if pose=='cast':
   for x in (112,203,325,416):out += [p([(x,181),(x+5,197),(x,239),(x-5,199)],WHITE)]
- return out
+ parts['front']=out[start:]
+ # The entry pieces reassemble in the exact accepted painter order.
+ assert out==sum((parts[k]for k in ['frame','arm-left','arm-right','collar','face','front']),[])
+ return parts[part]if part else out
 
 def lightbearer(pose='idle'):
  out=[];opened=pose=='resist';dy=-3 if pose=='rise'else 0
@@ -74,9 +83,17 @@ def support(opened=False):
 
 def write(key,w,h,body):
  (ART/f'{key}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><title>{key.replace("-"," ")}</title>'+''.join(body)+'</svg>\n')
-for name,fn,poses in [('imperial',vessel,['idle','charge','cast','fallen']),('lightbearer',lightbearer,['idle','rise','cast','resist'])]:
- for pose in poses:write(name+'-'+pose,528,280,fn(pose))
- portrait=ART/f'{name}-portrait.svg'
- if not portrait.exists():portrait.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>'+name+'</title>'+r(0,0,128,128,INK)+'<g transform="translate(-150 -8) scale(.8)">'+''.join(fn())+'</g></svg>\n')
-write('imperial-support',96,160,support());write('imperial-support-broken',96,160,support(True))
-print('Exported imperial vessel, supports and Lightbearer poses.')
+if '--entry-only'not in sys.argv:
+ for name,fn,poses in [('imperial',vessel,['idle','charge','cast','fallen']),('lightbearer',lightbearer,['idle','rise','cast','resist'])]:
+  for pose in poses:write(name+'-'+pose,528,280,fn(pose))
+  portrait=ART/f'{name}-portrait.svg'
+  if not portrait.exists():portrait.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><title>'+name+'</title>'+r(0,0,128,128,INK)+'<g transform="translate(-150 -8) scale(.8)">'+''.join(fn())+'</g></svg>\n')
+ write('imperial-support',96,160,support());write('imperial-support-broken',96,160,support(True))
+for part in ['frame','arm-left','arm-right','face']:
+ write('imperial-entry-'+part,528,280,vessel(part=part))
+for part in ['collar','front']:
+ for side,x in [('left',0),('right',264)]:
+  clip=f'entry-{part}-{side}'
+  body=[f'<defs><clipPath id="{clip}"><path d="M{x} 0h264v280H{x}Z"/></clipPath></defs>',f'<g clip-path="url(#{clip})">',*vessel(part=part),'</g>']
+  write('imperial-entry-'+part+'-'+side,528,280,body)
+print('Exported imperial entry pieces'+(' only.'if '--entry-only'in sys.argv else ', vessel, supports and Lightbearer poses.'))

@@ -324,6 +324,8 @@ portrait on phones; Next/Continue stays fixed as lines change. Scenes without
 the option retain their existing bottom layout, and closing or skipping clears
 the placement before ordinary dialogue or panels open.
 
+The Emperor’s crown entrance stays on the crown platform at normal map scale. Authored shot focuses follow the growing vessel upward, hold on the Emperor’s first line, then pan down to the party as Celia answers. The bottom dialogue may cover the party’s lower bodies; framing never zooms out to fit the set. Resize retains the current focus, reduced motion settles pans immediately, and close/skip removes the pan before exploration or combat resumes. The opt-in `imperial-entry.spec.ts` cases cover motion/reduced motion, both Nell routes, native scale, the party pan, early advance, skip, reload, resize, failed-art retry and actual battle handoff.
+
 The Lower Dispensary introduction stages all six actors on clear floor in front
 of the lift. Its Tiled `Scene:five-wind-dispensary` cast and
 `assets/vector/windmere.py` must agree. The separate lift action keeps its own

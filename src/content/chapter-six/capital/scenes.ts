@@ -1,6 +1,7 @@
 import { STAGED as line,type Dialogue } from '../../dialogue';
 import { stage } from '../../maps';
 import type { GameState,MapId } from '../../../rules/state';
+import {IMPERIAL_WALK_MS,IMPERIAL_CLOSE_MS,IMPERIAL_UNFOLD_MS} from '../../imperial-entry';
 const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-lightbearer-fall').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:'nell-ill'}:a)},lines});
 export const street=(s:GameState)=>scene(s,'stillcity','six-capital-street','Stillwater Avenue',[
  line('Stillwater Avenue','A woman pulls her cart beneath the arch. A cloth slips from the load. She turns, and the cloth is folded on top again.',{focus:{x:32,y:25},cut:true}),
@@ -105,10 +106,11 @@ export const warning=(s:GameState)=>scene(s,'lastpalace','six-capital-warning','
  line('Kit','Then the launch stays ready. We don’t have to leave her like this.',{expression:'worried'}),
 ]);
 export const vessel=(s:GameState)=>scene(s,'crown','six-imperial-vessel','The Emperor’s last day',[
- line('The crown platform','The Emperor steps into the crown’s open frame. Plates close around his body.',{focus:{x:32,y:21},cut:true,cue:'resonance'}),
- line('The crown','The frame unfolds into a vast vessel above the palace roof. Two pale supports turn beneath its arms.'),
+ line('The crown platform','The Emperor steps into the crown’s open frame.',{focus:{x:32,y:21},cut:true,duration:IMPERIAL_WALK_MS,effect:'imperial-enter',actors:{emperor:{to:{x:32,y:19},face:'emperor-left'}}}),
+ line('The crown','Plates close around his body.',{effect:'imperial-close',duration:IMPERIAL_CLOSE_MS,cue:'resonance'}),
+ line('The crown','The frame unfolds into a vast vessel above the palace roof. Two pale supports turn beneath its arms.',{focus:{x:32,y:16.5},effect:'imperial-unfold',duration:IMPERIAL_UNFOLD_MS}),
  line('The Emperor','The window was open. She could hear the carts again.'),
- line('Celia','The lower ward was left without water. We carried your patients out.'),
+ line('Celia','The lower ward was left without water. We carried your patients out.',{focus:{x:32,y:31},duration:1400}),
  line('The Emperor','She hasn’t finished her breakfast. Keep the supports in place.'),
  line('Orrin','He’s drawing them back together already. Break both, then go for the vessel.'),
  ...(s.flags.nellRecovered?[line('Nell','There are people on those boats. Let them have tomorrow.')]:[line('Petra','The people are at the boats. You’re letting them leave.')]),
