@@ -1,8 +1,8 @@
 import {expect,it} from 'vitest';
-import {cast,createBattle,damage,fixtureDamage,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
+import {cast,createBattle,damage,enemyTurn,fixtureDamage,legalAim,shape,targets,type Encounter} from '../src/rules/combat';
 import {fixtureAt,teamStatus,type FixtureDefinition} from '../src/rules/combat-tactics';
 import {characterProfiles,defaultBuild,newCharacterSettings} from '../src/rules/characters';
-import {key,offset} from '../src/rules/hex';
+import {key,offset,type Hex} from '../src/rules/hex';
 import {newGame} from '../src/rules/state';
 import type {CompanionId} from '../src/rules/party';
 
@@ -37,6 +37,17 @@ it('damages a nearby enemy behind a bursting drum with its explosion, not a seco
  const {b,u,enemy,prop}=arena('orrin','drum',1);enemy.hex=offset(4,3);enemy.armor=3;enemy.guard=4;prop.power=18;
  const hp=enemy.hp;expect(cast(b,u,'steam',prop.hex)).toBe(true);
  expect(enemy.hp).toBe(hp-11);expect(enemy.guard).toBe(0);
+});
+it('reports the fired enemy beam footprint before its drum blocker is destroyed',()=>{
+ const {b,u,enemy,prop}=arena('orrin','drum',1),protectedAlly=b.units.find(v=>v.side==='party'&&v!==u)!;
+ enemy.hex=offset(1,3);enemy.abilities=['steam'];enemy.focus=10;enemy.movement=0;enemy.anchored=true;
+ u.hex=offset(2,3);protectedAlly.hex=offset(4,3);b.units=[u,protectedAlly,enemy];b.queue=[enemy.id,u.id,protectedAlly.id];
+ const hp=[u.hp,protectedAlly.hp];let fired:Hex[]|undefined;
+ expect(enemyTurn(b,undefined,(ability,aim,affected)=>{fired=affected??shape(b,enemy,ability,aim);})).toBe('steam');
+ expect(prop.hp).toBe(0);expect(b.obstacles.has(key(prop.hex))).toBe(false);
+ expect(u.hp).toBeLessThan(hp[0]);expect(protectedAlly.hp).toBe(hp[1]);
+ expect(fired).toEqual([offset(2,3),prop.hex]);
+ expect(shape(b,enemy,'steam',u.hex)).toContainEqual(protectedAlly.hex);
 });
 it('keeps solid rock blocking both the beam and shots at props behind it',()=>{
  const {b,u,prop}=arena('orrin');b.obstacles.add(key(offset(2,3)));

@@ -360,7 +360,7 @@ export function wait(b: Battle): boolean {
 }
 
 /** The AI evaluates every reachable firing position and the exact same AoE as the player. */
-export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex)=>void): AbilityId | 'defend' | undefined {
+export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, onAction?:(ability:AbilityId,aim:Hex,affected?:Hex[])=>void): AbilityId | 'defend' | undefined {
   const u = active(b); if (!u || u.side !== 'enemy' || b.result) return;
   if(movementOnly(b,u)){approachEnemy(b,u);if(active(b)?.id===u.id)endTurn(b);return;}
   if(isFlagshipPart(u)){
@@ -436,8 +436,11 @@ export function enemyTurn(b: Battle, onRetaliation?:(defenderId:string)=>void, o
   u.hex = original;
   if (best) {
     if (!equal(original, best.pos)) move(b, u, best.pos);
+    // Resolution can destroy cover, move targets or advance the round. Keep
+    // the fired footprint for presentation rather than rebuilding it afterward.
+    const affected=shape(b,u,best.ability,best.aim).map(h=>({...h}));
     cast(b, u, best.ability, best.aim, onRetaliation);
-    onAction?.(best.ability,{...best.aim});
+    onAction?.(best.ability,{...best.aim},affected);
     return best.ability;
   } else {
     approachEnemy(b,u);

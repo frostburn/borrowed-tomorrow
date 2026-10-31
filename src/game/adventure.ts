@@ -1053,7 +1053,7 @@ export class Adventure extends Phaser.Scene {
       const announced=attacker?.intent?.cells.map(h=>({...h}));
       let presentation:Pick<BattleMotion,'ability'|'aim'|'affected'>|undefined;
       const run=this.battlePresentation?.enemyTurn??enemyTurn;
-      const action=run(b,id=>retaliations.push(id),(ability,aim)=>{if(attacker)presentation={ability,aim:{...aim},affected:(ABILITIES[ability].shape==='pattern'&&announced?announced:shape(b,attacker,ability,aim)).map(h=>({...h}))};});
+      const action=run(b,id=>retaliations.push(id),(ability,aim,affected)=>{if(attacker)presentation={ability,aim:{...aim},affected:(affected??(ABILITIES[ability].shape==='pattern'&&announced?announced:shape(b,attacker,ability,aim))).map(h=>({...h}))};});
       if(action&&!presentation)this.audio.effect(action==='defend'?'defend':ABILITIES[action].sound??action as import('./synth').Effect,this.state.location.map);
       const path=attacker?routes?.get(key(attacker.hex))?.path:undefined;
       this.animateBattle(before,attacker?{actorId:attacker.id,partnerId:presentation?.ability==='relay'?partner?.id:undefined,aim:attacker.hex,...presentation,...(path?.length?{path}:{}),retaliations}:undefined);
