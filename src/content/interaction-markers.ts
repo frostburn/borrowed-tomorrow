@@ -3,6 +3,7 @@ import { trainApproachBlock } from './chapter-two/access';
 import { completedAnchors } from './chapter-five/progress';
 import type { MapObject } from './maps';
 import type { GameState } from '../rules/state';
+import {CREW_SERVICES,unlearnedImprovements,type ImprovementProgress,type ImprovementService} from '../rules/improvements';
 
 export type InteractionKind = 'rest' | 'story' | 'optional' | 'talk' | 'exit';
 export const INTERACTION_MARKERS = {
@@ -15,21 +16,22 @@ export const INTERACTION_MARKERS = {
 export const BLOCKED_MARKER_COLOR='#7c8990';
 /** Canvas-only icon, authored in both pixel masks; never an emoji/font fallback. */
 export const GYM_GLYPH='\uE000';
-export function offersTraining(object:MapObject,state:Pick<GameState,'flags'>):boolean {
+export function offersTraining(object:MapObject,state:ImprovementProgress):boolean {
  const f=state.flags;if(!f.airshipOwned)return false;
- if(['ship-supply','six-supplies','sill-rest','refuge-seven-rest','capital-crew','capital-departure'].includes(object.id))return true;
- if(['hammer-hester','hammer-hester-after'].includes(object.id))return !!f.hammerplainComplete;
- if(['dawn-soldier','dawn-soldier-after'].includes(object.id))return !!f.dawnwatchComplete;
- if(['wind-sera','wind-lift-sera'].includes(object.id))return !!f.windmereComplete;
- if(['river-tavi','river-stores','rainhouse-rest'].includes(object.id))return !!f.riverRestSeen;
- return ['palace-rest','crown-rest'].includes(object.id)&&!!f.nellRecovered;
+ const remaining=(...services:ImprovementService[])=>services.some(service=>unlearnedImprovements(state,service).length>0);
+ if(['ship-supply','six-supplies','sill-rest','refuge-seven-rest','capital-crew','capital-departure'].includes(object.id))return remaining('training',...CREW_SERVICES);
+ if(['hammer-hester','hammer-hester-after'].includes(object.id))return remaining('hammerplain');
+ if(['dawn-soldier','dawn-soldier-after'].includes(object.id))return remaining('dawnwatch');
+ if(['wind-sera','wind-lift-sera'].includes(object.id))return remaining('windmere');
+ if(['river-tavi','river-stores','rainhouse-rest'].includes(object.id))return remaining('iria');
+ return ['palace-rest','crown-rest'].includes(object.id)&&remaining('capital');
 }
 
 export function interactionKind(object:MapObject,state:Pick<GameState,'flags'>):InteractionKind {
  if(object.rest)return 'rest';
  return object.kind==='story'&&((object.storyUntil&&state.flags[object.storyUntil])||(object.doneFlag&&state.flags[object.doneFlag]))?'talk':object.kind;
 }
-export function interactionMarker(object:MapObject,state:Pick<GameState,'flags'>){
+export function interactionMarker(object:MapObject,state:ImprovementProgress){
  if(object.marker===false)return;
  if(object.doneFlag&&state.flags[object.doneFlag])return;
  // The boss owns this arena's story cue; its follow-up starts automatically.

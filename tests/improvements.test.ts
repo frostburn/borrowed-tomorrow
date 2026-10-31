@@ -1,7 +1,7 @@
 import {expect,it} from 'vitest';
-import {chapterFiveFinaleStart,chapterSixCapitalStart,chapterSixStart,chapterSevenRefugeStart,chapterSevenStart} from '../src/dev/canonical-saves';
+import {chapterFiveFinaleStart,chapterSixCapitalStart,chapterSixFinaleStart,chapterSixStart,chapterSevenDeparture,chapterSevenRefugeStart,chapterSevenStart} from '../src/dev/canonical-saves';
 import {jungleCheckpoint} from './support/jungle';
-import {IMPROVEMENTS,buyImprovement,improvementFlag,maxFocus,improvementProblem} from '../src/rules/improvements';
+import {IMPROVEMENTS,buyImprovement,improvementFlag,maxFocus,improvementProblem,improvementUnlocked,remainingImprovements} from '../src/rules/improvements';
 import {maxHp,newGame,restoreParty,type GameState} from '../src/rules/state';
 import {decodeSave} from '../src/rules/save';
 import {active,awardVictory,cast,createBattle,createPartyUnit,defend,legalAim,movement,type Encounter} from '../src/rules/combat';
@@ -9,7 +9,7 @@ import {offset,key} from '../src/rules/hex';
 import {abilityFor,skillsAtLevel} from '../src/rules/skills';
 import {defaultBuild,characterProfiles,newCharacterSettings} from '../src/rules/characters';
 import {completeRiverTreatment} from '../src/content/chapter-six/jungle/recovery';
-import {offerImprovements} from '../src/content/improvements';
+import {offerImprovements,trainingChoices} from '../src/content/improvements';
 import {interactChapterFive} from '../src/content/chapter-five/interactions';
 import {interactChapterSeven} from '../src/content/chapter-seven/interactions';
 import {interactChapterSix} from '../src/content/chapter-six/interactions';
@@ -36,16 +36,16 @@ it('requires recruitment, the real quest milestone, its local service and enough
  expect(decodeSave(JSON.stringify(s))).toEqual(s);
  const unseen=ready();unseen.party=unseen.party.filter(h=>h.id!=='kit');expect(buyImprovement(unseen,'hp-kit')).toBe(false);
 });
-it('confirms exact prices, cancels freely, shows completed purchases and keeps future recruits hidden',()=>{
+it('confirms exact prices, cancels freely, hides purchased lessons and keeps future recruits hidden',()=>{
  const s=ready(),j=host(s),coins=s.coins,hp=s.party.find(p=>p.id==='orrin')!.hp;
  offerImprovements(j.h,'training');j.choose('Train Orrin');expect(j.read().lines.map(l=>l.text).join(' ')).toContain('Max focus 6 → 7');
  j.choose('Endurance training · 300 marks');expect(j.read().lines[0].text).toContain(`${coins} → ${coins-300}`);expect(s.coins).toBe(coins);
  j.choose('Cancel improvement');expect(s.coins).toBe(coins);
  j.choose('Endurance training · 300 marks');j.choose('Confirm · 300 marks');
  expect(j.saves()).toBe(1);expect(s.coins).toBe(coins-300);expect(s.party.find(p=>p.id==='orrin')!.hp).toBe(hp);
- expect(j.read().choices?.find(c=>c.label==='Endurance training · Completed')?.disabled).toBe(true);
+ expect(j.read().choices?.some(c=>c.label.startsWith('Endurance training'))).toBe(false);
  offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBeFalsy();
- purchase(s,'focus-orrin');offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBe(true);
+ purchase(s,'focus-orrin');offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')).toBeUndefined();
  expect(j.read().choices?.find(c=>c.label==='Train Celia')?.disabled).toBeFalsy();
  s.party=s.party.filter(p=>p.id!=='kit');offerImprovements(j.h,'training');expect(j.read().choices?.some(c=>c.label.includes('Kit'))).toBe(false);
 });
@@ -59,7 +59,7 @@ it('labels the balance and closes after the last personal course, while cancella
  expect(j.read()).toBeDefined();expect(s.coins).toBe(450);expect(j.saves()).toBe(1);
  j.choose('Focus training · 450 marks');j.choose('Confirm · 450 marks');
  expect(j.read()).toBeUndefined();expect(s.coins).toBe(0);expect(j.saves()).toBe(2);
- offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')?.disabled).toBe(true);
+ offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Orrin')).toBeUndefined();
 });
 it('keeps unlearned courses visible when funds run out or a confirmation fails',()=>{
  const s=ready(),j=host(s);s.coins=300;
@@ -72,7 +72,7 @@ it('dismisses a local specialist after successful training without hiding the co
  const s=ready(),j=host(s);s.location.map='hammerplain';s.coins=500;
  offerImprovements(j.h,'hammerplain');j.choose('Counterbalanced lance · 500 marks');j.choose('Confirm · 500 marks');
  expect(j.read()).toBeUndefined();expect(s.coins).toBe(0);expect(s.flags['improved-orrin-counterbalance']).toBe(true);expect(j.saves()).toBe(1);
- offerImprovements(j.h,'hammerplain');expect(j.read().choices?.find(c=>c.label==='Counterbalanced lance · Completed')?.disabled).toBe(true);
+ offerImprovements(j.h,'hammerplain');expect(j.read().choices).toBeUndefined();expect(j.read().lines[0].text).toContain('Counterbalanced lance');
 });
 it('keeps earned anchor specialties available at every travelling training counter',()=>{
  for(const map of ['airship','outermooring','capitalquay','hollowsill','lastrefuge']as const){
@@ -97,18 +97,18 @@ it('crew specialties confirm and persist once without remote trainer dialogue or
  for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450]]as const){
   j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
   if(name==='Long-range focus calibration')expect(j.read()).toBeUndefined();
-  else expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+  else expect(j.read().choices?.some(c=>c.label.startsWith(name))).toBe(false);
  }
  expect(j.saves()).toBe(3);expect(s.coins).toBe(0);expect(s.party).toEqual(before);expect(s.flags.nellRecovered).toBeFalsy();expect(decodeSave(JSON.stringify(s))).toEqual(s);
  offerImprovements(j.h,'training');expect(j.read().choices?.find(c=>c.label==='Train Nell')?.disabled).toBe(true);
  const local=ready();local.location.map='hammerplain';purchase(local,'orrin-counterbalance');local.location.map='airship';
- const k=host(local);offerImprovements(k.h,'training');k.choose('Specialist improvements');expect(k.read().choices?.find(c=>c.label==='Counterbalanced lance · Completed')?.disabled).toBe(true);
- local.flags.dawnwatchComplete=false;local.party=local.party.filter(p=>p.id!=='celia');offerImprovements(k.h,'training');k.choose('Specialist improvements');
- expect(k.read().choices?.map(c=>c.label)).toEqual(['Counterbalanced lance · Completed','Back to training']);
+ const k=host(local);offerImprovements(k.h,'training');k.choose('Specialist improvements');expect(k.read().choices?.some(c=>c.label.startsWith('Counterbalanced lance'))).toBe(false);
+ local.flags.dawnwatchComplete=false;local.party=local.party.filter(p=>p.id!=='celia');offerImprovements(k.h,'training');
+ expect(k.read().choices?.some(c=>c.label==='Specialist improvements')).toBe(false);
  local.flags.hammerplainComplete=false;offerImprovements(k.h,'training');expect(k.read().choices?.some(c=>c.label==='Specialist improvements')).toBe(false);
  // Alda remains at the mooring; the final refuge uses its own supply crew.
  s.location.map='lastrefuge';offerImprovements(j.h,'training');expect(j.read().lines[0].who).toBe('Supply crew');expect(j.read().lines[0].text).not.toContain('survey deck');
- j.choose('Specialist improvements');expect(j.read().lines[0].who).toBe('Supply crew');
+ expect(j.read().choices?.some(c=>c.label==='Specialist improvements')).toBe(false);
 });
 it('persists max HP/focus across save, formation and equipment, without changing skill ranks or healing on purchase',()=>{
  const s=ready(),hp=maxHp('celia',s),skills=structuredClone(s.skills),gear=structuredClone(s.inventory);
@@ -189,6 +189,56 @@ it('keeps completed Dawnwatch gate conversation separate from Enna’s training'
  expect(j.read().choices?.some(c=>c.label==='Shield recovery drill · 400 marks')).toBe(true);
 });
 
+it('removes Nell’s bought lantern option at the palace, crown and both capital crew menus',()=>{
+ for(const [start,map,object]of [[chapterSixFinaleStart,'lastpalace','palace-rest'],[chapterSixFinaleStart,'crown','crown-rest'],[chapterSixCapitalStart,'capitalquay','capital-crew'],[chapterSevenDeparture,'capitalquay','capital-crew']]as const){
+  const s=start(true);s.location.map=map;s.coins=400;
+  if(map==='crown'){s.flags.capitalWarningSeen=true;s.flags.capitalAssaultCommitted=true;s.flags.capitalRiskAccepted=false;}
+  const j=host(s);
+  interactChapterSix(j.h,object);j.choose('Reinforce Nell’s lantern · 400 marks');j.choose('Reinforced lantern housing · 400 marks');
+  j.choose('Cancel improvement');expect(s.coins).toBe(400);
+  j.choose('Reinforced lantern housing · 400 marks');j.choose('Confirm · 400 marks');expect(j.read()).toBeUndefined();
+  const restored=decodeSave(JSON.stringify(s)),k=host(restored);interactChapterSix(k.h,object);
+  expect(k.read().choices?.some(c=>c.label.includes('lantern'))).toBe(false);expect(restored.coins).toBe(0);
+  expect(buyImprovement(restored,'nell-housing')).toBe(false);
+  if(object.endsWith('-rest'))expect(k.read().choices?.map(c=>c.label)).toEqual(['Rest · restore everyone’s HP and focus','Browse medical supplies and trade gear','Keep going']);
+ }
+});
+
+it('hides empty training branches but retains earned unbought specialties at every travelling counter',()=>{
+ for(const map of ['airship','outermooring','capitalquay','hollowsill','lastrefuge']as const){
+  const s=map==='airship'?chapterFiveFinaleStart():map==='lastrefuge'?chapterSevenRefugeStart():map==='hollowsill'?chapterSevenStart():chapterSixCapitalStart(true);s.location.map=map;s.coins=30000;const j=host(s);
+  for(const i of IMPROVEMENTS.filter(i=>i.service==='training'))purchase(s,i.id);
+  expect(trainingChoices(j.h)).toHaveLength(1);offerImprovements(j.h,'training');
+  expect(j.read().choices?.map(c=>c.label)).toEqual(['Specialist improvements','Leave training']);
+  j.choose('Specialist improvements');expect(j.read().choices).toHaveLength(map==='airship'?4:6);
+  for(const i of IMPROVEMENTS.filter(i=>i.service!=='training'&&improvementUnlocked(s,i)))purchase(s,i.id);
+  expect(trainingChoices(j.h)).toEqual([]);expect(remainingImprovements(s,'training')).toEqual([]);
+  const restored=decodeSave(JSON.stringify(s));expect(trainingChoices(host(restored).h)).toEqual([]);
+  if(map==='airship')interactChapterFive(j.h,'ship-supply');
+  else if(map==='outermooring')interactChapterSix(j.h,'six-supplies');
+  else if(map==='capitalquay')interactChapterSix(j.h,'capital-crew');
+  else interactChapterSeven(j.h,map==='hollowsill'?'sill-rest':'refuge-seven-rest');
+  expect(j.read().choices?.some(c=>c.label.includes('improvements')||c.label.includes('lantern'))).toBe(false);
+ }
+});
+
+it('omits Kit’s bought river training from both supply menus and keeps rest and trade',()=>{
+ const s=jungleCheckpoint('riverRestSeen');s.coins=450;s.location.map='riverhaven';purchase(s,'kit-footing');
+ for(const [map,object]of [['riverhaven','river-stores'],['rainhouse','rainhouse-rest']]as const){
+  s.location.map=map;const j=host(s);interactChapterSix(j.h,object);
+  expect(j.read().choices?.map(c=>c.label)).toEqual(['Rest · restore everyone’s HP and focus','Browse medical supplies and trade gear','Keep going']);
+ }
+});
+
+it('omits cleared gun positions while preserving Dawnwatch’s remaining battle choices',()=>{
+ for(const [mortar,repeater]of [[false,false],[true,false],[false,true],[true,true]]){
+  const s=ready();s.location.map='watchbarracks';s.flags.mortarWon=mortar;s.flags.repeaterWon=repeater;const j=host(s);
+  interactChapterFive(j.h,'watch-plan');
+  expect(j.read().choices?.map(c=>c.label)).toEqual([...(!mortar?['Western mortar · repeater lane support']:[]),...(!repeater?['Eastern repeater · mortar blast support']:[]),'Leave the terrace for now']);
+  if(mortar&&repeater)expect(j.read().lines[0].text).toContain('Both guns are silent.');
+ }
+});
+
 it('the Chapter Seven mooring and refuge retain all earned specialties with real confirmation, cancellation and shared flags',()=>{
  for(const [start,map,object]of [[chapterSevenStart,'hollowsill','sill-rest'],[chapterSevenRefugeStart,'lastrefuge','refuge-seven-rest']]as const){
   const s=start();s.location.map=map;s.coins=2200;const hp=structuredClone(s.party),skills=structuredClone(s.skills),j=host(s);
@@ -197,7 +247,7 @@ it('the Chapter Seven mooring and refuge retain all earned specialties with real
   for(const [name,cost]of [['Counterbalanced lance',500],['Shield recovery drill',400],['Long-range focus calibration',450],['River courier training',450],['Reinforced lantern housing',400]]as const){
    j.choose(`${name} · ${cost} marks`);j.choose(`Confirm · ${cost} marks`);
    if(name==='Reinforced lantern housing')expect(j.read()).toBeUndefined();
-   else expect(j.read().choices?.find(c=>c.label===`${name} · Completed`)?.disabled).toBe(true);
+   else expect(j.read().choices?.some(c=>c.label.startsWith(name))).toBe(false);
   }
   expect(j.saves()).toBe(5);expect(s.coins).toBe(0);expect(s.party).toEqual(hp);expect(s.skills).toEqual(skills);expect(decodeSave(JSON.stringify(s))).toEqual(s);
   s.location.map='riverhaven';expect(buyImprovement(s,'kit-footing')).toBe(false);s.location.map='capitalquay';expect(buyImprovement(s,'nell-housing')).toBe(false);

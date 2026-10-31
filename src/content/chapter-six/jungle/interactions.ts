@@ -1,4 +1,4 @@
-import {offerImprovements} from '../../improvements';
+import {improvementChoices,offerImprovements} from '../../improvements';
 import type { StoryHost } from '../../story-host';
 import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
@@ -34,7 +34,7 @@ export function interactJungle(h:StoryHost,id:string):boolean{
   h.talk({lines:[SAY('Celia','Clean water and a place to sit. Let me check the dressings before we move on.')],choices:[
    {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
-   ...(f.riverRestSeen&&id!=='canopy-stores'?[{label:'River courier training · Kit · 450 marks',action:()=>offerImprovements(h,'iria')}]:[]),
+   ...(id!=='canopy-stores'?improvementChoices(h,'iria','River courier training · Kit · 450 marks'):[]),
    {label:'Keep going',action:()=>{}},
   ]});return true;
  }

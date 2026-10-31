@@ -1,4 +1,4 @@
-import {trainingChoice} from '../improvements';
+import {trainingChoices} from '../improvements';
 import type {StoryHost} from '../story-host';
 import type {Dialogue} from '../dialogue';
 import {SAY} from '../dialogue';
@@ -49,7 +49,7 @@ export function interactChapterSeven(h:StoryHost,id:string){
  if(id.endsWith('-rest'))return h.talk({lines:[SAY('Supplies','Clean water, folded blankets and a field kit are under cover.')],choices:[
   {label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Everyone has rested.');}},
    {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},
-   ...(['hollowsill','lastrefuge'].includes(s.location.map)?[trainingChoice(h)]:[]),
+   ...(['hollowsill','lastrefuge'].includes(s.location.map)?trainingChoices(h):[]),
   {label:'Keep moving',action:()=>{}},
  ]});
  switch(id){

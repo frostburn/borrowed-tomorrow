@@ -6,6 +6,8 @@ import {MAPS,visibleObjects} from '../src/content/maps';
 import {BLOCKED_MARKER_COLOR,INTERACTION_MARKERS,interactionKind,interactionMarker} from '../src/content/interaction-markers';
 import {newGame} from '../src/rules/state';
 import {MAP_REVIEWS,reviewFlags} from '../src/dev/map-catalog';
+import {chapterFiveFinaleStart,chapterSevenStart} from '../src/dev/canonical-saves';
+import {IMPROVEMENTS,improvementFlag} from '../src/rules/improvements';
 
 it('turns the sent report and the completed capital entrance into conversations',()=>{
  const s=newGame();
@@ -188,7 +190,7 @@ it('dims remaining scene-gated exits until their release scene finishes',()=>{
 
 
 it('marks training clerks with a barbell, combining rest and story shapes where appropriate',()=>{
- const s=newGame();
+ const s=newGame();s.party=chapterFiveFinaleStart().party;
  for(const [map,id]of [['airship','ship-supply'],['outermooring','six-supplies'],['hollowsill','sill-rest'],['lastrefuge','refuge-seven-rest']]as const){
   const o=MAPS[map].objects.find(o=>o.id===id)!;
   s.flags.airshipOwned=false;expect(interactionMarker(o,s)?.glyph).toBe('⌂');
@@ -208,10 +210,42 @@ it('marks training clerks with a barbell, combining rest and story shapes where 
  expect(smallGlyphs[GYM_GLYPH as keyof typeof smallGlyphs]).toBeDefined();
 });
 it('shows a single Dawnwatch training marker on Enna after the town is freed',()=>{
- const s=newGame();Object.assign(s.flags,{airshipOwned:true,dawnwatchSeen:true,shelterOpened:true});
+ const s=newGame();s.party=chapterFiveFinaleStart().party;Object.assign(s.flags,{airshipOwned:true,dawnwatchSeen:true,shelterOpened:true});
  const trainers=()=>visibleObjects(MAPS.dawnwatch,s).filter(o=>interactionMarker(o,s)?.glyph.includes(GYM_GLYPH)).map(o=>o.id);
  expect(trainers()).toEqual([]);s.flags.dawnwatchComplete=true;
  expect(trainers()).toEqual(['dawn-soldier-after']);
  const gate=visibleObjects(MAPS.dawnwatch,s).find(o=>o.id==='dawn-gate')!;
  expect(interactionMarker(gate,s)).toEqual(INTERACTION_MARKERS.talk);
+});
+
+it('removes only the gym part of each local specialist marker after its upgrade is bought',()=>{
+ for(const [map,id,upgrade]of [['hammerplain','hammer-hester-after','orrin-counterbalance'],['dawnwatch','dawn-soldier-after','petra-recovery'],['windmere','wind-sera','celia-sight'],['riverhaven','river-tavi','kit-footing'],['riverhaven','river-stores','kit-footing'],['rainhouse','rainhouse-rest','kit-footing'],['lastpalace','palace-rest','nell-housing'],['crown','crown-rest','nell-housing']]as const){
+  const s=chapterSevenStart(),object=MAPS[map].objects.find(o=>o.id===id)!;s.coins=0;
+  expect(interactionMarker(object,s)?.glyph).toContain(GYM_GLYPH);
+  s.flags[improvementFlag(upgrade)]=true;
+  expect(interactionMarker(object,s)).toMatchObject(INTERACTION_MARKERS[interactionKind(object,s)]);
+  expect(interactionMarker(object,s)?.label).not.toContain('training');
+ }
+});
+
+it('retains a travelling gym for any remaining lesson or specialty, then restores its base marker',()=>{
+ for(const [map,id]of [['airship','ship-supply'],['outermooring','six-supplies'],['capitalquay','capital-crew'],['capitalquay','capital-departure'],['hollowsill','sill-rest'],['lastrefuge','refuge-seven-rest']]as const){
+  const s=chapterSevenStart(),object=MAPS[map].objects.find(o=>o.id===id)!;s.coins=0;
+  for(const i of IMPROVEMENTS)s.flags[improvementFlag(i.id)]=true;
+  // A remaining specialty still matters when all personal courses are finished.
+  s.flags[improvementFlag('nell-housing')]=false;
+  expect(interactionMarker(object,s)?.glyph).toContain(GYM_GLYPH);
+  s.flags[improvementFlag('nell-housing')]=true;
+  expect(interactionMarker(object,s)).toMatchObject(INTERACTION_MARKERS[interactionKind(object,s)]);
+  // Recruits and permanent availability match the actual menu, not a full roster.
+  s.flags[improvementFlag('nell-housing')]=false;s.party=s.party.filter(p=>p.id!=='nell');
+  expect(interactionMarker(object,s)?.glyph).not.toContain(GYM_GLYPH);
+ }
+});
+
+it('uses bought flags in roster-free map previews as well as campaign markers',()=>{
+ const s=chapterSevenStart(),object=MAPS.lastpalace.objects.find(o=>o.id==='palace-rest')!;
+ expect(interactionMarker(object,{flags:s.flags})?.glyph).toContain(GYM_GLYPH);
+ s.flags[improvementFlag('nell-housing')]=true;
+ expect(interactionMarker(object,{flags:s.flags})).toMatchObject(INTERACTION_MARKERS.rest);
 });

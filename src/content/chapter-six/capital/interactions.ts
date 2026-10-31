@@ -1,4 +1,4 @@
-import {lanternChoice,trainingChoice} from '../../improvements';
+import {lanternChoices,trainingChoices} from '../../improvements';
 import type { StoryHost } from '../../story-host';
 import { arrival } from '../../maps';
 import { SAY,type Dialogue } from '../../dialogue';
@@ -48,14 +48,14 @@ export function interactCapital(h:StoryHost,id:string):boolean{
  const battle=(encounter:string,flag:string,label:string)=>h.talk({lines:[SAY('Petra',encounter==='lightbearer'?'When she closes the shutter, the mantle opens. Keep clear while the light is moving.':encounter==='imperial-vessel'?'Break both supports. The next coronation can rebuild a vacant mounting; watch the crown before it turns.':'Keep the stair behind us clear for the people coming down.')],choices:[{label,action:()=>{h.commit(flag);h.battle(encounter);}},{label:'Rest and prepare first',action:()=>{}}]});
  if(id==='capital-inner'||id==='capital-after'){if(f.capitalReleased)say('Alda','The upper streets are clear. The chart and all the foreign landings are still available.');else go(h,'stillcity');return true;}
  if((id==='capital-crew'||id==='capital-departure')&&f.capitalLandingSeen){
-  h.talk({lines:[SAY('Alda','The route through the hollow sun is marked. We can sail when you’re ready, or keep the ship here while you finish your visits.')],choices:[{label:'Prepare the final crossing',action:()=>{f.chapterSixComplete=true;s.boundary=SEVENTH_CHAPTER;remember(s,'sixDeparture');h.save();h.boundary();}},trainingChoice(h),lanternChoice(h),{label:'Stay · visit allies and fit equipment',action:()=>{}}]});return true;
+  h.talk({lines:[SAY('Alda','The route through the hollow sun is marked. We can sail when you’re ready, or keep the ship here while you finish your visits.')],choices:[{label:'Prepare the final crossing',action:()=>{f.chapterSixComplete=true;s.boundary=SEVENTH_CHAPTER;remember(s,'sixDeparture');h.save();h.boundary();}},...trainingChoices(h),...lanternChoices(h),{label:'Stay · visit allies and fit equipment',action:()=>{}}]});return true;
  }
  if(id==='capital-crew'&&!f.capitalLandingSeen){
-  h.talk({lines:[SAY('Orrin',f.nellRecovered?'The fitters left a bench by the gangway. I can work on your lantern here.':'Alda’s crew is keeping the survey deck clear for training.')],choices:[trainingChoice(h),...(f.nellRecovered?[lanternChoice(h)]:[]),{label:'Leave',action:()=>{}}]});return true;
+  h.talk({lines:[SAY('Orrin',f.nellRecovered?'The fitters left a bench by the gangway. I can work on your lantern here.':'Alda’s crew is keeping the survey deck clear for training.')],choices:[...trainingChoices(h),...lanternChoices(h),{label:'Leave',action:()=>{}}]});return true;
  }
  if(id==='palace-rest'||id==='crown-rest'){
   h.talk({lines:[SAY('Celia','There’s clean water and room to sit. Let me check everyone before we move.')],choices:[{label:'Rest · restore everyone’s HP and focus',action:()=>{restoreParty(s);h.refresh();h.save();h.toast('Your companions have rested.');}},
-   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},...(f.nellRecovered?[lanternChoice(h)]:[]),{label:'Keep going',action:()=>{}}]});return true;
+   {label:'Browse medical supplies and trade gear',action:()=>h.shop('field')},...lanternChoices(h),{label:'Keep going',action:()=>{}}]});return true;
  }
  switch(id){
   case 'city-quay':go(h,'capitalquay');break;
