@@ -284,6 +284,25 @@ phone and 320px phone layouts. Detailed menu cases remain outside the default
 browser CI selection.
 
 
+## Cutscene dialogue placement
+
+`Cinematic.dialoguePosition: 'top'` puts dialogue below the scene heading and
+frames the authored focus in the lower half. Cuts, pans, tracking and resize use
+the same camera allowance. The top linear card stays 184px high, with a 96px
+portrait on phones; Next/Continue stays fixed as lines change. Scenes without
+the option retain their existing bottom layout, and closing or skipping clears
+the placement before ordinary dialogue or panels open.
+
+The Lower Dispensary introduction stages all six actors on clear floor in front
+of the lift. Its Tiled `Scene:five-wind-dispensary` cast and
+`assets/vector/windmere.py` must agree. The separate lift action keeps its own
+framing. Review the opt-in desktop, fractional-DPR phone, narrow-phone,
+reduced-motion, resize, replay and cleanup checks with:
+
+```sh
+npx playwright test dispensary-staging.spec.ts
+```
+
 ## Story mechanism animation
 
 `Shot.mechanism` names an explicit narrated action. The catalogue in

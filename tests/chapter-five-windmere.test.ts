@@ -15,6 +15,21 @@ import * as scenes from '../src/content/chapter-five/windmere-scenes';
 import { prepareWard,wardMirrors,wardUnit } from '../src/rules/ward';
 import { offset } from '../src/rules/hex';
 import { occupiedHexes } from '../src/rules/footprint';
+import {visibleSceneArt} from '../src/content/scene-art';
+
+it('stages the dispensary introduction in front of the lift with dialogue above the cast',()=>{
+ const s=windmereCheckpoint('windmereSeen'),v=visit(s);s.location=arrival('dispensary','start');resumeChapterFive(v.h);
+ const d=v.read();expect(d.scene).toMatchObject({id:'five-wind-dispensary',dialoguePosition:'top'});
+ const platform=visibleSceneArt(MAPS.dispensary.tiles!,s)!.find(p=>p.key==='scene-five-water-platform')!;
+ for(const actor of d.scene!.actors){
+  expect(walkable(MAPS.dispensary,actor.at.x,actor.at.y,s),actor.id).toBe(true);
+  expect((actor.at.y+.5)*24+7,`${actor.id} must sort in front of the platform`).toBeGreaterThan(platform.depth);
+ }
+ expect(d.lines[0].shot?.focus).toEqual({x:31,y:29});
+ expect(scenes.lift().scene?.dialoguePosition).toBeUndefined();
+ expect(s.flags.dispensarySeen).toBeFalsy();const before=structuredClone(s);
+ v.finish();expect(s.flags.dispensarySeen).toBe(true);expect(s.party).toEqual(before.party);expect(s.inventory).toEqual(before.inventory);
+});
 function visit(s:GameState){
  let read:Dialogue|undefined,encounter='',toast='';
  const h:StoryHost={state:s,talk:d=>{read=d;},commit:(f,e)=>{s.flags[f]=true;if(e)remember(s,e);},refresh(){},save(){},travel:(map,x,y)=>{s.location={map,x,y};resumeChapterFive(h);},battle:id=>{encounter=id;},shop(){},boundary(){},toast:t=>{toast=t;},async checkpoint(){return true;},endingMusic(){}};

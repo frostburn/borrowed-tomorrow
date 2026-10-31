@@ -14,4 +14,4 @@ export interface Shot {
   omen?:'shard'|'sun'|'none';
   actors?:Partial<Record<CharacterId,{to?:StagePoint;at?:StagePoint;face?:string;visible?:boolean;fallen?:boolean}>>;
 }
-export interface Cinematic { id:string;title:string;actors:StageActor[];hideCompanions?:boolean }
+export interface Cinematic { id:string;title:string;actors:StageActor[];hideCompanions?:boolean;dialoguePosition?:'top'|'bottom' }
