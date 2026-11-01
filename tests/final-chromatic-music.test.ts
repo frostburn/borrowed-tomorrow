@@ -4,8 +4,8 @@ import {ARRANGEMENTS,scoreBar} from '../src/game/score';
 import {pitchSteps,isPercussion} from '../src/game/tuning';
 const modes=['benefactor','hollow-sun','unborrowed']as const;
 
-it('keeps the full mantle organ melody while harmonizing it in the same rhythm and radiant scale',()=>{
- const melody=(mode:'benefactor'|'sunthrone',start:number)=>Array.from({length:4},(_,i)=>scoreBar(mode,start+i)).flat().filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>n.pitch);
+it('trades the mantle organ call with a harmonized band answer in the radiant scale',()=>{
+ const melody=(mode:'benefactor'|'sunthrone',start:number)=>Array.from({length:2},(_,i)=>scoreBar(mode,start+i)).flat().filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>n.pitch);
  for(let phrase=0;phrase<8;phrase++){
   expect(melody('benefactor',2+phrase*4)).toEqual(melody('sunthrone',phrase*4));
   const start=phrase*4+2,notes=Array.from({length:2},(_,i)=>finalPhraseNotes('benefactor',start+i,1,1).map(n=>({...n,at:i*4+n.beat}))).flat();
@@ -17,15 +17,18 @@ it('keeps the full mantle organ melody while harmonizing it in the same rhythm a
    for(let i=1;i<line.length;i++)expect(line[i-1].at+line[i-1].duration).toBeLessThanOrEqual(line[i].at);
    expect(line.at(-1)!.at+line.at(-1)!.duration).toBeLessThan(8);
   }
-  const theme=Array.from({length:2},(_,i)=>scoreBar('benefactor',start+i+2).filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>({...n,at:i*4+n.beat}))).flat();
+  const theme=Array.from({length:2},(_,i)=>scoreBar('benefactor',start+i+2).filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12)).flat();
+  expect(theme).toEqual([]);
+  for(let i=0;i<2;i++)expect(finalPhraseNotes('benefactor',phrase*4+i,1,1)).toEqual([]);
   for(const line of lines){
-   expect(line.map(n=>[n.at,n.duration])).toEqual(theme.map(n=>[n.at,n.duration]));
+   expect(line.map(n=>[n.at,n.duration])).toEqual([0,2,4,6].map(at=>[at,1.4]));
    for(const n of line)expect([0,5,10,14,18,22,25,28]).toContain((pitchSteps(n.pitch)%31+31)%31);
   }
   let simultaneous=0;
   for(let at=0;at<8;at+=.125)simultaneous=Math.max(simultaneous,lines.filter(line=>line.some(n=>n.at<=at&&n.at+n.duration>at)).length);
   expect(simultaneous).toBe(3);
-  expect(finalLeadHold('benefactor',start,1,4)).toBe(4);
+  expect(finalLeadHold('benefactor',start,1,4)).toBe(0);
+  expect(finalLeadHold('benefactor',start-1,3,2)).toBe(1);
  }
 });
 

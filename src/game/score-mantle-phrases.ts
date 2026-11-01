@@ -2,7 +2,7 @@ import type {Instrument,Note} from './score';
 import {octave,type Pitch} from './tuning';
 import {singing} from './expression';
 
-// Shared with the main organ melody: added voices take the same attacks/holds.
+// One shared rhythmic sentence: organ call, then a harmonized band answer.
 export const MANTLE_RHYTHM=[0,1,3,6,8,10,12,14];
 interface Phrase {bar:number;brass:readonly number[];strings:readonly number[];inner:readonly number[]}
 const phrases:readonly Phrase[]=[
@@ -31,4 +31,15 @@ export function mantlePhraseNotes(bar:number,gain:number,strength:number):Note[]
   return [{instrument,pitch:pitch(degree),beat:at-offset,duration:hold,velocity:gain*mix,pan,
    expression:{...singing('clear',strength*(j===0?1:.9),hold,j===3),release:part==='strings'?.2:.12}}];
  }));
+}
+
+/** The lead rests during each two-bar answer, with held calls cut at the handoff. */
+export function mantleLeadHold(bar:number,beat:number,hold:number):number{
+ const start=bar*4+beat;
+ for(const p of phrases){
+  const at=p.bar*4,end=at+8;
+  if(start>=at&&start<end)return 0;
+  if(start<at&&start+hold>at)hold=at-start;
+ }
+ return hold;
 }

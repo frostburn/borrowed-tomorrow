@@ -416,15 +416,13 @@ The Emperor's Order is restored to its original arrangement. Captain Alban and I
 ## Final boss polyphony and close-step breaks
 
 `score-final-runs.ts` gives the three forms different phrase-end motion. The
-God Who Lent Tomorrow (`benefactor`) retains its complete organ melody and
-adds eight authored two-bar phrases in the second halves of its sentences.
-Brass, strings and lower organ harmonize those phrases with the main melody's
-exact attacks, rests and written holds. Their different registers and moving
-scale voices supply thickness while the rhythm stays together. The four
-harmonic voices follow one pulse rather than interleaving separate answers.
-All three added voices use the existing radiant 31-EDO collection. The original
-bass, pads and percussion keep their scores. The former glides and echo are
-removed; the added phrases build the first form's weight through composition.
+God Who Lent Tomorrow (`benefactor`) trades two-bar organ calls with eight
+authored two-bar band answers. During an answer the foreground organ rests;
+brass, strings and lower organ take over together, with matched attacks,
+rests and holds in the radiant 31-EDO scale. The shared rhythmic sentence
+preserves the original lead's attack positions across call and response.
+Bass, pads and drums keep their foundation underneath the exchange. The
+former glides and echo are removed.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
 adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
@@ -444,7 +442,7 @@ transpositions preserve the same intervals in each figure's register.
 The sun/heart's authored runs may pass outside the radiant/reflected octatonics;
 the surrounding melodies and harmonies keep their original collections. Their
 lead holds truncate where a run takes over, including notes from the preceding
-bar. The mantle's original organ lead now plays through its entire sentences.
+bar. The mantle's organ lead hands each sentence's second half to the band.
 All forms retain their tempo, meter, two-bar introductions and loop timing.
 Music → Ch 7 reviews the campaign arrangements; Brass, Strings and Organ
 isolate the mantle's new lines, while Organ/Piano retain the sun/heart runs.

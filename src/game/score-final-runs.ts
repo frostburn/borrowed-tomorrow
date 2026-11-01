@@ -1,7 +1,7 @@
 import type {Note} from './score';
 import {octave,transpose,type Interval,type Pitch} from './tuning';
 import {phrasing} from './expression';
-import {mantlePhraseNotes} from './score-mantle-phrases';
+import {mantlePhraseNotes,mantleLeadHold} from './score-mantle-phrases';
 
 // Every neighbouring 31-EDO pitch, with spelling retained across octaves.
 const adjacent:readonly Pitch[]=['C4','Ct4','C#4','Db4','Dd4','D4','Dt4','D#4','Eb4','Ed4','E4','Et4','E#4','F4','Ft4','F#4','Gb4','Gd4','G4','Gt4','G#4','Ab4','Ad4','A4','At4','A#4','Bb4','Bd4','B4','Bt4','B#4'];
@@ -39,8 +39,9 @@ const heart:readonly Run[]=[
 ];
 const plan=(mode:string):readonly Run[]=>mode==='hollow-sun'?sun:mode==='unborrowed'?heart:[];
 const beats=(mode:string)=>mode==='hollow-sun'?5:4;
-/** Runs take their lead span, including held arrivals; mantle counterlines leave it intact. */
+/** Give the foreground to the answering band or run, including held arrivals. */
 export function finalLeadHold(mode:string,bar:number,beat:number,hold:number):number{
+ if(mode==='benefactor')return mantleLeadHold(bar,beat,hold);
  const meter=beats(mode),start=bar*meter+beat;
  const windows=plan(mode).map(r=>({bar:r.bar,beat:r.beat,end:r.beat+r.pitches.length*r.step}));
  for(const w of windows){
