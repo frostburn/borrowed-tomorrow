@@ -13,7 +13,7 @@ it('keeps the intact voice before the mantle breaks, then shows the hollow sun s
  expect(broken.portrait).toBe(BENEFACTOR_PORTRAITS[1]);
  expect(broken.text.toLowerCase()).toBe('i was here before your stations. before your names.');
  const letters=[...broken.text].filter(c=>/[a-z]/i.test(c));
- letters.forEach((c,i)=>expect(c).toBe(i%2?c.toUpperCase():c.toLowerCase()));
+ letters.forEach((c,i)=>expect(c).toBe(i%2?c.toLowerCase():c.toUpperCase()));
  expect(scenes.sun().lines.find(l=>l.who==='Orrin')!.text).toBe('The channels are empty. It can’t build another body.');
  // Chapter Five still uses the unseen light card, never the final boss portrait.
  expect(SAY('The Benefactor','Words.').portrait).toBe('ui/portrait-light');

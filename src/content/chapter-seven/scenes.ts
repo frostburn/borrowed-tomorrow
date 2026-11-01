@@ -136,7 +136,7 @@ export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
 export const sun=()=>scene('sunthrone','seven-sun','The mantle falls',[
  l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'sunthrone'}),
  l('Orrin','The channels are empty. It can’t build another body.'),
- l('The Benefactor','i WaS hErE bEfOrE yOuR sTaTiOnS. bEfOrE yOuR nAmEs.',{portrait:BENEFACTOR_PORTRAITS[1]}),
+ l('The Benefactor','I wAs HeRe BeFoRe YoUr StAtIoNs. BeFoRe YoUr NaMeS.',{portrait:BENEFACTOR_PORTRAITS[1]}),
  l('The sun throne','The ring lifts from the wreckage. Its rays unfold across the floor.'),
  l('Petra','It can still reach us. Watch where the light falls.'),
 ]);
