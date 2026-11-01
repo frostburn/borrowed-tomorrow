@@ -157,7 +157,7 @@
 /* Fine status is drawn from the full-resolution UI cache, beside chunky pans. */
 .portrait-layout .fine-status{font:12px/16px monospace}
 .portrait-layout .fine-status img{image-rendering:auto}
-.portrait-layout .world-hero strong,.portrait-layout .world-hero small{font:12px/16px monospace;margin:0}
+.phone-layout.portrait-layout .world-party .world-hero strong,.phone-layout.portrait-layout .world-party .world-hero small{font:12px/16px monospace;margin:0}
 .portrait-layout .world-party[data-size="3"] .world-hero{gap:4px}
 .portrait-layout .world-party[data-size="3"] .world-hero img{width:32px;height:32px}
 .portrait-layout .battle-controls .identity{width:calc(100% - 174px);padding:8px;gap:8px;border-bottom:0}

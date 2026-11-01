@@ -121,7 +121,9 @@ test('@ci portrait combat zooms out the world, pans and confirms real healing by
   expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(48); expect(errors).toEqual([]);
   // Inspect the actual late-game command list, with both of Nell's partners.
   const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
-  await importSave(page,late);await capture(page,'phone-portrait-world');
+  await importSave(page,late);
+  expect(await page.locator('.world-party strong,.world-party small').evaluateAll(nodes=>nodes.every(e=>getComputedStyle(e).fontFamily.includes('monospace')&&!getComputedStyle(e).fontFamily.includes('Switchyard'))),'all party status fields use the fine font').toBe(true);
+  await capture(page,'phone-portrait-world');
   await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-portrait-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
   await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
   await page.getByRole('button',{name:/^F\s+Defend$/}).tap();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
