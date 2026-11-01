@@ -6,7 +6,7 @@ const modes=['benefactor','hollow-sun','unborrowed']as const;
 
 it('trades the mantle organ call with a harmonized band answer in the radiant scale',()=>{
  const melody=(mode:'benefactor'|'sunthrone',start:number)=>Array.from({length:2},(_,i)=>scoreBar(mode,start+i)).flat().filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>n.pitch);
- let full=0,varied=0,rests=0;
+ let steady=0,varied=0;const rhythms=new Set<string>();
  for(let phrase=0;phrase<8;phrase++){
   expect(melody('benefactor',2+phrase*4)).toEqual(melody('sunthrone',phrase*4));
   const start=phrase*4+2,notes=Array.from({length:2},(_,i)=>finalPhraseNotes('benefactor',start+i,1,1).map(n=>({...n,at:i*4+n.beat}))).flat();
@@ -14,7 +14,7 @@ it('trades the mantle organ call with a harmonized band answer in the radiant sc
   expect(notes.every(n=>!n.expression?.bend)).toBe(true);
   const lines=[-.22,.24,.05].map(pan=>notes.filter(n=>n.pan===pan).sort((a,b)=>a.at-b.at));
   for(const line of lines){
-   expect(line.length).toBeGreaterThanOrEqual(2);
+   expect(line.length).toBeGreaterThanOrEqual(4);
    for(let i=1;i<line.length;i++)expect(line[i-1].at+line[i-1].duration).toBeLessThanOrEqual(line[i].at);
    expect(line.at(-1)!.at+line.at(-1)!.duration).toBeLessThan(8);
   }
@@ -22,19 +22,24 @@ it('trades the mantle organ call with a harmonized band answer in the radiant sc
   expect(theme).toEqual([]);
   for(let i=0;i<2;i++)expect(finalPhraseNotes('benefactor',phrase*4+i,1,1)).toEqual([]);
   for(const line of lines){
-   for(const n of line){expect([0,2,4,6]).toContain(n.at);expect(n.duration).toBe(1.4);}
+   expect(line.map(n=>[n.at,n.duration])).toEqual(lines[0].map(n=>[n.at,n.duration]));
+   for(const at of [0,2,4,6])expect(line.some(n=>n.at===at)).toBe(true);
+   for(const [i,n]of line.entries()){
+    expect(n.at*2).toBe(Math.round(n.at*2));
+    if(i)expect(n.at-line[i-1].at).toBeGreaterThanOrEqual(.5);
+    expect(n.duration).toBeCloseTo(((line[i+1]?.at??8)-n.at)*.7,12);
+   }
    for(const n of line)expect([0,5,10,14,18,22,25,28]).toContain((pitchSteps(n.pitch)%31+31)%31);
   }
   let simultaneous=0;
   for(let at=0;at<8;at+=.125)simultaneous=Math.max(simultaneous,lines.filter(line=>line.some(n=>n.at<=at&&n.at+n.duration>at)).length);
-  expect(simultaneous).toBeGreaterThanOrEqual(2);
-  const textures=[0,2,4,6].map(at=>lines.filter(line=>line.some(n=>n.at===at)).length);
-  if(textures.every(n=>n===3))full++;else varied++;
-  rests+=textures.filter(n=>n===0).length;
+  expect(simultaneous).toBe(3);
+  rhythms.add(lines[0].map(n=>n.at).join(','));
+  if(lines[0].length===4)steady++;else varied++;
   expect(finalLeadHold('benefactor',start,1,4)).toBe(0);
   expect(finalLeadHold('benefactor',start-1,3,2)).toBe(1);
  }
- expect(full).toBe(4);expect(varied).toBe(4);expect(rests).toBe(2);
+ expect(steady).toBe(4);expect(varied).toBe(4);expect(rhythms.size).toBeGreaterThanOrEqual(4);
 });
 
 it('focuses sun and heart runs on adjacent 31-tone steps, broken by alternating tritone pairs',()=>{

@@ -8,7 +8,7 @@ test('the mantle call and response have audible voices and cancel future notes',
   const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
   // @ts-expect-error Actual production rack and performed phrases.
   const {performanceBar}:typeof import('../../src/game/score-performance')=await import('/src/game/score-performance.ts');
-  const notes=[2,3,4,5].flatMap((bar,i)=>{const p=performanceBar('benefactor',bar);return p.notes.map(n=>({...n,time:n.time+i*p.duration}));});
+  const notes=[6,7,8,9].flatMap((bar,i)=>{const p=performanceBar('benefactor',bar);return p.notes.map(n=>({...n,time:n.time+i*p.duration}));});
   const groups=[{name:'theme',pan:.12},{name:'brass',pan:-.22},{name:'strings',pan:.24},{name:'inner organ',pan:.05}];
   const rate=22050,when=.03,seconds=16*60/132;
   const render=async(voices:typeof notes,cancel=false)=>{

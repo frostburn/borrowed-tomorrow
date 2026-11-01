@@ -421,12 +421,14 @@ authored two-bar band answers. During an answer the foreground organ rests;
 brass, strings and lower organ take over together, with matched attacks,
 rests and holds in the radiant 31-EDO scale. The shared rhythmic sentence
 preserves the original lead's attack positions across call and response.
-Four answers stay fully voiced. The other four use restrained breaks on the
-same four attacks: brass gives way to strings/lower organ, smaller groups
-trade, and two slots leave a short band rest before the next hit. No displaced
-entrances or extra subdivisions are added. Bass, pads and drums keep their
-foundation underneath the exchange. The
-former glides and echo are removed.
+All answers keep the full three-part voicing. Four remain broad; the other
+four vary their shared rhythm: repeated quarter-note accents at the opening,
+a split middle note, one short eighth-note pickup into a strong beat, and
+quarter-note closing taps. Core attacks at beats 0/2/4/6, scale voicings and
+instrument gains stay intact. Added taps repeat an existing voicing, so the
+rhythm gains interest without accelerating the harmony. All voices strike
+together; bass, pads and drums continue underneath. The former glides and
+echo are removed.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
 adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
