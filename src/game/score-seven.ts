@@ -1,4 +1,4 @@
-import {finalLeadHold,finalChromaticNotes} from './score-final-runs';
+import {finalLeadHold,finalPhraseNotes} from './score-final-runs';
 import type {Note,Instrument} from './score';
 import {octave,type Pitch} from './tuning';
 import {phrasing,singing} from './expression';
@@ -114,6 +114,6 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
  if(within===1||within===3){const at=beats-1;add('bell',pitch(root+4),at,2.4,a.battle?.038:.046,.35).expression={release:1.6,...phrasing(strength)};}
  if(mode==='firstfield'||mode==='seasonstreet')for(const at of [0,1.5])if(at<beats)add('wood',pitch(root,-1),at,.18,.045,-.3);
  if(mode==='unborrowed'&&(within===1||within===3))add('brass',pitch(melody[7],-1),0,beats-.2,.09,.3).expression=singing('clear',strength,beats-.2);
- notes.push(...finalChromaticNotes(mode,i,a.gain,strength));
+ notes.push(...finalPhraseNotes(mode,i,a.gain,strength));
  return notes;
 }

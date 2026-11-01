@@ -413,8 +413,24 @@ The final introductions now build into their loops with a short snare crescendo.
 The Emperor's Order is restored to its original arrangement. Captain Alban and Iron Above the Clouds are unchanged. Quiet imperial exploration, the Lightbearer and the Benefactor keep their existing arrangements. Music → Ch 6 uses the campaign score; Strings and Reed auditions isolate the relevant instruments. No new samples, tempo changes, room responses or synth patches are involved.
 
 
-## Final boss chromatic breaks
+## Final boss phrase answers
 
-`score-final-runs.ts` ornaments only the Benefactor's three battle forms. The mantle's six measured phrase-end flourishes use the hollow tritaver voice against its organ-led theme. The hollow sun hands its falling flat-spelled chromatic sequences and compressed neighbouring-step approaches to organ within its five-beat meter. Both use nearly full-length note holds and smooth short overlapping releases, avoiding the brass attack on fast runs. The exposed heart hands its eight faster breaks to piano, whose short attack can articulate 32nd notes while the broad string melody retains its existing envelope. One entire 31-step octave rises into the untouched C5 at the quieter middle; the following three bars keep their space.
+`score-final-runs.ts` now gives the Benefactor's three battle forms short,
+shaped answers in place of the former chromatic ladders. Each answer uses
+only two or three notes, varied spacing and real rests. The mantle's six
+tritaver figures descend in broader intervals toward the next organ entrance.
+The hollow sun's six organ answers break across its five-beat meter using
+the reflected octatonic, with unequal holds and changes of direction. The
+heart keeps eight piano answers, with more space between attacks; its former
+full 31-step octave sweep becomes two measured notes before the original high
+C5. The following three middle bars retain their space.
 
-Two chromatic languages alternate: twelve consecutive fifths produce the 7L 5s meantone chromatic (seven 3-step and five 2-step semitones per octave), while the adjacent collection spells every single 31-EDO step using `t`, `d`, sharps and flats. Sharp and flat versions remain distinct. Runs replace short lead spans and truncate any held lead arriving from a previous bar; their last passing note approaches the existing next melody entrance. Pads, bass, drums, tempo, meter, two-bar introductions and all non-final-boss cues retain their scores. The flourish releases are short and smooth, with no bends or pitch rounding. Music → Ch 7 reviews the real campaign arrangements; Tritaver and Organ isolate the first two forms' run voices; Piano isolates the heart's unchanged breaks. Full-form/loop audio renders remain opt-in.
+Every answer belongs to its form's existing radiant or reflected 31-EDO
+collection and finishes close to the next original melody entrance. Lead
+holds truncate at the answer's start, including notes held from a previous
+bar; rests inside the answer remain clear. The original main sentences,
+pads, bass, percussion, tempo, meter, two-bar introductions, quieter middle
+and loop handoffs keep their roles. The change removes the constant-rate
+chromatic and adjacent-step scales while retaining phrase-end variety.
+Music → Ch 7 reviews the campaign arrangements; Tritaver, Organ and Piano
+isolate the respective answer voices. Full-form/loop audio checks remain opt-in.
