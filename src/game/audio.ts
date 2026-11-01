@@ -5,6 +5,9 @@ import type { Instrument, MusicMode } from './score';
 import { Synth, type Effect } from './synth';
 import type { PerformanceOptions } from './score-performance';
 
+// Post-room makeup preserves compressor drive and the authored dry/wet balance.
+export const AUDIO_OUTPUT_GAIN=1.5;
+
 /** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
 export class Audio {
   private context?:AudioContext;
@@ -43,7 +46,9 @@ export class Audio {
     const mix=c.createGain();music.connect(mix);fx.connect(mix);
     // Control the excitation, then let the room decay independently. A
     // compressor on the return would duck existing tails and swell them back.
-    mix.connect(compressor);this.reverb=new RoomReverb(c,compressor,master);master.connect(c.destination);
+    mix.connect(compressor);
+    const output=c.createGain();output.gain.value=AUDIO_OUTPUT_GAIN;
+    this.reverb=new RoomReverb(c,compressor,output);output.connect(master);master.connect(c.destination);
     this.music=new Synth(c,music);this.effects=new Synth(c,fx);
   }
   async toggle():Promise<boolean>{

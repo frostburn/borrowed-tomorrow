@@ -304,3 +304,8 @@ redraw clock, menu/cinematic pauses, reduced-motion rest poses and map cleanup;
 do not add ambient tweens or change walking cadence. See `docs/map-life.md`.
 
 Scene rendering and framebuffer presentation share one pre-render decision. Keep simulation/input/audio on the browser clock, ordinary motion at the existing 30 Hz, UI changes immediate and smooth chapter films at the browser rate. Do not relight hidden intermediate frames or redraw a steady reduced-motion scene. Check live boss aftermath, walking cadence and compositor equality on desktop/phone; detailed render/profiling cases stay opt-in. See `docs/development.md`.
+
+The broken Benefactor's sun-form line uses its hollow-sun portrait and fractured
+alternating case; earlier speeches and the unseen Chapter Five voice stay normal.
+Battle portraits follow the current form. The audio output has 1.5× makeup gain
+between room and master; preserve input-side compression, wet balance and mute.

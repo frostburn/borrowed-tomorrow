@@ -1,7 +1,8 @@
+import {BENEFACTOR_PORTRAITS} from '../benefactor-art';
 import {STAGED,type StageCue,type Dialogue} from '../dialogue';
 import {stage} from '../maps';
 import type {MapId} from '../../rules/state';
-const l=(who:string,text:string,cue?:StageCue)=>STAGED(who,text,{...cue,portrait:who==='The Benefactor'?'benefactor':cue?.portrait});
+const l=(who:string,text:string,cue?:StageCue)=>STAGED(who,text,{...cue,portrait:cue?.portrait??(who==='The Benefactor'?'benefactor':undefined)});
 const scene=(map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id)},lines:lines.map((line,index)=>index===1?{...line,shot:{focus:map==='homecoming'?{x:24,y:18}:map==='seaholiday'?{x:31,y:24}:{x:32,y:29},duration:900,...line.shot}}:line)});
 export const crossing=()=>scene('hollowsill','seven-crossing','Under the sea',[
  l('The crossing','Water hangs overhead. A boat passes across it, upside down; its wake spreads without falling.',{focus:{x:32,y:29},cut:true,music:'hollowsill'}),
@@ -135,7 +136,7 @@ export const god=()=>scene('sunthrone','seven-god','The god who lent tomorrow',[
 export const sun=()=>scene('sunthrone','seven-sun','The mantle falls',[
  l('The sun throne','The mantle breaks from its shoulders. No light comes to fill the cracks.',{focus:{x:32,y:18},cut:true,cue:'flare',effect:'domain-break',duration:2100,music:'sunthrone'}),
  l('Orrin','The channels are empty. It can’t build another body.'),
- l('The Benefactor','I was here before your stations. Before your names.'),
+ l('The Benefactor','i WaS hErE bEfOrE yOuR sTaTiOnS. bEfOrE yOuR nAmEs.',{portrait:BENEFACTOR_PORTRAITS[1]}),
  l('The sun throne','The ring lifts from the wreckage. Its rays unfold across the floor.'),
  l('Petra','It can still reach us. Watch where the light falls.'),
 ]);
