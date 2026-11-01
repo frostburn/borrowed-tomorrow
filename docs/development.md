@@ -260,7 +260,7 @@ opt-in, outside the small default CI browser gate.
 The single command grid contains the contextual **Move / Strike** action, all
 learned solo/team skills, Items, Defend and Wait. Shortcut 1 selects the basic
 command; the remaining numbered shortcuts follow the displayed skill buttons.
-An enemy click (including a projected multi-hex boss body) previews a strike in
+An enemy footprint click previews a strike in
 place when adjacent, or the shortest legal route to a reachable adjacent hex plus
 a strike. Routes use movement cost first, then hex count and stable row/column
 ties. A read-only forecast supplies the path, destination and damage without
@@ -272,6 +272,9 @@ can be struck at its closest legal contact even when another body contact was
 clicked. An unreachable enemy stays invalid, without a partial approach.
 Ground clicks still preview movement separately; adjacent enemies use Confirm
 attack. Fixtures retain Strike / Move here choices without automatic approaches.
+The contextual command preserves an exact empty board hex even beneath opaque
+boss artwork. Explicit attack skills retain painted-body shortcuts, and legal
+area/line aims keep their position. Actual boss contacts still select the enemy.
 Team helpers retain their movement-only continuation and show **Move**, never
 Move / Strike, alongside End turn.
 
@@ -283,12 +286,14 @@ that footprint. In-range attacks stay in place. Ranged/support/team skills keep
 their targeting. An unused Bash can approach during Petra's team continuation,
 without granting another main action.
 
-Scheduled enemy attack cells retain their red X. A living party member on one
-of those cells has a red filled hex and red outline, including the active
-character and allies inside an ability preview. Empty threatened destinations
-keep their blue reachable interior. The current attack's wind-up/impact colors
-take precedence while it plays; leaving a marked cell removes the character's
-red highlight.
+Scheduled enemy attack cells retain their X. The acting fighter has a strong red
+fill and outline; threatened allies have a quieter fill, thinner outline and
+muted X, including inside ability previews. Empty threatened destinations keep
+their blue reachable interior. `game/battle-warnings.ts` omits a pattern source's
+own/allied occupied contacts from warnings and visual impacts, retaining the
+gold boss footprints. It never changes saved intents or combat resolution.
+Current attack wind-up/impact colors take precedence; leaving a marked cell
+removes the fighter's warning.
 
 Confirmation and target feedback sit below the command grid in the bottom command
 panel, outside its scroller. Confirm, Cancel and fixture Move here buttons stay
@@ -325,6 +330,8 @@ the option retain their existing bottom layout, and closing or skipping clears
 the placement before ordinary dialogue or panels open.
 
 The Emperor’s crown entrance stays on the crown platform at normal map scale. Authored shot focuses follow the growing vessel upward, hold on the Emperor’s first line, then pan down to the party as Celia answers. The bottom dialogue may cover the party’s lower bodies; framing never zooms out to fit the set. Resize retains the current focus, reduced motion settles pans immediately, and close/skip removes the pan before exploration or combat resumes. The opt-in `imperial-entry.spec.ts` cases cover motion/reduced motion, both Nell routes, native scale, the party pan, early advance, skip, reload, resize, failed-art retry and actual battle handoff.
+
+The recovered capital landing supplies `Cinematic.sky` for a temporary band above the unchanged map. Its colour matches the quay background; the camera bounds extend upward at normal scale and are restored on close/skip. Resize reapplies the band before framing the current shot. `content/capital-horizon.ts` keeps the Hollow Sun above the marble roofline and clear of the dialogue on desktop and phone. The next shot returns to Alda on the quay. `capital-horizon.spec.ts` covers completion, skip, resize, resources and reload without adding to the default browser gate.
 
 The Lower Dispensary introduction stages all six actors on clear floor in front
 of the lift. Its Tiled `Scene:five-wind-dispensary` cast and

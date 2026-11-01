@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { StagePoint } from '../content/cinematics';
 import { hollowSunPolygons } from '../content/hollow-sun';
 import hollowSun from '../content/hollow-sun.json';
+import {capitalHorizon} from '../content/capital-horizon';
 import {ImperialEntry} from './imperial-entry';
 import type {ImperialEntryEffect} from '../content/imperial-entry';
 export type ImperialEffect=ImperialEntryEffect|'capital-street'|'capital-fall'|'capital-thread'|'capital-horizon'|'lightbearer-rise'|'lightbearer-fall';
@@ -11,9 +12,11 @@ export class ImperialCinematic {
  private objects:Phaser.GameObjects.GameObject[]=[];
  private originals:{image:Phaser.GameObjects.Image;x:number;y:number;alpha:number}[]=[];
  private entry?:ImperialEntry;
+ private redraw?:()=>void;
  constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,emperor?:Phaser.GameObjects.Image,onEntryClose?:()=>void){if(emperor)this.entry=new ImperialEntry(scene,world,emperor,onEntryClose);}
  get animating(){return !!this.entry?.animating||this.tweens.some(t=>t.isPlaying());}
  settle(){this.entry?.settle();}
+ reframe(){this.redraw?.();}
  play(kind:ImperialEffect,focus?:StagePoint){
   if(kind==='imperial-enter'||kind==='imperial-unfold'){this.entry?.play(kind);return;}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches,x=((focus?.x??32)+.5)*24,y=((focus?.y??22)+.5)*24;
@@ -28,15 +31,17 @@ export class ImperialCinematic {
    else this.tweens.push(this.scene.tweens.add({targets:image,y:kind==='lightbearer-rise'?504:559,alpha:kind==='lightbearer-rise'?1:0,duration:1500,ease:'Cubic.easeInOut'}));
   }else{
    const g=this.scene.add.graphics().setDepth(28001);this.world.add(g);this.objects.push(g);
+   let progress=0;
    const draw=(p:number)=>{
+    progress=p;
     if(!g.active)return;g.clear();
     if(kind==='capital-horizon'){
      // A perspective view of the same open, twelve-ray emblem seen in stone
      // and brass, rather than an unrelated thin portal ellipse.
-     // Keep the whole corona inside narrow views, above the dialogue panel.
-     const radius=Math.min(195,(this.scene.cameras.main.width-32)/(2*hollowSun.longRayTip));
-     const size=radius*(105+p*90)/195,sun=hollowSunPolygons(x,y-72,size,.42);
-     g.fillStyle(Number.parseInt(hollowSun.skyInterior.slice(1),16),1).fillEllipse(x,y-72,size*hollowSun.innerRadius*2,size*hollowSun.innerRadius*.84);
+     // World-anchored above the palace, in the shot's extended sky band.
+     const sky=capitalHorizon(this.scene.cameras.main.width),radius=sky.radius;
+     const size=radius*(105+p*90)/195,sun=hollowSunPolygons(sky.x,sky.y,size,sky.aspect);
+     g.fillStyle(Number.parseInt(hollowSun.skyInterior.slice(1),16),1).fillEllipse(sky.x,sky.y,size*hollowSun.innerRadius*2,size*hollowSun.innerRadius*2*sky.aspect);
      const polygon=(points:{x:number;y:number}[])=>{g.beginPath().moveTo(points[0].x,points[0].y);for(const p of points.slice(1))g.lineTo(p.x,p.y);g.closePath().fillPath();};
      g.fillStyle(0xc2a16b,.9);for(const ray of sun.rays)polygon(ray);
      for(const [i,band]of sun.bands.entries()){g.fillStyle(i<8?0xe4cf94:0xaa8e5f,.95);polygon(band);}
@@ -45,10 +50,10 @@ export class ImperialCinematic {
      g.lineStyle(8,0xe5ebcd,(1-p)*.35).lineBetween(x,y-210,x+80,y+330);g.lineStyle(2,0xffeab2,1-p).lineBetween(x,y-210,x+80,y+330);
      for(let i=0;i<6;i++)g.fillStyle(0xf2dfb4,1-p).fillRect(x+i*14-40,y+i*28-100+p*30,4,7);
     }
-   };draw(reduced?kind==='capital-horizon'?1:.8:0);
+   };if(kind==='capital-horizon')this.redraw=()=>draw(progress);draw(reduced?kind==='capital-horizon'?1:.8:0);
    if(!reduced)this.tweens.push(this.scene.tweens.addCounter({from:0,to:1,duration:1400,onUpdate:t=>draw(t.getValue()??0)}));
   }
   this.world.sort('depth');
  }
- close(){this.entry?.close();this.entry=undefined;for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const p of this.originals)if(p.image.active)p.image.setPosition(p.x,p.y).setAlpha(p.alpha);this.originals=[];}
+ close(){this.redraw=undefined;this.entry?.close();this.entry=undefined;for(const t of this.tweens)t.remove();this.tweens=[];for(const o of this.objects)o.destroy();this.objects=[];for(const p of this.originals)if(p.image.active)p.image.setPosition(p.x,p.y).setAlpha(p.alpha);this.originals=[];}
 }

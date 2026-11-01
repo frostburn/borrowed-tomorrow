@@ -59,8 +59,18 @@ export class Cutscene {
   private glint?:LanternGlint;
   private mechanisms?:MechanismCinematic;
   private tracked?:Phaser.GameObjects.Image;
+  private skyBackdrop?:Phaser.GameObjects.Graphics;
+  private originalBounds?:Phaser.Geom.Rectangle;
+  private originalUseBounds=true;
+  private frameSky(){
+    const b=this.originalBounds,sky=this.script.sky;if(b&&sky)this.scene.cameras.main.setBounds(b.x,b.y-sky.height,b.width,b.height+sky.height);
+  }
   private duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:450;
   constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,readonly script:Cinematic,private audio:Audio,private motion:ActorAnimator,lighting:WorldLighting){
+    if(script.sky){
+      this.originalBounds=scene.cameras.main.getBounds();this.originalUseBounds=scene.cameras.main.useBounds;
+      const b=this.originalBounds;this.skyBackdrop=scene.add.graphics().setDepth(-1001).fillStyle(script.sky.color).fillRect(b.x,b.y-script.sky.height,b.width,script.sky.height);world.add(this.skyBackdrop);this.frameSky();
+    }
     const sprites=new Set<string>(script.actors.map(a=>CHARACTERS[a.id].sprite));
     for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&child.visible){
       const name=child.getData('hero')??child.texture.key.replace(/-(left|right|back)$/,'');
@@ -146,12 +156,13 @@ export class Cutscene {
     if(shot.mechanism){this.mechanisms??=new MechanismCinematic(this.scene,this.world);this.mechanisms.play(shot.mechanism);}
     this.audio.cinematicMix(shot.silence?0:.7);if(shot.cue)this.audio.effect(shot.cue);
   }
-  reframe(){const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
+  reframe(){this.frameSky();this.imperial?.reframe();const p=this.tracked?.active?{x:this.tracked.x,y:this.tracked.y+this.dialogueInset}:this.focus?this.cameraPoint(this.focus):undefined;if(p){this.scene.cameras.main.panEffect.reset();this.scene.cameras.main.centerOn(p.x,p.y);}}
   close(){
     if(this.closed)return;this.closed=true;this.mechanisms?.close();this.glint?.close();this.effects?.close();this.launch?.close();this.shelter?.close();this.ward?.close();this.flagship?.close();this.claim?.close();this.pact?.close();this.river?.close();this.imperial?.close();this.domain?.close();this.raid?.close();this.scene.cameras.main.stopFollow();
     for(const actor of this.actors.values()){this.motion.stop(actor);this.scene.tweens.killTweensOf(actor);actor.destroy();}
     this.scene.cameras.main.panEffect.reset();this.layer.destroy(true);
     for(const image of this.hidden)if(image.active)image.setVisible(true);
+    this.skyBackdrop?.destroy();const b=this.originalBounds;if(b){this.scene.cameras.main.setBounds(b.x,b.y,b.width,b.height);this.scene.cameras.main.useBounds=this.originalUseBounds;}
     this.audio.cinematicMix(1);
   }
 }

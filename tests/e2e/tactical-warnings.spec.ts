@@ -4,9 +4,9 @@ import {active,movement,type Battle} from '../../src/rules/combat';
 import {key,toPixel,type Hex} from '../../src/rules/hex';
 
 /** Sample the exposed side edges in the visible, pixelated framebuffer. */
-async function dangerRed(page:Page,h:Hex){
+async function dangerRed(page:Page,h:Hex,muted=false){
  await clickHex(page,h); // Also pans the character into view on phones.
- return page.evaluate(p=>{
+ return page.evaluate(({p,muted})=>{
   const {view}=window.borrowedTomorrow.inspect(),info=window.borrowedTomorrowPixels.inspect();
   const source=document.querySelector('.pixel-source')!.getBoundingClientRect(),world=document.querySelector('.world-input')!.getBoundingClientRect();
   const canvas=document.querySelector<HTMLCanvasElement>('.pixel-output')!,pixels=canvas.getContext('2d')!.getImageData(0,0,canvas.width,canvas.height).data;
@@ -17,13 +17,13 @@ async function dangerRed(page:Page,h:Hex){
    const xx=Math.round(info.physicalLeft+(x+dx)*info.physicalScale),yy=Math.round(info.physicalTop+(y+dy)*info.physicalScale);
    if(xx<0||yy<0||xx>=canvas.width||yy>=canvas.height)continue;
    const i=(yy*canvas.width+xx)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2];
-   if(r>170&&r-g>65&&Math.abs(g-b)<25)red++;
+   if(muted?r>145&&r-g>25&&r-g<65&&g-b>10:r>170&&r-g>65&&Math.abs(g-b)<25)red++;
   }
   return red;
- },toPixel(h));
+ },{p:toPixel(h),muted});
 }
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`scheduled boss attacks stay red under active and waiting characters on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`scheduled boss attacks emphasize the acting fighter and keep quieter ally warnings on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
  try{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -31,7 +31,10 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   const snapshot=(await inspect(page)).battle!,b={...snapshot,obstacles:new Set(snapshot.obstacles),water:new Set(snapshot.water),vents:new Set(snapshot.vents)}as Battle,u=active(b)!;
   const danger=new Set(b.units.flatMap(v=>v.intent?.cells.map(key)??[])),threatened=b.units.filter(v=>v.side==='party'&&danger.has(key(v.hex)));
   expect(threatened.some(v=>v.id===u.id)).toBe(true);expect(threatened.some(v=>v.id!==u.id)).toBe(true);
-  for(const hero of threatened)await expect.poll(()=>dangerRed(page,hero.hex)).toBeGreaterThan(25);
+  for(const hero of threatened){
+   if(hero.id===u.id)await expect.poll(()=>dangerRed(page,hero.hex)).toBeGreaterThan(25);
+   else{await expect.poll(()=>dangerRed(page,hero.hex)).toBeLessThan(25);await expect.poll(()=>dangerRed(page,hero.hex,true)).toBeGreaterThan(25);}
+  }
   await capture(page,`occupied-danger-${device}`);
   await page.getByRole('button',{name:/Lantern burst$/}).click();await expect.poll(()=>dangerRed(page,u.hex)).toBeGreaterThan(25);
   await capture(page,`occupied-danger-preview-${device}`);await page.getByRole('button',{name:'Cancel',exact:true}).click();
