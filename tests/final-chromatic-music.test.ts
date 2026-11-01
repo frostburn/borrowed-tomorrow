@@ -22,7 +22,6 @@ it('trades the mantle organ call with a harmonized band answer in the radiant sc
   expect(theme).toEqual([]);
   for(let i=0;i<2;i++)expect(finalPhraseNotes('benefactor',phrase*4+i,1,1)).toEqual([]);
   for(const line of lines){
-   expect(line.map(n=>[n.at,n.duration])).toEqual(lines[0].map(n=>[n.at,n.duration]));
    for(const at of [0,2,4,6])expect(line.some(n=>n.at===at)).toBe(true);
    for(const [i,n]of line.entries()){
     expect(n.at*2).toBe(Math.round(n.at*2));
@@ -34,8 +33,11 @@ it('trades the mantle organ call with a harmonized band answer in the radiant sc
   let simultaneous=0;
   for(let at=0;at<8;at+=.125)simultaneous=Math.max(simultaneous,lines.filter(line=>line.some(n=>n.at<=at&&n.at+n.duration>at)).length);
   expect(simultaneous).toBe(3);
-  rhythms.add(lines[0].map(n=>n.at).join(','));
-  if(lines[0].length===4)steady++;else varied++;
+  for(const line of lines)rhythms.add(line.map(n=>n.at).join(','));
+  if(lines.every(line=>line.length===4))steady++;else varied++;
+  const extras=new Set(lines.flatMap(line=>line.map(n=>n.at)).filter(at=>![0,2,4,6].includes(at)));
+  // A fill never becomes an extra full-band stab.
+  for(const at of extras)expect(lines.filter(line=>line.some(n=>n.at===at)).length).toBe(1);
   expect(finalLeadHold('benefactor',start,1,4)).toBe(0);
   expect(finalLeadHold('benefactor',start-1,3,2)).toBe(1);
  }

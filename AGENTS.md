@@ -64,9 +64,10 @@ Keep audio procedural and asset-light. Compose phrases with variation, rests, an
 The mantle's final boss theme trades two-bar organ calls with two-bar band
 answers in brass, strings and lower organ. The answering voices share one
 rhythm and radiant scale while the lead rests; the bass/drum foundation stays.
-Keep all three answering voices fully voiced and rhythmically together.
-Four answers vary the shared rhythm with repeated quarter/eighth accents and
-held endings, retaining the strong 0/2/4/6 attacks. Other answers stay broad.
+Keep the answering harmony full. In four answers, quarter/eighth embellishments
+belong to individual instruments while the other voices keep broader holds.
+Do not turn the fills into repeated full-band stabs. All retain the strong
+0/2/4/6 attacks and the radiant scale; other answers stay broad.
 The sun and heart retain their accepted close 31-EDO runs and paired tritones,
 including the heart's full adjacent-step octave into C5.
 

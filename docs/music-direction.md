@@ -418,16 +418,17 @@ The Emperor's Order is restored to its original arrangement. Captain Alban and I
 `score-final-runs.ts` gives the three forms different phrase-end motion. The
 God Who Lent Tomorrow (`benefactor`) trades two-bar organ calls with eight
 authored two-bar band answers. During an answer the foreground organ rests;
-brass, strings and lower organ take over together, with matched attacks,
-rests and holds in the radiant 31-EDO scale. The shared rhythmic sentence
+brass, strings and lower organ take over in the radiant 31-EDO scale,
+with shared strong beats and individually shaped fills. The shared rhythmic sentence
 preserves the original lead's attack positions across call and response.
-All answers keep the full three-part voicing. Four remain broad; the other
-four vary their shared rhythm: repeated quarter-note accents at the opening,
-a split middle note, one short eighth-note pickup into a strong beat, and
-quarter-note closing taps. Core attacks at beats 0/2/4/6, scale voicings and
-instrument gains stay intact. Added taps repeat an existing voicing, so the
-rhythm gains interest without accelerating the harmony. All voices strike
-together; bass, pads and drums continue underneath. The former glides and
+All answers keep the full three-part harmony on the strong beats. Four stay
+broad; in the other four, individual instruments add quarter/eighth figures
+while the others keep their longer notes. Brass ornaments the second answer;
+strings vary the fourth; brass and lower organ make separate pickups in the
+sixth; brass and strings take separate closing taps in the seventh. Every
+extra attack belongs to one voice, avoiding repeated full-band stabs. Core
+voicings, gains and the scale stay intact, and no rhythm is finer than an
+eighth note. Bass, pads and drums continue underneath. The former glides and
 echo are removed.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
