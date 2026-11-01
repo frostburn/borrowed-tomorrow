@@ -1,32 +1,28 @@
 import {expect,it} from 'vitest';
 import {finalLeadHold,finalPhraseNotes} from '../src/game/score-final-runs';
 import {ARRANGEMENTS,scoreBar} from '../src/game/score';
-import {performanceBar} from '../src/game/score-performance';
 import {pitchSteps,isPercussion} from '../src/game/tuning';
 const modes=['benefactor','hollow-sun','unborrowed']as const;
 
-it('gives each mantle descent a long sine lead and a quieter delayed near-unison echo',()=>{
- let count=0;
- for(let bar=0;bar<32;bar++){
-  const figure=finalPhraseNotes('benefactor',bar,1,1);if(!figure.length)continue;count++;
-  expect(figure).toHaveLength(2);const [lead,echo]=figure;
-  expect(lead.instrument).toBe('sine');expect(echo.instrument).toBe('sine');
-  expect(lead.duration).toBeGreaterThanOrEqual(5);expect(echo.duration).toBe(lead.duration);
-  expect(echo.beat-lead.beat).toBe(.375);expect(echo.velocity/lead.velocity).toBeCloseTo(.28,12);
-  expect(pitchSteps(lead.pitch)-pitchSteps(echo.pitch)).toBe(1);
-  const bend=lead.expression!.bend!;expect(bend).toHaveLength(2);
-  expect(bend[0][0]).toBe(0);expect(bend[1]).toEqual([1,0]);expect(bend[0][1]).toBeGreaterThan(900);
-  expect(echo.expression!.bend).toEqual(bend);
-  // At the same time, the lagging echo is only about 26–40 cents above it.
-  const separation=bend[0][1]/lead.duration*.375-1200/31;
-  expect(separation).toBeGreaterThan(20);expect(separation).toBeLessThan(45);
-  const arrivalBar=bar+2+(lead.beat+lead.duration)/4;
-  const arrival=scoreBar('benefactor',arrivalBar).find(n=>n.beat===0&&Math.abs(n.pan)===.12)!;
-  expect(lead.pitch).toBe(arrival.pitch);
-  const performed=performanceBar('benefactor',bar+2).notes.find(n=>n.instrument==='sine'&&n.pan===-.12)!;
-  expect(performed.expression?.bend).toEqual(bend);expect(performed.seconds).toBeCloseTo(lead.duration*60/132,12);
+it('keeps the full mantle organ melody while adding three independent polyphonic lines',()=>{
+ const melody=(mode:'benefactor'|'sunthrone',start:number)=>Array.from({length:4},(_,i)=>scoreBar(mode,start+i)).flat().filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>n.pitch);
+ for(let phrase=0;phrase<8;phrase++){
+  expect(melody('benefactor',2+phrase*4)).toEqual(melody('sunthrone',phrase*4));
+  const start=phrase*4+2,notes=Array.from({length:2},(_,i)=>finalPhraseNotes('benefactor',start+i,1,1).map(n=>({...n,at:i*4+n.beat}))).flat();
+  expect(new Set(notes.map(n=>n.instrument))).toEqual(new Set(['brass','strings','organ']));
+  expect(notes.every(n=>!n.expression?.bend)).toBe(true);
+  const lines=[-.22,.24,.05].map(pan=>notes.filter(n=>n.pan===pan).sort((a,b)=>a.at-b.at));
+  for(const line of lines){
+   expect(line.length).toBeGreaterThanOrEqual(4);
+   for(let i=1;i<line.length;i++)expect(line[i-1].at+line[i-1].duration).toBeLessThanOrEqual(line[i].at);
+   expect(line.at(-1)!.at+line.at(-1)!.duration).toBeLessThan(8);
+  }
+  expect(new Set(lines.map(line=>line.map(n=>n.at).join(','))).size).toBe(3);
+  let simultaneous=0;
+  for(let at=0;at<8;at+=.125)simultaneous=Math.max(simultaneous,lines.filter(line=>line.some(n=>n.at<=at&&n.at+n.duration>at)).length);
+  expect(simultaneous).toBe(3);
+  expect(finalLeadHold('benefactor',start,1,4)).toBe(4);
  }
- expect(count).toBe(6);
 });
 
 it('focuses sun and heart runs on adjacent 31-tone steps, broken by alternating tritone pairs',()=>{

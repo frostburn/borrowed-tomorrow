@@ -413,20 +413,19 @@ The final introductions now build into their loops with a short snare crescendo.
 The Emperor's Order is restored to its original arrangement. Captain Alban and Iron Above the Clouds are unchanged. Quiet imperial exploration, the Lightbearer and the Benefactor keep their existing arrangements. Music → Ch 6 uses the campaign score; Strings and Reed auditions isolate the relevant instruments. No new samples, tempo changes, room responses or synth patches are involved.
 
 
-## Final boss glides and close-step breaks
+## Final boss polyphony and close-step breaks
 
 `score-final-runs.ts` gives the three forms different phrase-end motion. The
-God Who Lent Tomorrow (`benefactor`) uses six long descending sine glides,
-lasting five to seven beats and taking over earlier in each phrase ending.
-The organ theme hands off to each continuous fall, then returns at its endpoint.
-A second sine follows 3/8 beat later at 28% of the lead's gain (about −11 dB).
-Its entire path is one 31-EDO step lower; during the overlapping descents,
-the delay leaves it roughly 26–40 cents above the lead. The voices rub near
-unison, then the quiet echo drops below the returning organ. The echo has a
-softer release and sits slightly to the right of the lead. It can cross a bar
-or loop boundary; it is an authored second voice, not a global room change.
-Both voices use smooth cents ramps with no intermediate attacks or vibrato.
-Cancellation stops both current falls and not-yet-started echoes.
+God Who Lent Tomorrow (`benefactor`) retains its complete organ melody and
+adds eight authored two-bar phrases in the second halves of its sentences.
+Upper brass calls use clipped attacks, the strings carry a broader answering
+line, and a lower organ voice moves independently beneath them. Their entries,
+holds and rests differ, so the thicker sound comes from overlapping lines
+rather than parallel doubling. The fourth answer broadens; the lifted middle
+adds more urgent brass entries; the last answer descends into the opening.
+All three added voices use the existing radiant 31-EDO collection. The original
+bass, pads and percussion keep their scores. The former glides and echo are
+removed; the added phrases build the first form's weight through composition.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
 adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
@@ -443,11 +442,11 @@ fifths), making the octave complement exact. This is whole-tone colour within
 31-EDO, not six equally spaced tones forced to close an octave. Spelled
 transpositions preserve the same intervals in each figure's register.
 
-These authored glides/runs may pass outside the radiant/reflected octatonics;
-the surrounding melodies and harmonies keep their original collections. Primary
-lead holds truncate where a gesture takes over, including notes from the preceding
-bar. Bass, pads, drums, tempo, meter, two-bar introductions and other themes
-keep their scores. Music → Ch 7 reviews the campaign arrangements; Sine,
-Organ and Piano isolate the respective flourish voices. Expression off removes
-the glides' bends for comparison, following the existing expression controls.
-Full-form/loop audio checks and continuous-glide/cancellation renders stay opt-in.
+The sun/heart's authored runs may pass outside the radiant/reflected octatonics;
+the surrounding melodies and harmonies keep their original collections. Their
+lead holds truncate where a run takes over, including notes from the preceding
+bar. The mantle's original organ lead now plays through its entire sentences.
+All forms retain their tempo, meter, two-bar introductions and loop timing.
+Music → Ch 7 reviews the campaign arrangements; Brass, Strings and Organ
+isolate the mantle's new lines, while Organ/Piano retain the sun/heart runs.
+Full-form/loop audio checks and polyphonic layer/cancellation renders stay opt-in.
