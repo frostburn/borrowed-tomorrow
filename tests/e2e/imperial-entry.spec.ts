@@ -20,19 +20,21 @@ for(const reduced of [false,true])test(`Emperor enters the crown on ${device} wi
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
   await page.evaluate(async()=>{const module='/src/game/audio.ts',{Audio}=await import(/* @vite-ignore */module),set=Audio.prototype.setMode;(window as any).entryCues=[];Audio.prototype.setMode=function(mode:any){(window as any).entryCues.push(mode);return set.call(this,mode);};});
+  await page.evaluate(async()=>{const module='/src/game/audio.ts',{Audio}=await import(/* @vite-ignore */module),play=Audio.prototype.effect;(window as any).entrySounds=[];Audio.prototype.effect=function(...args:any[]){(window as any).entrySounds.push(args[0]);return play.apply(this,args);};});
   const s=imperialEntryCheckpoint(device==='desktop');if(device==='desktop')s.activeParty=['kit','orrin','petra'];
   await importSave(page,s);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await page.mouse.move(0,0);
   await expect(page.locator('#scene-layer')).toHaveAttribute('data-dialogue-position','bottom');
   expect((await inspect(page)).state.location.map).toBe('crown');expect((await inspect(page)).view.zoom).toBe(1);
   expect((await inspect(page)).actors.some(a=>a.hero==='nell')).toBe(device==='desktop');
   const emperor=()=>inspect(page).then(s=>s.actors.find(a=>a.hero==='emperor'));
-  expect((await emperor())?.texture).toMatch(/^emperor-left/);
-  if(reduced){expect((await emperor())?.x).toBe(780);await present(page);const still=await stageHash(page);await page.waitForTimeout(450);expect(await stageHash(page)).toBe(still);}
-  else{const x=(await emperor())!.x;await page.waitForTimeout(400);expect((await emperor())!.x).toBeLessThan(x);await capture(page,`emperor-walk-${device}`);await expect.poll(async()=>(await emperor())?.x).toBe(780);}
+  await expect(page.locator('.dialogue p')).toHaveText('The Emperor climbs into the crown’s open frame. Plates close around his body.');
+  if(reduced){expect(await emperor()).toBeUndefined();await present(page);const still=await stageHash(page);await page.waitForTimeout(450);expect(await stageHash(page)).toBe(still);}
+  else{const x=(await emperor())!.x;await page.waitForTimeout(400);expect((await emperor())!.x).toBeLessThan(x);expect(await page.evaluate(()=>(window as any).entrySounds)).not.toContain('resonance');await capture(page,`emperor-walk-${device}`);await expect.poll(async()=>(await emperor())?.x).toBe(780);}
   await capture(page,`emperor-open-${device}-${reduced?'reduced':'moving'}`);expect((await inspect(page)).state.flags.emperorSeen).toBeUndefined();
-  await next(page);await expect(page.locator('.dialogue p')).toHaveText('Plates close around his body.');await present(page);
+  await expect(page.locator('.dialogue p')).toContainText('climbs into');await present(page);
   if(!reduced){const first=await stageHash(page);await page.waitForTimeout(450);expect(await stageHash(page)).not.toBe(first);await capture(page,`emperor-closing-${device}`);}
   await expect.poll(async()=>!!(await emperor())).toBe(false);
+  expect(await page.evaluate(()=>(window as any).entrySounds.filter((s:string)=>s==='resonance').length)).toBe(1);
   const entranceY=(await inspect(page)).view.scrollY;
   await next(page);await expect(page.locator('.dialogue p')).toContainText('unfolds into a vast vessel');await present(page);
   if(!reduced){await page.waitForTimeout(500);const first=await stageHash(page);await capture(page,`emperor-unfolding-${device}`);await page.waitForTimeout(500);expect(await stageHash(page)).not.toBe(first);await page.waitForTimeout(1700);}
@@ -58,11 +60,11 @@ for(const reduced of [false,true])test(`Emperor enters the crown on ${device} wi
 
 test('interruption replays the entry, and fast advance or skipping the assembly or party pan restores the world camera',async({page})=>{
  await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');const s=imperialEntryCheckpoint();await importSave(page,s);
- await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await next(page);await page.waitForTimeout(150);expect((await inspect(page)).state.flags.emperorSeen).toBeUndefined();
- await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await expect(page.locator('.dialogue p')).toContainText('steps into');
- await next(page);await next(page);await next(page);await expect(page.locator('.dialogue h2')).toHaveText('The Emperor');await dialogue(page);expect((await inspect(page)).view.zoom).toBe(1);
- for(const advances of [0,1,2,4]){
-  await importSave(page,s);for(let i=0;i<advances;i++)await next(page);await page.getByRole('button',{name:'Skip scene',exact:true}).click();
+ await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await page.waitForTimeout(2350);expect((await inspect(page)).state.flags.emperorSeen).toBeUndefined();
+ await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('six-imperial-vessel');await expect(page.locator('.dialogue p')).toContainText('climbs into');
+ await next(page);await next(page);await expect(page.locator('.dialogue h2')).toHaveText('The Emperor');await dialogue(page);expect((await inspect(page)).view.zoom).toBe(1);
+ for(const [advances,delay]of [[0,0],[0,2350],[1,0],[3,0]]){
+  await importSave(page,s);for(let i=0;i<advances;i++)await next(page);if(delay)await page.waitForTimeout(delay);await page.getByRole('button',{name:'Skip scene',exact:true}).click();
   const result=await inspect(page);expect(result.cinematic).toBeNull();expect(result.view.zoom).toBe(1);expect(result.state.flags.emperorSeen).toBe(true);expect(result.actors.some(a=>a.hero==='emperor')).toBe(false);expect(result.state.party).toEqual(s.party);
   await present(page);const stopped=(await inspect(page)).view;await page.waitForTimeout(400);expect((await inspect(page)).view).toEqual(stopped);
  }

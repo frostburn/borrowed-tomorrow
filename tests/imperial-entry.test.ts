@@ -39,8 +39,9 @@ for(const recovered of [false,true])it(`stages the human Emperor before battle w
  const host={state:s,talk:(dialogue:Dialogue)=>{d=dialogue;},commit:(flag:string)=>{s.flags[flag]=true;}}as unknown as StoryHost;
  resumeChapterSix(host);expect(s).toEqual(before);expect(d?.scene?.id).toBe('six-imperial-vessel');expect(d?.scene?.dialoguePosition??'bottom').toBe('bottom');
  expect(d?.scene?.actors.find(a=>a.id==='emperor')?.at).toEqual({x:36,y:19});expect(d?.scene?.actors.some(a=>a.id==='nell')).toBe(recovered);
- expect(d?.lines.slice(0,3).map(l=>[l.shot?.effect,l.shot?.duration])).toEqual([['imperial-enter',IMPERIAL_WALK_MS],['imperial-close',IMPERIAL_CLOSE_MS],['imperial-unfold',IMPERIAL_UNFOLD_MS]]);
- const entrance=d!.lines[0].shot!,vessel=d!.lines[2].shot!,reply=d!.lines.find(l=>l.who==='Celia')!.shot!;
+ expect(d?.lines.slice(0,2).map(l=>[l.shot?.effect,l.shot?.duration])).toEqual([['imperial-enter',IMPERIAL_WALK_MS],['imperial-unfold',IMPERIAL_UNFOLD_MS]]);
+ expect(d!.lines[0].text).toContain('climbs into');expect(d!.lines[0].text).toContain('Plates close');
+ const entrance=d!.lines[0].shot!,vessel=d!.lines[1].shot!,reply=d!.lines.find(l=>l.who==='Celia')!.shot!;
  expect(vessel.focus!.y).toBeLessThan(entrance.focus!.y);expect(reply.focus!.y).toBeGreaterThan(28);expect(reply.cut).toBeUndefined();expect(reply.duration).toBe(1400);
  expect(d?.lines.every(l=>!l.shot?.music)).toBe(true);expect(d?.lines.some(l=>l.who==='The Emperor')).toBe(true);
  d!.done!();expect(s).toEqual({...before,flags:{...before.flags,emperorSeen:true}});expect(decodeSave(JSON.stringify(s))).toEqual(s);

@@ -1,7 +1,7 @@
 /** Native pieces retain the accepted vessel's dimensions and painter order. */
 export const IMPERIAL_ENTRY_PARTS=['frame','arm-left','arm-right','collar-left','collar-right','face','front-left','front-right'] as const;
 export const IMPERIAL_ENTRY_ASSETS=IMPERIAL_ENTRY_PARTS.map(part=>({key:`imperial-entry-${part}`,url:`art/vector/chapter-six/imperial-entry-${part}.svg`}));
-export type ImperialEntryEffect='imperial-enter'|'imperial-close'|'imperial-unfold';
+export type ImperialEntryEffect='imperial-enter'|'imperial-unfold';
 export const IMPERIAL_WALK_MS=2200;
 export const IMPERIAL_CLOSE_MS=1100;
 export const IMPERIAL_UNFOLD_MS=2500;

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import {IMPERIAL_ENTRY_PARTS,IMPERIAL_CLOSE_MS,IMPERIAL_UNFOLD_MS,imperialEntryPose,type ImperialEntryEffect} from '../content/imperial-entry';
+import {IMPERIAL_ENTRY_PARTS,IMPERIAL_WALK_MS,IMPERIAL_CLOSE_MS,IMPERIAL_UNFOLD_MS,imperialEntryPose,type ImperialEntryEffect} from '../content/imperial-entry';
 import {nativeTexture} from './boss-display';
 
 /** Temporary assembly only. The existing scene owns all saved progression. */
@@ -11,9 +11,10 @@ export class ImperialEntry {
  private started=0;
  private finished=false;
  private closed=false;
+ private closing=false;
  private reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  private humanPose?:{depth:number;worldActor:boolean;visible:boolean;alpha:number};
- constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,private human?:Phaser.GameObjects.Image){
+ constructor(private scene:Phaser.Scene,world:Phaser.GameObjects.Container,private human?:Phaser.GameObjects.Image,private onClose?:()=>void){
   for(const child of world.list)if(child instanceof Phaser.GameObjects.Image&&['scene-six-crown-vessel','scene-six-crown-west-support','scene-six-crown-east-support'].includes(child.getData('scene-piece')?.key)){
    this.originals.push({image:child,visible:child.visible});child.setVisible(false);
   }
@@ -27,20 +28,23 @@ export class ImperialEntry {
   if(human){this.humanPose={depth:human.depth,worldActor:!!human.getData('world-actor'),visible:human.visible,alpha:human.alpha};human.setData('world-actor',false).setDepth(27010);}
   this.draw(0);scene.events.on(Phaser.Scenes.Events.UPDATE,this.update,this);world.sort('depth');
  }
- get animating(){return !this.closed&&!this.reduced&&!!this.phase&&this.phase!=='imperial-enter';}
+ get animating(){return !this.closed&&!this.reduced&&!!this.phase;}
  play(phase:ImperialEntryEffect){
   if(this.closed)return;this.settle();this.phase=phase;this.started=this.scene.time.now;this.human?.setDepth(phase==='imperial-enter'?27010:27001);
-  if(phase==='imperial-enter')this.draw(0);else if(this.reduced)this.settle();else this.update();
+  if(this.reduced)this.settle();else this.update();
  }
+ private beginClose(){if(this.closing)return;this.closing=true;this.human?.setDepth(27001);this.onClose?.();}
  private update=()=>{
-  if(this.closed||!this.phase||this.phase==='imperial-enter')return;
-  const end=this.phase==='imperial-close'?IMPERIAL_CLOSE_MS:IMPERIAL_CLOSE_MS+IMPERIAL_UNFOLD_MS;
-  const time=(this.phase==='imperial-unfold'?IMPERIAL_CLOSE_MS:0)+this.scene.time.now-this.started;
+  if(this.closed||!this.phase)return;
+  const entering=this.phase==='imperial-enter',elapsed=this.scene.time.now-this.started;
+  if(entering&&elapsed>=IMPERIAL_WALK_MS)this.beginClose();
+  const end=IMPERIAL_CLOSE_MS+(entering?0:IMPERIAL_UNFOLD_MS);
+  const time=entering?Math.max(0,elapsed-IMPERIAL_WALK_MS):IMPERIAL_CLOSE_MS+elapsed;
   if(time>=end)this.settle();else this.draw(time);
  };
  settle(){
   if(this.closed||!this.phase)return;
-  const unfold=this.phase==='imperial-unfold';this.draw(this.phase==='imperial-enter'?0:IMPERIAL_CLOSE_MS+(unfold?IMPERIAL_UNFOLD_MS:0));
+  const unfold=this.phase==='imperial-unfold';if(!unfold)this.beginClose();this.draw(IMPERIAL_CLOSE_MS+(unfold?IMPERIAL_UNFOLD_MS:0));
   this.phase=undefined;
   if(unfold){this.finished=true;for(const image of [...this.parts.values(),...this.supports])image.setVisible(false);for(const {image,visible}of this.originals)if(image.active)image.setVisible(visible);}
  }

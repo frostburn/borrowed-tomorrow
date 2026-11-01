@@ -11,11 +11,11 @@ export class ImperialCinematic {
  private objects:Phaser.GameObjects.GameObject[]=[];
  private originals:{image:Phaser.GameObjects.Image;x:number;y:number;alpha:number}[]=[];
  private entry?:ImperialEntry;
- constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,emperor?:Phaser.GameObjects.Image){if(emperor)this.entry=new ImperialEntry(scene,world,emperor);}
+ constructor(private scene:Phaser.Scene,private world:Phaser.GameObjects.Container,emperor?:Phaser.GameObjects.Image,onEntryClose?:()=>void){if(emperor)this.entry=new ImperialEntry(scene,world,emperor,onEntryClose);}
  get animating(){return !!this.entry?.animating||this.tweens.some(t=>t.isPlaying());}
  settle(){this.entry?.settle();}
  play(kind:ImperialEffect,focus?:StagePoint){
-  if(kind==='imperial-enter'||kind==='imperial-close'||kind==='imperial-unfold'){this.entry?.play(kind);return;}
+  if(kind==='imperial-enter'||kind==='imperial-unfold'){this.entry?.play(kind);return;}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches,x=((focus?.x??32)+.5)*24,y=((focus?.y??22)+.5)*24;
   if(kind==='capital-street'){
    for(const o of this.world.list)if(o instanceof Phaser.GameObjects.Image&&/city-return|palace-cordon|city-cart/.test(o.getData('scene-piece')?.key??'')){
