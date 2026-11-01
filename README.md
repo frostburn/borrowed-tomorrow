@@ -49,10 +49,11 @@ workshop, canonical starts and battle cheats.
 | Confirm battle action | Confirmation button or Enter |
 | Defend / wait | F / W |
 
-On phones, rotate to **landscape**. The world sits beside a fixed control panel;
-drag the battlefield or use its four pan buttons to reach distant hexes.
-Portrait orientation pauses the game and asks you to rotate, preserving your
-current dialogue, turn and target. Dialogue advances at your
+Phones support both orientations. **Portrait** shows the world at half scale
+above full-width controls, with dialogue below the stage. **Landscape** keeps
+the world beside the command panel. Drag the battlefield or use its four pan
+buttons to reach distant hexes; rotating preserves your turn and target.
+Dialogue advances at your
 pace; cinematics can be paused or skipped. Reduced-motion settings provide
 cuts and still poses. The sound on/off preference is remembered in this
 browser; use the Sound button to change it. The **?** menu includes the

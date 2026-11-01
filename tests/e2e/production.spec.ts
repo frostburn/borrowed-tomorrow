@@ -1,5 +1,5 @@
 import {battleMenuFlows,commandsFit} from './battle-menu-flow';
-import {phoneConsole} from './phone-layout-flow';
+import {phoneConsole,unfilteredPortraitWorld} from './phone-layout-flow';
 import {newSkillBook} from '../../src/rules/skills';
 import {restoreParty} from '../../src/rules/state';
 battleMenuFlows(true);
@@ -25,7 +25,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { coastCheckpoint, palaceCheckpoint, brokenCheckpoint, checkpoint } from '../support/progress';
 import { equipItem, receiveItem } from '../../src/rules/inventory';
 import { importSave, approach } from './navigation';
-import { capture, inspect, dialogue, clickWorld, battle } from './controls';
+import { capture, inspect, dialogue, clickWorld, clickHex, battle } from './controls';
 import { travel } from './navigation';
 import {sampleRegulator} from './conduit-controls';
 import {chapterTwoStart,chapterThreeStart,chapterFourStart,chapterFiveStart,chapterSixStart,chapterSevenStart} from '../../src/dev/canonical-saves';
@@ -68,8 +68,8 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
 }
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
-  await page.setViewportSize({width:844,height:390});
-  const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   for (const route of ['combat', 'workshop', 'inventory', 'music', 'sprites', 'animation', 'maps', 'boss']) {
     await page.goto(`/?dev=${route}`);
     await expect(page).toHaveTitle('Borrowed Tomorrow');
@@ -100,7 +100,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
-  // The release engine must present the same usable landscape console, with
+  // The release engine must present the same usable portrait console, with
   // the full command list and no development strip over the pan controls.
   const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
   await importSave(page,late);await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
@@ -108,7 +108,10 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);
   await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
   await expect(page.locator('#toast')).toBeHidden();
-  await capture(page,'phone-landscape-production');await page.getByRole('button',{name:/Prism lance$/}).click();await capture(page,'phone-landscape-production-skill');
+  await unfilteredPortraitWorld(page);await capture(page,'phone-portrait-production');await page.getByRole('button',{name:/Prism lance$/}).click();
+  await clickHex(page,(await inspect(page)).battle!.units.find(u=>u.side==='enemy')!.hex);
+  await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await capture(page,'phone-portrait-production-skill');
+  for(const viewport of [{width:375,height:667},{width:430,height:932},{width:844,height:390}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-production-${viewport.width}`);}
   expect(errors).toEqual([]);
 });
 

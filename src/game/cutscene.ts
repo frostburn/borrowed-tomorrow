@@ -20,13 +20,14 @@ import { facingAsset } from '../content/actors';
 import { EMPEROR_WALK } from '../content/cinematic-art';
 import { ConduitCinematic } from './conduit-cinematic';
 import type { WorldLighting } from './world-lighting';
-import { narrowScreen } from './resolution';
+import { narrowScreen,portraitScreen } from './resolution';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
   private get dialogueInset(){
+    if(portraitScreen())return 0; // Portrait dialogue has its own area below the stage.
     // Upper dialogue leaves the lower stage for the actors. Apply the same
     // framing to cuts, pans, tracking and resize, on desktop and phone.
     if(this.script.dialoguePosition==='top')return -Math.min(160,Math.max(0,(this.scene.cameras.main.height??480)/2-24));

@@ -33,6 +33,7 @@ export class PixelDisplay {
   private physicalScale=1;
   private physicalLeft=0;
   private physicalTop=0;
+  private worldScale=1;
   private native?:HTMLCanvasElement;
   private dirty=true;
   private commands:{draw:(ctx:CanvasRenderingContext2D)=>void;state:boolean;world?:boolean}[]=[];
@@ -69,18 +70,25 @@ export class PixelDisplay {
     for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
     window.addEventListener('resize',()=>this.layout());this.layout();
-    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,palette:PALETTE})};
+    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,worldScale:this.worldScale,worldFiltered:this.worldScale===1,palette:PALETTE})};
   }
   attach(canvas:HTMLCanvasElement){
     this.native=canvas;
-    // A scene can resize between Scale Manager callbacks. Never paint or accept
-    // input through an old portrait-sized surface.
+    // A scene can resize between Scale Manager callbacks. Keep presentation and
+    // input synchronized with the new viewport in either orientation.
     if(this.world.width!==canvas.width||this.world.height!==canvas.height)this.fitWorld();
   }
   private layout(){
     this.dirty=true;this.fitted='';
     const layout=screenLayout();this.width=layout.width;this.height=layout.height;
-    this.source.classList.toggle('phone-layout',layout.compact);this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
+    this.worldScale=layout.worldScale;
+    this.source.classList.toggle('phone-layout',layout.compact);this.source.classList.toggle('portrait-layout',layout.portrait);this.source.classList.toggle('portrait-short',layout.portrait&&layout.height<700);
+    this.source.style.setProperty('--phone-stage-height',layout.stageHeight+'px');
+    this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
+    // In portrait, use the freed space below the stage for dialogue and title
+    // panels. Reparent the existing node: preserve its controls and callbacks.
+    const scene=document.getElementById('scene-layer')!,parent=document.querySelector(layout.portrait?'.game-shell':'.stage-wrap')!;
+    if(scene.parentElement!==parent)parent.append(scene);
     // On phones the shared bitmap is CSS-pixel sized. The browser expands that
     // single nearest-sampled surface for DPR, avoiding a huge extra copy on
     // high-density phones while keeping DOM targets at their authored size.
@@ -100,8 +108,9 @@ export class PixelDisplay {
   fitWorld(){
     if(!this.native)return;
     const stage=document.getElementById('canvas')!;
-    // The scene owns its camera viewport. A scene pixel is always a framebuffer pixel.
-    const w=this.native.width,h=this.native.height;
+    // Input retains native scene coordinates even when portrait presents two
+    // world pixels per CSS pixel. UI targets are never scaled down with it.
+    const w=this.native.width*this.worldScale,h=this.native.height*this.worldScale;
     if(this.world.width!==this.native.width||this.world.height!==this.native.height){this.world.width=this.native.width;this.world.height=this.native.height;this.dirty=true;}
     const fitted=`${w}:${h}:${stage.clientWidth}:${stage.clientHeight}`;
     if(fitted!==this.fitted){
@@ -133,6 +142,7 @@ export class PixelDisplay {
     this.fitWorld();
     const full=this.dirty||resized;
     if(this.dirty){this.rebuild();this.dirty=false;}
+    if(this.worldScale!==1){this.paintUnfiltered(full);return;}
     // Stable controls and letterboxing do not need another physical-screen
     // copy when only the world changes. Round outward on the sampling grid.
     const r=this.worldRect,u=RASTER_UNIT;
@@ -154,6 +164,21 @@ export class PixelDisplay {
     this.presentCtx.save();this.presentCtx.beginPath();this.presentCtx.rect(this.physicalLeft,this.physicalTop,this.width*this.physicalScale,this.height*this.physicalScale);this.presentCtx.clip();
     const scale=RASTER_UNIT*this.physicalScale;
     this.presentCtx.drawImage(this.raster,left,top,w,h,this.physicalLeft+left*scale,this.physicalTop+top*scale,w*scale,h*scale);this.presentCtx.restore();
+  }
+  /** Portrait bypasses the chunky world raster. Only the UI retains its lattice;
+   * shrink the original scene directly, between the cached lower/upper UI. */
+  private paintUnfiltered(full:boolean){
+    const ctx=this.presentCtx,r=this.worldRect,s=this.physicalScale;
+    const x=this.physicalLeft,y=this.physicalTop;
+    if(full){ctx.fillStyle=PALETTE[0];ctx.fillRect(0,0,this.output.width,this.output.height);}
+    ctx.save();ctx.beginPath();
+    ctx.rect(x+(full?0:r.x*s),y+(full?0:r.y*s),(full?this.width:r.w)*s,(full?this.height:r.h)*s);ctx.clip();
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(this.lowerRaster,x,y,this.width*s,this.height*s);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.drawImage(this.native!,x+r.x*s,y+r.y*s,r.w*s,r.h*s);
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(this.upperRaster,x,y,this.width*s,this.height*s);ctx.restore();
   }
   /** Measure the DOM only after changes; the world updates each presented frame. */
   private rebuild(){

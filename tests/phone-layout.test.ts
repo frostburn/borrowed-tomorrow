@@ -16,7 +16,14 @@ it('keeps the notch and home indicator out of the game and input area',()=>{
  const layout=layoutForViewport(844,390,{left:44,right:44,top:0,bottom:21});
  expect(layout).toMatchObject({width:756,height:368,sidebar:286,view:{width:470,height:288}});
 });
-it('requires rotation for the narrow portrait screen',()=>{
- expect(layoutForViewport(390,844).portrait).toBe(true);
- expect(layoutForViewport(844,390).portrait).toBe(false);
+it.each([[390,844],[375,667],[320,568],[430,932]])('gives portrait a half-scale stage and full-width controls at %i × %i',(width,height)=>{
+ const l=layoutForViewport(width,height);
+ expect(l).toMatchObject({compact:true,portrait:true,worldScale:.5,sidebar:0,header:72});
+ expect(l.view.width).toBe(l.width*2);expect(l.view.height).toBe(l.stageHeight*2);
+ expect(l.stageHeight).toBeLessThanOrEqual(240);
+ expect(l.height-l.header-24-l.stageHeight-16).toBeGreaterThanOrEqual(318);
+});
+it('measures portrait safe areas before allocating the stage and commands',()=>{
+ const l=layoutForViewport(390,844,{left:0,right:0,top:47,bottom:34});
+ expect(l).toMatchObject({width:390,height:762,view:{width:780,height:480},worldScale:.5});
 });

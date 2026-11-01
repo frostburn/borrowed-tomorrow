@@ -320,26 +320,30 @@ The max-level layout cases cover all five characters and desktop, fractional-DPR
 landscape phones and short landscape phone layouts. Detailed menu cases remain outside the default
 browser CI selection.
 
-### Landscape phone console
+### Phone console
 
-Phone play uses the available landscape viewport at CSS scale 1, with safe-area
-insets excluded. The world and battlefield sit to the left of a fixed control
-panel. The shared framebuffer stays on its two-pixel lattice; phones present a
-CSS-pixel-sized bitmap with nearest sampling instead of making an extra full-DPR
-copy. Desktop retains the 1024 × 768 composition and device-pixel presentation.
+Phone controls use the available viewport at CSS scale 1, with safe-area insets
+excluded. Landscape keeps the world to the left of its command panel. Portrait
+uses a full-width stage above the controls, with twice the native camera coverage
+in each direction (world scale 0.5). PixelDisplay paints the original scene directly
+at half size between the cached UI layers, bypassing the two-pixel world raster.
+The UI retains its two-pixel lattice and full-size touch targets; phones present
+a CSS-pixel-sized bitmap. Desktop retains the 1024 × 768 composition and
+device-pixel presentation.
 
-Portrait shows a rotation gate and makes the game DOM inert. Phaser scene
-timers, tweens, movement and enemy turns pause until landscape returns; rotating
-does not replace the save, dialogue, selected skill or pending confirmation.
+Portrait dialogue and title panels reuse the same scene-layer node below the
+stage, leaving actors visible. Both orientations are playable; rotating does
+not replace the save, dialogue, selected skill or pending confirmation.
 The notch/home indicator, resize, hit targets and Phaser viewport all use the
 same layout measurement. Phone battle cameras pan on both axes, with four
 buttons and touch dragging; a drag never selects a hex or spends an action.
 Keyboard shortcut labels are omitted visually on phone buttons to leave room
 for skill names, while shortcuts and accessible labels remain available.
 
-Browser phone fixtures use landscape. The existing critical phone smoke covers
-real healing, rotation with a pending confirmation, touch panning, inventory and
-the full late-game command list. Detailed menu/device checks remain opt-in.
+The existing critical phone smoke covers portrait launch/dialogue, real healing
+by touch, rotation with a pending confirmation, touch panning, inventory and
+the full late-game command list in both orientations. Detailed menu/device
+checks remain opt-in.
 CI retains screenshot evidence as the `browser-screenshots` artifact.
 
 
@@ -348,7 +352,9 @@ CI retains screenshot evidence as the `browser-screenshots` artifact.
 `Cinematic.dialoguePosition: 'top'` puts dialogue below the scene heading and
 frames the authored focus in the lower half. Cuts, pans, tracking and resize use
 the same camera allowance. The top linear card stays 184px high, with a 96px
-portrait on phones; Next/Continue stays fixed as lines change. Scenes without
+portrait in landscape phone mode; Next/Continue stays fixed as lines change. In
+portrait orientation, dialogue lives below the stage and needs no camera allowance.
+Scenes without
 the option retain their existing bottom layout, and closing or skipping clears
 the placement before ordinary dialogue or panels open.
 

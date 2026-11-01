@@ -1,15 +1,10 @@
-/* Phone play is a landscape console. These rules follow the shared styles. */
+/* Phone controls retain CSS scale 1 in either orientation. */
 #screen-insets{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 .pan-vertical{display:none}
 .sound-compact{display:none}
 .world-input{touch-action:none}
 .toast{pointer-events:none}
 .phone-layout .toast{top:4px;bottom:auto;left:8px;transform:none;max-width:max(160px,calc(100% - 364px))}
-.orientation-gate{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;padding:32px max(24px,env(safe-area-inset-left));background:#080f19;color:#f4e5be;text-align:center}
-.orientation-gate h2{max-width:320px;line-height:28px}
-.orientation-gate p{font:10px/18px SwitchyardCompact,monospace;max-width:280px}
-.orientation-gate .rotate-detail{color:#87a3a2}
-.rotate-phone{width:104px;height:60px;border:3px solid #b8a780;border-radius:8px;display:grid;place-items:center;font:40px/48px Switchyard,monospace;color:#f4c77a}
 .phone-layout .game-shell{grid-template-columns:minmax(0,1fr) var(--phone-sidebar);grid-template-rows:40px 24px minmax(0,1fr) 16px}
 .phone-layout .topbar{grid-column:1/-1;flex-direction:row;justify-content:space-between;gap:8px;padding:0 8px}
 .phone-layout .brand{gap:0}.phone-layout .brand h1{font:20px/24px Switchyard,monospace}.phone-layout .brand span{display:none}
@@ -100,3 +95,59 @@
 .phone-layout .ending-controls button{min-height:40px;font:10px/12px SwitchyardCompact,monospace;padding:4px}
 .phone-layout .ending-controls .ending-keys{display:none}
 @media(max-width:700px){.phone-layout .brand h1{font:10px/12px SwitchyardCompact,monospace}}
+
+/* Portrait trades world magnification for a full-width command area. Only the
+   stage is halved; text, touch targets and the UI raster keep their size. */
+.phone-layout.portrait-layout .game-shell,.phone-layout.portrait-layout .game-shell.inventory-open{grid-template-columns:minmax(0,1fr);grid-template-rows:72px 24px var(--phone-stage-height) minmax(0,1fr) 16px}
+.portrait-layout .topbar{flex-direction:column;align-items:stretch;gap:4px;padding:2px 8px 4px}
+.portrait-layout .brand{justify-content:center;height:20px}
+.phone-layout.portrait-layout .brand h1{font:20px/24px Switchyard,monospace}
+.portrait-layout .topbar nav{display:grid;grid-template-columns:1.2fr 1fr .8fr 1.2fr 32px;gap:4px}
+.portrait-layout .topbar button{min-width:0;min-height:40px;padding:4px;white-space:normal}
+.portrait-layout #sound-button{max-width:none}
+.portrait-layout .stage-wrap{grid-column:1;grid-row:3}
+.phone-layout.portrait-layout .controls{grid-column:1;grid-row:4;border-left:0;border-top:1px solid #b8a780}
+.phone-layout.portrait-layout footer{grid-row:5}
+.portrait-layout .world-party,.portrait-layout .world-party[data-size="3"]{flex-basis:72px;height:72px;padding:8px}
+.portrait-layout .world-hero img{display:block;width:48px;height:48px}
+.portrait-layout .world-party[data-size="3"] .world-hero{display:flex;text-align:left}
+.portrait-layout .world-party[data-size="3"] .world-hero img{display:block;width:36px;height:36px}
+.portrait-layout .world-objective{padding:16px}
+.portrait-layout .world-objective p{font:20px/24px Switchyard,monospace}
+.portrait-layout .world-actions{padding:12px;gap:16px}
+.portrait-layout .interact-action button{width:100%;min-height:48px}
+.phone-layout.portrait-layout .battle-controls{grid-template-rows:64px minmax(0,1fr)}
+.portrait-layout .battle-controls .identity{padding:6px 12px;gap:12px}
+.portrait-layout .battle-controls .identity img{width:48px;height:48px}
+.portrait-layout .identity h2{font:20px/24px Switchyard,monospace;margin:0}
+.portrait-layout .identity .role{margin:0}
+.portrait-layout .battle-controls .command-panel{padding:8px;gap:8px;grid-template-rows:auto minmax(88px,1fr)}
+.portrait-layout .battle-controls .actions{gap:6px}
+.portrait-layout .battle-controls .actions button{min-height:44px;padding:6px;line-height:14px}
+.portrait-layout .battle-controls .confirmation{grid-template-rows:minmax(0,1fr) 44px;gap:6px}
+.portrait-layout .battle-controls .confirmation button{min-height:44px}
+.portrait-layout .battle-controls .confirmation .prediction{font:10px/16px SwitchyardCompact,monospace;padding:4px}
+.portrait-layout .scene-layer{position:relative;inset:auto;grid-column:1;grid-row:4;min-height:0;z-index:2}
+.portrait-layout .scene-layer:not(:empty){background:#101d28}
+.portrait-layout .scene-layer.cinematic{display:grid;grid-template-rows:40px minmax(0,1fr);gap:8px;padding:0 8px 8px;align-items:stretch;justify-content:stretch}
+.portrait-layout .scene-layer.cinematic:has(.cinema-document){grid-template-rows:40px minmax(80px,1fr) minmax(136px,1fr)}
+.portrait-layout .scene-layer .dialogue{inset:8px;height:auto;max-height:none;overflow:hidden}
+.portrait-layout .scene-layer.cinematic .dialogue{position:relative;inset:auto;grid-row:2;height:100%;max-height:none}
+.portrait-layout .scene-layer.cinematic:has(.cinema-document) .dialogue{grid-row:3}
+.portrait-layout .dialogue-copy p{flex:1;font:20px/24px Switchyard,monospace}
+.portrait-layout .dialogue-actions{margin-top:12px}
+.portrait-layout .dialogue-actions button{min-height:44px}
+.portrait-layout .dialogue-linear .dialogue-actions button{min-height:44px;width:120px}
+.portrait-layout .cinema-bar{position:relative;grid-row:1;padding:0;gap:8px}
+.portrait-layout .cinema-bar>span{min-width:0;overflow:hidden;white-space:nowrap}
+.portrait-layout .cinema-bar button{flex-shrink:0}
+.portrait-layout .cinema-document{position:relative;inset:auto;transform:none;grid-row:2;width:100%;max-height:100%;min-height:0;overflow:auto}
+.portrait-layout .campaign-inventory .ci-grid{grid-template-columns:minmax(0,1fr)}
+.portrait-layout .toast{top:0;left:8px;max-width:calc(100% - 16px)}
+.phone-layout.portrait-short .battle-controls{grid-template-rows:48px minmax(0,1fr)}
+.portrait-short .battle-controls .identity{padding:2px 8px}
+.portrait-short .battle-controls .identity img{width:40px;height:40px}
+.portrait-short .battle-controls .identity .role{display:none}
+.portrait-short .battle-controls .command-panel{padding:6px;gap:6px;grid-template-rows:auto minmax(80px,1fr)}
+.portrait-short .battle-controls .actions{gap:4px}
+.portrait-short .battle-controls .actions button{min-height:40px;padding:4px}

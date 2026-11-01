@@ -20,7 +20,7 @@ export async function clickWorld(page: Page, x: number, y: number) {
   const box=(await page.locator('#canvas canvas').boundingBox())!,view=(await inspect(page)).view;
   await page.mouse.click(box.x+((x+.5)*24-view.scrollX)*box.width/view.width,box.y+((y+.5)*24-view.scrollY)*box.height/view.height);
 }
-export async function clickHex(page: Page, h: Hex) {
+export async function clickHex(page: Page, h: Hex, touch=false) {
   const p=toPixel(h);let view=(await inspect(page)).view;
   for(let pan=0;pan<6&&(p.x<view.scrollX+8||p.x>view.scrollX+view.width-8);pan++){
     await page.getByRole('button',{name:p.x<view.scrollX?'Pan battlefield left':'Pan battlefield right',exact:true}).click();view=(await inspect(page)).view;
@@ -29,7 +29,8 @@ export async function clickHex(page: Page, h: Hex) {
     await page.getByRole('button',{name:p.y<view.scrollY?'Pan battlefield up':'Pan battlefield down',exact:true}).click();view=(await inspect(page)).view;
   }
   const box=(await page.locator('#canvas canvas').boundingBox())!;
-  await page.mouse.click(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
+  const x=box.x+(p.x-view.scrollX)*box.width/view.width,y=box.y+(p.y-view.scrollY)*box.height/view.height;
+  if(touch)await page.touchscreen.tap(x,y);else await page.mouse.click(x,y);
 }
 export async function dialogue(page: Page) {
   await expect(page.locator('.dialogue')).toBeVisible({timeout:15000});
@@ -74,12 +75,19 @@ export async function nativeScene(page:Page,map:string,yOffset=0){
     const expected=ctx.getImageData(0,0,scenery.width,scenery.height).data;
     const output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,actual=output.getContext('2d')!.getImageData(0,0,output.width,output.height).data;
     const worldX=Math.round((world.left-source.left)/info.cssScale),worldY=Math.round((world.top-source.top)/info.cssScale),u=info.rasterUnit;
+    let portrait:Uint8ClampedArray|undefined;
+    if(info.worldScale!==1){
+      const stage=document.createElement('canvas');stage.width=world.width;stage.height=world.height;
+      const c=stage.getContext('2d')!;c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+      c.drawImage(scenery,view.scrollX,view.scrollY+(tiles?0:yOffset),view.width,view.height,0,0,stage.width,stage.height);
+      portrait=c.getImageData(0,0,stage.width,stage.height).data;
+    }
     const sample=(n:number)=>Math.floor(n/u)*u;
     let missing=0,maxDelta=0;const examples:number[][]=[];
     for(let y=48;y<112;y++)for(let x=8;x<40;x++)for(let c=0;c<4;c++){
       const at=((info.physicalTop+(worldY+y)*info.physicalScale)*output.width+info.physicalLeft+(worldX+x)*info.physicalScale)*4+c;
       const sx=Math.round(view.scrollX)+sample(worldX+x)-worldX,sy=Math.round(view.scrollY)+sample(worldY+y)-worldY+(tiles?0:yOffset);
-      const want=expected[(sy*scenery.width+sx)*4+c];
+      const want=portrait?portrait[(y*Math.round(world.width)+x)*4+c]:expected[(sy*scenery.width+sx)*4+c];
       const delta=Math.abs(actual[at]-want);maxDelta=Math.max(maxDelta,delta);if(delta>1){missing++;if(examples.length<5)examples.push([x,y,c,actual[at],want]);}
     }
     return missing?JSON.stringify({missing,maxDelta,examples}):'ok';

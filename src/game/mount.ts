@@ -4,7 +4,6 @@ import { Adventure } from './adventure';
 import { UI } from './ui';
 import { worldView } from './resolution';
 import { PixelDisplay } from './pixel-display';
-import {orientationGuard} from './orientation';
 
 export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Partial<ConstructorParameters<typeof UI>[1]> = {}) {
   const ui=new UI(root,{
@@ -40,11 +39,9 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
 
   window.addEventListener('resize',()=>{
     adventure.resizeView();
-    // Orientation can resume a paused scene in a later resize listener. Sync
-    // after those listeners, before the browser can deliver another pointer.
+    // Sync after all resize listeners, before another pointer can arrive.
     queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}});
   });
-  orientationGuard(root,display.source,game,adventure);
 
   return {ui,game,display};
 }

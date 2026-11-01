@@ -4,7 +4,7 @@ import { checkpoint } from '../support/progress';
 import { battle, capture, dialogue, inspect, clickHex, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 import { active, type Battle } from '../../src/rules/combat';
-import {phoneConsole,rotateWithPlan,touchPan} from './phone-layout-flow';
+import {phoneConsole,rotateWithPlan,touchPan,unfilteredPortraitWorld} from './phone-layout-flow';
 import {commandsFit} from './battle-menu-flow';
 import {coastCheckpoint} from '../support/progress';
 import {newSkillBook} from '../../src/rules/skills';
@@ -21,11 +21,13 @@ async function begin(page: import('@playwright/test').Page) {
 }
 
 test('@ci opening, interrupted raid and skip keep a coherent checkpoint on a phone', async ({ page }) => {
-  const errors = errorsOn(page); await page.setViewportSize({ width: 844, height: 390 });
+  const errors = errorsOn(page); await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/'); await page.getByRole('button', { name: 'Begin Chapter One' }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
   await nativeScene(page, 'station'); await capture(page, 'opening-phone');
+  const stage=await page.locator('.stage-wrap').boundingBox(),dialog=await page.locator('.dialogue').boundingBox();
+  expect(dialog!.y,'portrait dialogue leaves the world visible').toBeGreaterThanOrEqual(stage!.y+stage!.height);
   await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
   await page.getByRole('button', { name: 'Skip scene' }).click();
@@ -76,9 +78,9 @@ test('@ci unsupported save versions cannot resume or import', async ({ page }) =
   expect(errors).toEqual([]);
 });
 
-test('@ci phone combat pans and confirms real healing without shrinking the actors', async ({ browser }) => {
-  const context=await browser.newContext({viewport:{width:844,height:390},hasTouch:true,isMobile:true,deviceScaleFactor:1.25}),page=await context.newPage();
-  const errors = errorsOn(page); await page.setViewportSize({ width: 844, height: 390 }); await page.goto('/');
+test('@ci portrait combat zooms out the world, pans and confirms real healing by touch', async ({ browser }) => {
+  const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:1.25}),page=await context.newPage();
+  const errors = errorsOn(page); await page.goto('/');
   const state = checkpoint('captainConfronted'); state.location = { map: 'tunnel', x: 30, y: 14 }; state.party[0].hp = 24;
   await importSave(page, state); await approach(page, 'captain');
   await expect.poll(async () => (await inspect(page)).mode).toBe('battle');
@@ -90,21 +92,21 @@ test('@ci phone combat pans and confirms real healing without shrinking the acto
   await phoneConsole(page);await touchPan(page);
   const snapshot = (await inspect(page)).battle!, b = { ...snapshot, obstacles: new Set(snapshot.obstacles), water: new Set(snapshot.water), vents: new Set(snapshot.vents) } as Battle;
   const nell = active(b)!; const before = snapshot.bandages;
-  await page.locator('.actions').getByRole('button', { name: /^\d\s+Items$/ }).click(); await page.getByRole('dialog',{name:'Battle items'}).getByRole('group',{name:'Bandage',exact:true}).getByRole('button',{name:'Select',exact:true}).click(); await clickHex(page, nell.hex);
+  await page.locator('.actions').getByRole('button', { name: /^\d\s+Items$/ }).tap(); await page.getByRole('dialog',{name:'Battle items'}).getByRole('group',{name:'Bandage',exact:true}).getByRole('button',{name:'Select',exact:true}).tap(); await clickHex(page, nell.hex,true);
   await expect(page.getByRole('button', { name: 'Confirm healing', exact: true })).toBeInViewport();
   await rotateWithPlan(page);await expect(page.getByRole('button',{name:'Confirm healing',exact:true})).toBeInViewport();
-  await capture(page, 'healing-phone'); await page.getByRole('button', { name: 'Confirm healing', exact: true }).click();
+  await capture(page, 'healing-phone'); await page.getByRole('button', { name: 'Confirm healing', exact: true }).tap();
   await expect.poll(async () => (await inspect(page)).battle!.bandages).toBe(before - 1);
   expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(48); expect(errors).toEqual([]);
   // Inspect the actual late-game command list, with both of Nell's partners.
   const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
-  await importSave(page,late);await capture(page,'phone-landscape-world');
-  await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-landscape-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
+  await importSave(page,late);await capture(page,'phone-portrait-world');
+  await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-portrait-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
   await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
   await page.getByRole('button',{name:/^F\s+Defend$/}).tap();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
-  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await capture(page,'phone-landscape-full-skills');
-  await page.getByRole('button',{name:/Prism lance$/}).tap();await expect(page.locator('#confirmation')).not.toBeEmpty();await capture(page,'phone-landscape-skill-info');
-  for(const viewport of [{width:667,height:375},{width:932,height:430}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-landscape-${viewport.width}`);}
+  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await unfilteredPortraitWorld(page);await capture(page,'phone-portrait-full-skills');
+  await page.getByRole('button',{name:/Prism lance$/}).tap();await expect(page.locator('#confirmation')).not.toBeEmpty();await capture(page,'phone-portrait-skill-info');
+  for(const viewport of [{width:375,height:667},{width:430,height:932},{width:844,height:390}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-${viewport.width}`);}
   expect(errors).toEqual([]);await context.close();
 });
 

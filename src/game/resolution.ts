@@ -7,15 +7,18 @@ export const PHONE_HEADER = 40, PHONE_TURNS = 24, PHONE_FOOTER = 16;
 export interface Insets {left:number;right:number;top:number;bottom:number}
 const even=(n:number)=>Math.floor(n/2)*2;
 const compactViewport=(width:number,height:number)=>width<DESKTOP_WIDTH||height<600;
-/** Phones use the available landscape area at CSS scale 1, not a scaled-down
- * portrait console. Keep the desktop's established 1024×768 composition. */
+/** Controls stay at CSS scale 1. Portrait gives the world a half-scale stage
+ * above them; desktop and landscape retain their established composition. */
 export function layoutForViewport(width:number,height:number,insets:Insets={left:0,right:0,top:0,bottom:0}){
  const compact=compactViewport(width,height);
  const w=compact?even(width-insets.left-insets.right):DESKTOP_WIDTH;
  const h=compact?even(height-insets.top-insets.bottom):DISPLAY_HEIGHT;
- const sidebar=compact?Math.min(288,even(w*.38)):0;
- return {compact,portrait:compact&&height>width,width:w,height:h,sidebar,
-  view:{width:compact?w-sidebar:WORLD_VIEW_WIDTH,height:compact?h-PHONE_HEADER-PHONE_TURNS-PHONE_FOOTER:WORLD_VIEW_HEIGHT},insets};
+ const portrait=compact&&height>width,header=portrait?72:PHONE_HEADER;
+ const sidebar=compact&&!portrait?Math.min(288,even(w*.38)):0;
+ const worldScale=portrait?.5:1;
+ const stageHeight=portrait?even(Math.min(240,Math.max(120,h-header-PHONE_TURNS-PHONE_FOOTER-(h<700?320:370)))):h-header-PHONE_TURNS-PHONE_FOOTER;
+ return {compact,portrait,width:w,height:h,sidebar,header,stageHeight,worldScale,
+  view:{width:compact?(w-sidebar)/worldScale:WORLD_VIEW_WIDTH,height:compact?stageHeight/worldScale:WORLD_VIEW_HEIGHT},insets};
 }
 export function screenLayout(){
  const probe=typeof document==='undefined'?null:document.getElementById('screen-insets'),s=probe?getComputedStyle(probe):undefined;

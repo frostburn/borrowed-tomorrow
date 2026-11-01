@@ -57,13 +57,14 @@ Do not name characters Morrow, Vale, Rook, Sable, Voss, Mara, Dacre, Holt, Kestr
 
 Aim for a consistent pixel-art look with small assets, rather than requiring crisp 1:1 source pixels everywhere. Fractional uniform sprite scaling and filtered Canvas rendering are allowed. Use the existing 1024 × 768 desktop layout and shared UI framebuffer; narrower layouts crop and pan. Keep text readable and verify desktop/phone at fractional DPR. Preserve source artwork and avoid palette reduction. Civilians now use the Chapter Two vector models at the shared 80px frame and row-68 sole anchor. The earlier Pixel Art Fixer conversion is archived in `assets/characters/pixel-fixer.md`. Respect CSS display sizes when composing images into the shared UI canvas.
 
-Phone play uses landscape, with a full-height control panel beside the world,
-safe-area insets and CSS-scale-1 hit targets. Portrait pauses the Phaser scene
-and shows a rotation gate; preserve the current save, dialogue, skill and plan
-when rotating. Both camera axes must remain reachable through pan buttons and
-touch dragging, with no accidental selection or action cost during a drag.
-Keep phone fixtures in landscape and detailed device matrices outside default
-CI. See the landscape phone console notes in `docs/development.md`.
+Phone controls use CSS scale 1 and safe-area insets. Landscape keeps its sidebar;
+portrait presents the native world at half scale without the chunky world raster,
+above a full-width control area. Keep the UI raster and full-size touch targets;
+never halve the entire console. Portrait dialogue/panels live below the stage.
+Preserve save, dialogue, skill and plan across orientation changes, including
+world/input coordinate alignment. Both camera axes remain reachable through
+buttons and touch dragging without accidental selection or action costs.
+Keep detailed device matrices outside default CI. See `docs/development.md`.
 
 Music uses 31-tone equal temperament with A4 = 440 Hz. Score pitches retain explicit diatonic spellings: C# and Db are distinct. Use `src/game/tuning.ts` for octave shifts and spelled intervals, never round MIDI numbers or add semitones to a pitch. A fifth is 18 steps, a sharp/flat changes two steps, and the full circle contains 31 pitch classes. The Music workshop (`?dev=music`) and its review controls remain Vite-only and do not alter campaign or character settings. Every arrangement declares quarter-note beats per bar; Railway Ward (`infirmary`), Windmere (`windmere`), the lower dispensary (`dispensary`) and Namar’s court (`sunpalace`) are 3/4, the sun serpent is 6/8 (three quarter-note beats), the flagship is 10/8 (five quarter-note beats), the last palace/crown and Emperor cues are 3/4, and the other current cues are 4/4. Intro cues carry optional intro-bar metadata: schedule the opening once, then wrap only their loop; display the authored signature rather than inferring it from quarter-note beats. Keep scheduling, playback position and offline renders meter-aware. `airship`, `windmere`, `refuge`, `anchorforge`, `signalwall` and `observation` use authored ensemble rubato. `score-performance.ts` owns their shared forward/inverse clock and performed note lengths; live and offline playback must use it and forward `Note.expression` to the synth. Expression supports dynamics, controlled vibrato, additive cents bends and release times. Preserve cross-bar holds, exact 31-EDO pitch centres, cancellation of future swells/bends/tails, and the constant pulse of other cues. Music exposes session-only Expression and, where authored, Rubato comparisons. Boss themes start with battle confirmation; introductions and transformations use their location music. Every encounter declares its `music` cue: Chapter Two uses `coast-battle` for both train approaches, `shunting` for boarding defense and `petra-battle` for Petra. New chapters need related regional battle variations rather than falling back to Chapter One material.
 
