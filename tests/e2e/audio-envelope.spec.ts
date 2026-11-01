@@ -1,5 +1,30 @@
 import {test,expect} from '@playwright/test';
 
+test('the Emperor’s marked impact is distinct from resonance, bounded, and cancellable',async({page})=>{
+ await page.goto('/');const results=await page.evaluate(async()=>{
+  // @ts-expect-error Vite serves the actual campaign synth.
+  const {Synth}:typeof import('../../src/game/synth')=await import('/src/game/synth.ts');
+  const results=[];
+  for(const rate of [44100,48000])for(const kind of ['resonance','imperial-judgment','repeated','stopped']as const){
+   const c=new OfflineAudioContext(2,rate*3,rate),synth=new Synth(c,c.destination);
+   if(kind==='repeated')for(const t of [.03,.55,1.07])synth.effect('imperial-judgment',t);else synth.effect(kind==='stopped'?'imperial-judgment':kind,.03);
+   if(kind==='stopped')synth.stop(.22);
+   const b=await c.startRendering(),left=b.getChannelData(0),right=b.getChannelData(1);let peak=0,tail=0,stereo=0;
+   for(let i=0;i<b.length;i++){
+    if(!Number.isFinite(left[i])||!Number.isFinite(right[i]))throw Error('Non-finite sample');
+    peak=Math.max(peak,Math.abs(left[i]),Math.abs(right[i]));stereo+=Math.abs(left[i]-right[i]);
+    if(i>rate*(kind==='stopped'?.24:2.6))tail=Math.max(tail,Math.abs(left[i]),Math.abs(right[i]));
+   }
+   results.push({rate,kind,peak,tail,stereo});
+  }
+  return results;
+ });
+ for(const result of results){
+  expect(result.peak).toBeGreaterThan(.01);expect(result.peak).toBeLessThan(.9);expect(result.tail).toBe(0);
+  if(result.kind==='imperial-judgment'){expect(result.stereo).toBeGreaterThan(1);expect(result.peak).toBeGreaterThan(results.find(r=>r.rate===result.rate&&r.kind==='resonance')!.peak);}
+ }
+});
+
 // Render the real rack: checking scheduled parameter calls alone misses the
 // quiet bursts from cancelled future notes and the final nonzero sample.
 test('cancelled queued instruments remain silent, while a new arrangement still plays',async({page})=>{
