@@ -7,6 +7,15 @@ import {bossPlacement,pickBossBody} from '../src/game/boss-display';
 import {basicAction} from '../src/game/battle-basic';
 vi.mock('phaser',()=>({default:{}}));
 
+it('preserves a clicked far dragon foot instead of snapping to the foot already in strike range',()=>{
+ const b=createBattle('winter-dragon',chapterSevenRefugeStart()),boss=b.units.find(u=>u.id==='winter-dragon')!,hero=b.units.find(u=>u.side==='party')!;
+ const feet=occupiedHexes(boss);hero.hex=neighbors(feet[0]).find(h=>!unitAt(b,h))!;b.queue=[hero.id];
+ expect(legalAim(b,hero,'strike',feet[0])).toBe(true);expect(legalAim(b,hero,'strike',feet[1])).toBe(false);
+ const p=toPixel(feet[1]),mask=new Uint8Array(528*280).fill(255);
+ expect(pickBossBody(b,'basic',p.x,p.y,boss,528,280,mask)).toEqual(feet[1]);
+ expect(pickBossBody(b,'strike',p.x,p.y,boss,528,280,mask)).toEqual(feet[1]);
+});
+
 for(const [id,width,height]of [['heart-pressure',256,240],['winter-dragon',528,280],['imperial-vessel',528,280],['benefactor-body',360,288]]as const){
  const setup=()=>{
   const b=createBattle(id,chapterSevenRefugeStart()),boss=b.units.find(u=>u.side==='enemy'&&!u.passive)!,hero=b.units.find(u=>u.side==='party')!;

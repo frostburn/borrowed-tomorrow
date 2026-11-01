@@ -36,6 +36,7 @@ export function pickBossBody(b:Battle,requested:BattlePickAction,x:number,y:numb
   const clicked=fromPixel(x,y),direct=unitAt(b,clicked);
   if(direct&&direct.id!==boss.id)return;
   if(contextual&&inside(clicked)&&!direct)return;
+  if(direct?.id===boss.id&&(contextual||approachAbility(u,action)))return clicked;
   if(legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
   if(!mask||mask[py*width+px]===0)return;
   const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));

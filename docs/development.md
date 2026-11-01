@@ -267,9 +267,10 @@ ties. A read-only forecast supplies the path, destination and damage without
 spending anything. **Confirm move + strike** commits both ordinary rule calls
 and animates the walk before contact; Cancel spends neither. The selected
 destination is revalidated before either allowance is spent. Obstacles, occupied
-cells, water/ice costs, Pin, Taunt and spent movement/actions still apply. A boss
-can be struck at its closest legal contact even when another body contact was
-clicked. An unreachable enemy stays invalid, without a partial approach.
+cells, water/ice costs, Pin, Taunt and spent movement/actions still apply. A
+multi-hex enemy is approached at the particular clicked contact. The route ends
+beside that hex. An unreachable contact stays invalid without a partial approach,
+even when another part of the same enemy is reachable.
 Ground clicks still preview movement separately; adjacent enemies use Confirm
 attack. Fixtures retain Strike / Move here choices without automatic approaches.
 The contextual command preserves an exact empty board hex even beneath opaque
