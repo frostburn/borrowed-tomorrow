@@ -69,6 +69,9 @@ test('the mantle break and fragment return animate independently, frame the cast
  await page.mouse.move(0,0);await page.waitForTimeout(700);await capture(page,'seven-mantle-break');
  await page.locator('.dialogue-actions button').first().click();await page.waitForTimeout(1100);
  const framed=await page.evaluate(()=>{const s=window.borrowedTomorrow.inspect(),nell=s.actors.find(a=>a.hero==='nell')!,canvas=document.querySelector('#canvas canvas')!.getBoundingClientRect(),dialog=document.querySelector('.dialogue')!.getBoundingClientRect();return {foot:canvas.top+(nell.y-s.view.scrollY)*canvas.height/s.view.height,dialog:dialog.top};});expect(framed.foot).toBeLessThan(framed.dialog);await capture(page,'seven-cast-framed');
+ await page.locator('.dialogue-actions button').first().click();
+ await expect(page.locator('.dialogue-portrait img')).toHaveAttribute('src',/portrait-benefactor-sun\.svg$/);
+ await expect(page.locator('.dialogue-copy p')).toHaveText('I wAs HeRe BeFoRe YoUr StAtIoNs. BeFoRe YoUr NaMeS.');
  await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.hollowSunSeen).toBe(true);
  const next=(await inspect(page)).state;next.flags.benefactorSunConfronted=true;next.flags.benefactorSunWon=true;await importSave(page,next);await expect.poll(async()=>(await inspect(page)).cinematic,{timeout:30000}).toBe('seven-heart');
  for(let i=0;i<5;i++)await page.locator('.dialogue-actions button').first().click();await page.waitForTimeout(650);await capture(page,'seven-fragment-return');expect((await inspect(page)).state.flags.fragmentReturned).toBeUndefined();

@@ -63,3 +63,9 @@ the completion panel directly. Its renderer changes no flags, locations,
 resources, equipment, formation or save version. Headless story hosts without
 the optional film service continue directly to the existing boundary callback.
 The workshop reviews the same film without requiring or changing a save.
+
+After the mantle breaks, the Benefactor's remaining line uses the hollow-sun
+portrait and alternating letter case. Earlier speeches retain the intact
+portrait and ordinary case; Chapter Five's unseen light remains concealed.
+Battle portraits follow mantle/sun/heart forms, using 128px vector portraits
+derived by the existing form exporter. No scene flags or completion timing change.

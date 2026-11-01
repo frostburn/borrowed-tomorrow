@@ -41,7 +41,7 @@ test('the full mixer keeps headroom with boss music and overlapping combat effec
    window.AudioContext=function(){return c;}as unknown as typeof AudioContext;
    const audio=new Audio(),rack=audio as unknown as {initialize():void;master:GainNode;music:import('../../src/game/synth').Synth;effects:import('../../src/game/synth').Synth;reverb:{setRoom(id:typeof TRACK_ROOMS[typeof mode]):void;close():void}};
    try{rack.initialize();}finally{window.AudioContext=Native;}
-   rack.master.gain.value=.75;rack.reverb.setRoom(TRACK_ROOMS[mode]);
+   rack.master.gain.value=1;rack.reverb.setRoom(TRACK_ROOMS[mode]);
    for(let bar=start-4;bar<start+8;bar++)for(const n of performanceBar(mode,bar).notes)rack.music.note(n.instrument,n.pitch,.03+scoreTime(mode,bar*beats)-reference+n.time,n.seconds,n.velocity,n.pan,n.expression);
    for(let time=begin+.4;time<end;time+=2){rack.effects.effect('burst',time);rack.effects.effect('steam',time+.15);rack.effects.effect('strike',time+.3);}
    const audioBuffer=await c.startRendering();let peak=0,jump=0,energy=0,count=0;

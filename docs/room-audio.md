@@ -83,3 +83,19 @@ than 1% of tail energy after half a second, per channel. Midrange band tilt must
 stay below 3 dB. The former requirements for heavily suppressed treble and a
 long Domain bass tail no longer describe this design. Detailed audio/browser
 checks remain outside the small default `@ci` gate.
+
+## Output level (#263)
+
+The shared output now has 1.5× makeup gain (+3.52 dB) after the room and before
+master volume. Music input stays 0.52, effects 0.58, and compressor settings,
+room feedback/wet levels and cinematic ducking retain their values. Master
+volume still ranges from zero to one and pause/mute still reaches silence.
+
+A 48 kHz audit rendered the production compressed dry bus in Node Web Audio,
+then applied the production room coefficients with fractional-delay linear
+interpolation. Seven passages covered station, flagship, Emperor, furnace and
+all three final forms, including overlapping burst/steam/strike/judgment effects.
+The busiest modeled return peaked at 0.620 before makeup and 0.929 after it at
+100% master, or 0.697 at the default 75%. This is an analytical room estimate,
+not a native-browser full-mixer measurement. The opt-in full-mixer browser test
+now checks 100% master; output routing and mute also have unit coverage.

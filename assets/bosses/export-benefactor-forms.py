@@ -65,6 +65,11 @@ for form in ['sun','heart']:
    for j in range(8):
     a=j*math.tau/8;x=math.cos(a);y=math.sin(a);out.append(poly([(cx+x*82,cy+y*82),(cx+x*119-y*8,cy+y*119+x*8),(cx+x*126+y*6,cy+y*126-x*6)],GOLD))
    out += exposed_heart(i)
+  if i==0:
+   portrait=f'<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="40 0 280 280" data-benefactor-form="{form}"><title>The Benefactor: {form} portrait</title>'+''.join(out)+'</svg>\n'
+   target=ART.parent/f'portrait-benefactor-{form}.svg'
+   target.write_text(portrait)
+   assert target.stat().st_size<131072
   if i==10:out += [ring(cx,cy,122,4,PALE),ring(cx,cy,134,2,TEAL)]
   frames.append(f'<svg x="{i%2*360}" y="{i//2*288}" width="360" height="288" viewBox="0 0 360 288">'+''.join(out)+'</svg>')
  text='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1728" viewBox="0 0 720 1728"><title>'+escape('The Benefactor '+form)+'</title>'+''.join(frames)+'</svg>\n'

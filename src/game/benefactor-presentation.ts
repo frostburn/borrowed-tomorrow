@@ -1,3 +1,4 @@
+import {benefactorPortraitPath} from '../content/benefactor-art';
 import type {BattlePresentation} from './battle-presentation';
 import type {Encounter} from '../rules/combat';
 import {BENEFACTOR_ID,benefactorUnit,prepareBenefactor} from '../rules/benefactor';
@@ -15,7 +16,7 @@ export function benefactorPresentation(encounter:Encounter):BattlePresentation{
   encounter,prepare:prepareBenefactor,focus:offset(5,2),
   lighting:{scene:'battle-'+encounter.id,ground:'M148 94H783L833 152V407L782 443H148L101 401V152Z'},
   animating:b=>(benefactorUnit(b)?.hp??0)>0&&bossMotionEnabled(),
-  portrait:u=>u.id===BENEFACTOR_ID?BENEFACTOR_PORTRAIT:undefined,
+  portrait:u=>u.id===BENEFACTOR_ID?`${import.meta.env.BASE_URL}${benefactorPortraitPath(form)}`:undefined,
   facing:u=>u.side==='party'?actorAsset(u.kind as CompanionId,'back'):undefined,
   hint:b=>`${benefactorUnit(b)?.intent?.name??'Judgment'} · the marked hexes are struck on the god’s turn.${form?' Calls up to two minions every other round; they act the following round. Break the source to disperse them.':''}`,
   background(scene,world){nativeTexture(scene,'benefactor-domain');world.add(scene.add.image(0,0,'benefactor-domain').setOrigin(0).setDepth(-1000));},

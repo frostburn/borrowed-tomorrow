@@ -89,3 +89,9 @@ parked. Campaign and workshop use the same presentation.
 The crown entrance splits the accepted imperial vessel into eight native pieces, retaining its painter order and geometry. `python3 assets/bosses/export-imperial.py --entry-only` regenerates the back, hinged arms, split collar/front plates and likeness without touching battle poses or portraits. `content/imperial-entry.ts` owns the assembly clock/assets; `game/imperial-entry.ts` owns temporary scene objects, native supports, reduced motion and cleanup. The Tiled crown cast supplies the walking Emperor. Closing resolves to the existing whole-image scenery.
 
 The Emperor’s telegraphed Judgment has a dedicated `Synth.effect('imperial-judgment')`: a metallic impact, stereo falling rays and a short pressure tail. `imperial-presentation.ts` selects it by ability at the shared attack contact. Crown bolt keeps the low beating resonance; story resonance, the Lightbearer and the fourth-round pause retain their existing sound. No samples or score changes are involved. `imperial-sound.test.ts` covers routing and scheduled layers; the opt-in audio-envelope test renders native Web Audio, including cancellation.
+
+`export-benefactor-forms.py` also derives the 128px
+`public/art/vector/portrait-benefactor-sun.svg` and `portrait-benefactor-heart.svg`
+from the resting native forms. Dialogue after the mantle break uses the sun
+portrait; campaign battle panels select the portrait for their current form.
+The intact editable portrait is preserved.
