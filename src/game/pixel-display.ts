@@ -110,6 +110,11 @@ export class PixelDisplay {
     this.physicalLeft=Math.round(left*dpr);this.physicalTop=Math.round(top*dpr);
     this.output.width=Math.ceil(window.innerWidth*dpr);this.output.height=Math.ceil(window.innerHeight*dpr);
     Object.assign(this.output.style,{left:'0px',top:'0px',width:this.output.width/dpr+'px',height:this.output.height/dpr+'px'});
+    // Keep real controls painted underneath the opaque compositor, so native
+    // touch click synthesis can use their rendered boxes. Fill before exposing
+    // them, including on resize, to avoid a flash of the uncomposited DOM.
+    this.presentCtx.fillStyle=PALETTE[0];this.presentCtx.fillRect(0,0,this.output.width,this.output.height);
+    this.source.style.opacity='1';
     this.fitWorld();
   }
   /** Sync hit targets in the resize event, before another pointer event can run. */
