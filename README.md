@@ -128,7 +128,7 @@ HTTP compression on the host. `npm run build:size` reports startup, deferred
 JavaScript and total distribution sizes; see [Production bundles](docs/production-build.md).
 
 - [Release procedure and playthrough checks](docs/releasing.md)
-- [v1.0.0 release notes](docs/release-notes.md)
+- [v1.1.0 release notes](docs/release-notes.md)
 - [Source map and local workflows](docs/development.md)
 - [Vector art direction](docs/art-direction.md) and [tile maps](docs/tile-maps.md)
 - [Music direction](docs/music-direction.md) and [room audio](docs/room-audio.md)
