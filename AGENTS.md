@@ -61,10 +61,10 @@ Music uses 31-tone equal temperament with A4 = 440 Hz. Score pitches retain expl
 
 Keep audio procedural and asset-light. Compose phrases with variation, rests, and distinct location arrangements. Music → Themes identifies Nell with Larkspur festival (`station`), Orrin with The Next Shift (`hammerplain`), Kit with Iron Coast (`coast`), Petra with The Open Gate (`dawnwatch`), Celia with The Garden Walk (`windmere`), and Alban with Iron Above the Clouds (`flagship`). Above the Railway is general airship music. Orrin’s workshop trades his transposed hammer cell with Nell’s actual festival phrases, using repeated chord-tone taps in bars 3/9/10; Captain Alban preserves its opening and keeps its original sixteen bars and quotes the flagship contour in an eight-bar extension without changing its 4/4 meter. Petra’s crossing grounds the C–Db–C–G cell on the beat, with one brief triplet pickup over straight drums; retire the former B–E assignment. Conduit rolls hold to beat 3.5; sanctuary uses one held roll per four bars. Ward bells and Wheel bass carry into empty melodic bars. Both chambers retain soft bell releases; Ward/Wheel basses use louder 1.25-beat slides spanning five to eighteen steps, with post-arrival vibrato that finishes straight. Cabin piano bends arrive in 0.55–0.6 beats, with three-step approaches in bars 3/11/17/19/23/27 and no slides in 15/21; they never move simultaneously with the bass. Iron Above the Clouds uses its established march as a compositional baseline. Deliberate local changes to melody, passing notes, onsets or durations are allowed; the earlier rhythm revert is not a permanent note-for-note constraint. Keep the 10/8 meter, two-bar one-shot intro, 32-bar loop, phrase dynamics and Alban theme identity. Do not restore the repeated rising-triad template; read the current melodic/harmonic forms in `docs/music-direction.md` before extending them. Sound effects must correspond to the actual action: steam, lantern, melee, healing, movement, and menu interaction have different sounds.
 
-The three final boss themes use short modal phrase answers with rests, broader
-intervals and varied timing. Preserve their distinct radiant/reflected 31-EDO
-collections and main melodies; the former exhaustive chromatic/31-step runs
-sounded circus-like. Keep the exposed heart's high-C middle arrival spacious.
+The mantle's final-boss flourishes are continuous triangle glides. The sun and
+heart retain fast close 31-EDO runs, with paired 15/16-step tritones over a
+whole-tone contour replacing broader scale ladders. Keep main melodies and
+intro/loop timing; the heart's full adjacent-step octave leads to its high C5.
 
 For new themes, read `docs/music-direction.md`. The retained Northglass score uses the supplied Evangelion progression. The Nichijou progression and non-functional Chrono Trigger-style vamps remain references for new themes; original melodies and clear phrase variation are required.
 

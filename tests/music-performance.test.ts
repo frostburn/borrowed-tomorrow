@@ -66,7 +66,7 @@ for(const mode of Object.keys(ARRANGEMENTS)as MusicMode[])it(`${mode}: only auth
      expect(curve[0][0]).toBe(0);expect(curve.at(-1)![0]).toBe(1);
      for(let i=0;i<curve.length;i++){expect(Number.isFinite(curve[i][1])).toBe(true);if(i)expect(curve[i][0]).toBeGreaterThan(curve[i-1][0]);}
     }
-    if(e.bend){expect(e.bend.at(-1)![1]).toBe(0);expect(Math.max(...e.bend.map(p=>Math.abs(p[1])))).toBeLessThanOrEqual((mode==='mirrorward'||mode==='signalwall'?18:8)*1200/31);}
+    if(e.bend){expect(e.bend.at(-1)![1]).toBe(0);expect(Math.max(...e.bend.map(p=>Math.abs(p[1])))).toBeLessThanOrEqual((mode==='benefactor'&&n.instrument==='triangle'?31:mode==='mirrorward'||mode==='signalwall'?18:8)*1200/31);}
    }
   }
 });

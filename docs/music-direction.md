@@ -413,24 +413,36 @@ The final introductions now build into their loops with a short snare crescendo.
 The Emperor's Order is restored to its original arrangement. Captain Alban and Iron Above the Clouds are unchanged. Quiet imperial exploration, the Lightbearer and the Benefactor keep their existing arrangements. Music → Ch 6 uses the campaign score; Strings and Reed auditions isolate the relevant instruments. No new samples, tempo changes, room responses or synth patches are involved.
 
 
-## Final boss phrase answers
+## Final boss glides and close-step breaks
 
-`score-final-runs.ts` now gives the Benefactor's three battle forms short,
-shaped answers in place of the former chromatic ladders. Each answer uses
-only two or three notes, varied spacing and real rests. The mantle's six
-tritaver figures descend in broader intervals toward the next organ entrance.
-The hollow sun's six organ answers break across its five-beat meter using
-the reflected octatonic, with unequal holds and changes of direction. The
-heart keeps eight piano answers, with more space between attacks; its former
-full 31-step octave sweep becomes two measured notes before the original high
-C5. The following three middle bars retain their space.
+`score-final-runs.ts` gives the three forms different phrase-end motion. The
+God Who Lent Tomorrow (`benefactor`) uses six continuous triangle glides in
+place of separate flourish attacks. Each is one held triangle oscillator with
+a linear cents ramp from its starting pitch to the next original organ note.
+The ramp crosses the space between 31-EDO pitches continuously; its endpoints
+use the exact shared tuning. There are no retriggered intermediate notes,
+stepped pitch changes or added vibrato. The main organ theme remains intact.
 
-Every answer belongs to its form's existing radiant or reflected 31-EDO
-collection and finishes close to the next original melody entrance. Lead
-holds truncate at the answer's start, including notes held from a previous
-bar; rests inside the answer remain clear. The original main sentences,
-pads, bass, percussion, tempo, meter, two-bar introductions, quieter middle
-and loop handoffs keep their roles. The change removes the constant-rate
-chromatic and adjacent-step scales while retaining phrase-end variety.
-Music → Ch 7 reviews the campaign arrangements; Tritaver, Organ and Piano
-isolate the respective answer voices. Full-form/loop audio checks remain opt-in.
+The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
+adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
+of them adjacent steps, including the full 31-step octave before the original
+high C5. The following three quieter middle bars retain their space. Their
+fast articulation, timing and smooth short releases return; these are scale
+breaks again rather than the earlier two/three-note modal answers.
+
+Two runs in each of those forms alternate tritone pairs over a whole-tone
+contour instead of climbing a broad diatonic/chromatic ladder. Six lower
+anchors advance by five 31-EDO steps. The first three pairs rise 15 steps
+(augmented fourths); the next three reverse order and fall 16 (diminished
+fifths), making the octave complement exact. This is whole-tone colour within
+31-EDO, not six equally spaced tones forced to close an octave. Spelled
+transpositions preserve the same intervals in each figure's register.
+
+These authored glides/runs may pass outside the radiant/reflected octatonics;
+the surrounding melodies and harmonies keep their original collections. Lead
+holds truncate where a gesture takes over, including notes from the preceding
+bar. Bass, pads, drums, tempo, meter, two-bar introductions and other themes
+keep their scores. Music → Ch 7 reviews the campaign arrangements; Triangle,
+Organ and Piano isolate the respective flourish voices. Expression off removes
+the glide's bend for comparison, following the existing expression controls.
+Full-form/loop audio checks and continuous-glide/cancellation renders stay opt-in.
