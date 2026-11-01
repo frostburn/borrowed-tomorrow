@@ -196,6 +196,8 @@ Only recovered Nell is drawn into the playable Larkspur morning; she does not ch
 
 Celia checks Nell before the final assault; on the ill route she returns from Nell’s berth to give the warning. The uncured choice explicitly offers treatment in Iria and warns that the binding may take the vessel’s current. A separate return save is required before commitment. The Emperor is dead at victory in both routes. He never speaks or acts deliberately after the vessel is defeated.
 
+On the crown platform, the human Emperor walks into the open preservation frame. Its plates close around him, the armored arms unfold, and two supports take position beneath them. His enlarged likeness remains inside the completed vessel. The entrance completes at the existing `emperorSeen` checkpoint; the battle still requires its own confirmation.
+
 Recovered Nell survives the conduit’s break. The capital lands, collection widens beyond imperial territory, and the party retains the fragment for Chapter Seven. Choosing the final crossing saves `chapter-seven:hollow-sun` and begins its wordless journey.
 
 Proceeding deliberately uncured forms the Lightbearer around Nell. Her right hand sometimes closes the lantern, interrupting attacks. She never speaks. Kit recognizes her resistance but cannot cure her by affection. The companions destroy the mantle; Nell is lost and the fragment crumbles. Tomas, Kit and the other companions return to Larkspur, where her sea-train seat remains empty. The capital survives and the Benefactor continues collecting. This terminal bad ending grants no Chapter Seven boundary and offers the pre-assault save. It supersedes the earlier author plan promising survival without the optional treatment.

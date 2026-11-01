@@ -10,7 +10,7 @@
   "tilewidth": 24,
   "tileheight": 24,
   "nextlayerid": 16,
-  "nextobjectid": 26,
+  "nextobjectid": 27,
   "properties": [
     {
       "name": "name",
@@ -20,7 +20,7 @@
     {
       "name": "subtitle",
       "type": "string",
-      "value": "The imperial vessel stands above its two supports. The final stair is behind you; the evacuation boats are far below."
+      "value": "The crown platform hangs above the palace roof. The final stair is behind you; the evacuation boats are far below."
     },
     {
       "name": "sceneArt",
@@ -872,6 +872,14 @@
           "y": 684,
           "properties": [],
           "id": 10
+        },
+        {
+          "name": "emperor",
+          "point": true,
+          "x": 876,
+          "y": 468,
+          "properties": [],
+          "id": 26
         }
       ],
       "properties": []
