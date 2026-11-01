@@ -29,14 +29,17 @@ All profiles have been authored for this smaller network:
 
 | Room | Size | Feedback | Wet | Damping pole (Hz) |
 | --- | ---: | ---: | ---: | ---: |
-| Open air | 0.35 | 0.25 | 0.05 | 12000 |
-| Timber cabin | 0.5 | 0.4 | 0.14 | 8000 |
-| Ward | 0.7 | 0.42 | 0.15 | 10000 |
-| Stone courtyard | 0.9 | 0.4 | 0.1 | 12000 |
-| Engine hall | 0.65 | 0.35 | 0.17 | 9000 |
-| Marble hall | 1.25 | 0.55 | 0.19 | 12000 |
-| Cavern | 1.35 | 0.5 | 0.17 | 8000 |
-| Hollow domain | 1.4 | 0.52 | 0.2 | 10000 |
+| Open air | 0.35 | 0.25 | 0.0625 | 12000 |
+| Timber cabin | 0.5 | 0.4 | 0.175 | 8000 |
+| Ward | 0.7 | 0.42 | 0.1875 | 10000 |
+| Stone courtyard | 0.9 | 0.4 | 0.125 | 12000 |
+| Engine hall | 0.65 | 0.35 | 0.2125 | 9000 |
+| Marble hall | 1.25 | 0.55 | 0.2375 | 12000 |
+| Cavern | 1.35 | 0.5 | 0.2125 | 8000 |
+| Hollow domain | 1.4 | 0.52 | 0.25 | 10000 |
+
+After listening review, all non-dry wet levels are raised uniformly by 25%
+(about +1.94 dB), preserving the relative room balance. Dry stays at zero wet.
 
 Size and feedback control decay directly. Wet gain only sets return volume;
 lowering it does not count as fixing a lingering tail. This design replaces
