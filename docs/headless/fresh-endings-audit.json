@@ -1,0 +1,817 @@
+{
+  "date": "2026-11-01",
+  "baseCommit": "77981f568ad718848551e7f1dd3b09de5c2eb791",
+  "gameplayModified": false,
+  "provenance": "Fresh newGame prefix; branches reuse only its newly earned Chapter Five departure. No canonical or historical earned inputs, grants, forced victories or retries.",
+  "stateHashFormat": "SHA-256 of UTF-8 JSON, sorted keys, no whitespace, Unicode unescaped. Report hashes use original bytes.",
+  "earlyKnockoutCheck": "No revival is available in Chapters One/Two; every pre-reward battle-end hero has positive HP. Later stages inspect every turn.",
+  "routes": {
+    "recovered": {
+      "stages": [
+        "early",
+        "middle",
+        "five",
+        "six-cured",
+        "seven"
+      ],
+      "victories": 50
+    },
+    "uncured": {
+      "stages": [
+        "early",
+        "middle",
+        "five",
+        "six-uncured"
+      ],
+      "victories": 37
+    },
+    "trainedRecovered": {
+      "stages": [
+        "early",
+        "middle",
+        "five",
+        "six-trained",
+        "seven-trained"
+      ],
+      "victories": 50,
+      "improvementsBought": 10,
+      "improvementMarks": 4050
+    }
+  },
+  "blockersFound": [],
+  "additionalConfirmedIssues": [],
+  "existingIssueExcluded": 260,
+  "scope": "Rules, actual map paths, story callbacks, purchases, checkpoint confirmation and save validation. Does not test rendering, hit areas, animation, asset loading, audio or human difficulty.",
+  "runs": {
+    "early": {
+      "command": "BT_HEADLESS_REPORT=/tmp/bt-endings-early.json npm run simulate:early",
+      "reportSha256": "238348c0c648002739071fd00bb8d31df39ee5abbd6cd4389e4c3b816ccdf70e",
+      "input": {
+        "kind": "newGame"
+      },
+      "status": "complete",
+      "victories": 7,
+      "chapter": "chapter-two",
+      "map": "cinderbank",
+      "boundary": "chapter-three:capital",
+      "xp": 420,
+      "marks": 250,
+      "bandages": 0,
+      "medicalBag": {},
+      "activeParty": [
+        "nell",
+        "orrin",
+        "kit"
+      ],
+      "stateSha256": "6238d452a8cd968f2a1dbfe9a8359ee351eccb8e1c03b6c6db2d4b7c72a71112",
+      "battles": {
+        "pursuit": {
+          "rounds": 2,
+          "knockouts": 0
+        },
+        "workshop": {
+          "rounds": 4,
+          "knockouts": 0
+        },
+        "collector": {
+          "rounds": 4,
+          "knockouts": 0
+        },
+        "captain": {
+          "rounds": 5,
+          "knockouts": 0
+        },
+        "coast-loading": {
+          "rounds": 4,
+          "knockouts": 0
+        },
+        "coast-collector": {
+          "rounds": 3,
+          "knockouts": 0
+        },
+        "coast-recapture": {
+          "rounds": 4,
+          "knockouts": 0
+        }
+      },
+      "endingFlags": {
+        "nellRecovered": false,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": false,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "middle": {
+      "command": "npm run simulate:middle -- --from /tmp/bt-endings-early.json --output /tmp/bt-endings-middle.json",
+      "reportSha256": "3447216d8885d7a846c17406fae61262d2ab040ebcdee913bb1e68eebc6206d4",
+      "input": {
+        "path": "/tmp/bt-endings-early.json",
+        "sha256": "238348c0c648002739071fd00bb8d31df39ee5abbd6cd4389e4c3b816ccdf70e"
+      },
+      "status": "complete",
+      "victories": 8,
+      "chapter": "chapter-four",
+      "map": "refuge",
+      "boundary": "chapter-five:anchors",
+      "xp": 1355,
+      "marks": 386,
+      "bandages": 0,
+      "medicalBag": {
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "nell",
+        "celia",
+        "petra"
+      ],
+      "stateSha256": "5dc895b3062c2937530aabda42524279634a2f6f69f8f6e5198d2fa6eb3a14c1",
+      "battles": {
+        "capital-arrest": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 55
+        },
+        "works-warden": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 80
+        },
+        "palace-stores": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 16
+        },
+        "heart-feeds": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 36
+        },
+        "works-survey": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 28
+        },
+        "works-dry": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 83
+        },
+        "sanctuary-road": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 76
+        },
+        "sanctuary-warden": {
+          "rounds": 7,
+          "knockouts": 0,
+          "hpLost": 202
+        }
+      },
+      "marksSpent": 372,
+      "rests": 4,
+      "improvementPurchases": [],
+      "endingFlags": {
+        "nellRecovered": false,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": false,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "five": {
+      "command": "npm run simulate:five -- --from /tmp/bt-endings-middle.json --output /tmp/bt-endings-five.json",
+      "reportSha256": "38d0d645afb0dd2b1cd579dede6d5aab38919e94821e19340258402e91f4310a",
+      "input": {
+        "path": "/tmp/bt-endings-middle.json",
+        "sha256": "3447216d8885d7a846c17406fae61262d2ab040ebcdee913bb1e68eebc6206d4"
+      },
+      "status": "complete",
+      "victories": 12,
+      "chapter": "chapter-five",
+      "map": "airship",
+      "boundary": "chapter-six:capital-approach",
+      "xp": 3475,
+      "marks": 1505,
+      "bandages": 3,
+      "medicalBag": {
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "kit",
+        "orrin",
+        "celia"
+      ],
+      "stateSha256": "ffb0d14b4baa9222bec7ca32dcb71ed79a760e13464dea470d56bd133e56d1d3",
+      "battles": {
+        "airfield-guard": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 54
+        },
+        "hammer-stores": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 62
+        },
+        "hammer-lift": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 78
+        },
+        "hammer-carrier": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 99
+        },
+        "dawn-mortar-first": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 43
+        },
+        "dawn-repeater-last": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 46
+        },
+        "dawn-commander": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 34
+        },
+        "wind-lift": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 47
+        },
+        "wind-gallery": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 50
+        },
+        "wind-engine": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 146
+        },
+        "alban-flagship": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 115
+        },
+        "benefactor-retaliation": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 60
+        }
+      },
+      "marksSpent": 174,
+      "rests": 9,
+      "improvementPurchases": [],
+      "endingFlags": {
+        "nellRecovered": false,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": false,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "six-cured": {
+      "command": "npm run simulate:six -- --from /tmp/bt-endings-five.json --output /tmp/bt-endings-six-cured.json",
+      "reportSha256": "bcacc977d87412536d2a4d497f8109d2fd9d953546dd241c9019135989ee9332",
+      "input": {
+        "path": "/tmp/bt-endings-five.json",
+        "sha256": "38d0d645afb0dd2b1cd579dede6d5aab38919e94821e19340258402e91f4310a"
+      },
+      "status": "complete",
+      "victories": 14,
+      "chapter": "chapter-six",
+      "map": "capitalquay",
+      "boundary": "chapter-seven:hollow-sun",
+      "xp": 7005,
+      "marks": 3462,
+      "bandages": 3,
+      "medicalBag": {
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "celia",
+        "nell",
+        "orrin"
+      ],
+      "stateSha256": "c160ae8325818e9a66167e57461cbfb3e3d90fb25e00fd057f39b42c13b5f6bf",
+      "battles": {
+        "river-patrol": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 69
+        },
+        "river-cache": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 33
+        },
+        "rainhouse-guard": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 55
+        },
+        "palace-gallery": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 44
+        },
+        "desert-ascent": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 38
+        },
+        "sun-serpent": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 44
+        },
+        "north-watch": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 49
+        },
+        "north-hunters": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 56
+        },
+        "north-cache": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 39
+        },
+        "winter-dragon": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 67
+        },
+        "capital-procession": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 61
+        },
+        "palace-command": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 81
+        },
+        "capital-hunters": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 84
+        },
+        "imperial-vessel": {
+          "rounds": 8,
+          "knockouts": 0,
+          "hpLost": 153
+        }
+      },
+      "marksSpent": 78,
+      "rests": 9,
+      "improvementPurchases": [],
+      "returnCheckpoint": {
+        "validBeforeCommitment": true,
+        "map": "lastpalace",
+        "nellHp": 114
+      },
+      "endingFlags": {
+        "nellRecovered": true,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": true,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "six-uncured": {
+      "command": "npm run simulate:six -- --from /tmp/bt-endings-five.json --order desert,north --skip-optional --output /tmp/bt-endings-six-uncured.json",
+      "reportSha256": "9b7b41bb2ee9f809ade1a0be113b032f35160e53b81b8f5854d477fe47af9994",
+      "input": {
+        "path": "/tmp/bt-endings-five.json",
+        "sha256": "38d0d645afb0dd2b1cd579dede6d5aab38919e94821e19340258402e91f4310a"
+      },
+      "status": "complete",
+      "victories": 10,
+      "chapter": "chapter-six",
+      "map": "laststation",
+      "boundary": null,
+      "xp": 6155,
+      "marks": 2983,
+      "bandages": 2,
+      "medicalBag": {
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "kit",
+        "celia",
+        "petra"
+      ],
+      "stateSha256": "23644719e47fcd2ddf40309c1b7fa6d2f8aa53f8f47d050bf7fd6eed52799621",
+      "battles": {
+        "palace-gallery": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 68
+        },
+        "desert-ascent": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 37
+        },
+        "sun-serpent": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 78
+        },
+        "north-watch": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 61
+        },
+        "north-hunters": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 26
+        },
+        "winter-dragon": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 133
+        },
+        "capital-procession": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 24
+        },
+        "palace-command": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 158
+        },
+        "imperial-vessel": {
+          "rounds": 10,
+          "knockouts": 0,
+          "hpLost": 200
+        },
+        "lightbearer": {
+          "rounds": 7,
+          "knockouts": 0,
+          "hpLost": 61
+        }
+      },
+      "marksSpent": 62,
+      "rests": 10,
+      "improvementPurchases": [],
+      "returnCheckpoint": {
+        "validBeforeCommitment": true,
+        "map": "lastpalace",
+        "nellHp": 1
+      },
+      "endingFlags": {
+        "nellRecovered": false,
+        "nellLost": true,
+        "lightbearerEnding": true,
+        "chapterSixComplete": false,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "seven": {
+      "command": "npm run simulate:seven -- --from /tmp/bt-endings-six-cured.json --output /tmp/bt-endings-seven.json",
+      "reportSha256": "150c4ee0585c11ef595afb48af5b54f55bda962ffff86ee2cc696431c79482b3",
+      "input": {
+        "path": "/tmp/bt-endings-six-cured.json",
+        "sha256": "bcacc977d87412536d2a4d497f8109d2fd9d953546dd241c9019135989ee9332"
+      },
+      "status": "complete",
+      "victories": 9,
+      "chapter": "chapter-seven",
+      "map": "seaholiday",
+      "boundary": null,
+      "xp": 9935,
+      "marks": 4416,
+      "bandages": 3,
+      "medicalBag": {
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "celia",
+        "nell",
+        "orrin"
+      ],
+      "stateSha256": "5a8a5ae160b31ef740d70d1bd9fe7cab17d5c73534bcf846d758dd2b144dbd09",
+      "battles": {
+        "domain-hounds": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 14
+        },
+        "domain-collector": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 28
+        },
+        "domain-furnace": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 123
+        },
+        "domain-ward": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 57
+        },
+        "domain-patrol": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 38
+        },
+        "domain-dragon": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 168
+        },
+        "benefactor-body": {
+          "rounds": 7,
+          "knockouts": 0,
+          "hpLost": 189
+        },
+        "benefactor-sun": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 148
+        },
+        "benefactor-heart": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 89
+        }
+      },
+      "marksSpent": 116,
+      "rests": 8,
+      "improvementPurchases": [],
+      "endingFlags": {
+        "nellRecovered": true,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": true,
+        "chapterSevenComplete": true,
+        "realSeaSeen": true
+      }
+    },
+    "six-trained": {
+      "command": "npm run simulate:six -- --from /tmp/bt-endings-five.json --improvements --output /tmp/bt-endings-six-trained.json",
+      "reportSha256": "8e1014873d3b12eaa4b210d0e2240d7996055c076a69d9696afcc8d6daca7607",
+      "input": {
+        "path": "/tmp/bt-endings-five.json",
+        "sha256": "38d0d645afb0dd2b1cd579dede6d5aab38919e94821e19340258402e91f4310a"
+      },
+      "status": "complete",
+      "victories": 14,
+      "chapter": "chapter-six",
+      "map": "capitalquay",
+      "boundary": "chapter-seven:hollow-sun",
+      "xp": 7005,
+      "marks": 1388,
+      "bandages": 3,
+      "medicalBag": {
+        "field-bandage": 0,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "celia",
+        "nell",
+        "orrin"
+      ],
+      "stateSha256": "65c3d95af47ff4081196d72e4cc2e7e1bb71f8c6746a97fa8eb220b72f0a69a6",
+      "battles": {
+        "river-patrol": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 69
+        },
+        "river-cache": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 33
+        },
+        "rainhouse-guard": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 55
+        },
+        "palace-gallery": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 44
+        },
+        "desert-ascent": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 38
+        },
+        "sun-serpent": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 93
+        },
+        "north-watch": {
+          "rounds": 4,
+          "knockouts": 0,
+          "hpLost": 49
+        },
+        "north-hunters": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 56
+        },
+        "north-cache": {
+          "rounds": 2,
+          "knockouts": 0,
+          "hpLost": 39
+        },
+        "winter-dragon": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 67
+        },
+        "capital-procession": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 55
+        },
+        "palace-command": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 59
+        },
+        "capital-hunters": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 53
+        },
+        "imperial-vessel": {
+          "rounds": 8,
+          "knockouts": 0,
+          "hpLost": 191
+        }
+      },
+      "marksSpent": 2152,
+      "rests": 10,
+      "improvementPurchases": [
+        {
+          "label": "Confirm · 300 marks",
+          "marks": 300
+        },
+        {
+          "label": "Confirm · 450 marks",
+          "marks": 450
+        },
+        {
+          "label": "Confirm · 500 marks",
+          "marks": 500
+        },
+        {
+          "label": "Confirm · 450 marks",
+          "marks": 450
+        },
+        {
+          "label": "Confirm · 400 marks",
+          "marks": 400
+        }
+      ],
+      "returnCheckpoint": {
+        "validBeforeCommitment": true,
+        "map": "lastpalace",
+        "nellHp": 114
+      },
+      "endingFlags": {
+        "nellRecovered": true,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": true,
+        "chapterSevenComplete": false,
+        "realSeaSeen": false
+      }
+    },
+    "seven-trained": {
+      "command": "npm run simulate:seven -- --from /tmp/bt-endings-six-trained.json --improvements --output /tmp/bt-endings-seven-trained.json",
+      "reportSha256": "541e1b0a59c33141c3a7ab39d588143e2e320eea5e1d69ab177b0c53ef46ca4d",
+      "input": {
+        "path": "/tmp/bt-endings-six-trained.json",
+        "sha256": "8e1014873d3b12eaa4b210d0e2240d7996055c076a69d9696afcc8d6daca7607"
+      },
+      "status": "complete",
+      "victories": 9,
+      "chapter": "chapter-seven",
+      "map": "seaholiday",
+      "boundary": null,
+      "xp": 9935,
+      "marks": 436,
+      "bandages": 3,
+      "medicalBag": {
+        "field-bandage": 2,
+        "focus-tonic": 1
+      },
+      "activeParty": [
+        "celia",
+        "nell",
+        "orrin"
+      ],
+      "stateSha256": "4140444a4706d78c06b2661d7665754ed08ce5a9e73032463415df2567f0366d",
+      "battles": {
+        "domain-hounds": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 14
+        },
+        "domain-collector": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 20
+        },
+        "domain-furnace": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 115
+        },
+        "domain-ward": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 49
+        },
+        "domain-patrol": {
+          "rounds": 3,
+          "knockouts": 0,
+          "hpLost": 54
+        },
+        "domain-dragon": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 154
+        },
+        "benefactor-body": {
+          "rounds": 6,
+          "knockouts": 0,
+          "hpLost": 122
+        },
+        "benefactor-sun": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 57
+        },
+        "benefactor-heart": {
+          "rounds": 5,
+          "knockouts": 0,
+          "hpLost": 89
+        }
+      },
+      "marksSpent": 2022,
+      "rests": 7,
+      "improvementPurchases": [
+        {
+          "label": "Confirm · 450 marks",
+          "marks": 450
+        },
+        {
+          "label": "Confirm · 450 marks",
+          "marks": 450
+        },
+        {
+          "label": "Confirm · 300 marks",
+          "marks": 300
+        },
+        {
+          "label": "Confirm · 450 marks",
+          "marks": 450
+        },
+        {
+          "label": "Confirm · 300 marks",
+          "marks": 300
+        }
+      ],
+      "endingFlags": {
+        "nellRecovered": true,
+        "nellLost": false,
+        "lightbearerEnding": false,
+        "chapterSixComplete": true,
+        "chapterSevenComplete": true,
+        "realSeaSeen": true
+      }
+    }
+  }
+}
