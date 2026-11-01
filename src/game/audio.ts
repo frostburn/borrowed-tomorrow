@@ -6,7 +6,7 @@ import { Synth, type Effect } from './synth';
 import type { PerformanceOptions } from './score-performance';
 
 // Post-room makeup preserves compressor drive and the authored dry/wet balance.
-export const AUDIO_OUTPUT_GAIN=1.5;
+export const AUDIO_OUTPUT_GAIN=1.4;
 
 /** Bar-aligned arrangement changes and look-ahead timing, independent of frame rate. */
 export class Audio {

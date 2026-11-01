@@ -1,6 +1,6 @@
 # Releasing Borrowed Tomorrow
 
-The v1.0.0 preparation sets both package and lockfile versions to `1.0.0` and
+The v1.1.0 preparation sets both package and lockfile versions to `1.1.0` and
 provides [release notes](release-notes.md). Merging the preparation PR does not
 create a tag, publish a GitHub release or deploy the site. Keep the existing
 `v0.2.0-beta.1` pre-release intact. The hosted game is
@@ -8,17 +8,28 @@ create a tag, publish a GitHub release or deploy the site. Keep the existing
 
 ## Select and verify the candidate
 
-### v1.0.0 preparation evidence
+### v1.1.0 candidate
 
-The preparation is based on merged main `560627c` (PR #265), with only README,
-release documentation and package version changes. Gameplay, dependencies and
-save schemas are unchanged.
+The preparation starts from merged main `65b0409` (PR #268). That includes the
+portrait/landscape phone work and fine character status. The release preparation
+reduces `AUDIO_OUTPUT_GAIN` to `1.4`, updates package metadata and supplies
+incremental release notes. Dependencies, combat rules and save schemas are unchanged.
 
-- `npm run check`: 1,105 rule/content tests, TypeScript and production build pass with package version `1.0.0`.
-- `npm run build:size`: 3.36 MB JavaScript raw / 635.71 kB gzip; startup 3.23 MB raw / 597.35 kB gzip; complete distribution 13.49 MB. Existing large-chunk warnings remain visible.
-- The content baseline passed both critical development and production browser suites in [Check run 769](https://github.com/frostburn/borrowed-tomorrow/actions/runs/41315611097). The preparation PR must also pass its own required **Check** workflow.
-- [Fresh headless ending audit](headless.md#fresh-campaign-through-both-endings--2026-11-01): both endings and the additional training-purchase route complete without defeats or retries.
-- A live-host probe on 2026-11-01 returned HTTP 503 with an upstream connection failure from this environment. This does not establish the cause or the site's availability from other networks; the final hosted production check below remains unverified.
+The phone baseline passed 1,116 rule/content tests, TypeScript, production build,
+five critical development and two critical production Chromium cases in
+[Check run 788](https://github.com/frostburn/borrowed-tomorrow/actions/runs/41328113597).
+Its screenshots cover three portrait sizes, landscape, desktop and fractional-DPR
+touch input. The preparation PR must pass its own required **Check** workflow.
+Local v1.1.0 preparation checks pass: 1,116 rule/content tests, TypeScript and
+production build. `npm run build:size` reports 3.37 MB JavaScript raw / 637.52 kB
+gzip, 3.23 MB startup raw / 599.16 kB gzip, and a 13.51 MB complete distribution.
+The existing large-chunk warnings are retained.
+
+Physical-device Safari and final hosted-production checks remain unverified.
+
+The [fresh headless ending audit](headless.md#fresh-campaign-through-both-endings--2026-11-01)
+is historical campaign evidence; it is not a new v1.1.0 playthrough. The
+[v1.0.0 release notes](release-notes-v1.0.0.md) are retained separately.
 
 ### Candidate checks
 
@@ -81,7 +92,7 @@ outside the candidate unless explicitly chosen for the release.
 
 Once the candidate is accepted and publication is requested:
 
-1. Verify `package.json` and both root package versions in `package-lock.json` are `1.0.0`. They are updated together in the preparation PR. The campaign save format remains version 11.
+1. Verify `package.json` and both root package versions in `package-lock.json` are `1.1.0`. They are updated together in the preparation PR. The campaign save format remains version 11.
 2. Use the prepared release notes and retain the known issue #260. Record any further findings from the final playthrough/host checks above.
 3. Build and verify the resulting release commit, including its required CI checks. If the final change is only version metadata, retain the playthrough evidence and identify the tested content commit as well.
 4. Create the requested tag at that verified commit. Publish GitHub release notes or deploy only when those actions are requested. Do not move the existing pre-release tag.
@@ -90,7 +101,7 @@ Once the candidate is accepted and publication is requested:
 Application release versions and campaign save versions are independent. A
 release-number bump alone must not discard supported version-11 progress.
 
-For v1.0.0, create the tag from the merged main commit after its checks pass,
+For v1.1.0, create the tag from the merged main commit after its checks pass,
 not from the PR branch or an older build. A manual publication sequence is:
 
 ```sh
@@ -98,14 +109,14 @@ git switch main
 git pull --ff-only origin main
 npm ci
 npm run check
-git tag -a v1.0.0 -m "Borrowed Tomorrow v1.0.0"
-git push origin v1.0.0
-gh release create v1.0.0 --verify-tag --title "Borrowed Tomorrow v1.0.0" --notes-file docs/release-notes.md
+git tag -a v1.1.0 -m "Borrowed Tomorrow v1.1.0"
+git push origin v1.1.0
+gh release create v1.1.0 --verify-tag --title "Borrowed Tomorrow v1.1.0" --notes-file docs/release-notes.md
 ```
 
 Check that the selected commit is the intended merged candidate before creating
 the tag. For a downloadable static build, archive the complete `dist/` with
-`tar -czf borrowed-tomorrow-v1.0.0.tar.gz -C dist .` and attach that archive to
+`tar -czf borrowed-tomorrow-v1.1.0.tar.gz -C dist .` and attach that archive to
 the release. This includes hidden build metadata as well as art and deferred
 chunks. Deploy that same output to the hosted game and perform the host check
 above; package version changes alone do not update an existing deployment.

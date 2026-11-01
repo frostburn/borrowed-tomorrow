@@ -319,5 +319,5 @@ Scene rendering and framebuffer presentation share one pre-render decision. Keep
 
 The broken Benefactor's sun-form line uses its hollow-sun portrait and fractured
 alternating case; earlier speeches and the unseen Chapter Five voice stay normal.
-Battle portraits follow the current form. The audio output has 1.5× makeup gain
+Battle portraits follow the current form. The audio output has 1.4× makeup gain
 between room and master; preserve input-side compression, wet balance and mute.

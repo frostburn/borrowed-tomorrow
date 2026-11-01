@@ -1,61 +1,31 @@
-# Borrowed Tomorrow v1.0.0
+# Borrowed Tomorrow v1.1.0
 
 **[Play online](https://tomorrow.lumipakkanen.com/)**
 
----
+## Phone layouts
 
-Borrowed Tomorrow is a complete seven-chapter JRPG for the browser. A search
-for Nell's brother leads from a railway festival into an empire that pays for
-its miracles with other people's tomorrows.
+- Play in portrait or landscape. Portrait presents the world at half size without the chunky stage filter, above full-width controls; landscape keeps its command sidebar.
+- Fine-detail character status shows miniatures, names, HP and levels. Combat pan arrows sit beside status, leaving the battlefield clear.
+- Dialogue keeps native 128×128 chunky portraits, with full-width text below and a separate action row. Phone menus, inventory and safe-area handling adapt to the viewport.
+- All ten late-game commands fit without scrolling the command list. Pan the battlefield in either direction with touch dragging or four camera buttons.
+- Rotate without losing the selected skill or pending confirmation. Camera drags do not spend an action or swallow the next control tap.
 
-## The adventure
+## Audio
 
-- Five playable companions, optional quests, an alternate ending and playable epilogues.
-- Turn-based hex battles with up to three active fighters, automatically progressing solo skills and paired team attacks.
-- Large bosses with multiple battlefield contacts, readable attack warnings, distinct phases and environmental hazards.
-- Manually equipped loot, shared supplies, free rest spots and purchasable permanent training.
-- Wordless vector cinematics at every chapter crossing, ending films and credits.
+Reduce shared post-room output gain from 1.5 to 1.4 for a slightly quieter mix.
+Music/effects balance, compressor drive, room wet levels and volume/mute controls
+retain their existing behavior.
 
-## Presentation
+## Saves and compatibility
 
-- A consistent polygonal vector style with animated cast, expressive portraits, actor lighting and chunky graphics and text.
-- An original procedural 31-tone equal-temperament soundtrack, synthesized effects and room reverb.
-- A public soundtrack menu with volume controls, bar skipping and optional autoplay.
-- Pointer and keyboard controls, phone controls, reduced-motion support and remembered sound preferences.
-
-## Keeping your progress
-
-Autosave, three manual slots and JSON export/import are available. The game
-accepts campaign save format 11 (`imperial-debt`); earlier formats are not
-migrated. Keep an exported copy when moving between browsers, devices or site
-addresses. Workshop builds are separate from campaign progress.
-
-## Running the game
-
-The production build is a static browser game with no account, API key or live
-story service. Building from source requires Node 24 and npm; `npm run build`
-produces `dist/`. See the [README](../README.md) for controls and setup.
-
-## Validation and known issues
-
-Fresh headless campaigns reach both endings: 50 victories for the recovered
-route and 37 for the Lightbearer route, without defeats, retries or granted
-resources. An additional recovered route purchases ten permanent improvements
-and also completes. See the [ending audit](headless.md#fresh-campaign-through-both-endings--2026-11-01)
-for reproduction and limits. Headless completion does not verify rendering or audio.
+Existing campaign save format 11 (`imperial-debt`) remains supported. This
+release does not change save schemas, dependencies, story progression or combat
+rules. Export a save when moving between browsers, devices or site addresses.
 
 [Basic skill balance (#260)](https://github.com/frostburn/borrowed-tomorrow/issues/260)
-remains open: Steam Lance and Quick Shot can dominate the player's choices.
-This is a known balance concern, not an ending-completion blocker observed in
-the audited routes.
+remains a known concern. Physical-device Safari coverage and final hosting checks
+are recorded separately in the release checklist; passing CI is not a claim of a
+complete physical-device playthrough.
 
-## Credits
-
-A game by GPT-6.1 Sol, directed by Lumi Pakkanen. Lumi contributed game design,
-combat system direction, story concepts, art direction, playtesting and
-additional musical passages. Full credits are available in-game.
-
-MIT licensed. Copyright © 2026 Lumi Pakkanen.
-
-Report bugs at [GitHub Issues](https://github.com/frostburn/borrowed-tomorrow/issues),
-with a save export or screenshot when useful.
+See the [v1.0.0 release notes](release-notes-v1.0.0.md) for the original seven-chapter
+release, credits and setup, and the [release guide](releasing.md) for publication.
