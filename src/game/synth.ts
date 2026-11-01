@@ -1,5 +1,5 @@
 import type { Instrument } from './score';
-export type Effect = 'lanternvolley' | 'drum' | 'rivet' | 'lightline' | 'pressure' | 'stars' | 'ricochet' | 'bolt' | 'barrier' | 'revive' | 'shield' | 'prism' | 'crossfire' | 'relay' | 'valve' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
+export type Effect = 'imperial-judgment' | 'lanternvolley' | 'drum' | 'rivet' | 'lightline' | 'pressure' | 'stars' | 'ricochet' | 'bolt' | 'barrier' | 'revive' | 'shield' | 'prism' | 'crossfire' | 'relay' | 'valve' | 'strike' | 'burst' | 'steam' | 'mend' | 'bandage' | 'peck' | 'flare' | 'move' | 'win' | 'click' | 'defend' | 'punch' | 'return-call' | 'paper' | 'resonance';
 import { isBass, isPercussion, pitchFrequency, type Pitch } from './tuning';
 import type { ControlCurve,NoteExpression } from './expression';
 
@@ -193,6 +193,13 @@ export class Synth {
         if(kind!=='pressure')[880,1320].forEach(hz=>tone(hz,.13,.35,.065));break;
       case 'resonance':
         tone(146.8,0,1.6,.1);tone(149.1,.04,1.5,.08);tone(440.4,.02,1.2,.025);break;
+      case 'imperial-judgment':
+        // A crown-sized impact: rigid metal, falling rays, then spent pressure.
+        tone(72,0,.65,.13,'triangle',32);tone(144,0,.4,.055,'sine',54);
+        noise(0,.1,.17,2200,700);
+        [620,1010,1660,2570].forEach((hz,i)=>tone(hz,.012+i*.009,.72-i*.08,.045/(1+i*.35),'sine',hz*.72));
+        [-.55,0,.55].forEach((pan,i)=>this.tone(2600,when+i*.065,.2,.045,'triangle',pan,560));
+        noise(.04,.62,.16,2900,420);noise(.28,.75,.075,640,120);break;
       case 'punch':
         noise(0,.025,.2,2400,900);tone(180,0,.06,.16,'triangle',72);tone(370,.05,.4,.09);break;
       case 'return-call':

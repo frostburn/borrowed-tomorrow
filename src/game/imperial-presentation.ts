@@ -42,7 +42,7 @@ export function imperialPresentation(encounter:Encounter):BattlePresentation{
   },
   attackTiming:u=>u.id===EMPEROR_ID||u.id===LIGHTBEARER_ID?{contact:380,duration:900}:undefined,
   attack:(_scene,image,u,elapsed)=>{if(u.id===EMPEROR_ID||u.id===LIGHTBEARER_ID)(image.getData('imperial-attack') as (n:number)=>void)(elapsed);},
-  attackSound:u=>u.id===LIGHTBEARER_ID?'flare':u.id===EMPEROR_ID?'resonance':undefined,
+  attackSound:(u,id)=>u.id===LIGHTBEARER_ID?'flare':u.id===EMPEROR_ID?id==='judgment'?'imperial-judgment':'resonance':undefined,
   attackEffect(scene,world,_image,u,id,affected){
    if(id!=='judgment'||!u.anchored)return false;
    const g=scene.add.graphics();world.add(g);
