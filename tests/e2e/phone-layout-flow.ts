@@ -49,7 +49,9 @@ export async function touchPan(page:Page){
  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
  await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x-70,y:y-40}]});
  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
- await session.detach();
+ // Keep this gesture session until the owning browser context closes, so the
+ // subsequent touchscreen taps use continuous device emulation.
+ expect(await page.evaluate(()=>navigator.maxTouchPoints)).toBeGreaterThan(0);
  const after=await inspect(page);
  expect(after.view.scrollX).toBeGreaterThan(before.view.scrollX);
  expect(after.view.scrollY).toBeGreaterThanOrEqual(before.view.scrollY);
