@@ -1,4 +1,5 @@
-import {finalLeadHold,finalChromaticNotes} from './score-final-runs';
+import {MANTLE_RHYTHM} from './score-mantle-phrases';
+import {finalLeadHold,finalPhraseNotes} from './score-final-runs';
 import type {Note,Instrument} from './score';
 import {octave,type Pitch} from './tuning';
 import {phrasing,singing} from './expression';
@@ -61,7 +62,7 @@ const forms:Record<SevenMode,Form>={
  'harvest-battle':{lead:'brass',beats:4,rhythm:[0,1.5,3,4,6.5,9,11,14],roots:[0,4,1,5,3,6,2,0],lines:harvest,gain:.21,battle:true},
  'hospice-battle':{lead:'organ',inverted:true,beats:3,rhythm:[0,2,3,5,7,10,12,14],roots:[0,4,2,6,3,1,5,0],lines:ward,gain:.18,battle:true},
  'seasons-battle':{lead:'tritaver',inverted:true,beats:5,rhythm:[0,2,3,5,8,11,14,17],roots:[0,2,5,1,6,3,4,0],lines:seasons,gain:.19,battle:true},
- benefactor:{lead:'organ',beats:4,rhythm:[0,1,3,6,8,10,12,14],roots:[0,6,3,5,1,4,2,0],lines:god,gain:.19,battle:true,intro:true},
+ benefactor:{lead:'organ',beats:4,rhythm:MANTLE_RHYTHM,roots:[0,6,3,5,1,4,2,0],lines:god,gain:.19,battle:true,intro:true},
  'hollow-sun':{lead:'brass',inverted:true,beats:5,rhythm:[0,1.5,3,5,8,10,13.5,17],roots:[0,3,6,2,5,1,4,0],lines:sun,gain:.21,battle:true,intro:true},
  unborrowed:{lead:'strings',beats:4,rhythm:[0,1,3,4.5,8,9,11,14],roots:[0,4,2,5,3,6,1,0],lines:heart,gain:.19,battle:true,intro:true},
 };
@@ -114,6 +115,6 @@ export function sevenBar(mode:SevenMode,bar:number):Note[]{
  if(within===1||within===3){const at=beats-1;add('bell',pitch(root+4),at,2.4,a.battle?.038:.046,.35).expression={release:1.6,...phrasing(strength)};}
  if(mode==='firstfield'||mode==='seasonstreet')for(const at of [0,1.5])if(at<beats)add('wood',pitch(root,-1),at,.18,.045,-.3);
  if(mode==='unborrowed'&&(within===1||within===3))add('brass',pitch(melody[7],-1),0,beats-.2,.09,.3).expression=singing('clear',strength,beats-.2);
- notes.push(...finalChromaticNotes(mode,i,a.gain,strength));
+ notes.push(...finalPhraseNotes(mode,i,a.gain,strength));
  return notes;
 }

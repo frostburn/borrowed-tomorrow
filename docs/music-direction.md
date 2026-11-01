@@ -413,8 +413,44 @@ The final introductions now build into their loops with a short snare crescendo.
 The Emperor's Order is restored to its original arrangement. Captain Alban and Iron Above the Clouds are unchanged. Quiet imperial exploration, the Lightbearer and the Benefactor keep their existing arrangements. Music → Ch 6 uses the campaign score; Strings and Reed auditions isolate the relevant instruments. No new samples, tempo changes, room responses or synth patches are involved.
 
 
-## Final boss chromatic breaks
+## Final boss polyphony and close-step breaks
 
-`score-final-runs.ts` ornaments only the Benefactor's three battle forms. The mantle's six measured phrase-end flourishes use the hollow tritaver voice against its organ-led theme. The hollow sun hands its falling flat-spelled chromatic sequences and compressed neighbouring-step approaches to organ within its five-beat meter. Both use nearly full-length note holds and smooth short overlapping releases, avoiding the brass attack on fast runs. The exposed heart hands its eight faster breaks to piano, whose short attack can articulate 32nd notes while the broad string melody retains its existing envelope. One entire 31-step octave rises into the untouched C5 at the quieter middle; the following three bars keep their space.
+`score-final-runs.ts` gives the three forms different phrase-end motion. The
+God Who Lent Tomorrow (`benefactor`) trades two-bar organ calls with eight
+authored two-bar band answers. During an answer the foreground organ rests;
+brass, strings and lower organ take over in the radiant 31-EDO scale,
+with shared strong beats and individually shaped fills. The shared rhythmic sentence
+preserves the original lead's attack positions across call and response.
+All answers keep the full three-part harmony on the strong beats. Four stay
+broad; in the other four, individual instruments add quarter/eighth figures
+while the others keep their longer notes. Brass ornaments the second answer;
+strings vary the fourth; brass and lower organ make separate pickups in the
+sixth; brass and strings take separate closing taps in the seventh. Every
+extra attack belongs to one voice, avoiding repeated full-band stabs. Core
+voicings, gains and the scale stay intact, and no rhythm is finer than an
+eighth note. Bass, pads and drums continue underneath. The former glides and
+echo are removed.
 
-Two chromatic languages alternate: twelve consecutive fifths produce the 7L 5s meantone chromatic (seven 3-step and five 2-step semitones per octave), while the adjacent collection spells every single 31-EDO step using `t`, `d`, sharps and flats. Sharp and flat versions remain distinct. Runs replace short lead spans and truncate any held lead arriving from a previous bar; their last passing note approaches the existing next melody entrance. Pads, bass, drums, tempo, meter, two-bar introductions and all non-final-boss cues retain their scores. The flourish releases are short and smooth, with no bends or pitch rounding. Music → Ch 7 reviews the real campaign arrangements; Tritaver and Organ isolate the first two forms' run voices; Piano isolates the heart's unchanged breaks. Full-form/loop audio renders remain opt-in.
+The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
+adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
+of them adjacent steps, including the full 31-step octave before the original
+high C5. The following three quieter middle bars retain their space. Their
+fast articulation, timing and smooth short releases return; these are scale
+breaks again rather than the earlier two/three-note modal answers.
+
+Two runs in each of those forms alternate tritone pairs over a whole-tone
+contour instead of climbing a broad diatonic/chromatic ladder. Six lower
+anchors advance by five 31-EDO steps. The first three pairs rise 15 steps
+(augmented fourths); the next three reverse order and fall 16 (diminished
+fifths), making the octave complement exact. This is whole-tone colour within
+31-EDO, not six equally spaced tones forced to close an octave. Spelled
+transpositions preserve the same intervals in each figure's register.
+
+The sun/heart's authored runs may pass outside the radiant/reflected octatonics;
+the surrounding melodies and harmonies keep their original collections. Their
+lead holds truncate where a run takes over, including notes from the preceding
+bar. The mantle's organ lead hands each sentence's second half to the band.
+All forms retain their tempo, meter, two-bar introductions and loop timing.
+Music → Ch 7 reviews the campaign arrangements; Brass, Strings and Organ
+isolate the mantle's new lines, while Organ/Piano retain the sun/heart runs.
+Full-form/loop audio checks and polyphonic layer/cancellation renders stay opt-in.
