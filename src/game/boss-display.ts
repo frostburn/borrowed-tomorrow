@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { bitmapText } from './pixel-font';
 import { ABILITIES, active, legalAim, targets, unitAt, type Battle, type Unit } from '../rules/combat';
 import { occupiedHexes } from '../rules/footprint';
-import { distance, fromPixel, toPixel } from '../rules/hex';
+import { distance, fromPixel, inside, toPixel } from '../rules/hex';
 import { vectorSurface } from './vector-image';
 import type {BattlePickAction} from './battle-presentation';
 import {approachAbility} from './battle-basic';
@@ -25,8 +25,8 @@ export function bossPlacement(unit:Unit){
   return {x:Math.round(toPixel(unit.hex).x),y:Math.round(Math.max(...occupiedHexes(unit).map(h=>toPixel(h).y))+24)};
 }
 
-/** Skills shortcut to legal contacts. A basic body hit stays an explicit strike
- * even out of range, never movement onto the ground behind it or a nearby ally. */
+/** Explicit attacks can shortcut through the body. The contextual command
+ * preserves an empty board hex beneath the artwork for precise movement. */
 export function pickBossBody(b:Battle,requested:BattlePickAction,x:number,y:number,boss:Unit,width:number,height:number,mask?:Uint8Array,visualOffset={x:0,y:0}){
   const contextual=requested==='basic',action=contextual?'strike':requested;
   if(action==='move'||ABILITIES[action].heal||['guard','focus','taunt'].includes(ABILITIES[action].effect??''))return;
@@ -35,6 +35,8 @@ export function pickBossBody(b:Battle,requested:BattlePickAction,x:number,y:numb
   if(px<0||px>=width||py<0||py>=height)return;
   const clicked=fromPixel(x,y),direct=unitAt(b,clicked);
   if(direct&&direct.id!==boss.id)return;
+  if(contextual&&inside(clicked)&&!direct)return;
+  if(direct?.id===boss.id&&(contextual||approachAbility(u,action)))return clicked;
   if(legalAim(b,u,action,clicked)&&targets(b,u,action,clicked).some(v=>v.id===boss.id))return clicked;
   if(!mask||mask[py*width+px]===0)return;
   const parts=occupiedHexes(boss).sort((a,z)=>distance(u.hex,a)-distance(u.hex,z));

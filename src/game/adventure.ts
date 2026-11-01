@@ -74,6 +74,7 @@ import { bitmapText } from './pixel-font';
 import { PixelLabel } from './pixel-label';
 import { worldView, narrowScreen } from './resolution';
 import { occupiedHexes } from '../rules/footprint';
+import {battleWarnings,partyWarningStyle,patternDisplayCells} from './battle-warnings';
 import type { BattlePresentation } from './battle-presentation';
 import { conduitPresentation } from './conduit-presentation';
 import { WorldLighting } from './world-lighting';
@@ -717,11 +718,8 @@ export class Adventure extends Phaser.Scene {
     const canAct=u?.side==='party'&&!b.result&&!this.busy;
     if(canAct&&aimed&&!this.plan&&this.basicSelected)this.selected=basicAction(b,u!,aimed);
     const reachableHexes=canAct&&this.basicSelected?movement(b,u!):undefined;
-    const occupied=new Set(b.units.filter(v=>v.hp>0&&v.footprint?.length).flatMap(v=>occupiedHexes(v).map(key)));
     const attack=this.enemyAttack?.battle===b?this.enemyAttack:undefined;
-    const attackCells=new Set(attack?.cells.map(key));
-    const danger=new Set(b.units.filter(v=>v.hp>0&&!(v.id===attack?.actorId&&ABILITIES[attack.ability].shape==='pattern')).flatMap(v=>v.intent?.cells.map(key)??[]));
-    const threatenedParty=new Set(b.units.filter(v=>v.side==='party'&&v.hp>0).flatMap(v=>occupiedHexes(v).map(key)).filter(id=>danger.has(id)));
+    const {occupied,danger,threatenedParty,actingDanger,attackCells}=battleWarnings(b,attack);
     const attackPlan=canAct&&aimed&&this.selected!=='move'?approachAttack(b,u!,this.selected,aimed,this.plan?.approach):undefined;
     const affected=attackPlan?new Set(shape(attackPlan.battle,attackPlan.actor,this.selected as AbilityId,attackPlan.aim).map(key)):canAct&&aimed&&this.selected!=='move'&&legalAim(b,u!,this.selected,aimed)?new Set(shape(b,u!,this.selected,aimed).map(key)):new Set<string>();
     const valves=this.selected!=='move'&&damagingAbility(this.selected)?b.fixtures?.filter(f=>f.kind==='valve'&&affected.has(key(f.hex)))??[]:[];
@@ -731,6 +729,7 @@ export class Adventure extends Phaser.Scene {
     const fill=(h:Hex,color:number,alpha:number)=>this.grid!.fillStyle(color,alpha).fillPoints(hexVertices(h).map(p=>new Phaser.Math.Vector2(p.x,p.y)),true);
     for(const h of cells()){
       const id=key(h);let color=0x182824,alpha=.12,stroke=0x938e68,width=1,priority=0;
+      const warning=threatenedParty.has(id)?partyWarningStyle(actingDanger.has(id)):undefined;
       const reachable=!!reachableHexes?.get(id)?.path.length;
       if(rallyCells.has(id)){color=0x727fca;alpha=.22;}
       if(b.water.has(id)){color=0x357e98;alpha=.46;stroke=0x87bbc9;priority=1;}
@@ -748,15 +747,15 @@ export class Adventure extends Phaser.Scene {
       if(u&&equal(h,u.hex)){color=0xf0d38c;alpha=.19;stroke=0xf2e0ac;width=3;priority=7;}
       if(aimed&&equal(h,aimed)){stroke=0xffffff;width=2;priority=9;}
       if(b.evacuation?.route.some(p=>equal(p,h))){stroke=0xf4cc72;width=Math.max(2,width);priority=8;if(alpha===.12){color=0xd7a548;alpha=.22;}}
-      // Keep danger visible under every threatened fighter, including the active
-      // character and allies inside a selected healing or attack footprint.
-      if(threatenedParty.has(id)){color=0xc23842;alpha=.6;stroke=0xff7770;width=3;priority=10;}
+      // The current fighter needs the strongest dodge warning; allies retain
+      // quieter warnings even inside a healing or attack preview.
+      if(warning){({color,alpha,stroke,width}=warning);priority=10;}
       if(attackCells.has(id)){color=attack!.impact?0xf0a34b:0xb65a38;alpha=attack!.impact ? .5 : .3;stroke=attack!.impact?0xffe1a1:0xffb16c;width=3;priority=11;}
       fill(h,color,alpha);outlines.push({hex:h,color:stroke,width,priority});
       if(danger.has(id)){
         if(reachable)this.hexPolygon(h,0,0,0x91d5df,2,6);
         const p=toPixel(h),x=Math.round(p.x/2)*2,y=Math.round((p.y-20)/2)*2;
-        this.grid.lineStyle(2,0xffd098,1);this.grid.lineBetween(x-4,y-4,x+4,y+4);this.grid.lineBetween(x-4,y+4,x+4,y-4);
+        this.grid.lineStyle(2,0xffd098,warning?.markerAlpha??1);this.grid.lineBetween(x-4,y-4,x+4,y+4);this.grid.lineBetween(x-4,y+4,x+4,y-4);
       }
       if(b.evacuation?.route.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(2,0xf4cc72,.95);this.grid.lineBetween(p.x-9,p.y+15,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+10,p.x+9,p.y+15);this.grid.lineBetween(p.x+3,p.y+20,p.x+9,p.y+15);}
       if(b.grounding?.plates.some(p=>equal(p,h))){const p=toPixel(h);this.grid.lineStyle(3,0xb7f0df,1);this.grid.lineBetween(p.x,p.y-9,p.x,p.y+7);for(let row=0;row<3;row++)this.grid.lineBetween(p.x-10+row*3,p.y+7+row*5,p.x+10-row*3,p.y+7+row*5);}
@@ -835,13 +834,14 @@ export class Adventure extends Phaser.Scene {
     const attackPlan=aimed&&this.selected!=='move'?approachAttack(b,u,this.selected,aimed,this.plan?.approach):undefined;
     if(attackPlan){b=attackPlan.battle;u=attackPlan.actor;aimed=attackPlan.aim;}
     if(!player){hint.textContent=`${u.name} is choosing a position.`;confirm.innerHTML='';return;}
+    const danger=battleWarnings(b).danger;
     hint.textContent=b.grounding&&!b.grounding.open?'Keeper shielded: occupy both blue earth plates together. The shield stays down afterward.':this.selected==='move'?(b.vents.size?(b.furnaceHeat?'Hot metal: 6 HP to ground fighters at round end.':'Orange vents: 6 HP to ground units at round end.')+' Move to an unmarked hex before the last turn. Blue hexes are reachable.':b.water.size?'Blue hexes are reachable. Water marked with waves costs 2 movement; dry ground costs 1. Crows fly over it.':'Blue hexes are reachable. Moving leaves your action available. Wait is available before moving.'):abilityFor(u!,this.selected,teamStatus(b,u,this.selected).partner).description;
     if(this.selected!=='move'&&this.selected!=='strike'&&approachAbility(u,this.selected))hint.textContent+=' Click an enemy to preview an approach and this skill together.';
     if(this.selected!=='move'&&abilityFor(u,this.selected).rank)hint.textContent=`Skill ${abilityFor(u,this.selected).rank}. `+hint.textContent;
     if(this.battlePresentation?.hint)hint.textContent=this.battlePresentation.hint(b)+' '+hint.textContent;
     const directHint=this.selected==='move'&&bossDirectHint(b);if(directHint)hint.textContent=directHint+' '+hint.textContent;
     if(movementOnly(b,u)&&this.selected==='move')hint.textContent=bonusAvailable(u)?'Attack spent. Shield bash is still available. Move once, or End turn (F).':'Attack spent. Move once, or End turn (F).';
-    if(this.selected==='move'&&b.units.some(v=>v.hp>0&&v.intent?.cells.length))hint.textContent+=' Red X marks an announced attack; red hexes mark threatened characters; blue interiors remain reachable.';
+    if(this.selected==='move'&&danger.size)hint.textContent+=' Red X marks an announced attack. Bright red marks the acting fighter, muted red marks allies; blue interiors remain reachable.';
     confirm.innerHTML='';
     if(this.selected!=='move'&&abilityFor(u!,this.selected).team&&teamStatus(b,u,this.selected).reason){
       const reason=teamStatus(b,u,this.selected).reason!;hint.textContent=reason;confirm.hidden=false;
@@ -856,7 +856,7 @@ export class Adventure extends Phaser.Scene {
     if(this.selected==='move'){
       const visit=movement(b,u).get(key(aimed));
       if(visit&&visit.path.length){if(this.plan)confirm.append(this.ui.button({label:`Confirm move · ${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''}`,action:()=>this.commitPlan()}));else{const text=document.createElement('span');text.className='prediction';text.textContent=`${visit.path.length} hexes${b.water.size?` · ${visit.cost}/${u.movement} movement`:''} · click to select`;confirm.append(text);}
-        if(b.units.some(v=>v.hp>0&&v.intent?.cells.some(h=>equal(h,aimed)))){const warning=document.createElement('span');warning.className='prediction';warning.textContent='Threatened destination · an enemy has marked this hex.';const preview=confirm.querySelector('.prediction');if(preview)preview.append(' '+warning.textContent);else confirm.append(warning);}
+        if(danger.has(key(aimed))){const warning=document.createElement('span');warning.className='prediction';warning.textContent='Threatened destination · an enemy has marked this hex.';const preview=confirm.querySelector('.prediction');if(preview)preview.append(' '+warning.textContent);else confirm.append(warning);}
       }
       else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Outside movement range.';confirm.append(text);}
     }else if(legalAim(b,u,this.selected,aimed)){
@@ -868,7 +868,7 @@ export class Adventure extends Phaser.Scene {
       if(this.plan)confirm.append(this.ui.button({label:attackPlan?.visit?`Confirm move + ${this.selected==='strike'?'strike':ability.name}`:ability.heal?'Confirm healing':ability.effect==='rally'||ability.effect==='guard'||ability.effect==='weaken'||ability.effect==='focus'||ability.effect==='taunt'||ability.effect==='shove'?'Confirm ability':'Confirm attack',action:()=>this.commitPlan()}));
       const contributions=team?[u,team].map(fighter=>{const solo=abilityFor(fighter,teamSolo(fighter.kind,this.selected as AbilityId)!);return `${solo.name}${solo.rank?` ${solo.rank}`:''}`;}).join(' + '):'';
       const protection=this.selected==='daybreak'?daybreakProtection(u,team):undefined;
-      const text=document.createElement('span');text.className='prediction';text.textContent=(attackPlan?.visit?`Move ${attackPlan.visit.path.length} hexes (${attackPlan.visit.cost}/${u.movement} movement), then ${this.selected==='strike'?'strike':`use ${ability.name}`}. ${b.units.some(v=>v.hp>0&&v.intent?.cells.some(h=>equal(h,attackPlan.visit!.hex)))?'Threatened destination. ':''}${b.vents.has(key(attackPlan.visit.hex))?'Steam / hot metal destination. ':''}`:'')+(team?`${u.name} + ${team.name} · both actions · ${ability.team!.cost} focus each. ${contributions}. `:'')+description+(ability.ward&&!protection?` · ${ability.ward.party?'All allies':u.name}: up to ${ability.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5)} guard`:'')+(protection?` · all enemies target ${protection.vanguard.name}${protection.power?` · ${protection.party?'All allies':protection.vanguard.name}: up to ${protection.power} guard`:''}`:'');confirm.append(text);
+      const text=document.createElement('span');text.className='prediction';text.textContent=(attackPlan?.visit?`Move ${attackPlan.visit.path.length} hexes (${attackPlan.visit.cost}/${u.movement} movement), then ${this.selected==='strike'?'strike':`use ${ability.name}`}. ${danger.has(key(attackPlan.visit!.hex))?'Threatened destination. ':''}${b.vents.has(key(attackPlan.visit.hex))?'Steam / hot metal destination. ':''}`:'')+(team?`${u.name} + ${team.name} · both actions · ${ability.team!.cost} focus each. ${contributions}. `:'')+description+(ability.ward&&!protection?` · ${ability.ward.party?'All allies':u.name}: up to ${ability.ward.power+Math.floor(Math.max(0,(u.level??1)-1)*1.5)} guard`:'')+(protection?` · all enemies target ${protection.vanguard.name}${protection.power?` · ${protection.party?'All allies':protection.vanguard.name}: up to ${protection.power} guard`:''}`:'');confirm.append(text);
     }else{const text=document.createElement('span');text.className='prediction invalid-target';text.textContent='Out of range or blocked.';confirm.append(text);}
     if(this.plan){
       confirm.append(this.ui.button({label:'Cancel',action:()=>this.cancelPlan()}));
@@ -933,6 +933,7 @@ export class Adventure extends Phaser.Scene {
   private animateBattle(before:BattleSnapshot,action?:BattleMotion) {
     const battle=this.battle!,valid=()=>this.battle===battle&&this.mode==='battle';
     const actor=battle.units.find(u=>u.id===action?.actorId),hero=actor?.appearance??actor?.kind;
+    if(actor&&action?.ability&&action.affected&&ABILITIES[action.ability].shape==='pattern')action={...action,affected:patternDisplayCells(battle,actor,action.affected)};
     const from=actor?toPixel(action?.path&&action.ability?actor.hex:before.get(actor.id)?.hex??actor.hex):undefined,to=action?toPixel(action.aim):undefined;
     const face=hero&&walkingHero(hero)&&from&&to?facingAsset(hero,to.x-from.x,to.y-from.y):undefined;
     if(face&&actor)this.battleFaces.set(actor.id,face);

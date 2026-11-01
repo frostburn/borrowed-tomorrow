@@ -35,11 +35,11 @@ describe('confirmed approach for adjacent attacks',()=>{
    expect(legalAim(b,u,id,plan.aim)).toBe(true);
   }
  });
- it('approaches the nearest contact of a large enemy and applies an area only once',()=>{
+ it('approaches the clicked contact of a large enemy and applies an area only once',()=>{
   for(const id of ['crush','bash','sweep','repulse']as const){
    const {b,u,enemy}=yard(id);enemy.footprint=[{q:0,r:0},{q:-1,r:1},{q:0,r:1}];
    const contacts=occupiedHexes(enemy),plan=approachAttack(b,u,id,contacts[2])!;
-   expect(plan.visit).toBeTruthy();expect(contacts.some(h=>distance(h,plan.actor.hex)===1)).toBe(true);
+   expect(plan.visit).toBeTruthy();expect(distance(contacts[2],plan.actor.hex)).toBe(1);
    expect(targets(plan.battle,plan.actor,id,plan.aim).filter(v=>v.id===enemy.id)).toHaveLength(1);
    const hp=enemy.hp,predicted=id==='bash'?0:damage(plan.actor,plan.battle.units.find(v=>v.id===enemy.id)!,id);
    expect(move(b,u,plan.visit!.hex)).toBeTruthy();expect(cast(b,u,id,plan.aim)).toBe(true);expect(enemy.hp).toBe(hp-predicted);
@@ -72,4 +72,12 @@ describe('confirmed approach for adjacent attacks',()=>{
   const {b,u,enemy}=yard();for(const id of ['quickshot','steam','taunt','heal','crossfire','daybreak']as const)expect(approachAttack(b,u,id,enemy.hex)).toBeUndefined();
   expect(approachAttack(b,u,'sweep',offset(8,6))).toBeUndefined();expect(approachAttack(b,u,'crush',offset(8,6))).toBeUndefined();
  });
+});
+
+for(const id of ['crush','bash','sweep','repulse']as const)it(`${id} approaches the chosen side even when another body contact is already adjacent`,()=>{
+ const {b,u,enemy}=yard(id);u.hex=offset(4,3);u.movement=8;enemy.footprint=[{q:0,r:0},{q:1,r:0},{q:2,r:0}];
+ const clicked=occupiedHexes(enemy)[2],before=structuredClone(b),plan=approachAttack(b,u,id,clicked)!;
+ expect(plan.visit).toBeTruthy();expect(distance(plan.actor.hex,clicked)).toBe(1);expect(b).toEqual(before);
+ for(const h of occupiedHexes(enemy))if(!equal(h,clicked))expect(distance(u.hex,h)).toBeLessThan(distance(u.hex,clicked));
+ expect(targets(plan.battle,plan.actor,id,plan.aim).filter(v=>v.id===enemy.id)).toHaveLength(1);
 });

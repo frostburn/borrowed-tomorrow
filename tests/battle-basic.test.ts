@@ -65,10 +65,10 @@ it('routes around cover and allies using movement costs, retaining a chosen dest
  expect(basicStrike(b,u,enemy.hex,plan.visit!.hex)?.visit).toEqual(plan.visit);expect(b).toEqual(before);
  b.obstacles.add(key(plan.visit!.hex));expect(basicStrike(b,u,enemy.hex,plan.visit!.hex)).toBeUndefined();
 });
-it('finds an adjacent contact of a large enemy even when the clicked contact is farther away',()=>{
+it('approaches the particular clicked contact of a large enemy',()=>{
  const {b,u,enemy}=yard();b.queue=[u.id];u.movement=10;enemy.footprint=[{q:0,r:0},{q:-1,r:1},{q:0,r:1}];
- const plan=basicStrike(b,u,occupiedHexes(enemy)[2])!;
- expect(occupiedHexes(enemy).some(h=>distance(h,plan.actor.hex)===1)).toBe(true);
+ const clicked=occupiedHexes(enemy)[2],plan=basicStrike(b,u,clicked)!;
+ expect(distance(clicked,plan.actor.hex)).toBe(1);expect(plan.aim).toEqual(clicked);
  expect(legalAim(plan.battle,plan.actor,'strike',plan.aim)).toBe(true);
 });
 it('does not offer an approach when the strike would violate Taunt or the active turn',()=>{
@@ -86,4 +86,13 @@ it('forecasts a shield opened by the approach using ordinary movement rules',()=
  expect(plan.battle.grounding!.open).toBe(true);expect(plan.battle.units.find(v=>v.id===enemy.id)!.sealed).toBe(false);
  expect(b).toEqual(before);move(b,u,destination);const hp=enemy.hp;cast(b,u,'strike',plan.aim);
  expect(enemy.hp).toBe(hp-damage(plan.actor,plan.battle.units.find(v=>v.id===enemy.id)!,'strike'));
+});
+
+it('walks around a large body to the clicked side and rejects an unreachable contact without choosing another',()=>{
+ const {b,u,enemy}=yard();b.queue=[u.id];u.movement=10;u.hex=offset(6,3);enemy.footprint=[{q:0,r:0},{q:1,r:0},{q:2,r:0}];
+ const near=enemy.hex,far=occupiedHexes(enemy)[2],before=structuredClone(b),plan=basicStrike(b,u,far)!;
+ expect(basicStrike(b,u,near)!.visit).toBeUndefined();expect(plan.visit).toBeTruthy();expect(plan.aim).toEqual(far);expect(distance(plan.actor.hex,far)).toBe(1);expect(b).toEqual(before);
+ expect(basicStrike(b,u,far,u.hex)).toBeUndefined();
+ const body=new Set(occupiedHexes(enemy).map(key));for(const h of neighbors(far))if(!body.has(key(h)))b.obstacles.add(key(h));
+ expect(basicStrike(b,u,far)).toBeUndefined();expect(basicStrike(b,u,near)!.visit).toBeUndefined();
 });

@@ -2,6 +2,7 @@ import { STAGED as line,type Dialogue } from '../../dialogue';
 import { stage } from '../../maps';
 import type { GameState,MapId } from '../../../rules/state';
 import {IMPERIAL_WALK_MS,IMPERIAL_UNFOLD_MS} from '../../imperial-entry';
+import {CAPITAL_SKY,CAPITAL_SKY_FOCUS} from '../../capital-horizon';
 const scene=(s:GameState,map:MapId,id:string,title:string,lines:Dialogue['lines']):Dialogue=>({scene:{id,title,actors:stage(map,id).filter(a=>a.id!=='nell'||s.flags.nellRecovered||id==='six-lightbearer-fall').map(a=>a.id==='nell'&&!s.flags.nellRecovered?{...a,face:'nell-ill'}:a)},lines});
 export const street=(s:GameState)=>scene(s,'stillcity','six-capital-street','Stillwater Avenue',[
  line('Stillwater Avenue','A woman pulls her cart beneath the arch. A cloth slips from the load. She turns, and the cloth is folded on top again.',{focus:{x:32,y:25},cut:true}),
@@ -146,8 +147,8 @@ export const lost=(s:GameState)=>scene(s,'crown','six-lightbearer-fall','The las
  line('Celia','Kit. Put the lantern down.',{expression:'sad'}),
  line('The platform','He sets it beside her hand. Celia does not ask him to move away.'),
 ]);
-export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city lands',actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
- line('The allied quay','The last terrace settles on its old foundations. Above it, the hollow sun opens across a dark strip of sky.',{focus:{x:32,y:14},cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
+export const landing=(s:GameState):Dialogue=>({scene:{id:'six-capital-landing',title:'The city lands',sky:CAPITAL_SKY,actors:[...stage('capitalquay','six-capital-quay').filter(a=>a.id!=='nell'||s.flags.nellRecovered)]},lines:[
+ line('The allied quay','The last terrace settles on its old foundations. Above it, the hollow sun opens across a dark strip of sky.',{focus:CAPITAL_SKY_FOCUS,cut:true,effect:'capital-horizon',duration:1600,cue:'resonance'}),
  line('Alda','The last ward boat’s in. Skeld’s pilots are checking the lower streets.',{focus:{x:34,y:25},cut:true}),
  line('Celia','The man behind the screen is with the medical crew. He asked for breakfast.'),
  line('Orrin','The broken vessel’s still connected to something above it. The old hospice diagram had this same opening.'),

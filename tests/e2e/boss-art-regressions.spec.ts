@@ -23,7 +23,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
      const p=bossPlacement(dragon),presentation=winterDragonPresentation({id:'winter-dragon'} as Parameters<typeof winterDragonPresentation>[0]);
      const alpha=async(name:string)=>{const img=new Image();img.src=`/art/vector/chapter-six/${name}.svg`;await img.decode();const c=document.createElement('canvas');c.width=528;c.height=280;const ctx=c.getContext('2d')!;ctx.drawImage(img,0,0);return ctx.getImageData(264,264,1,1).data[3];};
      const body=await Promise.all(['winter-dragon','dragon-inhale','dragon-breath','dragon-shatter'].map(alpha));
-     return {body,shadow:await alpha('dragon-shadow'),gap:!!presentation.pick!(battle,'basic',p.x,p.y-16),torso:!!presentation.pick!(battle,'basic',p.x,p.y-100)};
+     return {body,shadow:await alpha('dragon-shadow'),gap:!!presentation.pick!(battle,'strike',p.x,p.y-16),torso:!!presentation.pick!(battle,'strike',p.x,p.y-100)};
     });
     expect(separation.body).toEqual([0,0,0,0]);expect(separation.shadow).toBeGreaterThan(0);
     expect(separation.gap).toBe(false);expect(separation.torso).toBe(true);
