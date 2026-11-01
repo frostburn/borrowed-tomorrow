@@ -317,8 +317,30 @@ BT_PRODUCTION=1 npx playwright test --grep 'production panel confirmation'
 ```
 
 The max-level layout cases cover all five characters and desktop, fractional-DPR
-phone and 320px phone layouts. Detailed menu cases remain outside the default
+landscape phones and short landscape phone layouts. Detailed menu cases remain outside the default
 browser CI selection.
+
+### Landscape phone console
+
+Phone play uses the available landscape viewport at CSS scale 1, with safe-area
+insets excluded. The world and battlefield sit to the left of a fixed control
+panel. The shared framebuffer stays on its two-pixel lattice; phones present a
+CSS-pixel-sized bitmap with nearest sampling instead of making an extra full-DPR
+copy. Desktop retains the 1024 × 768 composition and device-pixel presentation.
+
+Portrait shows a rotation gate and makes the game DOM inert. Phaser scene
+timers, tweens, movement and enemy turns pause until landscape returns; rotating
+does not replace the save, dialogue, selected skill or pending confirmation.
+The notch/home indicator, resize, hit targets and Phaser viewport all use the
+same layout measurement. Phone battle cameras pan on both axes, with four
+buttons and touch dragging; a drag never selects a hex or spends an action.
+Keyboard shortcut labels are omitted visually on phone buttons to leave room
+for skill names, while shortcuts and accessible labels remain available.
+
+Browser phone fixtures use landscape. The existing critical phone smoke covers
+real healing, rotation with a pending confirmation, touch panning, inventory and
+the full late-game command list. Detailed menu/device checks remain opt-in.
+CI retains screenshot evidence as the `browser-screenshots` artifact.
 
 
 ## Cutscene dialogue placement

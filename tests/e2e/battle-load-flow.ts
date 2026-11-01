@@ -40,7 +40,7 @@ export function battleLoadFlows(production=false){
    expect(errors).toEqual([]);
   });
   test('failed battle imports remain playable and retry without browser storage',async({page})=>{
-   await page.setViewportSize({width:390,height:844});
+   await page.setViewportSize({width:844,height:390});
    await page.addInitScript(()=>Object.defineProperty(indexedDB,'open',{value:()=>{throw new Error('Storage blocked');}}));
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto('/');await pursuit(page);

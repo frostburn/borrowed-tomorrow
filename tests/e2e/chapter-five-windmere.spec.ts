@@ -3,7 +3,7 @@ import { anchorCheckpoint,anchorDeparture,windmereCheckpoint } from '../support/
 import { importSave,approach,travel } from './navigation';
 import { battle,capture,dialogue,inspect,nativeScene } from './controls';
 async function fastBattle(page:Page){await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await page.getByRole('button',{name:'Win battle',exact:true}).click();await expect(page.getByRole('heading',{name:'The line is clear',exact:true})).toBeVisible();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();}
-for(const [previous,device,viewport]of [['none','desktop',{width:1280,height:800}],['both','phone',{width:390,height:844}]]as const){
+for(const [previous,device,viewport]of [['none','desktop',{width:1280,height:800}],['both','phone',{width:844,height:390}]]as const){
  test(`@journey Act III Windmere ${previous==='none'?'first':'third'} on ${device}`,async({page})=>{
   test.setTimeout(600000);page.setDefaultTimeout(15000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const before=previous==='none'?anchorCheckpoint('firstFlightSeen'):windmereCheckpoint('windmereSeen','both');delete before.flags.windmereSeen;before.location={map:'airship',x:32,y:26};before.activeParty=['nell','celia','petra'];

@@ -6,7 +6,7 @@ test.setTimeout(60000);
 const signature=async(page:Page)=>JSON.stringify((await inspect(page)).people.map(p=>[p.id,p.x,p.y,p.texture,p.frame]));
 const bitmap=(page:Page,selector='.phaser-host canvas')=>page.locator(selector).evaluate((c:HTMLCanvasElement)=>c.toDataURL());
 
-for(const [name,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`people move with a parked cursor, freeze for collection and settle for reduced motion on ${name}`,async({browser})=>{
+for(const [name,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`people move with a parked cursor, freeze for collection and settle for reduced motion on ${name}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{

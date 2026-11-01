@@ -51,7 +51,7 @@ async function openingRay(page:Page){
  });
 }
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test(`Chapter Five blocked ! and exit marks render grey and unlock on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
   page.on('pageerror',e=>errors.push(e.message));

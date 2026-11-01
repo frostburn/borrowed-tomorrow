@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-for(const viewport of [{width:1280,height:800},{width:390,height:844}])test(`sound choice survives visits at ${viewport.width}px`,async({page})=>{
+for(const viewport of [{width:1280,height:800},{width:844,height:390}])test(`sound choice survives visits at ${viewport.width}px`,async({page})=>{
  await page.setViewportSize(viewport);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await page.getByRole('button',{name:'Start adventure with sound',exact:true}).click();
  await expect(page.getByRole('button',{name:'Sound on',exact:true})).toBeVisible();await expect(page.locator('.dialogue')).toBeVisible();

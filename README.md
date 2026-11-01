@@ -49,7 +49,10 @@ workshop, canonical starts and battle cheats.
 | Confirm battle action | Confirmation button or Enter |
 | Defend / wait | F / W |
 
-Phones have movement and battlefield-pan controls. Dialogue advances at your
+On phones, rotate to **landscape**. The world sits beside a fixed control panel;
+drag the battlefield or use its four pan buttons to reach distant hexes.
+Portrait orientation pauses the game and asks you to rotate, preserving your
+current dialogue, turn and target. Dialogue advances at your
 pace; cinematics can be paused or skipped. Reduced-motion settings provide
 cuts and still poses. The sound on/off preference is remembered in this
 browser; use the Sound button to change it. The **?** menu includes the

@@ -41,7 +41,7 @@ async function crispLabels(page:Page){
  }).toBe(0);
 }
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test(`HP and status glyphs stay exact on alternating hex rows on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
   try{

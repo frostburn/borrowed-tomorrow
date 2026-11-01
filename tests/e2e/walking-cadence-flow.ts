@@ -5,7 +5,7 @@ import {capture,inspect} from './controls';
 
 type Probe={active:boolean;frames:{time:number;x:number;y:number}[]};
 export function walkingCadenceFlows(production=false){
- for(const [map,viewport,dpr]of [['coast',{width:1280,height:800},1],['relayhall',{width:1280,height:800},1],['conduit',{width:390,height:844},1.25]]as const){
+ for(const [map,viewport,dpr]of [['coast',{width:1280,height:800},1],['relayhall',{width:1280,height:800},1],['conduit',{width:844,height:390},1.25]]as const){
   test(`${production?'production ':''}walking cadence in ${map}`,async({browser})=>{
    const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'no-preference'}),page=await context.newPage();
    try{

@@ -6,7 +6,7 @@ import {chapterFiveStart} from '../../src/dev/canonical-saves';
 import {newSkillBook} from '../../src/rules/skills';
 
 export function automaticSkillFlows(production=false){
- for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
   test.describe(`${production?'production':'development'} automatic skills ${device}`,()=>{
    test.use({viewport,deviceScaleFactor});test.setTimeout(90_000);
    test('current saves receive read-only level progression with keyboard-accessible effects',async({page})=>{

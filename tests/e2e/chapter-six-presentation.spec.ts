@@ -9,7 +9,7 @@ const frame=(page:import('@playwright/test').Page)=>page.evaluate(()=>{
  const c=document.querySelector<HTMLCanvasElement>('.pixel-output')!,d=c.getContext('2d')!.getImageData(0,0,c.width,c.height).data;
  let hash=2166136261;for(let i=0;i<d.length;i+=4)hash=Math.imul(hash^d[i],16777619);return hash>>>0;
 });
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test(`Chapter Six ${device}: gallery lattice, supported lamps and a short taunt label`,async({browser})=>{
   const context=await browser.newContext({viewport,reducedMotion:'reduce'}),page=await context.newPage();
   try{
@@ -55,7 +55,7 @@ test('rest shelters and one-time report rewards have distinct markers and labels
  await approach(page,'namar-post-sent');await expect(page.locator('.dialogue')).toContainText('Your report has gone to Dena');await capture(page,'rest-and-reward-markers');
 });
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`court fountain, rooftop framing and post-serpent return on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`court fountain, rooftop framing and post-serpent return on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   const s=desertCheckpoint('desertSealBroken');s.location=arrival('sunpalace','start');await page.goto('/');await importSave(page,s);await page.mouse.move(0,0);

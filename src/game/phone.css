@@ -1,0 +1,102 @@
+/* Phone play is a landscape console. These rules follow the shared styles. */
+#screen-insets{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.pan-vertical{display:none}
+.sound-compact{display:none}
+.world-input{touch-action:none}
+.toast{pointer-events:none}
+.phone-layout .toast{top:4px;bottom:auto;left:8px;transform:none;max-width:max(160px,calc(100% - 364px))}
+.orientation-gate{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;padding:32px max(24px,env(safe-area-inset-left));background:#080f19;color:#f4e5be;text-align:center}
+.orientation-gate h2{max-width:320px;line-height:28px}
+.orientation-gate p{font:10px/18px SwitchyardCompact,monospace;max-width:280px}
+.orientation-gate .rotate-detail{color:#87a3a2}
+.rotate-phone{width:104px;height:60px;border:3px solid #b8a780;border-radius:8px;display:grid;place-items:center;font:40px/48px Switchyard,monospace;color:#f4c77a}
+.phone-layout .game-shell{grid-template-columns:minmax(0,1fr) var(--phone-sidebar);grid-template-rows:40px 24px minmax(0,1fr) 16px}
+.phone-layout .topbar{grid-column:1/-1;flex-direction:row;justify-content:space-between;gap:8px;padding:0 8px}
+.phone-layout .brand{gap:0}.phone-layout .brand h1{font:20px/24px Switchyard,monospace}.phone-layout .brand span{display:none}
+.phone-layout .topbar nav{gap:4px}.phone-layout .topbar button{font:10px/12px SwitchyardCompact,monospace;min-height:36px;padding:4px 6px}
+.phone-layout .sound-wide{display:none}.phone-layout .sound-compact{display:inline}
+.phone-layout .button-key{display:none}
+.phone-layout #sound-button{max-width:92px;white-space:normal}
+.phone-layout .initiative{grid-column:1/-1;min-height:0}
+.phone-layout .stage-wrap{grid-column:1;grid-row:3}
+.phone-layout .game-shell.inventory-open{grid-template-columns:minmax(0,1fr);grid-template-rows:40px 24px minmax(0,1fr) 16px}
+.phone-layout .inventory-open .stage-wrap{grid-column:1/-1}
+.phone-layout .controls{grid-column:2;grid-row:3;border-top:0;border-left:1px solid #b8a780;min-height:0;min-width:0;flex-direction:column;flex-wrap:nowrap}
+.phone-layout footer{grid-column:1/-1;grid-row:4}.phone-layout footer a{display:none}
+.phone-layout .world-party{flex:0 0 60px;width:100%;height:60px;gap:4px;padding:4px;border-right:0;border-bottom:1px solid #625842;justify-content:space-around}
+.phone-layout .world-hero{min-width:0;flex:1;gap:4px;justify-content:center}
+.phone-layout .world-hero img{width:40px;height:40px;object-fit:contain}
+.phone-layout .world-hero strong{font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .world-hero small{font:10px/12px SwitchyardCompact,monospace;margin-top:4px;white-space:nowrap}
+.phone-layout .world-party[data-size="3"]{height:60px}
+.phone-layout .world-party[data-size="3"] .world-hero{display:block;text-align:center}
+.phone-layout .world-party[data-size="3"] .world-hero img{display:none}
+.phone-layout .world-objective{flex:1;align-self:stretch;min-height:0;padding:12px;overflow:auto}
+.phone-layout .world-objective h3{font:10px/14px SwitchyardCompact,monospace;margin-bottom:8px}
+.phone-layout .world-objective p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .world-actions{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px;width:100%;flex:0 0 auto;padding:8px;border-top:1px solid #625842}
+.phone-layout .world-actions .dpad{display:grid;gap:4px}
+.phone-layout .dpad button{width:40px;height:40px;min-height:40px;padding:4px;font:20px/24px Switchyard,monospace}
+.phone-layout .interact-action button{min-height:44px;white-space:normal;font:10px/14px SwitchyardCompact,monospace;padding:8px}
+.phone-layout .battle-controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:60px minmax(0,1fr)}
+.phone-layout .battle-controls .identity{display:flex;gap:8px;flex-basis:auto;min-width:0;overflow:hidden;padding:2px 8px;border-right:0;border-bottom:1px solid #625842}
+.phone-layout .battle-controls .identity img{width:48px;height:48px;object-fit:contain}
+.phone-layout .identity h2{font:10px/12px SwitchyardCompact,monospace;margin:0 0 4px}
+.phone-layout .identity .bar{display:none}
+.phone-layout .identity .role{display:block;font:10px/12px SwitchyardCompact,monospace;max-height:12px;overflow:auto;margin:0 0 4px}
+.phone-layout .battle-controls .vitals{display:flex;flex-wrap:wrap;gap:4px 12px}
+.phone-layout .battle-controls .command-panel{min-height:0;padding:4px;grid-template-rows:minmax(0,1fr) 72px;gap:4px}
+.phone-layout .battle-controls .command-list{gap:0}
+.phone-layout .battle-controls .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--phone-action-gap);align-content:start}
+.phone-layout .battle-controls .actions button{min-width:0;min-height:var(--phone-action-height);padding:4px;font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .confirmation{grid-template-rows:minmax(0,1fr) 40px;gap:4px}
+.phone-layout .battle-controls .confirmation button{padding:4px;min-height:40px;font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .confirmation .prediction{font:10px/14px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .skill-badge{margin-left:2px;padding:0 2px}
+.phone-layout .battle-pan,.phone-layout .boss-battle .battle-pan{top:auto;bottom:8px;right:8px;gap:4px;padding:4px}
+.phone-layout .battle-pan button{display:block;width:36px;height:36px;font:20px/24px Switchyard,monospace;padding:4px}
+.phone-layout .dialogue,.phone-layout .cinematic .dialogue{gap:8px;padding:8px;min-height:0;max-height:calc(100% - 48px);overflow:auto}
+.phone-layout .dialogue-portrait{width:82px;height:82px;flex-basis:82px;align-self:flex-start}
+.phone-layout .dialogue-portrait img{width:80px;height:80px;object-fit:contain}
+.phone-layout .dialogue-copy{padding-right:0}
+.phone-layout .dialogue h2{font:10px/12px SwitchyardCompact,monospace;margin-bottom:8px}
+.phone-layout .dialogue-copy p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .dialogue-actions{gap:4px;margin-top:8px}
+.phone-layout .dialogue-actions button{font:10px/12px SwitchyardCompact,monospace;min-height:40px;padding:6px 8px}
+.phone-layout .dialogue-linear,.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-linear{height:176px}
+.phone-layout .dialogue-linear .dialogue-actions button{width:112px;min-height:40px}
+.phone-layout .dialogue-linear .dialogue-page{left:12px;bottom:18px}
+.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-portrait{width:82px;height:82px;flex-basis:82px}
+.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-portrait img{width:80px;height:80px}
+.phone-layout .cinema-bar{height:40px;padding:0 8px}.phone-layout .cinema-bar button{min-height:36px}
+.phone-layout .cinema-document{top:44px;padding:8px;max-height:calc(100% - 52px);overflow:auto}
+.phone-layout .cinema-document h3,.phone-layout .cinema-document p{font:10px/14px SwitchyardCompact,monospace;margin-bottom:4px}
+.phone-layout .scene-panel{padding:16px;max-height:calc(100% - 16px);overflow:auto}
+.phone-layout .scene-panel h2{font:20px/24px Switchyard,monospace;margin-bottom:8px}
+.phone-layout .scene-panel p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .panel-actions{margin-top:12px;gap:8px}.phone-layout .panel-actions button{min-height:40px;white-space:normal;font:10px/14px SwitchyardCompact,monospace}
+.phone-layout .title-panel .panel-actions{display:flex;flex-wrap:wrap}
+.phone-layout .modal-backdrop{padding:8px}.phone-layout .modal{width:min(880px,100%)}
+.phone-layout .modal header{flex-shrink:0;padding:4px 12px;min-height:44px}
+.phone-layout .modal header h2{font:20px/24px Switchyard,monospace}.phone-layout .close-modal{min-width:40px;min-height:36px}
+.phone-layout .modal-content{padding:12px;min-height:0;overflow:auto}
+.phone-layout .modal-content p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .modal-actions{flex-shrink:0;padding:4px 12px 12px}.phone-layout .modal-actions button,.phone-layout .slot-buttons button{font:10px/14px SwitchyardCompact,monospace;min-height:40px}
+.phone-layout .save-row{gap:12px;padding:8px 0}.phone-layout .save-row p{max-width:380px}
+.phone-layout .campaign-inventory .ci-grid{display:grid;grid-template-columns:184px minmax(0,1fr);gap:16px}
+.phone-layout .ci-character{display:grid;grid-template-columns:80px minmax(0,1fr);align-content:start;gap:8px}
+.phone-layout .ci-character>*{grid-column:1/-1}
+.phone-layout .ci-character>img{grid-column:1;grid-row:1;width:80px;height:80px;object-fit:contain;margin:0;float:none}
+.phone-layout .ci-character h2{grid-column:2;grid-row:1;align-self:center;font:20px/24px Switchyard,monospace;margin:0}
+.phone-layout .ci-character h2 small{display:block;margin-top:8px}
+.phone-layout .ci-character>p{grid-column:1/-1;margin:0}
+.phone-layout .ci-character>.ci-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;gap:4px}
+.phone-layout .ci-character .ci-slot{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+.phone-layout .campaign-inventory button{min-height:40px}
+.phone-layout .ending-controls{padding:8px;gap:12px;overflow:auto}
+.phone-layout .ending-controls h2{font:20px/24px Switchyard,monospace}
+.phone-layout .ending-controls p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .ending-controls .panel-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:0}
+.phone-layout .ending-controls button{min-height:40px;font:10px/12px SwitchyardCompact,monospace;padding:4px}
+.phone-layout .ending-controls .ending-keys{display:none}
+@media(max-width:700px){.phone-layout .brand h1{font:10px/12px SwitchyardCompact,monospace}}

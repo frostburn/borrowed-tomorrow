@@ -24,7 +24,7 @@ async function advanceTo(page:Page,text:string){
  throw Error(`Missing dialogue: ${text}`);
 }
 export function openIssueFlows(production=false){
- for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
   test.describe(`${production?'production':'development'} sound and lantern ${device}`,()=>{
    test.use({viewport,deviceScaleFactor});
    test('remembered sound clearly waits for input and the sound button cancels it',async({page})=>{

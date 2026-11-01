@@ -16,7 +16,7 @@ async function ready(page:Page){await expect.poll(async()=>(await inspect(page))
 async function moveTo(page:Page,col:number,row:number){
  await page.getByRole('button',{name:/^1\s+Move \/ Strike$/}).click();await clickHex(page,offset(col,row));await page.getByRole('button',{name:/^Confirm move/}).click();await ready(page);
 }
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test(`conduit boss previews both routes, targets three contacts and preserves the campaign on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
   try{

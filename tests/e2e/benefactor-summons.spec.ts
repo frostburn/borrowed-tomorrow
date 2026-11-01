@@ -8,7 +8,7 @@ async function choose(page:Page,label:string){
  while(await next.count())await next.click();
  await page.locator('.dialogue-actions').getByRole('button',{name:label,exact:true}).click();
 }
-for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,false],['phone',{width:390,height:844},1.25,true]]as const)test.describe(`final reinforcements on ${device}`,()=>{
+for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,false],['phone',{width:844,height:390},1.25,true]]as const)test.describe(`final reinforcements on ${device}`,()=>{
  test.use({viewport,deviceScaleFactor:dpr,reducedMotion:reduced?'reduce':'no-preference'});
  for(const [form,label]of [[1,'Campaign · hollow sun'],[2,'Campaign · exposed heart']]as const)test(`${label} reveals summoned actors at impact and restart removes them`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});

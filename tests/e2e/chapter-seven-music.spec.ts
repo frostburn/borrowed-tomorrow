@@ -1,6 +1,6 @@
 import { test,expect } from '@playwright/test';
 const cues=[["hollowsill", "Under the Hanging Sea"], ["takenwater", "The Bell’s Second Note"], ["firstfield", "The First Good Year"], ["quietward", "You May Leave"], ["seasonstreet", "Snow on the Postal Stair"], ["lastrefuge", "The Unwritten Hour"], ["sunthrone", "The Empty Channels"], ["homecoming", "One Train without Us"], ["seaholiday", "Until Evening"], ["domain-battle", "The Road We Know"], ["harvest-battle", "The Uncut Row"], ["hospice-battle", "Discharge the Patient"], ["seasons-battle", "The Winter Kept Here"], ["benefactor", "The God Who Lent Tomorrow"], ["hollow-sun", "The Broken Meridian"], ["unborrowed", "Tomorrow"]]as const;
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Chapter Seven music controls on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`Chapter Seven music controls on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});await page.getByRole('button',{name:'Ch 7',exact:true}).click();

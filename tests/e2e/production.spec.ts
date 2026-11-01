@@ -1,4 +1,7 @@
-import {battleMenuFlows} from './battle-menu-flow';
+import {battleMenuFlows,commandsFit} from './battle-menu-flow';
+import {phoneConsole} from './phone-layout-flow';
+import {newSkillBook} from '../../src/rules/skills';
+import {restoreParty} from '../../src/rules/state';
 battleMenuFlows(true);
 import {walkingCadenceFlows} from './walking-cadence-flow';
 walkingCadenceFlows(true);
@@ -29,7 +32,7 @@ import {chapterTwoStart,chapterThreeStart,chapterFourStart,chapterFiveStart,chap
 import { economyFlows } from './economy-flow';
 economyFlows(true);
 
-for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test.describe(`packed distribution on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor});
   test('packed chapter data restores all seven chapters and loads scores only when sound is enabled',async({page})=>{
@@ -65,6 +68,7 @@ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:8
 }
 
 test('@ci production ignores all workshop routes and omits its controls and progression', async ({ page }) => {
+  await page.setViewportSize({width:844,height:390});
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   for (const route of ['combat', 'workshop', 'inventory', 'music', 'sprites', 'animation', 'maps', 'boss']) {
     await page.goto(`/?dev=${route}`);
@@ -96,9 +100,19 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
+  // The release engine must present the same usable landscape console, with
+  // the full command list and no development strip over the pan controls.
+  const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
+  await importSave(page,late);await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
+  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);
+  await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
+  await expect(page.locator('#toast')).toBeHidden();
+  await capture(page,'phone-landscape-production');await page.getByRole('button',{name:/Prism lance$/}).click();await capture(page,'phone-landscape-production-skill');
+  expect(errors).toEqual([]);
 });
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`${device==='desktop'?'@ci ':''}production campaign inventory equips and saves individual loadouts on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.goto('/');
@@ -118,7 +132,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 }
 
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`production Chapter Two recruits only Kit and preserves equipment and formation on ${device}`,async({page})=>{
 
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');await importSave(page,checkpoint('chapterOneComplete'));
@@ -135,7 +149,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 }
 
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`production Chapter Three keeps Tomas safe and equipment through the departure on ${device}`,async({page})=>{
 
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
@@ -154,7 +168,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`production extraction console from the saved east side on ${device}`,async({page})=>{
 
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -192,7 +206,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  });
 }
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`production Chapter Four preserves the roster and completes the new anchor departure on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const old=palaceCheckpoint('chapterThreeComplete');old.activeParty=['nell','petra','kit'];old.party[1].hp=17;old.party[1].focus=2;equipItem(old.inventory,'nell','silver-reflector');
@@ -209,7 +223,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
  });
 }
 
-for(const [route,viewport,dpr] of [['feeds',{width:1280,height:800},1],['pressure',{width:390,height:844},1.25]] as const){
+for(const [route,viewport,dpr] of [['feeds',{width:1280,height:800},1],['pressure',{width:844,height:390},1.25]] as const){
  test(`production three-hex conduit guardian resolves ${route} and preserves the escape handoff`,async({browser})=>{
   const {battle,clickHex}=await import('./controls');const {occupiedHexes}=await import('../../src/rules/footprint');const {offset}=await import('../../src/rules/hex');
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
@@ -268,13 +282,13 @@ test('production Chapter Five continues the coast departure and supports deep Ac
 });
 
 test('production Dawnwatch restores independent progress and the completed offer with no development controls',async({page})=>{
- const {dawnwatchCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ const {dawnwatchCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:844,height:390});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
  const saved=dawnwatchCheckpoint('aurelWon');saved.location={map:'signalwall',x:32,y:23};saved.activeParty=['nell','petra','celia'];await importSave(page,saved);await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.dawnwatchFreed).toBe(true);expect((await inspect(page)).state.flags.hammerplainComplete).toBeUndefined();await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.dawnwatchFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
  const both=dawnwatchCheckpoint('dawnwatchComplete',true);both.flags.fleetSighted=true;both.location={map:'airship',x:47,y:31};await importSave(page,both);await approach(page,'ship-cabin');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-told');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.emperorOfferTold).toBe(true);await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);expect((await inspect(page)).state.boundary).toBeNull();expect(errors).toEqual([]);
 });
 
 test('production Windmere restores partial support and accepts any two regions for the Emperor offer',async({page})=>{
- const {windmereCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+ const {windmereCheckpoint}=await import('../support/anchors');const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:844,height:390});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
  const saved=windmereCheckpoint('wardEngineWon','dawnwatch');saved.location={map:'mirrorward',x:32,y:23};saved.activeParty=['nell','celia','petra'];await importSave(page,saved);await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.windmereFreed).toBe(true);await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.windmereFreed).toBe(true);expect((await inspect(page)).state.inventory).toEqual(saved.inventory);
  const two=windmereCheckpoint('windmereComplete','dawnwatch');two.flags.fleetSighted=true;two.location={map:'airship',x:47,y:31};await importSave(page,two);await approach(page,'ship-cabin');await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-offer');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-emperor-told');await page.getByRole('button',{name:'Skip scene',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.emperorOfferTold).toBe(true);expect((await inspect(page)).state.flags.hammerplainComplete).toBeUndefined();await expect(page.getByRole('button',{name:'Win battle',exact:true})).toHaveCount(0);
  const three=windmereCheckpoint('windmereComplete','both');three.flags.emperorOfferSeen=true;three.flags.emperorOfferTold=true;three.location={map:'airship',x:32,y:26};await importSave(page,three);await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-alliance');await page.getByRole('button',{name:'Skip scene',exact:true}).click();expect((await inspect(page)).state.flags.allAnchorsSeen).toBe(true);expect((await inspect(page)).state.flags.chapterFiveComplete).toBeUndefined();expect((await inspect(page)).state.boundary).toBeNull();expect(errors).toEqual([]);
@@ -305,7 +319,7 @@ test('production Namar preserves the real Chapter Five departure and completes t
  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.flags.desertReported).toBe(true);expect((await inspect(page)).state.inventory).toEqual(reward);await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);await capture(page,'six-production-return');
 });
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test(`production campaign uses shared-turn skills and real terrain on ${device}`,async({page})=>{
   const {anchorCheckpoint}=await import('../support/anchors');const {clickHex}=await import('./controls');const {offset}=await import('../../src/rules/hex');
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

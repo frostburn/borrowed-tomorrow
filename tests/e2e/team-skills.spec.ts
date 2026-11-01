@@ -3,7 +3,7 @@ import {capture,clickHex,inspect} from './controls';
 import {defaultBuild,newCharacterSettings} from '../../src/rules/characters';
 import {offset} from '../../src/rules/hex';
 
-for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test.describe(`derived teams ${device}`,()=>{
   test.use({viewport,deviceScaleFactor});
   test('a spent partner leaves a gray inspectable command and a named explanation through pointer and keyboard',async({page})=>{

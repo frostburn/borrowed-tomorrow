@@ -3,7 +3,7 @@ import {northCheckpoint} from '../support/north';
 import {approach,importSave} from './navigation';
 import {capture,dialogue,inspect} from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)
 test(`Skeld after the dragon shades only presented frames on ${device}`,async({browser})=>{
  test.setTimeout(120000);
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'no-preference'}),page=await context.newPage(),errors:string[]=[];

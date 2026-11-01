@@ -32,7 +32,7 @@ async function hashes(page:Page,c:Case,ms=380){return page.evaluate(({roi,ms})=>
  };tick();
 }),{roi:c.roi,ms});}
 for(const [device,viewport,dpr,reduced]of [
- ['desktop',{width:1280,height:800},1,false],['phone',{width:390,height:844},1.25,false],['reduced',{width:390,height:844},1.25,true],
+ ['desktop',{width:1280,height:800},1,false],['phone',{width:844,height:390},1.25,false],['reduced',{width:844,height:390},1.25,true],
 ]as const)for(const c of mechanismCases)test(`${c.name} mechanism moves, settles and commits on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:reduced?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{

@@ -7,7 +7,7 @@ import { capture,clickWorld,inspect } from './controls';
 // Wall-clock play time continues while the player walks between controls.
 const progress=({playSeconds:_,...state}:GameState)=>state;
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test.describe(`Hammerplain preparation on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:1.25});
   test('boards from an older dock save and rests on the gantry before confronting the carrier',async({page})=>{

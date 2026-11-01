@@ -12,7 +12,7 @@ async function markerPixels(page:Page,color:number[]){
   return count;
  },{view,color});
 }
-for(const [name,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Rillbridge exit is grey while blocked and blue when freed on ${name}`,async({page})=>{
+for(const [name,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`Rillbridge exit is grey while blocked and blue when freed on ${name}`,async({page})=>{
  await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');

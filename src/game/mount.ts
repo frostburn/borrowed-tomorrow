@@ -4,15 +4,16 @@ import { Adventure } from './adventure';
 import { UI } from './ui';
 import { worldView } from './resolution';
 import { PixelDisplay } from './pixel-display';
+import {orientationGuard} from './orientation';
 
 export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Partial<ConstructorParameters<typeof UI>[1]> = {}) {
   const ui=new UI(root,{
-    inventory:()=>adventure.inventory(),journal:()=>adventure.journal(),saves:()=>{void adventure.saves();},sound:()=>{void adventure.toggleSound();},help:()=>adventure.help(),pan:direction=>adventure.panBattle(direction),...overrides,
+    inventory:()=>adventure.inventory(),journal:()=>adventure.journal(),saves:()=>{void adventure.saves();},sound:()=>{void adventure.toggleSound();},help:()=>adventure.help(),pan:(direction,axis)=>adventure.panBattle(direction,axis),...overrides,
   });
   adventure.attach(ui);
   if(!overrides.sound)adventure.soundPreferences=installSoundPreferences(root,adventure.audio,(on,phase)=>ui.sound(on,phase),()=>ui.toast('Audio could not start in this browser.'));
   root.addEventListener('click',event=>{const button=(event.target as HTMLElement).closest('button');if(button&&button.id!=='sound-button')adventure.audio.effect('click');});
-  const display=new PixelDisplay(root,(x,y,click)=>adventure.point(x,y,click));
+  const display=new PixelDisplay(root,(x,y,click)=>adventure.point(x,y,click),(dx,dy)=>adventure.dragBattle(dx,dy));
   // Canvas rendering keeps the compositor on one raster pipeline, avoiding GPU readback.
   const sceneCanvas=document.createElement('canvas');sceneCanvas.getContext('2d',{willReadFrequently:true});
   const viewport=worldView();
@@ -37,7 +38,13 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
     if(drawFrame)display.paint(adventure.animating,false,adventure.smoothAnimation,game.loop.now);
   });
 
-  window.addEventListener('resize',()=>adventure.resizeView());
+  window.addEventListener('resize',()=>{
+    adventure.resizeView();
+    // Orientation can resume a paused scene in a later resize listener. Sync
+    // after those listeners, before the browser can deliver another pointer.
+    queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}});
+  });
+  orientationGuard(root,display.source,game,adventure);
 
   return {ui,game,display};
 }

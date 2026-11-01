@@ -1,5 +1,5 @@
 import { bitmapText } from './pixel-font';
-import { displayWidth, DISPLAY_HEIGHT } from './resolution';
+import { screenLayout, DISPLAY_HEIGHT } from './resolution';
 import { RASTER_UNIT, rasterize, snapRaster } from './raster';
 import {FrameCadence} from './frame-cadence';
 
@@ -43,7 +43,7 @@ export class PixelDisplay {
   private cadence=new FrameCadence();
   private sceneDirty=false;
   private prepared?:{time:number;draw:boolean};
-  constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void) {
+  constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void,onDrag?:(dx:number,dy:number)=>void) {
     this.source=document.createElement('div');this.source.className='pixel-source';
     while(root.firstChild)this.source.append(root.firstChild);root.append(this.source);
     this.output=document.createElement('canvas');this.output.className='pixel-output';this.output.setAttribute('aria-hidden','true');this.output.style.imageRendering='pixelated';root.append(this.output);
@@ -52,20 +52,41 @@ export class PixelDisplay {
     this.host=document.createElement('div');this.host.className='phaser-host';document.body.append(this.host);
     this.world=document.createElement('canvas');this.world.className='world-input';document.getElementById('canvas')!.append(this.world);
     const point=(e:PointerEvent,click:boolean)=>{const b=this.world.getBoundingClientRect();onPoint((e.clientX-b.left)*this.world.width/b.width,(e.clientY-b.top)*this.world.height/b.height,click);};
-    this.world.addEventListener('pointerdown',e=>point(e,true));this.world.addEventListener('pointermove',e=>point(e,false));
+    let touch:{id:number;x:number;y:number;lastX:number;lastY:number;dragged:boolean}|undefined;
+    this.world.addEventListener('pointerdown',e=>{
+      if(e.pointerType!=='touch'){point(e,true);return;}
+      touch={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,dragged:false};this.world.setPointerCapture(e.pointerId);
+    });
+    this.world.addEventListener('pointermove',e=>{
+      if(touch?.id!==e.pointerId){if(e.pointerType!=='touch')point(e,false);return;}
+      const t=touch;if(!t.dragged&&Math.hypot(e.clientX-t.x,e.clientY-t.y)<8)return;
+      t.dragged=true;const b=this.world.getBoundingClientRect();onDrag?.((e.clientX-t.lastX)*this.world.width/b.width,(e.clientY-t.lastY)*this.world.height/b.height);t.lastX=e.clientX;t.lastY=e.clientY;
+    });
+    this.world.addEventListener('pointerup',e=>{if(touch?.id!==e.pointerId)return;if(!touch.dragged)point(e,true);touch=undefined;});
+    this.world.addEventListener('pointercancel',()=>{touch=undefined;});
+    this.world.addEventListener('lostpointercapture',()=>{touch=undefined;});
     new MutationObserver(()=>{this.dirty=true;}).observe(this.source,{subtree:true,childList:true,characterData:true,attributes:true});
     for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
     window.addEventListener('resize',()=>this.layout());this.layout();
     window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,palette:PALETTE})};
   }
-  attach(canvas:HTMLCanvasElement){this.native=canvas;}
+  attach(canvas:HTMLCanvasElement){
+    this.native=canvas;
+    // A scene can resize between Scale Manager callbacks. Never paint or accept
+    // input through an old portrait-sized surface.
+    if(this.world.width!==canvas.width||this.world.height!==canvas.height)this.fitWorld();
+  }
   private layout(){
     this.dirty=true;this.fitted='';
-    this.width=displayWidth();this.height=DISPLAY_HEIGHT;
-    const dpr=window.devicePixelRatio||1,scale=pixelScale(window.innerWidth,window.innerHeight,dpr,this.width,this.height);
+    const layout=screenLayout();this.width=layout.width;this.height=layout.height;
+    this.source.classList.toggle('phone-layout',layout.compact);this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
+    // On phones the shared bitmap is CSS-pixel sized. The browser expands that
+    // single nearest-sampled surface for DPR, avoiding a huge extra copy on
+    // high-density phones while keeping DOM targets at their authored size.
+    const dpr=layout.compact?1:window.devicePixelRatio||1,scale=layout.compact?{physical:1,css:1}:pixelScale(window.innerWidth,window.innerHeight,dpr,this.width,this.height);
     this.cssScale=scale.css;this.physicalScale=scale.physical;
-    const left=Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
+    const left=layout.compact?layout.insets.left:Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=layout.compact?layout.insets.top:Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
     this.source.style.width=this.width+'px';this.source.style.height=this.height+'px';this.source.style.left=left+'px';this.source.style.top=top+'px';this.source.style.transform=`scale(${this.cssScale})`;
     this.raster.width=Math.ceil(this.width/RASTER_UNIT);this.raster.height=Math.ceil(this.height/RASTER_UNIT);
     // The visible canvas starts at the device origin; center the console inside

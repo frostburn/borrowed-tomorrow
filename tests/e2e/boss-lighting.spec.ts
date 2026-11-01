@@ -7,7 +7,7 @@ async function floorHash(page:Page){return page.evaluate(()=>{
  const data=document.querySelector<HTMLCanvasElement>('.pixel-output')!.getContext('2d')!.getImageData(Math.round(x),Math.round(y),18*info.physicalScale,12*info.physicalScale).data;
  let hash=2166136261;for(let i=0;i<data.length;i+=4)for(let c=0;c<3;c++)hash=Math.imul(hash^data[i+c],16777619);return hash>>>0;
 });}
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`final boss lighting keeps three distinct readable forms and resets on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`final boss lighting keeps three distinct readable forms and resets on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   const colors=[];
@@ -45,7 +45,7 @@ async function brightness(page:Page,x:number,y:number){return page.evaluate(({x,
  let value=0;for(let i=0;i<data.length;i+=4)value+=.2126*data[i]+.7152*data[i+1]+.0722*data[i+2];return value/(data.length/4);
  },{x,y});}
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`boss attacks isolate their fired hexes and restore front light on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`boss attacks isolate their fired hexes and restore front light on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
@@ -84,7 +84,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
  }finally{await context.close();}
 });
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Lightbearer lantern lighting follows attacks and the closed shutter on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`Lightbearer lantern lighting follows attacks and the closed shutter on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{

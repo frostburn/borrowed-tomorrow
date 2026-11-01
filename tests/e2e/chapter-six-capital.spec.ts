@@ -13,7 +13,7 @@ async function nellEquipment(page:Page,lost:boolean){
  await expect(inventory).not.toContainText(lost?'resting aboard':'Deceased');await expect(inventory.getByRole('button',{name:'Set active',exact:true})).toBeDisabled();
  if(lost){await expect(inventory).toContainText('HP 0 /');await capture(page,'capital-nell-deceased-equipment');}await page.getByRole('button',{name:'Close',exact:true}).click();
 }
-for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},1,true],['phone',{width:390,height:844},1.25,false]]as const)test(`@journey capital ${device}: ${recovered?'recovered Nell reaches the hopeful departure':'uncured Nell becomes the Lightbearer and the return checkpoint works'}`,async({browser})=>{
+for(const [device,viewport,dpr,recovered]of [['desktop',{width:1280,height:800},1,true],['phone',{width:844,height:390},1.25,false]]as const)test(`@journey capital ${device}: ${recovered?'recovered Nell reaches the hopeful departure':'uncured Nell becomes the Lightbearer and the return checkpoint works'}`,async({browser})=>{
  test.setTimeout(420000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   const initial=chapterSixCapitalStart(recovered);if(recovered)initial.activeParty=['kit','orrin','petra'];await page.goto('/');await importSave(page,initial);await drain(page);await capture(page,`capital-quay-${device}`);

@@ -3,3 +3,4 @@
 .dev-battle-tools small{color:#f4c77a}
 
 .battle-overlay .dev-battle-tools{pointer-events:auto;position:absolute;bottom:8px;left:8px;right:8px;padding:4px;margin:0;border:1px solid #625842;background:#101d28}
+.phone-layout .battle-overlay .dev-battle-tools{bottom:56px}

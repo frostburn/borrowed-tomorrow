@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {inspect,capture,clickHex} from './controls';
 import {occupiedHexes} from '../../src/rules/footprint';
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`hollow sun, Lightbearer and imperial footprints render and target correctly on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`hollow sun, Lightbearer and imperial footprints render and target correctly on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{

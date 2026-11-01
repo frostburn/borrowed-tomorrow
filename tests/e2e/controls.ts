@@ -25,6 +25,9 @@ export async function clickHex(page: Page, h: Hex) {
   for(let pan=0;pan<6&&(p.x<view.scrollX+8||p.x>view.scrollX+view.width-8);pan++){
     await page.getByRole('button',{name:p.x<view.scrollX?'Pan battlefield left':'Pan battlefield right',exact:true}).click();view=(await inspect(page)).view;
   }
+  for(let pan=0;pan<4&&(p.y<view.scrollY+8||p.y>view.scrollY+view.height-8);pan++){
+    await page.getByRole('button',{name:p.y<view.scrollY?'Pan battlefield up':'Pan battlefield down',exact:true}).click();view=(await inspect(page)).view;
+  }
   const box=(await page.locator('#canvas canvas').boundingBox())!;
   await page.mouse.click(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
 }

@@ -3,7 +3,7 @@ import {palaceCheckpoint} from '../support/progress';
 import {importSave} from './navigation';
 import {capture,clickWorld,inspect,nativeActor} from './controls';
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`Equipment immediately replaces visible companions without travel on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/');
   const saved=palaceCheckpoint('petraJoined');saved.location={map:'northglass',x:35,y:25};await importSave(page,saved);

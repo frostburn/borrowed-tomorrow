@@ -13,7 +13,7 @@ async function stageHash(page:Page){return page.evaluate(()=>{
  let hash=2166136261;for(let i=0;i<pixels.length;i+=4)for(let c=0;c<3;c++)hash=Math.imul(hash^pixels[i+c],16777619);return hash>>>0;
 });}
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)
 for(const reduced of [false,true])test(`Emperor enters the crown on ${device} with ${reduced?'reduced':'normal'} motion`,async({browser})=>{
  test.setTimeout(120000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:reduced?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -48,7 +48,7 @@ for(const reduced of [false,true])test(`Emperor enters the crown on ${device} wi
   const world=(await page.locator('.world-input').boundingBox())!,box=(await page.locator('.dialogue').boundingBox())!,dialogueTop=(box.y-world.y)*partyView.height/world.height;
   for(const actor of (await inspect(page)).actors){expect(actor.y-68-partyView.scrollY).toBeGreaterThan(36);expect(actor.y-40-partyView.scrollY).toBeLessThan(dialogueTop);}
   await capture(page,`emperor-party-${device}-${reduced?'reduced':'moving'}`);
-  if(device==='phone'){await page.setViewportSize({width:375,height:812});await page.waitForTimeout(100);expect((await inspect(page)).view.zoom).toBe(1);expect((await inspect(page)).view.scrollY).toBeGreaterThan(500);}
+  if(device==='phone'){await page.setViewportSize({width:812,height:375});await page.waitForTimeout(100);expect((await inspect(page)).view.zoom).toBe(1);expect((await inspect(page)).view.scrollY).toBeGreaterThan(500);}
   expect(await page.evaluate(()=>(window as any).entryCues)).not.toContain('emperor');
   await dialogue(page);const after=await inspect(page);expect(after.state.flags.emperorSeen).toBe(true);expect(after.view.zoom).toBe(1);expect(after.actors.some(a=>a.hero==='emperor')).toBe(false);
   for(const key of ['party','activeParty','inventory','coins','bandages','location']as const)expect(after.state[key]).toEqual(s[key]);

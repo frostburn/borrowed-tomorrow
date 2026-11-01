@@ -52,7 +52,7 @@ test('Celia follows the party with six-pose directional walks and restores her i
 
 for(const reduced of [false,true])test(`Celia casts once, restores her book pose and cancels interrupted casts${reduced?' with reduced motion':''}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  if(reduced)await page.setViewportSize({width:390,height:844});
+  if(reduced)await page.setViewportSize({width:844,height:390});
   await page.emulateMedia({reducedMotion:reduced?'reduce':'no-preference'});await page.goto('/?dev=workshop');
   await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:'Celia',exact:true}).click();
   await page.getByRole('button',{name:'Add Celia to party',exact:true}).click();
@@ -77,7 +77,7 @@ for(const reduced of [false,true])test(`Celia casts once, restores her book pose
   expect((await inspect(page)).battle!.result).toBe('victory');await expect(page.locator('vite-error-overlay')).toHaveCount(0);expect(errors).toEqual([]);
 });
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`sprite workshop plays, pauses and steps native motion frames on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.goto('/?dev=sprites');
     await expect(page).toHaveURL(/dev=sprites/);await expect(page).toHaveTitle(/Borrowed Tomorrow/);

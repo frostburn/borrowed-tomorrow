@@ -77,7 +77,7 @@ async function nativeBoss(page:Page,portrait:string){
   },portrait)).toBe(0);
 }
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test.describe(`boss preview on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('faces the giant, targets its whole body, resolves warnings and preserves campaign saves',async({page})=>{
@@ -115,7 +115,7 @@ for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phon
  });
 }
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test.describe(`boss motion on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('breathes, gathers judgment before contact, recovers and cancels a restarted attack',async({page})=>{

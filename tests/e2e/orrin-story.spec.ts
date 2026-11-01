@@ -22,7 +22,7 @@ async function framed(page:Page){
   return {bottom:canvas.top+(a.y-s.view.scrollY+8)*canvas.height/s.view.height,top:dialogue.top};
  });expect(frame.bottom).toBeLessThan(frame.top);
 }
-for(const [device,viewport,recovered]of [['desktop',{width:1280,height:800},true],['phone',{width:390,height:844},false]]as const)test(`Orrin ${device}: delegates the hoist, trusts the gate watch and rests with Nell ${recovered?'recovered':'initially ill'}`,async({browser})=>{
+for(const [device,viewport,recovered]of [['desktop',{width:1280,height:800},true],['phone',{width:844,height:390},false]]as const)test(`Orrin ${device}: delegates the hoist, trusts the gate watch and rests with Nell ${recovered?'recovered':'initially ill'}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/');await expect(page).toHaveTitle(/Borrowed Tomorrow/);

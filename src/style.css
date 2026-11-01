@@ -1,3 +1,4 @@
+@import './game/phone.css';
 @font-face{font-family:SwitchyardCompact;src:url('./game/switchyard-small.woff') format('woff');font-display:swap}
 @font-face{font-family:Switchyard;src:url('./game/switchyard.woff') format('woff');font-display:swap}
 :root{font-family:Switchyard,monospace;font-size:20px;font-family:Switchyard,monospace;color:#f4e5be;background:#080f19;--ink:#101d28;--brass:#b8a780;--muted:#87a3a2;--line:#625842;--accent:#f4c77a;font-synthesis:none}

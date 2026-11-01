@@ -4,6 +4,11 @@ import { checkpoint } from '../support/progress';
 import { battle, capture, dialogue, inspect, clickHex, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 import { active, type Battle } from '../../src/rules/combat';
+import {phoneConsole,rotateWithPlan,touchPan} from './phone-layout-flow';
+import {commandsFit} from './battle-menu-flow';
+import {coastCheckpoint} from '../support/progress';
+import {newSkillBook} from '../../src/rules/skills';
+import {restoreParty} from '../../src/rules/state';
 
 function errorsOn(page: import('@playwright/test').Page) {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -16,7 +21,7 @@ async function begin(page: import('@playwright/test').Page) {
 }
 
 test('@ci opening, interrupted raid and skip keep a coherent checkpoint on a phone', async ({ page }) => {
-  const errors = errorsOn(page); await page.setViewportSize({ width: 390, height: 844 });
+  const errors = errorsOn(page); await page.setViewportSize({ width: 844, height: 390 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/'); await page.getByRole('button', { name: 'Begin Chapter One' }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
@@ -71,8 +76,9 @@ test('@ci unsupported save versions cannot resume or import', async ({ page }) =
   expect(errors).toEqual([]);
 });
 
-test('@ci phone combat pans and confirms real healing without shrinking the actors', async ({ page }) => {
-  const errors = errorsOn(page); await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/');
+test('@ci phone combat pans and confirms real healing without shrinking the actors', async ({ browser }) => {
+  const context=await browser.newContext({viewport:{width:844,height:390},hasTouch:true,isMobile:true,deviceScaleFactor:1.25}),page=await context.newPage();
+  const errors = errorsOn(page); await page.setViewportSize({ width: 844, height: 390 }); await page.goto('/');
   const state = checkpoint('captainConfronted'); state.location = { map: 'tunnel', x: 30, y: 14 }; state.party[0].hp = 24;
   await importSave(page, state); await approach(page, 'captain');
   await expect.poll(async () => (await inspect(page)).mode).toBe('battle');
@@ -81,16 +87,28 @@ test('@ci phone combat pans and confirms real healing without shrinking the acto
   await page.getByRole('button', { name: 'Pan battlefield right' }).click();
   expect((await inspect(page)).view.scrollX).toBe(start + 192);
   await page.getByRole('button', { name: 'Pan battlefield left' }).click();
+  await phoneConsole(page);await touchPan(page);
   const snapshot = (await inspect(page)).battle!, b = { ...snapshot, obstacles: new Set(snapshot.obstacles), water: new Set(snapshot.water), vents: new Set(snapshot.vents) } as Battle;
   const nell = active(b)!; const before = snapshot.bandages;
   await page.locator('.actions').getByRole('button', { name: /^\d\s+Items$/ }).click(); await page.getByRole('dialog',{name:'Battle items'}).getByRole('group',{name:'Bandage',exact:true}).getByRole('button',{name:'Select',exact:true}).click(); await clickHex(page, nell.hex);
   await expect(page.getByRole('button', { name: 'Confirm healing', exact: true })).toBeInViewport();
+  await rotateWithPlan(page);await expect(page.getByRole('button',{name:'Confirm healing',exact:true})).toBeInViewport();
   await capture(page, 'healing-phone'); await page.getByRole('button', { name: 'Confirm healing', exact: true }).click();
   await expect.poll(async () => (await inspect(page)).battle!.bandages).toBe(before - 1);
   expect((await inspect(page)).battle!.units.find(u => u.id === 'nell')!.hp).toBe(48); expect(errors).toEqual([]);
+  // Inspect the actual late-game command list, with both of Nell's partners.
+  const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
+  await importSave(page,late);await capture(page,'phone-landscape-world');
+  await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-landscape-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
+  await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  await page.getByRole('button',{name:/^F\s+Defend$/}).tap();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
+  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await capture(page,'phone-landscape-full-skills');
+  await page.getByRole('button',{name:/Prism lance$/}).tap();await expect(page.locator('#confirmation')).not.toBeEmpty();await capture(page,'phone-landscape-skill-info');
+  for(const viewport of [{width:667,height:375},{width:932,height:430}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-landscape-${viewport.width}`);}
+  expect(errors).toEqual([]);await context.close();
 });
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`captain stays on the stone walkway throughout pass scenes on ${device}`,async({page})=>{
     const errors=errorsOn(page);await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
     const arrival=checkpoint('villageFreed');arrival.location={map:'tunnel',x:3,y:14};await importSave(page,arrival);

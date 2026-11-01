@@ -7,7 +7,7 @@ import {importSave,approach} from './navigation';
 import {capture,inspect} from './controls';
 
 test.setTimeout(45000);
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`expressions follow dialogue, reset and replay on ${device}`,async({page})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`expressions follow dialogue, reset and replay on ${device}`,async({page})=>{
  await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('/');await page.getByRole('button',{name:'Begin Chapter One',exact:true}).click();
  const next=()=>page.locator('.dialogue-actions button').first().click(),image=page.locator('.dialogue-portrait img');await next();await next();
