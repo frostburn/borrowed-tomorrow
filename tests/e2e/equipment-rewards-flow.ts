@@ -4,7 +4,7 @@ import {importSave,approach} from './navigation';
 import {battle,capture,dialogue,inspect} from './controls';
 
 export function equipmentRewardFlows(production=false){
- for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
   test.describe(`${production?'production':'development'} equipment rewards ${device}`,()=>{
    test.use({viewport,deviceScaleFactor});
    test('first gear victory names its character and offers immediate manual fitting',async({page})=>{

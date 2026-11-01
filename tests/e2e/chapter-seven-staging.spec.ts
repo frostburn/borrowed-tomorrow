@@ -26,7 +26,7 @@ const chest=(page:Page)=>page.evaluate(()=>{
  const data=canvas.getContext('2d')!.getImageData(x,y,Math.round(100*info.physicalScale),Math.round(80*info.physicalScale)).data;let hash=0;for(const v of data)hash=(Math.imul(hash,31)+v)|0;return hash;
 });
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Chapter Seven staging on ${device}: withdrawal, patient, defeated patrol and real epilogue`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`Chapter Seven staging on ${device}: withdrawal, patient, defeated patrol and real epilogue`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{

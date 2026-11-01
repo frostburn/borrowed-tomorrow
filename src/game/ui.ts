@@ -27,7 +27,7 @@ export class UI {
   private modalDispose?:()=>void;
   private toastTimer?: number;
   toastSerial=0;
-  constructor(root: HTMLElement, callbacks: { inventory: () => void; journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1)=>void }) {
+  constructor(root: HTMLElement, callbacks: { inventory: () => void; journal: () => void; saves: () => void; sound: () => void; help: () => void; pan: (direction:-1|1,axis?:'x'|'y')=>void }) {
     root.innerHTML = `<main class="game-shell">
       <header class="topbar"><div class="brand"><h1>Borrowed Tomorrow</h1><span id="location">The Wrong Platform</span></div>
       <nav aria-label="Game menu"><button id="inventory-button" disabled>Equipment</button><button id="journal-button">Journal</button><button id="save-button">Save</button><button id="sound-button" aria-pressed="false">Sound off</button><button id="help-button" aria-label="Controls and combat help">?</button></nav></header>
@@ -35,7 +35,7 @@ export class UI {
       <section class="stage-wrap" aria-label="Game world"><div id="canvas" tabindex="0" aria-label="Explore with arrow keys or WASD. E to interact. In battle use pointer or arrow keys to choose a hex."></div><div id="battle-pan" class="battle-pan" hidden aria-label="Battlefield view"><button id="pan-left" aria-label="Pan battlefield left">←</button><button id="pan-right" aria-label="Pan battlefield right">→</button></div><div id="battle-overlay" class="battle-overlay" hidden><button id="battle-log-button" class="battle-log-button" aria-label="Battle log">L Log</button></div><div id="scene-layer" class="scene-layer"></div></section>
       <section class="controls" id="controls" aria-label="Adventure controls"></section>
       <footer><span id="status">Loading the railway…</span><a href="https://github.com/frostburn/borrowed-tomorrow/issues" target="_blank" rel="noopener">Report a bug</a></footer>
-    </main><div id="modal" class="modal-backdrop" hidden></div><div id="toast" class="toast" role="status" hidden></div>`;
+    </main><div id="modal" class="modal-backdrop" hidden></div><div id="toast" class="toast" role="status" hidden></div><div id="screen-insets" aria-hidden="true"></div>`;
     const get = (id: string) => document.getElementById(id)!;
     this.canvas = get('canvas'); this.controls = get('controls'); this.initiative = get('initiative'); this.sceneLayer = get('scene-layer'); this.modal = get('modal'); this.status = get('status');this.battlePan=get('battle-pan');
     this.battleOverlay=get('battle-overlay');this.battleLog=get('battle-log-button') as HTMLButtonElement;
@@ -43,6 +43,9 @@ export class UI {
     get('journal-button').onclick = callbacks.journal; get('save-button').onclick = callbacks.saves;
     get('sound-button').onclick = callbacks.sound; get('help-button').onclick = callbacks.help;
     get('pan-left').onclick=()=>callbacks.pan(-1);get('pan-right').onclick=()=>callbacks.pan(1);
+    for(const [id,label,arrow,direction] of [['pan-up','Pan battlefield up','↑',-1],['pan-down','Pan battlefield down','↓',1]]as const){
+      const button=document.createElement('button');button.id=id;button.className='pan-vertical';button.setAttribute('aria-label',label);button.textContent=arrow;button.onclick=()=>callbacks.pan(direction,'y');this.battlePan.append(button);
+    }
     this.modal.addEventListener('click', event => { if (event.target === this.modal) this.closeModal(); });
     document.addEventListener('keydown', e => {
       if (this.modal.hidden || e.key !== 'Tab') return;
@@ -55,13 +58,15 @@ export class UI {
   }
   location(name: string) { document.getElementById('location')!.textContent = name; }
   sound(enabled:boolean,phase?:SoundPhase){
-    const button=document.getElementById('sound-button')!;button.textContent=phase==='waiting'?'Sound on next input':phase==='starting'?'Starting sound':enabled?'Sound on':'Sound off';
+    const button=document.getElementById('sound-button')!,label=phase==='waiting'?'Sound on next input':phase==='starting'?'Starting sound':enabled?'Sound on':'Sound off';
+    button.setAttribute('aria-label',label);button.innerHTML=`<span class="sound-wide">${label}</span><span class="sound-compact" aria-hidden="true">${phase==='waiting'?'Sound ready':phase==='starting'?'Starting':label}</span>`;
     button.setAttribute('aria-pressed',String(enabled||!!phase));
     const description=phase==='waiting'?'Sound will start with your next click or key press. Select to keep sound off.':phase==='starting'?'Sound is starting. Select to cancel.':enabled?'Mute sound.':'Enable sound.';
     button.setAttribute('aria-description',description);button.title=description;
   }
   button(b: Button): HTMLButtonElement {
-    const button = document.createElement('button'); button.textContent = b.key ? `${b.key}  ${b.label}` : b.label;
+    const button = document.createElement('button'); button.textContent = b.label;
+    if(b.key){const key=document.createElement('span');key.className='button-key';key.textContent=`${b.key}  `;button.prepend(key);button.setAttribute('aria-label',`${b.key} ${b.label}`);}
     if(b.icon)button.insertAdjacentHTML('afterbegin',icon(b.icon));
     button.disabled = !!b.disabled; button.className = [b.selected?'selected':'',b.unavailable?'unavailable':''].filter(Boolean).join(' '); if (b.title) {button.setAttribute('aria-description', b.title);button.title=b.title;}
     if(b.badge){const badge=document.createElement('span');badge.className='skill-badge';badge.setAttribute('aria-hidden','true');badge.textContent=b.badge;button.append(badge);}

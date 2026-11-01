@@ -5,7 +5,7 @@ import {checkpoint} from '../support/progress';
 const bitmap=(page:Page,selector:string)=>page.locator(selector).evaluate(c=>{let hash=0;for(const ch of(c as HTMLCanvasElement).toDataURL())hash=(Math.imul(hash,31)+ch.charCodeAt(0))|0;return hash;});
 
 test.setTimeout(45000);
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`first screen trees and Tomas expressions on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`first screen trees and Tomas expressions on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await expect(page.getByRole('button',{name:'Begin Chapter One',exact:true})).toBeVisible();

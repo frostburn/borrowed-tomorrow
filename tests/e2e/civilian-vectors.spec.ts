@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {CIVILIANS} from '../../src/content/civilians';
 import {artPath} from '../../src/content/art-assets';
 import {capture} from './controls';
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test.describe(`vector civilians on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('reviews all nine native SVG roles and clothing variants without changing saves',async({page})=>{

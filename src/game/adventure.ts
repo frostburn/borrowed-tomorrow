@@ -169,7 +169,7 @@ export class Adventure extends Phaser.Scene {
     const film=this.crossingFilm??this.endingFilm;
     if(film){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);film.resize();return;}
     if(this.mode==='battle'){
-      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
+      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(this.plan?.hex??active(this.battle!)?.hex??this.battleCursor);return;
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
@@ -177,15 +177,22 @@ export class Adventure extends Phaser.Scene {
     else if(this.mode==='world'&&this.player){camera.centerOn(this.player.x,this.player.y);camera.startFollow(this.player,false,1,1);}
     else camera.setScroll(Math.floor((WIDTH-view.width)/2),72);
   }
-  panBattle(direction:-1|1){
+  panBattle(direction:-1|1,axis:'x'|'y'='x'){
     if(this.mode!=='battle'||this.blocked)return;
-    const camera=this.cameras.main;camera.setScroll(Phaser.Math.Clamp(camera.scrollX+direction*192,0,WIDTH-camera.width),0);
+    this.dragBattle(axis==='x'?-direction*192:0,axis==='y'?-direction*144:0);
     this.ui.status.textContent='Battlefield view · choose an action and target';
+  }
+  dragBattle(dx:number,dy:number){
+    if(this.mode!=='battle'||this.blocked)return;
+    const camera=this.cameras.main;
+    camera.setScroll(Phaser.Math.Clamp(camera.scrollX-dx,0,Math.max(0,WIDTH-camera.width)),Phaser.Math.Clamp(camera.scrollY-dy,0,Math.max(0,480-camera.height)));
   }
   private revealHex(hex:Hex,margin=48){
     if(!narrowScreen())return;
     const camera=this.cameras.main,p=toPixel(hex);
-    if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
+    const mx=Math.min(margin,camera.width/3),my=Math.min(margin,camera.height/3);
+    if(p.x<camera.scrollX+mx||p.x>camera.scrollX+camera.width-mx)camera.scrollX=Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,Math.max(0,WIDTH-camera.width));
+    if(p.y<camera.scrollY+my||p.y>camera.scrollY+camera.height-my)camera.scrollY=Phaser.Math.Clamp(Math.round(p.y-camera.height/2),0,Math.max(0,480-camera.height));
   }
   private mechanisms?:WorldMechanisms;
   private mapLife?:MapLife;
@@ -425,7 +432,7 @@ export class Adventure extends Phaser.Scene {
     if(this.crossingFilm)return;
     if (this.mode !== 'world') return;
     const s = this.state, esc = this.ui.escape;
-    this.ui.controls.innerHTML = `<div class="world-party" data-size="${s.activeParty.length}">${s.activeParty.map(id=>s.party.find(h=>h.id===id)!).map(h => `<div class="world-hero"><img src="${art(h.id)}" alt=""/><div><strong>${CHARACTERS[h.id].name}</strong><small>HP ${h.hp}/${maxHp(h.id,s)}</small><small>Lv ${level(s)}</small></div></div>`).join('')}</div><div class="world-objective"><h3${this.near?' class="nearby"':''}>${esc(this.near?`${(interactionMarker(this.near,s)?.label??INTERACTION_MARKERS[interactionKind(this.near,s)].label)} · ${this.near.label}`:'Next stop')}</h3><p>${esc(objective(s))}</p></div><div class="world-actions"><div class="dpad"></div><div class="interact-action"></div></div>`;
+    this.ui.controls.innerHTML = `<div class="world-party fine-status" data-size="${s.activeParty.length}">${s.activeParty.map(id=>s.party.find(h=>h.id===id)!).map(h => `<div class="world-hero"><img src="${art(h.id)}" alt=""/><div><strong>${CHARACTERS[h.id].name}</strong><small>HP ${h.hp}/${maxHp(h.id,s)}</small><small>Lv ${level(s)}</small></div></div>`).join('')}</div><div class="world-objective"><h3${this.near?' class="nearby"':''}>${esc(this.near?`${(interactionMarker(this.near,s)?.label??INTERACTION_MARKERS[interactionKind(this.near,s)].label)} · ${this.near.label}`:'Next stop')}</h3><p>${esc(objective(s))}</p></div><div class="world-actions"><div class="dpad"></div><div class="interact-action"></div></div>`;
     const pad = this.ui.controls.querySelector('.dpad')!;
     for (const [label, dx, dy] of [['↑',0,-1],['←',-1,0],['↓',0,1],['→',1,0]] as const) pad.append(this.ui.button({ label, action: () => { if (!this.blocked && !this.moving) this.stepWorld(dx,dy); } }));
     this.ui.controls.querySelector('.interact-action')!.append(this.ui.button({ label: this.near ? 'Interact' : 'Journal', key: this.near ? 'E' : 'J', action: () => this.near ? this.interact(this.near) : this.journal() }));
@@ -802,7 +809,9 @@ export class Adventure extends Phaser.Scene {
     this.ui.battleOverlay.hidden=false;this.ui.controls.classList.add('battle-controls');
     const commandScroll=this.ui.controls.dataset.unit===u.id?(this.ui.controls.querySelector('.command-list')?.scrollTop??0):0;this.ui.controls.dataset.unit=u.id;
     const character=CHARACTERS[(u.appearance??u.kind) as keyof typeof CHARACTERS];
-    this.ui.controls.innerHTML=`<div class="identity"><img src="${this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind)}" alt=""/><div><h2>${esc(u.name)}</h2><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',rallyBonus(b,u)?'Focus regen +1':'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals"><span class="vital">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div></span><span class="vital">Focus ${u.focus} / ${focusCapacity(u)}<div class="bar focus"><span style="width:${u.focus/focusCapacity(u)*100}%"></span></div></span></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation" role="region" aria-label="Battle confirmation" hidden></div></div>`;
+    const portrait=this.battlePresentation?.portrait?.(u)??art(u.kind==='herald'||u.kind==='glasswing'?`portrait-${u.kind}`:character?.portrait??u.appearance??u.kind);
+    const miniature=COMPANION_IDS.includes((u.appearance??u.kind) as CompanionId)?art(u.appearance??u.kind):portrait;
+    this.ui.controls.innerHTML=`<div class="identity fine-status"><img class="identity-portrait" src="${portrait}" alt=""/><img class="identity-figure" src="${miniature}" alt=""/><div><h2>${esc(u.name)}</h2><span class="identity-level">${u.level?`Lv ${u.level}`:''}</span><div class="role">${[u.role??roles[u.kind],u.level?`Lv ${u.level}`:'',u.guard?`Guard ${u.guard}`:'',u.dazzledAttacks?`Dazzled ${u.dazzledAttacks}`:'',u.pinned?'Pinned · move 1':'',rallyBonus(b,u)?'Focus regen +1':'',tauntTarget(b,u)?`Taunted: ${esc(tauntTarget(b,u)!.name)}`:''].filter(Boolean).join(' · ')}</div><div class="vitals"><span class="vital">HP ${u.hp} / ${u.maxHp}<div class="bar"><span style="width:${u.hp/u.maxHp*100}%"></span></div></span><span class="vital">Focus ${u.focus} / ${focusCapacity(u)}<div class="bar focus"><span style="width:${u.focus/focusCapacity(u)*100}%"></span></div></span></div></div></div><div class="command-panel"><div class="command-list"><div class="actions"></div><p class="hint" id="battle-hint"></p></div><div class="confirmation" id="confirmation" role="region" aria-label="Battle confirmation" hidden></div></div>`;
     const actions=this.ui.controls.querySelector<HTMLElement>('.actions')!;
     if(import.meta.env.DEV)this.ui.battleOverlay.querySelector('.dev-battle-tools')?.remove();
     if(import.meta.env.DEV)this.testingTools?.(this.ui,this.ui.battleOverlay,{

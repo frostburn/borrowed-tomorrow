@@ -3,7 +3,7 @@ import {checkpoint,coastCheckpoint,palaceCheckpoint} from '../support/progress';
 import {approach,importSave} from './navigation';
 import {capture,inspect} from './controls';
 const loaded=async(images:Locator)=>{await expect.poll(()=>images.evaluateAll(nodes=>nodes.every(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0))).toBe(true);};
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test.describe(`objects and equipment art on ${device}`,()=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test.describe(`objects and equipment art on ${device}`,()=>{
  test.use({viewport,deviceScaleFactor:dpr});
  test('reading cards, purchases, equipped items, optional finds and victory rewards',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});

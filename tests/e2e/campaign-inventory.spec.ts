@@ -4,7 +4,7 @@ import { checkpoint } from '../support/progress';
 import { approach, importSave, travel, visit } from './navigation';
 import { capture, inspect } from './controls';
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`campaign purchases, loadouts, saves and battle bonuses work on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');
@@ -62,7 +62,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 
 test('campaign portraits retain native geometry on a compact phone',async({page})=>{
-  await page.setViewportSize({width:320,height:844});await page.goto('/');await importSave(page,checkpoint('orrinJoined'));
+  await page.setViewportSize({width:844,height:320});await page.goto('/');await importSave(page,checkpoint('orrinJoined'));
   await page.getByRole('button',{name:'Equipment',exact:true}).click();
   const inventory=page.getByRole('dialog',{name:'Character inventory'});
   for(const name of ['Nell','Orrin']){

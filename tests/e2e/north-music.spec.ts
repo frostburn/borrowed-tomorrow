@@ -1,6 +1,6 @@
 import { test,expect } from '@playwright/test';
 const cues=[['bellharbor','Skeld · Answering Bells'],['frostwatch','The Covered Road'],['glacier','The Fleet beneath the Ice'],['wintershrine','A Bell for the Outer Marker'],['north-battle','Skeld · Open the Mountain'],['winter-dragon','Wings over the Winter Bell']]as const;
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`northern music workshop on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`northern music workshop on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:20000});await page.getByRole('button',{name:'Ch 6',exact:true}).click();

@@ -1,5 +1,5 @@
 import { bitmapText } from './pixel-font';
-import { displayWidth, DISPLAY_HEIGHT } from './resolution';
+import { screenLayout, DISPLAY_HEIGHT } from './resolution';
 import { RASTER_UNIT, rasterize, snapRaster } from './raster';
 import {FrameCadence} from './frame-cadence';
 
@@ -33,6 +33,8 @@ export class PixelDisplay {
   private physicalScale=1;
   private physicalLeft=0;
   private physicalTop=0;
+  private worldScale=1;
+  private fineRects:{x:number;y:number;w:number;h:number}[]=[];
   private native?:HTMLCanvasElement;
   private dirty=true;
   private commands:{draw:(ctx:CanvasRenderingContext2D)=>void;state:boolean;world?:boolean}[]=[];
@@ -43,7 +45,7 @@ export class PixelDisplay {
   private cadence=new FrameCadence();
   private sceneDirty=false;
   private prepared?:{time:number;draw:boolean};
-  constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void) {
+  constructor(root:HTMLElement, onPoint:(x:number,y:number,click:boolean)=>void,onDrag?:(dx:number,dy:number)=>void) {
     this.source=document.createElement('div');this.source.className='pixel-source';
     while(root.firstChild)this.source.append(root.firstChild);root.append(this.source);
     this.output=document.createElement('canvas');this.output.className='pixel-output';this.output.setAttribute('aria-hidden','true');this.output.style.imageRendering='pixelated';root.append(this.output);
@@ -51,21 +53,62 @@ export class PixelDisplay {
     this.presentCtx=this.output.getContext('2d',{willReadFrequently:true})!;
     this.host=document.createElement('div');this.host.className='phaser-host';document.body.append(this.host);
     this.world=document.createElement('canvas');this.world.className='world-input';document.getElementById('canvas')!.append(this.world);
+    // World gestures are handled by Pointer Events below. Cancel the native
+    // touch gesture as well, so a camera drag cannot leave the browser consuming
+    // the next control tap as a scroll/fling stop. DOM buttons keep native clicks.
+    for(const type of ['touchstart','touchmove'])this.world.addEventListener(type,event=>{if(event.cancelable)event.preventDefault();},{passive:false});
     const point=(e:PointerEvent,click:boolean)=>{const b=this.world.getBoundingClientRect();onPoint((e.clientX-b.left)*this.world.width/b.width,(e.clientY-b.top)*this.world.height/b.height,click);};
-    this.world.addEventListener('pointerdown',e=>point(e,true));this.world.addEventListener('pointermove',e=>point(e,false));
+    let touch:{id:number;x:number;y:number;lastX:number;lastY:number;dragged:boolean}|undefined;
+    this.world.addEventListener('pointerdown',e=>{
+      if(e.pointerType!=='touch'){point(e,true);return;}
+      if(touch)return;
+      touch={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,dragged:false};this.world.setPointerCapture(e.pointerId);
+    });
+    this.world.addEventListener('pointermove',e=>{
+      if(touch?.id!==e.pointerId){if(e.pointerType!=='touch')point(e,false);return;}
+      const t=touch;if(!t.dragged&&Math.hypot(e.clientX-t.x,e.clientY-t.y)<8)return;
+      t.dragged=true;const b=this.world.getBoundingClientRect();onDrag?.((e.clientX-t.lastX)*this.world.width/b.width,(e.clientY-t.lastY)*this.world.height/b.height);t.lastX=e.clientX;t.lastY=e.clientY;
+    });
+    const endTouch=(e:PointerEvent,select:boolean)=>{
+      if(touch?.id!==e.pointerId)return;const dragged=touch.dragged;touch=undefined;
+      // Release before a tap can redraw controls or another finger starts on
+      // the UI. Do not leave the next gesture captured by the world surface.
+      if(this.world.hasPointerCapture(e.pointerId))this.world.releasePointerCapture(e.pointerId);
+      if(select&&!dragged)point(e,true);
+    };
+    this.world.addEventListener('pointerup',e=>endTouch(e,true));
+    this.world.addEventListener('pointercancel',e=>endTouch(e,false));
+    this.world.addEventListener('lostpointercapture',e=>{if(touch?.id===e.pointerId)touch=undefined;});
     new MutationObserver(()=>{this.dirty=true;}).observe(this.source,{subtree:true,childList:true,characterData:true,attributes:true});
     for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
     window.addEventListener('resize',()=>this.layout());this.layout();
-    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,palette:PALETTE})};
+    window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,worldScale:this.worldScale,worldFiltered:this.worldScale===1,palette:PALETTE})};
   }
-  attach(canvas:HTMLCanvasElement){this.native=canvas;}
+  attach(canvas:HTMLCanvasElement){
+    this.native=canvas;
+    // A scene can resize between Scale Manager callbacks. Keep presentation and
+    // input synchronized with the new viewport in either orientation.
+    if(this.world.width!==canvas.width||this.world.height!==canvas.height)this.fitWorld();
+  }
   private layout(){
     this.dirty=true;this.fitted='';
-    this.width=displayWidth();this.height=DISPLAY_HEIGHT;
-    const dpr=window.devicePixelRatio||1,scale=pixelScale(window.innerWidth,window.innerHeight,dpr,this.width,this.height);
+    const layout=screenLayout();this.width=layout.width;this.height=layout.height;
+    this.worldScale=layout.worldScale;
+    this.source.classList.toggle('phone-layout',layout.compact);this.source.classList.toggle('portrait-layout',layout.portrait);this.source.classList.toggle('portrait-short',layout.portrait&&layout.height<700);
+    this.source.style.setProperty('--phone-stage-height',layout.stageHeight+'px');
+    this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
+    // In portrait, use the freed space below the stage for dialogue and title
+    // panels. Reparent the existing node: preserve its controls and callbacks.
+    const scene=document.getElementById('scene-layer')!,parent=document.querySelector(layout.portrait?'.game-shell':'.stage-wrap')!,pan=document.getElementById('battle-pan')!;
+    if(pan.parentElement!==parent)parent.insertBefore(pan,scene.parentElement===parent?scene:null);
+    if(scene.parentElement!==parent)parent.append(scene);
+    // On phones the shared bitmap is CSS-pixel sized. The browser expands that
+    // single nearest-sampled surface for DPR, avoiding a huge extra copy on
+    // high-density phones while keeping DOM targets at their authored size.
+    const dpr=layout.compact?1:window.devicePixelRatio||1,scale=layout.compact?{physical:1,css:1}:pixelScale(window.innerWidth,window.innerHeight,dpr,this.width,this.height);
     this.cssScale=scale.css;this.physicalScale=scale.physical;
-    const left=Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
+    const left=layout.compact?layout.insets.left:Math.round((window.innerWidth-this.width*this.cssScale)*dpr/2)/dpr,top=layout.compact?layout.insets.top:Math.round((window.innerHeight-this.height*this.cssScale)*dpr/2)/dpr;
     this.source.style.width=this.width+'px';this.source.style.height=this.height+'px';this.source.style.left=left+'px';this.source.style.top=top+'px';this.source.style.transform=`scale(${this.cssScale})`;
     this.raster.width=Math.ceil(this.width/RASTER_UNIT);this.raster.height=Math.ceil(this.height/RASTER_UNIT);
     // The visible canvas starts at the device origin; center the console inside
@@ -79,8 +122,9 @@ export class PixelDisplay {
   fitWorld(){
     if(!this.native)return;
     const stage=document.getElementById('canvas')!;
-    // The scene owns its camera viewport. A scene pixel is always a framebuffer pixel.
-    const w=this.native.width,h=this.native.height;
+    // Input retains native scene coordinates even when portrait presents two
+    // world pixels per CSS pixel. UI targets are never scaled down with it.
+    const w=this.native.width*this.worldScale,h=this.native.height*this.worldScale;
     if(this.world.width!==this.native.width||this.world.height!==this.native.height){this.world.width=this.native.width;this.world.height=this.native.height;this.dirty=true;}
     const fitted=`${w}:${h}:${stage.clientWidth}:${stage.clientHeight}`;
     if(fitted!==this.fitted){
@@ -112,6 +156,7 @@ export class PixelDisplay {
     this.fitWorld();
     const full=this.dirty||resized;
     if(this.dirty){this.rebuild();this.dirty=false;}
+    if(this.worldScale!==1){this.paintUnfiltered(full);return;}
     // Stable controls and letterboxing do not need another physical-screen
     // copy when only the world changes. Round outward on the sampling grid.
     const r=this.worldRect,u=RASTER_UNIT;
@@ -134,14 +179,36 @@ export class PixelDisplay {
     const scale=RASTER_UNIT*this.physicalScale;
     this.presentCtx.drawImage(this.raster,left,top,w,h,this.physicalLeft+left*scale,this.physicalTop+top*scale,w*scale,h*scale);this.presentCtx.restore();
   }
+  /** Portrait bypasses the chunky world raster. Only the UI retains its lattice;
+   * shrink the original scene directly, between the cached lower/upper UI. */
+  private paintUnfiltered(full:boolean){
+    const ctx=this.presentCtx,r=this.worldRect,s=this.physicalScale;
+    const x=this.physicalLeft,y=this.physicalTop;
+    if(full){ctx.fillStyle=PALETTE[0];ctx.fillRect(0,0,this.output.width,this.output.height);}
+    ctx.save();ctx.beginPath();
+    ctx.rect(x+(full?0:r.x*s),y+(full?0:r.y*s),(full?this.width:r.w)*s,(full?this.height:r.h)*s);ctx.clip();
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(this.lowerRaster,x,y,this.width*s,this.height*s);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.drawImage(this.native!,x+r.x*s,y+r.y*s,r.w*s,r.h*s);
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(this.upperRaster,x,y,this.width*s,this.height*s);
+    // Restore only the fine-detail status strips from the full-resolution UI
+    // cache. Their DOM text and images bypass the chunky UI sampling step.
+    for(const f of this.fineRects)ctx.drawImage(this.upper,f.x,f.y,f.w,f.h,x+f.x*s,y+f.y*s,f.w*s,f.h*s);
+    ctx.restore();
+  }
   /** Measure the DOM only after changes; the world updates each presented frame. */
   private rebuild(){
-    const origin=this.source.getBoundingClientRect();this.commands=[];
+    const origin=this.source.getBoundingClientRect();this.commands=[];this.fineRects=[];
+    const fineVisible=this.worldScale!==1&&document.getElementById('modal')!.hidden&&!document.getElementById('scene-layer')!.childElementCount;
     const add=(draw:(ctx:CanvasRenderingContext2D)=>void,state=false,world=false)=>this.commands.push({draw,state,world});
     const rect=(r:DOMRect)=>({x:Math.round((r.left-origin.left)/this.cssScale),y:Math.round((r.top-origin.top)/this.cssScale),w:Math.round(r.width/this.cssScale),h:Math.round(r.height/this.cssScale)});
     const walk=(element:HTMLElement)=>{
       const style=getComputedStyle(element);if(element.hidden||style.display==='none'||style.visibility==='hidden')return;
       const r=rect(element.getBoundingClientRect());if(r.w<=0||r.h<=0)return;
+      const fine=this.worldScale!==1&&!!element.closest('.fine-status');
+      if(fineVisible&&element.classList.contains('fine-status'))this.fineRects.push(r);
       const alpha=Number(style.opacity),background=style.backgroundColor;
       add(ctx=>{ctx.save();ctx.globalAlpha*=Number.isFinite(alpha)?alpha:1;},true);
       if(background!=='rgba(0, 0, 0, 0)'&&background!=='transparent')add(ctx=>{ctx.fillStyle=background;ctx.fillRect(r.x,r.y,r.w,r.h);});
@@ -182,7 +249,11 @@ export class PixelDisplay {
             for(let i=0;i<text.length;i++){
               if(/\s/.test(text[i]))continue;range.setStart(node,i);range.setEnd(node,i+1);
               const boxes=range.getClientRects();if(!boxes.length)continue;const b=rect(boxes[0]),char=text[i];
-              add(ctx=>{bitmapText(ctx,char,b.x,b.y+scale,color,scale);});
+              if(fine){
+                const font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                const x=(boxes[0].left-origin.left)/this.cssScale,y=(boxes[0].top-origin.top)/this.cssScale;
+                add(ctx=>{ctx.font=font;ctx.textBaseline='alphabetic';ctx.fillStyle=color;ctx.fillText(char,x,y+(ctx.measureText(char).fontBoundingBoxAscent??parseFloat(style.fontSize)));});
+              }else add(ctx=>{bitmapText(ctx,char,b.x,b.y+scale,color,scale);});
             }
           }
         }

@@ -5,7 +5,7 @@ import {importSave} from './navigation';
 import {capture,inspect} from './controls';
 
 export function skillEquipmentFlows(production=false){
- for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
   test.describe(`${production?'production':'development'} skill and equipment fixes ${device}`,()=>{
    test.use({viewport,deviceScaleFactor});
    test('equipment dims incompatible fittings but keeps inspection and shared coats available',async({page})=>{

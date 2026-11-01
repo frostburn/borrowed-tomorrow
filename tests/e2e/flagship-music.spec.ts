@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { capture, inspect } from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test(`flagship music reviews 10/8, new instruments and an intro that stays out of the loop on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage();
   try{

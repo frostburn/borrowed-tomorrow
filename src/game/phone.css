@@ -1,0 +1,186 @@
+/* Phone controls retain CSS scale 1 in either orientation. */
+#screen-insets{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.pan-vertical{display:none}
+.sound-compact{display:none}
+.identity .identity-figure,.identity-level{display:none}
+.world-input{touch-action:none}
+.phone-layout button{touch-action:manipulation}
+.toast{pointer-events:none}
+.phone-layout .toast{top:4px;bottom:auto;left:8px;transform:none;max-width:max(160px,calc(100% - 364px))}
+.phone-layout .game-shell{grid-template-columns:minmax(0,1fr) var(--phone-sidebar);grid-template-rows:40px 24px minmax(0,1fr) 16px}
+.phone-layout .topbar{grid-column:1/-1;flex-direction:row;justify-content:space-between;gap:8px;padding:0 8px}
+.phone-layout .brand{gap:0}.phone-layout .brand h1{font:20px/24px Switchyard,monospace}.phone-layout .brand span{display:none}
+.phone-layout .topbar nav{gap:4px}.phone-layout .topbar button{font:10px/12px SwitchyardCompact,monospace;min-height:36px;padding:4px 6px}
+.phone-layout .sound-wide{display:none}.phone-layout .sound-compact{display:inline}
+.phone-layout .button-key{display:none}
+.phone-layout #sound-button{max-width:92px;white-space:normal}
+.phone-layout .initiative{grid-column:1/-1;min-height:0}
+.phone-layout .stage-wrap{grid-column:1;grid-row:3}
+.phone-layout .game-shell.inventory-open{grid-template-columns:minmax(0,1fr);grid-template-rows:40px 24px minmax(0,1fr) 16px}
+.phone-layout .inventory-open .stage-wrap{grid-column:1/-1}
+.phone-layout .controls{grid-column:2;grid-row:3;border-top:0;border-left:1px solid #b8a780;min-height:0;min-width:0;flex-direction:column;flex-wrap:nowrap}
+.phone-layout footer{grid-column:1/-1;grid-row:4}.phone-layout footer a{display:none}
+.phone-layout .world-party{flex:0 0 60px;width:100%;height:60px;gap:4px;padding:4px;border-right:0;border-bottom:1px solid #625842;justify-content:space-around}
+.phone-layout .world-hero{min-width:0;flex:1;gap:4px;justify-content:center}
+.phone-layout .world-hero img{width:40px;height:40px;object-fit:contain}
+.phone-layout .world-hero strong{font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .world-hero small{font:10px/12px SwitchyardCompact,monospace;margin-top:4px;white-space:nowrap}
+.phone-layout .world-party[data-size="3"]{height:60px}
+.phone-layout .world-party[data-size="3"] .world-hero{display:block;text-align:center}
+.phone-layout .world-party[data-size="3"] .world-hero img{display:none}
+.phone-layout .world-objective{flex:1;align-self:stretch;min-height:0;padding:12px;overflow:auto}
+.phone-layout .world-objective h3{font:10px/14px SwitchyardCompact,monospace;margin-bottom:8px}
+.phone-layout .world-objective p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .world-actions{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px;width:100%;flex:0 0 auto;padding:8px;border-top:1px solid #625842}
+.phone-layout .world-actions .dpad{display:grid;gap:4px}
+.phone-layout .dpad button{width:40px;height:40px;min-height:40px;padding:4px;font:20px/24px Switchyard,monospace}
+.phone-layout .interact-action button{min-height:44px;white-space:normal;font:10px/14px SwitchyardCompact,monospace;padding:8px}
+.phone-layout .battle-controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:60px minmax(0,1fr)}
+.phone-layout .battle-controls .identity{display:flex;gap:8px;flex-basis:auto;min-width:0;overflow:hidden;padding:2px 8px;border-right:0;border-bottom:1px solid #625842}
+.phone-layout .battle-controls .identity img{width:48px;height:48px;object-fit:contain}
+.phone-layout .identity h2{font:10px/12px SwitchyardCompact,monospace;margin:0 0 4px}
+.phone-layout .identity .bar{display:none}
+.phone-layout .identity .role{display:block;font:10px/12px SwitchyardCompact,monospace;max-height:12px;overflow:auto;margin:0 0 4px}
+.phone-layout .battle-controls .vitals{display:flex;flex-wrap:wrap;gap:4px 12px}
+.phone-layout .battle-controls .command-panel{min-height:0;padding:4px;grid-template-rows:minmax(0,1fr) 72px;gap:4px}
+.phone-layout .battle-controls .command-list{gap:0}
+.phone-layout .battle-controls .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--phone-action-gap);align-content:start}
+.phone-layout .battle-controls .actions button{min-width:0;min-height:var(--phone-action-height);padding:4px;font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .confirmation{grid-template-rows:minmax(0,1fr) 40px;gap:4px}
+.phone-layout .battle-controls .confirmation button{padding:4px;min-height:40px;font:10px/12px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .confirmation .prediction{font:10px/14px SwitchyardCompact,monospace}
+.phone-layout .battle-controls .skill-badge{margin-left:2px;padding:0 2px}
+.phone-layout .battle-pan,.phone-layout .boss-battle .battle-pan{top:auto;bottom:8px;right:8px;gap:4px;padding:4px}
+.phone-layout .battle-pan button{display:block;width:36px;height:36px;font:20px/24px Switchyard,monospace;padding:4px}
+.phone-layout .dialogue,.phone-layout .cinematic .dialogue{gap:8px;padding:8px;min-height:0;max-height:calc(100% - 48px);overflow:auto}
+.phone-layout .dialogue-portrait{width:82px;height:82px;flex-basis:82px;align-self:flex-start}
+.phone-layout .dialogue-portrait img{width:80px;height:80px;object-fit:contain}
+.phone-layout .dialogue-copy{padding-right:0}
+.phone-layout .dialogue h2{font:10px/12px SwitchyardCompact,monospace;margin-bottom:8px}
+.phone-layout .dialogue-copy p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .dialogue-actions{gap:4px;margin-top:8px}
+.phone-layout .dialogue-actions button{font:10px/12px SwitchyardCompact,monospace;min-height:40px;padding:6px 8px}
+.phone-layout .dialogue-linear,.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-linear{height:176px}
+.phone-layout .dialogue-linear .dialogue-actions button{width:112px;min-height:40px}
+.phone-layout .dialogue-linear .dialogue-page{left:12px;bottom:18px}
+.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-portrait{width:82px;height:82px;flex-basis:82px}
+.phone-layout .cinematic[data-dialogue-position="top"] .dialogue-portrait img{width:80px;height:80px}
+.phone-layout .cinema-bar{height:40px;padding:0 8px}.phone-layout .cinema-bar button{min-height:36px}
+.phone-layout .cinema-document{top:44px;padding:8px;max-height:calc(100% - 52px);overflow:auto}
+.phone-layout .cinema-document h3,.phone-layout .cinema-document p{font:10px/14px SwitchyardCompact,monospace;margin-bottom:4px}
+.phone-layout .scene-panel{padding:16px;max-height:calc(100% - 16px);overflow:auto}
+.phone-layout .scene-panel h2{font:20px/24px Switchyard,monospace;margin-bottom:8px}
+.phone-layout .scene-panel p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .panel-actions{margin-top:12px;gap:8px}.phone-layout .panel-actions button{min-height:40px;white-space:normal;font:10px/14px SwitchyardCompact,monospace}
+.phone-layout .title-panel .panel-actions{display:flex;flex-wrap:wrap}
+.phone-layout .modal-backdrop{padding:8px}.phone-layout .modal{width:min(880px,100%)}
+.phone-layout .modal header{flex-shrink:0;padding:4px 12px;min-height:44px}
+.phone-layout .modal header h2{font:20px/24px Switchyard,monospace}.phone-layout .close-modal{min-width:40px;min-height:36px}
+.phone-layout .modal-content{padding:12px;min-height:0;overflow:auto}
+.phone-layout .modal-content p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .modal-actions{flex-shrink:0;padding:4px 12px 12px}.phone-layout .modal-actions button,.phone-layout .slot-buttons button{font:10px/14px SwitchyardCompact,monospace;min-height:40px}
+.phone-layout .save-row{gap:12px;padding:8px 0}.phone-layout .save-row p{max-width:380px}
+.phone-layout .campaign-inventory .ci-grid{display:grid;grid-template-columns:184px minmax(0,1fr);gap:16px}
+.phone-layout .ci-character{display:grid;grid-template-columns:80px minmax(0,1fr);align-content:start;gap:8px}
+.phone-layout .ci-character>*{grid-column:1/-1}
+.phone-layout .ci-character>img{grid-column:1;grid-row:1;width:80px;height:80px;object-fit:contain;margin:0;float:none}
+.phone-layout .ci-character h2{grid-column:2;grid-row:1;align-self:center;font:20px/24px Switchyard,monospace;margin:0}
+.phone-layout .ci-character h2 small{display:block;margin-top:8px}
+.phone-layout .ci-character>p{grid-column:1/-1;margin:0}
+.phone-layout .ci-character>.ci-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;gap:4px}
+.phone-layout .ci-character .ci-slot{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+.phone-layout .campaign-inventory button{min-height:40px}
+.phone-layout .ending-controls{padding:8px;gap:12px;overflow:auto}
+.phone-layout .ending-controls h2{font:20px/24px Switchyard,monospace}
+.phone-layout .ending-controls p{font:10px/16px SwitchyardCompact,monospace}
+.phone-layout .ending-controls .panel-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:0}
+.phone-layout .ending-controls button{min-height:40px;font:10px/12px SwitchyardCompact,monospace;padding:4px}
+.phone-layout .ending-controls .ending-keys{display:none}
+@media(max-width:700px){.phone-layout .brand h1{font:10px/12px SwitchyardCompact,monospace}}
+
+/* Portrait trades world magnification for a full-width command area. Only the
+   stage is halved; text, touch targets and the UI raster keep their size. */
+.phone-layout.portrait-layout .game-shell,.phone-layout.portrait-layout .game-shell.inventory-open{grid-template-columns:minmax(0,1fr);grid-template-rows:72px 24px var(--phone-stage-height) minmax(0,1fr) 16px}
+.portrait-layout .topbar{flex-direction:column;align-items:stretch;gap:4px;padding:2px 8px 4px}
+.portrait-layout .brand{justify-content:center;height:20px}
+.phone-layout.portrait-layout .brand h1{font:20px/24px Switchyard,monospace}
+.portrait-layout .topbar nav{display:grid;grid-template-columns:1.2fr 1fr .8fr 1.2fr 32px;gap:4px}
+.portrait-layout .topbar button{min-width:0;min-height:40px;padding:4px;white-space:normal}
+.portrait-layout #sound-button{max-width:none}
+.portrait-layout .stage-wrap{grid-column:1;grid-row:3}
+.phone-layout.portrait-layout .controls{grid-column:1;grid-row:4;border-left:0;border-top:1px solid #b8a780}
+.phone-layout.portrait-layout footer{grid-row:5}
+.portrait-layout .world-party,.portrait-layout .world-party[data-size="3"]{flex-basis:72px;height:72px;padding:8px}
+.portrait-layout .world-hero img{display:block;width:48px;height:48px}
+.portrait-layout .world-party[data-size="3"] .world-hero{display:flex;text-align:left}
+.portrait-layout .world-party[data-size="3"] .world-hero img{display:block;width:36px;height:36px}
+.portrait-layout .world-objective{padding:16px}
+.portrait-layout .world-objective p{font:20px/24px Switchyard,monospace}
+.portrait-layout .world-actions{padding:12px;gap:16px}
+.portrait-layout .interact-action button{width:100%;min-height:48px}
+.phone-layout.portrait-layout .battle-controls{grid-template-rows:64px minmax(0,1fr)}
+.portrait-layout .battle-controls .identity{padding:6px 12px;gap:12px}
+.portrait-layout .battle-controls .identity img{width:48px;height:48px}
+.portrait-layout .identity h2{font:20px/24px Switchyard,monospace;margin:0}
+.portrait-layout .identity .role{margin:0}
+.portrait-layout .battle-controls .command-panel{padding:8px;gap:8px;grid-template-rows:auto minmax(88px,1fr)}
+.portrait-layout .battle-controls .actions{gap:6px}
+.portrait-layout .battle-controls .actions button{min-height:44px;padding:6px;line-height:14px}
+.portrait-layout .battle-controls .confirmation{grid-template-rows:minmax(0,1fr) 44px;gap:6px}
+.portrait-layout .battle-controls .confirmation button{min-height:44px}
+.portrait-layout .battle-controls .confirmation .prediction{font:10px/16px SwitchyardCompact,monospace;padding:4px}
+.portrait-layout .scene-layer{position:relative;inset:auto;grid-column:1;grid-row:4;min-height:0;z-index:2}
+.portrait-layout .scene-layer:not(:empty){background:#101d28}
+.portrait-layout .scene-layer.cinematic{display:grid;grid-template-rows:40px minmax(0,1fr);gap:8px;padding:0 8px 8px;align-items:stretch;justify-content:stretch}
+.portrait-layout .scene-layer.cinematic:has(.cinema-document){grid-template-rows:40px minmax(80px,1fr) minmax(136px,1fr)}
+.portrait-layout .scene-layer .dialogue{inset:8px;height:auto;max-height:none;overflow:hidden}
+.portrait-layout .scene-layer.cinematic .dialogue{position:relative;inset:auto;grid-row:2;height:100%;max-height:none}
+.portrait-layout .scene-layer.cinematic:has(.cinema-document) .dialogue{grid-row:3}
+.portrait-layout .dialogue-copy p{flex:1;font:20px/24px Switchyard,monospace}
+.portrait-layout .dialogue-actions{margin-top:12px}
+.portrait-layout .dialogue-actions button{min-height:44px}
+.portrait-layout .dialogue-linear .dialogue-actions button{min-height:44px;width:120px}
+.portrait-layout .cinema-bar{position:relative;grid-row:1;padding:0;gap:8px}
+.portrait-layout .cinema-bar>span{min-width:0;overflow:hidden;white-space:nowrap}
+.portrait-layout .cinema-bar button{flex-shrink:0}
+.portrait-layout .cinema-document{position:relative;inset:auto;transform:none;grid-row:2;width:100%;max-height:100%;min-height:0;overflow:auto}
+.portrait-layout .campaign-inventory .ci-grid{grid-template-columns:minmax(0,1fr)}
+.portrait-layout .toast{top:0;left:8px;max-width:calc(100% - 16px)}
+.phone-layout.portrait-short .battle-controls{grid-template-rows:64px minmax(0,1fr)}
+.portrait-short .battle-controls .identity{padding:2px 8px}
+.portrait-short .battle-controls .identity img{width:40px;height:40px}
+.portrait-short .battle-controls .identity .role{display:none}
+.portrait-short .battle-controls .command-panel{padding:6px;gap:6px;grid-template-rows:auto minmax(80px,1fr)}
+.portrait-short .battle-controls .actions{gap:4px}
+.portrait-short .battle-controls .actions button{min-height:40px;padding:4px}
+
+/* Fine status is drawn from the full-resolution UI cache, beside chunky pans. */
+.portrait-layout .fine-status{font:12px/16px monospace}
+.portrait-layout .fine-status img{image-rendering:auto}
+.phone-layout.portrait-layout .world-party .world-hero strong,.phone-layout.portrait-layout .world-party .world-hero small{font:12px/16px monospace;margin:0}
+.portrait-layout .world-party[data-size="3"] .world-hero{gap:4px}
+.portrait-layout .world-party[data-size="3"] .world-hero img{width:32px;height:32px}
+.portrait-layout .battle-controls .identity{width:calc(100% - 174px);padding:8px;gap:8px;border-bottom:0}
+.phone-layout.portrait-layout .identity .identity-portrait{display:none}
+.phone-layout.portrait-layout .identity .identity-figure{display:block;width:40px;height:40px;border:0;background:none;object-fit:contain}
+.portrait-layout .fine-status h2{display:inline;font:14px/16px monospace;white-space:nowrap}
+.portrait-layout .identity-level{display:inline;font:11px/16px monospace;margin-left:6px;color:#87a3a2}
+.portrait-layout .fine-status .role{display:none}
+.portrait-layout .fine-status .vitals{font:11px/14px monospace;gap:0 8px}
+.phone-layout.portrait-layout .battle-pan,.phone-layout.portrait-layout .boss-battle .battle-pan{position:relative;grid-column:1;grid-row:4;align-self:start;justify-self:end;inset:auto;margin:8px 4px;height:46px}
+.portrait-layout .battle-pan button{height:36px}
+
+/* Native portrait size, then a full-width scrolling text area and fixed actions. */
+.phone-layout.portrait-layout .scene-layer .dialogue{overflow:auto}
+.portrait-layout .dialogue-copy{display:grid;width:100%;height:100%;grid-template-rows:132px minmax(48px,1fr) auto;gap:8px}
+.phone-layout.portrait-layout .scene-layer .dialogue-portrait{position:absolute;left:8px;top:8px;align-self:auto;width:132px;height:132px;flex-basis:132px;border-width:2px}
+.phone-layout.portrait-layout .scene-layer .dialogue-portrait img{width:128px;height:128px;object-fit:none}
+.portrait-layout .dialogue h2{grid-row:1;align-self:center;margin:0 0 0 144px;font:20px/24px Switchyard,monospace}
+.portrait-layout .dialogue-copy p{grid-row:2;overflow:auto}
+.portrait-layout .dialogue-actions{grid-row:3;margin-top:0;justify-content:flex-end}
+.phone-layout.portrait-layout .dialogue .dialogue-page{left:152px;top:120px;bottom:auto}
+.portrait-layout .scene-layer.cinematic:has(.cinema-document){grid-template-rows:40px minmax(80px,.6fr) minmax(256px,1.4fr);overflow:auto}
+@media(max-width:360px){
+ .portrait-layout .world-party[data-size="3"] .world-hero img{width:28px;height:28px}
+ .portrait-layout .world-party[data-size="3"] .world-hero strong,.portrait-layout .world-party[data-size="3"] .world-hero small{font:11px/14px monospace}
+}

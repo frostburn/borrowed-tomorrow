@@ -5,7 +5,7 @@ import {inspect,capture} from './controls';
 test.setTimeout(30000);
 const bitmap=(page:Page,selector='.phaser-host canvas')=>page.locator(selector).evaluate(c=>{let hash=0;for(const n of (c as HTMLCanvasElement).toDataURL())hash=(Math.imul(hash,31)+n.charCodeAt(0))|0;return hash;});
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`scenery moves with a parked cursor and settles for reduced motion on ${device}`,async({page})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`scenery moves with a parked cursor and settles for reduced motion on ${device}`,async({page})=>{
  await page.setViewportSize(viewport);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
  await importSave(page,checkpoint('villageFreed'));await expect.poll(async()=>(await inspect(page)).ambient?.water).toBe(true);
  const before=(await inspect(page)).state,native=await bitmap(page),visible=await bitmap(page,'.pixel-output');

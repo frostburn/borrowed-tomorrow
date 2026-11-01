@@ -24,7 +24,7 @@ async function markerPixels(page:Page,id:string,color:string){
   return count;
  },{o,color});
 }
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test.describe(`interface issues on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'});
   test('markers, objective space, fixed dialogue navigation and inline range feedback',async({page})=>{

@@ -10,7 +10,7 @@ import {basicStrike} from '../../src/game/battle-basic';
 battleMenuFlows();
 
 const parties:CompanionId[][]=[['nell','orrin','kit'],['orrin','nell','celia'],['kit','nell','petra'],['celia','orrin','petra'],['petra','celia','kit']];
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25],['narrow phone',{width:320,height:740},1]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25],['narrow phone',{width:740,height:320},1]]as const){
  test(`every level-15 command fits on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'});
   try{for(const party of parties){
@@ -33,7 +33,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  });
 }
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`basic command preserves ground beneath the regulator and targets real contacts on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`basic command preserves ground beneath the regulator and targets real contacts on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
  try{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?dev=boss&boss=conduit&route=pressure');
@@ -57,7 +57,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  }finally{await context.close();}
 });
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`enemy click confirms approach and strike together on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`enemy click confirms approach and strike together on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
  try{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));

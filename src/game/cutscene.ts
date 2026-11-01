@@ -20,16 +20,17 @@ import { facingAsset } from '../content/actors';
 import { EMPEROR_WALK } from '../content/cinematic-art';
 import { ConduitCinematic } from './conduit-cinematic';
 import type { WorldLighting } from './world-lighting';
-import { narrowScreen } from './resolution';
+import { narrowScreen,portraitScreen } from './resolution';
 
 const pixel=(p:StagePoint)=>({x:Math.round((p.x+.5)*24),y:Math.round((p.y+.5)*24)+7});
 
 /** Temporary staging never changes party positions, resources, or story flags. */
 export class Cutscene {
   private get dialogueInset(){
+    if(portraitScreen())return 0; // Portrait dialogue has its own area below the stage.
     // Upper dialogue leaves the lower stage for the actors. Apply the same
     // framing to cuts, pans, tracking and resize, on desktop and phone.
-    if(this.script.dialoguePosition==='top')return -160;
+    if(this.script.dialoguePosition==='top')return -Math.min(160,Math.max(0,(this.scene.cameras.main.height??480)/2-24));
     return narrowScreen()&&(this.script.id.startsWith('one-')||this.script.id==='three-reunion'||this.script.id==='three-rupture'||this.script.id==='four-home'||this.script.id==='four-choice'||this.script.id==='five-wind-night'||this.script.id.startsWith('five-deck-')||this.script.id==='five-emperor-told'||this.script.id==='six-capital-quay'||this.script.id==='six-briefing'||this.script.id==='six-roofs'||this.script.id==='six-river-treatment'||this.script.id==='six-river-rest'||this.script.id==='six-river-thanks'||this.script.id==='seven-home'||this.script.id==='seven-ready'||this.script.id==='seven-orrin'||this.script.id==='seven-sea'||this.script.id==='seven-picnic')?48:0;
   }
   private cameraPoint(point:StagePoint){

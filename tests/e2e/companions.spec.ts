@@ -8,7 +8,7 @@ async function tab(page:Page,name:string){await page.getByRole('navigation',{nam
 async function level(page:Page,name:string,value:number){const input=page.getByRole('spinbutton',{name:`${name} level`,exact:true});await input.fill(String(value));await input.press('Tab');}
 async function stats(page:Page,name:string,values:Record<string,number>){for(const [stat,value] of Object.entries(values))await page.getByRole('spinbutton',{name:`${name} ${stat}`,exact:true}).fill(String(value));await page.getByRole('button',{name:'Apply base stats',exact:true}).click();}
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`Celestial bolt, harmless bash and Taunt work on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.goto('/?dev=workshop');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop');
@@ -116,7 +116,7 @@ for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{wi
 
 test('future-companion portraits keep their native geometry on a compact phone',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.setViewportSize({width:320,height:844});await page.goto('/?dev=workshop');
+  await page.setViewportSize({width:844,height:320});await page.goto('/?dev=workshop');
   for(const name of ['Kit','Celia','Petra']){
     await choose(page,name);
     const image=page.getByRole('region',{name:`${name} equipment`}).getByRole('img',{name,exact:true});

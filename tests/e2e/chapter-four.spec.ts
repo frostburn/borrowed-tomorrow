@@ -12,7 +12,7 @@ async function equip(page:Page,hero:string,item:string){
  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:hero,exact:true}).click();
  await page.locator('.ci-items').getByRole('button',{name:new RegExp(`^${item}`)}).click();await page.getByRole('button',{name:`Equip on ${hero}`,exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
 }
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`Chapter Four replays Celia’s introduction and keeps formation editable on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const state=brokenCheckpoint('refugeSeen');state.location={map:'breakwater',x:25,y:29};state.activeParty=device==='desktop'?['nell']:['nell','petra'];await importSave(page,state);
@@ -31,7 +31,7 @@ test('failed sanctuary vectors preserve the exact Chapter Three departure until 
  expect((await inspect(page)).state).toMatchObject({chapter:'chapter-three',boundary:'chapter-four:broken-world',inventory:before.inventory,party:before.party,activeParty:before.activeParty});
  await page.unroute('**/art/vector/chapter-four/sanctuary-ring.svg');await page.getByRole('button',{name:'Retry crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('four-home');
 });
-for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],['wet','phone',{width:390,height:844}]] as const){
+for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],['wet','phone',{width:844,height:390}]] as const){
  test(`@journey rewritten Chapter Four ${route} route frees the harbor and coast on ${device}`,async({page})=>{
   test.setTimeout(600000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const departure=palaceCheckpoint('chapterThreeComplete');departure.activeParty=['nell','petra','kit'];equipItem(departure.inventory,'nell','silver-reflector');equipItem(departure.inventory,'nell','insulated-coat');equipItem(departure.inventory,'petra','saber-hilt');equipItem(departure.inventory,'kit','courier-sight');
@@ -54,7 +54,7 @@ for(const [route,device,viewport] of [['dry','desktop',{width:1280,height:800}],
  });
 }
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test.describe(`Chapter Four painted controls and sea wall on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('automatically resumes the wheel and clamp, and keeps both siblings visible beside the boat',async({page})=>{

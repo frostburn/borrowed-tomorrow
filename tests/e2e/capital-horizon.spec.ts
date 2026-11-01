@@ -4,7 +4,7 @@ import {arrival} from '../../src/content/maps';
 import {importSave} from './navigation';
 import {capture,dialogue,inspect} from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`the Hollow Sun opens above the capital, then restores the quay camera on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`the Hollow Sun opens above the capital, then restores the quay camera on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
@@ -18,7 +18,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
    if(finish==='skip')await page.getByRole('button',{name:'Skip scene',exact:true}).click();
    else{
     await page.locator('.dialogue-actions button').click();await expect(page.locator('.dialogue h2')).toHaveText('Alda');expect((await inspect(page)).view.scrollY).toBeGreaterThan(0);
-    if(device==='phone'){await page.setViewportSize({width:375,height:812});await page.waitForTimeout(100);expect((await inspect(page)).view.scrollY).toBeGreaterThan(0);}
+    if(device==='phone'){await page.setViewportSize({width:812,height:375});await page.waitForTimeout(100);expect((await inspect(page)).view.scrollY).toBeGreaterThan(0);}
     await capture(page,`capital-horizon-quay-${device}`);await dialogue(page);
    }
    const after=await inspect(page);expect(after.cinematic).toBeNull();expect(after.state.flags.capitalLandingSeen).toBe(true);expect(after.view.zoom).toBe(1);expect(after.view.scrollY).toBeGreaterThanOrEqual(0);

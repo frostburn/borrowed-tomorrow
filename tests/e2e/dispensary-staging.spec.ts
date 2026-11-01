@@ -31,8 +31,8 @@ async function composition(page:Page){
 
 for(const [device,viewport,reducedMotion]of [
  ['desktop',{width:1280,height:800},'no-preference'],
- ['phone',{width:390,height:844},'reduce'],
- ['narrow phone',{width:320,height:740},'no-preference'],
+ ['phone',{width:844,height:390},'reduce'],
+ ['narrow phone',{width:740,height:320},'no-preference'],
 ]as const)test(`Lower Dispensary keeps the cast clear below upper dialogue on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
@@ -48,7 +48,7 @@ for(const [device,viewport,reducedMotion]of [
    // exercises Cutscene.reframe while the top dialogue is still active.
    await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();
    await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-wind-dispensary');await composition(page);
-   await page.setViewportSize({width:390,height:844});await expect.poll(async()=>(await inspect(page)).view.width).toBe(368);await composition(page);
+   await page.setViewportSize({width:844,height:390});await expect.poll(async()=>(await inspect(page)).view.width).toBe(368);await composition(page);
    await capture(page,'dispensary-intro-resized');
   }
   if(device==='narrow phone')await dialogue(page);else await page.getByRole('button',{name:'Skip scene',exact:true}).click();

@@ -9,7 +9,7 @@ import { approach, importSave, travel, visit } from './navigation';
 
 test('phone routes connect the workshop, both river banks, residents and pass recesses',async({page})=>{
   test.setTimeout(180_000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+  await page.setViewportSize({width:844,height:390});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const yard=checkpoint('orrinJoined');yard.location={map:'yard',x:27,y:15};await importSave(page,yard);
   await nativeScene(page,'yard');await capture(page,'tile-yard-phone');await visit(page,'engine');
   await travel(page,'branch','rillbridge');await dialogue(page);await nativeScene(page,'rillbridge');await capture(page,'tile-river-phone');
@@ -67,7 +67,7 @@ test('native foreground trees occlude actors behind them and yield to actors in 
   }
 });
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`actors stand above the bridge deck and cross both banks on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

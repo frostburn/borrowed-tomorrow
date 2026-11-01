@@ -4,7 +4,7 @@ import { SPRITE_CATALOG } from '../../src/dev/sprite-catalog';
 import { expect, test } from '@playwright/test';
 import { capture } from './controls';
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
  test.describe(`sprites on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr});
   test('reviews native cast, directions and integer zoom without changing storage',async({page})=>{

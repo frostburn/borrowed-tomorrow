@@ -20,7 +20,7 @@ async function framed(page:Page,heroes:string[]){
  },heroes);
  for(const a of frame){expect(a.bottom,a.id).toBeLessThan(a.dialogue);expect(a.top,a.id).toBeGreaterThanOrEqual(a.canvas);}
 }
-for(const [device,viewport,previous]of [['desktop',{width:1280,height:800},'none'],['phone',{width:390,height:844},'both']]as const)test(`Celia ${device}: Windmere ${previous==='none'?'first':'third'}, trusted treatment and accepting company`,async({browser})=>{
+for(const [device,viewport,previous]of [['desktop',{width:1280,height:800},'none'],['phone',{width:844,height:390},'both']]as const)test(`Celia ${device}: Windmere ${previous==='none'?'first':'third'}, trusted treatment and accepting company`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/');await expect(page).toHaveTitle(/Borrowed Tomorrow/);

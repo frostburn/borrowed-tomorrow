@@ -37,7 +37,7 @@ test('sung reeds bloom in level and vibrato around their exact 31-EDO pitch, and
  expect(measured.silence).toBeLessThan(.00001);expect(measured.incoming).toBeGreaterThan(.005);expect(measured.after).toBeLessThan(.00001);
 });
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test.describe(`expressive review on ${device}`,()=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test.describe(`expressive review on ${device}`,()=>{
  test.use({viewport,deviceScaleFactor:dpr});
  test('compares swells and rubato through the real player, seeks over the loop and leaves saves alone',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});

@@ -5,7 +5,7 @@ import {abilityFor} from '../../src/rules/skills';
 import type {Battle} from '../../src/rules/combat';
 import {inspect,clickHex,capture} from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)
 for(const [id,name,hero]of [['crush','Crushing blow','petra'],['bash','Shield bash','petra'],['sweep','Saber sweep','petra'],['repulse','Pressure wave','orrin']]as const)
 test(`${name} confirms its approach and skill together on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];

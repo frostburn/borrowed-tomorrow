@@ -41,7 +41,7 @@ test('canonical Chapter Three replays arrival with earned equipment and preserve
  await expect.poll(async()=>(await inspect(page)).state.chapter).toBe('chapter-two');
  expect((await inspect(page)).state).toMatchObject({chapter:'chapter-two',coins:37,inventory:original.inventory});expect(errors).toEqual([]);
 });
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
  test(`capital entry and interrupted Petra recruitment preserve gear on ${device}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await begin(page);
   await expect(page).toHaveTitle('Borrowed Tomorrow');await nativeScene(page,'northglass');await capture(page,`chapter-three-arrival-${device}`);await dialogue(page);
@@ -74,7 +74,7 @@ test('@journey Chapter Three rescues Tomas, earns usable loot and escapes the fa
  await page.reload();await page.getByRole('button',{name:'Continue',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('three-four-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();expect((await inspect(page)).state.inventory).toEqual(saved.inventory);expect(errors).toEqual([]);
 });
 test('the pressure route, optional stores refusal and escape work on a phone',async({page})=>{
- const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,palaceCheckpoint('tomasRescued'));
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:844,height:390});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,palaceCheckpoint('tomasRescued'));
  await approach(page,'works-locker');await page.getByRole('button',{name:'Leave the stores sealed',exact:true}).click();expect((await inspect(page)).state.flags.palaceStoresWon).toBeUndefined();
  await approach(page,'works-plan');await choices(page);await capture(page,'intake-choice-phone');await page.getByRole('button',{name:'Take the pressure walk · crows and vents',exact:true}).click();
  await travel(page,'works-depths','conduit');await capture(page,'conduit-arrival-phone');await dialogue(page);await approach(page,'heart-regulator');await battle(page,'heart-pressure-phone');await dialogue(page);await equip(page,'Kit','Insulated work coat');

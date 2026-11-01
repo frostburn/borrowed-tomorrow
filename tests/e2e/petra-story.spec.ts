@@ -23,7 +23,7 @@ async function framed(page:Page){
  });
  expect(frame.bottom).toBeLessThan(frame.top);
 }
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Petra ${device}: refusal, account, return and an interrupted homecoming`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`Petra ${device}: refusal, account, return and an interrupted homecoming`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{

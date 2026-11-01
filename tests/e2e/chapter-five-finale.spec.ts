@@ -10,7 +10,7 @@ async function start(page:Page){
  await approach(page,'ship-chart');await page.getByRole('button',{name:'Capital approach · Alban’s flagship',exact:true}).click();
  await page.getByRole('button',{name:'Enter the capital crossing',exact:true}).click();await expect.poll(async()=>(await inspect(page)).cinematic).toBe('five-flagship-approach');
 }
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test(`Chapter Five Act IV canonical start, divine retaliation and saved capital departure on ${device}`,async({browser})=>{
   test.setTimeout(240000);
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];

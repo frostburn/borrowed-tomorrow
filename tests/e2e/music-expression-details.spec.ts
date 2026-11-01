@@ -117,7 +117,7 @@ for(const [family,modes]of [
  for(const r of results){expect(r.peak,JSON.stringify(r)).toBeLessThan(.9);expect(r.rms,JSON.stringify(r)).toBeGreaterThan(.002);expect(r.jump,JSON.stringify(r)).toBeLessThan(.25);}
 });
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test.describe(`expression controls on ${device}`,()=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test.describe(`expression controls on ${device}`,()=>{
  test.use({viewport,deviceScaleFactor:dpr});
  test('reviews each added performance, compares bass bends and preserves saves',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?dev=music');const storage=await page.evaluate(()=>JSON.stringify(localStorage));

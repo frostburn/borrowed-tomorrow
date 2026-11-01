@@ -24,7 +24,7 @@ const playerChunk=/\/(?:src\/game\/soundtrack\.ts(?:\?.*)?|assets\/soundtrack-[^
 const scoreChunk=/\/(?:src\/game\/music-runtime\.ts(?:\?.*)?|assets\/music-runtime-[^/]+\.js)$/;
 
 export function soundtrackFlows(production=false){
- for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`public soundtrack ${production?'production ':''}${device}: browse acts, skip bars, autoplay, close and restore the host`,async({browser})=>{
+ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`public soundtrack ${production?'production ':''}${device}: browse acts, skip bars, autoplay, close and restore the host`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[],scoreRequests:string[]=[];
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   page.on('request',r=>{if(scoreChunk.test(r.url()))scoreRequests.push(r.url());});

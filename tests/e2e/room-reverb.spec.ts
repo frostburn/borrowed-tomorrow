@@ -57,7 +57,7 @@ test('campaign rooms follow the location through reused music and battles',async
  await page.getByRole('button',{name:'Win battle',exact:true}).click();await page.getByRole('button',{name:'Continue the journey',exact:true}).click();expect((await inspect(page)).audioRoom).toBe('works');
 });
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`room review ${device}: canonical rooms, overrides without restarting, audition and reset`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`room review ${device}: canonical rooms, overrides without restarting, audition and reset`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/?dev=music');const select=page.locator('.music-rooms summary');const room=async(name:string)=>{await select.click();await page.getByRole('group',{name:'Room',exact:true}).getByRole('button',{name,exact:true}).click();};await expect(select).toContainText('Canonical · Open air');

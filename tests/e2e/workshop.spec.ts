@@ -16,7 +16,7 @@ async function selectTab(page: Page, tab: string) {
   await page.getByRole('navigation', { name: 'Workshop panels' }).getByRole('button', { name: tab, exact: true }).click();
 }
 
-for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 390, height: 844 }]] as const) {
+for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 844, height: 390 }]] as const) {
   test(`character builds persist and unlocked support abilities work on ${device}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
@@ -71,7 +71,7 @@ for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['p
   });
 }
 
-for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 390, height: 844 }]] as const) {
+for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 844, height: 390 }]] as const) {
   test(`level-five knockback, Dazzle and area healing play through on ${device}`, async ({ page }) => {
     const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
     page.on('console', m => { if(m.type() === 'error') errors.push(m.text()); });
