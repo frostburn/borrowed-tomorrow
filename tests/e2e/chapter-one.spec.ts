@@ -28,6 +28,10 @@ test('@ci opening, interrupted raid and skip keep a coherent checkpoint on a pho
   await nativeScene(page, 'station'); await capture(page, 'opening-phone');
   const stage=await page.locator('.stage-wrap').boundingBox(),dialog=await page.locator('.dialogue').boundingBox();
   expect(dialog!.y,'portrait dialogue leaves the world visible').toBeGreaterThanOrEqual(stage!.y+stage!.height);
+  expect(await page.locator('.dialogue-portrait').evaluate(e=>e.clientWidth)).toBe(128);
+  const copy=await page.locator('.dialogue-copy p').boundingBox(),face=await page.locator('.dialogue-portrait').boundingBox();
+  expect(copy!.y,'dialogue text uses the full width below the portrait').toBeGreaterThanOrEqual(face!.y+face!.height);
+  expect(copy!.width).toBeGreaterThan(330);
   await page.reload(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect.poll(async () => (await inspect(page)).cinematic).toBe('one-festival');
   await page.getByRole('button', { name: 'Skip scene' }).click();

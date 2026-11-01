@@ -327,7 +327,12 @@ excluded. Landscape keeps the world to the left of its command panel. Portrait
 uses a full-width stage above the controls, with twice the native camera coverage
 in each direction (world scale 0.5). PixelDisplay paints the original scene directly
 at half size between the cached UI layers, bypassing the two-pixel world raster.
-The UI retains its two-pixel lattice and full-size touch targets; phones present
+Character status strips bypass sampling too: the cached full-resolution UI
+supplies native text and character miniatures, with raw patches suppressed behind
+dialogue/panels and modals. Combat pan buttons sit in the chunky control space
+beside the active-character strip. Dialogue uses native 128px portraits above a
+full-width scrolling text area and separate action row.
+The remaining UI retains its two-pixel lattice and full-size touch targets; phones present
 a CSS-pixel-sized bitmap. Desktop retains the 1024 × 768 composition and
 device-pixel presentation.
 

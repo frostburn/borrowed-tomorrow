@@ -16,7 +16,7 @@ export function layoutForViewport(width:number,height:number,insets:Insets={left
  const portrait=compact&&height>width,header=portrait?72:PHONE_HEADER;
  const sidebar=compact&&!portrait?Math.min(288,even(w*.38)):0;
  const worldScale=portrait?.5:1;
- const stageHeight=portrait?even(Math.min(240,Math.max(120,h-header-PHONE_TURNS-PHONE_FOOTER-(h<700?320:370)))):h-header-PHONE_TURNS-PHONE_FOOTER;
+ const stageHeight=portrait?even(Math.min(240,Math.max(104,h-header-PHONE_TURNS-PHONE_FOOTER-(h<700?336:370)))):h-header-PHONE_TURNS-PHONE_FOOTER;
  return {compact,portrait,width:w,height:h,sidebar,header,stageHeight,worldScale,
   view:{width:compact?(w-sidebar)/worldScale:WORLD_VIEW_WIDTH,height:compact?stageHeight/worldScale:WORLD_VIEW_HEIGHT},insets};
 }

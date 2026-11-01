@@ -60,7 +60,10 @@ Aim for a consistent pixel-art look with small assets, rather than requiring cri
 Phone controls use CSS scale 1 and safe-area insets. Landscape keeps its sidebar;
 portrait presents the native world at half scale without the chunky world raster,
 above a full-width control area. Keep the UI raster and full-size touch targets;
-never halve the entire console. Portrait dialogue/panels live below the stage.
+never halve the entire console. Portrait status strips use native text/miniatures
+from the full-resolution UI cache; combat pan arrows occupy the chunky control
+area alongside status. Dialogue keeps native 128px portraits with full-width
+text below them. Portrait dialogue/panels live below the stage.
 Preserve save, dialogue, skill and plan across orientation changes, including
 world/input coordinate alignment. Both camera axes remain reachable through
 buttons and touch dragging without accidental selection or action costs.

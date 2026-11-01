@@ -8,16 +8,18 @@ export async function phoneConsole(page:Page){
  const geometry=()=>page.evaluate(()=>{
   const stage=document.querySelector('.stage-wrap')!.getBoundingClientRect(),controls=document.querySelector('.controls')!.getBoundingClientRect(),world=document.querySelector<HTMLCanvasElement>('.world-input')!,bounds=world.getBoundingClientRect(),view=window.borrowedTomorrow.inspect().view;
   const pixels=window.borrowedTomorrowPixels.inspect();
-  const portrait=innerHeight>innerWidth;
-  return {scale:pixels.cssScale,frameFits:pixels.width<=innerWidth&&pixels.height<=innerHeight,placed:portrait?controls.top>=stage.bottom:controls.left>=stage.right,worldScale:pixels.worldScale,filtered:pixels.worldFiltered,portrait,surface:[world.width,world.height],view:[view.width,view.height],sizeCorrect:bounds.width===view.width*pixels.worldScale&&bounds.height===view.height*pixels.worldScale,origin:[bounds.x,bounds.y],stageOrigin:[stage.x,stage.y],clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button')].filter(b=>{
+  const portrait=innerHeight>innerWidth,pan=document.getElementById('battle-pan')!.getBoundingClientRect(),status=document.querySelector('.identity.fine-status')!,statusBounds=status.getBoundingClientRect();
+  const docked=!portrait||(pan.top>=stage.bottom&&pan.left>=statusBounds.right&&pan.bottom<=statusBounds.bottom+1);
+  const fineStatus=!portrait||(getComputedStyle(status).fontFamily.includes('monospace')&&getComputedStyle(status.querySelector('.identity-figure')!).display!=='none'&&getComputedStyle(status.querySelector('.identity-level')!).display!=='none');
+  return {docked,fineStatus,scale:pixels.cssScale,frameFits:pixels.width<=innerWidth&&pixels.height<=innerHeight,placed:portrait?controls.top>=stage.bottom:controls.left>=stage.right,worldScale:pixels.worldScale,filtered:pixels.worldFiltered,portrait,surface:[world.width,world.height],view:[view.width,view.height],sizeCorrect:bounds.width===view.width*pixels.worldScale&&bounds.height===view.height*pixels.worldScale,origin:[bounds.x,bounds.y],stageOrigin:[stage.x,stage.y],clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button,#battle-pan button')].filter(b=>{
    const r=b.getBoundingClientRect();return r.width>0&&(r.x<0||r.y<0||r.right>innerWidth+1||r.bottom>innerHeight+1);
   }).map(b=>b.textContent)};
  });
  // setViewportSize can return before Chromium delivers its resize event. Wait
  // for the actual fit rather than sampling the previous frame's DOM bounds.
  await expect.poll(async()=>{
-  const l=await geometry();return {scale:l.scale,frameFits:l.frameFits,placed:l.placed,clipped:l.clipped,surfaceMatches:JSON.stringify(l.surface)===JSON.stringify(l.view),aligned:JSON.stringify(l.origin)===JSON.stringify(l.stageOrigin),sizeCorrect:l.sizeCorrect,worldScale:l.worldScale===(l.portrait?.5:1),filter:l.filtered===!l.portrait};
- }).toEqual({scale:1,frameFits:true,placed:true,clipped:[],surfaceMatches:true,aligned:true,sizeCorrect:true,worldScale:true,filter:true});
+  const l=await geometry();return {docked:l.docked,fineStatus:l.fineStatus,scale:l.scale,frameFits:l.frameFits,placed:l.placed,clipped:l.clipped,surfaceMatches:JSON.stringify(l.surface)===JSON.stringify(l.view),aligned:JSON.stringify(l.origin)===JSON.stringify(l.stageOrigin),sizeCorrect:l.sizeCorrect,worldScale:l.worldScale===(l.portrait?.5:1),filter:l.filtered===!l.portrait};
+ }).toEqual({docked:true,fineStatus:true,scale:1,frameFits:true,placed:true,clipped:[],surfaceMatches:true,aligned:true,sizeCorrect:true,worldScale:true,filter:true});
 }
 export async function rotateWithPlan(page:Page){
  const before=(await inspect(page)).battle;

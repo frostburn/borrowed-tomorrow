@@ -34,6 +34,7 @@ export class PixelDisplay {
   private physicalLeft=0;
   private physicalTop=0;
   private worldScale=1;
+  private fineRects:{x:number;y:number;w:number;h:number}[]=[];
   private native?:HTMLCanvasElement;
   private dirty=true;
   private commands:{draw:(ctx:CanvasRenderingContext2D)=>void;state:boolean;world?:boolean}[]=[];
@@ -99,7 +100,8 @@ export class PixelDisplay {
     this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
     // In portrait, use the freed space below the stage for dialogue and title
     // panels. Reparent the existing node: preserve its controls and callbacks.
-    const scene=document.getElementById('scene-layer')!,parent=document.querySelector(layout.portrait?'.game-shell':'.stage-wrap')!;
+    const scene=document.getElementById('scene-layer')!,parent=document.querySelector(layout.portrait?'.game-shell':'.stage-wrap')!,pan=document.getElementById('battle-pan')!;
+    if(pan.parentElement!==parent)parent.insertBefore(pan,scene.parentElement===parent?scene:null);
     if(scene.parentElement!==parent)parent.append(scene);
     // On phones the shared bitmap is CSS-pixel sized. The browser expands that
     // single nearest-sampled surface for DPR, avoiding a huge extra copy on
@@ -190,16 +192,23 @@ export class PixelDisplay {
     ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
     ctx.drawImage(this.native!,x+r.x*s,y+r.y*s,r.w*s,r.h*s);
     ctx.imageSmoothingEnabled=false;
-    ctx.drawImage(this.upperRaster,x,y,this.width*s,this.height*s);ctx.restore();
+    ctx.drawImage(this.upperRaster,x,y,this.width*s,this.height*s);
+    // Restore only the fine-detail status strips from the full-resolution UI
+    // cache. Their DOM text and images bypass the chunky UI sampling step.
+    for(const f of this.fineRects)ctx.drawImage(this.upper,f.x,f.y,f.w,f.h,x+f.x*s,y+f.y*s,f.w*s,f.h*s);
+    ctx.restore();
   }
   /** Measure the DOM only after changes; the world updates each presented frame. */
   private rebuild(){
-    const origin=this.source.getBoundingClientRect();this.commands=[];
+    const origin=this.source.getBoundingClientRect();this.commands=[];this.fineRects=[];
+    const fineVisible=this.worldScale!==1&&document.getElementById('modal')!.hidden&&!document.getElementById('scene-layer')!.childElementCount;
     const add=(draw:(ctx:CanvasRenderingContext2D)=>void,state=false,world=false)=>this.commands.push({draw,state,world});
     const rect=(r:DOMRect)=>({x:Math.round((r.left-origin.left)/this.cssScale),y:Math.round((r.top-origin.top)/this.cssScale),w:Math.round(r.width/this.cssScale),h:Math.round(r.height/this.cssScale)});
     const walk=(element:HTMLElement)=>{
       const style=getComputedStyle(element);if(element.hidden||style.display==='none'||style.visibility==='hidden')return;
       const r=rect(element.getBoundingClientRect());if(r.w<=0||r.h<=0)return;
+      const fine=this.worldScale!==1&&!!element.closest('.fine-status');
+      if(fineVisible&&element.classList.contains('fine-status'))this.fineRects.push(r);
       const alpha=Number(style.opacity),background=style.backgroundColor;
       add(ctx=>{ctx.save();ctx.globalAlpha*=Number.isFinite(alpha)?alpha:1;},true);
       if(background!=='rgba(0, 0, 0, 0)'&&background!=='transparent')add(ctx=>{ctx.fillStyle=background;ctx.fillRect(r.x,r.y,r.w,r.h);});
@@ -240,7 +249,11 @@ export class PixelDisplay {
             for(let i=0;i<text.length;i++){
               if(/\s/.test(text[i]))continue;range.setStart(node,i);range.setEnd(node,i+1);
               const boxes=range.getClientRects();if(!boxes.length)continue;const b=rect(boxes[0]),char=text[i];
-              add(ctx=>{bitmapText(ctx,char,b.x,b.y+scale,color,scale);});
+              if(fine){
+                const font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                const x=(boxes[0].left-origin.left)/this.cssScale,y=(boxes[0].top-origin.top)/this.cssScale;
+                add(ctx=>{ctx.font=font;ctx.textBaseline='alphabetic';ctx.fillStyle=color;ctx.fillText(char,x,y+(ctx.measureText(char).fontBoundingBoxAscent??parseFloat(style.fontSize)));});
+              }else add(ctx=>{bitmapText(ctx,char,b.x,b.y+scale,color,scale);});
             }
           }
         }
