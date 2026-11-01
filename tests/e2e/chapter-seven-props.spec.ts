@@ -5,7 +5,7 @@ import {MAPS,arrival} from '../../src/content/maps';
 import {visibleSceneArt} from '../../src/content/scene-art';
 import {importSave,approach} from './navigation';
 import {inspect,capture,nativeActor} from './controls';
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Chapter Seven prop occlusion and original engine on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`Chapter Seven prop occlusion and original engine on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   const crossing=chapterSevenStart();crossing.flags.domainEntered=true;crossing.location={map:'hollowsill',x:24,y:32};await page.goto('/');await importSave(page,crossing);

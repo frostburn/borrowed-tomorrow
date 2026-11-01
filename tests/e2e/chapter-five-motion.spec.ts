@@ -12,7 +12,7 @@ async function hashes(page:Page,ms:number){
   const tick=()=>{const now=performance.now();if(now-sampled>80){sampled=now;const c=document.querySelector<HTMLCanvasElement>('.pixel-output')!,r=c.getBoundingClientRect(),w=document.querySelector('.world-input')!.getBoundingClientRect(),scale=c.width/r.width,x=Math.round((w.left-r.left)*scale),y=Math.round((w.top-r.top+w.height*.12)*scale),width=Math.min(c.width-x,Math.floor(w.width*scale)),height=Math.floor(w.height*.4*scale),p=c.getContext('2d')!.getImageData(x,y,width,height).data;let hash=2166136261;for(let i=0;i<p.length;i+=16)hash=Math.imul(hash^p[i],16777619);values.add(hash>>>0);}if(now-start>=ms)resolve([...values]);else requestAnimationFrame(tick);};tick();
  }),ms);
 }
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test(`the survey takeoff lifts the boarded cast together on scene time on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'no-preference'}),page=await context.newPage();
   try{

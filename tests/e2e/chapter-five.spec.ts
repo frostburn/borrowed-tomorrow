@@ -10,7 +10,7 @@ async function equip(page:Page,hero:string,item:string){
  await page.getByRole('button',{name:'Equipment',exact:true}).click();await page.getByRole('group',{name:'Character',exact:true}).getByRole('button',{name:hero,exact:true}).click();
  await page.locator('.ci-items').getByRole('button',{name:new RegExp(`^${item}`)}).click();await page.getByRole('button',{name:`Equip on ${hero}`,exact:true}).click();await page.getByRole('button',{name:'Close',exact:true}).click();
 }
-for(const [route,device,viewport]of [['lift','desktop',{width:1280,height:800}],['race','phone',{width:390,height:844}]]as const){
+for(const [route,device,viewport]of [['lift','desktop',{width:1280,height:800}],['race','phone',{width:844,height:390}]]as const){
  test(`@journey Chapter Five Act I ${route} route frees Hammerplain on ${device}`,async({page})=>{
   test.setTimeout(600000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
   const departure=anchorDeparture();departure.activeParty=['nell','petra','celia'];await importSave(page,departure);await page.getByRole('button',{name:'Skip cinematic',exact:true}).click();await dialogue(page);if(device==='desktop')await nativeScene(page,'airfield');await capture(page,`airfield-${device}`);

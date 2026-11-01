@@ -72,7 +72,7 @@ async function observeMusic(page:Page){
     };
   });
 }
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`Chapter Two uses regional variations for both raids, the loading walk and Petra on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');await observeMusic(page);
@@ -93,7 +93,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
     await page.locator('#sound-button').click();expect((await music(page)).enabled).toBe(false);expect(errors).toEqual([]);
   });
 }
-for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 390, height: 844 }]] as const) {
+for (const [device, viewport] of [['desktop', { width: 1280, height: 800 }], ['phone', { width: 844, height: 390 }]] as const) {
   test(`Chapter Four routes the live warden music and Sound control on ${device}`, async ({ page }) => {
     const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
     await page.setViewportSize(viewport); await page.goto('/');

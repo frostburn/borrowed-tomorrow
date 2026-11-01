@@ -5,7 +5,7 @@ import {offset} from '../../src/rules/hex';
 import {damage,type Unit} from '../../src/rules/combat';
 import {newCharacterSettings,defaultBuild} from '../../src/rules/characters';
 automaticSkillFlows();
-for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test.describe(`automatic workshop skills ${device}`,()=>{
   test.use({viewport,deviceScaleFactor});
   test('changing level automatically changes the real Burst footprint and friendly damage',async({page})=>{

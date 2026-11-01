@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 import {offset,toPixel} from '../../src/rules/hex';
 import {inspect,capture} from './controls';
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`vertical hex borders occupy complete chunky columns on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`vertical hex borders occupy complete chunky columns on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/?dev=boss');await page.getByRole('button',{name:'Start finale preset',exact:true}).click();

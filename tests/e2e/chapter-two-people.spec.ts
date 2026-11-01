@@ -5,7 +5,7 @@ import { coastCheckpoint } from '../support/progress';
 import { capture, clickWorld, inspect, nativeActor } from './controls';
 import { importSave } from './navigation';
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]] as const){
   test.describe(`silent Chapter Two people on ${device}`,()=>{
     test.use({viewport,deviceScaleFactor:dpr});
     test('populate the world and cutscenes without dialogue, then board with story progress',async({page})=>{

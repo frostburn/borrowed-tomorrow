@@ -5,7 +5,7 @@ import {checkpoint,palaceCheckpoint} from '../support/progress';
 import {importSave,approach} from './navigation';
 import {inspect,capture} from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Rillbridge releases automatically after collector victory on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`Rillbridge releases automatically after collector victory on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
  try{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -25,7 +25,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
  }finally{await context.close();}
 });
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`guardian victory starts its aftermath automatically on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`guardian victory starts its aftermath automatically on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
  try{
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));

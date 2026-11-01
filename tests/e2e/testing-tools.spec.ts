@@ -4,7 +4,7 @@ import { approach, importSave } from './navigation';
 import { checkpoint } from '../support/progress';
 import { offset } from '../../src/rules/hex';
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const){
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){
   test(`development battle tools restore, restart and resolve practice on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.goto('/?dev=workshop');

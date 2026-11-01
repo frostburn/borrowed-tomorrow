@@ -28,7 +28,7 @@ async function framed(page:Page,heroes:string[]){
 
 // Flight deck -> existing companion markers -> staged conversations, with reserves
 // present and no campaign mutation; then the one-time grief/recovery and real picnic.
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`Party relationships ${device}: shared work, grief, recovery and a group holiday`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`Party relationships ${device}: shared work, grief, recovery and a group holiday`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:device==='phone'?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{

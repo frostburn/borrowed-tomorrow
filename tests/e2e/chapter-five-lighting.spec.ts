@@ -5,7 +5,7 @@ import {arrival} from '../../src/content/maps';
 import {importSave} from './navigation';
 import {capture,inspect,nativeActor} from './controls';
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test(`Chapter Five native regional lighting follows the party on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage();
   try{

@@ -13,7 +13,7 @@ async function choose(page:Page,label:string){
  await revealChoices(page);
  await page.locator('.dialogue-actions').getByRole('button',{name:label,exact:true}).click();
 }
-for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,deviceScaleFactor]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test.describe(`permanent improvements on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor});
   test('airship confirms training, restores its larger capacity, and reloads the purchase',async({page})=>{

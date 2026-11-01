@@ -18,7 +18,7 @@ async function dragonPixels(page:Page){return page.evaluate(()=>{
  let hash=2166136261;for(let i=0;i<pixels.length;i+=4)for(let c=0;c<3;c++)hash=Math.imul(hash^pixels[i+c],16777619);return hash>>>0;
 });}
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`@journey Skeld ${device}: full expedition with Nell ${device==='phone'?'well, after Namar':'ill, before Namar'}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`@journey Skeld ${device}: full expedition with Nell ${device==='phone'?'well, after Namar':'ill, before Namar'}`,async({browser})=>{
  test.setTimeout(300000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/');

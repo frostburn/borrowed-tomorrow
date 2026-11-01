@@ -8,7 +8,7 @@ import { battle, capture, clickWorld, dialogue, inspect, nativeScene, nativeActo
 import { approach, importSave, travel, visit } from './navigation';
 
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const) {
   test(`Petra and Alban are fully visible at the crossing before and during the confrontation on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
@@ -135,7 +135,7 @@ test('@journey Chapter Two: Kit’s delivery, prison rescue and the capital trai
 
 
 test('the three traveling companions fit the compact inventory and phone HUD',async({page})=>{
-  await page.setViewportSize({width:320,height:740});await page.goto('/');await importSave(page,coastCheckpoint('wardSeen'));
+  await page.setViewportSize({width:740,height:320});await page.goto('/');await importSave(page,coastCheckpoint('wardSeen'));
   await expect(page.locator('.world-party')).toHaveAttribute('data-size','3');
   for(const name of ['Nell','Orrin','Kit'])await expect(page.locator('.world-party').getByText(name,{exact:true})).toBeInViewport();
   const boxes=await page.locator('.world-hero').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right};}));
@@ -159,7 +159,7 @@ test('failed region artwork keeps the original departure available for retry',as
 });
 
 test('loading-gate route, ward supplies and the escape work on a phone',async({page})=>{
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,coastCheckpoint('kitJoined'));
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:844,height:390});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await importSave(page,coastCheckpoint('kitJoined'));
   await approach(page,'loading-gate');await dialogue(page);await expect(page.locator('.identity .role')).toHaveText('Courier · Lv 3');await battle(page,'loading-gate-phone');expect((await inspect(page)).state.flags.raidDiversion).toBe(false);
   await visit(page,'prison-coach');await travel(page,'coast-ward','infirmary');await dialogue(page);await nativeScene(page,'infirmary');await capture(page,'railway-ward-phone');
   const before=(await inspect(page)).state;await approach(page,'ward-rest');await expect(page.locator('.dialogue')).toBeVisible();await capture(page,'ward-care-menu-phone');
@@ -172,7 +172,7 @@ test('loading-gate route, ward supplies and the escape work on a phone',async({p
   await expect.poll(async()=>(await inspect(page)).cinematic).toBe('two-three-crossing');await page.getByRole('button',{name:'Pause',exact:true}).click();await capture(page,'chapter-two-complete-phone');expect(errors).toEqual([]);
 });
 
-for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]] as const) {
+for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const) {
   test(`the illustrated coach door opens from the saved post-raid position on ${device}`,async({page})=>{
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
     await page.setViewportSize(viewport);await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');

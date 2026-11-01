@@ -15,7 +15,7 @@ export async function commandsFit(page:Page){
  expect(fit.scroll,'all ordinary commands fit without scrolling').toBeLessThanOrEqual(1);expect(fit.clipped).toEqual([]);
 }
 export function battleMenuFlows(production=false){
- for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
   test(`${production?'production ':''}panel confirmation and a full campaign command grid on ${device}`,async({browser})=>{
    const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
    try{
@@ -39,7 +39,8 @@ export function battleMenuFlows(production=false){
     await clickHex(page,enemy.hex);await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeVisible();
     const card=await page.locator('#confirmation').boundingBox(),stage=await page.locator('.stage-wrap').boundingBox(),controls=await page.locator('.controls').boundingBox();
     expect(card,'confirmation uses the same fixed-size region').toEqual(anchored);
-    expect(card!.y,'confirmation is below the entire battlefield').toBeGreaterThanOrEqual(stage!.y+stage!.height);
+    if(device==='phone')expect(card!.x,'confirmation is beside the battlefield').toBeGreaterThanOrEqual(stage!.x+stage!.width);
+    else expect(card!.y,'confirmation is below the entire battlefield').toBeGreaterThanOrEqual(stage!.y+stage!.height);
     expect(card!.x).toBeGreaterThanOrEqual(controls!.x);expect(card!.x+card!.width).toBeLessThanOrEqual(controls!.x+controls!.width+1);
     expect(card!.y+card!.height).toBeLessThanOrEqual(controls!.y+controls!.height+1);
     await expect(page.locator('.stage-wrap #confirmation')).toHaveCount(0);await commandsFit(page);

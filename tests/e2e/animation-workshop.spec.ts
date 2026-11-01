@@ -30,7 +30,7 @@ async function nativeHero(page:Page,hero:'kit'|'petra',frame:number,direction:Ac
   },{hero,frame,direction})).toBe(0);
 }
 
-for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['phone',{width:390,height:844},1]] as const){
+for(const [device,viewport,dpr] of [['desktop',{width:1280,height:800},1.25],['phone',{width:844,height:390},1]] as const){
   test.describe(`layered reference on ${device}`,()=>{
     test.use({viewport,deviceScaleFactor:dpr});
     test('plays a complete walk, isolates layers and exports native frames without saving',async({page})=>{

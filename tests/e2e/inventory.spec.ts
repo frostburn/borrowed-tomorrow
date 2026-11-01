@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { newGame } from '../../src/rules/state';
 import { capture, inspect, battle } from './controls';
 
-for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phone', { width:390,height:844 }]] as const) {
+for (const [device, viewport] of [['desktop', { width:1280,height:800 }], ['phone', { width:844,height:390 }]] as const) {
   test(`inventory equips individual characters and leaves campaign saves intact on ${device}`, async ({ page }) => {
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
     await page.setViewportSize(viewport);await page.goto('/');

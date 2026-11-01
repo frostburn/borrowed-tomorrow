@@ -7,7 +7,7 @@ async function heartPixels(page:Page){return page.evaluate(()=>{
  const pixels=document.querySelector<HTMLCanvasElement>('.pixel-output')!.getContext('2d')!.getImageData(Math.round(x),Math.round(y),80*info.physicalScale,70*info.physicalScale).data;
  let hash=2166136261;for(let i=0;i<pixels.length;i+=4)for(let c=0;c<3;c++)hash=Math.imul(hash^pixels[i+c],16777619);return hash>>>0;
 });}
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`exposed heart beats with a parked cursor, attacks and settles on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`exposed heart beats with a parked cursor, attacks and settles on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.clock.install();await page.goto('/?dev=boss');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});await page.locator('[data-final-form="2"]').click();await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');await page.mouse.move(1,1);

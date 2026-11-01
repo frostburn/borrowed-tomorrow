@@ -17,7 +17,7 @@ for(const [label,map]of [['Begin Chapter Seven (canonical)','hollowsill'],['Begi
  await page.reload();await page.getByRole('button',{name:label,exact:true}).click();await page.getByRole('button',{name:'Start canonical save',exact:true}).click();await at(page,map);expect((await inspect(page)).state.chapter).toBe('chapter-seven');
  await page.reload();await page.getByRole('button',{name:'Save files',exact:true}).click();await page.locator('[data-slot="slot-1"]').getByRole('button',{name:'Load',exact:true}).click();await expect.poll(async()=>(await inspect(page)).state.coins).toBe(37);expect((await inspect(page)).state).toMatchObject({chapter:'chapter-one',inventory:original.inventory});
 });
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`@journey Chapter Seven ${device}: stolen days, guardian sequence, three forms and the real sea`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`@journey Chapter Seven ${device}: stolen days, guardian sequence, three forms and the real sea`,async({browser})=>{
  test.setTimeout(540000);const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/');await expect(page).toHaveTitle('Borrowed Tomorrow');const departure=chapterSevenDeparture();if(device==='desktop')departure.activeParty=['orrin','petra','kit'];await importSave(page,departure);

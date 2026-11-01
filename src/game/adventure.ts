@@ -169,7 +169,7 @@ export class Adventure extends Phaser.Scene {
     const film=this.crossingFilm??this.endingFilm;
     if(film){const view=worldView();this.scale.setGameSize(view.width,view.height);this.cameras.main.setBounds(0,0,view.width,view.height).setScroll(0,0);film.resize();return;}
     if(this.mode==='battle'){
-      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(active(this.battle!)?.hex??this.battleCursor);return;
+      const view=worldView();this.scale.setGameSize(view.width,view.height);this.ui.battlePan.hidden=!narrowScreen();this.revealHex(this.plan?.hex??active(this.battle!)?.hex??this.battleCursor);return;
     }
     const view=worldView();this.scale.setGameSize(view.width,view.height);
     const camera=this.cameras.main,size=this.mode==='world'?mapSize(MAPS[this.state.location.map]):{width:WIDTH,height:HEIGHT};camera.stopFollow();camera.setBounds(0,0,size.width,size.height);
@@ -177,15 +177,22 @@ export class Adventure extends Phaser.Scene {
     else if(this.mode==='world'&&this.player){camera.centerOn(this.player.x,this.player.y);camera.startFollow(this.player,false,1,1);}
     else camera.setScroll(Math.floor((WIDTH-view.width)/2),72);
   }
-  panBattle(direction:-1|1){
+  panBattle(direction:-1|1,axis:'x'|'y'='x'){
     if(this.mode!=='battle'||this.blocked)return;
-    const camera=this.cameras.main;camera.setScroll(Phaser.Math.Clamp(camera.scrollX+direction*192,0,WIDTH-camera.width),0);
+    this.dragBattle(axis==='x'?-direction*192:0,axis==='y'?-direction*144:0);
     this.ui.status.textContent='Battlefield view · choose an action and target';
+  }
+  dragBattle(dx:number,dy:number){
+    if(this.mode!=='battle'||this.blocked)return;
+    const camera=this.cameras.main;
+    camera.setScroll(Phaser.Math.Clamp(camera.scrollX-dx,0,Math.max(0,WIDTH-camera.width)),Phaser.Math.Clamp(camera.scrollY-dy,0,Math.max(0,480-camera.height)));
   }
   private revealHex(hex:Hex,margin=48){
     if(!narrowScreen())return;
     const camera=this.cameras.main,p=toPixel(hex);
-    if(p.x<camera.scrollX+margin||p.x>camera.scrollX+camera.width-margin)camera.setScroll(Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,WIDTH-camera.width),0);
+    const mx=Math.min(margin,camera.width/3),my=Math.min(margin,camera.height/3);
+    if(p.x<camera.scrollX+mx||p.x>camera.scrollX+camera.width-mx)camera.scrollX=Phaser.Math.Clamp(Math.round(p.x-camera.width/2),0,Math.max(0,WIDTH-camera.width));
+    if(p.y<camera.scrollY+my||p.y>camera.scrollY+camera.height-my)camera.scrollY=Phaser.Math.Clamp(Math.round(p.y-camera.height/2),0,Math.max(0,480-camera.height));
   }
   private mechanisms?:WorldMechanisms;
   private mapLife?:MapLife;

@@ -12,7 +12,7 @@ async function clickBody(page:Page,x:number,y:number){
  const view=(await inspect(page)).view,box=(await page.locator('#canvas canvas').boundingBox())!;
  await page.mouse.click(box.x+(x-view.scrollX)*box.width/view.width,box.y+y*box.height/view.height);
 }
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test(`flagship picker, body targeting, presets and campaign isolation on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'}),page=await context.newPage();
   try{

@@ -6,7 +6,7 @@ import { battle, capture, clickHex, inspect } from './controls';
 
 /** Run the actual early-game counters and item menu in dev and the packed app. */
 export function economyFlows(production = false) {
-  for (const [device, viewport, deviceScaleFactor] of [['desktop', { width: 1280, height: 800 }, 1], ['phone', { width: 390, height: 844 }, 1.25]] as const) {
+  for (const [device, viewport, deviceScaleFactor] of [['desktop', { width: 1280, height: 800 }, 1], ['phone', { width: 844, height: 390 }, 1.25]] as const) {
     test.describe(`${production ? 'production' : 'development'} economy on ${device}`, () => {
       test.use({ viewport, deviceScaleFactor });
       test('Larkspur buys, confirms spare sales and preserves worn equipment and saves', async ({ page }) => {

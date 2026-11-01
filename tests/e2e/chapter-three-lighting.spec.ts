@@ -36,7 +36,7 @@ async function shadedActor(page:Page){
  },{actor,pieces:visibleSceneArt(map.tiles!,snapshot.state)!,url:'/'+artPath(actor.texture),map:{id:map.id,width:map.tiles!.width*24,height:map.tiles!.height*24}});
 }
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const){
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const){
  test(`Chapter Three actors keep native highlight planes and regional shadow strength on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage();
   try{

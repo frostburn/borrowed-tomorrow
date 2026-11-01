@@ -23,7 +23,7 @@ async function observeScene(page:Page){
  });
 }
 
-for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,false],['phone',{width:390,height:844},1.25,true]]as const){
+for(const [device,viewport,dpr,reduced]of [['desktop',{width:1280,height:800},1,false],['phone',{width:844,height:390},1.25,true]]as const){
  test.describe(`enemy footprints on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr,reducedMotion:reduced?'reduce':'no-preference'});
   for(const kind of ['single','line','blast']as const){

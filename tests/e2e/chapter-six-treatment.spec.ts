@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {jungleCheckpoint} from '../support/jungle';
 import {importSave,approach} from './navigation';
 import {inspect,capture} from './controls';
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)for(const reduced of [false,true])test(`Iria carried treatment ${device} ${reduced?'reduced':'moving'}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)for(const reduced of [false,true])test(`Iria carried treatment ${device} ${reduced?'reduced':'moving'}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:reduced?'reduce':'no-preference'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto('/');await importSave(page,jungleCheckpoint('rainhouseWon'));await approach(page,'river-treatment');await page.getByRole('button',{name:'Bring Nell and begin the treatment',exact:true}).click();

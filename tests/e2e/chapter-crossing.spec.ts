@@ -7,7 +7,7 @@ import {receiveItem,equipItem} from '../../src/rules/inventory';
 import {sceneAssets} from '../../src/content/scene-art';
 import {CHAPTER_TWO_MAPS} from '../../src/content/chapter-two/maps';
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test(`crossing preserves the departure, exports and can be replayed on ${device}`,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test(`crossing preserves the departure, exports and can be replayed on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25,reducedMotion:'reduce'}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   const saved=checkpoint('chapterOneComplete');saved.coins=47;saved.party[0].hp=17;saved.bandages=2;receiveItem(saved.inventory,'brass-reflector');equipItem(saved.inventory,'nell','brass-reflector');

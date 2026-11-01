@@ -4,7 +4,7 @@ import {chapterSevenStart} from '../../src/dev/canonical-saves';
 import {importSave} from './navigation';
 import {capture,inspect} from './controls';
 
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:375,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:375},1.25]]as const){
  test(`camera follow preserves stationary face pixels on ${device}`,async({browser})=>{
   const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage();
   try{

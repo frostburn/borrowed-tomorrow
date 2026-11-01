@@ -13,7 +13,7 @@ async function filmHash(page:Page){
   return {hash:hash>>>0,colors:colors.size};
  });
 }
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test('good-ending workshop plays all shots, pauses and cleans up on '+device,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test('good-ending workshop plays all shots, pauses and cleans up on '+device,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
@@ -27,7 +27,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
   const first=await filmHash(page);expect(first.colors).toBeGreaterThan(20);
   await page.getByRole('button',{name:'Pause',exact:true}).dispatchEvent('click');
   await page.clock.runFor(100);const paused=await filmHash(page);await page.clock.runFor(1200);expect(await filmHash(page)).toEqual(paused);
-  const other=device==='desktop'?{width:390,height:844}:{width:1280,height:800};
+  const other=device==='desktop'?{width:844,height:390}:{width:1280,height:800};
   await page.setViewportSize(other);await page.clock.runFor(200);
   expect((await inspect(page)).view.width).toBe(other.width===390?368:1008);
   expect((await filmHash(page)).colors).toBeGreaterThan(20);
@@ -82,7 +82,7 @@ for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{wid
  }finally{await context.close();}
 });
 
-for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:390,height:844}]]as const)test('bad-ending workshop keeps the loss, shared credits and save isolation on '+device,async({browser})=>{
+for(const [device,viewport]of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]]as const)test('bad-ending workshop keeps the loss, shared credits and save isolation on '+device,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:1.25}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{

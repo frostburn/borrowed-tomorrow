@@ -4,7 +4,7 @@ import {offset} from '../../src/rules/hex';
 import {rallyBonus} from '../../src/rules/rally';
 
 // Opt-in rendered checks; no complete journeys are added to the @ci gate.
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const){
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const){
  test.describe(`Rallying cry on ${device}`,()=>{
   test.use({viewport,deviceScaleFactor:dpr,reducedMotion:'reduce'});
   for(const rank of [1,2,3])test(`rank ${rank} shows its field, follows movement and regenerates on real turns`,async({page})=>{

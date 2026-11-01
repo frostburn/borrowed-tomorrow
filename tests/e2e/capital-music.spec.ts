@@ -1,6 +1,6 @@
 import { test,expect } from '@playwright/test';
 const cues=[['stillcity','The Procession Never Ends'],['lastpalace','A Place at the Table'],['capital-battle','Open the Patient Stair'],['emperor','The Emperor’s Last Day'],['lightbearer','The Hand on the Shutter'],['laststation','The Empty Seat'],['capital-return','The City Comes Down']]as const;
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`capital music controls on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`capital music controls on ${device}`,async({browser})=>{
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  try{
   await page.goto('/?dev=music');await expect(page).toHaveTitle('Borrowed Tomorrow · Character workshop',{timeout:30000});await page.getByRole('button',{name:'Ch 6',exact:true}).click();

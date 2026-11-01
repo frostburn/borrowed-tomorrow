@@ -1,5 +1,5 @@
 import { test,expect } from '@playwright/test';
-for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:390,height:844},1.25]]as const)test(`Namar Music review, neutral spelling, lute and transport on ${device}`,async({browser})=>{
+for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone',{width:844,height:390},1.25]]as const)test(`Namar Music review, neutral spelling, lute and transport on ${device}`,async({browser})=>{
  test.setTimeout(45000);
  const context=await browser.newContext({viewport,deviceScaleFactor:dpr}),page=await context.newPage(),errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));
