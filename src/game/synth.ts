@@ -138,7 +138,6 @@ export class Synth {
     }else if(strings){osc('sawtooth',-6,1,.38);osc('sawtooth',6,1,.38);}
     else if(instrument==='organ'){osc('sine',0,1,.62);osc('sine',0,2,.22);osc('sine',0,3,.1);osc('sine',0,4,.04);}
     else if(instrument==='sine'){osc('sine');}
-    else if(instrument==='triangle'){osc('triangle');}
     else if(instrument==='tritaver'){osc('custom');}
     else if(instrument==='round-bass'){osc('sine',0,1,.82);osc('sine',0,2,.18);}
     else if(instrument==='square-bass'){osc('square',0,1,.7);}

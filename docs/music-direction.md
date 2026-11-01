@@ -416,12 +416,17 @@ The Emperor's Order is restored to its original arrangement. Captain Alban and I
 ## Final boss glides and close-step breaks
 
 `score-final-runs.ts` gives the three forms different phrase-end motion. The
-God Who Lent Tomorrow (`benefactor`) uses six continuous triangle glides in
-place of separate flourish attacks. Each is one held triangle oscillator with
-a linear cents ramp from its starting pitch to the next original organ note.
-The ramp crosses the space between 31-EDO pitches continuously; its endpoints
-use the exact shared tuning. There are no retriggered intermediate notes,
-stepped pitch changes or added vibrato. The main organ theme remains intact.
+God Who Lent Tomorrow (`benefactor`) uses six long descending sine glides,
+lasting five to seven beats and taking over earlier in each phrase ending.
+The organ theme hands off to each continuous fall, then returns at its endpoint.
+A second sine follows 3/8 beat later at 28% of the lead's gain (about −11 dB).
+Its entire path is one 31-EDO step lower; during the overlapping descents,
+the delay leaves it roughly 26–40 cents above the lead. The voices rub near
+unison, then the quiet echo drops below the returning organ. The echo has a
+softer release and sits slightly to the right of the lead. It can cross a bar
+or loop boundary; it is an authored second voice, not a global room change.
+Both voices use smooth cents ramps with no intermediate attacks or vibrato.
+Cancellation stops both current falls and not-yet-started echoes.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
 adjacent 31-EDO steps. Tomorrow (`unborrowed`) restores eight piano runs, six
@@ -439,10 +444,10 @@ fifths), making the octave complement exact. This is whole-tone colour within
 transpositions preserve the same intervals in each figure's register.
 
 These authored glides/runs may pass outside the radiant/reflected octatonics;
-the surrounding melodies and harmonies keep their original collections. Lead
-holds truncate where a gesture takes over, including notes from the preceding
+the surrounding melodies and harmonies keep their original collections. Primary
+lead holds truncate where a gesture takes over, including notes from the preceding
 bar. Bass, pads, drums, tempo, meter, two-bar introductions and other themes
-keep their scores. Music → Ch 7 reviews the campaign arrangements; Triangle,
+keep their scores. Music → Ch 7 reviews the campaign arrangements; Sine,
 Organ and Piano isolate the respective flourish voices. Expression off removes
-the glide's bend for comparison, following the existing expression controls.
+the glides' bends for comparison, following the existing expression controls.
 Full-form/loop audio checks and continuous-glide/cancellation renders stay opt-in.
