@@ -4,15 +4,18 @@ import {capture,inspect} from './controls';
 export async function phoneConsole(page:Page){
  await expect(page.locator('.pixel-source')).toHaveClass(/phone-layout/);
  await expect(page.locator('.orientation-gate')).toBeHidden();
- const layout=await page.evaluate(()=>{
+ const geometry=()=>page.evaluate(()=>{
   const stage=document.querySelector('.stage-wrap')!.getBoundingClientRect(),controls=document.querySelector('.controls')!.getBoundingClientRect(),world=document.querySelector<HTMLCanvasElement>('.world-input')!,bounds=world.getBoundingClientRect(),view=window.borrowedTomorrow.inspect().view;
-  return {scale:window.borrowedTomorrowPixels.inspect().cssScale,stageRight:stage.right,controlsLeft:controls.left,surface:[world.width,world.height],view:[view.width,view.height],origin:[bounds.x,bounds.y],stageOrigin:[stage.x,stage.y],clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button')].filter(b=>{
+  const pixels=window.borrowedTomorrowPixels.inspect();
+  return {scale:pixels.cssScale,frameFits:pixels.width<=innerWidth&&pixels.height<=innerHeight,stageRight:stage.right,controlsLeft:controls.left,surface:[world.width,world.height],view:[view.width,view.height],origin:[bounds.x,bounds.y],stageOrigin:[stage.x,stage.y],clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button')].filter(b=>{
    const r=b.getBoundingClientRect();return r.width>0&&(r.x<0||r.y<0||r.right>innerWidth+1||r.bottom>innerHeight+1);
   }).map(b=>b.textContent)};
  });
- expect(layout.scale).toBe(1);expect(layout.controlsLeft).toBeGreaterThanOrEqual(layout.stageRight);expect(layout.clipped).toEqual([]);
- expect(layout.surface,'the input surface matches the actual camera after resize').toEqual(layout.view);
- expect(layout.origin,'the world stays inside its stage, below the header').toEqual(layout.stageOrigin);
+ // setViewportSize can return before Chromium delivers its resize event. Wait
+ // for the actual fit rather than sampling the previous frame's DOM bounds.
+ await expect.poll(async()=>{
+  const l=await geometry();return {scale:l.scale,frameFits:l.frameFits,beside:l.controlsLeft>=l.stageRight,clipped:l.clipped,surfaceMatches:JSON.stringify(l.surface)===JSON.stringify(l.view),aligned:JSON.stringify(l.origin)===JSON.stringify(l.stageOrigin)};
+ }).toEqual({scale:1,frameFits:true,beside:true,clipped:[],surfaceMatches:true,aligned:true});
 }
 export async function rotateWithPlan(page:Page){
  const before=(await inspect(page)).battle;

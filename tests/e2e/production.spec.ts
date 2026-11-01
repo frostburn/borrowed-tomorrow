@@ -1,4 +1,7 @@
-import {battleMenuFlows} from './battle-menu-flow';
+import {battleMenuFlows,commandsFit} from './battle-menu-flow';
+import {phoneConsole} from './phone-layout-flow';
+import {newSkillBook} from '../../src/rules/skills';
+import {restoreParty} from '../../src/rules/state';
 battleMenuFlows(true);
 import {walkingCadenceFlows} from './walking-cadence-flow';
 walkingCadenceFlows(true);
@@ -97,6 +100,15 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   for(const devOnly of ['Sprite review', 'Ground guides', '.sprite-inspector', 'Preview background'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Layered reference', 'Reference walker', 'Steam lance (Orrin)', 'Arms and weapon', 'Export pose data', '.animation-review'])expect(built).not.toContain(devOnly);
   for(const devOnly of ['Map review / Layers', 'Copy reference', 'Download view PNG', '.map-review'])expect(built).not.toContain(devOnly);
+  // The release engine must present the same usable landscape console, with
+  // the full command list and no development strip over the pan controls.
+  const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
+  await importSave(page,late);await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
+  await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
+  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);
+  await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
+  await capture(page,'phone-landscape-production');await page.getByRole('button',{name:/Prism lance$/}).click();await capture(page,'phone-landscape-production-skill');
+  expect(errors).toEqual([]);
 });
 
 for(const [device,viewport] of [['desktop',{width:1280,height:800}],['phone',{width:844,height:390}]] as const){

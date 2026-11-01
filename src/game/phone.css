@@ -82,9 +82,14 @@
 .phone-layout .modal-actions{flex-shrink:0;padding:4px 12px 12px}.phone-layout .modal-actions button,.phone-layout .slot-buttons button{font:10px/14px SwitchyardCompact,monospace;min-height:40px}
 .phone-layout .save-row{gap:12px;padding:8px 0}.phone-layout .save-row p{max-width:380px}
 .phone-layout .campaign-inventory .ci-grid{display:grid;grid-template-columns:184px minmax(0,1fr);gap:16px}
-.phone-layout .ci-character{display:block}.phone-layout .ci-character>img{width:80px;height:80px;object-fit:contain;float:left;margin:0 8px 8px 0}
-.phone-layout .ci-character h2{font:20px/24px Switchyard,monospace}
-.phone-layout .ci-character>h3{clear:both}.phone-layout .ci-character>.ci-stats{display:flex;flex-wrap:wrap;margin:8px 0;gap:4px 8px}
+.phone-layout .ci-character{display:grid;grid-template-columns:80px minmax(0,1fr);align-content:start;gap:8px}
+.phone-layout .ci-character>*{grid-column:1/-1}
+.phone-layout .ci-character>img{grid-column:1;grid-row:1;width:80px;height:80px;object-fit:contain;margin:0;float:none}
+.phone-layout .ci-character h2{grid-column:2;grid-row:1;align-self:center;font:20px/24px Switchyard,monospace;margin:0}
+.phone-layout .ci-character h2 small{display:block;margin-top:8px}
+.phone-layout .ci-character>p{grid-column:1/-1;margin:0}
+.phone-layout .ci-character>.ci-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;gap:4px}
+.phone-layout .ci-character .ci-slot{display:flex;flex-direction:column;align-items:stretch;gap:6px}
 .phone-layout .campaign-inventory button{min-height:40px}
 .phone-layout .ending-controls{padding:8px;gap:12px;overflow:auto}
 .phone-layout .ending-controls h2{font:20px/24px Switchyard,monospace}
