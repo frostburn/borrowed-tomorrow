@@ -4,7 +4,7 @@ import { checkpoint } from '../support/progress';
 import { battle, capture, dialogue, inspect, clickHex, nativeScene, nativeActor } from './controls';
 import { approach, importSave, travel, visit } from './navigation';
 import { active, type Battle } from '../../src/rules/combat';
-import {phoneConsole,rotateWithPlan,touchPan,unfilteredPortraitWorld} from './phone-layout-flow';
+import {phoneConsole,rotateWithPlan,touchPan,phoneWorldVisible} from './phone-layout-flow';
 import {commandsFit} from './battle-menu-flow';
 import {coastCheckpoint} from '../support/progress';
 import {newSkillBook} from '../../src/rules/skills';
@@ -121,7 +121,7 @@ test('@ci portrait combat zooms out the world, pans and confirms real healing by
   await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-portrait-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
   await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
   await page.getByRole('button',{name:/^F\s+Defend$/}).tap();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
-  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await unfilteredPortraitWorld(page);await capture(page,'phone-portrait-full-skills');
+  await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await phoneWorldVisible(page);await capture(page,'phone-portrait-full-skills');
   await page.getByRole('button',{name:/Prism lance$/}).tap();await expect(page.locator('#confirmation')).not.toBeEmpty();await capture(page,'phone-portrait-skill-info');
   for(const viewport of [{width:375,height:667},{width:430,height:932},{width:844,height:390}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-${viewport.width}`);}
   expect(errors).toEqual([]);await context.close();

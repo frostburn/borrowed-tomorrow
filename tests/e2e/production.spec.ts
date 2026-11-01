@@ -1,5 +1,5 @@
 import {battleMenuFlows,commandsFit} from './battle-menu-flow';
-import {phoneConsole,unfilteredPortraitWorld} from './phone-layout-flow';
+import {phoneConsole,phoneWorldVisible} from './phone-layout-flow';
 import {newSkillBook} from '../../src/rules/skills';
 import {restoreParty} from '../../src/rules/state';
 battleMenuFlows(true);
@@ -108,7 +108,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);
   await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
   await expect(page.locator('#toast')).toBeHidden();
-  await unfilteredPortraitWorld(page);await capture(page,'phone-portrait-production');await page.getByRole('button',{name:/Prism lance$/}).click();
+  await phoneWorldVisible(page);await capture(page,'phone-portrait-production');await page.getByRole('button',{name:/Prism lance$/}).click();
   await clickHex(page,(await inspect(page)).battle!.units.find(u=>u.side==='enemy')!.hex);
   await expect(page.getByRole('button',{name:'Confirm attack',exact:true})).toBeInViewport();await capture(page,'phone-portrait-production-skill');
   for(const viewport of [{width:375,height:667},{width:430,height:932},{width:844,height:390}]){await page.setViewportSize(viewport);await phoneConsole(page);await commandsFit(page);await capture(page,`phone-production-${viewport.width}`);}
