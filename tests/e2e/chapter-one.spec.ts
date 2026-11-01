@@ -77,7 +77,7 @@ test('@ci unsupported save versions cannot resume or import', async ({ page }) =
 });
 
 test('@ci phone combat pans and confirms real healing without shrinking the actors', async ({ browser }) => {
-  const context=await browser.newContext({viewport:{width:844,height:390},hasTouch:true,isMobile:true,deviceScaleFactor:3}),page=await context.newPage();
+  const context=await browser.newContext({viewport:{width:844,height:390},hasTouch:true,isMobile:true,deviceScaleFactor:1.25}),page=await context.newPage();
   const errors = errorsOn(page); await page.setViewportSize({ width: 844, height: 390 }); await page.goto('/');
   const state = checkpoint('captainConfronted'); state.location = { map: 'tunnel', x: 30, y: 14 }; state.party[0].hp = 24;
   await importSave(page, state); await approach(page, 'captain');
