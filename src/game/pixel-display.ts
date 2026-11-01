@@ -52,6 +52,10 @@ export class PixelDisplay {
     this.presentCtx=this.output.getContext('2d',{willReadFrequently:true})!;
     this.host=document.createElement('div');this.host.className='phaser-host';document.body.append(this.host);
     this.world=document.createElement('canvas');this.world.className='world-input';document.getElementById('canvas')!.append(this.world);
+    // World gestures are handled by Pointer Events below. Cancel the native
+    // touch gesture as well, so a camera drag cannot leave the browser consuming
+    // the next control tap as a scroll/fling stop. DOM buttons keep native clicks.
+    for(const type of ['touchstart','touchmove'])this.world.addEventListener(type,event=>{if(event.cancelable)event.preventDefault();},{passive:false});
     const point=(e:PointerEvent,click:boolean)=>{const b=this.world.getBoundingClientRect();onPoint((e.clientX-b.left)*this.world.width/b.width,(e.clientY-b.top)*this.world.height/b.height,click);};
     let touch:{id:number;x:number;y:number;lastX:number;lastY:number;dragged:boolean}|undefined;
     this.world.addEventListener('pointerdown',e=>{
@@ -110,10 +114,6 @@ export class PixelDisplay {
     this.physicalLeft=Math.round(left*dpr);this.physicalTop=Math.round(top*dpr);
     this.output.width=Math.ceil(window.innerWidth*dpr);this.output.height=Math.ceil(window.innerHeight*dpr);
     Object.assign(this.output.style,{left:'0px',top:'0px',width:this.output.width/dpr+'px',height:this.output.height/dpr+'px'});
-    // The opaque output hides the DOM; keep native controls painted underneath
-    // it for touch activation, without flashing them during boot or resize.
-    this.presentCtx.fillStyle=PALETTE[0];this.presentCtx.fillRect(0,0,this.output.width,this.output.height);
-    this.source.style.opacity='1';
     this.fitWorld();
   }
   /** Sync hit targets in the resize event, before another pointer event can run. */
