@@ -26,7 +26,8 @@ test('all-pass rooms render finite stereo tails at both device rates, with a tru
   if(r.id==='dry'){expect(r.tail).toBe(0);expect(r.peak).toBeCloseTo(.3,6);}
   else{expect(r.tail,r.id).toBeGreaterThan(1e-8);expect(r.right,r.id).toBeGreaterThan(1e-8);expect(r.end,r.id).toBeLessThan(r.tail*.001);}
  }
- for(const rate of [44100,48000])expect(results.find(r=>r.rate===rate&&r.id==='domain')!.late).toBeGreaterThan(results.find(r=>r.rate===rate&&r.id==='cabin')!.late*100);
+ // Profile-specific normalized decay is checked in room-decay/room-domain.
+ // Domain no longer needs a disproportionately long tail relative to Cabin.
 });
 
 test('rapid room changes keep a bounded graph and settle on the latest room without unstable transients',async({page})=>{
