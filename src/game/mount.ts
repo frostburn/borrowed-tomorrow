@@ -19,7 +19,8 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
   const game=new Phaser.Game({
     type:Phaser.CANVAS,canvas:sceneCanvas,parent:display.host,backgroundColor:'#0a171a',pixelArt:false,antialias:true,roundPixels:false,
     width:viewport.width,height:viewport.height,scale:{mode:Phaser.Scale.NONE},
-    scene:[adventure],audio:{noAudio:true},banner:false,
+    // Pointer input belongs to the visible DOM bridge, not the offscreen canvas.
+    input:{mouse:false,touch:false},scene:[adventure],audio:{noAudio:true},banner:false,
   });
   // Finish all Phaser resize handlers, then sync before the next input event.
   game.events.once('destroy',()=>adventure.soundPreferences?.close());

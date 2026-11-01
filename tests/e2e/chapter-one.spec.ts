@@ -89,19 +89,26 @@ test('@ci portrait combat zooms out the world, pans and confirms real healing by
   await page.getByRole('button', { name: 'Pan battlefield right' }).click();
   expect((await inspect(page)).view.scrollX).toBe(start + 192);
   await page.getByRole('button', { name: 'Pan battlefield left' }).click();
-  await phoneConsole(page);await touchPan(page);
-  const snapshot = (await inspect(page)).battle!, b = { ...snapshot, obstacles: new Set(snapshot.obstacles), water: new Set(snapshot.water), vents: new Set(snapshot.vents) } as Battle;
-  const nell = active(b)!; const before = snapshot.bandages;
+  await phoneConsole(page);
   // Retain native input evidence in failure logs without changing game state.
   await page.evaluate(()=>{
     const log:string[]=[];(window as unknown as {phoneInputTrace:string[]}).phoneInputTrace=log;
-    for(const type of ['pointerdown','pointerup','touchstart','touchend','click'])document.addEventListener(type,e=>{
-      const target=e.target as Element;log.push(`${type}:${target.closest('button')?.getAttribute('aria-label')??target.tagName}:${e.defaultPrevented}`);
+    for(const type of ['pointerdown','pointerup','touchstart','touchend','mousedown','mouseup','click'])document.addEventListener(type,e=>{
+      const target=e.target as Element,p=e as PointerEvent,t=e as TouchEvent;
+      const description=`${type}:${target.closest('button')?.getAttribute('aria-label')??target.tagName}:primary=${p.isPrimary}:touches=${t.touches?.length}`;
+      log.push(description);setTimeout(()=>log.push(`${description}:prevented=${e.defaultPrevented}:connected=${target.isConnected}`),0);
     },{capture:true});
   });
-  await page.locator('.actions').getByRole('button', { name: /^\d\s+Items$/ }).tap();
-  try{await expect(page.getByRole('dialog',{name:'Battle items'})).toBeVisible();}
-  catch(error){throw new Error(`${String(error)}\nInput: ${await page.evaluate(()=>JSON.stringify({touches:navigator.maxTouchPoints,events:(window as unknown as {phoneInputTrace:string[]}).phoneInputTrace}))}`);}
+  const openItems=async(stage:string)=>{
+    await page.locator('.actions').getByRole('button', { name: /^\d\s+Items$/ }).tap();
+    try{await expect(page.getByRole('dialog',{name:'Battle items'})).toBeVisible();}
+    catch(error){throw new Error(`${stage}: ${String(error)}\nInput: ${await page.evaluate(()=>JSON.stringify({touches:navigator.maxTouchPoints,busy:window.borrowedTomorrow.inspect().busy,events:(window as unknown as {phoneInputTrace:string[]}).phoneInputTrace}))}`);}
+  };
+  await openItems('before drag');await page.getByRole('button',{name:'Close',exact:true}).tap();
+  await touchPan(page);
+  const snapshot = (await inspect(page)).battle!, b = { ...snapshot, obstacles: new Set(snapshot.obstacles), water: new Set(snapshot.water), vents: new Set(snapshot.vents) } as Battle;
+  const nell = active(b)!; const before = snapshot.bandages;
+  await openItems('after drag');
   await page.getByRole('dialog',{name:'Battle items'}).getByRole('group',{name:'Bandage',exact:true}).getByRole('button',{name:'Select',exact:true}).tap(); await clickHex(page, nell.hex,true);
   await expect(page.getByRole('button', { name: 'Confirm healing', exact: true })).toBeInViewport();
   await rotateWithPlan(page);await expect(page.getByRole('button',{name:'Confirm healing',exact:true})).toBeInViewport();
