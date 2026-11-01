@@ -3,6 +3,7 @@
 .pan-vertical{display:none}
 .sound-compact{display:none}
 .world-input{touch-action:none}
+.phone-layout button{touch-action:manipulation}
 .toast{pointer-events:none}
 .phone-layout .toast{top:4px;bottom:auto;left:8px;transform:none;max-width:max(160px,calc(100% - 364px))}
 .phone-layout .game-shell{grid-template-columns:minmax(0,1fr) var(--phone-sidebar);grid-template-rows:40px 24px minmax(0,1fr) 16px}

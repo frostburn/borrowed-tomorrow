@@ -56,6 +56,7 @@ export class PixelDisplay {
     let touch:{id:number;x:number;y:number;lastX:number;lastY:number;dragged:boolean}|undefined;
     this.world.addEventListener('pointerdown',e=>{
       if(e.pointerType!=='touch'){point(e,true);return;}
+      if(touch)return;
       touch={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,dragged:false};this.world.setPointerCapture(e.pointerId);
     });
     this.world.addEventListener('pointermove',e=>{
@@ -63,9 +64,16 @@ export class PixelDisplay {
       const t=touch;if(!t.dragged&&Math.hypot(e.clientX-t.x,e.clientY-t.y)<8)return;
       t.dragged=true;const b=this.world.getBoundingClientRect();onDrag?.((e.clientX-t.lastX)*this.world.width/b.width,(e.clientY-t.lastY)*this.world.height/b.height);t.lastX=e.clientX;t.lastY=e.clientY;
     });
-    this.world.addEventListener('pointerup',e=>{if(touch?.id!==e.pointerId)return;if(!touch.dragged)point(e,true);touch=undefined;});
-    this.world.addEventListener('pointercancel',()=>{touch=undefined;});
-    this.world.addEventListener('lostpointercapture',()=>{touch=undefined;});
+    const endTouch=(e:PointerEvent,select:boolean)=>{
+      if(touch?.id!==e.pointerId)return;const dragged=touch.dragged;touch=undefined;
+      // Release before a tap can redraw controls or another finger starts on
+      // the UI. Do not leave the next gesture captured by the world surface.
+      if(this.world.hasPointerCapture(e.pointerId))this.world.releasePointerCapture(e.pointerId);
+      if(select&&!dragged)point(e,true);
+    };
+    this.world.addEventListener('pointerup',e=>endTouch(e,true));
+    this.world.addEventListener('pointercancel',e=>endTouch(e,false));
+    this.world.addEventListener('lostpointercapture',e=>{if(touch?.id===e.pointerId)touch=undefined;});
     new MutationObserver(()=>{this.dirty=true;}).observe(this.source,{subtree:true,childList:true,characterData:true,attributes:true});
     for(const event of ['focusin','focusout','pointerover','pointerout','scroll','load','input','change'])this.source.addEventListener(event,()=>{this.dirty=true;},true);
     void document.fonts.ready.then(()=>{this.dirty=true;});
