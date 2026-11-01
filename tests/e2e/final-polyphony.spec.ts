@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 // Detailed audio checks stay outside the small @ci set.
-test('the mantle counterphrases have audible independent layers and cancel future notes',async({page},testInfo)=>{
+test('the mantle harmonizations have audible layers and cancel future notes',async({page},testInfo)=>{
  await page.goto('/');
  const result=await page.evaluate(async()=>{
   // @ts-expect-error Actual production rack and performed phrases.

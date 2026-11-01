@@ -418,11 +418,10 @@ The Emperor's Order is restored to its original arrangement. Captain Alban and I
 `score-final-runs.ts` gives the three forms different phrase-end motion. The
 God Who Lent Tomorrow (`benefactor`) retains its complete organ melody and
 adds eight authored two-bar phrases in the second halves of its sentences.
-Upper brass calls use clipped attacks, the strings carry a broader answering
-line, and a lower organ voice moves independently beneath them. Their entries,
-holds and rests differ, so the thicker sound comes from overlapping lines
-rather than parallel doubling. The fourth answer broadens; the lifted middle
-adds more urgent brass entries; the last answer descends into the opening.
+Brass, strings and lower organ harmonize those phrases with the main melody's
+exact attacks, rests and written holds. Their different registers and moving
+scale voices supply thickness while the rhythm stays together. The four
+harmonic voices follow one pulse rather than interleaving separate answers.
 All three added voices use the existing radiant 31-EDO collection. The original
 bass, pads and percussion keep their scores. The former glides and echo are
 removed; the added phrases build the first form's weight through composition.

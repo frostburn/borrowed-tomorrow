@@ -4,7 +4,7 @@ import {ARRANGEMENTS,scoreBar} from '../src/game/score';
 import {pitchSteps,isPercussion} from '../src/game/tuning';
 const modes=['benefactor','hollow-sun','unborrowed']as const;
 
-it('keeps the full mantle organ melody while adding three independent polyphonic lines',()=>{
+it('keeps the full mantle organ melody while harmonizing it in the same rhythm and radiant scale',()=>{
  const melody=(mode:'benefactor'|'sunthrone',start:number)=>Array.from({length:4},(_,i)=>scoreBar(mode,start+i)).flat().filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>n.pitch);
  for(let phrase=0;phrase<8;phrase++){
   expect(melody('benefactor',2+phrase*4)).toEqual(melody('sunthrone',phrase*4));
@@ -17,7 +17,11 @@ it('keeps the full mantle organ melody while adding three independent polyphonic
    for(let i=1;i<line.length;i++)expect(line[i-1].at+line[i-1].duration).toBeLessThanOrEqual(line[i].at);
    expect(line.at(-1)!.at+line.at(-1)!.duration).toBeLessThan(8);
   }
-  expect(new Set(lines.map(line=>line.map(n=>n.at).join(','))).size).toBe(3);
+  const theme=Array.from({length:2},(_,i)=>scoreBar('benefactor',start+i+2).filter(n=>n.instrument==='organ'&&Math.abs(n.pan)===.12).map(n=>({...n,at:i*4+n.beat}))).flat();
+  for(const line of lines){
+   expect(line.map(n=>[n.at,n.duration])).toEqual(theme.map(n=>[n.at,n.duration]));
+   for(const n of line)expect([0,5,10,14,18,22,25,28]).toContain((pitchSteps(n.pitch)%31+31)%31);
+  }
   let simultaneous=0;
   for(let at=0;at<8;at+=.125)simultaneous=Math.max(simultaneous,lines.filter(line=>line.some(n=>n.at<=at&&n.at+n.duration>at)).length);
   expect(simultaneous).toBe(3);
