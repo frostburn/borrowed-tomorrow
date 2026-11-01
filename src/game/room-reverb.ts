@@ -1,18 +1,15 @@
 import {ROOMS,type RoomId} from '../content/rooms';
+import {ROOM_DELAYS,reflectionCoefficients} from './room-dsp';
 
 export const ROOM_FADE=.28;
-const delays=[.0137,.0199,.0311,.0437,.0613,.0899];
 
-/** Damped Schroeder diffuser: H(z) = (L(z) z^-m - g) / (1 - g L(z) z^-m).
- * L is a nonresonant two-pole absorption filter on the delayed branch,
- * including its feedback. High frequencies lose energy on every reflection.
- * Every feedback cycle contains a fixed delay; |g| < 1. No oscillators,
- * convolution buffers, delay modulation or pitch-shifting room transitions. */
+/** Two short all-pass stages per side give a deliberately sparse retro room.
+ * H(z) = (L(z) z^-m - g) / (1 - g L(z) z^-m), with gentle one-pole L.
+ * Fixed delays and passive loss keep feedback stable; no modulation or samples. */
 function diffuser(c:BaseAudioContext,input:AudioNode,seconds:number,g:number,damping:number,nodes:AudioNode[]){
  const sum=c.createGain(),delay=c.createDelay(1),feedback=c.createGain(),forward=c.createGain(),out=c.createGain();
- // Two real poles attenuate upper-register reflections on every pass. A
- // return-only lowpass cannot stop those notes circulating in a large room.
- const pole=Math.exp(-2*Math.PI*Math.min(damping,1800)/c.sampleRate),absorption=c.createIIRFilter([(1-pole)**2],[1,-2*pole,pole*pole]);
+ const {feedforward,feedback:denominator}=reflectionCoefficients(c.sampleRate,damping);
+ const absorption=c.createIIRFilter(feedforward,denominator);
  delay.delayTime.value=seconds;feedback.gain.value=g;forward.gain.value=-g;
  input.connect(sum);sum.connect(delay);delay.connect(absorption);absorption.connect(feedback);feedback.connect(sum);
  sum.connect(forward);forward.connect(out);absorption.connect(out);
@@ -29,9 +26,8 @@ function room(c:BaseAudioContext,input:AudioNode,output:AudioNode,id:RoomId,star
   for(let ch=0;ch<2;ch++){
    const channel=c.createGain();nodes.push(channel);split.connect(channel,ch);
    let end:AudioNode=channel;
-   for(const [i,t]of delays.entries())end=diffuser(c,end,t*p.size*(ch?1.071+i*.009:1),p.feedback,p.damping,nodes);
-   const filter=c.createBiquadFilter();filter.type='lowpass';filter.frequency.value=p.damping;filter.Q.value=.5;nodes.push(filter);
-   end.connect(filter);filter.connect(merge,0,ch);
+   for(const [i,t]of ROOM_DELAYS.entries())end=diffuser(c,end,t*p.size*(ch?1.071+i*.009:1),p.feedback,p.damping,nodes);
+   end.connect(merge,0,ch);
   }
   merge.connect(wet);wet.connect(output);
  }
