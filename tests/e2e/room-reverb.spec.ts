@@ -3,7 +3,7 @@ import {checkpoint,palaceCheckpoint} from '../support/progress';
 import {importSave,approach} from './navigation';
 import {inspect,capture} from './controls';
 
-test('all-pass rooms render finite stereo tails at both device rates, with a true dry reference',async({page})=>{
+test('retro rooms render finite stereo tails at both device rates, with a true dry reference',async({page})=>{
  await page.goto('/');
  const results=await page.evaluate(async()=>{
   // @ts-expect-error Vite serves the shared production effect.
@@ -26,7 +26,7 @@ test('all-pass rooms render finite stereo tails at both device rates, with a tru
   if(r.id==='dry'){expect(r.tail).toBe(0);expect(r.peak).toBeCloseTo(.3,6);}
   else{expect(r.tail,r.id).toBeGreaterThan(1e-8);expect(r.right,r.id).toBeGreaterThan(1e-8);expect(r.end,r.id).toBeLessThan(r.tail*.001);}
  }
- for(const rate of [44100,48000])expect(results.find(r=>r.rate===rate&&r.id==='domain')!.late).toBeGreaterThan(results.find(r=>r.rate===rate&&r.id==='cabin')!.late*100);
+
 });
 
 test('rapid room changes keep a bounded graph and settle on the latest room without unstable transients',async({page})=>{
@@ -46,7 +46,7 @@ test('rapid room changes keep a bounded graph and settle on the latest room with
   for(let ch=0;ch<2;ch++){const d=audio.getChannelData(ch);for(let i=1;i<d.length;i++){peak=Math.max(peak,Math.abs(d[i]));if(i>rate*.7&&i<rate*2)jump=Math.max(jump,Math.abs(d[i]-d[i-1]));if(i>rate*7)tail+=d[i]*d[i];}}
   reverb.close();return{maximum,alive,peak,jump,tail,finalRoom};
  });
- expect(result.finalRoom).toBe('open');expect(result.maximum).toBeLessThanOrEqual(24);expect(result.alive).toBe(0);expect(result.peak).toBeLessThan(.3);expect(result.jump).toBeLessThan(.02);expect(result.tail).toBeLessThan(1e-7);
+ expect(result.finalRoom).toBe('open');expect(result.maximum).toBeLessThanOrEqual(8);expect(result.alive).toBe(0);expect(result.peak).toBeLessThan(.3);expect(result.jump).toBeLessThan(.02);expect(result.tail).toBeLessThan(1e-7);
 });
 
 test('campaign rooms follow the location through reused music and battles',async({page})=>{

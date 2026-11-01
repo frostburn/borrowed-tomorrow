@@ -1,71 +1,81 @@
 # Map rooms
 
-Issue #88: exploration and battles share the room of their actual campaign location. Music changes, victory cues, cutscenes and menu effects do not choose a new room. The title uses Larkspur's open air; isolated battle previews use the canonical room for their battle theme.
+Exploration and battles share the room of their actual campaign location.
+Music, victory cues, cutscenes and menu effects do not choose a new room.
+`src/content/rooms.ts` assigns every map and track a room; both the campaign
+and Music workshop use those profiles. Dry remains the comparison option.
 
-`src/content/rooms.ts` assigns every map and every track a room. Open air, timber cabins, wards, courtyards, engine halls, marble halls, caverns and the hollow domain have distinct sizes, return levels and damping. Dry is the comparison option. Changing these authored presets changes future room instances, without changing scores or saves.
+## Sparse retro network
 
-The complete music/effects bus passes through the shared compressor **before** entering the dry/room mixer, then reaches master volume. This controls the incoming excitation without compressing the room return: a new loud sound cannot duck an already ringing tail or swell it back as the compressor releases. Each settled room remains a fixed linear time-invariant system. Room crossfades and explicit master fades on pause/volume changes still apply. Each room has six fixed Schroeder diffusion stages per stereo side and a damped return. Each delayed branch also passes through a unity-DC, nonresonant two-pole absorption filter before both the output and feedback. Its two real poles use the profile
-cutoff capped at 1.8 kHz; the separate return filter retains the profile
-setting. This makes high frequencies lose energy on every reflection rather than circulating at full strength behind the return filter. The lossless all-pass form is recovered when that filter is unity. There are no downloaded impulses, convolution, per-note room effects, delay modulation or changes to 31-EDO pitches. The former music-only convolution is removed.
+The room implementation is rebuilt around two short fixed all-pass diffusers
+per stereo side: four delay lines total, down from twelve. The base delays are
+29.7 and 43.7 ms, scaled by room size; the right side offsets them by 7.1% and
+8% for stereo spread. This deliberately sparse response gives short, audible
+reflections rather than a dense modern wash. Each stage has one gentle damping
+pole inside its delayed branch, including feedback:
 
-Changing rooms crossfades the old sends/returns over 280 ms. Feedback gains and delay lengths remain fixed for the life of each graph. At most two rooms coexist; faster requests retain only the latest destination. A silent scheduled source retires the outgoing graph on the audio clock, so suspension cannot run a wall-clock cleanup early. Pause fades the room to Dry under the master mute; resume selects the current map again.
+`L(z) = (1-p)/(1-p z^-1)`, with `p = exp(-2*pi*damping/sampleRate)`.
 
-Music workshop → Room starts at the selected track's canonical room. Choose any other room, including Dry, without restarting the cue or changing its bar. A new cue restores Canonical. Single-pitch and circle-of-fifths auditions use the same room effect. These comparisons are session-only and never write campaign or workshop storage.
+`H(z) = (L(z) z^-m - g)/(1-g L(z) z^-m)`.
 
-Validation uses native `OfflineAudioContext` impulse/tone renders at 44.1/48 kHz, stereo tails and decay, rapid transitions, graph retirement, actual campaign entry/battle routing and desktop/phone review controls. Detailed audio/browser checks remain outside the small default CI browser gate.
+The loss has unity DC gain and never boosts a frequency. With unity loss the
+stage is all-pass. High damping settings (8–12 kHz) gently absorb repeated
+reflections; there is no cutoff cap, second absorption pole, extra return EQ,
+resonant biquad, convolution, modulation or downloaded impulse. The cutoff
+parameter describes the exponential pole, not an exact digital −3 dB frequency.
+Mixing the phase-shifted wet return with dry audio still creates comb filtering.
 
-`tests/e2e/room-mix.spec.ts` initializes the actual production mixer offline and inspects its connections. Incoming music must pass through compression, while both dry and wet room paths must reach master volume without encountering it. This checks all reachable paths through the feedback graph rather than comparing independently constructed native feedback networks sample for sample. Loud boss passages with overlapping combat effects also render through the full mixer to check output headroom.
+All profiles have been authored for this smaller network:
 
-Large rooms use restrained delay lengths, feedback and return levels to keep held strings and bells from accumulating a long resonance. Regression limits require Captain Alban's canonical Cavern to shed 99.9% of its impulse-tail energy within 1.15 seconds and the longer Hollow domain within 1.9 seconds. `tests/e2e/room-decay.spec.ts` checks normalized tail decay independently of return volume at both device rates, plus the actual Captain Alban phrase after its sources stop. Run it with `npx playwright test room-decay room-reverb` to review decay alongside transition and routing regressions. Scores, instrument releases and tuning are unchanged.
+| Room | Size | Feedback | Wet | Damping pole (Hz) |
+| --- | ---: | ---: | ---: | ---: |
+| Open air | 0.35 | 0.25 | 0.05 | 12000 |
+| Timber cabin | 0.5 | 0.4 | 0.14 | 8000 |
+| Ward | 0.7 | 0.42 | 0.15 | 10000 |
+| Stone courtyard | 0.9 | 0.4 | 0.1 | 12000 |
+| Engine hall | 0.65 | 0.35 | 0.17 | 9000 |
+| Marble hall | 1.25 | 0.55 | 0.19 | 12000 |
+| Cavern | 1.35 | 0.5 | 0.17 | 8000 |
+| Hollow domain | 1.4 | 0.52 | 0.2 | 10000 |
 
-The courtyard used by Letters on the Water has a restrained return (0.1125 after #192, previously 0.09), less feedback (0.46) and a 3.2 kHz return setting. Other room profiles keep their distinct levels and geometry while sharing the stronger reflection absorption. The uniform wet-level increase is described below. `tests/e2e/room-absorption.spec.ts` compares 400 Hz and 4 kHz burst tails at 44.1/48 kHz; it requires audible low-frequency room energy and substantially weaker treble tails. Run `npx playwright test room-absorption room-decay room-reverb` for spectral decay, tail duration, dry reference, transition/cleanup and campaign/workshop routing checks.
+Size and feedback control decay directly. Wet gain only sets return volume;
+lowering it does not count as fixing a lingering tail. This design replaces
+the former six-stage presets and their successive absorption/level adjustments.
+It is an independent alternative to the Domain-only retune in PR #258.
 
-Isolated treble needs its own decay check: a broadband impulse or a comparison
-with loud bass can hide ringing. `room-absorption.spec.ts` now probes 1.6, 2.5,
-4 and 6.5 kHz bursts in the courtyard, hall and domain at both sample rates.
-It measures normalized tail duration and late-energy fraction, so reducing
-return volume alone cannot pass. A 400 Hz domain reference must retain more
-than a second of room tail. In the 48 kHz 4 kHz probe, 99.9% of the remaining
-tail clears in about 0.35 seconds after the note, versus about 1.01 seconds
-before the stronger absorption. The direct signal, instrument releases,
-score and room delay geometry are unchanged; the wet-level adjustment below
-only scales these tails.
+The complete music/effects bus passes through compression before the unity
+dry/room mixer, then master volume. Existing tails cannot be ducked or swelled
+by subsequent input compression. Scores, instrument envelopes, tuning, location
+routing and save data retain their behavior. Each settled room is linear and
+time-invariant. The 280 ms send/return crossfade keeps at most two rooms
+(eight delay lines) alive; rapid requests queue only the latest destination.
+Cleanup runs on the audio clock, including across suspension. Pause fades to
+Dry under the master mute and resume selects the map again.
 
-## Wet-level adjustment (#192)
+Music workshop → Room supports Canonical, overrides and Dry without restarting
+the score or moving its bar. A new cue restores Canonical. Single-pitch and
+circle-of-fifths auditions use the same effect. Review settings are session-only.
 
-With compression confined to the room input, the non-dry profiles now return
-25% more wet signal (about +1.94 dB). Open air remains subtle; enclosed rooms
-retain their relative strengths. Dry gain, delay geometry, feedback, damping
-and transition timing are unchanged, so the adjustment increases space without
-lengthening or brightening the impulse responses. The Dry reference remains
-fully dry. Both campaign and workshop use the same profile values.
+## Validation
 
-## Engine hall resonance
+`python3 scripts/analyze-rooms.py --output /tmp/retro-rooms.json` audits actual
+production profiles, delays and one-pole coefficients with NumPy/SciPy. It models
+fractional-delay linear interpolation at 44.1/48 kHz. Sixth-octave power averages
+show less than 0.6 dB of 200 Hz–2 kHz tilt for every profile. Isolated 82–6500 Hz
+200 ms tones (10 ms ramps) clear 99.9% of each channel's remaining tail in at
+most 0.47 seconds; Domain is longest. Tail energy is normalized from 20 ms
+after note end. These are analytical results, not native recordings or listening
+approval. The optional script adds no runtime or CI dependencies.
 
-Engine hall uses a shorter room scale (0.8), lower feedback (0.4) and a
-3 kHz return cutoff. Its wet level stays at 0.225. This reduces repeated bass
-and midrange reflections while retaining an audible early room response.
-Relay Hall, the conduit works and Hammerplain use the same profile in the
-campaign and Music workshop. Scores, instrument envelopes,
-input compression and room crossfades retain their settings. Each settled
-room remains linear and time-invariant.
+Unit tests check passive one-pole coefficients, the four-delay graph, direct dry
+routing and cleanup. Detailed native `OfflineAudioContext` tests check finite
+stereo tails, normalized tone decay, midrange audibility/tilt, full-mixer headroom,
+rapid transitions, actual campaign routing and desktop/phone review controls:
 
-At 48 kHz, the normalized 700 Hz burst tail clears 99.9% of its energy in
-about 0.44 seconds, down from 0.74 seconds. The fraction left after half a
-second drops from 3.74% to 0.012%; this is a decay-shape change, independent
-of return volume. The impulse clears in about 0.54 seconds instead of 0.83.
-`room-absorption.spec.ts` now checks isolated 82–1600 Hz notes at 44.1/48 kHz,
-requiring an audible return, 99.9% decay within 0.65 seconds and less than
-0.5% of the tail energy after half a second. `room-decay.spec.ts` also applies
-the 0.65-second limit to Engine hall's broadband impulse. These remain opt-in
-audio checks outside the normal CI browser gate.
+`npx playwright test room-absorption room-decay room-reverb room-mix`
 
-## Ward adjustment
-
-Ward takes a smaller step: feedback drops from 0.57 to 0.5 and the return
-cutoff from 5.2 to 4.2 kHz. Its 0.8 room scale and 0.2125 wet level stay in
-place, keeping the infirmary and Windmere dispensary spacious with a softer,
-less persistent return. Engine hall keeps its stronger shortening above.
-The shared bass/midrange probes now cover Ward too, including a return-energy
-limit that catches its former excessive 220 Hz buildup. Its impulse and
-isolated-note tails must clear 99.9% of their energy within 0.75 seconds.
+Tone checks require an audible return, 99.9% decay within 0.65 seconds and less
+than 1% of tail energy after half a second, per channel. Midrange band tilt must
+stay below 3 dB. The former requirements for heavily suppressed treble and a
+long Domain bass tail no longer describe this design. Detailed audio/browser
+checks remain outside the small default `@ci` gate.

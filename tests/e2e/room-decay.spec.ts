@@ -32,10 +32,10 @@ test('room decay and the Captain Alban phrase clear after the source stops',asyn
   }
   return{rooms,tracks};
  });
- const limits={ward:{seconds:.75,late:.002},works:{seconds:.65,late:.001},hall:{seconds:1.4,late:.02},cave:{seconds:1.15,late:.002},domain:{seconds:1.9,late:.1}};
+ const limits={ward:{seconds:.75,late:.002},works:{seconds:.65,late:.001},hall:{seconds:1.4,late:.02},cave:{seconds:1.15,late:.002},domain:{seconds:.65,late:.005}};
  for(const r of measured.rooms){
   const label=`${r.id} at ${r.rate} Hz`,limit=limits[r.id];
-  expect(r.total,label).toBeGreaterThan(1e-8);expect(r.t999,label).toBeGreaterThan(.2);
+  expect(r.total,label).toBeGreaterThan(1e-8);expect(r.t999,label).toBeGreaterThan(.02);
   expect(r.t999,label).toBeLessThan(limit.seconds);expect(r.lateFraction,label).toBeLessThan(limit.late);
  }
  for(const r of measured.tracks){expect(r.body,`${r.rate} Hz phrase`).toBeGreaterThan(1e-8);expect(r.lateRatio,`${r.rate} Hz Alban tail`).toBeLessThan(1e-5);}

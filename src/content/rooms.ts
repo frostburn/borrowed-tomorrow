@@ -1,18 +1,18 @@
 import type {MapId} from '../rules/state';
 import type {MusicMode} from '../game/score';
 
-// Fixed geometry: transitions change gains, never the feedback delays.
-// Wet returns raised 25% (~1.94 dB) after moving compression before the rooms (#192).
+// Retro rooms: two fixed diffusers per side, with gentle one-pole reflection loss.
+// Damping is the pole's decay-frequency parameter, not an extra return filter.
 export const ROOMS={
- dry:{name:'Dry',size:0,feedback:0,wet:0,damping:8000},
- open:{name:'Open air',size:.38,feedback:.38,wet:.05625,damping:4400},
- cabin:{name:'Timber cabin',size:.5,feedback:.52,wet:.175,damping:3800},
- ward:{name:'Ward',size:.8,feedback:.5,wet:.2125,damping:4200},
- court:{name:'Stone courtyard',size:1.1,feedback:.46,wet:.1125,damping:3200},
- works:{name:'Engine hall',size:.8,feedback:.4,wet:.225,damping:3000},
- hall:{name:'Marble hall',size:1.4,feedback:.5,wet:.25,damping:5600},
- cave:{name:'Cavern',size:1.35,feedback:.44,wet:.2125,damping:3200},
- domain:{name:'Hollow domain',size:1.9,feedback:.54,wet:.275,damping:4400},
+ dry:{name:'Dry',size:0,feedback:0,wet:0,damping:12000},
+ open:{name:'Open air',size:.35,feedback:.25,wet:.05,damping:12000},
+ cabin:{name:'Timber cabin',size:.5,feedback:.4,wet:.14,damping:8000},
+ ward:{name:'Ward',size:.7,feedback:.42,wet:.15,damping:10000},
+ court:{name:'Stone courtyard',size:.9,feedback:.4,wet:.1,damping:12000},
+ works:{name:'Engine hall',size:.65,feedback:.35,wet:.17,damping:9000},
+ hall:{name:'Marble hall',size:1.25,feedback:.55,wet:.19,damping:12000},
+ cave:{name:'Cavern',size:1.35,feedback:.5,wet:.17,damping:8000},
+ domain:{name:'Hollow domain',size:1.4,feedback:.52,wet:.2,damping:10000},
 }as const;
 export type RoomId=keyof typeof ROOMS;
 
