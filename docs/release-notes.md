@@ -1,9 +1,6 @@
-# Unreleased — draft for v1.0.0
+# Borrowed Tomorrow v1.0.0
 
-This is an unpublished draft, not a release announcement. The package version
-remains `0.2.0`; the existing `v0.2.0-beta.1` pre-release is unchanged. Complete
-the [release checks](releasing.md) and revise these notes against the selected
-commit before publishing.
+**[Play online](https://tomorrow.lumipakkanen.com/)**
 
 ---
 
@@ -14,7 +11,7 @@ its miracles with other people's tomorrows.
 ## The adventure
 
 - Five playable companions, optional quests, an alternate ending and playable epilogues.
-- Turn-based hex battles with up to three active fighters, upgradeable solo skills and paired team attacks.
+- Turn-based hex battles with up to three active fighters, automatically progressing solo skills and paired team attacks.
 - Large bosses with multiple battlefield contacts, readable attack warnings, distinct phases and environmental hazards.
 - Manually equipped loot, shared supplies, free rest spots and purchasable permanent training.
 - Wordless vector cinematics at every chapter crossing, ending films and credits.
@@ -38,6 +35,19 @@ addresses. Workshop builds are separate from campaign progress.
 The production build is a static browser game with no account, API key or live
 story service. Building from source requires Node 24 and npm; `npm run build`
 produces `dist/`. See the [README](../README.md) for controls and setup.
+
+## Validation and known issues
+
+Fresh headless campaigns reach both endings: 50 victories for the recovered
+route and 37 for the Lightbearer route, without defeats, retries or granted
+resources. An additional recovered route purchases ten permanent improvements
+and also completes. See the [ending audit](headless.md#fresh-campaign-through-both-endings--2026-11-01)
+for reproduction and limits. Headless completion does not verify rendering or audio.
+
+[Basic skill balance (#260)](https://github.com/frostburn/borrowed-tomorrow/issues/260)
+remains open: Steam Lance and Quick Shot can dominate the player's choices.
+This is a known balance concern, not an ending-completion blocker observed in
+the audited routes.
 
 ## Credits
 

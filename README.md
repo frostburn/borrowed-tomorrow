@@ -1,5 +1,7 @@
 # Borrowed Tomorrow
 
+**[Play Borrowed Tomorrow](https://tomorrow.lumipakkanen.com/)** — hosted browser game.
+
 A story-complete, seven-chapter JRPG for the browser. Nell sets out to find her
 brother after an imperial raid. A stolen crystal, a coal-fired engine and a
 village where time has stopped draw her into an empire living on tomorrow's
@@ -60,12 +62,12 @@ confirming: some attacks hit companions as well as enemies. Cover blocks many
 shots, while boss warnings show the area of an upcoming attack. Large enemies
 can occupy multiple hexes; an area attack damages each body only once.
 
-Skill points buy ranks when a character meets the required level. For example,
+Skills improve automatically at fixed character levels. For example,
 Nell's Lantern burst starts as four slanted hexes, grows to a seven-hex area,
 then gains stronger damage with reduced friendly fire. Orrin's Steam lance
 stays a four-hex straight ray. Team moves require both learned solo skills and
 spend both fighters' main actions; the assisting fighter keeps unused movement.
-Skills improve automatically at fixed character levels. Level-up results name new skills and rank improvements; Equipment → Skills shows current effects and upcoming milestones.
+Level-up results name new skills and rank improvements; Equipment → Skills shows current effects and upcoming milestones.
 
 Bought and found equipment goes into the shared bag. Open **Equipment** to fit
 it, choose active companions or review skills. Reserves keep their equipment
@@ -122,7 +124,7 @@ HTTP compression on the host. `npm run build:size` reports startup, deferred
 JavaScript and total distribution sizes; see [Production bundles](docs/production-build.md).
 
 - [Release procedure and playthrough checks](docs/releasing.md)
-- [Unpublished release-notes draft](docs/release-notes.md)
+- [v1.0.0 release notes](docs/release-notes.md)
 - [Source map and local workflows](docs/development.md)
 - [Vector art direction](docs/art-direction.md) and [tile maps](docs/tile-maps.md)
 - [Music direction](docs/music-direction.md) and [room audio](docs/room-audio.md)
