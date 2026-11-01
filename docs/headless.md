@@ -84,7 +84,7 @@ npm run check
 
 The opt-in simulation suite earns the early checkpoint once, tests the four route combinations, compares split versus uninterrupted continuation and clears the route without optional rewards. Its `.simulation.ts` files stay outside the small default CI gate. Default tests cover input validation, inaccessible interactions, rejected formation changes, isolated tactical planning and team-helper turns.
 
-These runs do not test rendering, hit areas, animation, asset loading or audio. The scripted routes currently stop after Chapter Five. Chapter Six onward needs its own route and checkpoint-prompt handling before it is supported; a successful run is not evidence about those later chapters. The earned Chapter Five checkpoint records the actual Chapter Six departure.
+These runs do not test rendering, hit areas, animation, asset loading or audio. The chapter-specific runners now cover all seven chapters and both endings; see the Chapter Six/Seven sections and the fresh ending audit below. A successful run of an earlier stage only establishes completion through that stage's recorded departure.
 
 ## Defensive and spending comparison (middle-v2)
 
@@ -584,3 +584,51 @@ guarantee of less damage for every skill build or agent. The regression now chec
 actual grounding, victory without knockouts, loss below a quarter of deployed
 maximum HP on each route, and no excessive setup-round overhead. No encounter
 stats or agent tactics were changed for this progression update.
+
+## Fresh campaign through both endings — 2026-11-01
+
+Replayed main `77981f568ad718848551e7f1dd3b09de5c2eb791` from `newGame()`,
+earned the Chapter Five departure, then branched that same save for treatment
+and the uncured route. No historical earned checkpoint or canonical fixture
+was used. Both endings complete with real paths, story callbacks, checkpoint
+confirmation, combat, purchases and rewards. There were no defeats, knockouts,
+retries, forced victories or resource grants. No gameplay blocker was found.
+
+| Route from new game | Victories | Terminal map | XP | Marks |
+| --- | ---: | --- | ---: | ---: |
+| Iria cure → Emperor → three Benefactor forms → seaside | 50 | `seaholiday` | 9,935 | 4,416 |
+| No Iria → Emperor → Lightbearer → empty seat | 37 | `laststation` | 6,155 | 2,983 |
+
+The recovered save has `chapterSevenComplete`, `realSeaSeen` and a null
+boundary. The uncured save has `lightbearerEnding`, Nell lost at zero HP,
+no Chapter Six completion or Chapter Seven departure, and a valid
+`capital-return` checkpoint captured before assault commitment.
+
+The additional `--improvements` continuation also reaches the seaside without
+defeats or knockouts. It buys ten real improvements for 4,050 marks across
+Chapters Six/Seven and ends with 436 marks. The default controller's large
+unspent purse therefore does not establish that useful purchases are absent.
+No additional confirmed gameplay issue was found beyond the separately tracked
+[#260](https://github.com/frostburn/borrowed-tomorrow/issues/260); these runs do
+not establish human difficulty or rule out other route or presentation issues.
+
+[fresh-endings-audit.json](headless/fresh-endings-audit.json) records the commands,
+report/input hashes, encounter summaries, spending and terminal state hashes.
+Full turn traces remain generated outside the repository. Reproduce the fresh
+prefix with `simulate:early`, `simulate:middle` and `simulate:five`, then run
+`simulate:six` twice: default for the cure, or `--order desert,north
+--skip-optional` for the uncured ending. Pass the cured departure to
+`simulate:seven`. Add `--improvements` to the Six/Seven commands to repeat the
+purchasing comparison, using the same newly earned Five input.
+
+The opt-in regression earns the shared prefix anew, checks every victory and
+money balance, validates exported saves and verifies both terminal outcomes
+and the uncured return checkpoint:
+
+```sh
+npx vitest run --config scripts/headless.vitest.config.ts tests/headless-endings.simulation.ts
+```
+
+It stays outside default CI; normal rule/content tests, TypeScript and the
+production build also pass. No combat, campaign, map, economy or agent behavior
+was changed for this audit.
