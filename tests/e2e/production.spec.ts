@@ -107,6 +107,7 @@ test('@ci production ignores all workshop routes and omits its controls and prog
   await page.getByRole('button',{name:/^F\s+Defend$/}).click();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
   await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);
   await expect(page.getByRole('group',{name:'Development battle tools'})).toHaveCount(0);
+  await expect(page.locator('#toast')).toBeHidden();
   await capture(page,'phone-landscape-production');await page.getByRole('button',{name:/Prism lance$/}).click();await capture(page,'phone-landscape-production-skill');
   expect(errors).toEqual([]);
 });

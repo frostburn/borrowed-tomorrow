@@ -3,6 +3,8 @@
 .pan-vertical{display:none}
 .sound-compact{display:none}
 .world-input{touch-action:none}
+.toast{pointer-events:none}
+.phone-layout .toast{top:4px;bottom:auto;left:8px;transform:none;max-width:max(160px,calc(100% - 364px))}
 .orientation-gate{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;padding:32px max(24px,env(safe-area-inset-left));background:#080f19;color:#f4e5be;text-align:center}
 .orientation-gate h2{max-width:320px;line-height:28px}
 .orientation-gate p{font:10px/18px SwitchyardCompact,monospace;max-width:280px}
