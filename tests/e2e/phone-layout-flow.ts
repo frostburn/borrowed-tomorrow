@@ -38,7 +38,8 @@ export async function unfilteredPortraitWorld(page:Page){
   const native=document.querySelector<HTMLCanvasElement>('.phaser-host canvas')!,output=document.querySelector<HTMLCanvasElement>('.pixel-output')!,world=document.querySelector('.world-input')!.getBoundingClientRect();
   const expected=document.createElement('canvas');expected.width=world.width;expected.height=world.height;
   const ctx=expected.getContext('2d')!;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(native,0,0,world.width,world.height);
-  const x=Math.floor(world.width/2)-32,y=Math.floor(world.height/2)-16;
+  // Stay below Log and above the wrapped development strip/camera controls.
+  const x=Math.floor(world.width/2)-32,y=48;
   const a=ctx.getImageData(x,y,64,24).data,b=output.getContext('2d')!.getImageData(world.x+x,world.y+y,64,24).data;
   return {matches:a.every((v,i)=>v===b[i]),nonblank:new Set(Array.from(a).filter((_,i)=>i%4!==3)).size>3};
  }),{message:'portrait paints the original scene without the chunky raster'}).toEqual({matches:true,nonblank:true});
