@@ -421,7 +421,11 @@ authored two-bar band answers. During an answer the foreground organ rests;
 brass, strings and lower organ take over together, with matched attacks,
 rests and holds in the radiant 31-EDO scale. The shared rhythmic sentence
 preserves the original lead's attack positions across call and response.
-Bass, pads and drums keep their foundation underneath the exchange. The
+Four answers stay fully voiced. The other four use restrained breaks on the
+same four attacks: brass gives way to strings/lower organ, smaller groups
+trade, and two slots leave a short band rest before the next hit. No displaced
+entrances or extra subdivisions are added. Bass, pads and drums keep their
+foundation underneath the exchange. The
 former glides and echo are removed.
 
 The Broken Meridian (`hollow-sun`) restores six organ runs, four of them
