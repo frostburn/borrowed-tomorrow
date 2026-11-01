@@ -99,7 +99,7 @@ test('@ci phone combat pans and confirms real healing without shrinking the acto
   // Inspect the actual late-game command list, with both of Nell's partners.
   const late=coastCheckpoint('raidConfronted');late.xp=8200;late.skills=newSkillBook(15);restoreParty(late);
   await importSave(page,late);await capture(page,'phone-landscape-world');
-  await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Equipment',exact:true})).toBeVisible();await capture(page,'phone-landscape-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
+  await page.getByRole('button',{name:'Equipment',exact:true}).tap();await expect(page.getByRole('dialog',{name:'Character inventory',exact:true})).toBeVisible();await capture(page,'phone-landscape-equipment');await page.getByRole('button',{name:'Close',exact:true}).tap();
   await approach(page,'loading-gate');await expect.poll(async()=>(await inspect(page)).mode).toBe('battle');
   await page.getByRole('button',{name:/^F\s+Defend$/}).tap();await expect.poll(async()=>{const s=await inspect(page);return !s.busy&&s.battle?.queue[0];}).toBe('nell');
   await expect(page.locator('.actions button')).toHaveCount(10);await commandsFit(page);await phoneConsole(page);await capture(page,'phone-landscape-full-skills');

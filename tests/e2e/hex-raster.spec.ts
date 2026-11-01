@@ -8,6 +8,7 @@ for(const [device,viewport,dpr]of [['desktop',{width:1280,height:800},1],['phone
   for(let row=0;row<7;row++){
    const p=toPixel(offset(0,row));let view=(await inspect(page)).view;
    for(let pan=0;pan<6&&p.x<view.scrollX+36;pan++){await page.getByRole('button',{name:'Pan battlefield left',exact:true}).click();view=(await inspect(page)).view;}
+   for(let pan=0;pan<4&&(p.y<view.scrollY+36||p.y>view.scrollY+view.height-36);pan++){await page.getByRole('button',{name:p.y<view.scrollY?'Pan battlefield up':'Pan battlefield down',exact:true}).click();view=(await inspect(page)).view;}
    const box=(await page.locator('#canvas canvas').boundingBox())!;
    await page.mouse.move(box.x+(p.x-view.scrollX)*box.width/view.width,box.y+(p.y-view.scrollY)*box.height/view.height);
    await expect.poll(()=>page.evaluate(p=>{

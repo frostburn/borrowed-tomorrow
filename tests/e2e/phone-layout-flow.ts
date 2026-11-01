@@ -5,12 +5,14 @@ export async function phoneConsole(page:Page){
  await expect(page.locator('.pixel-source')).toHaveClass(/phone-layout/);
  await expect(page.locator('.orientation-gate')).toBeHidden();
  const layout=await page.evaluate(()=>{
-  const stage=document.querySelector('.stage-wrap')!.getBoundingClientRect(),controls=document.querySelector('.controls')!.getBoundingClientRect();
-  return {scale:window.borrowedTomorrowPixels.inspect().cssScale,stageRight:stage.right,controlsLeft:controls.left,clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button')].filter(b=>{
+  const stage=document.querySelector('.stage-wrap')!.getBoundingClientRect(),controls=document.querySelector('.controls')!.getBoundingClientRect(),world=document.querySelector<HTMLCanvasElement>('.world-input')!,bounds=world.getBoundingClientRect(),view=window.borrowedTomorrow.inspect().view;
+  return {scale:window.borrowedTomorrowPixels.inspect().cssScale,stageRight:stage.right,controlsLeft:controls.left,surface:[world.width,world.height],view:[view.width,view.height],origin:[bounds.x,bounds.y],stageOrigin:[stage.x,stage.y],clipped:[...document.querySelectorAll('.topbar button,.controls .actions button,#confirmation button')].filter(b=>{
    const r=b.getBoundingClientRect();return r.width>0&&(r.x<0||r.y<0||r.right>innerWidth+1||r.bottom>innerHeight+1);
   }).map(b=>b.textContent)};
  });
  expect(layout.scale).toBe(1);expect(layout.controlsLeft).toBeGreaterThanOrEqual(layout.stageRight);expect(layout.clipped).toEqual([]);
+ expect(layout.surface,'the input surface matches the actual camera after resize').toEqual(layout.view);
+ expect(layout.origin,'the world stays inside its stage, below the header').toEqual(layout.stageOrigin);
 }
 export async function rotateWithPlan(page:Page){
  const before=(await inspect(page)).battle;

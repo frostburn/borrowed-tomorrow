@@ -38,7 +38,12 @@ export function mountGame(root:HTMLElement, adventure:Adventure, overrides:Parti
     if(drawFrame)display.paint(adventure.animating,false,adventure.smoothAnimation,game.loop.now);
   });
 
-  window.addEventListener('resize',()=>adventure.resizeView());
+  window.addEventListener('resize',()=>{
+    adventure.resizeView();
+    // Orientation can resume a paused scene in a later resize listener. Sync
+    // after those listeners, before the browser can deliver another pointer.
+    queueMicrotask(()=>{if(game.canvas){display.attach(game.canvas);display.fitWorld();}});
+  });
   orientationGuard(root,display.source,game,adventure);
 
   return {ui,game,display};

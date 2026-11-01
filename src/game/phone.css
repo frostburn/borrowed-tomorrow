@@ -45,7 +45,7 @@
 .phone-layout .battle-controls .vitals{display:flex;flex-wrap:wrap;gap:4px 12px}
 .phone-layout .battle-controls .command-panel{min-height:0;padding:4px;grid-template-rows:minmax(0,1fr) 72px;gap:4px}
 .phone-layout .battle-controls .command-list{gap:0}
-.phone-layout .battle-controls .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;align-content:start}
+.phone-layout .battle-controls .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--phone-action-gap);align-content:start}
 .phone-layout .battle-controls .actions button{min-width:0;min-height:var(--phone-action-height);padding:4px;font:10px/12px SwitchyardCompact,monospace}
 .phone-layout .battle-controls .confirmation{grid-template-rows:minmax(0,1fr) 40px;gap:4px}
 .phone-layout .battle-controls .confirmation button{padding:4px;min-height:40px;font:10px/12px SwitchyardCompact,monospace}

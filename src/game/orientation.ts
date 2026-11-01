@@ -18,8 +18,10 @@ export function orientationGuard(root:HTMLElement,source:HTMLElement,game:Phaser
    else if(focus?.isConnected)focus.focus();
   }
   // The first portrait check can happen before Phaser boots its scene.
-  if(portrait&&adventure.sys.isActive()){adventure.scene.pause();paused=true;}
-  else if(!portrait&&paused){paused=false;adventure.scene.resume();adventure.input.keyboard?.resetKeys();adventure.resizeView();}
+  // ScenePlugin.resume queues the operation until the next game step. Use the
+  // manager's immediate resume so resizeView sees an active scene right now.
+  if(portrait&&adventure.sys.isActive()){game.scene.pause(adventure);paused=true;}
+  else if(!portrait&&paused){paused=false;game.scene.resume(adventure);adventure.input.keyboard?.resetKeys();adventure.resizeView();}
  };
  window.addEventListener('resize',sync);game.events.on('prerender',sync);sync();
  game.events.once('destroy',()=>{window.removeEventListener('resize',sync);game.events.off('prerender',sync);gate.remove();source.inert=false;});

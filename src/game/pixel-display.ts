@@ -71,11 +71,16 @@ export class PixelDisplay {
     window.addEventListener('resize',()=>this.layout());this.layout();
     window.borrowedTomorrowPixels={inspect:()=>({width:this.width,height:this.height,physicalScale:this.physicalScale,cssScale:this.cssScale,physicalLeft:this.physicalLeft,physicalTop:this.physicalTop,rasterUnit:RASTER_UNIT,palette:PALETTE})};
   }
-  attach(canvas:HTMLCanvasElement){this.native=canvas;}
+  attach(canvas:HTMLCanvasElement){
+    this.native=canvas;
+    // A scene can resize between Scale Manager callbacks. Never paint or accept
+    // input through an old portrait-sized surface.
+    if(this.world.width!==canvas.width||this.world.height!==canvas.height)this.fitWorld();
+  }
   private layout(){
     this.dirty=true;this.fitted='';
     const layout=screenLayout();this.width=layout.width;this.height=layout.height;
-    this.source.classList.toggle('phone-layout',layout.compact);this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');
+    this.source.classList.toggle('phone-layout',layout.compact);this.source.style.setProperty('--phone-sidebar',layout.sidebar+'px');this.source.style.setProperty('--phone-action-height',layout.height<380?'34px':'38px');this.source.style.setProperty('--phone-action-gap',layout.height<380?'2px':'4px');
     // On phones the shared bitmap is CSS-pixel sized. The browser expands that
     // single nearest-sampled surface for DPR, avoiding a huge extra copy on
     // high-density phones while keeping DOM targets at their authored size.
