@@ -10,6 +10,12 @@ export function orientationGuard(root:HTMLElement,source:HTMLElement,game:Phaser
  gate.innerHTML='<div class="rotate-phone" aria-hidden="true">↻</div><h2 id="rotate-title" tabindex="-1">Turn your phone sideways</h2><p>Borrowed Tomorrow plays in landscape.</p><p class="rotate-detail">Your game pauses here while you rotate.</p>';
  root.append(gate);
  let blocked=false,paused=false,focus:HTMLElement|undefined;
+ // Films also listen on window, outside Phaser's paused input plugin. Keep
+ // their shortcuts from skipping an unseen scene behind the rotation gate.
+ const preventInput=(event:KeyboardEvent)=>{
+  if(!portraitScreen()||event.ctrlKey||event.metaKey||event.altKey)return;
+  if(event.key.length===1||['Enter','Escape','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();}
+ };
  const sync=()=>{
   const portrait=portraitScreen();
   if(portrait!==blocked){
@@ -23,6 +29,7 @@ export function orientationGuard(root:HTMLElement,source:HTMLElement,game:Phaser
   if(portrait&&adventure.sys.isActive()){game.scene.pause(adventure);paused=true;}
   else if(!portrait&&paused){paused=false;game.scene.resume(adventure);adventure.input.keyboard?.resetKeys();adventure.resizeView();}
  };
+ window.addEventListener('keydown',preventInput,true);window.addEventListener('keyup',preventInput,true);
  window.addEventListener('resize',sync);game.events.on('prerender',sync);sync();
- game.events.once('destroy',()=>{window.removeEventListener('resize',sync);game.events.off('prerender',sync);gate.remove();source.inert=false;});
+ game.events.once('destroy',()=>{window.removeEventListener('resize',sync);window.removeEventListener('keydown',preventInput,true);window.removeEventListener('keyup',preventInput,true);game.events.off('prerender',sync);gate.remove();source.inert=false;});
 }

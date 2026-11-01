@@ -23,6 +23,7 @@ export async function rotateWithPlan(page:Page){
  await expect(page.getByRole('dialog',{name:'Turn your phone sideways'})).toBeVisible();
  expect(await page.locator('.pixel-source').evaluate(e=>(e as HTMLElement).inert)).toBe(true);
  await capture(page,'phone-portrait-rotate');
+ await page.keyboard.press('Escape');await page.keyboard.press('Enter');await page.keyboard.press('Space');await page.keyboard.press('1');
  // Scene timers and the campaign clock must remain stopped, not just covered.
  const seconds=(await inspect(page)).state.playSeconds;
  await page.waitForTimeout(1100);
